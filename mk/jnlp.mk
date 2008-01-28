@@ -3,7 +3,7 @@
 # @Author: Christopher Brooks
 # @Version: $Id$
 #
-# Copyright (c) 2001-2007 The Regents of the University of California.
+# Copyright (c) 2001-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -34,6 +34,20 @@
 # This makefile should be included from the bottom of $PTII/makefile
 # It is a separate file so as to not clutter up $PTII/makefile
 
+# We usually build installers using jnlp first because it is
+# easier to update jar files and test.
+# 
+# To build with a self signed certificate, use:
+#   make jnlp_all
+
+# The usual procedure is to build the jnlp files, access them via
+# a browser and then use the Ptolemy "about" facilty (part of the copyright
+# links) to expand the configuration and view all the demos.
+# In this way, we can be sure that we have all the files in the jar
+# files _before_ building installers.
+# 
+
+################################
 # Large jar file containing all the codedoc documentation.
 # Comment this out for testing
 DOC_CODEDOC_JAR = \
@@ -201,7 +215,10 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
 	$(MATLAB_JARS) 
 
-
+PTALON_JARS = \
+	ptolemy/actor/ptalon/antlr/antlr.jar \
+	ptolemy/actor/ptalon/demo/demo.jar \
+	ptolemy/actor/ptalon/ptalon.jar
 
 #######
 # Ptiny
@@ -219,6 +236,7 @@ PTINY_ONLY_JNLP_JARS = \
         ptolemy/actor/lib/python/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
 	ptolemy/codegen/codegen.jar \
+	$(PTALON_JARS) \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/csp/demo/demo.jar \
@@ -235,6 +253,8 @@ PTINY_ONLY_JNLP_JARS = \
         ptolemy/domains/pn/doc/doc.jar \
 	ptolemy/domains/rendezvous/demo/demo.jar \
         ptolemy/domains/rendezvous/doc/doc.jar \
+	ptolemy/domains/sr/demo/demo.jar \
+	ptolemy/domains/sr/doc/doc.jar \
 	ptolemy/moml/demo/demo.jar \
 	ptolemy/vergil/kernel/attributes/demo/demo.jar
 
@@ -314,8 +334,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/x10/x10.jar \
 	ptolemy/actor/lib/x10/demo/demo.jar \
 	vendors/misc/x10/tjx10p-13/lib/x10.jar \
-	ptolemy/actor/ptalon/ptalon.jar \
-	ptolemy/actor/ptalon/demo/demo.jar \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
 	lib/saxon8-dom.jar \
@@ -340,8 +358,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/psdf/demo/demo.jar \
 	lib/mapss.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
-	ptolemy/domains/sr/demo/demo.jar \
-	ptolemy/domains/sr/doc/doc.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
 	$(RUN_JARS) \
@@ -461,6 +477,11 @@ JNLPS =	vergilDSP.jnlp \
 	vergilVisualSense.jnlp \
 	vergil.jnlp 
 
+##############################
+# "make jnlp_all" - Main entry point for building with a self-signed certificate
+# Create $PTII/ptKeystore, copy jar files to $PTII/signed
+# and create the .jnlp files
+#
 jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) jnlp_sign $(JNLPS) 
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
 jnlp_clean: 
@@ -836,6 +857,12 @@ jnlp_verify:
 		echo "$$x"; \
 		"$(PTJAVA_DIR)/bin/jarsigner" -verify -verbose -certs $$x; \
 	done;
+
+# Use this to verify that the key is ok
+key_list:
+	   "$(KEYTOOL)" -list -v \
+		-keystore $(KEYSTORE) \
+		$(STOREPASSWORD)
 
 # Update a location with the files necessary to download
 DIST_BASE = ptolemyII/ptII6.0/jnlp-$(PTVERSION)
