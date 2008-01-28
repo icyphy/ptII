@@ -564,7 +564,8 @@ public class CCodeGenerator extends CodeGenerator {
             types.add("String");
         }
 
-        if (functions.contains("isCloseTo") && _newTypesUsed.contains("Int")
+        if (functions.contains("isCloseTo")
+                && (_newTypesUsed.contains("Int") || _newTypesUsed.contains("UnsignedByte"))
                 && !_newTypesUsed.contains("Double")) {
             // FIXME: we should not need Double for Int_isCloseTo()
             types.add("Double");
@@ -1298,5 +1299,6 @@ public class CCodeGenerator extends CodeGenerator {
         _scalarDeleteTypes.add("Double");
         _scalarDeleteTypes.add("Int");
         _scalarDeleteTypes.add("Long");
+        _scalarDeleteTypes.add("UnsignedByte");
     }
 }

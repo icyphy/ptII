@@ -88,6 +88,12 @@ char* BooleantoString (boolean b) {
     return results;
 }
 
+char* UnsignedBytetoString (unsigned char b) {
+    char* string = (char*) malloc(sizeof(char) * 3);
+    sprintf(string, "%d", (int) b);
+    return string;
+}
+
 /**/
 
 /*** unsupportedTypeFunction ***/
