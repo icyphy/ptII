@@ -2,7 +2,7 @@
      The file to edit is $PTII/doc/ptIIx.x.release.htm
      where x.x is the release number, then run 'make update'
      to update the derived files and check them in to cvs. -->
-<html>
+html>
 <head>
 <!-- $Id$ -->
 <!--
@@ -43,17 +43,22 @@ set of demos that highlight the key features of Ptolemy II.
 
 <li> <a href="#ct">CT (Continuous Time)</a>
 <!--vergilDocs-->
+<li> <a href="#ddf">DDF (Dynamic Dataflow)</a>
+<!--vergilDocs-->
 <li> <a href="#de">DE (Discrete Events)</a>
 <!--vergilDocs-->
 
 <li> <a href="#fsm">FSM (Finite State Machines)</a>
 
 <!--vergilDocs-->
+<li> <a href="#hdf">HDF (Heterochronous Dataflow)</a>
+<!--vergilDocs-->
 
 <li> <a href="#pn">PN (Process Networks)</a>
 <!--vergilDocs-->
 <li> <a href="#rendezvous">Rendezvous (Processes with synchronous communication)</a>
 <li> <a href="#sdf">SDF (Synchronous Dataflow)</a>
+<li> <a href="#sr">SR (Synchronous/Reactive)</a>
 
 <!--vergilDocs-->
 </ul>
@@ -94,6 +99,23 @@ Regulator</a>
 <!-- jspaces -->
 </ul>
 
+<!--vergilDocs-->
+<h3><a name="ddf">Dynamic Dataflow (DDF)</a></h3>
+<ul>
+<li><a href="../../domains/ddf/demo/Eratosthenes/Eratosthenes.xml">Eratosthenes</a>
+<li><a href="../../domains/ddf/demo/Factorial/Factorial.xml">Factorial</a>
+
+<!--ptiny does not include Java3D, which is used by HanoiTower-->
+<!--vergilDocs-->
+
+<li><a href="../../domains/ddf/demo/IfThenElse/IfThenElse.xml">IfThenElse</a>
+<li><a href="../../domains/ddf/demo/Loop/Loop.xml">Loop</a>
+<li><a href="../../domains/ddf/demo/OrderedMerge/OrderedMerge.xml">OrderedMerge</a>
+<li><a href="../../domains/ddf/demo/RandomWalk/RandomWalk.xml">RandomWalk</a>
+<li><a href="../../domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml">RijndaelEncryption</a>
+</ul>
+
+<!--ptiny does not include distributed-->
 <!--vergilDocs-->
 
 <h3><a name="de">Discrete Events (DE)</a></h3>
@@ -242,6 +264,19 @@ Windows only, requires that Matlab be installed locally
  <!-- Known bug: the types do not update
       ../../domains/sdf/demo/Type/Type.xml Type&nbsp;system
  -->
+</ul>
+
+<h3><a name="sr">Synchronous/Reactive (SR)</a></h3>
+<ul>
+<!-- Reflex Game is not really SR
+	../../domains/sr/demo/ReflexGame/ReflexGame.xml -->
+
+<li><a href="../../domains/sr/demo/GuardedCount/GuardedCount.xml">GuardedCount</a> 
+<li><a href="../../domains/sr/demo/GuardedCount/GuardedCountTimed.xml">GuardedCountTimed</a> (New in Ptolemy II 7.0) 
+<li><a href="../../domains/sr/demo/FeedbackLoop/FeedbackLoop.xml">FeedbackLoop</a>
+<li><a href="../../domains/sr/demo/TokenRing/TokenRing.xml">TokenRing</a> 
+<li><a href="../../domains/sr/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> (New in Ptolemy II 7.0) 
+<li><a href="../../domains/sr/demo/TrafficLight/WirelessDeployment.xml">WirelessDeployment</a> (New in Ptolemy II 7.0) 
 </ul>
 
 <!--vergilDocs-->
