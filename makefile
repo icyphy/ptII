@@ -225,6 +225,7 @@ CLEAN_SHIPPING_FILES = \
 		jni/launcher/launcher.exe \
 		jni/launcher/launcher \
 		lib/cachedir \
+		org \
 		ptolemy/apps ptolemy/actor/lib/ptp \
 		ptolemy/actor/gui/run \
 		ptolemy/actor/lib/gui/KeystrokeSensor* \
