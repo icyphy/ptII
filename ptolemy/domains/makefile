@@ -33,7 +33,7 @@ ME =		ptolemy/domains
 
 # Domains we do not ship
 EXPERIMENTAL_DOMAINS = \
-		hdf rtp 
+		rtp 
 
 # Domains, in alphabetical order.  If you change this, change
 # PTCLASSALLJARS below
@@ -45,7 +45,7 @@ EXPERIMENTAL_DOMAINS = \
 # PTCONTINUOUS_DIR is set to continuous if we want to compile that domain.
 PTCONTINUOUS_DIR = continuous
 DOMAINS =	ci $(PTCONTINUOUS_DIR) csp ct curriculum \
-	        dde ddf de fsm pn sdf dt \
+	        dde ddf de fsm hdf pn sdf dt \
 	        giotto petrinet rendezvous \
 		$(PTPSDF_DIR) ptinyos \
 		sr tm $(PTJAVA3D_DIR) wireless
@@ -79,10 +79,8 @@ PTAUXALLJARS = \
 	        dt/dt.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
-		hdf/hdf.jar \
 		petrinet/petrinet.jar \
 		tm/tm.jar \
-		sr/sr.jar \
 		wireless/wireless.jar
 
 # Are we shipping these domains?
@@ -100,9 +98,12 @@ PTCLASSALLJARS = \
 		ct/ct.jar \
 		de/de.jar \
 		fsm/fsm.jar \
+		hdf/hdf.jar \
 		pn/pn.jar \
 		rendezvous/rendezvous.jar \
-		sdf/sdf.jar
+		sdf/sdf.jar \
+		sr/sr.jar
+
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
