@@ -72,10 +72,6 @@ refinement changing the state change to double (0.5).</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 395.0]">
         </property>
     </property>
-    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 45.0]">
-        </property>
-    </property>
     <entity name="ModalBinarySymmetricChannel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
         </property>
