@@ -1,6 +1,6 @@
 /* A commutator  that processes a single token per iteration.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 2002-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,6 +53,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Yellow (cxh)
  */
 public class SingleTokenCommutator extends Transformer implements SequenceActor {
+    // SingleTokenCommutator used to be in sr.lib, but
+    // ddf.lib.DDFSingleTokenCommutator depends on it, so we moved it 
+    // to actor.lib
+
     /** Construct an actor in the specified container with the specified
      *  name. Create ports and make the input port a multiport. Create
      *  the actor parameters.
