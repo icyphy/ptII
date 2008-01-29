@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.sr.lib;
+package ptolemy.actor.lib;
 
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
