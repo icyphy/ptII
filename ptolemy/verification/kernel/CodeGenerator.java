@@ -184,7 +184,7 @@ public class CodeGenerator extends Attribute {
                                                     JOptionPane.YES_NO_OPTION,
                                                     JOptionPane.QUESTION_MESSAGE,
                                                     null, null, null);
-                                    if (selected == 1) {
+                                    if (selected == 0) {
                                         smvFileWriter = new FileWriter(smvFile);
                                         smvFileWriter.write(smvDescritpion
                                                 .toString());
