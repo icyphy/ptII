@@ -326,6 +326,18 @@ public class EditParametersDialog extends ComponentDialog implements
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variable                ////
+
+    /** The owner window. */
+    protected Frame _owner;
+
+    /** The query window for adding parameters. */
+    protected Query _query;
+
+    /** The target object whose parameters are being edited. */
+    protected NamedObj _target;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Open a dialog to add a new parameter.
@@ -400,13 +412,4 @@ public class EditParametersDialog extends ComponentDialog implements
     // Button labels.
     private static String[] _moreButtons = { "Commit", "Add", "Remove",
             "Restore Defaults", "Preferences", "Help", "Cancel" };
-
-    // The owner window.
-    protected Frame _owner;
-
-    // The query window for adding parameters.
-    protected Query _query;
-
-    // The target object whose parameters are being edited.
-    protected NamedObj _target;
 }
