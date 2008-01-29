@@ -963,9 +963,10 @@ public class MoMLApplication implements ExecutionListener {
         // If the configuration has a _classesToRemove attribute,
         // then set a MoMLFilter to remove those classes.  This
         // is used by Ptiny and Kepler to avoid the Code Generator.
-        ArrayToken classesToRemoveToken = (ArrayToken) ((Parameter) _configuration.getAttribute("_classesToRemove")).getToken();
+        Parameter classesToRemoveParameter = (Parameter) _configuration.getAttribute("_classesToRemove");
 
-        if (classesToRemoveToken != null) {
+        if (classesToRemoveParameter != null) {
+            ArrayToken classesToRemoveToken = (ArrayToken) classesToRemoveParameter.getToken();
             // We use RemoveGraphicalClasses here to remove these
             // classes.
             // FIXME: this could cause problem with RemoveGraphicalClasses
