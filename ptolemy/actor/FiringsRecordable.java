@@ -1,6 +1,6 @@
-/*
+/* Interface for entities that can report FiringEvents.
 
-Copyright (c) 2007 The Regents of the University of California.
+Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -27,23 +27,30 @@ package ptolemy.actor;
 
 /** Interface for entities that can report FiringEvents.
  *
- * FIXME:
- *
- * These methods should be added to Executable interface instead of being
- * separate.
- *
  * @author Daniel Crawl
  * @version $Id$
- *
+ * @since Ptolemy II 7.0
+ * @Pt.ProposedRating Green (neuendor)
+ * @Pt.AcceptedRating Yellow (neuendor)
  */
-
 public interface FiringsRecordable {
-    /** Append a listener to the current set of firing event listeners. */
+    // FIXME: These methods should be added to Executable interface
+    // instead of being separate.
+
+    /** Append a listener to the current set of firing event listeners.
+     *  @param listener The listener to be appended.
+     *  @see #removeActorFiringListener(ActorFiringListener)
+     */
     public void addActorFiringListener(ActorFiringListener listener);
 
-    /** Unregister a firing event listener. */
+    /** Unregister a firing event listener.
+     *  @param listener The listener to be removed
+     *  @see #addActorFiringListener(ActorFiringListener)
+     */
     public void removeActorFiringListener(ActorFiringListener listener);
 
-    /** Record a firing event. */
+    /** Record a firing event. 
+     *  @param type The type of firing event to record.
+     */
     public void recordFiring(FiringEvent.FiringEventType type);
 }

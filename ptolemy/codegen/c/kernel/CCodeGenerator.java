@@ -193,7 +193,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  of the format
      *  <pre>
      *  #line <i>lineNumber</i> "<i>filename</i>"
-     *  <pre>
+     *  </pre>
      *  are generated for use by the C preprocessor.
      *  @param lineNumber The line number of the source file or
      *  file containing code blocks.

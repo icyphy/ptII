@@ -1,6 +1,6 @@
 /* An event that represents an actor activation.
 
- Copyright (c) 2000-2006 The Regents of the University of California.
+ Copyright (c) 2000-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -184,9 +184,13 @@ public class FiringEvent implements DebugEvent {
     public static final FiringEventType BEFORE_ITERATE = new FiringEventType(
             "iterated", true);
 
+    // FIXME: Kepler should be fixed so that these are not necessary.
+
+    /** The type of event published as part of the Kepler sql actor. */
     public static final FiringEventType BEFORE_RW_FIRE = new FiringEventType(
             "rw fired", true);
 
+    /** The type of event published as part of the Kepler sql actor. */
     public static final FiringEventType AFTER_RW_FIRE = new FiringEventType(
             "rw fired", false);
 
@@ -213,7 +217,11 @@ public class FiringEvent implements DebugEvent {
      *  FiringEvent class.
      */
     public static class FiringEventType {
-        // Create a new event type with the given name.
+        /** Create a new event type with the given name.
+         *  @param name The name of this event type.
+         *  @param isStart true if this event type is a start event,
+         *  false if it is an end event.
+         */
         private FiringEventType(String name, boolean isStart) {
             _isStart = isStart;
             _name = name;
@@ -237,10 +245,12 @@ public class FiringEvent implements DebugEvent {
             return "FiringEventType(" + getName() + ")";
         }
 
+        /** Return true if this event corresponds with a start event. */
         public boolean isStart() {
             return _isStart;
         }
 
+        /** Return the name of this event type. */
         public String getTypeName() {
             return _name;
         }

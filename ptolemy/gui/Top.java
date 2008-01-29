@@ -1,6 +1,6 @@
 /* Top-level window with a menubar and status bar.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 1998-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -161,9 +161,12 @@ public abstract class Top extends JFrame {
     }
 
     /**
-     * Allows external configuration to determine the initial/default
-     * opening/saving directory to use for file dialogs
-     * (Used in Kepler)
+     * Set the initial default directory.  If this method is not
+     * called, then the initial default directory will be the value of
+     * the user.dir Java property, which is typically the current
+     * working directory.  This method allows external configuration
+     * to determine the initial/default opening/saving directory to
+     * use for file dialogs.  (Used in Kepler)
      * @param dir the initial directory to use for file dialogs
      */
     public static void setDirectory(File dir) {

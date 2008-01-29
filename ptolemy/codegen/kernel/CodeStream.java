@@ -412,6 +412,8 @@ public class CodeStream {
     /**
      * Return a set of code block signatures contained by this CodeStream.
      * @return The set of code block signatures contained by this CodeStream.
+     * @exception IllegalActionException If there is a problem when
+     * parsing the code helper .[target] file.
      */
     public Set<Signature> getAllCodeBlockSignatures()
             throws IllegalActionException {
