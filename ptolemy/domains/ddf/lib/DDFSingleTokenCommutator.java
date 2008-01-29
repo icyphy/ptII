@@ -60,6 +60,14 @@ import ptolemy.kernel.util.Settable;
  @Pt.AcceptedRating Yellow (cxh)
  */
 public class DDFSingleTokenCommutator extends SingleTokenCommutator {
+
+    // FIXME: This actor extends sr.lib.SingleTokenCommutator which is 
+    // really wrong because it means that if we ship DDF, then we _must_
+    // ship SR.  One solution would be to move this actor elsewhere,
+    // say actor/lib.  It would be interesting to see what happens when
+    // this actor is used with SDF, perhaps we should throw an error 
+    // automatically.
+
     /** Construct an actor in the specified container with the specified name.
      *  @param container The container.
      *  @param name This is the name of this distributor within the container.
