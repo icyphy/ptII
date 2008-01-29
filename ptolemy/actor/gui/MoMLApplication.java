@@ -44,6 +44,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.GraphicalMessageHandler;
@@ -62,6 +64,7 @@ import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -955,6 +958,28 @@ public class MoMLApplication implements ExecutionListener {
             _configuration = _createDefaultConfiguration();
         } else {
             _configuration = _createEmptyConfiguration();
+        }
+
+        // If the configuration has a _classesToRemove attribute,
+        // then set a MoMLFilter to remove those classes.  This
+        // is used by Ptiny and Kepler to avoid the Code Generator.
+        ArrayToken classesToRemoveToken = (ArrayToken) ((Parameter) _configuration.getAttribute("_classesToRemove")).getToken();
+
+        if (classesToRemoveToken != null) {
+            // We use RemoveGraphicalClasses here to remove these
+            // classes.
+            // FIXME: this could cause problem with RemoveGraphicalClasses
+            // elsewhere, but usually we run w/o _classesToRemove
+            RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
+            filter.clear();
+            // _classesToRemove is an array of Strings where each element
+            // names a class to be added to the MoMLFilter for removal.
+            for (int i = 0; i < classesToRemoveToken.length(); i++) {
+                String classNameToRemove = ((StringToken) classesToRemoveToken
+                    .getElement(i)).stringValue();
+                filter.put(classNameToRemove, null);
+            }
+            _parser.addMoMLFilter(filter);
         }
 
         for (int i = 0; i < args.length; i++) {
