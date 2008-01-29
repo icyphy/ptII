@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileWriter;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -171,8 +172,24 @@ public class CodeGenerator extends Attribute {
                             try {
                                 File smvFile = fileSaveDialog.getSelectedFile()
                                         .getCanonicalFile();
-                                smvFileWriter = new FileWriter(smvFile);
-                                smvFileWriter.write(smvDescritpion.toString());
+
+                                if (smvFile.exists()) {
+                                    String queryString = "Overwrite "
+                                            + smvFile.getName() + "?";
+                                    int selected = JOptionPane
+                                            .showOptionDialog(
+                                                    null,
+                                                    queryString,
+                                                    "Save Changes?",
+                                                    JOptionPane.YES_NO_OPTION,
+                                                    JOptionPane.QUESTION_MESSAGE,
+                                                    null, null, null);
+                                    if (selected == 1) {
+                                        smvFileWriter = new FileWriter(smvFile);
+                                        smvFileWriter.write(smvDescritpion
+                                                .toString());
+                                    }
+                                }
 
                             } finally {
                                 if (smvFileWriter != null) {
