@@ -38,7 +38,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/**
+/** 
  * Produce a random sequence with a Gaussian distribution.  On each
  * iteration, a new random number is produced.  The output port is of
  * type DoubleToken.  The values that are generated are independent
@@ -55,13 +55,13 @@ public class Gaussian extends RandomSource implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The mean of the random number.
      * This has type double, initially with value 0.
      */
     public PortParameter mean;
 
-    /**
+    /**     
      * The standard deviation of the random number.
      * This has type double, initially with value 1.
      */
@@ -73,12 +73,12 @@ public class Gaussian extends RandomSource implements Rollbackable {
     ////                         protected methods                 ////
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The random number for the current iteration.
+    /**     
+     * The random number for the current iteration. 
      */
     private double _current;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -87,8 +87,7 @@ public class Gaussian extends RandomSource implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public Gaussian(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public Gaussian(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output.setTypeEquals(BaseType.DOUBLE);
         mean = new PortParameter(this, "mean", new DoubleToken(0.0));
@@ -98,27 +97,26 @@ public class Gaussian extends RandomSource implements Rollbackable {
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
     }
 
-    /**
+    /**     
      * Send a random number with a Gaussian distribution to the output.
      * This number is only changed in the prefire() method, so it will
      * remain constant throughout an iteration.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         mean.update();
         standardDeviation.update();
         output.send(0, new DoubleToken(_current));
     }
 
-    /**
+    /**     
      * Generate a new random number.
      * @exception IllegalActionException If parameter values are incorrect.
      */
-    protected void _generateRandomNumber() throws IllegalActionException {
-        double meanValue = ((DoubleToken) (mean.getToken())).doubleValue();
-        double standardDeviationValue = ((DoubleToken) (standardDeviation
-                .getToken())).doubleValue();
+    protected void _generateRandomNumber() throws IllegalActionException  {
+        double meanValue = ((DoubleToken)(mean.getToken())).doubleValue();
+        double standardDeviationValue = ((DoubleToken)(standardDeviation.getToken())).doubleValue();
         double rawNum = _random.nextGaussian();
         $ASSIGN$_current((rawNum * standardDeviationValue) + meanValue);
     }
@@ -131,8 +129,7 @@ public class Gaussian extends RandomSource implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
@@ -143,6 +140,9 @@ public class Gaussian extends RandomSource implements Rollbackable {
 
     private FieldRecord $RECORD$_current = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_current };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$_current
+        };
 
 }
+

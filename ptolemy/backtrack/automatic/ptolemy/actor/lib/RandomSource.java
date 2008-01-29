@@ -29,8 +29,8 @@
 //// RandomSource
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import java.util.Random;
-
 import ptolemy.actor.lib.Source;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.SharedParameter;
 
-/**
+/** 
  * A base class for sources of random numbers.
  * It uses the class java.util.Random.
  * This base class manages the seed. Specifically,
@@ -83,7 +83,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * If true, this parameter specifies that the random number
      * generator should be reset on each run of the model (in
      * the initialize() method). It is a boolean that defaults
@@ -93,7 +93,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
      */
     public SharedParameter resetOnEachRun;
 
-    /**
+    /**     
      * The seed that controls the random number generation.
      * This is a shared parameter, meaning that all instances of
      * RandomSource or derived classes in the same model share the
@@ -122,27 +122,27 @@ public abstract class RandomSource extends Source implements Rollbackable {
     ////                         protected methods                 ////
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    /**
-     * The current value of the seed parameter.
+    /**     
+     * The current value of the seed parameter. 
      */
     protected long _generatorSeed = 0L;
 
-    /**
-     * Indicator that a new random number is needed.
+    /**     
+     * Indicator that a new random number is needed. 
      */
     protected boolean _needNew = false;
 
-    /**
-     * Indicator that a new generator is needed.
+    /**     
+     * Indicator that a new generator is needed. 
      */
     protected boolean _needNewGenerator = true;
 
-    /**
-     * The Random object.
+    /**     
+     * The Random object. 
      */
     protected Random _random;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -151,29 +151,25 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public RandomSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public RandomSource(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         seed = new SharedParameter(this, "seed", RandomSource.class, "0L");
         seed.setTypeEquals(BaseType.LONG);
-        resetOnEachRun = new SharedParameter(this, "resetOnEachRun",
-                RandomSource.class, "false");
+        resetOnEachRun = new SharedParameter(this, "resetOnEachRun", RandomSource.class, "false");
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
-        new SingletonParameter(trigger, "_showName")
-                .setToken(BooleanToken.TRUE);
+        new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);
     }
 
-    /**
+    /**     
      * If the attribute is <i>seed</i>
      * then create the base random number generator.
      * @param attribute The attribute that changed.
      * @exception IllegalActionException If the change is not acceptable
      * to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == seed) {
-            long seedValue = ((LongToken) (seed.getToken())).longValue();
+            long seedValue = ((LongToken)(seed.getToken())).longValue();
             if (seedValue != _generatorSeed) {
                 _needNewGenerator = true;
             }
@@ -182,7 +178,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the
      * base class and then creates new ports and parameters.
      * @param workspace The workspace for the new object.
@@ -190,18 +186,18 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        RandomSource newObject = (RandomSource) (super.clone(workspace));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        RandomSource newObject = (RandomSource)(super.clone(workspace));
         newObject._needNewGenerator = true;
         return newObject;
     }
 
-    /**
+    /**     
      * Generate a new random number if this is the first firing
      * of the iteration.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         if (_needNewGenerator) {
             _createGenerator();
@@ -212,7 +208,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Initialize the random number generator with the seed, if it
      * has been given.  A seed of zero is interpreted to mean that no
      * seed is specified.  In such cases, a seed based on the current
@@ -220,32 +216,31 @@ public abstract class RandomSource extends Source implements Rollbackable {
      * sure that two identical sequences will not be returned.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
-        if (_random == null
-                || ((BooleanToken) resetOnEachRun.getToken()).booleanValue()) {
+        if (_random == null || ((BooleanToken)resetOnEachRun.getToken()).booleanValue()) {
             _createGenerator();
         }
         _needNew = true;
     }
 
-    /**
+    /**     
      * Calculate the next random number.
      * @exception IllegalActionException If the base class throws it.
      * @return True if it is ok to continue.
      */
-    public boolean postfire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException  {
         _needNew = true;
         return super.postfire();
     }
 
-    /**
+    /**     
      * Create the random number generator using current parameter values.
      * @exception IllegalActionException If thrown while reading the
      * seed Token.
      */
-    protected void _createGenerator() throws IllegalActionException {
-        long seedValue = ((LongToken) (seed.getToken())).longValue();
+    protected void _createGenerator() throws IllegalActionException  {
+        long seedValue = ((LongToken)(seed.getToken())).longValue();
         _generatorSeed = seedValue;
         if (seedValue == 0L) {
             seedValue = System.currentTimeMillis() + hashCode();
@@ -257,25 +252,22 @@ public abstract class RandomSource extends Source implements Rollbackable {
         _needNew = true;
     }
 
-    /**
+    /**     
      * Generate a new random number.
      * @exception IllegalActionException Not thrown in this base class.
      * Derived classes may throw it if there are problems getting parameter
      * values.
      */
-    protected abstract void _generateRandomNumber()
-            throws IllegalActionException;
+    protected abstract void _generateRandomNumber() throws IllegalActionException ;
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -301,6 +293,8 @@ public abstract class RandomSource extends Source implements Rollbackable {
 
     protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {};
+    private FieldRecord[] $RECORDS = new FieldRecord[] {
+        };
 
 }
+

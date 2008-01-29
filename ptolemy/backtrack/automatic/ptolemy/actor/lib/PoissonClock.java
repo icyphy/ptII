@@ -29,6 +29,7 @@
 //// PoissonClock
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.TimedSource;
 import ptolemy.actor.util.Time;
@@ -50,7 +51,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * This actor produces a signal that is piecewise constant, with transitions
  * between levels taken at times given by a Poisson process.
  * It has various uses.  Its simplest use in the DE domain
@@ -101,20 +102,20 @@ public class PoissonClock extends TimedSource implements Rollbackable {
     // Call this so that we don't have to copy its code here...
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * If true, then this actor will request a firing at the start time.
      * Otherwise, the first firing will be requested at the first random
      * time. This is a boolean-valued parameter that defaults to <i>true</i>.
      */
     public Parameter fireAtStart;
 
-    /**
+    /**     
      * The mean time between events, where the output value transitions.
      * This parameter must contain a DoubleToken.
      */
     public Parameter meanTime;
 
-    /**
+    /**     
      * The values that will be produced at the output.
      * This parameter can contain any ArrayToken, and it defaults to {1, 0}.
      */
@@ -150,7 +151,7 @@ public class PoissonClock extends TimedSource implements Rollbackable {
 
     private transient boolean _boundaryCrossed;
 
-    /**
+    /**     
      * Construct an actor with the specified container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -159,8 +160,7 @@ public class PoissonClock extends TimedSource implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public PoissonClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public PoissonClock(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         meanTime = new Parameter(this, "meanTime");
         meanTime.setExpression("1.0");
@@ -174,31 +174,28 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         fireAtStart.setTypeEquals(BaseType.BOOLEAN);
     }
 
-    /**
+    /**     
      * If the argument is the meanTime parameter, check that it is
      * positive.
      * @param attribute The attribute that changed.
      * @exception IllegalActionException If the meanTime value is
      * not positive.
      */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == meanTime) {
-            double mean = ((DoubleToken) meanTime.getToken()).doubleValue();
+            double mean = ((DoubleToken)meanTime.getToken()).doubleValue();
             if (mean <= 0.0) {
-                throw new IllegalActionException(this,
-                        "meanTime is required to be positive.  meanTime given: "
-                                + mean);
+                throw new IllegalActionException(this, "meanTime is required to be positive.  meanTime given: " + mean);
             }
         } else if (attribute == values) {
-            ArrayToken val = (ArrayToken) (values.getToken());
+            ArrayToken val = (ArrayToken)(values.getToken());
             $ASSIGN$_length(val.length());
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the parameter public members to refer
      * to the parameters of the new actor.
@@ -207,30 +204,28 @@ public class PoissonClock extends TimedSource implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        PoissonClock newObject = (PoissonClock) super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        PoissonClock newObject = (PoissonClock)super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.values));
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
         return newObject;
     }
 
-    /**
+    /**     
      * Output the current value.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         Time currentTime = getDirector().getModelTime();
         $ASSIGN$_boundaryCrossed(false);
         $ASSIGN$_tentativeCurrentOutputIndex(_currentOutputIndex);
         output.send(0, _getValue(_tentativeCurrentOutputIndex));
         if (currentTime.compareTo(_nextFiringTime) == 0) {
-            $ASSIGN$SPECIAL$_tentativeCurrentOutputIndex(11,
-                    _tentativeCurrentOutputIndex);
+            $ASSIGN$SPECIAL$_tentativeCurrentOutputIndex(11, _tentativeCurrentOutputIndex);
             if (_tentativeCurrentOutputIndex >= _length) {
                 $ASSIGN$_tentativeCurrentOutputIndex(0);
             }
@@ -238,22 +233,21 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Schedule the first firing at time zero and initialize local variables.
      * @exception IllegalActionException If the fireAt() method of the
      * director throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_tentativeCurrentOutputIndex(0);
         $ASSIGN$_currentOutputIndex(0);
         Time currentTime = getDirector().getModelTime();
         $ASSIGN$_nextFiringTime(currentTime);
-        if (((BooleanToken) fireAtStart.getToken()).booleanValue()) {
+        if (((BooleanToken)fireAtStart.getToken()).booleanValue()) {
             getDirector().fireAt(this, currentTime);
         } else {
-            double meanTimeValue = ((DoubleToken) meanTime.getToken())
-                    .doubleValue();
+            double meanTimeValue = ((DoubleToken)meanTime.getToken()).doubleValue();
             double exp = -Math.log((1 - Math.random())) * meanTimeValue;
             Director director = getDirector();
             $ASSIGN$_nextFiringTime(director.getModelTime().add(exp));
@@ -261,17 +255,16 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Update the state of the actor and schedule the next firing,
      * if appropriate.
      * @exception IllegalActionException If the director throws it when
      * scheduling the next firing.
      */
-    public boolean postfire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_currentOutputIndex(_tentativeCurrentOutputIndex);
         if (_boundaryCrossed) {
-            double meanTimeValue = ((DoubleToken) meanTime.getToken())
-                    .doubleValue();
+            double meanTimeValue = ((DoubleToken)meanTime.getToken()).doubleValue();
             double exp = -Math.log((1 - Math.random())) * meanTimeValue;
             Director director = getDirector();
             $ASSIGN$_nextFiringTime(director.getModelTime().add(exp));
@@ -280,11 +273,10 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         return super.postfire();
     }
 
-    private Token _getValue(int index) throws IllegalActionException {
-        ArrayToken val = (ArrayToken) (values.getToken());
+    private Token _getValue(int index) throws IllegalActionException  {
+        ArrayToken val = (ArrayToken)(values.getToken());
         if ((val == null) || (index >= _length)) {
-            throw new IllegalActionException(this,
-                    "Index out of range of the values parameter.");
+            throw new IllegalActionException(this, "Index out of range of the values parameter.");
         }
         return val.getElement(index);
     }
@@ -298,97 +290,85 @@ public class PoissonClock extends TimedSource implements Rollbackable {
 
     private final int $ASSIGN$_tentativeCurrentOutputIndex(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeCurrentOutputIndex.add(null,
-                    _tentativeCurrentOutputIndex, $CHECKPOINT.getTimestamp());
+            $RECORD$_tentativeCurrentOutputIndex.add(null, _tentativeCurrentOutputIndex, $CHECKPOINT.getTimestamp());
         }
         return _tentativeCurrentOutputIndex = newValue;
     }
 
-    private final int $ASSIGN$SPECIAL$_tentativeCurrentOutputIndex(
-            int operator, long newValue) {
+    private final int $ASSIGN$SPECIAL$_tentativeCurrentOutputIndex(int operator, long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeCurrentOutputIndex.add(null,
-                    _tentativeCurrentOutputIndex, $CHECKPOINT.getTimestamp());
+            $RECORD$_tentativeCurrentOutputIndex.add(null, _tentativeCurrentOutputIndex, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-        case 0:
-            return _tentativeCurrentOutputIndex += newValue;
-        case 1:
-            return _tentativeCurrentOutputIndex -= newValue;
-        case 2:
-            return _tentativeCurrentOutputIndex *= newValue;
-        case 3:
-            return _tentativeCurrentOutputIndex /= newValue;
-        case 4:
-            return _tentativeCurrentOutputIndex &= newValue;
-        case 5:
-            return _tentativeCurrentOutputIndex |= newValue;
-        case 6:
-            return _tentativeCurrentOutputIndex ^= newValue;
-        case 7:
-            return _tentativeCurrentOutputIndex %= newValue;
-        case 8:
-            return _tentativeCurrentOutputIndex <<= newValue;
-        case 9:
-            return _tentativeCurrentOutputIndex >>= newValue;
-        case 10:
-            return _tentativeCurrentOutputIndex >>>= newValue;
-        case 11:
-            return _tentativeCurrentOutputIndex++;
-        case 12:
-            return _tentativeCurrentOutputIndex--;
-        case 13:
-            return ++_tentativeCurrentOutputIndex;
-        case 14:
-            return --_tentativeCurrentOutputIndex;
-        default:
-            return _tentativeCurrentOutputIndex;
+            case 0:
+                return _tentativeCurrentOutputIndex += newValue;
+            case 1:
+                return _tentativeCurrentOutputIndex -= newValue;
+            case 2:
+                return _tentativeCurrentOutputIndex *= newValue;
+            case 3:
+                return _tentativeCurrentOutputIndex /= newValue;
+            case 4:
+                return _tentativeCurrentOutputIndex &= newValue;
+            case 5:
+                return _tentativeCurrentOutputIndex |= newValue;
+            case 6:
+                return _tentativeCurrentOutputIndex ^= newValue;
+            case 7:
+                return _tentativeCurrentOutputIndex %= newValue;
+            case 8:
+                return _tentativeCurrentOutputIndex <<= newValue;
+            case 9:
+                return _tentativeCurrentOutputIndex >>= newValue;
+            case 10:
+                return _tentativeCurrentOutputIndex >>>= newValue;
+            case 11:
+                return _tentativeCurrentOutputIndex++;
+            case 12:
+                return _tentativeCurrentOutputIndex--;
+            case 13:
+                return ++_tentativeCurrentOutputIndex;
+            case 14:
+                return --_tentativeCurrentOutputIndex;
+            default:
+                return _tentativeCurrentOutputIndex;
         }
     }
 
     private final int $ASSIGN$_currentOutputIndex(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_currentOutputIndex.add(null, _currentOutputIndex,
-                    $CHECKPOINT.getTimestamp());
+            $RECORD$_currentOutputIndex.add(null, _currentOutputIndex, $CHECKPOINT.getTimestamp());
         }
         return _currentOutputIndex = newValue;
     }
 
     private final Time $ASSIGN$_nextFiringTime(Time newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_nextFiringTime.add(null, _nextFiringTime, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_nextFiringTime.add(null, _nextFiringTime, $CHECKPOINT.getTimestamp());
         }
         return _nextFiringTime = newValue;
     }
 
     private final boolean $ASSIGN$_boundaryCrossed(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_boundaryCrossed.add(null, _boundaryCrossed, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_boundaryCrossed.add(null, _boundaryCrossed, $CHECKPOINT.getTimestamp());
         }
         return _boundaryCrossed = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         _length = $RECORD$_length.restore(_length, timestamp, trim);
-        _tentativeCurrentOutputIndex = $RECORD$_tentativeCurrentOutputIndex
-                .restore(_tentativeCurrentOutputIndex, timestamp, trim);
-        _currentOutputIndex = $RECORD$_currentOutputIndex.restore(
-                _currentOutputIndex, timestamp, trim);
-        _nextFiringTime = (Time) $RECORD$_nextFiringTime.restore(
-                _nextFiringTime, timestamp, trim);
-        _boundaryCrossed = $RECORD$_boundaryCrossed.restore(_boundaryCrossed,
-                timestamp, trim);
+        _tentativeCurrentOutputIndex = $RECORD$_tentativeCurrentOutputIndex.restore(_tentativeCurrentOutputIndex, timestamp, trim);
+        _currentOutputIndex = $RECORD$_currentOutputIndex.restore(_currentOutputIndex, timestamp, trim);
+        _nextFiringTime = (Time)$RECORD$_nextFiringTime.restore(_nextFiringTime, timestamp, trim);
+        _boundaryCrossed = $RECORD$_boundaryCrossed.restore(_boundaryCrossed, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -416,8 +396,7 @@ public class PoissonClock extends TimedSource implements Rollbackable {
 
     private FieldRecord $RECORD$_length = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_tentativeCurrentOutputIndex = new FieldRecord(
-            0);
+    private FieldRecord $RECORD$_tentativeCurrentOutputIndex = new FieldRecord(0);
 
     private FieldRecord $RECORD$_currentOutputIndex = new FieldRecord(0);
 
@@ -425,8 +404,13 @@ public class PoissonClock extends TimedSource implements Rollbackable {
 
     private FieldRecord $RECORD$_boundaryCrossed = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_length,
-            $RECORD$_tentativeCurrentOutputIndex, $RECORD$_currentOutputIndex,
-            $RECORD$_nextFiringTime, $RECORD$_boundaryCrossed };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$_length,
+            $RECORD$_tentativeCurrentOutputIndex,
+            $RECORD$_currentOutputIndex,
+            $RECORD$_nextFiringTime,
+            $RECORD$_boundaryCrossed
+        };
 
 }
+

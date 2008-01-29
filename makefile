@@ -225,6 +225,7 @@ CLEAN_SHIPPING_FILES = \
 		jni/launcher/launcher.exe \
 		jni/launcher/launcher \
 		lib/cachedir \
+		org \
 		ptolemy/apps ptolemy/actor/lib/ptp \
 		ptolemy/actor/gui/run \
 		ptolemy/actor/lib/gui/KeystrokeSensor* \
@@ -233,6 +234,7 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/actor/lib/security/test/foo.keystore \
 		ptolemy/codegen/c/actor/lib/javasound/test/outfile.wav \
 		ptolemy/codegen/c/domains/sdf/kernel/test/foo.c \
+		ptolemy/codegen/c/domains/pn \
 		ptolemy/codegen/kernel/test/substitute.out \
 		ptolemy/codegen/vhdl \
 		ptolemy/copernicus/*/test/codeGenerator.tmp \
