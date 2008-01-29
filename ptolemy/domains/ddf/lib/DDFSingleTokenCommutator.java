@@ -1,6 +1,6 @@
 /* A commutator that processes a single token per iteration, used in DDF doamin.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2004-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,12 +27,12 @@
  */
 package ptolemy.domains.ddf.lib;
 
+import ptolemy.actor.lib.SingleTokenCommutator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sr.lib.SingleTokenCommutator;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
