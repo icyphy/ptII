@@ -40,7 +40,8 @@ set of demos that highlight the key features of Ptolemy II.
 
 <h1>Ptolemy II Domains</h1>
 <ul>
-<li> <a href="#csp">CSP (Communicating Sequential Processes)</a>
+
+<!--ptinyKeplerDocs-->
 
 <!--vergilDocs-->
 
@@ -54,27 +55,24 @@ set of demos that highlight the key features of Ptolemy II.
 <li> <a href="#fsm">FSM (Finite State Machines)</a>
 
 <!--vergilDocs-->
-<li> <a href="#hdf">HDF (Heterochronous Dataflow)</a>
+<!--ptinyKeplerDocs-->
 <!--vergilDocs-->
 
 <li> <a href="#pn">PN (Process Networks)</a>
 <!--vergilDocs-->
-<li> <a href="#rendezvous">Rendezvous (Processes with synchronous communication)</a>
+
+<!--ptinyKeplerDocs-->
+
 <li> <a href="#sdf">SDF (Synchronous Dataflow)</a>
-<li> <a href="#sr">SR (Synchronous/Reactive)</a>
+
+<!--ptinyKeplerDocs-->
 
 <!--vergilDocs-->
 </ul>
 <!--vergilDocs-->
-<h3><a name="csp">Communicating Sequential Processes (CSP)</a></h3>
-<ul>
-<li> <a href="../../domains/csp/demo/Barrier/Barrier.xml">Barrier Synchronization</a>
-<li> <a href="../../domains/csp/demo/ResourcePool/ResourcePool.xml">Resource
-Management</a>
-<li> <a href="../../domains/csp/demo/WriteRegulator/WriteRegulator.xml">Write
-Regulator</a>
-</ul>
+<!--ptinyKeplerDocs-->
 <!--vergilDocs-->
+<!--ptinyKeplerDocs-->
 <h3><a name="ct">Continuous Time (CT)</a></h3>
 
 <ul>
@@ -147,8 +145,8 @@ Regulator</a>
 <ul>
 <li> <a href="../../domains/fsm/demo/ABP/ABP.xml">Alternating&nbsp;Bit</a>
 <li> <a href="../../domains/fsm/demo/ChainedTransitions/ChainedTransitions.xml">Chained Transitions</a>
-<li> <a href="../../domains/fsm/demo/Blending/Blending.xml">Blending</a> (with codegen)
-<li> <a href="../../domains/fsm/demo/ModalBSC/ModalBSC.xml">Modal&nbsp;Binary Symmetric Channel</a> (with codegen)
+<li> <a href="../../domains/fsm/demo/Blending/Blending.xml">Blending</a> (In the full version of Ptolemy: with codegen)
+<li> <a href="../../domains/fsm/demo/ModalBSC/ModalBSC.xml">Modal&nbsp;Binary Symmetric Channel</a> (In the full version of Ptolemy: with codegen)
 <!--
 FSM MultipleRuns has problems with dangling threads, so we comment it out.
 ../../domains/fsm/demo/MultipleRuns/MultipleRuns.xml Multiple&nbsp;Runs
@@ -170,19 +168,15 @@ FSM MultipleRuns has problems with dangling threads, so we comment it out.
 <li> <a href="../../domains/pn/demo/QR/QR.xml">QR</a>
 </ul>
 <!--vergilDocs-->
-<h3><a name="rendezvous">Rendezvous</a></h3>
-
-<ul>
-<!-- Please keep the demos alphabetical -->
-<li> <a href="../../domains/rendezvous/demo/Barrier/Barrier.xml">Barrier Synchronization</a>
-<li> <a href="../../domains/rendezvous/demo/ResourcePool/ResourcePool.xml">Resource Management</a>
-<li> <a href="../../domains/rendezvous/demo/Sequencing/Sequencing.xml">Sequencing</a>
+<!--ptinyKeplerDocs-->
 
 <!--vergilDocs-->
 
-<li> <a href="../../domains/rendezvous/demo/WriteRegulator/WriteRegulator.xml">Write Regulator</a>
-</ul>
+<!--ptinyKeplerDocs-->
+
 <!--vergilDocs-->
+<!--ptinyKeplerDocs-->
+
 <h3><a name="sdf">Synchronous Dataflow (SDF)</a></h3>
 <ul>
 <!-- Please keep the demos alphabetical -->
@@ -191,7 +185,7 @@ FSM MultipleRuns has problems with dangling threads, so we comment it out.
 <li><a href="../../vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml">Animate Vergil</a>
 <li><a href="../../domains/sdf/demo/Array/Array.xml">Array</a>
 <li><a href="../../actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml">ApplyFFT</a>
-<li><a href="../../domains/sdf/demo/Butterfly/Butterfly.xml">Butterfly</a> (with codegen)
+<li><a href="../../domains/sdf/demo/Butterfly/Butterfly.xml">Butterfly</a> (In the full version of Ptolemy: with codegen)
 <li> <a href="../../actor/lib/hoc/demo/Case/Case.xml">Case</a>
 <!--ptinyKeplerDocs-->
 
@@ -236,10 +230,8 @@ FSM MultipleRuns has problems with dangling threads, so we comment it out.
 <li><a href="../../moml/demo/Networked/Networked.xml">Network Integration</a>
 
 
-<li> <a href="../../actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml">Ptolemnizer (using Python)</a>
-
-<li> <a href="../../actor/lib/python/demo/PythonScale/PythonScale.xml">Python Integration</a>
-
+<!--Kepler does not include Python-->
+<!--ptinyKeplerDocs-->
 
 <li><a href="../../domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml">Rijndael Encryption</a>
 
@@ -258,19 +250,12 @@ FSM MultipleRuns has problems with dangling threads, so we comment it out.
  -->
 </ul>
 
-<h3><a name="sr">Synchronous/Reactive (SR)</a></h3>
-<ul>
-<!-- Reflex Game is not really SR
-	../../domains/sr/demo/ReflexGame/ReflexGame.xml -->
+<!--ptinyKeplerDocs-->
 
-<li><a href="../../domains/sr/demo/GuardedCount/GuardedCount.xml">GuardedCount</a> 
-<li><a href="../../domains/sr/demo/GuardedCount/GuardedCountTimed.xml">GuardedCountTimed</a> (New in Ptolemy II 7.0) 
-<li><a href="../../domains/sr/demo/FeedbackLoop/FeedbackLoop.xml">FeedbackLoop</a>
-<li><a href="../../domains/sr/demo/TokenRing/TokenRing.xml">TokenRing</a> 
-<li><a href="../../domains/sr/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> (New in Ptolemy II 7.0) 
 <!--Ptiny does not include wireless-->
 <!--vergilDocs-->
-</ul>
+
+<!--ptinyKeplerDocs-->
 
 <!--vergilDocs-->
 
