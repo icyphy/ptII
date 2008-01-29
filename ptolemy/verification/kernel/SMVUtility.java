@@ -581,6 +581,65 @@ public class SMVUtility {
                 }
             }
         }
+        
+        // Also count based on parameters
+        for (Iterator actors = (((CompositeActor) model).entityList())
+                .iterator(); actors.hasNext();) {
+            Entity innerModel = (Entity) actors.next();
+            if (innerModel instanceof FSMActor) {
+
+                Iterator it = _variableInfo.keySet().iterator();
+                while (it.hasNext()) {
+                    String originalAttribute = (String) it.next();
+                    String[] attributeList = originalAttribute.split("-");
+                    String attribute = attributeList[attributeList.length - 1].trim();
+                    String[] propertyList = null;
+                    try{
+                        propertyList = innerModel.getAttribute(
+                            attribute).description().split(" ");
+                    }catch(Exception ex){
+                        continue;
+                    }
+                    String property = null;
+                    try {
+                        property = propertyList[propertyList.length - 1];
+                        int numberRetrival = Integer.parseInt(property);
+                        VariableInfo variable = _variableInfo.get(innerModel
+                                .getName()
+                                + "-" + attribute);
+                        
+                        if (variable == null) {
+                            continue;
+
+                        } else {
+                            // modify the existing one
+                            if (Integer
+                                    .parseInt(variable._maxValue) < numberRetrival) {
+                                variable._maxValue = Integer
+                                        .toString(numberRetrival);
+                            }
+                            if (Integer
+                                    .parseInt(variable._minValue) > numberRetrival) {
+                                variable._minValue = Integer
+                                        .toString(numberRetrival);
+                            }
+                            _variableInfo.remove(innerModel
+                                    .getName()
+                                    + "-" + attribute);
+                            _variableInfo.put(innerModel
+                                    .getName()
+                                    + "-" + attribute, variable);
+
+                        }
+                        
+                        
+                    } catch (Exception ex) {
+                        continue;
+                    }
+                    //returnMap.put(originalAttribute, property);
+                }
+            }
+        }
 
         // Expend based on the domain
         Iterator<String> itVariableSet = returnVariableSet.iterator();
@@ -3485,47 +3544,72 @@ public class SMVUtility {
                     .iterator(); actors.hasNext();) {
                 Entity innerModel = (Entity) actors.next();
                 if (innerModel instanceof FSMActor) {
-                    ComponentPort outPort = ((FSMActor) innerModel)
-                            .getInitialState().outgoingPort;
-                    Iterator transitions = outPort.linkedRelationList()
-                            .iterator();
-                    while (transitions.hasNext()) {
-                        Transition transition = (Transition) transitions.next();
-                        String setActionExpression = transition.setActions
-                                .getExpression();
-                        if ((setActionExpression != null)
-                                && !setActionExpression.trim().equals("")) {
-                            // Retrieve possible value of the variable
-                            String[] splitExpression = setActionExpression
-                                    .split(";");
-                            for (int i = 0; i < splitExpression.length; i++) {
-                                String[] characters = splitExpression[i]
-                                        .split("=");
-                                String lValue = characters[0].trim();
-                                String rValue = "";
-                                int numberRetrival = 0;
-                                boolean rvalueSingleNumber = true;
-                                try {
-                                    rValue = characters[1].trim();
-                                    numberRetrival = Integer.parseInt(rValue);
-                                } catch (Exception ex) {
-                                    rvalueSingleNumber = false;
-                                }
-                                if (rvalueSingleNumber == true) {
-                                    // see if the lValue is in variableSet
-                                    if (variableSet
-                                            .contains(((FSMActor) innerModel)
-                                                    .getName()
-                                                    + "-" + lValue)) {
-                                        returnMap.put(((FSMActor) innerModel)
-                                                .getName()
-                                                + "-" + lValue, rValue);
-                                    }
-                                }
-                            }
-                        }
 
+                    Iterator<String> it = variableSet.iterator();
+                    while (it.hasNext()) {
+                        String originalAttribute = it.next();
+                        String[] attributeList = originalAttribute.split("-");
+                        String attribute = attributeList[attributeList.length - 1];
+                        String[] propertyList = null;
+                        try{
+                            propertyList = innerModel.getAttribute(
+                                attribute).description().split(" ");
+                        }catch(Exception ex){
+                            continue;
+                        }
+                        String property = null;
+                        try {
+                            property = propertyList[propertyList.length - 1];
+                        } catch (Exception ex) {
+                            continue;
+                        }
+                        returnMap.put(originalAttribute, property);
                     }
+
+                    /*  
+                      ComponentPort outPort = ((FSMActor) innerModel)
+                              .getInitialState().outgoingPort;
+                      Iterator transitions = outPort.linkedRelationList()
+                              .iterator();
+                      while (transitions.hasNext()) {
+                          Transition transition = (Transition) transitions.next();
+                          String setActionExpression = transition.setActions
+                                  .getExpression();
+                          if ((setActionExpression != null)
+                                  && !setActionExpression.trim().equals("")) {
+                              // Retrieve possible value of the variable
+                              String[] splitExpression = setActionExpression
+                                      .split(";");
+                              for (int i = 0; i < splitExpression.length; i++) {
+                                  String[] characters = splitExpression[i]
+                                          .split("=");
+                                  String lValue = characters[0].trim();
+                                  String rValue = "";
+                                  int numberRetrival = 0;
+                                  boolean rvalueSingleNumber = true;
+                                  try {
+                                      rValue = characters[1].trim();
+                                      numberRetrival = Integer.parseInt(rValue);
+                                  } catch (Exception ex) {
+                                      rvalueSingleNumber = false;
+                                  }
+                                  if (rvalueSingleNumber == true) {
+                                      // see if the lValue is in variableSet
+                                      if (variableSet
+                                              .contains(((FSMActor) innerModel)
+                                                      .getName()
+                                                      + "-" + lValue)) {
+                                          returnMap.put(((FSMActor) innerModel)
+                                                  .getName()
+                                                  + "-" + lValue, rValue);
+                                      }
+                                  }
+                              }
+                          }
+
+                      }
+                      
+                    */
                 }
             }
         } catch (Exception ex) {
