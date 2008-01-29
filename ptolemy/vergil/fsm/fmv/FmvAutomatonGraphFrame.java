@@ -37,6 +37,7 @@ import java.io.InputStreamReader;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 
 import ptolemy.actor.gui.Tableau;
 import ptolemy.domains.fsm.kernel.fmv.FmvAutomaton;
@@ -257,10 +258,23 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
                         File smvFile = fileSaveDialog.getSelectedFile()
                                 .getCanonicalFile();
-                        smvFileWriter = new FileWriter(smvFile);
-                        smvFileWriter.write(fmvFormat.toString());
+
+                        if (smvFile.exists()) {
+                            String queryString = "Overwrite "
+                                    + smvFile.getName() + "?";
+                            int selected = JOptionPane.showOptionDialog(null,
+                                    queryString, "Overwrite?",
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE, null, null,
+                                    null);
+                            if (selected == 0) {
+                                smvFileWriter = new FileWriter(smvFile);
+                                smvFileWriter.write(fmvFormat.toString());
+                            }
+                        }
 
                     }
+
                 } catch (Exception ex) {
                     MessageHandler
                             .error("Failed to perform the conversion process:\n"
@@ -271,8 +285,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                         smvFileWriter.close();
                 } catch (Exception ex) {
                     MessageHandler
-                    .error("Failed to perform the file closing process:\n"
-                            + ex.getMessage());
+                            .error("Failed to perform the file closing process:\n"
+                                    + ex.getMessage());
                 }
 
             }
