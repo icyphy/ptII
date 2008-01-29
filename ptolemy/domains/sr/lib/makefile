@@ -63,9 +63,8 @@ JSRCS = \
 	NonStrictThreeBitAdder.java \
 	Pre.java \
 	SingleTokenDistributor.java \
-	SingleTokenCommutator.java \
-    Undefined.java \
-    When.java
+	Undefined.java \
+        When.java	
 
 OTHER_FILES_TO_BE_JARED = \
 	CurrentIcon.xml \
