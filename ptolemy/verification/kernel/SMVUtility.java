@@ -77,7 +77,8 @@ public class SMVUtility {
         returnFmvFormat.append("MODULE main \n");
         returnFmvFormat.append("\tVAR \n");
 
-        returnFmvFormat.append("\t\tproc: " + model.getName() + "();\n\n");
+        returnFmvFormat.append("\t\t" + model.getName() + ": "
+                + "System();\n\n");
 
         if (choice.equalsIgnoreCase("CTL")) {
             returnFmvFormat.append("\tSPEC \n");
@@ -87,7 +88,7 @@ public class SMVUtility {
             returnFmvFormat.append("\t\t" + pattern + "\n");
         }
 
-        returnFmvFormat.append("MODULE " + model.getName() + "() \n");
+        returnFmvFormat.append("MODULE " + "System" + "() \n");
         returnFmvFormat.append("\tVAR \n");
         HashMap<String, FSMActor> FSMActors = new HashMap<String, FSMActor>();
 
@@ -581,7 +582,7 @@ public class SMVUtility {
                 }
             }
         }
-        
+
         // Also count based on parameters
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
@@ -592,12 +593,13 @@ public class SMVUtility {
                 while (it.hasNext()) {
                     String originalAttribute = (String) it.next();
                     String[] attributeList = originalAttribute.split("-");
-                    String attribute = attributeList[attributeList.length - 1].trim();
+                    String attribute = attributeList[attributeList.length - 1]
+                            .trim();
                     String[] propertyList = null;
-                    try{
-                        propertyList = innerModel.getAttribute(
-                            attribute).description().split(" ");
-                    }catch(Exception ex){
+                    try {
+                        propertyList = innerModel.getAttribute(attribute)
+                                .description().split(" ");
+                    } catch (Exception ex) {
                         continue;
                     }
                     String property = null;
@@ -607,32 +609,27 @@ public class SMVUtility {
                         VariableInfo variable = _variableInfo.get(innerModel
                                 .getName()
                                 + "-" + attribute);
-                        
+
                         if (variable == null) {
                             continue;
 
                         } else {
                             // modify the existing one
-                            if (Integer
-                                    .parseInt(variable._maxValue) < numberRetrival) {
+                            if (Integer.parseInt(variable._maxValue) < numberRetrival) {
                                 variable._maxValue = Integer
                                         .toString(numberRetrival);
                             }
-                            if (Integer
-                                    .parseInt(variable._minValue) > numberRetrival) {
+                            if (Integer.parseInt(variable._minValue) > numberRetrival) {
                                 variable._minValue = Integer
                                         .toString(numberRetrival);
                             }
-                            _variableInfo.remove(innerModel
-                                    .getName()
-                                    + "-" + attribute);
-                            _variableInfo.put(innerModel
-                                    .getName()
-                                    + "-" + attribute, variable);
+                            _variableInfo.remove(innerModel.getName() + "-"
+                                    + attribute);
+                            _variableInfo.put(innerModel.getName() + "-"
+                                    + attribute, variable);
 
                         }
-                        
-                        
+
                     } catch (Exception ex) {
                         continue;
                     }
@@ -1591,180 +1588,304 @@ public class SMVUtility {
                                     // are manipulating simple format
                                     // a = a op constInt; or a = constInt;
 
-                                    String[] rValueOperends = rValue
-                                            .split("[+]|[-]|[*]|[/]");
-                                    if (Pattern.matches(".*+.*", rValue)) {
+                                    //String[] rValueOperends = rValue
+                                    //        .split("[+]|[-]|[*]|[/]");
+
+                                    if (Pattern.matches(".*\\*.*", rValue)) {
+
+                                        String[] rValueOperends = rValue
+                                                .split("[*]");
+                                        String offset = rValueOperends[1]
+                                                .trim();
+
                                         try {
                                             int value = Integer
                                                     .parseInt(rValueOperends[1]
                                                             .trim());
-                                            // set up all possible
-                                            // transitions regarding to this
-                                            // assignment.
-
-                                            String statePrecondition = ((FSMActor) innerModel)
-                                                    .getName()
-                                                    + "-"
-                                                    + "state="
-                                                    + stateInThis
-                                                            .getDisplayName();
-
-                                            _generatePremiseAndResultEachTransition(
-                                                    statePrecondition
-
-                                                    + premiseRelated.toString(),
-                                                    valueDomain,
-                                                    ((FSMActor) innerModel)
-                                                            .getName()
-                                                            + "-"
-
-                                                            + lValue,
-                                                    rValueOperends[1].trim(),
-                                                    "+");
-                                            _generatePremiseAndResultEachTransition(
-                                                    statePrecondition
-
-                                                    + premiseRelated.toString(),
-                                                    valueDomain,
-                                                    ((FSMActor) innerModel)
-                                                            .getName()
-                                                            + "-" + "state",
-                                                    destinationInThis
-                                                            .getDisplayName(),
-                                                    "S");
                                         } catch (Exception ex) {
+                                            // check if the value is of format
+                                            // (-a)
+                                            if (rValueOperends[1].trim()
+                                                    .endsWith(")")
+                                                    && rValueOperends[1].trim()
+                                                            .startsWith("(")) {
+                                                // retrieve the value
+                                                offset = rValueOperends[1]
+                                                        .trim()
+                                                        .substring(
+                                                                1,
+                                                                rValueOperends[1]
+                                                                        .trim()
+                                                                        .length() - 1);
+                                                try {
+                                                    Integer.parseInt(offset);
+                                                } catch (Exception exInner) {
+                                                    // Return the format is not
+                                                    // supported by the system.
+                                                }
+
+                                            }
 
                                         }
 
-                                    } else if (Pattern.matches(".*-.*", rValue)) {
+                                        //String[] rValueOperends = rValue
+                                        //        .split("[*]");
+
+                                        int value = Integer
+                                                .parseInt(rValueOperends[1]
+                                                        .trim());
+                                        // set up all possible
+                                        // transitions
+                                        // regarding to this
+                                        // assignment.
+
+                                        String statePrecondition = ((FSMActor) innerModel)
+                                                .getName()
+                                                + "-"
+                                                + "state="
+                                                + stateInThis.getDisplayName();
+
+                                        _generatePremiseAndResultEachTransition(
+                                                statePrecondition
+                                                        + premiseRelated
+                                                                .toString(),
+                                                valueDomain,
+                                                ((FSMActor) innerModel)
+                                                        .getName()
+                                                        + "-"
+
+                                                        + lValue,
+                                                rValueOperends[1].trim(), "*");
+                                        _generatePremiseAndResultEachTransition(
+                                                statePrecondition
+                                                        + premiseRelated
+                                                                .toString(),
+                                                valueDomain,
+                                                ((FSMActor) innerModel)
+                                                        .getName()
+                                                        + "-" + "state",
+                                                destinationInThis
+                                                        .getDisplayName(), "S");
+
+                                    } else if (Pattern.matches(".*\\/.*",
+                                            rValue)) {
+                                        //try {
+                                        String[] rValueOperends = rValue
+                                                .split("[/]");
+
+                                        String offset = rValueOperends[1]
+                                                .trim();
+
                                         try {
                                             int value = Integer
                                                     .parseInt(rValueOperends[1]
                                                             .trim());
-                                            // set up all possible
-                                            // transitions
-                                            // regarding to this
-                                            // assignment.
-
-                                            String statePrecondition = ((FSMActor) innerModel)
-                                                    .getName()
-                                                    + "-"
-                                                    + "state="
-                                                    + stateInThis
-                                                            .getDisplayName();
-
-                                            _generatePremiseAndResultEachTransition(
-                                                    statePrecondition
-
-                                                    + premiseRelated.toString(),
-                                                    valueDomain,
-                                                    ((FSMActor) innerModel)
-                                                            .getName()
-                                                            + "-"
-
-                                                            + lValue,
-                                                    rValueOperends[1].trim(),
-                                                    "-");
-                                            _generatePremiseAndResultEachTransition(
-                                                    statePrecondition
-
-                                                    + premiseRelated.toString(),
-                                                    valueDomain,
-                                                    ((FSMActor) innerModel)
-                                                            .getName()
-                                                            + "-" + "state",
-                                                    destinationInThis
-                                                            .getDisplayName(),
-                                                    "S");
                                         } catch (Exception ex) {
+                                            // check if the value is of format
+                                            // (-a)
+                                            if (rValueOperends[1].trim()
+                                                    .endsWith(")")
+                                                    && rValueOperends[1].trim()
+                                                            .startsWith("(")) {
+                                                // retrieve the value
+                                                offset = rValueOperends[1]
+                                                        .trim()
+                                                        .substring(
+                                                                1,
+                                                                rValueOperends[1]
+                                                                        .trim()
+                                                                        .length() - 1);
+                                                try {
+                                                    Integer.parseInt(offset);
+                                                } catch (Exception exInner) {
+                                                    // Return the format is not
+                                                    // supported by the system.
+                                                }
+
+                                            }
 
                                         }
-                                    } else if (Pattern.matches(".**.*", rValue)) {
+                                        // set up all possible
+                                        // transitions
+                                        // regarding to this
+                                        // assignment.
+
+                                        String statePrecondition = ((FSMActor) innerModel)
+                                                .getName()
+                                                + "-"
+                                                + "state="
+                                                + stateInThis.getDisplayName();
+
+                                        _generatePremiseAndResultEachTransition(
+                                                statePrecondition
+
+                                                + premiseRelated.toString(),
+                                                valueDomain,
+                                                ((FSMActor) innerModel)
+                                                        .getName()
+                                                        + "-"
+
+                                                        + lValue,
+                                                rValueOperends[1].trim(), "/");
+                                        _generatePremiseAndResultEachTransition(
+                                                statePrecondition
+
+                                                + premiseRelated.toString(),
+                                                valueDomain,
+                                                ((FSMActor) innerModel)
+                                                        .getName()
+                                                        + "-" + "state",
+                                                destinationInThis
+                                                        .getDisplayName(), "S");
+                                        //} catch (Exception ex) {
+
+                                        //}
+
+                                    } else if (Pattern.matches(".*\\+.*",
+                                            rValue)) {
+                                        //try {
+                                        String[] rValueOperends = rValue
+                                                .split("[+]");
+
+                                        String offset = rValueOperends[1]
+                                                .trim();
+
                                         try {
                                             int value = Integer
                                                     .parseInt(rValueOperends[1]
                                                             .trim());
-                                            // set up all possible
-                                            // transitions
-                                            // regarding to this
-                                            // assignment.
-
-                                            String statePrecondition = ((FSMActor) innerModel)
-                                                    .getName()
-                                                    + "-"
-                                                    + "state="
-                                                    + stateInThis
-                                                            .getDisplayName();
-
-                                            _generatePremiseAndResultEachTransition(
-                                                    statePrecondition
-                                                            + premiseRelated
-                                                                    .toString(),
-                                                    valueDomain,
-                                                    ((FSMActor) innerModel)
-                                                            .getName()
-                                                            + "-"
-
-                                                            + lValue,
-                                                    rValueOperends[1].trim(),
-                                                    "*");
-                                            _generatePremiseAndResultEachTransition(
-                                                    statePrecondition
-                                                            + premiseRelated
-                                                                    .toString(),
-                                                    valueDomain,
-                                                    ((FSMActor) innerModel)
-                                                            .getName()
-                                                            + "-" + "state",
-                                                    destinationInThis
-                                                            .getDisplayName(),
-                                                    "S");
                                         } catch (Exception ex) {
+                                            // check if the value is of format
+                                            // (-a)
+                                            if (rValueOperends[1].trim()
+                                                    .endsWith(")")
+                                                    && rValueOperends[1].trim()
+                                                            .startsWith("(")) {
+                                                // retrieve the value
+                                                offset = rValueOperends[1]
+                                                        .trim()
+                                                        .substring(
+                                                                1,
+                                                                rValueOperends[1]
+                                                                        .trim()
+                                                                        .length() - 1);
+                                                try {
+                                                    Integer.parseInt(offset);
+                                                } catch (Exception exInner) {
+                                                    // Return the format is not
+                                                    // supported by the system.
+                                                }
+
+                                            }
 
                                         }
-                                    } else if (Pattern.matches(".*/.*", rValue)) {
+                                        // set up all possible
+                                        // transitions regarding to this
+                                        // assignment.
+
+                                        String statePrecondition = ((FSMActor) innerModel)
+                                                .getName()
+                                                + "-"
+                                                + "state="
+                                                + stateInThis.getDisplayName();
+
+                                        _generatePremiseAndResultEachTransition(
+                                                statePrecondition
+
+                                                + premiseRelated.toString(),
+                                                valueDomain,
+                                                ((FSMActor) innerModel)
+                                                        .getName()
+                                                        + "-"
+
+                                                        + lValue,
+                                                rValueOperends[1].trim(), "+");
+                                        _generatePremiseAndResultEachTransition(
+                                                statePrecondition
+
+                                                + premiseRelated.toString(),
+                                                valueDomain,
+                                                ((FSMActor) innerModel)
+                                                        .getName()
+                                                        + "-" + "state",
+                                                destinationInThis
+                                                        .getDisplayName(), "S");
+                                        //} catch (Exception ex) {
+
+                                        //}
+                                    } else if (Pattern.matches(".*\\-.*",
+                                            rValue)) {
+                                        //try {
+                                        String[] rValueOperends = rValue
+                                                .split("[-]");
+
+                                        String offset = rValueOperends[1]
+                                                .trim();
+
                                         try {
                                             int value = Integer
                                                     .parseInt(rValueOperends[1]
                                                             .trim());
-                                            // set up all possible
-                                            // transitions
-                                            // regarding to this
-                                            // assignment.
-
-                                            String statePrecondition = ((FSMActor) innerModel)
-                                                    .getName()
-                                                    + "-"
-                                                    + "state="
-                                                    + stateInThis
-                                                            .getDisplayName();
-
-                                            _generatePremiseAndResultEachTransition(
-                                                    statePrecondition
-
-                                                    + premiseRelated.toString(),
-                                                    valueDomain,
-                                                    ((FSMActor) innerModel)
-                                                            .getName()
-                                                            + "-"
-
-                                                            + lValue,
-                                                    rValueOperends[1].trim(),
-                                                    "/");
-                                            _generatePremiseAndResultEachTransition(
-                                                    statePrecondition
-
-                                                    + premiseRelated.toString(),
-                                                    valueDomain,
-                                                    ((FSMActor) innerModel)
-                                                            .getName()
-                                                            + "-" + "state",
-                                                    destinationInThis
-                                                            .getDisplayName(),
-                                                    "S");
                                         } catch (Exception ex) {
+                                            // check if the value is of format
+                                            // (-a)
+                                            if (rValueOperends[1].trim()
+                                                    .endsWith(")")
+                                                    && rValueOperends[1].trim()
+                                                            .startsWith("(")) {
+                                                // retrieve the value
+                                                offset = rValueOperends[1]
+                                                        .trim()
+                                                        .substring(
+                                                                1,
+                                                                rValueOperends[1]
+                                                                        .trim()
+                                                                        .length() - 1);
+                                                try {
+                                                    Integer.parseInt(offset);
+                                                } catch (Exception exInner) {
+                                                    // Return the format is not
+                                                    // supported by the system.
+                                                }
+
+                                            }
 
                                         }
+                                        // set up all possible
+                                        // transitions
+                                        // regarding to this
+                                        // assignment.
+
+                                        String statePrecondition = ((FSMActor) innerModel)
+                                                .getName()
+                                                + "-"
+                                                + "state="
+                                                + stateInThis.getDisplayName();
+
+                                        _generatePremiseAndResultEachTransition(
+                                                statePrecondition
+
+                                                + premiseRelated.toString(),
+                                                valueDomain,
+                                                ((FSMActor) innerModel)
+                                                        .getName()
+                                                        + "-"
+
+                                                        + lValue,
+                                                rValueOperends[1].trim(), "-");
+                                        _generatePremiseAndResultEachTransition(
+                                                statePrecondition
+
+                                                + premiseRelated.toString(),
+                                                valueDomain,
+                                                ((FSMActor) innerModel)
+                                                        .getName()
+                                                        + "-" + "state",
+                                                destinationInThis
+                                                        .getDisplayName(), "S");
+                                        //} catch (Exception ex) {
+
+                                        //}
                                     }
 
                                 }
@@ -3551,10 +3672,10 @@ public class SMVUtility {
                         String[] attributeList = originalAttribute.split("-");
                         String attribute = attributeList[attributeList.length - 1];
                         String[] propertyList = null;
-                        try{
-                            propertyList = innerModel.getAttribute(
-                                attribute).description().split(" ");
-                        }catch(Exception ex){
+                        try {
+                            propertyList = innerModel.getAttribute(attribute)
+                                    .description().split(" ");
+                        } catch (Exception ex) {
                             continue;
                         }
                         String property = null;
