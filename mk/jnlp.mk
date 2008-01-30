@@ -483,11 +483,19 @@ JNLPS =	vergilDSP.jnlp \
 # and create the .jnlp files
 #
 jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) jnlp_sign $(JNLPS) 
+	@echo "To run the jnlp file, run \"make jnlp_run\""
+
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
 jnlp_clean: 
 	rm -rf $(JNLPS) $(SIGNED_DIR)
 jnlp_distclean: jnlp_clean
 	rm -f  $(ALL_JNLP_JARS) 
+
+# Rule to run the jnlp file
+PTJNLP = vergil.jnlp
+jnlp_run:
+	"$(PTJAVA_HOME)/../bin/javaws" $(PTJNLP)
+
 
 $(SIGNED_DIR):
 	if [ ! -d $(SIGNED_DIR) ]; then \
