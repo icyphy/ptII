@@ -47,7 +47,6 @@ PTPACKAGE = 	gui
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	PropertyDisplayGUIFactory.java \
 	PropertySolverGUIFactory.java
 
 EXTRA_SRCS =	$(JSRCS)
