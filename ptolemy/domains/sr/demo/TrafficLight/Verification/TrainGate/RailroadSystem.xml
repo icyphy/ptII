@@ -306,7 +306,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 120.0]">
         </property>
-        <property name="distance" class="ptolemy.data.expr.Parameter" value="-204">
+        <property name="distance" class="ptolemy.data.expr.Parameter" value="-10">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>
