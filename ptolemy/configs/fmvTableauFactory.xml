@@ -3,28 +3,38 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <!-- This file contains a single factory, for editing          -->
 <!-- Fmv automata.                                       -->
-<property name="factoryFmv" class="ptolemy.actor.gui.PtolemyTableauFactory">
-  <property name="Fmv Automaton Editor"
-        class="ptolemy.vergil.fsm.fmv.FmvAutomatonGraphTableau$Factory">
-    <!-- Specify the default library to use if the model does not         -->
-    <!-- contain a library attribute.  NOTE: We do not use fsmLibrary.xml -->
-    <!-- here because it imports annotation.xml, which has utilities     -->
-    <!-- that are not relevant. -->
-    <property name="_library" class="ptolemy.moml.LibraryAttribute">
-      <configure>
-    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity">
-      <input source="ptolemy/configs/basicUtilities.xml"/>
-      <entity name="State" class="ptolemy.domains.fsm.kernel.State">
-        <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
-      </entity>
-    </entity>
-      </configure>
-    </property>
-  </property>
-  <property name="Tree View"
-        class="ptolemy.vergil.tree.TreeTableau$Factory"/>
-  <property name="XML view"
-        class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+<property name="factoryFmv"
+	class="ptolemy.actor.gui.PtolemyTableauFactory">
+	<property name="Fmv Automaton Editor"
+		class="ptolemy.vergil.fsm.fmv.FmvAutomatonGraphTableau$Factory">
+		<!-- Specify the default library to use if the model does not         -->
+		<!-- contain a library attribute.  NOTE: We do not use fsmLibrary.xml -->
+		<!-- here because it imports annotation.xml, which has utilities     -->
+		<!-- that are not relevant. -->
+		<property name="_library"
+			class="ptolemy.moml.LibraryAttribute">
+			<configure>
+				<entity name="StateLibrary"
+					class="ptolemy.kernel.CompositeEntity">
+					<input
+						source="ptolemy/vergil/kernel/attributes/decorative.xml" />
+					<input
+						source="ptolemy/configs/utilityParameters.xml" />
+					<input source="ptolemy/configs/utilityAnalysis.xml" />
+					<entity name="State"
+						class="ptolemy.domains.fsm.kernel.State">
+						<property name="_centerName"
+							class="ptolemy.kernel.util.Attribute" />
+					</entity>
+
+				</entity>
+			</configure>
+		</property>
+	</property>
+	<property name="Tree View"
+		class="ptolemy.vergil.tree.TreeTableau$Factory" />
+	<property name="XML view"
+		class="ptolemy.actor.gui.TextEditorTableau$Factory" />
 </property>
 
 
