@@ -33,24 +33,23 @@ import java.io.FileWriter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
-
-import ptolemy.verification.gui.CodeGeneratorGUIFactory;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-
+import ptolemy.domains.fsm.kernel.fmv.FmvAutomaton;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
-
 import ptolemy.kernel.CompositeEntity;
-
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
+import ptolemy.verification.gui.CodeGeneratorGUIFactory;
+
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CodeGenerator
@@ -118,26 +117,154 @@ public class CodeGenerator extends Attribute {
                     Query query = new Query();
 
                     query.addLine("formula", "Input temporal formula", "");
-                    String[] possibleChoice = new String[2];
-                    possibleChoice[0] = "CTL";
-                    possibleChoice[1] = "LTL";
-                    query.addRadioButtons("choice", "Formula Type",
-                            possibleChoice, "CTL");
+                    String[] possibleFormulaChoice = new String[2];
+                    possibleFormulaChoice[0] = "CTL";
+                    possibleFormulaChoice[1] = "LTL";
+                    query.addRadioButtons("formulaChoice", "Formula Type",
+                            possibleFormulaChoice, "CTL");
+
                     query.addLine("span", "Size of span", "0");
+                    String[] possibleOutputChoice = new String[3];
+                    possibleOutputChoice[0] = "Output to File";
+                    possibleOutputChoice[1] = "Open Text Editor";
+                    possibleOutputChoice[2] = "Invoke NuSMV";
+                    query.addRadioButtons("outputChoice", "Output Choice",
+                            possibleOutputChoice, "Output to File");
+                    //query.addDisplay("note", "", "To invoke NuSMV, the system must have it properly installed.");
                     ComponentDialog dialog = new ComponentDialog(null,
                             "Input Formula", query);
 
                     String pattern = "";
-                    String finalChoice = "";
+                    String finalFormulaChoice = "";
+                    String finalOutputChoice = "";
                     String span = "";
                     if (dialog.buttonPressed().equals("OK")) {
                         pattern = query.getStringValue("formula");
-                        finalChoice = query.getStringValue("choice");
+                        finalFormulaChoice = query
+                                .getStringValue("formulaChoice");
                         span = query.getStringValue("span");
                         smvDescritpion.append(SMVUtility
                                 .generateSMVDescription(
                                         (CompositeActor) _model, pattern,
-                                        finalChoice, span));
+                                        finalFormulaChoice, span));
+
+                        if (query.getStringValue("outputChoice")
+                                .equalsIgnoreCase("Output to File")) {
+                            JFileChooser fileSaveDialog = new JFileChooser();
+                            // SMVFileFilter filter = new SMVFileFilter();
+                            // fileSaveDialog.setFileFilter(filter);
+                            fileSaveDialog
+                                    .setDialogType(JFileChooser.SAVE_DIALOG);
+                            fileSaveDialog
+                                    .setDialogTitle("Convert Ptolemy model into .smv file");
+                            if (_directory != null) {
+                                fileSaveDialog.setCurrentDirectory(_directory);
+                            } else {
+                                // The default on Windows is to open at
+                                // user.home, which is typically an absurd
+                                // directory inside the O/S installation.
+                                // So we use the current directory instead.
+                                // FIXME: Could this throw a security
+                                // exception in an applet?
+                                String cwd = StringUtilities
+                                        .getProperty("user.dir");
+
+                                if (cwd != null) {
+                                    fileSaveDialog
+                                            .setCurrentDirectory(new File(cwd));
+                                }
+                            }
+
+                            int returnValue = fileSaveDialog
+                                    .showSaveDialog(null);
+                            //.showOpenDialog(ActorGraphFrame.this);
+
+                            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                                _directory = fileSaveDialog
+                                        .getCurrentDirectory();
+
+                                FileWriter smvFileWriter = null;
+                                try {
+                                    File smvFile = fileSaveDialog
+                                            .getSelectedFile()
+                                            .getCanonicalFile();
+
+                                    if (smvFile.exists()) {
+                                        String queryString = "Overwrite "
+                                                + smvFile.getName() + "?";
+                                        int selected = JOptionPane
+                                                .showOptionDialog(
+                                                        null,
+                                                        queryString,
+                                                        "Save Changes?",
+                                                        JOptionPane.YES_NO_OPTION,
+                                                        JOptionPane.QUESTION_MESSAGE,
+                                                        null, null, null);
+                                        if (selected == 0) {
+                                            smvFileWriter = new FileWriter(
+                                                    smvFile);
+                                            smvFileWriter.write(smvDescritpion
+                                                    .toString());
+                                        }
+                                    }
+
+                                } finally {
+                                    if (smvFileWriter != null) {
+                                        smvFileWriter.close();
+                                    }
+                                }
+                            }
+                        } else if (query.getStringValue("outputChoice")
+                                .equalsIgnoreCase("Open Text Editor")) {
+                           
+                        } else {
+                            // Also invoke NuSMV. Create a temporal file and later delete it.
+                            // The temporal file uses a random number generator to generate its name.
+                        }
+
+                    }
+                } else {
+                    MessageHandler
+                            .error("The execution director is not SR.\nCurrently it is beyond our scope.");
+                }
+
+            } else if (_model instanceof FSMActor) {
+
+                Query query = new Query();
+                query.addLine("formula", "Temporal formula", "");
+                String[] possibleFormulaChoice = new String[2];
+                possibleFormulaChoice[0] = "CTL";
+                possibleFormulaChoice[1] = "LTL";
+                query.addRadioButtons("choice", "Formula Type",
+                        possibleFormulaChoice, "CTL");
+                query.addLine("span", "Size of span", "0");
+                String[] possibleOutputChoice = new String[3];
+                possibleOutputChoice[0] = "Output to File";
+                possibleOutputChoice[1] = "Open Text Editor";
+                possibleOutputChoice[2] = "Invoke NuSMV";
+                query.addRadioButtons("outputChoice", "Output Choice",
+                        possibleOutputChoice, "Output to File");
+
+                ComponentDialog dialog = new ComponentDialog(null,
+                        "Input Formula", query);
+
+                String pattern = "";
+                String finalChoice = "";
+                String span = "";
+                if (dialog.buttonPressed().equals("OK")) {
+                    pattern = query.getStringValue("formula");
+                    finalChoice = query.getStringValue("choice");
+                    span = query.getStringValue("span");
+                    // Retrieve the Fmv Automaton
+                    FmvAutomaton model = (FmvAutomaton) _model;
+                    // StringBuffer = model
+
+                    StringBuffer fmvFormat = new StringBuffer("");
+                    FileWriter smvFileWriter = null;
+                    try {
+
+                        fmvFormat.append(model.convertToSMVFormat(pattern,
+                                finalChoice, span));
                         JFileChooser fileSaveDialog = new JFileChooser();
                         // SMVFileFilter filter = new SMVFileFilter();
                         // fileSaveDialog.setFileFilter(filter);
@@ -147,12 +274,12 @@ public class CodeGenerator extends Attribute {
                         if (_directory != null) {
                             fileSaveDialog.setCurrentDirectory(_directory);
                         } else {
-                            // The default on Windows is to open at
-                            // user.home, which is typically an absurd
-                            // directory inside the O/S installation.
+                            // The default on Windows is to open at user.home, which is
+                            // typically an absurd directory inside the O/S
+                            // installation.
                             // So we use the current directory instead.
-                            // FIXME: Could this throw a security
-                            // exception in an applet?
+                            // FIXME: Could this throw a security exception in an
+                            // applet?
                             String cwd = StringUtilities
                                     .getProperty("user.dir");
 
@@ -162,75 +289,51 @@ public class CodeGenerator extends Attribute {
                             }
                         }
 
-                        int returnValue = fileSaveDialog.showSaveDialog(null);
-                        //.showOpenDialog(ActorGraphFrame.this);
+                        int returnValue = fileSaveDialog.showOpenDialog(null);
 
                         if (returnValue == JFileChooser.APPROVE_OPTION) {
                             _directory = fileSaveDialog.getCurrentDirectory();
 
-                            FileWriter smvFileWriter = null;
-                            try {
-                                File smvFile = fileSaveDialog.getSelectedFile()
-                                        .getCanonicalFile();
+                            File smvFile = fileSaveDialog.getSelectedFile()
+                                    .getCanonicalFile();
 
-                                if (smvFile.exists()) {
-                                    String queryString = "Overwrite "
-                                            + smvFile.getName() + "?";
-                                    int selected = JOptionPane
-                                            .showOptionDialog(
-                                                    null,
-                                                    queryString,
-                                                    "Save Changes?",
-                                                    JOptionPane.YES_NO_OPTION,
-                                                    JOptionPane.QUESTION_MESSAGE,
-                                                    null, null, null);
-                                    if (selected == 0) {
-                                        smvFileWriter = new FileWriter(smvFile);
-                                        smvFileWriter.write(smvDescritpion
-                                                .toString());
-                                    }
-                                }
-
-                            } finally {
-                                if (smvFileWriter != null) {
-                                    smvFileWriter.close();
+                            if (smvFile.exists()) {
+                                String queryString = "Overwrite "
+                                        + smvFile.getName() + "?";
+                                int selected = JOptionPane.showOptionDialog(
+                                        null, queryString, "Overwrite?",
+                                        JOptionPane.YES_NO_OPTION,
+                                        JOptionPane.QUESTION_MESSAGE, null,
+                                        null, null);
+                                if (selected == 0) {
+                                    smvFileWriter = new FileWriter(smvFile);
+                                    smvFileWriter.write(fmvFormat.toString());
                                 }
                             }
+
                         }
 
+                    } catch (Exception ex) {
+                        MessageHandler
+                                .error("Failed to perform the conversion process:\n"
+                                        + ex.getMessage());
                     }
-                } else {
-                    MessageHandler
-                            .error("The execution director is not SR.\nCurrently it is beyond our scope.");
-                }
+                    try {
+                        if (smvFileWriter != null)
+                            smvFileWriter.close();
+                    } catch (Exception ex) {
+                        MessageHandler
+                                .error("Failed to perform the file closing process:\n"
+                                        + ex.getMessage());
+                    }
 
+                }
             }
 
         }
 
         return 0;
         //return returnValue;
-    }
-
-    /** Generate code and append it to the given string buffer.
-
-     *  Write the code to the directory specified by the codeDirectory
-     *  parameter.  The file name is a sanitized version of the model
-     *  name with a suffix that is based on last package name of the
-     *  <i>generatorPackage</i> parameter.  Thus if the
-     *  <i>codeDirectory</i> is <code>$HOME</code>, the name of the
-     *  model is <code>Foo</code> and the <i>generatorPackage</i>
-     *  is <code>ptolemy.codegen.c</code>, then the file that is
-     *  written will be <code>$HOME/Foo.c</code>
-     *  This method is the main entry point.
-     *  @param code The given string buffer.
-     *  @return The return value of the last subprocess that was executed.
-     *  or -1 if no commands were executed.
-     *  @exception KernelException If the target file cannot be overwritten
-     *   or write-to-file throw any exception.
-     */
-    public int _generateCode(StringBuffer code) throws KernelException {
-        return 3;
     }
 
     ///////////////////////////////////////////////////////////////////
