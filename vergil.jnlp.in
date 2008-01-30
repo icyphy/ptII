@@ -25,6 +25,7 @@
          <!-- Bump maximum heap size to 512Mb, use JVM Props. to confirm -->
    	<j2se version="1.5+" max-heap-size="512m" />
         <extension href="http://download.java.net/media/java3d/webstart/release/java3d-latest.jnlp"/>
+	<extension href="http://download.java.net/media/jai/webstart/release/jai-1.1.3-latest.jnlp"/>
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>
