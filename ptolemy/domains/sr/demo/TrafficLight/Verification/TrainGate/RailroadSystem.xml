@@ -7,7 +7,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The undesired behavior is to have gate &#10;open when the train is crossing the gate. &#10;To avoid this, we use temporal logic to &#10;describe the specification and generate &#10;a file acceptable by model checker NuSMV.&#10;&#10;CTL Specification (Copy the line below when double clicking the SMV CodeGenerator)&#10;!EF (RailRoadSystem.Train-state=within &amp; RailRoadSystem.Gate-state=open)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The undesired behavior is to have gate &#10;open when the train is crossing the gate. &#10;To avoid this, we use temporal logic to &#10;describe the specification and generate &#10;a file acceptable by model checker NuSMV.&#10;&#10;CTL Specification (Copy the line below when double clicking the SMV CodeGenerator)&#10;!EF (RailroadSystem.Train-state=within &amp; RailroadSystem.Gate-state=open)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 325.0]">
         </property>
