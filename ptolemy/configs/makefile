@@ -107,6 +107,7 @@ PTCLASSALLJARS = \
 		doc/doc.jar \
 		dsp/dsp.jar \
 		full/full.jar \
+		gt/gt.jar \
 		hyvisual/hyvisual.jar \
 		jni/jni.jar \
 		jxta/jxta.jar \
