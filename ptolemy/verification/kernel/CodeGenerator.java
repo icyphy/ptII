@@ -220,6 +220,13 @@ public class CodeGenerator extends Attribute {
                             }
                         } else if (query.getStringValue("outputChoice")
                                 .equalsIgnoreCase("Open Text Editor")) {
+                            
+                            Query newQuery = new Query();
+                            newQuery.setTextWidth(90);
+                            newQuery.addTextArea("formula",
+                                    _model.getName(), smvDescritpion.toString());
+                            ComponentDialog newDialog = new ComponentDialog(
+                                    null, "Converted SMV Format", newQuery);
 
                         } else {
                             // Also invoke NuSMV. Create a temporal file and later delete it.
@@ -414,7 +421,22 @@ public class CodeGenerator extends Attribute {
 
                     } else if (query.getStringValue("outputChoice")
                             .equalsIgnoreCase("Open Text Editor")) {
-
+                        try {
+                            fmvFormat.append(model.convertToSMVFormat(pattern,
+                                    finalChoice, span));
+                            
+                            Query newQuery = new Query();
+                            newQuery.setTextWidth(90);
+                            newQuery.addTextArea("formula",
+                                    _model.getName(), fmvFormat.toString());
+                            ComponentDialog newDialog = new ComponentDialog(
+                                    null, "Converted SMV Format", newQuery);
+                            
+                        } catch (Exception ex) {
+                            MessageHandler
+                                    .error("Failed to perform the conversion process:\n"
+                                            + ex.getMessage());
+                        }
                     } else {
                         // Also invoke NuSMV
                         try {
@@ -480,7 +502,7 @@ public class CodeGenerator extends Attribute {
                             } catch (Exception ex) {
                                 MessageHandler
                                         .warning("Failed to invoke NuSMV correctly: "
-                                                + ex);
+                                                + ex.getMessage());
 
                             }
 
