@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy II Formal Method Verification automatons
+# Makefile for the Ptolemy Classic style code generation
 #
 # @Authors: Chihhong Patrick Cheng, Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2005-2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,22 +29,22 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/verification/kernel
+ME =		ptolemy/verification/kernel
 
-# Root of the ptII directory
+#DIRS = 		
+
+# Root of the Java directory
 ROOT =		../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-CLASSPATH =	$(ROOT)
-
-# Used to build zip files
+# Used to build jar files
 PTPACKAGE = 	kernel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = \
 	CodeGenerator.java \
@@ -52,25 +52,24 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED =
 
+
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+#MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
 	'SMVUtility$$VariableInfo.class' \
 	'SMVUtility$$VariableTransitionInfo.class'
 
-
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: all jars
-
+install: jclass $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
