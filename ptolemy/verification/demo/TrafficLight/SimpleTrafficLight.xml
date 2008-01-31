@@ -16,20 +16,20 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 933, 562}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 936, 557}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 445]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 440]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{336.921875, 228.4942989864865}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.421875, 225.9942989864865}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Contrary to TrafficLight.xml, SimpleTrafficLight.xml &#10;is a simplified version of traffic control which only &#10;simulates the behavior of normal situation. &#10;&#10;Another difference is that SimpleTrafficLight.xml &#10;only uses FSMActors to represent extended state &#10;machines rather than ModalModels (which are used in &#10;TrafficLight.xml). This enables the use of SMV&#10;code generator.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Contrary to TrafficLight.xml in ptolemy/domains/sr/demo/TrafficLight, &#10;SimpleTrafficLight.xml is a simplified version of traffic control which &#10;only simulates the behavior of normal situation. &#10;&#10;Another difference is that SimpleTrafficLight.xml only uses FSMActors &#10;to represent extended state machines rather than ModalModels &#10;(which are used in TrafficLight.xml). This enables the use of &#10;SMV code generator.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 180.0]">
         </property>
     </property>
     <property name="SMV CodeGenerator" class="ptolemy.verification.kernel.CodeGenerator">
@@ -43,7 +43,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this model, the undesired behavior is to have the &#10;car light and pedestrian light green at the same time.&#10;This would lead to accidents. To avoid this, we use&#10;temporal logic to describe the specification and &#10;generate a file acceptable by model checker NuSMV.&#10;&#10;CTL Specification (Copy the line below when double clicking the SMV CodeGenerator)&#10;! EF (SimpleTrafficLight.CarLightNormal-state = Cgrn &amp; SimpleTrafficLight.PedestrianLightNormal-state = Pgreen)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 270.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -690,7 +690,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 170.0]">
         </property>
     </entity>
     <entity name="SetVariable4" class="ptolemy.actor.lib.SetVariable">
@@ -704,7 +704,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 210.0]">
         </property>
     </entity>
     <entity name="SetVariable5" class="ptolemy.actor.lib.SetVariable">
@@ -718,7 +718,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[246.1708984375, 259.990234375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 255.0]">
         </property>
     </entity>
     <entity name="Sec" class="ptolemy.actor.lib.Ramp">
