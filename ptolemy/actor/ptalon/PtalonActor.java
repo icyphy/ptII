@@ -523,7 +523,28 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             PtalonLexer lex = null;
             PtalonRecognizer rec = null;
             InputStream inputStream = null;
-            URL inputURL = ptalonCodeLocation.asURL();
+            URL inputURL = null;
+            try {
+                inputURL = ptalonCodeLocation.asURL();
+            } catch (IllegalActionException ex) {
+                // We might be under WebStart, try it as a jar URL
+                String ptII = StringUtilities
+                    .getProperty("ptolemy.ptII.dir");
+                String codeLocation = ptalonCodeLocation.getExpression();
+                if (codeLocation.startsWith(ptII)) {
+                    codeLocation = codeLocation.substring(ptII.length() + 1);
+                }
+                inputURL = Thread.currentThread().getContextClassLoader()
+                    .getResource(codeLocation);
+                if (inputURL == null) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to open "
+                            + "\"" +  ptalonCodeLocation.getExpression()
+                            + "\" as a file or jar URL"
+                            + " ptII: " + ptII
+                            + " codeLocation: " + codeLocation);
+                }
+            }
             try {
                 inputStream = inputURL.openStream();
                 lex = new PtalonLexer(inputStream);
