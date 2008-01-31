@@ -1256,6 +1256,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/ptalon \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/hsif \
+	$(REMOTE1PTIIDIST)/ptolemy/verification \
 	$(REMOTE1PTIIDIST)/jni \
 	$(REMOTE1PTIIDIST)/jni/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
