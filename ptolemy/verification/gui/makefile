@@ -39,12 +39,10 @@ ROOT =		../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-	
 CLASSPATH =	$(ROOT)
 
 # Used to build zip files
 PTPACKAGE = 	gui
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
