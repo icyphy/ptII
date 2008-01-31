@@ -1,9 +1,9 @@
 # Makefile for Ptolemy Classic style Codegen
 #
 # @Version: $Id$
-# @Author: Christopher Brooks
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2005-2006 The Regents of the University of California
+# @Copyright (c) 2008 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -45,15 +45,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	codegen
+PTPACKAGE = 	verification
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
+# Because of size issues, we don't include demo/demo.jar in verification.jar 
 PTCLASSALLJARS = \
-	demo/demo.jar \
 	gui/gui.jar \
 	kernel/kernel.jar
 
