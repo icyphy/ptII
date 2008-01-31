@@ -80,8 +80,7 @@ JSRCS = \
 	LinkManhattanConnector.java \
 	PortConnectSite.java \
 	PortTerminal.java \
-	TypeOpaqueCompositeActorTableauFactory.java \
-	VerificationUtility.java
+	TypeOpaqueCompositeActorTableauFactory.java
 
 OTHER_FILES_TO_BE_JARED = \
 	docViewerHelp.htm
@@ -163,10 +162,7 @@ OPTIONAL_FILES = \
 	'LinkController$$1.class' \
 	'LinkController$$LinkDropper.class' \
 	'LinkController$$LinkRenderer.class' \
-	'LinkController$$LinkTarget.class' \
-	'VerificationUtility$$1.class' \
-	'VerificationUtility$$VariableInfo.class' \
-	'VerificationUtility$$VariableTransitionInfo.class'
+	'LinkController$$LinkTarget.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
