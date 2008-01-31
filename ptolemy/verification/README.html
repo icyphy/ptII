@@ -5,6 +5,12 @@
 
 
 
+
+
+
+  
+  
+  
   
   
   
@@ -13,6 +19,12 @@
 
 
 
+
+
+
+  
+  
+  
   
   
   
@@ -21,6 +33,12 @@
 
 
 
+
+
+
+  
+  
+  
   
   
   
@@ -29,6 +47,12 @@
 
 
 
+
+
+
+  
+  
+  
   
   
   
@@ -37,6 +61,12 @@
 
 
 
+
+
+
+  
+  
+  
   
   
   
@@ -46,6 +76,15 @@
 
 
 
+
+
+
+  
+  
+  
+  
+  
+  
   
   
   
@@ -97,11 +136,20 @@ st1\:*{behavior:url(#ieooui) }
   
   
   
+  
+  
+  
   <link rel="Stylesheet" type="text/css" media="all" href="../../doc/default.css">
 
 
 
 
+
+
+
+  
+  
+  
   
   
   
@@ -349,9 +397,15 @@ ul
 
 
 
+
+
+
 <div class="Section1">
 
 <h1><span lang="EN-US">Correctness Checking using Formal Verification</span></h1>
+
+
+
 
 
 
@@ -366,7 +420,13 @@ convert Ptolemy II models into files accepted by model checker <a href="http://n
 
 
 
+
+
+
 <ul type="disc">
+
+
+
 
 
 
@@ -375,7 +435,13 @@ convert Ptolemy II models into files accepted by model checker <a href="http://n
 
 
 
+
+
+
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Install">Install NuSMV and setup environment variables</a> <o:p></o:p></span></li>
+
+
+
 
 
 
@@ -386,7 +452,13 @@ convert Ptolemy II models into files accepted by model checker <a href="http://n
 
 
 
+
+
+
 </ul>
+
+
+
 
 
 
@@ -398,7 +470,13 @@ convert Ptolemy II models into files accepted by model checker <a href="http://n
 
 
 
+
+
+
 <ol start="1" type="1">
+
+
+
 
 
 
@@ -409,15 +487,24 @@ convert Ptolemy II models into files accepted by model checker <a href="http://n
 
 
 
+
+
+
  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Double click on the <span class="SpellE">CodeGeneratorIcon</span>
      (Pink color). <o:p></o:p></span></li>
 
 
 
 
+
+
+
  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">A dialog box will appear, ask you to input
-     temporal formula. Type&nbsp;&ldquo;<small><b style="">! EF (<span class="SpellE">SimpleTrafficLight.CarLightNormal</span>-state = <span class="SpellE">Cgrn</span> &amp; <span class="SpellE">SimpleTrafficLight.PedestrianLightNormal</span>-state
-     = <span class="SpellE">Pgreen</span>)</b></small>&rdquo; (You may want to copy the above line; it would be a lot faster).<span style=""> &nbsp; </span><o:p></o:p></span></li>
+     temporal formula. Type&nbsp;<small><b style="">! EF (<span class="SpellE">SimpleTrafficLight.CarLightNormal</span>-state = <span class="SpellE">Cgrn</span> &amp; <span class="SpellE">SimpleTrafficLight.PedestrianLightNormal</span>-state
+     = <span class="SpellE">Pgreen</span>)</b></small>. You may want to copy the above line; it would be a lot faster.<span style="">&nbsp; </span><o:p></o:p></span></li>
+
+
+
 
 
 
@@ -427,7 +514,13 @@ convert Ptolemy II models into files accepted by model checker <a href="http://n
 
 
 
+
+
+
  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Invoke <span class="SpellE">NuSMV</span> or SMV to see if the property is hold. If you have installed NuSMV and set up the path environment variable (<a href="#Install">how?</a>), you may also check the result of verification by selecting "Invoke NuSMV" options in step 3. <o:p></o:p></span></li>
+
+
+
 
 
 
@@ -438,7 +531,13 @@ convert Ptolemy II models into files accepted by model checker <a href="http://n
 
 
 
+
+
+
 <h2><a name="Install"><span lang="EN-US"></span></a>Install NuSMV and set up environment variables</h2>
+
+
+
 
 
 
@@ -454,11 +553,20 @@ approaches).&nbsp;</span></p>
 
 
 
+
+
+
 <ol start="1" type="1">
 
 
 
+
+
+
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="demo/TrafficLight/SimpleTrafficLight.xml"><code><span style="font-size: 10pt;"></span></code></a>Install NuSMV by downloading from its <a href="http://nusmv.irst.itc.it/" target="_blank">website</a>.&nbsp;</span></li>
+
+
+
 
 
 
@@ -468,11 +576,20 @@ then set up the the environment variable "Path" by attaching "</span><span style
 
 
 
+
+
+
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">That's all you need to do! Now you can invoke NuSMV within Ptolemy II software!&nbsp;<o:p></o:p></span></li>
 
 
 
+
+
+
 </ol>
+
+
+
 
 
 
@@ -484,20 +601,26 @@ then set up the the environment variable "Path" by attaching "</span><span style
 
 
 
+
+
+
 <p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">This is a highly
 preliminary code generator facility, with many limitations. It is best viewed
 as a concept demonstration. Currently i</span><span style="font-family: Arial;" lang="EN-US">t
 may analyze a single FSMActor, or a system consisting of multiple
 FSMActors interacting with each other in SR domain. We will expand
-existing functionalities soon. <o:p></o:p></span></p>
-
-
-
+existing functionalities soon.</span></p>
 <br>
 
 
 
+
+
+
 </div>
+
+
+
 
 
 
