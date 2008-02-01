@@ -529,6 +529,10 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             URL inputURL = null;
             try {
                 inputURL = ptalonCodeLocation.asURL();
+                if (inputURL == null) {
+                    // We are probably just starting up
+                    return;
+                } 
             } catch (IllegalActionException ex) {
                 // We might be under WebStart, try it as a jar URL
                 inputURL = Thread.currentThread().getContextClassLoader()
@@ -540,6 +544,13 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                             + "\" as a file or jar URL");
                 }
             }
+
+            if (inputURL == null) {
+               throw new IllegalActionException(this,
+                       "Failed to open \"" + ptalonCodeLocation.asURL()
+                       + "\" as a URL.");
+            }
+
             try {
                 inputStream = inputURL.openStream();
                 lex = new PtalonLexer(inputStream);
