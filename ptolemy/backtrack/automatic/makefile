@@ -51,7 +51,15 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	automatic
 PTCLASSJAR =
-OTHER_JARS =	$(PTPACKAGE).jar
+# We use OTHER_JARS instead of PTCLASSJAR because the directories under
+# this one do not follow our coding standards.
+OTHER_JARS = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+#PTCLASSALLJARS = \
+#		ptolemy/ptolemy.jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
+
 # Keep this list alphabetized.
 JSRCS = 
 
@@ -120,7 +128,7 @@ build: ptolemy_makefile
                 fi \
 	fi
 
-ptolemy_makefile: 
+ptolemy_makefile:
 	@echo "Generating ptolemy/makefile..."
 	@echo "ME = $(ME)/ptolemy" > ptolemy/makefile
 	@echo "DIRS =" >> ptolemy/makefile
@@ -136,7 +144,7 @@ ptolemy_makefile:
 	  echo "    "$$filename \\ >> ptolemy/makefile; \
 	done
 	@echo >> ptolemy/makefile
-	@echo "OTHER_FILES_TO_BE_JARED =" >> ptolemy/makefile
+	@echo "OTHER_FILES_TO_BE_JARED = $(shell find . -name \"*.class\")" >> ptolemy/makefile
 	@echo "EXTRA_SRCS = \$$(JSRCS) \$$(OTHER_FILES_TO_BE_JARED)" >> ptolemy/makefile
 	@echo "MISC_FILES = \$$(DIRS)" >> ptolemy/makefile
 	@echo "OPTIONAL_FILES =" >> ptolemy/makefile
@@ -150,7 +158,7 @@ automatic.jar: $(JSRCS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED) all
 	mkdir $(PTJAR_TMPDIR)
 	# Copy any class files from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	"$(JAR)" -c `find . -name "*.class"` | (cd $(PTJAR_TMPDIR)/$(ME); "$(JAR)" -x)
+	"$(JAR)" -c `find . -name "*.xml" -o -name "*.class"` | (cd $(PTJAR_TMPDIR)/$(ME); "$(JAR)" -x)
 	-cp $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -cvf tmp.jar .)
