@@ -1,6 +1,6 @@
 /* An aggregation of typed actors, specified by a Ptalon program.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 2006-2008 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -31,6 +31,7 @@ package ptolemy.actor.ptalon;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
@@ -66,7 +67,7 @@ import com.microstar.xml.XmlParser;
  <i>ptalonCodeLocation</i>.
 
  <p>
- @author Adam Cataldo, Elaine Cheong
+ @author Adam Cataldo, Elaine Cheong, Contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (celaine)
@@ -211,7 +212,10 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                         _codeManager.assignInternalParameters();
                     }
                 } catch (Exception ex) {
-                    throw new IllegalActionException(this, ex, ex.getMessage());
+                    throw new IllegalActionException(this, ex,
+                            "Failed to process attribute change to "
+                            + "PtalonParameter, whose value is \""
+                            + attribute + "\".");
                 }
             }
         }
@@ -361,8 +365,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 prefix = prefix + "_" + depth + "_";
             }
         } catch (IllegalActionException ex) {
-            // Derivation invariant is not satisfied.
-            throw new InternalErrorException(ex);
+            throw new InternalErrorException(this, ex,
+                    "Derivation invariant is not satisfied.");
         }
 
         int uniqueNameIndex = 1;
@@ -425,12 +429,20 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 // Get the name of the Ptalon file.
                 String filename;
                 try {
-                    filename = ptalonCodeLocation.asFile().toURI().toString();
+                    filename = ptalonCodeLocation.asURL().toString();
                 } catch (IllegalActionException ex) {
-                    throw new IOException("Unable to get valid file name.");
+                    IOException ex2 = new IOException(
+                            "Unable to get valid file name "
+                            + "from ptalonCodeLocation: \""
+                            + ptalonCodeLocation + "\".");
+                    ex2.initCause(ex);
+                    throw ex2;
                 }
                 if (filename.startsWith("file:/")) {
                     filename = filename.substring(5);
+                }
+                if (filename.startsWith("$CLASSPATH")) {
+                    filename = filename.substring(9);
                 }
                 if (filename.startsWith("/")) {
                     filename = filename.substring(1);
@@ -445,7 +457,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 if (prefix.startsWith("/")) {
                     prefix = prefix.substring(1);
                 }
-                String ptIIFilename = filename.substring(prefix.length());
+               String ptIIFilename = filename.substring(prefix.length());
                 String unPtlnName = ptIIFilename.substring(0, ptIIFilename
                         .length() - 5);
                 String displayName = unPtlnName.replace('/', '.');
@@ -510,15 +522,55 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 ptalonCodeLocation.setVisibility(Settable.NONE);
                 return;
             }
-            File inputFile = ptalonCodeLocation.asFile();
-            if (inputFile == null) {
-                return;
+            // Open the code location.  Use urls for WebStart and jar files.
+            PtalonLexer lex = null;
+            PtalonRecognizer rec = null;
+            InputStream inputStream = null;
+            URL inputURL = null;
+            try {
+                inputURL = ptalonCodeLocation.asURL();
+                if (inputURL == null) {
+                    // We are probably just starting up
+                    return;
+                } 
+            } catch (IllegalActionException ex) {
+                // We might be under WebStart, try it as a jar URL
+                inputURL = Thread.currentThread().getContextClassLoader()
+                    .getResource(ptalonCodeLocation.getExpression());
+                if (inputURL == null) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to open "
+                            + "\"" +  ptalonCodeLocation.getExpression()
+                            + "\" as a file or jar URL");
+                }
             }
-            FileReader reader = new FileReader(inputFile);
-            PtalonLexer lex = new PtalonLexer(reader);
-            PtalonRecognizer rec = new PtalonRecognizer(lex);
-            rec.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
-            rec.actor_definition();
+
+            if (inputURL == null) {
+               throw new IllegalActionException(this,
+                       "Failed to open \"" + ptalonCodeLocation.asURL()
+                       + "\" as a URL.");
+            }
+
+            try {
+                inputStream = inputURL.openStream();
+                lex = new PtalonLexer(inputStream);
+
+                rec = new PtalonRecognizer(lex);
+                rec.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
+                rec.actor_definition();
+            } catch (IOException ex2) {
+                throw new IllegalActionException(this, ex2,
+                        "Failed to open \"" + inputURL + "\".");
+            } finally {
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException ex4) {
+                        // Ignored, but print anyway
+                        ex4.printStackTrace();
+                    } 
+                }
+            }
             _ast = (PtalonAST) rec.getAST();
             PtalonScopeChecker checker = new PtalonScopeChecker();
             checker.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
@@ -534,8 +586,9 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             ptalonCodeLocation.setVisibility(Settable.NOT_EDITABLE);
             _codeManager.assignInternalParameters();
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new IllegalActionException(this, ex, ex.getMessage());
+            throw new IllegalActionException(this, ex, "Failed to process "
+                    + "the ptalonCodeLocation \"" + ptalonCodeLocation
+                    + "\"");
         }
     }
 
