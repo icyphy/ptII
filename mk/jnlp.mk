@@ -338,6 +338,8 @@ FULL_ONLY_JNLP_JARS = \
 	lib/saxon8.jar \
 	lib/saxon8-dom.jar \
 	lib/java_cup.jar \
+	ptolemy/backtrack/backtrack.jar \
+	ptolemy/backtrack/demo/demo.jar \
 	ptolemy/caltrop/caltrop.jar \
 	ptolemy/caltrop/demo/demo.jar \
 	ptolemy/distributed/distributed.jar \
