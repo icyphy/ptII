@@ -739,14 +739,20 @@ codeDoc/allNamedObjs.txt: codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Create the actor index.  See $PTII/ptolemy/vergil/actor/docViewerHelp.htm
 indexActors: codeDoc/ptolemy/actor/lib/RampIdx.xml
-codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt
+codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt \
+			../ptolemy/configs/doc/models.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDoc/allNamedObjs.txt \
-		"$(PTII)/ptolemy/configs/doc/models.txt" codeDoc
+		../ptolemy/configs/doc/models.txt codeDoc
+
+../ptolemy/configs/doc/models.txt: \
+			$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
+			../ptolemy/configs/doc/completeDemos.htm
+	(cd ../ptolemy/configs/doc; make mModels.txt)
 
 
 
