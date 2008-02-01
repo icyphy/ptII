@@ -169,7 +169,7 @@ public class HTMLAbout {
                             + _aboutHTML("ptolemy/configs/doc/completeDemosPtiny.htm")
                             + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm")
 
-                            + _aboutHTML("ptolemy/doc/mainVergilPtiny.htm"));
+                            + _aboutHTML("doc/mainVergilPtiny.htm"));
         }
 
         if (_configurationExists("ptinyKepler")) {
