@@ -246,6 +246,7 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/de/doc/doc.jar \
 	ptolemy/domains/fsm/demo/demo.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
+	ptolemy/domains/hdf/demo/demo.jar \
 	ptolemy/domains/pn/demo/demo.jar \
         ptolemy/domains/pn/doc/doc.jar \
 	ptolemy/domains/rendezvous/demo/demo.jar \
@@ -358,7 +359,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
-	ptolemy/domains/hdf/demo/demo.jar \
 	ptolemy/domains/psdf/psdf.jar \
 	ptolemy/domains/psdf/demo/demo.jar \
 	lib/mapss.jar \
