@@ -140,8 +140,7 @@ CORE_JNLP_JARS = \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar \
 	$(MATLAB_JARS) \
-	ptolemy/ptsupport.jar \
-	ptolemy/vergil/vergil.jar
+	ptolemy/ptsupport.jar
 
 #######
 # DSP - The smallest runtime
@@ -239,8 +238,6 @@ PTINY_ONLY_JNLP_JARS = \
 	$(PTALON_JARS) \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
-	ptolemy/domains/csp/demo/demo.jar \
-	ptolemy/domains/csp/doc/doc.jar \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/ct/doc/doc.jar \
 	ptolemy/domains/ddf/ddf.jar \
@@ -350,6 +347,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/continuous/doc/doc.jar \
+	ptolemy/domains/csp/demo/demo.jar \
+	ptolemy/domains/csp/doc/doc.jar \
 	ptolemy/domains/curriculum/curriculum.jar \
 	ptolemy/domains/dde/demo/demo.jar \
 	ptolemy/domains/dt/demo/demo.jar \
