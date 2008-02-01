@@ -298,17 +298,25 @@ every actor executes in its own thread, and communication is by rendezvous.
 The rendezvous domain supports conditional rendezvous (where an actor communicates
 nondeterministically with one of several other actors) and multi-way rendezvous
 (where an actor communicates simultaneously with all of several other actors).
+
+<!-- CSP does not ship with Ptiny -->
+<!--/vergilDocs-->
 The
 <a href="../../domains/csp/demo/Barrier/Barrier.xml">Barrier</a> example shows
 the use of multi-way rendezvous to achieve a classic concurrency design pattern
 called barrier synchronization.
+<!--vergilDocs-->
+
 <!--ptinyKeplerDocs-->
-<!--/vergilDocs-->
-<!--Ptiny does not include ddf-->
+
 <br>
 <li> <i>Dynamic Dataflow</i>:
+
+<!--/vergilDocs-->
+<!-- GR does not get included in demosPtiny.htm -->
 <a href="../../domains/ddf/demo/HanoiTower/HanoiTower.xml">HanoiTower</a>
-(see also
+<!--vergilDocs-->
+
 <a href="../../domains/ddf/demo/Eratosthenes/Eratosthenes.xml">Eratosthenes</a>,
 <a href="../../domains/ddf/demo/IfThenElse/IfThenElse.xml">IfThenElse</a>,
 <a href="../../domains/ddf/demo/Loop/Loop.xml">Loop</a>,
@@ -320,10 +328,13 @@ input data. The schedule is dynamic and data dependent, and actors can
 change their production and consumption rates in each firing.
 Unlike synchronous dataflow, the DDF model of computation is Turing
 complete, and questions of deadlock and boundedness are undecidable.
+<!--/vergilDocs-->
 The <a href="../../domains/ddf/demo/HanoiTower/HanoiTower.xml">HanoiTower</a>
 example exploits this to give an algorithmic solution to the well-known
 towers of Hanoi problem.
+<!--vergilDocs-->
 
+<!--/ptinyKeplerDocs-->
 <br>
 <li> <i>Heterochronous Dataflow</i>:
 <a href="../../domains/hdf/demo/Fibonacci/Fibonacci.xml">Fibonacci</a>
@@ -343,10 +354,8 @@ The <a href="../../domains/hdf/demo/Fibonacci/Fibonacci.xml">Fibonacci</a>
 example uses this mechanism in a clever way to extract a Fibonacci sequence
 from a counting sequence.
 
-<!--vergilDocs-->
 <br>
 
-<!--/ptinyKeplerDocs-->
 <li><i>Synchronous/Reactive Modeling</i>:
 <a href="../../domains/sr/demo/TokenRing/TokenRing.xml">
 TokenRing</a> (see also
