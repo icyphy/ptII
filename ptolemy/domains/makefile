@@ -61,7 +61,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	domains
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include these jars in PTAUXALLJAR
