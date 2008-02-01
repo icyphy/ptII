@@ -149,7 +149,6 @@ public class HTMLAbout {
                             + _aboutHTML("ptolemy/configs/doc/demos.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew"
                                     + version + ".htm")
-                            + _aboutHTML("ptolemy/configs/doc/whatsNew7.0.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew6.0.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew5.1.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew5.0.htm")
@@ -168,7 +167,9 @@ public class HTMLAbout {
             htmlBuffer
                     .append("<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
                             + _aboutHTML("ptolemy/configs/doc/completeDemosPtiny.htm")
-                            + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm"));
+                            + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm")
+
+                            + _aboutHTML("doc/mainVergilPtiny.htm"));
         }
 
         if (_configurationExists("ptinyKepler")) {
@@ -351,7 +352,7 @@ public class HTMLAbout {
             newURL = runAllDemos(aboutURI.getFragment(), configuration);
         } else if (event.getDescription().startsWith("about:expandLibrary")) {
             URI aboutURI = new URI(event.getDescription());
-            newURL = _expandLibrary(".*.xml$",
+            newURL = _expandLibrary(".*.xml",
                     configuration);
         } else {
             // Display a message about the about: facility
@@ -543,6 +544,25 @@ public class HTMLAbout {
                 String model = (String) modelList.get(0);
                 System.out.println("HTMLAbout._expandLibrary(): looking for model relative to about URL: " + model);
                 modelURL = new URL(baseURL, model);
+            } else {
+                // Get the first url from intro.htm, look in it and get the
+                // first model
+                System.out.println("HTMLAbout._expandLibrary(): looking inside " + baseURL + " for .htm files");
+                List urlList = _getURLs(baseURL, ".*.htm");
+                Iterator urls = urlList.iterator();
+                while (urls.hasNext() && modelURL == null) {
+                    // Looping through files, looking for a model
+                    String model = (String) urls.next();
+                    System.out.println("HTMLAbout._expandLibrary(): looking inside " + model);
+                    URL possibleModelURL = new URL(baseURL, model);
+                    modelList = _getURLs(possibleModelURL, regexp);
+                    if (modelList.size() > 0) {
+                        model = (String) modelList.get(0);
+                        // Get the first model and open it
+                        System.out.println("HTMLAbout._expandLibrary(): looking for model relative to first URL: " + model);
+                        modelURL = new URL(baseURL, model);
+                    }
+                }
             }
         }
         if (modelURL == null) {
