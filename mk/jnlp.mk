@@ -140,8 +140,7 @@ CORE_JNLP_JARS = \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar \
 	$(MATLAB_JARS) \
-	ptolemy/ptsupport.jar \
-	ptolemy/vergil/vergil.jar
+	ptolemy/ptsupport.jar
 
 #######
 # DSP - The smallest runtime
@@ -239,8 +238,6 @@ PTINY_ONLY_JNLP_JARS = \
 	$(PTALON_JARS) \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
-	ptolemy/domains/csp/demo/demo.jar \
-	ptolemy/domains/csp/doc/doc.jar \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/ct/doc/doc.jar \
 	ptolemy/domains/ddf/ddf.jar \
@@ -249,6 +246,7 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/de/doc/doc.jar \
 	ptolemy/domains/fsm/demo/demo.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
+	ptolemy/domains/hdf/demo/demo.jar \
 	ptolemy/domains/pn/demo/demo.jar \
         ptolemy/domains/pn/doc/doc.jar \
 	ptolemy/domains/rendezvous/demo/demo.jar \
@@ -303,11 +301,13 @@ PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
 PTJACL_JARS =
 
 # Jars for configurable run control panel
-RUN_JARS = \
-	com/jgoodies/jgoodies.jar \
-	lib/bsh-2.0b4.jar \
-	org/mlc/mlc.jar \
-	ptolemy/actor/gui/run/run.jar
+RUN_JARS =
+
+# configurable run control panel not to be shipped in 7.0.beta
+#	com/jgoodies/jgoodies.jar \
+#	lib/bsh-2.0b4.jar \
+#	org/mlc/mlc.jar \
+#	ptolemy/actor/gui/run/run.jar
 
 WIRELESS_JARS = \
 	ptolemy/domains/wireless/wireless.jar \
@@ -348,6 +348,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/continuous/doc/doc.jar \
+	ptolemy/domains/csp/demo/demo.jar \
+	ptolemy/domains/csp/doc/doc.jar \
 	ptolemy/domains/curriculum/curriculum.jar \
 	ptolemy/domains/dde/demo/demo.jar \
 	ptolemy/domains/dt/demo/demo.jar \
@@ -357,7 +359,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
-	ptolemy/domains/hdf/demo/demo.jar \
 	ptolemy/domains/psdf/psdf.jar \
 	ptolemy/domains/psdf/demo/demo.jar \
 	lib/mapss.jar \
