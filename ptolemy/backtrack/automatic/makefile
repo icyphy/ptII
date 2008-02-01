@@ -51,7 +51,13 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	automatic
 PTCLASSJAR =
-OTHER_JARS =	$(PTPACKAGE).jar
+OTHER_JARS = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+#PTCLASSALLJARS = \
+#		ptolemy/ptolemy.jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
+
 # Keep this list alphabetized.
 JSRCS = 
 
@@ -120,7 +126,7 @@ build: ptolemy_makefile
                 fi \
 	fi
 
-ptolemy_makefile: 
+ptolemy_makefile:
 	@echo "Generating ptolemy/makefile..."
 	@echo "ME = $(ME)/ptolemy" > ptolemy/makefile
 	@echo "DIRS =" >> ptolemy/makefile
@@ -136,7 +142,7 @@ ptolemy_makefile:
 	  echo "    "$$filename \\ >> ptolemy/makefile; \
 	done
 	@echo >> ptolemy/makefile
-	@echo "OTHER_FILES_TO_BE_JARED =" >> ptolemy/makefile
+	@echo "OTHER_FILES_TO_BE_JARED = $(shell find . -name \"*.class\")" >> ptolemy/makefile
 	@echo "EXTRA_SRCS = \$$(JSRCS) \$$(OTHER_FILES_TO_BE_JARED)" >> ptolemy/makefile
 	@echo "MISC_FILES = \$$(DIRS)" >> ptolemy/makefile
 	@echo "OPTIONAL_FILES =" >> ptolemy/makefile
