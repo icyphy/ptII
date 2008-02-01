@@ -54,6 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	Butterfly/Butterfly.jar \
+	Life/Life.jar \
 	Ramp/Ramp.jar
 
 # Keep this list alphabetized.
