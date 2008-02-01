@@ -31,6 +31,7 @@ package ptolemy.actor.ptalon;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URL;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -145,9 +146,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
 
             if (_getType(symbol).equals("import")) {
                 PtalonActor actor = new PtalonActor(_actor, uniqueName);
-                FileParameter location = actor.ptalonCodeLocation;
-                File file = _imports.get(symbol);
-                location.setToken(new StringToken(file.toString()));
+                URL url = _imports.get(symbol);
+                actor.ptalonCodeLocation.setToken(new StringToken(url.toString()));
                 actor.setNestedDepth(_actor.getNestedDepth() + 1);
                 _currentActorTree.assignPtalonParameters(actor);
                 _currentActorTree.makeConnections(actor);
@@ -169,11 +169,13 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 }
                 String actor = parsedExpression[0];
                 if (actor.startsWith("ptalonActor:")) {
-                    File file = new File(_parameterToImport(actor));
                     PtalonActor ptalonActor = new PtalonActor(_actor,
                             uniqueName);
+                    // Set ptalonCodeLocation to a path to the .ptln file.
+                    // The path will have $CLASSPATH in it so that this works
+                    // in WebStart and the installer.
                     ptalonActor.ptalonCodeLocation.setToken(new StringToken(
-                            file.toString()));
+                                    _parameterToImport(actor)));
                     ptalonActor.setNestedDepth(_actor.getNestedDepth() + 1);
                     for (int i = 1; i < parsedExpression.length; i = i + 2) {
                         String lhs = parsedExpression[i];
@@ -565,11 +567,9 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
      *  @return The converted expression.
      */
     private String _parameterToImport(String expression) {
-        String qualifiedName = expression.substring(12);
-        String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
-        String fileName = ptII.concat("/").concat(
-                qualifiedName.replace('.', '/')).concat(".ptln");
-        return fileName;
+        // Skip "ptalonActor:"
+        return  "$CLASSPATH/" + expression.substring(12).replace('.', '/')
+            + ".ptln";
     }
 
     // /////////////////////////////////////////////////////////////////

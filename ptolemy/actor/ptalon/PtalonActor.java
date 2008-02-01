@@ -67,7 +67,7 @@ import com.microstar.xml.XmlParser;
  <i>ptalonCodeLocation</i>.
 
  <p>
- @author Adam Cataldo, Elaine Cheong
+ @author Adam Cataldo, Elaine Cheong, Contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (celaine)
@@ -429,7 +429,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 // Get the name of the Ptalon file.
                 String filename;
                 try {
-                    filename = ptalonCodeLocation.asFile().toURI().toString();
+                    filename = ptalonCodeLocation.asURL().toString();
                 } catch (IllegalActionException ex) {
                     IOException ex2 = new IOException(
                             "Unable to get valid file name "
@@ -440,6 +440,9 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 }
                 if (filename.startsWith("file:/")) {
                     filename = filename.substring(5);
+                }
+                if (filename.startsWith("$CLASSPATH")) {
+                    filename = filename.substring(9);
                 }
                 if (filename.startsWith("/")) {
                     filename = filename.substring(1);
@@ -454,7 +457,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 if (prefix.startsWith("/")) {
                     prefix = prefix.substring(1);
                 }
-                String ptIIFilename = filename.substring(prefix.length());
+               String ptIIFilename = filename.substring(prefix.length());
                 String unPtlnName = ptIIFilename.substring(0, ptIIFilename
                         .length() - 5);
                 String displayName = unPtlnName.replace('/', '.');
