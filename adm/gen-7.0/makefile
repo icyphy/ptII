@@ -2139,7 +2139,7 @@ indent_all:
 #IZPACKDIR=c:/Program Files/IzPack
 IZPACKDIR=$(PTII)/vendors/izpack
 IZPACK_COMPILE=$(IZPACKDIR)/_dist/bin/compile
-IZPACK_TAR=IzPack.src.3.9.0.tar.gz
+IZPACK_TAR=IzPack.src.3.10.2.tar.gz
 
 # Under Solaris: gmake make_izpack TAR=gtar
 make_izpack: $(IZPACK_COMPILE)
@@ -2150,7 +2150,7 @@ $(IZPACK_COMPILE): $(PTII)/vendors/izpack
 $(PTII)/vendors/izpack:
 	mkdir $(PTII)/vendors/izpack
 	cd $(PTII)/vendors/izpack; \
-		wget http://download.berlios.de/izpack/$(IZPACK_TAR); \
+		wget http://prdownload.berlios.de/izpack/$(IZPACK_TAR); \
 		$(TAR) -zxf $(IZPACK_TAR)
 
 PTSETUP=ptII$(WINDOWS_VERSION)_setup
