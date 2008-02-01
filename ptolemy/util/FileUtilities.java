@@ -351,7 +351,6 @@ public class FileUtilities {
                     String name2 = StringUtilities.substitute(name, "%20", " ");
                     try {
                         newURI = baseDirectory.resolve(name2);
-
                         name = name2;
                     } catch (Exception ex2) {
                         IOException io = new IOException(
@@ -386,7 +385,6 @@ public class FileUtilities {
                         // + urlString.substring(6);
                     }
 
-                    return new URL(urlString);
                 } catch (Exception ex3) {
                     try {
                         // Under Webstart, opening
@@ -394,21 +392,28 @@ public class FileUtilities {
                         // requires this because the URL is relative.
                         return new URL(baseDirectory.toURL(), urlString);
                     } catch (Exception ex4) {
-                        // Ignore
-                    }
 
-                    IOException io = new IOException(
-                            "Problem with URI format in '"
-                                    + urlString
-                                    + "'. "
-                                    + "This can happen if the '"
-                                    + urlString
-                                    + "' is not absolute"
-                                    + " and is not present relative to the directory"
-                                    + " in which the specified model was read"
-                                    + " (which was '" + baseDirectory + "')");
-                    io.initCause(ex3);
-                    throw io;
+                        try {
+                            // Under Webstart, ptalon, EightChannelFFT
+                            // requires this.
+                            return new URL(baseDirectory.toURL(), newURI.toString());
+                        } catch (Exception ex5) {
+                            // Ignore
+                        }
+
+                        IOException io = new IOException(
+                                "Problem with URI format in '"
+                                + urlString
+                                + "'. "
+                                + "This can happen if the '"
+                                + urlString
+                                + "' is not absolute"
+                                + " and is not present relative to the directory"
+                                + " in which the specified model was read"
+                                + " (which was '" + baseDirectory + "')");
+                        io.initCause(ex3);
+                        throw io;
+                    }
                 }
             }
 
@@ -462,6 +467,8 @@ public class FileUtilities {
             return STD_IN;
         }
 
+
+
         // Not standard input. Try URL mechanism.
         URL url = nameToURL(name, base, classLoader);
 
@@ -470,7 +477,36 @@ public class FileUtilities {
                     + "\" with base \"" + base + "\" to a URL.");
         }
 
-        return new BufferedReader(new InputStreamReader(url.openStream()));
+        InputStreamReader inputStreamReader = null;
+        try {
+            inputStreamReader = new InputStreamReader(url.openStream());
+        } catch (IOException ex) {
+            // Try it as a jar url.
+            // WebStart ptalon MapReduce needs this.
+            try {
+                URL possibleJarURL = ClassUtilities.jarURLEntryResource(url.toString());
+                if (possibleJarURL != null) {
+                    inputStreamReader = new InputStreamReader(possibleJarURL.openStream());
+                }
+                // If possibleJarURL is null, this throws an exception,
+                // which we ignore and report the first exception (ex)
+                return new BufferedReader(inputStreamReader);
+            } catch (Exception ex2) {
+                try {
+                    if (inputStreamReader != null) {
+                        inputStreamReader.close();
+                    }
+                } catch (IOException ex3) {
+                    // Ignore
+                }
+                IOException ioException = new IOException("Failed to open \""
+                        + url + "\".");
+                ioException.initCause(ex);
+                throw ioException;
+            }
+        }
+
+        return new BufferedReader(inputStreamReader);
     }
 
     /** Open the specified file for writing or appending. If the
