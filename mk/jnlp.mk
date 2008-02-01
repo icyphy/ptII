@@ -240,8 +240,8 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/ct/doc/doc.jar \
-	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/domains/ddf/demo/demo.jar \
+	ptolemy/domains/ddf/doc/doc.jar \
 	ptolemy/domains/de/demo/demo.jar \
 	ptolemy/domains/de/doc/doc.jar \
 	ptolemy/domains/fsm/demo/demo.jar \
@@ -783,7 +783,7 @@ jnlp_test:
 	(cd `dirname $(JARSRC)`; make `basename $(JARSRC)`)
 	cp $(JARSRC) signed/$(JARSRC)
 	$(MAKE) sign_jar JARFILE=signed/$(JARSRC)
-	$(MAKE) jnlp_run
+	$(MAKE) jnlp_run PTJNLP=vergilPtiny.jnlp
 
 JAR_DIST_DIR = jar_dist
 
@@ -956,12 +956,12 @@ sign_jar_dist_update_remote: sign_jar_dist
 MKL4J = $(ROOT)/bin/mkl4j
 
 # Location of Launch4J, see http://launch4j.sourceforge.net/
-#L4J_DIR=c:/Program Files/Launch4j
-L4J_DIR=$(PTII)/vendors/launch4j
+L4J_DIR=c:/Program Files/Launch4j
+#4J_DIR=$(PTII)/vendors/launch4j
 
 # Cygpath command
-#PTCYGPATH=cygpath --windows
-PTCYGPATH=$(ROOT)/bin/ptcygpath
+PTCYGPATH=cygpath --windows -a
+#PTCYGPATH=$(ROOT)/bin/ptcygpath
 
 # Launch4J console application that reads in .xml files and creates .exe files.
 #L4JC=$(L4J_DIR)/launch4jc.exe
@@ -981,7 +981,7 @@ L4J_EXES =		$(L4J_DOC_EXES) $(L4J_PTOLEMY_EXES) $(L4J_PTPLOT_EXES)
 L4J_CONFIGS =		$(L4J_EXES:%.exe=%_l4j.xml)
 
 # Create all the .exe files
-exes: $(L4J_EXES)
+exes: $(L4J_CONFIGS) $(L4J_EXES)
 
 # Remove the .exe files and the .xml files used to create the .exe files
 clean_exes:
