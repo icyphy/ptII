@@ -338,6 +338,8 @@ FULL_ONLY_JNLP_JARS = \
 	lib/saxon8.jar \
 	lib/saxon8-dom.jar \
 	lib/java_cup.jar \
+	ptolemy/backtrack/backtrack.jar \
+	ptolemy/backtrack/demo/demo.jar \
 	ptolemy/caltrop/caltrop.jar \
 	ptolemy/caltrop/demo/demo.jar \
 	ptolemy/distributed/distributed.jar \
@@ -345,6 +347,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
+	ptolemy/domains/continuous/doc/doc.jar \
+	ptolemy/domains/curriculum/curriculum.jar \
 	ptolemy/domains/dde/demo/demo.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/dt/doc/doc.jar \
@@ -494,7 +498,7 @@ jnlp_distclean: jnlp_clean
 # Rule to run the jnlp file
 PTJNLP = vergil.jnlp
 jnlp_run:
-	"$(PTJAVA_HOME)/../bin/javaws" $(PTJNLP)
+	"$(PTJAVA_HOME)/../bin/javaws" -wait $(PTJNLP)
 
 
 $(SIGNED_DIR):
@@ -771,6 +775,14 @@ sign_jar:
 		$(KEYPASSWORD) \
 		$(JARFILE) $(KEYALIAS)
 
+# The jnlp_test rule can be used to build, copy, and sign a jar file.
+# For example:
+#   make jnlp_test JARSRC=ptolemy/actor/ptalon/ptalon.jar
+jnlp_test:
+	(cd `dirname $(JARSRC)`; make `basename $(JARSRC)`)
+	cp $(JARSRC) signed/$(JARSRC)
+	$(MAKE) sign_jar JARFILE=signed/$(JARSRC)
+	$(MAKE) jnlp_run
 
 JAR_DIST_DIR = jar_dist
 
