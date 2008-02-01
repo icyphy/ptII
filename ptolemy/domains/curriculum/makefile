@@ -44,7 +44,12 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	curriculum
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+PTCLASSALLJARS = \
+	demo/demo.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Course.java \
@@ -74,7 +79,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
