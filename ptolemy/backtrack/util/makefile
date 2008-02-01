@@ -44,8 +44,11 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	util
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+# We use OTHER_JARS instead of PTCLASSJAR because the directories under
+# this one do not follow our coding standards.
+OTHER_JARS =    $(PTPACKAGE).jar
+
 
 # GCC files.
 GCC_FILES = \
@@ -175,4 +178,17 @@ transform: gcc-source
 
 gcc-compile: $(GCC_CLASSES)
 
-KRUFT = gcc java/util/*.class
+util.jar: $(JSRCS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED) all
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	# Copy any class files from this directory
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	"$(JAR)" -c `find . -name "*.xml" -o -name "*.class"` | (cd $(PTJAR_TMPDIR)/$(ME); "$(JAR)" -x)
+	-cp $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	$(JAR_INDEX)
+	rm -rf $(PTJAR_TMPDIR)
+
+KRUFT = gcc java/util/*.class util.jar
