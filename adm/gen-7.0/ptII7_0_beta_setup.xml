@@ -183,7 +183,7 @@ The Ptiny pack is required.
 
             <file src="../../jar_dist/ptolemy/domains/ddf/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ddf/demo"/>
-            <file src="../../jar_dist/ptolemy/domains/ddf/demo/doc.jar"
+            <file src="../../jar_dist/ptolemy/domains/ddf/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ddf/doc"/>
 
             <file src="../../jar_dist/ptolemy/domains/de/doc/doc.jar"
@@ -198,6 +198,8 @@ The Ptiny pack is required.
 
             <file src="../../jar_dist/ptolemy/domains/hdf/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/hdf/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/hdf/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/hdf/doc"/>
 
             <file src="../../jar_dist/ptolemy/domains/pn/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/pn/demo"/>
