@@ -31,7 +31,8 @@
 ME =		ptolemy/actor/ptalon/demo
 
 # Keep these alphabetical please.
-DIRS = 		CruiseControl EightChannelFFT GameOfLife MapReduce Unicycle
+DIRS = 		CruiseControl EightChannelFFT GameOfLife \
+		MapReduce ModelChange SmallWorld Unicycle
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -50,6 +51,8 @@ PTCLASSALLJARS = \
 	EightChannelFFT/EightChannelFFT.jar \
 	GameOfLife/GameOfLife.jar \
 	MapReduce/MapReduce.jar \
+	ModelChange/ModelChange.jar \
+	SmallWorld/SmallWorld.jar \
 	Unicycle/Unicycle.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
