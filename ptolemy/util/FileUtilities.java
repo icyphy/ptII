@@ -351,7 +351,6 @@ public class FileUtilities {
                     String name2 = StringUtilities.substitute(name, "%20", " ");
                     try {
                         newURI = baseDirectory.resolve(name2);
-
                         name = name2;
                     } catch (Exception ex2) {
                         IOException io = new IOException(
@@ -394,21 +393,28 @@ public class FileUtilities {
                         // requires this because the URL is relative.
                         return new URL(baseDirectory.toURL(), urlString);
                     } catch (Exception ex4) {
-                        // Ignore
-                    }
 
-                    IOException io = new IOException(
-                            "Problem with URI format in '"
-                                    + urlString
-                                    + "'. "
-                                    + "This can happen if the '"
-                                    + urlString
-                                    + "' is not absolute"
-                                    + " and is not present relative to the directory"
-                                    + " in which the specified model was read"
-                                    + " (which was '" + baseDirectory + "')");
-                    io.initCause(ex3);
-                    throw io;
+                        try {
+                            // Under Webstart, ptalon, EightChannelFFT
+                            // requires this.
+                            return new URL(baseDirectory.toURL(), newURI.toString());
+                        } catch (Exception ex5) {
+                            // Ignore
+                        }
+
+                        IOException io = new IOException(
+                                "Problem with URI format in '"
+                                + urlString
+                                + "'. "
+                                + "This can happen if the '"
+                                + urlString
+                                + "' is not absolute"
+                                + " and is not present relative to the directory"
+                                + " in which the specified model was read"
+                                + " (which was '" + baseDirectory + "')");
+                        io.initCause(ex3);
+                        throw io;
+                    }
                 }
             }
 
