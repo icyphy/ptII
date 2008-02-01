@@ -72,9 +72,9 @@ PTCLASSJAR =
 PTAUXALLJARS = \
 		ci/ci.jar \
 		continuous/continuous.jar \
+		csp/csp.jar \
 		curriculum/curriculum.jar \
 		dde/dde.jar \
-		ddf/ddf.jar \
 	        dt/dt.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
@@ -91,11 +91,12 @@ PTAUXALLJARS = \
 PTAUXALLJAR =	experimentalDomains.jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
+# See ptolemy/configs/basicDirectors.xml 
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-		csp/csp.jar \
 		ct/ct.jar \
 		de/de.jar \
+		ddf/ddf.jar \
 		fsm/fsm.jar \
 		hdf/hdf.jar \
 		pn/pn.jar \
