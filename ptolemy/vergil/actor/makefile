@@ -80,7 +80,8 @@ JSRCS = \
 	LinkManhattanConnector.java \
 	PortConnectSite.java \
 	PortTerminal.java \
-	TypeOpaqueCompositeActorTableauFactory.java
+	TypeOpaqueCompositeActorTableauFactory.java \
+	VerificationUtility.java
 
 OTHER_FILES_TO_BE_JARED = \
 	docViewerHelp.htm
