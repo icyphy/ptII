@@ -72,6 +72,7 @@ PTCLASSJAR =
 PTAUXALLJARS = \
 		ci/ci.jar \
 		continuous/continuous.jar \
+		csp/csp.jar \
 		curriculum/curriculum.jar \
 		dde/dde.jar \
 		ddf/ddf.jar \
@@ -93,7 +94,6 @@ PTAUXALLJAR =	experimentalDomains.jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-		csp/csp.jar \
 		ct/ct.jar \
 		de/de.jar \
 		fsm/fsm.jar \
