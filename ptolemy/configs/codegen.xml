@@ -7,7 +7,8 @@
       <group>
         <input source="ptolemy/codegen/codegen.xml"/>
         <input source="ptolemy/copernicus/copernicus.xml"/>
-		<input source="ptolemy/verification/verification.xml"/> 
+	<!-- verification is not shipped in 7.0.beta
+	     input source="ptolemy/verification/verification.xml"/ --> 
       </group>
     ?>
   </configure>
