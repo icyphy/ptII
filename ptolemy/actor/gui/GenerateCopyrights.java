@@ -112,9 +112,6 @@ public class GenerateCopyrights {
                 "org.mlc.swing.layout.LayoutConstraintsManager",
                 "org/mlc/mlc-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.backtrack.ast.TypeAnalyzer",
-                "ptolemy/backtrack/ast/eclipse-copyright.htm");
-
         _addIfPresent(copyrightsMap, "caltrop.ptolemy.actors.CalInterpreter",
                 "ptolemy/cal/saxon-copyright.htm");
 
@@ -124,8 +121,12 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.colt.ColtRandomSource",
                 "ptolemy/actor/lib/colt/colt-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.domains.gr.kernel.GRActor",
-                "ptolemy/domains/gr/lib/java3d-copyright.htm");
+        _addIfPresent(copyrightsMap,
+                "ptolemy.backtrack.eclipse.ast.TypeAnalyzer",
+                "ptolemy/backtrack/eclipse/ast/eclipse-copyright.htm");
+
+        _addIfPresent(copyrightsMap, "ptolemy.backtrack.util.ClassFileLoader",
+                "ptolemy/backtrack/util/gcj-copyright.html");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.io.comm.SerialComm",
                 "ptolemy/actor/lib/io/comm/copyright.htm");
@@ -155,6 +156,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap,
                 "ptolemy.domains.gr.lib.quicktime.MovieViewScreen2D",
                 "ptolemy/domains/gr/lib/quicktime/quicktime-copyright.htm");
+
+        _addIfPresent(copyrightsMap, "ptolemy.domains.gr.kernel.GRActor",
+                "ptolemy/domains/gr/lib/java3d-copyright.htm");
 
         _addIfPresent(copyrightsMap,
                 "ptolemy.domains.psdf.kernel.PSDFScheduler",
