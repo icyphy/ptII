@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RealTimeComposite" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 40, 965, 576}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 40, 965, 574}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[750, 458]">
     </property>
@@ -95,7 +95,7 @@
             <property name="output"/>
         </port>
         <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Drop1.aif">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/Drop1.aif">
             </property>
             <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -135,7 +135,7 @@
             <property name="output"/>
         </port>
         <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="glup.aif">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/glup.aif">
             </property>
             <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -212,7 +212,7 @@
             <property name="output"/>
         </port>
         <entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer">
-            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="Kys2.aif">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/Kys2.aif">
             </property>
             <property name="overlay" class="ptolemy.data.expr.Parameter" value="true">
             </property>
