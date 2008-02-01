@@ -739,14 +739,20 @@ codeDoc/allNamedObjs.txt: codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Create the actor index.  See $PTII/ptolemy/vergil/actor/docViewerHelp.htm
 indexActors: codeDoc/ptolemy/actor/lib/RampIdx.xml
-codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt
+codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt \
+			../ptolemy/configs/doc/models.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx256m \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDoc/allNamedObjs.txt \
-		"$(PTII)/ptolemy/configs/doc/models.txt" codeDoc
+		../ptolemy/configs/doc/models.txt codeDoc
+
+../ptolemy/configs/doc/models.txt: \
+			$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
+			../ptolemy/configs/doc/completeDemos.htm
+	(cd ../ptolemy/configs/doc; make mModels.txt)
 
 
 
@@ -790,10 +796,11 @@ codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/c
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDocHyVisual/doc/codeDoc/allNamedObjs.txt \
-		"$(PTII)/ptolemy/configs/hyvisual/hyvisualModels.txt" \
+		"../ptolemy/configs/hyvisual/hyvisualModels.txt" \
 		codeDocHyVisual/doc/codeDoc
 
 ../ptolemy/configs/hyvisual/hyvisualModels.txt: \
+		$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
 		../ptolemy/configs/hyvisual/intro.htm
 	(cd ../ptolemy/configs/hyvisual; make hyvisualModels.txt)
 
@@ -841,7 +848,9 @@ codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		../ptolemy/configs/viptos/viptosModels.txt \
 		codeDocViptos/doc/codeDoc
 
-$(ROOT)/ptolemy/configs/viptos/viptosModels.txt: ../ptolemy/configs/viptos/intro.htm
+$(ROOT)/ptolemy/configs/viptos/viptosModels.txt: \
+			$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
+			../ptolemy/configs/viptos/intro.htm
 	(cd ../ptolemy/configs/viptos; make viptosModels.txt)
 
 #############################################################################
@@ -888,7 +897,8 @@ codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		../ptolemy/configs/visualsense/visualsenseModels.txt \
 		codeDocVisualSense/doc/codeDoc
 
-$(ROOT)/ptolemy/configs/visualsense/visualsenseModels.txt: \
+../ptolemy/configs/visualsense/visualsenseModels.txt: \
+		$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
 		../ptolemy/configs/visualsense/intro.htm
 	(cd ../ptolemy/configs/visualsense; make visualsenseModels.txt)
 
