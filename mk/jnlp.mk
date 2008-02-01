@@ -494,7 +494,7 @@ jnlp_distclean: jnlp_clean
 # Rule to run the jnlp file
 PTJNLP = vergil.jnlp
 jnlp_run:
-	"$(PTJAVA_HOME)/../bin/javaws" $(PTJNLP)
+	"$(PTJAVA_HOME)/../bin/javaws" -wait $(PTJNLP)
 
 
 $(SIGNED_DIR):
@@ -771,6 +771,14 @@ sign_jar:
 		$(KEYPASSWORD) \
 		$(JARFILE) $(KEYALIAS)
 
+# The jnlp_test rule can be used to build, copy, and sign a jar file.
+# For example:
+#   make jnlp_test JARSRC=ptolemy/actor/ptalon/ptalon.jar
+jnlp_test:
+	(cd `dirname $(JARSRC)`; make `basename $(JARSRC)`)
+	cp $(JARSRC) signed/$(JARSRC)
+	$(MAKE) sign_jar JARFILE=signed/$(JARSRC)
+	$(MAKE) jnlp_run
 
 JAR_DIST_DIR = jar_dist
 
