@@ -27,6 +27,8 @@
  */
 package ptolemy.actor.lib.javasound;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,12 +48,13 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.ClassUtilities;
 
 /////////////////////////////////////////////////////////
 //// ClipPlayer
 
 /**
- This actor plays an audio clip given in a file. If the <i>overlay</i>
+ An actor that plays an audio clip given in a file. If the <i>overlay</i>
  parameter is false (the default), then it will terminate any previously
  playing clip before playing the new instance. Otherwise, it will mix
  in the new instance with the currently playing clip.
@@ -168,8 +171,25 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                 try {
                     Clip clip = AudioSystem.getClip();
                     clip.addLineListener(this);
-                    AudioInputStream stream = AudioSystem
+                    AudioInputStream stream = null;
+                    try {
+                        stream = AudioSystem
                             .getAudioInputStream(fileOrURL.asURL());
+                    } catch (IOException ex) {
+                        // Handle jar urls from WebStart or the installer
+                        try {
+                            URL possibleJarURL = ClassUtilities.jarURLEntryResource(fileOrURL.getExpression());
+
+                            stream = AudioSystem
+                                .getAudioInputStream(possibleJarURL);
+                        } catch (Exception ex2) {
+                            IOException ioException = new IOException("Failed to open \""
+                                    + fileOrURL.getExpression() + "\".");
+                            ioException.initCause(ex);
+                            throw ioException;
+                        }
+                    }
+
                     clip.open(stream);
                     clip.start();
                     _clips.add(clip);
