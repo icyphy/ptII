@@ -313,7 +313,8 @@ RUN_JARS =
 
 WIRELESS_JARS = \
 	ptolemy/domains/wireless/wireless.jar \
-	ptolemy/domains/wireless/demo/demo.jar
+	ptolemy/domains/wireless/demo/demo.jar \
+	ptolemy/domains/wireless/doc/doc.jar
 
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
@@ -349,11 +350,14 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
+	ptolemy/domains/ci/doc/doc.jar \
+	ptolemy/domains/continuous/demo/demo.jar \
 	ptolemy/domains/continuous/doc/doc.jar \
 	ptolemy/domains/csp/demo/demo.jar \
 	ptolemy/domains/csp/doc/doc.jar \
 	ptolemy/domains/curriculum/curriculum.jar \
 	ptolemy/domains/dde/demo/demo.jar \
+	ptolemy/domains/dde/doc/doc.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/dt/doc/doc.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
@@ -363,6 +367,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
 	ptolemy/domains/psdf/psdf.jar \
 	ptolemy/domains/psdf/demo/demo.jar \
+	ptolemy/domains/psdf/doc/doc.jar \
 	lib/mapss.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/tm/demo/demo.jar \
