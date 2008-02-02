@@ -75,8 +75,6 @@ OTHER_FILES_TO_BE_JARED = \
 	fsmEffigyFactories.xml \
 	fsmLibrary.xml \
 	fsmTableauFactory.xml \
-	fmvEffigyFactory.xml \
-	fmvTableauFactory.xml \
 	graphEffigyFactory.xml \
 	graphTableauFactory.xml \
 	iaEffigyFactory.xml \

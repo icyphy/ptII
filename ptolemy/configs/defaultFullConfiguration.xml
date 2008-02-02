@@ -40,7 +40,8 @@
     <input source="ptolemy/configs/graphEffigyFactory.xml"/>
     <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <input source="ptolemy/configs/iaEffigyFactory.xml"/>
-    <input source="ptolemy/configs/fmvEffigyFactory.xml"/>
+    <!-- We are not shipping fmv with 7.0.beta --> 
+    <!-- input source="ptolemy/configs/fmvEffigyFactory.xml"/ -->
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
   </entity>
 
