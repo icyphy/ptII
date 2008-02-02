@@ -1,6 +1,6 @@
 /* An actor that outputs a sequence with a given step in values.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,6 +29,7 @@
 //// Ramp
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.lib.SequenceSource;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.backtrack.Checkpoint;
@@ -43,7 +44,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * Produce an output token on each firing with a value that is
  * incremented by the specified step each iteration. The
  * first output is given by the <i>init</i> parameter, and the
@@ -73,13 +74,13 @@ public class Ramp extends SequenceSource implements Rollbackable {
     // set the type constraints.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The value produced by the ramp on its first iteration.
      * The default value of this parameter is the integer 0.
      */
     public Parameter init;
 
-    /**
+    /**     
      * The amount by which the ramp output is incremented on each iteration.
      * The default value of this parameter is the integer 1.
      */
@@ -101,7 +102,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
 
     private Token[] _resultArray;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * In addition to invoking the base class constructors, construct
      * the <i>init</i> and <i>step</i> parameter and the <i>step</i>
@@ -114,8 +115,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public Ramp(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public Ramp(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         init = new Parameter(this, "init");
         init.setExpression("0");
@@ -123,15 +123,11 @@ public class Ramp extends SequenceSource implements Rollbackable {
         step.setExpression("1");
         output.setTypeAtLeast(init);
         output.setTypeAtLeast(step);
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<polygon points=\"-20,10 20,-10 20,10\" "
-                + "style=\"fill:grey\"/>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "+"width=\"60\" height=\"40\" "+"style=\"fill:white\"/>\n"+"<polygon points=\"-20,10 20,-10 20,10\" "+"style=\"fill:grey\"/>\n"+"</svg>\n");
         $ASSIGN$_resultArray(new Token[1]);
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the <code>init</code> and <code>step</code>
      * public members to the parameters of the new actor.
@@ -140,36 +136,36 @@ public class Ramp extends SequenceSource implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Ramp newObject = (Ramp) super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        Ramp newObject = (Ramp)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.init);
         newObject.output.setTypeAtLeast(newObject.step);
         $ASSIGN$_resultArray(new Token[1]);
         return newObject;
     }
 
-    /**
+    /**     
      * Send the current value of the state of this actor to the output.
      * @exception IllegalActionException If calling send() or super.fire()
      * throws it.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         output.send(0, _stateToken);
     }
 
-    /**
+    /**     
      * Set the state to equal the value of the <i>init</i> parameter.
      * The state is incremented by the value of the <i>step</i>
      * parameter on each iteration (in the postfire() method).
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_stateToken(output.getType().convert(init.getToken()));
     }
 
-    /**
+    /**     
      * Invoke a specified number of iterations of this actor. Each
      * iteration updates the state of the actor by adding the
      * value of the <i>step</i> parameter to the state and sending
@@ -189,7 +185,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
      * @exception IllegalActionException If iterating cannot be
      * performed.
      */
-    public int iterate(int count) throws IllegalActionException {
+    public int iterate(int count) throws IllegalActionException  {
         if (count > _resultArray.length) {
             $ASSIGN$_resultArray(new Token[count]);
         }
@@ -204,9 +200,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
                 step.update();
                 $ASSIGN$_stateToken(_stateToken.add(step.getToken()));
             } catch (IllegalActionException ex) {
-                throw new InternalErrorException(this, ex,
-                        "Should not be thrown because we have already "
-                                + "verified that the tokens can be added");
+                throw new InternalErrorException(this, ex, "Should not be thrown because we have already " + "verified that the tokens can be added");
             }
         }
         output.send(0, $BACKUP$_resultArray(), count);
@@ -219,7 +213,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
         return COMPLETED;
     }
 
-    /**
+    /**     
      * Update the state of the actor by adding the value of the
      * <i>step</i> parameter to the state.  Also, increment the
      * iteration count, and if the result is equal to
@@ -229,7 +223,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
      * @exception IllegalActionException If the firingCountLimit parameter
      * has an invalid expression.
      */
-    public boolean postfire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException  {
         step.update();
         $ASSIGN$_stateToken(_stateToken.add(step.getToken()));
         return super.postfire();
@@ -237,48 +231,42 @@ public class Ramp extends SequenceSource implements Rollbackable {
 
     private final Token $ASSIGN$_stateToken(Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_stateToken.add(null, _stateToken, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_stateToken.add(null, _stateToken, $CHECKPOINT.getTimestamp());
         }
         return _stateToken = newValue;
     }
 
     private final Token[] $ASSIGN$_resultArray(Token[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_resultArray.add(null, _resultArray, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_resultArray.add(null, _resultArray, $CHECKPOINT.getTimestamp());
         }
         return _resultArray = newValue;
     }
 
     private final Token $ASSIGN$_resultArray(int index0, Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_resultArray.add(new int[] { index0 },
-                    _resultArray[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_resultArray.add(new int[] {
+                    index0
+                }, _resultArray[index0], $CHECKPOINT.getTimestamp());
         }
         return _resultArray[index0] = newValue;
     }
 
     private final Token[] $BACKUP$_resultArray() {
-        $RECORD$_resultArray.backup(null, _resultArray, $CHECKPOINT
-                .getTimestamp());
+        $RECORD$_resultArray.backup(null, _resultArray, $CHECKPOINT.getTimestamp());
         return _resultArray;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _stateToken = (Token) $RECORD$_stateToken.restore(_stateToken,
-                timestamp, trim);
-        _resultArray = (Token[]) $RECORD$_resultArray.restore(_resultArray,
-                timestamp, trim);
+        _stateToken = (Token)$RECORD$_stateToken.restore(_stateToken, timestamp, trim);
+        _resultArray = (Token[])$RECORD$_resultArray.restore(_resultArray, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -308,7 +296,10 @@ public class Ramp extends SequenceSource implements Rollbackable {
 
     private FieldRecord $RECORD$_resultArray = new FieldRecord(1);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_stateToken,
-            $RECORD$_resultArray };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$_stateToken,
+            $RECORD$_resultArray
+        };
 
 }
+

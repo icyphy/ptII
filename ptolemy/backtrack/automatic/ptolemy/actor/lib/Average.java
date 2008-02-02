@@ -29,6 +29,7 @@
 //// Average
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
@@ -43,7 +44,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/**
+/** 
  * <p>Output the average of the inputs after the last time a true token is
  * received at the reset port.
  * One output is produced each time the actor is fired.
@@ -71,7 +72,7 @@ public class Average extends Transformer implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The reset port of type BooleanToken. If this input port
      * receives a True token, then the averaging process will be
      * reset.
@@ -92,7 +93,7 @@ public class Average extends Transformer implements Rollbackable {
 
     private int _latestCount;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -101,14 +102,13 @@ public class Average extends Transformer implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public Average(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public Average(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         reset = new TypedIOPort(this, "reset", true, false);
         reset.setTypeEquals(BaseType.BOOLEAN);
     }
 
-    /**
+    /**     
      * Consume at most one token from the <i>input</i>
      * and compute the average of the input tokens so far. Send the
      * result to the output.  If there is no input token available,
@@ -123,13 +123,13 @@ public class Average extends Transformer implements Rollbackable {
      * @exception IllegalActionException If addition or division by an
      * integer are not supported by the supplied tokens.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         $ASSIGN$_latestSum(_sum);
         $ASSIGN$_latestCount(_count);
         for (int i = 0; i < reset.getWidth(); i++) {
             if (reset.hasToken(i)) {
-                BooleanToken r = (BooleanToken) reset.get(i);
+                BooleanToken r = (BooleanToken)reset.get(i);
                 if (r.booleanValue()) {
                     $ASSIGN$_latestSum(null);
                     $ASSIGN$_latestCount(0);
@@ -149,22 +149,22 @@ public class Average extends Transformer implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Reset the count of inputs.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_count(0);
         $ASSIGN$_sum(null);
     }
 
-    /**
+    /**     
      * Record the most recent input as part of the running average.
      * Do nothing if there is no input.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_sum(_latestSum);
         $ASSIGN$_count(_latestCount);
         return super.postfire();
@@ -179,8 +179,7 @@ public class Average extends Transformer implements Rollbackable {
 
     private final Token $ASSIGN$_latestSum(Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_latestSum
-                    .add(null, _latestSum, $CHECKPOINT.getTimestamp());
+            $RECORD$_latestSum.add(null, _latestSum, $CHECKPOINT.getTimestamp());
         }
         return _latestSum = newValue;
     }
@@ -194,69 +193,63 @@ public class Average extends Transformer implements Rollbackable {
 
     private final int $ASSIGN$_latestCount(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_latestCount.add(null, _latestCount, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_latestCount.add(null, _latestCount, $CHECKPOINT.getTimestamp());
         }
         return _latestCount = newValue;
     }
 
     private final int $ASSIGN$SPECIAL$_latestCount(int operator, long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_latestCount.add(null, _latestCount, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_latestCount.add(null, _latestCount, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-        case 0:
-            return _latestCount += newValue;
-        case 1:
-            return _latestCount -= newValue;
-        case 2:
-            return _latestCount *= newValue;
-        case 3:
-            return _latestCount /= newValue;
-        case 4:
-            return _latestCount &= newValue;
-        case 5:
-            return _latestCount |= newValue;
-        case 6:
-            return _latestCount ^= newValue;
-        case 7:
-            return _latestCount %= newValue;
-        case 8:
-            return _latestCount <<= newValue;
-        case 9:
-            return _latestCount >>= newValue;
-        case 10:
-            return _latestCount >>>= newValue;
-        case 11:
-            return _latestCount++;
-        case 12:
-            return _latestCount--;
-        case 13:
-            return ++_latestCount;
-        case 14:
-            return --_latestCount;
-        default:
-            return _latestCount;
+            case 0:
+                return _latestCount += newValue;
+            case 1:
+                return _latestCount -= newValue;
+            case 2:
+                return _latestCount *= newValue;
+            case 3:
+                return _latestCount /= newValue;
+            case 4:
+                return _latestCount &= newValue;
+            case 5:
+                return _latestCount |= newValue;
+            case 6:
+                return _latestCount ^= newValue;
+            case 7:
+                return _latestCount %= newValue;
+            case 8:
+                return _latestCount <<= newValue;
+            case 9:
+                return _latestCount >>= newValue;
+            case 10:
+                return _latestCount >>>= newValue;
+            case 11:
+                return _latestCount++;
+            case 12:
+                return _latestCount--;
+            case 13:
+                return ++_latestCount;
+            case 14:
+                return --_latestCount;
+            default:
+                return _latestCount;
         }
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _sum = (Token) $RECORD$_sum.restore(_sum, timestamp, trim);
-        _latestSum = (Token) $RECORD$_latestSum.restore(_latestSum, timestamp,
-                trim);
+        _sum = (Token)$RECORD$_sum.restore(_sum, timestamp, trim);
+        _latestSum = (Token)$RECORD$_latestSum.restore(_latestSum, timestamp, trim);
         _count = $RECORD$_count.restore(_count, timestamp, trim);
-        _latestCount = $RECORD$_latestCount.restore(_latestCount, timestamp,
-                trim);
+        _latestCount = $RECORD$_latestCount.restore(_latestCount, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -290,7 +283,12 @@ public class Average extends Transformer implements Rollbackable {
 
     private FieldRecord $RECORD$_latestCount = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_sum,
-            $RECORD$_latestSum, $RECORD$_count, $RECORD$_latestCount };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$_sum,
+            $RECORD$_latestSum,
+            $RECORD$_count,
+            $RECORD$_latestCount
+        };
 
 }
+

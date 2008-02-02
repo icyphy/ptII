@@ -1,6 +1,6 @@
 /* A simple phase unwrapper.
 
- Copyright (c) 1990-2007 The Regents of the University of California.
+ Copyright (c) 1990-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,6 +29,7 @@
 //// PhaseUnwrap
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -40,7 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/**
+/** 
  * This actor unwraps a phase plot, removing discontinuities of
  * magnitude 2*PI. The input is assumed to be a sequence of phases in
  * radians in the range [-PI, PI].  The input and output types
@@ -77,7 +78,7 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
 
     private double _tempPreviousPhaseOutput = 0.0;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -86,24 +87,23 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public PhaseUnwrap(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public PhaseUnwrap(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
     }
 
-    /**
+    /**     
      * Consume at most one input token and output a value that
      * represents the same angle, but differs from the previous output
      * (or from 0.0, if this is the first output), by less than 2*PI.
      * If there is no input token, then no output is produced.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         if (input.hasToken(0)) {
-            double newPhase = ((DoubleToken) input.get(0)).doubleValue();
+            double newPhase = ((DoubleToken)input.get(0)).doubleValue();
             double phaseChange = newPhase - _previousPhaseInput;
             if (phaseChange < -Math.PI) {
                 phaseChange += (2 * Math.PI);
@@ -117,12 +117,12 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Reset the state of the actor to assume the most recently seen
      * phase is zero.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_previousPhaseInput(0.0);
         $ASSIGN$_previousPhaseOutput(0.0);
@@ -130,12 +130,12 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
         $ASSIGN$_tempPreviousPhaseOutput(0.0);
     }
 
-    /**
+    /**     
      * Record the final value of the most recent value of the input,
      * for use in the next phase.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_previousPhaseInput(_tempPreviousPhaseInput);
         $ASSIGN$_previousPhaseOutput(_tempPreviousPhaseOutput);
         return super.postfire();
@@ -143,54 +143,44 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
 
     private final double $ASSIGN$_previousPhaseInput(double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_previousPhaseInput.add(null, _previousPhaseInput,
-                    $CHECKPOINT.getTimestamp());
+            $RECORD$_previousPhaseInput.add(null, _previousPhaseInput, $CHECKPOINT.getTimestamp());
         }
         return _previousPhaseInput = newValue;
     }
 
     private final double $ASSIGN$_tempPreviousPhaseInput(double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tempPreviousPhaseInput.add(null, _tempPreviousPhaseInput,
-                    $CHECKPOINT.getTimestamp());
+            $RECORD$_tempPreviousPhaseInput.add(null, _tempPreviousPhaseInput, $CHECKPOINT.getTimestamp());
         }
         return _tempPreviousPhaseInput = newValue;
     }
 
     private final double $ASSIGN$_previousPhaseOutput(double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_previousPhaseOutput.add(null, _previousPhaseOutput,
-                    $CHECKPOINT.getTimestamp());
+            $RECORD$_previousPhaseOutput.add(null, _previousPhaseOutput, $CHECKPOINT.getTimestamp());
         }
         return _previousPhaseOutput = newValue;
     }
 
     private final double $ASSIGN$_tempPreviousPhaseOutput(double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tempPreviousPhaseOutput.add(null,
-                    _tempPreviousPhaseOutput, $CHECKPOINT.getTimestamp());
+            $RECORD$_tempPreviousPhaseOutput.add(null, _tempPreviousPhaseOutput, $CHECKPOINT.getTimestamp());
         }
         return _tempPreviousPhaseOutput = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _previousPhaseInput = $RECORD$_previousPhaseInput.restore(
-                _previousPhaseInput, timestamp, trim);
-        _tempPreviousPhaseInput = $RECORD$_tempPreviousPhaseInput.restore(
-                _tempPreviousPhaseInput, timestamp, trim);
-        _previousPhaseOutput = $RECORD$_previousPhaseOutput.restore(
-                _previousPhaseOutput, timestamp, trim);
-        _tempPreviousPhaseOutput = $RECORD$_tempPreviousPhaseOutput.restore(
-                _tempPreviousPhaseOutput, timestamp, trim);
+        _previousPhaseInput = $RECORD$_previousPhaseInput.restore(_previousPhaseInput, timestamp, trim);
+        _tempPreviousPhaseInput = $RECORD$_tempPreviousPhaseInput.restore(_tempPreviousPhaseInput, timestamp, trim);
+        _previousPhaseOutput = $RECORD$_previousPhaseOutput.restore(_previousPhaseOutput, timestamp, trim);
+        _tempPreviousPhaseOutput = $RECORD$_tempPreviousPhaseOutput.restore(_tempPreviousPhaseOutput, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -225,7 +215,11 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
     private FieldRecord $RECORD$_tempPreviousPhaseOutput = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_previousPhaseInput, $RECORD$_tempPreviousPhaseInput,
-            $RECORD$_previousPhaseOutput, $RECORD$_tempPreviousPhaseOutput };
+            $RECORD$_previousPhaseInput,
+            $RECORD$_tempPreviousPhaseInput,
+            $RECORD$_previousPhaseOutput,
+            $RECORD$_tempPreviousPhaseOutput
+        };
 
 }
+

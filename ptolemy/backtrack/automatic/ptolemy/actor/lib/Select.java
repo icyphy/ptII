@@ -30,6 +30,7 @@
 //// Select
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
@@ -43,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-/**
+/** 
  * <p>A polymorphic select, which routes specified input channels to the
  * output.  This actor has two input ports, the <i>input</i> port for
  * data, and the <i>control</i> port to select which input channel to
@@ -83,9 +84,9 @@ public class Select extends Transformer implements Rollbackable {
     ////                     ports and parameters                  ////
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
+    /**     
      * Input port for control tokens, which specify the output channel
-     * to produce data on.  The type is int.
+     * to produce data on.  The type is int. 
      */
     public TypedIOPort control;
 
@@ -95,7 +96,7 @@ public class Select extends Transformer implements Rollbackable {
     // The most recently read control token.
     private int _control = 0;
 
-    /**
+    /**     
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -105,40 +106,38 @@ public class Select extends Transformer implements Rollbackable {
      * @exception NameDuplicationException If the name coincides with
      * an actor already in the container.
      */
-    public Select(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public Select(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
         super(container, name);
         input.setMultiport(true);
         control = new TypedIOPort(this, "control", true, false);
         control.setTypeEquals(BaseType.INT);
-        StringAttribute controlCardinal = new StringAttribute(control,
-                "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(control, "_cardinal");
         controlCardinal.setExpression("SOUTH");
     }
 
-    /**
+    /**     
      * Read an input token from the specified input channel and produce
      * it on the output.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         if (input.hasToken(_control)) {
             output.send(0, input.get(_control));
         }
     }
 
-    /**
+    /**     
      * Initialize this actor so that channel zero of <i>input</i> is read
      * from until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_control(0);
     }
 
-    /**
+    /**     
      * Read a control token, if there is one, and check to see
      * whether an input is available on the input channel specified by
      * the most recent control token, if it is in range.
@@ -147,12 +146,11 @@ public class Select extends Transformer implements Rollbackable {
      * @return True if the actor is ready to fire.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean prefire() throws IllegalActionException {
+    public boolean prefire() throws IllegalActionException  {
         if (control.hasToken(0)) {
-            $ASSIGN$_control(((IntToken) control.get(0)).intValue());
+            $ASSIGN$_control(((IntToken)control.get(0)).intValue());
         }
-        if ((_control < 0) || (_control > input.getWidth())
-                || !input.hasToken(_control)) {
+        if ((_control < 0) || (_control > input.getWidth())||!input.hasToken(_control)) {
             return false;
         }
         return super.prefire();
@@ -166,16 +164,14 @@ public class Select extends Transformer implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         _control = $RECORD$_control.restore(_control, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -203,6 +199,9 @@ public class Select extends Transformer implements Rollbackable {
 
     private FieldRecord $RECORD$_control = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_control };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$_control
+        };
 
 }
+

@@ -29,6 +29,7 @@
 //// Sequence
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.backtrack.Checkpoint;
@@ -46,14 +47,17 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * This actor produces a sequence of values, optionally periodically repeating
  * them. The <i>values</i> parameter contains an ArrayToken that specifies the
  * sequence of values to produce at the output. If the <i>enable</i> input
  * port is connected, then it provides a boolean sequence that specifies
  * whether to produce an output. If the <i>enable</i> is present and
  * true, then the actor will produce the next output. Otherwise, it
- * produces no output.
+ * produces no output and will produce the next in the sequence
+ * on the next firing (if enable is true). If the <i>holdLastOutput</i>
+ * parameter is true, then the sequence is infinite, with the last
+ * value being repeated forever.
  * <p>
  * Compared with the Pulse actor, this actor can be enabled or disabled
  * on each firing by providing a true or false input on the <i>enable</i>
@@ -74,28 +78,37 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
     // set type constraint
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The enable input port.  If this port is connected, then its
      * input will determine whether an output is produced in any
      * given firing. The type is boolean.
      */
     public TypedIOPort enable;
 
-    /**
+    /**     
+     * A flag indicating whether to interpret the <i>values</i>
+     * as an infinite sequence where the last value is repeated
+     * forever. This is a boolean that defaults to false.
+     */
+    public Parameter holdLastOutput;
+
+    /**     
      * The output port. The type is greater than or equal to the
      * types of the two input ports.
      */
     public TypedIOPort output;
 
-    /**
+    /**     
      * The flag that indicates whether the sequence needs to be
-     * repeated. If this is false, then the last value of the
+     * repeated. If this is false, then either the last value of the
      * sequence is repeatedly produced after the entire sequence
-     * has been produced. This is a boolean, and defaults to false.
+     * has been produced, or the actor stops producing output,
+     * depending on the value of <i>holdLastOutput</i>.
+     * This is a boolean, and defaults to false.
      */
     public Parameter repeat;
 
-    /**
+    /**     
      * The values that will be produced on the output.
      * This parameter is an array, with default value {1}.
      */
@@ -104,7 +117,8 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Note that this will default to null if there is no initialValue set.
-    // To prevent overflow...
+    // To repeatedly produce the last output.
+    // To prevent overflow.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The index of the next value to be produced.
@@ -113,7 +127,7 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
 
     private boolean _outputProduced;
 
-    /**
+    /**     
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -123,20 +137,21 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
      * @exception NameDuplicationException If the name coincides with
      * an actor already in the container.
      */
-    public Sequence(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public Sequence(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
         super(container, name);
         values = new Parameter(this, "values");
         values.setExpression("{1}");
-        repeat = new Parameter(this, "repeat", new BooleanToken(false));
+        repeat = new Parameter(this, "repeat", BooleanToken.FALSE);
         repeat.setTypeEquals(BaseType.BOOLEAN);
+        holdLastOutput = new Parameter(this, "holdLastOutput", BooleanToken.FALSE);
+        holdLastOutput.setTypeEquals(BaseType.BOOLEAN);
         enable = new TypedIOPort(this, "enable", true, false);
         enable.setTypeEquals(BaseType.BOOLEAN);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(ArrayType.elementType(values));
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This overrides the
      * base class to handle type constraints.
      * @param workspace The workspace for the new object.
@@ -144,30 +159,27 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Sequence newObject = (Sequence) super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        Sequence newObject = (Sequence)super.clone(workspace);
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.values));
+            newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.values));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
         return newObject;
     }
 
-    /**
+    /**     
      * If the <i>enable</i> input is connected, then if it has a true
      * token, produce the next output. If it is not connected, produce
      * the next output unconditionally. Whether it is connected is
      * determined by checking the width of the port.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
-        if ((enable.getWidth() == 0)
-                || (enable.hasToken(0) && ((BooleanToken) enable.get(0))
-                        .booleanValue())) {
-            ArrayToken valuesArray = (ArrayToken) values.getToken();
+        if ((enable.getWidth() == 0) || (enable.hasToken(0) && ((BooleanToken)enable.get(0)).booleanValue())) {
+            ArrayToken valuesArray = (ArrayToken)values.getToken();
             if (_currentIndex < valuesArray.length()) {
                 output.send(0, valuesArray.getElement(_currentIndex));
                 $ASSIGN$_outputProduced(true);
@@ -175,33 +187,37 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Initialize the actor by resetting to the first output value.
      * @exception IllegalActionException If there is no director.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         $ASSIGN$_currentIndex(0);
         $ASSIGN$_outputProduced(false);
         super.initialize();
     }
 
-    /**
+    /**     
      * Update the state of the actor by moving to the next value
      * in the <i>values</i> array.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException  {
         if (_outputProduced) {
             $ASSIGN$_outputProduced(false);
             $ASSIGN$SPECIAL$_currentIndex(0, 1);
-            ArrayToken valuesArray = (ArrayToken) values.getToken();
+            ArrayToken valuesArray = (ArrayToken)values.getToken();
             if (_currentIndex >= valuesArray.length()) {
-                boolean repeatValue = ((BooleanToken) repeat.getToken())
-                        .booleanValue();
+                boolean repeatValue = ((BooleanToken)repeat.getToken()).booleanValue();
                 if (repeatValue) {
                     $ASSIGN$_currentIndex(0);
                 } else {
-                    $ASSIGN$_currentIndex(valuesArray.length());
+                    boolean holdLastOutputValue = ((BooleanToken)holdLastOutput.getToken()).booleanValue();
+                    if (holdLastOutputValue) {
+                        $ASSIGN$_currentIndex(valuesArray.length() - 1);
+                    } else {
+                        $ASSIGN$_currentIndex(valuesArray.length());
+                    }
                 }
             }
         }
@@ -210,75 +226,68 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
 
     private final int $ASSIGN$_currentIndex(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_currentIndex.add(null, _currentIndex, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_currentIndex.add(null, _currentIndex, $CHECKPOINT.getTimestamp());
         }
         return _currentIndex = newValue;
     }
 
     private final int $ASSIGN$SPECIAL$_currentIndex(int operator, long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_currentIndex.add(null, _currentIndex, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_currentIndex.add(null, _currentIndex, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-        case 0:
-            return _currentIndex += newValue;
-        case 1:
-            return _currentIndex -= newValue;
-        case 2:
-            return _currentIndex *= newValue;
-        case 3:
-            return _currentIndex /= newValue;
-        case 4:
-            return _currentIndex &= newValue;
-        case 5:
-            return _currentIndex |= newValue;
-        case 6:
-            return _currentIndex ^= newValue;
-        case 7:
-            return _currentIndex %= newValue;
-        case 8:
-            return _currentIndex <<= newValue;
-        case 9:
-            return _currentIndex >>= newValue;
-        case 10:
-            return _currentIndex >>>= newValue;
-        case 11:
-            return _currentIndex++;
-        case 12:
-            return _currentIndex--;
-        case 13:
-            return ++_currentIndex;
-        case 14:
-            return --_currentIndex;
-        default:
-            return _currentIndex;
+            case 0:
+                return _currentIndex += newValue;
+            case 1:
+                return _currentIndex -= newValue;
+            case 2:
+                return _currentIndex *= newValue;
+            case 3:
+                return _currentIndex /= newValue;
+            case 4:
+                return _currentIndex &= newValue;
+            case 5:
+                return _currentIndex |= newValue;
+            case 6:
+                return _currentIndex ^= newValue;
+            case 7:
+                return _currentIndex %= newValue;
+            case 8:
+                return _currentIndex <<= newValue;
+            case 9:
+                return _currentIndex >>= newValue;
+            case 10:
+                return _currentIndex >>>= newValue;
+            case 11:
+                return _currentIndex++;
+            case 12:
+                return _currentIndex--;
+            case 13:
+                return ++_currentIndex;
+            case 14:
+                return --_currentIndex;
+            default:
+                return _currentIndex;
         }
     }
 
     private final boolean $ASSIGN$_outputProduced(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_outputProduced.add(null, _outputProduced, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_outputProduced.add(null, _outputProduced, $CHECKPOINT.getTimestamp());
         }
         return _outputProduced = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _currentIndex = $RECORD$_currentIndex.restore(_currentIndex, timestamp,
-                trim);
-        _outputProduced = $RECORD$_outputProduced.restore(_outputProduced,
-                timestamp, trim);
+        _currentIndex = $RECORD$_currentIndex.restore(_currentIndex, timestamp, trim);
+        _outputProduced = $RECORD$_outputProduced.restore(_outputProduced, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -308,7 +317,10 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
 
     private FieldRecord $RECORD$_outputProduced = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_currentIndex,
-            $RECORD$_outputProduced };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$_currentIndex,
+            $RECORD$_outputProduced
+        };
 
 }
+

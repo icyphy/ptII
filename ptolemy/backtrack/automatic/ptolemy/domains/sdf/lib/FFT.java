@@ -1,6 +1,6 @@
 /* An FFT.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,6 +29,7 @@
 //// FFT
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
+import java.lang.Object;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
@@ -46,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Complex;
 import ptolemy.math.SignalProcessing;
 
-/**
+/** 
  * This actor calculates the Fast Fourier Transform of a sequence of
  * complex inputs.  The order of the FFT determines the number of tokens
  * that will be consumed and produced on each firing. The order is the
@@ -66,7 +67,7 @@ public class FFT extends SDFTransformer implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    /**
+    /**     
      * The order of the FFT.  The type is IntToken, and the value should
      * be greater than zero.  The default value is an IntToken with value 8.
      */
@@ -85,7 +86,7 @@ public class FFT extends SDFTransformer implements Rollbackable {
 
     private ComplexToken[] _outTokenArray;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -94,8 +95,7 @@ public class FFT extends SDFTransformer implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public FFT(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public FFT(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setTypeEquals(BaseType.COMPLEX);
         output.setTypeEquals(BaseType.COMPLEX);
@@ -106,21 +106,19 @@ public class FFT extends SDFTransformer implements Rollbackable {
         output_tokenProductionRate.setExpression("2^order");
     }
 
-    /**
+    /**     
      * Ensure that the order parameter is positive and recompute the
      * size of internal buffers.
      * @param attribute The attribute that has changed.
      * @exception IllegalActionException If the parameters are out of range.
      */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+    public void attributeChanged(Attribute attribute) throws IllegalActionException  {
         if (attribute == order) {
-            $ASSIGN$_orderValue(((IntToken) order.getToken()).intValue());
+            $ASSIGN$_orderValue(((IntToken)order.getToken()).intValue());
             if (_orderValue <= 0) {
-                throw new IllegalActionException(this, "Order was "
-                        + _orderValue + " but must be greater than zero.");
+                throw new IllegalActionException(this, "Order was " + _orderValue+" but must be greater than zero.");
             }
-            $ASSIGN$_transformSize((int) Math.pow(2, _orderValue));
+            $ASSIGN$_transformSize((int)Math.pow(2, _orderValue));
             $ASSIGN$_inComplexArray(new Complex[_transformSize]);
             $ASSIGN$_outTokenArray(new ComplexToken[_transformSize]);
         } else {
@@ -128,19 +126,17 @@ public class FFT extends SDFTransformer implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Consume the inputs and produce the outputs of the FFT filter.
      * @exception IllegalActionException If a runtime type error occurs.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         Token[] inTokenArray = input.get(0, _transformSize);
         for (int i = 0; i < _transformSize; i++) {
-            $ASSIGN$_inComplexArray(i, ((ComplexToken) inTokenArray[i])
-                    .complexValue());
+            $ASSIGN$_inComplexArray(i, ((ComplexToken)inTokenArray[i]).complexValue());
         }
-        Complex[] outComplexArray = SignalProcessing.FFTComplexOut(
-                $BACKUP$_inComplexArray(), _orderValue);
+        Complex[] outComplexArray = SignalProcessing.FFTComplexOut($BACKUP$_inComplexArray(), _orderValue);
         for (int i = 0; i < _transformSize; i++) {
             $ASSIGN$_outTokenArray(i, new ComplexToken(outComplexArray[i]));
         }
@@ -149,82 +145,72 @@ public class FFT extends SDFTransformer implements Rollbackable {
 
     private final int $ASSIGN$_transformSize(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_transformSize.add(null, _transformSize, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_transformSize.add(null, _transformSize, $CHECKPOINT.getTimestamp());
         }
         return _transformSize = newValue;
     }
 
     private final int $ASSIGN$_orderValue(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_orderValue.add(null, _orderValue, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_orderValue.add(null, _orderValue, $CHECKPOINT.getTimestamp());
         }
         return _orderValue = newValue;
     }
 
     private final Complex[] $ASSIGN$_inComplexArray(Complex[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_inComplexArray.add(null, _inComplexArray, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_inComplexArray.add(null, _inComplexArray, $CHECKPOINT.getTimestamp());
         }
         return _inComplexArray = newValue;
     }
 
     private final Complex $ASSIGN$_inComplexArray(int index0, Complex newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_inComplexArray.add(new int[] { index0 },
-                    _inComplexArray[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_inComplexArray.add(new int[] {
+                    index0
+                }, _inComplexArray[index0], $CHECKPOINT.getTimestamp());
         }
         return _inComplexArray[index0] = newValue;
     }
 
     private final Complex[] $BACKUP$_inComplexArray() {
-        $RECORD$_inComplexArray.backup(null, _inComplexArray, $CHECKPOINT
-                .getTimestamp());
+        $RECORD$_inComplexArray.backup(null, _inComplexArray, $CHECKPOINT.getTimestamp());
         return _inComplexArray;
     }
 
     private final ComplexToken[] $ASSIGN$_outTokenArray(ComplexToken[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_outTokenArray.add(null, _outTokenArray, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_outTokenArray.add(null, _outTokenArray, $CHECKPOINT.getTimestamp());
         }
         return _outTokenArray = newValue;
     }
 
-    private final ComplexToken $ASSIGN$_outTokenArray(int index0,
-            ComplexToken newValue) {
+    private final ComplexToken $ASSIGN$_outTokenArray(int index0, ComplexToken newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_outTokenArray.add(new int[] { index0 },
-                    _outTokenArray[index0], $CHECKPOINT.getTimestamp());
+            $RECORD$_outTokenArray.add(new int[] {
+                    index0
+                }, _outTokenArray[index0], $CHECKPOINT.getTimestamp());
         }
         return _outTokenArray[index0] = newValue;
     }
 
     private final ComplexToken[] $BACKUP$_outTokenArray() {
-        $RECORD$_outTokenArray.backup(null, _outTokenArray, $CHECKPOINT
-                .getTimestamp());
+        $RECORD$_outTokenArray.backup(null, _outTokenArray, $CHECKPOINT.getTimestamp());
         return _outTokenArray;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _transformSize = $RECORD$_transformSize.restore(_transformSize,
-                timestamp, trim);
+        _transformSize = $RECORD$_transformSize.restore(_transformSize, timestamp, trim);
         _orderValue = $RECORD$_orderValue.restore(_orderValue, timestamp, trim);
-        _inComplexArray = (Complex[]) $RECORD$_inComplexArray.restore(
-                _inComplexArray, timestamp, trim);
-        _outTokenArray = (ComplexToken[]) $RECORD$_outTokenArray.restore(
-                _outTokenArray, timestamp, trim);
+        _inComplexArray = (Complex[])$RECORD$_inComplexArray.restore(_inComplexArray, timestamp, trim);
+        _outTokenArray = (ComplexToken[])$RECORD$_outTokenArray.restore(_outTokenArray, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -259,7 +245,11 @@ public class FFT extends SDFTransformer implements Rollbackable {
     private FieldRecord $RECORD$_outTokenArray = new FieldRecord(1);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_transformSize, $RECORD$_orderValue,
-            $RECORD$_inComplexArray, $RECORD$_outTokenArray };
+            $RECORD$_transformSize,
+            $RECORD$_orderValue,
+            $RECORD$_inComplexArray,
+            $RECORD$_outTokenArray
+        };
 
 }
+

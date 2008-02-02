@@ -1,6 +1,6 @@
 /* A polymorphic multiplexor.
 
- Copyright (c) 1997-2007 The Regents of the University of California.
+ Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,6 +29,7 @@
 //// Multiplexor
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
@@ -42,7 +43,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/**
+/** 
  * This actor selects from the channels on the
  * <i>input</i> port, copying the input from one channel to the output,
  * based on the most recently received value on the <i>select</i> input.
@@ -71,19 +72,19 @@ public class Multiplexor extends Transformer implements Rollbackable {
     ////                     ports and parameters                  ////
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
-     * Input for the index of the port to select. The type is IntToken.
+    /**     
+     * Input for the index of the port to select. The type is IntToken. 
      */
     public TypedIOPort select;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The most recently read select input.
+    /**     
+     * The most recently read select input. 
      */
     private int _channel = 0;
 
-    /**
+    /**     
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -93,15 +94,14 @@ public class Multiplexor extends Transformer implements Rollbackable {
      * @exception NameDuplicationException If the name coincides with
      * an actor already in the container.
      */
-    public Multiplexor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public Multiplexor(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
         super(container, name);
         input.setMultiport(true);
         select = new TypedIOPort(this, "select", true, false);
         select.setTypeEquals(BaseType.INT);
     }
 
-    /**
+    /**     
      * Read a token from the <i>select</i> port and from each channel
      * of the <i>input</i> port, and output a token on the selected
      * channel.  This method will throw a NoTokenException if any
@@ -109,10 +109,10 @@ public class Multiplexor extends Transformer implements Rollbackable {
      * @exception IllegalActionException If there is no director, or if
      * the <i>select</i> input is out of range.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         if (select.hasToken(0)) {
-            $ASSIGN$_channel(((IntToken) select.get(0)).intValue());
+            $ASSIGN$_channel(((IntToken)select.get(0)).intValue());
         }
         boolean inRange = false;
         for (int i = 0; i < input.getWidth(); i++) {
@@ -125,13 +125,12 @@ public class Multiplexor extends Transformer implements Rollbackable {
             }
         }
         if (!inRange) {
-            throw new IllegalActionException(this,
-                    "Select input is out of range: " + _channel + ".");
+            throw new IllegalActionException(this, "Select input is out of range: " + _channel+".");
         }
     }
 
-    /**
-     * Initialize to the default, which is to use channel zero.
+    /**     
+     * Initialize to the default, which is to use channel zero. 
      */
     public void initialize() {
         $ASSIGN$_channel(0);
@@ -145,16 +144,14 @@ public class Multiplexor extends Transformer implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         _channel = $RECORD$_channel.restore(_channel, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -182,6 +179,9 @@ public class Multiplexor extends Transformer implements Rollbackable {
 
     private FieldRecord $RECORD$_channel = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_channel };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$_channel
+        };
 
 }
+

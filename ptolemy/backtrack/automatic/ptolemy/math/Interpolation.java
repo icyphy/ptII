@@ -1,6 +1,6 @@
 /* An interpolator for a specified array of indexes and values.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,13 +29,14 @@
 //// Interpolation
 package ptolemy.backtrack.automatic.ptolemy.math;
 
+import java.lang.Object;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.math.DoubleMatrixMath;
 
-/**
+/** 
  * This class provides algorithms to do interpolation. Currently, zero,
  * first, and third order interpolations are supported. These are the
  * interpolation orders most often used in practice. zero order interpolation
@@ -103,21 +104,27 @@ public class Interpolation implements Rollbackable {
     // compute the interpolated value
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private int[] _indexes = { 0, 1 };
+    private int[] _indexes =  {
+        0,
+        1
+    };
 
-    private double[] _values = { 1.0, 0.0 };
+    private double[] _values =  {
+        1.0,
+        0.0
+    };
 
     private int _period = 2;
 
     private int _order = 0;
 
-    /**
+    /**     
      * Construct an instance of Interpolation using the default parameters.
      */
     public Interpolation() {
     }
 
-    /**
+    /**     
      * Return the reference indexes.
      * @return An int array.
      * @see #setIndexes(int[])
@@ -126,7 +133,7 @@ public class Interpolation implements Rollbackable {
         return $BACKUP$_indexes();
     }
 
-    /**
+    /**     
      * Return the interpolation order.
      * @return An int.
      * @see #setOrder(int)
@@ -135,7 +142,7 @@ public class Interpolation implements Rollbackable {
         return _order;
     }
 
-    /**
+    /**     
      * Return the value repetition period.
      * @return An int.
      * @see #setPeriod(int)
@@ -144,7 +151,7 @@ public class Interpolation implements Rollbackable {
         return _period;
     }
 
-    /**
+    /**     
      * Return the reference values.
      * @return An double array.
      * @see #setValues(double[])
@@ -153,7 +160,7 @@ public class Interpolation implements Rollbackable {
         return $BACKUP$_values();
     }
 
-    /**
+    /**     
      * Return the interpolation result for the specified index.
      * @param index The point of interpolation. Can be negative
      * @return A double.
@@ -164,15 +171,11 @@ public class Interpolation implements Rollbackable {
     public double interpolate(int index) {
         int numRefPoints = _indexes.length;
         if (numRefPoints != _values.length) {
-            throw new IllegalStateException("Interpolation.interpolate(): "
-                    + "The index and value arrays do "
-                    + "not have the same length.");
+            throw new IllegalStateException("Interpolation.interpolate(): " + "The index and value arrays do "+"not have the same length.");
         }
         int largestIndex = _indexes[numRefPoints - 1];
         if ((_period != 0) && (_period <= largestIndex)) {
-            throw new IllegalStateException("Interpolation.interpolate(): "
-                    + "The period is not 0 and not " + "greater than the "
-                    + "largest index.");
+            throw new IllegalStateException("Interpolation.interpolate(): " + "The period is not 0 and not "+"greater than the "+"largest index.");
         }
         if ((index < 0) || (index > largestIndex)) {
             if (_period == 0) {
@@ -223,8 +226,7 @@ public class Interpolation implements Rollbackable {
             vEnd = _values[indexIndexStart + 1];
         }
         if (_order == 1) {
-            return vStart
-                    + (((index - iStart) * (vEnd - vStart)) / (iEnd - iStart));
+            return vStart + (((index - iStart) * (vEnd - vStart)) / (iEnd - iStart));
         }
         int iBeforeStart;
         int iAfterEnd;
@@ -260,8 +262,7 @@ public class Interpolation implements Rollbackable {
             iAfterEnd = _indexes[indexIndexStart + 2];
             vAfterEnd = _values[indexIndexStart + 2];
         }
-        double tanBefore2Start = (vStart - vBeforeStart)
-                / (iStart - iBeforeStart);
+        double tanBefore2Start = (vStart - vBeforeStart) / (iStart - iBeforeStart);
         double tanStart2End = (vEnd - vStart) / (iEnd - iStart);
         double tanEnd2After = (vAfterEnd - vEnd) / (iAfterEnd - iEnd);
         double tanStart = 0.5 * (tanBefore2Start + tanStart2End);
@@ -269,7 +270,7 @@ public class Interpolation implements Rollbackable {
         return _hermite(index, iStart, vStart, tanStart, iEnd, vEnd, tanEnd);
     }
 
-    /**
+    /**     
      * Set the reference indexes.
      * @param indexes An int array.
      * @exception IllegalArgumentException If the argument array is
@@ -280,29 +281,27 @@ public class Interpolation implements Rollbackable {
         int prev = -1;
         for (int i = 0; i < indexes.length; i++) {
             if (indexes[i] <= prev) {
-                throw new IllegalArgumentException("Interpolation.setIndexes"
-                        + " index array is not increasing and non-negative.");
+                throw new IllegalArgumentException("Interpolation.setIndexes" + " index array is not increasing and non-negative.");
             }
             prev = indexes[i];
         }
         $ASSIGN$_indexes(indexes);
     }
 
-    /**
+    /**     
      * Set the interpolation order.
      * @param order An int.
      * @exception IllegalArgumentException If the order is not 0, 1, or 3.
      * @see #getOrder()
      */
     public void setOrder(int order) {
-        if ((order != 0) && (order != 1) && (order != 3)) {
-            throw new IllegalArgumentException("Interpolation.setOrder: "
-                    + "The order " + order + " is not valid.");
+        if ((order != 0) && (order != 1)&&(order != 3)) {
+            throw new IllegalArgumentException("Interpolation.setOrder: " + "The order " + order+" is not valid.");
         }
         $ASSIGN$_order(order);
     }
 
-    /**
+    /**     
      * Set the value repetition period.
      * @param period An int.
      * @exception IllegalArgumentException If the period is negative.
@@ -310,13 +309,12 @@ public class Interpolation implements Rollbackable {
      */
     public void setPeriod(int period) {
         if (period < 0) {
-            throw new IllegalArgumentException("Interpolation.setPeriod: "
-                    + "The period is negative.");
+            throw new IllegalArgumentException("Interpolation.setPeriod: " + "The period is negative.");
         }
         $ASSIGN$_period(period);
     }
 
-    /**
+    /**     
      * Set the reference values.
      * @param values A double array.
      * @see #getValues()
@@ -325,8 +323,7 @@ public class Interpolation implements Rollbackable {
         $ASSIGN$_values(values);
     }
 
-    private double _hermite(int index, int iStart, double vStart,
-            double tanStart, int iEnd, double vEnd, double tanEnd) {
+    private double _hermite(int index, int iStart, double vStart, double tanStart, int iEnd, double vEnd, double tanEnd) {
         double[][] M = new double[4][4];
         double iStartSqr = iStart * iStart;
         double iEndSqr = iEnd * iEnd;
@@ -354,8 +351,7 @@ public class Interpolation implements Rollbackable {
         Gh[3] = tanEnd;
         double[] coef = DoubleMatrixMath.multiply(Gh, MInverse);
         double indexSqr = index * index;
-        return (coef[0] * indexSqr * index) + (coef[1] * indexSqr)
-                + (coef[2] * index) + coef[3];
+        return (coef[0] * indexSqr*index) + (coef[1] * indexSqr)+(coef[2] * index)+coef[3];
     }
 
     private final int[] $ASSIGN$_indexes(int[] newValue) {
@@ -397,19 +393,17 @@ public class Interpolation implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _indexes = (int[]) $RECORD$_indexes.restore(_indexes, timestamp, trim);
-        _values = (double[]) $RECORD$_values.restore(_values, timestamp, trim);
+        _indexes = (int[])$RECORD$_indexes.restore(_indexes, timestamp, trim);
+        _values = (double[])$RECORD$_values.restore(_values, timestamp, trim);
         _period = $RECORD$_period.restore(_period, timestamp, trim);
         _order = $RECORD$_order.restore(_order, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -443,7 +437,12 @@ public class Interpolation implements Rollbackable {
 
     private FieldRecord $RECORD$_order = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_indexes,
-            $RECORD$_values, $RECORD$_period, $RECORD$_order };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$_indexes,
+            $RECORD$_values,
+            $RECORD$_period,
+            $RECORD$_order
+        };
 
 }
+

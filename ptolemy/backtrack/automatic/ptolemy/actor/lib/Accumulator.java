@@ -29,6 +29,7 @@
 //// Accumulator
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
@@ -45,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * Output the initial value plus the sum of all the inputs since
  * the last time a true token was received at the reset port.
  * One output is produced each time the actor is fired. The
@@ -69,7 +70,7 @@ public class Accumulator extends Transformer implements Rollbackable {
     // set the type constraints.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The lower bound. If this is set, then its type must be the
      * same as that of the <i>init</i> parameter, and the output
      * will be constrained to never drop below the lower bound.
@@ -77,20 +78,20 @@ public class Accumulator extends Transformer implements Rollbackable {
      */
     public Parameter lowerBound;
 
-    /**
+    /**     
      * The value produced by the actor on its first iteration.
      * The default value of this parameter is the integer 0.
      */
     public Parameter init;
 
-    /**
+    /**     
      * If this port receives a True token on any channel, then the
      * accumulator state will be reset to the initial value.
      * This is a multiport and has type boolean.
      */
     public TypedIOPort reset;
 
-    /**
+    /**     
      * The upper bound. If this is set, then its type must be the
      * same as that of the <i>init</i> parameter, and the output
      * will be constrained to never rise above the upper bound.
@@ -106,17 +107,17 @@ public class Accumulator extends Transformer implements Rollbackable {
     // Check the bounds.
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    /**
-     * The running sum.
+    /**     
+     * The running sum. 
      */
     private Token _sum;
 
-    /**
-     * The latest sum, prior to a state commit.
+    /**     
+     * The latest sum, prior to a state commit. 
      */
     private Token _latestSum;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -125,8 +126,7 @@ public class Accumulator extends Transformer implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public Accumulator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public Accumulator(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setMultiport(true);
         reset = new TypedIOPort(this, "reset", true, false);
@@ -142,7 +142,7 @@ public class Accumulator extends Transformer implements Rollbackable {
         output.setTypeAtLeast(input);
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets up the type constraints.
      * @param workspace The workspace for the new object.
@@ -150,8 +150,8 @@ public class Accumulator extends Transformer implements Rollbackable {
      * @exception CloneNotSupportedException If a derived class contains
      * an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Accumulator newObject = (Accumulator) super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        Accumulator newObject = (Accumulator)super.clone(workspace);
         newObject.lowerBound.setTypeSameAs(newObject.init);
         newObject.upperBound.setTypeSameAs(newObject.init);
         newObject.output.setTypeAtLeast(newObject.init);
@@ -159,7 +159,7 @@ public class Accumulator extends Transformer implements Rollbackable {
         return newObject;
     }
 
-    /**
+    /**     
      * Consume at most one token from each channel of the <i>input</i>
      * port, add it to the running sum, and produce the result at the
      * <i>output</i> port.  If there is no input token available,
@@ -170,15 +170,14 @@ public class Accumulator extends Transformer implements Rollbackable {
      * @exception IllegalActionException If addition is not
      * supported by the supplied tokens.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         $ASSIGN$_latestSum(_sum);
         for (int i = 0; i < reset.getWidth(); i++) {
             if (reset.hasToken(i)) {
-                BooleanToken r = (BooleanToken) reset.get(i);
+                BooleanToken r = (BooleanToken)reset.get(i);
                 if (r.booleanValue()) {
-                    $ASSIGN$_latestSum(output.getType()
-                            .convert(init.getToken()));
+                    $ASSIGN$_latestSum(output.getType().convert(init.getToken()));
                 }
             }
         }
@@ -191,48 +190,41 @@ public class Accumulator extends Transformer implements Rollbackable {
         Token lowerBoundValue = lowerBound.getToken();
         if (lowerBoundValue != null) {
             if (lowerBoundValue instanceof ScalarToken) {
-                if (((ScalarToken) lowerBoundValue).isGreaterThan(
-                        (ScalarToken) _latestSum).booleanValue()) {
+                if (((ScalarToken)lowerBoundValue).isGreaterThan((ScalarToken)_latestSum).booleanValue()) {
                     $ASSIGN$_latestSum(lowerBoundValue);
                 }
             } else {
-                throw new IllegalActionException(this,
-                        "lowerBound parameter only works with scalar values. Value given was: "
-                                + lowerBoundValue);
+                throw new IllegalActionException(this, "lowerBound parameter only works with scalar values. Value given was: " + lowerBoundValue);
             }
         }
         Token upperBoundValue = upperBound.getToken();
         if (upperBoundValue != null) {
             if (upperBoundValue instanceof ScalarToken) {
-                if (((ScalarToken) upperBoundValue).isLessThan(
-                        (ScalarToken) _latestSum).booleanValue()) {
+                if (((ScalarToken)upperBoundValue).isLessThan((ScalarToken)_latestSum).booleanValue()) {
                     $ASSIGN$_latestSum(upperBoundValue);
                 }
             } else {
-                throw new IllegalActionException(this,
-                        "upperBound parameter only works with scalar values. Value given was: "
-                                + upperBoundValue);
+                throw new IllegalActionException(this, "upperBound parameter only works with scalar values. Value given was: " + upperBoundValue);
             }
         }
         output.broadcast(_latestSum);
     }
 
-    /**
+    /**     
      * Reset the running sum to equal the value of <i>init</i>.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
-        $ASSIGN$_latestSum($ASSIGN$_sum(output.getType().convert(
-                init.getToken())));
+        $ASSIGN$_latestSum($ASSIGN$_sum(output.getType().convert(init.getToken())));
     }
 
-    /**
+    /**     
      * Record the most recent input as part of the running average.
      * Do nothing if there is no input.
      * @exception IllegalActionException If the base class throws it.
      */
-    public boolean postfire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_sum(_latestSum);
         return super.postfire();
     }
@@ -246,25 +238,21 @@ public class Accumulator extends Transformer implements Rollbackable {
 
     private final Token $ASSIGN$_latestSum(Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_latestSum
-                    .add(null, _latestSum, $CHECKPOINT.getTimestamp());
+            $RECORD$_latestSum.add(null, _latestSum, $CHECKPOINT.getTimestamp());
         }
         return _latestSum = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _sum = (Token) $RECORD$_sum.restore(_sum, timestamp, trim);
-        _latestSum = (Token) $RECORD$_latestSum.restore(_latestSum, timestamp,
-                trim);
+        _sum = (Token)$RECORD$_sum.restore(_sum, timestamp, trim);
+        _latestSum = (Token)$RECORD$_latestSum.restore(_latestSum, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -294,7 +282,10 @@ public class Accumulator extends Transformer implements Rollbackable {
 
     private FieldRecord $RECORD$_latestSum = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_sum,
-            $RECORD$_latestSum };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$_sum,
+            $RECORD$_latestSum
+        };
 
 }
+

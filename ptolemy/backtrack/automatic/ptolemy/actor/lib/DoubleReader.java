@@ -1,6 +1,6 @@
 /* An actor that outputs doubles read from a URL.
 
- @Copyright (c) 1998-2007 The Regents of the University of California.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -30,8 +30,8 @@
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.io.IOException;
+import java.lang.Object;
 import java.util.StringTokenizer;
-
 import ptolemy.actor.lib.URLReader;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -42,7 +42,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/**
+/** 
  * This actor reads tokens from an URL, and output them. Each entry in
  * the file corresponds to one iteration. If there are multiple fires in
  * the iteration, the same token will be repeated.  This actor has a
@@ -88,7 +88,7 @@ public class DoubleReader extends URLReader implements Rollbackable {
 
     private int _dataSize;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -97,38 +97,37 @@ public class DoubleReader extends URLReader implements Rollbackable {
      * @exception NameDuplicationException If the container already has an
      * actor with this name.
      */
-    public DoubleReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public DoubleReader(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
         super(container, name);
     }
 
-    /**
+    /**     
      * Output the data read in the prefire.
      * @exception IllegalActionException If there's no director.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         for (int i = 0; i < _dataSize; i++) {
             output.send(i, new DoubleToken(_data[i]));
         }
     }
 
-    /**
+    /**     
      * Open the file at the URL, and set the width of the output.
      * @exception IllegalActionException Not thrown in this base class
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_dataSize(output.getWidth());
         $ASSIGN$_data(new double[_dataSize]);
         attributeChanged(sourceURL);
     }
 
-    /**
+    /**     
      * Read one row from the input and prepare for output them.
      * @exception IllegalActionException If an IO error occurs.
      */
-    public boolean prefire() throws IllegalActionException {
+    public boolean prefire() throws IllegalActionException  {
         try {
             $ASSIGN$_dataSize(output.getWidth());
             if (_data.length != _dataSize) {
@@ -144,8 +143,7 @@ public class DoubleReader extends URLReader implements Rollbackable {
                 $ASSIGN$_dataSize(columnCount);
             }
             for (int i = 0; i < _dataSize; i++) {
-                $ASSIGN$_data(i, Double.valueOf(tokenizer.nextToken())
-                        .doubleValue());
+                $ASSIGN$_data(i, Double.valueOf(tokenizer.nextToken()).doubleValue());
             }
             return super.prefire();
         } catch (IOException ex) {
@@ -162,8 +160,9 @@ public class DoubleReader extends URLReader implements Rollbackable {
 
     private final double $ASSIGN$_data(int index0, double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_data.add(new int[] { index0 }, _data[index0], $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$_data.add(new int[] {
+                    index0
+                }, _data[index0], $CHECKPOINT.getTimestamp());
         }
         return _data[index0] = newValue;
     }
@@ -176,17 +175,15 @@ public class DoubleReader extends URLReader implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _data = (double[]) $RECORD$_data.restore(_data, timestamp, trim);
+        _data = (double[])$RECORD$_data.restore(_data, timestamp, trim);
         _dataSize = $RECORD$_dataSize.restore(_dataSize, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -216,7 +213,10 @@ public class DoubleReader extends URLReader implements Rollbackable {
 
     private FieldRecord $RECORD$_dataSize = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_data,
-            $RECORD$_dataSize };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$_data,
+            $RECORD$_dataSize
+        };
 
 }
+
