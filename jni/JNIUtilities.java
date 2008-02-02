@@ -1213,6 +1213,7 @@ public class JNIUtilities {
                         + "\t\"$(PTCC)\" \\\n"
                         + "\t\t\"-I$(PTJAVA_HOME)/../include\" \\\n"
                         + "\t\t\"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)\" \\\n"
+                        + "\t\t$(PTJNI_SHAREDLIBRARY_CFLAG) \\\n"
                         + "\t\t-fno-exceptions \\\n"
                         + "\t\t-shared $(PTJNI_SHAREDLIBRARY_LDFLAG) \\\n"
                         + "\t\t-L"

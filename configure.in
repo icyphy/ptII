@@ -2330,10 +2330,12 @@ else
         PT_MSG_RESULT(['$PTJNI_NO_CYGWIN'])
 
         AC_MSG_CHECKING([for the proper shared library cc flag])
+	# Under Cygwin with gcc, we need -D__int64="long long"
+	# FIXME: we should have a test for this instead of setting it explictly
         case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
+	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
+	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
 	    SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
 	    *) PTJNI_SHAREDLIBRARY_CFLAG=;;
         esac
