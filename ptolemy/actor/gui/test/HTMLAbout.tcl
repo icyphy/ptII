@@ -148,6 +148,12 @@ tag specially.
     <td><a href="about:links#ptolemy/configs/doc/demosPtiny.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosPtiny.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
+  <tr>
+    <code>doc/mainVergilPtiny.htm</code>
+    <td><a href="about:demos#doc/mainVergilPtiny.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#doc/mainVergilPtiny.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#doc/mainVergilPtiny.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
 <tr rowspan=4><center><b>Ptiny for Kepler</b></center></tr>
   <tr>
     <code>ptolemy/configs/doc/completeDemosPtinyKepler.htm</code>
