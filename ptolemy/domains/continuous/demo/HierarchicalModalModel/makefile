@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2007 The Regents of the University of California.
+# @Copyright (c) 2007-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -52,7 +52,8 @@ OTHER_FILES_TO_BE_JARED = \
 	HierarchicalModalModel1.xml \
 	HierarchicalModalModel2.xml \
 	HierarchicalModalModel3.xml \
-	HierarchicalModalModel4.xml
+	HierarchicalModalModel4.xml \
+	HierarchicalModalModel.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
