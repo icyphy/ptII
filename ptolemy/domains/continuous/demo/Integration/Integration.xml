@@ -1,11 +1,11 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="test5" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Integration" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1000000">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="100">
         </property>
@@ -29,7 +29,12 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 175.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -40,15 +45,15 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 270.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={316, 276, 468, 337}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 210, 508, 348}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[460, 289]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 329]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 225.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -57,43 +62,16 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="-2.0" max="4.0"/>
-<default marks="dots"/>
+<xRange min="0.1" max="1000000.0"/>
+<yRange min="0.0" max="1.1641532182693481E-10"/>
 </plot>?>
         </configure>
     </entity>
-    <entity name="impulse" class="ptolemy.domains.continuous.lib.EventSource">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="Infinity">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 255.0]">
-        </property>
-    </entity>
-    <entity name="reset" class="ptolemy.domains.continuous.lib.EventSource">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="Infinity">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0, 7.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{-2, 1.0}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 325.0]">
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{345, 205}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <vertex name="vertex1" value="[295.0, 185.0]">
-        </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
@@ -101,12 +79,22 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="Integrator.impulse" relation="relation3"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[290.0, 280.0]">
+        </vertex>
+    </relation>
     <link port="Integrator.derivative" relation="relation"/>
     <link port="Integrator.state" relation="relation5"/>
-    <link port="Integrator.initialState" relation="relation2"/>
+    <link port="CurrentTime.output" relation="relation2"/>
     <link port="Const.output" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation5"/>
-    <link port="impulse.output" relation="relation3"/>
-    <link port="reset.output" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="AddSubtract.minus" relation="relation5"/>
+    <link port="AddSubtract.output" relation="relation4"/>
 </entity>
