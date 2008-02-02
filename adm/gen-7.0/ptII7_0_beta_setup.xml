@@ -285,7 +285,7 @@ The Ptiny pack is required.
             <file src="../../jar_dist/ptolemy/backtrack/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/backtrack/demo"/>
             <file src="../../jar_dist/ptolemy/codegen/codegen.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/codegen/demo"/>
+                  targetdir="$INSTALL_PATH/ptolemy/codegen"/>
             <file src="../../jar_dist/ptolemy/codegen/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/codegen"/>
             <file src="../../jar_dist/ptolemy/copernicus/copernicus.jar"
