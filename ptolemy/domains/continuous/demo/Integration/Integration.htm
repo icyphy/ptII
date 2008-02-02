@@ -1,6 +1,6 @@
-<!-- $Id$
+<!-- : $Id$
   @author: 
--->
+ -->
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -8,14 +8,12 @@
 <TITLE>Integration</TITLE>
 </HEAD>
 <BODY>
-
 <H1>Integration</H1>
-
-
 <P>
- <!-- All of the controls of the applet should be visible when the
-applet is displayed on a XGA screen-->
+The Integration model shown using Vergil, the Ptolemy II schematic editor:
+
 <CENTER>
+<P>
 <!-- The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
      For information about applets and Ptolemy, see
@@ -45,11 +43,11 @@ applet is displayed on a XGA screen-->
     if (_ie == true) document.writeln('\
         <OBJECT \
             classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "815" \
-            height = "707"  \
+            width = "600" \
+            height = "907"  \
             codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
             <PARAM NAME = "code" \
-                   VALUE = "ptolemy.actor.gui.MoMLApplet" > \
+                   VALUE = "ptolemy.vergil.MoMLViewerApplet" > \
 	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
 	    <PARAM NAME = "archive" \
                    VALUE = "ptolemy/domains/ct/ct.jar,lib/ptcolt.jar,ptolemy/ptsupport.jar,ptolemy/domains/continuous/continuous.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar" > \
@@ -57,11 +55,11 @@ applet is displayed on a XGA screen-->
                    VALUE = "application/x-java-applet;version=1.4.2" > \
             <PARAM NAME = "progressbar" VALUE = "true"> \
             <PARAM NAME = "scriptable" VALUE = "false" > \
-            <PARAM NAME = "NAME" VALUE = "Integration" > \
+            <PARAM NAME = "NAME" VALUE = "IntegrationViewer" > \
 	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters" > \
-	    <PARAM NAME = "orientation" VALUE = "vertical" > \
 	    <PARAM NAME = "modelURL" VALUE = "Integration.xml" > \
+	    <PARAM NAME = "controls" VALUE = "buttons" > \
+	    <PARAM NAME = "includeRunPanel" VALUE = "true" > \
             <a href="Integration.xml">MoML specification for this model.</a> \
         </OBJECT> \
         ');
@@ -70,12 +68,12 @@ applet is displayed on a XGA screen-->
         <COMMENT> \
           <EMBED \
             type = "application/x-java-applet;version=1.4.2" \
-            code = "ptolemy.actor.gui.MoMLApplet" \
+            code = "ptolemy.vergil.MoMLViewerApplet" \
             codebase = "../../../../.." \
             archive = "ptolemy/domains/ct/ct.jar,lib/ptcolt.jar,ptolemy/ptsupport.jar,ptolemy/domains/continuous/continuous.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar" \
-            width = "815" \
-            height = "707" \
-            NAME = "Integration" background = "#ffffff" controls = "buttons, directorParameters" orientation = "vertical" modelURL = "Integration.xml"  \
+            width = "600" \
+            height = "907" \
+            NAME = "IntegrationViewer" background = "#ffffff" modelURL = "Integration.xml" controls = "buttons" includeRunPanel = "true"  \
             progressbar = "true" \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
@@ -87,25 +85,23 @@ applet is displayed on a XGA screen-->
         ');
     else document.writeln('\
         <APPLET \
-            code = "ptolemy.actor.gui.MoMLApplet" \
+            code = "ptolemy.vergil.MoMLViewerApplet" \
             codebase = "../../../../.." \
             archive = "ptolemy/domains/ct/ct.jar,lib/ptcolt.jar,ptolemy/ptsupport.jar,ptolemy/domains/continuous/continuous.jar,lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/vergil/vergilApplet.jar" \
-            width = "815" \
-            height = "707" \
+            width = "600" \
+            height = "907" \
             > \
-            <PARAM NAME = "NAME" VALUE = "Integration" > \
+            <PARAM NAME = "NAME" VALUE = "IntegrationViewer" > \
 	    <PARAM NAME = "background" VALUE = "#ffffff" > \
-	    <PARAM NAME = "controls" VALUE = "buttons, directorParameters" > \
-	    <PARAM NAME = "orientation" VALUE = "vertical" > \
 	    <PARAM NAME = "modelURL" VALUE = "Integration.xml" > \
+	    <PARAM NAME = "controls" VALUE = "buttons" > \
+	    <PARAM NAME = "includeRunPanel" VALUE = "true" > \
             <a href="Integration.xml">MoML specification for this model.</a> \
         </APPLET> \
         ');
 //--></SCRIPT>
 <!-- /HTML CONVERTER -->
 </CENTER>
-This applet is implemented in MoML, as shown in a 
-The <a href="IntegrationVergil.htm">Vergil block diagram</a>.
 </p>
 </BODY>
 </HTML>
