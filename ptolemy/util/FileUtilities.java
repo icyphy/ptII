@@ -384,7 +384,7 @@ public class FileUtilities {
                         // urlString = urlString.substring(0, 6) + "/"
                         // + urlString.substring(6);
                     }
-
+                    return new URL(urlString);
                 } catch (Exception ex3) {
                     try {
                         // Under Webstart, opening
