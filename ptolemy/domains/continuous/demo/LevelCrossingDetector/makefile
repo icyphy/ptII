@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2007 The Regents of the University of California.
+# @Copyright (c) 2007-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -49,6 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	LevelCrossingDetector.xml \
+	LevelCrossingDetector.htm \
 	LevelCrossingDetectorDetectingDirections.xml
 
 EXTRA_SRCS = \
@@ -76,8 +77,8 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo: demo_applet demo_ptolemy demo_vergil
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer LevelCrossingDetector.xml
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer LevelCrossingDetector.xml
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" LevelCrossingDetector.xml
