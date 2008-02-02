@@ -53,7 +53,8 @@
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <input source="ptolemy/configs/gt/gtTableauFactory.xml"/>
     <input source="ptolemy/configs/iaTableauFactory.xml"/>
-    <input source="ptolemy/configs/fmvTableauFactory.xml"/>
+    <!-- We are not shipping fmv with 7.0.beta --> 
+    <!-- input source="ptolemy/configs/fmvTableauFactory.xml"/-->
     <input source="ptolemy/configs/fsmTableauFactory.xml"/>
     <input source="ptolemy/configs/caseTableauFactory.xml"/>
     <input source="ptolemy/configs/graphTableauFactory.xml"/>
