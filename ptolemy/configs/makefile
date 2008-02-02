@@ -34,7 +34,7 @@ ME =		ptolemy/configs
 # If you add a configuration, be sure to add the jar file
 # in PTCLASSALLJARS below
 DIRS =		codegen doc dsp full gt hyvisual jni jxta ptiny ptinyKepler \
-		vhdl viptos visualsense test
+		viptos visualsense test
 
 # Root of the Java directory
 ROOT =		../..
@@ -113,7 +113,6 @@ PTCLASSALLJARS = \
 		jxta/jxta.jar \
 		ptiny/ptiny.jar \
 		ptinyKepler/ptinyKepler.jar \
-		vhdl/vhdl.jar \
 		viptos/viptos.jar \
 		visualsense/visualsense.jar
 
