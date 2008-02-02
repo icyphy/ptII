@@ -235,6 +235,7 @@ PTINY_ONLY_JNLP_JARS = \
         ptolemy/actor/lib/python/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
 	ptolemy/codegen/codegen.jar \
+	ptolemy/codegen/demo/demo.jar \
 	$(PTALON_JARS) \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
@@ -784,7 +785,7 @@ jnlp_test:
 	(cd `dirname $(JARSRC)`; make `basename $(JARSRC)`)
 	cp $(JARSRC) signed/$(JARSRC)
 	$(MAKE) sign_jar JARFILE=signed/$(JARSRC)
-	$(MAKE) jnlp_run PTJNLP=vergilPtiny.jnlp
+	$(MAKE) jnlp_run
 
 JAR_DIST_DIR = jar_dist
 
