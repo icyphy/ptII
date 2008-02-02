@@ -60,7 +60,9 @@ proc theTest {expression} {
     set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} $expression]
     set type [freeVars $root]
-    listToStrings $type
+    # We are returning a set, which can be in any order.
+    # Under ibm-java-i386-60, the order was different
+    lsort [listToStrings $type]
 }
 
 ######################################################################
@@ -240,7 +242,7 @@ test ParseTreeFreeVariableCollector-10.0 {Test that constants can be registered 
 test ParseTreeFreeVariableCollector-10.1 {Test that functions can access registered classes.
 } {
     list [theTest "min(1,3)"] [theTest "sin(30*PI/180)"]
-} {min {sin PI}}
+} {min {PI sin}}
 
 #
 
@@ -261,11 +263,11 @@ test ParseTreeFreeVariableCollector-12.2 {Test matrix construction.} {
 # Test array reference.
 test ParseTreeFreeVariableCollector-13.0 {Test array reference.} {
     list [theTest "v1(0+1,2)+v1(0, v2-1)"] [theTest "cast(complex,v1(0+1,2)+v1(0, v2-1).add(v2))"]
-} {{v1 v2} {v1 complex v2 cast}}
+} {{v1 v2} {cast complex v1 v2}}
 
 test ParseTreeFreeVariableCollector-13.1 {Test array method calls.} {
     list [theTest "cast(int, {1, 2, 3}.getElement(1))"]
-} {{int cast}}
+} {{cast int}}
 
 # Test record construction,
 test ParseTreeFreeVariableCollector-13.2 {Test record construction.} {
@@ -284,7 +286,7 @@ test ParseTreeFreeVariableCollector-14.0 {Test eval inference.} {
 # 
 test ParseTreeFreeVariableCollector-16.0 {Test method calls on arrays, matrices, etc.} {
     list [theTest "cast({int},{1,2,3}.add({3,4,5}))"] [theTest "cast({int},{{a=1,b=2},{a=3,b=4},{a=5,b=6}}.get(\"a\"))"] [theTest "cast(\[int\],create({1,2,3,4,5,6},2,3))"] [theTest "cast({int},{1,1,1,1}.leftShift({1,2,3,4}))"]
-} {{int cast} {int cast} {create int cast} {int cast}}
+} {{cast int} {cast int} {cast create int} {cast int}}
 
 test ParseTreeFreeVariableCollector-16.2 {Test record indexing} {
     list [theTest "true ? 2 : ({a={0,0,0}}.a).length()"] [theTest "false ? 2 : ({a={0,0,0}}.a).length()"]
