@@ -75,9 +75,10 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
 # make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar 
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
-# make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
+# make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar clean all src.jar setup
 # make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
@@ -154,6 +155,9 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 ##############################################################################
 # Targets
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
+
+release:
+	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup
 
 # Rebuild the distributions
 rebuild: clean all installshield_app build_unixPtII
@@ -2174,8 +2178,8 @@ Echo.class: Echo.java
 ExtractJarFile.jar: ExtractJarFile.class Echo.class
 	jar -cf $@ CYGPATH^
 
-#PTCYGPATH=cygpath --windows
-PTCYGPATH=./ptcygpath
+PTCYGPATH=cygpath -a --windows
+#PTCYGPATH=./ptcygpath
 
 # Recompile izpack
 izpack:	
@@ -2184,11 +2188,11 @@ izpack:
 	"$(L4JC)" `$(PTCYGPATH) test_l4j.xml`
 
 # Location of Launch4J, see http://launch4j.sourceforge.net/
-#L4J_DIR=c:/Program Files/Launch4j
+L4J_DIR=c:/Program Files/Launch4j
 
-L4J_DIR=$(PTII)/vendors/launch4j
+#L4J_DIR=$(PTII)/vendors/launch4j
 
-L4J_TAR=launch4j-3.0.0-pre1-solaris-sparc.tgz
+L4J_TAR=launch4j-3.0.0-pre2-solaris-sparc.tgz
 $(PTII)/vendors/launch4j:
 	cd $(PTII)/vendors; \
 		wget http://easynews.dl.sourceforge.net/sourceforge/launch4j/$(L4J_TAR); \
