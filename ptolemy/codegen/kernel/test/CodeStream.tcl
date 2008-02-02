@@ -147,6 +147,9 @@ test CodeStream-4.0 {appendCodeBlock(nameExpression)} {
     $codeStream4_0 appendCodeBlock "myBlock"
     # Increase code coverage of if (_declarations) block	
     $codeStream4_0 appendCodeBlock "myOtherBlock"
+
+    # Note that under different JVMs the description might be different
+    # because the underlying datastructure is a HashMap
     list [$codeStream4_0 toString] \
 	[$codeStream4_0 description]
 
