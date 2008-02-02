@@ -48,10 +48,11 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	integrator1.xml \
-	integrator2.xml \
-	integrator3.xml \
-	integrator5.xml
+	Integration.xml \
+	Integration.htm \
+	Integration2.xml \
+	Integration3.xml \
+	Integration5.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) 
