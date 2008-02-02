@@ -97,11 +97,15 @@ public class PtalonMLHandler extends HandlerBase {
                 String name = _attributes.get("file");
                 name = name.replace(".", "/");
                 name = name + ".ptln";
-                File file = new File(StringUtilities
-                        .getProperty("ptolemy.ptII.dir"));
-                file = new File(file, name);
-                _actor.ptalonCodeLocation.setToken(new StringToken(file
-                        .toString()));
+                // Don't append ptolemy.ptII.dir, it will fail under
+                // WebStart
+                //File file = new File(StringUtilities
+                //        .getProperty("ptolemy.ptII.dir"));
+                //file = new File(file, name);
+                //_actor.ptalonCodeLocation.setToken(new StringToken(file
+                //        .toString()));
+                _actor.ptalonCodeLocation.setToken(new StringToken(
+                                "$CLASSPATH/" + name));
             }
         } else if (elname.equals("ptalonParameter")) {
             if (_attributes.containsKey("name")

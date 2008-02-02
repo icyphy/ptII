@@ -1,7 +1,7 @@
 /* A helper class to store information, like variable scope info, for
  the Ptalon compiler.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 2007-2008 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -30,6 +30,7 @@
 package ptolemy.actor.ptalon;
 
 import java.io.File;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -82,7 +83,7 @@ public abstract class AbstractPtalonEvaluator {
         _actor = actor;
         _counter = 0;
         _root = new IfTree(null, _getNextIfSymbol());
-        _imports = new Hashtable<String, File>();
+        _imports = new Hashtable<String, URL>();
         _currentIfTree = _root;
     }
 
@@ -1005,7 +1006,8 @@ public abstract class AbstractPtalonEvaluator {
         _root.addSymbol(symbol, "import");
         _root.setStatus(symbol, true);
         try {
-            _imports.put(symbol, _actor.ptalonCodeLocation.asFile());
+            // Use asURL() so that $CLASSPATH is expanded
+            _imports.put(symbol, _actor.ptalonCodeLocation.asURL());
             if (!_actor.getName().startsWith(symbol)) {
                 String uniqueName = _actor.getContainer().uniqueName(symbol);
                 _actor.setName(uniqueName);
@@ -1123,7 +1125,7 @@ public abstract class AbstractPtalonEvaluator {
 
     /** A list of the import symbols and their corresponding files.
      */
-    protected Hashtable<String, File> _imports;
+    protected Hashtable<String, URL> _imports;
 
     /** The expression scope for this code manager.
      */
