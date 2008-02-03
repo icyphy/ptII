@@ -54,8 +54,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS =
 
-
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	libjvm.dll.a
 
 EXTRA_SRCS = \
 	$(JSRCS) \
