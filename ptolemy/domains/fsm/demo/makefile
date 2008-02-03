@@ -31,7 +31,7 @@
 ME = 		ptolemy/domains/fsm/demo
 
 DIRS =		ABP Case ChainedTransitions Blending ModalBSC \
-		MultipleRuns StateTracker SystemLevelType
+		MultipleRuns StateTracker
 
 # Root of ptII directory
 ROOT =		../../../..
@@ -54,8 +54,7 @@ PTCLASSALLJARS = \
 	ChainedTransitions/ChainedTransitions.jar \
 	Blending/Blending.jar \
 	ModalBSC/ModalBSC.jar \
-	StateTracker/StateTracker.jar \
-	SystemLevelType/SystemLevelType.jar
+	StateTracker/StateTracker.jar
 
 # We are not shipping MultipleRuns because it leaves threads running.
 # MultipleRuns/MultipleRuns.jar
