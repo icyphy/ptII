@@ -45,7 +45,17 @@
 # links) to expand the configuration and view all the demos.
 # In this way, we can be sure that we have all the files in the jar
 # files _before_ building installers.
-# 
+
+# To test a file, run:    make jnlp_run
+
+# To display our key:
+#   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=/users/ptII/adm/certs/ptkeystore
+#   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=c:/cygwin/users/ptII/adm/certs/ptkeystore
+
+# To sign using our key:
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" jnlp_all
+
+# To update the website:  make jnlp_dist_update
 
 ################################
 # Large jar file containing all the codedoc documentation.
@@ -476,6 +486,16 @@ KEYALIAS = claudius
 #
 # make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" jnlp_all
 #
+# Note that there is chaos with using full paths like
+# "/users/ptII/adm/certs/ptkeystore"
+# Cygwin and make think this file is c:/cygwin/users/ptII/adm/certs/ptkeystore
+# Java thinks it is c:/users/ptII/adm/certs/ptkeystore
+# Thus, you should copy the same file to both locations.
+# Then try viewing the keystore:
+# make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=/users/ptII/adm/certs/ptkeystore
+# make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=c:/cygwin/users/ptII/adm/certs/ptkeystore
+#
+
 STOREPASSWORD = -storepass this.is.the.storePassword,change.it
 KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
 
@@ -897,7 +917,7 @@ key_list:
 		$(STOREPASSWORD)
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII6.0/jnlp-$(PTVERSION)
+DIST_BASE = ptolemyII/ptII7.0/jnlp-$(PTVERSION)
 DIST_DIR = /export/home/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
@@ -922,7 +942,7 @@ jnlp_dist_update:
 	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
 
 # Used to update gr and codeDoc.jar
-DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII6.0/$(PTVERSION)
+DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII7.0/$(PTVERSION)
 update_gr_codeDoc:
 	scp ptolemy/domains/gr/gr.jar bennett:$(DIST_JAR)/ptolemy/domains/gr
 	ssh bennett "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-$(PTVERSION)/signed/doc/codeDoc.jar"
