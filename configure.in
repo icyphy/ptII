@@ -2606,6 +2606,12 @@ changequote([, ])dnl
 		case "`uname -s`" in
 		Linux)
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/glnx86
+			# Someone at Mathworks does not realize that
+			# under Unix, libraries go in the lib/ directory,
+			# not the bin/ directory
+			if test ! -f "$MATLAB_LIBDIR/libeng.so"; then
+			    MATLAB_LIBDIR=${MATLAB_DIR}/bin/glnx86
+			fi 
 			;;
 		CYGWIN*)
                         # As of 5/2007, we no longer use MSVC cl for Matlab
