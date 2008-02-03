@@ -2,24 +2,32 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TrialModule" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 103, 996, 533}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 103, 996, 563}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[773, 418]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[773, 449]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.5, 209.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.5, 224.5}">
     </property>
     <property name="Rendezvous Director" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 55.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the backtracking&#10;functionality, new in 6.1. This is a&#10;backtracking version of this demo.&#10;&#10;TrialModule is a module that computes&#10;capitalized string of the input string. We&#10;have a &quot;trial&quot; version of this module, which&#10;allows only 3 times of usage. After three&#10;outputs, the trial expires and the module&#10;outputs only empty strings to the &quot;output&quot;&#10;port, and true values to the &quot;error&quot; port.&#10;&#10;The Backtrack actor is used to &quot;hack&quot; this&#10;module. A checkpoint will be created at the&#10;first invocation of the module. The&#10;checkpoint handle is recorded in the&#10;ResourcePool. Every time the module&#10;outputs error, the Backtrack actor restores&#10;its state with the checkpoint. The module&#10;then considers itself not expired, and&#10;continues to work.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 25.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Thomas Huining Feng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 410.0]">
         </property>
     </property>
     <entity name="Backtrack" class="ptolemy.backtrack.manual.ptolemy.actor.lib.Backtrack">
@@ -53,7 +61,7 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[417.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[414.0, 267.5]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -63,18 +71,18 @@
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[422.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[419.0, 112.5]">
         </property>
     </entity>
     <entity name="BooleanSelect (B)" class="ptolemy.backtrack.automatic.ptolemy.actor.lib.BooleanSelect">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[292.0, 327.5]">
         </property>
     </entity>
     <entity name="Not Rollback" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a constant sequence.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[137.0, 362.5]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -87,7 +95,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Create a constant sequence.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[57.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[54.0, 217.5]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -99,7 +107,7 @@
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[157.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[154.0, 217.5]">
         </property>
     </entity>
     <entity name="ResourcePool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
@@ -147,11 +155,11 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[92.0, 277.5]">
         </property>
     </entity>
     <entity name="TrialModule" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 100.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[162.0, 122.5]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
@@ -599,7 +607,7 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[327.0, 167.5]">
         </property>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
@@ -612,7 +620,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[47.0, 122.5]">
         </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -622,25 +630,25 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[270.0, 90.0]">
+        <vertex name="vertex1" value="[267.0, 112.5]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[270.0, 195.0]">
+        <vertex name="vertex1" value="[267.0, 217.5]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[245.0, 110.0]">
+        <vertex name="vertex1" value="[242.0, 132.5]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[245.0, 355.0]">
+        <vertex name="vertex1" value="[242.0, 377.5]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -650,13 +658,13 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[170.0, 295.0]">
+        <vertex name="vertex1" value="[167.0, 317.5]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[465.0, 385.0]">
+        <vertex name="vertex1" value="[462.0, 407.5]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
