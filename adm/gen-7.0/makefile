@@ -163,7 +163,7 @@ release_newton_setup:
 	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar setup
 
 release_newton_remote4_test:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar remote4_test
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII7.0.beta/adm/gen-7.0/test/ptII$(VERSION)
 
 release_fortytwo:
 	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar remote4_test
@@ -824,11 +824,18 @@ update_ftp: update_ptii_ftp untar
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	scp -p $(PTII_FULL) $(PTII_SRC) \
-		messier:$(PTII_FTP)
+		bennett:$(PTII_FTP)
 untar:
-	ssh messier rm -rf $(PTII_FTP)/ptII$(VERSION)
-	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
+	ssh bennett rm -rf $(PTII_FTP)/ptII$(VERSION)
+	ssh bennett "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
+
+# Run this to copy the .exe
+update_windows: ptII$(WINDOWS_VERSION)_src.zip
+	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip bennett:$(PTII_FTP)
+
+ptII$(WINDOWS_VERSION)_src.zip:
+	@echo "create the .zip file by untaring $(PTII_SRC) and using zip"
 
 # Make the distribution, run htmlchek
 htmlchek:
