@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen
 
-DIRS =		kernel c gui vhdl test demo
+DIRS =		kernel c gui test demo
 
 # Root of the Java directory
 ROOT =		../..
