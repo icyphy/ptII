@@ -32,7 +32,7 @@
 
 ME =		ptolemy/vergil/fsm
 
-DIRS =		fmv ia modal
+DIRS =		ia modal
 
 # Root of the Java directory
 ROOT =		../../..
@@ -49,7 +49,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		fmv/fmv.jar \
 		ia/ia.jar \
 		modal/modal.jar
 
