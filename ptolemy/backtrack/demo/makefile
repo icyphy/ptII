@@ -49,7 +49,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		PrimeTest/PrimeTest.jar \
-		RampRollback/RampRollback.jar \ 
+		RampRollback/RampRollback.jar \
 		TrialModule/TrialModule.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
