@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Rendezvous demos
+# Makefile for backtrack PrimeTest demo
 #
-# @Authors: Christopher Hylands, Neil Smyth
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2007 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,38 +29,33 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/backtrack/demo
+ME =		ptolemy/backtrack/demo/PrimeTest
 
-DIRS =		PrimeTest RampRollback TrialModule
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
+
+# Used to build jar files
+PTPACKAGE = 	PrimeTest
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		PrimeTest/PrimeTest.jar \
-		RampRollback/RampRollback.jar \ 
-		TrialModule/TrialModule.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
 JSRCS =
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	PrimeTest.xml
+
+EXTRA_SRCS =	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -68,12 +63,22 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all
 
-demo: subdemo
+demo: demo_ptolemy demo_vergil
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer Eye.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" PrimeTest.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" PrimeTest.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
