@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/c
 
-DIRS =		kernel actor domains targets
+DIRS =		kernel actor domains lib targets
 
 # Root of the Java directory
 ROOT =		../../..
@@ -56,6 +56,7 @@ PTCLASSALLJARS = \
 	actor/actor.jar \
 	domains/domains.jar \
 	kernel/kernel.jar \
+	lib/lib.jar \
 	targets/targets.jar
 
 # Keep this list alphabetized.
