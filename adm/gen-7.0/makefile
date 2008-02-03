@@ -156,8 +156,14 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 # Targets
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
-release_newton:
-	make USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup remote4_test
+release_newton_all:
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup remote4_test
+
+release_newton_setup:
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar setup
+
+release_newton_remote4_test:
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar remote4_test
 
 
 # Rebuild the distributions
