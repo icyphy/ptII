@@ -387,7 +387,6 @@ ALL1_4PACKAGES = \
 	ptolemy.actor.lib.hoc \
 	ptolemy.actor.lib.jni \
 	ptolemy.actor.lib.net \
-	ptolemy.actor.lib.vhdl \
 	ptolemy.actor.sched \
 	ptolemy.actor.util \
 	ptolemy.codegen.c.actor \
@@ -410,8 +409,6 @@ ALL1_4PACKAGES = \
 	ptolemy.codegen.c.kernel \
 	ptolemy.codegen.gui \
 	ptolemy.codegen.kernel \
-	ptolemy.codegen.vhdl.actor.lib.vhdl \
-	ptolemy.codegen.vhdl.kernel \
 	ptolemy.domains.ci.kernel \
 	ptolemy.domains.ci.lib \
 	ptolemy.domains.curriculum \
@@ -420,7 +417,6 @@ ALL1_4PACKAGES = \
 	ptolemy.domains.ddf.kernel \
 	ptolemy.domains.ddf.lib \
 	ptolemy.domains.dt.kernel \
-	ptolemy.domains.fsm.kernel.fmv \
 	ptolemy.domains.giotto.kernel \
 	ptolemy.domains.hdf.kernel \
 	ptolemy.domains.petrinet.kernel \
@@ -449,7 +445,6 @@ ALL1_4PACKAGES = \
 	ptolemy.vergil.debugger \
 	ptolemy.vergil.icon \
 	ptolemy.vergil.fsm \
-	ptolemy.vergil.fsm.fmv \
 	ptolemy.vergil.fsm.ia \
 	ptolemy.vergil.kernel \
 	ptolemy.vergil.kernel.attributes \
@@ -630,7 +625,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/lib/logic/*.java \
 			../ptolemy/actor/lib/security/*.java \
 			../ptolemy/actor/lib/string/*.java \
-			../ptolemy/actor/lib/vhdl/*.java \
 			../ptolemy/actor/lib/xslt/*.java \
 			../ptolemy/actor/parameters/*.java \
 			../ptolemy/actor/process/*.java \
@@ -656,8 +650,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/codegen/c/kernel/*.java \
 			../ptolemy/codegen/gui/*.java \
 			../ptolemy/codegen/kernel/*.java \
-			../ptolemy/codegen/vhdl/actor/lib/vhdl/*.java \
-			../ptolemy/codegen/vhdl/kernel/*.java \
 			../ptolemy/domains/curriculum/*.java \
 			../ptolemy/domains/ci/kernel/*.java \
 			../ptolemy/domains/ci/lib/*.java \
