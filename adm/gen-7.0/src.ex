@@ -253,6 +253,7 @@ ptolemy/media/javasound/demo/livesines
 ptolemy/media/test/array.au
 ptolemy/media/test/tmp2.au
 ptolemy/media/test/tmp2*.au
+ptolemy/moml/filter/test/codeDoc
 ptolemy/moml/filter/test/compat
 ptolemy/moml/filter/test/compat1
 ptolemy/moml/filter/test/compat2
@@ -271,6 +272,8 @@ ptolemy/plotml/build.xml
 ptolemy/ptp
 ptolemy/schematic
 ptolemy/system
+ptolemy/util/test/FileUtilities-1.1.tmp
+ptolemy/util/test/META-INF
 ptolemy/vergil/JModelViewer.java
 ptolemy/vergil/VergilApplet.java
 ptolemy/vergil/actor/VerificationUtility.java
