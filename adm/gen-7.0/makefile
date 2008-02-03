@@ -156,8 +156,9 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 # Targets
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
-release:
-	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup
+release_newton:
+	make USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup remote4_test
+
 
 # Rebuild the distributions
 rebuild: clean all installshield_app build_unixPtII
@@ -218,7 +219,7 @@ $(PTIIDIST):
 	touch $(PTIIDIST)/configure
 	# Copy the vergil script for use in the full tar file
 	(cd $(PTIIHOME)/bin; make)
-	cp $(PTIIHOME)/bin/vergil $(PTIIDIST)/bin
+	#cp $(PTIIHOME)/bin/vergil $(PTIIDIST)/bin
 	# Bump up the mod time of $PTII/mk/ptII.mk.in so that if
 	# the user runs make, then configure will run 
 	touch $(PTIIDIST)/mk/ptII.mk.in
@@ -542,7 +543,7 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
-JAR=c:/j2sdk1.4.2_08/bin/jar
+JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
 
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
@@ -1785,7 +1786,7 @@ REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
 # Log file to save the results in
 REMOTE4LOG = $(GENLOGDIR)/remote4.out
 
-fortytwo_test: $(PTII_SRC) 
+remote4_test: $(PTII_SRC) 
 	if [ ! -d test ]; then mkdir test; fi
 	$(MAKE) REMOTE4HOME=$(GENDIR)/test \
 		PTII_FULL=$(PTII_SRC) \
@@ -2154,8 +2155,8 @@ $(IZPACK_COMPILE): $(PTII)/vendors/izpack
 $(PTII)/vendors/izpack:
 	mkdir $(PTII)/vendors/izpack
 	cd $(PTII)/vendors/izpack; \
-		wget http://prdownload.berlios.de/izpack/$(IZPACK_TAR); \
-		$(TAR) -zxf $(IZPACK_TAR)
+		wget http://download.berlios.de/izpack/$(IZPACK_TAR); \
+		$(TAR) -xxf $(IZPACK_TAR)
 
 PTSETUP=ptII$(WINDOWS_VERSION)_setup
 # IzPack installer
