@@ -441,6 +441,7 @@ VISUAL_SENSE_JNLP_JARS =	\
 # hopefully without duplicates so that  we don't sign jars twice.
 # We include plotapplication.jar so that the ptplot and histogram
 # commands will work.
+# Include ddf.jar because codegen needs it
 ALL_NON_APPLICATION_JNLP_JARS = \
 	$(NATIVE_SIGNED_LIB_JARS) \
 	$(CORE_JNLP_JARS) \
@@ -451,6 +452,8 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(VISUAL_SENSE_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS) \
+	$(CODEGEN_DOMAIN_JARS) \
+	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/plot/plotapplication.jar 
 
 # All the jar files, include the application jars
@@ -471,7 +474,7 @@ KEYALIAS = claudius
 # The password should not be stored in a makefile, for production
 # purposes, run something like:
 #
-# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD= jnlp_all
+# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" jnlp_all
 #
 STOREPASSWORD = -storepass this.is.the.storePassword,change.it
 KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
@@ -811,6 +814,7 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 CODEGEN_DOMAIN_JARS = \
 	ptolemy/domains/ci/ci.jar \
 	ptolemy/domains/ct/ct.jar \
+	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/domains/de/de.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/gr/gr.jar \
