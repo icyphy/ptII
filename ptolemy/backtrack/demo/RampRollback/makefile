@@ -49,8 +49,7 @@ include $(CONFIG)
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	RampRollback.xml \
-	RampRollbackNonBacktrack.xml
+	RampRollback.xml
 
 EXTRA_SRCS =	$(OTHER_FILES_TO_BE_JARED)
 
