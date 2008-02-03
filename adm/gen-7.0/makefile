@@ -166,11 +166,14 @@ release_newton_remote4_test:
 	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar remote4_test
 
 release_fortytwo:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar setup remote4_test
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar remote4_test
 
 
 release_fortytwo_setup:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar setup
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar L4J_DIR=$(PTII)/vendors/launch4j PTCYGPATH=`pwd`/ptcygpath setup
+
+release_fortytwo_remote4_test:
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar remote4_test
 
 
 # Rebuild the distributions
@@ -2192,8 +2195,8 @@ Echo.class: Echo.java
 ExtractJarFile.jar: ExtractJarFile.class Echo.class
 	jar -cf $@ CYGPATH^
 
-PTCYGPATH=cygpath -a --windows
-#PTCYGPATH=./ptcygpath
+#PTCYGPATH=cygpath -a --windows
+PTCYGPATH=./ptcygpath
 
 # Recompile izpack
 izpack:	
