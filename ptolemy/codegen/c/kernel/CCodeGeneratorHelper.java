@@ -47,6 +47,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.ExecuteCommands;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
@@ -201,6 +202,10 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         getCodeGenerator().addInclude("-I\"" + javaHome + "include\"");
         getCodeGenerator().addInclude("-I\"" + javaHome + "include/win32\"");
 
+        // The directive we use to find jvm.dll, which is usually
+        // in c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
+        String jvmLoaderDirective = "-ljvm";
+
         String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
         String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
         String libjvmAbsoluteDirectory = ptIIDir + "/"
@@ -214,16 +219,28 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             // that gcc can find it.
             URL libjvmURL = Thread.currentThread().getContextClassLoader()
                 .getResource(libjvmRelativeDirectory + "/" + libjvmFileName);
-            System.out.println("CCodeGeneratorHelper: found " +
-                    libjvmURL);
             if (libjvmURL != null) {
                 String libjvmAbsolutePath = null;
                 try {
-                    libjvmAbsolutePath = JNLPUtilities.saveJarURLInClassPath(libjvmURL.toString());
-                    libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
-                            libjvmAbsolutePath.lastIndexOf("/"));
-                    System.out.println("CCodeGeneratorHelper: found 2 " +
-                            libjvmAbsoluteDirectory);
+                    File temporaryFile = File.createTempFile("libjvm.dll", ".a");
+                    libjvmAbsolutePath = temporaryFile.getAbsolutePath();
+
+                    temporaryFile.deleteOnExit();
+
+                    if (FileUtilities.binaryCopyURLToFile(libjvmURL, 
+                                    temporaryFile)) {
+
+                        libjvmAbsolutePath = libjvmAbsolutePath.replace('\\', '/'); 
+                        libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
+                                    libjvmAbsolutePath.lastIndexOf("/"));
+
+                        // Get rid of everything before the last /lib and the .a
+                        jvmLoaderDirective = "-l"
+                            + libjvmAbsolutePath.substring(
+                                    libjvmAbsolutePath.lastIndexOf("/lib") + 4,
+                                    libjvmAbsolutePath.length() -2);
+
+                    }
                 } catch (Exception ex) {
                     throw new IllegalActionException(getComponent(),
                             ex, "Could not copy \"" + libjvmURL
@@ -235,7 +252,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         getCodeGenerator().addLibrary(
                 "-L\"" + libjvmAbsoluteDirectory + "\"");
-        getCodeGenerator().addLibrary("-ljvm");
+        getCodeGenerator().addLibrary(jvmLoaderDirective);
 
         Set files = new HashSet();
         files.add("<jni.h>");
