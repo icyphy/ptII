@@ -41,6 +41,7 @@ import ptolemy.actor.Director;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
@@ -90,27 +91,37 @@ public class SMVUtility {
 
         returnFmvFormat.append("MODULE " + "System" + "() \n");
         returnFmvFormat.append("\tVAR \n");
-        HashMap<String, FSMActor> FSMActors = new HashMap<String, FSMActor>();
+        //HashMap<String, FSMActor> FSMActors = new HashMap<String, FSMActor>();
 
         // List out all FSMs with their states.
         // int index = 0;
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
-            Entity innerModel = (Entity) actors.next();
+            Entity innerEntity = (Entity) actors.next();
+            Entity innerModel = innerEntity;
+            if (innerEntity instanceof ModalModel) {
+
+                try {
+                    // Temporarily set up the name of the inner FSMActor as
+                    // innerEntity.getName().
+                    ((ModalModel) innerEntity).getController().setName(
+                            innerEntity.getName());
+                } catch (Exception ex) {
+                    // This is OK to do this.
+                }
+                innerModel = ((ModalModel) innerEntity).getController();
+            }
             if (innerModel instanceof FSMActor) {
 
-                // String name = innerModel.getName() == null ? new String(
-                // Integer.toString(index) + "-") : new String(Integer
-                // .toString(index)
-                // + "-" + innerModel.getName());
                 String name = innerModel.getName();
-                FSMActors.put(name, (FSMActor) innerModel);
+                //FSMActors.put(name, (FSMActor) innerModel);
 
                 HashSet<State> frontier; // = new HashSet<State>();
                 try {
                     // Enumerate all states
                     frontier = _enumerateStateSet((FSMActor) innerModel);
                 } catch (Exception ex) {
+                    _undoSystemModalModelRenaming(model);
                     throw new IllegalActionException(
                             "VerificationUtility.generateSMVFormat() clashes: "
                                     + ex.getMessage());
@@ -157,6 +168,7 @@ public class SMVUtility {
             // _variableInfo would store the domain (min, max) of a
             // certain variable.
         } catch (Exception ex) {
+            _undoSystemModalModelRenaming(model);
             throw new IllegalActionException(
                     "VerificationUtility.generateSMVFormat() clashes: "
                             + ex.getMessage());
@@ -171,11 +183,13 @@ public class SMVUtility {
             // Retrieve the lower bound and upper bound of the
             // variable used in the system
             if (_variableInfo.get(valName) == null) {
+                _undoSystemModalModelRenaming(model);
                 throw new IllegalActionException("Internal error, getting \""
                         + valName + "\" from \"_variableInfo\" returned null?");
             }
             VariableInfo individual = (VariableInfo) _variableInfo.get(valName);
             if (individual == null) {
+                _undoSystemModalModelRenaming(model);
                 throw new IllegalActionException("Internal error, getting \""
                         + valName + "\" returned null?");
             }
@@ -191,6 +205,7 @@ public class SMVUtility {
                 returnFmvFormat.append("gt };\n");
 
             } catch (Exception ex) {
+                _undoSystemModalModelRenaming(model);
                 throw new IllegalActionException(
                         "VerificationUtility.generateSMVFormat() clashes: "
                                 + ex.getMessage());
@@ -204,22 +219,24 @@ public class SMVUtility {
 
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
-            Entity innerModel = (Entity) actors.next();
+            Entity innerEntity = (Entity) actors.next();
+            Entity innerModel = innerEntity;
+            if (innerEntity instanceof ModalModel) {
+                innerModel = ((ModalModel) innerEntity).getController();
+            }
             if (innerModel instanceof FSMActor) {
                 // setup initial state
                 try {
                     String name = ((FSMActor) innerModel).getInitialState()
                             .getName();
-                    returnFmvFormat.append("\t\tinit("
-                            + ((FSMActor) innerModel).getName() + "-"
-                            + "state) := " + name + ";\n");
+                    returnFmvFormat.append("\t\tinit(" + innerModel.getName()
+                            + "-" + "state) := " + name + ";\n");
                 } catch (Exception ex) {
                     throw new IllegalActionException(
                             "VerificationUtility.generateSMVFormat() clashes: "
                                     + ex.getMessage());
                 }
-                returnFmvFormat.append("\t\tnext("
-                        + ((FSMActor) innerModel).getName() + "-"
+                returnFmvFormat.append("\t\tnext(" + innerModel.getName() + "-"
                         + "state) :=\n");
                 returnFmvFormat.append("\t\t\tcase\n");
                 LinkedList<VariableTransitionInfo> infoList = _variableTransitionInfo
@@ -230,7 +247,7 @@ public class SMVUtility {
                             + " :{ " + info._varibleNewValue + " };\n");
                 }
                 returnFmvFormat.append("\t\t\t\t1             : "
-                        + ((FSMActor) innerModel).getName() + "-" + "state;\n");
+                        + innerModel.getName() + "-" + "state;\n");
                 returnFmvFormat.append("\t\t\tesac;\n\n");
             }
 
@@ -263,10 +280,13 @@ public class SMVUtility {
             returnFmvFormat.append("\t\t\tesac;\n\n");
         }
 
+        _undoSystemModalModelRenaming(model);
         //System.out.println("\n\n****** RESULT OF CONVERSION ******");
         //System.out.println(returnFmvFormat.toString());
         return returnFmvFormat;
     }
+
+
 
     /**
      *  This function decides if the director of the current actor is SR.
@@ -302,7 +322,11 @@ public class SMVUtility {
 
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
-            Entity innerModel = (Entity) actors.next();
+            Entity innerEntity = (Entity) actors.next();
+            Entity innerModel = innerEntity;
+            if (innerEntity instanceof ModalModel) {
+                innerModel = ((ModalModel) innerEntity).getController();
+            }
             if (innerModel instanceof FSMActor) {
                 HashSet<State> stateSet = new HashSet<State>();
                 try {
@@ -586,7 +610,11 @@ public class SMVUtility {
         // Also count based on parameters
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
-            Entity innerModel = (Entity) actors.next();
+            Entity innerEntity = (Entity) actors.next();
+            Entity innerModel = innerEntity;
+            if (innerEntity instanceof ModalModel) {
+                innerModel = ((ModalModel) innerEntity).getController();
+            }
             if (innerModel instanceof FSMActor) {
 
                 Iterator it = _variableInfo.keySet().iterator();
@@ -754,7 +782,11 @@ public class SMVUtility {
         // initialize
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
-            Entity innerModel = (Entity) actors.next();
+            Entity innerEntity = (Entity) actors.next();
+            Entity innerModel = innerEntity;
+            if (innerEntity instanceof ModalModel) {
+                innerModel = ((ModalModel) innerEntity).getController();
+            }
             if (innerModel instanceof FSMActor) {
                 LinkedList<VariableTransitionInfo> l = new LinkedList<VariableTransitionInfo>();
                 _variableTransitionInfo.put(((FSMActor) innerModel).getName()
@@ -794,7 +826,11 @@ public class SMVUtility {
         HashSet<String> outputSetUpSet = new HashSet<String>();
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
-            Entity innerModel = (Entity) actors.next();
+            Entity innerEntity = (Entity) actors.next();
+            Entity innerModel = innerEntity;
+            if (innerEntity instanceof ModalModel) {
+                innerModel = ((ModalModel) innerEntity).getController();
+            }
             if (innerModel instanceof FSMActor) {
                 HashSet<State> stateSet = new HashSet<State>();
 
@@ -878,7 +914,11 @@ public class SMVUtility {
         HashSet<String> outerCoordinationVariableSet = new HashSet<String>();
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
-            Entity innerModel = (Entity) actors.next();
+            Entity innerEntity = (Entity) actors.next();
+            Entity innerModel = innerEntity;
+            if (innerEntity instanceof ModalModel) {
+                innerModel = ((ModalModel) innerEntity).getController();
+            }
             if (innerModel instanceof FSMActor) {
                 HashSet<State> stateSet = new HashSet<State>();
                 //try {
@@ -1000,7 +1040,11 @@ public class SMVUtility {
 
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
-            Entity innerModel = (Entity) actors.next();
+            Entity innerEntity = (Entity) actors.next();
+            Entity innerModel = innerEntity;
+            if (innerEntity instanceof ModalModel) {
+                innerModel = ((ModalModel) innerEntity).getController();
+            }
             if (innerModel instanceof FSMActor) {
 
                 HashSet<State> stateSet = new HashSet<State>();
@@ -1978,7 +2022,11 @@ public class SMVUtility {
 
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
-            Entity innerModel = (Entity) actors.next();
+            Entity innerEntity = (Entity) actors.next();
+            Entity innerModel = innerEntity;
+            if (innerEntity instanceof ModalModel) {
+                innerModel = ((ModalModel) innerEntity).getController();
+            }
             if (innerModel instanceof FSMActor) {
                 if (innerModel.getName().equalsIgnoreCase(
                         currentModel.getName())) {
@@ -3663,7 +3711,11 @@ public class SMVUtility {
         try {
             for (Iterator actors = (((CompositeActor) model).entityList())
                     .iterator(); actors.hasNext();) {
-                Entity innerModel = (Entity) actors.next();
+                Entity innerEntity = (Entity) actors.next();
+                Entity innerModel = innerEntity;
+                if (innerEntity instanceof ModalModel) {
+                    innerModel = ((ModalModel) innerEntity).getController();
+                }
                 if (innerModel instanceof FSMActor) {
 
                     Iterator<String> it = variableSet.iterator();
@@ -3742,6 +3794,34 @@ public class SMVUtility {
         return returnMap;
     }
 
+    /**
+     *  This function tries to recover the modified name in the FSMActor of
+     *  a ModalModel. This is because every FSMActor in a ModalModel has a
+     *  similar name "_Controller", which causes problem in the output format.
+     *  Thus in the function "generateSMVDescription", we temporarily let the
+     *  FSMActor "inherent" the name of the modal model. When the process is
+     *  ended or exception occurs, we need to restore it. 
+     *  
+     *  @param model Whole System under analysis.
+     */
+    private static void _undoSystemModalModelRenaming(CompositeActor model) {
+        for (Iterator actors = (((CompositeActor) model).entityList())
+                .iterator(); actors.hasNext();) {
+            Entity innerEntity = (Entity) actors.next();
+            Entity innerModel = innerEntity;
+            if (innerEntity instanceof ModalModel) {
+                try {
+                    // Because we temporarily set up the name of the inner FSMActor as
+                    // innerEntity.getName(), now it is the time to restore.
+                    ((ModalModel) innerEntity).getController().setName(
+                            "_Controller");
+                } catch (Exception ex) {
+                    // This is OK to do this.
+                }
+            }
+        }
+    }
+    
     // BY PATRICK
     private static HashMap<String, VariableInfo> _variableInfo;
     private static HashMap<String, LinkedList<VariableTransitionInfo>> _variableTransitionInfo;
