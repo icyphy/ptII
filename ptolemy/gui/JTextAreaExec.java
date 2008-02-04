@@ -1,6 +1,6 @@
 /* A JTextArea that takes a list of commands and runs them.
 
- Copyright (c) 2001-2007 The Regents of the University of California.
+ Copyright (c) 2001-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,6 +56,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 import ptolemy.util.ExecuteCommands;
+import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
 /** Execute commands in a subprocess and display them in a JTextArea.
@@ -166,6 +167,20 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         SwingUtilities.invokeLater(doAppendJTextArea);
     }
 
+    /** Append to the path of the subprocess.  If directoryName is already
+     *  in the path, then it is not appended.  
+     *  @param directoryName The name of the directory to append to the path.
+     */
+    public void appendToPath(String directoryName) {
+        String path = getenv("PATH");
+        if (path.indexOf(File.pathSeparatorChar + directoryName
+                        + File.pathSeparatorChar) == -1) {
+            _envp = StreamExec.updateEnvironment("PATH",
+                    File.pathSeparatorChar + directoryName
+                    + File.pathSeparatorChar);
+        }
+    }
+
     /** Cancel any running commands. */
     public void cancel() {
         _cancelButton.doClick();
@@ -176,6 +191,26 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         _clearButton.doClick();
         updateStatusBar("");
         _updateProgressBar(0);
+    }
+
+    /** Get the value of the environment of the subprocess.
+     *  @param key   
+     *  @return The value of the key.  If the key is not set, then 
+     *  null is returned.  If appendToPath() has been called, and
+     *  the key parameter is "PATH", then the current value of the PATH
+     *  of the subprocess will be returned.  Note that this may be different 
+     *  from the PATH of the current process.
+     */
+    public String getenv(String key) {
+        if (_envp == null) {
+            return System.getenv(key);
+        }
+        for ( int i = 0; i < _envp.length; i++) {
+            if (_envp[i].startsWith("PATH=")) {
+                return _envp[i].substring(5, _envp[i].length());
+            }
+        }
+        return null;
     }
 
     /** Return the return code of the last subprocess that was executed.
@@ -364,8 +399,8 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                     _statusBar
                             .setText("Executing: " + statusCommand.toString());
 
-                    // 2nd arg is null, meaning no environment changes.
-                    _process = runtime.exec(commandTokens, null,
+                    // If _envp is null, then no environment changes.
+                    _process = runtime.exec(commandTokens, _envp,
                             _workingDirectory);
 
                     // Set up a Thread to read in any error messages
@@ -535,6 +570,12 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
      * the command.
      */
     private List _commands = null;
+
+    /** The environment, which is an array of Strings of the form
+     *  <code>name=value</code>.  If this variable is null, then
+     *  the environment of the calling process is used.
+     */
+    private String[] _envp;
 
     /** JTextArea to write the command and the output of the command. */
     private JTextArea _jTextArea;

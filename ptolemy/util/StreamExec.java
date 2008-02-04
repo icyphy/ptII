@@ -31,8 +31,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /** Execute commands in a subprocess and send the results to stderr and stdout.
  <p>As an alternative to this class, see
@@ -80,6 +82,20 @@ public class StreamExec implements ExecuteCommands {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Append to the path of the subprocess.  If directoryName is already
+     *  in the path, then it is not appended.  
+     *  @param directoryName The name of the directory to append to the path.
+     */
+    public void appendToPath(String directoryName) {
+        String path = getenv("PATH");
+        if (path.indexOf(File.pathSeparatorChar + directoryName
+                        + File.pathSeparatorChar) == -1) {
+            _envp = StreamExec.updateEnvironment("PATH",
+                    File.pathSeparatorChar + directoryName
+                    + File.pathSeparatorChar);
+        }
+    }
+
     /** Cancel any running commands. */
     public void cancel() {
         //_worker.interrupt();
@@ -92,6 +108,26 @@ public class StreamExec implements ExecuteCommands {
     public void clear() {
         updateStatusBar("");
         _updateProgressBar(0);
+    }
+
+    /** Get the value of the environment of the subprocess.
+     *  @param key   
+     *  @return The value of the key.  If the key is not set, then 
+     *  null is returned.  If appendToPath() has been called, and
+     *  the key parameter is "PATH", then the current value of the PATH
+     *  of the subprocess will be returned.  Note that this may be different 
+     *  from the PATH of the current process.
+     */
+    public String getenv(String key) {
+        if (_envp == null) {
+            return System.getenv(key);
+        }
+        for ( int i = 0; i < _envp.length; i++) {
+            if (_envp[i].startsWith("PATH=")) {
+                return _envp[i].substring(5, _envp[i].length());
+            }
+        }
+        return null;
     }
 
     /** Return the return code of the last subprocess that was executed.
@@ -144,6 +180,39 @@ public class StreamExec implements ExecuteCommands {
     public void stdout(final String text) {
         System.out.println(text);
         System.out.flush();
+    }
+
+    /** Update the environment and return the results.
+     *  Read the environment for the current process, append the value
+     *  of the value parameter to the environment variable named by
+     *  the key parameter.
+     *  @param key The environment variable to be updated.
+     *  @param value The value to append
+     *  @return An array of strings that consists of the subprocess
+     *  environment variable names and values in the form
+     *  <code>name=value</code> with the environment variable
+     *  named by the key parameter updated to include the value
+     *  of the value parameter.
+     */
+    public static String[] updateEnvironment(String key, String value) {
+        // This is static so that we can share it among
+        // ptolemy.util.StreamExec
+        // StringBufferExec, which extends Stream Exec
+        // and
+        // ptolemy.gui.JTextAreaExec, which extends JPanel
+
+        Map<String,String> env = new HashMap(System.getenv());
+
+        env.put(key, value + env.get(key));
+        String [] envp = new String[env.size()];
+
+        int i = 0;
+        Iterator entries = env.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry entry = (Map.Entry) entries.next();
+            envp[i++] = entry.getKey() + "=" + entry.getValue();
+        }
+        return envp;
     }
 
     /** Set the text of the status bar.  In this base class, do
@@ -229,8 +298,8 @@ public class StreamExec implements ExecuteCommands {
 
                     updateStatusBar("Executing: " + statusCommand.toString());
 
-                    // 2nd arg is null, meaning no environment changes.
-                    _process = runtime.exec(commandTokens, null,
+                    // If _envp is null, then no environment changes.
+                    _process = runtime.exec(commandTokens, _envp,
                             _workingDirectory);
 
                     // Set up a Thread to read in any error messages
@@ -331,6 +400,12 @@ public class StreamExec implements ExecuteCommands {
      *  the command.
      */
     private List _commands;
+
+    /** The environment, which is an array of Strings of the form
+     *  <code>name=value</code>.  If this variable is null, then
+     *  the environment of the calling process is used.
+     */
+    private String[] _envp;
 
     /** The Process that we are running. */
     private Process _process;
