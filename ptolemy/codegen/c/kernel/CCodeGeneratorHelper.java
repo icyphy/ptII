@@ -1,6 +1,6 @@
 /* Base class for C code generator helper.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2005-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,12 +27,16 @@
  */
 package ptolemy.codegen.c.kernel;
 
+import java.io.IOException;
+import java.io.File;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -43,6 +47,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.ExecuteCommands;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
@@ -197,10 +202,57 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         getCodeGenerator().addInclude("-I\"" + javaHome + "include\"");
         getCodeGenerator().addInclude("-I\"" + javaHome + "include/win32\"");
 
+        // The directive we use to find jvm.dll, which is usually
+        // in c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
+        String jvmLoaderDirective = "-ljvm";
+
         String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
+        String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
+        String libjvmAbsoluteDirectory = ptIIDir + "/"
+            + libjvmRelativeDirectory;
+        String libjvmFileName = "libjvm.dll.a"; 
+        String libjvmPath = libjvmAbsoluteDirectory + "/" + libjvmFileName;
+
+        if ( !(new File(libjvmPath).canRead()) ) {
+            // If we are under WebStart or running from jar files, we
+            // will need to copy libjvm.dll.a from the jar file
+            // that gcc can find it.
+            URL libjvmURL = Thread.currentThread().getContextClassLoader()
+                .getResource(libjvmRelativeDirectory + "/" + libjvmFileName);
+            if (libjvmURL != null) {
+                String libjvmAbsolutePath = null;
+                try {
+                    File temporaryFile = File.createTempFile("libjvm.dll", ".a");
+                    libjvmAbsolutePath = temporaryFile.getAbsolutePath();
+
+                    temporaryFile.deleteOnExit();
+
+                    if (FileUtilities.binaryCopyURLToFile(libjvmURL, 
+                                    temporaryFile)) {
+
+                        libjvmAbsolutePath = libjvmAbsolutePath.replace('\\', '/'); 
+                        libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
+                                    libjvmAbsolutePath.lastIndexOf("/"));
+
+                        // Get rid of everything before the last /lib and the .a
+                        jvmLoaderDirective = "-l"
+                            + libjvmAbsolutePath.substring(
+                                    libjvmAbsolutePath.lastIndexOf("/lib") + 4,
+                                    libjvmAbsolutePath.length() -2);
+
+                    }
+                } catch (Exception ex) {
+                    throw new IllegalActionException(getComponent(),
+                            ex, "Could not copy \"" + libjvmURL
+                            + "\" to the file system, path was: \""
+                            + libjvmAbsolutePath + "\"");
+                }
+            }
+        }
+
         getCodeGenerator().addLibrary(
-                "-L\"" + ptIIDir + "/ptolemy/codegen/c/lib/win\"");
-        getCodeGenerator().addLibrary("-ljvm");
+                "-L\"" + libjvmAbsoluteDirectory + "\"");
+        getCodeGenerator().addLibrary(jvmLoaderDirective);
 
         Set files = new HashSet();
         files.add("<jni.h>");
