@@ -29,6 +29,7 @@ package ptolemy.codegen.c.kernel;
 
 import java.io.IOException;
 import java.io.File;
+import java.io.FileFilter;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -168,12 +169,12 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
       *  @exception IllegalActionException Not Thrown in this subclass.
       */
     public Set getJVMHeaderFiles() throws IllegalActionException {
+        String javaHome = StringUtilities.getProperty("java.home");
         if (!_printedJVMWarning) {
             // We only print this once.
             _printedJVMWarning = true;
             ExecuteCommands executeCommands = getCodeGenerator()
                     .getExecuteCommands();
-            String javaHome = StringUtilities.getProperty("java.home");
 
             if (executeCommands == null) {
                 executeCommands = new StreamExec();
@@ -192,18 +193,58 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                     + "then this has been handled for you." + _eol
                     + "  If you are running via Eclipse, then you must update "
                     + "your path by hand." + _eol + _eol + _eol);
+            
+            String jreBinClientPath = javaHome + File.separator + "bin"
+                + File.separator + "client";
+            executeCommands.appendToPath(jreBinClientPath);
         }
 
-        // FIXME: This only works under windows.
-        String javaHome = StringUtilities.getProperty("java.home");
         javaHome = javaHome.replace('\\', '/');
-        int index = javaHome.lastIndexOf("jre");
-        javaHome = javaHome.substring(0, index);
-        getCodeGenerator().addInclude("-I\"" + javaHome + "include\"");
-        getCodeGenerator().addInclude("-I\"" + javaHome + "include/win32\"");
+        if (javaHome.endsWith("/jre")) {
+            javaHome = javaHome.substring(0, javaHome.length() - 4);
+        }
+            
+        if (!(new File(javaHome + "/include").isDirectory())) {
+            // It could be that we are running under WebStart
+            // or otherwise in a JRE, so we should look for the JDK.
+            File potentialJavaHomeParentFile = new File(javaHome).getParentFile();
+            // Loop through twice, once with the parent, once with
+            // C:/Program Files/Java.  This is lame, but easy
+            for (int loop = 2; loop > 0; loop--) {
+                // Get all the directories that have include/jni.h under them.
+                File [] jdkFiles = potentialJavaHomeParentFile.listFiles(
+                        new FileFilter() {
+                            public boolean accept(File pathname) {
+                                return new File(pathname, "/include/jni.h").canRead();
+                            }
+                    });
+                if (jdkFiles != null && jdkFiles.length >= 1) {
+                    // Sort and get the last directory, which should
+                    // be the most recent JDK.
+                    java.util.Arrays.sort(jdkFiles);
+                    javaHome = jdkFiles[jdkFiles.length - 1].toString();
+                    break;
+                } else {
+                    // Not found, please try again.
+                    potentialJavaHomeParentFile = new File("C:\\Program Files\\Java");
+                }
+            }
+        } 
 
-        // The directive we use to find jvm.dll, which is usually
-        // in c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
+        getCodeGenerator().addInclude("-I\"" + javaHome + "/include\"");
+
+        String osName = StringUtilities.getProperty("os.name");
+        String platform = "win32";
+        if (osName.startsWith("Linux")) {
+            platform = "linux";
+        } else if (osName.startsWith("SunOS")) {
+            platform = "solaris";
+        }
+        getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
+                + platform + "\"");
+
+        // The directive we use to find jvm.dll, which is usually in 
+        // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
         String jvmLoaderDirective = "-ljvm";
 
         String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
