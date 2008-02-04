@@ -1656,14 +1656,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         _eol = StringUtilities.getProperty("line.separator");
     }
 
-    /** Set of execute commands to run the generated code.
+    /** Execute commands to run the generated code.
      */
     protected ExecuteCommands _executeCommands;
 
-    /** Set of library command line arguments where each element is
+    /** List of library command line arguments where each element is
      *  a string, for example "-L/usr/local/lib".
+     *  This variable is a list so as to preserve the order that the
+     *  library commands were added to the list of libraries matters,
+     *  see the manual page for the -L option of the ld command.
      */
-    protected Set<String> _libraries = new HashSet<String>();
+    protected List<String> _libraries = new LinkedList<String>();
 
     /** Indent string for indent level 1.
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)

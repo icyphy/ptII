@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -564,8 +565,7 @@ public class CCodeGenerator extends CodeGenerator {
             types.add("String");
         }
 
-        if (functions.contains("isCloseTo")
-                && (_newTypesUsed.contains("Int") || _newTypesUsed.contains("UnsignedByte"))
+        if (functions.contains("isCloseTo") && _newTypesUsed.contains("Int")
                 && !_newTypesUsed.contains("Double")) {
             // FIXME: we should not need Double for Int_isCloseTo()
             types.add("Double");
@@ -1210,20 +1210,20 @@ public class CCodeGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Given a Set of Strings, return a string where each element of the
+    /** Given a Collection of Strings, return a string where each element of the
      *  Set is separated by a space.
      *  @param set The Set of Strings.
      *  @return A String that contains each element of the Set separated by
      *  a space.
      */
-    private static String _concatenateElements(Set set) {
+    private static String _concatenateElements(Collection collection) {
         StringBuffer buffer = new StringBuffer();
-        Iterator sets = set.iterator();
-        while (sets.hasNext()) {
+        Iterator iterator = collection.iterator();
+        while (iterator.hasNext()) {
             if (buffer.length() > 0) {
                 buffer.append(" ");
             }
-            buffer.append((String) sets.next());
+            buffer.append((String) iterator.next());
         }
         return buffer.toString();
     }
@@ -1299,6 +1299,5 @@ public class CCodeGenerator extends CodeGenerator {
         _scalarDeleteTypes.add("Double");
         _scalarDeleteTypes.add("Int");
         _scalarDeleteTypes.add("Long");
-        _scalarDeleteTypes.add("UnsignedByte");
     }
 }
