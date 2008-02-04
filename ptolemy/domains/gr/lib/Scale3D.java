@@ -75,6 +75,7 @@ public class Scale3D extends GRTransform {
         super(container, name);
 
         scaleInput = new TypedIOPort(this, "scaleInput");
+        scaleInput.setTypeEquals(BaseType.DOUBLE);
         scaleInput.setInput(true);
 
         scaleFactor = new Parameter(this, "scaleFactor", new DoubleToken(1.0));
@@ -119,16 +120,61 @@ public class Scale3D extends GRTransform {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Check the input port for scaling input. 
+     *
+     *  @exception IllegalActionException If the value of some parameters
+     *   can't be obtained
+     */
+    public void fire() throws IllegalActionException {
+        //  all state changes must be done in postfire()
+        super.fire();
+
+        boolean applyTransform = false;
+        double xScale = 1.0;
+        double yScale = 1.0;
+        double zScale = 1.0;
+
+        // read new inputs for offsets if there are any.
+        if (scaleInput.getWidth() != 0 && scaleInput.hasToken(0)) {
+            double in = ((DoubleToken) scaleInput.get(0)).doubleValue();
+            applyTransform = true;
+            xScale = in * _getInitialScaleX();
+            yScale = in * _getInitialScaleY();
+            zScale = in * _getInitialScaleZ();
+        } else {
+            xScale = _scaleXState;
+            yScale = _scaleYState;
+            zScale = _scaleZState;
+        }
+
+        if (applyTransform) {
+            Transform3D scaleTransform = new Transform3D();
+            scaleTransform.setScale(new Vector3d(xScale, yScale, zScale));
+            _transformNode.setTransform(scaleTransform);
+        }
+        
+        // use the results as the new states and save them
+        // (Should these state changes be moved to postfire?)
+        _scaleXState = xScale;
+        _scaleYState = yScale;
+        _scaleZState = zScale;
+
+    }
+
     /** Setup the transformation needed for scaling.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _transformNode = new TransformGroup();
         _transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+    
+        _scaleXState = _getInitialScaleX();
+        _scaleYState = _getInitialScaleY();
+        _scaleZState = _getInitialScaleZ();
 
         Transform3D scaleTransform = new Transform3D();
-        scaleTransform.setScale(new Vector3d(_getScaleX(), _getScaleY(),
-                _getScaleZ()));
+        scaleTransform.setScale(new Vector3d(_scaleXState, _scaleYState,
+                _scaleZState));
         _transformNode.setTransform(scaleTransform);
     }
 
@@ -166,7 +212,7 @@ public class Scale3D extends GRTransform {
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
      */
-    private double _getScaleX() throws IllegalActionException {
+    private double _getInitialScaleX() throws IllegalActionException {
         double factor = ((DoubleToken) scaleFactor.getToken()).doubleValue();
         double xFactor = ((DoubleToken) xScale.getToken()).doubleValue();
         return factor * xFactor;
@@ -177,7 +223,7 @@ public class Scale3D extends GRTransform {
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
      */
-    private double _getScaleY() throws IllegalActionException {
+    private double _getInitialScaleY() throws IllegalActionException {
         double factor = ((DoubleToken) scaleFactor.getToken()).doubleValue();
         double yFactor = ((DoubleToken) yScale.getToken()).doubleValue();
         return factor * yFactor;
@@ -188,9 +234,17 @@ public class Scale3D extends GRTransform {
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
      */
-    private double _getScaleZ() throws IllegalActionException {
+    private double _getInitialScaleZ() throws IllegalActionException {
         double factor = ((DoubleToken) scaleFactor.getToken()).doubleValue();
         double zFactor = ((DoubleToken) zScale.getToken()).doubleValue();
         return factor * zFactor;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private double _scaleXState;
+
+    private double _scaleYState;
+
+    private double _scaleZState;
 }
