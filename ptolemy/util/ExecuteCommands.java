@@ -51,11 +51,26 @@ public interface ExecuteCommands {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Append to the path of the subprocess.
+     *  @param directoryName The name of the directory to append to the path.
+     */
+    public void appendToPath(String directoryName);
+
     /** Cancel any running commands. */
     public void cancel();
 
     /** Clear the text area, status bar and progress bar. */
     public void clear();
+
+    /** Get the value of the environment of the subprocess.
+     *  @param key   
+     *  @return The value of the key.  If the key is not set, then 
+     *  null is returned.  If appendToPath() has been called, and
+     *  the key parameter is "PATH", then the current value of the PATH
+     *  of the subprocess will be returned.  Note that this may be different 
+     *  from the PATH of the current process.
+     */
+    public String getenv(String key);
 
     /** Return the return code of the last subprocess that was executed.
      *  @return the return code of the last subprocess that was executed.
