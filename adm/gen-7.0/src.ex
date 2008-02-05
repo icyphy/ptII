@@ -110,11 +110,17 @@ doc/img/*.psd
 hs_err_pid*
 java.hprof.txt
 jsdatabase
+jni/demo/demo.jar
+jni/demo/jni/jni.jar
+jni/doc/ doc.jar
 jni/launcher/launcher.exe
 jni/launcher/launcher
 jni/test/jni
 junk
+lib/bsh-2.0b4.jar
 lib/cachedir
+lib/commWindows.jar
+lib/joystickWindows.jar
 lib/javax.comm.properties
 lib/kepler-configs.jar
 lib/kepler-icons.jar
@@ -138,6 +144,7 @@ ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml
 ptolemy/actor/lib/javasound/test/pitchshift
 ptolemy/actor/lib/javasound/test/outfile.wav
 ptolemy/actor/lib/jspaces
+ptolemy/actor/lib/jxta
 ptolemy/actor/lib/net/test_auto
 ptolemy/actor/lib/python/demo/HelloWorld
 ptolemy/actor/lib/python/demo/NotifyFailedTest
@@ -173,6 +180,7 @@ ptolemy/copernicus/c/test/j2c_lib
 ptolemy/copernicus/c/test/java.lang.Object.c
 ptolemy/copernicus/c/test/java.lang.Object.h
 ptolemy/copernicus/c/test/natives
+ptolemy/copernicus/c/test/sootOutput
 ptolemy/copernicus/c/test/testOutput
 ptolemy/copernicus/deep
 ptolemy/copernicus/kernel/fragment
