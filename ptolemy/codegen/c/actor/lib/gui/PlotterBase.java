@@ -95,9 +95,10 @@ public class PlotterBase extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
         ArrayList args = new ArrayList();
+        String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir").replace('\\', '/');
         args.add(ptIIDir);
+
         code.append(_generateBlockCode("createJVMBlock", args));
 
         code.append(super.generateInitializeCode());
@@ -185,6 +186,7 @@ public class PlotterBase extends CCodeGeneratorHelper {
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.addAll(getJVMHeaderFiles());
+        files.add("<unistd.h>"); //For R_OK
         return files;
     }
 }

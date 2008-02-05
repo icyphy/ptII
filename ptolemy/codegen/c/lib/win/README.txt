@@ -16,13 +16,20 @@ http://www.inonit.com/cygwin/jni/invocationApi/archive.html
 You can find more information there.
 
 To create this,
-1) first create a file named jvm.def with the following content:
+1) First create a file named jvm.def with the following content:
 EXPORTS
 JNI_CreateJavaVM@12
 JNI_GetDefaultJavaVMInitArgs@4
 JNI_GetCreatedJavaVMs@12
 
-2)run the command:
+2) Copy jvm.dll to the current directory
+cp c:/Program\ Files/Java/jdk1.5.0_14/jre/bin/client/jvm.dll .
+
+Note that we don't ship jvm.dll, we just ship libjvm.dll.a, which includes
+entry points for jvm.dll
+
+3) Run the command dlltool command (found in Cygwin):
 dlltool --input-def jvm.def --kill-at --dllname jvm.dll --output-lib libjvm.dll.a
 
-This is specific to cygwin. 
+4) Remove jvm.dll
+rm jvm.dll

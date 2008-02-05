@@ -27,7 +27,11 @@ jmethodID $actorSymbol(plotMLParserParse);
 #define _JAVA_INVOCATION_INTERFACE_INIT
 args.version = JNI_VERSION_1_4;
 args.nOptions = 1;
-options[0].optionString = "-Djava.class.path=$path";
+if (access("$path/ptolemy/plot/Plot.class", R_OK) == 0) {
+    options[0].optionString = "-Djava.class.path=$path";
+} else {
+    options[0].optionString = "-Djava.class.path=$path/ptolemy/plot/plotapplication.jar";
+}
 args.options = options;
 args.ignoreUnrecognized = JNI_FALSE;
 

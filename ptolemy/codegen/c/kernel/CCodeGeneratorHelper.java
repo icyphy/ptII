@@ -197,6 +197,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             String jreBinClientPath = javaHome + File.separator + "bin"
                 + File.separator + "client";
             executeCommands.appendToPath(jreBinClientPath);
+            System.out.println("CCodeGeneratorHelper: appended to path "
+                    + jreBinClientPath);
         }
 
         javaHome = javaHome.replace('\\', '/');
@@ -247,7 +249,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
         String jvmLoaderDirective = "-ljvm";
 
-        String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
+        String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir").replace('\\', '/');
         String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
         String libjvmAbsoluteDirectory = ptIIDir + "/"
             + libjvmRelativeDirectory;
@@ -263,23 +265,28 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             if (libjvmURL != null) {
                 String libjvmAbsolutePath = null;
                 try {
-                    File temporaryFile = File.createTempFile("libjvm.dll", ".a");
-                    libjvmAbsolutePath = temporaryFile.getAbsolutePath();
+                    // Look for libjvm.dll.a in the codegen directory
+                    File libjvmFileCopy = new File(getCodeGenerator().codeDirectory.asFile(), "libjvm.dll.a");
+                        
+                    if (!libjvmFileCopy.canRead()) {
+                        // Create libjvm.dll.a in the codegen directory
+                        libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
+                        FileUtilities.binaryCopyURLToFile(libjvmURL, 
+                                libjvmFileCopy);
+                    }
 
-                    temporaryFile.deleteOnExit();
-
-                    if (FileUtilities.binaryCopyURLToFile(libjvmURL, 
-                                    temporaryFile)) {
-
-                        libjvmAbsolutePath = libjvmAbsolutePath.replace('\\', '/'); 
+                    if (libjvmFileCopy.canRead()) {
+                        libjvmAbsolutePath = libjvmAbsolutePath.replace('\\',
+                                '/'); 
                         libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
                                     libjvmAbsolutePath.lastIndexOf("/"));
 
-                        // Get rid of everything before the last /lib and the .a
+                        // Get rid of everything before the last /lib
+                        // and the .dll.a
                         jvmLoaderDirective = "-l"
                             + libjvmAbsolutePath.substring(
                                     libjvmAbsolutePath.lastIndexOf("/lib") + 4,
-                                    libjvmAbsolutePath.length() -2);
+                                    libjvmAbsolutePath.length() - 6);
 
                     }
                 } catch (Exception ex) {
