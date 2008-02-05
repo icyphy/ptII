@@ -342,14 +342,24 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/curriculum"/>
             <file src="../../jar_dist/ptolemy/domains/ci/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ci/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/ci/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ci/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/continuous/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/continuous/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/continuous/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/continuous/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/csp/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/csp/demo"/>
             <file src="../../jar_dist/ptolemy/domains/csp/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/csp/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/dde/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/dde/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/dde/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/dde/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/dt/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/dt/demo"/>
             <file src="../../jar_dist/ptolemy/domains/dt/doc/doc.jar"
@@ -364,10 +374,14 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/gr/doc"/>
             <file src="../../jar_dist/ptolemy/domains/gr/lib/quicktime/quicktime.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/gr/lib/quicktime"/>
+
             <file src="../../jar_dist/ptolemy/domains/psdf/psdf.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/psdf"/>
             <file src="../../jar_dist/ptolemy/domains/psdf/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/psdf/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/psdf/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/psdf/doc"/>
+
             <file src="../../jar_dist/lib/mapss.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/ptolemy/domains/sdf/lib/vq/data/data.jar"
@@ -376,10 +390,14 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/tm/demo"/>
             <file src="../../jar_dist/ptolemy/domains/tm/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/tm/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/wireless/wireless.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/wireless"/>
             <file src="../../jar_dist/ptolemy/domains/wireless/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/wireless/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/wireless/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/wireless/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/ptinyos/ptinyos.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ptinyos"/>
             <file src="../../jar_dist/ptolemy/domains/ptinyos/demo/demo.jar"
