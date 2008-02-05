@@ -16,13 +16,17 @@
 /***createJVMBlock($path)***/
 #ifndef _JAVA_INVOCATION_INTERFACE_INIT
 #define _JAVA_INVOCATION_INTERFACE_INIT
-    args.version = JNI_VERSION_1_4;
-    args.nOptions = 1;
-        options[0].optionString = "-Djava.class.path=$path";
-        args.options = options;
-        args.ignoreUnrecognized = JNI_FALSE;
+args.version = JNI_VERSION_1_4;
+args.nOptions = 1;
+if (access("$path/ptolemy/actor/lib/gui/SliderSource$SliderFrame.class", R_OK) == 0) {
+    options[0].optionString = "-Djava.class.path=$path";
+} else {
+    options[0].optionString = "-Djava.class.path=$path/ptolemy/ptsupport.jar";
+}
+args.options = options;
+args.ignoreUnrecognized = JNI_FALSE;
 
-    JNI_CreateJavaVM(&jvm, (void **)&env, &args);
+JNI_CreateJavaVM(&jvm, (void **)&env, &args);
 #endif
 /**/
 
