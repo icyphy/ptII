@@ -125,7 +125,7 @@ public class ClassFileLoader extends URLClassLoader {
                 // Class already loaded.
                 // FIXME: Any better solution here?
                 String message = e.getMessage();
-                int slashIndex = message.indexOf('/');
+                int slashIndex = message.lastIndexOf('/');
                 if (slashIndex < 0) {
                     throw e;
                 } else {
@@ -133,9 +133,16 @@ public class ClassFileLoader extends URLClassLoader {
                     if (startIndex < 0) {
                         throw e;
                     } else {
+                        if (startIndex < message.length() - 1
+                                && message.charAt(startIndex + 1) == '\"') {
+                            startIndex++;
+                        }
                         int endIndex = message.indexOf(' ', slashIndex);
                         if (endIndex < 0) {
-                            endIndex = message.length();
+                            endIndex = message.indexOf('\"', slashIndex);
+                            if (endIndex < 0) {
+                                endIndex = message.length();
+                            }
                         }
                         String path = message.substring(startIndex + 1,
                                 endIndex);
