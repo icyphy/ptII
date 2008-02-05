@@ -88,6 +88,7 @@ collections
 com/jgoodies
 com/microstar/xml/driver
 com/microstar/xml/SAXDriver.*
+confdefs.h
 config/*.class
 config/*.jar
 config.cache
