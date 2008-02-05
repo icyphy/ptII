@@ -93,8 +93,6 @@ jclass: $(PTLIB)
 #PTPACKAGE_NATIVE_JAR =	$(PTPACKAGE)$(MAJOR_OS_NAME).jar
 install: jclass jars $(PTPACKAGE).jar #$(PTPACKAGE_NATIVE_JAR)
 
-clean: ptmatlab_clean
-
 #--- Specialized part of the makefile: ---
 libjvm.dll.a: jvm.def
 	dlltool --input-def jvm.def --kill-at --dllname jvm.dll \
