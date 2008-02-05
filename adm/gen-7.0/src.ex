@@ -112,7 +112,7 @@ java.hprof.txt
 jsdatabase
 jni/demo/demo.jar
 jni/demo/jni/jni.jar
-jni/doc/ doc.jar
+jni/doc/doc.jar
 jni/launcher/launcher.exe
 jni/launcher/launcher
 jni/test/jni
