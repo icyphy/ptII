@@ -119,12 +119,20 @@ public class Backtrack extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        BooleanToken checkpointTrigger = (BooleanToken) _checkpoint.get(0);
+        boolean checkpointTrigger = false;
+        if (_checkpoint.getWidth() > 0 && _checkpoint.hasToken(0)) {
+            checkpointTrigger =
+                ((BooleanToken) _checkpoint.get(0)).booleanValue();
+        }
 
-        LongToken rollbackHandle = (LongToken) _rollback.get(0);
-        this._rollbackHandle = rollbackHandle.longValue();
+        if (_rollback.getWidth() > 0 && _rollback.hasToken(0)) {
+            LongToken rollbackHandle = (LongToken) _rollback.get(0);
+            _rollbackHandle = rollbackHandle.longValue();
+        } else {
+            _rollbackHandle = -1;
+        }
 
-        if (checkpointTrigger.booleanValue()) {
+        if (checkpointTrigger) {
             HashMap<Checkpoint, Long> handles = new HashMap<Checkpoint, Long>();
             _checkpoint(handles, (CompositeActor) getContainer());
             _currentHandle++;
