@@ -270,11 +270,12 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                         
                     if (!libjvmFileCopy.canRead()) {
                         // Create libjvm.dll.a in the codegen directory
-                        libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
                         FileUtilities.binaryCopyURLToFile(libjvmURL, 
                                 libjvmFileCopy);
                     }
 
+                    libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
+                        
                     if (libjvmFileCopy.canRead()) {
                         libjvmAbsolutePath = libjvmAbsolutePath.replace('\\',
                                 '/'); 
