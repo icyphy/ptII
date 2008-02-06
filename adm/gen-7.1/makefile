@@ -404,7 +404,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		lib/cachedir \
 		lib/ptII.properties \
 		lib/ptvr.jar \
-		lib/saxon8.jar \
 		mk/ptII.mk \
 		ptolemy/actor/gui/style/test/alljsimpletests.tcl \
 		ptolemy/actor/gui/test/alljsimpletests.tcl \
