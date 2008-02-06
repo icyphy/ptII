@@ -2448,7 +2448,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
 
             // Export MoML if the value has been set directly.
-            // FIXME: This is where WindowPropertiesAttribute is returning false.
             if ((_override.size() == 1)
                     && (((Integer) _override.get(0)).intValue() == 0)) {
                 return false;
