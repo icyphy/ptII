@@ -29,63 +29,110 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
 </ul>
 
 <h2><a name="highlights">Highlights</a></h2>
-<ul>
-<li> The
-<a href="../../../ptolemy/domains/continuous/doc/main.htm">Continuous domain</a>:
- <p>Primary Developers: Haiyang Zheng, Edward A. Lee
 
-<li> Backtracking
+<h3>Ptalon</h3>
+
+<p>Actor-oriented design is a common design strategy in embedded
+system design, where actors are concurrent components which
+communicate through ports by sending signals to one another. Such
+systems are frequently modeled with block diagrams, where the blocks
+represent systems and lines or arrows between blocks represent
+signals. Examples include Simulink, LabView, and VHDL/Verilog.
+
+<p>A common problem in such environments is managing complexity,
+particularly when the designs become large. Most actor-oriented design
+environments allow hierarchy, or systems (blocks) which are composed
+of other systems (blocks). To take this a step further, we are
+developing the Ptalon programming language, which allows users to
+parameterize components with other components.
+
+<p>We have developed a preliminary interpreter for the Ptalon language in
+the context of Ptolemy II, a general-purpose design environment for
+actor-oriented systems. We have also developed a mathematical
+framework for such languages, to help aid our understanding . We are
+currently investigating the resource management issues inherent in
+supporting large block-diagram models.
+
+<h4>References</h4>
+<ul>
+<li> E. A. Lee, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/03/MontereyWorkshopLee/#in_browser" target="_top">Model-driven Development--From Object-Oriented Design to Actor-Oriented Design</a>," <i>Workshop on Software Engineering for Embedded Systems: From Requirements to Implementation (a.k.a. The Monterey Workshop),</i> Chicago, IL, 2003.
+
+<li> A. Cataldo, E. Cheong, T. H. Feng, E. A. Lee, and A. Mihal, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-48.html#in_browser" target="_top">A Formalism for Higher-Order Composition Languages that Satisfies the Church-Rosser Property</a>," UC Berkeley EECS Technical Report No. UCB/EECS-2006-48, 2006.
+
+<li> J. A. Cataldo, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-189.html#in_browser" target="_top">The Power of Higher-Order Composition Languages in System Design</a>," EECS Department, UC Berkeley, Technical Report No. UCB/EECS-2006-189, December 18, 2006.
+
+<li> E. Cheong, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-112.html#in_browser" target="_top">Actor-Oriented Programming for Wireless Sensor Networks</a>," EECS Department, University of California, Berkeley Technical Report No. UCB/EECS-2007-112, August 30, 2007
+</ul>
+
+<h4>Ptalon Demonstrations</h4>
+  <ul>
+  <li> <a href="../../actor/ptalon/demo/CruiseControl/CruiseControl.xml">CruiseControl</a>
+  <li> <a href="../../actor/ptalon/demo/EightChannelFFT/EightChannelFFT.xml">EightChannelFFT</a>
+  <li> <a href="../../actor/ptalon/demo/GameOfLife/GameOfLife.xml">GameOfLife</a>
+  <li> <a href="../../actor/ptalon/demo/MapReduce/MapReduce.xml">MapReduce</a>
+  <li> <a href="../../actor/ptalon/demo/Unicycle/Unicycle.xml">Unicycle</a>
+  <li> <a href="../../actor/ptalon/demo/SmallWorld/ParameterSweep-SmallWorld-fsm.xml">ParameterSweep-SmallWorld-fsm</a>
+  <li> <a href="../../actor/ptalon/demo/SmallWorld/ParameterSweep-SmallWorld-sdf.xml">ParameterSweep-SmallWorld-sdf</a>
+  <li> <a href="../../actor/ptalon/demo/SmallWorld/SmallWorld-MultiInstanceComposite.xml">SmallWorld-MultiInstanceComposite</a>
+  <li> <a href="../../actor/ptalon/demo/SmallWorld/SmallWorld-PtalonActor.xml">SmallWorld-PtalonActor</a>
+  </ul>
+
+<h3>Backtracking</h3>
+A backtracking facility enables the system to restore its old
+state. It has many applications in practice, and is especially
+important to high-performance distributed computation.
+		</p>
+<p>In developing this sub-project, we highlight the
+following (increasing) list of criteria:
+			</p>
+<ul>
+
+<li><em>Performance</em>. The highest priority is awarded to the
+performance of the resulting system (the Ptolemy II system with
+backtracking support built in), as compared to the original
+system. Novel approaches are employed mainly to improve performance,
+with moderate complexity added.
+</li>
+
+<li><em>Automatic transformation</em>. Transformation from the original
+system to the backtracking-enabled system must be automated as much as
+possible. Due to the size of the existing system, it is not realistic
+to require a manual recoding in most of its sources. Moreover, coding
+the backtracking sub-system by hand makes it hard to debug and evolve
+over time./li>
+<li><em>Clean interface to other parts</em>. The
+backtracking sub-system must reveal a small but powerful
+interface to the other parts in the system. It provides
+the users with functions such as creating checkpoints,
+undoing multiple language-level operations by backtracking
+to a previous checkpoint, and even redoing those
+operations to achieve some form of laziness.
+</ul>
+
  <p>Primary Developer: Thomas Huining Feng
+<h4>Backtracking Demonstrations</h4>
  <ul>
    <li> <a href="../../../ptolemy/backtrack/demo/PrimeTest/PrimeTest.xml">Prime Test</a> </li>
    <li> <a href="../../../ptolemy/backtrack/demo/RampRollback/RampRollback.xml">Ramp Rollback</a> </li>
    <li> <a href="../../../ptolemy/backtrack/demo/TrialModule/TrialModule.xml">Trial Module</a> </li>
  </ul>
 
-<li> UI demos
-  <ul>
-  <li> <a href="../../domains/curriculum/demo/Curriculum/Curriculum.xml">Curriculum</a> (New in Ptolemy II 7.0)
-  </ul>
 
-<li> Ptalon demos
-  <ul>
-  <li> <a href="../../actor/ptalon/demo/CruiseControl/CruiseControl.xml">CruiseControl</a> (New in Ptolemy II 7.0) 
-  <li> <a href="../../actor/ptalon/demo/EightChannelFFT/EightChannelFFT.xml">EightChannelFFT</a> (New in Ptolemy II 7.0)
-  <li> <a href="../../actor/ptalon/demo/GameOfLife/GameOfLife.xml">GameOfLife</a> (New in Ptolemy II 7.0)
-  <li> <a href="../../actor/ptalon/demo/MapReduce/MapReduce.xml">MapReduce</a> (New in Ptolemy II 7.0)
-  <li> <a href="../../actor/ptalon/demo/Unicycle/Unicycle.xml">Unicycle</a> (New in Ptolemy II 7.0)
-  <li> <a href="../../actor/ptalon/demo/SmallWorld/ParameterSweep-SmallWorld-fsm.xml">ParameterSweep-SmallWorld-fsm</a> (New in Ptolemy II 7.0)
-  <li> <a href="../../actor/ptalon/demo/SmallWorld/ParameterSweep-SmallWorld-sdf.xml">ParameterSweep-SmallWorld-sdf</a> (New in Ptolemy II 7.0)
-  <li> <a href="../../actor/ptalon/demo/SmallWorld/SmallWorld-MultiInstanceComposite.xml">SmallWorld-MultiInstanceComposite</a> (New in Ptolemy II 7.0)
-  <li> <a href="../../actor/ptalon/demo/SmallWorld/SmallWorld-PtalonActor.xml">SmallWorld-PtalonActor</a> (New in Ptolemy II 7.0)
-  </ul>
-</ul>
-
-<h2><a name="demos">New demonstrations</a></h2>
-
-<li> Quadrotor?
-
-<h3>Discrete Event (DE)</h3>
-<ul>
-<li> <a href="../../domains/de/demo/RealTimeComposite/RealTimeComposite.xml">Real Time Composite</a> 
-</ul>
-<h3>Process Network (PN)</h3>
-<ul>
-<li><a href="../../domains/pn/demo/NondeterministicMergeWithFeedback/NondeterministicMergeWithFeedback.xml">Nondeterministic Merge with Feedback</a>
-</ul>
-<h3>Synchronous Dataflow (SDF)</h3>
-<ul>
-<li><a href="../../domains/sdf/demo/Gravitation/Gravitation.xml">Gravitation</a>
-<li><a href="../../domains/sdf/demo/ModelDisplay/ModelDisplay.xml">ModelDisplay</a>
-</ul>
-<h3>Synchronous/Reactive (SR) </h3>
-<ul>
-<li><a href="../../domains/sr/demo/GuardedCount/GuardedCountTimed.xml">GuardedCountTimed</a> 
-<li><a href="../../domains/sr/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> 
-<li><a href="../../domains/sr/demo/TrafficLight/WirelessDeployment.xml">WirelessDeployment</a> 
-</ul>
 
 <h3><a name="sdfCodegen">SDF Code Generation</a></h3>
+
+The SDF Template based C code generator (Codegen) generates code for
+hierarchical Synchronous Dataflow (SDF), Finite State Machine (FSM) and
+Heterochronous Dataflow Domain (HDF) models.
+
+<p>Codegen has the following new features:
+<ul> 
+<li><a href="ptdoc:ptolemy.actor.lib.jni.EmbeddedCActor">EmbeddedCActor</a> - Allows arbitrary C code to be embedded in a Java model.  The entire Java model can then be converted to C code and the code within the EmbeddedCActor will be used.
+<li>Enhanced polymorphic type system
+<li>Support for invoking the Java plotter from a C version of a model
+<li><i>and many more<i>
+</ul>
+
 <i>The code generation demos do not work under Web Start because
 Web Start uses a JRE, not a JDK.</i>
 <ul>
@@ -96,6 +143,82 @@ Web Start uses a JRE, not a JDK.</i>
 <li><a href="../../codegen/demo/Life/Life.xml">Life</a>
 <li><a href="../../domains/sdf/demo/LogisticMap/LogisticMap.xml">LogisticMap</a>
 </ul>
+<p><a href="../../../doc/codegen.htm">Codegen chapter from the User Guide</a>
+
+ <p>Primary Developers: Gang Zhou, Man-kit Leung.
+ <p>Contributors: Christopher Brooks, Teale Fristoe, Edward A. Lee, Ye Zhou
+
+
+<h3>The
+<a href="../../../ptolemy/domains/continuous/doc/main.htm">Continuous domain</a></h3>
+
+<P>
+The Continuous Domain is a redesign of the Continuous Time (CT) domain with
+a rigorous semantics documented in the following papers:
+
+<ul>
+<li> Edward A. Lee, Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/07/unifying/index.htm#in_browse" target="_top">Leveraging Synchronous Language Principles for Heterogeneous Modeling and Design of Embedded Systems</a>," EMSOFT,  September 30 - October 2, 2007, Salzburg, Austria.
+
+<li> Haiyang Zheng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-68.html#in_browser" target="_top">Operational Semantics of Hybrid Systems</a>," Ph.D. Dissertation, EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2007-68, May 18, 2007.
+
+<li> Edward A. Lee and Haiyang Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics" target="_top">Operational Semantics of Hybrid Systems</a>," Invited paper in <i>Proceedings of Hybrid Systems:  Computation and Control</i> (HSCC) LNCS 3414, Zurich, Switzerland, March 9-11, 2005, pp.25-53.
+</ul>
+
+The continuous domain models systems with continuous dynamics, including
+for example analog circuits and mechanical systems, but also
+cleanly supports discrete events, modal behaviors, and signals that
+mix continuous-time behaviors with discrete events.
+Models for continuous dynamics are equivalent to linear or nonlinear
+integral equations. A sophisticated numerical solver for these equations
+is integrated with the director.
+The clean semantics of the Continuous domain enables its integration
+in hierarchical heterogeneous models that use the Synchronous/Reactive (SR)
+and Discrete Event (DE) domains. Arbitrary hierarchical mixtures of these
+domains are supported, although if SR is at the top level, then the
+<i>period</i> parameter of the director must be used so that time advances.
+Domain interactions are documented in the following paper:
+
+<ul>
+<li> A. Goderis, C. Brooks, I. Altintas, E. A. Lee, and C. Goble, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-139.html#in_browser" target="_top">Heterogeneous Composition of Models of Computation</a>," EECS Department, University of California, Berkeley, Tech. Rep. UCB/EECS-2007-139, Nov. 2007.
+</ul>
+
+ <p>Primary Developers: Haiyang Zheng, Edward A. Lee
+
+
+
+<h2><a name="demos">New demonstrations</a></h2>
+
+<li> Quadrotor?
+
+<h3>Discrete Event (DE)</h3>
+<ul>
+<li> <a href="../../domains/de/demo/RealTimeComposite/RealTimeComposite.xml">Real Time Composite</a> 
+</ul>
+
+
+<h3>Process Network (PN)</h3>
+<ul>
+<li><a href="../../domains/pn/demo/NondeterministicMergeWithFeedback/NondeterministicMergeWithFeedback.xml">Nondeterministic Merge with Feedback</a>
+</ul>
+
+<h3>Synchronous Dataflow (SDF)</h3>
+<ul>
+<li><a href="../../domains/sdf/demo/Gravitation/Gravitation.xml">Gravitation</a>
+<li><a href="../../domains/sdf/demo/ModelDisplay/ModelDisplay.xml">ModelDisplay</a>
+</ul>
+
+<h3>Synchronous/Reactive (SR) </h3>
+<ul>
+<li><a href="../../domains/sr/demo/GuardedCount/GuardedCountTimed.xml">GuardedCountTimed</a> 
+<li><a href="../../domains/sr/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> 
+<li><a href="../../domains/sr/demo/TrafficLight/WirelessDeployment.xml">WirelessDeployment</a> 
+</ul>
+
+<h3>User Interface Demonstrations </h3>
+<ul>
+<li> <a href="../../domains/curriculum/demo/Curriculum/Curriculum.xml">Curriculum</a>
+</ul>
+
 
 </ul>
 See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
@@ -119,15 +242,19 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 <li><a href="ptdoc:ptolemy.actor.lib.CodegenActor">CodegenActor</a>
 <li><a href="ptdoc:ptolemy.actor.lib.LimitedFiringSource">LimitedFiringSource</a>
 <li><a href="ptdoc:ptolemy.actor.lib.MovingAverage">MovingAverage</a>
+<li><a href="ptdoc:ptolemy.actor.lib.PublisherNonStrictTest">PublisherNonStrictTest</a>
+<li><a href="ptdoc:ptolemy.actor.lib.PublisherTest">PublisherTest</a>
+<li><a href="ptdoc:ptolemy.actor.lib.SingleTokenCommutator">SingleTokenCommutator</a>
 <li><a href="ptdoc:ptolemy.actor.lib.SubMatrix">SubMatrix</a>
+<li><a href="ptdoc:ptolemy.actor.lib.colt.ColtSeedParameter">ColtSeedParameter</a>
 <li><a href="ptdoc:ptolemy.actor.lib.gui.ArrayPlotterXY">ArrayPlotterXY</a>
 <li><a href="ptdoc:ptolemy.actor.lib.gui.LEDMatrix">LEDMatrix</a>
 <li><a href="ptdoc:ptolemy.actor.lib.gui.ModelDisplay">ModelDisplay</a>
 <li><a href="ptdoc:ptolemy.actor.lib.hoc.MirrorComposite">MirrorComposite</a>
 <li><a href="ptdoc:ptolemy.actor.lib.hoc.RealTimeComposite">RealTimeComposite</a>
-<li><a href="ptdoc:ptolemy.actor.lib.javasound.ClipPlayer.java">ClipPlayer.java</a>
-<li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundActor.java">SoundActor.java</a>
-<li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundPlayer.java">SoundPlayer.java</a>
+<li><a href="ptdoc:ptolemy.actor.lib.javasound.ClipPlayer">ClipPlayer.java</a>
+<li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundActor">SoundActor.java</a>
+<li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundPlaye">SoundPlayer.java</a>
 </ul>
 
 <li><i>New Continuous Time (CT) actors</i>:
@@ -146,7 +273,13 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 <h2><a name="features">Additional Features</a></h2>
 
 <ul>
-<li> doc/tutorial
+<li> doc/tutorial - Tutorials for creating directors and using the GUI.
+
+<li><a href="ptdoc:ptolemy.actor.ActorFiringsListener">ActorFiringListener</a>
+<li><a href="ptdoc:ptolemy.actor.FiringsRecordable">FiringsRecordable</a>
+<li><a href="ptdoc:ptolemy.actor.TokenGotEvent">TokenGotEvent</a>
+<li><a href="ptdoc:ptolemy.actor.TokenGotListener">TokenGotListener</a>
+<li><a href="ptdoc:ptolemy.actor.TypedCompositeActorWithCoSimulation.">TypedCompositeActorWithCoSimulation</a>
 <li><a href="ptdoc:ptolemy.actor.gui.AbstractPlaceableActor">AbstractPlaceableActor</a>
 <li><a href="ptdoc:ptolemy.actor.gui.DependencyHighlighter">DependencyHighlighter</a>
 <li><a href="ptdoc:ptolemy.actor.gui.DoubleClickFactory">DoubleClickFactory</a>
@@ -158,6 +291,7 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 <li><a href="ptdoc:ptolemy.moml.MissingClassException">MissingClassException</a>
 <li><a href="ptdoc:ptolemy.moml.MoMLVariableChecker">MoMLVariableChecker</a>
 <li><a href="ptdoc:ptolemy.util.StringBufferExec">StringBufferExec</a>
+<li><a href="ptdoc:ptolemy.vergil.basic.ContextMenuFactoryCreator">ContextMenuFactoryCreator</a>
 <li><a href="ptdoc:ptolemy.vergil.basic.KeplerDocumentationAttribute">KeplerDocumentationAttribute</a>
 <li><a href="ptdoc:ptolemy.vergil.basic.OffsetMoMLChangeRequest">OffsetMoMLChangeRequest</a>
 <li><a href="ptdoc:ptolemy.vergil.toolbox.DoubleClickAction">DoubleClickAction</a>
@@ -173,6 +307,7 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 <li><a href="ptdoc:ptolemy.codegen.c.actor.lib.Lattice">Lattice</a>
 <li><a href="ptdoc:ptolemy.codegen.c.actor.lib.MovingAverage">MovingAverage</a>
 <li><a href="ptdoc:ptolemy.codegen.c.actor.lib.Publisher">Publisher</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.PublisherTest">PublisherTest</a>
 <li><a href="ptdoc:ptolemy.codegen.c.actor.lib.RecursiveLattice">RecursiveLattice</a>
 <li><a href="ptdoc:ptolemy.codegen.c.actor.lib.SetVariable">SetVariable</a>
 <li><a href="ptdoc:ptolemy.codegen.c.actor.lib.Subscriber">Subscriber</a>
