@@ -234,6 +234,9 @@ $(PTIIDIST):
 	#cd $(PTIIDIST); make javadocs
 	rm -f $(PTIIDIST)/.glimpse*
 	cp $(PTIIHOME)/.glimpse_exclude $(PTIIDIST)
+	# Copy libjvm.dll.a because it was removed by src.ex
+	cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a $(PTIIDIST)/ptolemy/codegen/c/lib/win
+	ls -l  $(PTIIDIST)/ptolemy/codegen/c/lib/win/libjvm.dll.a
 	touch $(PTIIDIST)/configure
 	# Copy the vergil script for use in the full tar file
 	(cd $(PTIIHOME)/bin; make)
@@ -363,8 +366,12 @@ $(PTII_SRC): $(PTII_FULL)
 		> src/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp
 	mv src/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp \
 		src/ptII$(VERSION)/ptolemy/domains/tm/makefile
+	# Copy libjvm.dll.a because it was removed by src.ex
+	cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a \
+		src/ptII$(VERSION)/ptolemy/codegen/c/lib/win/
+	ls -l  		src/ptII$(VERSION)/ptolemy/codegen/c/lib/win/
 	# Update the versions
-	./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 
+	#./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 
 	(cd src; \
 		echo "#  Starting tar of $@"; \
 		$(TAR) -c -v --no-anchored -X $(GENDIR)/src.ex --exclude bin/vergil -f $(PTII_SRC) ptII$(VERSION); \
