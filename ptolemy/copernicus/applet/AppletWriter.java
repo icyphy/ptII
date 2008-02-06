@@ -547,6 +547,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         classMap.put("ptolemy.actor.lib.colt.ColtZeta", "lib/ptcolt.jar");
 
         classMap.put("ptolemy.actor.gui.MoMLApplet", "ptolemy/ptsupport.jar");
+        
+        // Ptalon requires multiple jar files
+        String ptalonJar = "ptolemy/actor/ptalon/ptalon.jar";
+        classMap.put("ptolemy.actor.ptalon.PtalonActor", ptalonJar);
 
         // classMap.put("ptolemy.actor.lib.python.PythonScript",
         //                 "lib/jython.jar");
@@ -712,6 +716,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     + _domainJar + "', '" + potentialDomainJarFile
                     + "' does not exist, " + "adding domains.jar to jarfiles");
             jarFilesThatHaveBeenRequired.add("ptolemy/domains/domains.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains(ptalonJar)) {
+            // Ptalon requires multiple jar files
+            jarFilesThatHaveBeenRequired.add("ptolemy/actor/ptalon/antlr/antlr.jarc");
         }
 
         if (fixJarFiles) {
