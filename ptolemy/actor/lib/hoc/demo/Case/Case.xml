@@ -55,7 +55,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{275, 50}">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -63,15 +63,15 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To execute the generated code,&#10;you need to have the directory&#10;containing jvm.dll in your path.&#10;Ptolemy will try to adjust your path,&#10;but if the generated code runs without&#10;starting the plotter, you will need to&#10;add jvm.dll to your path.&#10;jvm.dll is found in directories like&#10;C:\Program Files\Java\jdk1.5.0_14\jre\bin\client&#10;It is used for invoking JVM to load&#10;GUI interface only. ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To execute the generated code,&#10;you need to have the directory&#10;containing jvm.dll in your path.&#10;jvm.dll is found in directories like&#10;C:\Program Files\Java\jdk1.5.0_14\jre\bin\client or&#10;C:\Program Files\Java\jdk1.5.0_14\jre\bin\server.&#10;It is used for invoking JVM to load&#10;GUI interface only. ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 70.0]">
         </property>
     </property>
     <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
         <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 40.0]">
         </property>
     </property>
     <entity name="Case" class="ptolemy.actor.lib.hoc.Case">
@@ -197,7 +197,7 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185, 150}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}, maximized=false}">
         </property>
@@ -376,7 +376,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.05">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 150.0]">
         </property>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -384,7 +384,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 150.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -437,7 +437,7 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 240}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
