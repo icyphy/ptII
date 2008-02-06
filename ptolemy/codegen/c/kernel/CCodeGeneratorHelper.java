@@ -170,15 +170,17 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
       */
     public Set getJVMHeaderFiles() throws IllegalActionException {
         String javaHome = StringUtilities.getProperty("java.home");
+
+        ExecuteCommands executeCommands = getCodeGenerator()
+            .getExecuteCommands();
+        if (executeCommands == null) {
+            executeCommands = new StreamExec();
+        }
+
         if (!_printedJVMWarning) {
             // We only print this once.
             _printedJVMWarning = true;
-            ExecuteCommands executeCommands = getCodeGenerator()
-                    .getExecuteCommands();
 
-            if (executeCommands == null) {
-                executeCommands = new StreamExec();
-            }
             executeCommands.stdout(_eol + _eol
                     + "WARNING: This model uses an actor that "
                     + "links with the jvm library." + _eol
@@ -193,13 +195,15 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                     + "then this has been handled for you." + _eol
                     + "  If you are running via Eclipse, then you must update "
                     + "your path by hand." + _eol + _eol + _eol);
-            
-            String jreBinClientPath = javaHome + File.separator + "bin"
-                + File.separator + "client";
-            executeCommands.appendToPath(jreBinClientPath);
-            System.out.println("CCodeGeneratorHelper: appended to path "
-                    + jreBinClientPath);
         }
+
+        String jreBinClientPath = javaHome + File.separator + "bin"
+            + File.separator + "client";
+        executeCommands.stdout(_eol + _eol 
+                + "CCodeGeneratorHelper: appended to path "
+                + jreBinClientPath);
+
+        executeCommands.appendToPath(jreBinClientPath);
 
         javaHome = javaHome.replace('\\', '/');
         if (javaHome.endsWith("/jre")) {
@@ -270,11 +274,12 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                         
                     if (!libjvmFileCopy.canRead()) {
                         // Create libjvm.dll.a in the codegen directory
-                        libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
                         FileUtilities.binaryCopyURLToFile(libjvmURL, 
                                 libjvmFileCopy);
                     }
 
+                    libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
+                        
                     if (libjvmFileCopy.canRead()) {
                         libjvmAbsolutePath = libjvmAbsolutePath.replace('\\',
                                 '/'); 
