@@ -222,7 +222,7 @@ public class StreamExec implements ExecuteCommands {
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             envp[i++] = entry.getKey() + "=" + entry.getValue();
-            System.out.println("StreamExec(): " + envp[i-1]);
+            // System.out.println("StreamExec(): " + envp[i-1]);
         }
         return envp;
     }
