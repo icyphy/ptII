@@ -172,12 +172,25 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
      *  @param directoryName The name of the directory to append to the path.
      */
     public void appendToPath(String directoryName) {
-        String path = getenv("PATH");
-        if (path.indexOf(File.pathSeparatorChar + directoryName
+        // stdout("JTextArea.appendToPath(): "
+        //        + directoryName + "\n");
+        String path = getenv("Path");
+        if (path == null) {
+            path = getenv("PATH");            
+        }
+        // stdout("JTextArea.appendToPath() Path: "
+        //        + path + "\n");
+
+        if (path == null
+                || path.indexOf(File.pathSeparatorChar + directoryName
                         + File.pathSeparatorChar) == -1) {
-            _envp = StreamExec.updateEnvironment("PATH",
+            // stdout("JTextArea.appendToPath() updating\n");
+            _envp = StreamExec.updateEnvironment("Path",
                     File.pathSeparatorChar + directoryName
                     + File.pathSeparatorChar);
+            // for ( int i = 0; i < _envp.length; i++) {
+            //     stdout("JTextArea.appendToPath() " + _envp[i]);
+            // }
         }
     }
 
@@ -197,17 +210,20 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
      *  @param key   
      *  @return The value of the key.  If the key is not set, then 
      *  null is returned.  If appendToPath() has been called, and
-     *  the key parameter is "PATH", then the current value of the PATH
-     *  of the subprocess will be returned.  Note that this may be different 
-     *  from the PATH of the current process.
+     *  the then the environment for the subprocess is checked, which
+     *  might be different than the environment for the current process
+     *  because appendToPath() was called.  Note that that key is searche
+     *  for in a case-insensitive mode.
      */
     public String getenv(String key) {
+        // FIXME: Code Duplication from StreamExec.java
         if (_envp == null) {
             return System.getenv(key);
         }
         for ( int i = 0; i < _envp.length; i++) {
-            if (_envp[i].startsWith("PATH=")) {
-                return _envp[i].substring(5, _envp[i].length());
+            if (key.regionMatches(true /*ignoreCase*/,
+                            0, _envp[i], 0, key.length())) {
+                return _envp[i].substring(key.length() + 1, _envp[i].length());
             }
         }
         return null;

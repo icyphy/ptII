@@ -87,9 +87,17 @@ public class StreamExec implements ExecuteCommands {
      *  @param directoryName The name of the directory to append to the path.
      */
     public void appendToPath(String directoryName) {
+        // stdout("StreamExec.appendToPath(): "
+        //        + directoryName + "\n");
         String path = getenv("PATH");
+        //stdout("StreamExec.appendToPath() path: "
+        //        + path + "\n");
+
         if (path.indexOf(File.pathSeparatorChar + directoryName
                         + File.pathSeparatorChar) == -1) {
+            //stdout("StreamExec.appendToPath() updating\n");
+
+
             _envp = StreamExec.updateEnvironment("PATH",
                     File.pathSeparatorChar + directoryName
                     + File.pathSeparatorChar);
@@ -114,17 +122,20 @@ public class StreamExec implements ExecuteCommands {
      *  @param key   
      *  @return The value of the key.  If the key is not set, then 
      *  null is returned.  If appendToPath() has been called, and
-     *  the key parameter is "PATH", then the current value of the PATH
-     *  of the subprocess will be returned.  Note that this may be different 
-     *  from the PATH of the current process.
+     *  the then the environment for the subprocess is checked, which
+     *  might be different than the environment for the current process
+     *  because appendToPath() was called.  Note that that key is searche
+     *  for in a case-insensitive mode.
      */
     public String getenv(String key) {
+        // FIXME: Code Duplication from JTextAreaExec.java
         if (_envp == null) {
             return System.getenv(key);
         }
         for ( int i = 0; i < _envp.length; i++) {
-            if (_envp[i].startsWith("PATH=")) {
-                return _envp[i].substring(5, _envp[i].length());
+            if (key.regionMatches(true /*ignoreCase*/,
+                            0, _envp[i], 0, key.length())) {
+                return _envp[i].substring(key.length() + 1, _envp[i].length());
             }
         }
         return null;
@@ -211,6 +222,7 @@ public class StreamExec implements ExecuteCommands {
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             envp[i++] = entry.getKey() + "=" + entry.getValue();
+            // System.out.println("StreamExec(): " + envp[i-1]);
         }
         return envp;
     }
