@@ -271,8 +271,10 @@ $(PTII_FULL_ZIP): $(PTIIDIST)
 	chgrp ptolemy $@
 	ls -l $@
 
+# Don't include gifs here - they will become corrupt with /r/n. 
 VERSION_FILES = \
-	src/ptII$(VERSION)/ptolemy/configs/*/* \
+	src/ptII$(VERSION)/ptolemy/configs/*/*.htm \
+	src/ptII$(VERSION)/ptolemy/configs/*/*.xml \
 	src/ptII$(VERSION)/ptolemy/kernel/attributes/VersionAttribute.java
 
 updateversions_test:
