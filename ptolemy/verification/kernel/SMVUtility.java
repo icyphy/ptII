@@ -28,6 +28,7 @@
 
 package ptolemy.verification.kernel;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,17 +37,25 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.TypedActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+
+import ptolemy.kernel.Port;
 
 /**
  * This is an utility function for ptolemy models. It performs a systematic
@@ -61,6 +70,34 @@ import ptolemy.kernel.util.InternalErrorException;
  */
 public class SMVUtility {
 
+    public static CompositeActor generateEquivalentSystemWithoutHierachy(
+            CompositeActor originalCompositeActor) {
+
+        try {
+            if ((((CompositeActor) originalCompositeActor).entityList()).size() > 0) {
+                for (int i = (((CompositeActor) originalCompositeActor)
+                        .entityList()).size() - 1; i >= 0; i--) {
+                    Entity innerEntity = (Entity) (((CompositeActor) originalCompositeActor)
+                            .entityList()).get(i);
+                    if (innerEntity instanceof ModalModel) {
+                        FSMActor newActor = (FSMActor) _rewriteModalModelToFSMActor((ModalModel) innerEntity);
+                        (((CompositeActor) originalCompositeActor).entityList())
+                                .remove(i);
+                        (((CompositeActor) originalCompositeActor).entityList())
+                                .add(i, newActor);
+
+                    }
+                }
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return originalCompositeActor;
+
+    }
+
     /**
      * Return an StringBuffer that contains the converted .smv format of the system.
      *
@@ -70,9 +107,11 @@ public class SMVUtility {
      * @param span A constant used to expand the size of the rough domain.
      * @return The converted .smv format of the system.
      */
-    public static StringBuffer generateSMVDescription(CompositeActor model,
+    public static StringBuffer generateSMVDescription(CompositeActor PreModel,
             String pattern, String choice, String span)
             throws IllegalActionException {
+
+        CompositeActor model = generateEquivalentSystemWithoutHierachy(PreModel);
 
         StringBuffer returnFmvFormat = new StringBuffer("");
         returnFmvFormat.append("MODULE main \n");
@@ -285,8 +324,6 @@ public class SMVUtility {
         //System.out.println(returnFmvFormat.toString());
         return returnFmvFormat;
     }
-
-
 
     /**
      *  This function decides if the director of the current actor is SR.
@@ -1228,10 +1265,10 @@ public class SMVUtility {
                         // lower bound 1, then the result of the next step
                         // would show that variable X has a list with domain
                         // {1,2,3,4,5}.
-                        // FIXME: We should apply {min, 1, 2, 3, 4, 5, max}
+                        //
+                        // We should apply {min, 1, 2, 3, 4, 5, max}
                         // instead ... (new discoveries by Patrick)
-                        // But I haven't do this yet...
-                        // FIXME: In this new version we implement this...
+                        // In this new version we implement this...
 
                         HashMap<String, ArrayList<Integer>> valueDomain = new HashMap<String, ArrayList<Integer>>();
                         Iterator<String> it = variableUsedInTransitionSet
@@ -3795,6 +3832,531 @@ public class SMVUtility {
     }
 
     /**
+     *  This is an experimental function which tries to analyze a ModalModel
+     *  and flatten it into a single FSMActor. The purpose of implementation is 
+     *  to understand the underlying structure of the ModalModel and Refinement,
+     *  so that in the future we may have better implementation. Also it would 
+     *  be suitable for the exhibition of BEAR 2008. 
+     *  
+     *  In our current implementation we only allow one additional layer for 
+     *  the refinement; an arbitrary layer of refinement would lead to state 
+     *  explosion of the system. Also the additional layer must be a finite 
+     *  state refinement so that the conversion is possible. But it is easy to
+     *  expand this functionality into multiple layer.
+     *  
+     *  @param model Whole System under analysis.
+     *  @return Equivalent FSMActor for later analysis.
+     */
+    private static FSMActor _rewriteModalModelToFSMActor(ModalModel modelmodel)
+            throws IllegalActionException {
+
+        // The algorithm is roughly constructed as follows:
+        //  
+        //  Step 1: For each state, check if there is refinement. 
+        //          If there is refinement, then jump into the refinement.
+        //          Copy the content of the refinement into the new FSMActor.
+        //          
+        //  Step 2: Scan all transition from the original actor; if there is a 
+        //          transition from state A to state B with condition C, then
+        //          for every refinement state in A, there is a transition
+        //          to the initial refinement state of B with transition C.   
+        //
+        // Note that we try to generate a similar FSMActor instead of modifying
+        // existing one; thus we offer utility functions which performs deep
+        // copy of states, transitions, and FSMActors.
+
+        FSMActor model = modelmodel.getController();
+        FSMActor returnFSMActor = new FSMActor(model.workspace());
+        try {
+            returnFSMActor.setName(modelmodel.getName());
+            Iterator states = model.entityList().iterator();
+            while (states.hasNext()) {
+                NamedObj state = (NamedObj) states.next();
+                if (state instanceof State) {
+                    String refinementList = ((State) state).refinementName
+                            .getExpression();
+                    if (refinementList == null) {
+                        // Copy the state into the returnFSMActor.
+                        // This is done in a reverse way, that is,
+                        // set the container of the state instead of 
+                        // adding component of a FSMActor.
+                        // Interesting :)
+                        State newState = (State) state.clone();
+                        newState.setName(state.getName());
+                        (newState).setContainer(returnFSMActor);
+                        newState.moveToFirst();
+                    } else if (refinementList.equalsIgnoreCase("")) {
+                        // Copy the state into the returnFSMActor.
+                        // This is done in a reverse way, that is,
+                        // set the container of the state instead of 
+                        // adding component of a FSMActor.
+                        // Interesting :)
+                        State newState = (State) state.clone();
+                        newState.setName(state.getName());
+                        (newState).setContainer(returnFSMActor);
+                        newState.moveToFirst();
+                    } else {
+                        // First check of the refinement is state refinement.
+                        // This can be checked by getting the refinement.
+
+                        TypedActor[] actors = ((State) state).getRefinement();
+                        if (actors != null) {
+                            if (actors.length > 1) {
+
+                                System.out
+                                        .println("We might not be able to deal with it");
+                            } else {
+
+                                // Retrieve the actor.
+                                TypedActor innerActor = actors[0];
+                                if (innerActor instanceof FSMActor) {
+
+                                    // This is what we want.
+                                    // Retrieve all states and place into returnFSMActor                                     
+                                    Iterator innerStates = ((FSMActor) innerActor)
+                                            .entityList().iterator();
+                                    while (innerStates.hasNext()) {
+                                        NamedObj innerState = (NamedObj) innerStates
+                                                .next();
+                                        if (innerState instanceof State) {
+                                            // We need to give it a new name based on our criteria.
+                                            // For example state S has refinement, then 
+                                            // a state S' in the refinement should be 
+                                            // renamed as S-S' for the analysis usage.
+
+                                            State newState = (State) innerState
+                                                    .clone();
+
+                                            newState.setName(state.getName()
+                                                    .trim()
+                                                    + "-"
+                                                    + innerState.getName()
+                                                            .trim());
+
+                                            newState
+                                                    .setContainer(returnFSMActor);
+                                            if ((model.getInitialState() == state)
+                                                    && ((FSMActor) innerActor)
+                                                            .getInitialState() == innerState) {
+                                                newState.isInitialState
+                                                        .setToken("true");
+                                            }
+                                            newState.moveToFirst();
+
+                                        }
+                                    }
+
+                                    // We also need to glue transitions into the system.
+
+                                    Iterator innerTransitions = ((FSMActor) innerActor)
+                                            .relationList().iterator();
+                                    while (innerTransitions.hasNext()) {
+                                        Relation innerTransition = (Relation) innerTransitions
+                                                .next();
+
+                                        if (!(innerTransition instanceof Transition)) {
+                                            continue;
+                                        }
+
+                                        State source = ((Transition) innerTransition)
+                                                .sourceState();
+                                        State destination = ((Transition) innerTransition)
+                                                .destinationState();
+
+                                        Transition newTransition = (Transition) innerTransition
+                                                .clone();
+
+                                        newTransition.setName(((State) state)
+                                                .getName()
+                                                + "-"
+                                                + innerTransition.getName());
+                                        // We need to attach states to it.
+                                        // The newly attached states should be in returnFSMActor.
+                                        Iterator returnFSMActorStates = returnFSMActor
+                                                .entityList().iterator();
+                                        State sCorresponding = null;
+                                        State dCorresponding = null;
+                                        while (returnFSMActorStates.hasNext()) {
+                                            NamedObj cState = (NamedObj) returnFSMActorStates
+                                                    .next();
+                                            if (cState instanceof State) {
+
+                                                if (((State) cState)
+                                                        .getName()
+                                                        .equalsIgnoreCase(
+                                                                ((State) state)
+                                                                        .getName()
+                                                                        .trim()
+                                                                        + "-"
+                                                                        + source
+                                                                                .getName()
+                                                                                .trim())) {
+
+                                                    sCorresponding = (State) cState;
+                                                }
+                                            }
+                                        }
+                                        returnFSMActorStates = returnFSMActor
+                                                .entityList().iterator();
+                                        while (returnFSMActorStates.hasNext()) {
+                                            NamedObj cState = (NamedObj) returnFSMActorStates
+                                                    .next();
+                                            if (cState instanceof State) {
+
+                                                if (((State) cState)
+                                                        .getName()
+                                                        .equalsIgnoreCase(
+                                                                ((State) state)
+                                                                        .getName()
+                                                                        .trim()
+                                                                        + "-"
+                                                                        + destination
+                                                                                .getName()
+                                                                                .trim())) {
+                                                    dCorresponding = (State) cState;
+
+                                                }
+                                            }
+                                        }
+
+                                        Port s = sCorresponding.outgoingPort;
+                                        Port d = dCorresponding.incomingPort;
+                                        newTransition.unlinkAll();
+                                        newTransition
+                                                .setContainer(returnFSMActor);
+                                        newTransition.moveToFirst();
+                                        s.link(newTransition);
+                                        d.link(newTransition);
+                                    }
+
+                                } else {
+                                    /* Problematic
+                                     * 
+                                     */
+                                }
+                            }
+                        } else {
+                            /* This should not happen
+                             * 
+                             */
+                        }
+
+                    } // end of null refinement case
+                }
+            }
+
+            // Now we have returnFSMActor having a flatten set of states.
+            // However, the transition is not complete. This is because we
+            // haven't establish the connection of between inner actors.
+            // 
+            // For each state S in the inner actor, if its upper state A has 
+            // a transition from A to another state B, then S must establish 
+            // a transition which connects itself with B; if B has refinements, 
+            // then S must establish a connection which connects to B's 
+            // refinement initial state. 
+            //  
+
+            Iterator Transitions = model.relationList().iterator();
+            while (Transitions.hasNext()) {
+                Relation transition = (Relation) Transitions.next();
+                if (!(transition instanceof Transition)) {
+                    continue;
+                }
+                State source = ((Transition) transition).sourceState();
+                State destination = ((Transition) transition)
+                        .destinationState();
+
+                // If the source state has refinement, then every state in the 
+                // refinement must have a state which connects to the destination;
+                // if the destination has refinements, then all of these newly added
+                // transitions must be connected to the refinement initial state.
+                TypedActor[] sActors = ((State) source).getRefinement();
+                TypedActor[] dActors = ((State) destination).getRefinement();
+                if ((sActors == null) && (dActors == null)) {
+
+                    // We only need to find the corresponding node in the 
+                    // system and set up a connecttion for that.
+
+                    Iterator returnFSMActorStates = returnFSMActor.entityList()
+                            .iterator();
+                    State sCorresponding = null;
+                    State dCorresponding = null;
+                    while (returnFSMActorStates.hasNext()) {
+                        NamedObj cState = (NamedObj) returnFSMActorStates
+                                .next();
+                        if (cState instanceof State) {
+                            if (((State) cState).getName().equalsIgnoreCase(
+                                    source.getName().trim())) {
+
+                                sCorresponding = (State) cState;
+                            }
+                        }
+                    }
+                    returnFSMActorStates = returnFSMActor.entityList()
+                            .iterator();
+                    while (returnFSMActorStates.hasNext()) {
+                        NamedObj cState = (NamedObj) returnFSMActorStates
+                                .next();
+                        if (cState instanceof State) {
+                            if (((State) cState).getName().equalsIgnoreCase(
+                                    destination.getName().trim())) {
+                                dCorresponding = (State) cState;
+
+                            }
+                        }
+                    }
+
+                    Port s = sCorresponding.outgoingPort;
+                    Port d = dCorresponding.incomingPort;
+                    Transition newTransition = (Transition) transition.clone();
+                    newTransition.unlinkAll();
+                    newTransition.setContainer(returnFSMActor);
+                    newTransition.moveToFirst();
+                    s.link(newTransition);
+                    d.link(newTransition);
+                    newTransition.setName(source.getName().trim() + "-"
+                            + destination.getName().trim());
+
+                } else if ((sActors == null) && (dActors != null)) {
+                    // We need to retrieve the source and connect with
+                    // the inner initial state of destination. 
+                    //
+                    // First retrieve the inner model initial state of 
+                    // destination.
+                    TypedActor dInnerActor = dActors[0];
+                    if (!(dInnerActor instanceof FSMActor)) {
+                        // This is currently beyond our scope.
+                    }
+
+                    Iterator returnFSMActorStates = returnFSMActor.entityList()
+                            .iterator();
+                    State sCorresponding = null;
+                    State dCorresponding = null;
+                    while (returnFSMActorStates.hasNext()) {
+                        NamedObj cState = (NamedObj) returnFSMActorStates
+                                .next();
+                        if (cState instanceof State) {
+                            if (((State) cState).getName().equalsIgnoreCase(
+                                    source.getName().trim())) {
+
+                                sCorresponding = (State) cState;
+                            }
+                        }
+                    }
+                    returnFSMActorStates = returnFSMActor.entityList()
+                            .iterator();
+                    while (returnFSMActorStates.hasNext()) {
+                        NamedObj cState = (NamedObj) returnFSMActorStates
+                                .next();
+                        if (cState instanceof State) {
+                            if (((State) cState).getName().equalsIgnoreCase(
+                                    destination.getName().trim()
+                                            + "-"
+                                            + ((FSMActor) dInnerActor)
+                                                    .getInitialState()
+                                                    .getName().trim())) {
+                                dCorresponding = (State) cState;
+                            }
+                        }
+                    }
+
+                    Port s = sCorresponding.outgoingPort;
+                    Port d = dCorresponding.incomingPort;
+                    Transition newTransition = (Transition) transition.clone();
+                    newTransition.unlinkAll();
+                    newTransition.setContainer(returnFSMActor);
+                    newTransition.moveToFirst();
+                    s.link(newTransition);
+                    d.link(newTransition);
+                    newTransition.setName(source.getName().trim()
+                            + "-"
+                            + destination.getName().trim()
+                            + "-"
+                            + ((FSMActor) dInnerActor).getInitialState()
+                                    .getName().trim());
+
+                } else if ((sActors != null) && (dActors == null)) {
+                    // We need to connect every inner state in the source and
+                    // with destination state. We may copy existing transitions
+                    // from the upper layer and modify it.
+
+                    TypedActor innerActor = sActors[0];
+                    if (innerActor instanceof FSMActor) {
+
+                        Iterator innerStates = ((FSMActor) innerActor)
+                                .entityList().iterator();
+                        while (innerStates.hasNext()) {
+                            NamedObj innerState = (NamedObj) innerStates.next();
+                            if (innerState instanceof State) {
+
+                                Iterator returnFSMActorStates = returnFSMActor
+                                        .entityList().iterator();
+                                State sCorresponding = null;
+                                State dCorresponding = null;
+                                while (returnFSMActorStates.hasNext()) {
+                                    NamedObj cState = (NamedObj) returnFSMActorStates
+                                            .next();
+                                    if (cState instanceof State) {
+                                        if (((State) cState)
+                                                .getName()
+                                                .equalsIgnoreCase(
+                                                        source.getName().trim()
+                                                                + "-"
+                                                                + innerState
+                                                                        .getName()
+                                                                        .trim())) {
+
+                                            sCorresponding = (State) cState;
+                                        }
+                                    }
+                                }
+                                returnFSMActorStates = returnFSMActor
+                                        .entityList().iterator();
+                                while (returnFSMActorStates.hasNext()) {
+                                    NamedObj cState = (NamedObj) returnFSMActorStates
+                                            .next();
+                                    if (cState instanceof State) {
+                                        if (((State) cState).getName()
+                                                .equalsIgnoreCase(
+                                                        destination.getName()
+                                                                .trim())) {
+                                            dCorresponding = (State) cState;
+                                        }
+                                    }
+                                }
+
+                                Port s = sCorresponding.outgoingPort;
+                                Port d = dCorresponding.incomingPort;
+                                Transition newTransition = (Transition) transition
+                                        .clone();
+                                newTransition.unlinkAll();
+                                newTransition.setContainer(returnFSMActor);
+                                newTransition.moveToFirst();
+                                s.link(newTransition);
+                                d.link(newTransition);
+                                newTransition.setName(source.getName().trim()
+                                        + "-" + innerState.getName().trim()
+                                        + "-" + destination.getName().trim());
+                            }
+                        }
+                    }
+
+                } else {
+                    // Do the combination of the previous two cases.
+                    // First retrieve the inner initial state 
+
+                    TypedActor sInnerActor = sActors[0];
+                    TypedActor dInnerActor = dActors[0];
+                    String newDestName = "";
+                    if (dInnerActor instanceof FSMActor) {
+                        newDestName = destination.getName().trim()
+                                + "-"
+                                + ((FSMActor) dInnerActor).getInitialState()
+                                        .getName().trim();
+                    }
+                    if (sInnerActor instanceof FSMActor) {
+                        Iterator innerStates = ((FSMActor) sInnerActor)
+                                .entityList().iterator();
+                        while (innerStates.hasNext()) {
+                            NamedObj innerState = (NamedObj) innerStates.next();
+                            if (innerState instanceof State) {
+                                // Retrieve the name, generate a new transition
+
+                                Transition newTransition = (Transition) transition
+                                        .clone(model.workspace());
+                                newTransition.unlinkAll();
+                                // Find the corresponding State in the returnFSMActor
+                                Iterator returnFSMActorStates = returnFSMActor
+                                        .entityList().iterator();
+                                State sCorresponding = null;
+                                State dCorresponding = null;
+                                while (returnFSMActorStates.hasNext()) {
+                                    NamedObj cState = (NamedObj) returnFSMActorStates
+                                            .next();
+                                    if (cState instanceof State) {
+                                        if (((State) cState)
+                                                .getName()
+                                                .equalsIgnoreCase(
+                                                        source.getName().trim()
+                                                                + "-"
+                                                                + innerState
+                                                                        .getName()
+                                                                        .trim())) {
+
+                                            sCorresponding = (State) cState;
+                                        }
+                                    }
+                                }
+                                returnFSMActorStates = returnFSMActor
+                                        .entityList().iterator();
+                                while (returnFSMActorStates.hasNext()) {
+                                    NamedObj cState = (NamedObj) returnFSMActorStates
+                                            .next();
+                                    if (cState instanceof State) {
+                                        if (((State) cState).getName()
+                                                .equalsIgnoreCase(newDestName)) {
+                                            dCorresponding = (State) cState;
+
+                                        }
+                                    }
+                                }
+
+                                Port s = sCorresponding.outgoingPort;
+                                Port d = dCorresponding.incomingPort;
+                                newTransition.unlinkAll();
+                                newTransition.setContainer(returnFSMActor);
+                                newTransition.moveToFirst();
+                                s.link(newTransition);
+                                d.link(newTransition);
+                                newTransition.setName(source.getName().trim()
+                                        + "-" + innerState.getName().trim()
+                                        + "-" + newDestName);
+
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        // Final print out the returnFSMActor
+
+        try {
+            Iterator states = returnFSMActor.entityList().iterator();
+            while (states.hasNext()) {
+                NamedObj state = (NamedObj) states.next();
+                if (state instanceof State) {
+                    System.out.println("State name: " + state.getName());
+                }
+            }
+
+            Iterator Transitions = returnFSMActor.relationList().iterator();
+
+            while (Transitions.hasNext()) {
+                Transition transition = (Transition) Transitions.next();
+                if (transition instanceof Transition) {
+                    System.out.println("Transition name: "
+                            + transition.getName()
+                            + "; From "
+                            + ((Transition) transition).sourceState().getName()
+                            + " to "
+                            + ((Transition) transition).destinationState()
+                                    .getName());
+                }
+            }
+        } catch (Exception ex) {
+
+        }
+
+        return returnFSMActor;
+    }
+
+    /**
      *  This function tries to recover the modified name in the FSMActor of
      *  a ModalModel. This is because every FSMActor in a ModalModel has a
      *  similar name "_Controller", which causes problem in the output format.
@@ -3821,7 +4383,7 @@ public class SMVUtility {
             }
         }
     }
-    
+
     // BY PATRICK
     private static HashMap<String, VariableInfo> _variableInfo;
     private static HashMap<String, LinkedList<VariableTransitionInfo>> _variableTransitionInfo;
