@@ -3884,7 +3884,11 @@ public class SMVUtility {
                         State newState = (State) state.clone();
                         newState.setName(state.getName());
                         (newState).setContainer(returnFSMActor);
+                        if ((model.getInitialState() == state)) {
+                            newState.isInitialState.setToken("true");
+                        }
                         newState.moveToFirst();
+
                     } else if (refinementList.equalsIgnoreCase("")) {
                         // Copy the state into the returnFSMActor.
                         // This is done in a reverse way, that is,
@@ -3894,6 +3898,9 @@ public class SMVUtility {
                         State newState = (State) state.clone();
                         newState.setName(state.getName());
                         (newState).setContainer(returnFSMActor);
+                        if ((model.getInitialState() == state)) {
+                            newState.isInitialState.setToken("true");
+                        }
                         newState.moveToFirst();
                     } else {
                         // First check of the refinement is state refinement.
@@ -4352,7 +4359,9 @@ public class SMVUtility {
         } catch (Exception ex) {
 
         }
-
+        //System.out.println("The initial state of the FSMActor "
+        //        + returnFSMActor.getName() + " would be:"
+        //        + returnFSMActor.getInitialState().getName());
         return returnFSMActor;
     }
 
