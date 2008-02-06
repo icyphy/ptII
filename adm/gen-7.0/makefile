@@ -341,7 +341,7 @@ $(PTII_SRC): $(PTII_FULL)
 	mv src/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp \
 		src/ptII$(VERSION)/ptolemy/domains/tm/makefile
 	# Update the versions
-	./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 
+	#./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 
 	(cd src; \
 		echo "#  Starting tar of $@"; \
 		$(TAR) -c -v --no-anchored -X $(GENDIR)/src.ex --exclude bin/vergil -f $(PTII_SRC) ptII$(VERSION); \
