@@ -720,7 +720,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         if (jarFilesThatHaveBeenRequired.contains(ptalonJar)) {
             // Ptalon requires multiple jar files
-            jarFilesThatHaveBeenRequired.add("ptolemy/actor/ptalon/antlr/antlr.jarc");
+            jarFilesThatHaveBeenRequired.add("ptolemy/actor/ptalon/antlr/antlr.jar");
         }
 
         if (fixJarFiles) {
