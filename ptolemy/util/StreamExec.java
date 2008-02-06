@@ -133,7 +133,7 @@ public class StreamExec implements ExecuteCommands {
             return System.getenv(key);
         }
         for ( int i = 0; i < _envp.length; i++) {
-            if (key.regionMatches(true /*ignoreCase*/,
+            if (key.regionMatches(false /*ignoreCase*/,
                             0, _envp[i], 0, key.length())) {
                 return _envp[i].substring(key.length() + 1, _envp[i].length());
             }
@@ -222,7 +222,7 @@ public class StreamExec implements ExecuteCommands {
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             envp[i++] = entry.getKey() + "=" + entry.getValue();
-            // System.out.println("StreamExec(): " + envp[i-1]);
+//             System.out.println("StreamExec(): " + envp[i-1]);
         }
         return envp;
     }

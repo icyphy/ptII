@@ -172,25 +172,36 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
      *  @param directoryName The name of the directory to append to the path.
      */
     public void appendToPath(String directoryName) {
-        // stdout("JTextArea.appendToPath(): "
-        //        + directoryName + "\n");
-        String path = getenv("Path");
+//         stdout("JTextArea.appendToPath(): "
+//                + directoryName + "\n");
+
+        // Might be Path, might be PATH
+        String keyPath = "PATH";
+        String path = getenv(keyPath);
         if (path == null) {
-            path = getenv("PATH");            
+            path = getenv("Path");
+            if (path != null) {
+                keyPath = "Path";
+            }
+//             stdout("JTextArea.appendToPath() Path: "
+//                 + path + "\n");
+//         } else {
+//             stdout("JTextArea.appendToPath() PATH: "
+//                 + path + "\n");
         }
-        // stdout("JTextArea.appendToPath() Path: "
-        //        + path + "\n");
 
         if (path == null
                 || path.indexOf(File.pathSeparatorChar + directoryName
                         + File.pathSeparatorChar) == -1) {
-            // stdout("JTextArea.appendToPath() updating\n");
-            _envp = StreamExec.updateEnvironment("Path",
+//            stdout("JTextArea.appendToPath() updating\n");
+            _envp = StreamExec.updateEnvironment(keyPath,
                     File.pathSeparatorChar + directoryName
                     + File.pathSeparatorChar);
-            // for ( int i = 0; i < _envp.length; i++) {
-            //     stdout("JTextArea.appendToPath() " + _envp[i]);
-            // }
+
+            // For debugging
+//             for ( int i = 0; i < _envp.length; i++) {
+//                 stdout("JTextArea.appendToPath() " + _envp[i]);
+//             }
         }
     }
 
@@ -218,11 +229,14 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     public String getenv(String key) {
         // FIXME: Code Duplication from StreamExec.java
         if (_envp == null) {
+//             stdout("JTextArea.getenv(" + key + "), _envp null, returning: " 
+//                     + System.getenv(key));
             return System.getenv(key);
         }
         for ( int i = 0; i < _envp.length; i++) {
-            if (key.regionMatches(true /*ignoreCase*/,
+            if (key.regionMatches(false /*ignoreCase*/,
                             0, _envp[i], 0, key.length())) {
+//                 stdout("JTextArea.getenv(" + key + "), _envp not null, returning: " + _envp[i].substring(key.length() + 1, _envp[i].length()));
                 return _envp[i].substring(key.length() + 1, _envp[i].length());
             }
         }
