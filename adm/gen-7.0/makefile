@@ -166,7 +166,10 @@ release_newton_remote4_test:
 	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII7.0.beta/adm/gen-7.0/test/ptII$(VERSION)
 
 release_fortytwo:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar remote4_test
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
+
+release_fortytwo_update_ftp:
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar update_ftp
 
 
 release_fortytwo_setup:
