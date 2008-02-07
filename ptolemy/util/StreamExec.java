@@ -130,10 +130,16 @@ public class StreamExec implements ExecuteCommands {
     public String getenv(String key) {
         // FIXME: Code Duplication from JTextAreaExec.java
         if (_envp == null) {
-            return System.getenv(key);
+            // Sigh.  System.getEnv("PATH") and System.getEnv("Path")
+            // will return the same thing, even though the variable
+            // is Path.  Updating PATH is wrong, the subprocess will
+            // not see the change.  So, we search the env for a direct
+            // match
+            Map<String,String> environmentMap = System.getenv(); 
+            return (String) environmentMap.get(key);
         }
         for ( int i = 0; i < _envp.length; i++) {
-            if (key.regionMatches(true /*ignoreCase*/,
+            if (key.regionMatches(false /*ignoreCase*/,
                             0, _envp[i], 0, key.length())) {
                 return _envp[i].substring(key.length() + 1, _envp[i].length());
             }
