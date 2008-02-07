@@ -30,7 +30,9 @@ args.nOptions = 1;
 if (access("$path/ptolemy/plot/Plot.class", R_OK) == 0) {
     options[0].optionString = "-Djava.class.path=$path";
 } else {
-    options[0].optionString = "-Djava.class.path=$path/ptolemy/plot/plotapplication.jar";
+    // Use ptsupport here in case we use SliderSource or some other actor
+    options[0].optionString = "-Djava.class.path=$path/ptolemy/ptsupport.jar";
+    //options[0].optionString = "-Djava.class.path=$path/ptolemy/plot/plotapplication.jar";
 }
 args.options = options;
 args.ignoreUnrecognized = JNI_FALSE;
@@ -41,6 +43,10 @@ JNI_CreateJavaVM(&jvm, (void **)&env, &args);
 
 /***initBlock***/
 $actorSymbol(plotClass) = (*env)->FindClass(env, "ptolemy/plot/Plot");
+if ($actorSymbol(plotClass) == 0x0) {
+    fprintf(stderr, "Could not find class ptolemy/plot/Plot\n");
+}
+
 $actorSymbol(plotConstructor) = (*env)->GetMethodID
         (env, $actorSymbol(plotClass), "<init>", "()V");
 $actorSymbol(plotObject) = (*env)->NewObject

@@ -35,6 +35,9 @@ JNI_CreateJavaVM(&jvm, (void **)&env, &args);
     // Use backslash before dollar sign and avoid subsitution by codegen.
     $actorSymbol(frameClass) = (*env)->FindClass
             (env, "ptolemy/actor/lib/gui/SliderSource\$SliderFrame");
+    if ($actorSymbol(frameClass) == 0x0) {
+        fprintf(stderr, "Could not find class ptolemy/actor/lib/gui/SliderSource\$SliderFrame\n");
+    }
     $actorSymbol(frameConstructor) = (*env)->GetMethodID
             (env, $actorSymbol(frameClass), "<init>", "(IIIILjava/lang/String;)V");
     $actorSymbol(frameObject) = (*env)->NewObject
