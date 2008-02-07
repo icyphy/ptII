@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2006 The Regents of the University of California.
+# @Copyright (c) 1998-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -40,7 +40,7 @@ DIRS = 		BouncingBall Brownian \
 		LevelCrossingDetectorDetectsGlitches \
 		Lorenz NewtonsCradle Pendulum3D\
 		SampledClocks Satellite SigmaDelta SinuBouncingBall \
-		Spontaneous SquareWave StickyMasses Switch \
+		Spontaneous SquareWave Starmac StickyMasses Switch \
 		Transmission Thermostat V2V \
 		Corba \
 		#$(PTJSPACES_DIR)
@@ -83,6 +83,7 @@ PTCLASSALLJARS = \
 	SigmaDelta/SigmaDelta.jar \
 	SinuBouncingBall/SinuBouncingBall.jar \
 	Spontaneous/Spontaneous.jar \
+	Starmac/Starmac.jar \
 	SquareWave/SquareWave.jar \
 	StickyMasses/StickyMasses.jar \
 	Switch/Switch.jar \
