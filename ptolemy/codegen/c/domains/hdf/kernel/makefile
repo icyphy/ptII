@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen fsm kernel
+# Makefile for Ptolemy Classic style Codegen hdf kernel
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2006 The Regents of the University of California
+# @Copyright (c) 2005-2008 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c/domains/fsm/kernel
+ME =		ptolemy/codegen/c/domains/hdf/kernel
 
 DIRS =		test
 
