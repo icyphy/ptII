@@ -31,6 +31,7 @@ $CLASSPATH/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml
 $CLASSPATH/ptolemy/configs/doc/ClassesIllustrated.xml
 $CLASSPATH/ptolemy/data/type/demo/Router/Router.xml
 $CLASSPATH/ptolemy/caltrop/demo/Primes/Primes.xml
+$CLASSPATH/ptolemy/domains/ct/demo/Starmac/Starmac.xml
 $CLASSPATH/ptolemy/domains/ddf/demo/IfThenElse/IfThenElse.xml
 $CLASSPATH/ptolemy/domains/ddf/demo/RandomWalk/RandomWalk.xml
 $CLASSPATH/ptolemy/domains/ct/demo/BouncingBall/BouncingBall.xml
