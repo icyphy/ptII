@@ -315,7 +315,7 @@ $(PTII_SRC): $(PTII_FULL)
 		$(TAR) -xvf $(PTII_FULL); \
 		cd ptII$(VERSION); \
 		echo "About to configure `pwd`"; \
-		PTII=`pwd` ./configure; make -k clean; \
+		PTII=`./ptcygpwd`  ./configure; make -k clean; \
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; \
@@ -2210,8 +2210,8 @@ Echo.class: Echo.java
 ExtractJarFile.jar: ExtractJarFile.class Echo.class
 	jar -cf $@ CYGPATH^
 
-#PTCYGPATH=cygpath -a --windows
-PTCYGPATH=./ptcygpath
+PTCYGPATH=cygpath -a --windows
+#PTCYGPATH=./ptcygpath
 
 # Recompile izpack
 izpack:	
