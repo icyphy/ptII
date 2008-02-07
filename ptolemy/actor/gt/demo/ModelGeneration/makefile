@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2007 The Regents of the University of California.
+# @Copyright (c) 2007-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -51,8 +51,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	ModelGeneration.xml \
 	ModelGeneration_DDF.xml \
-	ModelGeneration_DE.xml \
 	ModelGeneration_DE2.xml
 
 EXTRA_SRCS = \
