@@ -10,6 +10,7 @@ $CLASSPATH/ptolemy/domains/ct/demo/Lorenz/Lorenz.xml
 $CLASSPATH/ptolemy/domains/ct/demo/LevelCrossingDetector/LevelCrossingDetectorDetectingDirections.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Hysteresis/Hysteresis.xml
+$CLASSPATH/ptolemy/codegen/demo/Ramp/Ramp.xml
 $CLASSPATH/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld-PtalonActor.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/AntennaPattern/AntennaGainTest.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/Expression/Expression.xml
