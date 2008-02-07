@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModalBSC" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 10, 706, 581}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 10, 706, 570}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[491, 463]">
     </property>
@@ -60,7 +60,8 @@ refinement changing the state change to double (0.5).</text></svg></configure>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:darkgray">Author: Zoltan Kemenczy, Research in Motion Limited</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:darkgray">Author: Zoltan Kemenczy, Research in Motion Limited
+Codegen Implementation: Gang Zhou</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -73,7 +74,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 405.0]">
         </property>
     </property>
     <entity name="ModalBinarySymmetricChannel" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -113,8 +114,6 @@ refinement changing the state change to double (0.5).</text></svg></configure>
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
