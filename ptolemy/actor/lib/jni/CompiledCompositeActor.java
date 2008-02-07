@@ -336,7 +336,17 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                                         + jniClassName + "\" from \"" + url
                                         + "\".  Try deleting the \""
                                         + jniClassName + "\" class in \"" + url
-                                        + "\".");
+                                        + "\".\nThis problem can also occur "
+                                        + "if the version of java that is "
+                                        + "running Ptolemy and the version "
+                                        + "of javac used to compile the file "
+                                        + "to load into Ptolemy are different "
+                                        + "and java is of a later version."
+                                        + "\nTo see information about the "
+                                        + "version of Java used to run "
+                                        + "Ptolemy, use View -> JVM Properties."
+                                        + "  To see what version of javac "
+                                        + "was used, run \"java -version\".");
                     } catch (Throwable ex) {
                         throw new IllegalActionException(this, ex,
                                 "Cannot load the class \"" + jniClassName
