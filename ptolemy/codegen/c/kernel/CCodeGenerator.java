@@ -932,27 +932,7 @@ public class CCodeGenerator extends CodeGenerator {
         if (!isTopLevel()) {
             includingFiles.add("\"" + _sanitizedModelName + ".h\"");
 
-            // FIXME: This only works under windows.
-            // FIXME: Shouldn't this be included only if used?
-            String javaHome = StringUtilities.getProperty("java.home");
-            javaHome = javaHome.replace('\\', '/');
-            int index = javaHome.lastIndexOf("jre");
-            javaHome = javaHome.substring(0, index);
-            addInclude("-I\"" + javaHome + "include\"");
-
-            // FIXME: Need a better way to handle this OS dependency.
-            String osName = StringUtilities.getProperty("os.name");
-            if (osName != null) {
-                if (osName.startsWith("Windows")) {
-                    addInclude("-I\"" + javaHome + "include/win32\"");
-                } else if (osName.startsWith("SunOS")) {
-                    addInclude("-I\"" + javaHome + "include/solaris\"");
-                } else if (osName.startsWith("Linux")) {
-                    addInclude("-I\"" + javaHome + "include/linux\"");
-                } else if (osName.startsWith("Darwin")) {
-                    addInclude("-I\"" + javaHome + "include/darwin\"");
-                }
-            }
+            includingFiles.addAll(((CCodeGeneratorHelper)compositeActorHelper).getJVMHeaderFiles());
         }
 
         includingFiles.add("<stdarg.h>");
