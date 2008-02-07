@@ -318,7 +318,7 @@ $(PTII_SRC): $(PTII_FULL)
 		$(TAR) -xvf $(PTII_FULL); \
 		cd ptII$(VERSION); \
 		echo "About to configure `pwd`"; \
-		PTII=`./ptcygpwd`  ./configure; make -k clean; \
+		PTII=`$(GENDIR)/ptcygpwd`  ./configure; make -k clean; \
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; \
