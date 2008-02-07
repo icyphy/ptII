@@ -87,20 +87,47 @@ public class StreamExec implements ExecuteCommands {
      *  @param directoryName The name of the directory to append to the path.
      */
     public void appendToPath(String directoryName) {
-        // stdout("StreamExec.appendToPath(): "
-        //        + directoryName + "\n");
-        String path = getenv("PATH");
-        //stdout("StreamExec.appendToPath() path: "
-        //        + path + "\n");
+        // FIXME: Code Duplication from JTextAreaExec.java
+        if (_debug) {
+            stdout("StreamExec.appendToPath(): "
+                    + directoryName + "\n");
+        }
 
-        if (path.indexOf(File.pathSeparatorChar + directoryName
+        // Might be Path, might be PATH
+        String keyPath = "PATH";
+        String path = getenv(keyPath);
+        if (path == null) {
+            path = getenv("Path");
+            if (path != null) {
+                keyPath = "Path";
+            }
+            if (_debug) {
+                stdout("StreamExec.appendToPath() Path: "
+                        + path + "\n");
+            }
+        } else {
+            if (_debug) {
+                stdout("StreamExec.appendToPath() PATH: "
+                        + path + "\n");
+            }
+        }
+
+        if (path == null
+                || path.indexOf(File.pathSeparatorChar + directoryName
                         + File.pathSeparatorChar) == -1) {
-            //stdout("StreamExec.appendToPath() updating\n");
-
-
-            _envp = StreamExec.updateEnvironment("PATH",
+            if (_debug) {
+                stdout("StreamExec.appendToPath() updating\n");
+            }
+            _envp = StreamExec.updateEnvironment(keyPath,
                     File.pathSeparatorChar + directoryName
                     + File.pathSeparatorChar);
+
+            if (_debug) {
+                // For debugging
+                for ( int i = 0; i < _envp.length; i++) {
+                    stdout("StreamExec.appendToPath() " + _envp[i]);
+                }
+            }
         }
     }
 
@@ -418,6 +445,8 @@ public class StreamExec implements ExecuteCommands {
      *  the command.
      */
     private List _commands;
+
+    private final boolean _debug = false;
 
     /** The environment, which is an array of Strings of the form
      *  <code>name=value</code>.  If this variable is null, then
