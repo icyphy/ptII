@@ -111,6 +111,13 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
 
         _windowProperties = new WindowPropertiesAttribute(this,
                 "_windowProperties");
+        // Note that we have to force this to be persistent because
+        // there is no real mechanism for the value of the properties
+        // to be updated when the window is moved or resized. By
+        // making it persistent, when the model is saved, the
+        // attribute will determine the current size and position
+        // of the window and save it.
+        _windowProperties.setPersistent(true);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
