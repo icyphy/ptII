@@ -1,2 +1,7 @@
 #!/bin/sh
-echo `pwd`/$1
+case "`uname -s`" in
+    CYGWIN_NT-*)
+	cygpath -m $@;;
+    *)
+	echo `pwd`/$1;;
+esac
