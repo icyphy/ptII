@@ -56,7 +56,6 @@ OTHER_FILES_TO_BE_JARED = \
 	Reduce.ptln \
 	Split.ptln \
 	WaitingStop.ptln \
-	ReadTest.map \
 	MapReduce.htm
 
 EXTRA_SRCS = \
