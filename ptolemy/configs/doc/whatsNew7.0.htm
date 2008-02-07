@@ -21,6 +21,11 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
 <p>Contents:
 <ul>
 <li> <a href="#highlights">Highlights</a>
+     <a href="#sdfcodegen">Codegen</a>
+     - <a href="#ptalon">Ptalon</a>
+     - <a href="#backtracking">Backtracking</h3>
+     - <a href="continuousDomain">Continuous Domain</a>
+     - <a href="graphTransformation">Graph Transformation</a>
 <li> <a href="#demos">New demonstrations</a>
 <li> <a href="#other">Other Key New Capabilities</a>
 <li> <a href="#libraries">New and Enhanced Actor Libraries</a>
@@ -30,7 +35,37 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
 
 <h2><a name="highlights">Highlights</a></h2>
 
-<h3>Ptalon</h3>
+<h3><a name="sdfCodegen">SDF Code Generation</a></h3>
+
+The SDF Template based C code generator (Codegen) generates code for
+hierarchical Synchronous Dataflow (SDF), Finite State Machine (FSM) and
+Heterochronous Dataflow Domain (HDF) models.
+
+<p>Codegen has the following new features:
+<ul> 
+<li><a href="ptdoc:ptolemy.actor.lib.jni.EmbeddedCActor">EmbeddedCActor</a> - Allows arbitrary C code to be embedded in a Java model.  The entire Java model can then be converted to C code and the code within the EmbeddedCActor will be used.
+<li>Enhanced polymorphic type system
+<li>Support for invoking the Java plotter from a C version of a model
+<li><i>and many more<i>
+</ul>
+
+<h4>References</h4>
+<ul>
+<li> G. Zhou, M.-K. Leung, and E. A. Lee, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/07/codegen/">A Code Generation Framework for Actor-Oriented Models with Partial Evaluation</a>," <i>Proceedings of International Conference on Embedded Software and Systems 2007,</i> LNCS Vol. 4523, Daegu, South Korea, May 14-16, 2007, pp. 786-799.
+</ul>
+
+<h4>Codegen Demonstrations</h4>
+<i>Some of the code generation demos might not work under Web Start because
+Web Start uses a JRE, not a JDK.</i>
+
+ <p><a href="../codegen/demos.htm">Codegen demonstrations</a>
+
+ <p>Primary Codegen Developers: Gang Zhou, Man-kit Leung.
+ <p>Codegen Contributors: Christopher Brooks, Teale Fristoe, Edward A. Lee, Ye Zhou
+
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="ptalon">Ptalon</h3>
 
 <p>Actor-oriented design is a common design strategy in embedded
 system design, where actors are concurrent components which
@@ -77,39 +112,43 @@ supporting large block-diagram models.
   <li> <a href="../../actor/ptalon/demo/SmallWorld/SmallWorld-PtalonActor.xml">SmallWorld-PtalonActor</a>
   </ul>
 
-<h3>Backtracking</h3>
+<p>Primary Ptalon Developer: Adam Cataldo
+<p>Contributor: Elaine Cheong
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="backtracking">Backtracking</h3>
 A backtracking facility enables the system to restore its old
 state. It has many applications in practice, and is especially
-important to high-performance distributed computation.
-		</p>
+important to high-performance distributed computation.</p>
 <p>In developing this sub-project, we highlight the
-following (increasing) list of criteria:
-			</p>
+following (increasing) list of criteria:</p>
+
 <ul>
 
 <li><em>Performance</em>. The highest priority is awarded to the
 performance of the resulting system (the Ptolemy II system with
 backtracking support built in), as compared to the original
 system. Novel approaches are employed mainly to improve performance,
-with moderate complexity added.
-</li>
+with moderate complexity added.</li>
 
 <li><em>Automatic transformation</em>. Transformation from the original
 system to the backtracking-enabled system must be automated as much as
 possible. Due to the size of the existing system, it is not realistic
 to require a manual recoding in most of its sources. Moreover, coding
 the backtracking sub-system by hand makes it hard to debug and evolve
-over time./li>
+over time.</li>
+
 <li><em>Clean interface to other parts</em>. The
 backtracking sub-system must reveal a small but powerful
 interface to the other parts in the system. It provides
 the users with functions such as creating checkpoints,
 undoing multiple language-level operations by backtracking
 to a previous checkpoint, and even redoing those
-operations to achieve some form of laziness.
+operations to achieve some form of laziness.</li>
+
 </ul>
 
- <p>Primary Developer: Thomas Huining Feng
+ <p>Primary Backtracking Developer: Thomas Huining Feng
 <h4>Backtracking Demonstrations</h4>
  <ul>
    <li> <a href="../../../ptolemy/backtrack/demo/PrimeTest/PrimeTest.xml">Prime Test</a> </li>
@@ -117,36 +156,13 @@ operations to achieve some form of laziness.
    <li> <a href="../../../ptolemy/backtrack/demo/TrialModule/TrialModule.xml">Trial Module</a> </li>
  </ul>
 
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="continuousDomain">Continuous Domain</a></h3>
 
-
-<h3><a name="sdfCodegen">SDF Code Generation</a></h3>
-
-The SDF Template based C code generator (Codegen) generates code for
-hierarchical Synchronous Dataflow (SDF), Finite State Machine (FSM) and
-Heterochronous Dataflow Domain (HDF) models.
-
-<p>Codegen has the following new features:
-<ul> 
-<li><a href="ptdoc:ptolemy.actor.lib.jni.EmbeddedCActor">EmbeddedCActor</a> - Allows arbitrary C code to be embedded in a Java model.  The entire Java model can then be converted to C code and the code within the EmbeddedCActor will be used.
-<li>Enhanced polymorphic type system.
-<li>Support for invoking the Java plotter from a C version of a model.
-<li><i>and many more<i>
-</ul>
-
-<i>Some of the code generation demos might not work under Web Start because
-Web Start uses a JRE, not a JDK.</i>
-
-<p><a href="../codegen/demos.htm">Codegen demonstrations</a>
-
- <p>Primary Developers: Gang Zhou, Man-kit Leung.
- <p>Contributors: Christopher Brooks, Teale Fristoe, Edward A. Lee, Ye Zhou
-
-
-<h3>The
-<a href="../../../ptolemy/domains/continuous/doc/main.htm">Continuous domain</a></h3>
-
-<P>
-The Continuous Domain is a redesign of the Continuous Time (CT) domain with
+<P> The
+<a href="../../../ptolemy/domains/continuous/doc/main.htm">Continuous domain</a>
+is a redesign of the Continuous Time (CT) domain with
 a rigorous semantics documented in the following papers:
 
 <ul>
@@ -175,13 +191,78 @@ Domain interactions are documented in the following paper:
 <li> A. Goderis, C. Brooks, I. Altintas, E. A. Lee, and C. Goble, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-139.html#in_browser" target="_top">Heterogeneous Composition of Models of Computation</a>," EECS Department, University of California, Berkeley, Tech. Rep. UCB/EECS-2007-139, Nov. 2007.
 </ul>
 
- <p>Primary Developers: Haiyang Zheng, Edward A. Lee
+ <p>Primary Continuous Domain Developers: Haiyang Zheng, Edward A. Lee
 
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="graphTransformation">Graph Transformation</h3>
 
+<p>The graph transformation facility provides a framework for the
+analysis and transformation of actor models using graph transformation
+techniques.
+
+<p>The design of large-scale models poses a number of challenges. As
+the size of the models increases to thousands of actors or hundreds of
+thousands of actors, analysis and consistent modification on the
+models become extremely hard. Furthermore, to maximize component
+reuse, a systematic approach is needed for the specification and
+maintenance of common patterns in the models and the transformation of
+those patterns.
+
+<p>The model transformation framework to be developed in this project
+aims to support the flexible specification of patterns and
+replacements by means of rules in graph grammar. An intuitive
+graphical user interface will be built. For novice users, a set of
+common transformations will be included in a library to facilitate
+their common tasks.
+
+<p>The transformations are models in their own right. They can be
+embedded in larger models hierarchically. Heterogeneous models of
+computation can be used to control the application of individual
+"atomic" transformations. This makes it easy to create sophisticated
+transformations by composing simple ones in a manageable and
+disciplined way. The sophisticated transformations will also take
+advantage of the concurrency inherent in those models of computation.
+
+<p>Model transformation can be applied as an optimization of modal
+models. These are hierarchical state machines with refinements in
+their states, which are sub-models to be executed when those states
+are active. The current implementation includes the complete
+description of each refinement in the model description, even though
+refinements of the states in a state machine tend to have large
+commonality. With the transformation technique, only one refinement
+needs to be stored completely. The others are obtained by
+transformations performed on the stored refinement. This eliminates
+redundancy and eases the job of modifying multiple refinements
+consistently.
+
+<p>Other applications of the model transformation technique include
+recognizing common design patterns in the models in a static analysis,
+replacing exiting design patterns with more efficient ones, and
+reusing design patterns by incorporating them into new models.
+
+<h4>References</h4>
+<ul>
+<li>Thomas Huining Feng, Miriam Zia, and Hans Vangheluwe, "<a href="papers/fzv07scsc.pdf" target="_top">Multi-Formalism Modelling and Model Transformation for the Design of Reactive Systems</a>," In <a href="http://www.sce.carleton.ca/faculty/wainer/SCSC07/">2007 Summer Computer Simulation Conference (SCSC 2007)</a>, San Diego, CA, USA, Jul. 2007.
+</ul>
+
+<h4>Graph Transformation Demonstrations</h4>
+
+<p>Primary Graph Transformation Developer: Thomas Huining Feng
+<ul>
+   <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a> </li>
+   <li> <a href="../../../ptolemy/actor/gt/demo/HierarchyFlattening/HierarchyFlattening.xml">HierarchyFlattening</a> </li>
+   <li> <a href="../../../ptolemy/actor/gt/demo/ModelGeneration/ModelGeneration.xml">ModelGeneration</a> </li>
+   <li> <a href="../../../ptolemy/actor/gt/demo/PublisherTest/PublisherTest.xml">PublisherTest</a> </li>
+</ul>
 
 <h2><a name="demos">New demonstrations</a></h2>
 
-<li> Quadrotor?
+
+<h3>Discrete Event (DE)</h3>
+<ul>
+<li> <a href="../../domains/ct/demo/Starmac/Starmac.xml">Starmac</a>
+</ul>
 
 <h3>Discrete Event (DE)</h3>
 <ul>
@@ -245,9 +326,9 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 <li><a href="ptdoc:ptolemy.actor.lib.gui.ModelDisplay">ModelDisplay</a>
 <li><a href="ptdoc:ptolemy.actor.lib.hoc.MirrorComposite">MirrorComposite</a>
 <li><a href="ptdoc:ptolemy.actor.lib.hoc.RealTimeComposite">RealTimeComposite</a>
-<li><a href="ptdoc:ptolemy.actor.lib.javasound.ClipPlayer">ClipPlayer.java</a>
-<li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundActor">SoundActor.java</a>
-<li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundPlaye">SoundPlayer.java</a>
+<li><a href="ptdoc:ptolemy.actor.lib.javasound.ClipPlayer">ClipPlayer</a>
+<li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundActor">SoundActor</a>
+<li><a href="ptdoc:ptolemy.actor.lib.javasound.SoundPlaye">SoundPlayer</a>
 </ul>
 
 <li><i>New Continuous Time (CT) actors</i>:
