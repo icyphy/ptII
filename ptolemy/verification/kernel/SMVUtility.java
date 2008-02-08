@@ -67,22 +67,27 @@ public class SMVUtility {
     public static CompositeActor generateEquivalentSystemWithoutHierachy(
             CompositeActor originalCompositeActor) {
 
+        ArrayList<FSMActor> list = new ArrayList<FSMActor>(); 
         try {
             if ((((CompositeActor) originalCompositeActor).entityList()).size() > 0) {
-                for (int i = 0; i<(((CompositeActor) originalCompositeActor)
-                        .entityList()).size() ; ) {
-                    Entity innerEntity = (Entity) (((CompositeActor) originalCompositeActor)
-                            .entityList()).get(i);
+                //for (int i = 0; i<(((CompositeActor) originalCompositeActor)
+                //        .entityList()).size() ; ) {
+                
+                    //Entity innerEntity = (Entity) (((CompositeActor) originalCompositeActor)
+                    //        .entityList()).get(i);
+                Iterator it = (((CompositeActor) originalCompositeActor)
+                                .entityList()).iterator();
+                while(it.hasNext()){
+                    Entity innerEntity = (Entity) it.next();
                     if (innerEntity instanceof ModalModel) {
                         FSMActor newActor = (FSMActor) _rewriteModalModelToFSMActor((ModalModel) innerEntity);
                         (((CompositeActor) originalCompositeActor).entityList())
-                                .remove(i);
-                        (((CompositeActor) originalCompositeActor).entityList())
-                                .add(i, (FSMActor) newActor);
+                                .remove(innerEntity);
+                        list.add(newActor);
+                        //(((CompositeActor) originalCompositeActor).entityList())
+                        //        .add(i, (FSMActor) newActor);
                         
-                    } else {
-                        i++;
-                    }
+                    } 
                 }
             }
 
@@ -90,6 +95,9 @@ public class SMVUtility {
             ex.printStackTrace();
         }
 
+        for(int i = 0; i< list.size(); i++){
+            (((CompositeActor) originalCompositeActor).entityList()).add(list.get(i));
+        }
         return originalCompositeActor;
 
     }
