@@ -28,7 +28,6 @@
 
 package ptolemy.verification.kernel;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,7 +36,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedActor;
@@ -47,14 +45,10 @@ import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.ComponentPort;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-
 import ptolemy.kernel.Port;
 
 /**
@@ -75,8 +69,8 @@ public class SMVUtility {
 
         try {
             if ((((CompositeActor) originalCompositeActor).entityList()).size() > 0) {
-                for (int i = (((CompositeActor) originalCompositeActor)
-                        .entityList()).size() - 1; i >= 0; i--) {
+                for (int i = 0; i<(((CompositeActor) originalCompositeActor)
+                        .entityList()).size() ; ) {
                     Entity innerEntity = (Entity) (((CompositeActor) originalCompositeActor)
                             .entityList()).get(i);
                     if (innerEntity instanceof ModalModel) {
@@ -84,8 +78,10 @@ public class SMVUtility {
                         (((CompositeActor) originalCompositeActor).entityList())
                                 .remove(i);
                         (((CompositeActor) originalCompositeActor).entityList())
-                                .add(i, newActor);
-
+                                .add(i, (FSMActor) newActor);
+                        
+                    } else {
+                        i++;
                     }
                 }
             }
@@ -111,217 +107,88 @@ public class SMVUtility {
             String pattern, String choice, String span)
             throws IllegalActionException {
 
+        _globalSignalDistributionInfo = new HashMap<String, ArrayList<String>>();
+        _globalSignalRetrivalInfo = new HashMap<String, HashSet<String>>();
+
         CompositeActor model = generateEquivalentSystemWithoutHierachy(PreModel);
-
+ 
         StringBuffer returnFmvFormat = new StringBuffer("");
-        returnFmvFormat.append("MODULE main \n");
-        returnFmvFormat.append("\tVAR \n");
-
-        returnFmvFormat.append("\t\t" + model.getName() + ": "
-                + "System();\n\n");
-
-        if (choice.equalsIgnoreCase("CTL")) {
-            returnFmvFormat.append("\tSPEC \n");
-            returnFmvFormat.append("\t\t" + pattern + "\n");
-        } else if (choice.equalsIgnoreCase("LTL")) {
-            returnFmvFormat.append("\tLTLSPEC \n");
-            returnFmvFormat.append("\t\t" + pattern + "\n");
-        }
-
-        returnFmvFormat.append("MODULE " + "System" + "() \n");
-        returnFmvFormat.append("\tVAR \n");
-        //HashMap<String, FSMActor> FSMActors = new HashMap<String, FSMActor>();
 
         // List out all FSMs with their states.
-        // int index = 0;
+
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
-            Entity innerModel = innerEntity;
-            if (innerEntity instanceof ModalModel) {
-
-                try {
-                    // Temporarily set up the name of the inner FSMActor as
-                    // innerEntity.getName().
-                    ((ModalModel) innerEntity).getController().setName(
-                            innerEntity.getName());
-                } catch (Exception ex) {
-                    // This is OK to do this.
-                }
-                innerModel = ((ModalModel) innerEntity).getController();
+            //Entity innerModel = innerEntity;
+            if (innerEntity instanceof FSMActor) {
+                // Directly generate the whole description of the system.
+                returnFmvFormat.append(translateSingleFSMActor(
+                        (FSMActor) innerEntity, span));
             }
-            if (innerModel instanceof FSMActor) {
+        }
 
-                String name = innerModel.getName();
-                //FSMActors.put(name, (FSMActor) innerModel);
+        StringBuffer mainModuleDescription = new StringBuffer("");
+        mainModuleDescription.append("MODULE main \n");
+        mainModuleDescription.append("\tVAR \n");
 
-                HashSet<State> frontier; // = new HashSet<State>();
-                try {
-                    // Enumerate all states
-                    frontier = _enumerateStateSet((FSMActor) innerModel);
-                } catch (Exception ex) {
-                    _undoSystemModalModelRenaming(model);
-                    throw new IllegalActionException(
-                            "VerificationUtility.generateSMVFormat() clashes: "
-                                    + ex.getMessage());
-                }
+        for (Iterator actors = (((CompositeActor) model).entityList())
+                .iterator(); actors.hasNext();) {
+            Entity innerEntity = (Entity) actors.next();
+            // Entity innerModel = innerEntity;
+            if (innerEntity instanceof FSMActor) {
+                mainModuleDescription.append("\t\t" + innerEntity.getName()
+                        + ": " + innerEntity.getName() + "(");
+                // Check if the variable has variable outside; where is the location. 
+                ArrayList<String> signalInfo = _globalSignalDistributionInfo
+                        .get(innerEntity.getName());
+                if (signalInfo == null) {
 
-                returnFmvFormat.append("\t\t" + name + "-state : {");
-                Iterator<State> it = frontier.iterator();
-                while (it.hasNext()) {
-                    State val = (State) it.next();
-                    returnFmvFormat.append(val.getDisplayName());
-                    if (it.hasNext()) {
-                        returnFmvFormat.append(",");
+                } else {
+                    for (int i = 0; i < signalInfo.size(); i++) {
+                        String signalName = signalInfo.get(i);
+                        boolean contain = false;
+                        String location = "";
+                        Iterator<String> it = _globalSignalRetrivalInfo
+                                .keySet().iterator();
+                        while (it.hasNext()) {
+                            String place = it.next();
+                            if (_globalSignalRetrivalInfo.get(place).contains(
+                                    signalName)) {
+                                location = place;
+                                contain = true;
+                                break;
+                            }
+                        }
+                        if (contain == true) {
+                            if (i == signalInfo.size() - 1) {
+                                mainModuleDescription.append(location.trim()+"."+signalName+" ");
+                            } else {
+                                mainModuleDescription.append(location.trim()+"."+signalName+", ");
+                            }
+                        } else {
+                            // use 1 to represent the signal
+                            if (i == signalInfo.size() - 1) {
+                                mainModuleDescription.append("1 ");
+                            } else {
+                                mainModuleDescription.append("1, ");
+                            }
+                        }
                     }
                 }
-                returnFmvFormat.append("};\n");
+                mainModuleDescription.append(");\n");
 
             }
         }
 
-        // now initiate _variableInfo
-        _variableInfo = new HashMap<String, VariableInfo>();
-        HashSet<String> globalVariableSet = new HashSet<String>();
-
-        // Decide variables encoded in the Kripke Structure. Here we need to
-        // consider all variables in FSMActor.
-        // FIXME: For outer coordination, it can be observed via the initial
-        // setting of variables. For example, in the example of traffic
-        // light, we know that for variable Sec, Sec_isPresent is shown in
-        // the guard, but we are not initializing it. This indicates that
-        // Sec is an outer variable used for coordination. In this way, we
-        // do not need to list it as variable in the .smv file. But we still
-        // need to use it as coordination between variables.
-        // FIXME: Nop, the above statement is wrong. No cooredination is
-        // needed.
-
-        HashSet<String> variableSet; // = new HashSet<String>();
-        try {
-            // Enumerate all variables used in the Kripke structure
-            // note that every valName =
-            // String(FSMActor.getName()+"-" + valName).
-            // So don't add FSMActor.getName()+"-" later on!
-            int numSpan = Integer.parseInt(span);
-            variableSet = _decideVariableSet((CompositeActor) model, numSpan);
-            // _variableInfo would store the domain (min, max) of a
-            // certain variable.
-        } catch (Exception ex) {
-            _undoSystemModalModelRenaming(model);
-            throw new IllegalActionException(
-                    "VerificationUtility.generateSMVFormat() clashes: "
-                            + ex.getMessage());
+        if (choice.equalsIgnoreCase("CTL")) {
+            mainModuleDescription.append("\n\tSPEC \n");
+            mainModuleDescription.append("\t\t" + pattern + "\n");
+        } else if (choice.equalsIgnoreCase("LTL")) {
+            mainModuleDescription.append("\n\tLTLSPEC \n");
+            mainModuleDescription.append("\t\t" + pattern + "\n");
         }
 
-        Iterator<String> itVariableSet = variableSet.iterator();
-        while (itVariableSet.hasNext()) {
-
-            String valName = (String) itVariableSet.next();
-            globalVariableSet.add(valName);//globalVariableSet.add(new String(valName));
-            returnFmvFormat.append("\t\t" + valName + " : {");
-            // Retrieve the lower bound and upper bound of the
-            // variable used in the system
-            if (_variableInfo.get(valName) == null) {
-                _undoSystemModalModelRenaming(model);
-                throw new IllegalActionException("Internal error, getting \""
-                        + valName + "\" from \"_variableInfo\" returned null?");
-            }
-            VariableInfo individual = (VariableInfo) _variableInfo.get(valName);
-            if (individual == null) {
-                _undoSystemModalModelRenaming(model);
-                throw new IllegalActionException("Internal error, getting \""
-                        + valName + "\" returned null?");
-            }
-            int lowerBound = Integer.parseInt(individual._minValue);
-            int upperBound = Integer.parseInt(individual._maxValue);
-            try {
-                int numSpan = Integer.parseInt(span);
-                returnFmvFormat.append(" ls,");
-                for (int number = lowerBound; number <= upperBound; number++) {
-                    returnFmvFormat.append(number);
-                    returnFmvFormat.append(",");
-                }
-                returnFmvFormat.append("gt };\n");
-
-            } catch (Exception ex) {
-                _undoSystemModalModelRenaming(model);
-                throw new IllegalActionException(
-                        "VerificationUtility.generateSMVFormat() clashes: "
-                                + ex.getMessage());
-            }
-        }
-
-        _generateAllVariableTransitions(globalVariableSet,
-                (CompositeActor) model);
-
-        returnFmvFormat.append("\tASSIGN \n");
-
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
-            Entity innerEntity = (Entity) actors.next();
-            Entity innerModel = innerEntity;
-            if (innerEntity instanceof ModalModel) {
-                innerModel = ((ModalModel) innerEntity).getController();
-            }
-            if (innerModel instanceof FSMActor) {
-                // setup initial state
-                try {
-                    String name = ((FSMActor) innerModel).getInitialState()
-                            .getName();
-                    returnFmvFormat.append("\t\tinit(" + innerModel.getName()
-                            + "-" + "state) := " + name + ";\n");
-                } catch (Exception ex) {
-                    throw new IllegalActionException(
-                            "VerificationUtility.generateSMVFormat() clashes: "
-                                    + ex.getMessage());
-                }
-                returnFmvFormat.append("\t\tnext(" + innerModel.getName() + "-"
-                        + "state) :=\n");
-                returnFmvFormat.append("\t\t\tcase\n");
-                LinkedList<VariableTransitionInfo> infoList = _variableTransitionInfo
-                        .get(((FSMActor) innerModel).getName() + "-" + "state");
-                for (int i = 0; i < infoList.size(); i++) {
-                    VariableTransitionInfo info = infoList.get(i);
-                    returnFmvFormat.append("\t\t\t\t" + info._preCondition
-                            + " :{ " + info._varibleNewValue + " };\n");
-                }
-                returnFmvFormat.append("\t\t\t\t1             : "
-                        + innerModel.getName() + "-" + "state;\n");
-                returnFmvFormat.append("\t\t\tesac;\n\n");
-            }
-
-        }
-
-        // Find out initial values for those variables.
-        HashMap<String, String> variableInitialValue; // = new HashMap<String, String>();
-        variableInitialValue = _retrieveVariableInitialValue(globalVariableSet,
-                ((CompositeActor) model));
-
-        Iterator<String> newItVariableSet = globalVariableSet.iterator();
-        while (newItVariableSet.hasNext()) {
-
-            String valName = (String) newItVariableSet.next();
-            returnFmvFormat.append("\t\tinit(" + valName + ") := "
-                    + variableInitialValue.get(valName) + ";\n");
-            returnFmvFormat.append("\t\tnext(" + valName + ") :=\n");
-            returnFmvFormat.append("\t\t\tcase\n");
-
-            // Generate all transitions; start from "state"
-            List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
-                    .get(valName);
-            for (int i = 0; i < innerInfoList.size(); i++) {
-                VariableTransitionInfo info = innerInfoList.get(i);
-                returnFmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
-                        + info._varibleNewValue + " };\n");
-            }
-            returnFmvFormat
-                    .append("\t\t\t\t1             : " + valName + ";\n");
-            returnFmvFormat.append("\t\t\tesac;\n\n");
-        }
-
-        _undoSystemModalModelRenaming(model);
-        //System.out.println("\n\n****** RESULT OF CONVERSION ******");
-        //System.out.println(returnFmvFormat.toString());
+        returnFmvFormat.append(mainModuleDescription);
         return returnFmvFormat;
     }
 
@@ -342,366 +209,679 @@ public class SMVUtility {
         }
     }
 
+    public static StringBuffer translateSingleFSMActor(FSMActor actor,
+            String span) {
+        StringBuffer returnSmvFormat = new StringBuffer("");
+
+        // returnSmvFormat.append("MODULE "+actor.getName()+"()"+);
+
+        returnSmvFormat.append("\tVAR \n");
+        returnSmvFormat.append("\t\tstate : {");
+
+        // Enumerate all states in the FmvAutomaton
+        HashSet<State> frontier = null; // = new HashSet<State>();
+        try {
+            frontier = _enumerateStateSet(actor);
+        } catch (Exception exception) {
+
+        }
+
+        // Print out all these states
+        Iterator<State> it = frontier.iterator();
+        while (it.hasNext()) {
+            State val = (State) it.next();
+            returnSmvFormat.append(val.getDisplayName());
+            if (it.hasNext()) {
+                returnSmvFormat.append(",");
+            }
+        }
+        returnSmvFormat.append("};\n");
+
+        // Decide variables encoded in the Kripke Structure.
+        // Note that here the variable only contains inner variables.
+        // 
+        HashSet<String> variableSet = null; // = new HashSet<String>();
+        try {
+            // Enumerate all variables used in the Kripke structure
+            int numSpan = Integer.parseInt(span);
+            variableSet = _decideVariableSet(actor, numSpan);
+        } catch (Exception exception) {
+
+        }
+
+        Iterator<String> itVariableSet = variableSet.iterator();
+        while (itVariableSet.hasNext()) {
+
+            String valName = (String) itVariableSet.next();
+            returnSmvFormat.append("\t\t" + valName + " : {");
+            // Retrieve the lower bound and upper bound of the variable used in
+            // the system based on inequalities or assignments
+            // Also, add up symbols "ls" and "gt" within the variable domain.
+            if (_variableInfo.get(valName) == null) {
+
+            }
+            VariableInfo individual = (VariableInfo) _variableInfo.get(valName);
+            int lowerBound = Integer.parseInt(individual._minValue);
+            int upperBound = Integer.parseInt(individual._maxValue);
+            try {
+                int numSpan = Integer.parseInt(span);
+                returnSmvFormat.append(" ls,");
+                for (int number = lowerBound; number <= upperBound; number++) {
+                    returnSmvFormat.append(number);
+                    returnSmvFormat.append(",");
+                }
+                returnSmvFormat.append("gt };\n");
+
+            } catch (Exception exception) {
+
+            }
+
+        }
+
+        // Decide variables encoded in the Kripke Structure.
+        // Note that here the variable only contains Signal Variables.
+        // For example, PGo_isPresent
+
+        HashSet<String> signalVariableSet = null; // = new HashSet<String>();
+        try {
+            // Enumerate all variables used in the Kripke structure
+            int numSpan = Integer.parseInt(span);
+            signalVariableSet = _decideSignalVariableSet(actor, numSpan);
+        } catch (Exception exception) {
+
+        }
+
+        // Meanwhile, place elements in signalVariableSet into variableSet;  
+        Iterator<String> itSignalVariableSet = signalVariableSet.iterator();
+        while (itSignalVariableSet.hasNext()) {
+
+            String valName = (String) itSignalVariableSet.next();
+            returnSmvFormat.append("\t\t" + valName + " : boolean; \n");
+            variableSet.add(valName);
+        }
+
+        // Now start the variable transition calculation process.
+        // First we would perform on states.
+
+        returnSmvFormat.append("\tASSIGN \n");
+
+        // setup initial state
+        try {
+            String name = actor.getInitialState().getName();
+            returnSmvFormat.append("\t\tinit(state) := " + name + ";\n");
+        } catch (Exception exception) {
+
+        }
+        try {
+            _generateAllVariableTransitions(actor, variableSet);
+        } catch (Exception ex) {
+
+        }
+        returnSmvFormat.append("\t\tnext(state) :=\n");
+        returnSmvFormat.append("\t\t\tcase\n");
+
+        // Generate all transitions; start from "state"
+        LinkedList<VariableTransitionInfo> infoList = _variableTransitionInfo
+                .get("state");
+        if (infoList == null) {
+
+        }
+        for (int i = 0; i < infoList.size(); i++) {
+            VariableTransitionInfo info = infoList.get(i);
+            returnSmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
+                    + info._varibleNewValue + " };\n");
+        }
+        returnSmvFormat.append("\t\t\t\t1             : state;\n");
+        returnSmvFormat.append("\t\t\tesac;\n\n");
+
+        HashSet<String> signalOfferedSet = new HashSet<String>();
+
+        // Find out initial values for those variables.
+        HashMap<String, String> variableInitialValue; // = new HashMap<String, String>();
+        variableInitialValue = _retrieveVariableInitialValue(actor, variableSet);
+
+        // Generate all transitions; run for every variable used in Kripke
+        // structure.
+        Iterator<String> newItVariableSet = variableSet.iterator();
+        while (newItVariableSet.hasNext()) {
+
+            String valName = (String) newItVariableSet.next();
+            returnSmvFormat.append("\t\tinit(" + valName + ") := "
+                    + variableInitialValue.get(valName) + ";\n");
+            returnSmvFormat.append("\t\tnext(" + valName + ") :=\n");
+            returnSmvFormat.append("\t\t\tcase\n");
+
+            // Generate all transitions; start from "state"
+            List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
+                    .get(valName);
+            if (innerInfoList == null) {
+
+            }
+            for (int i = 0; i < innerInfoList.size(); i++) {
+                VariableTransitionInfo info = innerInfoList.get(i);
+                returnSmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
+                        + info._varibleNewValue + " };\n");
+
+            }
+            boolean b = Pattern.matches(".*_isPresent", valName);
+            if (b == true) {
+                returnSmvFormat.append("\t\t\t\t1             : { 0 };\n");
+                signalOfferedSet.add(valName);
+            } else {
+                returnSmvFormat.append("\t\t\t\t1             : " + valName
+                        + ";\n");
+            }
+
+            returnSmvFormat.append("\t\t\tesac;\n\n");
+        }
+
+        _globalSignalRetrivalInfo.put(actor.getName(), signalOfferedSet);
+
+        // Lastly, attach the name and parameter required to use in the system.
+        // In our current implementation, it corresponds to those variables 
+        // having format "XX_isPresent" in guard expression.
+
+        // Decide variables encoded in the Kripke Structure.
+        // Note that here the variable only contains Signal Variables.
+        // For example, PGo_isPresent
+
+        StringBuffer frontAttachment = new StringBuffer("MODULE "
+                + actor.getName() + "( ");
+
+        HashSet<String> guardSignalVariableSet = null; // = new HashSet<String>();
+        try {
+            // Enumerate all variables used in the Kripke structure
+            guardSignalVariableSet = _decideGuardSignalVariableSet(actor);
+        } catch (Exception exception) {
+
+        }
+
+        ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
+        // Meanwhile, place elements in signalVariableSet into variableSet;  
+        Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
+                .iterator();
+        while (itGuardSignalVariableSet.hasNext()) {
+            String valName = (String) itGuardSignalVariableSet.next();
+            guardSignalVariableInfo.add(valName);
+            if (itGuardSignalVariableSet.hasNext() == true) {
+                frontAttachment.append(valName + ",");
+            } else {
+                frontAttachment.append(valName);
+            }
+        }
+        frontAttachment.append(" )\n");
+        frontAttachment.append(returnSmvFormat);
+
+        _globalSignalDistributionInfo.put(actor.getName(),
+                guardSignalVariableInfo);
+
+        return frontAttachment;
+    }
+
+    /**
+     * This private function first decides signal variables that would be used in the
+     * Kripke structure. Note that signal variables only appears in outputActions
+     */
+    private static HashSet<String> _decideSignalVariableSet(FSMActor actor,
+            int numSpan) throws IllegalActionException {
+
+        HashSet<String> returnVariableSet = new HashSet<String>();
+        HashSet<State> stateSet = new HashSet<State>();
+        //try {
+        // initialize
+        HashMap<String, State> frontier = new HashMap<String, State>();
+        // _variableInfo = new HashMap<String, VariableInfo>();
+
+        // create initial state
+        State stateInThis = actor.getInitialState();
+        String name = stateInThis.getName();
+        frontier.put(name, stateInThis);
+
+        // iterate
+        while (!frontier.isEmpty()) {
+            // pick a state from frontier. It seems that there isn't an 
+            // easy way to pick an arbitrary entry from a HashMap, except
+            // through Iterator
+            Iterator<String> iterator = frontier.keySet().iterator();
+            name = (String) iterator.next();
+            stateInThis = (State) frontier.remove(name);
+            if (stateInThis == null) {
+                throw new IllegalActionException("Internal error, removing \""
+                        + name + "\" returned null?");
+            }
+            ComponentPort outPort = stateInThis.outgoingPort;
+            Iterator transitions = outPort.linkedRelationList().iterator();
+
+            while (transitions.hasNext()) {
+                Transition transition = (Transition) transitions.next();
+
+                State destinationInThis = transition.destinationState();
+
+                if (!stateSet.contains(destinationInThis)) {
+                    frontier
+                            .put(destinationInThis.getName(), destinationInThis);
+                    stateSet.add(destinationInThis);
+                }
+
+                // get transitionLabel, transitionName and relation
+                // name for later use. Retrieve the transition
+
+                boolean hasAnnotation = false;
+                String text;
+                try {
+                    text = transition.annotation.stringValue();
+                } catch (IllegalActionException e) {
+                    text = "Exception evaluating annotation: " + e.getMessage();
+                }
+                if (!text.trim().equals("")) {
+                    hasAnnotation = true;
+                    // buffer.append(text);
+                }
+
+                String expression = transition.outputActions.getExpression();
+                if ((expression != null) && !expression.trim().equals("")) {
+                    // Retrieve possible value of the variable
+                    String[] splitExpression = expression.split(";");
+                    for (int i = 0; i < splitExpression.length; i++) {
+                        String[] characters = splitExpression[i].split("=");
+                        String lValue_isPresent = characters[0].trim()
+                                + "_isPresent";
+
+                        // add it into the _variableInfo
+                        VariableInfo variable = (VariableInfo) _variableInfo
+                                .get(lValue_isPresent);
+                        if (variable == null) {
+                            // Create a new one and insert all info.
+                            VariableInfo newVariable = new VariableInfo(
+                                    lValue_isPresent, "1", "0");
+                            _variableInfo.put(lValue_isPresent, newVariable);
+                            if (returnVariableSet.contains(lValue_isPresent) == false)
+                                returnVariableSet.add(lValue_isPresent);
+                        }
+
+                        /*
+                        String rValue;
+                        int numberRetrival = 0;
+                        boolean rvalueSingleNumber = true;
+                        try {
+                            rValue = characters[1].trim();
+                            numberRetrival = Integer.parseInt(rValue);
+                        } catch (Exception ex) {
+                            rvalueSingleNumber = false;
+                        }
+                        if (rvalueSingleNumber == true) {
+                            // add it into the _variableInfo
+                            VariableInfo variable = (VariableInfo) _variableInfo
+                                    .get(lValue);
+                            if (variable == null) {
+                                // Create a new one and insert all info.
+                                VariableInfo newVariable = new VariableInfo(
+                                        lValue, Integer
+                                                .toString(numberRetrival),
+                                        Integer.toString(numberRetrival));
+                                _variableInfo.put(lValue, newVariable);
+
+                            } else {
+                                // modify the existing one
+                                if (Integer.parseInt(variable._maxValue) < numberRetrival) {
+                                    variable._maxValue = Integer
+                                            .toString(numberRetrival);
+                                }
+                                if (Integer.parseInt(variable._minValue) > numberRetrival) {
+                                    variable._minValue = Integer
+                                            .toString(numberRetrival);
+                                }
+                                _variableInfo.remove(lValue);
+                                _variableInfo.put(lValue, variable);
+
+                            }
+                        }
+                        */
+                    }
+                }
+
+            }
+
+        }
+
+        return returnVariableSet;
+    }
+
+    /**
+     * This private function first decides signal variables that would be used in the
+     * Kripke structure. Note that signal variables only appears in outputActions
+     */
+    private static HashSet<String> _decideGuardSignalVariableSet(FSMActor actor)
+            throws IllegalActionException {
+
+        HashSet<String> returnVariableSet = new HashSet<String>();
+        HashSet<State> stateSet = new HashSet<State>();
+        //try {
+        // initialize
+        HashMap<String, State> frontier = new HashMap<String, State>();
+        // _variableInfo = new HashMap<String, VariableInfo>();
+
+        // create initial state
+        State stateInThis = actor.getInitialState();
+        String name = stateInThis.getName();
+        frontier.put(name, stateInThis);
+
+        // iterate
+        while (!frontier.isEmpty()) {
+            // pick a state from frontier. It seems that there isn't an 
+            // easy way to pick an arbitrary entry from a HashMap, except
+            // through Iterator
+            Iterator<String> iterator = frontier.keySet().iterator();
+            name = (String) iterator.next();
+            stateInThis = (State) frontier.remove(name);
+            if (stateInThis == null) {
+                throw new IllegalActionException("Internal error, removing \""
+                        + name + "\" returned null?");
+            }
+            ComponentPort outPort = stateInThis.outgoingPort;
+            Iterator transitions = outPort.linkedRelationList().iterator();
+
+            while (transitions.hasNext()) {
+                Transition transition = (Transition) transitions.next();
+
+                State destinationInThis = transition.destinationState();
+
+                if (!stateSet.contains(destinationInThis)) {
+                    frontier
+                            .put(destinationInThis.getName(), destinationInThis);
+                    stateSet.add(destinationInThis);
+                }
+
+                // get transitionLabel, transitionName and relation
+                // name for later use. Retrieve the transition
+
+                boolean hasAnnotation = false;
+                String text;
+                try {
+                    text = transition.annotation.stringValue();
+                } catch (IllegalActionException e) {
+                    text = "Exception evaluating annotation: " + e.getMessage();
+                }
+                if (!text.trim().equals("")) {
+                    hasAnnotation = true;
+                    // buffer.append(text);
+                }
+
+                // Retrieve the guardExpression for checking the existence
+                // of inner variables used in FmcAutomaton.
+                String guard = transition.getGuardExpression();
+                if ((guard != null) && !guard.trim().equals("")) {
+                    if (hasAnnotation) {
+                        // do nothing
+                    } else {
+
+                        // Rule II. For all variables that are used as 
+                        // guards, they would be expanded as AP
+
+                        // Separate each guard expression into substring
+                        String[] guardSplitExpression = guard.split("(&&)");
+                        if (guardSplitExpression.length != 0) {
+                            for (int i = 0; i < guardSplitExpression.length; i++) {
+
+                                String subGuardCondition = guardSplitExpression[i]
+                                        .trim();
+                                // Retrieve the left value of the
+                                // inequality.
+                                String[] characterOfSubGuard = subGuardCondition
+                                        .split("(>=)|(<=)|(==)|(!=)|[><]");
+                                // Here we may still have two cases:
+                                // (1) XXX_isPresent (2) the normal case.
+                                boolean b = Pattern.matches(".*_isPresent",
+                                        characterOfSubGuard[0].trim());
+                                if (b == true) {
+
+                                    if (returnVariableSet
+                                            .contains(characterOfSubGuard[0]
+                                                    .trim()) == false)
+                                        returnVariableSet
+                                                .add(characterOfSubGuard[0]
+                                                        .trim());
+                                }
+
+                            }
+
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+
+        return returnVariableSet;
+    }
+
     /**
      * This private function first decides variables that would be used in the
      * Kripke structure. Once when it is decided, it performs step 1 and 2 of
      * the variable domain generation process.
-     * 
-     * @param model
-     * @param numSpan
-     * @return returnVariableSet
      */
-    private static HashSet<String> _decideVariableSet(CompositeActor model,
+    private static HashSet<String> _decideVariableSet(FSMActor actor,
             int numSpan) throws IllegalActionException {
-        // BY PATRICK
-        _variableInfo = new HashMap<String, VariableInfo>();
+
         HashSet<String> returnVariableSet = new HashSet<String>();
+        HashSet<State> stateSet = new HashSet<State>();
+        //try {
+        // initialize
+        HashMap<String, State> frontier = new HashMap<String, State>();
+        _variableInfo = new HashMap<String, VariableInfo>();
 
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
-            Entity innerEntity = (Entity) actors.next();
-            Entity innerModel = innerEntity;
-            if (innerEntity instanceof ModalModel) {
-                innerModel = ((ModalModel) innerEntity).getController();
+        // create initial state
+        State stateInThis = actor.getInitialState();
+        String name = stateInThis.getName();
+        frontier.put(name, stateInThis);
+
+        // iterate
+        while (!frontier.isEmpty()) {
+            // pick a state from frontier. It seems that there isn't an 
+            // easy way to pick an arbitrary entry from a HashMap, except
+            // through Iterator
+            Iterator<String> iterator = frontier.keySet().iterator();
+            name = (String) iterator.next();
+            stateInThis = (State) frontier.remove(name);
+            if (stateInThis == null) {
+                throw new IllegalActionException("Internal error, removing \""
+                        + name + "\" returned null?");
             }
-            if (innerModel instanceof FSMActor) {
-                HashSet<State> stateSet = new HashSet<State>();
+            ComponentPort outPort = stateInThis.outgoingPort;
+            Iterator transitions = outPort.linkedRelationList().iterator();
+
+            while (transitions.hasNext()) {
+                Transition transition = (Transition) transitions.next();
+
+                State destinationInThis = transition.destinationState();
+
+                if (!stateSet.contains(destinationInThis)) {
+                    frontier
+                            .put(destinationInThis.getName(), destinationInThis);
+                    stateSet.add(destinationInThis);
+                }
+
+                // get transitionLabel, transitionName and relation
+                // name for later use. Retrieve the transition
+
+                boolean hasAnnotation = false;
+                String text;
                 try {
-                    // initialize
-                    HashMap<String, State> frontier = new HashMap<String, State>();
+                    text = transition.annotation.stringValue();
+                } catch (IllegalActionException e) {
+                    text = "Exception evaluating annotation: " + e.getMessage();
+                }
+                if (!text.trim().equals("")) {
+                    hasAnnotation = true;
+                    // buffer.append(text);
+                }
 
-                    // create initial state
-                    State stateInThis = ((FSMActor) innerModel)
-                            .getInitialState();
-                    String name = stateInThis.getName();
-                    frontier.put(name, stateInThis);
+                // Retrieve the guardExpression for checking the existence
+                // of inner variables used in FmcAutomaton.
+                String guard = transition.getGuardExpression();
+                if ((guard != null) && !guard.trim().equals("")) {
+                    if (hasAnnotation) {
+                        // do nothing
+                    } else {
 
-                    // iterate
-                    while (!frontier.isEmpty()) {
-                        // pick a state from frontier. It seems that there isn't
-                        // an easy way to pick an arbitrary entry from a HashMap,
-                        // except through Iterator
-                        Iterator<String> iterator = frontier.keySet()
-                                .iterator();
-                        name = (String) iterator.next();
-                        stateInThis = (State) frontier.remove(name);
-                        if (stateInThis == null) {
-                            throw new IllegalActionException(
-                                    "Internal error, removing \"" + name
-                                            + "\" returned null?");
-                        }
-                        ComponentPort outPort = stateInThis.outgoingPort;
-                        Iterator transitions = outPort.linkedRelationList()
-                                .iterator();
+                        // Rule II. For all variables that are used as 
+                        // guards, they would be expanded as AP
 
-                        while (transitions.hasNext()) {
-                            Transition transition = (Transition) transitions
-                                    .next();
+                        // Separate each guard expression into substring
+                        String[] guardSplitExpression = guard.split("(&&)");
+                        if (guardSplitExpression.length != 0) {
+                            for (int i = 0; i < guardSplitExpression.length; i++) {
 
-                            State destinationInThis = transition
-                                    .destinationState();
-
-                            if (!stateSet.contains(destinationInThis)) {
-                                frontier.put(destinationInThis.getName(),
-                                        destinationInThis);
-                                stateSet.add(destinationInThis);
-                            }
-
-                            // Retrieve the transition
-
-                            boolean hasAnnotation = false;
-                            String text;
-                            try {
-                                text = transition.annotation.stringValue();
-                            } catch (IllegalActionException e) {
-                                text = "Exception evaluating annotation: "
-                                        + e.getMessage();
-                            }
-                            if (!text.trim().equals("")) {
-                                hasAnnotation = true;
-
-                            }
-
-                            String guard = transition.getGuardExpression();
-                            if ((guard != null) && !guard.trim().equals("")) {
-                                if (hasAnnotation) {
-                                    // do nothing
+                                String subGuardCondition = guardSplitExpression[i]
+                                        .trim();
+                                // Retrieve the left value of the
+                                // inequality.
+                                String[] characterOfSubGuard = subGuardCondition
+                                        .split("(>=)|(<=)|(==)|(!=)|[><]");
+                                // Here we may still have two cases:
+                                // (1) XXX_isPresent (2) the normal case.
+                                boolean b = Pattern.matches(".*_isPresent",
+                                        characterOfSubGuard[0].trim());
+                                if (b == true) {
+                                    // First case, synchronize usage.
+                                    // Currently do nothing for single
+                                    // FmvAutomaton case.
                                 } else {
+                                    // Second case, place this variable into
+                                    // usage set. Retrieve the rvalue
 
-                                    // Rule II. For all variables that are used
-                                    // as guards, they would be expanded as AP
+                                    // Check if the right value exists. We
+                                    // need to ward off cases like "true".
 
-                                    // Separate each guard expression into
-                                    // substring
-                                    String[] guardSplitExpression = guard
-                                            .split("(&&)");
-                                    if (guardSplitExpression.length != 0) {
-                                        for (int i = 0; i < guardSplitExpression.length; i++) {
-
-                                            String subGuardCondition = guardSplitExpression[i]
-                                                    .trim();
-                                            // Retrieve the left value of the
-                                            // inequality.
-                                            String[] characterOfSubGuard = subGuardCondition
-                                                    .split("(>=)|(<=)|(==)|(!=)|[><]");
-                                            // Here we may still have two cases:
-                                            // (1) XXX_isPresent (2) the normal
-                                            // case.
-                                            boolean b = Pattern.matches(
-                                                    ".*_isPresent",
-                                                    characterOfSubGuard[0]
-                                                            .trim());
-                                            if (b == true) {
-                                                // First case, synchronize
-                                                // usage.
-                                                // Currently not implementing
-                                            } else {
-                                                // Second case, place this
-                                                // variable into usage set. 
-                                                // Retrieve the rvalue
-                                                //
-                                                // Check if the right value
-                                                // exists.
-                                                // We need to ward off cases
-                                                // like "true".
-
-                                                //try {
-                                                String rValue = null;
-                                                boolean isTrue = false;
-                                                try {
-                                                    rValue = characterOfSubGuard[1]
-                                                            .trim();
-                                                } catch (Exception ex) {
-                                                    isTrue = true;
-                                                }
-                                                if (isTrue == false) {
-                                                    int numberRetrival = 0;
-
-                                                    numberRetrival = Integer
-                                                            .parseInt(rValue);
-
-                                                    // add it into the
-                                                    // _variableInfo
-                                                    returnVariableSet
-                                                            .add(innerModel
-                                                                    .getName()
-                                                                    + "-"
-                                                                    + characterOfSubGuard[0]
-                                                                            .trim());
-
-                                                    VariableInfo variable = (VariableInfo) _variableInfo
-                                                            .get(innerModel
-                                                                    .getName()
-                                                                    + "-"
-                                                                    + characterOfSubGuard[0]
-                                                                            .trim());
-                                                    if (variable == null) {
-                                                        // Create a new one
-                                                        // and
-                                                        // insert all info.
-                                                        VariableInfo newVariable = new VariableInfo(
-                                                                innerModel
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + characterOfSubGuard[0]
-                                                                                .trim(),
-                                                                Integer
-                                                                        .toString(numberRetrival),
-                                                                Integer
-                                                                        .toString(numberRetrival));
-                                                        _variableInfo
-                                                                .put(
-                                                                        innerModel
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + characterOfSubGuard[0]
-                                                                                        .trim(),
-                                                                        newVariable);
-
-                                                    } else {
-                                                        // modify the
-                                                        // existing
-                                                        // one
-                                                        if (Integer
-                                                                .parseInt(variable._maxValue) < numberRetrival) {
-                                                            variable._maxValue = Integer
-                                                                    .toString(numberRetrival);
-                                                        }
-                                                        if (Integer
-                                                                .parseInt(variable._minValue) > numberRetrival) {
-                                                            variable._minValue = Integer
-                                                                    .toString(numberRetrival);
-                                                        }
-                                                        _variableInfo
-                                                                .remove(innerModel
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + characterOfSubGuard[0]
-                                                                                .trim());
-                                                        _variableInfo
-                                                                .put(
-                                                                        innerModel
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + characterOfSubGuard[0]
-                                                                                        .trim(),
-                                                                        variable);
-
-                                                    }
-                                                }
-
-                                                //} catch (Exception ex) {
-                                                // We know that we can not
-                                                // parse the
-                                                // rvalue.
-
-                                                //}
-
-                                            }
-
-                                        }
-
-                                    }
-                                }
-
-                            }
-
-                            String expression = transition.setActions
-                                    .getExpression();
-                            if ((expression != null)
-                                    && !expression.trim().equals("")) {
-                                // Retrieve possible value of the variable
-                                String[] splitExpression = expression
-                                        .split(";");
-                                for (int i = 0; i < splitExpression.length; i++) {
-                                    String[] characters = splitExpression[i]
-                                            .split("=");
-                                    String lValue = characters[0].trim();
-                                    String rValue;
-                                    int numberRetrival = 0;
-                                    boolean rvalueSingleNumber = true;
+                                    String rValue = null;
+                                    boolean isTrue = false;
                                     try {
-                                        rValue = characters[1].trim();
-                                        numberRetrival = Integer
-                                                .parseInt(rValue);
+                                        rValue = characterOfSubGuard[1].trim();
                                     } catch (Exception ex) {
-                                        rvalueSingleNumber = false;
+                                        isTrue = true;
                                     }
-                                    if (rvalueSingleNumber == true) {
-                                        // add it into the _variableInfo
-                                        VariableInfo variable = (VariableInfo) _variableInfo
-                                                .get(innerModel.getName() + "-"
-                                                        + lValue);
-                                        if (variable == null) {
-                                            // Create a new one and insert all
-                                            // info.
-                                            VariableInfo newVariable = new VariableInfo(
-                                                    innerModel.getName() + "-"
-                                                            + lValue,
-                                                    Integer
-                                                            .toString(numberRetrival),
-                                                    Integer
-                                                            .toString(numberRetrival));
-                                            _variableInfo
-                                                    .put(innerModel.getName()
-                                                            + "-" + lValue,
-                                                            newVariable);
+                                    if (isTrue == false) {
+                                        int numberRetrival = 0;
+                                        boolean rvalueSingleNumber = true;
+                                        try {
+                                            numberRetrival = Integer
+                                                    .parseInt(rValue);
+                                        } catch (Exception ex) {
+                                            rvalueSingleNumber = false;
+                                        }
+                                        if (rvalueSingleNumber == true) {
+                                            // add it into the _variableInfo
+                                            returnVariableSet
+                                                    .add(characterOfSubGuard[0]
+                                                            .trim());
 
-                                        } else {
-                                            // modify the existing one
-                                            if (Integer
-                                                    .parseInt(variable._maxValue) < numberRetrival) {
-                                                variable._maxValue = Integer
-                                                        .toString(numberRetrival);
-                                            }
-                                            if (Integer
-                                                    .parseInt(variable._minValue) > numberRetrival) {
-                                                variable._minValue = Integer
-                                                        .toString(numberRetrival);
-                                            }
-                                            _variableInfo.remove(innerModel
-                                                    .getName()
-                                                    + "-" + lValue);
-                                            _variableInfo.put(innerModel
-                                                    .getName()
-                                                    + "-" + lValue, variable);
+                                            VariableInfo variable = (VariableInfo) _variableInfo
+                                                    .get(characterOfSubGuard[0]
+                                                            .trim());
+                                            if (variable == null) {
+                                                // Create a new one and
+                                                // insert all info.
+                                                VariableInfo newVariable = new VariableInfo(
+                                                        characterOfSubGuard[0]
+                                                                .trim(),
+                                                        Integer
+                                                                .toString(numberRetrival),
+                                                        Integer
+                                                                .toString(numberRetrival));
+                                                _variableInfo.put(
+                                                        characterOfSubGuard[0]
+                                                                .trim(),
+                                                        newVariable);
 
+                                            } else {
+                                                // modify the existing one
+                                                if (Integer
+                                                        .parseInt(variable._maxValue) < numberRetrival) {
+                                                    variable._maxValue = Integer
+                                                            .toString(numberRetrival);
+                                                }
+                                                if (Integer
+                                                        .parseInt(variable._minValue) > numberRetrival) {
+                                                    variable._minValue = Integer
+                                                            .toString(numberRetrival);
+                                                }
+                                                _variableInfo
+                                                        .remove(characterOfSubGuard[0]
+                                                                .trim());
+                                                _variableInfo.put(
+                                                        characterOfSubGuard[0]
+                                                                .trim(),
+                                                        variable);
+
+                                            }
                                         }
                                     }
                                 }
+
                             }
 
                         }
-
                     }
 
-                } catch (Exception exception) {
-
-                    throw new InternalErrorException(
-                            "FmvAutomaton._DecideVariableSet() clashes: "
-                                    + exception.getMessage());
                 }
-            }
-        }
 
-        // Also count based on parameters
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
-            Entity innerEntity = (Entity) actors.next();
-            Entity innerModel = innerEntity;
-            if (innerEntity instanceof ModalModel) {
-                innerModel = ((ModalModel) innerEntity).getController();
-            }
-            if (innerModel instanceof FSMActor) {
-
-                Iterator it = _variableInfo.keySet().iterator();
-                while (it.hasNext()) {
-                    String originalAttribute = (String) it.next();
-                    String[] attributeList = originalAttribute.split("-");
-                    String attribute = attributeList[attributeList.length - 1]
-                            .trim();
-                    String[] propertyList = null;
-                    try {
-                        propertyList = innerModel.getAttribute(attribute)
-                                .description().split(" ");
-                    } catch (Exception ex) {
-                        continue;
-                    }
-                    String property = null;
-                    try {
-                        property = propertyList[propertyList.length - 1];
-                        int numberRetrival = Integer.parseInt(property);
-                        VariableInfo variable = _variableInfo.get(innerModel
-                                .getName()
-                                + "-" + attribute);
-
-                        if (variable == null) {
-                            continue;
-
-                        } else {
-                            // modify the existing one
-                            if (Integer.parseInt(variable._maxValue) < numberRetrival) {
-                                variable._maxValue = Integer
-                                        .toString(numberRetrival);
-                            }
-                            if (Integer.parseInt(variable._minValue) > numberRetrival) {
-                                variable._minValue = Integer
-                                        .toString(numberRetrival);
-                            }
-                            _variableInfo.remove(innerModel.getName() + "-"
-                                    + attribute);
-                            _variableInfo.put(innerModel.getName() + "-"
-                                    + attribute, variable);
-
+                String expression = transition.setActions.getExpression();
+                if ((expression != null) && !expression.trim().equals("")) {
+                    // Retrieve possible value of the variable
+                    String[] splitExpression = expression.split(";");
+                    for (int i = 0; i < splitExpression.length; i++) {
+                        String[] characters = splitExpression[i].split("=");
+                        String lValue = characters[0].trim();
+                        String rValue;
+                        int numberRetrival = 0;
+                        boolean rvalueSingleNumber = true;
+                        try {
+                            rValue = characters[1].trim();
+                            numberRetrival = Integer.parseInt(rValue);
+                        } catch (Exception ex) {
+                            rvalueSingleNumber = false;
                         }
+                        if (rvalueSingleNumber == true) {
+                            // add it into the _variableInfo
+                            VariableInfo variable = (VariableInfo) _variableInfo
+                                    .get(lValue);
+                            if (variable == null) {
+                                // Create a new one and insert all info.
+                                VariableInfo newVariable = new VariableInfo(
+                                        lValue, Integer
+                                                .toString(numberRetrival),
+                                        Integer.toString(numberRetrival));
+                                _variableInfo.put(lValue, newVariable);
 
-                    } catch (Exception ex) {
-                        continue;
+                            } else {
+                                // modify the existing one
+                                if (Integer.parseInt(variable._maxValue) < numberRetrival) {
+                                    variable._maxValue = Integer
+                                            .toString(numberRetrival);
+                                }
+                                if (Integer.parseInt(variable._minValue) > numberRetrival) {
+                                    variable._minValue = Integer
+                                            .toString(numberRetrival);
+                                }
+                                _variableInfo.remove(lValue);
+                                _variableInfo.put(lValue, variable);
+
+                            }
+                        }
                     }
-                    //returnMap.put(originalAttribute, property);
                 }
+
             }
+
         }
+
+        //} catch (Exception exception) {
+        //    throw new InternalErrorException(
+        //            "FmvAutomaton._DecideVariableSet() clashes: "
+        //                    + exception.getMessage());
+        //}
 
         // Expend based on the domain
         Iterator<String> itVariableSet = returnVariableSet.iterator();
@@ -725,7 +905,7 @@ public class SMVUtility {
                 _variableInfo.put(valName, individual);
 
             } catch (Exception ex) {
-                throw new InternalErrorException(
+                throw new IllegalActionException(
                         "FmvAutomaton._decideVariableSet() clashes: "
                                 + ex.getMessage());
             }
@@ -738,35 +918,29 @@ public class SMVUtility {
      * Perform an enumeration of the state in this FmvAutomaton and return a
      * HashSet of states.
      * 
-     * @param innerModel A FSM which is fed into the function.
-     * @return A HashSet of states of a particular FSMActor 
+     * @return A HashSet of states of a particular FmvAutomaton
      */
-    private static HashSet<State> _enumerateStateSet(FSMActor innerModel)
+    private static HashSet<State> _enumerateStateSet(FSMActor actor)
             throws IllegalActionException {
 
         HashSet<State> returnStateSet = new HashSet<State>();
         try {
-            // initialize
+            // init
             HashMap<String, State> frontier = new HashMap<String, State>();
 
             // create initial state
-            State stateInThis = innerModel.getInitialState();
+            State stateInThis = actor.getInitialState();
             String name = stateInThis.getName();
             frontier.put(name, stateInThis);
             returnStateSet.add(stateInThis);
             // iterate
             while (!frontier.isEmpty()) {
                 // pick a state from frontier. It seems that there isn't an
-                // easy way to pick an arbitrary entry from a HashMap,
-                // except through Iterator
+                // easy way to pick an arbitrary entry from a HashMap, except
+                // through Iterator
                 Iterator<String> iterator = frontier.keySet().iterator();
                 name = (String) iterator.next();
                 stateInThis = (State) frontier.remove(name);
-                if (stateInThis == null) {
-                    throw new IllegalActionException(
-                            "Internal error, removing \"" + name
-                                    + "\" returned null?");
-                }
                 ComponentPort outPort = stateInThis.outgoingPort;
                 Iterator transitions = outPort.linkedRelationList().iterator();
 
@@ -782,9 +956,10 @@ public class SMVUtility {
                 }
             }
         } catch (Exception exception) {
-            throw new InternalErrorException(
+            throw new IllegalActionException(
                     "FmvAutomaton._EnumerateStateSet() clashes: "
                             + exception.getMessage());
+
         }
         return returnStateSet;
     }
@@ -792,1215 +967,821 @@ public class SMVUtility {
     /**
      * Generate all premise-action pairs regarding this
      * FmvAutomaton. For example, this method may generate
-     * (Carlight-state=red)&&(Carlight-count=1):{grn}.  This can only be applied when
+     * (state=red)&&(count=1):{grn}.  This can only be applied when
      * the domain of variable is decided.
-     * 
-     * @param globalVariableSet Set of variables used in the system. 
-     * @param model System under analysis.
      */
-    private static void _generateAllVariableTransitions(
-            HashSet<String> globalVariableSet, CompositeActor model)
-            throws IllegalActionException {
+    private static void _generateAllVariableTransitions(FSMActor actor,
+            HashSet<String> variableSet) throws IllegalActionException {
+
+        HashSet<State> stateSet = new HashSet<State>();
+        //try {
+        // Initialize
+        HashMap<String, State> frontier = new HashMap<String, State>();
 
         _variableTransitionInfo = new HashMap<String, LinkedList<VariableTransitionInfo>>();
-
-        //try {
-
-        Iterator<String> vit = globalVariableSet.iterator();
+        Iterator<String> vit = variableSet.iterator();
         while (vit.hasNext()) {
             String v = vit.next();
             LinkedList<VariableTransitionInfo> l = new LinkedList<VariableTransitionInfo>();
             _variableTransitionInfo.put(v, l);
         }
-        //} catch (Exception ex) {
+        LinkedList<VariableTransitionInfo> l = new LinkedList<VariableTransitionInfo>();
+        _variableTransitionInfo.put("state", l);
 
-        //}
+        // Create initial state
+        State stateInThis = actor.getInitialState();
+        String name = stateInThis.getName();
+        frontier.put(name, stateInThis);
 
-        // initialize
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
-            Entity innerEntity = (Entity) actors.next();
-            Entity innerModel = innerEntity;
-            if (innerEntity instanceof ModalModel) {
-                innerModel = ((ModalModel) innerEntity).getController();
+        // Iterate
+        while (!frontier.isEmpty()) {
+
+            // pick a state from frontier. It seems that there isn't an
+            // easy way to pick an arbitrary entry from a HashMap, except
+            // through Iterator
+
+            Iterator<String> iterator = frontier.keySet().iterator();
+            name = (String) iterator.next();
+            stateInThis = (State) frontier.remove(name);
+            if (stateInThis == null) {
+                throw new IllegalActionException("Internal error, removing \""
+                        + name + "\" returned null?");
             }
-            if (innerModel instanceof FSMActor) {
-                LinkedList<VariableTransitionInfo> l = new LinkedList<VariableTransitionInfo>();
-                _variableTransitionInfo.put(((FSMActor) innerModel).getName()
-                        + "-state", l);
-                // For each variable in different FSMActor actor, we use
-                // actor.getName()+"-"+variableName as its variable name in
-                // global. We use actor.getName()+"-state" to represent variable
-                // in a particular machine. Note that for those variables that
-                // do not used in the Kripke structure rather than
-                // synchronization process, we SHOULD NOT add actor.getName()
-                // because it would impede the checking process among two FSMs.
-            }
+            ComponentPort outPort = stateInThis.outgoingPort;
+            Iterator transitions = outPort.linkedRelationList().iterator();
 
-        }
+            while (transitions.hasNext()) {
+                // FIXME: signalPremise is used to store premise of signals 
+                StringBuffer signalPremise = new StringBuffer("");
 
-        // First we need to evaluate "outer coordination" in the system. An
-        // outer coordination happens in a transition guard like XX_isPresent,
-        // but we do not see any initialization of XX in the system. Once when
-        // we recognize those variables, we say that for all transitions with
-        // "XX_isPresent" should be synchronized. This is the NEW Rule IV.
-        //
-        // FIXME: I didn't implement this because the above statement seems to
-        // be wrong. We don't need to synchronize them because they would not
-        // influence each other. It is only the inner synchronization that
-        // matters. Hence Rule IV is now still used to decide outer coordination
-        // variables, but as a reference only. This would be further
-        // investigated when I write the report.
-        //
-        // Also we need to apply Rule III: For all variable XX that is used at
-        // post-firing rules (transition.outputActions) and also used with
-        // XX_isPresent, we need to perform synchronizing techniques.
-        // 
+                Transition transition = (Transition) transitions.next();
+                State destinationInThis = transition.destinationState();
 
-        // Rule IV: outputSetUpSet stores variables used in all
-        // transition.outputActions. Hence these variables SHOULD NOT have
-        // actor.getName() attached in front of their names.
-        HashSet<String> outputSetUpSet = new HashSet<String>();
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
-            Entity innerEntity = (Entity) actors.next();
-            Entity innerModel = innerEntity;
-            if (innerEntity instanceof ModalModel) {
-                innerModel = ((ModalModel) innerEntity).getController();
-            }
-            if (innerModel instanceof FSMActor) {
-                HashSet<State> stateSet = new HashSet<State>();
-
-                //try {
-                // Initialize
-                HashMap<String, State> frontier = new HashMap<String, State>();
-
-                // Create initial state
-                State stateInThis = ((FSMActor) innerModel).getInitialState();
-                String name = stateInThis.getName();
-                frontier.put(name, stateInThis);
-
-                // Iterate
-                while (!frontier.isEmpty()) {
-                    // pick a state from frontier.
-                    Iterator<String> iterator = frontier.keySet().iterator();
-                    name = (String) iterator.next();
-                    stateInThis = (State) frontier.remove(name);
-                    if (stateInThis == null) {
-                        throw new IllegalActionException(
-                                "Internal error, removing \"" + name
-                                        + "\" returned null?");
-                    }
-                    ComponentPort outPort = stateInThis.outgoingPort;
-                    Iterator transitions = outPort.linkedRelationList()
-                            .iterator();
-
-                    while (transitions.hasNext()) {
-                        // Retrieve the transition
-                        Transition transition = (Transition) transitions.next();
-
-                        State destinationInThis = transition.destinationState();
-
-                        if (!stateSet.contains(destinationInThis)) {
-                            frontier.put(destinationInThis.getName(),
-                                    destinationInThis);
-                            stateSet.add(destinationInThis);
-                        }
-
-                        String setOutputExpression = transition.outputActions
-                                .getExpression();
-                        if ((setOutputExpression != null)
-                                && !setOutputExpression.trim().equals("")) {
-                            // Retrieve possible value of the variable
-                            String[] splitExpression = setOutputExpression
-                                    .split(";");
-                            for (int i = 0; i < splitExpression.length; i++) {
-                                String[] characters = splitExpression[i]
-                                        .split("=");
-                                String lValue = characters[0].trim();
-                                String rValue = "";
-                                int numberRetrival = 0;
-                                boolean rvalueSingleNumber = true;
-                                try {
-                                    rValue = characters[1].trim();
-                                    numberRetrival = Integer.parseInt(rValue);
-                                } catch (Exception ex) {
-                                    rvalueSingleNumber = false;
-                                }
-                                if (rvalueSingleNumber == true) {
-                                    // see if the lValue is in variableSet
-                                    outputSetUpSet.add(lValue);
-                                }
-                            }
-                        }
-
-                    }
+                if (!stateSet.contains(destinationInThis)) {
+                    frontier
+                            .put(destinationInThis.getName(), destinationInThis);
+                    stateSet.add(destinationInThis);
                 }
 
-                //} catch (Exception ex) {
+                // Retrieve the transition
 
-                //}
-            }
-        }
-
-        // Now perform a search on all transitions to see if there is an
-        // sub guard expression XX_isPresent that is not used in outputActions,
-        // meaning that it is not in the outputSetUpSet. Record those in
-        // the outer-coordination variable set. Hence these variables SHOULD NOT
-        // have actor.getName() attached in front of their names.
-        HashSet<String> outerCoordinationVariableSet = new HashSet<String>();
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
-            Entity innerEntity = (Entity) actors.next();
-            Entity innerModel = innerEntity;
-            if (innerEntity instanceof ModalModel) {
-                innerModel = ((ModalModel) innerEntity).getController();
-            }
-            if (innerModel instanceof FSMActor) {
-                HashSet<State> stateSet = new HashSet<State>();
-                //try {
-                // Initialize
-                HashMap<String, State> frontier = new HashMap<String, State>();
-
-                // Create initial state
-                State stateInThis = ((FSMActor) innerModel).getInitialState();
-                String name = stateInThis.getName();
-                frontier.put(name, stateInThis);
-
-                // Iterate
-                while (!frontier.isEmpty()) {
-                    // pick a state from frontier.
-                    Iterator<String> iterator = frontier.keySet().iterator();
-                    name = (String) iterator.next();
-                    stateInThis = (State) frontier.remove(name);
-                    if (stateInThis == null) {
-                        throw new IllegalActionException(
-                                "Internal error, removing \"" + name
-                                        + "\" returned null?");
-                    }
-                    ComponentPort outPort = stateInThis.outgoingPort;
-                    Iterator transitions = outPort.linkedRelationList()
-                            .iterator();
-
-                    while (transitions.hasNext()) {
-                        // Retrieve the transition
-                        Transition transition = (Transition) transitions.next();
-
-                        State destinationInThis = transition.destinationState();
-
-                        if (!stateSet.contains(destinationInThis)) {
-                            frontier.put(destinationInThis.getName(),
-                                    destinationInThis);
-                            stateSet.add(destinationInThis);
-                        }
-
-                        boolean hasAnnotation = false;
-                        String text;
-                        try {
-                            text = transition.annotation.stringValue();
-                        } catch (IllegalActionException e) {
-                            text = "Exception evaluating annotation: "
-                                    + e.getMessage();
-                        }
-                        if (!text.trim().equals("")) {
-                            hasAnnotation = true;
-                            // buffer.append(text);
-                        }
-
-                        String guard = transition.getGuardExpression();
-
-                        if ((guard != null) && !guard.trim().equals("")) {
-                            if (hasAnnotation) {
-                                // FIXME: (2007/12/14 Patrick.Cheng)
-                                // Currently I don't know the meaning of
-                                // annotation. Do nothing currently.
-                            } else {
-
-                                // Rule II. For all variables that are
-                                // used as guards, they would be
-                                // expanded as Atomic Propositions (AP).
-
-                                // Separate each guard expression into
-                                // "sub guard expressions".
-                                String[] guardSplitExpression = guard
-                                        .split("(&&)");
-
-                                if (guardSplitExpression.length != 0) {
-                                    for (int i = 0; i < guardSplitExpression.length; i++) {
-                                        // Trim tab/space
-                                        String subGuardCondition = guardSplitExpression[i]
-                                                .trim();
-
-                                        // Retrieve the left value of
-                                        // the inequality. Here we may still
-                                        // have two cases for the lValue:
-                                        // (1) XX_isPresent (2) the
-                                        // normal case (including "true").
-                                        String[] characterOfSubGuard = subGuardCondition
-                                                .split("(>=)|(<=)|(==)|(!=)|[><]");
-
-                                        String lValue = characterOfSubGuard[0]
-                                                .trim();
-                                        boolean b = Pattern.matches(
-                                                ".*_isPresent",
-                                                characterOfSubGuard[0].trim());
-                                        if (b == true) {
-                                            // XX_isPresent
-                                            String[] variableName = (characterOfSubGuard[0]
-                                                    .trim())
-                                                    .split("_isPresent");
-                                            // variableName[0] is the XX.
-                                            // Check if it is in
-                                            if (outputSetUpSet
-                                                    .contains(variableName[0]) == false) {
-                                                // add into
-                                                // outerCoordinationVariableSet
-                                                outerCoordinationVariableSet
-                                                        .add(variableName[0]);
-                                            }
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                boolean hasAnnotation = false;
+                String text;
+                try {
+                    text = transition.annotation.stringValue();
+                } catch (IllegalActionException e) {
+                    text = "Exception evaluating annotation: " + e.getMessage();
+                }
+                if (!text.trim().equals("")) {
+                    hasAnnotation = true;
+                    // buffer.append(text);
                 }
 
-                //} catch (Exception ex) {
-
-                //}
-            }
-        }
-
-        // Main Process to Perform Transition Generation.
-
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
-            Entity innerEntity = (Entity) actors.next();
-            Entity innerModel = innerEntity;
-            if (innerEntity instanceof ModalModel) {
-                innerModel = ((ModalModel) innerEntity).getController();
-            }
-            if (innerModel instanceof FSMActor) {
-
-                HashSet<State> stateSet = new HashSet<State>();
-                //try {
-                // Initialize
-                HashMap<String, State> frontier = new HashMap<String, State>();
-
-                // Create initial state
-                State stateInThis = ((FSMActor) innerModel).getInitialState();
-                String name = stateInThis.getName();
-                frontier.put(name, stateInThis);
-
-                // Iterate
-                while (!frontier.isEmpty()) {
-                    // pick a state from frontier.
-                    Iterator<String> iterator = frontier.keySet().iterator();
-                    name = (String) iterator.next();
-                    stateInThis = (State) frontier.remove(name);
-                    if (stateInThis == null) {
-                        throw new IllegalActionException(
-                                "Internal error, removing \"" + name
-                                        + "\" returned null?");
-                    }
-                    ComponentPort outPort = stateInThis.outgoingPort;
-                    Iterator transitions = outPort.linkedRelationList()
-                            .iterator();
-
-                    while (transitions.hasNext()) {
-                        // Retrieve the transition
-                        Transition transition = (Transition) transitions.next();
-
-                        State destinationInThis = transition.destinationState();
-
-                        if (!stateSet.contains(destinationInThis)) {
-                            frontier.put(destinationInThis.getName(),
-                                    destinationInThis);
-                            stateSet.add(destinationInThis);
-                        }
-
-                        boolean hasAnnotation = false;
-                        String text;
-                        try {
-                            text = transition.annotation.stringValue();
-                        } catch (IllegalActionException e) {
-                            text = "Exception evaluating annotation: "
-                                    + e.getMessage();
-                        }
-                        if (!text.trim().equals("")) {
-                            hasAnnotation = true;
-                            // buffer.append(text);
-                        }
-
-                        StringBuffer premiseRelated = new StringBuffer("");
-                        String guard = transition.getGuardExpression();
-                        String setAction = transition.setActions
-                                .getExpression();
-
-                        // variableUsedInTransitionSet: Store variable
-                        // names used in this transition as
-                        // preconditions. If in the guard expression, we
-                        // have X<3 && Y>5, then X and Y are used
-                        // as variables in precondition and should be
-                        // stored in the set "variableUsedInTransitionSet".
-
-                        // FIXME: (2008/01/22) Also, variables used in setAction should 
-                        // be stored in the set "variableUsedInTransitionSet".
-                        HashSet<String> variableUsedInTransitionSet = new HashSet<String>();
-
-                        if ((guard != null) && !guard.trim().equals("")) {
-                            if (hasAnnotation) {
-                                // FIXME: (2007/12/14 Patrick.Cheng)
-                                // Currently I don't know the meaning of
-                                // annotation. Do nothing currently.
-                            } else {
-
-                                // Rule II. For all variables that are
-                                // used as guards, they would be
-                                // expanded as Atomic Propositions (AP).
-
-                                // Separate each guard expression into
-                                // "sub guard expressions".
-                                String[] guardSplitExpression = guard
-                                        .split("(&&)");
-
-                                if (guardSplitExpression.length != 0) {
-                                    for (int i = 0; i < guardSplitExpression.length; i++) {
-                                        // Trim tab/space
-                                        String subGuardCondition = guardSplitExpression[i]
-                                                .trim();
-
-                                        // Retrieve the left value of
-                                        // the inequality. Here we may still
-                                        // have two cases for the lValue:
-                                        // (1) XXX_isPresent (2) the
-                                        // normal case (including "true").
-                                        String[] characterOfSubGuard = subGuardCondition
-                                                .split("(>=)|(<=)|(==)|(!=)|[><]");
-
-                                        String lValue = characterOfSubGuard[0]
-                                                .trim();
-                                        boolean b = Pattern.matches(
-                                                ".*_isPresent",
-                                                characterOfSubGuard[0].trim());
-                                        if (b == true) {
-                                            String[] variableName = characterOfSubGuard[0]
-                                                    .trim().split("_isPresent");
-                                            // The variable SHOULD NOT
-                                            // have actor.getName() attached
-                                            // in front of its name. This is
-                                            // because this is XX_isPresent,
-                                            // and we need to use XX to
-                                            // match synchronizations.
-                                            variableUsedInTransitionSet
-                                                    .add(variableName[0]);
-                                        } else {
-                                            // Store in the set. Use
-                                            // try-catch to capture cases
-                                            // when single "true" exists.
-                                            String rValue = null;
-                                            boolean isTrue = false;
-                                            try {
-                                                rValue = characterOfSubGuard[1]
-                                                        .trim();
-                                            } catch (Exception ex) {
-                                                isTrue = true;
-                                            }
-                                            if (isTrue == false) {
-                                                // The variable SHOULD
-                                                // have actor.getName()
-                                                // attached in front of its
-                                                // name because this is a
-                                                // variable used in the
-                                                // Kripke structure.
-
-                                                variableUsedInTransitionSet
-                                                        .add(((FSMActor) innerModel)
-                                                                .getName()
-                                                                + "-" + lValue);
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if ((setAction != null) && !setAction.trim().equals("")) {
-
-                            String[] setActionSplitExpression = setAction
-                                    .split("(;)");
-
-                            if (setActionSplitExpression.length != 0) {
-                                for (int i = 0; i < setActionSplitExpression.length; i++) {
-                                    // Trim tab/space
-                                    String subSetActionCondition = setActionSplitExpression[i]
-                                            .trim();
-
-                                    String[] characterOfSubSetAction = subSetActionCondition
-                                            .split("(=)");
-
-                                    String lValue = characterOfSubSetAction[0]
-                                            .trim();
-
-                                    try {
-                                        variableUsedInTransitionSet
-                                                .add(((FSMActor) innerModel)
-                                                        .getName()
-                                                        + "-" + lValue);
-                                    } catch (Exception ex) {
-
-                                    }
-
-                                }
-                            }
-
-                        }
-
-                        // Once all variables used in the transition is
-                        // listed, generate a list to estimate its domain.
-                        // For example, if variable X has upper bound 5 and
-                        // lower bound 1, then the result of the next step
-                        // would show that variable X has a list with domain
-                        // {1,2,3,4,5}.
-                        //
-                        // We should apply {min, 1, 2, 3, 4, 5, max}
-                        // instead ... (new discoveries by Patrick)
-                        // In this new version we implement this...
-
-                        HashMap<String, ArrayList<Integer>> valueDomain = new HashMap<String, ArrayList<Integer>>();
-                        Iterator<String> it = variableUsedInTransitionSet
-                                .iterator();
-                        // Here in the variableUsedInTransitionSet, it has
-                        // some variables attached with actor.getName() and
-                        // some others without those name attachments.
-                        while (it.hasNext()) {
-                            String val = (String) it.next();
-                            // Retrieve the value in the _variableInfo.
-                            // contents in _variableInfo are previously
-                            // generated by
-                            VariableInfo variableInfo = _variableInfo.get(val);
-                            // variableInfo may be null. This is because
-                            // those values are like XX in XX_isPresent.
-                            // They are used as synchronization only.
-                            if (variableInfo != null) {
-                                int lowerBound = Integer
-                                        .parseInt(variableInfo._minValue);
-                                int upperBound = Integer
-                                        .parseInt(variableInfo._maxValue);
-                                // Now perform the add up of new value: DOMAIN_GT and
-                                // DOMAIN_LS into each of the
-                                // variableDomainForTransition set. We make it a sorted
-                                // list to facilitate further processing.
-                                ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
-                                variableDomainForTransition.add(DOMAIN_LS);
-                                for (int number = lowerBound; number <= upperBound; number++) {
-                                    // Place each possible value within
-                                    // boundary into the list.
-                                    variableDomainForTransition.add(Integer
-                                            .valueOf(number));
-                                }
-                                variableDomainForTransition.add(DOMAIN_GT);
-                                valueDomain.put(val,
-                                        variableDomainForTransition);
-                            }
-
-                        }
-
-                        // After previous steps, for each variable now
-                        // there exists a list with all possible values
-                        // between lower bound and upper bound. Now perform
-                        // the restriction process based on the guard
-                        // expression. For example, if variable X has upper
-                        // bound 5 and lower bound 1, and the guard
-                        // expression says that X<3, then the domain would
-                        // be restricted to only {1,2}.
-
-                        if ((guard != null) && !guard.trim().equals("")) {
-                            if (hasAnnotation) {
-                                // do nothing
-                            } else {
-                                // Separate each guard expression into
-                                // substring
-                                String[] guardSplitExpression = guard
-                                        .split("(&&)");
-                                if (guardSplitExpression.length != 0) {
-                                    for (int i = 0; i < guardSplitExpression.length; i++) {
-
-                                        String subGuardCondition = guardSplitExpression[i]
-                                                .trim();
-
-                                        // Retrieve the left value of
-                                        // the inequality.
-                                        String[] characterOfSubGuard = subGuardCondition
-                                                .split("(>=)|(<=)|(==)|(!=)|[><]");
-                                        // Here we may still have two
-                                        // cases:
-                                        // (1) XXX_isPresent
-                                        // (2) the normal case.
-                                        String lValue = characterOfSubGuard[0]
-                                                .trim();
-                                        boolean b = Pattern.matches(
-                                                ".*_isPresent",
-                                                characterOfSubGuard[0].trim());
-                                        if (b == true) {
-                                            // FIXME: (2007/12/14
-                                            // Patrick.Cheng)
-                                            // First check if XX is in the
-                                            // outer coordination set. If
-                                            // so, we skip it. Then check
-                                            // for every transition that has
-                                            // outputAction XX = const. Add
-                                            // up the constraint for that
-                                            // transition into that.
-
-                                            String[] variableName = (characterOfSubGuard[0]
-                                                    .trim())
-                                                    .split("_isPresent");
-                                            if (outerCoordinationVariableSet
-                                                    .contains(variableName[0]) == false) {
-                                                // Perform premise addition
-                                                // process.
-                                                String a = _generateRelatedPremise(
-                                                        model, variableName[0],
-                                                        (FSMActor) innerModel,
-                                                        outerCoordinationVariableSet);
-                                                if (a == null
-                                                        || a
-                                                                .trim()
-                                                                .equalsIgnoreCase(
-                                                                        "")) {
-
-                                                } else {
-                                                    premiseRelated
-                                                            .append(" & (" + a
-                                                                    + ")");
-                                                }
-
-                                            }
-                                        } else {
-                                            // Check if the right value
-                                            // exists. We need to ward off
-                                            // cases like "true".
-                                            // This is achieved using
-                                            // try-catch and
-                                            // retrieve the rValue from
-                                            // characterOfSubGuard[1].
-
-                                            String rValue = null;
-                                            boolean isNumber = true;
-                                            try {
-                                                rValue = characterOfSubGuard[1]
-                                                        .trim();
-                                            } catch (Exception ex) {
-                                                isNumber = false;
-                                            }
-                                            if (isNumber == true) {
-
-                                                int numberRetrival = 0;
-                                                boolean rvalueSingleNumber = true;
-                                                try {
-                                                    numberRetrival = Integer
-                                                            .parseInt(rValue);
-                                                } catch (Exception ex) {
-                                                    rvalueSingleNumber = false;
-                                                }
-                                                if (rvalueSingleNumber == true) {
-
-                                                    // We need to understand
-                                                    // what is the operator
-                                                    // of the value in
-                                                    // order to reason
-                                                    // the bound of
-                                                    // the variable for
-                                                    // suitable
-                                                    // transition.
-
-                                                    if (Pattern.matches(
-                                                            ".*==.*",
-                                                            subGuardCondition)) {
-                                                        // equal than,
-                                                        // restrict the
-                                                        // set of all
-                                                        // possible
-                                                        // values in the
-                                                        // domain into
-                                                        // one single
-                                                        // value.
-
-                                                        ArrayList<Integer> domain = valueDomain
-                                                                .remove(((FSMActor) innerModel)
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + lValue);
-
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() != numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        ((FSMActor) innerModel)
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + lValue,
-                                                                        domain);
-
-                                                    } else if (Pattern.matches(
-                                                            ".*!=.*",
-                                                            subGuardCondition)) {
-                                                        // not equal
-                                                        ArrayList<Integer> domain = valueDomain
-                                                                .remove(((FSMActor) innerModel)
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + lValue);
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() == numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        ((FSMActor) innerModel)
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + lValue,
-                                                                        domain);
-
-                                                    } else if (Pattern.matches(
-                                                            ".*<=.*",
-                                                            subGuardCondition)) {
-                                                        // less or equal than
-                                                        ArrayList<Integer> domain = valueDomain
-                                                                .remove(((FSMActor) innerModel)
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + lValue);
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() > numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        ((FSMActor) innerModel)
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + lValue,
-                                                                        domain);
-
-                                                    } else if (Pattern.matches(
-                                                            ".*>=.*",
-                                                            subGuardCondition)) {
-                                                        // greater or
-                                                        // equal than
-                                                        ArrayList<Integer> domain = valueDomain
-                                                                .remove(((FSMActor) innerModel)
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + lValue);
-
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() < numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-
-                                                        valueDomain
-                                                                .put(
-                                                                        ((FSMActor) innerModel)
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + lValue,
-                                                                        domain);
-
-                                                    } else if (Pattern.matches(
-                                                            ".*>.*",
-                                                            subGuardCondition)) {
-                                                        // greater than
-                                                        ArrayList<Integer> domain = valueDomain
-                                                                .remove(((FSMActor) innerModel)
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + lValue);
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() <= numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        ((FSMActor) innerModel)
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + lValue,
-                                                                        domain);
-
-                                                    } else if (Pattern.matches(
-                                                            ".*<.*",
-                                                            subGuardCondition)) {
-                                                        // less than
-                                                        ArrayList<Integer> domain = valueDomain
-                                                                .remove(((FSMActor) innerModel)
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + lValue);
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() >= numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        ((FSMActor) innerModel)
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + lValue,
-                                                                        domain);
-                                                    }
-
-                                                }
-                                            }
-
-                                        }
-
-                                    }
-                                }
-                            }
-
-                        }
-
-                        // setActions stores information about the
-                        // update of the variable; outputActions stores
-                        // information about the update of the variable that
-                        // is going to be transmitted through the output
-                        // port.
-
-                        String setActionExpression = transition.setActions
-                                .getExpression();
-
-                        if ((setActionExpression != null)
-                                && !setActionExpression.trim().equals("")) {
-                            // Retrieve possible value of the variable
-                            String[] splitExpression = setActionExpression
-                                    .split(";");
-                            for (int i = 0; i < splitExpression.length; i++) {
-                                String[] characters = splitExpression[i]
-                                        .split("=");
-                                String lValue = characters[0].trim();
-                                String rValue = "";
-                                int numberRetrival = 0;
-                                boolean rvalueSingleNumber = true;
-                                try {
-                                    rValue = characters[1].trim();
-                                    numberRetrival = Integer.parseInt(rValue);
-                                } catch (Exception ex) {
-                                    rvalueSingleNumber = false;
-                                }
-                                if (rvalueSingleNumber == true) {
-
-                                    // Generate all possible conditions
-                                    // that leads to this change.
-                                    try {
-                                        // set up all possible transitions
-                                        // regarding to this assignment.
-
-                                        String statePrecondition = ((FSMActor) innerModel)
-                                                .getName()
-                                                + "-"
-                                                + "state="
-                                                + stateInThis.getDisplayName();
-
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition
-                                                        + premiseRelated
-                                                                .toString(),
-                                                valueDomain,
-                                                ((FSMActor) innerModel)
-                                                        .getName()
-                                                        + "-" + lValue, rValue,
-                                                "N");
-
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition
-                                                        + premiseRelated
-                                                                .toString(),
-                                                valueDomain,
-                                                ((FSMActor) innerModel)
-                                                        .getName()
-                                                        + "-" + "state",
-                                                destinationInThis
-                                                        .getDisplayName(), "S");
-                                    } catch (Exception ex) {
-
-                                    }
+                // Retrieve the variable used in the Kripke structure. 
+                // Also analyze the guard expression to understand the
+                // possible value domain for the value to execute.
+                // 
+                // A guard expression would need to be separated into
+                // separate sub-statements in order to estimate the boundary
+                // of the variable. Note that we need to tackle cases where
+                // a>-1 and a<5 happen simultaneously. Also we expect to
+                // constrain the way that an end user can do for writing
+                // codes. We do "not" expect him to write in the way like
+                // -1<a.
+                // 
+                // Also here we assume that every sub-guard expression is
+                // connected using && but not || operator. But it is easy to
+                // modify the code such that it supports ||.
+                //
+
+                String guard = transition.getGuardExpression();
+                String setAction = transition.setActions.getExpression();
+                String outputAction = transition.outputActions.getExpression();
+
+                // variableUsedInTransitionSet: Store variable names used in
+                // this transition as preconditions. If in the guard
+                // expression, we have X<3 && Y>5, then X and Y are used as
+                // variables in precondition and should be stored in the
+                // set "variableUsedInTransitionSet".
+
+                // FIXME: (2008/01/22) Also, variables used in setAction should 
+                // be stored in the set "variableUsedInTransitionSet".
+                HashSet<String> variableUsedInTransitionSet = new HashSet<String>();
+
+                if ((guard != null) && !guard.trim().equals("")) {
+                    if (hasAnnotation) {
+                        // FIXME: (2007/12/14 Patrick.Cheng) Currently I
+                        // don't know the meaning of annotation. Do nothing
+                        // currently.
+                    } else {
+
+                        // Rule II. For all variables that are used as
+                        // guards, they would be expanded as Atomic
+                        // Propositions (AP).
+
+                        // Separate each guard expression into "sub guard
+                        // expressions".
+                        String[] guardSplitExpression = guard.split("(&&)");
+
+                        if (guardSplitExpression.length != 0) {
+                            for (int i = 0; i < guardSplitExpression.length; i++) {
+                                // Trim tab/space
+                                String subGuardCondition = guardSplitExpression[i]
+                                        .trim();
+
+                                // Retrieve the left value of the
+                                // inequality. Here we may still have two
+                                // cases for the lValue:
+                                // (1) XXX_isPresent (2) the normal case
+                                // (including "true").
+                                String[] characterOfSubGuard = subGuardCondition
+                                        .split("(>=)|(<=)|(==)|(!=)|[><]");
+
+                                String lValue = characterOfSubGuard[0].trim();
+                                boolean b = Pattern.matches(".*_isPresent",
+                                        characterOfSubGuard[0].trim());
+                                if (b == true) {
+                                    // FIXME: (2008/02/07 Patrick.Cheng)
+                                    // First case, synchronize usage.
+                                    // Pgo_isPresent
+                                    // We add it into the list for transition.
+
+                                    signalPremise.append(characterOfSubGuard[0]
+                                            .trim()
+                                            + " & ");
 
                                 } else {
-                                    // FIXME: The right hand side is
-                                    // actually complicated expression which
-                                    // needs to be carefully designed for
-                                    // accepting various expression.
-                                    // If we expect to do this, it is
-                                    // necessary to construct a parse tree
-                                    // and evaluate the value.
-                                    // Currently let us assume that we
-                                    // are manipulating simple format
-                                    // a = a op constInt; or a = constInt;
-
-                                    //String[] rValueOperends = rValue
-                                    //        .split("[+]|[-]|[*]|[/]");
-
-                                    if (Pattern.matches(".*\\*.*", rValue)) {
-
-                                        String[] rValueOperends = rValue
-                                                .split("[*]");
-                                        String offset = rValueOperends[1]
-                                                .trim();
-
-                                        try {
-                                            int value = Integer
-                                                    .parseInt(rValueOperends[1]
-                                                            .trim());
-                                        } catch (Exception ex) {
-                                            // check if the value is of format
-                                            // (-a)
-                                            if (rValueOperends[1].trim()
-                                                    .endsWith(")")
-                                                    && rValueOperends[1].trim()
-                                                            .startsWith("(")) {
-                                                // retrieve the value
-                                                offset = rValueOperends[1]
-                                                        .trim()
-                                                        .substring(
-                                                                1,
-                                                                rValueOperends[1]
-                                                                        .trim()
-                                                                        .length() - 1);
-                                                try {
-                                                    Integer.parseInt(offset);
-                                                } catch (Exception exInner) {
-                                                    // Return the format is not
-                                                    // supported by the system.
-                                                }
-
-                                            }
-
-                                        }
-
-                                        //String[] rValueOperends = rValue
-                                        //        .split("[*]");
-
-                                        int value = Integer
-                                                .parseInt(rValueOperends[1]
-                                                        .trim());
-                                        // set up all possible
-                                        // transitions
-                                        // regarding to this
-                                        // assignment.
-
-                                        String statePrecondition = ((FSMActor) innerModel)
-                                                .getName()
-                                                + "-"
-                                                + "state="
-                                                + stateInThis.getDisplayName();
-
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition
-                                                        + premiseRelated
-                                                                .toString(),
-                                                valueDomain,
-                                                ((FSMActor) innerModel)
-                                                        .getName()
-                                                        + "-"
-
-                                                        + lValue,
-                                                rValueOperends[1].trim(), "*");
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition
-                                                        + premiseRelated
-                                                                .toString(),
-                                                valueDomain,
-                                                ((FSMActor) innerModel)
-                                                        .getName()
-                                                        + "-" + "state",
-                                                destinationInThis
-                                                        .getDisplayName(), "S");
-
-                                    } else if (Pattern.matches(".*\\/.*",
-                                            rValue)) {
-                                        //try {
-                                        String[] rValueOperends = rValue
-                                                .split("[/]");
-
-                                        String offset = rValueOperends[1]
-                                                .trim();
-
-                                        try {
-                                            int value = Integer
-                                                    .parseInt(rValueOperends[1]
-                                                            .trim());
-                                        } catch (Exception ex) {
-                                            // check if the value is of format
-                                            // (-a)
-                                            if (rValueOperends[1].trim()
-                                                    .endsWith(")")
-                                                    && rValueOperends[1].trim()
-                                                            .startsWith("(")) {
-                                                // retrieve the value
-                                                offset = rValueOperends[1]
-                                                        .trim()
-                                                        .substring(
-                                                                1,
-                                                                rValueOperends[1]
-                                                                        .trim()
-                                                                        .length() - 1);
-                                                try {
-                                                    Integer.parseInt(offset);
-                                                } catch (Exception exInner) {
-                                                    // Return the format is not
-                                                    // supported by the system.
-                                                }
-
-                                            }
-
-                                        }
-                                        // set up all possible
-                                        // transitions
-                                        // regarding to this
-                                        // assignment.
-
-                                        String statePrecondition = ((FSMActor) innerModel)
-                                                .getName()
-                                                + "-"
-                                                + "state="
-                                                + stateInThis.getDisplayName();
-
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition
-
-                                                + premiseRelated.toString(),
-                                                valueDomain,
-                                                ((FSMActor) innerModel)
-                                                        .getName()
-                                                        + "-"
-
-                                                        + lValue,
-                                                rValueOperends[1].trim(), "/");
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition
-
-                                                + premiseRelated.toString(),
-                                                valueDomain,
-                                                ((FSMActor) innerModel)
-                                                        .getName()
-                                                        + "-" + "state",
-                                                destinationInThis
-                                                        .getDisplayName(), "S");
-                                        //} catch (Exception ex) {
-
-                                        //}
-
-                                    } else if (Pattern.matches(".*\\+.*",
-                                            rValue)) {
-                                        //try {
-                                        String[] rValueOperends = rValue
-                                                .split("[+]");
-
-                                        String offset = rValueOperends[1]
-                                                .trim();
-
-                                        try {
-                                            int value = Integer
-                                                    .parseInt(rValueOperends[1]
-                                                            .trim());
-                                        } catch (Exception ex) {
-                                            // check if the value is of format
-                                            // (-a)
-                                            if (rValueOperends[1].trim()
-                                                    .endsWith(")")
-                                                    && rValueOperends[1].trim()
-                                                            .startsWith("(")) {
-                                                // retrieve the value
-                                                offset = rValueOperends[1]
-                                                        .trim()
-                                                        .substring(
-                                                                1,
-                                                                rValueOperends[1]
-                                                                        .trim()
-                                                                        .length() - 1);
-                                                try {
-                                                    Integer.parseInt(offset);
-                                                } catch (Exception exInner) {
-                                                    // Return the format is not
-                                                    // supported by the system.
-                                                }
-
-                                            }
-
-                                        }
-                                        // set up all possible
-                                        // transitions regarding to this
-                                        // assignment.
-
-                                        String statePrecondition = ((FSMActor) innerModel)
-                                                .getName()
-                                                + "-"
-                                                + "state="
-                                                + stateInThis.getDisplayName();
-
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition
-
-                                                + premiseRelated.toString(),
-                                                valueDomain,
-                                                ((FSMActor) innerModel)
-                                                        .getName()
-                                                        + "-"
-
-                                                        + lValue,
-                                                rValueOperends[1].trim(), "+");
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition
-
-                                                + premiseRelated.toString(),
-                                                valueDomain,
-                                                ((FSMActor) innerModel)
-                                                        .getName()
-                                                        + "-" + "state",
-                                                destinationInThis
-                                                        .getDisplayName(), "S");
-                                        //} catch (Exception ex) {
-
-                                        //}
-                                    } else if (Pattern.matches(".*\\-.*",
-                                            rValue)) {
-                                        //try {
-                                        String[] rValueOperends = rValue
-                                                .split("[-]");
-
-                                        String offset = rValueOperends[1]
-                                                .trim();
-
-                                        try {
-                                            int value = Integer
-                                                    .parseInt(rValueOperends[1]
-                                                            .trim());
-                                        } catch (Exception ex) {
-                                            // check if the value is of format
-                                            // (-a)
-                                            if (rValueOperends[1].trim()
-                                                    .endsWith(")")
-                                                    && rValueOperends[1].trim()
-                                                            .startsWith("(")) {
-                                                // retrieve the value
-                                                offset = rValueOperends[1]
-                                                        .trim()
-                                                        .substring(
-                                                                1,
-                                                                rValueOperends[1]
-                                                                        .trim()
-                                                                        .length() - 1);
-                                                try {
-                                                    Integer.parseInt(offset);
-                                                } catch (Exception exInner) {
-                                                    // Return the format is not
-                                                    // supported by the system.
-                                                }
-
-                                            }
-
-                                        }
-                                        // set up all possible
-                                        // transitions
-                                        // regarding to this
-                                        // assignment.
-
-                                        String statePrecondition = ((FSMActor) innerModel)
-                                                .getName()
-                                                + "-"
-                                                + "state="
-                                                + stateInThis.getDisplayName();
-
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition
-
-                                                + premiseRelated.toString(),
-                                                valueDomain,
-                                                ((FSMActor) innerModel)
-                                                        .getName()
-                                                        + "-"
-
-                                                        + lValue,
-                                                rValueOperends[1].trim(), "-");
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition
-
-                                                + premiseRelated.toString(),
-                                                valueDomain,
-                                                ((FSMActor) innerModel)
-                                                        .getName()
-                                                        + "-" + "state",
-                                                destinationInThis
-                                                        .getDisplayName(), "S");
-                                        //} catch (Exception ex) {
-
-                                        //}
+                                    // Store in the set. Use try-catch to;
+                                    // capture cases when single "true"
+                                    // exists.
+                                    boolean isTrue = false;
+                                    String rValue = null;
+                                    try {
+                                        rValue = characterOfSubGuard[1].trim();
+                                    } catch (Exception ex) {
+                                        isTrue = true;
+                                    }
+                                    if (isTrue == false) {
+                                        variableUsedInTransitionSet.add(lValue);
                                     }
 
                                 }
                             }
-                        } else {
-                            // Note that there may be no setActions in
-                            // the transition.
-                            String statePrecondition = ((FSMActor) innerModel)
-                                    .getName()
-                                    + "-"
-                                    + "state="
-                                    + stateInThis.getDisplayName();
-                            _generatePremiseAndResultEachTransition(
-                                    statePrecondition
-                                            + premiseRelated.toString(),
-                                    valueDomain, ((FSMActor) innerModel)
-                                            .getName()
-                                            + "-" + "state", destinationInThis
-                                            .getDisplayName(), "S");
                         }
-
                     }
                 }
 
-                //} catch (Exception ex) {
+                if ((setAction != null) && !setAction.trim().equals("")) {
 
-                //}
+                    String[] setActionSplitExpression = setAction.split("(;)");
+
+                    if (setActionSplitExpression.length != 0) {
+                        for (int i = 0; i < setActionSplitExpression.length; i++) {
+                            // Trim tab/space
+                            String subSetActionCondition = setActionSplitExpression[i]
+                                    .trim();
+
+                            String[] characterOfSubSetAction = subSetActionCondition
+                                    .split("(=)");
+
+                            String lValue = characterOfSubSetAction[0].trim();
+
+                            try {
+                                variableUsedInTransitionSet.add(lValue);
+                            } catch (Exception ex) {
+
+                            }
+
+                        }
+                    }
+
+                }
+
+                if ((outputAction != null) && !outputAction.trim().equals("")) {
+                    String[] outputActionSplitExpression = outputAction
+                            .split("(;)");
+                    if (outputActionSplitExpression.length != 0) {
+                        for (int i = 0; i < outputActionSplitExpression.length; i++) {
+                            // Trim tab/space
+                            String subOutputActionCondition = outputActionSplitExpression[i]
+                                    .trim();
+
+                            String[] characterOfSubOutputAction = subOutputActionCondition
+                                    .split("(=)");
+
+                            String lValue = characterOfSubOutputAction[0]
+                                    .trim();
+
+                            try {
+                                variableUsedInTransitionSet.add(lValue
+                                        + "_isPresent");
+                            } catch (Exception ex) {
+
+                            }
+
+                        }
+                    }
+                }
+
+                // Once all variables used in the transition is listed,
+                // generate a list to estimate its domain. For example, if
+                // variable X has upper bound 5 and lower bound 1, then the
+                // result of the next step would show that variable X has a
+                // list with domain {1,2,3,4,5}.
+
+                HashMap<String, ArrayList<Integer>> valueDomain = new HashMap<String, ArrayList<Integer>>();
+                Iterator<String> it = variableUsedInTransitionSet.iterator();
+                while (it.hasNext()) {
+                    String val = (String) it.next();
+
+                    boolean b = Pattern.matches(".*_isPresent", val);
+                    if (b == true) {
+                        // For those variables, they only have true (1) 
+                        // and false (0) value.
+
+                        VariableInfo variableInfo = _variableInfo.get(val);
+                        if (variableInfo == null) {
+                            throw new IllegalActionException(
+                                    "Internal error, removing \"" + val
+                                            + "\" returned null?");
+                        }
+                        int lowerBound = Integer
+                                .parseInt(variableInfo._minValue);
+                        int upperBound = Integer
+                                .parseInt(variableInfo._maxValue);
+
+                        ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
+
+                        for (int number = lowerBound; number <= upperBound; number++) {
+                            // Place each possible value within boundary into
+                            // the list.
+                            variableDomainForTransition.add(Integer
+                                    .valueOf(number));
+                        }
+                        valueDomain.put(val, variableDomainForTransition);
+
+                    } else {
+                        // Retrieve the value in the 
+                        VariableInfo variableInfo = _variableInfo.get(val);
+                        if (variableInfo == null) {
+                            throw new IllegalActionException(
+                                    "Internal error, removing \"" + val
+                                            + "\" returned null?");
+                        }
+                        int lowerBound = Integer
+                                .parseInt(variableInfo._minValue);
+                        int upperBound = Integer
+                                .parseInt(variableInfo._maxValue);
+                        // Now perform the add up of new value: DOMAIN_GT and
+                        // DOMAIN_LS into each of the
+                        // variableDomainForTransition set. We make it a sorted
+                        // list to facilitate further processing.
+                        ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
+                        variableDomainForTransition.add(DOMAIN_LS);
+                        for (int number = lowerBound; number <= upperBound; number++) {
+                            // Place each possible value within boundary into
+                            // the list.
+                            variableDomainForTransition.add(Integer
+                                    .valueOf(number));
+                        }
+                        variableDomainForTransition.add(DOMAIN_GT);
+
+                        valueDomain.put(val, variableDomainForTransition);
+                    }
+
+                }
+
+                // After previous steps, for each variable now there
+                // exists a list with all possible values between lower
+                // bound and upper bound. Now perform the restriction
+                // process based on the guard expression. For example, if
+                // variable X has upper bound 5 and lower bound 1, and the
+                // guard expression says that X<3, then the domain would be
+                // restricted to only {1,2}.
+
+                if ((guard != null) && !guard.trim().equals("")) {
+                    if (hasAnnotation) {
+                        // do nothing
+                    } else {
+                        // Separate each guard expression into substring
+                        String[] guardSplitExpression = guard.split("(&&)");
+                        if (guardSplitExpression.length != 0) {
+                            for (int i = 0; i < guardSplitExpression.length; i++) {
+
+                                String subGuardCondition = guardSplitExpression[i]
+                                        .trim();
+
+                                // Retrieve the left value of the
+                                // inequality.
+                                String[] characterOfSubGuard = subGuardCondition
+                                        .split("(>=)|(<=)|(==)|(!=)|[><]");
+                                // Here we may still have two cases:
+                                // (1) XXX_isPresent (2) the normal case.
+                                String lValue = characterOfSubGuard[0].trim();
+                                boolean b = Pattern.matches(".*_isPresent",
+                                        characterOfSubGuard[0].trim());
+                                if (b == true) {
+                                    // FIXME: (2007/12/14 Patrick.Cheng)
+                                    // First case, synchronize usage.
+                                    // Currently not implementing...
+
+                                    /*
+                                    ArrayList<Integer> domain = valueDomain
+                                            .remove(lValue);
+
+                                    if (domain == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, removing \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    }
+                                    for (int j = domain.size() - 1; j >= 0; j--) {
+                                        if (domain.get(j).intValue() == 0) {
+                                            domain.remove(j);
+                                        }
+                                    }
+                                    valueDomain.put(lValue, domain);
+                                     */
+                                } else {
+                                    // Check if the right value exists. We
+                                    // need to ward off cases like "true".
+                                    // This is achieved using try-catch and
+                                    // retrieve the rValue from
+                                    // characterOfSubGuard[1].
+                                    boolean parse = true;
+                                    String rValue = null;
+                                    try {
+                                        rValue = characterOfSubGuard[1].trim();
+                                    } catch (Exception ex) {
+                                        parse = false;
+                                    }
+                                    if (parse == true) {
+                                        int numberRetrival = 0;
+                                        boolean rvalueSingleNumber = true;
+                                        try {
+                                            numberRetrival = Integer
+                                                    .parseInt(rValue);
+                                        } catch (Exception ex) {
+                                            rvalueSingleNumber = false;
+                                        }
+                                        if (rvalueSingleNumber == true) {
+
+                                            // We need to understand what is
+                                            // the operator of the value in
+                                            // order to reason the bound of
+                                            // the variable for suitable
+                                            // transition.
+
+                                            if (Pattern.matches(".*==.*",
+                                                    subGuardCondition)) {
+                                                // equal than, restrict the
+                                                // set of all possible
+                                                // values in the domain into
+                                                // one single value.
+
+                                                ArrayList<Integer> domain = valueDomain
+                                                        .remove(lValue);
+
+                                                if (domain == null) {
+                                                    throw new IllegalActionException(
+                                                            "Internal error, removing \""
+                                                                    + lValue
+                                                                    + "\" returned null?");
+                                                }
+
+                                                for (int j = domain.size() - 1; j >= 0; j--) {
+                                                    if (domain.get(j)
+                                                            .intValue() != numberRetrival) {
+                                                        domain.remove(j);
+                                                    }
+                                                }
+                                                valueDomain.put(lValue, domain);
+
+                                            } else if (Pattern
+                                                    .matches(".*!=.*",
+                                                            subGuardCondition)) {
+                                                // not equal
+                                                ArrayList<Integer> domain = valueDomain
+                                                        .remove(lValue);
+
+                                                if (domain == null) {
+                                                    throw new IllegalActionException(
+                                                            "Internal error, removing \""
+                                                                    + lValue
+                                                                    + "\" returned null?");
+                                                }
+
+                                                for (int j = domain.size() - 1; j >= 0; j--) {
+                                                    if (domain.get(j)
+                                                            .intValue() == numberRetrival) {
+                                                        domain.remove(j);
+                                                    }
+                                                }
+                                                valueDomain.put(lValue, domain);
+
+                                            } else if (Pattern
+                                                    .matches(".*<=.*",
+                                                            subGuardCondition)) {
+                                                // less or equal than
+                                                ArrayList<Integer> domain = valueDomain
+                                                        .remove(lValue);
+
+                                                if (domain == null) {
+                                                    throw new IllegalActionException(
+                                                            "Internal error, removing \""
+                                                                    + lValue
+                                                                    + "\" returned null?");
+                                                }
+
+                                                for (int j = domain.size() - 1; j >= 0; j--) {
+                                                    if (domain.get(j)
+                                                            .intValue() > numberRetrival) {
+                                                        domain.remove(j);
+                                                    }
+                                                }
+                                                valueDomain.put(lValue, domain);
+
+                                            } else if (Pattern
+                                                    .matches(".*>=.*",
+                                                            subGuardCondition)) {
+                                                // greater or equal than
+                                                ArrayList<Integer> domain = valueDomain
+                                                        .remove(lValue);
+
+                                                if (domain == null) {
+                                                    throw new IllegalActionException(
+                                                            "Internal error, removing \""
+                                                                    + lValue
+                                                                    + "\" returned null?");
+                                                }
+
+                                                for (int j = domain.size() - 1; j >= 0; j--) {
+                                                    if (domain.get(j)
+                                                            .intValue() < numberRetrival) {
+                                                        domain.remove(j);
+                                                    }
+                                                }
+                                                valueDomain.put(lValue, domain);
+
+                                            } else if (Pattern.matches(".*>.*",
+                                                    subGuardCondition)) {
+                                                // greater than
+                                                ArrayList<Integer> domain = valueDomain
+                                                        .remove(lValue);
+
+                                                if (domain == null) {
+                                                    throw new IllegalActionException(
+                                                            "Internal error, removing \""
+                                                                    + lValue
+                                                                    + "\" returned null?");
+                                                }
+
+                                                for (int j = domain.size() - 1; j >= 0; j--) {
+                                                    if (domain.get(j)
+                                                            .intValue() <= numberRetrival) {
+                                                        domain.remove(j);
+                                                    }
+                                                }
+                                                valueDomain.put(lValue, domain);
+
+                                            } else if (Pattern.matches(".*<.*",
+                                                    subGuardCondition)) {
+                                                // less than
+                                                ArrayList<Integer> domain = valueDomain
+                                                        .remove(lValue);
+
+                                                if (domain == null) {
+                                                    throw new IllegalActionException(
+                                                            "Internal error, removing \""
+                                                                    + lValue
+                                                                    + "\" returned null?");
+                                                }
+
+                                                for (int j = domain.size() - 1; j >= 0; j--) {
+                                                    if (domain.get(j)
+                                                            .intValue() >= numberRetrival) {
+                                                        domain.remove(j);
+                                                    }
+                                                }
+                                                valueDomain.put(lValue, domain);
+                                            }
+
+                                        }
+                                    }
+
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+
+                // setActions stores information about the update of the
+                // variable; outputActions stores information about the
+                // update of the variable that is going to be transmitted
+                // through the output port.
+
+                String setActionExpression = transition.setActions
+                        .getExpression();
+
+                if ((setActionExpression != null)
+                        && !setActionExpression.trim().equals("")) {
+                    // Retrieve possible value of the variable
+                    String[] splitExpression = setActionExpression.split(";");
+                    for (int i = 0; i < splitExpression.length; i++) {
+                        String[] characters = splitExpression[i].split("=");
+                        String lValue = characters[0].trim();
+                        String rValue = "";
+                        int numberRetrival = 0;
+                        boolean rvalueSingleNumber = true;
+                        try {
+                            rValue = characters[1].trim();
+                            numberRetrival = Integer.parseInt(rValue);
+                        } catch (Exception ex) {
+                            rvalueSingleNumber = false;
+                        }
+                        if (rvalueSingleNumber == true) {
+
+                            // Generate all possible conditions that leads
+                            // to this change.
+                            //try {
+                            // set up all possible transitions
+                            // regarding to this assignment.
+
+                            //String statePrecondition = new String(
+                            //        "state="
+                            //                + stateInThis
+                            //                        .getDisplayName());
+                            String statePrecondition = "state="
+                                    + stateInThis.getDisplayName();
+                            _generatePremiseAndResultEachTransition(
+                                    signalPremise.toString()
+                                            + statePrecondition, valueDomain,
+                                    lValue, rValue, "N");
+                            _generatePremiseAndResultEachTransition(
+                                    signalPremise.toString()
+                                            + statePrecondition, valueDomain,
+                                    "state",
+                                    destinationInThis.getDisplayName(), "S");
+
+                        } else {
+                            // The right hand side is actually complicated
+                            // expression which needs to be carefully
+                            // Designed for accepting various expression.
+                            // If we expect to do this, it is necessary to
+                            // construct a parse tree and
+                            // evaluate the value.
+                            // Currently let us assume that we are
+                            // manipulating simple format
+                            // a = a op constInt; or a = constInt;
+
+                            if (Pattern.matches(".*[*].*", rValue)) {
+                                //try {
+
+                                String[] rValueOperends = rValue.split("[*]");
+
+                                String offset = rValueOperends[1].trim();
+
+                                try {
+                                    int value = Integer
+                                            .parseInt(rValueOperends[1].trim());
+                                } catch (Exception ex) {
+                                    // check if the value is of format
+                                    // (-a)
+                                    if (rValueOperends[1].trim().endsWith(")")
+                                            && rValueOperends[1].trim()
+                                                    .startsWith("(")) {
+                                        // retrieve the value
+                                        offset = rValueOperends[1].trim()
+                                                .substring(
+                                                        1,
+                                                        rValueOperends[1]
+                                                                .trim()
+                                                                .length() - 1);
+                                        try {
+                                            Integer.parseInt(offset);
+                                        } catch (Exception exInner) {
+                                            // Return the format is not
+                                            // supported by the system.
+                                        }
+
+                                    }
+
+                                }
+                                // set up all possible transitions
+                                // regarding to this assignment.
+
+                                String statePrecondition = "state="
+                                        + stateInThis.getDisplayName();
+
+                                _generatePremiseAndResultEachTransition(
+                                        signalPremise.toString()
+                                                + statePrecondition,
+                                        valueDomain, lValue, offset, "*");
+                                _generatePremiseAndResultEachTransition(
+                                        signalPremise.toString()
+                                                + statePrecondition,
+                                        valueDomain, "state", destinationInThis
+                                                .getDisplayName(), "S");
+                                //} catch (Exception ex) {
+
+                                //}
+
+                            } else if (Pattern.matches(".*/.*", rValue)) {
+                                //try {
+                                String[] rValueOperends = rValue.split("[/]");
+
+                                String offset = rValueOperends[1].trim();
+
+                                try {
+                                    int value = Integer
+                                            .parseInt(rValueOperends[1].trim());
+                                } catch (Exception ex) {
+                                    // check if the value is of format
+                                    // (-a)
+                                    if (rValueOperends[1].trim().endsWith(")")
+                                            && rValueOperends[1].trim()
+                                                    .startsWith("(")) {
+                                        // retrieve the value
+                                        offset = rValueOperends[1].trim()
+                                                .substring(
+                                                        1,
+                                                        rValueOperends[1]
+                                                                .trim()
+                                                                .length() - 1);
+                                        try {
+                                            Integer.parseInt(offset);
+                                        } catch (Exception exInner) {
+                                            // Return the format is not
+                                            // supported by the system.
+                                        }
+
+                                    }
+
+                                }
+                                // set up all possible transitions
+                                // regarding to this assignment.
+
+                                String statePrecondition = "state="
+                                        + stateInThis.getDisplayName();
+
+                                _generatePremiseAndResultEachTransition(
+                                        signalPremise.toString()
+                                                + statePrecondition,
+                                        valueDomain, lValue, offset, "/");
+                                _generatePremiseAndResultEachTransition(
+                                        signalPremise.toString()
+                                                + statePrecondition,
+                                        valueDomain, "state", destinationInThis
+                                                .getDisplayName(), "S");
+                                //} catch (Exception ex) {
+
+                                //}
+
+                            } else if (Pattern.matches(".*+.*", rValue)) {
+                                //try {
+                                String[] rValueOperends = rValue.split("[+]");
+
+                                String offset = rValueOperends[1].trim();
+
+                                try {
+                                    int value = Integer
+                                            .parseInt(rValueOperends[1].trim());
+                                } catch (Exception ex) {
+                                    // check if the value is of format
+                                    // (-a)
+                                    if (rValueOperends[1].trim().endsWith(")")
+                                            && rValueOperends[1].trim()
+                                                    .startsWith("(")) {
+                                        // retrieve the value
+                                        offset = rValueOperends[1].trim()
+                                                .substring(
+                                                        1,
+                                                        rValueOperends[1]
+                                                                .trim()
+                                                                .length() - 1);
+                                        try {
+                                            Integer.parseInt(offset);
+                                        } catch (Exception exInner) {
+                                            // Return the format is not
+                                            // supported by the system.
+                                        }
+
+                                    }
+
+                                }
+                                // set up all possible transitions
+                                // regarding to this assignment.
+
+                                String statePrecondition = "state="
+                                        + stateInThis.getDisplayName();
+                                // Check if the value is in the maximum.
+                                // If so, then we need to use "gt".
+
+                                _generatePremiseAndResultEachTransition(
+                                        signalPremise.toString()
+                                                + statePrecondition,
+                                        valueDomain, lValue, rValueOperends[1]
+                                                .trim(), "+");
+
+                                _generatePremiseAndResultEachTransition(
+                                        signalPremise.toString()
+                                                + statePrecondition,
+                                        valueDomain, "state", destinationInThis
+                                                .getDisplayName(), "S");
+                                //} catch (Exception ex) {
+
+                                //}
+                            } else if (Pattern.matches(".*-.*", rValue)) {
+                                //try {
+                                String[] rValueOperends = rValue.split("[-]");
+
+                                String offset = rValueOperends[1].trim();
+
+                                try {
+                                    int value = Integer
+                                            .parseInt(rValueOperends[1].trim());
+                                } catch (Exception ex) {
+                                    // check if the value is of format
+                                    // (-a)
+                                    if (rValueOperends[1].trim().endsWith(")")
+                                            && rValueOperends[1].trim()
+                                                    .startsWith("(")) {
+                                        // retrieve the value
+                                        offset = rValueOperends[1].trim()
+                                                .substring(
+                                                        1,
+                                                        rValueOperends[1]
+                                                                .trim()
+                                                                .length() - 1);
+                                        try {
+                                            Integer.parseInt(offset);
+                                        } catch (Exception exInner) {
+                                            // Return the format is not
+                                            // supported by the system.
+                                        }
+
+                                    }
+
+                                }
+                                // set up all possible transitions
+                                // regarding to this assignment.
+
+                                String statePrecondition = "state="
+                                        + stateInThis.getDisplayName();
+
+                                _generatePremiseAndResultEachTransition(
+                                        signalPremise.toString()
+                                                + statePrecondition,
+                                        valueDomain, lValue, rValueOperends[1]
+                                                .trim(), "-");
+                                _generatePremiseAndResultEachTransition(
+                                        signalPremise.toString()
+                                                + statePrecondition,
+                                        valueDomain, "state", destinationInThis
+                                                .getDisplayName(), "S");
+                                //} catch (Exception ex) {
+
+                                //}
+                            }
+
+                        }
+                    }
+                } else {
+                    // Note that there may be no setActions in the
+                    // transition.
+                    String statePrecondition = "state="
+                            + stateInThis.getDisplayName();
+                    _generatePremiseAndResultEachTransition(signalPremise
+                            .toString()
+                            + statePrecondition, valueDomain, "state",
+                            destinationInThis.getDisplayName(), "S");
+                }
+
+                String outputActionExpression = transition.outputActions
+                        .getExpression();
+                if ((outputActionExpression != null)
+                        && !outputActionExpression.trim().equals("")) {
+                    // Retrieve possible value of the variable
+                    String[] splitExpression = outputActionExpression
+                            .split(";");
+                    for (int i = 0; i < splitExpression.length; i++) {
+                        String[] characters = splitExpression[i].split("=");
+                        String lValue = characters[0].trim();
+
+                        String statePrecondition = "state="
+                                + stateInThis.getDisplayName();
+                        _generatePremiseAndResultEachTransition(signalPremise
+                                .toString()
+                                + statePrecondition, valueDomain, lValue
+                                + "_isPresent", "1", "N");
+
+                    }
+                }
             }
-        }
 
-        // Last, we need to perform the conjunction for cases like XX=1 and
-        // XX_isPresent. In _variableTransitionInfo, the output value would not
-        // change. It only perform restriction on premises.
-        // FIXME: Now I remove into the premise generation step.
+        }
 
     }
 
@@ -2014,624 +1795,57 @@ public class SMVUtility {
             HashMap<String, ArrayList<Integer>> valueDomain, String lValue,
             String offset, String operatingSign) throws IllegalActionException {
 
-        // 1. If operatingSign=="N", then offset means the value that needs
-        // to be assigned.
-        // 2. if operatingSign=="S", then offset means the destination
-        // vertex label.
+        // 1. If operatingSign=="N", then offset means the value that needs to
+        // be assigned.
+        // 2. if operatingSign=="S", then offset means the destination vertex
+        // label.
         // 3. For rest cases (operatingSign=="+","-","*","/"), variable
         // has "X = X operatingSign offset".
 
-        //NO MODIFICATION ON THE NEXT LINE
         String[] keySetArray = (String[]) valueDomain.keySet().toArray(
                 new String[0]);
+
         _recursiveStepGeneratePremiseAndResultEachTransition(statePrecondition,
                 0, keySetArray.length, keySetArray, valueDomain, lValue,
                 offset, operatingSign);
 
     }
 
-    private static String _generatePremiseTransition(String statePrecondition,
-            HashMap<String, ArrayList<Integer>> valueDomain)
-            throws IllegalActionException {
-
-        //NO MODIFICATION ON THE NEXT LINE
-        String[] keySetArray = (String[]) valueDomain.keySet().toArray(
-                new String[0]);
-        premiseText = new StringBuffer("");
-        premiseText.append(_recursiveStepGeneratePremiseTransition(
-                statePrecondition, 0, keySetArray.length, keySetArray,
-                valueDomain));
-        String returnText = premiseText.toString().trim();
-        if (returnText.substring(0, 1).equalsIgnoreCase("|")) {
-            return returnText.substring(1);
-        }
-        return returnText;
-    }
-
-    private static String _generateRelatedPremise(CompositeActor model,
-            String variableNameUsed, FSMActor currentModel,
-            HashSet<String> outerCoordinationVariableSet)
-            throws IllegalActionException {
-
-        StringBuffer returnPremise = new StringBuffer(" ");
-
-        // Main Process to Perform Transition Generation.
-
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
-            Entity innerEntity = (Entity) actors.next();
-            Entity innerModel = innerEntity;
-            if (innerEntity instanceof ModalModel) {
-                innerModel = ((ModalModel) innerEntity).getController();
-            }
-            if (innerModel instanceof FSMActor) {
-                if (innerModel.getName().equalsIgnoreCase(
-                        currentModel.getName())) {
-
-                    continue;
-                }
-
-                HashSet<State> stateSet = new HashSet<State>();
-                //try {
-                // Initialize
-                HashMap<String, State> frontier = new HashMap<String, State>();
-
-                // Create initial state
-                State stateInThis = ((FSMActor) innerModel).getInitialState();
-                String name = stateInThis.getName();
-                frontier.put(name, stateInThis);
-                // FIXME: It seems that there is something wrong in the work interface automaton
-                //stateSet.add(stateInThis);
-                // Iterate
-                while (!frontier.isEmpty()) {
-                    // pick a state from frontier.
-                    Iterator<String> iterator = frontier.keySet().iterator();
-                    name = (String) iterator.next();
-                    stateInThis = (State) frontier.remove(name);
-                    if (stateInThis == null) {
-                        throw new IllegalActionException(
-                                "Internal error, removing \"" + name
-                                        + "\" returned null?");
-                    }
-                    ComponentPort outPort = stateInThis.outgoingPort;
-                    Iterator transitions = outPort.linkedRelationList()
-                            .iterator();
-
-                    while (transitions.hasNext()) {
-                        // Retrieve the transition
-                        Transition transition = (Transition) transitions.next();
-
-                        State destinationInThis = transition.destinationState();
-
-                        if (!stateSet.contains(destinationInThis)) {
-                            frontier.put(name, destinationInThis);
-                            stateSet.add(destinationInThis);
-                        }
-
-                        boolean hasAnnotation = false;
-                        String text;
-                        try {
-                            text = transition.annotation.stringValue();
-                        } catch (IllegalActionException e) {
-                            text = "Exception evaluating annotation: "
-                                    + e.getMessage();
-                        }
-                        if (!text.trim().equals("")) {
-                            hasAnnotation = true;
-                            // buffer.append(text);
-                        }
-
-                        // The first step is to analyze the output
-
-                        String outputActionExpression = transition.outputActions
-                                .getExpression();
-
-                        if ((outputActionExpression == null)
-                                || outputActionExpression.trim().equals("") == true) {
-                            continue;
-                        }
-
-                        String[] splitOutputActionExpression = outputActionExpression
-                                .split(";");
-
-                        boolean continueThisExpression = false;
-                        if (splitOutputActionExpression.length != 0) {
-
-                            for (int i = 0; i < splitOutputActionExpression.length; i++) {
-                                // Trim tab/space
-                                String subOutputAction = splitOutputActionExpression[i]
-                                        .trim();
-                                // Split again to retrieve the lValue.
-                                String[] characterOfSubOutputAction = subOutputAction
-                                        .split("=");
-                                String lValue = characterOfSubOutputAction[0]
-                                        .trim();
-                                if (lValue.equalsIgnoreCase(variableNameUsed)) {
-                                    continueThisExpression = true;
-                                    break;
-                                }
-
-                            }
-                        }
-                        if (continueThisExpression == false) {
-                            continue;
-                        }
-
-                        String guard = transition.getGuardExpression();
-
-                        // variableUsedInTransitionSet: Store variable
-                        // names used in this transition as
-                        // preconditions. If in the guard expression, we
-                        // have X<3 && Y>5, then X and Y are used
-                        // as variables in precondition and should be
-                        // stored in the set "variableUsedInTransitionSet".
-
-                        HashSet<String> variableUsedInTransitionSet = new HashSet<String>();
-
-                        if ((guard != null) && !guard.trim().equals("")) {
-                            if (hasAnnotation) {
-                                // FIXME: (2007/12/14 Patrick.Cheng)
-                                // Currently I don't know the meaning of
-                                // annotation. Do nothing currently.
-                            } else {
-
-                                // Rule II. For all variables that are
-                                // used as guards, they would be
-                                // expanded as Atomic Propositions (AP).
-
-                                // Separate each guard expression into
-                                // "sub guard expressions".
-                                String[] guardSplitExpression = guard
-                                        .split("(&&)");
-
-                                if (guardSplitExpression.length != 0) {
-                                    for (int i = 0; i < guardSplitExpression.length; i++) {
-                                        // Trim tab/space
-                                        String subGuardCondition = guardSplitExpression[i]
-                                                .trim();
-
-                                        // Retrieve the left value of
-                                        // the inequality. Here we may still
-                                        // have two cases for the lValue:
-                                        // (1) XXX_isPresent (2) the
-                                        // normal case (including "true").
-                                        String[] characterOfSubGuard = subGuardCondition
-                                                .split("(>=)|(<=)|(==)|(!=)|[><]");
-
-                                        String lValue = characterOfSubGuard[0]
-                                                .trim();
-                                        boolean b = Pattern.matches(
-                                                ".*_isPresent",
-                                                characterOfSubGuard[0].trim());
-                                        if (b == true) {
-                                            // String[] variableName =
-                                            // characterOfSubGuard[0]
-                                            // .trim().split(
-                                            // "_isPresent");
-                                            // The variable SHOULD NOT
-                                            // have actor.getName() attached
-                                            // in front of its name. This is
-                                            // because this is XX_isPresent,
-                                            // and we need to use XX to
-                                            // match synchronizations.
-                                            // variableUsedInTransitionSet
-                                            // .add(variableName[0]);
-                                        } else {
-                                            // Store in the set. Use
-                                            // try-catch to capture cases
-                                            // when single "true" exists.
-
-                                            String rValue = null;
-                                            boolean isTrue = false;
-                                            try {
-                                                rValue = characterOfSubGuard[1]
-                                                        .trim();
-                                            } catch (Exception ex) {
-                                                isTrue = true;
-                                            }
-                                            if (isTrue == false) {
-                                                // The variable SHOULD
-                                                // have actor.getName()
-                                                // attached in front of its
-                                                // name because this is a
-                                                // variable used in the
-                                                // Kripke structure.
-
-                                                variableUsedInTransitionSet
-                                                        .add(((FSMActor) innerModel)
-                                                                .getName()
-                                                                + "-" + lValue);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        // Once all variables used in the transition is
-                        // listed, generate a list to estimate its domain.
-                        // For example, if variable X has upper bound 5 and
-                        // lower bound 1, then the result of the next step
-                        // would show that variable X has a list with domain
-                        // {1,2,3,4,5}.
-                        // FIXME: We should apply {min, 1, 2, 3, 4, 5, max}
-                        // instead ... (new discoveries by Patrick)
-                        // But I haven't do this yet...
-                        // FIXME: In this new version we implement this...
-
-                        HashMap<String, ArrayList<Integer>> valueDomain = new HashMap<String, ArrayList<Integer>>();
-                        Iterator<String> it = variableUsedInTransitionSet
-                                .iterator();
-                        // Here in the variableUsedInTransitionSet, it has
-                        // some variables attached with actor.getName() and
-                        // some others without those name attachments.
-                        while (it.hasNext()) {
-                            String val = (String) it.next();
-                            // Retrieve the value in the _variableInfo.
-                            // contents in _variableInfo are previously
-                            // generated by
-                            VariableInfo variableInfo = _variableInfo.get(val);
-                            // variableInfo may be null. This is because
-                            // those values are like XX in XX_isPresent.
-                            // They are used as synchronization only.
-                            if (variableInfo != null) {
-                                int lowerBound = Integer
-                                        .parseInt(variableInfo._minValue);
-                                int upperBound = Integer
-                                        .parseInt(variableInfo._maxValue);
-                                // Now perform the add up of new value: DOMAIN_GT and
-                                // DOMAIN_LS into each of the
-                                // variableDomainForTransition set. We make it a sorted
-                                // list to facilitate further processing.
-                                ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
-                                variableDomainForTransition.add(DOMAIN_LS);
-                                for (int number = lowerBound; number <= upperBound; number++) {
-                                    // Place each possible value within
-                                    // boundary into the list.
-                                    variableDomainForTransition.add(Integer
-                                            .valueOf(number));
-                                }
-                                variableDomainForTransition.add(DOMAIN_GT);
-                                valueDomain.put(val,
-                                        variableDomainForTransition);
-                            }
-
-                        }
-
-                        // After previous steps, for each variable now
-                        // there exists a list with all possible values
-                        // between lower bound and upper bound. Now perform
-                        // the restriction process based on the guard
-                        // expression. For example, if variable X has upper
-                        // bound 5 and lower bound 1, and the guard
-                        // expression says that X<3, then the domain would
-                        // be restricted to only {1,2}.
-
-                        if ((guard != null) && !guard.trim().equals("")) {
-                            if (hasAnnotation) {
-                                // do nothing
-                            } else {
-                                // Separate each guard expression into
-                                // substring
-                                String[] guardSplitExpression = guard
-                                        .split("(&&)");
-                                if (guardSplitExpression.length != 0) {
-                                    for (int i = 0; i < guardSplitExpression.length; i++) {
-
-                                        String subGuardCondition = guardSplitExpression[i]
-                                                .trim();
-
-                                        // Retrieve the left value of
-                                        // the inequality.
-                                        String[] characterOfSubGuard = subGuardCondition
-                                                .split("(>=)|(<=)|(==)|(!=)|[><]");
-                                        // Here we may still have two
-                                        // cases:
-                                        // (1) XXX_isPresent
-                                        // (2) the normal case.
-                                        String lValue = characterOfSubGuard[0]
-                                                .trim();
-                                        boolean b = Pattern.matches(
-                                                ".*_isPresent",
-                                                characterOfSubGuard[0].trim());
-                                        if (b == true) {
-
-                                        } else {
-                                            // Check if the right value
-                                            // exists. We need to ward off
-                                            // cases like "true".
-                                            // This is achieved using
-                                            // try-catch and
-                                            // retrieve the rValue from
-                                            // characterOfSubGuard[1].
-
-                                            String rValue = null;
-                                            boolean isNumber = true;
-                                            try {
-                                                rValue = characterOfSubGuard[1]
-                                                        .trim();
-                                            } catch (Exception ex) {
-                                                isNumber = false;
-                                            }
-                                            if (isNumber == true) {
-                                                int numberRetrival = 0;
-                                                boolean rvalueSingleNumber = true;
-                                                try {
-                                                    numberRetrival = Integer
-                                                            .parseInt(rValue);
-                                                } catch (Exception ex) {
-                                                    rvalueSingleNumber = false;
-                                                }
-                                                if (rvalueSingleNumber == true) {
-
-                                                    // We need to understand
-                                                    // what is the operator
-                                                    // of the value in
-                                                    // order to reason
-                                                    // the bound of
-                                                    // the variable for
-                                                    // suitable
-                                                    // transition.
-
-                                                    if (Pattern.matches(
-                                                            ".*==.*",
-                                                            subGuardCondition)) {
-                                                        // equal than,
-                                                        // restrict the
-                                                        // set of all
-                                                        // possible
-                                                        // values in the
-                                                        // domain into
-                                                        // one single
-                                                        // value.
-
-                                                        ArrayList<Integer> domain = valueDomain
-                                                                .remove(((FSMActor) innerModel)
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + lValue);
-
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() != numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        ((FSMActor) innerModel)
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + lValue,
-                                                                        domain);
-
-                                                    } else if (Pattern.matches(
-                                                            ".*!=.*",
-                                                            subGuardCondition)) {
-                                                        // not equal
-                                                        ArrayList<Integer> domain = valueDomain
-                                                                .remove(((FSMActor) innerModel)
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + lValue);
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() == numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        ((FSMActor) innerModel)
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + lValue,
-                                                                        domain);
-
-                                                    } else if (Pattern.matches(
-                                                            ".*<=.*",
-                                                            subGuardCondition)) {
-                                                        // less or equal
-                                                        // than
-                                                        ArrayList<Integer> domain = valueDomain
-                                                                .remove(((FSMActor) innerModel)
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + lValue);
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() > numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        ((FSMActor) innerModel)
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + lValue,
-                                                                        domain);
-
-                                                    } else if (Pattern.matches(
-                                                            ".*>=.*",
-                                                            subGuardCondition)) {
-                                                        // greater or
-                                                        // equal than
-                                                        ArrayList<Integer> domain = valueDomain
-                                                                .remove(((FSMActor) innerModel)
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + lValue);
-
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() < numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        ((FSMActor) innerModel)
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + lValue,
-                                                                        domain);
-
-                                                    } else if (Pattern.matches(
-                                                            ".*>.*",
-                                                            subGuardCondition)) {
-                                                        // greater than
-                                                        ArrayList<Integer> domain = valueDomain
-                                                                .remove(((FSMActor) innerModel)
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + lValue);
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() <= numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        ((FSMActor) innerModel)
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + lValue,
-                                                                        domain);
-
-                                                    } else if (Pattern.matches(
-                                                            ".*<.*",
-                                                            subGuardCondition)) {
-                                                        // less than
-                                                        ArrayList<Integer> domain = valueDomain
-                                                                .remove(((FSMActor) innerModel)
-                                                                        .getName()
-                                                                        + "-"
-                                                                        + lValue);
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() >= numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        ((FSMActor) innerModel)
-                                                                                .getName()
-                                                                                + "-"
-                                                                                + lValue,
-                                                                        domain);
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                    }
-                                }
-                            }
-
-                        }
-
-                        String statePrecondition = ((FSMActor) innerModel)
-                                .getName()
-                                + "-" + "state=" + stateInThis.getDisplayName();
-                        if (returnPremise.toString().trim()
-                                .equalsIgnoreCase("") == false) {
-                            returnPremise.append(" | "
-                                    + _generatePremiseTransition(
-                                            statePrecondition, valueDomain));
-                        } else {
-                            returnPremise.append(_generatePremiseTransition(
-                                    statePrecondition, valueDomain));
-                        }
-
-                    }
-                }
-
-                //} catch (Exception ex) {
-
-                //}
-            }
-        }
-        String returnString = returnPremise.toString().trim();
-        // eliminate the last "|" sign.
-        if (returnString.length() == 0) {
-            return "";
-        }
-        String s = returnString;
-
-        return s;
-    }
-
-    private static StringBuffer _recursiveStepGeneratePremiseTransition(
-            String currentPremise, int index, int maxIndex,
-            String[] keySetArray,
-            HashMap<String, ArrayList<Integer>> valueDomain)
-            throws IllegalActionException {
-
-        if (index >= maxIndex) {
-
-            return new StringBuffer(" | " + currentPremise);
-
-        } else {
-            // if (index == 0) {
-            // premiseText.append(currentPremise);
-            // }
-            StringBuffer returnStringBuffer = new StringBuffer("");
-            ArrayList<Integer> vList = valueDomain.get(keySetArray[index]);
-            if (vList.size() != 0) {
-                for (int i = 0; i < vList.size(); i++) {
-
-                    // retrieve the string and concatenate
-                    if (vList.get(i).intValue() == DOMAIN_GT) {
-                        String newPremise = "(" + currentPremise + " & " + "("
-                                + keySetArray[index] + "=" + " gt))";
-                        returnStringBuffer
-                                .append(_recursiveStepGeneratePremiseTransition(
-                                        newPremise, index + 1, maxIndex,
-                                        keySetArray, valueDomain));
-                    } else if (vList.get(i).intValue() == DOMAIN_LS) {
-                        String newPremise = "(" + currentPremise + " & " + "("
-                                + keySetArray[index] + "=" + " ls)) ";
-                        returnStringBuffer
-                                .append(_recursiveStepGeneratePremiseTransition(
-                                        newPremise, index + 1, maxIndex,
-                                        keySetArray, valueDomain));
-                    } else {
-                        String newPremise = "(" + currentPremise + " & " + "("
-                                + keySetArray[index] + "="
-                                + vList.get(i).toString() + "))";
-                        returnStringBuffer
-                                .append(_recursiveStepGeneratePremiseTransition(
-                                        newPremise, index + 1, maxIndex,
-                                        keySetArray, valueDomain));
-                    }
-
-                }
-            } else {
-                returnStringBuffer
-                        .append(_recursiveStepGeneratePremiseTransition(
-                                currentPremise, index + 1, maxIndex,
-                                keySetArray, valueDomain));
-            }
-            return returnStringBuffer;
-        }
-
-    }
-
+    /**
+     * A private function used as a recursive step to generate all premises for
+     * enabling transition in .smv file. In variable valueDomain, it specifies
+     * that for a particular transition, the set of all possible values to
+     * invoke the transition. Thus it is the duty of this recursive step
+     * function to generate all possible combinations. The function would try to
+     * attach correct premise and update correct new value for the variable set
+     * by the transition based on the original value.
+     * 
+     * @param currentPremise
+     *        Current precondition for the transition. It is not completed
+     *        unless parameter index == maxIndex.
+     * @param index
+     *        Current depth for the recursive function. It would stop when it
+     *        reaches maxIndex.
+     * @param maxIndex
+     * @param keySetArray
+     *        keySetArray stores all variable names that is used in this
+     *        transition.
+     * @param valueDomain
+     *        valueDomain specifies for a particular transition, for each
+     *        variable, the set of all possible values to invoke the transition.
+     * @param lValue
+     *        lValue specifies the variable name that would be set after the
+     *        transition.
+     * @param newVariableValue
+     *        newVariableValue can have different meanings based on different
+     *        value of variable operatingSign. When operatingSign is +,-,*,/ it
+     *        represents the offset. Remember in the set-action, each
+     *        sub-statement has formats either <i>var = var operatingSign offset</i>
+     *        or <i>var = rValue</i>. When operatingSign is S or N, it
+     *        represents the rValue of the system.
+     * @param operatingSign
+     * 
+     */
     private static void _recursiveStepGeneratePremiseAndResultEachTransition(
             String currentPremise, int index, int maxIndex,
             String[] keySetArray,
@@ -2648,12 +1862,16 @@ public class SMVUtility {
             newTransitionInfo._varibleNewValue = newVariableValue;
             LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
                     .remove(lValue);
+            if (temp == null) {
+                throw new IllegalActionException("Internal error, removing \""
+                        + lValue + "\" returned null?");
+            }
             temp.add(newTransitionInfo);
             _variableTransitionInfo.put(lValue, temp);
 
         } else {
-            // retrieve all possible variable value in this stage, skip when
-            // no possible value is needed.
+            // retrieve all possible variable value in this stage, skip when no
+            // possible value is needed.
 
             // See if this key corresponds to the lValue; if so we need to
             // record the new value of the outcome.
@@ -2664,7 +1882,7 @@ public class SMVUtility {
                     // that is possible to perform transition
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
-                    if (vList.size() != 0) {
+                    if ((vList != null) && (vList.size() != 0)) {
                         for (int i = 0; i < vList.size(); i++) {
 
                             // check whether the offset is positive or negative.
@@ -2674,12 +1892,13 @@ public class SMVUtility {
                                 if (vList.get(i).intValue() == DOMAIN_GT) {
 
                                     // newpremise=currentPremise & (var = C)
-                                    String newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "gt";
                                     //String newPremise = new String(
                                     //        currentPremise + " & "
                                     //                + keySetArray[index] + "="
                                     //                + "gt");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
+
                                     // When the original value is GT, then
                                     // GT + positive_const = GT
                                     // Hence the updated value remains the same.
@@ -2697,12 +1916,22 @@ public class SMVUtility {
 
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
-
+                                    //String newPremise = new String(
+                                    //        currentPremise + " & "
+                                    //                + keySetArray[index] + "="
+                                    //                + "ls");
                                     // First, LS + positive_const = LS
                                     _recursiveStepGeneratePremiseAndResultEachTransition(
                                             newPremise, index + 1, maxIndex,
                                             keySetArray, valueDomain, lValue,
                                             "ls", operatingSign);
+
+                                    if (_variableInfo.get(lValue) == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    }
 
                                     int minimumInBoundary = Integer
                                             .parseInt(((VariableInfo) _variableInfo
@@ -2760,7 +1989,7 @@ public class SMVUtility {
                                             .parseInt(((VariableInfo) _variableInfo
                                                     .get(lValue))._maxValue)) {
                                         // Use DOMAIN_GT to replace the value.
-                                        updatedVariableValue = "gt";
+                                        updatedVariableValue = new String("gt");
                                     }
 
                                     _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -2798,6 +2027,13 @@ public class SMVUtility {
                                             keySetArray, valueDomain, lValue,
                                             "gt", operatingSign);
 
+                                    if (_variableInfo.get(lValue) == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    }
+
                                     int maximumInBoundary = Integer
                                             .parseInt(((VariableInfo) _variableInfo
                                                     .get(lValue))._maxValue);
@@ -2810,7 +2046,12 @@ public class SMVUtility {
                                         // never exceeds upper bound. If it
                                         // is below lower bound, we must stop it
                                         // and use LS to replace the value.
-
+                                        if (_variableInfo.get(lValue) == null) {
+                                            throw new IllegalActionException(
+                                                    "Internal error, removing \""
+                                                            + lValue
+                                                            + "\" returned null?");
+                                        }
                                         if ((maximumInBoundary + j) < Integer
                                                 .parseInt(((VariableInfo) _variableInfo
                                                         .get(lValue))._minValue)) {
@@ -2881,7 +2122,7 @@ public class SMVUtility {
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
 
-                    if (vList.size() != 0) {
+                    if ((vList != null) && (vList.size() != 0)) {
                         for (int i = 0; i < vList.size(); i++) {
 
                             // check whether the offset is positive or negative.
@@ -2972,7 +2213,7 @@ public class SMVUtility {
                                             .parseInt(((VariableInfo) _variableInfo
                                                     .get(lValue))._minValue)) {
                                         // Use DOMAIN_LS to replace the value.
-                                        updatedVariableValue = "ls";
+                                        updatedVariableValue = new String("ls");
                                     }
 
                                     _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -3009,6 +2250,12 @@ public class SMVUtility {
                                             keySetArray, valueDomain, lValue,
                                             "ls", operatingSign);
 
+                                    if (_variableInfo.get(lValue) == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, removing \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    }
                                     int minimumInBoundary = Integer
                                             .parseInt(((VariableInfo) _variableInfo
                                                     .get(lValue))._minValue);
@@ -3090,7 +2337,7 @@ public class SMVUtility {
 
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
-                    if (vList.size() != 0) {
+                    if ((vList != null) && (vList.size() != 0)) {
                         for (int i = 0; i < vList.size(); i++) {
 
                             // check whether the offset is positive or negative.
@@ -3103,7 +2350,12 @@ public class SMVUtility {
                                     // const)
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "gt";
-
+                                    if (_variableInfo.get(lValue) == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    }
                                     if (Integer
                                             .parseInt(((VariableInfo) _variableInfo
                                                     .get(lValue))._maxValue) >= 0) {
@@ -3205,6 +2457,12 @@ public class SMVUtility {
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
 
+                                    if (_variableInfo.get(lValue) == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    }
                                     if (Integer
                                             .parseInt(((VariableInfo) _variableInfo
                                                     .get(lValue))._minValue) <= 0) {
@@ -3297,6 +2555,12 @@ public class SMVUtility {
                                                     * (Integer
                                                             .parseInt(newVariableValue)));
 
+                                    if (_variableInfo.get(lValue) == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    }
                                     if (vList.get(i).intValue()
                                             * (Integer
                                                     .parseInt(newVariableValue)) < Integer
@@ -3325,6 +2589,13 @@ public class SMVUtility {
 
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "gt";
+
+                                    if (_variableInfo.get(lValue) == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    }
 
                                     if (Integer
                                             .parseInt(((VariableInfo) _variableInfo
@@ -3449,6 +2720,12 @@ public class SMVUtility {
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
 
+                                    if (_variableInfo.get(lValue) == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    }
                                     if (Integer
                                             .parseInt(((VariableInfo) _variableInfo
                                                     .get(lValue))._minValue) <= 0) {
@@ -3623,6 +2900,13 @@ public class SMVUtility {
 
                                 String updatedVariableValue = new String("0");
 
+                                if (_variableInfo.get(lValue) == null) {
+                                    throw new IllegalActionException(
+                                            "Internal error, getting \""
+                                                    + lValue
+                                                    + "\" returned null?");
+                                }
+
                                 if (0 > Integer
                                         .parseInt(((VariableInfo) _variableInfo
                                                 .get(lValue))._maxValue)) {
@@ -3648,10 +2932,12 @@ public class SMVUtility {
                     }
 
                 } else if (operatingSign.equalsIgnoreCase("/")) {
+                    // FIXME: Right now the execution of division is not
+                    // implemented.
 
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
-                    if (vList.size() != 0) {
+                    if ((vList != null) && (vList.size() != 0)) {
                         for (int i = 0; i < vList.size(); i++) {
                             String updatedVariableValue = String.valueOf(vList
                                     .get(i).intValue()
@@ -3659,7 +2945,16 @@ public class SMVUtility {
                             // retrieve the string and concatenate
                             String newPremise = currentPremise + " & "
                                     + keySetArray[index] + "="
-                                    + vList.get(i).toString();
+                                    + String.valueOf(vList.get(i).intValue());
+
+                            if (vList.get(i).intValue() == DOMAIN_LS) {
+                                newPremise = new String(currentPremise + " & "
+                                        + keySetArray[index] + "=" + "ls");
+                            } else if (vList.get(i).intValue() == DOMAIN_GT) {
+                                newPremise = new String(currentPremise + " & "
+                                        + keySetArray[index] + "=" + "gt");
+                            }
+
                             _recursiveStepGeneratePremiseAndResultEachTransition(
                                     newPremise, index + 1, maxIndex,
                                     keySetArray, valueDomain, lValue,
@@ -3676,9 +2971,72 @@ public class SMVUtility {
 
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
-                    if (vList.size() != 0) {
-                        for (int i = 0; i < vList.size(); i++) {
+                    if ((vList != null) && (vList.size() != 0)) {
+                        boolean b = Pattern.matches(".*_isPresent",
+                                keySetArray[index].trim());
+                        if (b == true) {
                             String updatedVariableValue = newVariableValue;
+
+                            String newPremise = currentPremise;
+
+                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                    newPremise, index + 1, maxIndex,
+                                    keySetArray, valueDomain, lValue,
+                                    updatedVariableValue, operatingSign);
+                        } else {
+                            for (int i = 0; i < vList.size(); i++) {
+                                String updatedVariableValue = newVariableValue;
+                                // retrieve the string and concatenate
+                                String newPremise = currentPremise
+                                        + " & "
+                                        + keySetArray[index]
+                                        + "="
+                                        + String.valueOf(vList.get(i)
+                                                .intValue());
+
+                                if (vList.get(i).intValue() == DOMAIN_LS) {
+                                    newPremise = new String(currentPremise
+                                            + " & " + keySetArray[index] + "="
+                                            + "ls");
+                                } else if (vList.get(i).intValue() == DOMAIN_GT) {
+                                    newPremise = new String(currentPremise
+                                            + " & " + keySetArray[index] + "="
+                                            + "gt");
+                                }
+                                _recursiveStepGeneratePremiseAndResultEachTransition(
+                                        newPremise, index + 1, maxIndex,
+                                        keySetArray, valueDomain, lValue,
+                                        updatedVariableValue, operatingSign);
+                            }
+                        }
+
+                    } else {
+                        _recursiveStepGeneratePremiseAndResultEachTransition(
+                                currentPremise, index + 1, maxIndex,
+                                keySetArray, valueDomain, lValue,
+                                newVariableValue, operatingSign);
+                    }
+
+                }
+
+            } else {
+                // meaning: if
+                // (keySetArray[index].equalsIgnoreCase(lValue)==false)
+                ArrayList<Integer> vList = valueDomain.get(keySetArray[index]);
+
+                if ((vList != null) && (vList.size() != 0)) {
+                    // if the keySetArray[index] is similar to "XX_isPresent", 
+                    // skip the update of premise.
+                    boolean b = Pattern.matches(".*_isPresent",
+                            keySetArray[index].trim());
+                    if (b == true) {
+                        _recursiveStepGeneratePremiseAndResultEachTransition(
+                                currentPremise, index + 1, maxIndex,
+                                keySetArray, valueDomain, lValue,
+                                newVariableValue, operatingSign);
+                    } else {
+                        for (int i = 0; i < vList.size(); i++) {
+
                             // retrieve the string and concatenate
                             String newPremise = currentPremise + " & "
                                     + keySetArray[index] + "="
@@ -3694,41 +3052,10 @@ public class SMVUtility {
                             _recursiveStepGeneratePremiseAndResultEachTransition(
                                     newPremise, index + 1, maxIndex,
                                     keySetArray, valueDomain, lValue,
-                                    updatedVariableValue, operatingSign);
+                                    newVariableValue, operatingSign);
                         }
-                    } else {
-                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                currentPremise, index + 1, maxIndex,
-                                keySetArray, valueDomain, lValue,
-                                newVariableValue, operatingSign);
                     }
 
-                }
-
-            } else {
-                // meaning: if
-                // (keySetArray[index].equalsIgnoreCase(lValue)==false)
-                ArrayList<Integer> vList = valueDomain.get(keySetArray[index]);
-                if (vList.size() != 0) {
-                    for (int i = 0; i < vList.size(); i++) {
-
-                        // retrieve the string and concatenate
-                        String newPremise = currentPremise + " & "
-                                + keySetArray[index] + "="
-                                + String.valueOf(vList.get(i).intValue());
-
-                        if (vList.get(i).intValue() == DOMAIN_LS) {
-                            newPremise = new String(currentPremise + " & "
-                                    + keySetArray[index] + "=" + "ls");
-                        } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                            newPremise = new String(currentPremise + " & "
-                                    + keySetArray[index] + "=" + "gt");
-                        }
-                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                newPremise, index + 1, maxIndex, keySetArray,
-                                valueDomain, lValue, newVariableValue,
-                                operatingSign);
-                    }
                 } else {
                     _recursiveStepGeneratePremiseAndResultEachTransition(
                             currentPremise, index + 1, maxIndex, keySetArray,
@@ -3741,93 +3068,66 @@ public class SMVUtility {
 
     }
 
+    /**
+     * A private function used as to generate variable initial values for the
+     * initial variable set. This is achieved using a scan on all transitions in
+     * edges (equalities/ inequalities) and retrieve all integer values in the
+     * system. Currently the span is not taken into consideration.
+     * 
+     * @param variableSet
+     *        Set of variables that expect to find initial values.
+     * 
+     */
     private static HashMap<String, String> _retrieveVariableInitialValue(
-            HashSet<String> variableSet, CompositeActor model) {
-
+            FSMActor actor, HashSet<String> variableSet) {
+        // FIXME: 
+        //HashMap<String, String> returnMap = new HashMap<String, String>();
+        //Iterator<String> it = variableSet.iterator();
+        //while (it.hasNext()) {
+        //    String attribute = it.next();
+        //    String property = this.getAttribute(attribute).description();
+        //    System.out.print(property);
+        //    returnMap.put(attribute, property);
+        //}
+        //return returnMap;
         HashMap<String, String> returnMap = new HashMap<String, String>();
         try {
-            for (Iterator actors = (((CompositeActor) model).entityList())
-                    .iterator(); actors.hasNext();) {
-                Entity innerEntity = (Entity) actors.next();
-                Entity innerModel = innerEntity;
-                if (innerEntity instanceof ModalModel) {
-                    innerModel = ((ModalModel) innerEntity).getController();
-                }
-                if (innerModel instanceof FSMActor) {
 
-                    Iterator<String> it = variableSet.iterator();
-                    while (it.hasNext()) {
-                        String originalAttribute = it.next();
-                        String[] attributeList = originalAttribute.split("-");
-                        String attribute = attributeList[attributeList.length - 1];
-                        String[] propertyList = null;
+            ComponentPort outPort = actor.getInitialState().outgoingPort;
+            Iterator transitions = outPort.linkedRelationList().iterator();
+            while (transitions.hasNext()) {
+                Transition transition = (Transition) transitions.next();
+                String setActionExpression = transition.setActions
+                        .getExpression();
+                if ((setActionExpression != null)
+                        && !setActionExpression.trim().equals("")) {
+                    // Retrieve possible value of the variable
+                    String[] splitExpression = setActionExpression.split(";");
+                    for (int i = 0; i < splitExpression.length; i++) {
+                        String[] characters = splitExpression[i].split("=");
+                        String lValue = characters[0].trim();
+                        String rValue = "";
+                        int numberRetrival = 0;
+                        boolean rvalueSingleNumber = true;
                         try {
-                            propertyList = innerModel.getAttribute(attribute)
-                                    .description().split(" ");
+                            rValue = characters[1].trim();
+                            numberRetrival = Integer.parseInt(rValue);
                         } catch (Exception ex) {
-                            continue;
+                            rvalueSingleNumber = false;
                         }
-                        String property = null;
-                        try {
-                            property = propertyList[propertyList.length - 1];
-                        } catch (Exception ex) {
-                            continue;
+                        if (rvalueSingleNumber == true) {
+                            // see if the lValue is in variableSet
+                            if (variableSet.contains(lValue)) {
+                                returnMap.put(lValue, rValue);
+                            }
                         }
-                        returnMap.put(originalAttribute, property);
                     }
-
-                    /*  
-                      ComponentPort outPort = ((FSMActor) innerModel)
-                              .getInitialState().outgoingPort;
-                      Iterator transitions = outPort.linkedRelationList()
-                              .iterator();
-                      while (transitions.hasNext()) {
-                          Transition transition = (Transition) transitions.next();
-                          String setActionExpression = transition.setActions
-                                  .getExpression();
-                          if ((setActionExpression != null)
-                                  && !setActionExpression.trim().equals("")) {
-                              // Retrieve possible value of the variable
-                              String[] splitExpression = setActionExpression
-                                      .split(";");
-                              for (int i = 0; i < splitExpression.length; i++) {
-                                  String[] characters = splitExpression[i]
-                                          .split("=");
-                                  String lValue = characters[0].trim();
-                                  String rValue = "";
-                                  int numberRetrival = 0;
-                                  boolean rvalueSingleNumber = true;
-                                  try {
-                                      rValue = characters[1].trim();
-                                      numberRetrival = Integer.parseInt(rValue);
-                                  } catch (Exception ex) {
-                                      rvalueSingleNumber = false;
-                                  }
-                                  if (rvalueSingleNumber == true) {
-                                      // see if the lValue is in variableSet
-                                      if (variableSet
-                                              .contains(((FSMActor) innerModel)
-                                                      .getName()
-                                                      + "-" + lValue)) {
-                                          returnMap.put(((FSMActor) innerModel)
-                                                  .getName()
-                                                  + "-" + lValue, rValue);
-                                      }
-                                  }
-                              }
-                          }
-
-                      }
-                      
-                    */
                 }
+
             }
         } catch (Exception ex) {
-            throw new InternalErrorException(
-                    "FmvAutomaton._retrieveVariableInitialValue() clashes: "
-                            + ex.getMessage());
-        }
 
+        }
         return returnMap;
     }
 
@@ -4332,72 +3632,46 @@ public class SMVUtility {
         }
 
         // Final print out the returnFSMActor
+        /*
+                try {
+                    Iterator states = returnFSMActor.entityList().iterator();
+                    while (states.hasNext()) {
+                        NamedObj state = (NamedObj) states.next();
+                        if (state instanceof State) {
+                            System.out.println("State name: " + state.getName());
+                        }
+                    }
 
-        try {
-            Iterator states = returnFSMActor.entityList().iterator();
-            while (states.hasNext()) {
-                NamedObj state = (NamedObj) states.next();
-                if (state instanceof State) {
-                    System.out.println("State name: " + state.getName());
+                    Iterator Transitions = returnFSMActor.relationList().iterator();
+
+                    while (Transitions.hasNext()) {
+                        Transition transition = (Transition) Transitions.next();
+                        if (transition instanceof Transition) {
+                            System.out.println("Transition name: "
+                                    + transition.getName()
+                                    + "; From "
+                                    + ((Transition) transition).sourceState().getName()
+                                    + " to "
+                                    + ((Transition) transition).destinationState()
+                                            .getName());
+                        }
+                    }
+                } catch (Exception ex) {
+
                 }
-            }
-
-            Iterator Transitions = returnFSMActor.relationList().iterator();
-
-            while (Transitions.hasNext()) {
-                Transition transition = (Transition) Transitions.next();
-                if (transition instanceof Transition) {
-                    System.out.println("Transition name: "
-                            + transition.getName()
-                            + "; From "
-                            + ((Transition) transition).sourceState().getName()
-                            + " to "
-                            + ((Transition) transition).destinationState()
-                                    .getName());
-                }
-            }
-        } catch (Exception ex) {
-
-        }
+         */
         //System.out.println("The initial state of the FSMActor "
         //        + returnFSMActor.getName() + " would be:"
         //        + returnFSMActor.getInitialState().getName());
         return returnFSMActor;
     }
 
-    /**
-     *  This function tries to recover the modified name in the FSMActor of
-     *  a ModalModel. This is because every FSMActor in a ModalModel has a
-     *  similar name "_Controller", which causes problem in the output format.
-     *  Thus in the function "generateSMVDescription", we temporarily let the
-     *  FSMActor "inherent" the name of the modal model. When the process is
-     *  ended or exception occurs, we need to restore it. 
-     *  
-     *  @param model Whole System under analysis.
-     */
-    private static void _undoSystemModalModelRenaming(CompositeActor model) {
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
-            Entity innerEntity = (Entity) actors.next();
-            Entity innerModel = innerEntity;
-            if (innerEntity instanceof ModalModel) {
-                try {
-                    // Because we temporarily set up the name of the inner FSMActor as
-                    // innerEntity.getName(), now it is the time to restore.
-                    ((ModalModel) innerEntity).getController().setName(
-                            "_Controller");
-                } catch (Exception ex) {
-                    // This is OK to do this.
-                }
-            }
-        }
-    }
+    // Used to store information regarding the position of the variable.
+    private static HashMap<String, ArrayList<String>> _globalSignalDistributionInfo;
+    private static HashMap<String, HashSet<String>> _globalSignalRetrivalInfo;
 
-    // BY PATRICK
     private static HashMap<String, VariableInfo> _variableInfo;
     private static HashMap<String, LinkedList<VariableTransitionInfo>> _variableTransitionInfo;
-
-    private static StringBuffer premiseText;
 
     private static int DOMAIN_GT = Integer.MAX_VALUE;
     private static int DOMAIN_LS = Integer.MIN_VALUE;
@@ -4426,7 +3700,8 @@ public class SMVUtility {
         }
 
         private String _preCondition;
-        // Set of conditions that leads to the change of variable _variableName.
+        // Record set of conditions that leads to the change of variable
+        // _variableName.
         private String _varibleNewValue = null;
         private String _variableName = null;
 
