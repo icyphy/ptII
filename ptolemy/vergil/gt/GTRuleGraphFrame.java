@@ -77,7 +77,6 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import ptolemy.actor.gt.AtomicActorMatcher;
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.DefaultDirectoryAttribute;
 import ptolemy.actor.gt.DefaultModelAttribute;
@@ -88,6 +87,7 @@ import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.MatchCallback;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.PatternObjectAttribute;
+import ptolemy.actor.gt.PortMatcher;
 import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gt.data.CombinedCollection;
@@ -122,6 +122,8 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ActorInstanceController;
+import ptolemy.vergil.actor.ExternalIOPortController;
+import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -1269,6 +1271,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         protected void _createControllers() {
             super._createControllers();
             _entityController = new EntityController();
+            _portController = new PortController();
         }
 
         protected void initializeInteraction() {
@@ -1292,6 +1295,18 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
                 } else {
                     menuFactory.addMenuItemFactory(factory);
                 }
+            }
+        }
+        
+        private class PortController extends ExternalIOPortController {
+            
+            public PortController() {
+                super(GTActionGraphController.this, AttributeController.FULL);
+                
+                MenuActionFactory newFactory = new GTMenuActionFactory(
+                        _configureMenuFactory, _configureAction);
+                _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
+                _configureMenuFactory = newFactory;
             }
         }
 
@@ -1330,8 +1345,13 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
                     for (Component itemComponent : menuItems) {
                         JMenuItem item = (JMenuItem) itemComponent;
                         Action action = item.getAction();
-                        if (action instanceof PortDialogAction
-                                && object instanceof AtomicActorMatcher) {
+                        if (object instanceof PortMatcher) {
+                            // Disable all the items for a PortMatcher, which
+                            // should be configured by double-clicking the
+                            // containing CompositeActor.
+                            item.setEnabled(false);
+                        } else if (action instanceof PortDialogAction
+                                && object instanceof GTEntity) {
                             // Disable the PortDialogAction from the context
                             // menu.
                             item.setEnabled(false);

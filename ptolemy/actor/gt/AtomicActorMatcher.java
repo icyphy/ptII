@@ -27,31 +27,17 @@
 package ptolemy.actor.gt;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
-import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
-import ptolemy.actor.gt.ingredients.criteria.SubclassCriterion;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
-import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.gt.GTIngredientsEditor;
-import ptolemy.vergil.icon.EditorIcon;
 
 //////////////////////////////////////////////////////////////////////////
 //// AtomicActorMatcher
@@ -141,117 +127,11 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
     }
 
     public void updateAppearance(GTIngredientsAttribute attribute) {
-
-        try {
-            _workspace.getWriteAccess();
-
-            Set<String> preservedPortNames = new HashSet<String>();
-            boolean isIconSet = false;
-            int i = 1;
-            GTIngredientList list = attribute.getIngredientList();
-            for (GTIngredient ingredient : list) {
-                if (ingredient instanceof PortCriterion) {
-                    PortCriterion criterion = (PortCriterion) ingredient;
-                    String portID = criterion.getPortID(list);
-                    preservedPortNames.add(portID);
-
-                    TypedIOPort port = (TypedIOPort) getPort(portID);
-                    boolean isInput = criterion.isInput();
-                    boolean isOutput = criterion.isOutput();
-                    boolean isMultiport = !criterion.isMultiportEnabled()
-                            || criterion.isMultiport();
-                    if (port != null) {
-                        port.setInput(isInput);
-                        port.setOutput(isOutput);
-                        port.setMultiport(isMultiport);
-                        port.setPersistent(false);
-                    } else {
-                        port = new TypedIOPort(this, portID, isInput, isOutput);
-                        port.setMultiport(isMultiport);
-                        port.setPersistent(false);
-                    }
-                    port.setPersistent(false);
-                } else if (ingredient instanceof SubclassCriterion
-                        && !isIconSet) {
-                    SubclassCriterion criterion = (SubclassCriterion) ingredient;
-                    final String superclass = criterion.getSuperclass();
-                    requestChange(new ChangeRequest(this,
-                            "Deferred load actor icon action.") {
-                        protected void _execute() throws Exception {
-                            _loadActorIcon(superclass);
-                        }
-                    });
-                    isIconSet = true;
-                }
-                i++;
-            }
-            if (!isIconSet) {
-                requestChange(new RestoreAppearanceChangeRequest());
-            }
-
-            List<?> portList = portList();
-            for (i = 0; i < portList.size();) {
-                Port port = (Port) portList.get(i);
-                if (!preservedPortNames.contains(port.getName())) {
-                    port.setContainer(null);
-                } else {
-                    i++;
-                }
-            }
-            for (Object portObject : portList()) {
-                Port port = (Port) portObject;
-                if (!preservedPortNames.contains(port.getName())) {
-                    port.setContainer(null);
-                }
-            }
-
-        } catch (KernelException e) {
-            throw new KernelRuntimeException(e, "Cannot update appearance for "
-                    + "actor " + getName() + ".");
-
-        } finally {
-            _workspace.doneWriting();
-        }
+        GTEntityUtils.updateAppearance(this, attribute);
     }
 
     public void valueChanged(Settable settable) {
-        if (settable == criteria) {
-            if (GTTools.isInPattern(this)) {
-                // criteria attribute is used to set the matching criteria for
-                // this actor. It is used only for actors in the pattern of
-                // a transformation rule. If the actor is in the
-                // replacement, this attribute is ignored.
-                updateAppearance(criteria);
-
-                // Update the appearance of corresponding entities in the
-                // replacement.
-                Pattern pattern = (Pattern) GTTools
-                        .getContainingPatternOrReplacement(this);
-                NamedObj container = pattern.getContainer();
-                if (container instanceof TransformationRule) {
-                    Replacement replacement = ((TransformationRule) container)
-                            .getReplacement();
-                    replacement.updateEntitiesAppearance(criteria);
-                }
-            }
-        } else if (settable == patternObject) {
-            if (GTTools.isInReplacement(this)) {
-                // Update the ports with the criteria attribute of the
-                // corresponding actor in the pattern of the transformation
-                // rule.
-                NamedObj entity = GTTools.getCorrespondingPatternObject(this);
-                if (entity != null && entity instanceof AtomicActorMatcher) {
-                    criteria.setPersistent(false);
-                    try {
-                        criteria.setExpression("");
-                    } catch (IllegalActionException e) {
-                        // Ignore because criteria is not used for
-                        // patternObject.
-                    }
-                    updateAppearance(((AtomicActorMatcher) entity).criteria);
-                }
-            }
-        }
+        GTEntityUtils.valueChanged(this, settable);
     }
 
     public GTIngredientsAttribute criteria;
@@ -264,34 +144,8 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
 
     Set<String> _labelSet;
 
-    private void _loadActorIcon(String actorClassName) throws Exception {
-        CompositeActor container = new CompositeActor();
-        String moml = "<group><entity name=\"NewActor\" class=\""
-                + actorClassName + "\"/></group>";
-
-        try {
-            new MoMLChangeRequest(this, container, moml).execute();
-            new LoadActorIconChangeRequest(container).execute();
-        } catch (Throwable t) {
-            _removeEditorIcons();
-            _setIconDescription(_ICON_DESCRIPTION);
-        }
-    }
-
-    private void _removeEditorIcons() throws KernelException {
-        for (Object editorIconObject : attributeList(EditorIcon.class)) {
-            EditorIcon editorIcon = (EditorIcon) editorIconObject;
-            editorIcon.setContainer(null);
-        }
-    }
-
-    private void _setIconDescription(String iconDescription) {
-        String moml = "<property name=\"_iconDescription\" class="
-                + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
-                + "  <configure>" + iconDescription + "</configure>"
-                + "</property>";
-        MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
-        request.execute();
+    public String getDefaultIconDescription() {
+        return _ICON_DESCRIPTION;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -309,58 +163,10 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
             + "<line x1=\"30\" y1=\"22\" x2=\"30\" y2=\"30\""
             + "  style=\"stroke:#404040\"/>"
             + "<line x1=\"30\" y1=\"30\" x2=\"35\" y2=\"30\""
-            + "  style=\"stroke:#404040\"/>" + "<text x=\"17\" y=\"13\""
+            + "  style=\"stroke:#404040\"/>"
+            + "<text x=\"17\" y=\"13\""
             + "  style=\"font-size:12; fill:#E00000; font-family:SansSerif\">"
             + "  match</text>" + "</svg>";
 
     private long _version = -1;
-
-    private class LoadActorIconChangeRequest extends ChangeRequest {
-
-        public LoadActorIconChangeRequest(CompositeEntity container) {
-            super(container, "Load the icon of the newly created actor");
-
-            _container = container;
-        }
-
-        protected void _execute() throws Exception {
-            ComponentEntity actor = (ComponentEntity) _container.entityList()
-                    .get(0);
-
-            _removeEditorIcons();
-
-            ConfigurableAttribute actorAttribute = (ConfigurableAttribute) actor
-                    .getAttribute("_iconDescription");
-            String iconDescription = actorAttribute.getConfigureText();
-            _setIconDescription(iconDescription);
-
-            List<?> editorIconList = actor.attributeList(EditorIcon.class);
-
-            for (Object editorIconObject : editorIconList) {
-                EditorIcon editorIcon = (EditorIcon) editorIconObject;
-                EditorIcon icon = (EditorIcon) editorIcon.clone(workspace());
-                icon.setName("_icon");
-                EditorIcon oldIcon = (EditorIcon) getAttribute("_icon");
-                if (oldIcon != null) {
-                    oldIcon.setContainer(null);
-                }
-                icon.setContainer(AtomicActorMatcher.this);
-                break;
-            }
-        }
-
-        private CompositeEntity _container;
-    }
-
-    private class RestoreAppearanceChangeRequest extends ChangeRequest {
-
-        protected void _execute() throws Exception {
-            _removeEditorIcons();
-            _setIconDescription(_ICON_DESCRIPTION);
-        }
-
-        RestoreAppearanceChangeRequest() {
-            super(AtomicActorMatcher.this, "Restore the default appearance.");
-        }
-    }
 }

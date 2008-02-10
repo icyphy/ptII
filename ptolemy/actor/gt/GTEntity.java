@@ -39,7 +39,11 @@ public interface GTEntity extends Nameable {
 
     public GTIngredientsAttribute getCriteriaAttribute();
 
+    public String getDefaultIconDescription();
+
     public GTIngredientsAttribute getOperationsAttribute();
+
+    public PatternObjectAttribute getPatternObjectAttribute();
 
     public Set<String> labelSet();
 
