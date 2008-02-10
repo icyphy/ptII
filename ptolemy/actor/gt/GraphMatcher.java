@@ -412,24 +412,11 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     private static PortCriterion _getPortRule(Port port) {
-        NamedObj container = port.getContainer();
-        if (container instanceof AtomicActorMatcher) {
-            try {
-                GTIngredientList ruleList = ((AtomicActorMatcher) container).criteria
-                        .getIngredientList();
-                String portID = port.getName();
-                for (GTIngredient rule : ruleList) {
-                    if (rule instanceof PortCriterion) {
-                        PortCriterion portRule = (PortCriterion) rule;
-                        if (portRule.getPortID(ruleList).equals(portID)) {
-                            return portRule;
-                        }
-                    }
-                }
-            } catch (MalformedStringException e) {
-            }
+        if (port instanceof PortMatcher) {
+            return ((PortMatcher) port).getPortCriterion();
+        } else {
+            return null;
         }
-        return null;
     }
 
     private boolean _matchAtomicEntity(ComponentEntity patternActor,
@@ -519,6 +506,8 @@ public class GraphMatcher extends GraphAnalyzer {
             CompositeEntity hostEntity) {
         int matchSize = _match.size();
         boolean success = true;
+        ObjectList patternList = new ObjectList();
+        ObjectList hostList = new ObjectList();
 
         _match.put(patternEntity, hostEntity);
 
@@ -542,7 +531,6 @@ public class GraphMatcher extends GraphAnalyzer {
             IndexedLists patternMarkedList = new IndexedLists();
             NamedObj patternNextChild = findFirstChild(patternEntity,
                     patternMarkedList, _match.keySet());
-            ObjectList patternList = new ObjectList();
             while (patternNextChild != null) {
                 patternList.add(patternNextChild);
                 patternNextChild = findNextChild(patternEntity,
@@ -552,15 +540,19 @@ public class GraphMatcher extends GraphAnalyzer {
             IndexedLists hostMarkedList = new IndexedLists();
             NamedObj hostNextObject = findFirstChild(hostEntity,
                     hostMarkedList, _match.values());
-            ObjectList hostList = new ObjectList();
             while (hostNextObject != null) {
                 hostList.add(hostNextObject);
                 hostNextObject = findNextChild(hostEntity, hostMarkedList,
                         _match.values());
             }
-
-            success = _matchObject(patternList, hostList);
         }
+
+        if (success) {
+            patternList.addAll((Collection<?>) patternEntity.portList());
+            hostList.addAll((Collection<?>) hostEntity.portList());
+        }
+
+        success = success && _matchObject(patternList, hostList);
 
         if (!success) {
             _match.retain(matchSize);

@@ -127,13 +127,12 @@ public class GTEntityUtils {
             }
 
             List<?> portList = ((ComponentEntity) entity).portList();
-            for (i = 0; i < portList.size();) {
+            for (i = 0; i < portList.size(); i++) {
                 Port port = (Port) portList.get(i);
                 if (port instanceof PortMatcher
                         && !preservedPortNames.contains(port.getName())) {
+                    ((PortMatcher) port)._setPortCriterion(null);
                     port.setContainer(null);
-                } else {
-                    i++;
                 }
             }
 

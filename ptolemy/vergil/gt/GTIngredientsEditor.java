@@ -523,7 +523,7 @@ public class GTIngredientsEditor extends PtolemyDialog implements
         column0.setCellRenderer(indexRenderer);
 
         model.getColumn(1).setPreferredWidth(150);
-        model.getColumn(2).setPreferredWidth(550);
+        model.getColumn(2).setPreferredWidth(650);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -601,7 +601,7 @@ public class GTIngredientsEditor extends PtolemyDialog implements
     private static final Color _NON_REGULAR_EXPRESSION_BACKGROUND = new Color(
             230, 230, 255);
 
-    private static final Dimension _PREFERRED_SIZE = new Dimension(700, 500);
+    private static final Dimension _PREFERRED_SIZE = new Dimension(800, 500);
 
     private static final Color _PTOLEMY_EXPRESSION_BACKGROUND = new Color(255,
             200, 200);

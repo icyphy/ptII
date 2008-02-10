@@ -71,7 +71,7 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
 
         editorFactory = new GTIngredientsEditor.Factory(this, "editorFactory");
         scopeExtender = new ActorScopeExtender(this, "scopeExtender");
-        
+
         _attachText("_iconDescription", _ICON_DESCRIPTION);
     }
 
