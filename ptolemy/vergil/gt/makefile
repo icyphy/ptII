@@ -99,6 +99,7 @@ OPTIONAL_FILES = \
 	'GTRuleGraphFrame$$FileComparator.class' \
 	'GTRuleGraphFrame$$GTActionGraphController$$EntityController.class' \
 	'GTRuleGraphFrame$$GTActionGraphController$$NewRelationAction.class' \
+	'GTRuleGraphFrame$$GTActionGraphController$$PortController.class' \
 	'GTRuleGraphFrame$$GTActionGraphController.class' \
 	'GTRuleGraphFrame$$GTMenuActionFactory.class' \
 	'GTRuleGraphFrame$$LayoutAction.class' \

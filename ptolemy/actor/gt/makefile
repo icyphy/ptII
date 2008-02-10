@@ -66,6 +66,7 @@ JSRCS = \
 	DefaultModelAttribute.java \
 	FakedRecordToken.java \
 	GTEntity.java \
+	GTEntityUtils.java \
 	GTIngredient.java \
 	GTIngredientElement.java \
 	GTIngredientList.java \
@@ -86,6 +87,7 @@ JSRCS = \
 	ParameterAttribute.java \
 	Pattern.java \
 	PatternObjectAttribute.java \
+	PortMatcher.java \
 	RelationCollapsingAttribute.java \
 	RelationHidingAttribute.java \
 	Replacement.java \
@@ -111,10 +113,10 @@ MISC_FILES =	data ingredients test util
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'AtomicActorMatcher$$1.class' \
-	'AtomicActorMatcher$$LoadActorIconChangeRequest.class' \
-	'AtomicActorMatcher$$RestoreAppearanceChangeRequest.class' \
 	'FakedRecordToken$$FakedRecordType.class' \
+	'GTEntityUtils$$1.class' \
+	'GTEntityUtils$$LoadActorIconChangeRequest.class' \
+	'GTEntityUtils$$RestoreAppearanceChangeRequest.class' \
 	'GTIngredient$$FieldIterator.class' \
 	'GTIngredient$$NamedObjMatchResult.class' \
 	'GTParameter$$Evaluator.class' \
