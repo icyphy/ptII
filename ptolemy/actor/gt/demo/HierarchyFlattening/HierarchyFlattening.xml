@@ -2,11 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HierarchyFlattening" class="ptolemy.actor.gt.TransformationRule">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 222, 858, 606}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={268, 208, 863, 633}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[635, 491]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 519]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -35,7 +35,7 @@
           </svg>
         </configure>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 0.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, -5.0]">
             </property>
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -59,7 +59,7 @@
             </property>
         </property>
         <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 0.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, -25.0]">
             </property>
         </entity>
     </entity>
