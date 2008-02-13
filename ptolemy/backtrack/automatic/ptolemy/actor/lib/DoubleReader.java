@@ -76,7 +76,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class DoubleReader extends URLReader implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
@@ -207,13 +207,13 @@ public class DoubleReader extends URLReader implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_data = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_data = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_dataSize = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_dataSize = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_data,
             $RECORD$_dataSize
         };

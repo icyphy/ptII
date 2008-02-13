@@ -97,7 +97,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class SequentialClock extends TypedAtomicActor implements SequenceActor, Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // NOTE: This cannot extend Source, because it doesn't have a trigger
     // input.  This is too bad, since it results in a lot of duplicated
@@ -430,19 +430,19 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor, 
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_currentValue = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_currentValue = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_cycleStartTime = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_cycleStartTime = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_firstFiring = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_firstFiring = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_offsets = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_offsets = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_phase = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_phase = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_currentValue,
             $RECORD$_cycleStartTime,
             $RECORD$_firstFiring,

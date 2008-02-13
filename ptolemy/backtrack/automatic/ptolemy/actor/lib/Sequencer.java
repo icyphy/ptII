@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class Sequencer extends Transformer implements SequenceActor, Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -300,19 +300,19 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_fireProducedOutput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_fireProducedOutput = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_nextSequenceNumber = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_nextSequenceNumber = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_nextToken = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_nextToken = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_pending = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_pending = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_sequenceNumberOfInput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_sequenceNumberOfInput = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_fireProducedOutput,
             $RECORD$_nextSequenceNumber,
             $RECORD$_nextToken,

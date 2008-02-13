@@ -41,7 +41,7 @@ import java.net.URLClassLoader;
    Class loader that tries to load a class from the given file. This class
    loader, unlike other class loaders that accept class names and load classes
    with those names, accepts class file names and loads them as classes. It
-   uses {@link URLClassLoader#defineClass(java.lang.String, sun.misc.Resource)}
+   uses defineClass(java.lang.String, sun.misc.Resource) in URLClassLoader
    to define the class with the contents in the given file. If error occurs, it
    falls back to traditional class loading with the class name in the exception
    message.

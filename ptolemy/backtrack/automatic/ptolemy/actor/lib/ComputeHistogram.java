@@ -80,7 +80,7 @@ import ptolemy.kernel.util.Settable;
  */
 public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -353,19 +353,19 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_bins = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_bins = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_minimumValue = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_minimumValue = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_maximumValue = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_maximumValue = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_binWidth = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_binWidth = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_numberOfBins = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_numberOfBins = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_bins,
             $RECORD$_minimumValue,
             $RECORD$_maximumValue,

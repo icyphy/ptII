@@ -115,7 +115,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class Autocorrelation extends SDFTransformer implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Set the output type to be an ArrayType.
     ///////////////////////////////////////////////////////////////////
@@ -181,7 +181,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
 
     private static class FunctionTerm extends MonotonicFunction implements Rollbackable {
 
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
@@ -256,11 +256,11 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
             return this;
         }
 
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-        private FieldRecord $RECORD$_port = new FieldRecord(0);
+        private transient FieldRecord $RECORD$_port = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
                 $RECORD$_port
             };
 
@@ -271,7 +271,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
      */
     private class OutputTypeTerm extends MonotonicFunction implements Rollbackable {
 
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
         ///////////////////////////////////////////////////////////////
         ////                   public inner methods                ////
@@ -386,11 +386,11 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
             return this;
         }
 
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-        private FieldRecord $RECORD$_arrayType = new FieldRecord(0);
+        private transient FieldRecord $RECORD$_arrayType = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
                 $RECORD$_arrayType
             };
 
@@ -609,19 +609,19 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_numberOfInputs = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_numberOfInputs = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_numberOfLags = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_numberOfLags = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_lengthOfOutput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_lengthOfOutput = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_symmetricOutput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_symmetricOutput = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_outputs = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_outputs = new FieldRecord(1);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_numberOfInputs,
             $RECORD$_numberOfLags,
             $RECORD$_lengthOfOutput,

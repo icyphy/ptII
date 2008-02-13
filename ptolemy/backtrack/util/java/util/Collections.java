@@ -1,43 +1,44 @@
 /* Collections.java -- Utility class with methods to operate on collections
- Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005
- Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005
+   Free Software Foundation, Inc.
 
- This file is part of GNU Classpath.
+This file is part of GNU Classpath.
 
- GNU Classpath is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2, or (at your option)
- any later version.
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
 
- GNU Classpath is distributed in the hope that it will be useful, but
- WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- General Public License for more details.
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with GNU Classpath; see the file COPYING.  If not, write to the
- Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- 02110-1301 USA.
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+02110-1301 USA.
 
- Linking this library statically or dynamically with other modules is
- making a combined work based on this library.  Thus, the terms and
- conditions of the GNU General Public License cover the whole
- combination.
+Linking this library statically or dynamically with other modules is
+making a combined work based on this library.  Thus, the terms and
+conditions of the GNU General Public License cover the whole
+combination.
 
- As a special exception, the copyright holders of this library give you
- permission to link this library with independent modules to produce an
- executable, regardless of the license terms of these independent
- modules, and to copy and distribute the resulting executable under
- terms of your choice, provided that you also meet, for each linked
- independent module, the terms and conditions of the license of that
- module.  An independent module is a module which is not derived from
- or based on this library.  If you modify this library, you may extend
- this exception to your version of the library, but you are not
- obligated to do so.  If you do not wish to do so, delete this
- exception statement from your version. */
+As a special exception, the copyright holders of this library give you
+permission to link this library with independent modules to produce an
+executable, regardless of the license terms of these independent
+modules, and to copy and distribute the resulting executable under
+terms of your choice, provided that you also meet, for each linked
+independent module, the terms and conditions of the license of that
+module.  An independent module is a module which is not derived from
+or based on this library.  If you modify this library, you may extend
+this exception to your version of the library, but you are not
+obligated to do so.  If you do not wish to do so, delete this
+exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
 import java.io.Serializable;
+import java.lang.Object;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -45,13 +46,15 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
-
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
+import ptolemy.backtrack.util.java.util.Collection;
+import ptolemy.backtrack.util.java.util.Set;
+import ptolemy.backtrack.util.java.util.SortedSet;
 
-/**
+/** 
  * Utility class consisting of static methods that operate on, or return
  * Collections. Contains methods to sort, search, reverse, fill and shuffle
  * Collections, methods to facilitate interoperability with legacy APIs that
@@ -59,9 +62,13 @@ import ptolemy.backtrack.util.FieldRecord;
  * multiple copies of one element, and methods which "wrap" collections to give
  * them extra properties, such as thread-safety and unmodifiability.
  * <p>
- * All methods which take a collection throw a {@link NullPointerException} if
+ * All methods which take a collection throw a {
+@link NullPointerException}
+ if
  * that collection is null. Algorithms which can change a collection may, but
- * are not required, to throw the {@link UnsupportedOperationException} that
+ * are not required, to throw the {
+@link UnsupportedOperationException}
+ that
  * the underlying collection would throw during an attempt at modification.
  * For example,
  * <code>Collections.singleton("").addAll(Collections.EMPTY_SET)</code>
@@ -80,51 +87,5014 @@ import ptolemy.backtrack.util.FieldRecord;
  */
 public class Collections implements Rollbackable {
 
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        $RECORD$$CHECKPOINT.commit(timestamp);
-    }
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-    public final Checkpoint $GET$CHECKPOINT() {
-        return $CHECKPOINT;
-    }
+    /**     
+     * Constant used to decide cutoff for when a non-RandomAccess list should
+     * be treated as sequential-access. Basically, quadratic behavior is
+     * acceptable for small lists when the overhead is so small in the first
+     * place. I arbitrarily set it to 16, so it may need some tuning.
+     */
+    private static final int LARGE_LIST_SIZE = 16;
 
-    public void $RESTORE(long timestamp, boolean trim) {
-        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
-            FieldRecord.popState($RECORDS);
-            $RESTORE(timestamp, trim);
+    /**     
+     * An immutable, serializable, empty Set.
+     * @see Serializable
+     */
+    public static final Set EMPTY_SET = new EmptySet();
+
+    // This is really cheating! I think it's perfectly valid, though.
+    // The remaining methods are optional, but provide a performance
+    // advantage by not allocating unnecessary iterators in AbstractSet.
+    // class EmptySet
+    /**     
+     * An immutable, serializable, empty List, which implements RandomAccess.
+     * @see Serializable
+     * @see RandomAccess
+     */
+    public static final List EMPTY_LIST = new EmptyList();
+
+    // The remaining methods are optional, but provide a performance
+    // advantage by not allocating unnecessary iterators in AbstractList.
+    // class EmptyList
+    /**     
+     * An immutable, serializable, empty Map.
+     * @see Serializable
+     */
+    public static final Map EMPTY_MAP = new EmptyMap();
+
+    // The remaining methods are optional, but provide a performance
+    // advantage by not allocating unnecessary iterators in AbstractMap.
+    // class EmptyMap
+    // We use a linear search with log(n) comparisons using an iterator
+    // if the list is sequential-access.
+    // Assumes list is not empty (see isSequential)
+    // Changing direction first.
+    // Changing direction first.
+    // This gets the insertion point right on the last loop
+    // This gets the insertion point right on the last loop
+    // If we failed to find it, we do the same whichever search we did.
+    // throws NoSuchElementException
+    // throws NoSuchElementExcception
+    // The remaining methods are optional, but provide a performance
+    // advantage by not allocating unnecessary iterators in AbstractList.
+    // class CopiesList
+    /**     
+     * The object for {
+@link #reverseOrder()    }
+.
+     */
+    private static final ReverseComparator rcInstance = new ReverseComparator();
+
+    // Determine the least common multiple of distance and size, as there
+    // are (distance / LCM) loops to cycle through.
+    // Now, make the swaps. We must take the remainder every time through
+    // the inner loop so that we don't overflow i to negative values.
+    /**     
+     * Cache a single Random object for use by shuffle(List). This improves
+     * performance as well as ensuring that sequential calls to shuffle() will
+     * not result in the same shuffle order occurring: the resolution of
+     * System.currentTimeMillis() is not sufficient to guarantee a unique seed.
+     */
+    private static Random defaultRandom = null;
+
+    /**     
+     * The implementation of {
+@link #EMPTY_SET    }
+. This class name is required
+     * for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class EmptySet extends AbstractSet implements Serializable, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 1582296315990362920L;
+
+        /**         
+         * A private constructor adds overhead.
+         */
+        EmptySet() {
         }
+
+        /**         
+         * The size: always 0!
+         * @return 0.
+         */
+        public int size() {
+            return 0;
+        }
+
+        /**         
+         * Returns an iterator that does not iterate.
+         * @return A non-iterating iterator.
+         */
+        public Iterator iterator() {
+            return EMPTY_LIST.iterator();
+        }
+
+        /**         
+         * The empty set never contains anything.
+         * @param o The object to search for.
+         * @return <code>false</code>.
+         */
+        public boolean contains(Object o) {
+            return false;
+        }
+
+        /**         
+         * This is true only if the given collection is also empty.
+         * @param c The collection of objects which are to be compared
+         * against the members of this set.
+         * @return <code>true</code> if c is empty.
+         */
+        public boolean containsAll(Collection c) {
+            return c.isEmpty();
+        }
+
+        /**         
+         * Equal only if the other set is empty.
+         * @param o The object to compare with this set.
+         * @return <code>true</code> if o is an empty instance of <code>Set</code>.
+         */
+        public boolean equals(Object o) {
+            return o instanceof Set && ((Set)o).isEmpty();
+        }
+
+        /**         
+         * The hashcode is always 0.
+         * @return 0.
+         */
+        public int hashCode() {
+            return 0;
+        }
+
+        /**         
+         * Always succeeds with a <code>false</code> result.
+         * @param o The object to remove.
+         * @return <code>false</code>.
+         */
+        public boolean remove(Object o) {
+            return false;
+        }
+
+        /**         
+         * Always succeeds with a <code>false</code> result.
+         * @param c The collection of objects which should
+         * all be removed from this set.
+         * @return <code>false</code>.
+         */
+        public boolean removeAll(Collection c) {
+            return false;
+        }
+
+        /**         
+         * Always succeeds with a <code>false</code> result.
+         * @param c The collection of objects which should
+         * all be retained within this set.
+         * @return <code>false</code>.
+         */
+        public boolean retainAll(Collection c) {
+            return false;
+        }
+
+        /**         
+         * The array is always empty.
+         * @return A new array with a size of 0.
+         */
+        public Object[] toArray() {
+            return new Object[0];
+        }
+
+        /**         
+         * We don't even need to use reflection!
+         * @param a An existing array, which can be empty.
+         * @return The original array with any existing
+         * initial element set to null.
+         */
+        public Object[] toArray(Object[] a) {
+            if (a.length > 0)
+                a[0] = null;
+            return a;
+        }
+
+        /**         
+         * The string never changes.
+         * @return the string "[]".
+         */
+        public String toString() {
+            return "[]";
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
     }
 
-    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-        if ($CHECKPOINT != checkpoint) {
-            Checkpoint oldCheckpoint = $CHECKPOINT;
-            if (checkpoint != null) {
-                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                FieldRecord.pushState($RECORDS);
+    /**     
+     * The implementation of {
+@link #EMPTY_LIST    }
+. This class name is required
+     * for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class EmptyList extends AbstractList implements Serializable, RandomAccess, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 8842843931221139166L;
+
+        /**         
+         * A private constructor adds overhead.
+         */
+        EmptyList() {
+        }
+
+        /**         
+         * The size is always 0.
+         * @return 0.
+         */
+        public int size() {
+            return 0;
+        }
+
+        /**         
+         * No matter the index, it is out of bounds.  This
+         * method never returns, throwing an exception instead.
+         * @param index The index of the element to retrieve.
+         * @return the object at the specified index.
+         * @throws IndexOutOfBoundsException as any given index
+         * is outside the bounds of an empty array.
+         */
+        public Object get(int index) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        /**         
+         * Never contains anything.
+         * @param o The object to search for.
+         * @return <code>false</code>.
+         */
+        public boolean contains(Object o) {
+            return false;
+        }
+
+        /**         
+         * This is true only if the given collection is also empty.
+         * @param c The collection of objects, which should be compared
+         * against the members of this list.
+         * @return <code>true</code> if c is also empty. 
+         */
+        public boolean containsAll(Collection c) {
+            return c.isEmpty();
+        }
+
+        /**         
+         * Equal only if the other list is empty.
+         * @param o The object to compare against this list.
+         * @return <code>true</code> if o is also an empty instance of
+         * <code>List</code>.
+         */
+        public boolean equals(Object o) {
+            return o instanceof List && ((List)o).isEmpty();
+        }
+
+        /**         
+         * The hashcode is always 1.
+         * @return 1.
+         */
+        public int hashCode() {
+            return 1;
+        }
+
+        /**         
+         * Returns -1.
+         * @param o The object to search for.
+         * @return -1.
+         */
+        public int indexOf(Object o) {
+            return -1;
+        }
+
+        /**         
+         * Returns -1.
+         * @param o The object to search for.
+         * @return -1.
+         */
+        public int lastIndexOf(Object o) {
+            return -1;
+        }
+
+        /**         
+         * Always succeeds with <code>false</code> result.
+         * @param o The object to remove.
+         * @return -1.
+         */
+        public boolean remove(Object o) {
+            return false;
+        }
+
+        /**         
+         * Always succeeds with <code>false</code> result.
+         * @param c The collection of objects which should
+         * all be removed from this list.
+         * @return <code>false</code>.
+         */
+        public boolean removeAll(Collection c) {
+            return false;
+        }
+
+        /**         
+         * Always succeeds with <code>false</code> result.
+         * @param c The collection of objects which should
+         * all be retained within this list.
+         * @return <code>false</code>.
+         */
+        public boolean retainAll(Collection c) {
+            return false;
+        }
+
+        /**         
+         * The array is always empty.
+         * @return A new array with a size of 0.
+         */
+        public Object[] toArray() {
+            return new Object[0];
+        }
+
+        /**         
+         * We don't even need to use reflection!
+         * @param a An existing array, which can be empty.
+         * @return The original array with any existing
+         * initial element set to null.
+         */
+        public Object[] toArray(Object[] a) {
+            if (a.length > 0)
+                a[0] = null;
+            return a;
+        }
+
+        /**         
+         * The string never changes.
+         * @return the string "[]".
+         */
+        public String toString() {
+            return "[]";
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
+    }
+
+    /**     
+     * The implementation of {
+@link #EMPTY_MAP    }
+. This class name is required
+     * for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class EmptyMap extends AbstractMap implements Serializable, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 6428348081105594320L;
+
+        /**         
+         * A private constructor adds overhead.
+         */
+        EmptyMap() {
+        }
+
+        /**         
+         * There are no entries.
+         * @return The empty set.
+         */
+        public Set entrySet() {
+            return EMPTY_SET;
+        }
+
+        /**         
+         * No entries!
+         * @param key The key to search for.
+         * @return <code>false</code>.
+         */
+        public boolean containsKey(Object key) {
+            return false;
+        }
+
+        /**         
+         * No entries!
+         * @param value The value to search for.
+         * @return <code>false</code>.
+         */
+        public boolean containsValue(Object value) {
+            return false;
+        }
+
+        /**         
+         * Equal to all empty maps.
+         * @param o The object o to compare against this map.
+         * @return <code>true</code> if o is also an empty instance of
+         * <code>Map</code>.
+         */
+        public boolean equals(Object o) {
+            return o instanceof Map && ((Map)o).isEmpty();
+        }
+
+        /**         
+         * No mappings, so this returns null.
+         * @param o The key of the object to retrieve.
+         * @return null. 
+         */
+        public Object get(Object o) {
+            return null;
+        }
+
+        /**         
+         * The hashcode is always 0.
+         * @return 0.
+         */
+        public int hashCode() {
+            return 0;
+        }
+
+        /**         
+         * No entries.
+         * @return The empty set.
+         */
+        public Set keySet() {
+            return EMPTY_SET;
+        }
+
+        /**         
+         * Remove always succeeds, with null result.
+         * @param o The key of the mapping to remove.
+         * @return null, as there is never a mapping for o.
+         */
+        public Object remove(Object o) {
+            return null;
+        }
+
+        /**         
+         * Size is always 0.
+         * @return 0.
+         */
+        public int size() {
+            return 0;
+        }
+
+        /**         
+         * No entries. Technically, EMPTY_SET, while more specific than a general
+         * Collection, will work. Besides, that's what the JDK uses!
+         * @return The empty set.
+         */
+        public Collection values() {
+            return EMPTY_SET;
+        }
+
+        /**         
+         * The string never changes.
+         * @return the string "[]".
+         */
+        public String toString() {
+            return "[]";
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
+    }
+
+    /**     
+     * The implementation of {
+@link #nCopies(int, Object)    }
+. This class name
+     * is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class CopiesList extends AbstractList implements Serializable, RandomAccess, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 2739099268398711800L;
+
+        /**         
+         * The count of elements in this list.
+         * @serial the list size
+         */
+        private final int n;
+
+        /**         
+         * The repeated list element.
+         * @serial the list contents
+         */
+        private final Object element;
+
+        /**         
+         * Constructs the list.
+         * @param n the count
+         * @param o the object
+         * @throws IllegalArgumentException if n &lt; 0
+         */
+        CopiesList(int n, Object o) {
+            if (n < 0)
+                throw new IllegalArgumentException();
+            this.n = n;
+            element = o;
+        }
+
+        /**         
+         * The size is fixed.
+         * @return The size of the list.
+         */
+        public int size() {
+            return n;
+        }
+
+        /**         
+         * The same element is returned.
+         * @param index The index of the element to be returned (irrelevant
+         * as the list contains only copies of <code>element</code>).
+         * @return The element used by this list.
+         */
+        public Object get(int index) {
+            if (index < 0 || index >= n)
+                throw new IndexOutOfBoundsException();
+            return element;
+        }
+
+        /**         
+         * This list only contains one element.
+         * @param o The object to search for.
+         * @return <code>true</code> if o is the element used by this list.
+         */
+        public boolean contains(Object o) {
+            return n > 0 && equals(o, element);
+        }
+
+        /**         
+         * The index is either 0 or -1.
+         * @param o The object to find the index of.
+         * @return 0 if <code>o == element</code>, -1 if not.
+         */
+        public int indexOf(Object o) {
+            return (n > 0 && equals(o, element))?0:-1;
+        }
+
+        /**         
+         * The index is either n-1 or -1.
+         * @param o The object to find the last index of.
+         * @return The last index in the list if <code>o == element</code>,
+         * -1 if not.
+         */
+        public int lastIndexOf(Object o) {
+            return equals(o, element)?n - 1:-1;
+        }
+
+        /**         
+         * A subList is just another CopiesList.
+         * @param from The starting bound of the sublist.
+         * @param to The ending bound of the sublist.
+         * @return A list of copies containing <code>from - to</code>
+         * elements, all of which are equal to the element
+         * used by this list.
+         */
+        public List subList(int from, int to) {
+            if (from < 0 || to > n)
+                throw new IndexOutOfBoundsException();
+            return new CopiesList(to - from, element);
+        }
+
+        /**         
+         * The array is easy.
+         * @return An array of size n filled with copies of
+         * the element used by this list.
+         */
+        public Object[] toArray() {
+            Object[] a = new Object[n];
+            Arrays.fill(a, element);
+            return a;
+        }
+
+        /**         
+         * The string is easy to generate.
+         * @return A string representation of the list.
+         */
+        public String toString() {
+            StringBuffer r = new StringBuffer("{");
+            for (int i = n - 1; --i > 0; ) 
+                r.append(element).append(", ");
+            r.append(element).append("}");
+            return r.toString();
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            $RECORD$element.restore(element, timestamp, trim);
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord $RECORD$n = new FieldRecord(0);
+
+        private transient FieldRecord $RECORD$element = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$n,
+                $RECORD$element
+            };
+
+    }
+
+    /**     
+     * The implementation of {
+@link #reverseOrder()    }
+. This class name
+     * is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class ReverseComparator implements Comparator, Serializable, Rollbackable {
+
+        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 7207038068494060240L;
+
+        /**         
+         * A private constructor adds overhead.
+         */
+        ReverseComparator() {
+        }
+
+        /**         
+         * Compare two objects in reverse natural order.
+         * @param a the first object
+         * @param b the second object
+         * @return &lt;, ==, or &gt; 0 according to b.compareTo(a)
+         */
+        public int compare(Object a, Object b) {
+            return ((Comparable)b).compareTo(a);
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
-            $CHECKPOINT = checkpoint;
-            oldCheckpoint.setCheckpoint(checkpoint);
-            checkpoint.addObject(this);
         }
-        return this;
+
+        public final Checkpoint $GET$CHECKPOINT() {
+            return $CHECKPOINT;
+        }
+
+        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+            if ($CHECKPOINT != checkpoint) {
+                Checkpoint oldCheckpoint = $CHECKPOINT;
+                if (checkpoint != null) {
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    FieldRecord.pushState($RECORDS);
+                }
+                $CHECKPOINT = checkpoint;
+                oldCheckpoint.setCheckpoint(checkpoint);
+                checkpoint.addObject(this);
+            }
+            return this;
+        }
+
+        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
     }
 
-    /**
+    // stores a copy of the list for the sequential case
+    // Obtain a random position to swap with. pos + 1 is used so that the
+    // range of the random number includes the current position.
+    // Swap the desired element.
+    /**     
+     * The implementation of {
+@link #singleton(Object)    }
+. This class name
+     * is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class SingletonSet extends AbstractSet implements Serializable, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 3193687207550431679L;
+
+        /**         
+         * The single element; package visible for use in nested class.
+         * @serial the singleton
+         */
+        final Object element;
+
+        /**         
+         * Construct a singleton.
+         * @param o the element
+         */
+        SingletonSet(Object o) {
+            element = o;
+        }
+
+        /**         
+         * The size: always 1!
+         * @return 1.
+         */
+        public int size() {
+            return 1;
+        }
+
+        /**         
+         * Returns an iterator over the lone element.
+         */
+        public Iterator iterator() {
+            return new Iterator() {
+                /**                 
+                 * Flag to indicate whether or not the element has
+                 * been retrieved.
+                 */
+                private boolean hasNext = true;
+
+                /**                 
+                 * Returns <code>true</code> if elements still remain to be
+                 * iterated through.
+                 * @return <code>true</code> if the element has not yet been returned.
+                 */
+                public boolean hasNext() {
+                    return hasNext;
+                }
+
+                /**                 
+                 * Returns the element.
+                 * @return The element used by this singleton.
+                 * @throws NoSuchElementException if the object
+                 * has already been retrieved.
+                 */
+                public Object next() {
+                    if (hasNext) {
+                        $ASSIGN$hasNext(false);
+                        return element;
+                    } else
+                        throw new NoSuchElementException();
+                }
+
+                /**                 
+                 * Removes the element from the singleton.
+                 * As this set is immutable, this will always
+                 * throw an exception.
+                 * @throws UnsupportedOperationException as the
+                 * singleton set doesn't support
+                 * <code>remove()</code>.
+                 */
+                public void remove() {
+                    throw new UnsupportedOperationException();
+                }
+
+                final class _PROXY_ implements Rollbackable {
+
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT() {
+                        return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        return this;
+                    }
+
+                }
+
+                private final boolean $ASSIGN$hasNext(boolean newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$hasNext.add(null, hasNext, $CHECKPOINT.getTimestamp());
+                    }
+                    return hasNext = newValue;
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    $RECORD$$CHECKPOINT.commit(timestamp);
+                }
+
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    hasNext = $RECORD$hasNext.restore(hasNext, timestamp, trim);
+                    if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        FieldRecord.popState($RECORDS);
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+                }
+
+                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                    return $CHECKPOINT;
+                }
+
+                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(new _PROXY_());
+                    }
+                    return this;
+                }
+
+                private transient FieldRecord $RECORD$hasNext = new FieldRecord(0);
+
+                private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                        $RECORD$hasNext
+                    };
+
+                {
+                    $CHECKPOINT.addObject(new _PROXY_());
+                }
+
+            };
+        }
+        // The remaining methods are optional, but provide a performance
+
+        // advantage by not allocating unnecessary iterators in AbstractSet.
+        /**         
+         * The set only contains one element.
+         * @param o The object to search for.
+         * @return <code>true</code> if o == the element of the singleton.
+         */
+        public boolean contains(Object o) {
+            return equals(o, element);
+        }
+
+        /**         
+         * This is true if the other collection only contains the element.
+         * @param c A collection to compare against this singleton.
+         * @return <code>true</code> if c only contains either no elements or
+         * elements equal to the element in this singleton.
+         */
+        public boolean containsAll(Collection c) {
+            Iterator i = c.iterator();
+            int pos = c.size();
+            while (--pos >= 0) 
+                if (!equals(i.next(), element))
+                    return false;
+            return true;
+        }
+
+        /**         
+         * The hash is just that of the element.
+         * @return The hashcode of the element.
+         */
+        public int hashCode() {
+            return hashCode(element);
+        }
+
+        /**         
+         * Returning an array is simple.
+         * @return An array containing the element.
+         */
+        public Object[] toArray() {
+            return new Object[] {
+                    element
+                };
+        }
+
+        /**         
+         * Obvious string.
+         * @return The string surrounded by enclosing
+         * square brackets.
+         */
+        public String toString() {
+            return "[" + element+"]";
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
+    }
+
+    // class SingletonSet
+    /**     
+     * The implementation of {
+@link #singletonList(Object)    }
+. This class name
+     * is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class SingletonList extends AbstractList implements Serializable, RandomAccess, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 3093736618740652951L;
+
+        /**         
+         * The single element.
+         * @serial the singleton
+         */
+        private final Object element;
+
+        /**         
+         * Construct a singleton.
+         * @param o the element
+         */
+        SingletonList(Object o) {
+            element = o;
+        }
+
+        /**         
+         * The size: always 1!
+         * @return 1.
+         */
+        public int size() {
+            return 1;
+        }
+
+        /**         
+         * Only index 0 is valid.
+         * @param index The index of the element
+         * to retrieve.
+         * @return The singleton's element if the
+         * index is 0.
+         * @throws IndexOutOfBoundsException if
+         * index is not 0.
+         */
+        public Object get(int index) {
+            if (index == 0)
+                return element;
+            throw new IndexOutOfBoundsException();
+        }
+        // The remaining methods are optional, but provide a performance
+
+        // advantage by not allocating unnecessary iterators in AbstractList.
+        /**         
+         * The set only contains one element.
+         * @param o The object to search for.
+         * @return <code>true</code> if o == the singleton element.
+         */
+        public boolean contains(Object o) {
+            return equals(o, element);
+        }
+
+        /**         
+         * This is true if the other collection only contains the element.
+         * @param c A collection to compare against this singleton.
+         * @return <code>true</code> if c only contains either no elements or
+         * elements equal to the element in this singleton.
+         */
+        public boolean containsAll(Collection c) {
+            Iterator i = c.iterator();
+            int pos = c.size();
+            while (--pos >= 0) 
+                if (!equals(i.next(), element))
+                    return false;
+            return true;
+        }
+
+        /**         
+         * Speed up the hashcode computation.
+         * @return The hashcode of the list, based
+         * on the hashcode of the singleton element.
+         */
+        public int hashCode() {
+            return 31 + hashCode(element);
+        }
+
+        /**         
+         * Either the list has it or not.
+         * @param o The object to find the first index of.
+         * @return 0 if o is the singleton element, -1 if not.
+         */
+        public int indexOf(Object o) {
+            return equals(o, element)?0:-1;
+        }
+
+        /**         
+         * Either the list has it or not.
+         * @param o The object to find the last index of.
+         * @return 0 if o is the singleton element, -1 if not.
+         */
+        public int lastIndexOf(Object o) {
+            return equals(o, element)?0:-1;
+        }
+
+        /**         
+         * Sublists are limited in scope.
+         * @param from The starting bound for the sublist.
+         * @param to The ending bound for the sublist.
+         * @return Either an empty list if both bounds are
+         * 0 or 1, or this list if the bounds are 0 and 1.
+         * @throws IllegalArgumentException if <code>from > to</code>
+         * @throws IndexOutOfBoundsException if either bound is greater
+         * than 1.
+         */
+        public List subList(int from, int to) {
+            if (from == to && (to == 0 || to == 1))
+                return EMPTY_LIST;
+            if (from == 0 && to == 1)
+                return this;
+            if (from > to)
+                throw new IllegalArgumentException();
+            throw new IndexOutOfBoundsException();
+        }
+
+        /**         
+         * Returning an array is simple.
+         * @return An array containing the element.
+         */
+        public Object[] toArray() {
+            return new Object[] {
+                    element
+                };
+        }
+
+        /**         
+         * Obvious string.
+         * @return The string surrounded by enclosing
+         * square brackets. 
+         */
+        public String toString() {
+            return "[" + element+"]";
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            $RECORD$element.restore(element, timestamp, trim);
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord $RECORD$element = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$element
+            };
+
+    }
+
+    // class SingletonList
+    /**     
+     * The implementation of {
+@link #singletonMap(Object, Object)    }
+. This class
+     * name is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class SingletonMap extends AbstractMap implements Serializable, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = -6979724477215052911L;
+
+        /**         
+         * The single key.
+         * @serial the singleton key
+         */
+        private final Object k;
+
+        /**         
+         * The corresponding value.
+         * @serial the singleton value
+         */
+        private final Object v;
+
+        /**         
+         * Cache the entry set.
+         */
+        private transient Set entries;
+
+        /**         
+         * Construct a singleton.
+         * @param key the key
+         * @param value the value
+         */
+        SingletonMap(Object key, Object value) {
+            k = key;
+            v = value;
+        }
+
+        /**         
+         * There is a single immutable entry.
+         * @return A singleton containing the map entry.
+         */
+        public Set entrySet() {
+            if (entries == null)
+                $ASSIGN$entries(singleton(new AbstractMap.BasicMapEntry(k, v) {
+                    /**                     
+                     * Sets the value of the map entry to the supplied value.
+                     * An exception is always thrown, as the map is immutable.
+                     * @param o The new value.
+                     * @return The old value.
+                     * @throws UnsupportedOperationException as setting the value
+                     * is not supported.
+                     */
+                    public Object setValue(Object o) {
+                        throw new UnsupportedOperationException();
+                    }
+
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                            return this;
+                        }
+
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
+                    }
+
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
+                        }
+                        return this;
+                    }
+
+                    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                        };
+
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+
+                }));
+            return entries;
+        }
+        // The remaining methods are optional, but provide a performance
+
+        // advantage by not allocating unnecessary iterators in AbstractMap.
+        /**         
+         * Single entry.
+         * @param key The key to look for.
+         * @return <code>true</code> if the key is the same as the one used by
+         * this map.
+         */
+        public boolean containsKey(Object key) {
+            return equals(key, k);
+        }
+
+        /**         
+         * Single entry.
+         * @param value The value to look for.
+         * @return <code>true</code> if the value is the same as the one used by
+         * this map.
+         */
+        public boolean containsValue(Object value) {
+            return equals(value, v);
+        }
+
+        /**         
+         * Single entry.
+         * @param key The key of the value to be retrieved.
+         * @return The singleton value if the key is the same as the
+         * singleton key, null otherwise.
+         */
+        public Object get(Object key) {
+            return equals(key, k)?v:null;
+        }
+
+        /**         
+         * Calculate the hashcode directly.
+         * @return The hashcode computed from the singleton key
+         * and the singleton value.
+         */
+        public int hashCode() {
+            return hashCode(k) ^ hashCode(v);
+        }
+
+        /**         
+         * Return the keyset.
+         * @return A singleton containing the key.
+         */
+        public Set keySet() {
+            if (getKeys() == null)
+                setKeys(singleton(k));
+            return getKeys();
+        }
+
+        /**         
+         * The size: always 1!
+         * @return 1.
+         */
+        public int size() {
+            return 1;
+        }
+
+        /**         
+         * Return the values. Technically, a singleton, while more specific than
+         * a general Collection, will work. Besides, that's what the JDK uses!
+         * @return A singleton containing the value.
+         */
+        public Collection values() {
+            if (getValues() == null)
+                setValues(singleton(v));
+            return getValues();
+        }
+
+        /**         
+         * Obvious string.
+         * @return A string containing the string representations of the key
+         * and its associated value.
+         */
+        public String toString() {
+            return "{" + k+"="+v+"}";
+        }
+
+        private final Set $ASSIGN$entries(Set newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return entries = newValue;
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            $RECORD$k.restore(k, timestamp, trim);
+            $RECORD$v.restore(v, timestamp, trim);
+            entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord $RECORD$k = new FieldRecord(0);
+
+        private transient FieldRecord $RECORD$v = new FieldRecord(0);
+
+        private transient FieldRecord $RECORD$entries = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$k,
+                $RECORD$v,
+                $RECORD$entries
+            };
+
+    }
+
+    // class SingletonMap
+    /**     
+     * The implementation of {
+@link #synchronizedCollection(Collection)    }
+. This
+     * class name is required for compatibility with Sun's JDK serializability.
+     * Package visible, so that collections such as the one for
+     * Hashtable.values() can specify which object to synchronize on.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    static class SynchronizedCollection implements Collection, Serializable, Rollbackable {
+
+        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 3053995032091335093L;
+
+        /**         
+         * The wrapped collection. Package visible for use by subclasses.
+         * @serial the real collection
+         */
+        final Collection c;
+
+        /**         
+         * The object to synchronize on.  When an instance is created via public
+         * methods, it will be this; but other uses like SynchronizedMap.values()
+         * must specify another mutex. Package visible for use by subclasses.
+         * @serial the lock
+         */
+        final Object mutex;
+
+        /**         
+         * Wrap a given collection.
+         * @param c the collection to wrap
+         * @throws NullPointerException if c is null
+         */
+        SynchronizedCollection(Collection c) {
+            this.c = c;
+            mutex = this;
+            if (c == null)
+                throw new NullPointerException();
+        }
+
+        /**         
+         * Called only by trusted code to specify the mutex as well as the
+         * collection.
+         * @param sync the mutex
+         * @param c the collection
+         */
+        SynchronizedCollection(Object sync, Collection c) {
+            this.c = c;
+            mutex = sync;
+        }
+
+        /**         
+         * Adds the object to the underlying collection, first
+         * obtaining a lock on the mutex.
+         * @param o The object to add.
+         * @return <code>true</code> if the collection was modified as a result
+         * of this action.
+         * @throws UnsupportedOperationException if this collection does not
+         * support the add operation.
+         * @throws ClassCastException if o cannot be added to this collection due
+         * to its type.
+         * @throws NullPointerException if o is null and this collection doesn't
+         * support the addition of null values.
+         * @throws IllegalArgumentException if o cannot be added to this
+         * collection for some other reason.
+         */
+        public boolean add(Object o) {
+            synchronized (mutex) {
+                return c.add(o);
+            }
+        }
+
+        /**         
+         * Adds the objects in col to the underlying collection, first
+         * obtaining a lock on the mutex.
+         * @param col The collection to take the new objects from.
+         * @return <code>true</code> if the collection was modified as a result
+         * of this action.
+         * @throws UnsupportedOperationException if this collection does not
+         * support the addAll operation.
+         * @throws ClassCastException if some element of col cannot be added to this
+         * collection due to its type.
+         * @throws NullPointerException if some element of col is null and this
+         * collection does not support the addition of null values.
+         * @throws NullPointerException if col itself is null.
+         * @throws IllegalArgumentException if some element of col cannot be added
+         * to this collection for some other reason.
+         */
+        public boolean addAll(Collection col) {
+            synchronized (mutex) {
+                return c.addAll(col);
+            }
+        }
+
+        /**         
+         * Removes all objects from the underlying collection,
+         * first obtaining a lock on the mutex.
+         * @throws UnsupportedOperationException if this collection does not
+         * support the clear operation.
+         */
+        public void clear() {
+            synchronized (mutex) {
+                c.clear();
+            }
+        }
+
+        /**         
+         * Checks for the existence of o within the underlying
+         * collection, first obtaining a lock on the mutex.
+         * @param o the element to look for.
+         * @return <code>true</code> if this collection contains at least one
+         * element e such that <code>o == null ? e == null : o.equals(e)</code>.
+         * @throws ClassCastException if the type of o is not a valid type for this
+         * collection.
+         * @throws NullPointerException if o is null and this collection doesn't
+         * support null values.
+         */
+        public boolean contains(Object o) {
+            synchronized (mutex) {
+                return c.contains(o);
+            }
+        }
+
+        /**         
+         * Checks for the existence of each object in cl
+         * within the underlying collection, first obtaining
+         * a lock on the mutex.
+         * @param c1 the collection to test for.
+         * @return <code>true</code> if for every element o in c, contains(o)
+         * would return <code>true</code>.
+         * @throws ClassCastException if the type of any element in cl is not a valid
+         * type for this collection.
+         * @throws NullPointerException if some element of cl is null and this
+         * collection does not support null values.
+         * @throws NullPointerException if cl itself is null.
+         */
+        public boolean containsAll(Collection c1) {
+            synchronized (mutex) {
+                return c.containsAll(c1);
+            }
+        }
+
+        /**         
+         * Returns <code>true</code> if there are no objects in the underlying
+         * collection.  A lock on the mutex is obtained before the
+         * check is performed.
+         * @return <code>true</code> if this collection contains no elements.
+         */
+        public boolean isEmpty() {
+            synchronized (mutex) {
+                return c.isEmpty();
+            }
+        }
+
+        /**         
+         * Returns a synchronized iterator wrapper around the underlying
+         * collection's iterator.  A lock on the mutex is obtained before
+         * retrieving the collection's iterator.
+         * @return An iterator over the elements in the underlying collection,
+         * which returns each element in any order.
+         */
+        public Iterator iterator() {
+            synchronized (mutex) {
+                return new SynchronizedIterator(mutex, c.iterator());
+            }
+        }
+
+        /**         
+         * Removes the specified object from the underlying collection,
+         * first obtaining a lock on the mutex.
+         * @param o The object to remove.
+         * @return <code>true</code> if the collection changed as a result of this call, that is,
+         * if the collection contained at least one occurrence of o.
+         * @throws UnsupportedOperationException if this collection does not
+         * support the remove operation.
+         * @throws ClassCastException if the type of o is not a valid type
+         * for this collection.
+         * @throws NullPointerException if o is null and the collection doesn't
+         * support null values.
+         */
+        public boolean remove(Object o) {
+            synchronized (mutex) {
+                return c.remove(o);
+            }
+        }
+
+        /**         
+         * Removes all elements, e, of the underlying
+         * collection for which <code>col.contains(e)</code>
+         * returns <code>true</code>.  A lock on the mutex is obtained
+         * before the operation proceeds.
+         * @param col The collection of objects to be removed.
+         * @return <code>true</code> if this collection was modified as a result of this call.
+         * @throws UnsupportedOperationException if this collection does not
+         * support the removeAll operation.
+         * @throws ClassCastException if the type of any element in c is not a valid
+         * type for this collection.
+         * @throws NullPointerException if some element of c is null and this
+         * collection does not support removing null values.
+         * @throws NullPointerException if c itself is null.
+         */
+        public boolean removeAll(Collection col) {
+            synchronized (mutex) {
+                return c.removeAll(col);
+            }
+        }
+
+        /**         
+         * Retains all elements, e, of the underlying
+         * collection for which <code>col.contains(e)</code>
+         * returns <code>true</code>.  That is, every element that doesn't
+         * exist in col is removed.  A lock on the mutex is obtained
+         * before the operation proceeds.
+         * @param col The collection of objects to be removed.
+         * @return <code>true</code> if this collection was modified as a result of this call.
+         * @throws UnsupportedOperationException if this collection does not
+         * support the removeAll operation.
+         * @throws ClassCastException if the type of any element in c is not a valid
+         * type for this collection.
+         * @throws NullPointerException if some element of c is null and this
+         * collection does not support removing null values.
+         * @throws NullPointerException if c itself is null.
+         */
+        public boolean retainAll(Collection col) {
+            synchronized (mutex) {
+                return c.retainAll(col);
+            }
+        }
+
+        /**         
+         * Retrieves the size of the underlying collection.
+         * A lock on the mutex is obtained before the collection
+         * is accessed.
+         * @return The size of the collection.
+         */
+        public int size() {
+            synchronized (mutex) {
+                return c.size();
+            }
+        }
+
+        /**         
+         * Returns an array containing each object within the underlying
+         * collection.  A lock is obtained on the mutex before the collection
+         * is accessed.
+         * @return An array of objects, matching the collection in size.  The
+         * elements occur in any order.
+         */
+        public Object[] toArray() {
+            synchronized (mutex) {
+                return c.toArray();
+            }
+        }
+
+        /**         
+         * Copies the elements in the underlying collection to the supplied
+         * array.  If <code>a.length < size()</code>, a new array of the
+         * same run-time type is created, with a size equal to that of
+         * the collection.  If <code>a.length > size()</code>, then the
+         * elements from 0 to <code>size() - 1</code> contain the elements
+         * from this collection.  The following element is set to null
+         * to indicate the end of the collection objects.  However, this
+         * only makes a difference if null is not a permitted value within
+         * the collection.
+         * Before the copying takes place, a lock is obtained on the mutex.
+         * @param a An array to copy elements to.
+         * @return An array containing the elements of the underlying collection.
+         * @throws ArrayStoreException if the type of any element of the
+         * collection is not a subtype of the element type of a.
+         */
+        public Object[] toArray(Object[] a) {
+            synchronized (mutex) {
+                return c.toArray(a);
+            }
+        }
+
+        /**         
+         * Returns a string representation of the underlying collection.
+         * A lock is obtained on the mutex before the string is created.
+         * @return A string representation of the collection.
+         */
+        public String toString() {
+            synchronized (mutex) {
+                return c.toString();
+            }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
+            }
+        }
+
+        public final Checkpoint $GET$CHECKPOINT() {
+            return $CHECKPOINT;
+        }
+
+        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+            if ($CHECKPOINT != checkpoint) {
+                Checkpoint oldCheckpoint = $CHECKPOINT;
+                if (checkpoint != null) {
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    FieldRecord.pushState($RECORDS);
+                }
+                $CHECKPOINT = checkpoint;
+                oldCheckpoint.setCheckpoint(checkpoint);
+                checkpoint.addObject(this);
+            }
+            return this;
+        }
+
+        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
+    }
+
+    // class SynchronizedCollection
+    /**     
+     * The implementation of the various iterator methods in the
+     * synchronized classes. These iterators must "sync" on the same object
+     * as the collection they iterate over.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static class SynchronizedIterator implements Iterator, Rollbackable {
+
+        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+        /**         
+         * The object to synchronize on. Package visible for use by subclass.
+         */
+        final Object mutex;
+
+        /**         
+         * The wrapped iterator.
+         */
+        private final Iterator i;
+
+        /**         
+         * Only trusted code creates a wrapper, with the specified sync.
+         * @param sync the mutex
+         * @param i the wrapped iterator
+         */
+        SynchronizedIterator(Object sync, Iterator i) {
+            this.i = i;
+            mutex = sync;
+        }
+
+        /**         
+         * Retrieves the next object in the underlying collection.
+         * A lock is obtained on the mutex before the collection is accessed.
+         * @return The next object in the collection.
+         * @throws NoSuchElementException if there are no more elements
+         */
+        public Object next() {
+            synchronized (mutex) {
+                return i.next();
+            }
+        }
+
+        /**         
+         * Returns <code>true</code> if objects can still be retrieved from the iterator
+         * using <code>next()</code>.  A lock is obtained on the mutex before
+         * the collection is accessed.
+         * @return <code>true</code> if at least one element is still to be returned by
+         * <code>next()</code>.
+         */
+        public boolean hasNext() {
+            synchronized (mutex) {
+                return i.hasNext();
+            }
+        }
+
+        /**         
+         * Removes the object that was last returned by <code>next()</code>
+         * from the underlying collection.  Only one call to this method is
+         * allowed per call to the <code>next()</code> method, and it does
+         * not affect the value that will be returned by <code>next()</code>.
+         * Thus, if element n was retrieved from the collection by
+         * <code>next()</code>, it is this element that gets removed.
+         * Regardless of whether this takes place or not, element n+1 is
+         * still returned on the subsequent <code>next()</code> call.
+         * @throws IllegalStateException if next has not yet been called or remove
+         * has already been called since the last call to next.
+         * @throws UnsupportedOperationException if this Iterator does not support
+         * the remove operation.
+         */
+        public void remove() {
+            synchronized (mutex) {
+                i.remove();
+            }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            $RECORD$i.restore(i, timestamp, trim);
+            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
+            }
+        }
+
+        public final Checkpoint $GET$CHECKPOINT() {
+            return $CHECKPOINT;
+        }
+
+        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+            if ($CHECKPOINT != checkpoint) {
+                Checkpoint oldCheckpoint = $CHECKPOINT;
+                if (checkpoint != null) {
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    FieldRecord.pushState($RECORDS);
+                }
+                $CHECKPOINT = checkpoint;
+                oldCheckpoint.setCheckpoint(checkpoint);
+                checkpoint.addObject(this);
+            }
+            return this;
+        }
+
+        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+        private transient FieldRecord $RECORD$i = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$i
+            };
+
+    }
+
+    // class SynchronizedIterator
+    /**     
+     * The implementation of {
+@link #synchronizedList(List)    }
+ for sequential
+     * lists. This class name is required for compatibility with Sun's JDK
+     * serializability. Package visible, so that lists such as Vector.subList()
+     * can specify which object to synchronize on.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    static class SynchronizedList extends SynchronizedCollection implements List, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = -7754090372962971524L;
+
+        /**         
+         * The wrapped list; stored both here and in the superclass to avoid
+         * excessive casting. Package visible for use by subclass.
+         * @serial the wrapped list
+         */
+        final List list;
+
+        /**         
+         * Wrap a given list.
+         * @param l the list to wrap
+         * @throws NullPointerException if l is null
+         */
+        SynchronizedList(List l) {
+            super(l);
+            list = l;
+        }
+
+        /**         
+         * Called only by trusted code to specify the mutex as well as the list.
+         * @param sync the mutex
+         * @param l the list
+         */
+        SynchronizedList(Object sync, List l) {
+            super(sync, l);
+            list = l;
+        }
+
+        /**         
+         * Insert an element into the underlying list at a given position (optional
+         * operation).  This shifts all existing elements from that position to the
+         * end one index to the right. This version of add has no return, since it is
+         * assumed to always succeed if there is no exception.  Before the
+         * addition takes place, a lock is obtained on the mutex.
+         * @param index the location to insert the item
+         * @param o the object to insert
+         * @throws UnsupportedOperationException if this list does not support the
+         * add operation
+         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+         * @throws ClassCastException if o cannot be added to this list due to its
+         * type
+         * @throws IllegalArgumentException if o cannot be added to this list for
+         * some other reason
+         * @throws NullPointerException if o is null and this list doesn't support
+         * the addition of null values.
+         */
+        public void add(int index, Object o) {
+            synchronized (mutex) {
+                list.add(index, o);
+            }
+        }
+
+        /**         
+         * Add the contents of a collection to the underlying list at the given
+         * index (optional operation).  If the list imposes restraints on what 
+         * can be inserted, such as no null elements, this should be documented.
+         * A lock is obtained on the mutex before any of the elements are added.
+         * @param index the index at which to insert
+         * @param c the collection to add
+         * @return <code>true</code>, as defined by Collection for a modified list
+         * @throws UnsupportedOperationException if this list does not support the
+         * add operation
+         * @throws ClassCastException if o cannot be added to this list due to its
+         * type
+         * @throws IllegalArgumentException if o cannot be added to this list for
+         * some other reason
+         * @throws NullPointerException if o is null and this list doesn't support
+         * the addition of null values.
+         */
+        public boolean addAll(int index, Collection c) {
+            synchronized (mutex) {
+                return list.addAll(index, c);
+            }
+        }
+
+        /**         
+         * Tests whether the underlying list is equal to the supplied object.
+         * The object is deemed to be equal if it is also a <code>List</code>
+         * of equal size and with the same elements (i.e. each element, e1,
+         * in list, l1, and each element, e2, in l2, must return <code>true</code> for
+         * <code>e1 == null ? e2 == null : e1.equals(e2)</code>.  Before the
+         * comparison is made, a lock is obtained on the mutex.
+         * @param o The object to test for equality with the underlying list.
+         * @return <code>true</code> if o is equal to the underlying list under the above
+         * definition.
+         */
+        public boolean equals(Object o) {
+            synchronized (mutex) {
+                return list.equals(o);
+            }
+        }
+
+        /**         
+         * Retrieves the object at the specified index.  A lock
+         * is obtained on the mutex before the list is accessed.
+         * @param index the index of the element to be returned
+         * @return the element at index index in this list
+         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+         */
+        public Object get(int index) {
+            synchronized (mutex) {
+                return list.get(index);
+            }
+        }
+
+        /**         
+         * Obtains a hashcode for the underlying list, first obtaining
+         * a lock on the mutex.  The calculation of the hashcode is
+         * detailed in the documentation for the <code>List</code>
+         * interface.
+         * @return The hashcode of the underlying list.
+         * @see List#hashCode()
+         */
+        public int hashCode() {
+            synchronized (mutex) {
+                return list.hashCode();
+            }
+        }
+
+        /**         
+         * Obtain the first index at which a given object is to be found in the
+         * underlying list.  A lock is obtained on the mutex before the list is
+         * accessed.
+         * @param o the object to search for
+         * @return the least integer n such that <code>o == null ? get(n) == null :
+         * o.equals(get(n))</code>, or -1 if there is no such index.
+         * @throws ClassCastException if the type of o is not a valid
+         * type for this list.
+         * @throws NullPointerException if o is null and this
+         * list does not support null values.
+         */
+        public int indexOf(Object o) {
+            synchronized (mutex) {
+                return list.indexOf(o);
+            }
+        }
+
+        /**         
+         * Obtain the last index at which a given object is to be found in this
+         * underlying list.  A lock is obtained on the mutex before the list
+         * is accessed.
+         * @return the greatest integer n such that <code>o == null ? get(n) == null
+         * : o.equals(get(n))</code>, or -1 if there is no such index.
+         * @throws ClassCastException if the type of o is not a valid
+         * type for this list.
+         * @throws NullPointerException if o is null and this
+         * list does not support null values.
+         */
+        public int lastIndexOf(Object o) {
+            synchronized (mutex) {
+                return list.lastIndexOf(o);
+            }
+        }
+
+        /**         
+         * Retrieves a synchronized wrapper around the underlying list's
+         * list iterator.  A lock is obtained on the mutex before the
+         * list iterator is retrieved.
+         * @return A list iterator over the elements in the underlying list.
+         * The list iterator allows additional list-specific operations
+         * to be performed, in addition to those supplied by the
+         * standard iterator.
+         */
+        public ListIterator listIterator() {
+            synchronized (mutex) {
+                return new SynchronizedListIterator(mutex, list.listIterator());
+            }
+        }
+
+        /**         
+         * Retrieves a synchronized wrapper around the underlying list's
+         * list iterator.  A lock is obtained on the mutex before the
+         * list iterator is retrieved.  The iterator starts at the
+         * index supplied, leading to the element at that index being
+         * the first one returned by <code>next()</code>.  Calling
+         * <code>previous()</code> from this initial position returns
+         * index - 1.
+         * @param index the position, between 0 and size() inclusive, to begin the
+         * iteration from
+         * @return A list iterator over the elements in the underlying list.
+         * The list iterator allows additional list-specific operations
+         * to be performed, in addition to those supplied by the
+         * standard iterator.
+         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+         */
+        public ListIterator listIterator(int index) {
+            synchronized (mutex) {
+                return new SynchronizedListIterator(mutex, list.listIterator(index));
+            }
+        }
+
+        /**         
+         * Remove the element at a given position in the underlying list (optional
+         * operation).  All remaining elements are shifted to the left to fill the gap.
+         * A lock on the mutex is obtained before the element is removed.
+         * @param index the position within the list of the object to remove
+         * @return the object that was removed
+         * @throws UnsupportedOperationException if this list does not support the
+         * remove operation
+         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+         */
+        public Object remove(int index) {
+            synchronized (mutex) {
+                return list.remove(index);
+            }
+        }
+
+        /**         
+         * Replace an element of the underlying list with another object (optional
+         * operation).  A lock is obtained on the mutex before the element is
+         * replaced.
+         * @param index the position within this list of the element to be replaced
+         * @param o the object to replace it with
+         * @return the object that was replaced
+         * @throws UnsupportedOperationException if this list does not support the
+         * set operation.
+         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+         * @throws ClassCastException if o cannot be added to this list due to its
+         * type
+         * @throws IllegalArgumentException if o cannot be added to this list for
+         * some other reason
+         * @throws NullPointerException if o is null and this
+         * list does not support null values.
+         */
+        public Object set(int index, Object o) {
+            synchronized (mutex) {
+                return list.set(index, o);
+            }
+        }
+
+        /**         
+         * Obtain a List view of a subsection of the underlying list, from fromIndex
+         * (inclusive) to toIndex (exclusive). If the two indices are equal, the
+         * sublist is empty. The returned list should be modifiable if and only
+         * if this list is modifiable. Changes to the returned list should be
+         * reflected in this list. If this list is structurally modified in
+         * any way other than through the returned list, the result of any subsequent
+         * operations on the returned list is undefined.  A lock is obtained
+         * on the mutex before the creation of the sublist.  The returned list
+         * is also synchronized, using the same mutex.
+         * @param fromIndex the index that the returned list should start from
+         * (inclusive)
+         * @param toIndex the index that the returned list should go to (exclusive)
+         * @return a List backed by a subsection of this list
+         * @throws IndexOutOfBoundsException if fromIndex &lt; 0
+         * || toIndex &gt; size() || fromIndex &gt; toIndex
+         */
+        public List subList(int fromIndex, int toIndex) {
+            synchronized (mutex) {
+                return new SynchronizedList(mutex, list.subList(fromIndex, toIndex));
+            }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
+    }
+
+    // class SynchronizedList
+    /**     
+     * The implementation of {
+@link #synchronizedList(List)    }
+ for random-access
+     * lists. This class name is required for compatibility with Sun's JDK
+     * serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class SynchronizedRandomAccessList extends SynchronizedList implements RandomAccess, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 1530674583602358482L;
+
+        /**         
+         * Wrap a given list.
+         * @param l the list to wrap
+         * @throws NullPointerException if l is null
+         */
+        SynchronizedRandomAccessList(List l) {
+            super(l);
+        }
+
+        /**         
+         * Called only by trusted code to specify the mutex as well as the
+         * collection.
+         * @param sync the mutex
+         * @param l the list
+         */
+        SynchronizedRandomAccessList(Object sync, List l) {
+            super(sync, l);
+        }
+
+        /**         
+         * Obtain a List view of a subsection of the underlying list, from fromIndex
+         * (inclusive) to toIndex (exclusive). If the two indices are equal, the
+         * sublist is empty. The returned list should be modifiable if and only
+         * if this list is modifiable. Changes to the returned list should be
+         * reflected in this list. If this list is structurally modified in
+         * any way other than through the returned list, the result of any subsequent
+         * operations on the returned list is undefined.    A lock is obtained
+         * on the mutex before the creation of the sublist.  The returned list
+         * is also synchronized, using the same mutex.  Random accessibility
+         * is also extended to the new list.
+         * @param fromIndex the index that the returned list should start from
+         * (inclusive)
+         * @param toIndex the index that the returned list should go to (exclusive)
+         * @return a List backed by a subsection of this list
+         * @throws IndexOutOfBoundsException if fromIndex &lt; 0
+         * || toIndex &gt; size() || fromIndex &gt; toIndex
+         */
+        public List subList(int fromIndex, int toIndex) {
+            synchronized (mutex) {
+                return new SynchronizedRandomAccessList(mutex, list.subList(fromIndex, toIndex));
+            }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
+    }
+
+    // class SynchronizedRandomAccessList
+    /**     
+     * The implementation of {
+@link SynchronizedList#listIterator()    }
+. This
+     * iterator must "sync" on the same object as the list it iterates over.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class SynchronizedListIterator extends SynchronizedIterator implements ListIterator, Rollbackable {
+
+        /**         
+         * The wrapped iterator, stored both here and in the superclass to
+         * avoid excessive casting.
+         */
+        private final ListIterator li;
+
+        /**         
+         * Only trusted code creates a wrapper, with the specified sync.
+         * @param sync the mutex
+         * @param li the wrapped iterator
+         */
+        SynchronizedListIterator(Object sync, ListIterator li) {
+            super(sync, li);
+            this.li = li;
+        }
+
+        /**         
+         * Insert an element into the underlying list at the current position of
+         * the iterator (optional operation). The element is inserted in between
+         * the element that would be returned by <code>previous()</code> and the
+         * element that would be returned by <code>next()</code>. After the
+         * insertion, a subsequent call to next is unaffected, but
+         * a call to previous returns the item that was added. The values returned
+         * by nextIndex() and previousIndex() are incremented.  A lock is obtained
+         * on the mutex before the addition takes place.
+         * @param o the object to insert into the list
+         * @throws ClassCastException if the object is of a type which cannot be added
+         * to this list.
+         * @throws IllegalArgumentException if some other aspect of the object stops
+         * it being added to this list.
+         * @throws UnsupportedOperationException if this ListIterator does not
+         * support the add operation.
+         */
+        public void add(Object o) {
+            synchronized (mutex) {
+                li.add(o);
+            }
+        }
+
+        /**         
+         * Tests whether there are elements remaining in the underlying list
+         * in the reverse direction. In other words, <code>previous()</code>
+         * will not fail with a NoSuchElementException.  A lock is obtained
+         * on the mutex before the check takes place.
+         * @return <code>true</code> if the list continues in the reverse direction
+         */
+        public boolean hasPrevious() {
+            synchronized (mutex) {
+                return li.hasPrevious();
+            }
+        }
+
+        /**         
+         * Find the index of the element that would be returned by a call to
+         * <code>next()</code>.  If hasNext() returns <code>false</code>, this
+         * returns the list size.  A lock is obtained on the mutex before the
+         * query takes place.
+         * @return the index of the element that would be returned by next()
+         */
+        public int nextIndex() {
+            synchronized (mutex) {
+                return li.nextIndex();
+            }
+        }
+
+        /**         
+         * Obtain the previous element from the underlying list. Repeated
+         * calls to previous may be used to iterate backwards over the entire list,
+         * or calls to next and previous may be used together to go forwards and
+         * backwards. Alternating calls to next and previous will return the same
+         * element.  A lock is obtained on the mutex before the object is retrieved.
+         * @return the next element in the list in the reverse direction
+         * @throws NoSuchElementException if there are no more elements
+         */
+        public Object previous() {
+            synchronized (mutex) {
+                return li.previous();
+            }
+        }
+
+        /**         
+         * Find the index of the element that would be returned by a call to
+         * previous. If hasPrevious() returns <code>false</code>, this returns -1.
+         * A lock is obtained on the mutex before the query takes place.
+         * @return the index of the element that would be returned by previous()
+         */
+        public int previousIndex() {
+            synchronized (mutex) {
+                return li.previousIndex();
+            }
+        }
+
+        /**         
+         * Replace the element last returned by a call to <code>next()</code> or
+         * <code>previous()</code> with a given object (optional operation).  This
+         * method may only be called if neither <code>add()</code> nor
+         * <code>remove()</code> have been called since the last call to
+         * <code>next()</code> or <code>previous</code>.  A lock is obtained
+         * on the mutex before the list is modified.
+         * @param o the object to replace the element with
+         * @throws ClassCastException the object is of a type which cannot be added
+         * to this list
+         * @throws IllegalArgumentException some other aspect of the object stops
+         * it being added to this list
+         * @throws IllegalStateException if neither next or previous have been
+         * called, or if add or remove has been called since the last call
+         * to next or previous
+         * @throws UnsupportedOperationException if this ListIterator does not
+         * support the set operation
+         */
+        public void set(Object o) {
+            synchronized (mutex) {
+                li.set(o);
+            }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            $RECORD$li.restore(li, timestamp, trim);
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord $RECORD$li = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$li
+            };
+
+    }
+
+    // class SynchronizedListIterator
+    /**     
+     * The implementation of {
+@link #synchronizedMap(Map)    }
+. This
+     * class name is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static class SynchronizedMap implements Map, Serializable, Rollbackable {
+
+        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 1978198479659022715L;
+
+        /**         
+         * The wrapped map.
+         * @serial the real map
+         */
+        private final Map m;
+
+        /**         
+         * The object to synchronize on.  When an instance is created via public
+         * methods, it will be this; but other uses like
+         * SynchronizedSortedMap.subMap() must specify another mutex. Package
+         * visible for use by subclass.
+         * @serial the lock
+         */
+        final Object mutex;
+
+        /**         
+         * Cache the entry set.
+         */
+        private transient Set entries;
+
+        /**         
+         * Cache the key set.
+         */
+        private transient Set keys;
+
+        /**         
+         * Cache the value collection.
+         */
+        private transient Collection values;
+
+        /**         
+         * Wrap a given map.
+         * @param m the map to wrap
+         * @throws NullPointerException if m is null
+         */
+        SynchronizedMap(Map m) {
+            this.m = m;
+            mutex = this;
+            if (m == null)
+                throw new NullPointerException();
+        }
+
+        /**         
+         * Called only by trusted code to specify the mutex as well as the map.
+         * @param sync the mutex
+         * @param m the map
+         */
+        SynchronizedMap(Object sync, Map m) {
+            this.m = m;
+            mutex = sync;
+        }
+
+        /**         
+         * Clears all the entries from the underlying map.  A lock is obtained
+         * on the mutex before the map is cleared.
+         * @throws UnsupportedOperationException if clear is not supported
+         */
+        public void clear() {
+            synchronized (mutex) {
+                m.clear();
+            }
+        }
+
+        /**         
+         * Returns <code>true</code> if the underlying map contains a entry for the given key.
+         * A lock is obtained on the mutex before the map is queried.
+         * @param key the key to search for.
+         * @return <code>true</code> if the underlying map contains the key.
+         * @throws ClassCastException if the key is of an inappropriate type.
+         * @throws NullPointerException if key is <code>null</code> but the map
+         * does not permit null keys.
+         */
+        public boolean containsKey(Object key) {
+            synchronized (mutex) {
+                return m.containsKey(key);
+            }
+        }
+
+        /**         
+         * Returns <code>true</code> if the underlying map contains at least one entry with the
+         * given value.  In other words, returns <code>true</code> if a value v exists where
+         * <code>(value == null ? v == null : value.equals(v))</code>. This usually
+         * requires linear time.  A lock is obtained on the mutex before the map
+         * is queried.
+         * @param value the value to search for
+         * @return <code>true</code> if the map contains the value
+         * @throws ClassCastException if the type of the value is not a valid type
+         * for this map.
+         * @throws NullPointerException if the value is null and the map doesn't
+         * support null values.
+         */
+        public boolean containsValue(Object value) {
+            synchronized (mutex) {
+                return m.containsValue(value);
+            }
+        }
+        // This is one of the ickiest cases of nesting I've ever seen. It just
+
+        // means "return a SynchronizedSet, except that the iterator() method
+        // returns an SynchronizedIterator whose next() method returns a
+        // synchronized wrapper around its normal return value".
+        // Define this here to spare some nesting.
+        public Set entrySet() {
+            class SynchronizedMapEntry implements Map.Entry, Rollbackable {
+
+                protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+                final Map.Entry e;
+
+                SynchronizedMapEntry(Object o) {
+                    e = (Map.Entry)o;
+                }
+
+                /**                 
+                 * Returns <code>true</code> if the object, o, implements <code>Map.Entry</code>
+                 * with the same key and value as the underlying entry.  A lock is
+                 * obtained on the mutex before the comparison takes place.
+                 * @param o The object to compare with this entry.
+                 * @return <code>true</code> if o is equivalent to the underlying map entry.
+                 */
+                public boolean equals(Object o) {
+                    synchronized (mutex) {
+                        return e.equals(o);
+                    }
+                }
+
+                /**                 
+                 * Returns the key used in the underlying map entry.  A lock is obtained
+                 * on the mutex before the key is retrieved.
+                 * @return The key of the underlying map entry.
+                 */
+                public Object getKey() {
+                    synchronized (mutex) {
+                        return e.getKey();
+                    }
+                }
+
+                /**                 
+                 * Returns the value used in the underlying map entry.  A lock is obtained
+                 * on the mutex before the value is retrieved.
+                 * @return The value of the underlying map entry.
+                 */
+                public Object getValue() {
+                    synchronized (mutex) {
+                        return e.getValue();
+                    }
+                }
+
+                /**                 
+                 * Computes the hash code for the underlying map entry.
+                 * This computation is described in the documentation for the
+                 * <code>Map</code> interface.  A lock is obtained on the mutex
+                 * before the underlying map is accessed.
+                 * @return The hash code of the underlying map entry.
+                 * @see Map#hashCode()
+                 */
+                public int hashCode() {
+                    synchronized (mutex) {
+                        return e.hashCode();
+                    }
+                }
+
+                /**                 
+                 * Replaces the value in the underlying map entry with the specified
+                 * object (optional operation).  A lock is obtained on the mutex
+                 * before the map is altered.  The map entry, in turn, will alter
+                 * the underlying map object.  The operation is undefined if the
+                 * <code>remove()</code> method of the iterator has been called
+                 * beforehand.
+                 * @param value the new value to store
+                 * @return the old value
+                 * @throws UnsupportedOperationException if the operation is not supported.
+                 * @throws ClassCastException if the value is of the wrong type.
+                 * @throws IllegalArgumentException if something about the value
+                 * prevents it from existing in this map.
+                 * @throws NullPointerException if the map forbids null values.
+                 */
+                public Object setValue(Object value) {
+                    synchronized (mutex) {
+                        return e.setValue(value);
+                    }
+                }
+
+                /**                 
+                 * Returns a textual representation of the underlying map entry.
+                 * A lock is obtained on the mutex before the entry is accessed.
+                 * @return The contents of the map entry in <code>String</code> form.
+                 */
+                public String toString() {
+                    synchronized (mutex) {
+                        return e.toString();
+                    }
+                }
+
+                public void $COMMIT(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    $RECORD$$CHECKPOINT.commit(timestamp);
+                }
+
+                public void $RESTORE(long timestamp, boolean trim) {
+                    if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                        FieldRecord.popState($RECORDS);
+                        $RESTORE(timestamp, trim);
+                    }
+                }
+
+                public final Checkpoint $GET$CHECKPOINT() {
+                    return $CHECKPOINT;
+                }
+
+                public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(this);
+                    }
+                    return this;
+                }
+
+                protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+                private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                    };
+
+            }
+
+            // class SynchronizedMapEntry
+            // Now the actual code.
+            if (entries == null)
+                synchronized (mutex) {
+                    $ASSIGN$entries(new SynchronizedSet(mutex, m.entrySet()) {
+                        /**                         
+                         * Returns an iterator over the set.  The iterator has no specific order,
+                         * unless further specified.  A lock is obtained on the set's mutex
+                         * before the iterator is created.  The created iterator is also
+                         * thread-safe.
+                         * @return A synchronized set iterator.
+                         */
+                        public Iterator iterator() {
+                            synchronized (super.mutex) {
+                                return new SynchronizedIterator(super.mutex, c.iterator()) {
+                                    /**                                     
+                                     * Retrieves the next map entry from the iterator.
+                                     * A lock is obtained on the iterator's mutex before
+                                     * the entry is created.  The new map entry is enclosed in
+                                     * a thread-safe wrapper.
+                                     * @return A synchronized map entry.
+                                     */
+                                    public Object next() {
+                                        synchronized (super.mutex) {
+                                            return new SynchronizedMapEntry(super.next());
+                                        }
+                                    }
+
+                                    final class _PROXY_ implements Rollbackable {
+
+                                        public final void $COMMIT(long timestamp) {
+                                            $COMMIT_ANONYMOUS(timestamp);
+                                        }
+
+                                        public final void $RESTORE(long timestamp, boolean trim) {
+                                            $RESTORE_ANONYMOUS(timestamp, trim);
+                                        }
+
+                                        public final Checkpoint $GET$CHECKPOINT() {
+                                            return $GET$CHECKPOINT_ANONYMOUS();
+                                        }
+
+                                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                                            return this;
+                                        }
+
+                                    }
+
+                                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                        super.$COMMIT(timestamp);
+                                    }
+
+                                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                                        super.$RESTORE(timestamp, trim);
+                                    }
+
+                                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                                        return $CHECKPOINT;
+                                    }
+
+                                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                                        if ($CHECKPOINT != checkpoint) {
+                                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                                            if (checkpoint != null) {
+                                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                                FieldRecord.pushState($RECORDS);
+                                            }
+                                            $CHECKPOINT = checkpoint;
+                                            oldCheckpoint.setCheckpoint(checkpoint);
+                                            checkpoint.addObject(new _PROXY_());
+                                        }
+                                        return this;
+                                    }
+
+                                    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                                        };
+
+                                    {
+                                        $CHECKPOINT.addObject(new _PROXY_());
+                                    }
+
+                                };
+                            }
+                        }
+
+                        final class _PROXY_ implements Rollbackable {
+
+                            public final void $COMMIT(long timestamp) {
+                                $COMMIT_ANONYMOUS(timestamp);
+                            }
+
+                            public final void $RESTORE(long timestamp, boolean trim) {
+                                $RESTORE_ANONYMOUS(timestamp, trim);
+                            }
+
+                            public final Checkpoint $GET$CHECKPOINT() {
+                                return $GET$CHECKPOINT_ANONYMOUS();
+                            }
+
+                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                                return this;
+                            }
+
+                        }
+
+                        public void $COMMIT_ANONYMOUS(long timestamp) {
+                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            super.$COMMIT(timestamp);
+                        }
+
+                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                            super.$RESTORE(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                            return $CHECKPOINT;
+                        }
+
+                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                            if ($CHECKPOINT != checkpoint) {
+                                Checkpoint oldCheckpoint = $CHECKPOINT;
+                                if (checkpoint != null) {
+                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                    FieldRecord.pushState($RECORDS);
+                                }
+                                $CHECKPOINT = checkpoint;
+                                oldCheckpoint.setCheckpoint(checkpoint);
+                                checkpoint.addObject(new _PROXY_());
+                            }
+                            return this;
+                        }
+
+                        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                            };
+
+                        {
+                            $CHECKPOINT.addObject(new _PROXY_());
+                        }
+
+                    });
+                }
+            return entries;
+        }
+
+        /**         
+         * Returns <code>true</code> if the object, o, is also an instance
+         * of <code>Map</code> and contains an equivalent
+         * entry set to that of the underlying map.  A lock
+         * is obtained on the mutex before the objects are
+         * compared.
+         * @param o The object to compare.
+         * @return <code>true</code> if o and the underlying map are equivalent.
+         */
+        public boolean equals(Object o) {
+            synchronized (mutex) {
+                return m.equals(o);
+            }
+        }
+
+        /**         
+         * Returns the value associated with the given key, or null
+         * if no such mapping exists.  An ambiguity exists with maps
+         * that accept null values as a return value of null could
+         * be due to a non-existent mapping or simply a null value
+         * for that key.  To resolve this, <code>containsKey</code>
+         * should be used.  A lock is obtained on the mutex before
+         * the value is retrieved from the underlying map.
+         * @param key The key of the required mapping.
+         * @return The value associated with the given key, or
+         * null if no such mapping exists.
+         * @throws ClassCastException if the key is an inappropriate type.
+         * @throws NullPointerException if this map does not accept null keys.
+         */
+        public Object get(Object key) {
+            synchronized (mutex) {
+                return m.get(key);
+            }
+        }
+
+        /**         
+         * Calculates the hash code of the underlying map as the
+         * sum of the hash codes of all entries.  A lock is obtained
+         * on the mutex before the hash code is computed.
+         * @return The hash code of the underlying map.
+         */
+        public int hashCode() {
+            synchronized (mutex) {
+                return m.hashCode();
+            }
+        }
+
+        /**         
+         * Returns <code>true</code> if the underlying map contains no entries.
+         * A lock is obtained on the mutex before the map is examined.
+         * @return <code>true</code> if the map is empty.
+         */
+        public boolean isEmpty() {
+            synchronized (mutex) {
+                return m.isEmpty();
+            }
+        }
+
+        /**         
+         * Returns a thread-safe set view of the keys in the underlying map.  The
+         * set is backed by the map, so that changes in one show up in the other.
+         * Modifications made while an iterator is in progress cause undefined
+         * behavior.  If the set supports removal, these methods remove the
+         * underlying mapping from the map: <code>Iterator.remove</code>,
+         * <code>Set.remove</code>, <code>removeAll</code>, <code>retainAll</code>,
+         * and <code>clear</code>.  Element addition, via <code>add</code> or
+         * <code>addAll</code>, is not supported via this set.  A lock is obtained
+         * on the mutex before the set is created.
+         * @return A synchronized set containing the keys of the underlying map.
+         */
+        public Set keySet() {
+            if (keys == null)
+                synchronized (mutex) {
+                    $ASSIGN$keys(new SynchronizedSet(mutex, m.keySet()));
+                }
+            return keys;
+        }
+
+        /**         
+         * Associates the given key to the given value (optional operation). If the
+         * underlying map already contains the key, its value is replaced. Be aware
+         * that in a map that permits <code>null</code> values, a null return does not
+         * always imply that the mapping was created.  A lock is obtained on the mutex
+         * before the modification is made.
+         * @param key the key to map.
+         * @param value the value to be mapped.
+         * @return the previous value of the key, or null if there was no mapping
+         * @throws UnsupportedOperationException if the operation is not supported
+         * @throws ClassCastException if the key or value is of the wrong type
+         * @throws IllegalArgumentException if something about this key or value
+         * prevents it from existing in this map
+         * @throws NullPointerException if either the key or the value is null,
+         * and the map forbids null keys or values
+         * @see #containsKey(Object)
+         */
+        public Object put(Object key, Object value) {
+            synchronized (mutex) {
+                return m.put(key, value);
+            }
+        }
+
+        /**         
+         * Copies all entries of the given map to the underlying one (optional
+         * operation). If the map already contains a key, its value is replaced.
+         * A lock is obtained on the mutex before the operation proceeds.
+         * @param map the mapping to load into this map
+         * @throws UnsupportedOperationException if the operation is not supported
+         * @throws ClassCastException if a key or value is of the wrong type
+         * @throws IllegalArgumentException if something about a key or value
+         * prevents it from existing in this map
+         * @throws NullPointerException if the map forbids null keys or values, or
+         * if <code>m</code> is null.
+         * @see #put(Object, Object)
+         */
+        public void putAll(Map map) {
+            synchronized (mutex) {
+                m.putAll(map);
+            }
+        }
+
+        /**         
+         * Removes the mapping for the key, o, if present (optional operation). If
+         * the key is not present, this returns null. Note that maps which permit
+         * null values may also return null if the key was removed.  A prior
+         * <code>containsKey()</code> check is required to avoid this ambiguity.
+         * Before the mapping is removed, a lock is obtained on the mutex.
+         * @param o the key to remove
+         * @return the value the key mapped to, or null if not present
+         * @throws UnsupportedOperationException if deletion is unsupported
+         * @throws NullPointerException if the key is null and this map doesn't
+         * support null keys.
+         * @throws ClassCastException if the type of the key is not a valid type
+         * for this map.
+         */
+        public Object remove(Object o) {
+            synchronized (mutex) {
+                return m.remove(o);
+            }
+        }
+
+        /**         
+         * Retrieves the size of the underlying map.  A lock
+         * is obtained on the mutex before access takes place.
+         * Maps with a size greater than <code>Integer.MAX_VALUE</code>
+         * return <code>Integer.MAX_VALUE</code> instead.
+         * @return The size of the underlying map.
+         */
+        public int size() {
+            synchronized (mutex) {
+                return m.size();
+            }
+        }
+
+        /**         
+         * Returns a textual representation of the underlying
+         * map.  A lock is obtained on the mutex before the map
+         * is accessed.
+         * @return The map in <code>String</code> form.
+         */
+        public String toString() {
+            synchronized (mutex) {
+                return m.toString();
+            }
+        }
+
+        /**         
+         * Returns a synchronized collection view of the values in the underlying
+         * map.  The collection is backed by the map, so that changes in one show up in
+         * the other.  Modifications made while an iterator is in progress cause
+         * undefined behavior.  If the collection supports removal, these methods
+         * remove the underlying mapping from the map: <code>Iterator.remove</code>,
+         * <code>Collection.remove</code>, <code>removeAll</code>,
+         * <code>retainAll</code>, and <code>clear</code>. Element addition, via
+         * <code>add</code> or <code>addAll</code>, is not supported via this
+         * collection.  A lock is obtained on the mutex before the collection
+         * is created.
+         * @return the collection of all values in the underlying map.
+         */
+        public Collection values() {
+            if (values == null)
+                synchronized (mutex) {
+                    $ASSIGN$values(new SynchronizedCollection(mutex, m.values()));
+                }
+            return values;
+        }
+
+        private final Set $ASSIGN$entries(Set newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return entries = newValue;
+        }
+
+        private final Set $ASSIGN$keys(Set newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$keys.add(null, keys, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return keys = newValue;
+        }
+
+        private final Collection $ASSIGN$values(Collection newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$values.add(null, values, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return values = newValue;
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            $RECORD$m.restore(m, timestamp, trim);
+            entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
+            keys = (Set)$RECORD$keys.restore(keys, timestamp, trim);
+            values = (Collection)$RECORD$values.restore(values, timestamp, trim);
+            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
+            }
+        }
+
+        public final Checkpoint $GET$CHECKPOINT() {
+            return $CHECKPOINT;
+        }
+
+        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+            if ($CHECKPOINT != checkpoint) {
+                Checkpoint oldCheckpoint = $CHECKPOINT;
+                if (checkpoint != null) {
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    FieldRecord.pushState($RECORDS);
+                }
+                $CHECKPOINT = checkpoint;
+                oldCheckpoint.setCheckpoint(checkpoint);
+                checkpoint.addObject(this);
+            }
+            return this;
+        }
+
+        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+        private transient FieldRecord $RECORD$m = new FieldRecord(0);
+
+        private transient FieldRecord $RECORD$entries = new FieldRecord(0);
+
+        private transient FieldRecord $RECORD$keys = new FieldRecord(0);
+
+        private transient FieldRecord $RECORD$values = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$m,
+                $RECORD$entries,
+                $RECORD$keys,
+                $RECORD$values
+            };
+
+    }
+
+    // class SynchronizedMap
+    /**     
+     * The implementation of {
+@link #synchronizedSet(Set)    }
+. This class
+     * name is required for compatibility with Sun's JDK serializability.
+     * Package visible, so that sets such as Hashtable.keySet()
+     * can specify which object to synchronize on.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    static class SynchronizedSet extends SynchronizedCollection implements Set, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 487447009682186044L;
+
+        /**         
+         * Wrap a given set.
+         * @param s the set to wrap
+         * @throws NullPointerException if s is null
+         */
+        SynchronizedSet(Set s) {
+            super(s);
+        }
+
+        /**         
+         * Called only by trusted code to specify the mutex as well as the set.
+         * @param sync the mutex
+         * @param s the set
+         */
+        SynchronizedSet(Object sync, Set s) {
+            super(sync, s);
+        }
+
+        /**         
+         * Returns <code>true</code> if the object, o, is a <code>Set</code>
+         * of the same size as the underlying set, and contains
+         * each element, e, which occurs in the underlying set.
+         * A lock is obtained on the mutex before the comparison
+         * takes place.
+         * @param o The object to compare against.
+         * @return <code>true</code> if o is an equivalent set.
+         */
+        public boolean equals(Object o) {
+            synchronized (mutex) {
+                return c.equals(o);
+            }
+        }
+
+        /**         
+         * Computes the hash code for the underlying set as the
+         * sum of the hash code of all elements within the set.
+         * A lock is obtained on the mutex before the computation
+         * occurs.
+         * @return The hash code for the underlying set.
+         */
+        public int hashCode() {
+            synchronized (mutex) {
+                return c.hashCode();
+            }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
+    }
+
+    // class SynchronizedSet
+    /**     
+     * The implementation of {
+@link #synchronizedSortedMap(SortedMap)    }
+. This
+     * class name is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class SynchronizedSortedMap extends SynchronizedMap implements SortedMap, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = -8798146769416483793L;
+
+        /**         
+         * The wrapped map; stored both here and in the superclass to avoid
+         * excessive casting.
+         * @serial the wrapped map
+         */
+        private final SortedMap sm;
+
+        /**         
+         * Wrap a given map.
+         * @param sm the map to wrap
+         * @throws NullPointerException if sm is null
+         */
+        SynchronizedSortedMap(SortedMap sm) {
+            super(sm);
+            this.sm = sm;
+        }
+
+        /**         
+         * Called only by trusted code to specify the mutex as well as the map.
+         * @param sync the mutex
+         * @param sm the map
+         */
+        SynchronizedSortedMap(Object sync, SortedMap sm) {
+            super(sync, sm);
+            this.sm = sm;
+        }
+
+        /**         
+         * Returns the comparator used in sorting the underlying map, or null if
+         * it is the keys' natural ordering.  A lock is obtained on the mutex
+         * before the comparator is retrieved.
+         * @return the sorting comparator.
+         */
+        public Comparator comparator() {
+            synchronized (mutex) {
+                return sm.comparator();
+            }
+        }
+
+        /**         
+         * Returns the first, lowest sorted, key from the underlying map.
+         * A lock is obtained on the mutex before the map is accessed.
+         * @return the first key.
+         * @throws NoSuchElementException if this map is empty.
+         */
+        public Object firstKey() {
+            synchronized (mutex) {
+                return sm.firstKey();
+            }
+        }
+
+        /**         
+         * Returns a submap containing the keys from the first
+         * key (as returned by <code>firstKey()</code>) to
+         * the key before that specified.  The submap supports all
+         * operations supported by the underlying map and all actions
+         * taking place on the submap are also reflected in the underlying
+         * map.  A lock is obtained on the mutex prior to submap creation.
+         * This operation is equivalent to <code>subMap(firstKey(), toKey)</code>.
+         * The submap retains the thread-safe status of this map.
+         * @param toKey the exclusive upper range of the submap.
+         * @return a submap from <code>firstKey()</code> to the
+         * the key preceding toKey.
+         * @throws ClassCastException if toKey is not comparable to the underlying
+         * map's contents.
+         * @throws IllegalArgumentException if toKey is outside the map's range.
+         * @throws NullPointerException if toKey is null. but the map does not allow
+         * null keys.
+         */
+        public SortedMap headMap(Object toKey) {
+            synchronized (mutex) {
+                return new SynchronizedSortedMap(mutex, sm.headMap(toKey));
+            }
+        }
+
+        /**         
+         * Returns the last, highest sorted, key from the underlying map.
+         * A lock is obtained on the mutex before the map is accessed.
+         * @return the last key.
+         * @throws NoSuchElementException if this map is empty.
+         */
+        public Object lastKey() {
+            synchronized (mutex) {
+                return sm.lastKey();
+            }
+        }
+
+        /**         
+         * Returns a submap containing the keys from fromKey to
+         * the key before toKey.  The submap supports all
+         * operations supported by the underlying map and all actions
+         * taking place on the submap are also reflected in the underlying
+         * map.  A lock is obtained on the mutex prior to submap creation.
+         * The submap retains the thread-safe status of this map.
+         * @param fromKey the inclusive lower range of the submap.
+         * @param toKey the exclusive upper range of the submap.
+         * @return a submap from fromKey to the key preceding toKey.
+         * @throws ClassCastException if fromKey or toKey is not comparable
+         * to the underlying map's contents.
+         * @throws IllegalArgumentException if fromKey or toKey is outside the map's
+         * range.
+         * @throws NullPointerException if fromKey or toKey is null. but the map does
+         * not allow  null keys.
+         */
+        public SortedMap subMap(Object fromKey, Object toKey) {
+            synchronized (mutex) {
+                return new SynchronizedSortedMap(mutex, sm.subMap(fromKey, toKey));
+            }
+        }
+
+        /**         
+         * Returns a submap containing all the keys from fromKey onwards.
+         * The submap supports all operations supported by the underlying
+         * map and all actions taking place on the submap are also reflected
+         * in the underlying map.  A lock is obtained on the mutex prior to
+         * submap creation.  The submap retains the thread-safe status of
+         * this map.
+         * @param fromKey the inclusive lower range of the submap.
+         * @return a submap from fromKey to <code>lastKey()</code>.
+         * @throws ClassCastException if fromKey is not comparable to the underlying
+         * map's contents.
+         * @throws IllegalArgumentException if fromKey is outside the map's range.
+         * @throws NullPointerException if fromKey is null. but the map does not allow
+         * null keys.
+         */
+        public SortedMap tailMap(Object fromKey) {
+            synchronized (mutex) {
+                return new SynchronizedSortedMap(mutex, sm.tailMap(fromKey));
+            }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            $RECORD$sm.restore(sm, timestamp, trim);
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord $RECORD$sm = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$sm
+            };
+
+    }
+
+    // class SynchronizedSortedMap
+    /**     
+     * The implementation of {
+@link #synchronizedSortedSet(SortedSet)    }
+. This
+     * class name is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class SynchronizedSortedSet extends SynchronizedSet implements SortedSet, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 8695801310862127406L;
+
+        /**         
+         * The wrapped set; stored both here and in the superclass to avoid
+         * excessive casting.
+         * @serial the wrapped set
+         */
+        private final SortedSet ss;
+
+        /**         
+         * Wrap a given set.
+         * @param ss the set to wrap
+         * @throws NullPointerException if ss is null
+         */
+        SynchronizedSortedSet(SortedSet ss) {
+            super(ss);
+            this.ss = ss;
+        }
+
+        /**         
+         * Called only by trusted code to specify the mutex as well as the set.
+         * @param sync the mutex
+         * @param ss the set
+         */
+        SynchronizedSortedSet(Object sync, SortedSet ss) {
+            super(sync, ss);
+            this.ss = ss;
+        }
+
+        /**         
+         * Returns the comparator used in sorting the underlying set, or null if
+         * it is the elements' natural ordering.  A lock is obtained on the mutex
+         * before the comparator is retrieved.
+         * @return the sorting comparator.
+         */
+        public Comparator comparator() {
+            synchronized (mutex) {
+                return ss.comparator();
+            }
+        }
+
+        /**         
+         * Returns the first, lowest sorted, element from the underlying set.
+         * A lock is obtained on the mutex before the set is accessed.
+         * @return the first element.
+         * @throws NoSuchElementException if this set is empty.
+         */
+        public Object first() {
+            synchronized (mutex) {
+                return ss.first();
+            }
+        }
+
+        /**         
+         * Returns a subset containing the element from the first
+         * element (as returned by <code>first()</code>) to
+         * the element before that specified.  The subset supports all
+         * operations supported by the underlying set and all actions
+         * taking place on the subset are also reflected in the underlying
+         * set.  A lock is obtained on the mutex prior to subset creation.
+         * This operation is equivalent to <code>subSet(first(), toElement)</code>.
+         * The subset retains the thread-safe status of this set.
+         * @param toElement the exclusive upper range of the subset.
+         * @return a subset from <code>first()</code> to the
+         * the element preceding toElement.
+         * @throws ClassCastException if toElement is not comparable to the underlying
+         * set's contents.
+         * @throws IllegalArgumentException if toElement is outside the set's range.
+         * @throws NullPointerException if toElement is null. but the set does not allow
+         * null elements.
+         */
+        public SortedSet headSet(Object toElement) {
+            synchronized (mutex) {
+                return new SynchronizedSortedSet(mutex, ss.headSet(toElement));
+            }
+        }
+
+        /**         
+         * Returns the last, highest sorted, element from the underlying set.
+         * A lock is obtained on the mutex before the set is accessed.
+         * @return the last element.
+         * @throws NoSuchElementException if this set is empty.
+         */
+        public Object last() {
+            synchronized (mutex) {
+                return ss.last();
+            }
+        }
+
+        /**         
+         * Returns a subset containing the elements from fromElement to
+         * the element before toElement.  The subset supports all
+         * operations supported by the underlying set and all actions
+         * taking place on the subset are also reflected in the underlying
+         * set.  A lock is obtained on the mutex prior to subset creation.
+         * The subset retains the thread-safe status of this set.
+         * @param fromElement the inclusive lower range of the subset.
+         * @param toElement the exclusive upper range of the subset.
+         * @return a subset from fromElement to the element preceding toElement.
+         * @throws ClassCastException if fromElement or toElement is not comparable
+         * to the underlying set's contents.
+         * @throws IllegalArgumentException if fromElement or toElement is outside the set's
+         * range.
+         * @throws NullPointerException if fromElement or toElement is null. but the set does
+         * not allow null elements.
+         */
+        public SortedSet subSet(Object fromElement, Object toElement) {
+            synchronized (mutex) {
+                return new SynchronizedSortedSet(mutex, ss.subSet(fromElement, toElement));
+            }
+        }
+
+        /**         
+         * Returns a subset containing all the elements from fromElement onwards.
+         * The subset supports all operations supported by the underlying
+         * set and all actions taking place on the subset are also reflected
+         * in the underlying set.  A lock is obtained on the mutex prior to
+         * subset creation.  The subset retains the thread-safe status of
+         * this set.
+         * @param fromElement the inclusive lower range of the subset.
+         * @return a subset from fromElement to <code>last()</code>.
+         * @throws ClassCastException if fromElement is not comparable to the underlying
+         * set's contents.
+         * @throws IllegalArgumentException if fromElement is outside the set's range.
+         * @throws NullPointerException if fromElement is null. but the set does not allow
+         * null elements.
+         */
+        public SortedSet tailSet(Object fromElement) {
+            synchronized (mutex) {
+                return new SynchronizedSortedSet(mutex, ss.tailSet(fromElement));
+            }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            $RECORD$ss.restore(ss, timestamp, trim);
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord $RECORD$ss = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$ss
+            };
+
+    }
+
+    // class SynchronizedSortedSet
+    /**     
+     * The implementation of {
+@link #unmodifiableCollection(Collection)    }
+. This
+     * class name is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static class UnmodifiableCollection implements Collection, Serializable, Rollbackable {
+
+        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = 1820017752578914078L;
+
+        /**         
+         * The wrapped collection. Package visible for use by subclasses.
+         * @serial the real collection
+         */
+        final Collection c;
+
+        /**         
+         * Wrap a given collection.
+         * @param c the collection to wrap
+         * @throws NullPointerException if c is null
+         */
+        UnmodifiableCollection(Collection c) {
+            this.c = c;
+            if (c == null)
+                throw new NullPointerException();
+        }
+
+        /**         
+         * Blocks the addition of elements to the underlying collection.
+         * This method never returns, throwing an exception instead.
+         * @param o the object to add.
+         * @return <code>true</code> if the collection was modified as a result of this action.
+         * @throws UnsupportedOperationException as an unmodifiable collection does not
+         * support the add operation.
+         */
+        public boolean add(Object o) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Blocks the addition of a collection of elements to the underlying
+         * collection.  This method never returns, throwing an exception instead.
+         * @param c the collection to add.
+         * @return <code>true</code> if the collection was modified as a result of this action.
+         * @throws UnsupportedOperationException as an unmodifiable collection does not
+         * support the <code>addAll</code> operation.
+         */
+        public boolean addAll(Collection c) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Blocks the clearing of the underlying collection.  This method never
+         * returns, throwing an exception instead.
+         * @throws UnsupportedOperationException as an unmodifiable collection does
+         * not support the <code>clear()</code> operation.
+         */
+        public void clear() {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Test whether the underlying collection contains a given object as one of its
+         * elements.
+         * @param o the element to look for.
+         * @return <code>true</code> if the underlying collection contains at least
+         * one element e such that
+         * <code>o == null ? e == null : o.equals(e)</code>.
+         * @throws ClassCastException if the type of o is not a valid type for the
+         * underlying collection.
+         * @throws NullPointerException if o is null and the underlying collection
+         * doesn't support null values.
+         */
+        public boolean contains(Object o) {
+            return c.contains(o);
+        }
+
+        /**         
+         * Test whether the underlying collection contains every element in a given
+         * collection.
+         * @param c1 the collection to test for.
+         * @return <code>true</code> if for every element o in c, contains(o) would
+         * return <code>true</code>.
+         * @throws ClassCastException if the type of any element in c is not a valid
+         * type for the underlying collection.
+         * @throws NullPointerException if some element of c is null and the underlying
+         * collection does not support null values.
+         * @throws NullPointerException if c itself is null.
+         */
+        public boolean containsAll(Collection c1) {
+            return c.containsAll(c1);
+        }
+
+        /**         
+         * Tests whether the underlying collection is empty, that is,
+         * if size() == 0.
+         * @return <code>true</code> if this collection contains no elements.
+         */
+        public boolean isEmpty() {
+            return c.isEmpty();
+        }
+
+        /**         
+         * Obtain an Iterator over the underlying collection, which maintains
+         * its unmodifiable nature.
+         * @return an UnmodifiableIterator over the elements of the underlying
+         * collection, in any order.
+         */
+        public Iterator iterator() {
+            return new UnmodifiableIterator(c.iterator());
+        }
+
+        /**         
+         * Blocks the removal of an object from the underlying collection.
+         * This method never returns, throwing an exception instead.
+         * @param o The object to remove.
+         * @return <code>true</code> if the object was removed (i.e. the underlying
+         * collection returned 1 or more instances of o).
+         * @throws UnsupportedOperationException as an unmodifiable collection
+         * does not support the <code>remove()</code> operation.
+         */
+        public boolean remove(Object o) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Blocks the removal of a collection of objects from the underlying
+         * collection.  This method never returns, throwing an exception
+         * instead.
+         * @param c The collection of objects to remove.
+         * @return <code>true</code> if the collection was modified.
+         * @throws UnsupportedOperationException as an unmodifiable collection
+         * does not support the <code>removeAll()</code> operation.
+         */
+        public boolean removeAll(Collection c) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Blocks the removal of all elements from the underlying collection,
+         * except those in the supplied collection.  This method never returns,
+         * throwing an exception instead.
+         * @param c The collection of objects to retain.
+         * @return <code>true</code> if the collection was modified.
+         * @throws UnsupportedOperationException as an unmodifiable collection
+         * does not support the <code>retainAll()</code> operation.
+         */
+        public boolean retainAll(Collection c) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Retrieves the number of elements in the underlying collection.
+         * @return the number of elements in the collection.
+         */
+        public int size() {
+            return c.size();
+        }
+
+        /**         
+         * Copy the current contents of the underlying collection into an array.
+         * @return an array of type Object[] with a length equal to the size of the
+         * underlying collection and containing the elements currently in
+         * the underlying collection, in any order.
+         */
+        public Object[] toArray() {
+            return c.toArray();
+        }
+
+        /**         
+         * Copy the current contents of the underlying collection into an array.  If
+         * the array passed as an argument has length less than the size of the
+         * underlying collection, an array of the same run-time type as a, with a length
+         * equal to the size of the underlying collection, is allocated using reflection.
+         * Otherwise, a itself is used.  The elements of the underlying collection are
+         * copied into it, and if there is space in the array, the following element is
+         * set to null. The resultant array is returned.
+         * Note: The fact that the following element is set to null is only useful
+         * if it is known that this collection does not contain any null elements.
+         * @param a the array to copy this collection into.
+         * @return an array containing the elements currently in the underlying
+         * collection, in any order.
+         * @throws ArrayStoreException if the type of any element of the
+         * collection is not a subtype of the element type of a.
+         */
+        public Object[] toArray(Object[] a) {
+            return c.toArray(a);
+        }
+
+        /**         
+         * A textual representation of the unmodifiable collection.
+         * @return The unmodifiable collection in the form of a <code>String</code>.
+         */
+        public String toString() {
+            return c.toString();
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
+            }
+        }
+
+        public final Checkpoint $GET$CHECKPOINT() {
+            return $CHECKPOINT;
+        }
+
+        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+            if ($CHECKPOINT != checkpoint) {
+                Checkpoint oldCheckpoint = $CHECKPOINT;
+                if (checkpoint != null) {
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    FieldRecord.pushState($RECORDS);
+                }
+                $CHECKPOINT = checkpoint;
+                oldCheckpoint.setCheckpoint(checkpoint);
+                checkpoint.addObject(this);
+            }
+            return this;
+        }
+
+        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
+    }
+
+    // class UnmodifiableCollection
+    /**     
+     * The implementation of the various iterator methods in the
+     * unmodifiable classes.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static class UnmodifiableIterator implements Iterator, Rollbackable {
+
+        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+        /**         
+         * The wrapped iterator.
+         */
+        private final Iterator i;
+
+        /**         
+         * Only trusted code creates a wrapper.
+         * @param i the wrapped iterator
+         */
+        UnmodifiableIterator(Iterator i) {
+            this.i = i;
+        }
+
+        /**         
+         * Obtains the next element in the underlying collection.
+         * @return the next element in the collection.
+         * @throws NoSuchElementException if there are no more elements.
+         */
+        public Object next() {
+            return i.next();
+        }
+
+        /**         
+         * Tests whether there are still elements to be retrieved from the
+         * underlying collection by <code>next()</code>.  When this method
+         * returns <code>true</code>, an exception will not be thrown on calling
+         * <code>next()</code>.
+         * @return <code>true</code> if there is at least one more element in the underlying
+         * collection.
+         */
+        public boolean hasNext() {
+            return i.hasNext();
+        }
+
+        /**         
+         * Blocks the removal of elements from the underlying collection by the
+         * iterator.
+         * @throws UnsupportedOperationException as an unmodifiable collection
+         * does not support the removal of elements by its iterator.
+         */
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            $RECORD$i.restore(i, timestamp, trim);
+            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
+            }
+        }
+
+        public final Checkpoint $GET$CHECKPOINT() {
+            return $CHECKPOINT;
+        }
+
+        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+            if ($CHECKPOINT != checkpoint) {
+                Checkpoint oldCheckpoint = $CHECKPOINT;
+                if (checkpoint != null) {
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    FieldRecord.pushState($RECORDS);
+                }
+                $CHECKPOINT = checkpoint;
+                oldCheckpoint.setCheckpoint(checkpoint);
+                checkpoint.addObject(this);
+            }
+            return this;
+        }
+
+        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+        private transient FieldRecord $RECORD$i = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$i
+            };
+
+    }
+
+    // class UnmodifiableIterator
+    /**     
+     * The implementation of {
+@link #unmodifiableList(List)    }
+ for sequential
+     * lists. This class name is required for compatibility with Sun's JDK
+     * serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static class UnmodifiableList extends UnmodifiableCollection implements List, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = -283967356065247728L;
+
+        /**         
+         * The wrapped list; stored both here and in the superclass to avoid
+         * excessive casting. Package visible for use by subclass.
+         * @serial the wrapped list
+         */
+        final List list;
+
+        /**         
+         * Wrap a given list.
+         * @param l the list to wrap
+         * @throws NullPointerException if l is null
+         */
+        UnmodifiableList(List l) {
+            super(l);
+            list = l;
+        }
+
+        /**         
+         * Blocks the addition of an element to the underlying
+         * list at a specific index.  This method never returns,
+         * throwing an exception instead.
+         * @param index The index at which to place the new element.
+         * @param o the object to add.
+         * @throws UnsupportedOperationException as an unmodifiable
+         * list doesn't support the <code>add()</code> operation.
+         */
+        public void add(int index, Object o) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Blocks the addition of a collection of elements to the
+         * underlying list at a specific index.  This method never
+         * returns, throwing an exception instead.
+         * @param index The index at which to place the new element.
+         * @param c the collections of objects to add.
+         * @throws UnsupportedOperationException as an unmodifiable
+         * list doesn't support the <code>addAll()</code> operation.
+         */
+        public boolean addAll(int index, Collection c) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Returns <code>true</code> if the object, o, is an instance of
+         * <code>List</code> with the same size and elements
+         * as the underlying list.
+         * @param o The object to compare.
+         * @return <code>true</code> if o is equivalent to the underlying list.
+         */
+        public boolean equals(Object o) {
+            return list.equals(o);
+        }
+
+        /**         
+         * Retrieves the element at a given index in the underlying list.
+         * @param index the index of the element to be returned
+         * @return the element at index index in this list
+         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+         */
+        public Object get(int index) {
+            return list.get(index);
+        }
+
+        /**         
+         * Computes the hash code for the underlying list.
+         * The exact computation is described in the documentation
+         * of the <code>List</code> interface.
+         * @return The hash code of the underlying list.
+         * @see List#hashCode()
+         */
+        public int hashCode() {
+            return list.hashCode();
+        }
+
+        /**         
+         * Obtain the first index at which a given object is to be found in the
+         * underlying list.
+         * @param o the object to search for
+         * @return the least integer n such that <code>o == null ? get(n) == null :
+         * o.equals(get(n))</code>, or -1 if there is no such index.
+         * @throws ClassCastException if the type of o is not a valid
+         * type for the underlying list.
+         * @throws NullPointerException if o is null and the underlying
+         * list does not support null values.
+         */
+        public int indexOf(Object o) {
+            return list.indexOf(o);
+        }
+
+        /**         
+         * Obtain the last index at which a given object is to be found in the
+         * underlying list.
+         * @return the greatest integer n such that <code>o == null ? get(n) == null
+         * : o.equals(get(n))</code>, or -1 if there is no such index.
+         * @throws ClassCastException if the type of o is not a valid
+         * type for the underlying list.
+         * @throws NullPointerException if o is null and the underlying
+         * list does not support null values.
+         */
+        public int lastIndexOf(Object o) {
+            return list.lastIndexOf(o);
+        }
+
+        /**         
+         * Obtains a list iterator over the underlying list, starting at the beginning
+         * and maintaining the unmodifiable nature of this list.
+         * @return a <code>UnmodifiableListIterator</code> over the elements of the
+         * underlying list, in order, starting at the beginning.
+         */
+        public ListIterator listIterator() {
+            return new UnmodifiableListIterator(list.listIterator());
+        }
+
+        /**         
+         * Obtains a list iterator over the underlying list, starting at the specified
+         * index and maintaining the unmodifiable nature of this list.  An initial call
+         * to <code>next()</code> will retrieve the element at the specified index,
+         * and an initial call to <code>previous()</code> will retrieve the element
+         * at index - 1.
+         * @param index the position, between 0 and size() inclusive, to begin the
+         * iteration from.
+         * @return a <code>UnmodifiableListIterator</code> over the elements of the
+         * underlying list, in order, starting at the specified index.
+         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+         */
+        public ListIterator listIterator(int index) {
+            return new UnmodifiableListIterator(list.listIterator(index));
+        }
+
+        /**         
+         * Blocks the removal of the element at the specified index.
+         * This method never returns, throwing an exception instead.
+         * @param index The index of the element to remove.
+         * @return the removed element.
+         * @throws UnsupportedOperationException as an unmodifiable
+         * list does not support the <code>remove()</code>
+         * operation.
+         */
+        public Object remove(int index) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Blocks the replacement of the element at the specified index.
+         * This method never returns, throwing an exception instead.
+         * @param index The index of the element to replace.
+         * @param o The new object to place at the specified index.
+         * @return the replaced element.
+         * @throws UnsupportedOperationException as an unmodifiable
+         * list does not support the <code>set()</code>
+         * operation.
+         */
+        public Object set(int index, Object o) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Obtain a List view of a subsection of the underlying list, from
+         * fromIndex (inclusive) to toIndex (exclusive). If the two indices
+         * are equal, the sublist is empty. The returned list will be
+         * unmodifiable, like this list.  Changes to the elements of the
+         * returned list will be reflected in the underlying list. No structural
+         * modifications can take place in either list.
+         * @param fromIndex the index that the returned list should start from
+         * (inclusive).
+         * @param toIndex the index that the returned list should go to (exclusive).
+         * @return a List backed by a subsection of the underlying list.
+         * @throws IndexOutOfBoundsException if fromIndex &lt; 0
+         * || toIndex &gt; size() || fromIndex &gt; toIndex.
+         */
+        public List subList(int fromIndex, int toIndex) {
+            return unmodifiableList(list.subList(fromIndex, toIndex));
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
+    }
+
+    // class UnmodifiableList
+    /**     
+     * The implementation of {
+@link #unmodifiableList(List)    }
+ for random-access
+     * lists. This class name is required for compatibility with Sun's JDK
+     * serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class UnmodifiableRandomAccessList extends UnmodifiableList implements RandomAccess, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = -2542308836966382001L;
+
+        /**         
+         * Wrap a given list.
+         * @param l the list to wrap
+         * @throws NullPointerException if l is null
+         */
+        UnmodifiableRandomAccessList(List l) {
+            super(l);
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
+    }
+
+    // class UnmodifiableRandomAccessList
+    /**     
+     * The implementation of {
+@link UnmodifiableList#listIterator()    }
+.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static final class UnmodifiableListIterator extends UnmodifiableIterator implements ListIterator, Rollbackable {
+
+        /**         
+         * The wrapped iterator, stored both here and in the superclass to
+         * avoid excessive casting.
+         */
+        private final ListIterator li;
+
+        /**         
+         * Only trusted code creates a wrapper.
+         * @param li the wrapped iterator
+         */
+        UnmodifiableListIterator(ListIterator li) {
+            super(li);
+            this.li = li;
+        }
+
+        /**         
+         * Blocks the addition of an object to the list underlying this iterator.
+         * This method never returns, throwing an exception instead.
+         * @param o The object to add.
+         * @throws UnsupportedOperationException as the iterator of an unmodifiable
+         * list does not support the <code>add()</code> operation.
+         */
+        public void add(Object o) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Tests whether there are still elements to be retrieved from the
+         * underlying collection by <code>previous()</code>.  When this method
+         * returns <code>true</code>, an exception will not be thrown on calling
+         * <code>previous()</code>.
+         * @return <code>true</code> if there is at least one more element prior to the
+         * current position in the underlying list.
+         */
+        public boolean hasPrevious() {
+            return li.hasPrevious();
+        }
+
+        /**         
+         * Find the index of the element that would be returned by a call to next.
+         * If <code>hasNext()</code> returns <code>false</code>, this returns the list size.
+         * @return the index of the element that would be returned by
+         * <code>next()</code>.
+         */
+        public int nextIndex() {
+            return li.nextIndex();
+        }
+
+        /**         
+         * Obtains the previous element in the underlying list.
+         * @return the previous element in the list.
+         * @throws NoSuchElementException if there are no more prior elements.
+         */
+        public Object previous() {
+            return li.previous();
+        }
+
+        /**         
+         * Find the index of the element that would be returned by a call to
+         * previous. If <code>hasPrevious()</code> returns <code>false</code>,
+         * this returns -1.
+         * @return the index of the element that would be returned by
+         * <code>previous()</code>.
+         */
+        public int previousIndex() {
+            return li.previousIndex();
+        }
+
+        /**         
+         * Blocks the replacement of an element in the list underlying this
+         * iterator.  This method never returns, throwing an exception instead.
+         * @param o The new object to replace the existing one.
+         * @throws UnsupportedOperationException as the iterator of an unmodifiable
+         * list does not support the <code>set()</code> operation.
+         */
+        public void set(Object o) {
+            throw new UnsupportedOperationException();
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            $RECORD$li.restore(li, timestamp, trim);
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord $RECORD$li = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$li
+            };
+
+    }
+
+    // class UnmodifiableListIterator
+    /**     
+     * The implementation of {
+@link #unmodifiableMap(Map)    }
+. This
+     * class name is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static class UnmodifiableMap implements Map, Serializable, Rollbackable {
+
+        protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = -1034234728574286014L;
+
+        /**         
+         * The wrapped map.
+         * @serial the real map
+         */
+        private final Map m;
+
+        /**         
+         * Cache the entry set.
+         */
+        private transient Set entries;
+
+        /**         
+         * Cache the key set.
+         */
+        private transient Set keys;
+
+        /**         
+         * Cache the value collection.
+         */
+        private transient Collection values;
+
+        /**         
+         * The implementation of {
+@link UnmodifiableMap#entrySet()        }
+. This class
+         * name is required for compatibility with Sun's JDK serializability.
+         * @author Eric Blake (ebb9@email.byu.edu)
+         */
+        private static final class UnmodifiableEntrySet extends UnmodifiableSet implements Serializable, Rollbackable {
+
+            /**             
+             * Compatible with JDK 1.4.
+             */
+            private static final long serialVersionUID = 7854390611657943733L;
+
+            /**             
+             * Wrap a given set.
+             * @param s the set to wrap
+             */
+            UnmodifiableEntrySet(Set s) {
+                super(s);
+            }
+            // The iterator must return unmodifiable map entries.
+
+            public Iterator iterator() {
+                return new UnmodifiableIterator(c.iterator()) {
+                    /**                     
+                     * Obtains the next element from the underlying set of
+                     * map entries.
+                     * @return the next element in the collection.
+                     * @throws NoSuchElementException if there are no more elements.
+                     */
+                    public Object next() {
+                        final Map.Entry e = (Map.Entry)super.next();
+                        return new Map.Entry() {
+                            protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+                            /**                             
+                             * Returns <code>true</code> if the object, o, is also a map entry with an
+                             * identical key and value.
+                             * @param o the object to compare.
+                             * @return <code>true</code> if o is an equivalent map entry.
+                             */
+                            public boolean equals(Object o) {
+                                return e.equals(o);
+                            }
+
+                            /**                             
+                             * Returns the key of this map entry.
+                             * @return the key.
+                             */
+                            public Object getKey() {
+                                return e.getKey();
+                            }
+
+                            /**                             
+                             * Returns the value of this map entry.
+                             * @return the value.
+                             */
+                            public Object getValue() {
+                                return e.getValue();
+                            }
+
+                            /**                             
+                             * Computes the hash code of this map entry.
+                             * The computation is described in the <code>Map</code>
+                             * interface documentation.
+                             * @return the hash code of this entry.
+                             * @see Map#hashCode()
+                             */
+                            public int hashCode() {
+                                return e.hashCode();
+                            }
+
+                            /**                             
+                             * Blocks the alteration of the value of this map entry.
+                             * This method never returns, throwing an exception instead.
+                             * @param value The new value.
+                             * @throws UnsupportedOperationException as an unmodifiable
+                             * map entry does not support the <code>setValue()</code>
+                             * operation.
+                             */
+                            public Object setValue(Object value) {
+                                throw new UnsupportedOperationException();
+                            }
+
+                            /**                             
+                             * Returns a textual representation of the map entry.
+                             * @return The map entry as a <code>String</code>.
+                             */
+                            public String toString() {
+                                return e.toString();
+                            }
+
+                            public void $COMMIT(long timestamp) {
+                                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                $RECORD$$CHECKPOINT.commit(timestamp);
+                            }
+
+                            public void $RESTORE(long timestamp, boolean trim) {
+                                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                                    FieldRecord.popState($RECORDS);
+                                    $RESTORE(timestamp, trim);
+                                }
+                            }
+
+                            public final Checkpoint $GET$CHECKPOINT() {
+                                return $CHECKPOINT;
+                            }
+
+                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                if ($CHECKPOINT != checkpoint) {
+                                    Checkpoint oldCheckpoint = $CHECKPOINT;
+                                    if (checkpoint != null) {
+                                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                        FieldRecord.pushState($RECORDS);
+                                    }
+                                    $CHECKPOINT = checkpoint;
+                                    oldCheckpoint.setCheckpoint(checkpoint);
+                                    checkpoint.addObject(this);
+                                }
+                                return this;
+                            }
+
+                            protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+                            private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                                };
+
+                        };
+                    }
+
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                            return this;
+                        }
+
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
+                    }
+
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
+                        }
+                        return this;
+                    }
+
+                    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                        };
+
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+
+                };
+            }
+
+            public void $COMMIT(long timestamp) {
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                super.$COMMIT(timestamp);
+            }
+
+            public void $RESTORE(long timestamp, boolean trim) {
+                super.$RESTORE(timestamp, trim);
+            }
+
+            private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                };
+
+        }
+
+        // class UnmodifiableEntrySet
+        /**         
+         * Wrap a given map.
+         * @param m the map to wrap
+         * @throws NullPointerException if m is null
+         */
+        UnmodifiableMap(Map m) {
+            this.m = m;
+            if (m == null)
+                throw new NullPointerException();
+        }
+
+        /**         
+         * Blocks the clearing of entries from the underlying map.
+         * This method never returns, throwing an exception instead.
+         * @throws UnsupportedOperationException as an unmodifiable
+         * map does not support the <code>clear()</code> operation.
+         */
+        public void clear() {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Returns <code>true</code> if the underlying map contains a mapping for
+         * the given key.
+         * @param key the key to search for
+         * @return <code>true</code> if the map contains the key
+         * @throws ClassCastException if the key is of an inappropriate type
+         * @throws NullPointerException if key is <code>null</code> but the map
+         * does not permit null keys
+         */
+        public boolean containsKey(Object key) {
+            return m.containsKey(key);
+        }
+
+        /**         
+         * Returns <code>true</code> if the underlying map contains at least one mapping with
+         * the given value.  In other words, it returns <code>true</code> if a value v exists where
+         * <code>(value == null ? v == null : value.equals(v))</code>. This usually
+         * requires linear time.
+         * @param value the value to search for
+         * @return <code>true</code> if the map contains the value
+         * @throws ClassCastException if the type of the value is not a valid type
+         * for this map.
+         * @throws NullPointerException if the value is null and the map doesn't
+         * support null values.
+         */
+        public boolean containsValue(Object value) {
+            return m.containsValue(value);
+        }
+
+        /**         
+         * Returns a unmodifiable set view of the entries in the underlying map.
+         * Each element in the set is a unmodifiable variant of <code>Map.Entry</code>.
+         * The set is backed by the map, so that changes in one show up in the other.
+         * Modifications made while an iterator is in progress cause undefined
+         * behavior.  These modifications are again limited to the values of
+         * the objects.
+         * @return the unmodifiable set view of all mapping entries.
+         * @see Map.Entry
+         */
+        public Set entrySet() {
+            if (entries == null)
+                $ASSIGN$entries(new UnmodifiableEntrySet(m.entrySet()));
+            return entries;
+        }
+
+        /**         
+         * Returns <code>true</code> if the object, o, is also an instance
+         * of <code>Map</code> with an equal set of map entries.
+         * @param o The object to compare.
+         * @return <code>true</code> if o is an equivalent map.
+         */
+        public boolean equals(Object o) {
+            return m.equals(o);
+        }
+
+        /**         
+         * Returns the value associated with the supplied key or
+         * null if no such mapping exists.  An ambiguity can occur
+         * if null values are accepted by the underlying map.
+         * In this case, <code>containsKey()</code> can be used
+         * to separate the two possible cases of a null result.
+         * @param key The key to look up.
+         * @return the value associated with the key, or null if key not in map.
+         * @throws ClassCastException if the key is an inappropriate type.
+         * @throws NullPointerException if this map does not accept null keys.
+         * @see #containsKey(Object)
+         */
+        public Object get(Object key) {
+            return m.get(key);
+        }
+
+        /**         
+         * Blocks the addition of a new entry to the underlying map.
+         * This method never returns, throwing an exception instead.
+         * @param key The new key.
+         * @param value The new value.
+         * @return the previous value of the key, or null if there was no mapping.
+         * @throws UnsupportedOperationException as an unmodifiable
+         * map does not support the <code>put()</code> operation.
+         */
+        public Object put(Object key, Object value) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Computes the hash code for the underlying map, as the sum
+         * of the hash codes of all entries.
+         * @return The hash code of the underlying map.
+         * @see Map.Entry#hashCode()
+         */
+        public int hashCode() {
+            return m.hashCode();
+        }
+
+        /**         
+         * Returns <code>true</code> if the underlying map contains no entries.
+         * @return <code>true</code> if the map is empty.
+         */
+        public boolean isEmpty() {
+            return m.isEmpty();
+        }
+
+        /**         
+         * Returns a unmodifiable set view of the keys in the underlying map.
+         * The set is backed by the map, so that changes in one show up in the other.
+         * Modifications made while an iterator is in progress cause undefined
+         * behavior.  These modifications are again limited to the values of
+         * the keys.
+         * @return the set view of all keys.
+         */
+        public Set keySet() {
+            if (keys == null)
+                $ASSIGN$keys(new UnmodifiableSet(m.keySet()));
+            return keys;
+        }
+
+        /**         
+         * Blocks the addition of the entries in the supplied map.
+         * This method never returns, throwing an exception instead.
+         * @param m The map, the entries of which should be added
+         * to the underlying map.
+         * @throws UnsupportedOperationException as an unmodifiable
+         * map does not support the <code>putAll</code> operation.
+         */
+        public void putAll(Map m) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Blocks the removal of an entry from the map.
+         * This method never returns, throwing an exception instead.
+         * @param o The key of the entry to remove.
+         * @return The value the key was associated with, or null
+         * if no such mapping existed.  Null is also returned
+         * if the removed entry had a null key.
+         * @throws UnsupportedOperationException as an unmodifiable
+         * map does not support the <code>remove</code> operation.
+         */
+        public Object remove(Object o) {
+            throw new UnsupportedOperationException();
+        }
+
+        /**         
+         * Returns the number of key-value mappings in the underlying map.
+         * If there are more than Integer.MAX_VALUE mappings, Integer.MAX_VALUE
+         * is returned.
+         * @return the number of mappings.
+         */
+        public int size() {
+            return m.size();
+        }
+
+        /**         
+         * Returns a textual representation of the map.
+         * @return The map in the form of a <code>String</code>.
+         */
+        public String toString() {
+            return m.toString();
+        }
+
+        /**         
+         * Returns a unmodifiable collection view of the values in the underlying map.
+         * The collection is backed by the map, so that changes in one show up in the other.
+         * Modifications made while an iterator is in progress cause undefined
+         * behavior.  These modifications are again limited to the values of
+         * the keys.
+         * @return the collection view of all values.
+         */
+        public Collection values() {
+            if (values == null)
+                $ASSIGN$values(new UnmodifiableCollection(m.values()));
+            return values;
+        }
+
+        private final Set $ASSIGN$entries(Set newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return entries = newValue;
+        }
+
+        private final Set $ASSIGN$keys(Set newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$keys.add(null, keys, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return keys = newValue;
+        }
+
+        private final Collection $ASSIGN$values(Collection newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$values.add(null, values, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return values = newValue;
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            $RECORD$m.restore(m, timestamp, trim);
+            entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
+            keys = (Set)$RECORD$keys.restore(keys, timestamp, trim);
+            values = (Collection)$RECORD$values.restore(values, timestamp, trim);
+            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
+            }
+        }
+
+        public final Checkpoint $GET$CHECKPOINT() {
+            return $CHECKPOINT;
+        }
+
+        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+            if ($CHECKPOINT != checkpoint) {
+                Checkpoint oldCheckpoint = $CHECKPOINT;
+                if (checkpoint != null) {
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    FieldRecord.pushState($RECORDS);
+                }
+                $CHECKPOINT = checkpoint;
+                oldCheckpoint.setCheckpoint(checkpoint);
+                checkpoint.addObject(this);
+            }
+            return this;
+        }
+
+        protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+        private transient FieldRecord $RECORD$m = new FieldRecord(0);
+
+        private transient FieldRecord $RECORD$entries = new FieldRecord(0);
+
+        private transient FieldRecord $RECORD$keys = new FieldRecord(0);
+
+        private transient FieldRecord $RECORD$values = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$m,
+                $RECORD$entries,
+                $RECORD$keys,
+                $RECORD$values
+            };
+
+    }
+
+    // class UnmodifiableMap
+    /**     
+     * The implementation of {
+@link #unmodifiableSet(Set)    }
+. This class
+     * name is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static class UnmodifiableSet extends UnmodifiableCollection implements Set, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = -9215047833775013803L;
+
+        /**         
+         * Wrap a given set.
+         * @param s the set to wrap
+         * @throws NullPointerException if s is null
+         */
+        UnmodifiableSet(Set s) {
+            super(s);
+        }
+
+        /**         
+         * Returns <code>true</code> if the object, o, is also an instance of
+         * <code>Set</code> of the same size and with the same entries.
+         * @return <code>true</code> if o is an equivalent set.
+         */
+        public boolean equals(Object o) {
+            return c.equals(o);
+        }
+
+        /**         
+         * Computes the hash code of this set, as the sum of the
+         * hash codes of all elements within the set.
+         * @return the hash code of the set.
+         */
+        public int hashCode() {
+            return c.hashCode();
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            };
+
+    }
+
+    // class UnmodifiableSet
+    /**     
+     * The implementation of {
+@link #unmodifiableSortedMap(SortedMap)    }
+. This
+     * class name is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static class UnmodifiableSortedMap extends UnmodifiableMap implements SortedMap, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = -8806743815996713206L;
+
+        /**         
+         * The wrapped map; stored both here and in the superclass to avoid
+         * excessive casting.
+         * @serial the wrapped map
+         */
+        private final SortedMap sm;
+
+        /**         
+         * Wrap a given map.
+         * @param sm the map to wrap
+         * @throws NullPointerException if sm is null
+         */
+        UnmodifiableSortedMap(SortedMap sm) {
+            super(sm);
+            this.sm = sm;
+        }
+
+        /**         
+         * Returns the comparator used in sorting the underlying map,
+         * or null if it is the keys' natural ordering.
+         * @return the sorting comparator.
+         */
+        public Comparator comparator() {
+            return sm.comparator();
+        }
+
+        /**         
+         * Returns the first (lowest sorted) key in the map.
+         * @return the first key.
+         * @throws NoSuchElementException if this map is empty.
+         */
+        public Object firstKey() {
+            return sm.firstKey();
+        }
+
+        /**         
+         * Returns a unmodifiable view of the portion of the map strictly less
+         * than toKey. The view is backed by the underlying map, so changes in
+         * one show up in the other.  The submap supports all optional operations
+         * of the original.  This operation is equivalent to
+         * <code>subMap(firstKey(), toKey)</code>.
+         * <p>
+         * The returned map throws an IllegalArgumentException any time a key is
+         * used which is out of the range of toKey. Note that the endpoint, toKey,
+         * is not included; if you want this value to be included, pass its successor
+         * object in to toKey.  For example, for Integers, you could request
+         * <code>headMap(new Integer(limit.intValue() + 1))</code>.
+         * @param toKey the exclusive upper range of the submap.
+         * @return the submap.
+         * @throws ClassCastException if toKey is not comparable to the map contents.
+         * @throws IllegalArgumentException if this is a subMap, and toKey is out
+         * of range.
+         * @throws NullPointerException if toKey is null but the map does not allow
+         * null keys.
+         */
+        public SortedMap headMap(Object toKey) {
+            return new UnmodifiableSortedMap(sm.headMap(toKey));
+        }
+
+        /**         
+         * Returns the last (highest sorted) key in the map.
+         * @return the last key.
+         * @throws NoSuchElementException if this map is empty.
+         */
+        public Object lastKey() {
+            return sm.lastKey();
+        }
+
+        /**         
+         * Returns a unmodifiable view of the portion of the map greater than or
+         * equal to fromKey, and strictly less than toKey. The view is backed by
+         * the underlying map, so changes in one show up in the other. The submap
+         * supports all optional operations of the original.
+         * <p>
+         * The returned map throws an IllegalArgumentException any time a key is
+         * used which is out of the range of fromKey and toKey. Note that the
+         * lower endpoint is included, but the upper is not; if you want to
+         * change the inclusion or exclusion of an endpoint, pass its successor
+         * object in instead.  For example, for Integers, you could request
+         * <code>subMap(new Integer(lowlimit.intValue() + 1),
+         * new Integer(highlimit.intValue() + 1))</code> to reverse
+         * the inclusiveness of both endpoints.
+         * @param fromKey the inclusive lower range of the submap.
+         * @param toKey the exclusive upper range of the submap.
+         * @return the submap.
+         * @throws ClassCastException if fromKey or toKey is not comparable to
+         * the map contents.
+         * @throws IllegalArgumentException if this is a subMap, and fromKey or
+         * toKey is out of range.
+         * @throws NullPointerException if fromKey or toKey is null but the map
+         * does not allow null keys.
+         */
+        public SortedMap subMap(Object fromKey, Object toKey) {
+            return new UnmodifiableSortedMap(sm.subMap(fromKey, toKey));
+        }
+
+        /**         
+         * Returns a unmodifiable view of the portion of the map greater than or
+         * equal to fromKey. The view is backed by the underlying map, so changes
+         * in one show up in the other. The submap supports all optional operations
+         * of the original.
+         * <p>
+         * The returned map throws an IllegalArgumentException any time a key is
+         * used which is out of the range of fromKey. Note that the endpoint, fromKey, is
+         * included; if you do not want this value to be included, pass its successor object in
+         * to fromKey.  For example, for Integers, you could request
+         * <code>tailMap(new Integer(limit.intValue() + 1))</code>.
+         * @param fromKey the inclusive lower range of the submap
+         * @return the submap
+         * @throws ClassCastException if fromKey is not comparable to the map
+         * contents
+         * @throws IllegalArgumentException if this is a subMap, and fromKey is out
+         * of range
+         * @throws NullPointerException if fromKey is null but the map does not allow
+         * null keys
+         */
+        public SortedMap tailMap(Object fromKey) {
+            return new UnmodifiableSortedMap(sm.tailMap(fromKey));
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            $RECORD$sm.restore(sm, timestamp, trim);
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord $RECORD$sm = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$sm
+            };
+
+    }
+
+    // class UnmodifiableSortedMap
+    /**     
+     * The implementation of {
+@link #synchronizedSortedMap(SortedMap)    }
+. This
+     * class name is required for compatibility with Sun's JDK serializability.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    private static class UnmodifiableSortedSet extends UnmodifiableSet implements SortedSet, Rollbackable {
+
+        /**         
+         * Compatible with JDK 1.4.
+         */
+        private static final long serialVersionUID = -4929149591599911165L;
+
+        /**         
+         * The wrapped set; stored both here and in the superclass to avoid
+         * excessive casting.
+         * @serial the wrapped set
+         */
+        private SortedSet ss;
+
+        /**         
+         * Wrap a given set.
+         * @param ss the set to wrap
+         * @throws NullPointerException if ss is null
+         */
+        UnmodifiableSortedSet(SortedSet ss) {
+            super(ss);
+            this.$ASSIGN$ss(ss);
+        }
+
+        /**         
+         * Returns the comparator used in sorting the underlying set,
+         * or null if it is the elements' natural ordering.
+         * @return the sorting comparator
+         */
+        public Comparator comparator() {
+            return ss.comparator();
+        }
+
+        /**         
+         * Returns the first (lowest sorted) element in the underlying
+         * set.
+         * @return the first element.
+         * @throws NoSuchElementException if the set is empty.
+         */
+        public Object first() {
+            return ss.first();
+        }
+
+        /**         
+         * Returns a unmodifiable view of the portion of the set strictly
+         * less than toElement. The view is backed by the underlying set,
+         * so changes in one show up in the other.  The subset supports
+         * all optional operations of the original.  This operation
+         * is equivalent to <code>subSet(first(), toElement)</code>.
+         * <p>
+         * The returned set throws an IllegalArgumentException any time an element is
+         * used which is out of the range of toElement. Note that the endpoint, toElement,
+         * is not included; if you want this value included, pass its successor object in to
+         * toElement.  For example, for Integers, you could request
+         * <code>headSet(new Integer(limit.intValue() + 1))</code>.
+         * @param toElement the exclusive upper range of the subset
+         * @return the subset.
+         * @throws ClassCastException if toElement is not comparable to the set
+         * contents.
+         * @throws IllegalArgumentException if this is a subSet, and toElement is out
+         * of range.
+         * @throws NullPointerException if toElement is null but the set does not
+         * allow null elements.
+         */
+        public SortedSet headSet(Object toElement) {
+            return new UnmodifiableSortedSet(ss.headSet(toElement));
+        }
+
+        /**         
+         * Returns the last (highest sorted) element in the underlying
+         * set.
+         * @return the last element.
+         * @throws NoSuchElementException if the set is empty.
+         */
+        public Object last() {
+            return ss.last();
+        }
+
+        /**         
+         * Returns a unmodifiable view of the portion of the set greater than or
+         * equal to fromElement, and strictly less than toElement. The view is backed by
+         * the underlying set, so changes in one show up in the other. The subset
+         * supports all optional operations of the original.
+         * <p>
+         * The returned set throws an IllegalArgumentException any time an element is
+         * used which is out of the range of fromElement and toElement. Note that the
+         * lower endpoint is included, but the upper is not; if you want to
+         * change the inclusion or exclusion of an endpoint, pass its successor
+         * object in instead.  For example, for Integers, you can request
+         * <code>subSet(new Integer(lowlimit.intValue() + 1),
+         * new Integer(highlimit.intValue() + 1))</code> to reverse
+         * the inclusiveness of both endpoints.
+         * @param fromElement the inclusive lower range of the subset.
+         * @param toElement the exclusive upper range of the subset.
+         * @return the subset.
+         * @throws ClassCastException if fromElement or toElement is not comparable
+         * to the set contents.
+         * @throws IllegalArgumentException if this is a subSet, and fromElement or
+         * toElement is out of range.
+         * @throws NullPointerException if fromElement or toElement is null but the
+         * set does not allow null elements.
+         */
+        public SortedSet subSet(Object fromElement, Object toElement) {
+            return new UnmodifiableSortedSet(ss.subSet(fromElement, toElement));
+        }
+
+        /**         
+         * Returns a unmodifiable view of the portion of the set greater than or equal to
+         * fromElement. The view is backed by the underlying set, so changes in one show up
+         * in the other. The subset supports all optional operations of the original.
+         * <p>
+         * The returned set throws an IllegalArgumentException any time an element is
+         * used which is out of the range of fromElement. Note that the endpoint,
+         * fromElement, is included; if you do not want this value to be included, pass its
+         * successor object in to fromElement.  For example, for Integers, you could request
+         * <code>tailSet(new Integer(limit.intValue() + 1))</code>.
+         * @param fromElement the inclusive lower range of the subset
+         * @return the subset.
+         * @throws ClassCastException if fromElement is not comparable to the set
+         * contents.
+         * @throws IllegalArgumentException if this is a subSet, and fromElement is
+         * out of range.
+         * @throws NullPointerException if fromElement is null but the set does not
+         * allow null elements.
+         */
+        public SortedSet tailSet(Object fromElement) {
+            return new UnmodifiableSortedSet(ss.tailSet(fromElement));
+        }
+
+        private final SortedSet $ASSIGN$ss(SortedSet newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$ss.add(null, ss, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return ss = newValue;
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            ss = (SortedSet)$RECORD$ss.restore(ss, timestamp, trim);
+            super.$RESTORE(timestamp, trim);
+        }
+
+        private transient FieldRecord $RECORD$ss = new FieldRecord(0);
+
+        private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$ss
+            };
+
+    }
+
+    // class UnmodifiableSortedSet
+    /**     
+     * Returns the empty list (immutable). This list is serializable.
+     */
+    public static final List emptyList() {
+        return EMPTY_LIST;
+    }
+
+    /**     
+     * Returns the empty list (immutable). This list is serializable.
+     */
+    public static final Map emptyMap() {
+        return EMPTY_MAP;
+    }
+
+    /**     
+     * Determines if a list should be treated as a sequential-access one.
+     * Rather than the old method of JDK 1.3 of assuming only instanceof
+     * AbstractSequentialList should be sequential, this uses the new method
+     * of JDK 1.4 of assuming anything that does NOT implement RandomAccess
+     * and exceeds a large (unspecified) size should be sequential.
+     * @param l the list to check
+     * @return <code>true</code> if it should be treated as sequential-access
+     */
+    private static boolean isSequential(List l) {
+        return !(l instanceof RandomAccess) && l.size() > LARGE_LIST_SIZE;
+    }
+
+    /**     
+     * This class is non-instantiable.
+     */
+    private Collections() {
+    }
+
+    /**     
+     * Compare two objects with or without a Comparator. If c is null, uses the
+     * natural ordering. Slightly slower than doing it inline if the JVM isn't
+     * clever, but worth it for removing a duplicate of the search code.
+     * Note: This code is also used in Arrays (for sort as well as search).
+     */
+    static final int compare(Object o1, Object o2, Comparator c) {
+        return c == null?((Comparable)o1).compareTo(o2):c.compare(o1, o2);
+    }
+
+    /**     
      * Perform a binary search of a List for a key, using the natural ordering of
      * the elements. The list must be sorted (as by the sort() method) - if it is
      * not, the behavior of this method is undefined, and may be an infinite
      * loop. Further, the key must be comparable with every item in the list. If
      * the list contains the key more than once, any one of them may be found.
      * <p>
-     * This algorithm behaves in log(n) time for {@link RandomAccess}
-     lists,
+     * This algorithm behaves in log(n) time for {
+@link RandomAccess    }
+ lists,
      * and uses a linear search with O(n) link traversals and log(n) comparisons
-     * with {@link AbstractSequentialList}
-     lists. Note: although the
+     * with {
+@link AbstractSequentialList    }
+ lists. Note: although the
      * specification allows for an infinite loop if the list is unsorted, it will
      * not happen in this (Classpath) implementation.
      * @param l the list to search (must be sorted)
@@ -141,7 +5111,7 @@ public class Collections implements Rollbackable {
         return binarySearch(l, key, null);
     }
 
-    /**
+    /**     
      * Perform a binary search of a List for a key, using a supplied Comparator.
      * The list must be sorted (as by the sort() method with the same Comparator)
      * - if it is not, the behavior of this method is undefined, and may be an
@@ -149,9 +5119,13 @@ public class Collections implements Rollbackable {
      * list. If the list contains the key more than once, any one of them may be
      * found. If the comparator is null, the elements' natural ordering is used.
      * <p>
-     * This algorithm behaves in log(n) time for {@link RandomAccess} lists,
+     * This algorithm behaves in log(n) time for {
+@link RandomAccess    }
+ lists,
      * and uses a linear search with O(n) link traversals and log(n) comparisons
-     * with {@link AbstractSequentialList} lists. Note: although the
+     * with {
+@link AbstractSequentialList    }
+ lists. Note: although the
      * specification allows for an infinite loop if the list is unsorted, it will
      * not happen in this (Classpath) implementation.
      * @param l the list to search (must be sorted)
@@ -178,48 +5152,41 @@ public class Collections implements Rollbackable {
             while (low <= hi) {
                 pos = (low + hi) >> 1;
                 if (i < pos) {
-                    if (!forward) {
+                    if (!forward)
                         itr.next();
-                    }
-                    for (; i != pos; i++, o = itr.next()) {
+                    for (; i != pos; i++, o = itr.next()) 
                         ;
-                    }
                     forward = true;
                 } else {
-                    if (forward) {
+                    if (forward)
                         itr.previous();
-                    }
-                    for (; i != pos; i--, o = itr.previous()) {
+                    for (; i != pos; i--, o = itr.previous()) 
                         ;
-                    }
                     forward = false;
                 }
                 final int d = compare(o, key, c);
-                if (d == 0) {
+                if (d == 0)
                     return pos;
-                } else if (d > 0) {
+                else if (d > 0)
                     hi = pos - 1;
-                } else {
+                else
                     low = ++pos;
-                }
-            }
-        } else {
+            }        } else {
             while (low <= hi) {
                 pos = (low + hi) >> 1;
                 final int d = compare(l.get(pos), key, c);
-                if (d == 0) {
+                if (d == 0)
                     return pos;
-                } else if (d > 0) {
+                else if (d > 0)
                     hi = pos - 1;
-                } else {
+                else
                     low = ++pos;
-                }
             }
         }
         return -pos - 1;
     }
 
-    /**
+    /**     
      * Copy one list to another. If the destination list is longer than the
      * source list, the remaining elements are unaffected. This method runs in
      * linear time.
@@ -232,9 +5199,8 @@ public class Collections implements Rollbackable {
      */
     public static void copy(List dest, List source) {
         int pos = source.size();
-        if (dest.size() < pos) {
+        if (dest.size() < pos)
             throw new IndexOutOfBoundsException("Source does not fit in dest");
-        }
         Iterator i1 = source.iterator();
         ListIterator i2 = dest.listIterator();
         while (--pos >= 0) {
@@ -243,7 +5209,7 @@ public class Collections implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Returns an Enumeration over a collection. This allows interoperability
      * with legacy APIs that require an Enumeration as input.
      * @param c the Collection to iterate over
@@ -252,7 +5218,7 @@ public class Collections implements Rollbackable {
     public static Enumeration enumeration(Collection c) {
         final Iterator i = c.iterator();
         return new Enumeration() {
-            /**
+            /**             
              * Returns <code>true</code> if there are more elements to
              * be enumerated.
              * @return The result of <code>hasNext()</code>
@@ -262,7 +5228,7 @@ public class Collections implements Rollbackable {
                 return i.hasNext();
             }
 
-            /**
+            /**             
              * Returns the next element to be enumerated.
              * @return The result of <code>next()</code>
              * called on the underlying iterator.
@@ -274,7 +5240,7 @@ public class Collections implements Rollbackable {
         };
     }
 
-    /**
+    /**     
      * Replace every element of a list with a given value. This method runs in
      * linear time.
      * @param l the list to fill.
@@ -290,7 +5256,7 @@ public class Collections implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Returns the starting index where the specified sublist first occurs
      * in a larger list, or -1 if there is no matching position. If
      * <code>target.size() &gt; source.size()</code>, this returns -1,
@@ -304,15 +5270,13 @@ public class Collections implements Rollbackable {
      */
     public static int indexOfSubList(List source, List target) {
         int ssize = source.size();
-        for (int i = 0, j = target.size(); j <= ssize; i++, j++) {
-            if (source.subList(i, j).equals(target)) {
+        for (int i = 0, j = target.size(); j <= ssize; i++, j++) 
+            if (source.subList(i, j).equals(target))
                 return i;
-            }
-        }
         return -1;
     }
 
-    /**
+    /**     
      * Returns the starting index where the specified sublist last occurs
      * in a larger list, or -1 if there is no matching position. If
      * <code>target.size() &gt; source.size()</code>, this returns -1,
@@ -326,15 +5290,13 @@ public class Collections implements Rollbackable {
      */
     public static int lastIndexOfSubList(List source, List target) {
         int ssize = source.size();
-        for (int i = ssize - target.size(), j = ssize; i >= 0; i--, j--) {
-            if (source.subList(i, j).equals(target)) {
+        for (int i = ssize - target.size(), j = ssize; i >= 0; i--, j--) 
+            if (source.subList(i, j).equals(target))
                 return i;
-            }
-        }
         return -1;
     }
 
-    /**
+    /**     
      * Returns an ArrayList holding the elements visited by a given
      * Enumeration. This method exists for interoperability between legacy
      * APIs and the new Collection API.
@@ -345,13 +5307,12 @@ public class Collections implements Rollbackable {
      */
     public static ArrayList list(Enumeration e) {
         ArrayList l = new ArrayList();
-        while (e.hasMoreElements()) {
+        while (e.hasMoreElements()) 
             l.add(e.nextElement());
-        }
         return l;
     }
 
-    /**
+    /**     
      * Find the maximum element in a Collection, according to the natural
      * ordering of the elements. This implementation iterates over the
      * Collection, so it works in linear time.
@@ -365,7 +5326,7 @@ public class Collections implements Rollbackable {
         return max(c, null);
     }
 
-    /**
+    /**     
      * Find the maximum element in a Collection, according to a specified
      * Comparator. This implementation iterates over the Collection, so it
      * works in linear time.
@@ -384,14 +5345,13 @@ public class Collections implements Rollbackable {
         int csize = c.size();
         for (int i = 1; i < csize; i++) {
             Object o = itr.next();
-            if (compare(max, o, order) < 0) {
+            if (compare(max, o, order) < 0)
                 max = o;
-            }
         }
         return max;
     }
 
-    /**
+    /**     
      * Find the minimum element in a Collection, according to the natural
      * ordering of the elements. This implementation iterates over the
      * Collection, so it works in linear time.
@@ -405,7 +5365,7 @@ public class Collections implements Rollbackable {
         return min(c, null);
     }
 
-    /**
+    /**     
      * Find the minimum element in a Collection, according to a specified
      * Comparator. This implementation iterates over the Collection, so it
      * works in linear time.
@@ -424,14 +5384,13 @@ public class Collections implements Rollbackable {
         int csize = c.size();
         for (int i = 1; i < csize; i++) {
             Object o = itr.next();
-            if (compare(min, o, order) > 0) {
+            if (compare(min, o, order) > 0)
                 min = o;
-            }
         }
         return min;
     }
 
-    /**
+    /**     
      * Creates an immutable list consisting of the same object repeated n times.
      * The returned object is tiny, consisting of only a single reference to the
      * object and a count of the number of elements. It is Serializable, and
@@ -449,7 +5408,7 @@ public class Collections implements Rollbackable {
         return new CopiesList(n, o);
     }
 
-    /**
+    /**     
      * Replace all instances of one object with another in the specified list.
      * The list does not change size. An element e is replaced if
      * <code>oldval == null ? e == null : oldval.equals(e)</code>.
@@ -468,16 +5427,15 @@ public class Collections implements Rollbackable {
     public static boolean replaceAll(List list, Object oldval, Object newval) {
         ListIterator itr = list.listIterator();
         boolean replace_occured = false;
-        for (int i = list.size(); --i >= 0;) {
+        for (int i = list.size(); --i >= 0; ) 
             if (AbstractCollection.equals(oldval, itr.next())) {
                 itr.set(newval);
                 replace_occured = true;
             }
-        }
         return replace_occured;
     }
 
-    /**
+    /**     
      * Reverse a given list. This method works in linear time.
      * @param l the list to reverse
      * @throws UnsupportedOperationException if l.listIterator() does not
@@ -497,7 +5455,7 @@ public class Collections implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Get a comparator that implements the reverse of natural ordering. In
      * other words, this sorts Comparable objects opposite of how their
      * compareTo method would sort. This makes it easy to sort into reverse
@@ -511,7 +5469,7 @@ public class Collections implements Rollbackable {
         return rcInstance;
     }
 
-    /**
+    /**     
      * Rotate the elements in a list by a specified distance. After calling this
      * method, the element now at index <code>i</code> was formerly at index
      * <code>(i - distance) mod list.size()</code>. The list size is unchanged.
@@ -525,14 +5483,17 @@ public class Collections implements Rollbackable {
      * <code>Collections.rotate(l.subList(1, 3+1), -1)</code>, which will
      * result in <code>[t, n, k, a, s]</code>.
      * <p>
-     * If the list is small or implements {@link RandomAccess}, the
+     * If the list is small or implements {
+@link RandomAccess    }
+, the
      * implementation exchanges the first element to its destination, then the
      * displaced element, and so on until a circuit has been completed. The
      * process is repeated if needed on the second element, and so forth, until
      * all elements have been swapped.  For large non-random lists, the
      * implementation breaks the list into two sublists at index
-     * <code>-distance mod size</code>, calls {@link #reverse(List)}
-     on the
+     * <code>-distance mod size</code>, calls {
+@link #reverse(List)    }
+ on the
      * pieces, then reverses the overall list.
      * @param list the list to rotate
      * @param distance the distance to rotate by; unrestricted in value
@@ -541,16 +5502,13 @@ public class Collections implements Rollbackable {
      */
     public static void rotate(List list, int distance) {
         int size = list.size();
-        if (size == 0) {
+        if (size == 0)
             return;
-        }
         distance %= size;
-        if (distance == 0) {
+        if (distance == 0)
             return;
-        }
-        if (distance < 0) {
+        if (distance < 0)
             distance += size;
-        }
         if (isSequential(list)) {
             reverse(list);
             reverse(list.subList(0, distance));
@@ -566,16 +5524,14 @@ public class Collections implements Rollbackable {
             }
             while (--lcm >= 0) {
                 Object o = list.get(lcm);
-                for (int i = lcm + distance; i != lcm; i = (i + distance)
-                        % size) {
+                for (int i = lcm + distance; i != lcm; i = (i + distance) % size) 
                     o = list.set(i, o);
-                }
                 list.set(lcm, o);
             }
         }
     }
 
-    /**
+    /**     
      * Shuffle a list according to a default source of randomness. The algorithm
      * used iterates backwards over the list, swapping each element with an
      * element randomly selected from the elements in positions less than or
@@ -587,7 +5543,9 @@ public class Collections implements Rollbackable {
      * close to perfect.
      * <p>
      * This method operates in linear time. To do this on large lists which do
-     * not implement {@link RandomAccess}, a temporary array is used to acheive
+     * not implement {
+@link RandomAccess    }
+, a temporary array is used to acheive
      * this speed, since it would be quadratic access otherwise.
      * @param l the list to shuffle
      * @throws UnsupportedOperationException if l.listIterator() does not
@@ -596,15 +5554,14 @@ public class Collections implements Rollbackable {
     public static void shuffle(List l) {
         if (defaultRandom == null) {
             synchronized (Collections.class) {
-                if (defaultRandom == null) {
+                if (defaultRandom == null)
                     defaultRandom = new Random();
-                }
             }
         }
         shuffle(l, defaultRandom);
     }
 
-    /**
+    /**     
      * Shuffle a list according to a given source of randomness. The algorithm
      * used iterates backwards over the list, swapping each element with an
      * element randomly selected from the elements in positions less than or
@@ -616,7 +5573,9 @@ public class Collections implements Rollbackable {
      * results are merely very close to perfect.
      * <p>
      * This method operates in linear time. To do this on large lists which do
-     * not implement {@link RandomAccess}, a temporary array is used to acheive
+     * not implement {
+@link RandomAccess    }
+, a temporary array is used to acheive
      * this speed, since it would be quadratic access otherwise.
      * @param l the list to shuffle
      * @param r the source of randomness to use for the shuffle
@@ -628,23 +5587,21 @@ public class Collections implements Rollbackable {
         ListIterator i = l.listIterator(lsize);
         boolean sequential = isSequential(l);
         Object[] a = null;
-        if (sequential) {
+        if (sequential)
             a = l.toArray();
-        }
         for (int pos = lsize - 1; pos > 0; --pos) {
             int swap = r.nextInt(pos + 1);
             Object o;
             if (sequential) {
                 o = a[swap];
                 a[swap] = i.previous();
-            } else {
+            } else
                 o = l.set(swap, i.previous());
-            }
             i.set(o);
         }
     }
 
-    /**
+    /**     
      * Obtain an immutable Set consisting of a single element. The return value
      * of this method is Serializable.
      * @param o the single element
@@ -655,7 +5612,7 @@ public class Collections implements Rollbackable {
         return new SingletonSet(o);
     }
 
-    /**
+    /**     
      * Obtain an immutable List consisting of a single element. The return value
      * of this method is Serializable, and implements RandomAccess.
      * @param o the single element
@@ -668,7 +5625,7 @@ public class Collections implements Rollbackable {
         return new SingletonList(o);
     }
 
-    /**
+    /**     
      * Obtain an immutable Map consisting of a single key-value pair.
      * The return value of this method is Serializable.
      * @param key the single key
@@ -681,7 +5638,7 @@ public class Collections implements Rollbackable {
         return new SingletonMap(key, value);
     }
 
-    /**
+    /**     
      * Sort a list according to the natural ordering of its elements. The list
      * must be modifiable, but can be of fixed size. The sort algorithm is
      * precisely that used by Arrays.sort(Object[]), which offers guaranteed
@@ -698,7 +5655,7 @@ public class Collections implements Rollbackable {
         sort(l, null);
     }
 
-    /**
+    /**     
      * Sort a list according to a specified Comparator. The list must be
      * modifiable, but can be of fixed size. The sort algorithm is precisely that
      * used by Arrays.sort(Object[], Comparator), which offers guaranteed
@@ -724,7 +5681,7 @@ public class Collections implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Swaps the elements at the specified positions within the list. Equal
      * positions have no effect.
      * @param l the list to work on
@@ -739,7 +5696,7 @@ public class Collections implements Rollbackable {
         l.set(i, l.set(j, l.get(i)));
     }
 
-    /**
+    /**     
      * Returns a synchronized (thread-safe) collection wrapper backed by the
      * given collection. Notice that element access through the iterators
      * is thread-safe, but if the collection can be structurally modified
@@ -768,7 +5725,7 @@ public class Collections implements Rollbackable {
         return new SynchronizedCollection(c);
     }
 
-    /**
+    /**     
      * Returns a synchronized (thread-safe) list wrapper backed by the
      * given list. Notice that element access through the iterators
      * is thread-safe, but if the list can be structurally modified
@@ -793,13 +5750,12 @@ public class Collections implements Rollbackable {
      * @see RandomAccess
      */
     public static List synchronizedList(List l) {
-        if (l instanceof RandomAccess) {
+        if (l instanceof RandomAccess)
             return new SynchronizedRandomAccessList(l);
-        }
         return new SynchronizedList(l);
     }
 
-    /**
+    /**     
      * Returns a synchronized (thread-safe) map wrapper backed by the given
      * map. Notice that element access through the collection views and their
      * iterators are thread-safe, but if the map can be structurally modified
@@ -826,7 +5782,7 @@ public class Collections implements Rollbackable {
         return new SynchronizedMap(m);
     }
 
-    /**
+    /**     
      * Returns a synchronized (thread-safe) set wrapper backed by the given
      * set. Notice that element access through the iterator is thread-safe, but
      * if the set can be structurally modified (adding or removing elements)
@@ -852,7 +5808,7 @@ public class Collections implements Rollbackable {
         return new SynchronizedSet(s);
     }
 
-    /**
+    /**     
      * Returns a synchronized (thread-safe) sorted map wrapper backed by the
      * given map. Notice that element access through the collection views,
      * subviews, and their iterators are thread-safe, but if the map can be
@@ -884,7 +5840,7 @@ public class Collections implements Rollbackable {
         return new SynchronizedSortedMap(m);
     }
 
-    /**
+    /**     
      * Returns a synchronized (thread-safe) sorted set wrapper backed by the
      * given set. Notice that element access through the iterator and through
      * subviews are thread-safe, but if the set can be structurally modified
@@ -911,11 +5867,13 @@ public class Collections implements Rollbackable {
         return new SynchronizedSortedSet(s);
     }
 
-    /**
+    /**     
      * Returns an unmodifiable view of the given collection. This allows
      * "read-only" access, although changes in the backing collection show up
      * in this view. Attempts to modify the collection directly or via iterators
-     * will fail with {@link UnsupportedOperationException}.  Although this view
+     * will fail with {
+@link UnsupportedOperationException    }
+.  Although this view
      * prevents changes to the structure of the collection and its elements, the values
      * referenced by the objects in the collection can still be modified.
      * <p>
@@ -932,14 +5890,16 @@ public class Collections implements Rollbackable {
         return new UnmodifiableCollection(c);
     }
 
-    /**
+    /**     
      * Returns an unmodifiable view of the given list. This allows
      * "read-only" access, although changes in the backing list show up
      * in this view. Attempts to modify the list directly, via iterators, or
-     * via sublists, will fail with {@link UnsupportedOperationException}.
+     * via sublists, will fail with {
+@link UnsupportedOperationException    }
+.
      * Although this view prevents changes to the structure of the list and
      * its elements, the values referenced by the objects in the list can
-     * still be modified.
+     * still be modified.   
      * <p>
      * The returned List implements Serializable, but can only be serialized if
      * the list it wraps is likewise Serializable. In addition, if the wrapped
@@ -950,20 +5910,21 @@ public class Collections implements Rollbackable {
      * @see RandomAccess
      */
     public static List unmodifiableList(List l) {
-        if (l instanceof RandomAccess) {
+        if (l instanceof RandomAccess)
             return new UnmodifiableRandomAccessList(l);
-        }
         return new UnmodifiableList(l);
     }
 
-    /**
+    /**     
      * Returns an unmodifiable view of the given map. This allows "read-only"
      * access, although changes in the backing map show up in this view.
      * Attempts to modify the map directly, or via collection views or their
-     * iterators will fail with {@link UnsupportedOperationException}.
+     * iterators will fail with {
+@link UnsupportedOperationException    }
+.
      * Although this view prevents changes to the structure of the map and its
      * entries, the values referenced by the objects in the map can still be
-     * modified.
+     * modified.   
      * <p>
      * The returned Map implements Serializable, but can only be serialized if
      * the map it wraps is likewise Serializable.
@@ -975,14 +5936,16 @@ public class Collections implements Rollbackable {
         return new UnmodifiableMap(m);
     }
 
-    /**
+    /**     
      * Returns an unmodifiable view of the given set. This allows
      * "read-only" access, although changes in the backing set show up
      * in this view. Attempts to modify the set directly or via iterators
-     * will fail with {@link UnsupportedOperationException}.
+     * will fail with {
+@link UnsupportedOperationException    }
+.
      * Although this view prevents changes to the structure of the set and its
      * entries, the values referenced by the objects in the set can still be
-     * modified.
+     * modified.   
      * <p>
      * The returned Set implements Serializable, but can only be serialized if
      * the set it wraps is likewise Serializable.
@@ -994,15 +5957,16 @@ public class Collections implements Rollbackable {
         return new UnmodifiableSet(s);
     }
 
-    /**
+    /**     
      * Returns an unmodifiable view of the given sorted map. This allows
      * "read-only" access, although changes in the backing map show up in this
      * view. Attempts to modify the map directly, via subviews, via collection
-     * views, or iterators, will fail with
-     * {@link UnsupportedOperationException}.
+     * views, or iterators, will fail with {
+@link UnsupportedOperationException    }
+.
      * Although this view prevents changes to the structure of the map and its
      * entries, the values referenced by the objects in the map can still be
-     * modified.
+     * modified.   
      * <p>
      * The returned SortedMap implements Serializable, but can only be
      * serialized if the map it wraps is likewise Serializable.
@@ -1014,14 +5978,16 @@ public class Collections implements Rollbackable {
         return new UnmodifiableSortedMap(m);
     }
 
-    /**
+    /**     
      * Returns an unmodifiable view of the given sorted set. This allows
      * "read-only" access, although changes in the backing set show up
      * in this view. Attempts to modify the set directly, via subsets, or via
-     * iterators, will fail with {@link UnsupportedOperationException}.
+     * iterators, will fail with {
+@link UnsupportedOperationException    }
+.
      * Although this view prevents changes to the structure of the set and its
      * entries, the values referenced by the objects in the set can still be
-     * modified.
+     * modified.   
      * <p>
      * The returns SortedSet implements Serializable, but can only be
      * serialized if the set it wraps is likewise Serializable.
@@ -1033,5028 +5999,41 @@ public class Collections implements Rollbackable {
         return new UnmodifiableSortedSet(s);
     }
 
-    // This is really cheating! I think it's perfectly valid, though.
-    // The remaining methods are optional, but provide a performance
-    // advantage by not allocating unnecessary iterators in AbstractSet.
-    // class EmptySet
-    /**
-     * An immutable, serializable, empty List, which implements RandomAccess.
-     * @see Serializable
-     * @see RandomAccess
-     */
-    public static final List EMPTY_LIST = new EmptyList();
-
-    // The remaining methods are optional, but provide a performance
-    // advantage by not allocating unnecessary iterators in AbstractList.
-    // class EmptyList
-    /**
-     * An immutable, serializable, empty Map.
-     * @see Serializable
-     */
-    public static final Map EMPTY_MAP = new EmptyMap();
-
-    /**
-     * An immutable, serializable, empty Set.
-     * @see Serializable
-     */
-    public static final Set EMPTY_SET = new EmptySet();
-
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-    /**
-     * Compare two objects with or without a Comparator. If c is null, uses the
-     * natural ordering. Slightly slower than doing it inline if the JVM isn't
-     * clever, but worth it for removing a duplicate of the search code.
-     * Note: This code is also used in Arrays (for sort as well as search).
-     */
-    static final int compare(Object o1, Object o2, Comparator c) {
-        return c == null ? ((Comparable) o1).compareTo(o2) : c.compare(o1, o2);
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
-    // class SingletonMap
-    /**
-     * The implementation of {@link #synchronizedCollection(Collection)}. This
-     * class name is required for compatibility with Sun's JDK serializability.
-     * Package visible, so that collections such as the one for
-     * Hashtable.values() can specify which object to synchronize on.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    static class SynchronizedCollection implements Collection, Serializable,
-            Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            $RECORD$$CHECKPOINT.commit(timestamp);
+    public void $RESTORE(long timestamp, boolean trim) {
+        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            FieldRecord.popState($RECORDS);
+            $RESTORE(timestamp, trim);
         }
-
-        public final Checkpoint $GET$CHECKPOINT() {
-            return $CHECKPOINT;
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                        timestamp, trim);
-                FieldRecord.popState($RECORDS);
-                $RESTORE(timestamp, trim);
-            }
-        }
-
-        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-            if ($CHECKPOINT != checkpoint) {
-                Checkpoint oldCheckpoint = $CHECKPOINT;
-                if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                            .getTimestamp());
-                    FieldRecord.pushState($RECORDS);
-                }
-                $CHECKPOINT = checkpoint;
-                oldCheckpoint.setCheckpoint(checkpoint);
-                checkpoint.addObject(this);
-            }
-            return this;
-        }
-
-        /**
-         * Adds the object to the underlying collection, first
-         * obtaining a lock on the mutex.
-         * @param o The object to add.
-         * @return <code>true</code> if the collection was modified as a result
-         * of this action.
-         * @throws UnsupportedOperationException if this collection does not
-         * support the add operation.
-         * @throws ClassCastException if o cannot be added to this collection due
-         * to its type.
-         * @throws NullPointerException if o is null and this collection doesn't
-         * support the addition of null values.
-         * @throws IllegalArgumentException if o cannot be added to this
-         * collection for some other reason.
-         */
-        public boolean add(Object o) {
-            synchronized (mutex) {
-                return c.add(o);
-            }
-        }
-
-        /**
-         * Adds the objects in col to the underlying collection, first
-         * obtaining a lock on the mutex.
-         * @param col The collection to take the new objects from.
-         * @return <code>true</code> if the collection was modified as a result
-         * of this action.
-         * @throws UnsupportedOperationException if this collection does not
-         * support the addAll operation.
-         * @throws ClassCastException if some element of col cannot be added to this
-         * collection due to its type.
-         * @throws NullPointerException if some element of col is null and this
-         * collection does not support the addition of null values.
-         * @throws NullPointerException if col itself is null.
-         * @throws IllegalArgumentException if some element of col cannot be added
-         * to this collection for some other reason.
-         */
-        public boolean addAll(Collection col) {
-            synchronized (mutex) {
-                return c.addAll(col);
-            }
-        }
-
-        /**
-         * Removes all objects from the underlying collection,
-         * first obtaining a lock on the mutex.
-         * @throws UnsupportedOperationException if this collection does not
-         * support the clear operation.
-         */
-        public void clear() {
-            synchronized (mutex) {
-                c.clear();
-            }
-        }
-
-        /**
-         * Checks for the existence of o within the underlying
-         * collection, first obtaining a lock on the mutex.
-         * @param o the element to look for.
-         * @return <code>true</code> if this collection contains at least one
-         * element e such that <code>o == null ? e == null : o.equals(e)</code>.
-         * @throws ClassCastException if the type of o is not a valid type for this
-         * collection.
-         * @throws NullPointerException if o is null and this collection doesn't
-         * support null values.
-         */
-        public boolean contains(Object o) {
-            synchronized (mutex) {
-                return c.contains(o);
-            }
-        }
-
-        /**
-         * Checks for the existence of each object in cl
-         * within the underlying collection, first obtaining
-         * a lock on the mutex.
-         * @param c1 the collection to test for.
-         * @return <code>true</code> if for every element o in c, contains(o)
-         * would return <code>true</code>.
-         * @throws ClassCastException if the type of any element in cl is not a valid
-         * type for this collection.
-         * @throws NullPointerException if some element of cl is null and this
-         * collection does not support null values.
-         * @throws NullPointerException if cl itself is null.
-         */
-        public boolean containsAll(Collection c1) {
-            synchronized (mutex) {
-                return c.containsAll(c1);
-            }
-        }
-
-        /**
-         * Returns <code>true</code> if there are no objects in the underlying
-         * collection.  A lock on the mutex is obtained before the
-         * check is performed.
-         * @return <code>true</code> if this collection contains no elements.
-         */
-        public boolean isEmpty() {
-            synchronized (mutex) {
-                return c.isEmpty();
-            }
-        }
-
-        /**
-         * Returns a synchronized iterator wrapper around the underlying
-         * collection's iterator.  A lock on the mutex is obtained before
-         * retrieving the collection's iterator.
-         * @return An iterator over the elements in the underlying collection,
-         * which returns each element in any order.
-         */
-        public Iterator iterator() {
-            synchronized (mutex) {
-                return new SynchronizedIterator(mutex, c.iterator());
-            }
-        }
-
-        /**
-         * Removes the specified object from the underlying collection,
-         * first obtaining a lock on the mutex.
-         * @param o The object to remove.
-         * @return <code>true</code> if the collection changed as a result of this call, that is,
-         * if the collection contained at least one occurrence of o.
-         * @throws UnsupportedOperationException if this collection does not
-         * support the remove operation.
-         * @throws ClassCastException if the type of o is not a valid type
-         * for this collection.
-         * @throws NullPointerException if o is null and the collection doesn't
-         * support null values.
-         */
-        public boolean remove(Object o) {
-            synchronized (mutex) {
-                return c.remove(o);
-            }
-        }
-
-        /**
-         * Removes all elements, e, of the underlying
-         * collection for which <code>col.contains(e)</code>
-         * returns <code>true</code>.  A lock on the mutex is obtained
-         * before the operation proceeds.
-         * @param col The collection of objects to be removed.
-         * @return <code>true</code> if this collection was modified as a result of this call.
-         * @throws UnsupportedOperationException if this collection does not
-         * support the removeAll operation.
-         * @throws ClassCastException if the type of any element in c is not a valid
-         * type for this collection.
-         * @throws NullPointerException if some element of c is null and this
-         * collection does not support removing null values.
-         * @throws NullPointerException if c itself is null.
-         */
-        public boolean removeAll(Collection col) {
-            synchronized (mutex) {
-                return c.removeAll(col);
-            }
-        }
-
-        /**
-         * Retains all elements, e, of the underlying
-         * collection for which <code>col.contains(e)</code>
-         * returns <code>true</code>.  That is, every element that doesn't
-         * exist in col is removed.  A lock on the mutex is obtained
-         * before the operation proceeds.
-         * @param col The collection of objects to be removed.
-         * @return <code>true</code> if this collection was modified as a result of this call.
-         * @throws UnsupportedOperationException if this collection does not
-         * support the removeAll operation.
-         * @throws ClassCastException if the type of any element in c is not a valid
-         * type for this collection.
-         * @throws NullPointerException if some element of c is null and this
-         * collection does not support removing null values.
-         * @throws NullPointerException if c itself is null.
-         */
-        public boolean retainAll(Collection col) {
-            synchronized (mutex) {
-                return c.retainAll(col);
-            }
-        }
-
-        /**
-         * Retrieves the size of the underlying collection.
-         * A lock on the mutex is obtained before the collection
-         * is accessed.
-         * @return The size of the collection.
-         */
-        public int size() {
-            synchronized (mutex) {
-                return c.size();
-            }
-        }
-
-        /**
-         * Returns an array containing each object within the underlying
-         * collection.  A lock is obtained on the mutex before the collection
-         * is accessed.
-         * @return An array of objects, matching the collection in size.  The
-         * elements occur in any order.
-         */
-        public Object[] toArray() {
-            synchronized (mutex) {
-                return c.toArray();
-            }
-        }
-
-        /**
-         * Copies the elements in the underlying collection to the supplied
-         * array.  If <code>a.length < size()</code>, a new array of the
-         * same run-time type is created, with a size equal to that of
-         * the collection.  If <code>a.length > size()</code>, then the
-         * elements from 0 to <code>size() - 1</code> contain the elements
-         * from this collection.  The following element is set to null
-         * to indicate the end of the collection objects.  However, this
-         * only makes a difference if null is not a permitted value within
-         * the collection.
-         * Before the copying takes place, a lock is obtained on the mutex.
-         * @param a An array to copy elements to.
-         * @return An array containing the elements of the underlying collection.
-         * @throws ArrayStoreException if the type of any element of the
-         * collection is not a subtype of the element type of a.
-         */
-        public Object[] toArray(Object[] a) {
-            synchronized (mutex) {
-                return c.toArray(a);
-            }
-        }
-
-        /**
-         * Returns a string representation of the underlying collection.
-         * A lock is obtained on the mutex before the string is created.
-         * @return A string representation of the collection.
-         */
-        public String toString() {
-            synchronized (mutex) {
-                return c.toString();
-            }
-        }
-
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-        /**
-         * Wrap a given collection.
-         * @param c the collection to wrap
-         * @throws NullPointerException if c is null
-         */
-        SynchronizedCollection(Collection c) {
-            this.c = c;
-            mutex = this;
-            if (c == null) {
-                throw new NullPointerException();
-            }
-        }
-
-        /**
-         * Called only by trusted code to specify the mutex as well as the
-         * collection.
-         * @param sync the mutex
-         * @param c the collection
-         */
-        SynchronizedCollection(Object sync, Collection c) {
-            this.c = c;
-            mutex = sync;
-        }
-
-        /**
-         * The wrapped collection. Package visible for use by subclasses.
-         * @serial the real collection
-         */
-        final Collection c;
-
-        /**
-         * The object to synchronize on.  When an instance is created via public
-         * methods, it will be this; but other uses like SynchronizedMap.values()
-         * must specify another mutex. Package visible for use by subclasses.
-         * @serial the lock
-         */
-        final Object mutex;
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 3053995032091335093L;
-
     }
 
-    // class SynchronizedIterator
-    /**
-     * The implementation of {@link #synchronizedList(List)} for sequential
-     * lists. This class name is required for compatibility with Sun's JDK
-     * serializability. Package visible, so that lists such as Vector.subList()
-     * can specify which object to synchronize on.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    static class SynchronizedList extends SynchronizedCollection implements
-            List, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Insert an element into the underlying list at a given position (optional
-         * operation).  This shifts all existing elements from that position to the
-         * end one index to the right. This version of add has no return, since it is
-         * assumed to always succeed if there is no exception.  Before the
-         * addition takes place, a lock is obtained on the mutex.
-         * @param index the location to insert the item
-         * @param o the object to insert
-         * @throws UnsupportedOperationException if this list does not support the
-         * add operation
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-         * @throws ClassCastException if o cannot be added to this list due to its
-         * type
-         * @throws IllegalArgumentException if o cannot be added to this list for
-         * some other reason
-         * @throws NullPointerException if o is null and this list doesn't support
-         * the addition of null values.
-         */
-        public void add(int index, Object o) {
-            synchronized (mutex) {
-                list.add(index, o);
-            }
-        }
-
-        /**
-         * Add the contents of a collection to the underlying list at the given
-         * index (optional operation).  If the list imposes restraints on what
-         * can be inserted, such as no null elements, this should be documented.
-         * A lock is obtained on the mutex before any of the elements are added.
-         * @param index the index at which to insert
-         * @param c the collection to add
-         * @return <code>true</code>, as defined by Collection for a modified list
-         * @throws UnsupportedOperationException if this list does not support the
-         * add operation
-         * @throws ClassCastException if o cannot be added to this list due to its
-         * type
-         * @throws IllegalArgumentException if o cannot be added to this list for
-         * some other reason
-         * @throws NullPointerException if o is null and this list doesn't support
-         * the addition of null values.
-         */
-        public boolean addAll(int index, Collection c) {
-            synchronized (mutex) {
-                return list.addAll(index, c);
-            }
-        }
-
-        /**
-         * Tests whether the underlying list is equal to the supplied object.
-         * The object is deemed to be equal if it is also a <code>List</code>
-         * of equal size and with the same elements (i.e. each element, e1,
-         * in list, l1, and each element, e2, in l2, must return <code>true</code> for
-         * <code>e1 == null ? e2 == null : e1.equals(e2)</code>.  Before the
-         * comparison is made, a lock is obtained on the mutex.
-         * @param o The object to test for equality with the underlying list.
-         * @return <code>true</code> if o is equal to the underlying list under the above
-         * definition.
-         */
-        public boolean equals(Object o) {
-            synchronized (mutex) {
-                return list.equals(o);
-            }
-        }
-
-        /**
-         * Retrieves the object at the specified index.  A lock
-         * is obtained on the mutex before the list is accessed.
-         * @param index the index of the element to be returned
-         * @return the element at index index in this list
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-         */
-        public Object get(int index) {
-            synchronized (mutex) {
-                return list.get(index);
-            }
-        }
-
-        /**
-         * Obtains a hashcode for the underlying list, first obtaining
-         * a lock on the mutex.  The calculation of the hashcode is
-         * detailed in the documentation for the <code>List</code>
-         * interface.
-         * @return The hashcode of the underlying list.
-         * @see List#hashCode()
-         */
-        public int hashCode() {
-            synchronized (mutex) {
-                return list.hashCode();
-            }
-        }
-
-        /**
-         * Obtain the first index at which a given object is to be found in the
-         * underlying list.  A lock is obtained on the mutex before the list is
-         * accessed.
-         * @param o the object to search for
-         * @return the least integer n such that <code>o == null ? get(n) == null :
-         * o.equals(get(n))</code>, or -1 if there is no such index.
-         * @throws ClassCastException if the type of o is not a valid
-         * type for this list.
-         * @throws NullPointerException if o is null and this
-         * list does not support null values.
-         */
-        public int indexOf(Object o) {
-            synchronized (mutex) {
-                return list.indexOf(o);
-            }
-        }
-
-        /**
-         * Obtain the last index at which a given object is to be found in this
-         * underlying list.  A lock is obtained on the mutex before the list
-         * is accessed.
-         * @return the greatest integer n such that <code>o == null ? get(n) == null
-         * : o.equals(get(n))</code>, or -1 if there is no such index.
-         * @throws ClassCastException if the type of o is not a valid
-         * type for this list.
-         * @throws NullPointerException if o is null and this
-         * list does not support null values.
-         */
-        public int lastIndexOf(Object o) {
-            synchronized (mutex) {
-                return list.lastIndexOf(o);
-            }
-        }
-
-        /**
-         * Retrieves a synchronized wrapper around the underlying list's
-         * list iterator.  A lock is obtained on the mutex before the
-         * list iterator is retrieved.
-         * @return A list iterator over the elements in the underlying list.
-         * The list iterator allows additional list-specific operations
-         * to be performed, in addition to those supplied by the
-         * standard iterator.
-         */
-        public ListIterator listIterator() {
-            synchronized (mutex) {
-                return new SynchronizedListIterator(mutex, list.listIterator());
-            }
-        }
-
-        /**
-         * Retrieves a synchronized wrapper around the underlying list's
-         * list iterator.  A lock is obtained on the mutex before the
-         * list iterator is retrieved.  The iterator starts at the
-         * index supplied, leading to the element at that index being
-         * the first one returned by <code>next()</code>.  Calling
-         * <code>previous()</code> from this initial position returns
-         * index - 1.
-         * @param index the position, between 0 and size() inclusive, to begin the
-         * iteration from
-         * @return A list iterator over the elements in the underlying list.
-         * The list iterator allows additional list-specific operations
-         * to be performed, in addition to those supplied by the
-         * standard iterator.
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-         */
-        public ListIterator listIterator(int index) {
-            synchronized (mutex) {
-                return new SynchronizedListIterator(mutex, list
-                        .listIterator(index));
-            }
-        }
-
-        /**
-         * Remove the element at a given position in the underlying list (optional
-         * operation).  All remaining elements are shifted to the left to fill the gap.
-         * A lock on the mutex is obtained before the element is removed.
-         * @param index the position within the list of the object to remove
-         * @return the object that was removed
-         * @throws UnsupportedOperationException if this list does not support the
-         * remove operation
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-         */
-        public Object remove(int index) {
-            synchronized (mutex) {
-                return list.remove(index);
-            }
-        }
-
-        /**
-         * Replace an element of the underlying list with another object (optional
-         * operation).  A lock is obtained on the mutex before the element is
-         * replaced.
-         * @param index the position within this list of the element to be replaced
-         * @param o the object to replace it with
-         * @return the object that was replaced
-         * @throws UnsupportedOperationException if this list does not support the
-         * set operation.
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-         * @throws ClassCastException if o cannot be added to this list due to its
-         * type
-         * @throws IllegalArgumentException if o cannot be added to this list for
-         * some other reason
-         * @throws NullPointerException if o is null and this
-         * list does not support null values.
-         */
-        public Object set(int index, Object o) {
-            synchronized (mutex) {
-                return list.set(index, o);
-            }
-        }
-
-        /**
-         * Obtain a List view of a subsection of the underlying list, from fromIndex
-         * (inclusive) to toIndex (exclusive). If the two indices are equal, the
-         * sublist is empty. The returned list should be modifiable if and only
-         * if this list is modifiable. Changes to the returned list should be
-         * reflected in this list. If this list is structurally modified in
-         * any way other than through the returned list, the result of any subsequent
-         * operations on the returned list is undefined.  A lock is obtained
-         * on the mutex before the creation of the sublist.  The returned list
-         * is also synchronized, using the same mutex.
-         * @param fromIndex the index that the returned list should start from
-         * (inclusive)
-         * @param toIndex the index that the returned list should go to (exclusive)
-         * @return a List backed by a subsection of this list
-         * @throws IndexOutOfBoundsException if fromIndex &lt; 0
-         * || toIndex &gt; size() || fromIndex &gt; toIndex
-         */
-        public List subList(int fromIndex, int toIndex) {
-            synchronized (mutex) {
-                return new SynchronizedList(mutex, list.subList(fromIndex,
-                        toIndex));
-            }
-        }
-
-        /**
-         * Wrap a given list.
-         * @param l the list to wrap
-         * @throws NullPointerException if l is null
-         */
-        SynchronizedList(List l) {
-            super(l);
-            list = l;
-        }
-
-        /**
-         * Called only by trusted code to specify the mutex as well as the list.
-         * @param sync the mutex
-         * @param l the list
-         */
-        SynchronizedList(Object sync, List l) {
-            super(sync, l);
-            list = l;
-        }
-
-        /**
-         * The wrapped list; stored both here and in the superclass to avoid
-         * excessive casting. Package visible for use by subclass.
-         * @serial the wrapped list
-         */
-        final List list;
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = -7754090372962971524L;
-
+    public final Checkpoint $GET$CHECKPOINT() {
+        return $CHECKPOINT;
     }
 
-    // class SynchronizedMap
-    /**
-     * The implementation of {@link #synchronizedSet(Set)}. This class
-     * name is required for compatibility with Sun's JDK serializability.
-     * Package visible, so that sets such as Hashtable.keySet()
-     * can specify which object to synchronize on.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    static class SynchronizedSet extends SynchronizedCollection implements Set,
-            Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Returns <code>true</code> if the object, o, is a <code>Set</code>
-         * of the same size as the underlying set, and contains
-         * each element, e, which occurs in the underlying set.
-         * A lock is obtained on the mutex before the comparison
-         * takes place.
-         * @param o The object to compare against.
-         * @return <code>true</code> if o is an equivalent set.
-         */
-        public boolean equals(Object o) {
-            synchronized (mutex) {
-                return c.equals(o);
+    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+        if ($CHECKPOINT != checkpoint) {
+            Checkpoint oldCheckpoint = $CHECKPOINT;
+            if (checkpoint != null) {
+                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                FieldRecord.pushState($RECORDS);
             }
+            $CHECKPOINT = checkpoint;
+            oldCheckpoint.setCheckpoint(checkpoint);
+            checkpoint.addObject(this);
         }
-
-        /**
-         * Computes the hash code for the underlying set as the
-         * sum of the hash code of all elements within the set.
-         * A lock is obtained on the mutex before the computation
-         * occurs.
-         * @return The hash code for the underlying set.
-         */
-        public int hashCode() {
-            synchronized (mutex) {
-                return c.hashCode();
-            }
-        }
-
-        /**
-         * Called only by trusted code to specify the mutex as well as the set.
-         * @param sync the mutex
-         * @param s the set
-         */
-        SynchronizedSet(Object sync, Set s) {
-            super(sync, s);
-        }
-
-        /**
-         * Wrap a given set.
-         * @param s the set to wrap
-         * @throws NullPointerException if s is null
-         */
-        SynchronizedSet(Set s) {
-            super(s);
-        }
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 487447009682186044L;
-
+        return this;
     }
 
-    /**
-     * This class is non-instantiable.
-     */
-    private Collections() {
-    }
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    // class UnmodifiableSortedSet
-    /**
-     * Determines if a list should be treated as a sequential-access one.
-     * Rather than the old method of JDK 1.3 of assuming only instanceof
-     * AbstractSequentialList should be sequential, this uses the new method
-     * of JDK 1.4 of assuming anything that does NOT implement RandomAccess
-     * and exceeds a large (unspecified) size should be sequential.
-     * @param l the list to check
-     * @return <code>true</code> if it should be treated as sequential-access
-     */
-    private static boolean isSequential(List l) {
-        return !(l instanceof RandomAccess) && l.size() > LARGE_LIST_SIZE;
-    }
-
-    private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-    /**
-     * Constant used to decide cutoff for when a non-RandomAccess list should
-     * be treated as sequential-access. Basically, quadratic behavior is
-     * acceptable for small lists when the overhead is so small in the first
-     * place. I arbitrarily set it to 16, so it may need some tuning.
-     */
-    private static final int LARGE_LIST_SIZE = 16;
-
-    // Determine the least common multiple of distance and size, as there
-    // are (distance / LCM) loops to cycle through.
-    // Now, make the swaps. We must take the remainder every time through
-    // the inner loop so that we don't overflow i to negative values.
-    /**
-     * Cache a single Random object for use by shuffle(List). This improves
-     * performance as well as ensuring that sequential calls to shuffle() will
-     * not result in the same shuffle order occurring: the resolution of
-     * System.currentTimeMillis() is not sufficient to guarantee a unique seed.
-     */
-    private static Random defaultRandom = null;
-
-    // The remaining methods are optional, but provide a performance
-    // advantage by not allocating unnecessary iterators in AbstractMap.
-    // class EmptyMap
-    // We use a linear search with log(n) comparisons using an iterator
-    // if the list is sequential-access.
-    // Assumes list is not empty (see isSequential)
-    // Changing direction first.
-    // Changing direction first.
-    // This gets the insertion point right on the last loop
-    // This gets the insertion point right on the last loop
-    // If we failed to find it, we do the same whichever search we did.
-    // throws NoSuchElementException
-    // throws NoSuchElementExcception
-    // The remaining methods are optional, but provide a performance
-    // advantage by not allocating unnecessary iterators in AbstractList.
-    // class CopiesList
-    /**
-     * The object for {@link #reverseOrder()}.
-     */
-    private static final ReverseComparator rcInstance = new ReverseComparator();
-
-    /**
-     * The implementation of {@link #nCopies(int, Object)}. This class name
-     * is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class CopiesList extends AbstractList implements
-            Serializable, RandomAccess, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            $RECORD$element.restore(element, timestamp, trim);
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * This list only contains one element.
-         * @param o The object to search for.
-         * @return <code>true</code> if o is the element used by this list.
-         */
-        public boolean contains(Object o) {
-            return n > 0 && equals(o, element);
-        }
-
-        /**
-         * The same element is returned.
-         * @param index The index of the element to be returned (irrelevant
-         * as the list contains only copies of <code>element</code>).
-         * @return The element used by this list.
-         */
-        public Object get(int index) {
-            if (index < 0 || index >= n) {
-                throw new IndexOutOfBoundsException();
-            }
-            return element;
-        }
-
-        /**
-         * The index is either 0 or -1.
-         * @param o The object to find the index of.
-         * @return 0 if <code>o == element</code>, -1 if not.
-         */
-        public int indexOf(Object o) {
-            return (n > 0 && equals(o, element)) ? 0 : -1;
-        }
-
-        /**
-         * The index is either n-1 or -1.
-         * @param o The object to find the last index of.
-         * @return The last index in the list if <code>o == element</code>,
-         * -1 if not.
-         */
-        public int lastIndexOf(Object o) {
-            return equals(o, element) ? n - 1 : -1;
-        }
-
-        /**
-         * The size is fixed.
-         * @return The size of the list.
-         */
-        public int size() {
-            return n;
-        }
-
-        /**
-         * A subList is just another CopiesList.
-         * @param from The starting bound of the sublist.
-         * @param to The ending bound of the sublist.
-         * @return A list of copies containing <code>from - to</code>
-         * elements, all of which are equal to the element
-         * used by this list.
-         */
-        public List subList(int from, int to) {
-            if (from < 0 || to > n) {
-                throw new IndexOutOfBoundsException();
-            }
-            return new CopiesList(to - from, element);
-        }
-
-        /**
-         * The array is easy.
-         * @return An array of size n filled with copies of
-         * the element used by this list.
-         */
-        public Object[] toArray() {
-            Object[] a = new Object[n];
-            Arrays.fill(a, element);
-            return a;
-        }
-
-        /**
-         * The string is easy to generate.
-         * @return A string representation of the list.
-         */
-        public String toString() {
-            StringBuffer r = new StringBuffer("{");
-            for (int i = n - 1; --i > 0;) {
-                r.append(element).append(", ");
-            }
-            r.append(element).append("}");
-            return r.toString();
-        }
-
-        /**
-         * Constructs the list.
-         * @param n the count
-         * @param o the object
-         * @throws IllegalArgumentException if n &lt; 0
-         */
-        CopiesList(int n, Object o) {
-            if (n < 0) {
-                throw new IllegalArgumentException();
-            }
-            this.n = n;
-            element = o;
-        }
-
-        private FieldRecord $RECORD$element = new FieldRecord(0);
-
-        private FieldRecord $RECORD$n = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$n,
-                $RECORD$element };
-
-        /**
-         * The repeated list element.
-         * @serial the list contents
-         */
-        private final Object element;
-
-        /**
-         * The count of elements in this list.
-         * @serial the list size
-         */
-        private final int n;
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 2739099268398711800L;
-
-    }
-
-    /**
-     * The implementation of {@link #EMPTY_LIST}. This class name is required
-     * for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class EmptyList extends AbstractList implements
-            Serializable, RandomAccess, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Never contains anything.
-         * @param o The object to search for.
-         * @return <code>false</code>.
-         */
-        public boolean contains(Object o) {
-            return false;
-        }
-
-        /**
-         * This is true only if the given collection is also empty.
-         * @param c The collection of objects, which should be compared
-         * against the members of this list.
-         * @return <code>true</code> if c is also empty.
-         */
-        public boolean containsAll(Collection c) {
-            return c.isEmpty();
-        }
-
-        /**
-         * Equal only if the other list is empty.
-         * @param o The object to compare against this list.
-         * @return <code>true</code> if o is also an empty instance of
-         * <code>List</code>.
-         */
-        public boolean equals(Object o) {
-            return o instanceof List && ((List) o).isEmpty();
-        }
-
-        /**
-         * No matter the index, it is out of bounds.  This
-         * method never returns, throwing an exception instead.
-         * @param index The index of the element to retrieve.
-         * @return the object at the specified index.
-         * @throws IndexOutOfBoundsException as any given index
-         * is outside the bounds of an empty array.
-         */
-        public Object get(int index) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        /**
-         * The hashcode is always 1.
-         * @return 1.
-         */
-        public int hashCode() {
-            return 1;
-        }
-
-        /**
-         * Returns -1.
-         * @param o The object to search for.
-         * @return -1.
-         */
-        public int indexOf(Object o) {
-            return -1;
-        }
-
-        /**
-         * Returns -1.
-         * @param o The object to search for.
-         * @return -1.
-         */
-        public int lastIndexOf(Object o) {
-            return -1;
-        }
-
-        /**
-         * Always succeeds with <code>false</code> result.
-         * @param o The object to remove.
-         * @return -1.
-         */
-        public boolean remove(Object o) {
-            return false;
-        }
-
-        /**
-         * Always succeeds with <code>false</code> result.
-         * @param c The collection of objects which should
-         * all be removed from this list.
-         * @return <code>false</code>.
-         */
-        public boolean removeAll(Collection c) {
-            return false;
-        }
-
-        /**
-         * Always succeeds with <code>false</code> result.
-         * @param c The collection of objects which should
-         * all be retained within this list.
-         * @return <code>false</code>.
-         */
-        public boolean retainAll(Collection c) {
-            return false;
-        }
-
-        /**
-         * The size is always 0.
-         * @return 0.
-         */
-        public int size() {
-            return 0;
-        }
-
-        /**
-         * The array is always empty.
-         * @return A new array with a size of 0.
-         */
-        public Object[] toArray() {
-            return new Object[0];
-        }
-
-        /**
-         * We don't even need to use reflection!
-         * @param a An existing array, which can be empty.
-         * @return The original array with any existing
-         * initial element set to null.
-         */
-        public Object[] toArray(Object[] a) {
-            if (a.length > 0) {
-                a[0] = null;
-            }
-            return a;
-        }
-
-        /**
-         * The string never changes.
-         * @return the string "[]".
-         */
-        public String toString() {
-            return "[]";
-        }
-
-        /**
-         * A private constructor adds overhead.
-         */
-        EmptyList() {
-        }
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 8842843931221139166L;
-
-    }
-
-    /**
-     * The implementation of {@link #EMPTY_MAP}. This class name is required
-     * for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class EmptyMap extends AbstractMap implements
-            Serializable, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * No entries!
-         * @param key The key to search for.
-         * @return <code>false</code>.
-         */
-        public boolean containsKey(Object key) {
-            return false;
-        }
-
-        /**
-         * No entries!
-         * @param value The value to search for.
-         * @return <code>false</code>.
-         */
-        public boolean containsValue(Object value) {
-            return false;
-        }
-
-        /**
-         * There are no entries.
-         * @return The empty set.
-         */
-        public Set entrySet() {
-            return EMPTY_SET;
-        }
-
-        /**
-         * Equal to all empty maps.
-         * @param o The object o to compare against this map.
-         * @return <code>true</code> if o is also an empty instance of
-         * <code>Map</code>.
-         */
-        public boolean equals(Object o) {
-            return o instanceof Map && ((Map) o).isEmpty();
-        }
-
-        /**
-         * No mappings, so this returns null.
-         * @param o The key of the object to retrieve.
-         * @return null.
-         */
-        public Object get(Object o) {
-            return null;
-        }
-
-        /**
-         * The hashcode is always 0.
-         * @return 0.
-         */
-        public int hashCode() {
-            return 0;
-        }
-
-        /**
-         * No entries.
-         * @return The empty set.
-         */
-        public Set keySet() {
-            return EMPTY_SET;
-        }
-
-        /**
-         * Remove always succeeds, with null result.
-         * @param o The key of the mapping to remove.
-         * @return null, as there is never a mapping for o.
-         */
-        public Object remove(Object o) {
-            return null;
-        }
-
-        /**
-         * Size is always 0.
-         * @return 0.
-         */
-        public int size() {
-            return 0;
-        }
-
-        /**
-         * The string never changes.
-         * @return the string "[]".
-         */
-        public String toString() {
-            return "[]";
-        }
-
-        /**
-         * No entries. Technically, EMPTY_SET, while more specific than a general
-         * Collection, will work. Besides, that's what the JDK uses!
-         * @return The empty set.
-         */
-        public Collection values() {
-            return EMPTY_SET;
-        }
-
-        /**
-         * A private constructor adds overhead.
-         */
-        EmptyMap() {
-        }
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 6428348081105594320L;
-
-    }
-
-    /**
-     * The implementation of {@link #EMPTY_SET}. This class name is required
-     * for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class EmptySet extends AbstractSet implements
-            Serializable, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * The empty set never contains anything.
-         * @param o The object to search for.
-         * @return <code>false</code>.
-         */
-        public boolean contains(Object o) {
-            return false;
-        }
-
-        /**
-         * This is true only if the given collection is also empty.
-         * @param c The collection of objects which are to be compared
-         * against the members of this set.
-         * @return <code>true</code> if c is empty.
-         */
-        public boolean containsAll(Collection c) {
-            return c.isEmpty();
-        }
-
-        /**
-         * Equal only if the other set is empty.
-         * @param o The object to compare with this set.
-         * @return <code>true</code> if o is an empty instance of <code>Set</code>.
-         */
-        public boolean equals(Object o) {
-            return o instanceof Set && ((Set) o).isEmpty();
-        }
-
-        /**
-         * The hashcode is always 0.
-         * @return 0.
-         */
-        public int hashCode() {
-            return 0;
-        }
-
-        /**
-         * Returns an iterator that does not iterate.
-         * @return A non-iterating iterator.
-         */
-        public Iterator iterator() {
-            return EMPTY_LIST.iterator();
-        }
-
-        /**
-         * Always succeeds with a <code>false</code> result.
-         * @param o The object to remove.
-         * @return <code>false</code>.
-         */
-        public boolean remove(Object o) {
-            return false;
-        }
-
-        /**
-         * Always succeeds with a <code>false</code> result.
-         * @param c The collection of objects which should
-         * all be removed from this set.
-         * @return <code>false</code>.
-         */
-        public boolean removeAll(Collection c) {
-            return false;
-        }
-
-        /**
-         * Always succeeds with a <code>false</code> result.
-         * @param c The collection of objects which should
-         * all be retained within this set.
-         * @return <code>false</code>.
-         */
-        public boolean retainAll(Collection c) {
-            return false;
-        }
-
-        /**
-         * The size: always 0!
-         * @return 0.
-         */
-        public int size() {
-            return 0;
-        }
-
-        /**
-         * The array is always empty.
-         * @return A new array with a size of 0.
-         */
-        public Object[] toArray() {
-            return new Object[0];
-        }
-
-        /**
-         * We don't even need to use reflection!
-         * @param a An existing array, which can be empty.
-         * @return The original array with any existing
-         * initial element set to null.
-         */
-        public Object[] toArray(Object[] a) {
-            if (a.length > 0) {
-                a[0] = null;
-            }
-            return a;
-        }
-
-        /**
-         * The string never changes.
-         * @return the string "[]".
-         */
-        public String toString() {
-            return "[]";
-        }
-
-        /**
-         * A private constructor adds overhead.
-         */
-        EmptySet() {
-        }
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 1582296315990362920L;
-
-    }
-
-    /**
-     * The implementation of {@link #reverseOrder()}. This class name
-     * is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class ReverseComparator implements Comparator,
-            Serializable, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            $RECORD$$CHECKPOINT.commit(timestamp);
-        }
-
-        public final Checkpoint $GET$CHECKPOINT() {
-            return $CHECKPOINT;
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                        timestamp, trim);
-                FieldRecord.popState($RECORDS);
-                $RESTORE(timestamp, trim);
-            }
-        }
-
-        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-            if ($CHECKPOINT != checkpoint) {
-                Checkpoint oldCheckpoint = $CHECKPOINT;
-                if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                            .getTimestamp());
-                    FieldRecord.pushState($RECORDS);
-                }
-                $CHECKPOINT = checkpoint;
-                oldCheckpoint.setCheckpoint(checkpoint);
-                checkpoint.addObject(this);
-            }
-            return this;
-        }
-
-        /**
-         * Compare two objects in reverse natural order.
-         * @param a the first object
-         * @param b the second object
-         * @return &lt;, ==, or &gt; 0 according to b.compareTo(a)
-         */
-        public int compare(Object a, Object b) {
-            return ((Comparable) b).compareTo(a);
-        }
-
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-        /**
-         * A private constructor adds overhead.
-         */
-        ReverseComparator() {
-        }
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 7207038068494060240L;
-
-    }
-
-    // class SingletonSet
-    /**
-     * The implementation of {@link #singletonList(Object)}. This class name
-     * is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class SingletonList extends AbstractList implements
-            Serializable, RandomAccess, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            $RECORD$element.restore(element, timestamp, trim);
-            super.$RESTORE(timestamp, trim);
-        }
-
-        // advantage by not allocating unnecessary iterators in AbstractList.
-        /**
-         * The set only contains one element.
-         * @param o The object to search for.
-         * @return <code>true</code> if o == the singleton element.
-         */
-        public boolean contains(Object o) {
-            return equals(o, element);
-        }
-
-        /**
-         * This is true if the other collection only contains the element.
-         * @param c A collection to compare against this singleton.
-         * @return <code>true</code> if c only contains either no elements or
-         * elements equal to the element in this singleton.
-         */
-        public boolean containsAll(Collection c) {
-            Iterator i = c.iterator();
-            int pos = c.size();
-            while (--pos >= 0) {
-                if (!equals(i.next(), element)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        /**
-         * Only index 0 is valid.
-         * @param index The index of the element
-         * to retrieve.
-         * @return The singleton's element if the
-         * index is 0.
-         * @throws IndexOutOfBoundsException if
-         * index is not 0.
-         */
-        public Object get(int index) {
-            if (index == 0) {
-                return element;
-            }
-            throw new IndexOutOfBoundsException();
-        }
-
-        // The remaining methods are optional, but provide a performance
-
-        /**
-         * Speed up the hashcode computation.
-         * @return The hashcode of the list, based
-         * on the hashcode of the singleton element.
-         */
-        public int hashCode() {
-            return 31 + hashCode(element);
-        }
-
-        /**
-         * Either the list has it or not.
-         * @param o The object to find the first index of.
-         * @return 0 if o is the singleton element, -1 if not.
-         */
-        public int indexOf(Object o) {
-            return equals(o, element) ? 0 : -1;
-        }
-
-        /**
-         * Either the list has it or not.
-         * @param o The object to find the last index of.
-         * @return 0 if o is the singleton element, -1 if not.
-         */
-        public int lastIndexOf(Object o) {
-            return equals(o, element) ? 0 : -1;
-        }
-
-        /**
-         * The size: always 1!
-         * @return 1.
-         */
-        public int size() {
-            return 1;
-        }
-
-        /**
-         * Sublists are limited in scope.
-         * @param from The starting bound for the sublist.
-         * @param to The ending bound for the sublist.
-         * @return Either an empty list if both bounds are
-         * 0 or 1, or this list if the bounds are 0 and 1.
-         * @throws IllegalArgumentException if <code>from > to</code>
-         * @throws IndexOutOfBoundsException if either bound is greater
-         * than 1.
-         */
-        public List subList(int from, int to) {
-            if (from == to && (to == 0 || to == 1)) {
-                return EMPTY_LIST;
-            }
-            if (from == 0 && to == 1) {
-                return this;
-            }
-            if (from > to) {
-                throw new IllegalArgumentException();
-            }
-            throw new IndexOutOfBoundsException();
-        }
-
-        /**
-         * Returning an array is simple.
-         * @return An array containing the element.
-         */
-        public Object[] toArray() {
-            return new Object[] { element };
-        }
-
-        /**
-         * Obvious string.
-         * @return The string surrounded by enclosing
-         * square brackets.
-         */
-        public String toString() {
-            return "[" + element + "]";
-        }
-
-        /**
-         * Construct a singleton.
-         * @param o the element
-         */
-        SingletonList(Object o) {
-            element = o;
-        }
-
-        private FieldRecord $RECORD$element = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$element };
-
-        /**
-         * The single element.
-         * @serial the singleton
-         */
-        private final Object element;
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 3093736618740652951L;
-
-    }
-
-    // class SingletonList
-    /**
-     * The implementation of {@link #singletonMap(Object, Object)}. This class
-     * name is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class SingletonMap extends AbstractMap implements
-            Serializable, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            $RECORD$k.restore(k, timestamp, trim);
-            $RECORD$v.restore(v, timestamp, trim);
-            entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
-            super.$RESTORE(timestamp, trim);
-        }
-
-        // advantage by not allocating unnecessary iterators in AbstractMap.
-        /**
-         * Single entry.
-         * @param key The key to look for.
-         * @return <code>true</code> if the key is the same as the one used by
-         * this map.
-         */
-        public boolean containsKey(Object key) {
-            return equals(key, k);
-        }
-
-        /**
-         * Single entry.
-         * @param value The value to look for.
-         * @return <code>true</code> if the value is the same as the one used by
-         * this map.
-         */
-        public boolean containsValue(Object value) {
-            return equals(value, v);
-        }
-
-        /**
-         * There is a single immutable entry.
-         * @return A singleton containing the map entry.
-         */
-        public Set entrySet() {
-            if (entries == null) {
-                $ASSIGN$entries(singleton(new AbstractMap.BasicMapEntry(k, v) {
-                    public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp,
-                                $RECORD$$CHECKPOINT.getTopTimestamp());
-                        super.$COMMIT(timestamp);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                        return $CHECKPOINT;
-                    }
-
-                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                        super.$RESTORE(timestamp, trim);
-                    }
-
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(
-                            Checkpoint checkpoint) {
-                        if ($CHECKPOINT != checkpoint) {
-                            Checkpoint oldCheckpoint = $CHECKPOINT;
-                            if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                                        .getTimestamp());
-                                FieldRecord.pushState($RECORDS);
-                            }
-                            $CHECKPOINT = checkpoint;
-                            oldCheckpoint.setCheckpoint(checkpoint);
-                            checkpoint.addObject(new _PROXY_());
-                        }
-                        return this;
-                    }
-
-                    /**
-                     * Sets the value of the map entry to the supplied value.
-                     * An exception is always thrown, as the map is immutable.
-                     * @param o The new value.
-                     * @return The old value.
-                     * @throws UnsupportedOperationException as setting the value
-                     * is not supported.
-                     */
-                    public Object setValue(Object o) {
-                        throw new UnsupportedOperationException();
-                    }
-
-                    final class _PROXY_ implements Rollbackable {
-
-                        public final void $COMMIT(long timestamp) {
-                            $COMMIT_ANONYMOUS(timestamp);
-                        }
-
-                        public final Checkpoint $GET$CHECKPOINT() {
-                            return $GET$CHECKPOINT_ANONYMOUS();
-                        }
-
-                        public final void $RESTORE(long timestamp, boolean trim) {
-                            $RESTORE_ANONYMOUS(timestamp, trim);
-                        }
-
-                        public final Object $SET$CHECKPOINT(
-                                Checkpoint checkpoint) {
-                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                            return this;
-                        }
-
-                    }
-
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-                    {
-                        $CHECKPOINT.addObject(new _PROXY_());
-                    }
-
-                }));
-            }
-            return entries;
-        }
-
-        /**
-         * Single entry.
-         * @param key The key of the value to be retrieved.
-         * @return The singleton value if the key is the same as the
-         * singleton key, null otherwise.
-         */
-        public Object get(Object key) {
-            return equals(key, k) ? v : null;
-        }
-
-        // The remaining methods are optional, but provide a performance
-
-        /**
-         * Calculate the hashcode directly.
-         * @return The hashcode computed from the singleton key
-         * and the singleton value.
-         */
-        public int hashCode() {
-            return hashCode(k) ^ hashCode(v);
-        }
-
-        /**
-         * Return the keyset.
-         * @return A singleton containing the key.
-         */
-        public Set keySet() {
-            if (getKeys() == null) {
-                setKeys(singleton(k));
-            }
-            return getKeys();
-        }
-
-        /**
-         * The size: always 1!
-         * @return 1.
-         */
-        public int size() {
-            return 1;
-        }
-
-        /**
-         * Obvious string.
-         * @return A string containing the string representations of the key
-         * and its associated value.
-         */
-        public String toString() {
-            return "{" + k + "=" + v + "}";
-        }
-
-        /**
-         * Return the values. Technically, a singleton, while more specific than
-         * a general Collection, will work. Besides, that's what the JDK uses!
-         * @return A singleton containing the value.
-         */
-        public Collection values() {
-            if (getValues() == null) {
-                setValues(singleton(v));
-            }
-            return getValues();
-        }
-
-        /**
-         * Construct a singleton.
-         * @param key the key
-         * @param value the value
-         */
-        SingletonMap(Object key, Object value) {
-            k = key;
-            v = value;
-        }
-
-        private final Set $ASSIGN$entries(Set newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return entries = newValue;
-        }
-
-        private FieldRecord $RECORD$entries = new FieldRecord(0);
-
-        private FieldRecord $RECORD$k = new FieldRecord(0);
-
-        private FieldRecord $RECORD$v = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$k,
-                $RECORD$v, $RECORD$entries };
-
-        /**
-         * Cache the entry set.
-         */
-        private transient Set entries;
-
-        /**
-         * The single key.
-         * @serial the singleton key
-         */
-        private final Object k;
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = -6979724477215052911L;
-
-        /**
-         * The corresponding value.
-         * @serial the singleton value
-         */
-        private final Object v;
-
-    }
-
-    // stores a copy of the list for the sequential case
-    // Obtain a random position to swap with. pos + 1 is used so that the
-    // range of the random number includes the current position.
-    // Swap the desired element.
-    /**
-     * The implementation of {@link #singleton(Object)}. This class name
-     * is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class SingletonSet extends AbstractSet implements
-            Serializable, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            super.$RESTORE(timestamp, trim);
-        }
-
-        // advantage by not allocating unnecessary iterators in AbstractSet.
-        /**
-         * The set only contains one element.
-         * @param o The object to search for.
-         * @return <code>true</code> if o == the element of the singleton.
-         */
-        public boolean contains(Object o) {
-            return equals(o, element);
-        }
-
-        /**
-         * This is true if the other collection only contains the element.
-         * @param c A collection to compare against this singleton.
-         * @return <code>true</code> if c only contains either no elements or
-         * elements equal to the element in this singleton.
-         */
-        public boolean containsAll(Collection c) {
-            Iterator i = c.iterator();
-            int pos = c.size();
-            while (--pos >= 0) {
-                if (!equals(i.next(), element)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        /**
-         * The hash is just that of the element.
-         * @return The hashcode of the element.
-         */
-        public int hashCode() {
-            return hashCode(element);
-        }
-
-        // The remaining methods are optional, but provide a performance
-
-        /**
-         * Returns an iterator over the lone element.
-         */
-        public Iterator iterator() {
-            return new Iterator() {
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                            .getTopTimestamp());
-                    $RECORD$$CHECKPOINT.commit(timestamp);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    hasNext = $RECORD$hasNext.restore(hasNext, timestamp, trim);
-                    if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
-                                new _PROXY_(), timestamp, trim);
-                        FieldRecord.popState($RECORDS);
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(
-                        Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                                    .getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                /**
-                 * Returns <code>true</code> if elements still remain to be
-                 * iterated through.
-                 * @return <code>true</code> if the element has not yet been returned.
-                 */
-                public boolean hasNext() {
-                    return hasNext;
-                }
-
-                /**
-                 * Returns the element.
-                 * @return The element used by this singleton.
-                 * @throws NoSuchElementException if the object
-                 * has already been retrieved.
-                 */
-                public Object next() {
-                    if (hasNext) {
-                        $ASSIGN$hasNext(false);
-                        return element;
-                    } else {
-                        throw new NoSuchElementException();
-                    }
-                }
-
-                /**
-                 * Removes the element from the singleton.
-                 * As this set is immutable, this will always
-                 * throw an exception.
-                 * @throws UnsupportedOperationException as the
-                 * singleton set doesn't support
-                 * <code>remove()</code>.
-                 */
-                public void remove() {
-                    throw new UnsupportedOperationException();
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
-                    }
-
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                        return this;
-                    }
-
-                }
-
-                private final boolean $ASSIGN$hasNext(boolean newValue) {
-                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                        $RECORD$hasNext.add(null, hasNext, $CHECKPOINT
-                                .getTimestamp());
-                    }
-                    return hasNext = newValue;
-                }
-
-                private FieldRecord $RECORD$hasNext = new FieldRecord(0);
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$hasNext };
-
-                /**
-                 * Flag to indicate whether or not the element has
-                 * been retrieved.
-                 */
-                private boolean hasNext = true;
-
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-
-            };
-        }
-
-        /**
-         * The size: always 1!
-         * @return 1.
-         */
-        public int size() {
-            return 1;
-        }
-
-        /**
-         * Returning an array is simple.
-         * @return An array containing the element.
-         */
-        public Object[] toArray() {
-            return new Object[] { element };
-        }
-
-        /**
-         * Obvious string.
-         * @return The string surrounded by enclosing
-         * square brackets.
-         */
-        public String toString() {
-            return "[" + element + "]";
-        }
-
-        /**
-         * Construct a singleton.
-         * @param o the element
-         */
-        SingletonSet(Object o) {
-            element = o;
-        }
-
-        /**
-         * The single element; package visible for use in nested class.
-         * @serial the singleton
-         */
-        final Object element;
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 3193687207550431679L;
-
-    }
-
-    // class SynchronizedCollection
-    /**
-     * The implementation of the various iterator methods in the
-     * synchronized classes. These iterators must "sync" on the same object
-     * as the collection they iterate over.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static class SynchronizedIterator implements Iterator, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            $RECORD$$CHECKPOINT.commit(timestamp);
-        }
-
-        public final Checkpoint $GET$CHECKPOINT() {
-            return $CHECKPOINT;
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            $RECORD$i.restore(i, timestamp, trim);
-            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                        timestamp, trim);
-                FieldRecord.popState($RECORDS);
-                $RESTORE(timestamp, trim);
-            }
-        }
-
-        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-            if ($CHECKPOINT != checkpoint) {
-                Checkpoint oldCheckpoint = $CHECKPOINT;
-                if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                            .getTimestamp());
-                    FieldRecord.pushState($RECORDS);
-                }
-                $CHECKPOINT = checkpoint;
-                oldCheckpoint.setCheckpoint(checkpoint);
-                checkpoint.addObject(this);
-            }
-            return this;
-        }
-
-        /**
-         * Returns <code>true</code> if objects can still be retrieved from the iterator
-         * using <code>next()</code>.  A lock is obtained on the mutex before
-         * the collection is accessed.
-         * @return <code>true</code> if at least one element is still to be returned by
-         * <code>next()</code>.
-         */
-        public boolean hasNext() {
-            synchronized (mutex) {
-                return i.hasNext();
-            }
-        }
-
-        /**
-         * Retrieves the next object in the underlying collection.
-         * A lock is obtained on the mutex before the collection is accessed.
-         * @return The next object in the collection.
-         * @throws NoSuchElementException if there are no more elements
-         */
-        public Object next() {
-            synchronized (mutex) {
-                return i.next();
-            }
-        }
-
-        /**
-         * Removes the object that was last returned by <code>next()</code>
-         * from the underlying collection.  Only one call to this method is
-         * allowed per call to the <code>next()</code> method, and it does
-         * not affect the value that will be returned by <code>next()</code>.
-         * Thus, if element n was retrieved from the collection by
-         * <code>next()</code>, it is this element that gets removed.
-         * Regardless of whether this takes place or not, element n+1 is
-         * still returned on the subsequent <code>next()</code> call.
-         * @throws IllegalStateException if next has not yet been called or remove
-         * has already been called since the last call to next.
-         * @throws UnsupportedOperationException if this Iterator does not support
-         * the remove operation.
-         */
-        public void remove() {
-            synchronized (mutex) {
-                i.remove();
-            }
-        }
-
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-        /**
-         * Only trusted code creates a wrapper, with the specified sync.
-         * @param sync the mutex
-         * @param i the wrapped iterator
-         */
-        SynchronizedIterator(Object sync, Iterator i) {
-            this.i = i;
-            mutex = sync;
-        }
-
-        /**
-         * The object to synchronize on. Package visible for use by subclass.
-         */
-        final Object mutex;
-
-        private FieldRecord $RECORD$i = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$i };
-
-        /**
-         * The wrapped iterator.
-         */
-        private final Iterator i;
-
-    }
-
-    // class SynchronizedRandomAccessList
-    /**
-     * The implementation of {@link SynchronizedList#listIterator()}. This
-     * iterator must "sync" on the same object as the list it iterates over.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class SynchronizedListIterator extends
-            SynchronizedIterator implements ListIterator, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            $RECORD$li.restore(li, timestamp, trim);
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Insert an element into the underlying list at the current position of
-         * the iterator (optional operation). The element is inserted in between
-         * the element that would be returned by <code>previous()</code> and the
-         * element that would be returned by <code>next()</code>. After the
-         * insertion, a subsequent call to next is unaffected, but
-         * a call to previous returns the item that was added. The values returned
-         * by nextIndex() and previousIndex() are incremented.  A lock is obtained
-         * on the mutex before the addition takes place.
-         * @param o the object to insert into the list
-         * @throws ClassCastException if the object is of a type which cannot be added
-         * to this list.
-         * @throws IllegalArgumentException if some other aspect of the object stops
-         * it being added to this list.
-         * @throws UnsupportedOperationException if this ListIterator does not
-         * support the add operation.
-         */
-        public void add(Object o) {
-            synchronized (mutex) {
-                li.add(o);
-            }
-        }
-
-        /**
-         * Tests whether there are elements remaining in the underlying list
-         * in the reverse direction. In other words, <code>previous()</code>
-         * will not fail with a NoSuchElementException.  A lock is obtained
-         * on the mutex before the check takes place.
-         * @return <code>true</code> if the list continues in the reverse direction
-         */
-        public boolean hasPrevious() {
-            synchronized (mutex) {
-                return li.hasPrevious();
-            }
-        }
-
-        /**
-         * Find the index of the element that would be returned by a call to
-         * <code>next()</code>.  If hasNext() returns <code>false</code>, this
-         * returns the list size.  A lock is obtained on the mutex before the
-         * query takes place.
-         * @return the index of the element that would be returned by next()
-         */
-        public int nextIndex() {
-            synchronized (mutex) {
-                return li.nextIndex();
-            }
-        }
-
-        /**
-         * Obtain the previous element from the underlying list. Repeated
-         * calls to previous may be used to iterate backwards over the entire list,
-         * or calls to next and previous may be used together to go forwards and
-         * backwards. Alternating calls to next and previous will return the same
-         * element.  A lock is obtained on the mutex before the object is retrieved.
-         * @return the next element in the list in the reverse direction
-         * @throws NoSuchElementException if there are no more elements
-         */
-        public Object previous() {
-            synchronized (mutex) {
-                return li.previous();
-            }
-        }
-
-        /**
-         * Find the index of the element that would be returned by a call to
-         * previous. If hasPrevious() returns <code>false</code>, this returns -1.
-         * A lock is obtained on the mutex before the query takes place.
-         * @return the index of the element that would be returned by previous()
-         */
-        public int previousIndex() {
-            synchronized (mutex) {
-                return li.previousIndex();
-            }
-        }
-
-        /**
-         * Replace the element last returned by a call to <code>next()</code> or
-         * <code>previous()</code> with a given object (optional operation).  This
-         * method may only be called if neither <code>add()</code> nor
-         * <code>remove()</code> have been called since the last call to
-         * <code>next()</code> or <code>previous</code>.  A lock is obtained
-         * on the mutex before the list is modified.
-         * @param o the object to replace the element with
-         * @throws ClassCastException the object is of a type which cannot be added
-         * to this list
-         * @throws IllegalArgumentException some other aspect of the object stops
-         * it being added to this list
-         * @throws IllegalStateException if neither next or previous have been
-         * called, or if add or remove has been called since the last call
-         * to next or previous
-         * @throws UnsupportedOperationException if this ListIterator does not
-         * support the set operation
-         */
-        public void set(Object o) {
-            synchronized (mutex) {
-                li.set(o);
-            }
-        }
-
-        /**
-         * Only trusted code creates a wrapper, with the specified sync.
-         * @param sync the mutex
-         * @param li the wrapped iterator
-         */
-        SynchronizedListIterator(Object sync, ListIterator li) {
-            super(sync, li);
-            this.li = li;
-        }
-
-        private FieldRecord $RECORD$li = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$li };
-
-        /**
-         * The wrapped iterator, stored both here and in the superclass to
-         * avoid excessive casting.
-         */
-        private final ListIterator li;
-
-    }
-
-    // class SynchronizedListIterator
-    /**
-     * The implementation of {@link #synchronizedMap(Map)}. This
-     * class name is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static class SynchronizedMap implements Map, Serializable,
-            Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            $RECORD$$CHECKPOINT.commit(timestamp);
-        }
-
-        public final Checkpoint $GET$CHECKPOINT() {
-            return $CHECKPOINT;
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            $RECORD$m.restore(m, timestamp, trim);
-            entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
-            keys = (Set) $RECORD$keys.restore(keys, timestamp, trim);
-            values = (Collection) $RECORD$values.restore(values, timestamp,
-                    trim);
-            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                        timestamp, trim);
-                FieldRecord.popState($RECORDS);
-                $RESTORE(timestamp, trim);
-            }
-        }
-
-        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-            if ($CHECKPOINT != checkpoint) {
-                Checkpoint oldCheckpoint = $CHECKPOINT;
-                if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                            .getTimestamp());
-                    FieldRecord.pushState($RECORDS);
-                }
-                $CHECKPOINT = checkpoint;
-                oldCheckpoint.setCheckpoint(checkpoint);
-                checkpoint.addObject(this);
-            }
-            return this;
-        }
-
-        /**
-         * Clears all the entries from the underlying map.  A lock is obtained
-         * on the mutex before the map is cleared.
-         * @throws UnsupportedOperationException if clear is not supported
-         */
-        public void clear() {
-            synchronized (mutex) {
-                m.clear();
-            }
-        }
-
-        /**
-         * Returns <code>true</code> if the underlying map contains a entry for the given key.
-         * A lock is obtained on the mutex before the map is queried.
-         * @param key the key to search for.
-         * @return <code>true</code> if the underlying map contains the key.
-         * @throws ClassCastException if the key is of an inappropriate type.
-         * @throws NullPointerException if key is <code>null</code> but the map
-         * does not permit null keys.
-         */
-        public boolean containsKey(Object key) {
-            synchronized (mutex) {
-                return m.containsKey(key);
-            }
-        }
-
-        /**
-         * Returns <code>true</code> if the underlying map contains at least one entry with the
-         * given value.  In other words, returns <code>true</code> if a value v exists where
-         * <code>(value == null ? v == null : value.equals(v))</code>. This usually
-         * requires linear time.  A lock is obtained on the mutex before the map
-         * is queried.
-         * @param value the value to search for
-         * @return <code>true</code> if the map contains the value
-         * @throws ClassCastException if the type of the value is not a valid type
-         * for this map.
-         * @throws NullPointerException if the value is null and the map doesn't
-         * support null values.
-         */
-        public boolean containsValue(Object value) {
-            synchronized (mutex) {
-                return m.containsValue(value);
-            }
-        }
-
-        // means "return a SynchronizedSet, except that the iterator() method
-        // returns an SynchronizedIterator whose next() method returns a
-        // synchronized wrapper around its normal return value".
-        // Define this here to spare some nesting.
-        public Set entrySet() {
-            class SynchronizedMapEntry implements Map.Entry, Rollbackable {
-
-                public void $COMMIT(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                            .getTopTimestamp());
-                    $RECORD$$CHECKPOINT.commit(timestamp);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT() {
-                    return $CHECKPOINT;
-                }
-
-                public void $RESTORE(long timestamp, boolean trim) {
-                    if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
-                                this, timestamp, trim);
-                        FieldRecord.popState($RECORDS);
-                        $RESTORE(timestamp, trim);
-                    }
-                }
-
-                public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                                    .getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(this);
-                    }
-                    return this;
-                }
-
-                /**
-                 * Returns <code>true</code> if the object, o, implements <code>Map.Entry</code>
-                 * with the same key and value as the underlying entry.  A lock is
-                 * obtained on the mutex before the comparison takes place.
-                 * @param o The object to compare with this entry.
-                 * @return <code>true</code> if o is equivalent to the underlying map entry.
-                 */
-                public boolean equals(Object o) {
-                    synchronized (mutex) {
-                        return e.equals(o);
-                    }
-                }
-
-                /**
-                 * Returns the key used in the underlying map entry.  A lock is obtained
-                 * on the mutex before the key is retrieved.
-                 * @return The key of the underlying map entry.
-                 */
-                public Object getKey() {
-                    synchronized (mutex) {
-                        return e.getKey();
-                    }
-                }
-
-                /**
-                 * Returns the value used in the underlying map entry.  A lock is obtained
-                 * on the mutex before the value is retrieved.
-                 * @return The value of the underlying map entry.
-                 */
-                public Object getValue() {
-                    synchronized (mutex) {
-                        return e.getValue();
-                    }
-                }
-
-                /**
-                 * Computes the hash code for the underlying map entry.
-                 * This computation is described in the documentation for the
-                 * <code>Map</code> interface.  A lock is obtained on the mutex
-                 * before the underlying map is accessed.
-                 * @return The hash code of the underlying map entry.
-                 * @see Map#hashCode()
-                 */
-                public int hashCode() {
-                    synchronized (mutex) {
-                        return e.hashCode();
-                    }
-                }
-
-                /**
-                 * Replaces the value in the underlying map entry with the specified
-                 * object (optional operation).  A lock is obtained on the mutex
-                 * before the map is altered.  The map entry, in turn, will alter
-                 * the underlying map object.  The operation is undefined if the
-                 * <code>remove()</code> method of the iterator has been called
-                 * beforehand.
-                 * @param value the new value to store
-                 * @return the old value
-                 * @throws UnsupportedOperationException if the operation is not supported.
-                 * @throws ClassCastException if the value is of the wrong type.
-                 * @throws IllegalArgumentException if something about the value
-                 * prevents it from existing in this map.
-                 * @throws NullPointerException if the map forbids null values.
-                 */
-                public Object setValue(Object value) {
-                    synchronized (mutex) {
-                        return e.setValue(value);
-                    }
-                }
-
-                /**
-                 * Returns a textual representation of the underlying map entry.
-                 * A lock is obtained on the mutex before the entry is accessed.
-                 * @return The contents of the map entry in <code>String</code> form.
-                 */
-                public String toString() {
-                    synchronized (mutex) {
-                        return e.toString();
-                    }
-                }
-
-                protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-                protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-                SynchronizedMapEntry(Object o) {
-                    e = (Map.Entry) o;
-                }
-
-                final Map.Entry e;
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-            }
-
-            // class SynchronizedMapEntry
-            // Now the actual code.
-            if (entries == null) {
-                synchronized (mutex) {
-                    $ASSIGN$entries(new SynchronizedSet(mutex, m.entrySet()) {
-                        public void $COMMIT_ANONYMOUS(long timestamp) {
-                            FieldRecord.commit($RECORDS, timestamp,
-                                    $RECORD$$CHECKPOINT.getTopTimestamp());
-                            super.$COMMIT(timestamp);
-                        }
-
-                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                            return $CHECKPOINT;
-                        }
-
-                        public void $RESTORE_ANONYMOUS(long timestamp,
-                                boolean trim) {
-                            super.$RESTORE(timestamp, trim);
-                        }
-
-                        public final Object $SET$CHECKPOINT_ANONYMOUS(
-                                Checkpoint checkpoint) {
-                            if ($CHECKPOINT != checkpoint) {
-                                Checkpoint oldCheckpoint = $CHECKPOINT;
-                                if (checkpoint != null) {
-                                    $RECORD$$CHECKPOINT.add($CHECKPOINT,
-                                            checkpoint.getTimestamp());
-                                    FieldRecord.pushState($RECORDS);
-                                }
-                                $CHECKPOINT = checkpoint;
-                                oldCheckpoint.setCheckpoint(checkpoint);
-                                checkpoint.addObject(new _PROXY_());
-                            }
-                            return this;
-                        }
-
-                        /**
-                         * Returns an iterator over the set.  The iterator has no specific order,
-                         * unless further specified.  A lock is obtained on the set's mutex
-                         * before the iterator is created.  The created iterator is also
-                         * thread-safe.
-                         * @return A synchronized set iterator.
-                         */
-                        public Iterator iterator() {
-                            synchronized (super.mutex) {
-                                return new SynchronizedIterator(super.mutex, c
-                                        .iterator()) {
-                                    public void $COMMIT_ANONYMOUS(long timestamp) {
-                                        FieldRecord.commit($RECORDS, timestamp,
-                                                $RECORD$$CHECKPOINT
-                                                        .getTopTimestamp());
-                                        super.$COMMIT(timestamp);
-                                    }
-
-                                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                                        return $CHECKPOINT;
-                                    }
-
-                                    public void $RESTORE_ANONYMOUS(
-                                            long timestamp, boolean trim) {
-                                        super.$RESTORE(timestamp, trim);
-                                    }
-
-                                    public final Object $SET$CHECKPOINT_ANONYMOUS(
-                                            Checkpoint checkpoint) {
-                                        if ($CHECKPOINT != checkpoint) {
-                                            Checkpoint oldCheckpoint = $CHECKPOINT;
-                                            if (checkpoint != null) {
-                                                $RECORD$$CHECKPOINT
-                                                        .add(
-                                                                $CHECKPOINT,
-                                                                checkpoint
-                                                                        .getTimestamp());
-                                                FieldRecord.pushState($RECORDS);
-                                            }
-                                            $CHECKPOINT = checkpoint;
-                                            oldCheckpoint
-                                                    .setCheckpoint(checkpoint);
-                                            checkpoint.addObject(new _PROXY_());
-                                        }
-                                        return this;
-                                    }
-
-                                    /**
-                                     * Retrieves the next map entry from the iterator.
-                                     * A lock is obtained on the iterator's mutex before
-                                     * the entry is created.  The new map entry is enclosed in
-                                     * a thread-safe wrapper.
-                                     * @return A synchronized map entry.
-                                     */
-                                    public Object next() {
-                                        synchronized (super.mutex) {
-                                            return new SynchronizedMapEntry(
-                                                    super.next());
-                                        }
-                                    }
-
-                                    final class _PROXY_ implements Rollbackable {
-
-                                        public final void $COMMIT(long timestamp) {
-                                            $COMMIT_ANONYMOUS(timestamp);
-                                        }
-
-                                        public final Checkpoint $GET$CHECKPOINT() {
-                                            return $GET$CHECKPOINT_ANONYMOUS();
-                                        }
-
-                                        public final void $RESTORE(
-                                                long timestamp, boolean trim) {
-                                            $RESTORE_ANONYMOUS(timestamp, trim);
-                                        }
-
-                                        public final Object $SET$CHECKPOINT(
-                                                Checkpoint checkpoint) {
-                                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                                            return this;
-                                        }
-
-                                    }
-
-                                    private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-                                    {
-                                        $CHECKPOINT.addObject(new _PROXY_());
-                                    }
-
-                                };
-                            }
-                        }
-
-                        final class _PROXY_ implements Rollbackable {
-
-                            public final void $COMMIT(long timestamp) {
-                                $COMMIT_ANONYMOUS(timestamp);
-                            }
-
-                            public final Checkpoint $GET$CHECKPOINT() {
-                                return $GET$CHECKPOINT_ANONYMOUS();
-                            }
-
-                            public final void $RESTORE(long timestamp,
-                                    boolean trim) {
-                                $RESTORE_ANONYMOUS(timestamp, trim);
-                            }
-
-                            public final Object $SET$CHECKPOINT(
-                                    Checkpoint checkpoint) {
-                                $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                                return this;
-                            }
-
-                        }
-
-                        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-                        {
-                            $CHECKPOINT.addObject(new _PROXY_());
-                        }
-
-                    });
-                }
-            }
-            return entries;
-        }
-
-        /**
-         * Returns <code>true</code> if the object, o, is also an instance
-         * of <code>Map</code> and contains an equivalent
-         * entry set to that of the underlying map.  A lock
-         * is obtained on the mutex before the objects are
-         * compared.
-         * @param o The object to compare.
-         * @return <code>true</code> if o and the underlying map are equivalent.
-         */
-        public boolean equals(Object o) {
-            synchronized (mutex) {
-                return m.equals(o);
-            }
-        }
-
-        /**
-         * Returns the value associated with the given key, or null
-         * if no such mapping exists.  An ambiguity exists with maps
-         * that accept null values as a return value of null could
-         * be due to a non-existent mapping or simply a null value
-         * for that key.  To resolve this, <code>containsKey</code>
-         * should be used.  A lock is obtained on the mutex before
-         * the value is retrieved from the underlying map.
-         * @param key The key of the required mapping.
-         * @return The value associated with the given key, or
-         * null if no such mapping exists.
-         * @throws ClassCastException if the key is an inappropriate type.
-         * @throws NullPointerException if this map does not accept null keys.
-         */
-        public Object get(Object key) {
-            synchronized (mutex) {
-                return m.get(key);
-            }
-        }
-
-        /**
-         * Calculates the hash code of the underlying map as the
-         * sum of the hash codes of all entries.  A lock is obtained
-         * on the mutex before the hash code is computed.
-         * @return The hash code of the underlying map.
-         */
-        public int hashCode() {
-            synchronized (mutex) {
-                return m.hashCode();
-            }
-        }
-
-        /**
-         * Returns <code>true</code> if the underlying map contains no entries.
-         * A lock is obtained on the mutex before the map is examined.
-         * @return <code>true</code> if the map is empty.
-         */
-        public boolean isEmpty() {
-            synchronized (mutex) {
-                return m.isEmpty();
-            }
-        }
-
-        // This is one of the ickiest cases of nesting I've ever seen. It just
-
-        /**
-         * Returns a thread-safe set view of the keys in the underlying map.  The
-         * set is backed by the map, so that changes in one show up in the other.
-         * Modifications made while an iterator is in progress cause undefined
-         * behavior.  If the set supports removal, these methods remove the
-         * underlying mapping from the map: <code>Iterator.remove</code>,
-         * <code>Set.remove</code>, <code>removeAll</code>, <code>retainAll</code>,
-         * and <code>clear</code>.  Element addition, via <code>add</code> or
-         * <code>addAll</code>, is not supported via this set.  A lock is obtained
-         * on the mutex before the set is created.
-         * @return A synchronized set containing the keys of the underlying map.
-         */
-        public Set keySet() {
-            if (keys == null) {
-                synchronized (mutex) {
-                    $ASSIGN$keys(new SynchronizedSet(mutex, m.keySet()));
-                }
-            }
-            return keys;
-        }
-
-        /**
-         * Associates the given key to the given value (optional operation). If the
-         * underlying map already contains the key, its value is replaced. Be aware
-         * that in a map that permits <code>null</code> values, a null return does not
-         * always imply that the mapping was created.  A lock is obtained on the mutex
-         * before the modification is made.
-         * @param key the key to map.
-         * @param value the value to be mapped.
-         * @return the previous value of the key, or null if there was no mapping
-         * @throws UnsupportedOperationException if the operation is not supported
-         * @throws ClassCastException if the key or value is of the wrong type
-         * @throws IllegalArgumentException if something about this key or value
-         * prevents it from existing in this map
-         * @throws NullPointerException if either the key or the value is null,
-         * and the map forbids null keys or values
-         * @see #containsKey(Object)
-         */
-        public Object put(Object key, Object value) {
-            synchronized (mutex) {
-                return m.put(key, value);
-            }
-        }
-
-        /**
-         * Copies all entries of the given map to the underlying one (optional
-         * operation). If the map already contains a key, its value is replaced.
-         * A lock is obtained on the mutex before the operation proceeds.
-         * @param map the mapping to load into this map
-         * @throws UnsupportedOperationException if the operation is not supported
-         * @throws ClassCastException if a key or value is of the wrong type
-         * @throws IllegalArgumentException if something about a key or value
-         * prevents it from existing in this map
-         * @throws NullPointerException if the map forbids null keys or values, or
-         * if <code>m</code> is null.
-         * @see #put(Object, Object)
-         */
-        public void putAll(Map map) {
-            synchronized (mutex) {
-                m.putAll(map);
-            }
-        }
-
-        /**
-         * Removes the mapping for the key, o, if present (optional operation). If
-         * the key is not present, this returns null. Note that maps which permit
-         * null values may also return null if the key was removed.  A prior
-         * <code>containsKey()</code> check is required to avoid this ambiguity.
-         * Before the mapping is removed, a lock is obtained on the mutex.
-         * @param o the key to remove
-         * @return the value the key mapped to, or null if not present
-         * @throws UnsupportedOperationException if deletion is unsupported
-         * @throws NullPointerException if the key is null and this map doesn't
-         * support null keys.
-         * @throws ClassCastException if the type of the key is not a valid type
-         * for this map.
-         */
-        public Object remove(Object o) {
-            synchronized (mutex) {
-                return m.remove(o);
-            }
-        }
-
-        /**
-         * Retrieves the size of the underlying map.  A lock
-         * is obtained on the mutex before access takes place.
-         * Maps with a size greater than <code>Integer.MAX_VALUE</code>
-         * return <code>Integer.MAX_VALUE</code> instead.
-         * @return The size of the underlying map.
-         */
-        public int size() {
-            synchronized (mutex) {
-                return m.size();
-            }
-        }
-
-        /**
-         * Returns a textual representation of the underlying
-         * map.  A lock is obtained on the mutex before the map
-         * is accessed.
-         * @return The map in <code>String</code> form.
-         */
-        public String toString() {
-            synchronized (mutex) {
-                return m.toString();
-            }
-        }
-
-        /**
-         * Returns a synchronized collection view of the values in the underlying
-         * map.  The collection is backed by the map, so that changes in one show up in
-         * the other.  Modifications made while an iterator is in progress cause
-         * undefined behavior.  If the collection supports removal, these methods
-         * remove the underlying mapping from the map: <code>Iterator.remove</code>,
-         * <code>Collection.remove</code>, <code>removeAll</code>,
-         * <code>retainAll</code>, and <code>clear</code>. Element addition, via
-         * <code>add</code> or <code>addAll</code>, is not supported via this
-         * collection.  A lock is obtained on the mutex before the collection
-         * is created.
-         * @return the collection of all values in the underlying map.
-         */
-        public Collection values() {
-            if (values == null) {
-                synchronized (mutex) {
-                    $ASSIGN$values(new SynchronizedCollection(mutex, m.values()));
-                }
-            }
-            return values;
-        }
-
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-        /**
-         * Wrap a given map.
-         * @param m the map to wrap
-         * @throws NullPointerException if m is null
-         */
-        SynchronizedMap(Map m) {
-            this.m = m;
-            mutex = this;
-            if (m == null) {
-                throw new NullPointerException();
-            }
-        }
-
-        /**
-         * Called only by trusted code to specify the mutex as well as the map.
-         * @param sync the mutex
-         * @param m the map
-         */
-        SynchronizedMap(Object sync, Map m) {
-            this.m = m;
-            mutex = sync;
-        }
-
-        /**
-         * The object to synchronize on.  When an instance is created via public
-         * methods, it will be this; but other uses like
-         * SynchronizedSortedMap.subMap() must specify another mutex. Package
-         * visible for use by subclass.
-         * @serial the lock
-         */
-        final Object mutex;
-
-        private final Set $ASSIGN$entries(Set newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return entries = newValue;
-        }
-
-        private final Set $ASSIGN$keys(Set newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$keys.add(null, keys, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return keys = newValue;
-        }
-
-        private final Collection $ASSIGN$values(Collection newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$values.add(null, values, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return values = newValue;
-        }
-
-        private FieldRecord $RECORD$entries = new FieldRecord(0);
-
-        private FieldRecord $RECORD$keys = new FieldRecord(0);
-
-        private FieldRecord $RECORD$m = new FieldRecord(0);
-
-        private FieldRecord $RECORD$values = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$m,
-                $RECORD$entries, $RECORD$keys, $RECORD$values };
-
-        /**
-         * Cache the entry set.
-         */
-        private transient Set entries;
-
-        /**
-         * Cache the key set.
-         */
-        private transient Set keys;
-
-        /**
-         * The wrapped map.
-         * @serial the real map
-         */
-        private final Map m;
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 1978198479659022715L;
-
-        /**
-         * Cache the value collection.
-         */
-        private transient Collection values;
-
-    }
-
-    // class SynchronizedList
-    /**
-     * The implementation of {@link #synchronizedList(List)} for random-access
-     * lists. This class name is required for compatibility with Sun's JDK
-     * serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class SynchronizedRandomAccessList extends
-            SynchronizedList implements RandomAccess, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Obtain a List view of a subsection of the underlying list, from fromIndex
-         * (inclusive) to toIndex (exclusive). If the two indices are equal, the
-         * sublist is empty. The returned list should be modifiable if and only
-         * if this list is modifiable. Changes to the returned list should be
-         * reflected in this list. If this list is structurally modified in
-         * any way other than through the returned list, the result of any subsequent
-         * operations on the returned list is undefined.    A lock is obtained
-         * on the mutex before the creation of the sublist.  The returned list
-         * is also synchronized, using the same mutex.  Random accessibility
-         * is also extended to the new list.
-         * @param fromIndex the index that the returned list should start from
-         * (inclusive)
-         * @param toIndex the index that the returned list should go to (exclusive)
-         * @return a List backed by a subsection of this list
-         * @throws IndexOutOfBoundsException if fromIndex &lt; 0
-         * || toIndex &gt; size() || fromIndex &gt; toIndex
-         */
-        public List subList(int fromIndex, int toIndex) {
-            synchronized (mutex) {
-                return new SynchronizedRandomAccessList(mutex, list.subList(
-                        fromIndex, toIndex));
-            }
-        }
-
-        /**
-         * Wrap a given list.
-         * @param l the list to wrap
-         * @throws NullPointerException if l is null
-         */
-        SynchronizedRandomAccessList(List l) {
-            super(l);
-        }
-
-        /**
-         * Called only by trusted code to specify the mutex as well as the
-         * collection.
-         * @param sync the mutex
-         * @param l the list
-         */
-        SynchronizedRandomAccessList(Object sync, List l) {
-            super(sync, l);
-        }
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 1530674583602358482L;
-
-    }
-
-    // class SynchronizedSet
-    /**
-     * The implementation of {@link #synchronizedSortedMap(SortedMap)}. This
-     * class name is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class SynchronizedSortedMap extends SynchronizedMap
-            implements SortedMap, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            $RECORD$sm.restore(sm, timestamp, trim);
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Returns the comparator used in sorting the underlying map, or null if
-         * it is the keys' natural ordering.  A lock is obtained on the mutex
-         * before the comparator is retrieved.
-         * @return the sorting comparator.
-         */
-        public Comparator comparator() {
-            synchronized (mutex) {
-                return sm.comparator();
-            }
-        }
-
-        /**
-         * Returns the first, lowest sorted, key from the underlying map.
-         * A lock is obtained on the mutex before the map is accessed.
-         * @return the first key.
-         * @throws NoSuchElementException if this map is empty.
-         */
-        public Object firstKey() {
-            synchronized (mutex) {
-                return sm.firstKey();
-            }
-        }
-
-        /**
-         * Returns a submap containing the keys from the first
-         * key (as returned by <code>firstKey()</code>) to
-         * the key before that specified.  The submap supports all
-         * operations supported by the underlying map and all actions
-         * taking place on the submap are also reflected in the underlying
-         * map.  A lock is obtained on the mutex prior to submap creation.
-         * This operation is equivalent to <code>subMap(firstKey(), toKey)</code>.
-         * The submap retains the thread-safe status of this map.
-         * @param toKey the exclusive upper range of the submap.
-         * @return a submap from <code>firstKey()</code> to the
-         * the key preceding toKey.
-         * @throws ClassCastException if toKey is not comparable to the underlying
-         * map's contents.
-         * @throws IllegalArgumentException if toKey is outside the map's range.
-         * @throws NullPointerException if toKey is null. but the map does not allow
-         * null keys.
-         */
-        public SortedMap headMap(Object toKey) {
-            synchronized (mutex) {
-                return new SynchronizedSortedMap(mutex, sm.headMap(toKey));
-            }
-        }
-
-        /**
-         * Returns the last, highest sorted, key from the underlying map.
-         * A lock is obtained on the mutex before the map is accessed.
-         * @return the last key.
-         * @throws NoSuchElementException if this map is empty.
-         */
-        public Object lastKey() {
-            synchronized (mutex) {
-                return sm.lastKey();
-            }
-        }
-
-        /**
-         * Returns a submap containing the keys from fromKey to
-         * the key before toKey.  The submap supports all
-         * operations supported by the underlying map and all actions
-         * taking place on the submap are also reflected in the underlying
-         * map.  A lock is obtained on the mutex prior to submap creation.
-         * The submap retains the thread-safe status of this map.
-         * @param fromKey the inclusive lower range of the submap.
-         * @param toKey the exclusive upper range of the submap.
-         * @return a submap from fromKey to the key preceding toKey.
-         * @throws ClassCastException if fromKey or toKey is not comparable
-         * to the underlying map's contents.
-         * @throws IllegalArgumentException if fromKey or toKey is outside the map's
-         * range.
-         * @throws NullPointerException if fromKey or toKey is null. but the map does
-         * not allow  null keys.
-         */
-        public SortedMap subMap(Object fromKey, Object toKey) {
-            synchronized (mutex) {
-                return new SynchronizedSortedMap(mutex, sm.subMap(fromKey,
-                        toKey));
-            }
-        }
-
-        /**
-         * Returns a submap containing all the keys from fromKey onwards.
-         * The submap supports all operations supported by the underlying
-         * map and all actions taking place on the submap are also reflected
-         * in the underlying map.  A lock is obtained on the mutex prior to
-         * submap creation.  The submap retains the thread-safe status of
-         * this map.
-         * @param fromKey the inclusive lower range of the submap.
-         * @return a submap from fromKey to <code>lastKey()</code>.
-         * @throws ClassCastException if fromKey is not comparable to the underlying
-         * map's contents.
-         * @throws IllegalArgumentException if fromKey is outside the map's range.
-         * @throws NullPointerException if fromKey is null. but the map does not allow
-         * null keys.
-         */
-        public SortedMap tailMap(Object fromKey) {
-            synchronized (mutex) {
-                return new SynchronizedSortedMap(mutex, sm.tailMap(fromKey));
-            }
-        }
-
-        /**
-         * Called only by trusted code to specify the mutex as well as the map.
-         * @param sync the mutex
-         * @param sm the map
-         */
-        SynchronizedSortedMap(Object sync, SortedMap sm) {
-            super(sync, sm);
-            this.sm = sm;
-        }
-
-        /**
-         * Wrap a given map.
-         * @param sm the map to wrap
-         * @throws NullPointerException if sm is null
-         */
-        SynchronizedSortedMap(SortedMap sm) {
-            super(sm);
-            this.sm = sm;
-        }
-
-        private FieldRecord $RECORD$sm = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$sm };
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = -8798146769416483793L;
-
-        /**
-         * The wrapped map; stored both here and in the superclass to avoid
-         * excessive casting.
-         * @serial the wrapped map
-         */
-        private final SortedMap sm;
-
-    }
-
-    // class SynchronizedSortedMap
-    /**
-     * The implementation of {@link #synchronizedSortedSet(SortedSet)}. This
-     * class name is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class SynchronizedSortedSet extends SynchronizedSet
-            implements SortedSet, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            $RECORD$ss.restore(ss, timestamp, trim);
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Returns the comparator used in sorting the underlying set, or null if
-         * it is the elements' natural ordering.  A lock is obtained on the mutex
-         * before the comparator is retrieved.
-         * @return the sorting comparator.
-         */
-        public Comparator comparator() {
-            synchronized (mutex) {
-                return ss.comparator();
-            }
-        }
-
-        /**
-         * Returns the first, lowest sorted, element from the underlying set.
-         * A lock is obtained on the mutex before the set is accessed.
-         * @return the first element.
-         * @throws NoSuchElementException if this set is empty.
-         */
-        public Object first() {
-            synchronized (mutex) {
-                return ss.first();
-            }
-        }
-
-        /**
-         * Returns a subset containing the element from the first
-         * element (as returned by <code>first()</code>) to
-         * the element before that specified.  The subset supports all
-         * operations supported by the underlying set and all actions
-         * taking place on the subset are also reflected in the underlying
-         * set.  A lock is obtained on the mutex prior to subset creation.
-         * This operation is equivalent to <code>subSet(first(), toElement)</code>.
-         * The subset retains the thread-safe status of this set.
-         * @param toElement the exclusive upper range of the subset.
-         * @return a subset from <code>first()</code> to the
-         * the element preceding toElement.
-         * @throws ClassCastException if toElement is not comparable to the underlying
-         * set's contents.
-         * @throws IllegalArgumentException if toElement is outside the set's range.
-         * @throws NullPointerException if toElement is null. but the set does not allow
-         * null elements.
-         */
-        public SortedSet headSet(Object toElement) {
-            synchronized (mutex) {
-                return new SynchronizedSortedSet(mutex, ss.headSet(toElement));
-            }
-        }
-
-        /**
-         * Returns the last, highest sorted, element from the underlying set.
-         * A lock is obtained on the mutex before the set is accessed.
-         * @return the last element.
-         * @throws NoSuchElementException if this set is empty.
-         */
-        public Object last() {
-            synchronized (mutex) {
-                return ss.last();
-            }
-        }
-
-        /**
-         * Returns a subset containing the elements from fromElement to
-         * the element before toElement.  The subset supports all
-         * operations supported by the underlying set and all actions
-         * taking place on the subset are also reflected in the underlying
-         * set.  A lock is obtained on the mutex prior to subset creation.
-         * The subset retains the thread-safe status of this set.
-         * @param fromElement the inclusive lower range of the subset.
-         * @param toElement the exclusive upper range of the subset.
-         * @return a subset from fromElement to the element preceding toElement.
-         * @throws ClassCastException if fromElement or toElement is not comparable
-         * to the underlying set's contents.
-         * @throws IllegalArgumentException if fromElement or toElement is outside the set's
-         * range.
-         * @throws NullPointerException if fromElement or toElement is null. but the set does
-         * not allow null elements.
-         */
-        public SortedSet subSet(Object fromElement, Object toElement) {
-            synchronized (mutex) {
-                return new SynchronizedSortedSet(mutex, ss.subSet(fromElement,
-                        toElement));
-            }
-        }
-
-        /**
-         * Returns a subset containing all the elements from fromElement onwards.
-         * The subset supports all operations supported by the underlying
-         * set and all actions taking place on the subset are also reflected
-         * in the underlying set.  A lock is obtained on the mutex prior to
-         * subset creation.  The subset retains the thread-safe status of
-         * this set.
-         * @param fromElement the inclusive lower range of the subset.
-         * @return a subset from fromElement to <code>last()</code>.
-         * @throws ClassCastException if fromElement is not comparable to the underlying
-         * set's contents.
-         * @throws IllegalArgumentException if fromElement is outside the set's range.
-         * @throws NullPointerException if fromElement is null. but the set does not allow
-         * null elements.
-         */
-        public SortedSet tailSet(Object fromElement) {
-            synchronized (mutex) {
-                return new SynchronizedSortedSet(mutex, ss.tailSet(fromElement));
-            }
-        }
-
-        /**
-         * Called only by trusted code to specify the mutex as well as the set.
-         * @param sync the mutex
-         * @param ss the set
-         */
-        SynchronizedSortedSet(Object sync, SortedSet ss) {
-            super(sync, ss);
-            this.ss = ss;
-        }
-
-        /**
-         * Wrap a given set.
-         * @param ss the set to wrap
-         * @throws NullPointerException if ss is null
-         */
-        SynchronizedSortedSet(SortedSet ss) {
-            super(ss);
-            this.ss = ss;
-        }
-
-        private FieldRecord $RECORD$ss = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$ss };
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 8695801310862127406L;
-
-        /**
-         * The wrapped set; stored both here and in the superclass to avoid
-         * excessive casting.
-         * @serial the wrapped set
-         */
-        private final SortedSet ss;
-
-    }
-
-    // class SynchronizedSortedSet
-    /**
-     * The implementation of {@link #unmodifiableCollection(Collection)}. This
-     * class name is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static class UnmodifiableCollection implements Collection,
-            Serializable, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            $RECORD$$CHECKPOINT.commit(timestamp);
-        }
-
-        public final Checkpoint $GET$CHECKPOINT() {
-            return $CHECKPOINT;
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                        timestamp, trim);
-                FieldRecord.popState($RECORDS);
-                $RESTORE(timestamp, trim);
-            }
-        }
-
-        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-            if ($CHECKPOINT != checkpoint) {
-                Checkpoint oldCheckpoint = $CHECKPOINT;
-                if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                            .getTimestamp());
-                    FieldRecord.pushState($RECORDS);
-                }
-                $CHECKPOINT = checkpoint;
-                oldCheckpoint.setCheckpoint(checkpoint);
-                checkpoint.addObject(this);
-            }
-            return this;
-        }
-
-        /**
-         * Blocks the addition of elements to the underlying collection.
-         * This method never returns, throwing an exception instead.
-         * @param o the object to add.
-         * @return <code>true</code> if the collection was modified as a result of this action.
-         * @throws UnsupportedOperationException as an unmodifiable collection does not
-         * support the add operation.
-         */
-        public boolean add(Object o) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Blocks the addition of a collection of elements to the underlying
-         * collection.  This method never returns, throwing an exception instead.
-         * @param c the collection to add.
-         * @return <code>true</code> if the collection was modified as a result of this action.
-         * @throws UnsupportedOperationException as an unmodifiable collection does not
-         * support the <code>addAll</code> operation.
-         */
-        public boolean addAll(Collection c) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Blocks the clearing of the underlying collection.  This method never
-         * returns, throwing an exception instead.
-         * @throws UnsupportedOperationException as an unmodifiable collection does
-         * not support the <code>clear()</code> operation.
-         */
-        public void clear() {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Test whether the underlying collection contains a given object as one of its
-         * elements.
-         * @param o the element to look for.
-         * @return <code>true</code> if the underlying collection contains at least
-         * one element e such that
-         * <code>o == null ? e == null : o.equals(e)</code>.
-         * @throws ClassCastException if the type of o is not a valid type for the
-         * underlying collection.
-         * @throws NullPointerException if o is null and the underlying collection
-         * doesn't support null values.
-         */
-        public boolean contains(Object o) {
-            return c.contains(o);
-        }
-
-        /**
-         * Test whether the underlying collection contains every element in a given
-         * collection.
-         * @param c1 the collection to test for.
-         * @return <code>true</code> if for every element o in c, contains(o) would
-         * return <code>true</code>.
-         * @throws ClassCastException if the type of any element in c is not a valid
-         * type for the underlying collection.
-         * @throws NullPointerException if some element of c is null and the underlying
-         * collection does not support null values.
-         * @throws NullPointerException if c itself is null.
-         */
-        public boolean containsAll(Collection c1) {
-            return c.containsAll(c1);
-        }
-
-        /**
-         * Tests whether the underlying collection is empty, that is,
-         * if size() == 0.
-         * @return <code>true</code> if this collection contains no elements.
-         */
-        public boolean isEmpty() {
-            return c.isEmpty();
-        }
-
-        /**
-         * Obtain an Iterator over the underlying collection, which maintains
-         * its unmodifiable nature.
-         * @return an UnmodifiableIterator over the elements of the underlying
-         * collection, in any order.
-         */
-        public Iterator iterator() {
-            return new UnmodifiableIterator(c.iterator());
-        }
-
-        /**
-         * Blocks the removal of an object from the underlying collection.
-         * This method never returns, throwing an exception instead.
-         * @param o The object to remove.
-         * @return <code>true</code> if the object was removed (i.e. the underlying
-         * collection returned 1 or more instances of o).
-         * @throws UnsupportedOperationException as an unmodifiable collection
-         * does not support the <code>remove()</code> operation.
-         */
-        public boolean remove(Object o) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Blocks the removal of a collection of objects from the underlying
-         * collection.  This method never returns, throwing an exception
-         * instead.
-         * @param c The collection of objects to remove.
-         * @return <code>true</code> if the collection was modified.
-         * @throws UnsupportedOperationException as an unmodifiable collection
-         * does not support the <code>removeAll()</code> operation.
-         */
-        public boolean removeAll(Collection c) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Blocks the removal of all elements from the underlying collection,
-         * except those in the supplied collection.  This method never returns,
-         * throwing an exception instead.
-         * @param c The collection of objects to retain.
-         * @return <code>true</code> if the collection was modified.
-         * @throws UnsupportedOperationException as an unmodifiable collection
-         * does not support the <code>retainAll()</code> operation.
-         */
-        public boolean retainAll(Collection c) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Retrieves the number of elements in the underlying collection.
-         * @return the number of elements in the collection.
-         */
-        public int size() {
-            return c.size();
-        }
-
-        /**
-         * Copy the current contents of the underlying collection into an array.
-         * @return an array of type Object[] with a length equal to the size of the
-         * underlying collection and containing the elements currently in
-         * the underlying collection, in any order.
-         */
-        public Object[] toArray() {
-            return c.toArray();
-        }
-
-        /**
-         * Copy the current contents of the underlying collection into an array.  If
-         * the array passed as an argument has length less than the size of the
-         * underlying collection, an array of the same run-time type as a, with a length
-         * equal to the size of the underlying collection, is allocated using reflection.
-         * Otherwise, a itself is used.  The elements of the underlying collection are
-         * copied into it, and if there is space in the array, the following element is
-         * set to null. The resultant array is returned.
-         * Note: The fact that the following element is set to null is only useful
-         * if it is known that this collection does not contain any null elements.
-         * @param a the array to copy this collection into.
-         * @return an array containing the elements currently in the underlying
-         * collection, in any order.
-         * @throws ArrayStoreException if the type of any element of the
-         * collection is not a subtype of the element type of a.
-         */
-        public Object[] toArray(Object[] a) {
-            return c.toArray(a);
-        }
-
-        /**
-         * A textual representation of the unmodifiable collection.
-         * @return The unmodifiable collection in the form of a <code>String</code>.
-         */
-        public String toString() {
-            return c.toString();
-        }
-
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-        /**
-         * Wrap a given collection.
-         * @param c the collection to wrap
-         * @throws NullPointerException if c is null
-         */
-        UnmodifiableCollection(Collection c) {
-            this.c = c;
-            if (c == null) {
-                throw new NullPointerException();
-            }
-        }
-
-        /**
-         * The wrapped collection. Package visible for use by subclasses.
-         * @serial the real collection
-         */
-        final Collection c;
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = 1820017752578914078L;
-
-    }
-
-    // class UnmodifiableCollection
-    /**
-     * The implementation of the various iterator methods in the
-     * unmodifiable classes.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static class UnmodifiableIterator implements Iterator, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            $RECORD$$CHECKPOINT.commit(timestamp);
-        }
-
-        public final Checkpoint $GET$CHECKPOINT() {
-            return $CHECKPOINT;
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            $RECORD$i.restore(i, timestamp, trim);
-            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                        timestamp, trim);
-                FieldRecord.popState($RECORDS);
-                $RESTORE(timestamp, trim);
-            }
-        }
-
-        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-            if ($CHECKPOINT != checkpoint) {
-                Checkpoint oldCheckpoint = $CHECKPOINT;
-                if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                            .getTimestamp());
-                    FieldRecord.pushState($RECORDS);
-                }
-                $CHECKPOINT = checkpoint;
-                oldCheckpoint.setCheckpoint(checkpoint);
-                checkpoint.addObject(this);
-            }
-            return this;
-        }
-
-        /**
-         * Tests whether there are still elements to be retrieved from the
-         * underlying collection by <code>next()</code>.  When this method
-         * returns <code>true</code>, an exception will not be thrown on calling
-         * <code>next()</code>.
-         * @return <code>true</code> if there is at least one more element in the underlying
-         * collection.
-         */
-        public boolean hasNext() {
-            return i.hasNext();
-        }
-
-        /**
-         * Obtains the next element in the underlying collection.
-         * @return the next element in the collection.
-         * @throws NoSuchElementException if there are no more elements.
-         */
-        public Object next() {
-            return i.next();
-        }
-
-        /**
-         * Blocks the removal of elements from the underlying collection by the
-         * iterator.
-         * @throws UnsupportedOperationException as an unmodifiable collection
-         * does not support the removal of elements by its iterator.
-         */
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-        /**
-         * Only trusted code creates a wrapper.
-         * @param i the wrapped iterator
-         */
-        UnmodifiableIterator(Iterator i) {
-            this.i = i;
-        }
-
-        private FieldRecord $RECORD$i = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$i };
-
-        /**
-         * The wrapped iterator.
-         */
-        private final Iterator i;
-
-    }
-
-    // class UnmodifiableIterator
-    /**
-     * The implementation of {@link #unmodifiableList(List)} for sequential
-     * lists. This class name is required for compatibility with Sun's JDK
-     * serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static class UnmodifiableList extends UnmodifiableCollection
-            implements List, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Blocks the addition of an element to the underlying
-         * list at a specific index.  This method never returns,
-         * throwing an exception instead.
-         * @param index The index at which to place the new element.
-         * @param o the object to add.
-         * @throws UnsupportedOperationException as an unmodifiable
-         * list doesn't support the <code>add()</code> operation.
-         */
-        public void add(int index, Object o) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Blocks the addition of a collection of elements to the
-         * underlying list at a specific index.  This method never
-         * returns, throwing an exception instead.
-         * @param index The index at which to place the new element.
-         * @param c the collections of objects to add.
-         * @throws UnsupportedOperationException as an unmodifiable
-         * list doesn't support the <code>addAll()</code> operation.
-         */
-        public boolean addAll(int index, Collection c) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Returns <code>true</code> if the object, o, is an instance of
-         * <code>List</code> with the same size and elements
-         * as the underlying list.
-         * @param o The object to compare.
-         * @return <code>true</code> if o is equivalent to the underlying list.
-         */
-        public boolean equals(Object o) {
-            return list.equals(o);
-        }
-
-        /**
-         * Retrieves the element at a given index in the underlying list.
-         * @param index the index of the element to be returned
-         * @return the element at index index in this list
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-         */
-        public Object get(int index) {
-            return list.get(index);
-        }
-
-        /**
-         * Computes the hash code for the underlying list.
-         * The exact computation is described in the documentation
-         * of the <code>List</code> interface.
-         * @return The hash code of the underlying list.
-         * @see List#hashCode()
-         */
-        public int hashCode() {
-            return list.hashCode();
-        }
-
-        /**
-         * Obtain the first index at which a given object is to be found in the
-         * underlying list.
-         * @param o the object to search for
-         * @return the least integer n such that <code>o == null ? get(n) == null :
-         * o.equals(get(n))</code>, or -1 if there is no such index.
-         * @throws ClassCastException if the type of o is not a valid
-         * type for the underlying list.
-         * @throws NullPointerException if o is null and the underlying
-         * list does not support null values.
-         */
-        public int indexOf(Object o) {
-            return list.indexOf(o);
-        }
-
-        /**
-         * Obtain the last index at which a given object is to be found in the
-         * underlying list.
-         * @return the greatest integer n such that <code>o == null ? get(n) == null
-         * : o.equals(get(n))</code>, or -1 if there is no such index.
-         * @throws ClassCastException if the type of o is not a valid
-         * type for the underlying list.
-         * @throws NullPointerException if o is null and the underlying
-         * list does not support null values.
-         */
-        public int lastIndexOf(Object o) {
-            return list.lastIndexOf(o);
-        }
-
-        /**
-         * Obtains a list iterator over the underlying list, starting at the beginning
-         * and maintaining the unmodifiable nature of this list.
-         * @return a <code>UnmodifiableListIterator</code> over the elements of the
-         * underlying list, in order, starting at the beginning.
-         */
-        public ListIterator listIterator() {
-            return new UnmodifiableListIterator(list.listIterator());
-        }
-
-        /**
-         * Obtains a list iterator over the underlying list, starting at the specified
-         * index and maintaining the unmodifiable nature of this list.  An initial call
-         * to <code>next()</code> will retrieve the element at the specified index,
-         * and an initial call to <code>previous()</code> will retrieve the element
-         * at index - 1.
-         * @param index the position, between 0 and size() inclusive, to begin the
-         * iteration from.
-         * @return a <code>UnmodifiableListIterator</code> over the elements of the
-         * underlying list, in order, starting at the specified index.
-         * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-         */
-        public ListIterator listIterator(int index) {
-            return new UnmodifiableListIterator(list.listIterator(index));
-        }
-
-        /**
-         * Blocks the removal of the element at the specified index.
-         * This method never returns, throwing an exception instead.
-         * @param index The index of the element to remove.
-         * @return the removed element.
-         * @throws UnsupportedOperationException as an unmodifiable
-         * list does not support the <code>remove()</code>
-         * operation.
-         */
-        public Object remove(int index) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Blocks the replacement of the element at the specified index.
-         * This method never returns, throwing an exception instead.
-         * @param index The index of the element to replace.
-         * @param o The new object to place at the specified index.
-         * @return the replaced element.
-         * @throws UnsupportedOperationException as an unmodifiable
-         * list does not support the <code>set()</code>
-         * operation.
-         */
-        public Object set(int index, Object o) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Obtain a List view of a subsection of the underlying list, from
-         * fromIndex (inclusive) to toIndex (exclusive). If the two indices
-         * are equal, the sublist is empty. The returned list will be
-         * unmodifiable, like this list.  Changes to the elements of the
-         * returned list will be reflected in the underlying list. No structural
-         * modifications can take place in either list.
-         * @param fromIndex the index that the returned list should start from
-         * (inclusive).
-         * @param toIndex the index that the returned list should go to (exclusive).
-         * @return a List backed by a subsection of the underlying list.
-         * @throws IndexOutOfBoundsException if fromIndex &lt; 0
-         * || toIndex &gt; size() || fromIndex &gt; toIndex.
-         */
-        public List subList(int fromIndex, int toIndex) {
-            return unmodifiableList(list.subList(fromIndex, toIndex));
-        }
-
-        /**
-         * Wrap a given list.
-         * @param l the list to wrap
-         * @throws NullPointerException if l is null
-         */
-        UnmodifiableList(List l) {
-            super(l);
-            list = l;
-        }
-
-        /**
-         * The wrapped list; stored both here and in the superclass to avoid
-         * excessive casting. Package visible for use by subclass.
-         * @serial the wrapped list
-         */
-        final List list;
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = -283967356065247728L;
-
-    }
-
-    // class UnmodifiableRandomAccessList
-    /**
-     * The implementation of {@link UnmodifiableList#listIterator()}.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class UnmodifiableListIterator extends
-            UnmodifiableIterator implements ListIterator, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            $RECORD$li.restore(li, timestamp, trim);
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Blocks the addition of an object to the list underlying this iterator.
-         * This method never returns, throwing an exception instead.
-         * @param o The object to add.
-         * @throws UnsupportedOperationException as the iterator of an unmodifiable
-         * list does not support the <code>add()</code> operation.
-         */
-        public void add(Object o) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Tests whether there are still elements to be retrieved from the
-         * underlying collection by <code>previous()</code>.  When this method
-         * returns <code>true</code>, an exception will not be thrown on calling
-         * <code>previous()</code>.
-         * @return <code>true</code> if there is at least one more element prior to the
-         * current position in the underlying list.
-         */
-        public boolean hasPrevious() {
-            return li.hasPrevious();
-        }
-
-        /**
-         * Find the index of the element that would be returned by a call to next.
-         * If <code>hasNext()</code> returns <code>false</code>, this returns the list size.
-         * @return the index of the element that would be returned by
-         * <code>next()</code>.
-         */
-        public int nextIndex() {
-            return li.nextIndex();
-        }
-
-        /**
-         * Obtains the previous element in the underlying list.
-         * @return the previous element in the list.
-         * @throws NoSuchElementException if there are no more prior elements.
-         */
-        public Object previous() {
-            return li.previous();
-        }
-
-        /**
-         * Find the index of the element that would be returned by a call to
-         * previous. If <code>hasPrevious()</code> returns <code>false</code>,
-         * this returns -1.
-         * @return the index of the element that would be returned by
-         * <code>previous()</code>.
-         */
-        public int previousIndex() {
-            return li.previousIndex();
-        }
-
-        /**
-         * Blocks the replacement of an element in the list underlying this
-         * iterator.  This method never returns, throwing an exception instead.
-         * @param o The new object to replace the existing one.
-         * @throws UnsupportedOperationException as the iterator of an unmodifiable
-         * list does not support the <code>set()</code> operation.
-         */
-        public void set(Object o) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Only trusted code creates a wrapper.
-         * @param li the wrapped iterator
-         */
-        UnmodifiableListIterator(ListIterator li) {
-            super(li);
-            this.li = li;
-        }
-
-        private FieldRecord $RECORD$li = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$li };
-
-        /**
-         * The wrapped iterator, stored both here and in the superclass to
-         * avoid excessive casting.
-         */
-        private final ListIterator li;
-
-    }
-
-    // class UnmodifiableListIterator
-    /**
-     * The implementation of {@link #unmodifiableMap(Map)}. This
-     * class name is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static class UnmodifiableMap implements Map, Serializable,
-            Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            $RECORD$$CHECKPOINT.commit(timestamp);
-        }
-
-        public final Checkpoint $GET$CHECKPOINT() {
-            return $CHECKPOINT;
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            $RECORD$m.restore(m, timestamp, trim);
-            entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
-            keys = (Set) $RECORD$keys.restore(keys, timestamp, trim);
-            values = (Collection) $RECORD$values.restore(values, timestamp,
-                    trim);
-            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                        timestamp, trim);
-                FieldRecord.popState($RECORDS);
-                $RESTORE(timestamp, trim);
-            }
-        }
-
-        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-            if ($CHECKPOINT != checkpoint) {
-                Checkpoint oldCheckpoint = $CHECKPOINT;
-                if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                            .getTimestamp());
-                    FieldRecord.pushState($RECORDS);
-                }
-                $CHECKPOINT = checkpoint;
-                oldCheckpoint.setCheckpoint(checkpoint);
-                checkpoint.addObject(this);
-            }
-            return this;
-        }
-
-        /**
-         * Blocks the clearing of entries from the underlying map.
-         * This method never returns, throwing an exception instead.
-         * @throws UnsupportedOperationException as an unmodifiable
-         * map does not support the <code>clear()</code> operation.
-         */
-        public void clear() {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Returns <code>true</code> if the underlying map contains a mapping for
-         * the given key.
-         * @param key the key to search for
-         * @return <code>true</code> if the map contains the key
-         * @throws ClassCastException if the key is of an inappropriate type
-         * @throws NullPointerException if key is <code>null</code> but the map
-         * does not permit null keys
-         */
-        public boolean containsKey(Object key) {
-            return m.containsKey(key);
-        }
-
-        /**
-         * Returns <code>true</code> if the underlying map contains at least one mapping with
-         * the given value.  In other words, it returns <code>true</code> if a value v exists where
-         * <code>(value == null ? v == null : value.equals(v))</code>. This usually
-         * requires linear time.
-         * @param value the value to search for
-         * @return <code>true</code> if the map contains the value
-         * @throws ClassCastException if the type of the value is not a valid type
-         * for this map.
-         * @throws NullPointerException if the value is null and the map doesn't
-         * support null values.
-         */
-        public boolean containsValue(Object value) {
-            return m.containsValue(value);
-        }
-
-        /**
-         * Returns a unmodifiable set view of the entries in the underlying map.
-         * Each element in the set is a unmodifiable variant of <code>Map.Entry</code>.
-         * The set is backed by the map, so that changes in one show up in the other.
-         * Modifications made while an iterator is in progress cause undefined
-         * behavior.  These modifications are again limited to the values of
-         * the objects.
-         * @return the unmodifiable set view of all mapping entries.
-         * @see Map.Entry
-         */
-        public Set entrySet() {
-            if (entries == null) {
-                $ASSIGN$entries(new UnmodifiableEntrySet(m.entrySet()));
-            }
-            return entries;
-        }
-
-        /**
-         * Returns <code>true</code> if the object, o, is also an instance
-         * of <code>Map</code> with an equal set of map entries.
-         * @param o The object to compare.
-         * @return <code>true</code> if o is an equivalent map.
-         */
-        public boolean equals(Object o) {
-            return m.equals(o);
-        }
-
-        /**
-         * Returns the value associated with the supplied key or
-         * null if no such mapping exists.  An ambiguity can occur
-         * if null values are accepted by the underlying map.
-         * In this case, <code>containsKey()</code> can be used
-         * to separate the two possible cases of a null result.
-         * @param key The key to look up.
-         * @return the value associated with the key, or null if key not in map.
-         * @throws ClassCastException if the key is an inappropriate type.
-         * @throws NullPointerException if this map does not accept null keys.
-         * @see #containsKey(Object)
-         */
-        public Object get(Object key) {
-            return m.get(key);
-        }
-
-        /**
-         * Computes the hash code for the underlying map, as the sum
-         * of the hash codes of all entries.
-         * @return The hash code of the underlying map.
-         * @see Map.Entry#hashCode()
-         */
-        public int hashCode() {
-            return m.hashCode();
-        }
-
-        /**
-         * Returns <code>true</code> if the underlying map contains no entries.
-         * @return <code>true</code> if the map is empty.
-         */
-        public boolean isEmpty() {
-            return m.isEmpty();
-        }
-
-        /**
-         * Returns a unmodifiable set view of the keys in the underlying map.
-         * The set is backed by the map, so that changes in one show up in the other.
-         * Modifications made while an iterator is in progress cause undefined
-         * behavior.  These modifications are again limited to the values of
-         * the keys.
-         * @return the set view of all keys.
-         */
-        public Set keySet() {
-            if (keys == null) {
-                $ASSIGN$keys(new UnmodifiableSet(m.keySet()));
-            }
-            return keys;
-        }
-
-        /**
-         * Blocks the addition of a new entry to the underlying map.
-         * This method never returns, throwing an exception instead.
-         * @param key The new key.
-         * @param value The new value.
-         * @return the previous value of the key, or null if there was no mapping.
-         * @throws UnsupportedOperationException as an unmodifiable
-         * map does not support the <code>put()</code> operation.
-         */
-        public Object put(Object key, Object value) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Blocks the addition of the entries in the supplied map.
-         * This method never returns, throwing an exception instead.
-         * @param m The map, the entries of which should be added
-         * to the underlying map.
-         * @throws UnsupportedOperationException as an unmodifiable
-         * map does not support the <code>putAll</code> operation.
-         */
-        public void putAll(Map m) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Blocks the removal of an entry from the map.
-         * This method never returns, throwing an exception instead.
-         * @param o The key of the entry to remove.
-         * @return The value the key was associated with, or null
-         * if no such mapping existed.  Null is also returned
-         * if the removed entry had a null key.
-         * @throws UnsupportedOperationException as an unmodifiable
-         * map does not support the <code>remove</code> operation.
-         */
-        public Object remove(Object o) {
-            throw new UnsupportedOperationException();
-        }
-
-        /**
-         * Returns the number of key-value mappings in the underlying map.
-         * If there are more than Integer.MAX_VALUE mappings, Integer.MAX_VALUE
-         * is returned.
-         * @return the number of mappings.
-         */
-        public int size() {
-            return m.size();
-        }
-
-        /**
-         * Returns a textual representation of the map.
-         * @return The map in the form of a <code>String</code>.
-         */
-        public String toString() {
-            return m.toString();
-        }
-
-        /**
-         * Returns a unmodifiable collection view of the values in the underlying map.
-         * The collection is backed by the map, so that changes in one show up in the other.
-         * Modifications made while an iterator is in progress cause undefined
-         * behavior.  These modifications are again limited to the values of
-         * the keys.
-         * @return the collection view of all values.
-         */
-        public Collection values() {
-            if (values == null) {
-                $ASSIGN$values(new UnmodifiableCollection(m.values()));
-            }
-            return values;
-        }
-
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-        // class UnmodifiableEntrySet
-        /**
-         * Wrap a given map.
-         * @param m the map to wrap
-         * @throws NullPointerException if m is null
-         */
-        UnmodifiableMap(Map m) {
-            this.m = m;
-            if (m == null) {
-                throw new NullPointerException();
-            }
-        }
-
-        private final Set $ASSIGN$entries(Set newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return entries = newValue;
-        }
-
-        private final Set $ASSIGN$keys(Set newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$keys.add(null, keys, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return keys = newValue;
-        }
-
-        private final Collection $ASSIGN$values(Collection newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$values.add(null, values, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return values = newValue;
-        }
-
-        private FieldRecord $RECORD$entries = new FieldRecord(0);
-
-        private FieldRecord $RECORD$keys = new FieldRecord(0);
-
-        private FieldRecord $RECORD$m = new FieldRecord(0);
-
-        private FieldRecord $RECORD$values = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$m,
-                $RECORD$entries, $RECORD$keys, $RECORD$values };
-
-        /**
-         * Cache the entry set.
-         */
-        private transient Set entries;
-
-        /**
-         * Cache the key set.
-         */
-        private transient Set keys;
-
-        /**
-         * The wrapped map.
-         * @serial the real map
-         */
-        private final Map m;
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = -1034234728574286014L;
-
-        /**
-         * Cache the value collection.
-         */
-        private transient Collection values;
-
-        /**
-         * The implementation of {@link UnmodifiableMap#entrySet()}. This class
-         * name is required for compatibility with Sun's JDK serializability.
-         * @author Eric Blake (ebb9@email.byu.edu)
-         */
-        private static final class UnmodifiableEntrySet extends UnmodifiableSet
-                implements Serializable, Rollbackable {
-
-            public void $COMMIT(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                        .getTopTimestamp());
-                super.$COMMIT(timestamp);
-            }
-
-            public void $RESTORE(long timestamp, boolean trim) {
-                super.$RESTORE(timestamp, trim);
-            }
-
-            // The iterator must return unmodifiable map entries.
-
-            public Iterator iterator() {
-                return new UnmodifiableIterator(c.iterator()) {
-                    public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp,
-                                $RECORD$$CHECKPOINT.getTopTimestamp());
-                        super.$COMMIT(timestamp);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                        return $CHECKPOINT;
-                    }
-
-                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                        super.$RESTORE(timestamp, trim);
-                    }
-
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(
-                            Checkpoint checkpoint) {
-                        if ($CHECKPOINT != checkpoint) {
-                            Checkpoint oldCheckpoint = $CHECKPOINT;
-                            if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                                        .getTimestamp());
-                                FieldRecord.pushState($RECORDS);
-                            }
-                            $CHECKPOINT = checkpoint;
-                            oldCheckpoint.setCheckpoint(checkpoint);
-                            checkpoint.addObject(new _PROXY_());
-                        }
-                        return this;
-                    }
-
-                    /**
-                     * Obtains the next element from the underlying set of
-                     * map entries.
-                     * @return the next element in the collection.
-                     * @throws NoSuchElementException if there are no more elements.
-                     */
-                    public Object next() {
-                        final Map.Entry e = (Map.Entry) super.next();
-                        return new Map.Entry() {
-                            public void $COMMIT(long timestamp) {
-                                FieldRecord.commit($RECORDS, timestamp,
-                                        $RECORD$$CHECKPOINT.getTopTimestamp());
-                                $RECORD$$CHECKPOINT.commit(timestamp);
-                            }
-
-                            public final Checkpoint $GET$CHECKPOINT() {
-                                return $CHECKPOINT;
-                            }
-
-                            public void $RESTORE(long timestamp, boolean trim) {
-                                if (timestamp <= $RECORD$$CHECKPOINT
-                                        .getTopTimestamp()) {
-                                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore(
-                                            $CHECKPOINT, this, timestamp, trim);
-                                    FieldRecord.popState($RECORDS);
-                                    $RESTORE(timestamp, trim);
-                                }
-                            }
-
-                            public final Object $SET$CHECKPOINT(
-                                    Checkpoint checkpoint) {
-                                if ($CHECKPOINT != checkpoint) {
-                                    Checkpoint oldCheckpoint = $CHECKPOINT;
-                                    if (checkpoint != null) {
-                                        $RECORD$$CHECKPOINT.add($CHECKPOINT,
-                                                checkpoint.getTimestamp());
-                                        FieldRecord.pushState($RECORDS);
-                                    }
-                                    $CHECKPOINT = checkpoint;
-                                    oldCheckpoint.setCheckpoint(checkpoint);
-                                    checkpoint.addObject(this);
-                                }
-                                return this;
-                            }
-
-                            /**
-                             * Returns <code>true</code> if the object, o, is also a map entry with an
-                             * identical key and value.
-                             * @param o the object to compare.
-                             * @return <code>true</code> if o is an equivalent map entry.
-                             */
-                            public boolean equals(Object o) {
-                                return e.equals(o);
-                            }
-
-                            /**
-                             * Returns the key of this map entry.
-                             * @return the key.
-                             */
-                            public Object getKey() {
-                                return e.getKey();
-                            }
-
-                            /**
-                             * Returns the value of this map entry.
-                             * @return the value.
-                             */
-                            public Object getValue() {
-                                return e.getValue();
-                            }
-
-                            /**
-                             * Computes the hash code of this map entry.
-                             * The computation is described in the <code>Map</code>
-                             * interface documentation.
-                             * @return the hash code of this entry.
-                             * @see Map#hashCode()
-                             */
-                            public int hashCode() {
-                                return e.hashCode();
-                            }
-
-                            /**
-                             * Blocks the alteration of the value of this map entry.
-                             * This method never returns, throwing an exception instead.
-                             * @param value The new value.
-                             * @throws UnsupportedOperationException as an unmodifiable
-                             * map entry does not support the <code>setValue()</code>
-                             * operation.
-                             */
-                            public Object setValue(Object value) {
-                                throw new UnsupportedOperationException();
-                            }
-
-                            /**
-                             * Returns a textual representation of the map entry.
-                             * @return The map entry as a <code>String</code>.
-                             */
-                            public String toString() {
-                                return e.toString();
-                            }
-
-                            protected Checkpoint $CHECKPOINT = new Checkpoint(
-                                    this);
-
-                            protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-                            private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-                        };
-                    }
-
-                    final class _PROXY_ implements Rollbackable {
-
-                        public final void $COMMIT(long timestamp) {
-                            $COMMIT_ANONYMOUS(timestamp);
-                        }
-
-                        public final Checkpoint $GET$CHECKPOINT() {
-                            return $GET$CHECKPOINT_ANONYMOUS();
-                        }
-
-                        public final void $RESTORE(long timestamp, boolean trim) {
-                            $RESTORE_ANONYMOUS(timestamp, trim);
-                        }
-
-                        public final Object $SET$CHECKPOINT(
-                                Checkpoint checkpoint) {
-                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                            return this;
-                        }
-
-                    }
-
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-                    {
-                        $CHECKPOINT.addObject(new _PROXY_());
-                    }
-
-                };
-            }
-
-            /**
-             * Wrap a given set.
-             * @param s the set to wrap
-             */
-            UnmodifiableEntrySet(Set s) {
-                super(s);
-            }
-
-            private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-            /**
-             * Compatible with JDK 1.4.
-             */
-            private static final long serialVersionUID = 7854390611657943733L;
-
-        }
-
-    }
-
-    // class UnmodifiableList
-    /**
-     * The implementation of {@link #unmodifiableList(List)} for random-access
-     * lists. This class name is required for compatibility with Sun's JDK
-     * serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static final class UnmodifiableRandomAccessList extends
-            UnmodifiableList implements RandomAccess, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Wrap a given list.
-         * @param l the list to wrap
-         * @throws NullPointerException if l is null
-         */
-        UnmodifiableRandomAccessList(List l) {
-            super(l);
-        }
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = -2542308836966382001L;
-
-    }
-
-    // class UnmodifiableMap
-    /**
-     * The implementation of {@link #unmodifiableSet(Set)}. This class
-     * name is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static class UnmodifiableSet extends UnmodifiableCollection
-            implements Set, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Returns <code>true</code> if the object, o, is also an instance of
-         * <code>Set</code> of the same size and with the same entries.
-         * @return <code>true</code> if o is an equivalent set.
-         */
-        public boolean equals(Object o) {
-            return c.equals(o);
-        }
-
-        /**
-         * Computes the hash code of this set, as the sum of the
-         * hash codes of all elements within the set.
-         * @return the hash code of the set.
-         */
-        public int hashCode() {
-            return c.hashCode();
-        }
-
-        /**
-         * Wrap a given set.
-         * @param s the set to wrap
-         * @throws NullPointerException if s is null
-         */
-        UnmodifiableSet(Set s) {
-            super(s);
-        }
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = -9215047833775013803L;
-
-    }
-
-    // class UnmodifiableSet
-    /**
-     * The implementation of {@link #unmodifiableSortedMap(SortedMap)}
-     . This
-     * class name is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static class UnmodifiableSortedMap extends UnmodifiableMap
-            implements SortedMap, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            $RECORD$sm.restore(sm, timestamp, trim);
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Returns the comparator used in sorting the underlying map,
-         * or null if it is the keys' natural ordering.
-         * @return the sorting comparator.
-         */
-        public Comparator comparator() {
-            return sm.comparator();
-        }
-
-        /**
-         * Returns the first (lowest sorted) key in the map.
-         * @return the first key.
-         * @throws NoSuchElementException if this map is empty.
-         */
-        public Object firstKey() {
-            return sm.firstKey();
-        }
-
-        /**
-         * Returns a unmodifiable view of the portion of the map strictly less
-         * than toKey. The view is backed by the underlying map, so changes in
-         * one show up in the other.  The submap supports all optional operations
-         * of the original.  This operation is equivalent to
-         * <code>subMap(firstKey(), toKey)</code>.
-         * <p>
-         * The returned map throws an IllegalArgumentException any time a key is
-         * used which is out of the range of toKey. Note that the endpoint, toKey,
-         * is not included; if you want this value to be included, pass its successor
-         * object in to toKey.  For example, for Integers, you could request
-         * <code>headMap(new Integer(limit.intValue() + 1))</code>.
-         * @param toKey the exclusive upper range of the submap.
-         * @return the submap.
-         * @throws ClassCastException if toKey is not comparable to the map contents.
-         * @throws IllegalArgumentException if this is a subMap, and toKey is out
-         * of range.
-         * @throws NullPointerException if toKey is null but the map does not allow
-         * null keys.
-         */
-        public SortedMap headMap(Object toKey) {
-            return new UnmodifiableSortedMap(sm.headMap(toKey));
-        }
-
-        /**
-         * Returns the last (highest sorted) key in the map.
-         * @return the last key.
-         * @throws NoSuchElementException if this map is empty.
-         */
-        public Object lastKey() {
-            return sm.lastKey();
-        }
-
-        /**
-         * Returns a unmodifiable view of the portion of the map greater than or
-         * equal to fromKey, and strictly less than toKey. The view is backed by
-         * the underlying map, so changes in one show up in the other. The submap
-         * supports all optional operations of the original.
-         * <p>
-         * The returned map throws an IllegalArgumentException any time a key is
-         * used which is out of the range of fromKey and toKey. Note that the
-         * lower endpoint is included, but the upper is not; if you want to
-         * change the inclusion or exclusion of an endpoint, pass its successor
-         * object in instead.  For example, for Integers, you could request
-         * <code>subMap(new Integer(lowlimit.intValue() + 1),
-         * new Integer(highlimit.intValue() + 1))</code> to reverse
-         * the inclusiveness of both endpoints.
-         * @param fromKey the inclusive lower range of the submap.
-         * @param toKey the exclusive upper range of the submap.
-         * @return the submap.
-         * @throws ClassCastException if fromKey or toKey is not comparable to
-         * the map contents.
-         * @throws IllegalArgumentException if this is a subMap, and fromKey or
-         * toKey is out of range.
-         * @throws NullPointerException if fromKey or toKey is null but the map
-         * does not allow null keys.
-         */
-        public SortedMap subMap(Object fromKey, Object toKey) {
-            return new UnmodifiableSortedMap(sm.subMap(fromKey, toKey));
-        }
-
-        /**
-         * Returns a unmodifiable view of the portion of the map greater than or
-         * equal to fromKey. The view is backed by the underlying map, so changes
-         * in one show up in the other. The submap supports all optional operations
-         * of the original.
-         * <p>
-         * The returned map throws an IllegalArgumentException any time a key is
-         * used which is out of the range of fromKey. Note that the endpoint, fromKey, is
-         * included; if you do not want this value to be included, pass its successor object in
-         * to fromKey.  For example, for Integers, you could request
-         * <code>tailMap(new Integer(limit.intValue() + 1))</code>.
-         * @param fromKey the inclusive lower range of the submap
-         * @return the submap
-         * @throws ClassCastException if fromKey is not comparable to the map
-         * contents
-         * @throws IllegalArgumentException if this is a subMap, and fromKey is out
-         * of range
-         * @throws NullPointerException if fromKey is null but the map does not allow
-         * null keys
-         */
-        public SortedMap tailMap(Object fromKey) {
-            return new UnmodifiableSortedMap(sm.tailMap(fromKey));
-        }
-
-        /**
-         * Wrap a given map.
-         * @param sm the map to wrap
-         * @throws NullPointerException if sm is null
-         */
-        UnmodifiableSortedMap(SortedMap sm) {
-            super(sm);
-            this.sm = sm;
-        }
-
-        private FieldRecord $RECORD$sm = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$sm };
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = -8806743815996713206L;
-
-        /**
-         * The wrapped map; stored both here and in the superclass to avoid
-         * excessive casting.
-         * @serial the wrapped map
-         */
-        private final SortedMap sm;
-
-    }
-
-    // class UnmodifiableSortedMap
-    /**
-     * The implementation of {@link #synchronizedSortedMap(SortedMap)}. This
-     * class name is required for compatibility with Sun's JDK serializability.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    private static class UnmodifiableSortedSet extends UnmodifiableSet
-            implements SortedSet, Rollbackable {
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            ss = (SortedSet) $RECORD$ss.restore(ss, timestamp, trim);
-            super.$RESTORE(timestamp, trim);
-        }
-
-        /**
-         * Returns the comparator used in sorting the underlying set,
-         * or null if it is the elements' natural ordering.
-         * @return the sorting comparator
-         */
-        public Comparator comparator() {
-            return ss.comparator();
-        }
-
-        /**
-         * Returns the first (lowest sorted) element in the underlying
-         * set.
-         * @return the first element.
-         * @throws NoSuchElementException if the set is empty.
-         */
-        public Object first() {
-            return ss.first();
-        }
-
-        /**
-         * Returns a unmodifiable view of the portion of the set strictly
-         * less than toElement. The view is backed by the underlying set,
-         * so changes in one show up in the other.  The subset supports
-         * all optional operations of the original.  This operation
-         * is equivalent to <code>subSet(first(), toElement)</code>.
-         * <p>
-         * The returned set throws an IllegalArgumentException any time an element is
-         * used which is out of the range of toElement. Note that the endpoint, toElement,
-         * is not included; if you want this value included, pass its successor object in to
-         * toElement.  For example, for Integers, you could request
-         * <code>headSet(new Integer(limit.intValue() + 1))</code>.
-         * @param toElement the exclusive upper range of the subset
-         * @return the subset.
-         * @throws ClassCastException if toElement is not comparable to the set
-         * contents.
-         * @throws IllegalArgumentException if this is a subSet, and toElement is out
-         * of range.
-         * @throws NullPointerException if toElement is null but the set does not
-         * allow null elements.
-         */
-        public SortedSet headSet(Object toElement) {
-            return new UnmodifiableSortedSet(ss.headSet(toElement));
-        }
-
-        /**
-         * Returns the last (highest sorted) element in the underlying
-         * set.
-         * @return the last element.
-         * @throws NoSuchElementException if the set is empty.
-         */
-        public Object last() {
-            return ss.last();
-        }
-
-        /**
-         * Returns a unmodifiable view of the portion of the set greater than or
-         * equal to fromElement, and strictly less than toElement. The view is backed by
-         * the underlying set, so changes in one show up in the other. The subset
-         * supports all optional operations of the original.
-         * <p>
-         * The returned set throws an IllegalArgumentException any time an element is
-         * used which is out of the range of fromElement and toElement. Note that the
-         * lower endpoint is included, but the upper is not; if you want to
-         * change the inclusion or exclusion of an endpoint, pass its successor
-         * object in instead.  For example, for Integers, you can request
-         * <code>subSet(new Integer(lowlimit.intValue() + 1),
-         * new Integer(highlimit.intValue() + 1))</code> to reverse
-         * the inclusiveness of both endpoints.
-         * @param fromElement the inclusive lower range of the subset.
-         * @param toElement the exclusive upper range of the subset.
-         * @return the subset.
-         * @throws ClassCastException if fromElement or toElement is not comparable
-         * to the set contents.
-         * @throws IllegalArgumentException if this is a subSet, and fromElement or
-         * toElement is out of range.
-         * @throws NullPointerException if fromElement or toElement is null but the
-         * set does not allow null elements.
-         */
-        public SortedSet subSet(Object fromElement, Object toElement) {
-            return new UnmodifiableSortedSet(ss.subSet(fromElement, toElement));
-        }
-
-        /**
-         * Returns a unmodifiable view of the portion of the set greater than or equal to
-         * fromElement. The view is backed by the underlying set, so changes in one show up
-         * in the other. The subset supports all optional operations of the original.
-         * <p>
-         * The returned set throws an IllegalArgumentException any time an element is
-         * used which is out of the range of fromElement. Note that the endpoint,
-         * fromElement, is included; if you do not want this value to be included, pass its
-         * successor object in to fromElement.  For example, for Integers, you could request
-         * <code>tailSet(new Integer(limit.intValue() + 1))</code>.
-         * @param fromElement the inclusive lower range of the subset
-         * @return the subset.
-         * @throws ClassCastException if fromElement is not comparable to the set
-         * contents.
-         * @throws IllegalArgumentException if this is a subSet, and fromElement is
-         * out of range.
-         * @throws NullPointerException if fromElement is null but the set does not
-         * allow null elements.
-         */
-        public SortedSet tailSet(Object fromElement) {
-            return new UnmodifiableSortedSet(ss.tailSet(fromElement));
-        }
-
-        /**
-         * Wrap a given set.
-         * @param ss the set to wrap
-         * @throws NullPointerException if ss is null
-         */
-        UnmodifiableSortedSet(SortedSet ss) {
-            super(ss);
-            this.$ASSIGN$ss(ss);
-        }
-
-        private final SortedSet $ASSIGN$ss(SortedSet newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$ss.add(null, ss, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return ss = newValue;
-        }
-
-        private FieldRecord $RECORD$ss = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$ss };
-
-        /**
-         * Compatible with JDK 1.4.
-         */
-        private static final long serialVersionUID = -4929149591599911165L;
-
-        /**
-         * The wrapped set; stored both here and in the superclass to avoid
-         * excessive casting.
-         * @serial the wrapped set
-         */
-        private SortedSet ss;
-
-    }
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+        };
 
 }
 

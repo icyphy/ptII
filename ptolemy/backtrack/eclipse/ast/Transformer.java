@@ -163,9 +163,38 @@ public class Transformer {
                     try {
                         c = loader.loadClass(new File(fileName));
                     } catch (Exception e) {
-                        System.err.println("Skipping \"" + files[j] + "\". "
+                        /*System.err.println("Skipping \"" + files[j] + "\". "
                                 + "Cause: " + e.getMessage());
-                        continue;
+                        continue;*/
+                        System.err.println("***********************");
+                        String message = e.getMessage();
+                        System.err.println("Cannot load class from file: "
+                                + message);
+                        
+                        String header = "Prohibited package name:";
+                        if (message.startsWith(header)) {
+                            String packageName =
+                                message.substring(header.length()).trim();
+                            String name = new File(fileName).getName();
+                            int dotPos = name.indexOf('.');
+                            if (dotPos >= 0) {
+                                name = name.substring(0, dotPos);
+                            }
+                            String className = packageName + "." + name;
+                            System.err.println("Try to use preloaded class: "
+                                    + className);
+                            try {
+                                c = loader.loadClass(className);
+                            } catch (Exception e2) {
+                            }
+                            
+                            if (c == null) {
+                                System.err.println(
+                                        "Cannot obtain preloaded class: "
+                                        + className);
+                                continue;
+                            }
+                        }
                     }
 
                     fileList.add(files[j]);

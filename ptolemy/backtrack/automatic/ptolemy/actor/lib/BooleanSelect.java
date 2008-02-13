@@ -73,7 +73,7 @@ import ptolemy.kernel.util.StringAttribute;
  */
 public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Put the control input on the bottom of the actor.
     ///////////////////////////////////////////////////////////////////
@@ -227,11 +227,11 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_control = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_control = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_control
         };
 

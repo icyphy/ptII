@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class PhaseUnwrap extends Transformer implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -204,17 +204,17 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_previousPhaseInput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_previousPhaseInput = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_tempPreviousPhaseInput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tempPreviousPhaseInput = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_previousPhaseOutput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_previousPhaseOutput = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_tempPreviousPhaseOutput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tempPreviousPhaseOutput = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_previousPhaseInput,
             $RECORD$_tempPreviousPhaseInput,
             $RECORD$_previousPhaseOutput,

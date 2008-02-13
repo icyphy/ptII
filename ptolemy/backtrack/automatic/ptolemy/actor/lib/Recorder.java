@@ -73,7 +73,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class Recorder extends Sink implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -335,15 +335,15 @@ public class Recorder extends Sink implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_count = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_count = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_records = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_records = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_timeRecord = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_timeRecord = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_count,
             $RECORD$_records,
             $RECORD$_timeRecord

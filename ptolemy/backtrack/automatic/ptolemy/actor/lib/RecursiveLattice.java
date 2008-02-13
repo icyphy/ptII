@@ -112,7 +112,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class RecursiveLattice extends Transformer implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Note that setExpression() will call attributeChanged().
     ///////////////////////////////////////////////////////////////////
@@ -398,19 +398,19 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_backward = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_backward = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_backwardCache = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_backwardCache = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_forward = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_forward = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_forwardCache = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_forwardCache = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_reflectionCoefs = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_reflectionCoefs = new FieldRecord(1);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_backward,
             $RECORD$_backwardCache,
             $RECORD$_forward,

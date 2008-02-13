@@ -95,7 +95,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class Pulse extends SequenceSource implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Call this so that we don't have to copy its code here...
     // set values parameter
@@ -469,21 +469,21 @@ public class Pulse extends SequenceSource implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_iterationCount = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_iterationCount = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_indexColCount = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_indexColCount = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_indexes = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_indexes = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_zero = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_zero = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_match = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_match = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_repeatFlag = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_repeatFlag = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_iterationCount,
             $RECORD$_indexColCount,
             $RECORD$_indexes,

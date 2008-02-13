@@ -69,7 +69,7 @@ import ptolemy.util.MessageHandler;
  */
 public class IIR extends Transformer implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Parameters
     ///////////////////////////////////////////////////////////////////
@@ -397,19 +397,19 @@ public class IIR extends Transformer implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_numerator = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_numerator = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_denominator = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_denominator = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_stateVector = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_stateVector = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_currentTap = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_currentTap = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_latestWindow = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_latestWindow = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_numerator,
             $RECORD$_denominator,
             $RECORD$_stateVector,

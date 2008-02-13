@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Add an attribute to get the port placed on the bottom.
     ///////////////////////////////////////////////////////////////////
@@ -352,21 +352,21 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_recordedToken = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_recordedToken = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_nextPort = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_nextPort = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_readFromA = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_readFromA = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_tentativeReadFromA = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tentativeReadFromA = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_tentativeRecordedToken = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tentativeRecordedToken = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_tentativeNextPort = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tentativeNextPort = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_recordedToken,
             $RECORD$_nextPort,
             $RECORD$_readFromA,

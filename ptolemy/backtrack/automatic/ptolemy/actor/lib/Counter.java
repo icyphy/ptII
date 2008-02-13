@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class Counter extends TypedAtomicActor implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -270,15 +270,15 @@ public class Counter extends TypedAtomicActor implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_count = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_count = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_latestCount = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_latestCount = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_consumed = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_consumed = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_count,
             $RECORD$_latestCount,
             $RECORD$_consumed

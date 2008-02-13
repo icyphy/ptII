@@ -1,48 +1,47 @@
 /* Collection.java -- Interface that represents a collection of objects
- Copyright (C) 1998, 2001, 2005  Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001, 2005  Free Software Foundation, Inc.
 
- This file is part of GNU Classpath.
+This file is part of GNU Classpath.
 
- GNU Classpath is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2, or (at your option)
- any later version.
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
 
- GNU Classpath is distributed in the hope that it will be useful, but
- WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- General Public License for more details.
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with GNU Classpath; see the file COPYING.  If not, write to the
- Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- 02110-1301 USA.
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+02110-1301 USA.
 
- Linking this library statically or dynamically with other modules is
- making a combined work based on this library.  Thus, the terms and
- conditions of the GNU General Public License cover the whole
- combination.
+Linking this library statically or dynamically with other modules is
+making a combined work based on this library.  Thus, the terms and
+conditions of the GNU General Public License cover the whole
+combination.
 
- As a special exception, the copyright holders of this library give you
- permission to link this library with independent modules to produce an
- executable, regardless of the license terms of these independent
- modules, and to copy and distribute the resulting executable under
- terms of your choice, provided that you also meet, for each linked
- independent module, the terms and conditions of the license of that
- module.  An independent module is a module which is not derived from
- or based on this library.  If you modify this library, you may extend
- this exception to your version of the library, but you are not
- obligated to do so.  If you do not wish to do so, delete this
- exception statement from your version. */
+As a special exception, the copyright holders of this library give you
+permission to link this library with independent modules to produce an
+executable, regardless of the license terms of these independent
+modules, and to copy and distribute the resulting executable under
+terms of your choice, provided that you also meet, for each linked
+independent module, the terms and conditions of the license of that
+module.  An independent module is a module which is not derived from
+or based on this library.  If you modify this library, you may extend
+this exception to your version of the library, but you are not
+obligated to do so.  If you do not wish to do so, delete this
+exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
-import java.util.Arrays;
+import java.lang.Object;
 import java.util.Iterator;
-
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 
-/**
+/** 
  * Interface that represents a collection of objects. This interface is the
  * root of the collection hierarchy, and does not provide any guarantees about
  * the order of its elements or whether or not duplicate elements are
@@ -88,15 +87,7 @@ import ptolemy.backtrack.Rollbackable;
  */
 public interface Collection extends Rollbackable {
 
-    public void $COMMIT(long timestamp);
-
-    public Checkpoint $GET$CHECKPOINT();
-
-    public void $RESTORE(long timestamp, boolean trim);
-
-    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
-
-    /**
+    /**     
      * Add an element to this collection.
      * @param o the object to add.
      * @return true if the collection was modified as a result of this action.
@@ -111,7 +102,7 @@ public interface Collection extends Rollbackable {
      */
     boolean add(Object o);
 
-    /**
+    /**     
      * Add the contents of a given collection to this collection.
      * @param c the collection to add.
      * @return true if the collection was modified as a result of this action.
@@ -127,7 +118,7 @@ public interface Collection extends Rollbackable {
      */
     boolean addAll(Collection c);
 
-    /**
+    /**     
      * Clear the collection, such that a subsequent call to isEmpty() would
      * return true.
      * @throws UnsupportedOperationException if this collection does not
@@ -135,7 +126,7 @@ public interface Collection extends Rollbackable {
      */
     void clear();
 
-    /**
+    /**     
      * Test whether this collection contains a given object as one of its
      * elements.
      * @param o the element to look for.
@@ -148,7 +139,7 @@ public interface Collection extends Rollbackable {
      */
     boolean contains(Object o);
 
-    /**
+    /**     
      * Test whether this collection contains every element in a given collection.
      * @param c the collection to test for.
      * @return true if for every element o in c, contains(o) would return true.
@@ -160,7 +151,7 @@ public interface Collection extends Rollbackable {
      */
     boolean containsAll(Collection c);
 
-    /**
+    /**     
      * Test whether this collection is equal to some object. The Collection
      * interface does not explicitly require any behaviour from this method, and
      * it may be left to the default implementation provided by Object. The Set
@@ -177,7 +168,7 @@ public interface Collection extends Rollbackable {
      */
     boolean equals(Object o);
 
-    /**
+    /**     
      * Obtain a hash code for this collection. The Collection interface does not
      * explicitly require any behaviour from this method, and it may be left to
      * the default implementation provided by Object. The Set and List interfaces
@@ -192,19 +183,19 @@ public interface Collection extends Rollbackable {
      */
     int hashCode();
 
-    /**
+    /**     
      * Test whether this collection is empty, that is, if size() == 0.
      * @return true if this collection contains no elements.
      */
     boolean isEmpty();
 
-    /**
+    /**     
      * Obtain an Iterator over this collection.
      * @return an Iterator over the elements of this collection, in any order.
      */
     Iterator iterator();
 
-    /**
+    /**     
      * Remove a single occurrence of an object from this collection. That is,
      * remove an element e, if one exists, such that <code>o == null ? e == null
      * : o.equals(e)</code>.
@@ -220,7 +211,7 @@ public interface Collection extends Rollbackable {
      */
     boolean remove(Object o);
 
-    /**
+    /**     
      * Remove all elements of a given collection from this collection. That is,
      * remove every element e such that c.contains(e).
      * @param c The collection of objects to be removed.
@@ -235,7 +226,7 @@ public interface Collection extends Rollbackable {
      */
     boolean removeAll(Collection c);
 
-    /**
+    /**     
      * Remove all elements of this collection that are not contained in a given
      * collection. That is, remove every element e such that !c.contains(e).
      * @param c The collection of objects to be retained.
@@ -250,13 +241,13 @@ public interface Collection extends Rollbackable {
      */
     boolean retainAll(Collection c);
 
-    /**
+    /**     
      * Get the number of elements in this collection.
      * @return the number of elements in the collection.
      */
     int size();
 
-    /**
+    /**     
      * Copy the current contents of this collection into an array.
      * @return an array of type Object[] and length equal to the size of this
      * collection, containing the elements currently in this collection, in
@@ -264,7 +255,7 @@ public interface Collection extends Rollbackable {
      */
     Object[] toArray();
 
-    /**
+    /**     
      * Copy the current contents of this collection into an array. If the array
      * passed as an argument has length less than the size of this collection, an
      * array of the same run-time type as a, and length equal to the size of this
@@ -282,4 +273,13 @@ public interface Collection extends Rollbackable {
      */
     Object[] toArray(Object[] a);
 
+    public void $COMMIT(long timestamp);
+
+    public void $RESTORE(long timestamp, boolean trim);
+
+    public Checkpoint $GET$CHECKPOINT();
+
+    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
+
 }
+

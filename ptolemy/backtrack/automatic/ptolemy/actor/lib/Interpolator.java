@@ -85,7 +85,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class Interpolator extends SequenceSource implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Initialize the parameters with the default settings of the
     // Interpolation class. This is not required for this class to
@@ -372,17 +372,17 @@ public class Interpolator extends SequenceSource implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_indexes = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_indexes = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_iterationCount = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_iterationCount = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_interpolation = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_interpolation = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_values = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_values = new FieldRecord(1);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_indexes,
             $RECORD$_iterationCount,
             $RECORD$_interpolation,

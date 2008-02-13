@@ -974,6 +974,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         checkpointField.modifiers().add(
                 ast.newModifier(Modifier.ModifierKeyword.PROTECTED_KEYWORD));
+        checkpointField.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.TRANSIENT_KEYWORD));
 
         if (parent != null) {
             addToLists(_nodeSubstitution, parent.getName(), new NodeReplace(
@@ -1015,6 +1017,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
         record.setType(createType(ast, typeName));
         record.modifiers().add(
                 ast.newModifier(Modifier.ModifierKeyword.PROTECTED_KEYWORD));
+        record.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.TRANSIENT_KEYWORD));
 
         if (parent != null) {
             addToLists(_nodeSubstitution, parent.getName(), new NodeReplace(
@@ -1168,6 +1172,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
         List modifiers = field.modifiers();
         modifiers
                 .add(ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
+        modifiers
+                .add(ast.newModifier(Modifier.ModifierKeyword.TRANSIENT_KEYWORD));
         if (isStatic) {
             modifiers.add(ast
                     .newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
@@ -1414,6 +1420,8 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
         array.modifiers().add(
                 ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
+        array.modifiers().add(
+                ast.newModifier(Modifier.ModifierKeyword.TRANSIENT_KEYWORD));
         return array;
     }
 

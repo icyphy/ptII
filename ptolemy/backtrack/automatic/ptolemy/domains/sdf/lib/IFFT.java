@@ -64,7 +64,7 @@ import ptolemy.math.SignalProcessing;
  */
 public class IFFT extends SDFTransformer implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -235,17 +235,17 @@ public class IFFT extends SDFTransformer implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_transformSize = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_transformSize = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_orderValue = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_orderValue = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_outTokenArray = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_outTokenArray = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_inComplexArray = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_inComplexArray = new FieldRecord(1);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_transformSize,
             $RECORD$_orderValue,
             $RECORD$_outTokenArray,

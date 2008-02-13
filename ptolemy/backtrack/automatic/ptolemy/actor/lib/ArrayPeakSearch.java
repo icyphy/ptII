@@ -90,7 +90,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Set Parameters.
     // Ports.
@@ -453,9 +453,9 @@ public class ArrayPeakSearch extends TypedAtomicActor implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
         };
 
 }

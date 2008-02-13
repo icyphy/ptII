@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class Accumulator extends Transformer implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // set the type constraints.
     ///////////////////////////////////////////////////////////////////
@@ -276,13 +276,13 @@ public class Accumulator extends Transformer implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_sum = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_sum = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_latestSum = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_latestSum = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_sum,
             $RECORD$_latestSum
         };

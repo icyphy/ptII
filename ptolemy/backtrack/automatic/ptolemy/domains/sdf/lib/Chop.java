@@ -127,7 +127,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class Chop extends SDFTransformer implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -467,29 +467,29 @@ public class Chop extends SDFTransformer implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_highLimit = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_highLimit = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_inputIndex = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_inputIndex = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_lowLimit = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_lowLimit = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_numberToRead = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_numberToRead = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_numberToWrite = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_numberToWrite = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_offsetValue = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_offsetValue = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_buffer = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_buffer = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_pastBuffer = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_pastBuffer = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_usePast = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_usePast = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_pastNeedsInitializing = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_pastNeedsInitializing = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_highLimit,
             $RECORD$_inputIndex,
             $RECORD$_lowLimit,

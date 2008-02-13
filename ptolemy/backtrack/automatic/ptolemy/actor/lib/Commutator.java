@@ -79,7 +79,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class Commutator extends Transformer implements SequenceActor, Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -315,13 +315,13 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_currentInputPosition = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_currentInputPosition = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_tentativeInputPosition = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tentativeInputPosition = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_currentInputPosition,
             $RECORD$_tentativeInputPosition
         };

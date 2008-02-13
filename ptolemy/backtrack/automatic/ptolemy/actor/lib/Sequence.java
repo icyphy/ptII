@@ -71,7 +71,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class Sequence extends TypedAtomicActor implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // set values parameter
     // Set the Repeat Flag.
@@ -311,13 +311,13 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_currentIndex = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_currentIndex = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_outputProduced = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_outputProduced = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_currentIndex,
             $RECORD$_outputProduced
         };

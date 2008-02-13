@@ -1,49 +1,49 @@
 /* Random.java -- a pseudo-random number generator
- Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
- This file is part of GNU Classpath.
+This file is part of GNU Classpath.
 
- GNU Classpath is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2, or (at your option)
- any later version.
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
 
- GNU Classpath is distributed in the hope that it will be useful, but
- WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- General Public License for more details.
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with GNU Classpath; see the file COPYING.  If not, write to the
- Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- 02110-1301 USA.
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+02110-1301 USA.
 
- Linking this library statically or dynamically with other modules is
- making a combined work based on this library.  Thus, the terms and
- conditions of the GNU General Public License cover the whole
- combination.
+Linking this library statically or dynamically with other modules is
+making a combined work based on this library.  Thus, the terms and
+conditions of the GNU General Public License cover the whole
+combination.
 
- As a special exception, the copyright holders of this library give you
- permission to link this library with independent modules to produce an
- executable, regardless of the license terms of these independent
- modules, and to copy and distribute the resulting executable under
- terms of your choice, provided that you also meet, for each linked
- independent module, the terms and conditions of the license of that
- module.  An independent module is a module which is not derived from
- or based on this library.  If you modify this library, you may extend
- this exception to your version of the library, but you are not
- obligated to do so.  If you do not wish to do so, delete this
- exception statement from your version. */
+As a special exception, the copyright holders of this library give you
+permission to link this library with independent modules to produce an
+executable, regardless of the license terms of these independent
+modules, and to copy and distribute the resulting executable under
+terms of your choice, provided that you also meet, for each linked
+independent module, the terms and conditions of the license of that
+module.  An independent module is a module which is not derived from
+or based on this library.  If you modify this library, you may extend
+this exception to your version of the library, but you are not
+obligated to do so.  If you do not wish to do so, delete this
+exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
 import java.io.Serializable;
-
+import java.lang.Object;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
-/**
+/** 
  * This class generates pseudorandom numbers.  It uses the same
  * algorithm as the original JDK-class, so that your programs behave
  * exactly the same way, if started with the same seed.
@@ -72,7 +72,42 @@ import ptolemy.backtrack.util.FieldRecord;
  */
 public class Random implements Serializable, Rollbackable {
 
-    /**
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+    /**     
+     * True if the next nextGaussian is available.  This is used by
+     * nextGaussian, which generates two gaussian numbers by one call,
+     * and returns the second on the second call.
+     * @serial whether nextNextGaussian is available
+     * @see #nextGaussian()
+     * @see #nextNextGaussian
+     */
+    private boolean haveNextNextGaussian;
+
+    /**     
+     * The next nextGaussian, when available.  This is used by nextGaussian,
+     * which generates two gaussian numbers by one call, and returns the
+     * second on the second call.
+     * @serial the second gaussian of a pair
+     * @see #nextGaussian()
+     * @see #haveNextNextGaussian
+     */
+    private double nextNextGaussian;
+
+    /**     
+     * The seed.  This is the number set by setSeed and which is used
+     * in next.
+     * @serial the internal state of this generator
+     * @see #next(int)
+     */
+    private long seed;
+
+    /**     
+     * Compatible with JDK 1.0+.
+     */
+    private static final long serialVersionUID = 3905348978240129619L;
+
+    /**     
      * Creates a new pseudorandom number generator.  The seed is initialized
      * to the current time, as if by
      * <code>setSeed(System.currentTimeMillis());</code>.
@@ -82,7 +117,7 @@ public class Random implements Serializable, Rollbackable {
         this(System.currentTimeMillis());
     }
 
-    /**
+    /**     
      * Creates a new pseudorandom number generator, starting with the
      * specified seed, using <code>setSeed(seed);</code>.
      * @param seed the initial seed
@@ -91,59 +126,43 @@ public class Random implements Serializable, Rollbackable {
         setSeed(seed);
     }
 
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        $RECORD$$CHECKPOINT.commit(timestamp);
-    }
-
-    public final Checkpoint $GET$CHECKPOINT() {
-        return $CHECKPOINT;
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        haveNextNextGaussian = $RECORD$haveNextNextGaussian.restore(
-                haveNextNextGaussian, timestamp, trim);
-        nextNextGaussian = $RECORD$nextNextGaussian.restore(nextNextGaussian,
-                timestamp, trim);
-        seed = $RECORD$seed.restore(seed, timestamp, trim);
-        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
-            FieldRecord.popState($RECORDS);
-            $RESTORE(timestamp, trim);
-        }
-    }
-
-    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-        if ($CHECKPOINT != checkpoint) {
-            Checkpoint oldCheckpoint = $CHECKPOINT;
-            if (checkpoint != null) {
-                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                FieldRecord.pushState($RECORDS);
-            }
-            $CHECKPOINT = checkpoint;
-            oldCheckpoint.setCheckpoint(checkpoint);
-            checkpoint.addObject(this);
-        }
-        return this;
-    }
-
-    /**
-     * Generates the next pseudorandom boolean.  True and false have
-     * the same probability.  The implementation is:
-     * <pre>public boolean nextBoolean()
+    /**     
+     * Sets the seed for this pseudorandom number generator.  As described
+     * above, two instances of the same random class, starting with the
+     * same seed, should produce the same results, if the same methods
+     * are called.  The implementation for java.util.Random is:
+     * <pre>public synchronized void setSeed(long seed)
      * {
-     * return next(1) != 0;
+     * this.seed = (seed ^ 0x5DEECE66DL) & ((1L &lt;&lt; 48) - 1);
+     * haveNextNextGaussian = false;
      * }</pre>
-     * @return the next pseudorandom boolean
-     * @since 1.2
+     * @param seed the new seed
      */
-    public boolean nextBoolean() {
-        return next(1) != 0;
+    public synchronized void setSeed(long seed) {
+        this.$ASSIGN$seed((seed ^ 0x5DEECE66DL) & ((1L << 48) - 1));
+        $ASSIGN$haveNextNextGaussian(false);
     }
 
-    /**
+    /**     
+     * Generates the next pseudorandom number.  This returns
+     * an int value whose <code>bits</code> low order bits are
+     * independent chosen random bits (0 and 1 are equally likely).
+     * The implementation for java.util.Random is:
+     * <pre>protected synchronized int next(int bits)
+     * {
+     * seed = (seed * 0x5DEECE66DL + 0xBL) & ((1L &lt;&lt; 48) - 1);
+     * return (int) (seed &gt;&gt;&gt; (48 - bits));
+     * }</pre>
+     * @param bits the number of random bits to generate, in the range 1..32
+     * @return the next pseudorandom value
+     * @since 1.1
+     */
+    protected synchronized int next(int bits) {
+        $ASSIGN$seed((seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1));
+        return (int)(seed >>> (48 - bits));
+    }
+
+    /**     
      * Fills an array of bytes with random numbers.  All possible values
      * are (approximately) equally likely.
      * The JDK documentation gives no implementation, but it seems to be:
@@ -169,35 +188,117 @@ public class Random implements Serializable, Rollbackable {
         int max = bytes.length & ~0x3;
         for (int i = 0; i < max; i += 4) {
             random = next(32);
-            bytes[i] = (byte) random;
-            bytes[i + 1] = (byte) (random >> 8);
-            bytes[i + 2] = (byte) (random >> 16);
-            bytes[i + 3] = (byte) (random >> 24);
+            bytes[i] = (byte)random;
+            bytes[i + 1] = (byte)(random >> 8);
+            bytes[i + 2] = (byte)(random >> 16);
+            bytes[i + 3] = (byte)(random >> 24);
         }
         if (max < bytes.length) {
             random = next(32);
             for (int j = max; j < bytes.length; j++) {
-                bytes[j] = (byte) random;
+                bytes[j] = (byte)random;
                 random >>= 8;
             }
         }
     }
 
-    /**
-     * Generates the next pseudorandom double uniformly distributed
-     * between 0.0 (inclusive) and 1.0 (exclusive).  The
-     * implementation is as follows.
-     * <pre>public double nextDouble()
+    /**     
+     * Generates the next pseudorandom number.  This returns
+     * an int value whose 32 bits are independent chosen random bits
+     * (0 and 1 are equally likely).  The implementation for
+     * java.util.Random is:
+     * <pre>public int nextInt()
      * {
-     * return (((long) next(26) &lt;&lt; 27) + next(27)) / (double)(1L &lt;&lt; 53);
+     * return next(32);
      * }</pre>
-     * @return the next pseudorandom double
+     * @return the next pseudorandom value
      */
-    public double nextDouble() {
-        return (((long) next(26) << 27) + next(27)) / (double) (1L << 53);
+    public int nextInt() {
+        return next(32);
     }
 
-    /**
+    /**     
+     * Generates the next pseudorandom number.  This returns
+     * a value between 0(inclusive) and <code>n</code>(exclusive), and
+     * each value has the same likelihodd (1/<code>n</code>).
+     * (0 and 1 are equally likely).  The implementation for
+     * java.util.Random is:
+     * <pre>
+     * public int nextInt(int n)
+     * {
+     * if (n &lt;= 0)
+     * throw new IllegalArgumentException("n must be positive");
+     * if ((n & -n) == n)  // i.e., n is a power of 2
+     * return (int)((n * (long) next(31)) &gt;&gt; 31);
+     * int bits, val;
+     * do
+     * {
+     * bits = next(31);
+     * val = bits % n;
+     * }
+     * while(bits - val + (n-1) &lt; 0);
+     * return val;
+     * }</pre>
+     * <p>This algorithm would return every value with exactly the same
+     * probability, if the next()-method would be a perfect random number
+     * generator.
+     * The loop at the bottom only accepts a value, if the random
+     * number was between 0 and the highest number less then 1<<31,
+     * which is divisible by n.  The probability for this is high for small
+     * n, and the worst case is 1/2 (for n=(1<<30)+1).
+     * The special treatment for n = power of 2, selects the high bits of
+     * the random number (the loop at the bottom would select the low order
+     * bits).  This is done, because the low order bits of linear congruential
+     * number generators (like the one used in this class) are known to be
+     * ``less random'' than the high order bits.
+     * @param n the upper bound
+     * @throws IllegalArgumentException if the given upper bound is negative
+     * @return the next pseudorandom value
+     * @since 1.2
+     */
+    public int nextInt(int n) {
+        if (n <= 0)
+            throw new IllegalArgumentException("n must be positive");
+        if ((n & -n) == n)
+            // i.e., n is a power of 2
+            return (int)((n * (long)next(31)) >> 31);
+        int bits, val;
+        do {
+            bits = next(31);
+            val = bits % n;
+        } while (bits - val + (n - 1) < 0);
+        return val;
+    }
+
+    /**     
+     * Generates the next pseudorandom long number.  All bits of this
+     * long are independently chosen and 0 and 1 have equal likelihood.
+     * The implementation for java.util.Random is:
+     * <pre>public long nextLong()
+     * {
+     * return ((long) next(32) &lt;&lt; 32) + next(32);
+     * }</pre>
+     * @return the next pseudorandom value
+     */
+    public long nextLong() {
+        return ((long)next(32) << 32) + next(32);
+    }
+
+    /**     
+     * Generates the next pseudorandom boolean.  True and false have
+     * the same probability.  The implementation is:
+     * <pre>public boolean nextBoolean()
+     * {
+     * return next(1) != 0;
+     * }</pre>
+     * @return the next pseudorandom boolean
+     * @since 1.2
+     */
+    public boolean nextBoolean() {
+        return next(1) != 0;
+    }
+
+    /**     
      * Generates the next pseudorandom float uniformly distributed
      * between 0.0f (inclusive) and 1.0f (exclusive).  The
      * implementation is as follows.
@@ -208,10 +309,24 @@ public class Random implements Serializable, Rollbackable {
      * @return the next pseudorandom float
      */
     public float nextFloat() {
-        return next(24) / (float) (1 << 24);
+        return next(24) / (float)(1 << 24);
     }
 
-    /**
+    /**     
+     * Generates the next pseudorandom double uniformly distributed
+     * between 0.0 (inclusive) and 1.0 (exclusive).  The
+     * implementation is as follows.
+     * <pre>public double nextDouble()
+     * {
+     * return (((long) next(26) &lt;&lt; 27) + next(27)) / (double)(1L &lt;&lt; 53);
+     * }</pre>
+     * @return the next pseudorandom double
+     */
+    public double nextDouble() {
+        return (((long)next(26) << 27) + next(27)) / (double)(1L << 53);
+    }
+
+    /**     
      * Generates the next pseudorandom, Gaussian (normally) distributed
      * double value, with mean 0.0 and standard deviation 1.0.
      * The algorithm is as follows.
@@ -261,142 +376,16 @@ public class Random implements Serializable, Rollbackable {
         return v1 * norm;
     }
 
-    /**
-     * Generates the next pseudorandom number.  This returns
-     * an int value whose 32 bits are independent chosen random bits
-     * (0 and 1 are equally likely).  The implementation for
-     * java.util.Random is:
-     * <pre>public int nextInt()
-     * {
-     * return next(32);
-     * }</pre>
-     * @return the next pseudorandom value
-     */
-    public int nextInt() {
-        return next(32);
-    }
-
-    /**
-     * Generates the next pseudorandom number.  This returns
-     * a value between 0(inclusive) and <code>n</code>(exclusive), and
-     * each value has the same likelihodd (1/<code>n</code>).
-     * (0 and 1 are equally likely).  The implementation for
-     * java.util.Random is:
-     * <pre>
-     * public int nextInt(int n)
-     * {
-     * if (n &lt;= 0)
-     * throw new IllegalArgumentException("n must be positive");
-     * if ((n & -n) == n)  // i.e., n is a power of 2
-     * return (int)((n * (long) next(31)) &gt;&gt; 31);
-     * int bits, val;
-     * do
-     * {
-     * bits = next(31);
-     * val = bits % n;
-     * }
-     * while(bits - val + (n-1) &lt; 0);
-     * return val;
-     * }</pre>
-     * <p>This algorithm would return every value with exactly the same
-     * probability, if the next()-method would be a perfect random number
-     * generator.
-     * The loop at the bottom only accepts a value, if the random
-     * number was between 0 and the highest number less then 1<<31,
-     * which is divisible by n.  The probability for this is high for small
-     * n, and the worst case is 1/2 (for n=(1<<30)+1).
-     * The special treatment for n = power of 2, selects the high bits of
-     * the random number (the loop at the bottom would select the low order
-     * bits).  This is done, because the low order bits of linear congruential
-     * number generators (like the one used in this class) are known to be
-     * ``less random'' than the high order bits.
-     * @param n the upper bound
-     * @throws IllegalArgumentException if the given upper bound is negative
-     * @return the next pseudorandom value
-     * @since 1.2
-     */
-    public int nextInt(int n) {
-        if (n <= 0) {
-            throw new IllegalArgumentException("n must be positive");
-        }
-        if ((n & -n) == n) {
-            // i.e., n is a power of 2
-            return (int) ((n * (long) next(31)) >> 31);
-        }
-        int bits, val;
-        do {
-            bits = next(31);
-            val = bits % n;
-        } while (bits - val + (n - 1) < 0);
-        return val;
-    }
-
-    /**
-     * Generates the next pseudorandom long number.  All bits of this
-     * long are independently chosen and 0 and 1 have equal likelihood.
-     * The implementation for java.util.Random is:
-     * <pre>public long nextLong()
-     * {
-     * return ((long) next(32) &lt;&lt; 32) + next(32);
-     * }</pre>
-     * @return the next pseudorandom value
-     */
-    public long nextLong() {
-        return ((long) next(32) << 32) + next(32);
-    }
-
-    /**
-     * Sets the seed for this pseudorandom number generator.  As described
-     * above, two instances of the same random class, starting with the
-     * same seed, should produce the same results, if the same methods
-     * are called.  The implementation for java.util.Random is:
-     * <pre>public synchronized void setSeed(long seed)
-     * {
-     * this.seed = (seed ^ 0x5DEECE66DL) & ((1L &lt;&lt; 48) - 1);
-     * haveNextNextGaussian = false;
-     * }</pre>
-     * @param seed the new seed
-     */
-    public synchronized void setSeed(long seed) {
-        this.$ASSIGN$seed((seed ^ 0x5DEECE66DL) & ((1L << 48) - 1));
-        $ASSIGN$haveNextNextGaussian(false);
-    }
-
-    /**
-     * Generates the next pseudorandom number.  This returns
-     * an int value whose <code>bits</code> low order bits are
-     * independent chosen random bits (0 and 1 are equally likely).
-     * The implementation for java.util.Random is:
-     * <pre>protected synchronized int next(int bits)
-     * {
-     * seed = (seed * 0x5DEECE66DL + 0xBL) & ((1L &lt;&lt; 48) - 1);
-     * return (int) (seed &gt;&gt;&gt; (48 - bits));
-     * }</pre>
-     * @param bits the number of random bits to generate, in the range 1..32
-     * @return the next pseudorandom value
-     * @since 1.1
-     */
-    protected synchronized int next(int bits) {
-        $ASSIGN$seed((seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1));
-        return (int) (seed >>> (48 - bits));
-    }
-
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
     private final boolean $ASSIGN$haveNextNextGaussian(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$haveNextNextGaussian.add(null, haveNextNextGaussian,
-                    $CHECKPOINT.getTimestamp());
+            $RECORD$haveNextNextGaussian.add(null, haveNextNextGaussian, $CHECKPOINT.getTimestamp());
         }
         return haveNextNextGaussian = newValue;
     }
 
     private final double $ASSIGN$nextNextGaussian(double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$nextNextGaussian.add(null, nextNextGaussian, $CHECKPOINT
-                    .getTimestamp());
+            $RECORD$nextNextGaussian.add(null, nextNextGaussian, $CHECKPOINT.getTimestamp());
         }
         return nextNextGaussian = newValue;
     }
@@ -408,47 +397,53 @@ public class Random implements Serializable, Rollbackable {
         return seed = newValue;
     }
 
-    private FieldRecord $RECORD$haveNextNextGaussian = new FieldRecord(0);
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        $RECORD$$CHECKPOINT.commit(timestamp);
+    }
 
-    private FieldRecord $RECORD$nextNextGaussian = new FieldRecord(0);
+    public void $RESTORE(long timestamp, boolean trim) {
+        haveNextNextGaussian = $RECORD$haveNextNextGaussian.restore(haveNextNextGaussian, timestamp, trim);
+        nextNextGaussian = $RECORD$nextNextGaussian.restore(nextNextGaussian, timestamp, trim);
+        seed = $RECORD$seed.restore(seed, timestamp, trim);
+        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            FieldRecord.popState($RECORDS);
+            $RESTORE(timestamp, trim);
+        }
+    }
 
-    private FieldRecord $RECORD$seed = new FieldRecord(0);
+    public final Checkpoint $GET$CHECKPOINT() {
+        return $CHECKPOINT;
+    }
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$haveNextNextGaussian, $RECORD$nextNextGaussian,
-            $RECORD$seed };
+    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+        if ($CHECKPOINT != checkpoint) {
+            Checkpoint oldCheckpoint = $CHECKPOINT;
+            if (checkpoint != null) {
+                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                FieldRecord.pushState($RECORDS);
+            }
+            $CHECKPOINT = checkpoint;
+            oldCheckpoint.setCheckpoint(checkpoint);
+            checkpoint.addObject(this);
+        }
+        return this;
+    }
 
-    /**
-     * True if the next nextGaussian is available.  This is used by
-     * nextGaussian, which generates two gaussian numbers by one call,
-     * and returns the second on the second call.
-     * @serial whether nextNextGaussian is available
-     * @see #nextGaussian()
-     * @see #nextNextGaussian
-     */
-    private boolean haveNextNextGaussian;
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    /**
-     * The next nextGaussian, when available.  This is used by nextGaussian,
-     * which generates two gaussian numbers by one call, and returns the
-     * second on the second call.
-     * @serial the second gaussian of a pair
-     * @see #nextGaussian()
-     * @see #haveNextNextGaussian
-     */
-    private double nextNextGaussian;
+    private transient FieldRecord $RECORD$haveNextNextGaussian = new FieldRecord(0);
 
-    /**
-     * The seed.  This is the number set by setSeed and which is used
-     * in next.
-     * @serial the internal state of this generator
-     * @see #next(int)
-     */
-    private long seed;
+    private transient FieldRecord $RECORD$nextNextGaussian = new FieldRecord(0);
 
-    /**
-     * Compatible with JDK 1.0+.
-     */
-    private static final long serialVersionUID = 3905348978240129619L;
+    private transient FieldRecord $RECORD$seed = new FieldRecord(0);
+
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$haveNextNextGaussian,
+            $RECORD$nextNextGaussian,
+            $RECORD$seed
+        };
 
 }
+

@@ -189,7 +189,7 @@ public class LocalClassLoader extends URLClassLoader {
     }
 
     /** Search for a class with a partial name in the given scope.
-     *  It is called in {@link #loadClass(String, boolean)}.
+     *  It is called in loadClass(String, boolean).
      *  <p>
      *  It takes the following steps in this name resolving:
      *  <ol>
