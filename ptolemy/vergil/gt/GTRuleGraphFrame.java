@@ -43,6 +43,7 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Collections;
@@ -694,25 +695,30 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
 
     private static LibraryAttribute _importActorLibrary(Tableau tableau,
             LibraryAttribute gtLibrary) {
-        try {
-            Configuration configuration = (Configuration) tableau.toplevel();
-            CompositeEntity actorLibrary = (CompositeEntity) configuration
-                    .getEntity("actor library");
-            CompositeEntity library = gtLibrary.getLibrary();
-            for (Object entityObject : actorLibrary.entityList()) {
-                try {
-                    ComponentEntity libraryEntity = (ComponentEntity) entityObject;
-                    ComponentEntity entity = (ComponentEntity) libraryEntity
-                            .clone(library.workspace());
-                    entity.setContainer(library);
-                } catch (Exception e) {
-                    // Ignore this entity in the actor library because we don't
-                    // know how to import it.
+        if (gtLibrary != null) {
+            try {
+                Configuration configuration =
+                    (Configuration) tableau.toplevel();
+                CompositeEntity actorLibrary = (CompositeEntity) configuration
+                        .getEntity("actor library");
+                CompositeEntity library = gtLibrary.getLibrary();
+                for (Object entityObject : actorLibrary.entityList()) {
+                    try {
+                        ComponentEntity libraryEntity =
+                            (ComponentEntity) entityObject;
+                        ComponentEntity entity = (ComponentEntity) libraryEntity
+                                .clone(library.workspace());
+                        entity.setContainer(library);
+                    } catch (Exception e) {
+                        // Ignore this entity in the actor library because we
+                        // don't know how to import it.
+                    }
                 }
+                gtLibrary.setLibrary(library);
+            } catch (Exception e) {
+                // Ignore, just return a library without any actors or
+                // directors.
             }
-            gtLibrary.setLibrary(library);
-        } catch (Exception e) {
-            // Ignore, just return a library without any actors or directors.
         }
         return gtLibrary;
     }
@@ -1245,7 +1251,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         }
     }
 
-    private static class FileComparator implements Comparator<File> {
+    private static class FileComparator implements Comparator<File>,
+    Serializable {
 
         public int compare(File file1, File file2) {
             return file1.getAbsolutePath().compareTo(file2.getAbsolutePath());

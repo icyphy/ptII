@@ -361,7 +361,8 @@ public class GTIngredientsEditor extends PtolemyDialog implements
         super.setVisible(visible);
     }
 
-    public static String REGULAR_EXPRESSION_HELP_FILE = "ptolemy/configs/doc/basicHelp.htm";
+    public static final String REGULAR_EXPRESSION_HELP_FILE =
+        "ptolemy/configs/doc/basicHelp.htm";
 
     /**
      * @author tfeng
