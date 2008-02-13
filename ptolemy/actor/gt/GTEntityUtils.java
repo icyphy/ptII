@@ -29,6 +29,7 @@
 package ptolemy.actor.gt;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -126,7 +127,8 @@ public class GTEntityUtils {
                         new RestoreAppearanceChangeRequest(entity));
             }
 
-            List<?> portList = ((ComponentEntity) entity).portList();
+            List<?> portList = new LinkedList<Object>((List<?>)
+                    ((ComponentEntity) entity).portList());
             for (i = 0; i < portList.size(); i++) {
                 Port port = (Port) portList.get(i);
                 if (port instanceof PortMatcher

@@ -29,6 +29,7 @@
 package ptolemy.actor.gt;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -959,7 +960,8 @@ public class GraphMatcher extends GraphAnalyzer {
     private static class LookbackList extends FastLinkedList<LookbackEntry> {
     }
 
-    private static class NameComparator implements Comparator<Object> {
+    private static class NameComparator implements Comparator<Object>,
+    Serializable {
 
         public int compare(Object object1, Object object2) {
             return _getNameString(object1).compareTo(_getNameString(object2));

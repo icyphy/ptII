@@ -78,6 +78,7 @@ JSRCS = \
 	GraphTransformationException.java \
 	GraphTransformer.java \
 	HierarchyFlatteningAttribute.java \
+	LocationType.java \
 	MalformedStringException.java \
 	MatchCallback.java \
 	ModelGenerator.java \

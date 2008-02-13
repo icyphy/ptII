@@ -203,7 +203,7 @@ public class AttributeCriterion extends Criterion {
 
     public void validate() throws ValidationException {
         if (isAttributeNameEnabled()) {
-            if (_attributeName.equals("")) {
+            if (_attributeName.get().equals("")) {
                 throw new ValidationException(
                         "Attribute name must not be empty.");
             }
@@ -217,7 +217,7 @@ public class AttributeCriterion extends Criterion {
         }
 
         if (isAttributeTypeEnabled()) {
-            if (_attributeType.equals("")) {
+            if (_attributeType.get().equals("")) {
                 throw new ValidationException("Port type must not be empty.");
             }
 
@@ -239,12 +239,6 @@ public class AttributeCriterion extends Criterion {
         }
     }
 
-    private RegularExpressionString _attributeName;
-
-    private PtolemyExpressionString _attributeType;
-
-    private PtolemyExpressionString _attributeValue;
-
     private static final CriterionElement[] _ELEMENTS = {
             new StringCriterionElement("name", false, false, false),
             new ChoiceCriterionElement("type", true, false, true, true),
@@ -253,6 +247,12 @@ public class AttributeCriterion extends Criterion {
     private static final ParseTreeEvaluator _TYPE_EVALUATOR = new ParseTreeEvaluator();
 
     private static final PtParser _TYPE_PARSER = new PtParser();
+
+    private RegularExpressionString _attributeName;
+
+    private PtolemyExpressionString _attributeType;
+
+    private PtolemyExpressionString _attributeValue;
 
     static {
         ChoiceCriterionElement attributeTypes = (ChoiceCriterionElement) _ELEMENTS[1];

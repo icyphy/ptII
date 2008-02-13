@@ -73,13 +73,13 @@ public class NamedObjVariable extends Variable {
     }
 
     public void setToken(Token token) throws IllegalActionException {
-        try {
+        if (token instanceof NamedObjToken) {
             if (!((NamedObjToken) token).getObject().equals(getContainer())) {
                 throw new IllegalActionException("The NamedObj in the token "
                         + "is not equal to the container of this variable.");
             }
             super.setToken(token);
-        } catch (ClassCastException e) {
+        } else {
             throw new IllegalActionException("Only instances of NamedObjToken "
                     + "are allowed as argument of setToken().");
         }

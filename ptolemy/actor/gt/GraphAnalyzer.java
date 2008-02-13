@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.AtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.Pair;
 import ptolemy.data.BooleanToken;
@@ -145,7 +144,7 @@ public abstract class GraphAnalyzer {
             Set<? super Port> visitedPorts) {
         List<?> relationList = startPort.linkedRelationList();
         if (startPort instanceof ComponentPort) {
-            ((Collection<?>) relationList).addAll(((TypedIOPort) startPort)
+            ((Collection<?>) relationList).addAll(((ComponentPort) startPort)
                     .insideRelationList());
         }
 

@@ -352,7 +352,7 @@ public class TransformationRule extends MultiCompositeActor implements
 
     public TypedIOPort trigger;
 
-    public class TransformationDirector extends Director {
+    public static class TransformationDirector extends Director {
 
         /**
          * @param container
