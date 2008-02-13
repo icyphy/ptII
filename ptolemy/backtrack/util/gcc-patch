@@ -1,13 +1,13 @@
-diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.java
---- gcc/java/util/AbstractList.java        2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/AbstractList.java        2006-10-08 15:22:34.703125000 -0700
+diff -ruN gcc/java/util/AbstractList.java gcc.new/java/util/AbstractList.java
+--- gcc/java/util/AbstractList.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/AbstractList.java	2008-02-13 12:13:23.532800000 -0800
 @@ -85,7 +85,7 @@
     * <code>add(int, Object)</code> and <code>remove(int)</code> methods.
     * Otherwise, this field may be ignored.
     */
 -  protected transient int modCount;
 +  private transient int modCount;
-
+ 
    /**
     * The main constructor, for use by subclasses.
 @@ -305,7 +305,7 @@
@@ -16,7 +16,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
        private int last = -1;
 -      private int knownMod = modCount;
 +      private int knownMod = getModCount();
-
+ 
        // This will get inlined, since it is private.
        /**
 @@ -317,7 +317,7 @@
@@ -27,7 +27,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 +        if (knownMod != getModCount())
            throw new ConcurrentModificationException();
        }
-
+ 
 @@ -372,7 +372,7 @@
          pos--;
          size--;
@@ -38,7 +38,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
      };
    }
 @@ -433,7 +433,7 @@
-
+ 
      return new ListIterator()
      {
 -      private int knownMod = modCount;
@@ -54,7 +54,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 +        if (knownMod != getModCount())
            throw new ConcurrentModificationException();
        }
-
+ 
 @@ -556,7 +556,7 @@
          size--;
          position = lastReturned;
@@ -62,7 +62,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 -        knownMod = modCount;
 +        knownMod = getModCount();
        }
-
+ 
       /**
 @@ -605,7 +605,7 @@
          AbstractList.this.add(position++, o);
@@ -76,7 +76,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 @@ -736,7 +736,15 @@
      return new SubList(this, fromIndex, toIndex);
    }
-
+ 
 -  /**
 +  protected void setModCount(int modCount) {
 +    this.modCount = modCount;
@@ -96,7 +96,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
      /** The size of the sublist. */
 -    int size;
 +    private int size;
-
+ 
      /**
       * Construct the sublist.
 @@ -764,9 +772,9 @@
@@ -109,7 +109,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 -      size = toIndex - fromIndex;
 +      setSize(toIndex - fromIndex);
      }
-
+ 
      /**
 @@ -779,7 +787,7 @@
      // This can be inlined. Package visible, for use by iterator.
@@ -119,7 +119,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 +      if (getModCount() != backingList.getModCount())
          throw new ConcurrentModificationException();
      }
-
+ 
 @@ -793,9 +801,9 @@
      // This will get inlined, since it is private.
      private void checkBoundsInclusive(int index)
@@ -130,7 +130,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 -                                            + size);
 +                                            + getSize());
      }
-
+ 
      /**
 @@ -808,9 +816,9 @@
      // This will get inlined, since it is private.
@@ -142,7 +142,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 -                                            + size);
 +                                            + getSize());
      }
-
+ 
      /**
 @@ -823,7 +831,7 @@
      public int size()
@@ -151,7 +151,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 -      return size;
 +      return getSize();
      }
-
+ 
      /**
 @@ -885,8 +893,8 @@
        checkMod();
@@ -162,7 +162,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 +      setSize(getSize() + 1);
 +      setModCount(backingList.getModCount());
      }
-
+ 
      /**
 @@ -905,8 +913,8 @@
        checkMod();
@@ -174,17 +174,17 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 +      setModCount(backingList.getModCount());
        return o;
      }
-
+ 
 @@ -927,8 +935,8 @@
        checkMod();
-
+ 
        backingList.removeRange(offset + fromIndex, offset + toIndex);
 -      size -= toIndex - fromIndex;
 -      modCount = backingList.modCount;
 +      setSize(getSize() - (toIndex - fromIndex));
 +      setModCount(backingList.getModCount());
      }
-
+ 
      /**
 @@ -954,8 +962,8 @@
        checkBoundsInclusive(index);
@@ -196,7 +196,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 +      setModCount(backingList.getModCount());
        return result;
      }
-
+ 
 @@ -976,7 +984,7 @@
       */
      public boolean addAll(Collection c)
@@ -204,7 +204,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 -      return addAll(size, c);
 +      return addAll(getSize(), c);
      }
-
+ 
      /**
 @@ -1018,7 +1026,7 @@
           */
@@ -213,7 +213,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 -          return position < size;
 +          return position < getSize();
          }
-
+ 
          /**
 @@ -1044,7 +1052,7 @@
           */
@@ -234,8 +234,8 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 -          modCount = backingList.modCount;
 +          setModCount(backingList.getModCount());
          }
-
-
+ 
+ 
 @@ -1148,9 +1156,9 @@
          public void add(Object o)
          {
@@ -246,7 +246,7 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 -          modCount = backingList.modCount;
 +          setModCount(backingList.getModCount());
          }
-
+ 
          // Here is the reason why the various modCount fields are mostly
 @@ -1173,6 +1181,14 @@
          // since they do not go through the corresponding methods of the subList.
@@ -261,11 +261,11 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
 +        return size;
 +    }
    } // class SubList
-
+ 
    /**
-diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
---- gcc/java/util/AbstractMap.java        2006-02-04 12:21:48.936339000 -0800
-+++ gcc-patched/java/util/AbstractMap.java        2006-10-08 15:23:25.796875000 -0700
+diff -ruN gcc/java/util/AbstractMap.java gcc.new/java/util/AbstractMap.java
+--- gcc/java/util/AbstractMap.java	2006-02-04 12:21:48.936339000 -0800
++++ gcc.new/java/util/AbstractMap.java	2008-02-13 12:13:23.570800000 -0800
 @@ -75,13 +75,13 @@
    /**
     * The cache for {@link #keySet()}.
@@ -273,14 +273,14 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 -  // Package visible for use by subclasses.
 +  private // Package visible for use by subclasses.
    Set keys;
-
+ 
    /**
     * The cache for {@link #values()}.
     */
 -  // Package visible for use by subclasses.
 +  private // Package visible for use by subclasses.
    Collection values;
-
+ 
    /**
 @@ -135,8 +135,8 @@
    {
@@ -292,7 +292,7 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 +    copy.setValues(null);
      return copy;
    }
-
+ 
 @@ -275,8 +275,8 @@
     */
    public Set keySet()
@@ -302,8 +302,8 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 +    if (getKeys() == null)
 +      setKeys(new AbstractSet()
        {
-         /**
-          * Retrieves the number of keys in the backing map.
+ 	/**
+ 	 * Retrieves the number of keys in the backing map.
 @@ -353,8 +353,8 @@
              }
            };
@@ -313,7 +313,7 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 +      });
 +    return getKeys();
    }
-
+ 
    /**
 @@ -506,8 +506,8 @@
     */
@@ -324,8 +324,8 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 +    if (getValues() == null)
 +      setValues(new AbstractCollection()
        {
-         /**
-          * Returns the number of values stored in
+ 	/**
+ 	 * Returns the number of values stored in
 @@ -585,8 +585,8 @@
              }
            };
@@ -335,12 +335,12 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 +      });
 +    return getValues();
    }
-
+ 
    /**
 @@ -616,7 +616,27 @@
      return o == null ? 0 : o.hashCode();
    }
-
+ 
 -  /**
 +  void setKeys(// Package visible for use by subclasses.
 +  Set keys) {
@@ -372,13 +372,13 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
       */
 -    Object key;
 +    private Object key;
-
+ 
      /**
       * The value. Package visible for direct manipulation.
       */
 -    Object value;
 +    private Object value;
-
+ 
      /**
       * Basic constructor initializes the fields.
 @@ -645,8 +665,8 @@
@@ -390,7 +390,7 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 +      setKeyField(newKey);
 +      setValueField(newValue);
      }
-
+ 
      /**
 @@ -670,12 +690,12 @@
        if (o instanceof BasicMapEntry)
@@ -407,7 +407,7 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 +      return (AbstractMap.equals(getKeyField(), e.getKey())
 +              && AbstractMap.equals(getValueField(), e.getValue()));
      }
-
+ 
      /**
 @@ -685,7 +705,7 @@
       */
@@ -416,7 +416,7 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 -      return key;
 +      return getKeyField();
      }
-
+ 
      /**
 @@ -696,7 +716,7 @@
       */
@@ -425,7 +425,7 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 -      return value;
 +      return getValueField();
      }
-
+ 
      /**
 @@ -710,7 +730,7 @@
       */
@@ -434,7 +434,7 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 -      return (AbstractMap.hashCode(key) ^ AbstractMap.hashCode(value));
 +      return (AbstractMap.hashCode(getKeyField()) ^ AbstractMap.hashCode(getValueField()));
      }
-
+ 
      /**
 @@ -730,8 +750,8 @@
       */
@@ -446,7 +446,7 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 +      setValueField(newVal);
        return r;
      }
-
+ 
 @@ -743,7 +763,23 @@
       */
      public final String toString()
@@ -472,9 +472,9 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
      }
    } // class BasicMapEntry
  }
-diff -dur gcc/java/util/ArrayList.java gcc-patched/java/util/ArrayList.java
---- gcc/java/util/ArrayList.java        2005-11-15 15:20:01.014789000 -0800
-+++ gcc-patched/java/util/ArrayList.java        2006-10-08 15:22:34.796875000 -0700
+diff -ruN gcc/java/util/ArrayList.java gcc.new/java/util/ArrayList.java
+--- gcc/java/util/ArrayList.java	2005-11-15 15:20:01.014789000 -0800
++++ gcc.new/java/util/ArrayList.java	2008-02-13 12:13:23.604800000 -0800
 @@ -336,7 +336,7 @@
     */
    public boolean add(Object e)
@@ -514,7 +514,7 @@ diff -dur gcc/java/util/ArrayList.java gcc-patched/java/util/ArrayList.java
 @@ -428,7 +428,7 @@
      Iterator itr = c.iterator();
      int csize = c.size();
-
+ 
 -    modCount++;
 +    setModCount(getModCount() + 1);
      if (csize + size > data.length)
@@ -532,7 +532,7 @@ diff -dur gcc/java/util/ArrayList.java gcc-patched/java/util/ArrayList.java
 @@ -512,7 +512,7 @@
      if (i == size)
        return false;
-
+ 
 -    modCount++;
 +    setModCount(getModCount() + 1);
      for (j = i++; i < size; i++)
@@ -541,16 +541,37 @@ diff -dur gcc/java/util/ArrayList.java gcc-patched/java/util/ArrayList.java
 @@ -540,7 +540,7 @@
      if (i == size)
        return false;
-
+ 
 -    modCount++;
 +    setModCount(getModCount() + 1);
      for (j = i++; i < size; i++)
        if (c.contains(data[i]))
          data[j++] = data[i];
-diff -dur gcc/java/util/Collections.java gcc-patched/java/util/Collections.java
---- gcc/java/util/Collections.java        2006-02-04 12:21:48.936339000 -0800
-+++ gcc-patched/java/util/Collections.java        2006-10-08 15:22:58.968750000 -0700
-@@ -1855,9 +1855,9 @@
+diff -ruN gcc/java/util/Collections.java gcc.new/java/util/Collections.java
+--- gcc/java/util/Collections.java	2006-02-04 12:21:48.936339000 -0800
++++ gcc.new/java/util/Collections.java	2008-02-13 12:15:10.621800000 -0800
+@@ -73,6 +73,20 @@
+ public class Collections
+ {
+   /**
++   * Returns the empty list (immutable). This list is serializable.
++   */
++  public static final List emptyList() {
++      return EMPTY_LIST;
++  }
++  
++  /**
++   * Returns the empty list (immutable). This list is serializable.
++   */
++  public static final Map emptyMap() {
++      return EMPTY_MAP;
++  }
++  
++  /**
+    * Constant used to decide cutoff for when a non-RandomAccess list should
+    * be treated as sequential-access. Basically, quadratic behavior is
+    * acceptable for small lists when the overhead is so small in the first
+@@ -1855,9 +1869,9 @@
       */
      public Set keySet()
      {
@@ -561,9 +582,9 @@ diff -dur gcc/java/util/Collections.java gcc-patched/java/util/Collections.java
 +        setKeys(singleton(k));
 +      return getKeys();
      }
-
+ 
      /**
-@@ -1878,9 +1878,9 @@
+@@ -1878,9 +1892,9 @@
       */
      public Collection values()
      {
@@ -574,18 +595,18 @@ diff -dur gcc/java/util/Collections.java gcc-patched/java/util/Collections.java
 +        setValues(singleton(v));
 +      return getValues();
      }
-
+ 
      /**
-diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
---- gcc/java/util/HashMap.java        2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/HashMap.java        2006-10-08 15:26:42.046875000 -0700
+diff -ruN gcc/java/util/HashMap.java gcc.new/java/util/HashMap.java
+--- gcc/java/util/HashMap.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/HashMap.java	2008-02-13 12:13:23.704800000 -0800
 @@ -136,20 +136,20 @@
     * Array containing the actual key-value mappings.
     * Package visible for use by nested and subclasses.
     */
 -  transient HashEntry[] buckets;
 +  private transient HashEntry[] buckets;
-
+ 
    /**
     * Counts the number of modifications this HashMap has undergone, used
     * by Iterators to know when to throw ConcurrentModificationExceptions.
@@ -593,14 +614,14 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
     */
 -  transient int modCount;
 +  private transient int modCount;
-
+ 
    /**
     * The size of this HashMap:  denotes the number of key-value pairs.
     * Package visible for use by nested and subclasses.
     */
 -  transient int size;
 +  private transient int size;
-
+ 
    /**
     * The cache for {@link #entrySet()}.
 @@ -167,7 +167,7 @@
@@ -609,7 +630,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
       */
 -    HashEntry next;
 +    private HashEntry next;
-
+ 
      /**
       * Simple constructor.
 @@ -196,7 +196,15 @@
@@ -628,9 +649,9 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 +        return next;
      }
    }
-
+ 
 @@ -256,7 +264,7 @@
-
+ 
      if (initialCapacity == 0)
        initialCapacity = 1;
 -    buckets = new HashEntry[initialCapacity];
@@ -645,7 +666,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 -    return size;
 +    return getSize();
    }
-
+ 
    /**
 @@ -278,7 +286,7 @@
     */
@@ -654,7 +675,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 -    return size == 0;
 +    return getSize() == 0;
    }
-
+ 
    /**
 @@ -295,12 +303,12 @@
    public Object get(Object key)
@@ -695,7 +716,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
      int idx = hash(key);
 -    HashEntry e = buckets[idx];
 +    HashEntry e = getBuckets()[idx];
-
+ 
      while (e != null)
        {
 -        if (equals(key, e.key))
@@ -712,7 +733,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 -          e = e.next;
 +          e = e.getNext();
        }
-
+ 
      // At this point, we know we need to add a new entry.
 -    modCount++;
 -    if (++size > threshold)
@@ -737,7 +758,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 -    HashEntry e = buckets[idx];
 +    HashEntry e = getBuckets()[idx];
      HashEntry last = null;
-
+ 
      while (e != null)
        {
 -        if (equals(key, e.key))
@@ -777,7 +798,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 +        setSize(0);
        }
    }
-
+ 
 @@ -453,14 +461,14 @@
     */
    public boolean containsValue(Object value)
@@ -822,7 +843,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 -          return size;
 +          return getSize();
          }
-
+ 
          public Iterator iterator()
 @@ -532,12 +540,12 @@
            // Test against the size of the HashMap to determine if anything
@@ -839,7 +860,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 +      });
 +    return getKeys();
    }
-
+ 
    /**
 @@ -552,14 +560,14 @@
     */
@@ -857,7 +878,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 -          return size;
 +          return getSize();
          }
-
+ 
          public Iterator iterator()
 @@ -572,8 +580,8 @@
          {
@@ -868,7 +889,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 +      });
 +    return getValues();
    }
-
+ 
    /**
 @@ -598,7 +606,7 @@
        {
@@ -877,7 +898,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 -          return size;
 +          return getSize();
          }
-
+ 
          public Iterator iterator()
 @@ -622,7 +630,7 @@
            HashEntry e = getEntry(o);
@@ -897,7 +918,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 +    e.setNext(getBuckets()[idx]);
 +    getBuckets()[idx] = e;
    }
-
+ 
    /**
 @@ -664,12 +672,12 @@
      Map.Entry me = (Map.Entry) o;
@@ -923,7 +944,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 -    return key == null ? 0 : Math.abs(key.hashCode() % buckets.length);
 +    return key == null ? 0 : Math.abs(key.hashCode() % getBuckets().length);
    }
-
+ 
    /**
 @@ -708,10 +716,10 @@
    void putAllInternal(Map m)
@@ -935,22 +956,22 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
        {
 -        size++;
 +        setSize(getSize() + 1);
-         Map.Entry e = (Map.Entry) itr.next();
-         Object key = e.getKey();
-         int idx = hash(key);
+ 	Map.Entry e = (Map.Entry) itr.next();
+ 	Object key = e.getKey();
+ 	int idx = hash(key);
 @@ -730,22 +738,22 @@
     */
    private void rehash()
    {
 -    HashEntry[] oldBuckets = buckets;
 +    HashEntry[] oldBuckets = getBuckets();
-
+ 
 -    int newcapacity = (buckets.length * 2) + 1;
 +    int newcapacity = (getBuckets().length * 2) + 1;
      threshold = (int) (newcapacity * loadFactor);
 -    buckets = new HashEntry[newcapacity];
 +    setBuckets(new HashEntry[newcapacity]);
-
+ 
      for (int i = oldBuckets.length - 1; i >= 0; i--)
        {
          HashEntry e = oldBuckets[i];
@@ -972,7 +993,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 @@ -766,15 +774,15 @@
      // Write the threshold and loadFactor fields.
      s.defaultWriteObject();
-
+ 
 -    s.writeInt(buckets.length);
 -    s.writeInt(size);
 +    s.writeInt(getBuckets().length);
@@ -988,10 +1009,10 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 +        s.writeObject(entry.getValueField());
        }
    }
-
+ 
 @@ -796,9 +804,9 @@
      s.defaultReadObject();
-
+ 
      // Read and use capacity, followed by key/value pairs.
 -    buckets = new HashEntry[s.readInt()];
 +    setBuckets(new HashEntry[s.readInt()]);
@@ -1004,7 +1025,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 @@ -806,7 +814,31 @@
        }
    }
-
+ 
 -  /**
 +  void setModCount(int modCount) {
 +    this.modCount = modCount;
@@ -1060,11 +1081,11 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
          throw new NoSuchElementException();
 @@ -871,14 +903,14 @@
        HashEntry e = next;
-
+ 
        while (e == null)
 -        e = buckets[--idx];
 +        e = getBuckets()[--idx];
-
+ 
 -      next = e.next;
 +      next = e.getNext();
        last = e;
@@ -1076,7 +1097,7 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
 +        return e.getKeyField();
        return e;
      }
-
+ 
 @@ -890,12 +922,12 @@
       */
      public void remove()
@@ -1086,15 +1107,15 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
          throw new ConcurrentModificationException();
        if (last == null)
          throw new IllegalStateException();
-
+ 
 -      HashMap.this.remove(last.key);
 +      HashMap.this.remove(last.getKeyField());
        last = null;
        knownMod++;
      }
-diff -dur gcc/java/util/HashSet.java gcc-patched/java/util/HashSet.java
---- gcc/java/util/HashSet.java        2005-09-23 10:31:48.000000000 -0700
-+++ gcc-patched/java/util/HashSet.java        2006-10-08 15:26:42.109375000 -0700
+diff -ruN gcc/java/util/HashSet.java gcc.new/java/util/HashSet.java
+--- gcc/java/util/HashSet.java	2005-09-23 10:31:48.000000000 -0700
++++ gcc.new/java/util/HashSet.java	2008-02-13 12:13:23.744800000 -0800
 @@ -198,7 +198,7 @@
     */
    public boolean isEmpty()
@@ -1102,7 +1123,7 @@ diff -dur gcc/java/util/HashSet.java gcc-patched/java/util/HashSet.java
 -    return map.size == 0;
 +    return map.getSize() == 0;
    }
-
+ 
    /**
 @@ -234,7 +234,7 @@
     */
@@ -1111,7 +1132,7 @@ diff -dur gcc/java/util/HashSet.java gcc-patched/java/util/HashSet.java
 -    return map.size;
 +    return map.getSize();
    }
-
+ 
    /**
 @@ -264,9 +264,9 @@
      s.defaultWriteObject();
@@ -1125,16 +1146,16 @@ diff -dur gcc/java/util/HashSet.java gcc-patched/java/util/HashSet.java
      while (it.hasNext())
        s.writeObject(it.next());
    }
-diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
---- gcc/java/util/Hashtable.java        2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/Hashtable.java        2006-10-08 15:28:37.531250000 -0700
+diff -ruN gcc/java/util/Hashtable.java gcc.new/java/util/Hashtable.java
+--- gcc/java/util/Hashtable.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/Hashtable.java	2008-02-13 12:13:23.790800000 -0800
 @@ -145,20 +145,20 @@
     * Array containing the actual key-value mappings.
     */
    // Package visible for use by nested classes.
 -  transient HashEntry[] buckets;
 +  private transient HashEntry[] buckets;
-
+ 
    /**
     * Counts the number of modifications this Hashtable has undergone, used
     * by Iterators to know when to throw ConcurrentModificationExceptions.
@@ -1142,14 +1163,14 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
    // Package visible for use by nested classes.
 -  transient int modCount;
 +  private transient int modCount;
-
+ 
    /**
     * The size of this Hashtable:  denotes the number of key-value pairs.
     */
    // Package visible for use by nested classes.
 -  transient int size;
 +  private transient int size;
-
+ 
    /**
     * The cache for {@link #keySet()}.
 @@ -183,7 +183,7 @@
@@ -1158,7 +1179,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
      /** The next entry in the linked list. */
 -    HashEntry next;
 +    private HashEntry next;
-
+ 
      /**
       * Simple constructor.
 @@ -207,6 +207,14 @@
@@ -1174,10 +1195,10 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 +        return next;
 +    }
    }
-
+ 
    /**
 @@ -269,7 +277,7 @@
-
+ 
      if (initialCapacity == 0)
        initialCapacity = 1;
 -    buckets = new HashEntry[initialCapacity];
@@ -1192,7 +1213,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -    return size;
 +    return getSize();
    }
-
+ 
    /**
 @@ -289,7 +297,7 @@
     */
@@ -1201,12 +1222,12 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -    return size == 0;
 +    return getSize() == 0;
    }
-
+ 
    /**
 @@ -337,14 +345,14 @@
      if (value == null)
        throw new NullPointerException();
-
+ 
 -    for (int i = buckets.length - 1; i >= 0; i--)
 +    for (int i = getBuckets().length - 1; i >= 0; i--)
        {
@@ -1221,7 +1242,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 +            e = e.getNext();
            }
        }
-
+  
 @@ -382,12 +390,12 @@
    public synchronized boolean containsKey(Object key)
    {
@@ -1261,11 +1282,11 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
      int idx = hash(key);
 -    HashEntry e = buckets[idx];
 +    HashEntry e = getBuckets()[idx];
-
+ 
      // Check if value is null since it is not permitted.
      if (value == null)
 @@ -438,22 +446,22 @@
-
+ 
      while (e != null)
        {
 -        if (e.key.equals(key))
@@ -1284,7 +1305,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 +            e = e.getNext();
            }
        }
-
+ 
      // At this point, we know we need to add a new entry.
 -    modCount++;
 -    if (++size > threshold)
@@ -1294,14 +1315,14 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
          rehash();
          // Need a new hash value to suit the bigger table.
 @@ -462,8 +470,8 @@
-
+ 
      e = new HashEntry(key, value);
-
+ 
 -    e.next = buckets[idx];
 -    buckets[idx] = e;
 +    e.setNext(getBuckets()[idx]);
 +    getBuckets()[idx] = e;
-
+ 
      return null;
    }
 @@ -479,23 +487,23 @@
@@ -1311,7 +1332,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -    HashEntry e = buckets[idx];
 +    HashEntry e = getBuckets()[idx];
      HashEntry last = null;
-
+ 
      while (e != null)
        {
 -        if (e.key.equals(key))
@@ -1360,7 +1381,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 +        setSize(0);
        }
    }
-
+ 
 @@ -558,7 +566,7 @@
        {
          // This is impossible.
@@ -1386,7 +1407,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -            return size;
 +            return getSize();
            }
-
+ 
            public Iterator iterator()
 @@ -677,7 +685,7 @@
          {
@@ -1395,7 +1416,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -            return size;
 +            return getSize();
            }
-
+ 
            public Iterator iterator()
 @@ -729,7 +737,7 @@
          {
@@ -1404,7 +1425,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -            return size;
 +            return getSize();
            }
-
+ 
            public Iterator iterator()
 @@ -752,7 +760,7 @@
              HashEntry e = getEntry(o);
@@ -1422,7 +1443,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -    for (int pos = size; pos > 0; pos--)
 +    for (int pos = getSize(); pos > 0; pos--)
        hashcode += itr.next().hashCode();
-
+ 
      return hashcode;
 @@ -819,7 +827,7 @@
    {
@@ -1432,10 +1453,10 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 +    int hash = key.hashCode() % getBuckets().length;
      return hash < 0 ? -hash : hash;
    }
-
+ 
 @@ -841,12 +849,12 @@
        return null;
-
+ 
      int idx = hash(key);
 -    HashEntry e = buckets[idx];
 +    HashEntry e = getBuckets()[idx];
@@ -1454,35 +1475,35 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
      Iterator itr = m.entrySet().iterator();
 -    size = 0;
 +    setSize(0);
-
+ 
      while (itr.hasNext())
        {
 -        size++;
 +        setSize(getSize() + 1);
-         Map.Entry e = (Map.Entry) itr.next();
-         Object key = e.getKey();
-         int idx = hash(key);
-         HashEntry he = new HashEntry(key, e.getValue());
--        he.next = buckets[idx];
--        buckets[idx] = he;
-+        he.setNext(getBuckets()[idx]);
-+        getBuckets()[idx] = he;
+ 	Map.Entry e = (Map.Entry) itr.next();
+ 	Object key = e.getKey();
+ 	int idx = hash(key);
+ 	HashEntry he = new HashEntry(key, e.getValue());
+-	he.next = buckets[idx];
+-	buckets[idx] = he;
++	he.setNext(getBuckets()[idx]);
++	getBuckets()[idx] = he;
        }
    }
-
+ 
 @@ -888,33 +896,33 @@
     */
    protected void rehash()
    {
 -    HashEntry[] oldBuckets = buckets;
 +    HashEntry[] oldBuckets = getBuckets();
-
+ 
 -    int newcapacity = (buckets.length * 2) + 1;
 +    int newcapacity = (getBuckets().length * 2) + 1;
      threshold = (int) (newcapacity * loadFactor);
 -    buckets = new HashEntry[newcapacity];
 +    setBuckets(new HashEntry[newcapacity]);
-
+ 
      for (int i = oldBuckets.length - 1; i >= 0; i--)
        {
          HashEntry e = oldBuckets[i];
@@ -1492,7 +1513,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -            HashEntry dest = buckets[idx];
 +            int idx = hash(e.getKeyField());
 +            HashEntry dest = getBuckets()[idx];
-
+ 
              if (dest != null)
                {
 -                while (dest.next != null)
@@ -1507,7 +1528,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -                buckets[idx] = e;
 +                getBuckets()[idx] = e;
                }
-
+ 
 -            HashEntry next = e.next;
 -            e.next = null;
 +            HashEntry next = e.getNext();
@@ -1518,7 +1539,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 @@ -936,8 +944,8 @@
      // Write the threshold and loadFactor fields.
      s.defaultWriteObject();
-
+ 
 -    s.writeInt(buckets.length);
 -    s.writeInt(size);
 +    s.writeInt(getBuckets().length);
@@ -1536,20 +1557,20 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 +        s.writeObject(entry.getValueField());
        }
    }
-
+ 
 @@ -968,7 +976,7 @@
      s.defaultReadObject();
-
+ 
      // Read and use capacity.
 -    buckets = new HashEntry[s.readInt()];
 +    setBuckets(new HashEntry[s.readInt()]);
      int len = s.readInt();
-
+ 
      // Read and use key/value pairs.
 @@ -977,7 +985,31 @@
        put(s.readObject(), s.readObject());
    }
-
+ 
 -  /**
 +  void setBuckets(HashEntry[] buckets) {
 +    this.buckets = buckets;
@@ -1601,7 +1622,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
       */
 -    HashEntry next;
 +    private HashEntry next;
-
+ 
      /**
       * Construct a new HashIterator with the supplied type.
 @@ -1027,7 +1059,7 @@
@@ -1611,7 +1632,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -      return count > 0;
 +      return getCount() > 0;
      }
-
+ 
      /**
 @@ -1038,22 +1070,22 @@
       */
@@ -1627,11 +1648,11 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -      HashEntry e = next;
 +      setCount(getCount() - 1);
 +      HashEntry e = getNext();
-
+ 
        while (e == null)
 -        e = buckets[--idx];
 +        e = getBuckets()[setIdx(getIdx() - 1)];
-
+ 
 -      next = e.next;
 -      last = e;
 +      setNext(e.getNext());
@@ -1644,7 +1665,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 +        return e.getKeyField();
        return e;
      }
-
+ 
 @@ -1065,14 +1097,54 @@
       */
      public void remove()
@@ -1655,7 +1676,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -      if (last == null)
 +      if (getLast() == null)
          throw new IllegalStateException();
-
+ 
 -      Hashtable.this.remove(last.key);
 -      last = null;
 -      knownMod++;
@@ -1704,7 +1725,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 +        return next;
      }
    } // class HashIterator
-
+ 
 @@ -1098,15 +1170,15 @@
       */
      final int type;
@@ -1721,7 +1742,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
       */
 -    HashEntry next;
 +    private HashEntry next;
-
+ 
      /**
       * Construct the enumeration.
 @@ -1123,7 +1195,7 @@
@@ -1731,7 +1752,7 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -      return count > 0;
 +      return getCount() > 0;
      }
-
+ 
      /**
 @@ -1133,16 +1205,40 @@
       */
@@ -1744,13 +1765,11 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 -      HashEntry e = next;
 +      setCount(getCount() - 1);
 +      HashEntry e = getNext();
-
+ 
        while (e == null)
 -        e = buckets[--idx];
 +        e = getBuckets()[setIdx(getIdx() - 1)];
-
--      next = e.next;
--      return type == VALUES ? e.value : e.key;
++
 +      setNext(e.getNext());
 +      return type == VALUES ? e.getValueField() : e.getKeyField();
 +    }
@@ -1774,22 +1793,24 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
 +    void setNext(HashEntry next) {
 +        this.next = next;
 +    }
-+
+ 
+-      next = e.next;
+-      return type == VALUES ? e.value : e.key;
 +    HashEntry getNext() {
 +        return next;
      }
    } // class Enumerator
  } // class Hashtable
-diff -dur gcc/java/util/LinkedHashMap.java gcc-patched/java/util/LinkedHashMap.java
---- gcc/java/util/LinkedHashMap.java        2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/LinkedHashMap.java        2006-10-08 15:29:51.000000000 -0700
+diff -ruN gcc/java/util/LinkedHashMap.java gcc.new/java/util/LinkedHashMap.java
+--- gcc/java/util/LinkedHashMap.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/LinkedHashMap.java	2008-02-13 12:13:23.825800000 -0800
 @@ -116,7 +116,7 @@
    /**
     * The oldest Entry to begin iteration at.
     */
 -  transient LinkedHashEntry root;
 +  private transient LinkedHashEntry root;
-
+ 
    /**
     * The iteration order of this linked hash map: <code>true</code> for
 @@ -136,10 +136,10 @@
@@ -1798,11 +1819,11 @@ diff -dur gcc/java/util/LinkedHashMap.java gcc-patched/java/util/LinkedHashMap.j
       */
 -    LinkedHashEntry pred;
 +    private LinkedHashEntry pred;
-
+ 
      /** The successor in the iteration list, null if this is the newest. */
 -    LinkedHashEntry succ;
 +    private LinkedHashEntry succ;
-
+ 
      /**
       * Simple constructor.
 @@ -150,16 +150,16 @@
@@ -1827,7 +1848,7 @@ diff -dur gcc/java/util/LinkedHashMap.java gcc-patched/java/util/LinkedHashMap.j
 +          getRoot().setPred(this);
          }
      }
-
+ 
 @@ -170,23 +170,23 @@
       */
      void access()
@@ -1913,7 +1934,7 @@ diff -dur gcc/java/util/LinkedHashMap.java gcc-patched/java/util/LinkedHashMap.j
 +        return succ;
      }
    } // class LinkedHashEntry
-
+ 
 @@ -300,7 +316,7 @@
    public void clear()
    {
@@ -1921,7 +1942,7 @@ diff -dur gcc/java/util/LinkedHashMap.java gcc-patched/java/util/LinkedHashMap.j
 -    root = null;
 +    setRoot(null);
    }
-
+ 
    /**
 @@ -312,12 +328,12 @@
     */
@@ -1972,7 +1993,7 @@ diff -dur gcc/java/util/LinkedHashMap.java gcc-patched/java/util/LinkedHashMap.j
 +    if (callRemove && removeEldestEntry(getRoot()))
 +      remove(getRoot().getKeyField());
    }
-
+ 
    /**
 @@ -424,7 +440,7 @@
     */
@@ -1982,22 +2003,22 @@ diff -dur gcc/java/util/LinkedHashMap.java gcc-patched/java/util/LinkedHashMap.j
 +    setRoot(null);
      super.putAllInternal(m);
    }
-
+ 
 @@ -440,13 +456,13 @@
      return new Iterator()
      {
        /** The current Entry. */
 -      LinkedHashEntry current = root;
 +      private LinkedHashEntry current = getRoot();
-
+ 
        /** The previous Entry returned by next(). */
 -      LinkedHashEntry last;
 +      private LinkedHashEntry last;
-
+ 
        /** The number of known modifications to the backing Map. */
 -      int knownMod = modCount;
 +      private int knownMod = getModCount();
-
+ 
        /**
         * Returns true if the Iterator has more elements.
 @@ -455,7 +471,7 @@
@@ -2007,7 +2028,7 @@ diff -dur gcc/java/util/LinkedHashMap.java gcc-patched/java/util/LinkedHashMap.j
 -        return current != null;
 +        return getCurrent() != null;
        }
-
+ 
        /**
 @@ -467,13 +483,13 @@
         */
@@ -2026,7 +2047,7 @@ diff -dur gcc/java/util/LinkedHashMap.java gcc-patched/java/util/LinkedHashMap.j
 +        setCurrent(getCurrent().getSucc());
 +        return type == VALUES ? getLast().getValueField() : type == KEYS ? getLast().getKeyField() : getLast();
        }
-
+       
        /**
 @@ -485,14 +501,46 @@
         */
@@ -2080,28 +2101,28 @@ diff -dur gcc/java/util/LinkedHashMap.java gcc-patched/java/util/LinkedHashMap.j
 +    return root;
 +}
  } // class LinkedHashMap
-diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
---- gcc/java/util/LinkedList.java        2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/LinkedList.java        2006-10-08 15:50:14.812500000 -0700
+diff -ruN gcc/java/util/LinkedList.java gcc.new/java/util/LinkedList.java
+--- gcc/java/util/LinkedList.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/LinkedList.java	2008-02-13 12:13:23.869800000 -0800
 @@ -82,17 +82,17 @@
    /**
     * The first element in the list.
     */
 -  transient Entry first;
 +  private transient Entry first;
-
+ 
    /**
     * The last element in the list.
     */
 -  transient Entry last;
 +  private transient Entry last;
-
+ 
    /**
     * The current length of the list.
     */
 -  transient int size = 0;
 +  private transient int size = 0;
-
+ 
    /**
     * Class to represent an entry in the list. Holds a single element.
 @@ -100,13 +100,13 @@
@@ -2110,15 +2131,15 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
      /** The element in the list. */
 -    Object data;
 +    private Object data;
-
+ 
      /** The next list entry, null if this is last. */
 -    Entry next;
 +    private Entry next;
-
+ 
      /** The previous list entry, null if this is first. */
 -    Entry previous;
 +    private Entry previous;
-
+ 
      /**
       * Construct an entry.
 @@ -114,7 +114,31 @@
@@ -2153,7 +2174,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 +        return previous;
      }
    } // class Entry
-
+ 
 @@ -134,19 +158,19 @@
    Entry getEntry(int n)
    {
@@ -2229,7 +2250,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 -                                          + size);
 +                                          + getSize());
    }
-
+ 
    /**
 @@ -205,9 +229,9 @@
     */
@@ -2241,7 +2262,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 -                                          + size);
 +                                          + getSize());
    }
-
+ 
    /**
 @@ -237,9 +261,9 @@
     */
@@ -2253,7 +2274,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 -    return first.data;
 +    return getFirstField().getData();
    }
-
+ 
    /**
 @@ -250,9 +274,9 @@
     */
@@ -2265,7 +2286,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 -    return last.data;
 +    return getLastField().getData();
    }
-
+ 
    /**
 @@ -263,18 +287,18 @@
     */
@@ -2280,7 +2301,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 +    setModCount(getModCount() + 1);
 +    setSize(getSize() - 1);
 +    Object r = getFirstField().getData();
-
+ 
 -    if (first.next != null)
 -      first.next.previous = null;
 +    if (getFirstField().getNext() != null)
@@ -2288,10 +2309,10 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
      else
 -      last = null;
 +      setLastField(null);
-
+ 
 -    first = first.next;
 +    setFirstField(getFirstField().getNext());
-
+ 
      return r;
    }
 @@ -287,18 +311,18 @@
@@ -2307,7 +2328,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 +    setModCount(getModCount() + 1);
 +    setSize(getSize() - 1);
 +    Object r = getLastField().getData();
-
+ 
 -    if (last.previous != null)
 -      last.previous.next = null;
 +    if (getLastField().getPrevious() != null)
@@ -2315,16 +2336,16 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
      else
 -      first = null;
 +      setFirstField(null);
-
+ 
 -    last = last.previous;
 +    setLastField(getLastField().getPrevious());
-
+ 
      return r;
    }
 @@ -312,16 +336,16 @@
    {
      Entry e = new Entry(o);
-
+ 
 -    modCount++;
 -    if (size == 0)
 -      first = last = e;
@@ -2343,7 +2364,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 -    size++;
 +    setSize(getSize() + 1);
    }
-
+ 
    /**
 @@ -341,16 +365,16 @@
     */
@@ -2367,7 +2388,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 -    size++;
 +    setSize(getSize() + 1);
    }
-
+ 
    /**
 @@ -362,12 +386,12 @@
     */
@@ -2392,7 +2413,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 -    return size;
 +    return getSize();
    }
-
+ 
    /**
 @@ -403,15 +427,15 @@
     */
@@ -2420,7 +2441,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 -    return addAll(size, c);
 +    return addAll(getSize(), c);
    }
-
+ 
    /**
 @@ -455,20 +479,20 @@
      // is null. If the list is empty, both are null.
@@ -2436,7 +2457,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
      else
 -      before = last;
 +      before = getLastField();
-
+ 
      // Create the first new entry. We do not yet set the link from `before'
      // to the first entry, in order to deal with the case where (c == this).
      // [Actually, we don't have to handle this case to fufill the
@@ -2446,7 +2467,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 +    e.setPrevious(before);
      Entry prev = e;
      Entry firstNew = e;
-
+ 
 @@ -476,24 +500,24 @@
      for (int pos = 1; pos < csize; pos++)
        {
@@ -2457,7 +2478,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 +        prev.setNext(e);
          prev = e;
        }
-
+ 
      // Link the new chain of entries into the list.
 -    modCount++;
 -    size += csize;
@@ -2471,7 +2492,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
      else
 -      last = e;
 +      setLastField(e);
-
+ 
      if (before != null)
 -      before.next = firstNew;
 +      before.setNext(firstNew);
@@ -2480,7 +2501,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 +      setFirstField(firstNew);
      return true;
    }
-
+ 
 @@ -502,12 +526,12 @@
     */
    public void clear()
@@ -2498,7 +2519,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 +        setSize(0);
        }
    }
-
+ 
 @@ -521,7 +545,7 @@
    public Object get(int index)
    {
@@ -2506,7 +2527,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 -    return getEntry(index).data;
 +    return getEntry(index).getData();
    }
-
+ 
    /**
 @@ -536,8 +560,8 @@
    {
@@ -2518,11 +2539,11 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 +    e.setData(o);
      return old;
    }
-
+ 
 @@ -553,18 +577,18 @@
      checkBoundsInclusive(index);
      Entry e = new Entry(o);
-
+ 
 -    if (index < size)
 +    if (index < getSize())
        {
@@ -2554,7 +2575,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 -    return e.data;
 +    return e.getData();
    }
-
+ 
    /**
 @@ -594,13 +618,13 @@
    public int indexOf(Object o)
@@ -2650,11 +2671,11 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 +        e = e.getNext();
        }
    }
-
+ 
 @@ -745,7 +769,31 @@
        addLastEntry(new Entry(s.readObject()));
    }
-
+ 
 -  /**
 +  void setFirstField(Entry first) {
 +    this.first = first;
@@ -2690,7 +2711,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
      /** Number of modifications we know about. */
 -    private int knownMod = modCount;
 +    private int knownMod = getModCount();
-
+ 
      /** Entry that will be returned by next(). */
      private Entry next;
 @@ -776,15 +824,15 @@
@@ -2720,7 +2741,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 +      if (knownMod != getModCount())
          throw new ConcurrentModificationException();
      }
-
+ 
 @@ -854,8 +902,8 @@
          throw new NoSuchElementException();
        position++;
@@ -2730,7 +2751,7 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 +      next = lastReturned.getNext();
 +      return lastReturned.getData();
      }
-
+ 
      /**
 @@ -872,8 +920,8 @@
          throw new NoSuchElementException();
@@ -2741,19 +2762,19 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 +      previous = lastReturned.getPrevious();
 +      return lastReturned.getData();
      }
-
+ 
      /**
 @@ -893,8 +941,8 @@
        if (lastReturned == previous)
          position--;
-
+ 
 -      next = lastReturned.next;
 -      previous = lastReturned.previous;
 +      next = lastReturned.getNext();
 +      previous = lastReturned.getPrevious();
        removeEntry(lastReturned);
        knownMod++;
-
+ 
 @@ -910,23 +958,23 @@
      public void add(Object o)
      {
@@ -2769,21 +2790,21 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
 -      e.next = next;
 +      e.setPrevious(previous);
 +      e.setNext(next);
-
+ 
        if (previous != null)
 -        previous.next = e;
 +        previous.setNext(e);
        else
 -        first = e;
 +        setFirstField(e);
-
+ 
        if (next != null)
 -        next.previous = e;
 +        next.setPrevious(e);
        else
 -        last = e;
 +        setLastField(e);
-
+ 
        previous = e;
        lastReturned = null;
 @@ -944,7 +992,7 @@
@@ -2795,9 +2816,9 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
      }
    } // class LinkedListItr
  }
-diff -dur gcc/java/util/Stack.java gcc-patched/java/util/Stack.java
---- gcc/java/util/Stack.java        2005-09-23 10:31:48.000000000 -0700
-+++ gcc-patched/java/util/Stack.java        2006-10-08 15:53:37.875000000 -0700
+diff -ruN gcc/java/util/Stack.java gcc.new/java/util/Stack.java
+--- gcc/java/util/Stack.java	2005-09-23 10:31:48.000000000 -0700
++++ gcc.new/java/util/Stack.java	2008-02-13 12:13:23.895800000 -0800
 @@ -103,14 +103,14 @@
     */
    public synchronized Object pop()
@@ -2805,18 +2826,18 @@ diff -dur gcc/java/util/Stack.java gcc-patched/java/util/Stack.java
 -    if (elementCount == 0)
 +    if (getElementCount() == 0)
        throw new EmptyStackException();
-
+ 
 -    modCount++;
 -    Object obj = elementData[--elementCount];
 +    setModCount(getModCount() + 1);
 +    Object obj = getElementData()[setElementCount(getElementCount() - 1)];
-
+ 
      // Set topmost element to null to assist the gc in cleanup.
 -    elementData[elementCount] = null;
 +    getElementData()[getElementCount()] = null;
      return obj;
    }
-
+ 
 @@ -122,10 +122,10 @@
     */
    public synchronized Object peek()
@@ -2824,11 +2845,11 @@ diff -dur gcc/java/util/Stack.java gcc-patched/java/util/Stack.java
 -    if (elementCount == 0)
 +    if (getElementCount() == 0)
        throw new EmptyStackException();
-
+ 
 -    return elementData[elementCount - 1];
 +    return getElementData()[getElementCount() - 1];
    }
-
+ 
    /**
 @@ -135,7 +135,7 @@
     */
@@ -2837,7 +2858,7 @@ diff -dur gcc/java/util/Stack.java gcc-patched/java/util/Stack.java
 -    return elementCount == 0;
 +    return getElementCount() == 0;
    }
-
+ 
    /**
 @@ -149,10 +149,10 @@
     */
@@ -2853,9 +2874,9 @@ diff -dur gcc/java/util/Stack.java gcc-patched/java/util/Stack.java
      return -1;
    }
  }
-diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
---- gcc/java/util/TreeMap.java        2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/TreeMap.java        2006-10-08 15:51:54.015625000 -0700
+diff -ruN gcc/java/util/TreeMap.java gcc.new/java/util/TreeMap.java
+--- gcc/java/util/TreeMap.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/TreeMap.java	2008-02-13 12:13:23.949800000 -0800
 @@ -122,9 +122,9 @@
    static
      {
@@ -2867,7 +2888,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +      nil.setLeft(nil);
 +      nil.setRight(nil);
      }
-
+ 
    /**
 @@ -135,7 +135,7 @@
    /**
@@ -2875,7 +2896,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
     */
 -  transient int size;
 +  private transient int size;
-
+ 
    /**
     * The cache for {@link #entrySet()}.
 @@ -147,7 +147,7 @@
@@ -2884,7 +2905,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
     */
 -  transient int modCount;
 +  private transient int modCount;
-
+ 
    /**
     * This TreeMap's comparator, or null for natural ordering.
 @@ -166,14 +166,14 @@
@@ -2893,7 +2914,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
      /** The color of this node. */
 -    int color;
 +    private int color;
-
+ 
      /** The left child node. */
 -    Node left = nil;
 +    private Node left = nil;
@@ -2903,7 +2924,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
      /** The parent node. */
 -    Node parent = nil;
 +    private Node parent = nil;
-
+ 
      /**
       * Simple constructor.
 @@ -183,7 +183,39 @@
@@ -2946,7 +2967,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +        return parent;
      }
    }
-
+ 
 @@ -256,8 +288,8 @@
      while (--pos >= 0)
        {
@@ -2972,17 +2993,17 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +        setSize(0);
        }
    }
-
+ 
 @@ -292,15 +324,15 @@
        {
        }
      copy.entries = null;
 -    copy.fabricateTree(size);
 +    copy.fabricateTree(getSize());
-
+ 
      Node node = firstNode();
      Node cnode = copy.firstNode();
-
+ 
      while (node != nil)
        {
 -        cnode.key = node.key;
@@ -3008,7 +3029,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -          return size;
 +          return getSize();
          }
-
+ 
          public Iterator iterator()
 @@ -392,7 +424,7 @@
              return false;
@@ -3017,7 +3038,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -          return n != nil && AbstractSet.equals(me.getValue(), n.value);
 +          return n != nil && AbstractSet.equals(me.getValue(), n.getValueField());
        }
-
+ 
          public boolean remove(Object o)
 @@ -401,7 +433,7 @@
              return false;
@@ -3035,7 +3056,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -    return firstNode().key;
 +    return firstNode().getKeyField();
    }
-
+ 
    /**
 @@ -442,7 +474,7 @@
    public Object get(Object key)
@@ -3044,7 +3065,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -    return getNode(key).value;
 +    return getNode(key).getValueField();
    }
-
+ 
    /**
 @@ -476,14 +508,14 @@
     */
@@ -3062,7 +3083,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -          return size;
 +          return getSize();
          }
-
+ 
          public Iterator iterator()
 @@ -509,8 +541,8 @@
            removeNode(n);
@@ -3073,7 +3094,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +      });
 +    return getKeys();
    }
-
+ 
    /**
 @@ -523,7 +555,7 @@
    {
@@ -3082,7 +3103,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -    return lastNode().key;
 +    return lastNode().getKeyField();
    }
-
+ 
    /**
 @@ -552,22 +584,22 @@
      while (current != nil)
@@ -3099,12 +3120,12 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
          else // Key already in tree.
            return current.setValue(value);
        }
-
+ 
      // Set up new node.
      Node n = new Node(key, value, RED);
 -    n.parent = parent;
 +    n.setParent(parent);
-
+ 
      // Insert node in tree.
 -    modCount++;
 -    size++;
@@ -3122,7 +3143,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
      else
 -      parent.left = n;
 +      parent.setLeft(n);
-
+ 
      // Rebalance after insert.
      insertFixup(n);
 @@ -625,7 +657,7 @@
@@ -3141,7 +3162,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -    return size;
 +    return getSize();
    }
-
+ 
    /**
 @@ -696,14 +728,14 @@
     */
@@ -3159,7 +3180,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -          return size;
 +          return getSize();
          }
-
+ 
          public Iterator iterator()
 @@ -715,8 +747,8 @@
          {
@@ -3170,7 +3191,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +      });
 +    return getValues();
    }
-
+ 
    /**
 @@ -749,48 +781,48 @@
      // If a black node has been removed, we need to rebalance to avoid
@@ -3200,7 +3221,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -                sibling = parent.right;
 +                sibling = parent.getRight();
                }
-
+ 
 -            if (sibling.left.color == BLACK && sibling.right.color == BLACK)
 +            if (sibling.getLeft().getColor() == BLACK && sibling.getRight().getColor() == BLACK)
                {
@@ -3259,7 +3280,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -                sibling = parent.left;
 +                sibling = parent.getLeft();
                }
-
+ 
 -            if (sibling.right.color == BLACK && sibling.left.color == BLACK)
 +            if (sibling.getRight().getColor() == BLACK && sibling.getLeft().getColor() == BLACK)
                {
@@ -3302,26 +3323,26 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -    node.color = BLACK;
 +    node.setColor(BLACK);
    }
-
+ 
    /**
 @@ -854,7 +886,7 @@
      if (count == 0)
        {
-         root = nil;
--        size = 0;
-+        setSize(0);
-         return;
+ 	root = nil;
+-	size = 0;
++	setSize(0);
+ 	return;
        }
-
+ 
 @@ -865,7 +897,7 @@
-
+ 
      // Make the root node.
      root = new Node(null, null, BLACK);
 -    size = count;
 +    setSize(count);
      Node row = root;
      int rowsize;
-
+ 
 @@ -878,18 +910,18 @@
            {
              Node left = new Node(null, null, BLACK);
@@ -3347,7 +3368,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -        row = row.left;
 +        row = row.getLeft();
        }
-
+ 
      // Now do the partial final row in red.
 @@ -900,27 +932,27 @@
        {
@@ -3398,7 +3419,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +      node = node.getLeft();
      return node;
    }
-
+ 
 @@ -952,11 +984,11 @@
      Node current = root;
      while (current != nil)
@@ -3522,7 +3543,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -    root.color = BLACK;
 +    root.setColor(BLACK);
    }
-
+ 
    /**
 @@ -1077,8 +1109,8 @@
    {
@@ -3534,7 +3555,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +      node = node.getRight();
      return node;
    }
-
+ 
 @@ -1103,11 +1135,11 @@
      while (current != nil)
        {
@@ -3565,7 +3586,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +          node = node.getRight();
          return node;
        }
-
+ 
 -    Node parent = node.parent;
 +    Node parent = node.getParent();
      // Exploit fact that nil.left == nil and node is non-nil.
@@ -3579,7 +3600,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
      return parent;
    }
 @@ -1161,8 +1193,8 @@
-
+ 
      while (--count >= 0)
        {
 -        node.key = s.readObject();
@@ -3590,7 +3611,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
        }
    }
 @@ -1182,8 +1214,8 @@
-
+ 
      while (--count >= 0)
        {
 -        node.key = keys.next();
@@ -3603,12 +3624,12 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 @@ -1216,50 +1248,50 @@
      Node splice;
      Node child;
-
+ 
 -    modCount++;
 -    size--;
 +    setModCount(getModCount() + 1);
 +    setSize(getSize() - 1);
-
+ 
      // Find splice, the node at the position to actually remove from the tree.
 -    if (node.left == nil)
 +    if (node.getLeft() == nil)
@@ -3643,7 +3664,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +        node.setKeyField(splice.getKeyField());
 +        node.setValueField(splice.getValueField());
        }
-
+ 
      // Unlink splice from the tree.
 -    Node parent = splice.parent;
 +    Node parent = splice.getParent();
@@ -3663,12 +3684,12 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
      else
 -      parent.right = child;
 +      parent.setRight(child);
-
+ 
 -    if (splice.color == BLACK)
 +    if (splice.getColor() == BLACK)
        deleteFixup(child, parent);
    }
-
+ 
 @@ -1270,30 +1302,30 @@
     */
    private void rotateLeft(Node node)
@@ -3677,7 +3698,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +    Node child = node.getRight();
      // if (node == nil || child == nil)
      //   throw new InternalError();
-
+ 
      // Establish node.right link.
 -    node.right = child.left;
 -    if (child.left != nil)
@@ -3685,7 +3706,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +    node.setRight(child.getLeft());
 +    if (child.getLeft() != nil)
 +      child.getLeft().setParent(node);
-
+ 
      // Establish child->parent link.
 -    child.parent = node.parent;
 -    if (node.parent != nil)
@@ -3702,14 +3723,14 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
        }
      else
        root = child;
-
+ 
      // Link n and child.
 -    child.left = node;
 -    node.parent = child;
 +    child.setLeft(node);
 +    node.setParent(child);
    }
-
+ 
    /**
 @@ -1303,30 +1335,30 @@
     */
@@ -3719,7 +3740,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +    Node child = node.getLeft();
      // if (node == nil || child == nil)
      //   throw new InternalError();
-
+ 
      // Establish node.left link.
 -    node.left = child.right;
 -    if (child.right != nil)
@@ -3727,7 +3748,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +    node.setLeft(child.getRight());
 +    if (child.getRight() != nil)
 +      child.getRight().setParent(node);
-
+ 
      // Establish child->parent link.
 -    child.parent = node.parent;
 -    if (node.parent != nil)
@@ -3744,14 +3765,14 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
        }
      else
        root = child;
-
+ 
      // Link n and child.
 -    child.right = node;
 -    node.parent = child;
 +    child.setRight(node);
 +    node.setParent(child);
    }
-
+ 
    /**
 @@ -1338,20 +1370,20 @@
     */
@@ -3768,7 +3789,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +          node = node.getLeft();
          return node;
        }
-
+ 
 -    Node parent = node.parent;
 +    Node parent = node.getParent();
      // Exploit fact that nil.right == nil and node is non-nil.
@@ -3783,7 +3804,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
    }
 @@ -1369,16 +1401,32 @@
      s.defaultWriteObject();
-
+ 
      Node node = firstNode();
 -    s.writeInt(size);
 +    s.writeInt(getSize());
@@ -3796,7 +3817,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
          node = successor(node);
        }
    }
-
+ 
 -  /**
 +  void setModCount(int modCount) {
 +    this.modCount = modCount;
@@ -3838,7 +3859,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
          throw new NoSuchElementException();
 @@ -1456,9 +1504,9 @@
        next = successor(last);
-
+ 
        if (type == VALUES)
 -        return last.value;
 +        return last.getValueField();
@@ -3847,7 +3868,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +        return last.getKeyField();
        return last;
      }
-
+ 
 @@ -1472,7 +1520,7 @@
      {
        if (last == null)
@@ -3855,7 +3876,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -      if (knownMod != modCount)
 +      if (knownMod != getModCount())
          throw new ConcurrentModificationException();
-
+ 
        removeNode(last);
 @@ -1607,7 +1655,7 @@
              if (! keyInRange(key))
@@ -3864,7 +3885,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -            return n != nil && AbstractSet.equals(me.getValue(), n.value);
 +            return n != nil && AbstractSet.equals(me.getValue(), n.getValueField());
            }
-
+ 
            public boolean remove(Object o)
 @@ -1619,7 +1667,7 @@
              if (! keyInRange(key))
@@ -3885,10 +3906,10 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -      return node.key;
 +      return node.getKeyField();
      }
-
+ 
      public Object get(Object key)
 @@ -1654,10 +1702,10 @@
-
+ 
      public Set keySet()
      {
 -      if (this.keys == null)
@@ -3909,7 +3930,7 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +        });
 +      return this.getKeys();
      }
-
+ 
      public Object lastKey()
      {
        Node node = highestLessThan(maxKey);
@@ -3919,10 +3940,10 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 -      return node.key;
 +      return node.getKeyField();
      }
-
+ 
      public Object put(Object key, Object value)
 @@ -1750,10 +1798,10 @@
-
+ 
      public Collection values()
      {
 -      if (this.values == null)
@@ -3943,18 +3964,18 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 +        });
 +      return this.getValues();
      }
-   } // class SubMap
+   } // class SubMap  
  } // class TreeMap
-diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
---- gcc/java/util/Vector.java        2005-09-23 14:31:04.000000000 -0700
-+++ gcc-patched/java/util/Vector.java        2006-10-08 15:53:37.921875000 -0700
+diff -ruN gcc/java/util/Vector.java gcc.new/java/util/Vector.java
+--- gcc/java/util/Vector.java	2005-09-23 14:31:04.000000000 -0700
++++ gcc.new/java/util/Vector.java	2008-02-13 12:13:23.992800000 -0800
 @@ -93,14 +93,14 @@
     * in positions 0 through elementCount - 1, and all remaining slots are null.
     * @serial the elements
     */
 -  protected Object[] elementData;
 +  private Object[] elementData;
-
+ 
    /**
     * The number of elements currently in the vector, also returned by
     * {@link #size}.
@@ -3962,7 +3983,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
     */
 -  protected int elementCount;
 +  private int elementCount;
-
+ 
    /**
     * The amount the Vector's internal array should be increased in size when
 @@ -109,7 +109,7 @@
@@ -3971,7 +3992,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
     */
 -  protected int capacityIncrement;
 +  private int capacityIncrement;
-
+ 
    /**
     * Constructs an empty vector with an initial size of 10, and
 @@ -130,8 +130,8 @@
@@ -3983,7 +4004,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    setElementCount(c.size());
 +    setElementData(c.toArray(new Object[getElementCount()]));
    }
-
+ 
    /**
 @@ -147,8 +147,8 @@
    {
@@ -3994,7 +4015,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    setElementData(new Object[initialCapacity]);
 +    this.setCapacityIncrement(capacityIncrement);
    }
-
+ 
    /**
 @@ -176,7 +176,7 @@
     */
@@ -4003,12 +4024,12 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    System.arraycopy(elementData, 0, a, 0, elementCount);
 +    System.arraycopy(getElementData(), 0, a, 0, getElementCount());
    }
-
+ 
    /**
 @@ -190,9 +190,9 @@
      // vector since that is a much less likely case; it's more efficient to
      // not do the check and lose a bit of performance in that infrequent case
-
+ 
 -    Object[] newArray = new Object[elementCount];
 -    System.arraycopy(elementData, 0, newArray, 0, elementCount);
 -    elementData = newArray;
@@ -4016,7 +4037,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    System.arraycopy(getElementData(), 0, newArray, 0, getElementCount());
 +    setElementData(newArray);
    }
-
+ 
    /**
 @@ -207,19 +207,19 @@
     */
@@ -4025,7 +4046,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    if (elementData.length >= minCapacity)
 +    if (getElementData().length >= minCapacity)
        return;
-
+ 
      int newCapacity;
 -    if (capacityIncrement <= 0)
 -      newCapacity = elementData.length * 2;
@@ -4034,15 +4055,15 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
      else
 -      newCapacity = elementData.length + capacityIncrement;
 +      newCapacity = getElementData().length + getCapacityIncrement();
-
+ 
      Object[] newArray = new Object[Math.max(newCapacity, minCapacity)];
-
+ 
 -    System.arraycopy(elementData, 0, newArray, 0, elementCount);
 -    elementData = newArray;
 +    System.arraycopy(getElementData(), 0, newArray, 0, getElementCount());
 +    setElementData(newArray);
    }
-
+ 
    /**
 @@ -236,11 +236,11 @@
      // Don't bother checking for the case where size() == the capacity of the
@@ -4058,7 +4079,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +      Arrays.fill(getElementData(), newSize, getElementCount(), null);
 +    setElementCount(newSize);
    }
-
+ 
    /**
 @@ -251,7 +251,7 @@
     */
@@ -4067,7 +4088,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    return elementData.length;
 +    return getElementData().length;
    }
-
+ 
    /**
 @@ -261,7 +261,7 @@
     */
@@ -4076,7 +4097,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    return elementCount;
 +    return getElementCount();
    }
-
+ 
    /**
 @@ -271,7 +271,7 @@
     */
@@ -4085,16 +4106,16 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    return elementCount == 0;
 +    return getElementCount() == 0;
    }
-
+ 
    /**
 @@ -290,14 +290,14 @@
-
+ 
        public boolean hasMoreElements()
        {
 -        return i < elementCount;
 +        return i < getElementCount();
        }
-
+ 
        public Object nextElement()
        {
 -        if (i >= elementCount)
@@ -4123,7 +4144,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    return lastIndexOf(elem, elementCount - 1);
 +    return lastIndexOf(elem, getElementCount() - 1);
    }
-
+ 
    /**
 @@ -370,7 +370,7 @@
    {
@@ -4141,7 +4162,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    return elementData[index];
 +    return getElementData()[index];
    }
-
+ 
    /**
 @@ -397,10 +397,10 @@
     */
@@ -4150,11 +4171,11 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    if (elementCount == 0)
 +    if (getElementCount() == 0)
        throw new NoSuchElementException();
-
+ 
 -    return elementData[0];
 +    return getElementData()[0];
    }
-
+ 
    /**
 @@ -411,10 +411,10 @@
     */
@@ -4163,11 +4184,11 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    if (elementCount == 0)
 +    if (getElementCount() == 0)
        throw new NoSuchElementException();
-
+ 
 -    return elementData[elementCount - 1];
 +    return getElementData()[getElementCount() - 1];
    }
-
+ 
    /**
 @@ -455,13 +455,13 @@
    public synchronized void insertElementAt(Object obj, int index)
@@ -4188,7 +4209,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    setElementCount(getElementCount() + 1);
 +    getElementData()[index] = obj;
    }
-
+ 
    /**
 @@ -472,10 +472,10 @@
     */
@@ -4203,7 +4224,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    setModCount(getModCount() + 1);
 +    getElementData()[elementCount++] = obj;
    }
-
+ 
    /**
 @@ -506,12 +506,12 @@
     */
@@ -4212,7 +4233,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    if (elementCount == 0)
 +    if (getElementCount() == 0)
        return;
-
+ 
 -    modCount++;
 -    Arrays.fill(elementData, 0, elementCount, null);
 -    elementCount = 0;
@@ -4220,7 +4241,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    Arrays.fill(getElementData(), 0, getElementCount(), null);
 +    setElementCount(0);
    }
-
+ 
    /**
 @@ -525,7 +525,7 @@
      try
@@ -4257,7 +4278,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    System.arraycopy(getElementData(), 0, a, 0, getElementCount());
      return a;
    }
-
+ 
 @@ -605,8 +605,8 @@
    public synchronized Object set(int index, Object element)
    {
@@ -4268,7 +4289,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    getElementData()[index] = element;
      return temp;
    }
-
+ 
 @@ -661,13 +661,13 @@
    public synchronized Object remove(int index)
    {
@@ -4289,7 +4310,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    getElementData()[getElementCount()] = null;
      return temp;
    }
-
+ 
 @@ -705,7 +705,7 @@
     */
    public synchronized boolean addAll(Collection c)
@@ -4297,10 +4318,10 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    return addAll(elementCount, c);
 +    return addAll(getElementCount(), c);
    }
-
+ 
    /**
 @@ -723,17 +723,17 @@
-
+ 
      int i;
      int j;
 -    for (i = 0; i < elementCount; i++)
@@ -4311,7 +4332,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    if (i == elementCount)
 +    if (i == getElementCount())
        return false;
-
+ 
 -    modCount++;
 -    for (j = i++; i < elementCount; i++)
 -      if (! c.contains(elementData[i]))
@@ -4324,9 +4345,9 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    setElementCount(getElementCount() - (i - j));
      return true;
    }
-
+ 
 @@ -752,17 +752,17 @@
-
+ 
      int i;
      int j;
 -    for (i = 0; i < elementCount; i++)
@@ -4337,7 +4358,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 -    if (i == elementCount)
 +    if (i == getElementCount())
        return false;
-
+ 
 -    modCount++;
 -    for (j = i++; i < elementCount; i++)
 -      if (c.contains(elementData[i]))
@@ -4350,11 +4371,11 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    setElementCount(getElementCount() - (i - j));
      return true;
    }
-
+ 
 @@ -783,15 +783,15 @@
      Iterator itr = c.iterator();
      int csize = c.size();
-
+ 
 -    modCount++;
 -    ensureCapacity(elementCount + csize);
 +    setModCount(getModCount() + 1);
@@ -4362,18 +4383,18 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
      int end = index + csize;
 -    if (elementCount > 0 && index != elementCount)
 -      System.arraycopy(elementData, index,
--                       elementData, end, elementCount - index);
+-		       elementData, end, elementCount - index);
 -    elementCount += csize;
 +    if (getElementCount() > 0 && index != getElementCount())
-+      System.arraycopy(getElementData(), index,
-+                       getElementData(), end, getElementCount() - index);
++        System.arraycopy(getElementData(), index,
++                getElementData(), end, getElementCount() - index);
 +    setElementCount(getElementCount() + csize);
      for ( ; index < end; index++)
 -      elementData[index] = itr.next();
 +      getElementData()[index] = itr.next();
      return (csize > 0);
    }
-
+ 
 @@ -874,12 +874,12 @@
      int change = toIndex - fromIndex;
      if (change > 0)
@@ -4402,7 +4423,7 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    if (index > getElementCount())
 +      throw new ArrayIndexOutOfBoundsException(index + " > " + getElementCount());
    }
-
+ 
    /**
 @@ -911,8 +911,8 @@
      // Implementation note: we do not check for negative ranges here, since
@@ -4413,12 +4434,12 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +    if (index >= getElementCount())
 +      throw new ArrayIndexOutOfBoundsException(index + " >= " + getElementCount());
    }
-
+ 
    /**
 @@ -928,4 +928,28 @@
      s.defaultWriteObject();
    }
-
+ 
 +protected void setCapacityIncrement(int capacityIncrement) {
 +    this.capacityIncrement = capacityIncrement;
 +}
@@ -4444,9 +4465,9 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +}
 +
  }
-diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
---- gcc/java/util/WeakHashMap.java        2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/WeakHashMap.java        2006-10-08 15:55:04.828125000 -0700
+diff -ruN gcc/java/util/WeakHashMap.java gcc.new/java/util/WeakHashMap.java
+--- gcc/java/util/WeakHashMap.java	2006-04-05 11:41:17.416728000 -0700
++++ gcc.new/java/util/WeakHashMap.java	2008-02-13 12:13:24.032800000 -0800
 @@ -138,7 +138,7 @@
    /**
     * The number of entries in this hash map.
@@ -4454,7 +4475,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -  // Package visible for use by nested classes.
 +  private // Package visible for use by nested classes.
    int size;
-
+ 
    /**
 @@ -162,7 +162,7 @@
     * by the garbage collection.  Instead the iterators must make
@@ -4463,7 +4484,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -  // Package visible for use by nested classes.
 +  private // Package visible for use by nested classes.
    int modCount;
-
+ 
    /**
 @@ -186,7 +186,7 @@
       */
@@ -4472,7 +4493,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -      return size;
 +      return getSize();
      }
-
+ 
      /**
 @@ -210,7 +210,7 @@
           * being removed under us, since the entry strongly refers
@@ -4480,7 +4501,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
           */
 -        WeakBucket.WeakEntry lastEntry;
 +        private WeakBucket.WeakEntry lastEntry;
-
+ 
          /**
           * The entry that will be returned by the next
 @@ -221,13 +221,13 @@
@@ -4489,14 +4510,14 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
           */
 -        WeakBucket.WeakEntry nextEntry = findNext(null);
 +        private WeakBucket.WeakEntry nextEntry = findNext(null);
-
+ 
          /**
           * The known number of modification to the list, if it differs
           * from the real number, we throw an exception.
           */
 -        int knownMod = modCount;
 +        private int knownMod = getModCount();
-
+ 
          /**
           * Check the known number of modification to the number of
 @@ -240,9 +240,9 @@
@@ -4510,7 +4531,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 +            throw new ConcurrentModificationException(getKnownMod() + " != "
 +                                                      + getModCount());
          }
-
+ 
          /**
 @@ -258,12 +258,12 @@
            WeakBucket nextBucket;
@@ -4527,26 +4548,26 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 +              nextBucket = getBuckets()[0];
                slot = 0;
              }
-
+ 
 @@ -277,15 +277,15 @@
                      return entry;
-
+ 
                    // Entry was cleared, try next.
 -                  nextBucket = nextBucket.next;
 +                  nextBucket = nextBucket.getNext();
                  }
-
+ 
                slot++;
 -              if (slot == buckets.length)
 +              if (slot == getBuckets().length)
                  // No more buckets, we are through.
                  return null;
-
+ 
 -              nextBucket = buckets[slot];
 +              nextBucket = getBuckets()[slot];
              }
          }
-
+ 
 @@ -295,7 +295,7 @@
           */
          public boolean hasNext()
@@ -4554,7 +4575,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -          return nextEntry != null;
 +          return getNextEntry() != null;
          }
-
+ 
          /**
 @@ -308,11 +308,11 @@
          public Object next()
@@ -4570,7 +4591,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 +          setNextEntry(findNext(getLastEntry()));
 +          return getLastEntry();
          }
-
+ 
          /**
 @@ -326,12 +326,36 @@
          public void remove()
@@ -4620,14 +4641,14 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
       */
 -    Object value;
 +    private Object value;
-
+ 
      /**
       * The next bucket describing another entry that uses the same
       * slot.
       */
 -    WeakBucket next;
 +    private WeakBucket next;
-
+ 
      /**
       * The slot of this entry. This should be
 @@ -373,7 +397,7 @@
@@ -4636,7 +4657,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
       */
 -    int slot;
 +    private int slot;
-
+ 
      /**
       * Creates a new bucket for the given key/value pair and the specified
 @@ -388,8 +412,8 @@
@@ -4648,7 +4669,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 +      this.setValue(value);
 +      this.setSlot(slot);
      }
-
+ 
      /**
 @@ -402,7 +426,7 @@
        /**
@@ -4656,7 +4677,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
         */
 -      Object key;
 +      private Object key;
-
+ 
        /**
         * Creates a new entry for the key.
 @@ -410,7 +434,7 @@
@@ -4666,7 +4687,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -        this.key = key;
 +        this.setKeyField(key);
        }
-
+ 
        /**
 @@ -428,7 +452,7 @@
         */
@@ -4675,7 +4696,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -        return key == NULL_KEY ? null : key;
 +        return getKeyField() == NULL_KEY ? null : getKeyField();
        }
-
+ 
        /**
 @@ -437,7 +461,7 @@
         */
@@ -4684,7 +4705,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -        return value;
 +        return getValue();
        }
-
+ 
        /**
 @@ -448,8 +472,8 @@
         */
@@ -4696,7 +4717,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 +        setValue(newVal);
          return oldVal;
        }
-
+ 
 @@ -459,7 +483,7 @@
         */
        public int hashCode()
@@ -4704,7 +4725,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -        return key.hashCode() ^ WeakHashMap.hashCode(value);
 +        return getKeyField().hashCode() ^ WeakHashMap.hashCode(getValue());
        }
-
+ 
        /**
 @@ -473,15 +497,23 @@
            {
@@ -4715,7 +4736,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
            }
          return false;
        }
-
+ 
        public String toString()
        {
 -        return getKey() + "=" + value;
@@ -4730,7 +4751,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 +        return key;
 +    }
      }
-
+ 
      /**
 @@ -496,6 +528,30 @@
          return null;
@@ -4761,7 +4782,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 +        return value;
 +    }
    }
-
+ 
    /**
 @@ -507,7 +563,7 @@
     * The hash buckets.  These are linked lists. Package visible for use in
@@ -4769,7 +4790,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
     */
 -  WeakBucket[] buckets;
 +  private WeakBucket[] buckets;
-
+ 
    /**
     * Creates a new weak hash map with default load factor and default
 @@ -548,7 +604,7 @@
@@ -4779,7 +4800,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -    buckets = new WeakBucket[initialCapacity];
 +    setBuckets(new WeakBucket[initialCapacity]);
    }
-
+ 
    /**
 @@ -572,7 +628,7 @@
     */
@@ -4788,7 +4809,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -    return Math.abs(key.hashCode() % buckets.length);
 +    return Math.abs(key.hashCode() % getBuckets().length);
    }
-
+ 
    /**
 @@ -603,10 +659,10 @@
     */
@@ -4801,7 +4822,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
      threshold = (int) (newsize * loadFactor);
 -    buckets = new WeakBucket[newsize];
 +    setBuckets(new WeakBucket[newsize]);
-
+ 
      // Now we have to insert the buckets again.
      for (int i = 0; i < oldBuckets.length; i++)
 @@ -615,7 +671,7 @@
@@ -4810,7 +4831,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
            {
 -            nextBucket = bucket.next;
 +            nextBucket = bucket.getNext();
-
+ 
              Object key = bucket.get();
              if (key == null)
 @@ -623,16 +679,16 @@
@@ -4847,7 +4868,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -        if (entry != null && equals(key, entry.key))
 +        if (entry != null && equals(key, entry.getKeyField()))
            return entry;
-
+ 
 -        bucket = bucket.next;
 +        bucket = bucket.getNext();
        }
@@ -4864,7 +4885,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 +    getBuckets()[slot] = bucket;
 +    setSize(getSize() + 1);
    }
-
+ 
    /**
 @@ -687,7 +743,7 @@
     */
@@ -4881,28 +4902,28 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
      // internalRemove will be called a second time.
 -    bucket.slot = -1;
 +    bucket.setSlot(-1);
-
+ 
      WeakBucket prev = null;
 -    WeakBucket next = buckets[slot];
 +    WeakBucket next = getBuckets()[slot];
      while (next != bucket)
        {
           if (next == null) throw new InternalError("WeakHashMap in incosistent state");
-          prev = next;
+          prev = next; 
 -         next = prev.next;
 +         next = prev.getNext();
        }
      if (prev == null)
 -      buckets[slot] = bucket.next;
 +      getBuckets()[slot] = bucket.getNext();
-     else
+     else 
 -      prev.next = bucket.next;
 +      prev.setNext(bucket.getNext());
-
+ 
 -    size--;
 +    setSize(getSize() - 1);
    }
-
+ 
    /**
 @@ -721,7 +777,7 @@
    public int size()
@@ -4911,7 +4932,7 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -    return size;
 +    return getSize();
    }
-
+ 
    /**
 @@ -732,7 +788,7 @@
    public boolean isEmpty()
@@ -4920,23 +4941,23 @@ diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
 -    return size == 0;
 +    return getSize() == 0;
    }
-
+ 
    /**
 @@ -776,8 +832,8 @@
      if (entry != null)
        return entry.setValue(value);
-
+ 
 -    modCount++;
 -    if (size >= threshold)
 +    setModCount(getModCount() + 1);
 +    if (getSize() >= threshold)
        rehash();
-
+ 
      internalAdd(key, value);
 @@ -798,7 +854,7 @@
      if (entry == null)
        return null;
-
+ 
 -    modCount++;
 +    setModCount(getModCount() + 1);
      internalRemove(entry.getBucket());
