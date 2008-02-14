@@ -564,7 +564,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Generate the expression that represents the offsite in the generated
+     * Generate the expression that represents the offset in the generated
      * code.
      * @param offsetString The specified offset from the user.
      * @param port The referenced port.
@@ -576,6 +576,31 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String generateOffset(String offsetString, IOPort port, int channel,
             boolean isWrite) throws IllegalActionException {
+        ptolemy.actor.Director director = 
+            ((Actor) _component).getExecutiveDirector();
+        
+        if (director == null) {
+            // _component is at the top level. Use it's local director.
+            director = ((Actor) _component).getDirector();
+        }
+        Director directorHelper = (Director) _getHelper(director);
+        
+        return processCode(directorHelper.generateOffset(
+                offsetString, port, channel, isWrite, this));        
+    }
+
+    /**
+     * Generate the expression that represents the offset in the generated
+     * code.
+     * @param offsetString The specified offset from the user.
+     * @param port The referenced port.
+     * @param channel The referenced port channel.
+     * @param isWrite Whether to generate the write or read offset.
+     * @return The expression that represents the offset in the generated code.
+     * @exception IllegalActionException If there is problems getting the port
+     *  buffer size or the offset in the channel and offset map.
+     */
+    protected String _generateOffset(String offsetString, IOPort port, int channel, boolean isWrite) throws IllegalActionException {
         boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
                 .getToken()).booleanValue();
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
@@ -1326,6 +1351,20 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return getReference(name, isWrite);
     }
 
+    private String getReference(String name, boolean isWrite) 
+            throws IllegalActionException {
+        ptolemy.actor.Director director = 
+            ((Actor) _component).getExecutiveDirector();
+        
+        if (director == null) {
+            // _component is at the top level. Use it's local director.
+            director = ((Actor) _component).getDirector();
+        }
+        Director directorHelper = (Director) _getHelper(director);
+        
+        return directorHelper.getReference(name, isWrite, this);
+    }
+
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in
      *  the form "fullName_parameterName". For a port, the returned string
@@ -1338,7 +1377,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @exception IllegalActionException If the parameter or port does not
      *   exist or does not have a value.
      */
-    public String getReference(String name, boolean isWrite)
+    protected String _getReference(String name, boolean isWrite)
             throws IllegalActionException {
         boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
                 .getToken()).booleanValue();
@@ -1405,14 +1444,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 // when the channel specification is not an integer.
                 if (dynamicReferencesAllowed) {
                     try {
-                        channelNumber = (Integer.valueOf(channelAndOffset[0]))
-                                .intValue();
+                        channelNumber = 
+                            (Integer.valueOf(channelAndOffset[0])).intValue();
                     } catch (Exception ex) {
                         isChannelNumberInt = false;
                     }
                 } else {
-                    channelNumber = (Integer.valueOf(channelAndOffset[0]))
-                            .intValue();
+                    channelNumber = 
+                        (Integer.valueOf(channelAndOffset[0])).intValue();
                 }
             }
 
@@ -1484,38 +1523,27 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     int sinkChannelNumber = channel.channelNumber;
 
                     // Type convert.
-                    if (typeConvertSinks.contains(channel)
-                            && isPrimitive(((TypedIOPort) sourceChannel.port)
-                                    .getType())) {
+                    if (typeConvertSinks.contains(channel) && 
+                            isPrimitive(((TypedIOPort) sourceChannel.port).getType())) {
 
                         if (!hasTypeConvertReference) {
                             if (i != 0) {
                                 result.append(" = ");
                             }
-                            result
-                                    .append(_getTypeConvertReference(sourceChannel));
+                            result.append(_getTypeConvertReference(sourceChannel));
 
                             if (dynamicReferencesAllowed && port.isInput()) {
                                 if (channelAndOffset[1].trim().length() > 0) {
-                                    result.append("["
-                                            + channelAndOffset[1].trim() + "]");
+                                    result.append("[" + channelAndOffset[1].trim() + "]");
                                 } else {
-                                    result
-                                            .append("["
-                                                    + CodeGeneratorHelper
-                                                            .generateChannelOffset(
-                                                                    port,
-                                                                    isWrite,
-                                                                    channelAndOffset[0])
-                                                    + "]");
+                                    result.append("[" + 
+                                        CodeGeneratorHelper.generateChannelOffset(
+                                        port, isWrite, channelAndOffset[0]) + "]");
                                 }
                             } else {
-                                int rate = Math
-                                        .max(
-                                                DFUtilities
-                                                        .getTokenProductionRate(sourceChannel.port),
-                                                DFUtilities
-                                                        .getTokenConsumptionRate(sourceChannel.port));
+                                int rate = Math.max(
+                                        DFUtilities.getTokenProductionRate(sourceChannel.port),
+                                        DFUtilities.getTokenConsumptionRate(sourceChannel.port));
                                 if (rate > 1
                                         && channelAndOffset[1].trim().length() > 0) {
                                     result.append("["
@@ -1668,7 +1696,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @return The list of channel objects that are the sink channels
      *   of the given output channel.
      */
-    public List getSinkChannels(IOPort port, int channelNumber) {
+    public static List getSinkChannels(IOPort port, int channelNumber) {
         List sinkChannels = new LinkedList();
         Receiver[][] remoteReceivers;
 
@@ -1687,6 +1715,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
 
         if (remoteReceivers[channelNumber] == null) {
+            /* 
+             // FIXME: Is this an important warning? The reference to 
+             // printedNullPortWarnings prevents us from making this 
+             // a static method. 
             if (!printedNullPortWarnings) {
                 printedNullPortWarnings = true;
                 System.out.println("Warning: Channel " + channelNumber
@@ -1694,6 +1726,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         + "\" was null! Total number of channels: "
                         + remoteReceivers.length);
             }
+            */
             return sinkChannels;
         }
 
@@ -1978,9 +2011,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public void setBufferSize(IOPort port, int channelNumber, int bufferSize) {
         int[] bufferSizes = (int[]) _bufferSizes.get(port);
         bufferSizes[channelNumber] = bufferSize;
-
-        // perhaps this step is redundant?
-        _bufferSizes.put(port, bufferSizes);
     }
 
     /** Set the code generator associated with this helper class.

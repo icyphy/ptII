@@ -291,12 +291,11 @@ public class SDFDirector extends StaticSchedulingDirector {
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(CodeStream.indent(compositeActorHelper
-                                .getReference("@" + name + "," + k)));
-                        code.append(" =" + _eol);
-                        code.append(CodeStream.indent(_INDENT2
-                                + compositeActorHelper.getReference(name + ","
-                                        + k)));
+                        code.append(compositeActorHelper.getReference(
+                                "@" + name + "," + k));
+                        code.append(" = " + _eol);
+                        code.append(compositeActorHelper.getReference(
+                                name + "," + k));
                         code.append(";" + _eol);
                     }
                 }

@@ -779,7 +779,8 @@ public class CCodeGenerator extends CodeGenerator {
     protected void _analyzeTypeConversions() throws IllegalActionException {
         super._analyzeTypeConversions();
 
-        String typeDir = "$CLASSPATH/ptolemy/codegen/c/kernel/type/";
+        String cCodegenPath = "$CLASSPATH/ptolemy/codegen/c/kernel/";
+        String typeDir = cCodegenPath + "type/";
         String functionDir = typeDir + "polymorphic/";
 
         _overloadedFunctions = new CodeStream(functionDir + "add.c", this);
@@ -795,9 +796,11 @@ public class CCodeGenerator extends CodeGenerator {
         _overloadedFunctions.parse(typeDir + "Matrix.c");
         _overloadedFunctions.parse(typeDir + "String.c");
 
+        String directorFunctionDir = cCodegenPath + "parameterized/directorFunctions/";
+        _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c");
+
         _overloadedFunctionSet = new HashSet<String>();
 
-        //_overloadedFunctionSet = new HashSet(_overloadedFunctions.getAllCodeBlockNames());
     }
 
     /** Execute the compile and run commands in the

@@ -187,6 +187,23 @@ public class Director implements ActorCodeGenerator {
         return code.toString();
     }
 
+    /**
+     * 
+     * @param offsetString
+     * @param port
+     * @param channel
+     * @param isWrite
+     * @param helper
+     * @return
+     * @throws IllegalActionException
+     */
+    public String generateOffset(String offsetString, IOPort port, 
+        int channel, boolean isWrite, CodeGeneratorHelper helper)
+            throws IllegalActionException {
+        
+        return helper._generateOffset(offsetString, port, channel, isWrite);
+    }
+
     /** Generate the postfire code of the associated composite actor.
      *
      *  @return The postfire code of the associated composite actor.
@@ -412,6 +429,20 @@ public class Director implements ActorCodeGenerator {
         return code.toString();
     }
 
+    /**
+     * 
+     * @param name
+     * @param isWrite
+     * @param helper
+     * @return
+     * @throws IllegalActionException
+     */
+    public String getReference(String name, boolean isWrite, 
+            CodeGeneratorHelper helper) throws IllegalActionException {
+        
+        return helper._getReference(name, isWrite);
+    }
+
     /** Return the buffer size of a given channel (i.e, a given port
      *  and a given channel number). In this base class, this method
      *  always returns 1.
@@ -500,6 +531,14 @@ public class Director implements ActorCodeGenerator {
      */
     public void setCodeGenerator(CodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
+
+        String path = getClass().getName().replace(".", "/");  
+        String packageName = getClass().getPackage().getName().substring(16);
+        String extension = packageName.substring(0,
+                packageName.indexOf("."));
+        _codeStream = new CodeStream(
+                "$CLASSPATH/" + path + "." + extension, _codeGenerator);
+        
     }
 
     /////////////////////////////////////////////////////////////////////
@@ -694,6 +733,8 @@ public class Director implements ActorCodeGenerator {
         _eol = StringUtilities.getProperty("line.separator");
     }
 
+    protected CodeStream _codeStream;
+    
     /** The associated director.
      */
     protected ptolemy.actor.Director _director;
@@ -717,4 +758,5 @@ public class Director implements ActorCodeGenerator {
      *  @see #_getIndentPrefix(int)
      */
     protected static final String _INDENT4 = _getIndentPrefix(4);
+
 }
