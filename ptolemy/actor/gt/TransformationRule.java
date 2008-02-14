@@ -34,6 +34,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.lib.hoc.MultiCompositeActor;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -106,6 +107,13 @@ public class TransformationRule extends MultiCompositeActor implements
 
     public void fire() throws IllegalActionException {
         try {
+            // Obtain updated value for any PortParameter before each firing.
+            for (Object parameterObject : this.attributeList()) {
+                if (parameterObject instanceof PortParameter) {
+                    ((PortParameter) parameterObject).update();
+                }
+            }
+
             if (modelInput.hasToken(0)) {
                 ActorToken token = (ActorToken) modelInput.get(0);
                 _lastModel = (CompositeEntity) token.getEntity();
