@@ -437,7 +437,7 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 205.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 115, 833, 570}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 240, 833, 570}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 428]">
         </property>
@@ -454,11 +454,11 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
             <entity name="PreviousPhilosopher" class="ptolemy.actor.gt.AtomicActorMatcher">
                 <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;leftIn&quot;/false//true/true/true/false/true/false/true/&quot;leftIn&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;leftOut&quot;/false//true/false/true/true/true/false/true/&quot;leftOut&quot;)">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 95.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 95.0]">
                 </property>
             </entity>
-            <entity name="NextPool" class="ptolemy.actor.gt.AtomicActorMatcher">
-                <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.SubclassCriterion/false/&quot;ptolemy.domains.rendezvous.lib.ResourcePool&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/false/false/true/&quot;release&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//false/false/true/true/false/false/true/&quot;grant&quot;)">
+            <entity name="NextPool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+                <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{&quot;fork&quot;}">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 115.0]">
                 </property>
@@ -466,7 +466,7 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <vertex name="vertex1" value="[435.0, 45.0]">
+                <vertex name="vertex1" value="[435.0, 50.0]">
                 </vertex>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -475,8 +475,8 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
             </relation>
             <link port="PreviousPhilosopher.leftIn" relation="relation2"/>
             <link port="PreviousPhilosopher.leftOut" relation="relation"/>
-            <link port="NextPool.release" relation="relation"/>
             <link port="NextPool.grant" relation="relation2"/>
+            <link port="NextPool.release" relation="relation"/>
         </entity>
         <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
             <entity name="PreviousPhilosopher" class="ptolemy.actor.gt.AtomicActorMatcher">
@@ -485,14 +485,8 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 105.0}">
                 </property>
             </entity>
-            <entity name="NextPool" class="ptolemy.actor.gt.AtomicActorMatcher">
-                <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="NextPool">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 125.0}">
-                </property>
-            </entity>
             <entity name="Philosopher" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 295.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 260.0]">
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={336, 330, 772, 464}, maximized=false}">
                 </property>
@@ -645,26 +639,18 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
             <entity name="ResourcePool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
                 <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{&quot;fork&quot;}">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 210.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 130.0}">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            <entity name="NextPool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
+                <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{&quot;fork&quot;}">
                 </property>
-                <vertex name="vertex1" value="[445.0, 55.0]">
-                </vertex>
-                <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation2">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 220.0]">
                 </property>
-            </relation>
+                <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="NextPool">
+                </property>
+            </entity>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
@@ -672,22 +658,36 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <vertex name="vertex1" value="[480.0, 60.0]">
+                </vertex>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
-            <link port="PreviousPhilosopher.leftIn" relation="relation2"/>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="PreviousPhilosopher.leftIn" relation="relation7"/>
             <link port="PreviousPhilosopher.leftOut" relation="relation3"/>
-            <link port="NextPool.release" relation="relation6"/>
-            <link port="NextPool.grant" relation="relation"/>
             <link port="Philosopher.leftIn" relation="relation"/>
-            <link port="Philosopher.rightIn" relation="relation4"/>
-            <link port="Philosopher.leftOut" relation="relation6"/>
+            <link port="Philosopher.rightIn" relation="relation2"/>
+            <link port="Philosopher.leftOut" relation="relation4"/>
             <link port="Philosopher.rightOut" relation="relation5"/>
+            <link port="ResourcePool.grant" relation="relation7"/>
             <link port="ResourcePool.grant" relation="relation2"/>
-            <link port="ResourcePool.grant" relation="relation4"/>
             <link port="ResourcePool.release" relation="relation3"/>
             <link port="ResourcePool.release" relation="relation5"/>
+            <link port="NextPool.grant" relation="relation"/>
+            <link port="NextPool.release" relation="relation4"/>
         </entity>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
