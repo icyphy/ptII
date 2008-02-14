@@ -1,4 +1,4 @@
-/* An actor that translates the input 3D shape
+/* An actor that translates the input 2D shape
 
  Copyright (c) 2003-2005 The Regents of the University of California.
  All rights reserved.

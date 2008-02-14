@@ -1,4 +1,4 @@
-/* An abstract base class for transforming input 3D shape
+/* An abstract base class for transforming input 2D shape
 
  Copyright (c) 2003-2006 The Regents of the University of California.
  All rights reserved.
