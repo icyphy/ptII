@@ -845,8 +845,7 @@ public class GraphTransformer extends ChangeRequest {
 
     private void _removeObjects(CompositeEntity host)
             throws TransformationException {
-        CompositeEntity replacement = (CompositeEntity) _replacementToHost
-                .getKey(host);
+        NamedObj replacement = _replacementToHost.getKey(host);
         Collection<?> children = GTTools.getChildren(host, false, false, true,
                 true);
         Map<NamedObj, Boolean> childrenToRemove = new HashMap<NamedObj, Boolean>();
