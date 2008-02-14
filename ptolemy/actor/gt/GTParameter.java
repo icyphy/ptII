@@ -284,15 +284,26 @@ public class GTParameter extends Parameter {
                 return NamedObjVariable.getNamedObjVariable(child, true)
                         .getToken();
             } else {
-                return _superscope.get(name);
+                Token superToken = _superscope.get(name);
+                if (superToken == null) {
+                    NamedObj container = _pattern.getContainer();
+                    if (container != null) {
+                        NamedObjVariable containerVar =
+                            NamedObjVariable.getNamedObjVariable(
+                                    _pattern.getContainer(), true);
+                        ParserScope containerScope =
+                            containerVar.getParserScope();
+                        superToken = containerScope.get(name);
+                    }
+                }
+                return superToken;
             }
         }
 
         public Type getType(String name) throws IllegalActionException {
-            NamedObj patternChild = GTTools.getChild(_pattern, name, true,
-                    true, true, true);
-            if (patternChild != null && _matchResult.containsKey(patternChild)) {
-                return get(name).getType();
+            Token token = get(name);
+            if (token != null) {
+                return token.getType();
             } else {
                 return _superscope.getType(name);
             }
