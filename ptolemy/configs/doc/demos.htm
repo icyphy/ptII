@@ -542,6 +542,25 @@ used to make models much more compact.
 <!--/vergilDocs-->
 <!--We don't include hoc in Ptiny-->
   </li>
+  
+  <li><i>Model Transformation</i>:
+    <a href="../../actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a>
+(see also
+    <a href="../../actor/gt/demo/DiningPhilosophers/DiningPhilosophers.xml">DiningPhilosophers</a>,
+    <a href="../../actor/gt/demo/HierarchyFlattening/HierarchyFlattening.xml">HierarchyFlattening</a>,
+    <a href="../../actor/gt/demo/ModelGeneration/ModelGeneration.xml">ModelGeneration</a>
+).
+  <br>
+    Model transformation is a technique to manipulate models as first-class citizens. An atomic transformation
+    rule is defined in a TransformationRule actor. Inputs to a TransformationRule actor are tokens containing
+    models to be transformed, and outputs are tokens containing the results. Multiple transformations can be
+    programmed by a model to transform the input models step by step. Other actors that are commonly used in model
+    transformation include ModelGenerator to generate initial models, and ModelView to show the contents of input
+    models in new windows. In the <a href="../../actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a>
+    demo, a transformation is repeatedly applied on the initial model (<a href="../../actor/gt/demo/ConstOptimization/BaseModel.xml">BaseModel</a>)
+    to statically evaluate arithmetic operations in it, until no more simplification can be done.
+  <br>
+  </li>
 
   <li><i>Higher-Order Components</i>:
     <a href="../../actor/lib/hoc/demo/HocDE/HocDE.xml">HocDE</a>
