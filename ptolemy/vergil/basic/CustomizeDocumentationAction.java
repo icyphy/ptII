@@ -30,12 +30,18 @@ package ptolemy.vergil.basic;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.Iterator;
 
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.vergil.actor.DocApplicationSpecializer;
+import ptolemy.kernel.util.Attribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// CustomizeDocumentationAction
@@ -67,48 +73,116 @@ public class CustomizeDocumentationAction extends FigureAction {
         super.actionPerformed(e);
 
         final NamedObj target = getTarget();
+        boolean done = false;
 
         // If the object does not contain an attribute of class
         // DocAttribute, then create one.  Then open a dialog to edit
         // the parameters of the first such encountered attribute.
+        List docAttributeList = null;
+        
         if (target != null) {
-            List docAttributeList = target.attributeList(DocAttribute.class);
-            if (docAttributeList.size() == 0) {
-                // Create a doc attribute, then edit its parameters.
-                String moml = "<property name=\"" + "DocAttribute"
-                        + "\" class=\"ptolemy.vergil.basic.DocAttribute\"/>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this, target,
-                        moml) {
-                    protected void _execute() throws Exception {
-                        super._execute();
-                        List docAttributes = target
-                                .attributeList(DocAttribute.class);
-                        // There shouldn't be more than one of these, but if there are,
-                        // the new one is the last one.
-                        DocAttribute attribute = (DocAttribute) docAttributes
-                                .get(docAttributes.size() - 1);
-                        _editDocAttribute(getFrame(), attribute, target);
-                    }
-                };
-                target.requestChange(request);
-            } else {
-                // In case there is more than one such attribute, get the last one.
-                final DocAttribute attribute = (DocAttribute) docAttributeList
-                        .get(docAttributeList.size() - 1);
-                // Do the update in a change request because it may modify
-                // the DocAttribute parameter.
-                ChangeRequest request = new ChangeRequest(this,
-                        "Customize documentation.") {
-                    protected void _execute() throws Exception {
-                        // In case parameters or ports have been added since the
-                        // DocAttribute was constructed, refresh it.
-                        attribute.refreshParametersAndPorts();
-                        _editDocAttribute(getFrame(), attribute, target);
-                    }
-                };
-                target.requestChange(request);
+            Parameter docApplicationSpecializerParameter = null;
+            try {
+                //find the configuration
+                List configsList = Configuration.configurations();
+                Configuration config = null;
+                for (Iterator it = configsList.iterator(); it.hasNext(); ) {
+                  config = (Configuration)it.next();
+                  if (config != null)
+                    break;
+                }
+                //check to see if the configuration has a _docApplicationSpecializer
+                //parameter and if it does, let it handle the customization
+                docApplicationSpecializerParameter = (Parameter) config
+                        .getAttribute("_docApplicationSpecializer", Parameter.class);
             }
-        }
+            catch(IllegalActionException iae) {
+              //basically do nothing.  just let the default action happen
+              System.out.println("Error getting the documentation specializer: " + iae.getMessage());
+            }
+          
+            if(docApplicationSpecializerParameter != null) {
+                //if there is a docApplicationSpecializer, use it to 
+                //customize the documentation since it knows about the
+                //special doc attribute
+                String docApplicationSpecializerClassName = docApplicationSpecializerParameter.getExpression();
+                
+                try {
+                    Class docApplicationSpecializerClass = Class
+                            .forName(docApplicationSpecializerClassName);
+                    final DocApplicationSpecializer docApplicationSpecializer = (DocApplicationSpecializer) docApplicationSpecializerClass
+                            .newInstance();
+                    String docAttributeClassName = docApplicationSpecializer.getDocumentationAttributeClassName();
+                    Class docAttributeClass = Class.forName(docAttributeClassName);
+                    if(docApplicationSpecializerClass != null && docAttributeClass != null) {
+                      docAttributeList = target.attributeList(docAttributeClass);
+                    }
+                    
+                    if(docAttributeList.size() == 0) { //create a new attribute and edit it
+                      //TODO: 
+                    } else { //edit the existing attribute
+                      final Attribute docAttribute = (Attribute) docAttributeList.get(docAttributeList.size() - 1);
+                      ChangeRequest request = new ChangeRequest(this,
+                        "Customize documentation.") {
+                          protected void _execute() throws Exception {
+                            //_editDocAttribute(getFrame(), docAttribute, target);
+                            docApplicationSpecializer.editDocumentation(getFrame(), docAttribute, target);
+                          }
+                        };
+                      target.requestChange(request);
+                    }
+                } catch (Exception ee) {
+                    System.out.println(
+                            "Failed to call doc application specializer "
+                                    + "class \""
+                                    + docApplicationSpecializerClassName
+                                    + "\" on class \"" + docApplicationSpecializerClassName + "\".");
+                }
+                done = true;
+            }
+            
+            
+            if(!done) { 
+              //assign the docAttributeList the default DocAttribute if it
+              //wasn't assigned by the specializer
+              docAttributeList = target.attributeList(DocAttribute.class);
+              if (docAttributeList.size() == 0) {
+                  // Create a doc attribute, then edit its parameters.
+                  String moml = "<property name=\"" + "DocAttribute"
+                          + "\" class=\"ptolemy.vergil.basic.DocAttribute\"/>";
+                  MoMLChangeRequest request = new MoMLChangeRequest(this, target,
+                          moml) {
+                      protected void _execute() throws Exception {
+                          super._execute();
+                          List docAttributes = target
+                                  .attributeList(DocAttribute.class);
+                          // There shouldn't be more than one of these, but if there are,
+                          // the new one is the last one.
+                          DocAttribute attribute = (DocAttribute) docAttributes
+                                  .get(docAttributes.size() - 1);
+                          _editDocAttribute(getFrame(), attribute, target);
+                      }
+                  };
+                  target.requestChange(request);
+              } else {
+                  // In case there is more than one such attribute, get the last one.
+                  final DocAttribute attribute = (DocAttribute) docAttributeList
+                          .get(docAttributeList.size() - 1);
+                  // Do the update in a change request because it may modify
+                  // the DocAttribute parameter.
+                  ChangeRequest request = new ChangeRequest(this,
+                          "Customize documentation.") {
+                      protected void _execute() throws Exception {
+                          // In case parameters or ports have been added since the
+                          // DocAttribute was constructed, refresh it.
+                          attribute.refreshParametersAndPorts();
+                          _editDocAttribute(getFrame(), attribute, target);
+                      }
+                  };
+                  target.requestChange(request);
+              }
+           }
+       }
     }
 
     ///////////////////////////////////////////////////////////////////
