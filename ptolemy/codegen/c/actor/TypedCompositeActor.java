@@ -169,8 +169,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             if (!(inputPort instanceof ParameterPort)) {
-                //directorHelper.generateTransferInputsCode(inputPort, code);
-                generateTransferInputsCode(inputPort, code);
+                directorHelper.generateTransferInputsCode(inputPort, code);
+                //generateTransferInputsCode(inputPort, code);
             }
         }
 
@@ -183,8 +183,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
-            //directorHelper.generateTransferOutputsCode(outputPort, code);
-            generateTransferOutputsCode(outputPort, code);
+            directorHelper.generateTransferOutputsCode(outputPort, code);
+            //generateTransferOutputsCode(outputPort, code);
         }
         return processCode(code.toString());
     }
