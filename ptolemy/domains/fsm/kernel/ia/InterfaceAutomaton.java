@@ -2212,7 +2212,7 @@ public class InterfaceAutomaton extends FSMActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-    private class Triple {
+    private static class Triple {
         private Triple(State stateInProduct, State stateInThis,
                 State stateInArgument) {
             _stateInProduct = stateInProduct;

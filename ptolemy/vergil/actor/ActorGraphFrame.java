@@ -424,7 +424,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      * Subclass that updates the background color on each repaint if there is a
      * preferences attribute.
      */
-    private class ActorGraphPane extends GraphPane {
+    private static class ActorGraphPane extends GraphPane {
         public ActorGraphPane(ActorEditorGraphController controller,
                 ActorGraphModel model, NamedObj entity) {
             super(controller, model);

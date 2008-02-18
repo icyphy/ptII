@@ -2196,7 +2196,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  the graph, because the level layout algorithm doesn't understand
      *  how to layout hierarchical nodes.
      */
-    private class PtolemyLayout extends LevelLayout {
+    private static class PtolemyLayout extends LevelLayout {
         // FIXME: input ports should be on left, and output ports on right.
 
         /** Construct a new levelizing layout with a vertical orientation. */

@@ -219,7 +219,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
     /** Subclass that updates the background color on each repaint if
      *  there is a preferences attribute.
      */
-    private class FSMGraphPane extends GraphPane {
+    private static class FSMGraphPane extends GraphPane {
         public FSMGraphPane(FSMGraphController controller, FSMGraphModel model,
                 NamedObj entity) {
             super(controller, model);

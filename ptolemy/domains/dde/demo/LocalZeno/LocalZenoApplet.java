@@ -387,7 +387,7 @@ public class LocalZenoApplet extends PtolemyApplet {
 
     ///////////////////////////////////////////////////////////////////
     //// LocalZenoGraphController
-    public class LocalZenoGraphController extends BasicGraphController {
+    public static class LocalZenoGraphController extends BasicGraphController {
         private SelectionDragger _selectionDragger;
 
         /**
