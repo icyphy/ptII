@@ -188,20 +188,23 @@ public class Director implements ActorCodeGenerator {
     }
 
     /**
-     * 
-     * @param offsetString
-     * @param port
-     * @param channel
-     * @param isWrite
-     * @param helper
-     * @return
-     * @throws IllegalActionException
+     * Generate the expression that represents the offset in the generated
+     * code.
+     * @param offsetString The specified offset from the user.
+     * @param port The referenced port.
+     * @param channel The referenced port channel.
+     * @param isWrite Whether to generate the write or read offset.
+     * @return The expression that represents the offset in the generated
+     * code.
+     * @exception IllegalActionException If there is problems getting
+     * the port buffer size or the offset in the channel and offset map.
      */
     public String generateOffset(String offsetString, IOPort port, 
         int channel, boolean isWrite, CodeGeneratorHelper helper)
             throws IllegalActionException {
         
-        return helper._generateOffset(offsetString, port, channel, isWrite);
+        return helper._generateOffset(offsetString, port, channel,
+                isWrite);
     }
 
     /** Generate the postfire code of the associated composite actor.
