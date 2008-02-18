@@ -644,7 +644,9 @@ public class MultirateFSMDirector extends FSMDirector {
                 declaration = new DependencyDeclaration(variable,
                         "_MultirateFSMRateDependencyDeclaration");
             } catch (NameDuplicationException ex) {
-                // Ignore... should not happen.
+                throw new InternalErrorException(variable, ex,
+                        "Failed to create DependencyDeclaration "
+                        + "_MultirateFSMRateDependencyDeclaration");
             }
         }
 
