@@ -161,10 +161,10 @@ public class CodeStream {
      * invokes appendCodeBlock(String, LinkedList) with no arguments by
      * passing an empty array list of argments. The requested
      * code block is required to exist.
-     * @see #appendCodeBlock(String, LinkedList, boolean)
+     * @see #appendCodeBlock(String, List, boolean)
      * @param blockName The given code block name.
      * @exception IllegalActionException If
-     *  appendCodeBlock(String, LinkedList, boolean) throws the exception.
+     *  appendCodeBlock(String, List, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName) throws IllegalActionException {
         appendCodeBlock(blockName, new LinkedList(), false);
@@ -175,12 +175,12 @@ public class CodeStream {
      * invokes appendCodeBlock(String, LinkedList) with no arguments by
      * passing an empty array list of argments. The requested
      * code block is required to exist.
-     * @see #appendCodeBlock(String, LinkedList, boolean)
+     * @see #appendCodeBlock(String, List, boolean)
      * @param blockName The given code block name.
      * @param mayNotExist Indicate if it is okay not to find the code block.
      *  if the code block has parameters.
      * @exception IllegalActionException If
-     *  appendCodeBlock(String, LinkedList, boolean) throws the exception.
+     *  appendCodeBlock(String, List, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName, boolean mayNotExist)
             throws IllegalActionException {
@@ -192,13 +192,13 @@ public class CodeStream {
      * invokes appendCodeBlock(String, LinkedList) with no arguments by
      * passing an empty array list of argments. The requested
      * code block is required to exist.
-     * @see #appendCodeBlock(String, LinkedList, boolean)
+     * @see #appendCodeBlock(String, List, boolean)
      * @param blockName The given code block name.
      * @param mayNotExist Indicate if it is okay not to find the code block.
      *  if the code block has parameters.
      * @param indentLevel The level of indention.
      * @exception IllegalActionException If
-     *  appendCodeBlock(String, LinkedList, boolean) throws the exception.
+     *  appendCodeBlock(String, List, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName, boolean mayNotExist,
             int indentLevel) throws IllegalActionException {
@@ -210,12 +210,12 @@ public class CodeStream {
      * substitute each argument with the parameters of the code block in
      * the order listed in the given arguments array list. The requested
      * code block is required to exist.
-     * @see #appendCodeBlock(String, LinkedList, boolean)
+     * @see #appendCodeBlock(String, List, boolean)
      * @param blockName The name of the code block.
      * @param arguments The user-specified arguments for the code block,
      *  if the code block has parameters.
      * @exception IllegalActionException If
-     *  appendCodeBlock(String, LinkedList, boolean) throws the exception.
+     *  appendCodeBlock(String, List, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName, List arguments)
             throws IllegalActionException {
@@ -227,13 +227,13 @@ public class CodeStream {
      * substitute each argument with the parameters of the code block in
      * the order listed in the given arguments array list. The requested
      * code block is required to exist.
-     * @see #appendCodeBlock(String, LinkedList, boolean)
+     * @see #appendCodeBlock(String, List, boolean)
      * @param blockName The name of the code block.
      * @param arguments The user-specified arguments for the code block,
      *  if the code block has parameters.
      * @param indentLevel The level of indention.
      * @exception IllegalActionException If
-     *  appendCodeBlock(String, LinkedList, boolean) throws the exception.
+     *  appendCodeBlock(String, List, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName, List arguments,
             int indentLevel) throws IllegalActionException {
@@ -292,25 +292,33 @@ public class CodeStream {
             }
         }
 
-        String codeBlock = getCodeBlock(
-                blockName, arguments, mayNotExist, indentLevel);
+        String codeBlock = getCodeBlock(blockName, arguments, mayNotExist);
         
         _stream.append(codeBlock);
     }
 
+    /**
+     * @param blockName The given name that identifies the code block.
+     * @param arguments The list of arguments to substitute in the code block.
+     * @return The content contained by the code block with the given name.
+     * @throws IllegalActionException Thrown if 
+     *  getCodeBlock(String, List, boolean) throws it.
+     */
     public String getCodeBlock(String blockName, List arguments) throws IllegalActionException {
-        return getCodeBlock(blockName, arguments, false, 0);
+        return getCodeBlock(blockName, arguments, false);
     }
     
     /**
-     * @param blockName
-     * @param arguments
-     * @param mayNotExist
-     * @param indentLevel
-     * @return
-     * @throws IllegalActionException
+     * @param blockName The given name that identifies the code block.
+     * @param arguments The list of arguments to substitute in the code block.
+     * @param mayNotExist False to require the codeblock to exist.
+     * @return The content contained by the code block with the given name.
+     * @throws IllegalActionException Thrown if a problem occurs in constructing
+     *  the code block table, or the given code block name is required to exist
+     *  but does not.
      */
-    public String getCodeBlock(String blockName, List arguments, boolean mayNotExist, int indentLevel) throws IllegalActionException {
+    public String getCodeBlock(String blockName, List arguments, 
+            boolean mayNotExist) throws IllegalActionException {
 
         // First, it checks if the code file is parsed already.
         // If so, it gets the code block from the well-constructed code
@@ -334,10 +342,6 @@ public class CodeStream {
             }
         }
 
-        if (indentLevel > 0) {
-            codeBlock = new StringBuffer(indent(indentLevel, codeBlock
-                    .toString()));
-        }
         return codeBlock.toString();
     }
 
