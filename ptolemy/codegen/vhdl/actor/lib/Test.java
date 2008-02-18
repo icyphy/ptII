@@ -83,8 +83,8 @@ public class Test extends VHDLCodeGeneratorHelper {
         int high = precision.getIntegerBitLength() - 1;
         int low = -precision.getFractionBitLength();
 
-        args.add(new Integer(high));
-        args.add(new Integer(low));
+        args.add(Integer.valueOf(high));
+        args.add(Integer.valueOf(low));
 
         ArrayToken valueArray = (ArrayToken) actor.correctValues.getToken();
 

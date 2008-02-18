@@ -103,7 +103,7 @@ public class Multiplexor extends VHDLCodeGeneratorHelper {
 
         int width = outputPrecision.getNumberOfBits();
 
-        args.add(new Integer(width));
+        args.add(Integer.valueOf(width));
 
         if (((IntToken) actor.latency.getToken()).intValue() > 0) {
 
