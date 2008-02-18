@@ -469,7 +469,7 @@ public class Display extends AbstractPlaceableActor {
                 textEffigy.identifier.setExpression(getFullName());
 
                 DisplayWindowTableau tableau = new DisplayWindowTableau(
-                        textEffigy, "tableau");
+                        this, textEffigy, "tableau");
                 _frame = tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
@@ -548,9 +548,12 @@ public class Display extends AbstractPlaceableActor {
 
     /** Version of TextEditorTableau that creates DisplayWindow.
      */
-    private class DisplayWindowTableau extends Tableau {
+    private static class DisplayWindowTableau extends Tableau {
+        // FindBugs suggested refactoring this into a static class.
+
         /** Construct a new tableau for the model represented by the
          *  given effigy.
+         *  @param display The Display actor associated with this tableau.
          *  @param container The container.
          *  @param name The name.
          *  @exception IllegalActionException If the container does not accept
@@ -558,17 +561,18 @@ public class Display extends AbstractPlaceableActor {
          *  @exception NameDuplicationException If the name coincides with an
          *   attribute already in the container.
          */
-        public DisplayWindowTableau(TextEffigy container, String name)
+        public DisplayWindowTableau(
+                Display display, TextEffigy container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
-            String title = Display.this.title.getExpression();
+            String title = display.title.getExpression();
 
             if (title.trim().equals("")) {
-                title = Display.this.getFullName();
+                title = display.getFullName();
             }
 
-            frame = new TextEditor(title, null, Display.this);
+            frame = new TextEditor(title, null, display);
 
             // Also need to set the title of this Tableau.
             setTitle(title);

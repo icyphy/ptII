@@ -92,7 +92,7 @@ import diva.graph.JGraph;
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */
-public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
+public class UnitSolverDialog extends PtolemyDialog implements
         ListSelectionListener, SelectionListener {
     /**
      * Construct a Unit Solver Dialog.
@@ -328,7 +328,7 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
 
     /** List of solutions.
      */
-    public class SolutionListModel extends AbstractListModel {
+    public static class SolutionListModel extends AbstractListModel {
         Vector _solutions = new Vector();
 
         /** Return an element.

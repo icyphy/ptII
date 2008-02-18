@@ -117,26 +117,29 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
 
     /** The frame that is created by an instance of PythonShellTableau.
      */
-    public class PythonShellFrame extends TableauFrame {
+    public static class PythonShellFrame extends TableauFrame {
+        // FindBugs suggested refactoring this into a static class.
+
         /** Construct a frame to display the PythonShell window.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.
          *  This is typically accomplished by calling show() on
          *  enclosing tableau.
-         *  @param tableau The tableau responsible for this frame.
+         *  @param pythonShellTableau The PythonShellTableau associated with
+         *  this actor.
          *  @exception IllegalActionException If the model rejects the
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
          */
-        public PythonShellFrame(Tableau tableau) throws IllegalActionException,
-                NameDuplicationException {
-            super(tableau);
+        public PythonShellFrame(PythonShellTableau pythonShellTableau)
+                throws IllegalActionException, NameDuplicationException {
+            super(pythonShellTableau);
 
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
             ShellTextArea shellPanel = new ShellTextArea();
-            shellPanel.setInterpreter(PythonShellTableau.this);
+            shellPanel.setInterpreter(pythonShellTableau);
             component.add(shellPanel);
             getContentPane().add(component, BorderLayout.CENTER);
         }
