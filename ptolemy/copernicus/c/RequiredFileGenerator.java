@@ -303,7 +303,14 @@ public class RequiredFileGenerator {
 
             File dummyFile = new File(fileName.substring(0, fileName
                     .lastIndexOf('/')));
-            dummyFile.mkdirs();
+
+            if (!dummyFile.isDirectory()) {
+                if (!dummyFile.mkdirs()) {
+                    throw new IOException(
+                            "Failed to create directory \""
+                            + dummyFile + "\"");
+                }
+            }
         }
 
         // Generate the stub header file.

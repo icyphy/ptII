@@ -824,7 +824,11 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         File destDir = new File(rootPath + fileSeparator + pathDir);
 
         if (!destDir.exists()) {
-            destDir.mkdirs();
+            if (!destDir.mkdirs()) {
+                throw new IOException(
+                        "Failed to create directory \""
+                        + destDir + "\"");
+            }
         }
 
         File clsFile = new File(destDir, pathName.substring(pathName

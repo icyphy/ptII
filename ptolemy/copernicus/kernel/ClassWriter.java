@@ -110,7 +110,11 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
             File outDirFile = new File(outDir);
 
             if (!outDirFile.isDirectory()) {
-                outDirFile.mkdirs();
+                if (!outDirFile.mkdirs()) { 
+                    throw new RuntimeException(
+                            "Failed to create directory \""
+                            + outDirFile + "\"");
+                }
             }
         }
 
@@ -170,7 +174,18 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
     }
 
     private void _create(File file) throws IOException {
-        file.getParentFile().mkdirs();
-        file.createNewFile();
+        if (!file.getParentFile().isDirectory()) {
+            if (!file.getParentFile().mkdirs()) { 
+                throw new IOException(
+                        "Failed to create directory \""
+                        + file.getParentFile() + "\"");
+            }
+        }
+        
+        if (!file.createNewFile()) {
+            throw new IOException(
+                    "Failed to create "
+                        + file + "\"");
+        }
     }
 }

@@ -100,6 +100,11 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
 
                 if (!outDirFile.isDirectory()) {
                     outDirFile.mkdirs();
+                    if (!outDirFile.mkdirs()) { 
+                        throw new RuntimeException(
+                                "Failed to create directory \""
+                                + outDirFile + "\"");
+                    }
                 }
 
                 fileName = outDir + System.getProperty("file.separator");

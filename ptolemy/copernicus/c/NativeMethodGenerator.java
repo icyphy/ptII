@@ -33,6 +33,7 @@ package ptolemy.copernicus.c;
 import java.io.File;
 import java.util.Iterator;
 
+import ptolemy.kernel.util.InternalErrorException;
 import soot.RefLikeType;
 import soot.SootMethod;
 import soot.Type;
@@ -130,7 +131,11 @@ public class NativeMethodGenerator {
         // Create the directory for the native library if none exists.
         if (!FileHandler.exists(nativeLib)) {
             File nativesDir = new File(nativeLib);
-            nativesDir.mkdirs();
+            if (!nativesDir.mkdirs()) {
+                throw new InternalErrorException(
+                            "Failed to create directory \""
+                            + nativesDir + "\"");
+            }
         }
 
         // Write out to the File with the appropriate name.

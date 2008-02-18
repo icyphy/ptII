@@ -287,7 +287,11 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
         File outDirFile = new File(_outputDirectory);
 
         if (!outDirFile.isDirectory()) {
-            outDirFile.mkdirs();
+            if (!outDirFile.mkdirs()) { 
+                throw new RuntimeException(
+                        "Failed to create directory \""
+                        + outDirFile + "\"");
+            }
         }
 
         _targetPackage = PhaseOptions.getString(options, "targetPackage");

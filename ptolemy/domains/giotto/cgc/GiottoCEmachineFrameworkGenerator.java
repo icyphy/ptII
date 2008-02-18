@@ -125,7 +125,11 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         File outDirFile = new File(giottoDirectoryName);
 
         if (!outDirFile.isDirectory()) {
-            outDirFile.mkdirs();
+            if (!outDirFile.mkdirs()) {
+                throw new IllegalActionException(
+                        "Failed to create directory \""
+                        + outDirFile + "\"");
+            }
         }
 
         File writeGiottoFile = new File(giottoDirectoryName, modelName
@@ -186,7 +190,11 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         File outDirFile = new File(fcodeDirectoryName);
 
         if (!outDirFile.isDirectory()) {
-            outDirFile.mkdirs();
+            if (!outDirFile.mkdirs()) {
+                throw new IllegalActionException(
+                        "Failed to create directory \""
+                        + outDirFile + "\"");
+            }
         }
 
         File writeFCFile = new File(fcodeDirectoryName, "f_code.c");

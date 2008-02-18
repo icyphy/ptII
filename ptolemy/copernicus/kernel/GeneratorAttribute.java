@@ -325,9 +325,11 @@ public class GeneratorAttribute extends SingletonAttribute implements
                 ptIIUserDirectoryFile = new File(userDir + "/ptII/cg");
 
                 if (!ptIIUserDirectoryFile.isDirectory()) {
-                    // No need to check the return value here,
-                    // we do it later anyway
-                    ptIIUserDirectoryFile.mkdirs();
+                    if (!ptIIUserDirectoryFile.mkdirs()) {
+                        throw new IllegalActionException(
+                                "Failed to create directory \""
+                                + ptIIUserDirectoryFile + "\"");
+                    }
                 }
 
                 if (!ptIIUserDirectoryFile.isDirectory()

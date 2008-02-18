@@ -201,7 +201,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         if (!outDirFile.isDirectory()) {
             // MakefileWriter should have already created the directory
-            outDirFile.mkdirs();
+            if (!outDirFile.mkdirs()) {
+                System.out.println("Warning: Failed to create directory \""
+                        + outDirFile + "\"");
+            }
         }
 
         try {
@@ -391,7 +394,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // Copy $PTII/doc/default.css as well.
             File defaultStyleSheetDirectory = new File(_outputDirectory
                     + "/doc");
-            defaultStyleSheetDirectory.mkdirs();
+            if (!defaultStyleSheetDirectory.isDirectory()) {
+                if (!defaultStyleSheetDirectory.mkdirs()) {
+                    throw new InternalErrorException(
+                            "Failed to create directory \""
+                            + defaultStyleSheetDirectory + "\"");
+                }
+            }
 
             CodeGeneratorUtilities.substitute(_templateDirectory
                     + "default.css", _substituteMap, defaultStyleSheetDirectory

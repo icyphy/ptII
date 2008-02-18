@@ -126,7 +126,13 @@ public class InterpretedWriter extends SceneTransformer implements
                     .println(" Warning: '" + outDirFile + "' already exists.");
         }
 
-        outDirFile.mkdirs();
+        if (!outDirFile.isDirectory()) {
+            if (!outDirFile.mkdirs()) {
+                throw new InternalErrorException(
+                            "Failed to create directory \""
+                            + outDirFile + "\"");
+            }
+        }
 
         // Generate the .xml file.
         String modelFileName = _outputDirectory + "/" + _sanitizedModelName
