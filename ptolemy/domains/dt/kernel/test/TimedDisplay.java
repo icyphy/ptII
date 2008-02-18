@@ -41,7 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-public class TimedDisplay extends Display implements Placeable, SequenceActor {
+public class TimedDisplay extends Display implements SequenceActor {
     public TimedDisplay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

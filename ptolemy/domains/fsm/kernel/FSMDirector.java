@@ -117,7 +117,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (hyzheng)
  @see FSMActor
  */
-public class FSMDirector extends Director implements ModelErrorHandler,
+public class FSMDirector extends Director implements
         ExplicitChangeContext, QuasiTransparentDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in

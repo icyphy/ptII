@@ -274,7 +274,7 @@ public class JPanner extends JPanel {
     }
 
     private class ScaleMouseListener extends MouseAdapter implements
-            MouseMotionListener {
+             MouseMotionListener {
         public Point2D origin = null;
 
         public Point2D scaled = null;

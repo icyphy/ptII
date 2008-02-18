@@ -80,9 +80,7 @@ import ptolemy.kernel.util.Nameable;
  @see ConditionalReceive
  @see ConditionalSend
  */
-public class ConditionalBranchController extends AbstractBranchController
-        implements Debuggable {
-
+public class ConditionalBranchController extends AbstractBranchController {
     /** Construct a controller in the specified container, which should
      *  be an actor.
      *  @param container The parent actor that contains this object.

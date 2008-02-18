@@ -81,7 +81,7 @@ import ptolemy.plot.plotml.HistogramMLParser;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (cxh)
  */
-public class HistogramPlotter extends PlotterBase implements Placeable {
+public class HistogramPlotter extends PlotterBase {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
