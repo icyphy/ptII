@@ -29,6 +29,7 @@ package ptolemy.domains.psdf.kernel;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -281,7 +282,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         try {
             _inferFiringCounts(resultSchedule, null);
         } catch (NameDuplicationException ex) {
-            throw new NotSchedulableException(null, ex,
+            throw new NotSchedulableException(new LinkedList(), ex,
                     "Error recording firing counts");
         }
 
@@ -553,9 +554,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 return symbolicSchedule;
             }
         } catch (Throwable throwable) {
-            throw new KernelRuntimeException(null, throwable,
-                    "Error converting cluster hierarchy to " + "schedule.\n"
-                            + throwable.getMessage());
+            throw new KernelRuntimeException(throwable,
+                    "Error converting cluster hierarchy to " + "schedule.\n");
         }
     }
 
