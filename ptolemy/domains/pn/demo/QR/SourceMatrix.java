@@ -47,7 +47,7 @@ package ptolemy.domains.pn.demo.QR;
 public class SourceMatrix {
     ///////////////////////////////////////////////////////////////////
     ////                         public variable                   ////
-    public static final double[][] sourcematrix_0 = {
+    static final double[][] sourcematrix_0 = {
             { -100.0, -62.0, 2.0, 45.0, 35.0, 14.0, -8.0, -20.0, 8.0, 59.0,
                     105.0, 120.0, 90.0, 50.0, -19.0, -40.0 },
             { 86.0, 19.0, -22.0, -63.0, -62.0, -15.0, 13.0, -2.0, -29.0, -83.0,
