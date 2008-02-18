@@ -423,7 +423,7 @@ public class DocManager extends HandlerBase {
                 toRead = referenceClassLoader.getResource(docNames[0]);
             }
 
-            if (toRead == null && lookForPtDoc && applicationName != null
+            if (toRead == null && lookForPtDoc
                     && !applicationName.equals("")) {
                 // applicationName was set, try looking in the
                 // documentation for the default application (vergil).
