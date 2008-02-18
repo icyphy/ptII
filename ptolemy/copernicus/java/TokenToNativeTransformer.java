@@ -1475,12 +1475,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                             }
 
                             for (Iterator tokenFields = toFieldToReplacementLocal
-                                    .keySet().iterator(); tokenFields.hasNext();) {
-                                SootField tokenField = (SootField) tokenFields
-                                        .next();
-
-                                Local toReplacementLocal = (Local) toFieldToReplacementLocal
-                                        .get(tokenField);
+                                    .entrySet().iterator(); tokenFields.hasNext();) {
+                                Map.Entry entry = (Map.Entry) tokenFields.next();
+                                SootField tokenField = (SootField) entry.getKey();
+                                Local toReplacementLocal = (Local) entry.getValue();
                                 Local fromReplacementLocal = (Local) fromFieldToReplacementLocal
                                         .get(tokenField);
                                 List argumentList = new LinkedList();
@@ -1785,10 +1783,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 }
 
                                 for (Iterator tokenFields = fieldToReplacementField
-                                        .keySet().iterator(); tokenFields
+                                        .entrySet().iterator(); tokenFields
                                         .hasNext();) {
-                                    SootField tokenField = (SootField) tokenFields
-                                            .next();
+                                    Map.Entry entry = (Map.Entry) tokenFields.next();
+                                    SootField tokenField = (SootField) entry.getKey();
 
                                     if (debug) {
                                         System.out.println("tokenField = "
@@ -1797,8 +1795,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                                     SootField replacementField = (SootField) fieldToReplacementField
                                             .get(tokenField);
-                                    Local replacementLocal = (Local) fieldToReplacementLocal
-                                            .get(tokenField);
+                                    Local replacementLocal = (Local) entry.getValue();
 
                                     if (debug) {
                                         System.out
@@ -1881,10 +1878,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 }
 
                                 for (Iterator localFields = fieldToReplacementLocal
-                                        .keySet().iterator(); localFields
+                                        .entrySet().iterator(); localFields
                                         .hasNext();) {
-                                    SootField localField = (SootField) localFields
-                                            .next();
+                                    Map.Entry entry = (Map.Entry) localFields.next();
+                                    SootField localField = (SootField) entry.getKey();
 
                                     if (debug) {
                                         System.out.println("localField = "
@@ -1909,8 +1906,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                     if (localField.getName().equals(
                                             "_unitCategoryExponents")) {
 
-                                        Local replacementLocal = (Local) fieldToReplacementLocal
-                                                .get(localField);
+                                        Local replacementLocal = (Local) entry.getValue();
                                         body
                                                 .getUnits()
                                                 .insertBefore(
@@ -2083,11 +2079,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 }
 
                                 for (Iterator tokenFields = fieldToReplacementField
-                                        .keySet().iterator(); tokenFields
+                                        .entrySet().iterator(); tokenFields
                                         .hasNext();) {
-                                    SootField tokenField = (SootField) tokenFields
-                                            .next();
-
+                                    Map.Entry entry = (Map.Entry) tokenFields.next();
+                                    SootField tokenField = (SootField) entry.getKey();
                                     if (debug) {
                                         System.out.println("tokenField = "
                                                 + tokenField);
@@ -2095,8 +2090,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                                     SootField replacementField = (SootField) fieldToReplacementField
                                             .get(tokenField);
-                                    Local replacementLocal = (Local) fieldToReplacementLocal
-                                            .get(tokenField);
+                                    Local replacementLocal = (Local) entry.getValue();
                                     FieldRef fieldRef;
 
                                     if (stmt.getRightOp() instanceof InstanceFieldRef) {
@@ -2183,11 +2177,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 }
 
                                 for (Iterator tokenFields = fieldToReplacementLocal
-                                        .keySet().iterator(); tokenFields
+                                        .entrySet().iterator(); tokenFields
                                         .hasNext();) {
-                                    SootField tokenField = (SootField) tokenFields
-                                            .next();
-
+                                    Map.Entry entry = (Map.Entry) tokenFields.next();
+                                    SootField tokenField = (SootField) entry.getKey();
                                     if (debug) {
                                         System.out.println("tokenField = "
                                                 + tokenField);
@@ -2195,9 +2188,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                                     Local replacementArrayLocal = (Local) fieldToReplacementArrayLocal
                                             .get(tokenField);
-                                    Local replacementLocal = (Local) fieldToReplacementLocal
-                                            .get(tokenField);
-
+                                    Local replacementLocal = (Local) entry.getValue();
                                     body
                                             .getUnits()
                                             .insertBefore(
@@ -2261,10 +2252,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                 }
 
                                 for (Iterator tokenFields = fieldToReplacementLocal
-                                        .keySet().iterator(); tokenFields
+                                        .entrySet().iterator(); tokenFields
                                         .hasNext();) {
-                                    SootField tokenField = (SootField) tokenFields
-                                            .next();
+                                    Map.Entry entry = (Map.Entry) tokenFields.next();
+                                    SootField tokenField = (SootField) entry.getKey();
 
                                     if (debug) {
                                         System.out.println("tokenField = "
@@ -2273,8 +2264,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                                     Local replacementArrayLocal = (Local) fieldToReplacementArrayLocal
                                             .get(tokenField);
-                                    Local replacementLocal = (Local) fieldToReplacementLocal
-                                            .get(tokenField);
+                                    Local replacementLocal = (Local) entry.getValue();
 
                                     if (debug) {
                                         System.out
@@ -2338,18 +2328,16 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                                         newExpr.getSize())),
                                         unit);
 
-                                for (Iterator tokenFields = map.keySet()
-                                        .iterator(); tokenFields.hasNext();) {
-                                    SootField tokenField = (SootField) tokenFields
-                                            .next();
+                                for (Iterator tokenFields = map.entrySet()
+                                         .iterator(); tokenFields.hasNext();) {
+                                    Map.Entry entry = (Map.Entry) tokenFields.next();
+                                    SootField tokenField = (SootField) entry.getKey();
+                                    Local replacementLocal = (Local) entry.getValue();
 
                                     if (debug) {
                                         System.out.println("tokenField = "
                                                 + tokenField);
                                     }
-
-                                    Local replacementLocal = (Local) map
-                                            .get(tokenField);
 
                                     Type replacementType = SootUtilities
                                             .createIsomorphicType(newExpr
@@ -2404,12 +2392,11 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                                 isNotNullLocal,
                                                 IntConstant.v(1)), unit);
 
-                                for (Iterator tokenFields = map.keySet()
-                                        .iterator(); tokenFields.hasNext();) {
-                                    SootField tokenField = (SootField) tokenFields
-                                            .next();
-                                    Local replacementLocal = (Local) map
-                                            .get(tokenField);
+                                for (Iterator tokenFields = map.entrySet()
+                                         .iterator(); tokenFields.hasNext();) {
+                                    Map.Entry entry = (Map.Entry) tokenFields.next();
+                                    SootField tokenField = (SootField) entry.getKey();
+                                    Local replacementLocal = (Local) entry.getValue();
 
                                     // Initialize fields?
                                     if (debug) {
@@ -2717,15 +2704,15 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                         .getType())), stmt);
 
                 for (Iterator tokenFields = fieldToReplacementLeftLocal
-                        .keySet().iterator(); tokenFields.hasNext();) {
-                    SootField tokenField = (SootField) tokenFields.next();
+                        .entrySet().iterator(); tokenFields.hasNext();) {
+                    Map.Entry entry = (Map.Entry) tokenFields.next();
+                    SootField tokenField = (SootField) entry.getKey();
 
                     if (debug) {
                         System.out.println("tokenField = " + tokenField);
                     }
 
-                    Local replacementLocal = (Local) fieldToReplacementLeftLocal
-                            .get(tokenField);
+                    Local replacementLocal = (Local) entry.getValue();
 
                     // FIXME: ??
                     Value replacementValue = _getNullValueForType(replacementLocal
@@ -2753,15 +2740,15 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                 }
 
                 for (Iterator tokenFields = fieldToReplacementLeftLocal
-                        .keySet().iterator(); tokenFields.hasNext();) {
-                    SootField tokenField = (SootField) tokenFields.next();
+                        .entrySet().iterator(); tokenFields.hasNext();) {
+                    Map.Entry entry = (Map.Entry) tokenFields.next();
+                    SootField tokenField = (SootField) entry.getKey();
 
                     if (debug) {
                         System.out.println("tokenField = " + tokenField);
                     }
 
-                    Local replacementLeftLocal = (Local) fieldToReplacementLeftLocal
-                            .get(tokenField);
+                    Local replacementLeftLocal = (Local) entry.getValue();
                     Local replacementRightLocal = (Local) fieldToReplacementRightLocal
                             .get(tokenField);
 

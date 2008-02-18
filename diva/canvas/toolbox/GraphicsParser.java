@@ -355,11 +355,12 @@ public class GraphicsParser {
      */
     private static void processPaintedShapeAttributes(PaintedShape ps,
             Map attributes) {
-        Iterator i = attributes.keySet().iterator();
+        Iterator i = attributes.entrySet().iterator();
 
         while (i.hasNext()) {
-            String key = (String) i.next();
-            String val = (String) attributes.get(key);
+            Map.Entry entry = (Map.Entry) i.next();
+            String key = (String) entry.getKey();
+            String val = (String) entry.getValue();
 
             ////System.out.println(key + "=" + val);
             if (key.equals("fill")) {
@@ -377,11 +378,12 @@ public class GraphicsParser {
      */
     private static void processPaintedPathAttributes(PaintedPath pp,
             Map attributes) {
-        Iterator i = attributes.keySet().iterator();
+        Iterator i = attributes.entrySet().iterator();
 
         while (i.hasNext()) {
-            String key = (String) i.next();
-            String val = (String) attributes.get(key);
+            Map.Entry entry = (Map.Entry) i.next();
+            String key = (String) entry.getKey();
+            String val = (String) entry.getValue();
 
             if (key.equals("fill")) {
                 pp.strokePaint = lookupColor(val);
@@ -395,11 +397,12 @@ public class GraphicsParser {
      */
     private static void processPaintedStringAttributes(PaintedString pp,
             Map attributes) {
-        Iterator i = attributes.keySet().iterator();
+        Iterator i = attributes.entrySet().iterator();
 
         while (i.hasNext()) {
-            String key = (String) i.next();
-            String val = (String) attributes.get(key);
+            Map.Entry entry = (Map.Entry) i.next();
+            String key = (String) entry.getKey();
+            String val = (String) entry.getValue();
 
             if (key.equals("font")) {
                 pp.setFontName(val);

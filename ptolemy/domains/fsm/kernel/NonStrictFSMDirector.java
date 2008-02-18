@@ -351,10 +351,10 @@ public class NonStrictFSMDirector extends FSMDirector {
             Map map = parser.generateAssignmentMap(string);
             Set set /* Dead Local Store: = new HashSet()*/;
 
-            for (Iterator names = map.keySet().iterator(); names.hasNext();) {
-                String name = (String) names.next();
-
-                ASTPtAssignmentNode node = (ASTPtAssignmentNode) map.get(name);
+            for (Iterator names = map.entrySet().iterator();
+                 names.hasNext();) {
+                Map.Entry entry = (Map.Entry) names.next();
+                ASTPtAssignmentNode node = (ASTPtAssignmentNode) entry.getValue();
                 parseTree = node.getExpressionTree();
                 set = variableCollector.collectFreeVariables(parseTree, scope);
                 getReferredInputPorts(set, _outputActionReferredInputPorts);
@@ -456,10 +456,9 @@ public class NonStrictFSMDirector extends FSMDirector {
             Map map = parser.generateAssignmentMap(string);
             Set set /* Dead Local Store: = new HashSet()*/;
 
-            for (Iterator names = map.keySet().iterator(); names.hasNext();) {
-                String name = (String) names.next();
-
-                ASTPtAssignmentNode node = (ASTPtAssignmentNode) map.get(name);
+            for (Iterator names = map.entrySet().iterator(); names.hasNext();) {
+                Map.Entry entry = (Map.Entry) names.next();
+                ASTPtAssignmentNode node = (ASTPtAssignmentNode) entry.getValue();
                 parseTree = node.getExpressionTree();
                 set = variableCollector.collectFreeVariables(parseTree, scope);
                 getReferredInputPorts(set, _setActionReferredInputPorts);

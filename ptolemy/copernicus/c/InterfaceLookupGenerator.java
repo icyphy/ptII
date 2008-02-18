@@ -27,6 +27,7 @@ package ptolemy.copernicus.c;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import soot.SootClass;
 import soot.SootMethod;
@@ -82,14 +83,14 @@ public class InterfaceLookupGenerator {
         code.append(_indent(indentLevel) + "switch (methodIndex)\n");
         code.append(_indent(indentLevel++) + "{\n");
 
-        Iterator interfaceMethods = interfaceMethodsMap.keySet().iterator();
+        Iterator interfaceMethods = interfaceMethodsMap.entrySet().iterator();
 
         while (interfaceMethods.hasNext()) {
-            SootMethod interfaceMethod = (SootMethod) interfaceMethods.next();
+            Map.Entry entry = (Map.Entry) interfaceMethods.next();
+            SootMethod interfaceMethod = (SootMethod) entry.getKey();
 
             // The corresponding actual method.
-            SootMethod actualMethod = (SootMethod) interfaceMethodsMap
-                    .get(interfaceMethod);
+            SootMethod actualMethod = (SootMethod) entry.getValue();
 
             if (RequiredFileGenerator.isRequired(actualMethod)
             // We don't need to map abstract methods.

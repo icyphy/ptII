@@ -31,6 +31,7 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
@@ -312,15 +313,15 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
         DistributedDirector director = (DistributedDirector) compositeActor
                 .getDirector();
 
-        for (Iterator portsIterator = connections.keySet().iterator(); portsIterator
+        for (Iterator portsIterator = connections.entrySet().iterator(); portsIterator
                 .hasNext();) {
-            String portName = (String) portsIterator.next();
+            Map.Entry entry = (Map.Entry) portsIterator.next();
+            String portName = (String) entry.getKey();
             IOPort port = (IOPort) ((ComponentEntity) actor).getPort(portName);
             DistributedTypedIORelation relation = null;
 
             if (port.isInput()) {
-                Integer[][] integerReceivers = (Integer[][]) connections
-                        .get(portName);
+                Integer[][] integerReceivers = (Integer[][]) entry.getValue();
 
                 if (VERBOSE) {
                     System.out.println("Receivers received for "
@@ -409,12 +410,13 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
             System.out.println("Received port Types: " + portTypes.toString());
         }
 
-        for (Iterator portsIterator = portTypes.keySet().iterator(); portsIterator
+        for (Iterator portsIterator = portTypes.entrySet().iterator(); portsIterator
                 .hasNext();) {
-            String portName = (String) portsIterator.next();
+            Map.Entry entry = (Map.Entry) portsIterator.next();
+            String portName = (String) entry.getKey();
             TypedIOPort port = (TypedIOPort) ((ComponentEntity) actor)
                     .getPort(portName);
-            Type type = (Type) portTypes.get(portName);
+            Type type = (Type) entry.getValue();
             port.setTypeEquals(type);
 
             // This is not needed, does not trigger runtime type checking on
