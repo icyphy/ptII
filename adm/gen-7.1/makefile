@@ -1,6 +1,6 @@
 # Makefile to create tar files for distribution
 # Version: $Id$
-# Copyright (c) 1994-2008 The Regents of the University of California.
+# Copyright (c) 1994-2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -25,19 +25,19 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #
-# Programmer:  Christopher Brooks
+# Programmer:  Christopher Hylands
 
 # Variables
 #  If you change the version number, then edit 
 #  ptII/adm/bin/ptIInightly-mail
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
-MAJOR_VERSION = 	7.1
-MINOR_VERSION =		devel
+MAJOR_VERSION = 	7.0
+MINOR_VERSION =		beta
 
 VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	7_1_devel
+WINDOWS_VERSION =	7_0_beta
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -75,12 +75,13 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
 # make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar 
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
-# make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
+# make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar clean all src.jar setup
 # make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar 
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar clean all src.jar fortytwo_test
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta PTIIADM=/tmp/cxh/ptII7.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
@@ -122,8 +123,6 @@ PTII_TOPDIR=	.cshrc \
 		lib \
 		makefile \
 		mk \
-		org/makefile \
-		org/mlc \
 		ptolemy \
 		thales \
 		util \
@@ -156,6 +155,31 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 ##############################################################################
 # Targets
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
+
+release_newton_all:
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=c:/tmp/cxh/ptII7.0.beta/adm/gen-7.0/test/ptII$(VERSION)
+
+release_newton_setup:
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar setup
+
+release_newton_remote4_test:
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII7.0.beta/adm/gen-7.0/test/ptII$(VERSION)
+
+release_fortytwo:
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
+
+release_fortytwo_update_ftp:
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar update_ftp
+
+
+release_fortytwo_setup:
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar L4J_DIR=$(PTII)/vendors/launch4j PTCYGPATH=`pwd`/ptcygpath setup
+
+release_fortytwo_remote4_test:
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar remote4_test
+
+release_laptop:
+	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
 
 # Rebuild the distributions
 rebuild: clean all installshield_app build_unixPtII
@@ -213,10 +237,13 @@ $(PTIIDIST):
 	#cd $(PTIIDIST); make javadocs
 	rm -f $(PTIIDIST)/.glimpse*
 	cp $(PTIIHOME)/.glimpse_exclude $(PTIIDIST)
+	# Copy libjvm.dll.a because it was removed by src.ex
+	cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a $(PTIIDIST)/ptolemy/codegen/c/lib/win
+	ls -l  $(PTIIDIST)/ptolemy/codegen/c/lib/win/libjvm.dll.a
 	touch $(PTIIDIST)/configure
 	# Copy the vergil script for use in the full tar file
 	(cd $(PTIIHOME)/bin; make)
-	cp $(PTIIHOME)/bin/vergil $(PTIIDIST)/bin
+	#cp $(PTIIHOME)/bin/vergil $(PTIIDIST)/bin
 	# Bump up the mod time of $PTII/mk/ptII.mk.in so that if
 	# the user runs make, then configure will run 
 	touch $(PTIIDIST)/mk/ptII.mk.in
@@ -271,10 +298,8 @@ $(PTII_FULL_ZIP): $(PTIIDIST)
 	chgrp ptolemy $@
 	ls -l $@
 
-# Don't include gifs here - they will become corrupt with /r/n. 
 VERSION_FILES = \
-	src/ptII$(VERSION)/ptolemy/configs/*/*.htm \
-	src/ptII$(VERSION)/ptolemy/configs/*/*.xml \
+	src/ptII$(VERSION)/ptolemy/configs/*/* \
 	src/ptII$(VERSION)/ptolemy/kernel/attributes/VersionAttribute.java
 
 updateversions_test:
@@ -293,7 +318,7 @@ $(PTII_SRC): $(PTII_FULL)
 		$(TAR) -xvf $(PTII_FULL); \
 		cd ptII$(VERSION); \
 		echo "About to configure `pwd`"; \
-		PTII=`pwd` ./configure; make -k clean; \
+		PTII=`$(GENDIR)/ptcygpwd`  ./configure; make -k clean; \
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; \
@@ -344,6 +369,10 @@ $(PTII_SRC): $(PTII_FULL)
 		> src/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp
 	mv src/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp \
 		src/ptII$(VERSION)/ptolemy/domains/tm/makefile
+	# Copy libjvm.dll.a because it was removed by src.ex
+	cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a \
+		src/ptII$(VERSION)/ptolemy/codegen/c/lib/win/
+	ls -l  		src/ptII$(VERSION)/ptolemy/codegen/c/lib/win/
 	# Update the versions
 	./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 
 	(cd src; \
@@ -406,7 +435,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		lib/cachedir \
 		lib/ptII.properties \
 		lib/ptvr.jar \
-		lib/saxon8.jar \
 		mk/ptII.mk \
 		ptolemy/actor/gui/style/test/alljsimpletests.tcl \
 		ptolemy/actor/gui/test/alljsimpletests.tcl \
@@ -542,7 +570,7 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
-JAR=c:/j2sdk1.4.2_08/bin/jar
+JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
 
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
@@ -807,11 +835,18 @@ update_ftp: update_ptii_ftp untar
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	scp -p $(PTII_FULL) $(PTII_SRC) \
-		messier:$(PTII_FTP)
+		bennett:$(PTII_FTP)
 untar:
-	ssh messier rm -rf $(PTII_FTP)/ptII$(VERSION)
-	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
+	ssh bennett rm -rf $(PTII_FTP)/ptII$(VERSION)
+	ssh bennett "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
+
+# Run this to copy the .exe
+update_windows: ptII$(WINDOWS_VERSION)_src.zip
+	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip bennett:$(PTII_FTP)
+
+ptII$(WINDOWS_VERSION)_src.zip:
+	@echo "create the .zip file by untaring $(PTII_SRC) and using zip"
 
 # Make the distribution, run htmlchek
 htmlchek:
@@ -830,12 +865,11 @@ nightly: ptclean ptbuild \
 	glimpse \
 	findchanges \
 	ChangeLog \
-	jnlp
-
-#	remote4nuke \
-#	remote5nuke \
-#	remote4 \
-#	remote5
+	jnlp \
+	remote4nuke \
+	remote5nuke \
+	remote4 \
+	remote5
 
 #	remote2
 #	remote6
@@ -1142,6 +1176,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel/fmv \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel \
@@ -1175,7 +1210,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel/fmv \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel/ia \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/psdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/moml/filter \
@@ -1457,7 +1491,6 @@ remote1ChangeLog:
 	    fi) 
 	@echo "Problems generating ChangeLog from ptolemy/backtrack/automatic/ptolemy"
 	ls -l $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
-	(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy; cvs update )
 	#rm -rf $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
 	#(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic; cvs update ptolemy)
 	#ls -l $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
@@ -1789,7 +1822,7 @@ REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
 # Log file to save the results in
 REMOTE4LOG = $(GENLOGDIR)/remote4.out
 
-fortytwo_test: $(PTII_SRC) 
+remote4_test: $(PTII_SRC) 
 	if [ ! -d test ]; then mkdir test; fi
 	$(MAKE) REMOTE4HOME=$(GENDIR)/test \
 		PTII_FULL=$(PTII_SRC) \
@@ -2147,7 +2180,7 @@ indent_all:
 #IZPACKDIR=c:/Program Files/IzPack
 IZPACKDIR=$(PTII)/vendors/izpack
 IZPACK_COMPILE=$(IZPACKDIR)/_dist/bin/compile
-IZPACK_TAR=IzPack.src.3.9.0.tar.gz
+IZPACK_TAR=IzPack.src.3.10.2.tar.gz
 
 # Under Solaris: gmake make_izpack TAR=gtar
 make_izpack: $(IZPACK_COMPILE)
@@ -2182,7 +2215,7 @@ Echo.class: Echo.java
 ExtractJarFile.jar: ExtractJarFile.class Echo.class
 	jar -cf $@ CYGPATH^
 
-#PTCYGPATH=cygpath --windows
+#PTCYGPATH=cygpath -a --windows
 PTCYGPATH=./ptcygpath
 
 # Recompile izpack
@@ -2196,7 +2229,7 @@ izpack:
 
 L4J_DIR=$(PTII)/vendors/launch4j
 
-L4J_TAR=launch4j-3.0.0-pre1-solaris-sparc.tgz
+L4J_TAR=launch4j-3.0.0-pre2-solaris-sparc.tgz
 $(PTII)/vendors/launch4j:
 	cd $(PTII)/vendors; \
 		wget http://easynews.dl.sourceforge.net/sourceforge/launch4j/$(L4J_TAR); \

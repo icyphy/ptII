@@ -20,7 +20,7 @@
         <appversion>7.1.devel</appversion>
 	<appsubpath>Ptolemy/ptII7.1.devel</appsubpath>
         <url>http://ptolemy.eecs.berkeley.edu/ptolemyII</url>
-	<javaversion>1.4</javaversion>
+	<javaversion>1.5</javaversion>
     </info>
     
     <!-- 
@@ -84,7 +84,7 @@
     -->
     <packs>
         <pack name="Ptiny" required="yes">
-            <description>Ptiny: The common domains: CSP, CT, DE, FSM, PN and SDF.
+            <description>Ptiny: The common domains: CT, DE, DDF, FSM, HDF, PN, Rendezvous, SDF and SR.
 The Ptiny pack is required. 
 </description>
             <file src="../../README.txt" targetdir="$INSTALL_PATH"/>
@@ -102,7 +102,18 @@ The Ptiny pack is required.
             <file src="../../doc/img/ptplot.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
 
-	    <!-- Run (cd $PTII; make echo_jars JARS=PTINY_JNLP_JARS) -->
+	    <!-- Run (cd $PTII; make echo_jars JARS=PTINY_JNLP_JARS)
+		 and then copy the section below and use diff:
+
+		 # Copy the section below to /tmp/p0, then
+		 
+		 grep src= /tmp/p0 | sort > /tmp/p0a
+		 (cd $PTII; make echo_jars JARS=PTINY_JNLP_JARS) > /tmp/p1
+		 grep src= /tmp/p1 | sort > /tmp/p1a
+		 diff /tmp/p0a /tmp/p1a
+
+		 Then add missing jars
+	      -->
             <file src="../../jar_dist/doc/docConfig.jar"
                   targetdir="$INSTALL_PATH/doc"/>
             <file src="../../jar_dist/lib/diva.jar"
@@ -154,44 +165,57 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/python/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/security/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/security/demo"/>
+            <file src="../../jar_dist/ptolemy/actor/ptalon/antlr/antlr.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/antlr"/>
             <file src="../../jar_dist/ptolemy/actor/ptalon/ptalon.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/ptalon"/>
             <file src="../../jar_dist/ptolemy/actor/ptalon/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/demo"/>
-            <file src="../../jar_dist/ptolemy/backtrack/backtrack.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/backtrack"/>
-            <file src="../../jar_dist/ptolemy/codegen/codegen.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/codegen"/>
             <file src="../../jar_dist/ptolemy/data/type/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/data/type/demo"/>
             <file src="../../jar_dist/ptolemy/data/unit/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/data/unit/demo"/>
-            <file src="../../jar_dist/ptolemy/domains/csp/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/csp/demo"/>
-            <file src="../../jar_dist/ptolemy/domains/csp/doc/doc.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/csp/doc"/>
-            <file src="../../jar_dist/ptolemy/domains/continuous/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/continuous/demo"/>
+
             <file src="../../jar_dist/ptolemy/domains/ct/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ct/demo"/>
             <file src="../../jar_dist/ptolemy/domains/ct/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ct/doc"/>
+
+            <file src="../../jar_dist/ptolemy/domains/ddf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ddf/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/ddf/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ddf/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/de/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/de/demo"/>
             <file src="../../jar_dist/ptolemy/domains/de/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/de/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/fsm/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/fsm/demo"/>
             <file src="../../jar_dist/ptolemy/domains/fsm/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/fsm/doc"/>
+
+            <file src="../../jar_dist/ptolemy/domains/hdf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/hdf/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/hdf/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/hdf/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/pn/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/pn/demo"/>
             <file src="../../jar_dist/ptolemy/domains/pn/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/pn/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/rendezvous/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/rendezvous/demo"/>
             <file src="../../jar_dist/ptolemy/domains/rendezvous/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/rendezvous/doc"/>
+
+            <file src="../../jar_dist/ptolemy/domains/sr/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sr/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/sr/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sr/doc"/>
+
             <file src="../../jar_dist/ptolemy/moml/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/moml/demo"/>
             <file src="../../jar_dist/ptolemy/vergil/kernel/attributes/demo/demo.jar"
@@ -221,13 +245,25 @@ The Ptiny pack is required.
             <!-- file src="../../viptos.exe" targetdir="$INSTALL_PATH"/ -->
             <!-- file src="../../doc/img/viptos.ico" targetdir="$INSTALL_PATH/doc/img/"/ -->
 
-	    <!-- Run (make full_jars) and put the output here -->
+	    <!-- Update this $PTII/mk/jnlp.mk
+		 # Copy the section below to /tmp/f0, then
+		 
+		 grep src= /tmp/f0 | sort > /tmp/f0a
+		 (cd $PTII; make echo_jars JARS=FULL_ONLY_JNLP_JARS) > /tmp/f1
+		 (cd $PTII; make echo_jars JARS=CODEGEN_DOMAIN_JARS) >> /tmp/f1
+		 grep src= /tmp/f1 | sort > /tmp/f1a
+		 diff /tmp/f0a /tmp/f1a
+
+		 Then add missing jars
+	      -->
             <file src="../../jar_dist/ptolemy/hsif/hsif.jar"
                   targetdir="$INSTALL_PATH/ptolemy/hsif"/>
             <file src="../../jar_dist/ptolemy/hsif/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/hsif/demo"/>
             <file src="../../jar_dist/ptolemy/domains/ct/ct.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ct"/>
+            <file src="../../jar_dist/ptolemy/domains/ddf/ddf.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ddf"/>
             <file src="../../jar_dist/ptolemy/domains/de/de.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/de"/>
             <file src="../../jar_dist/ptolemy/domains/fsm/fsm.jar"
@@ -244,6 +280,14 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/lib/sootclasses.jar"
                   targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../jar_dist/ptolemy/backtrack/backtrack.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/backtrack"/>
+            <file src="../../jar_dist/ptolemy/backtrack/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/backtrack/demo"/>
+            <file src="../../jar_dist/ptolemy/codegen/codegen.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/codegen"/>
+            <file src="../../jar_dist/ptolemy/codegen/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/codegen"/>
             <file src="../../jar_dist/ptolemy/copernicus/copernicus.jar"
                   targetdir="$INSTALL_PATH/ptolemy/copernicus"/>
             <file src="../../jar_dist/doc/img/img.jar"
@@ -294,12 +338,28 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/demo"/>
             <file src="../../jar_dist/ptolemy/domains/experimentalDomains.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains"/>
+            <file src="../../jar_dist/ptolemy/domains/curriculum/curriculum.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/curriculum"/>
             <file src="../../jar_dist/ptolemy/domains/ci/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ci/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/ci/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/ci/doc"/>
+
+            <file src="../../jar_dist/ptolemy/domains/continuous/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/continuous/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/continuous/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/continuous/doc"/>
+
+            <file src="../../jar_dist/ptolemy/domains/csp/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/csp/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/csp/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/csp/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/dde/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/dde/demo"/>
-            <file src="../../jar_dist/ptolemy/domains/ddf/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/ddf/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/dde/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/dde/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/dt/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/dt/demo"/>
             <file src="../../jar_dist/ptolemy/domains/dt/doc/doc.jar"
@@ -314,36 +374,30 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/gr/doc"/>
             <file src="../../jar_dist/ptolemy/domains/gr/lib/quicktime/quicktime.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/gr/lib/quicktime"/>
-            <file src="../../jar_dist/ptolemy/domains/hdf/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/hdf/demo"/>
+
             <file src="../../jar_dist/ptolemy/domains/psdf/psdf.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/psdf"/>
             <file src="../../jar_dist/ptolemy/domains/psdf/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/psdf/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/psdf/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/psdf/doc"/>
+
             <file src="../../jar_dist/lib/mapss.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/ptolemy/domains/sdf/lib/vq/data/data.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/sdf/lib/vq/data"/>
-            <file src="../../jar_dist/ptolemy/domains/sr/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/sr/demo"/>
-            <file src="../../jar_dist/ptolemy/domains/sr/doc/doc.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/sr/doc"/>
             <file src="../../jar_dist/ptolemy/domains/tm/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/tm/demo"/>
             <file src="../../jar_dist/ptolemy/domains/tm/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/tm/doc"/>
-            <file src="../../jar_dist/com/jgoodies/jgoodies.jar"
-                  targetdir="$INSTALL_PATH/com/jgoodies"/>
-            <file src="../../jar_dist/lib/bsh-2.0b4.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../../jar_dist/org/mlc/mlc.jar"
-                  targetdir="$INSTALL_PATH/org/mlc"/>
-            <file src="../../jar_dist/ptolemy/actor/gui/run/run.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/gui/run"/>
+
             <file src="../../jar_dist/ptolemy/domains/wireless/wireless.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/wireless"/>
             <file src="../../jar_dist/ptolemy/domains/wireless/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/wireless/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/wireless/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/wireless/doc"/>
+
             <file src="../../jar_dist/ptolemy/domains/ptinyos/ptinyos.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ptinyos"/>
             <file src="../../jar_dist/ptolemy/domains/ptinyos/demo/demo.jar"
@@ -380,7 +434,7 @@ The Ptiny pack is required.
 
         </pack>
         <pack name="JRE" required="no">
-            <description>Java Runtime Environment (JRE) v1.5.0_08.  This JRE includes JAI, Java 3D, Joystick  JMF, JavaComm, and X10.  Ptolemy II requires either a Java Runtime Environment (JRE) or Java Development Kit (JDK).</description>
+            <description>Java Runtime Environment (JRE) v1.5.0_14.  This JRE includes JAI, Java 3D, JavaComm,  Joystick,  JMF, Quicktime Java interface and X10.  Ptolemy II requires either a Java Runtime Environment (JRE) or Java Development Kit (JDK).</description>
             <file src="jre" targetdir="$INSTALL_PATH"/>
         </pack>
         <pack name="Sources" required="no">
@@ -400,7 +454,6 @@ The Ptiny pack is required.
 	    <file src="src/ptII7.1.devel/lib" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.1.devel/makefile" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.1.devel/mk" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.1.devel/org" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.1.devel/ptolemy" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.1.devel/thales" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.1.devel/util" targetdir="$INSTALL_PATH"/>
