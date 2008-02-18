@@ -1078,7 +1078,8 @@ public class SootUtilities {
             SootClass class1 = ((RefType) type1).getSootClass();
             SootClass class2 = ((RefType) type2).getSootClass();
             return derivesFrom(class1, class2);
-        } else if (type1 instanceof Type && type2 instanceof RefType) {
+        } else if (/* type1 instanceof Type && */
+                type2 instanceof RefType) {
             Type elementType1 = ((ArrayType) type1).baseType;
 
             // FIXME: FindBugs: Impossible cast from soot.RefType to
@@ -1374,14 +1375,14 @@ public class SootUtilities {
             return Class.forName(((RefType) type).getSootClass().getName());
         } else if (type instanceof ArrayType) {
             ArrayType arrayType = (ArrayType) type;
-            String identifier = "";
+            StringBuffer identifier = new StringBuffer();
 
             for (int i = 0; i < arrayType.numDimensions; i++) {
-                identifier += "[";
+                identifier.append("[");
             }
 
-            identifier += getClassForType(arrayType.baseType).getName();
-            return Class.forName(identifier);
+            identifier.append(getClassForType(arrayType.baseType).getName());
+            return Class.forName(identifier.toString());
         } else if (type instanceof ByteType) {
             return Byte.TYPE;
         } else if (type instanceof CharType) {
@@ -1517,14 +1518,15 @@ public class SootUtilities {
             // inline the method.
             inlinee = (SootMethod) methodList.get(0);
         } else {
-            String string = "Can't resolve " + targetMethod + " on baseClass "
-                    + baseClass + "\n";
+            StringBuffer message = new StringBuffer("Can't resolve "
+                    + targetMethod + " on baseClass "
+                    + baseClass + "\n");
 
             for (int i = 0; i < methodList.size(); i++) {
-                string += ("target = " + methodList.get(i) + "\n");
+                message.append("target = " + methodList.get(i) + "\n");
             }
 
-            throw new RuntimeException(string);
+            throw new RuntimeException(message.toString());
         }
 
         // Make sure we can access the body of the method that is
