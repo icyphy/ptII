@@ -430,12 +430,21 @@ public class Director implements ActorCodeGenerator {
     }
 
     /**
-     * 
-     * @param name
-     * @param isWrite
-     * @param helper
-     * @return
-     * @throws IllegalActionException
+     * Return the reference to the specified parameter or port of the
+     * associated actor. For a parameter, the returned string is in
+     * the form "fullName_parameterName". For a port, the returned string
+     * is in the form "fullName_portName[channelNumber][offset]", if
+     * any channel number or offset is given.
+     *
+     * FIXME: need documentation on the input string format.
+     *
+     * @param name The name of the parameter or port
+     * @param isWrite True if the parameter is writable
+     * @param helper The helper of the associated actor
+     * @return The reference to that parameter or port (a variable name,
+     *   for example).
+     *  @exception IllegalActionException If the parameter or port does not
+     *   exist or does not have a value.
      */
     public String getReference(String name, boolean isWrite, 
             CodeGeneratorHelper helper) throws IllegalActionException {
