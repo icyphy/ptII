@@ -187,7 +187,11 @@ public class IconController extends ParameterizedNodeController {
                                 + "though one did not previously exist.");
             }
 
-            result.setToolTipText(object.getClassName());
+            if (result == null) {
+                throw new InternalErrorException("Failed to create icon.");
+            } else {    
+                result.setToolTipText(object.getClassName());
+            }
 
             // Check to see if it has
             // attributes that specify its color or an explanation.

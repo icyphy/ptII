@@ -49,6 +49,7 @@ import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Singleton;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AnimationRenderer;
@@ -354,8 +355,15 @@ public class EditorDropTarget extends DropTarget {
                 Object object = null;
                 for (Iterator it = configsList.iterator(); it.hasNext();) {
                     config = (Configuration) it.next();
-                    if (config != null)
+                    if (config != null) {
                         break;
+                    }
+                }
+                if (config == null) {
+                    throw new KernelRuntimeException(dropObj, "Could not find "
+                            + "configuration, list of configurations was "
+                            + configsList.size()
+                            + " elements, all were null.");
                 }
                 StringAttribute alternateGetMomlActionAttribute = (StringAttribute) config
                         .getAttribute("_alternateGetMomlAction");

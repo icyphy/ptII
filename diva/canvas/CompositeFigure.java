@@ -429,7 +429,9 @@ public class CompositeFigure extends AbstractFigureContainer {
         }
 
         this._background = background;
-        background.setParent(this);
+        if (background != null) {
+            background.setParent(this);
+        }
         _cachedBounds = null;
         repaint();
     }

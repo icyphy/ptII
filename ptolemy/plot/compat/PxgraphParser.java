@@ -740,7 +740,8 @@ public class PxgraphParser {
             read(instream);
         }
 
-        for (i = argumentsRead; i < args.length; i++) {
+        // Findbugs suggests checking for null
+        for (i = argumentsRead; args != null && i < args.length; i++) {
             // Have a filename.  First attempt to open it as a URL.
             try {
                 URL inurl = new URL(base, args[i]);

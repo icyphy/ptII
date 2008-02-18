@@ -462,11 +462,17 @@ public class TypeSpecializerAnalysis {
             System.out.println("result = " + TypeLattice.compare(type1, type2));
         }
         // Only inline if both are concrete types.
-        if (type1.isInstantiable() && type2.isInstantiable()) {
-            if (_debug) {
-                System.out.println("inlineTypeLatticeMethods: is Instantiable");
+        if (type1 == null || type2 == null) {
+            throw new RuntimeException("type1:" + type1 + " or type2:"
+                    + type2 + " is null. " + method
+                    + " " + unit + " " + expr);
+        } else {
+            if (type1.isInstantiable() && type2.isInstantiable()) {
+                if (_debug) {
+                    System.out.println("inlineTypeLatticeMethods: is Instantiable");
+                }
+                box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
             }
-            box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
         }
     }
 

@@ -41,6 +41,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
@@ -365,6 +366,12 @@ public class GetDocumentationAction extends FigureAction {
             if (config != null) {
                 break;
             }
+        }
+        if (config == null) {
+            throw new KernelRuntimeException("Could not find "
+                    + "configuration, list of configurations was "
+                    + configsList.size()
+                    + " elements, all were null.");
         }
         // Look up the attribute (if it exists)
         StringAttribute multipleDocumentationAllowed = (StringAttribute) config

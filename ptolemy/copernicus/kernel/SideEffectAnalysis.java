@@ -346,13 +346,16 @@ public class SideEffectAnalysis {
 
                 if (_hasEffects != other.hasEffects()) {
                     return false;
-                } else if ((_effectSet == null) && (other.effectSet() != null)) {
-                    return false;
-                } else if ((_effectSet == null) && (other.effectSet() == null)) {
-                    return true;
+                } else if (_effectSet == null) {
+                    if (other.effectSet() != null) {
+                        return false;
+                    } else {
+                        // other.effectSet() == null
+                        return true;
+                    }
+                } else {
+                    return _effectSet.equals(((EffectFlow) o).effectSet());
                 }
-
-                return _effectSet.equals(((EffectFlow) o).effectSet());
             } else {
                 return false;
             }

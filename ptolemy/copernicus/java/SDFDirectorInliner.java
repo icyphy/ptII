@@ -378,8 +378,12 @@ public class SDFDirectorInliner implements DirectorInliner {
             Iterator schedule = null;
 
             try {
-                schedule = director.getScheduler().getSchedule()
+                if (director == null) {
+                    throw new KernelRuntimeException(model, "No Director?");
+                } else {
+                    schedule = director.getScheduler().getSchedule()
                         .firingIterator();
+                }
             } catch (Exception ex) {
                 throw new KernelRuntimeException(ex, "Failed to get schedule");
             }

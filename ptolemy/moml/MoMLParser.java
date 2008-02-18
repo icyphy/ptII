@@ -5372,7 +5372,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (_iconLoader != null) {
             return _iconLoader.loadIconForClass(className, context);
         } else {
-            // Default behavior if no icon loader has been specified.
+            // Default behavior if no icon loader has been specified.       
             String fileName = className.replace('.', '/') + "Icon.xml";
             return _loadFileInContext(fileName, context);
         }
@@ -6160,8 +6160,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
         }
 
-        // Now we are assured that name is relative.
-        result = _current.getAttribute(name);
+        if (_current != null) {
+            // Now we are assured that name is relative.
+            result = _current.getAttribute(name);
+        } else {
+            // Findbugs suggests checking for null
+            throw new XmlException("The current object in the hierarchy "
+                    + "is null? Could not find property: " + name + " in "
+                    + currentName, _currentExternalEntity(), _getLineNumber(),
+                    _getColumnNumber());
+        }
 
         if (result == null) {
             throw new XmlException("No such property: " + name + " in "

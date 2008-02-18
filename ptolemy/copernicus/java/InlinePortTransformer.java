@@ -298,15 +298,15 @@ public class InlinePortTransformer extends SceneTransformer implements
                                     // Inline the method.
                                     inlinee = (SootMethod) methodList.get(0);
                                 } else {
-                                    String string = "Can't inline " + stmt
-                                            + " in method " + method + "\n";
+                                    StringBuffer message = new StringBuffer("Can't inline " + stmt
+                                            + " in method " + method + "\n");
 
                                     for (int i = 0; i < methodList.size(); i++) {
-                                        string += ("target = "
+                                        message.append("target = "
                                                 + methodList.get(i) + "\n");
                                     }
 
-                                    System.out.println(string);
+                                    System.out.println(message.toString());
                                 }
                             } else if (r instanceof SpecialInvokeExpr) {
                                 inlinee = Scene.v().getActiveHierarchy()
@@ -318,9 +318,8 @@ public class InlinePortTransformer extends SceneTransformer implements
                                     && !inlinee.getDeclaringClass()
                                             .isApplicationClass()) {
                                 inlinee.getDeclaringClass().setLibraryClass();
+                                inlinee.retrieveActiveBody();
                             }
-
-                            inlinee.retrieveActiveBody();
 
                             if (debug) {
                                 System.out
@@ -378,10 +377,10 @@ public class InlinePortTransformer extends SceneTransformer implements
 
                         // If we do this, then we have to get rid of
                         // the ports.
-                        if (port instanceof Typeable) {
+                        //if (port instanceof Typeable) {
                             PtolemyUtilities.inlineTypeableMethods(body, stmt,
                                     box, r, port);
-                        }
+                            //}
 
                         // Inline namedObj methods on the attribute.
                         if (r.getMethod().getSubSignature().equals(
@@ -618,15 +617,15 @@ public class InlinePortTransformer extends SceneTransformer implements
                                     // Inline the method.
                                     inlinee = (SootMethod) methodList.get(0);
                                 } else {
-                                    String string = "Can't inline " + stmt
-                                            + " in method " + method + "\n";
+                                    StringBuffer message = new StringBuffer("Can't inline " + stmt
+                                            + " in method " + method + "\n");
 
                                     for (int i = 0; i < methodList.size(); i++) {
-                                        string += ("target = "
+                                        message.append("target = "
                                                 + methodList.get(i) + "\n");
                                     }
 
-                                    System.out.println(string);
+                                    System.out.println(message.toString());
                                 }
                             } else if (r instanceof SpecialInvokeExpr) {
                                 inlinee = Scene.v().getActiveHierarchy()
@@ -638,9 +637,8 @@ public class InlinePortTransformer extends SceneTransformer implements
                                     && !inlinee.getDeclaringClass()
                                             .isApplicationClass()) {
                                 inlinee.getDeclaringClass().setLibraryClass();
+                                inlinee.retrieveActiveBody();
                             }
-
-                            inlinee.retrieveActiveBody();
 
                             if (debug) {
                                 System.out

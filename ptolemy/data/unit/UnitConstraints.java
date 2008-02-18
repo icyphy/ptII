@@ -206,11 +206,10 @@ public class UnitConstraints implements UnitPresentation {
             return null;
         }
 
-        StringBuffer retv = null;
+        StringBuffer retv = new StringBuffer();
 
         if (!_constraints.isEmpty()) {
-            retv = new StringBuffer(
-                    ((UnitEquation) (_constraints.elementAt(0)))
+            retv.append(((UnitEquation) (_constraints.elementAt(0)))
                             .descriptiveForm());
         }
 
