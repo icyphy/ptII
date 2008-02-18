@@ -309,14 +309,15 @@ public abstract class Polygon2D implements Shape {
     /** Return a string representation of the polygon.
      */
     public String toString() {
-        String out = getClass().getName() + "[\n";
+        StringBuffer out = new StringBuffer(getClass().getName() + "[\n");
 
+        
         for (int i = 0; i < getVertexCount(); i++) {
-            out = out + "\t" + getX(i) + ", " + getY(i) + "\n";
+            out.append("\t" + getX(i) + ", " + getY(i) + "\n");
         }
 
-        out = out + "]";
-        return out;
+        out.append("]");
+        return out.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
