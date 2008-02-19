@@ -166,10 +166,8 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
             writerOut.flush();
             streamOut.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Could not produce new classfile! (" + e
-                    + ")");
+        } catch (IOException ex) {
+            throw new RuntimeException("Could not produce new classfile!", ex);
         }
     }
 
@@ -182,7 +180,7 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
             }
         }
         
-        if (!file.createNewFile()) {
+        if (!file.exists() && !file.createNewFile()) {
             throw new IOException(
                     "Failed to create "
                         + file + "\"");
