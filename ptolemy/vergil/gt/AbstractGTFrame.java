@@ -27,43 +27,17 @@
  */
 package ptolemy.vergil.gt;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import javax.swing.JComponent;
-import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-import ptolemy.actor.gt.CompositeActorMatcher;
-import ptolemy.actor.gt.TransformationRule;
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.vergil.actor.ActorEditorGraphController;
-import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.basic.AbstractBasicGraphModel;
-import ptolemy.vergil.basic.EditorDropTarget;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-import ptolemy.vergil.kernel.Link;
-import diva.canvas.event.LayerAdapter;
-import diva.canvas.event.LayerEvent;
-import diva.graph.GraphController;
 import diva.graph.GraphPane;
-import diva.graph.GraphUtilities;
 import diva.graph.JGraph;
 
-public abstract class AbstractGTFrame extends ExtendedGraphFrame implements
-        ChangeListener, KeyListener {
+public abstract class AbstractGTFrame extends ExtendedGraphFrame {
 
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -99,14 +73,8 @@ public abstract class AbstractGTFrame extends ExtendedGraphFrame implements
         super(entity, tableau, defaultLibrary);
     }
 
-    public CompositeEntity getActiveModel() {
-        ActorGraphModel graphModel = (ActorGraphModel) _getGraphController()
-                .getGraphModel();
-        return (CompositeEntity) graphModel.getPtolemyModel();
-    }
-
-    public int getActiveTabIndex() {
-        return _activeTabIndex;
+    public GTFrameController getFrameController() {
+        return _frameController;
     }
 
     /** Return the JGraph instance that this view uses to represent the
@@ -115,266 +83,33 @@ public abstract class AbstractGTFrame extends ExtendedGraphFrame implements
      *  @see #setJGraph(JGraph)
      */
     public JGraph getJGraph() {
-        if (hasTabs()) {
-            Component selected = _tabbedPane.getSelectedComponent();
-            if (selected instanceof JGraph) {
-                return (JGraph) selected;
-            } else {
-                return null;
-            }
-        } else {
-            return super.getJGraph();
+        JGraph graph = _frameController.getJGraph();
+        if (graph == null) {
+            graph = super.getJGraph();
         }
-    }
-
-    public TransformationRule getTransformationRule() {
-        CompositeEntity model = getActiveModel();
-        NamedObj parent = model.getContainer();
-        while (!(parent instanceof TransformationRule)) {
-            parent = parent.getContainer();
-        }
-        return (TransformationRule) parent;
-    }
-
-    public boolean hasTabs() {
-        return _tabbedPane != null;
-    }
-
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE
-                || e.getKeyCode() == (KeyEvent.VK_ALT | KeyEvent.VK_S)) {
-            e.consume();
-            cancelFullScreen();
-        }
-    }
-
-    public void keyReleased(KeyEvent e) {
-    }
-
-    public void keyTyped(KeyEvent e) {
-    }
-
-    /** React to a change in the state of the tabbed pane.
-     *  @param event The event.
-     */
-    public void stateChanged(ChangeEvent event) {
-        if (event.getSource() == _tabbedPane) {
-            _activeTabIndex = _tabbedPane.getSelectedIndex();
-            if (_activeTabIndex < _graphPanes.size()) {
-                _controller.getSelectionModel().clearSelection();
-                GraphPane graphPane = _graphPanes.get(_activeTabIndex);
-                _controller.setGraphPane(graphPane);
-                _controller.setGraphModel(graphPane.getGraphModel());
-            }
-            _showTab(_activeTabIndex);
-        }
+        return graph;
     }
 
     protected boolean _close() {
         boolean result = super._close();
-        if (result && hasTabs()) {
-            for (Component tab : _tabbedPane.getComponents()) {
-                if (tab instanceof JGraph) {
-                    AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) ((JGraph) tab)
-                            .getGraphPane().getGraphModel();
-                    graphModel.removeListeners();
-                }
-            }
+        if (result) {
+            _frameController._removeListeners();
         }
         return result;
     }
 
-    protected abstract ActorEditorGraphController _createController();
-
     protected GraphPane _createGraphPane(NamedObj entity) {
-        // The cast is safe because the constructor only accepts
-        // CompositeEntity.
-        GTActorGraphModel graphModel = new GTActorGraphModel(entity);
-        GraphPane graphPane = new GraphPane(_controller, graphModel);
-        if (_graphPanes != null) {
-            _graphPanes.add(graphPane);
-        }
-        return graphPane;
+        return _frameController._createGraphPane(entity);
     }
 
     protected JComponent _createRightComponent(NamedObj entity) {
-        // entity must be SingleRuleTransformer or CompositeActorMatcher.
-
-        _controller = _createController();
-        _controller.setConfiguration(getConfiguration());
-        _controller.setFrame(this);
-
-        if (!(entity instanceof TransformationRule)) {
-            JComponent component = super._createRightComponent(entity);
-            return component;
+        _frameController = new GTFrameController(this, _graphPanner);
+        JComponent component = _frameController._createRightComponent(entity);
+        if (component == null) {
+            component = super._createRightComponent(entity);
         }
-
-        _graphPanes = new LinkedList<GraphPane>();
-        _graphs = new LinkedList<JGraph>();
-
-        _tabbedPane = new JTabbedPane() {
-            public void setMinimumSize(Dimension minimumSize) {
-                Iterator<JGraph> graphsIterator = _graphs.iterator();
-                while (graphsIterator.hasNext()) {
-                    graphsIterator.next().setMinimumSize(minimumSize);
-                }
-            }
-
-            public void setPreferredSize(Dimension preferredSize) {
-                Iterator<JGraph> graphsIterator = _graphs.iterator();
-                while (graphsIterator.hasNext()) {
-                    graphsIterator.next().setPreferredSize(preferredSize);
-                }
-            }
-
-            public void setSize(int width, int height) {
-                Iterator<JGraph> graphsIterator = _graphs.iterator();
-                while (graphsIterator.hasNext()) {
-                    graphsIterator.next().setSize(width, height);
-                }
-            }
-
-        };
-
-        _tabbedPane.addChangeListener(this);
-        Iterator<?> cases = ((TransformationRule) entity).entityList(
-                CompositeActorMatcher.class).iterator();
-        boolean first = true;
-        while (cases.hasNext()) {
-            CompositeActorMatcher matcher = (CompositeActorMatcher) cases
-                    .next();
-            JGraph jgraph = _addTabbedPane(matcher, false);
-            // The first JGraph is the one with the focus.
-            if (first) {
-                first = false;
-                setJGraph(jgraph);
-            }
-            _graphs.add(jgraph);
-        }
-
-        GraphPane graphPane = _graphPanes.get(0);
-        _controller.setGraphPane(graphPane);
-        _controller.setGraphModel(graphPane.getGraphModel());
-
-        return _tabbedPane;
+        return component;
     }
 
-    protected Configuration _getConfiguration() {
-        NamedObj toplevel = getTableau().toplevel();
-        if (toplevel instanceof Configuration) {
-            return (Configuration) toplevel;
-        } else {
-            return null;
-        }
-    }
-
-    protected GraphController _getGraphController() {
-        return _controller;
-    }
-
-    protected JTabbedPane _getTabbedPane() {
-        return _tabbedPane;
-    }
-
-    protected static class GTActorGraphModel extends ActorGraphModel {
-
-        public synchronized void startUpdate() {
-            Set<?> linkSet = _getLinkSet();
-            Set<Link> linksToRemove = new HashSet<Link>();
-            for (Object linkObject : linkSet) {
-                Link link = (Link) linkObject;
-                boolean headOK = GraphUtilities.isContainedNode(link.getHead(),
-                        getRoot(), this);
-                boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
-                        getRoot(), this);
-                if (!(headOK && tailOK)) {
-                    linksToRemove.add(link);
-                }
-            }
-            for (Link link : linksToRemove) {
-                _removeLink(link);
-            }
-            _updateStopped = false;
-            _update();
-        }
-
-        public synchronized void stopUpdate() {
-            _updateStopped = true;
-        }
-
-        protected boolean _update() {
-            if (!_updateStopped) {
-                return super._update();
-            } else {
-                return true;
-            }
-        }
-
-        GTActorGraphModel(NamedObj composite) {
-            super(composite);
-        }
-
-        private boolean _updateStopped = false;
-    }
-
-    /** Add a tabbed pane for the specified case.
-     *  @param refinement The case.
-     *  @param newPane True to add the pane prior to the last pane.
-     *  @return The pane.
-     */
-    private JGraph _addTabbedPane(CompositeActorMatcher matcher, boolean newPane) {
-        GraphPane pane = _createGraphPane(matcher);
-        pane.getForegroundLayer().setPickHalo(2);
-        pane.getForegroundEventLayer().setConsuming(false);
-        pane.getForegroundEventLayer().setEnabled(true);
-        pane.getForegroundEventLayer().addLayerListener(new LayerAdapter() {
-            /** Invoked when the mouse is pressed on a layer
-             * or figure.
-             */
-            public void mousePressed(LayerEvent event) {
-                Component component = event.getComponent();
-
-                if (!component.hasFocus()) {
-                    component.requestFocus();
-                }
-            }
-        });
-        JGraph jgraph = new JGraph(pane);
-        String name = matcher.getName();
-        jgraph.setName(name);
-        int index = _tabbedPane.getComponentCount();
-        // Put before the default pane, unless this is the default.
-        if (newPane) {
-            index--;
-        }
-        _tabbedPane.add(jgraph, index);
-        jgraph.setBackground(BACKGROUND_COLOR);
-        // Create a drop target for the jgraph.
-        new EditorDropTarget(jgraph);
-        return jgraph;
-    }
-
-    private void _showTab(int tabIndex) {
-        Component tab = _tabbedPane.getComponent(tabIndex);
-        if (tab instanceof JGraph) {
-            setJGraph((JGraph) tab);
-            if (_graphPanner != null) {
-                _graphPanner.setCanvas((JGraph) tab);
-            }
-        } else {
-            if (_graphPanner != null) {
-                _graphPanner.setCanvas(null);
-            }
-        }
-    }
-
-    private int _activeTabIndex = 0;
-
-    private ActorEditorGraphController _controller;
-
-    private List<GraphPane> _graphPanes;
-
-    private List<JGraph> _graphs;
-
-    private JTabbedPane _tabbedPane;
+    private GTFrameController _frameController;
 }

@@ -65,6 +65,7 @@ JSRCS = \
 	DefaultDirectoryAttribute.java \
 	DefaultModelAttribute.java \
 	FakedRecordToken.java \
+	FSMMatcher.java \
 	GTEntity.java \
 	GTEntityUtils.java \
 	GTIngredient.java \

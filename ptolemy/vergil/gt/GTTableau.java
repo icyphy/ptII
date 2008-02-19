@@ -41,6 +41,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.fsm.CaseGraphTableau;
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,7 +56,7 @@ import ptolemy.vergil.fsm.CaseGraphTableau;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GTRuleGraphTableau extends Tableau {
+public class GTTableau extends Tableau {
 
     /** Create a new case editor tableau with the specified container
      *  and name.
@@ -66,7 +67,7 @@ public class GTRuleGraphTableau extends Tableau {
      *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
-    public GTRuleGraphTableau(PtolemyEffigy container, String name)
+    public GTTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
@@ -81,7 +82,7 @@ public class GTRuleGraphTableau extends Tableau {
      *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
-    public GTRuleGraphTableau(PtolemyEffigy container, String name,
+    public GTTableau(PtolemyEffigy container, String name,
             LibraryAttribute defaultLibrary) throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
@@ -94,15 +95,7 @@ public class GTRuleGraphTableau extends Tableau {
                             + "or a CompositeActorMatcher.");
         }
 
-        createGraphFrame((CompositeEntity) model, defaultLibrary);
-    }
-
-    /** Create the graph frame that displays the model associated with
-     *  this tableau. This method creates a GRRuleGraphFrame.
-     *  @param model The Ptolemy II model to display in the graph frame.
-     */
-    public void createGraphFrame(CompositeEntity model) {
-        createGraphFrame(model, null);
+        createFrame((CompositeEntity) model, defaultLibrary);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -117,16 +110,17 @@ public class GTRuleGraphTableau extends Tableau {
      *  @param defaultLibrary The default library, or null to not specify
      *   one.
      */
-    public void createGraphFrame(CompositeEntity model,
+    public void createFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        if (!(model instanceof TransformationRule || model instanceof CompositeActorMatcher)) {
+        if (!(model instanceof TransformationRule ||
+                model instanceof CompositeActorMatcher)) {
             throw new InternalErrorException(this, null, "Composite Entity \""
                     + model.getFullName() + "\" is not an instance of "
                     + "SingleRuleTransformer or CompositeActorMatcher.");
         }
-        GTRuleGraphFrame frame = new GTRuleGraphFrame((CompositeEntity) model,
-                this, defaultLibrary);
 
+        ExtendedGraphFrame frame = new GTFrame((CompositeEntity) model, this,
+                defaultLibrary);
         try {
             setFrame(frame);
         } catch (IllegalActionException ex) {
@@ -159,7 +153,7 @@ public class GTRuleGraphTableau extends Tableau {
         /** Create an instance of GRRuleGraphTableau for the specified effigy,
          *  if it is an effigy for an instance of FSMActor.
          *  @param effigy The effigy for an FSMActor.
-         *  @return A new GRRuleGraphTableau, if the effigy is a PtolemyEffigy
+         *  @return A new GRTableau, if the effigy is a PtolemyEffigy
          *   that references an FSMActor, or null otherwise.
          *  @exception Exception If an exception occurs when creating the
          *   tableau.
@@ -169,8 +163,8 @@ public class GTRuleGraphTableau extends Tableau {
                 return null;
             }
 
-            ComponentEntity entity = effigy.getEntity("gtRuleGraphTableau");
-            if (entity != null && entity instanceof GTRuleGraphTableau) {
+            ComponentEntity entity = effigy.getEntity("gtTableau");
+            if (entity != null && entity instanceof GTTableau) {
                 return (Tableau) entity;
             }
 
@@ -183,9 +177,8 @@ public class GTRuleGraphTableau extends Tableau {
                 LibraryAttribute library = (LibraryAttribute) getAttribute(
                         "_library", LibraryAttribute.class);
 
-                GTRuleGraphTableau tableau = new GTRuleGraphTableau(
-                        (PtolemyEffigy) effigy, effigy
-                                .uniqueName("gtRuleGraphTableau"), library);
+                GTTableau tableau = new GTTableau((PtolemyEffigy) effigy,
+                        effigy.uniqueName("gtTableau"), library);
                 return tableau;
             } else {
                 return null;

@@ -57,9 +57,10 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AbstractGTFrame.java \
 	CellPanelEditor.java \
+	GTFrame.java \
+	GTFrameController.java \
 	GTIngredientsEditor.java \
-	GTRuleGraphFrame.java \
-	GTRuleGraphTableau.java \
+	GTTableau.java \
 	MatchResultTableau.java \
 	MatchResultViewer.java
 
@@ -72,9 +73,30 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'AbstractGTFrame$$1.class' \
-	'AbstractGTFrame$$2.class' \
-	'AbstractGTFrame$$GTActorGraphModel.class' \
+	'GTFrame$$1.class' \
+	'GTFrame$$2.class' \
+	'GTFrame$$BatchMatchAction$$ModelFileFilter.class' \
+	'GTFrame$$BatchMatchAction$$MultipleViewController.class' \
+	'GTFrame$$BatchMatchAction.class' \
+	'GTFrame$$CellEditor.class' \
+	'GTFrame$$FileComparator.class' \
+	'GTFrame$$LayoutAction.class' \
+	'GTFrame$$MatchAction.class' \
+	'GTFrame$$MatchResultRecorder.class' \
+	'GTFrame$$SingleMatchAction$$SingleViewController.class' \
+	'GTFrame$$SingleMatchAction.class' \
+	'GTFrame$$ViewController.class' \
+	'GTFrameController$$1.class' \
+	'GTFrameController$$2.class' \
+	'GTFrameController$$ConfigureOperationsAction.class' \
+	'GTFrameController$$GTActorGraphController$$EntityController.class' \
+	'GTFrameController$$GTActorGraphController$$NewRelationAction.class' \
+	'GTFrameController$$GTActorGraphController$$PortController.class' \
+	'GTFrameController$$GTActorGraphController.class' \
+	'GTFrameController$$GTActorGraphModel.class' \
+	'GTFrameController$$GTFSMGraphController.class' \
+	'GTFrameController$$GTFSMGraphModel.class' \
+	'GTFrameController$$GTMenuActionFactory.class' \
 	'GTIngredientsEditor$$1.class' \
 	'GTIngredientsEditor$$2.class' \
 	'GTIngredientsEditor$$3.class' \
@@ -88,30 +110,9 @@ OPTIONAL_FILES = \
 	'GTIngredientsEditor$$IngredientContentEditor.class' \
 	'GTIngredientsEditor$$Row$$CheckBoxActionListener.class' \
 	'GTIngredientsEditor$$Row.class' \
-	'GTRuleGraphFrame$$1.class' \
-	'GTRuleGraphFrame$$2.class' \
-	'GTRuleGraphFrame$$3.class' \
-	'GTRuleGraphFrame$$BatchMatchAction$$ModelFileFilter.class' \
-	'GTRuleGraphFrame$$BatchMatchAction$$MultipleViewController.class' \
-	'GTRuleGraphFrame$$BatchMatchAction.class' \
-	'GTRuleGraphFrame$$CellEditor.class' \
-	'GTRuleGraphFrame$$ConfigureOperationsAction.class' \
-	'GTRuleGraphFrame$$FileComparator.class' \
-	'GTRuleGraphFrame$$GTActionGraphController$$EntityController.class' \
-	'GTRuleGraphFrame$$GTActionGraphController$$NewRelationAction.class' \
-	'GTRuleGraphFrame$$GTActionGraphController$$PortController.class' \
-	'GTRuleGraphFrame$$GTActionGraphController.class' \
-	'GTRuleGraphFrame$$GTMenuActionFactory.class' \
-	'GTRuleGraphFrame$$LayoutAction.class' \
-	'GTRuleGraphFrame$$MatchAction.class' \
-	'GTRuleGraphFrame$$MatchResultRecorder.class' \
-	'GTRuleGraphFrame$$SingleMatchAction$$SingleViewController.class' \
-	'GTRuleGraphFrame$$SingleMatchAction.class' \
-	'GTRuleGraphFrame$$ViewController.class' \
-	'GTRuleGraphTableau$$Factory.class' \
+	'GTTableau$$Factory.class' \
 	'MatchResultTableau$$Factory.class' \
 	'MatchResultViewer$$1.class' \
-	'MatchResultViewer$$2.class' \
 	'MatchResultViewer$$CloseAction.class' \
 	'MatchResultViewer$$FileSelectionStatus.class' \
 	'MatchResultViewer$$MatchResultNodeController.class' \

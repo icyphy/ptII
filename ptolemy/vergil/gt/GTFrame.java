@@ -124,6 +124,7 @@ import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ActorInstanceController;
 import ptolemy.vergil.actor.ExternalIOPortController;
+import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -135,7 +136,7 @@ import diva.gui.GUIUtilities;
 import diva.gui.toolbox.JContextMenu;
 
 //////////////////////////////////////////////////////////////////////////
-//// GTRuleGraphFrame
+//// GTGraphFrame
 
 /**
  A graph editor frame for ptolemy graph transformation models.
@@ -147,7 +148,7 @@ import diva.gui.toolbox.JContextMenu;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GTRuleGraphFrame extends AbstractGTFrame implements
+public class GTFrame extends AbstractGTFrame implements
         ActionListener, TableModelListener, ValueListener {
 
     ///////////////////////////////////////////////////////////////////
@@ -164,7 +165,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
      *  @param entity The model to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
-    public GTRuleGraphFrame(CompositeEntity entity, Tableau tableau) {
+    public GTFrame(CompositeEntity entity, Tableau tableau) {
         this(entity, tableau, null);
     }
 
@@ -182,7 +183,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.
      */
-    public GTRuleGraphFrame(CompositeEntity entity, Tableau tableau,
+    public GTFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, _importActorLibrary(tableau, defaultLibrary));
 
@@ -214,7 +215,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
     }
 
     public void cancelFullScreen() {
-        if (!hasTabs()) {
+        if (!getFrameController().hasTabs()) {
             super.cancelFullScreen();
             return;
         }
@@ -223,7 +224,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
 
         // Put the component back into the original window.
         _splitPane.setRightComponent(_getRightComponent());
-        JTabbedPane tabbedPane = _getTabbedPane();
+        JTabbedPane tabbedPane = getFrameController().getTabbedPane();
         tabbedPane.add(_fullScreenComponent, _selectedIndexBeforeFullScreen);
         tabbedPane.setSelectedIndex(_selectedIndexBeforeFullScreen);
 
@@ -234,7 +235,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
             _graphPanner.setCanvas(null);
         }
 
-        _fullScreenComponent.removeKeyListener(this);
+        _fullScreenComponent.removeKeyListener(getFrameController());
         if (_selectedIndexBeforeFullScreen == 2) {
             _setOrUnsetKeyListenersForAllComponents(
                     (JPanel) _fullScreenComponent, false);
@@ -247,8 +248,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
     }
 
     public void copy() {
-        if (!_isTableActive()) {
-            CompositeEntity model = getActiveModel();
+        if (!getFrameController().isTableActive()) {
+            CompositeEntity model = getFrameController().getActiveModel();
             if (model instanceof Pattern || GTTools.isInPattern(model)) {
                 _setOrClearPatternObjectAttributes(model, true,
                         _getSelectionSet());
@@ -262,13 +263,13 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
     }
 
     public void delete() {
-        if (!_isTableActive()) {
+        if (!getFrameController().isTableActive()) {
             super.delete();
         }
     }
 
     public void fullScreen() {
-        if (!hasTabs()) {
+        if (!getFrameController().hasTabs()) {
             super.fullScreen();
             return;
         }
@@ -282,7 +283,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         int height = toolkit.getScreenSize().height;
         _screen.setSize(width, height);
 
-        JTabbedPane tabbedPane = _getTabbedPane();
+        JTabbedPane tabbedPane = getFrameController().getTabbedPane();
         _selectedIndexBeforeFullScreen = tabbedPane.getSelectedIndex();
         _fullScreenComponent = tabbedPane.getSelectedComponent();
         _screen.setUndecorated(true);
@@ -311,7 +312,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
 
         _screen.setResizable(false);
 
-        _fullScreenComponent.addKeyListener(this);
+        _fullScreenComponent.addKeyListener(getFrameController());
         if (_selectedIndexBeforeFullScreen == 2) {
             // The correspondence table is selected before full screen.
             // Set the key listener for the table.
@@ -327,10 +328,10 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
     }
 
     public void paste() {
-        if (!_isTableActive()) {
+        if (!getFrameController().isTableActive()) {
             super.paste();
 
-            CompositeEntity model = getActiveModel();
+            CompositeEntity model = getFrameController().getActiveModel();
             if (model instanceof Pattern || GTTools.isInPattern(model)) {
                 // FIXME: modify only newly created entities and relations.
                 _setOrClearPatternObjectAttributes(model, false, null);
@@ -341,7 +342,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
     }
 
     public void redo() {
-        if (_isTableActive() && _cellEditor != null) {
+        if (getFrameController().isTableActive() && _cellEditor != null) {
             _cellEditor.stopCellEditing();
         }
         super.redo();
@@ -498,7 +499,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
     }
 
     public void undo() {
-        if (_isTableActive() && _cellEditor != null) {
+        if (getFrameController().isTableActive() && _cellEditor != null) {
             _cellEditor.stopCellEditing();
         }
         super.undo();
@@ -512,19 +513,19 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
     }
 
     public void zoom(double factor) {
-        if (!_isTableActive()) {
+        if (!getFrameController().isTableActive()) {
             super.zoom(factor);
         }
     }
 
     public void zoomFit() {
-        if (!_isTableActive()) {
+        if (!getFrameController().isTableActive()) {
             super.zoomFit();
         }
     }
 
     public void zoomReset() {
-        if (!_isTableActive()) {
+        if (!getFrameController().isTableActive()) {
             super.zoomReset();
         }
     }
@@ -551,7 +552,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         GUIUtilities.addMenuItem(_ruleMenu, layoutAction);
 
         ActorEditorGraphController controller = (ActorEditorGraphController) _getGraphController();
-        if (hasTabs()) {
+        if (getFrameController().hasTabs()) {
             _ruleMenu.addSeparator();
             Action newRelationAction = controller.new NewRelationAction();
             GUIUtilities.addMenuItem(_ruleMenu, newRelationAction);
@@ -563,10 +564,6 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
 
         GUIUtilities.addToolBarButton(_toolbar, singleMatchAction);
         GUIUtilities.addToolBarButton(_toolbar, batchMatchAction);
-    }
-
-    protected ActorEditorGraphController _createController() {
-        return new GTActionGraphController();
     }
 
     protected JComponent _createRightComponent(NamedObj entity) {
@@ -652,7 +649,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         panel.add(_table, BorderLayout.CENTER);
         panel.add(buttonsPanel, BorderLayout.SOUTH);
 
-        JTabbedPane tabbedPane = _getTabbedPane();
+        JTabbedPane tabbedPane = getFrameController().getTabbedPane();
         int index = tabbedPane.getComponentCount();
         tabbedPane.add(panel, index);
 
@@ -680,13 +677,13 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         }
     }
 
-    private GTRuleGraphFrame _getToplevelFrame() {
-        NamedObj toplevel = getTransformationRule();
+    private GTFrame _getToplevelFrame() {
+        NamedObj toplevel = getFrameController().getTransformationRule();
         for (Frame frame : getFrames()) {
-            if (frame instanceof GTRuleGraphFrame) {
-                GTRuleGraphFrame gtRuleGraphFrame = (GTRuleGraphFrame) frame;
-                if (gtRuleGraphFrame.getModel() == toplevel) {
-                    return gtRuleGraphFrame;
+            if (frame instanceof GTFrame) {
+                GTFrame gtGraphFrame = (GTFrame) frame;
+                if (gtGraphFrame.getModel() == toplevel) {
+                    return gtGraphFrame;
                 }
             }
         }
@@ -723,12 +720,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         return gtLibrary;
     }
 
-    private boolean _isTableActive() {
-        return hasTabs() && getActiveTabIndex() == 2;
-    }
-
     private void _refreshTable() {
-        GTRuleGraphFrame frame = _getToplevelFrame();
+        GTFrame frame = _getToplevelFrame();
         if (frame._cellEditor != null) {
             frame._cellEditor.stopCellEditing();
         }
@@ -738,14 +731,15 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
             frame._tableModel.removeRow(0);
         }
 
-        TransformationRule transformer = (TransformationRule) getTransformationRule();
+        TransformationRule transformer =
+            (TransformationRule) getFrameController().getTransformationRule();
         CompositeActorMatcher replacement = transformer.getReplacement();
         _refreshTable(frame, replacement, 1, replacement);
 
         frame._tableModel.addTableModelListener(this);
     }
 
-    private int _refreshTable(GTRuleGraphFrame topLevelFrame,
+    private int _refreshTable(GTFrame topLevelFrame,
             CompositeActorMatcher replacement, int index,
             CompositeEntity container) {
         Collection<?> objectCollection = new CombinedCollection<Object>(
@@ -824,7 +818,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
                                 "patternObject");
                     }
                     String name = _getNameWithinContainer(object,
-                            getTransformationRule().getPattern());
+                            getFrameController().getTransformationRule()
+                            .getPattern());
                     patternObject.setPersistent(true);
                     patternObject.setExpression(name);
                 } else if (patternObject != null) {
@@ -845,9 +840,9 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
             boolean isSet) {
         for (Component component : container.getComponents()) {
             if (isSet) {
-                component.addKeyListener(this);
+                component.addKeyListener(getFrameController());
             } else {
-                component.removeKeyListener(this);
+                component.removeKeyListener(getFrameController());
             }
             if (component instanceof Container) {
                 _setOrUnsetKeyListenersForAllComponents((Container) component,
@@ -907,10 +902,10 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
 
     private JTable _table;
 
-    private DefaultTableModel _tableModel;
-
     ///////////////////////////////////////////////////////////////////
     ////                      private inner classes                ////
+
+    private DefaultTableModel _tableModel;
 
     private class BatchMatchAction extends MatchAction {
 
@@ -944,7 +939,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         }
 
         private File[] _getModelFiles() {
-            TransformationRule rule = getTransformationRule();
+            TransformationRule rule =
+                getFrameController().getTransformationRule();
             Pattern pattern = rule.getPattern();
             DefaultDirectoryAttribute attribute = (DefaultDirectoryAttribute) pattern
                     .getAttribute("DefaultDirectory");
@@ -965,7 +961,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
 
             if (directoryFile == null) {
                 ComponentDialog dialog = new ComponentDialog(
-                        GTRuleGraphFrame.this, "Select Model Directory",
+                        GTFrame.this, "Select Model Directory",
                         new Configurer(_attribute));
                 if (dialog.buttonPressed().equalsIgnoreCase("OK")) {
                     try {
@@ -1207,50 +1203,6 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         private String _previousString;
     }
 
-    private static class ConfigureOperationsAction extends FigureAction {
-
-        public void actionPerformed(ActionEvent event) {
-            // Determine which entity was selected for the look inside action.
-            super.actionPerformed(event);
-            NamedObj target = getTarget();
-            Frame frame = getFrame();
-            if (target instanceof GTEntity) {
-                List<?> attributeList = target
-                        .attributeList(EditorFactory.class);
-                if (attributeList.size() > 0) {
-                    EditorFactory factory = (EditorFactory) attributeList
-                            .get(0);
-                    factory.createEditor(target, frame);
-                } else {
-                    new EditParametersDialog(frame, target);
-                }
-            } else {
-                List<?> ingredientsAttributes = target
-                        .attributeList(GTIngredientsAttribute.class);
-                try {
-                    if (ingredientsAttributes.isEmpty()) {
-                        Attribute attribute = new GTIngredientsAttribute(
-                                target, target.uniqueName("operations"));
-                        attribute.setPersistent(false);
-                    }
-
-                    EditorFactory factory = new GTIngredientsEditor.Factory(
-                            target, target
-                                    .uniqueName("ingredientsEditorFactory"));
-                    factory.setPersistent(false);
-                    factory.createEditor(target, frame);
-                    factory.setContainer(null);
-                } catch (KernelException e) {
-                    throw new InternalErrorException(e);
-                }
-            }
-        }
-
-        ConfigureOperationsAction(String name) {
-            super(name);
-        }
-    }
-
     private static class FileComparator implements Comparator<File>,
     Serializable {
 
@@ -1258,130 +1210,6 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
             return file1.getAbsolutePath().compareTo(file2.getAbsolutePath());
         }
 
-    }
-
-    private class GTActionGraphController extends ActorEditorGraphController {
-
-        public class NewRelationAction extends
-                ActorEditorGraphController.NewRelationAction {
-
-            public void actionPerformed(ActionEvent e) {
-                if (_isTableActive()) {
-                    return;
-                } else {
-                    super.actionPerformed(e);
-                }
-            }
-
-        }
-
-        protected void _createControllers() {
-            super._createControllers();
-            _entityController = new EntityController();
-            _portController = new PortController();
-        }
-
-        protected void initializeInteraction() {
-            super.initializeInteraction();
-
-            MenuActionFactory newFactory = new GTMenuActionFactory(
-                    _configureMenuFactory, _configureAction);
-            _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
-            _configureMenuFactory = newFactory;
-        }
-
-        private void _replaceFactory(PtolemyMenuFactory menuFactory,
-                MenuItemFactory replacedFactory, MenuItemFactory replacement) {
-            List<?> factories = menuFactory.menuItemFactoryList();
-            int size = factories.size();
-            for (int i = 0; i < size; i++) {
-                MenuItemFactory factory = (MenuItemFactory) factories.get(0);
-                menuFactory.removeMenuItemFactory(factory);
-                if (factory == replacedFactory) {
-                    menuFactory.addMenuItemFactory(replacement);
-                } else {
-                    menuFactory.addMenuItemFactory(factory);
-                }
-            }
-        }
-        
-        private class PortController extends ExternalIOPortController {
-            
-            public PortController() {
-                super(GTActionGraphController.this, AttributeController.FULL);
-                
-                MenuActionFactory newFactory = new GTMenuActionFactory(
-                        _configureMenuFactory, _configureAction);
-                _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
-                _configureMenuFactory = newFactory;
-            }
-        }
-
-        private class EntityController extends ActorInstanceController {
-            EntityController() {
-                super(GTActionGraphController.this);
-
-                MenuActionFactory newFactory = new GTMenuActionFactory(
-                        _configureMenuFactory, _configureAction);
-                _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
-                _configureMenuFactory = newFactory;
-
-                FigureAction operationsAction = new ConfigureOperationsAction(
-                        "Operations");
-                _configureMenuFactory.addAction(operationsAction, "Customize");
-            }
-        }
-    }
-
-    private static class GTMenuActionFactory extends MenuActionFactory {
-
-        public void addAction(Action action, String label) {
-            _oldFactory.addAction(action, label);
-        }
-
-        public void addActions(Action[] actions, String label) {
-            _oldFactory.addActions(actions, label);
-        }
-
-        public JMenuItem create(JContextMenu menu, NamedObj object) {
-            JMenuItem menuItem = _oldFactory.create(menu, object);
-            if (menuItem instanceof JMenu) {
-                JMenu subMenu = (JMenu) menuItem;
-                if (subMenu.getText().equals("Customize")) {
-                    Component[] menuItems = subMenu.getMenuComponents();
-                    for (Component itemComponent : menuItems) {
-                        JMenuItem item = (JMenuItem) itemComponent;
-                        Action action = item.getAction();
-                        if (object instanceof PortMatcher) {
-                            // Disable all the items for a PortMatcher, which
-                            // should be configured by double-clicking the
-                            // containing CompositeActor.
-                            item.setEnabled(false);
-                        } else if (action instanceof PortDialogAction
-                                && object instanceof GTEntity) {
-                            // Disable the PortDialogAction from the context
-                            // menu.
-                            item.setEnabled(false);
-                        } else if (action instanceof ConfigureOperationsAction
-                                && (!(object instanceof Entity) || !GTTools
-                                        .isInReplacement(object))) {
-                            // Hide the ConfigureOperationsAction from the
-                            // context menu.
-                            item.setVisible(false);
-                        }
-                    }
-                }
-            }
-            return menuItem;
-        }
-
-        GTMenuActionFactory(MenuActionFactory oldFactory, Action configureAction) {
-            super(configureAction);
-
-            _oldFactory = oldFactory;
-        }
-
-        private MenuActionFactory _oldFactory;
     }
 
     /** Action to automatically layout the graph.
@@ -1418,7 +1246,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
     private class MatchAction extends FigureAction {
 
         protected List<MatchResult> _getMatchResult(CompositeEntity model) {
-            TransformationRule transformerActor = getTransformationRule();
+            TransformationRule transformerActor =
+                getFrameController().getTransformationRule();
             Pattern pattern = transformerActor.getPattern();
             MatchResultRecorder recorder = new MatchResultRecorder();
             _matcher.setMatchCallback(recorder);
@@ -1446,7 +1275,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
                 throws IllegalActionException, NameDuplicationException {
 
             MatchResultViewer._setTableauFactory(this, model);
-            Configuration configuration = _getConfiguration();
+            Configuration configuration =
+                getFrameController().getConfiguration();
             if (configuration == null) {
                 throw new InternalErrorException("Cannot get configuration.");
             }
@@ -1455,7 +1285,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
             MatchResultViewer viewer = (MatchResultViewer) tableau.getFrame();
             viewer.setMatchResult(results);
             viewer.setSourceFileName(sourceFileName);
-            viewer.setTransformationRule(getTransformationRule());
+            viewer.setTransformationRule(
+                    getFrameController().getTransformationRule());
             return viewer;
         }
 
@@ -1517,7 +1348,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         private File _getModelFile() {
             File modelFile = null;
             try {
-                TransformationRule rule = getTransformationRule();
+                TransformationRule rule =
+                    getFrameController().getTransformationRule();
                 Pattern pattern = rule.getPattern();
                 DefaultModelAttribute attribute = (DefaultModelAttribute) pattern
                         .getAttribute("DefaultModel");
@@ -1530,7 +1362,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
 
                 if (modelFile == null) {
                     ComponentDialog dialog = new ComponentDialog(
-                            GTRuleGraphFrame.this, "Select Model File",
+                            GTFrame.this, "Select Model File",
                             new Configurer(_attribute));
                     if (dialog.buttonPressed().equalsIgnoreCase("OK")) {
                         modelFile = ((FileParameter) _attribute.parameter)
@@ -1619,7 +1451,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
 
         public void windowClosing(WindowEvent e) {
             Window window = e.getWindow();
-            if (window == GTRuleGraphFrame.this) {
+            if (window == GTFrame.this) {
                 _close();
             }
         }

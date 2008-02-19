@@ -5,7 +5,7 @@
 <property name="gtTableauFactory" class="ptolemy.actor.gui.PtolemyTableauFactory">
   <!-- These will appear in the View menu of a graph rewriting rule tableau. -->
   <property name="Transformation Editor"
-            class="ptolemy.vergil.gt.GTRuleGraphTableau$Factory">
+            class="ptolemy.vergil.gt.GTTableau$Factory">
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
       <configure>
         <entity name="GTLibrary" class="ptolemy.kernel.CompositeEntity">

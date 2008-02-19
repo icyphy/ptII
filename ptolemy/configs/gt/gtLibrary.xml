@@ -3,8 +3,9 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <group>
-  <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher"/>
   <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher"/>
+  <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher"/>
+  <entity name="FSMMatcher" class="ptolemy.actor.gt.FSMMatcher"/>
   <entity name="PatternAttributes" class="ptolemy.moml.EntityLibrary">
     <property name="Constraint" class="ptolemy.actor.gt.Constraint">
       <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
