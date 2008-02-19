@@ -265,10 +265,13 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                     _debug("Iterating " + ((NamedObj) actor).getFullName());
                 }
 
-                //if (actor.iterate(1) == STOP_ITERATING) {
+                if (actor.iterate(1) == STOP_ITERATING) {
                     // FIXME: How to handle this?
                     // put the actor on a no-fire hashtable?
-                //}
+                    System.err.println("Warning: Giotto iterate returned "
+                            + "STOP_ITERATING for actor \""
+                            + actor.getFullName() + "\"");
+                }
             }
 
             _unitIndex++;
