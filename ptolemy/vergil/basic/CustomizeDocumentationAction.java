@@ -42,6 +42,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.vergil.actor.DocApplicationSpecializer;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CustomizeDocumentationAction
