@@ -25,7 +25,7 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
      - <a href="#ptalon">Ptalon</a>
      - <a href="#backtracking">Backtracking</a>
      - <a href="#continuousDomain">Continuous Domain</a>
-     - <a href="#modelTransformation">Model Transformation</a>
+     - <a href="#graphTransformation">Graph Transformation</a>
 <li> <a href="#demos">New demonstrations</a>
 <li> <a href="#other">Other Key New Capabilities</a>
 <li> <a href="#libraries">New and Enhanced Actor Libraries</a>
@@ -46,7 +46,6 @@ Heterochronous Dataflow Domain (HDF) models.
 <li><a href="ptdoc:ptolemy.actor.lib.jni.EmbeddedCActor">EmbeddedCActor</a> - Allows arbitrary C code to be embedded in a Java model.  The entire Java model can then be converted to C code and the code within the EmbeddedCActor will be used.
 <li>Enhanced polymorphic type system
 <li>Support for invoking the Java plotter from a C version of a model
-<li>Ability to target C++.
 <li><i>and many more<i>
 </ul>
 
@@ -151,21 +150,13 @@ operations to achieve some form of laziness.</li>
 
 </ul>
 
- <h4>References</h4>
-<ul>
-<li> Thomas Huining Feng and Edward A. Lee, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/06/incrementalCheckpointing_WSC06/" target="_top">Incremental Checkpointing with Application to Distributed Discrete Event Simulation</a>," Winter Simulation Conference (WSC 2006), Dec. 2006, Monterey, CA, USA.
-
-<li> Thomas Huining Feng and Edward A. Lee, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/08/FaultTolerantPtides_RTAS/" target="_top">Real-Time Distributed Discrete-Event Execution with Fault Tolerance</a>," 14th IEEE Real-Time and Embedded Technology and Applications Symposium (RTAS 08), Apr. 2008, St. Louis, MO, USA.
-</ul>
-
+ <p>Primary Backtracking Developer: Thomas Huining Feng
 <h4>Backtracking Demonstrations</h4>
  <ul>
    <li> <a href="../../../ptolemy/backtrack/demo/PrimeTest/PrimeTest.xml">Prime Test</a> </li>
    <li> <a href="../../../ptolemy/backtrack/demo/RampRollback/RampRollback.xml">Ramp Rollback</a> </li>
    <li> <a href="../../../ptolemy/backtrack/demo/TrialModule/TrialModule.xml">Trial Module</a> </li>
  </ul>
- 
-<p>Primary Backtracking Developer: Thomas Huining Feng
 
 <!-- a little space -->
 <p> &nbsp;
@@ -206,10 +197,10 @@ Domain interactions are documented in the following paper:
 
 <!-- a little space -->
 <p> &nbsp;
-<h3><a name="modelTransformation">Model Transformation</h3>
+<h3><a name="graphTransformation">Graph Transformation</h3>
 
-<p>The model transformation facility provides a framework for the
-analysis and transformation of actor models using model transformation
+<p>The graph transformation facility provides a framework for the
+analysis and transformation of actor models using graph transformation
 techniques.
 
 <p>The design of large-scale models poses a number of challenges. As
@@ -254,22 +245,18 @@ reusing design patterns by incorporating them into new models.
 
 <h4>References</h4>
 <ul>
-<li>Thomas Huining Feng, Miriam Zia, and Hans Vangheluwe," <a href="http://www.eecs.berkeley.edu/~tfeng/papers/fzv07scsc.pdf" target="_top">Multi-Formalism Modelling and Model Transformation for the Design of Reactive Systems</a>," In <a href="http://www.sce.carleton.ca/faculty/wainer/SCSC07/">2007 Summer Computer Simulation Conference (SCSC 2007)</a>, San Diego, CA, USA, Jul. 2007.
+<li>Thomas Huining Feng, Miriam Zia, and Hans Vangheluwe, "<a href="http://www.eecs.berkeley.edu/~tfeng/papers/fzv07scsc.pdf" target="_top">Multi-Formalism Modelling and Model Transformation for the Design of Reactive Systems</a>," In <a href="http://www.sce.carleton.ca/faculty/wainer/SCSC07/">2007 Summer Computer Simulation Conference (SCSC 2007)</a>, San Diego, CA, USA, Jul. 2007.
 </ul>
 
-<h4>Model Transformation Demonstrations</h4>
+<h4>Graph Transformation Demonstrations</h4>
 
+<p>Primary Graph Transformation Developer: Thomas Huining Feng
 <ul>
    <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a> </li>
-   <li> <a href="../../../ptolemy/actor/gt/demo/DiningPhilosophers/DiningPhilosophers.xml">DiningPhilosophers</a> </li>
    <li> <a href="../../../ptolemy/actor/gt/demo/HierarchyFlattening/HierarchyFlattening.xml">HierarchyFlattening</a> </li>
    <li> <a href="../../../ptolemy/actor/gt/demo/ModelGeneration/ModelGeneration.xml">ModelGeneration</a> </li>
    <li> <a href="../../../ptolemy/actor/gt/demo/PublisherTest/PublisherTest.xml">PublisherTest</a> </li>
 </ul>
-
-<p>Primary Model Transformation Developer: Thomas Huining Feng
- <!-- a little space -->
-<p> &nbsp;
 
 <h2><a name="demos">New demonstrations</a></h2>
 
@@ -314,6 +301,66 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 
 
 <h2><a name="other">Other Key New Capabilities</a></h2>
+
+<h3>ArrayType changes surrounding length</h3>
+
+The <a href="ptdoc:ptolemy.data.type.ArrayType">ArrayType</a> class
+now represents the length of arrays.  New methods were added:
+
+<pre>
+boolean hasKnownLength()
+int length()
+</pre>          
+The length() method throws a RuntimeException if invoked on an 
+ArrayType with hasKnownLength() == false.
+          
+<p>Existing ArrayType instances (creating using the ArrayType(Type)
+constructor have unknown length.  A new constructor ArrayType(Type,
+int) creates array types with a known length.  Generally speaking,
+array types with known length are incomparable with array types with
+different lengths, and can be converted to an array type with unknown
+length and compatible element type.  Scalars are convertible to array
+types with length 1.  Getting the code to do this right was
+significantly more complex than inferring sizes of Fix-point types
+because:
+
+<ol>
+
+<li>The FixType modifications were easily factored since any FixType
+with a known length is less than the single FixType with an unknown
+length.  ArrayType could not be factored this way because of the more
+complex type relations.
+
+<li>FixType doesn't have a contained type variable.
+</ol>
+          
+ArrayTypes now have a type construction functions: arrayType(int) and
+arrayType(int, 4) represent the types that you might expect.
+
+<p> Unfortunately, this means that there is <b>a signficant
+backward-compatibility issue</b> Previously, if you wanted to force an
+arbitrary integer array type, you used {int}, which is really an array
+with one element.  This now has the type arrayType(int, 1), which is
+more specific than you probably want.
+
+<p>The existing models have been updated using the new description
+of an array type with an unknown length.
+
+<p>Note that arrayType(int) returns an instance of the special class
+UnsizedArrayToken, whose only purpose is to have an unknown array
+size.  Regular array tokens always have a known length.
+          
+<p>Note also that arrayType(unknown) is no longer the GLB of all of
+the arrayTypes.  The GLB is now represented by BaseType.ARRAY_BOTTOM
+(which is not an instance of ArrayType).  This required moving farther
+along the path of decoupling type constraints on array element types
+from the type objects themselves.  TypeableElementTypeTerm can now
+refer to the element type of a typeable which may never esolve to a
+valid array type (resulting in an unsatisifed inequality term).
+
+<p>Primary Developer of ArrayType changes: Stephen Neuendorffer
+
+
 <ul>
 <li><a href="ptdoc:ptolemy.actor.Initializable">Initializable</a>
 <li><a href="ptdoc:ptolemy.actor.TokenGotEvent">TokenGotEvent</a>
