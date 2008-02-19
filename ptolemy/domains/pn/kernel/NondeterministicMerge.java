@@ -1,6 +1,6 @@
 /* A nondeterministic merge actor for PN.
 
- Copyright (c) 2004-2005 The Regents of the University of California.
+ Copyright (c) 2004-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -47,6 +47,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Merge
@@ -83,27 +84,24 @@ public class NondeterministicMerge extends TypedCompositeActor {
     public NondeterministicMerge(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        _constructor();
+    }
 
-        input = new TypedIOPort(this, "input", true, false);
-        output = new TypedIOPort(this, "output", false, true);
-
-        input.setMultiport(true);
-        output.setTypeAtLeast(input);
-
-        channel = new TypedIOPort(this, "channel");
-        channel.setOutput(true);
-        channel.setTypeEquals(BaseType.INT);
-
-        // Add an attribute to get the port placed on the bottom.
-        StringAttribute channelCardinal = new StringAttribute(channel,
-                "_cardinal");
-        channelCardinal.setExpression("SOUTH");
-
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:red\"/>\n" + "</svg>\n");
-
-        /*PNDirector director = */new MergeDirector(this, "director");
+    /** Construct a TypedCompositeActor in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.  You should set the local director or
+     *  executive director before attempting to send data to the actor
+     *  or to execute it. Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public NondeterministicMerge(Workspace workspace) 
+            throws NameDuplicationException, IllegalActionException {
+        // Added for the sake of Kepler's KAR handling, which needs this
+        // constructor to instantiate composite actors.
+        super(workspace);
+        _constructor();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -187,6 +185,35 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 }
             }
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Construct a NondeterministicMerge. */
+    private void _constructor() 
+            throws NameDuplicationException, IllegalActionException {
+
+        input = new TypedIOPort(this, "input", true, false);
+        output = new TypedIOPort(this, "output", false, true);
+
+        input.setMultiport(true);
+        output.setTypeAtLeast(input);
+
+        channel = new TypedIOPort(this, "channel");
+        channel.setOutput(true);
+        channel.setTypeEquals(BaseType.INT);
+
+        // Add an attribute to get the port placed on the bottom.
+        StringAttribute channelCardinal = new StringAttribute(channel,
+                "_cardinal");
+        channelCardinal.setExpression("SOUTH");
+
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                + "style=\"fill:red\"/>\n" + "</svg>\n");
+
+        /*PNDirector director = */new MergeDirector(this, "director");
     }
 
     ///////////////////////////////////////////////////////////////////
