@@ -291,12 +291,26 @@ public class KeplerDocumentationAttribute extends Attribute implements
     public void setDocName(String name) {
         this.docName = name;
     }
+    
+    /** return the document name
+     * @return the document name
+     */
+    public String getDocName() {
+        return this.docName;
+    }
 
     /** Set the name of this docClass.
      *  @param className The name of this docClass.
      */
     public void setDocClass(String className) {
         this.docClass = className;
+    }
+    
+    /** return the document class
+     * @return the document class
+     */
+    public String getDocClass() {
+        return this.docClass;
     }
 
     /** Set the description.
@@ -305,12 +319,26 @@ public class KeplerDocumentationAttribute extends Attribute implements
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    /** return the description
+     * @return the description
+     */
+    public String getDescription() {
+        return this.description;
+    }
 
     /** Set the author.
      *  @param author The author.
      */
     public void setAuthor(String author) {
         this.author = author;
+    }
+    
+    /** return the author
+     * @return the author
+     */
+    public String getAuthor() {
+        return this.author;
     }
 
     /** Set the version.
@@ -319,6 +347,13 @@ public class KeplerDocumentationAttribute extends Attribute implements
     public void setVersion(String version) {
         this.version = version;
     }
+    
+    /** return the version
+     * @return the version
+     */
+    public String getVersion() {
+        return this.version;
+    }
 
     /** Set the user level documentation.
      *  @param userLevelDocumentation The user level documentation.
@@ -326,12 +361,26 @@ public class KeplerDocumentationAttribute extends Attribute implements
     public void setUserLevelDocumentation(String userLevelDocumentation) {
         this.userLevelDocumentation = userLevelDocumentation;
     }
+    
+    /** return the user level documentation
+     * @return the user level documentation
+     */
+    public String getUserLevelDocumentation() {
+        return this.userLevelDocumentation;
+    }
 
     /** Set the port hash.
      *  @param portHash The port hash.
      */
     public void setPortHash(Hashtable portHash) {
         this.portHash = portHash;
+    }
+    
+    /** return the port hash
+     * @return the port has
+     */
+    public Hashtable getPortHash() {
+        return this.portHash;
     }
 
     /** Add port to the port hashtable.
@@ -341,12 +390,26 @@ public class KeplerDocumentationAttribute extends Attribute implements
     public void addPort(String name, String value) {
         portHash.put(name, value);
     }
+    
+    /** return the port docs
+     * @return the port docs
+     */
+    public String getPort(String name) {
+        return (String)portHash.get(name);
+    }
 
     /** Set the property hashtable.
      *  @param propertyHash The property hashtable.
      */
     public void setPropertyHash(Hashtable propertyHash) {
         this.propertyHash = propertyHash;
+    }
+    
+    /** return the property hash
+     * @return the property hash
+     */
+    public Hashtable getPropertyHash() {
+        return this.propertyHash;
     }
 
     /** Add a property to the property hashtable.
@@ -355,6 +418,13 @@ public class KeplerDocumentationAttribute extends Attribute implements
      */
     public void addProperty(String name, String value) {
         propertyHash.put(name, value);
+    }
+    
+    /** return the property docs
+     * @return the property docs
+     */
+    public String getProperty(String name) {
+        return (String)this.propertyHash.get(name);
     }
 
     /** Configure this documentation attribute.
