@@ -1,6 +1,6 @@
 /* An action for editing documentation.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2006-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Attribute;
 //// CustomizeDocumentationAction
 
 /**
- This class provides an action for editing instance-specific documentation.
+ An action for editing instance-specific documentation.
 
  @author Edward A. Lee
  @version $Id$
@@ -91,20 +91,31 @@ public class CustomizeDocumentationAction extends FigureAction {
                   if (config != null)
                     break;
                 }
-                //check to see if the configuration has a _docApplicationSpecializer
-                //parameter and if it does, let it handle the customization
+                if (config == null) {
+                    throw new InternalErrorException(target,
+                            "Failed to find configuration");
+                }
+
+                // Check to see if the configuration has a
+                // _docApplicationSpecializer parameter and if it does,
+                // let it handle the customization
+
                 docApplicationSpecializerParameter = (Parameter) config
-                        .getAttribute("_docApplicationSpecializer", Parameter.class);
+                        .getAttribute("_docApplicationSpecializer",
+                                Parameter.class);
             }
-            catch(IllegalActionException iae) {
-              //basically do nothing.  just let the default action happen
-              System.out.println("Error getting the documentation specializer: " + iae.getMessage());
+            catch (IllegalActionException iae) {
+              // Ignore.  just let the default action happen
+              System.out.println("Error getting the documentation "
+                     + "specializer: " + iae.getMessage());
             }
           
-            if(docApplicationSpecializerParameter != null) {
-                //if there is a docApplicationSpecializer, use it to 
-                //customize the documentation since it knows about the
-                //special doc attribute
+            if (docApplicationSpecializerParameter != null) {
+
+                // If there is a docApplicationSpecializer, use it to
+                // customize the documentation since it knows about
+                // the special doc attribute
+
                 String docApplicationSpecializerClassName = docApplicationSpecializerParameter.getExpression();
                 
                 try {
@@ -114,12 +125,13 @@ public class CustomizeDocumentationAction extends FigureAction {
                             .newInstance();
                     String docAttributeClassName = docApplicationSpecializer.getDocumentationAttributeClassName();
                     Class docAttributeClass = Class.forName(docAttributeClassName);
-                    if(docApplicationSpecializerClass != null && docAttributeClass != null) {
+                    if (docApplicationSpecializerClass != null && docAttributeClass != null) {
                       docAttributeList = target.attributeList(docAttributeClass);
                     }
                     
-                    if(docAttributeList.size() == 0) { //create a new attribute and edit it
-                      //TODO: 
+                    if (docAttributeList.size() == 0) {
+                        //create a new attribute and edit it
+                        //TODO: 
                     } else { //edit the existing attribute
                       final Attribute docAttribute = (Attribute) docAttributeList.get(docAttributeList.size() - 1);
                       ChangeRequest request = new ChangeRequest(this,
@@ -136,13 +148,15 @@ public class CustomizeDocumentationAction extends FigureAction {
                             "Failed to call doc application specializer "
                                     + "class \""
                                     + docApplicationSpecializerClassName
-                                    + "\" on class \"" + docApplicationSpecializerClassName + "\".");
+                                    + "\" on class \""
+                                    + docApplicationSpecializerClassName
+                                    + "\".");
                 }
                 done = true;
             }
             
             
-            if(!done) { 
+            if (!done) { 
               //assign the docAttributeList the default DocAttribute if it
               //wasn't assigned by the specializer
               docAttributeList = target.attributeList(DocAttribute.class);
@@ -150,14 +164,17 @@ public class CustomizeDocumentationAction extends FigureAction {
                   // Create a doc attribute, then edit its parameters.
                   String moml = "<property name=\"" + "DocAttribute"
                           + "\" class=\"ptolemy.vergil.basic.DocAttribute\"/>";
-                  MoMLChangeRequest request = new MoMLChangeRequest(this, target,
-                          moml) {
+                  MoMLChangeRequest request = new MoMLChangeRequest(this,
+                          target, moml) {
                       protected void _execute() throws Exception {
                           super._execute();
                           List docAttributes = target
                                   .attributeList(DocAttribute.class);
-                          // There shouldn't be more than one of these, but if there are,
-                          // the new one is the last one.
+
+                          // There shouldn't be more than one of
+                          // these, but if there are, the new one is
+                          // the last one.
+
                           DocAttribute attribute = (DocAttribute) docAttributes
                                   .get(docAttributes.size() - 1);
                           _editDocAttribute(getFrame(), attribute, target);
@@ -165,16 +182,24 @@ public class CustomizeDocumentationAction extends FigureAction {
                   };
                   target.requestChange(request);
               } else {
-                  // In case there is more than one such attribute, get the last one.
+
+                  // In case there is more than one such attribute,
+                  // get the last one.
+
                   final DocAttribute attribute = (DocAttribute) docAttributeList
                           .get(docAttributeList.size() - 1);
-                  // Do the update in a change request because it may modify
-                  // the DocAttribute parameter.
+
+                  // Do the update in a change request because it may
+                  // modify the DocAttribute parameter.
+
                   ChangeRequest request = new ChangeRequest(this,
                           "Customize documentation.") {
                       protected void _execute() throws Exception {
-                          // In case parameters or ports have been added since the
-                          // DocAttribute was constructed, refresh it.
+
+                          // In case parameters or ports have been
+                          // added since the DocAttribute was
+                          // constructed, refresh it.
+
                           attribute.refreshParametersAndPorts();
                           _editDocAttribute(getFrame(), attribute, target);
                       }
@@ -182,7 +207,7 @@ public class CustomizeDocumentationAction extends FigureAction {
                   target.requestChange(request);
               }
            }
-       }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -195,7 +220,7 @@ public class CustomizeDocumentationAction extends FigureAction {
      */
     private void _editDocAttribute(Frame owner, DocAttribute attribute,
             NamedObj target) {
-        new EditParametersDialog(owner, attribute, "Edit Documentation for "
-                + target.getName());
+        new EditParametersDialog(owner, attribute,
+                "Edit Documentation for " + target.getName());
     }
 }
