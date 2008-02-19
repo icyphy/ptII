@@ -42,6 +42,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.vergil.actor.DocApplicationSpecializer;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CustomizeDocumentationAction
@@ -92,7 +93,7 @@ public class CustomizeDocumentationAction extends FigureAction {
                     break;
                 }
                 if (config == null) {
-                    throw new InternalErrorException(target,
+                    throw new InternalErrorException(target, null,
                             "Failed to find configuration");
                 }
 
