@@ -1,6 +1,6 @@
 # Makefile to create tar files for distribution
 # Version: $Id$
-# Copyright (c) 1994-2007 The Regents of the University of California.
+# Copyright (c) 1994-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -32,12 +32,12 @@
 #  ptII/adm/bin/ptIInightly-mail
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
-MAJOR_VERSION = 	7.0
-MINOR_VERSION =		beta
+MAJOR_VERSION = 	7.1
+MINOR_VERSION =		devel
 
 VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	7_0_beta
+WINDOWS_VERSION =	7_1_devel
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -75,13 +75,13 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
 # make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar 
-# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.1.devel COMPRESS=gzip TAR=tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar clean all src.jar setup
 # make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar 
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta PTIIADM=/tmp/cxh/ptII7.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII7.1.devel PTIIADM=/tmp/cxh/ptII7.1.devel/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
@@ -157,29 +157,29 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
 release_newton_all:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=c:/tmp/cxh/ptII7.0.beta/adm/gen-7.0/test/ptII$(VERSION)
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.1.devel COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=c:/tmp/cxh/ptII7.1.devel/adm/gen-7.0/test/ptII$(VERSION)
 
 release_newton_setup:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar setup
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.1.devel COMPRESS=gzip TAR=tar setup
 
 release_newton_remote4_test:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII7.0.beta/adm/gen-7.0/test/ptII$(VERSION)
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.1.devel COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII7.1.devel/adm/gen-7.0/test/ptII$(VERSION)
 
 release_fortytwo:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.1.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
 
 release_fortytwo_update_ftp:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar update_ftp
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.1.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar update_ftp
 
 
 release_fortytwo_setup:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar L4J_DIR=$(PTII)/vendors/launch4j PTCYGPATH=`pwd`/ptcygpath setup
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.1.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar L4J_DIR=$(PTII)/vendors/launch4j PTCYGPATH=`pwd`/ptcygpath setup
 
 release_fortytwo_remote4_test:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar remote4_test
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.1.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar remote4_test
 
 release_laptop:
-	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.1.devel COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
 
 # Rebuild the distributions
 rebuild: clean all installshield_app build_unixPtII
