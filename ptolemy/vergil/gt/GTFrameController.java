@@ -48,9 +48,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.gt.CompositeActorMatcher;
+import ptolemy.actor.gt.FSMMatcher;
 import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredientsAttribute;
 import ptolemy.actor.gt.GTTools;
@@ -59,7 +58,6 @@ import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.EditorFactory;
-import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -75,6 +73,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.EditorDropTarget;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.basic.RunnableGraphController;
+import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.FSMGraphModel;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.Link;
@@ -102,8 +101,8 @@ import diva.gui.toolbox.JContextMenu;
 public class GTFrameController implements ChangeListener, KeyListener {
 
     public CompositeEntity getActiveModel() {
-        ActorGraphModel graphModel = (ActorGraphModel) getGraphController()
-                .getGraphModel();
+        AbstractBasicGraphModel graphModel =
+            (AbstractBasicGraphModel) getGraphController().getGraphModel();
         return (CompositeEntity) graphModel.getPtolemyModel();
     }
 
@@ -219,11 +218,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
     }
 
     protected AbstractBasicGraphModel _createGraphModel(NamedObj entity) {
-        Director director = null;
-        if (entity instanceof CompositeActor) {
-            director = ((CompositeActor) entity).getDirector();
-        }
-        if (director instanceof FSMDirector) {
+        if (_isFSM(entity)) {
             return new GTFSMGraphModel((CompositeEntity) entity);
         } else {
             return new GTActorGraphModel(entity);
@@ -402,11 +397,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
     }
 
     private boolean _isFSM(NamedObj entity) {
-        Director director = null;
-        if (entity instanceof CompositeActor) {
-            director = ((CompositeActor) entity).getDirector();
-        }
-        return director != null && director instanceof FSMDirector;
+        return entity instanceof FSMMatcher;
     }
 
     private void _showTab(int tabIndex) {
@@ -554,7 +545,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
         }
     }
 
-    private class GTFSMGraphController extends ActorEditorGraphController {
+    private class GTFSMGraphController extends FSMGraphController {
 
     }
 

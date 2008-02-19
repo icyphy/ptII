@@ -58,7 +58,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -81,22 +80,17 @@ import javax.swing.table.TableColumnModel;
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.DefaultDirectoryAttribute;
 import ptolemy.actor.gt.DefaultModelAttribute;
-import ptolemy.actor.gt.GTEntity;
-import ptolemy.actor.gt.GTIngredientsAttribute;
 import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.MatchCallback;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.PatternObjectAttribute;
-import ptolemy.actor.gt.PortMatcher;
 import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gt.data.CombinedCollection;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
-import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
@@ -104,9 +98,7 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -122,18 +114,11 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
-import ptolemy.vergil.actor.ActorInstanceController;
-import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.basic.RunnableGraphController;
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.MenuItemFactory;
-import ptolemy.vergil.toolbox.PtolemyMenuFactory;
+import diva.graph.GraphController;
 import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
-import diva.gui.toolbox.JContextMenu;
 
 //////////////////////////////////////////////////////////////////////////
 //// GTGraphFrame
@@ -551,14 +536,21 @@ public class GTFrame extends AbstractGTFrame implements
         LayoutAction layoutAction = new LayoutAction();
         GUIUtilities.addMenuItem(_ruleMenu, layoutAction);
 
-        ActorEditorGraphController controller = (ActorEditorGraphController) _getGraphController();
+        GraphController controller = (GraphController) _getGraphController();
         if (getFrameController().hasTabs()) {
-            _ruleMenu.addSeparator();
-            Action newRelationAction = controller.new NewRelationAction();
-            GUIUtilities.addMenuItem(_ruleMenu, newRelationAction);
-            GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
+            if (controller instanceof ActorEditorGraphController) {
+                _ruleMenu.addSeparator();
+                Action newRelationAction =
+                    ((ActorEditorGraphController) controller)
+                            .new NewRelationAction();
+                GUIUtilities.addMenuItem(_ruleMenu, newRelationAction);
+                GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
+            }
         } else {
-            controller.addToMenuAndToolbar(_ruleMenu, _toolbar);
+            if (controller instanceof RunnableGraphController) {
+                ((RunnableGraphController) controller).addToMenuAndToolbar(
+                        _ruleMenu, _toolbar);
+            }
             _removeUnusedToolbarButtons();
         }
 

@@ -28,8 +28,6 @@
 
 package ptolemy.actor.gt;
 
-import ptolemy.actor.Director;
-import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -53,8 +51,5 @@ public class FSMMatcher extends CompositeActorMatcher {
     public FSMMatcher(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        // TODO Auto-generated constructor stub
     }
-
-    protected Director _director = new FSMDirector(this, "director");
 }
