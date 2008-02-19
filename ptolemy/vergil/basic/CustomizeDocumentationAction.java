@@ -93,7 +93,7 @@ public class CustomizeDocumentationAction extends FigureAction {
                     break;
                 }
                 if (config == null) {
-                    throw new InternalErrorException(target,
+                    throw new InternalErrorException(target, null,
                             "Failed to find configuration");
                 }
 
