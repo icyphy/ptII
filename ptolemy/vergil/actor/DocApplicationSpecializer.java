@@ -27,8 +27,11 @@ package ptolemy.vergil.actor;
 
 import java.net.URL;
 import java.util.List;
+import java.awt.Frame;
 
 import ptolemy.util.ExecuteCommands;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Attribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// DocApplicationSpecializer
@@ -67,7 +70,8 @@ public interface DocApplicationSpecializer {
      *  @param lookForPtDoc True if we should look for ptdoc .xml files.
      *  @param lookForJavadoc True if we should look for javadoc files.
      *  @param lookForSource True if we should look for source files.
-     *  @param lookForActorIndex True if we should look for the actor index.
+     *  @param lookForActorIndex True if we should look for the actor
+     *  index.
      *  @return The URL of the documentation, if any.  If no documentation
      *  was found, return null.
      */
@@ -82,4 +86,19 @@ public interface DocApplicationSpecializer {
      *  command to be executed.
      */
     public List buildCommands(ExecuteCommands executeCommands);
+    
+    /** Return the class name of the attribute that this specializer
+     *  uses to store documentation
+     *  @return the name of the class of the specialized documentation
+     *  attribute
+     */
+    public String getDocumentationAttributeClassName();
+    
+    /** create a gui to edit the documentation in the attribute
+     * @param owner the editors gui parent
+     * @param attribute the documentation attribute to edit
+     * @param target the parent component to the attribute
+     */
+    public void editDocumentation(Frame owner, Attribute attribute,
+            NamedObj target);
 }
