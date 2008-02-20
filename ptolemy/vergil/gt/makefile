@@ -73,17 +73,17 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'GTFrame$$ConfigureOperationsAction.class' \
+	'GTFrame$$GTActorGraphController$$EntityController.class' \
+	'GTFrame$$GTActorGraphController$$NewRelationAction.class' \
+	'GTFrame$$GTActorGraphController$$PortController.class' \
+	'GTFrame$$GTActorGraphController.class' \
+	'GTFrame$$GTFSMGraphController.class' \
+	'GTFrame$$GTMenuActionFactory.class' \
 	'GTFrameController$$1.class' \
 	'GTFrameController$$2.class' \
-	'GTFrameController$$ConfigureOperationsAction.class' \
-	'GTFrameController$$GTActorGraphController$$EntityController.class' \
-	'GTFrameController$$GTActorGraphController$$NewRelationAction.class' \
-	'GTFrameController$$GTActorGraphController$$PortController.class' \
-	'GTFrameController$$GTActorGraphController.class' \
 	'GTFrameController$$GTActorGraphModel.class' \
-	'GTFrameController$$GTFSMGraphController.class' \
 	'GTFrameController$$GTFSMGraphModel.class' \
-	'GTFrameController$$GTMenuActionFactory.class' \
 	'GTIngredientsEditor$$1.class' \
 	'GTIngredientsEditor$$2.class' \
 	'GTIngredientsEditor$$3.class' \

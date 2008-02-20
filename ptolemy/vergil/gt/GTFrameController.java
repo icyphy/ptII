@@ -30,8 +30,6 @@ package ptolemy.vergil.gt;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
@@ -40,56 +38,33 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.Action;
 import javax.swing.JComponent;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.FSMMatcher;
-import ptolemy.actor.gt.GTEntity;
-import ptolemy.actor.gt.GTIngredientsAttribute;
-import ptolemy.actor.gt.GTTools;
-import ptolemy.actor.gt.PortMatcher;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.actor.gui.EditorFactory;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.actor.ActorInstanceController;
-import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.EditorDropTarget;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.basic.RunnableGraphController;
-import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.FSMGraphModel;
-import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.gt.GTFrame.GTFSMGraphController;
 import ptolemy.vergil.kernel.Link;
-import ptolemy.vergil.kernel.PortDialogAction;
-import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.MenuItemFactory;
-import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import diva.canvas.event.LayerAdapter;
 import diva.canvas.event.LayerEvent;
 import diva.graph.GraphPane;
 import diva.graph.GraphUtilities;
 import diva.graph.JGraph;
 import diva.gui.toolbox.JCanvasPanner;
-import diva.gui.toolbox.JContextMenu;
 
 /**
 
@@ -202,26 +177,23 @@ public class GTFrameController implements ChangeListener, KeyListener {
         }
     }
 
-    protected GTFrameController(ExtendedGraphFrame frame,
-            JCanvasPanner graphPanner) {
+    protected GTFrameController(GTFrame frame) {
         _frame = frame;
-        _graphPanner = graphPanner;
     }
 
     protected RunnableGraphController _createGraphController(NamedObj entity) {
         if (_frame instanceof MatchResultViewer) {
+            MatchResultViewer viewer = (MatchResultViewer) _frame;
             if (_isFSM(entity)) {
-                return ((MatchResultViewer) _frame).new
-                        MatchResultFSMGraphController();
+                return viewer.new MatchResultFSMGraphController();
             } else {
-                return ((MatchResultViewer) _frame).new
-                        MatchResultActorGraphController();
+                return viewer.new MatchResultActorGraphController();
             }
         } else {
             if (_isFSM(entity)) {
                 return new GTFSMGraphController();
             } else {
-                return new GTActorGraphController();
+                return _frame.new GTActorGraphController();
             }
         }
     }
@@ -411,201 +383,28 @@ public class GTFrameController implements ChangeListener, KeyListener {
 
     private void _showTab(int tabIndex) {
         Component tab = _tabbedPane.getComponent(tabIndex);
+        JCanvasPanner panner = _frame._getGraphPanner();
         if (tab instanceof JGraph) {
             _frame.setJGraph((JGraph) tab);
-            if (_graphPanner != null) {
-                _graphPanner.setCanvas((JGraph) tab);
+            if (panner != null) {
+                panner.setCanvas((JGraph) tab);
             }
         } else {
-            if (_graphPanner != null) {
-                _graphPanner.setCanvas(null);
+            if (panner != null) {
+                panner.setCanvas(null);
             }
         }
     }
 
     private int _activeTabIndex = 0;
 
-    private ExtendedGraphFrame _frame;
+    private GTFrame _frame;
 
     private RunnableGraphController _graphController;
 
     private List<GraphPane> _graphPanes;
 
-    private JCanvasPanner _graphPanner;
-
     private List<JGraph> _graphs;
 
     private JTabbedPane _tabbedPane;
-
-    private static class ConfigureOperationsAction extends FigureAction {
-
-        public void actionPerformed(ActionEvent event) {
-            // Determine which entity was selected for the look inside action.
-            super.actionPerformed(event);
-            NamedObj target = getTarget();
-            Frame frame = getFrame();
-            if (target instanceof GTEntity) {
-                List<?> attributeList = target
-                        .attributeList(EditorFactory.class);
-                if (attributeList.size() > 0) {
-                    EditorFactory factory = (EditorFactory) attributeList
-                            .get(0);
-                    factory.createEditor(target, frame);
-                } else {
-                    new EditParametersDialog(frame, target);
-                }
-            } else {
-                List<?> ingredientsAttributes = target
-                        .attributeList(GTIngredientsAttribute.class);
-                try {
-                    if (ingredientsAttributes.isEmpty()) {
-                        Attribute attribute = new GTIngredientsAttribute(
-                                target, target.uniqueName("operations"));
-                        attribute.setPersistent(false);
-                    }
-
-                    EditorFactory factory = new GTIngredientsEditor.Factory(
-                            target, target
-                                    .uniqueName("ingredientsEditorFactory"));
-                    factory.setPersistent(false);
-                    factory.createEditor(target, frame);
-                    factory.setContainer(null);
-                } catch (KernelException e) {
-                    throw new InternalErrorException(e);
-                }
-            }
-        }
-
-        ConfigureOperationsAction(String name) {
-            super(name);
-        }
-    }
-
-    private class GTActorGraphController extends ActorEditorGraphController {
-
-        public class NewRelationAction extends
-                ActorEditorGraphController.NewRelationAction {
-
-            public void actionPerformed(ActionEvent e) {
-                if (isTableActive()) {
-                    return;
-                } else {
-                    super.actionPerformed(e);
-                }
-            }
-
-        }
-
-        protected void _createControllers() {
-            super._createControllers();
-            _entityController = new EntityController();
-            _portController = new PortController();
-        }
-
-        protected void initializeInteraction() {
-            super.initializeInteraction();
-
-            MenuActionFactory newFactory = new GTMenuActionFactory(
-                    _configureMenuFactory, _configureAction);
-            _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
-            _configureMenuFactory = newFactory;
-        }
-
-        private void _replaceFactory(PtolemyMenuFactory menuFactory,
-                MenuItemFactory replacedFactory, MenuItemFactory replacement) {
-            List<?> factories = menuFactory.menuItemFactoryList();
-            int size = factories.size();
-            for (int i = 0; i < size; i++) {
-                MenuItemFactory factory = (MenuItemFactory) factories.get(0);
-                menuFactory.removeMenuItemFactory(factory);
-                if (factory == replacedFactory) {
-                    menuFactory.addMenuItemFactory(replacement);
-                } else {
-                    menuFactory.addMenuItemFactory(factory);
-                }
-            }
-        }
-
-        private class EntityController extends ActorInstanceController {
-            EntityController() {
-                super(GTActorGraphController.this);
-
-                MenuActionFactory newFactory = new GTMenuActionFactory(
-                        _configureMenuFactory, _configureAction);
-                _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
-                _configureMenuFactory = newFactory;
-
-                FigureAction operationsAction = new ConfigureOperationsAction(
-                        "Operations");
-                _configureMenuFactory.addAction(operationsAction, "Customize");
-            }
-        }
-
-        private class PortController extends ExternalIOPortController {
-
-            public PortController() {
-                super(GTActorGraphController.this, AttributeController.FULL);
-
-                MenuActionFactory newFactory = new GTMenuActionFactory(
-                        _configureMenuFactory, _configureAction);
-                _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
-                _configureMenuFactory = newFactory;
-            }
-        }
-    }
-
-    private class GTFSMGraphController extends FSMGraphController {
-
-    }
-
-    private static class GTMenuActionFactory extends MenuActionFactory {
-
-        public void addAction(Action action, String label) {
-            _oldFactory.addAction(action, label);
-        }
-
-        public void addActions(Action[] actions, String label) {
-            _oldFactory.addActions(actions, label);
-        }
-
-        public JMenuItem create(JContextMenu menu, NamedObj object) {
-            JMenuItem menuItem = _oldFactory.create(menu, object);
-            if (menuItem instanceof JMenu) {
-                JMenu subMenu = (JMenu) menuItem;
-                if (subMenu.getText().equals("Customize")) {
-                    Component[] menuItems = subMenu.getMenuComponents();
-                    for (Component itemComponent : menuItems) {
-                        JMenuItem item = (JMenuItem) itemComponent;
-                        Action action = item.getAction();
-                        if (object instanceof PortMatcher) {
-                            // Disable all the items for a PortMatcher, which
-                            // should be configured by double-clicking the
-                            // containing CompositeActor.
-                            item.setEnabled(false);
-                        } else if (action instanceof PortDialogAction
-                                && object instanceof GTEntity) {
-                            // Disable the PortDialogAction from the context
-                            // menu.
-                            item.setEnabled(false);
-                        } else if (action instanceof ConfigureOperationsAction
-                                && (!(object instanceof Entity) || !GTTools
-                                        .isInReplacement(object))) {
-                            // Hide the ConfigureOperationsAction from the
-                            // context menu.
-                            item.setVisible(false);
-                        }
-                    }
-                }
-            }
-            return menuItem;
-        }
-
-        GTMenuActionFactory(MenuActionFactory oldFactory, Action configureAction) {
-            super(configureAction);
-
-            _oldFactory = oldFactory;
-        }
-
-        private MenuActionFactory _oldFactory;
-    }
 }
