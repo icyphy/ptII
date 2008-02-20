@@ -61,6 +61,8 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.fsm.FSMGraphController;
+import ptolemy.vergil.fsm.StateController;
 import ptolemy.vergil.gt.GTFrameController.GTActorGraphModel;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.CompositeFigure;
@@ -70,7 +72,7 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.gui.GUIUtilities;
 
-public class MatchResultViewer extends AbstractGTFrame {
+public class MatchResultViewer extends GTFrame {
 
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -256,7 +258,7 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
     }
 
-    protected class MatchResultNodeController extends ActorController {
+    protected class MatchResultActorController extends ActorController {
 
         protected Figure _renderNode(Object node) {
             if ((node != null) && !_hide(node)) {
@@ -292,18 +294,71 @@ public class MatchResultViewer extends AbstractGTFrame {
             return super._renderNode(node);
         }
 
-        MatchResultNodeController(GraphController controller) {
+        MatchResultActorController(GraphController controller) {
             super(controller);
         }
     }
 
-    protected class MatchResultViewerController extends
+    protected class MatchResultActorGraphController extends
             ActorEditorGraphController {
 
         protected void _createControllers() {
             super._createControllers();
 
-            _entityController = new MatchResultNodeController(this);
+            _entityController = new MatchResultActorController(this);
+        }
+    }
+
+    protected class MatchResultFSMGraphController extends FSMGraphController {
+
+        public Figure drawNode(Object node) {
+            Figure figure = super.drawNode(node);
+            ((MatchResultStateController) _stateController)._highlightNode(node,
+                    figure);
+            return figure;
+        }
+
+        protected void _createControllers() {
+            super._createControllers();
+
+            _stateController = new MatchResultStateController(this);
+        }
+    }
+
+    protected class MatchResultStateController extends StateController {
+
+        protected void _highlightNode(Object node, Figure figure) {
+            if ((node != null) && !_hide(node)) {
+                GraphModel model = getController().getGraphModel();
+                Object object = model.getSemanticObject(node);
+                CompositeFigure cf = _getCompositeFigure(figure);
+
+                if (object instanceof NamedObj && cf != null && !_transformed
+                        && _results != null
+                        && _results.get(_currentPosition).containsValue(object)) {
+                    Stroke stroke = new BasicStroke(6f, BasicStroke.CAP_SQUARE,
+                            BasicStroke.JOIN_MITER, 10.0f);
+                    Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
+                    float padding = 3.0f;
+                    bounds = new Rectangle2D.Double(bounds.getX() - padding,
+                            bounds.getY() - padding, bounds.getWidth()
+                                    + padding * 2.0, bounds.getHeight()
+                                    + padding * 2.0);
+                    BasicFigure bf = new BasicFigure(bounds);
+                    bf.setStroke(stroke);
+                    bf.setStrokePaint(_HIGHLIGHT_COLOR);
+
+                    int index = cf.getFigureCount();
+                    if (index < 0) {
+                        index = 0;
+                    }
+                    cf.add(index, bf);
+                }
+            }
+        }
+
+        MatchResultStateController(GraphController controller) {
+            super(controller);
         }
     }
 

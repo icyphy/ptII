@@ -58,6 +58,7 @@ import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.EditorFactory;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -209,11 +210,19 @@ public class GTFrameController implements ChangeListener, KeyListener {
 
     protected RunnableGraphController _createGraphController(NamedObj entity) {
         if (_frame instanceof MatchResultViewer) {
-            return ((MatchResultViewer) _frame).new MatchResultViewerController();
-        } else if (_isFSM(entity)) {
-            return new GTFSMGraphController();
+            if (_isFSM(entity)) {
+                return ((MatchResultViewer) _frame).new
+                        MatchResultFSMGraphController();
+            } else {
+                return ((MatchResultViewer) _frame).new
+                        MatchResultActorGraphController();
+            }
         } else {
-            return new GTActorGraphController();
+            if (_isFSM(entity)) {
+                return new GTFSMGraphController();
+            } else {
+                return new GTActorGraphController();
+            }
         }
     }
 
@@ -397,7 +406,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
     }
 
     private boolean _isFSM(NamedObj entity) {
-        return entity instanceof FSMMatcher;
+        return entity instanceof FSMMatcher || entity instanceof FSMActor;
     }
 
     private void _showTab(int tabIndex) {

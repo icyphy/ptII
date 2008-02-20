@@ -119,7 +119,7 @@ public class GTTableau extends Tableau {
                     + "SingleRuleTransformer or CompositeActorMatcher.");
         }
 
-        ExtendedGraphFrame frame = new GTFrame((CompositeEntity) model, this,
+        ExtendedGraphFrame frame = new TransformationEditor((CompositeEntity) model, this,
                 defaultLibrary);
         try {
             setFrame(frame);

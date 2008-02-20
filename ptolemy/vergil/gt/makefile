@@ -55,14 +55,14 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	AbstractGTFrame.java \
 	CellPanelEditor.java \
 	GTFrame.java \
 	GTFrameController.java \
 	GTIngredientsEditor.java \
 	GTTableau.java \
 	MatchResultTableau.java \
-	MatchResultViewer.java
+	MatchResultViewer.java \
+	TransformationEditor.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -73,19 +73,6 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'GTFrame$$1.class' \
-	'GTFrame$$2.class' \
-	'GTFrame$$BatchMatchAction$$ModelFileFilter.class' \
-	'GTFrame$$BatchMatchAction$$MultipleViewController.class' \
-	'GTFrame$$BatchMatchAction.class' \
-	'GTFrame$$CellEditor.class' \
-	'GTFrame$$FileComparator.class' \
-	'GTFrame$$LayoutAction.class' \
-	'GTFrame$$MatchAction.class' \
-	'GTFrame$$MatchResultRecorder.class' \
-	'GTFrame$$SingleMatchAction$$SingleViewController.class' \
-	'GTFrame$$SingleMatchAction.class' \
-	'GTFrame$$ViewController.class' \
 	'GTFrameController$$1.class' \
 	'GTFrameController$$2.class' \
 	'GTFrameController$$ConfigureOperationsAction.class' \
@@ -115,14 +102,30 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$1.class' \
 	'MatchResultViewer$$CloseAction.class' \
 	'MatchResultViewer$$FileSelectionStatus.class' \
-	'MatchResultViewer$$MatchResultNodeController.class' \
-	'MatchResultViewer$$MatchResultViewerController.class' \
+	'MatchResultViewer$$MatchResultActorController.class' \
+	'MatchResultViewer$$MatchResultActorGraphController.class' \
+	'MatchResultViewer$$MatchResultFSMGraphController.class' \
+	'MatchResultViewer$$MatchResultStateController.class' \
 	'MatchResultViewer$$NextAction.class' \
 	'MatchResultViewer$$NextFileAction.class' \
 	'MatchResultViewer$$PreviousAction.class' \
 	'MatchResultViewer$$PreviousFileAction.class' \
 	'MatchResultViewer$$TransformAction.class' \
-	'MatchResultViewer$$TransformAllAction.class'
+	'MatchResultViewer$$TransformAllAction.class' \
+	'TransformationEditor$$1.class' \
+	'TransformationEditor$$2.class' \
+	'TransformationEditor$$3.class' \
+	'TransformationEditor$$BatchMatchAction$$ModelFileFilter.class' \
+	'TransformationEditor$$BatchMatchAction$$MultipleViewController.class' \
+	'TransformationEditor$$BatchMatchAction.class' \
+	'TransformationEditor$$CellEditor.class' \
+	'TransformationEditor$$FileComparator.class' \
+	'TransformationEditor$$LayoutAction.class' \
+	'TransformationEditor$$MatchAction.class' \
+	'TransformationEditor$$MatchResultRecorder.class' \
+	'TransformationEditor$$SingleMatchAction$$SingleViewController.class' \
+	'TransformationEditor$$SingleMatchAction.class' \
+	'TransformationEditor$$ViewController.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
