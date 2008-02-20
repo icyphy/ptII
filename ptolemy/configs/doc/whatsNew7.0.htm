@@ -344,6 +344,12 @@ arbitrary integer array type, you used {int}, which is really an array
 with one element.  This now has the type arrayType(int, 1), which is
 more specific than you probably want.
 
+ <p>As a result, in almost any case where the old style is used in a model
+to declare the type of a port in a model, e.g. {int}, it should be
+replaced with an arrayType declaration, e.g. arrayType(int, 7), or
+arrayType(int).  If this is not done, such models will most likely have
+a type error related to an array of length one.
+
 <p>The existing models have been updated using the new description
 of an array type with an unknown length.
 
