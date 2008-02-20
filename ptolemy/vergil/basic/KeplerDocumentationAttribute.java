@@ -296,7 +296,14 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @return the document name
      */
     public String getDocName() {
+      if(!docName.equals("null"))
+      {
         return this.docName;
+      }
+      else
+      {
+        return "";
+      }
     }
 
     /** Set the name of this docClass.
@@ -310,7 +317,14 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @return the document class
      */
     public String getDocClass() {
+      if(!docClass.equals("null"))
+      {
         return this.docClass;
+      }
+      else
+      {
+        return "";
+      }
     }
 
     /** Set the description.
@@ -324,7 +338,14 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @return the description
      */
     public String getDescription() {
+      if(!description.equals("null"))
+      {
         return this.description;
+      }
+      else
+      {
+        return "";
+      }
     }
 
     /** Set the author.
@@ -338,7 +359,14 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @return the author
      */
     public String getAuthor() {
+      if(!author.equals("null"))
+      {
         return this.author;
+      }
+      else
+      {
+        return "";
+      }
     }
 
     /** Set the version.
@@ -352,7 +380,14 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @return the version
      */
     public String getVersion() {
+      if(!version.equals("null"))
+      {
         return this.version;
+      }
+      else
+      {
+        return "";
+      }
     }
 
     /** Set the user level documentation.
@@ -366,7 +401,14 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @return the user level documentation
      */
     public String getUserLevelDocumentation() {
+      if(!userLevelDocumentation.equals("null"))
+      {
         return this.userLevelDocumentation;
+      }
+      else
+      {
+        return "";
+      }
     }
 
     /** Set the port hash.
