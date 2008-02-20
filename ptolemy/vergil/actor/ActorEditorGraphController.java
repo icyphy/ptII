@@ -171,323 +171,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the controllers for nodes in this graph.
-     *  In this class, controllers with FULL access are created.
-     *  This is called by the constructor, so derived classes that
-     *  override this must be careful not to reference local variables
-     *  defined in the derived classes, because the derived classes
-     *  will not have been fully constructed by the time this is called.
-     */
-    protected void _createControllers() {
-        _attributeController = new AttributeController(this,
-                AttributeController.FULL);
-
-        _classDefinitionController = new ClassDefinitionController(this);
-
-        _entityController = new ActorInstanceController(this);
-        _entityPortController = new IOPortController(this,
-                AttributeController.FULL);
-        _portController = new ExternalIOPortController(this,
-                AttributeController.FULL);
-        _relationController = new RelationController(this);
-        _linkController = new LinkController(this);
-    }
-
-    /** Initialize all interaction on the graph pane. This method
-     *  is called by the setGraphPane() method of the superclass.
-     *  This initialization cannot be done in the constructor because
-     *  the controller does not yet have a reference to its pane
-     *  at that time.
-     */
-    protected void initializeInteraction() {
-        super.initializeInteraction();
-
-        GraphPane pane = getGraphPane();
-
-        // Add a menu command to configure the ports.
-        _portDialogAction = new PortDialogAction("Ports");
-        _portDialogAction.setConfiguration(getConfiguration());
-
-        _configureMenuFactory.addAction(_portDialogAction, "Customize");
-        _configureUnitsAction = new ConfigureUnitsAction("Units Constraints");
-        _configureMenuFactory.addAction(_configureUnitsAction, "Customize");
-        _configureUnitsAction.setConfiguration(getConfiguration());
-
-        // Add a menu command to list to the actor.
-        _listenToActorFactory = new ListenToActorFactory();
-        _menuFactory.addMenuItemFactory(_listenToActorFactory);
-        _listenToActorFactory.setConfiguration(getConfiguration());
-
-        // Create listeners that creates new relations.
-        _relationCreator = new RelationCreator();
-        _relationCreator.setMouseFilter(_shortcutFilter);
-
-        pane.getBackgroundEventLayer().addInteractor(_relationCreator);
-
-        // Note that shift-click is already bound to the dragSelection
-        // interactor when adding things to a selection.
-        // Create the interactor that drags new edges.
-        _linkCreator = new LinkCreator();
-        _linkCreator.setMouseFilter(_shortcutFilter);
-
-        // NOTE: Do not use _initializeInteraction() because we are
-        // still in the constructor, and that method is overloaded in
-        // derived classes.
-        ((CompositeInteractor) _portController.getNodeInteractor())
-                .addInteractor(_linkCreator);
-        ((CompositeInteractor) _entityPortController.getNodeInteractor())
-                .addInteractor(_linkCreator);
-        ((CompositeInteractor) _relationController.getNodeInteractor())
-                .addInteractor(_linkCreator);
-
-        LinkCreator linkCreator2 = new LinkCreator();
-        linkCreator2
-                .setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK, 0));
-        ((CompositeInteractor) _entityPortController.getNodeInteractor())
-                .addInteractor(linkCreator2);
-    }
-
-    /** Initialize interactions for the specified controller.  This
-     *  method is called when a new controller is constructed. In this
-     *  class, this method attaches a link creator to the controller
-     *  if the controller is an instance of ExternalIOPortController,
-     *  IOPortController, or RelationController.
-     *  @param controller The controller for which to initialize interaction.
-     */
-    protected void _initializeInteraction(NamedObjController controller) {
-        super._initializeInteraction(controller);
-
-        if (controller instanceof ExternalIOPortController
-                || controller instanceof IOPortController
-                || controller instanceof RelationController) {
-            Interactor interactor = controller.getNodeInteractor();
-
-            if (interactor instanceof CompositeInteractor) {
-                ((CompositeInteractor) interactor).addInteractor(_linkCreator);
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private ConfigureUnitsAction _configureUnitsAction;
-
-    /** The interactors that interactively creates edges. */
-    private LinkCreator _linkCreator; // For control-click
-
-    //   private LinkCreator _linkCreator2;  // For shift-click
-
-    /** Factory for listen to actor menu item. */
-    private ListenToActorFactory _listenToActorFactory;
-
-    /** Action for creating a new input port. */
-    private Action _newInputPortAction = new NewPortAction(
-            ExternalIOPortController._GENERIC_INPUT, "New input port",
-            KeyEvent.VK_I, new String[][] {
-                    { "/ptolemy/vergil/actor/img/single_in.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/single_in_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/single_in_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/single_in_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
-
-    /** Action for creating a new output port. */
-    private Action _newOutputPortAction = new NewPortAction(
-            ExternalIOPortController._GENERIC_OUTPUT, "New output port",
-            KeyEvent.VK_O, new String[][] {
-                    { "/ptolemy/vergil/actor/img/single_out.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/single_out_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/single_out_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/single_out_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
-
-    /** Action for creating a new input/output port. */
-    private Action _newInoutPortAction = new NewPortAction(
-            ExternalIOPortController._GENERIC_INOUT, "New input/output port",
-            KeyEvent.VK_P, new String[][] {
-                    { "/ptolemy/vergil/actor/img/single_inout.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/single_inout_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/single_inout_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/single_inout_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
-
-    /** Action for creating a new input multiport. */
-    private Action _newInputMultiportAction = new NewPortAction(
-            ExternalIOPortController._GENERIC_INPUT_MULTIPORT,
-            "New input multiport", KeyEvent.VK_N, new String[][] {
-                    { "/ptolemy/vergil/actor/img/multi_in.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_in_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_in_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_in_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
-
-    /** Action for creating a new output multiport. */
-    private Action _newOutputMultiportAction = new NewPortAction(
-            ExternalIOPortController._GENERIC_OUTPUT_MULTIPORT,
-            "New output multiport", KeyEvent.VK_U, new String[][] {
-                    { "/ptolemy/vergil/actor/img/multi_out.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_out_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_out_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_out_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
-
-    /** Action for creating a new inout multiport. */
-    private Action _newInoutMultiportAction = new NewPortAction(
-            ExternalIOPortController._GENERIC_INOUT_MULTIPORT,
-            "New input/output multiport", KeyEvent.VK_T, new String[][] {
-                    { "/ptolemy/vergil/actor/img/multi_inout.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_inout_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_inout_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/multi_inout_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
-
-    /** Action for creating a new relation. */
-    private Action _newRelationAction = new NewRelationAction(
-            new String[][] {
-                    { "/ptolemy/vergil/actor/img/relation.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
-
-    /** The port dialog factory. */
-    private PortDialogAction _portDialogAction;
-
-    /** The interactor for creating new relations. */
-    private RelationCreator _relationCreator;
-
-    /** The filter for shortcut operations.  This is used for creation
-     *  of relations and creation of links from relations. Under PC,
-     *  this is a control-1 click.  Under Mac OS X, the control key is
-     *  used for context menus and this corresponds to the command-1
-     *  click.  For details, see the Apple java archive
-     *  http://lists.apple.com/archives/java-dev User: archives,
-     *  passwd: archives
-     */
-    private MouseFilter _shortcutFilter = new MouseFilter(
-            InputEvent.BUTTON1_MASK, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask(), Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask());
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    ///////////////////////////////////////////////////////////////////
-    //// LinkCreator
-
-    /** This class is an interactor that interactively drags edges from
-     *  one terminal to another, creating a link to connect them.
-     */
-    protected class LinkCreator extends AbstractInteractor {
-        /** Create a new edge when the mouse is pressed. */
-        public void mousePressed(LayerEvent event) {
-            Figure source = event.getFigureSource();
-            NamedObj sourceObject = (NamedObj) source.getUserObject();
-
-            // Create the new edge.
-            Link link = new Link();
-
-            // Set the tail, going through the model so the link is added
-            // to the list of links.
-            ActorGraphModel model = (ActorGraphModel) getGraphModel();
-            model.getLinkModel().setTail(link, sourceObject);
-
-            try {
-                // add it to the foreground layer.
-                FigureLayer layer = getGraphPane().getForegroundLayer();
-                Site headSite;
-                Site tailSite;
-
-                // Temporary sites.  One of these will get blown away later.
-                headSite = new AutonomousSite(layer, event.getLayerX(), event
-                        .getLayerY());
-                tailSite = new AutonomousSite(layer, event.getLayerX(), event
-                        .getLayerY());
-
-                // Render the edge.
-                Connector c = getEdgeController(link).render(link, layer,
-                        tailSite, headSite);
-
-                // get the actual attach site.
-                tailSite = getEdgeController(link).getConnectorTarget()
-                        .getTailSite(c, source, event.getLayerX(),
-                                event.getLayerY());
-
-                if (tailSite == null) {
-                    throw new RuntimeException("Invalid connector target: "
-                            + "no valid site found for tail of new connector.");
-                }
-
-                // And reattach the connector.
-                c.setTailSite(tailSite);
-
-                // Add it to the selection so it gets a manipulator, and
-                // make events go to the grab-handle under the mouse
-                getSelectionModel().addSelection(c);
-
-                ConnectorManipulator cm = (ConnectorManipulator) c.getParent();
-                GrabHandle gh = cm.getHeadHandle();
-                layer.grabPointer(event, gh);
-            } catch (Exception ex) {
-                MessageHandler.error("Drag connection failed:", ex);
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// ListenToActorFactory
-    private class ListenToActorFactory implements MenuItemFactory {
-        /** Add an item to the given context menu that will open a listen
-         *  to actor window.
-         *  @param menu The context menu.
-         *  @param object The object whose ports are being manipulated.
-         */
-        public JMenuItem create(final JContextMenu menu, NamedObj object) {
-            String name = "Listen to Actor";
-            final NamedObj target = object;
-
-            _action = new ActorController.ListenToActorAction(target,
-                    ActorEditorGraphController.this);
-            _action.setConfiguration(_configuration);
-            return menu.add(_action, name);
-        }
-
-        /** Set the configuration for use by the help screen.
-         *  @param configuration The configuration.
-         */
-        public void setConfiguration(Configuration configuration) {
-            _configuration = configuration;
-
-            if (_action != null) {
-                _action.setConfiguration(_configuration);
-            }
-        }
-
-        private ActorController.ListenToActorAction _action;
-
-        private Configuration _configuration;
-    }
-
     ///////////////////////////////////////////////////////////////////
     //// NewRelationAction
     /** An action to create a new relation. */
@@ -601,8 +284,178 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         }
     }
 
+    /** Create the controllers for nodes in this graph.
+     *  In this class, controllers with FULL access are created.
+     *  This is called by the constructor, so derived classes that
+     *  override this must be careful not to reference local variables
+     *  defined in the derived classes, because the derived classes
+     *  will not have been fully constructed by the time this is called.
+     */
+    protected void _createControllers() {
+        _attributeController = new AttributeController(this,
+                AttributeController.FULL);
+
+        _classDefinitionController = new ClassDefinitionController(this);
+
+        _entityController = new ActorInstanceController(this);
+        _entityPortController = new IOPortController(this,
+                AttributeController.FULL);
+        _portController = new ExternalIOPortController(this,
+                AttributeController.FULL);
+        _relationController = new RelationController(this);
+        _linkController = new LinkController(this);
+    }
+
+    /** Initialize interactions for the specified controller.  This
+     *  method is called when a new controller is constructed. In this
+     *  class, this method attaches a link creator to the controller
+     *  if the controller is an instance of ExternalIOPortController,
+     *  IOPortController, or RelationController.
+     *  @param controller The controller for which to initialize interaction.
+     */
+    protected void _initializeInteraction(NamedObjController controller) {
+        super._initializeInteraction(controller);
+
+        if (controller instanceof ExternalIOPortController
+                || controller instanceof IOPortController
+                || controller instanceof RelationController) {
+            Interactor interactor = controller.getNodeInteractor();
+
+            if (interactor instanceof CompositeInteractor) {
+                ((CompositeInteractor) interactor).addInteractor(_linkCreator);
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
-    //// RelationCreator
+    ////                         private variables                 ////
+
+    /** Initialize all interaction on the graph pane. This method
+     *  is called by the setGraphPane() method of the superclass.
+     *  This initialization cannot be done in the constructor because
+     *  the controller does not yet have a reference to its pane
+     *  at that time.
+     */
+    protected void initializeInteraction() {
+        super.initializeInteraction();
+
+        GraphPane pane = getGraphPane();
+
+        // Add a menu command to configure the ports.
+        _portDialogAction = new PortDialogAction("Ports");
+        _portDialogAction.setConfiguration(getConfiguration());
+
+        _configureMenuFactory.addAction(_portDialogAction, "Customize");
+        _configureUnitsAction = new ConfigureUnitsAction("Units Constraints");
+        _configureMenuFactory.addAction(_configureUnitsAction, "Customize");
+        _configureUnitsAction.setConfiguration(getConfiguration());
+
+        // Add a menu command to list to the actor.
+        _listenToActorFactory = new ListenToActorFactory();
+        _menuFactory.addMenuItemFactory(_listenToActorFactory);
+        _listenToActorFactory.setConfiguration(getConfiguration());
+
+        // Create listeners that creates new relations.
+        _relationCreator = new RelationCreator();
+        _relationCreator.setMouseFilter(_shortcutFilter);
+
+        pane.getBackgroundEventLayer().addInteractor(_relationCreator);
+
+        // Note that shift-click is already bound to the dragSelection
+        // interactor when adding things to a selection.
+        // Create the interactor that drags new edges.
+        _linkCreator = new LinkCreator();
+        _linkCreator.setMouseFilter(_shortcutFilter);
+
+        // NOTE: Do not use _initializeInteraction() because we are
+        // still in the constructor, and that method is overloaded in
+        // derived classes.
+        ((CompositeInteractor) _portController.getNodeInteractor())
+                .addInteractor(_linkCreator);
+        ((CompositeInteractor) _entityPortController.getNodeInteractor())
+                .addInteractor(_linkCreator);
+        ((CompositeInteractor) _relationController.getNodeInteractor())
+                .addInteractor(_linkCreator);
+
+        LinkCreator linkCreator2 = new LinkCreator();
+        linkCreator2
+                .setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK, 0));
+        ((CompositeInteractor) _entityPortController.getNodeInteractor())
+                .addInteractor(linkCreator2);
+    }
+
+    /** Action for creating a new relation. */
+    protected Action _newRelationAction = new NewRelationAction(
+            new String[][] {
+                    { "/ptolemy/vergil/actor/img/relation.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+    //   private LinkCreator _linkCreator2;  // For shift-click
+
+    /** This class is an interactor that interactively drags edges from
+     *  one terminal to another, creating a link to connect them.
+     */
+    protected class LinkCreator extends AbstractInteractor {
+        /** Create a new edge when the mouse is pressed. */
+        public void mousePressed(LayerEvent event) {
+            Figure source = event.getFigureSource();
+            NamedObj sourceObject = (NamedObj) source.getUserObject();
+
+            // Create the new edge.
+            Link link = new Link();
+
+            // Set the tail, going through the model so the link is added
+            // to the list of links.
+            ActorGraphModel model = (ActorGraphModel) getGraphModel();
+            model.getLinkModel().setTail(link, sourceObject);
+
+            try {
+                // add it to the foreground layer.
+                FigureLayer layer = getGraphPane().getForegroundLayer();
+                Site headSite;
+                Site tailSite;
+
+                // Temporary sites.  One of these will get blown away later.
+                headSite = new AutonomousSite(layer, event.getLayerX(), event
+                        .getLayerY());
+                tailSite = new AutonomousSite(layer, event.getLayerX(), event
+                        .getLayerY());
+
+                // Render the edge.
+                Connector c = getEdgeController(link).render(link, layer,
+                        tailSite, headSite);
+
+                // get the actual attach site.
+                tailSite = getEdgeController(link).getConnectorTarget()
+                        .getTailSite(c, source, event.getLayerX(),
+                                event.getLayerY());
+
+                if (tailSite == null) {
+                    throw new RuntimeException("Invalid connector target: "
+                            + "no valid site found for tail of new connector.");
+                }
+
+                // And reattach the connector.
+                c.setTailSite(tailSite);
+
+                // Add it to the selection so it gets a manipulator, and
+                // make events go to the grab-handle under the mouse
+                getSelectionModel().addSelection(c);
+
+                ConnectorManipulator cm = (ConnectorManipulator) c.getParent();
+                GrabHandle gh = cm.getHeadHandle();
+                layer.grabPointer(event, gh);
+            } catch (Exception ex) {
+                MessageHandler.error("Drag connection failed:", ex);
+            }
+        }
+    }
 
     /** An interactor for creating relations upon control clicking.
      */
@@ -611,5 +464,152 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             super();
             setAction(_newRelationAction);
         }
+    }
+
+    private ConfigureUnitsAction _configureUnitsAction;
+
+    /** The interactors that interactively creates edges. */
+    private LinkCreator _linkCreator; // For control-click
+
+    /** Factory for listen to actor menu item. */
+    private ListenToActorFactory _listenToActorFactory;
+
+    /** Action for creating a new inout multiport. */
+    private Action _newInoutMultiportAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_INOUT_MULTIPORT,
+            "New input/output multiport", KeyEvent.VK_T, new String[][] {
+                    { "/ptolemy/vergil/actor/img/multi_inout.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_inout_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_inout_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_inout_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+    /** Action for creating a new input/output port. */
+    private Action _newInoutPortAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_INOUT, "New input/output port",
+            KeyEvent.VK_P, new String[][] {
+                    { "/ptolemy/vergil/actor/img/single_inout.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/single_inout_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/actor/img/single_inout_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/single_inout_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+    /** Action for creating a new input multiport. */
+    private Action _newInputMultiportAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_INPUT_MULTIPORT,
+            "New input multiport", KeyEvent.VK_N, new String[][] {
+                    { "/ptolemy/vergil/actor/img/multi_in.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_in_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_in_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_in_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+    /** Action for creating a new input port. */
+    private Action _newInputPortAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_INPUT, "New input port",
+            KeyEvent.VK_I, new String[][] {
+                    { "/ptolemy/vergil/actor/img/single_in.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/single_in_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/actor/img/single_in_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/single_in_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+    /** Action for creating a new output multiport. */
+    private Action _newOutputMultiportAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_OUTPUT_MULTIPORT,
+            "New output multiport", KeyEvent.VK_U, new String[][] {
+                    { "/ptolemy/vergil/actor/img/multi_out.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_out_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_out_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/multi_out_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+    /** Action for creating a new output port. */
+    private Action _newOutputPortAction = new NewPortAction(
+            ExternalIOPortController._GENERIC_OUTPUT, "New output port",
+            KeyEvent.VK_O, new String[][] {
+                    { "/ptolemy/vergil/actor/img/single_out.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/single_out_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/actor/img/single_out_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/single_out_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    ///////////////////////////////////////////////////////////////////
+    //// LinkCreator
+
+    /** The port dialog factory. */
+    private PortDialogAction _portDialogAction;
+
+    /** The interactor for creating new relations. */
+    private RelationCreator _relationCreator;
+
+    /** The filter for shortcut operations.  This is used for creation
+     *  of relations and creation of links from relations. Under PC,
+     *  this is a control-1 click.  Under Mac OS X, the control key is
+     *  used for context menus and this corresponds to the command-1
+     *  click.  For details, see the Apple java archive
+     *  http://lists.apple.com/archives/java-dev User: archives,
+     *  passwd: archives
+     */
+    private MouseFilter _shortcutFilter = new MouseFilter(
+            InputEvent.BUTTON1_MASK, Toolkit.getDefaultToolkit()
+                    .getMenuShortcutKeyMask(), Toolkit.getDefaultToolkit()
+                    .getMenuShortcutKeyMask());
+
+    ///////////////////////////////////////////////////////////////////
+    //// RelationCreator
+
+    ///////////////////////////////////////////////////////////////////
+    //// ListenToActorFactory
+    private class ListenToActorFactory implements MenuItemFactory {
+        /** Add an item to the given context menu that will open a listen
+         *  to actor window.
+         *  @param menu The context menu.
+         *  @param object The object whose ports are being manipulated.
+         */
+        public JMenuItem create(final JContextMenu menu, NamedObj object) {
+            String name = "Listen to Actor";
+            final NamedObj target = object;
+
+            _action = new ActorController.ListenToActorAction(target,
+                    ActorEditorGraphController.this);
+            _action.setConfiguration(_configuration);
+            return menu.add(_action, name);
+        }
+
+        /** Set the configuration for use by the help screen.
+         *  @param configuration The configuration.
+         */
+        public void setConfiguration(Configuration configuration) {
+            _configuration = configuration;
+
+            if (_action != null) {
+                _action.setConfiguration(_configuration);
+            }
+        }
+
+        private ActorController.ListenToActorAction _action;
+
+        private Configuration _configuration;
     }
 }
