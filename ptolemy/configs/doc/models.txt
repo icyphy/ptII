@@ -1,6 +1,7 @@
 $CLASSPATH/ptolemy/domains/ddf/demo/Factorial/Factorial.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/CircularRange/CircularRange.xml
 $CLASSPATH/ptolemy/domains/ct/demo/SampledClocks/SampledClocks.xml
+$CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
 $CLASSPATH/ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Thermostat/Thermostat.xml
 $CLASSPATH/ptolemy/domains/dde/demo/LocalZeno/LocalZeno.xml
@@ -22,6 +23,7 @@ $CLASSPATH/ptolemy/actor/lib/hoc/demo/HocDE/HocDE.xml
 $CLASSPATH/ptolemy/data/unit/demo/StaticUnits/StaticUnits.xml
 $CLASSPATH/ptolemy/domains/sr/demo/FeedbackLoop/FeedbackLoop.xml
 $CLASSPATH/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.xml
+$CLASSPATH/ptolemy/actor/gt/demo/ModelGeneration/ModelGeneration.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/LogisticMap/LogisticMap.xml
 $CLASSPATH/ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml
 $CLASSPATH/ptolemy/codegen/demo/Life/Life.xml
@@ -58,6 +60,7 @@ $CLASSPATH/ptolemy/domains/ct/demo/LevelCrossingDetector/LevelCrossingDetector.x
 $CLASSPATH/ptolemy/domains/gr/demo/StickyMasses/StickyMasses.xml
 $CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml
 $CLASSPATH/ptolemy/domains/pn/demo/QR/QR.xml
+$CLASSPATH/ptolemy/actor/gt/demo/PublisherTest/PublisherTest.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml
 $CLASSPATH/ptolemy/domains/ct/demo/ComparedClocks/ComparedClocks.xml
@@ -119,6 +122,7 @@ $CLASSPATH/ptolemy/domains/fsm/demo/StateTracker/StateTracker.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Transmission/Transmission.xml
 $CLASSPATH/ptolemy/caltrop/demo/SDFDDI/SDFDDI.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Pendulum3D/Pendulum3D.xml
+$CLASSPATH/ptolemy/actor/gt/demo/HierarchyFlattening/HierarchyFlattening.xml
 $CLASSPATH/ptolemy/domains/de/demo/HierarchicalModel/HierarchicalModel.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/FourierSeries/FourierSeries.xml
 $CLASSPATH/ptolemy/domains/giotto/demo/Multimode/Multimode.xml
@@ -172,6 +176,7 @@ $CLASSPATH/ptolemy/domains/hdf/demo/Merge/Merge.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.xml
 $CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradleAnimated.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml
+$CLASSPATH/ptolemy/actor/gt/demo/DiningPhilosophers/DiningPhilosophers.xml
 $CLASSPATH/ptolemy/domains/gr/demo/SolarSystem/SolarSystem.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml
 $CLASSPATH/ptolemy/domains/hdf/demo/Fibonacci/Fibonacci.xml
