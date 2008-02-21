@@ -544,13 +544,24 @@ public class Director implements ActorCodeGenerator {
     public void setCodeGenerator(CodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
 
-        String path = getClass().getName().replace(".", "/");  
-        String packageName = getClass().getPackage().getName().substring(16);
-        String extension = packageName.substring(0,
-                packageName.indexOf("."));
+        String path = getClass().getName().replace('.', '/');  
+
+        String packageName = getClass().getPackage().getName();
+        if (packageName.startsWith("ptolemy.codegen")) {
+            // Strip off the ptolemy.codegen
+            packageName = packageName.substring(16);
+        }
+
+        String extension = "";
+        if (packageName.indexOf('.') != -1) { 
+            // Usually, Directors are in packages like
+            // ptolemy.codedgen.c.  Thus "c" is the file extension
+            // for the helper.  This is a bit of a hack.
+            extension = packageName.substring(0,
+                    packageName.indexOf('.'));
+        }
         _codeStream = new CodeStream(
                 "$CLASSPATH/" + path + "." + extension, _codeGenerator);
-        
     }
 
     /////////////////////////////////////////////////////////////////////
@@ -745,6 +756,7 @@ public class Director implements ActorCodeGenerator {
         _eol = StringUtilities.getProperty("line.separator");
     }
 
+    /** The codeStream associated with this director. */
     protected CodeStream _codeStream;
     
     /** The associated director.
