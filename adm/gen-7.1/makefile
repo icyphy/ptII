@@ -243,7 +243,7 @@ $(PTIIDIST):
 	touch $(PTIIDIST)/configure
 	# Copy the vergil script for use in the full tar file
 	(cd $(PTIIHOME)/bin; make)
-	#cp $(PTIIHOME)/bin/vergil $(PTIIDIST)/bin
+	cp $(PTIIHOME)/bin/vergil $(PTIIDIST)/bin
 	# Bump up the mod time of $PTII/mk/ptII.mk.in so that if
 	# the user runs make, then configure will run 
 	touch $(PTIIDIST)/mk/ptII.mk.in
@@ -264,7 +264,7 @@ $(PTII_FULL): $(PTIIDIST)
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	-(cd $(PTIIDIST); chmod -R a+rX .)
+	(cd $(PTIIDIST); chmod -R a+rX .)
 	@echo "For some reason under Cygwin, we need to build the compressed"
 	@echo "  tar file or we get errors"
 	(cd $(PTIIDIST)/..; \
