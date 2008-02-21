@@ -45,7 +45,17 @@
 # links) to expand the configuration and view all the demos.
 # In this way, we can be sure that we have all the files in the jar
 # files _before_ building installers.
-# 
+
+# To test a file, run:    make jnlp_run
+
+# To display our key:
+#   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=/users/ptII/adm/certs/ptkeystore
+#   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=c:/cygwin/users/ptII/adm/certs/ptkeystore
+
+# To sign using our key:
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" jnlp_all
+
+# To update the website:  make jnlp_dist_update
 
 ################################
 # Large jar file containing all the codedoc documentation.
@@ -235,18 +245,20 @@ PTINY_ONLY_JNLP_JARS = \
         ptolemy/actor/lib/python/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
 	ptolemy/codegen/codegen.jar \
+	ptolemy/codegen/demo/demo.jar \
 	$(PTALON_JARS) \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/ct/doc/doc.jar \
-	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/domains/ddf/demo/demo.jar \
+	ptolemy/domains/ddf/doc/doc.jar \
 	ptolemy/domains/de/demo/demo.jar \
 	ptolemy/domains/de/doc/doc.jar \
 	ptolemy/domains/fsm/demo/demo.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
 	ptolemy/domains/hdf/demo/demo.jar \
+	ptolemy/domains/hdf/doc/doc.jar \
 	ptolemy/domains/pn/demo/demo.jar \
         ptolemy/domains/pn/doc/doc.jar \
 	ptolemy/domains/rendezvous/demo/demo.jar \
@@ -311,7 +323,8 @@ RUN_JARS =
 
 WIRELESS_JARS = \
 	ptolemy/domains/wireless/wireless.jar \
-	ptolemy/domains/wireless/demo/demo.jar
+	ptolemy/domains/wireless/demo/demo.jar \
+	ptolemy/domains/wireless/doc/doc.jar
 
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
@@ -347,11 +360,14 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
+	ptolemy/domains/ci/doc/doc.jar \
+	ptolemy/domains/continuous/demo/demo.jar \
 	ptolemy/domains/continuous/doc/doc.jar \
 	ptolemy/domains/csp/demo/demo.jar \
 	ptolemy/domains/csp/doc/doc.jar \
 	ptolemy/domains/curriculum/curriculum.jar \
 	ptolemy/domains/dde/demo/demo.jar \
+	ptolemy/domains/dde/doc/doc.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/dt/doc/doc.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
@@ -361,6 +377,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
 	ptolemy/domains/psdf/psdf.jar \
 	ptolemy/domains/psdf/demo/demo.jar \
+	ptolemy/domains/psdf/doc/doc.jar \
 	lib/mapss.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/tm/demo/demo.jar \
@@ -434,6 +451,7 @@ VISUAL_SENSE_JNLP_JARS =	\
 # hopefully without duplicates so that  we don't sign jars twice.
 # We include plotapplication.jar so that the ptplot and histogram
 # commands will work.
+# Include ddf.jar because codegen needs it
 ALL_NON_APPLICATION_JNLP_JARS = \
 	$(NATIVE_SIGNED_LIB_JARS) \
 	$(CORE_JNLP_JARS) \
@@ -444,6 +462,8 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(VISUAL_SENSE_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS) \
+	$(CODEGEN_DOMAIN_JARS) \
+	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/plot/plotapplication.jar 
 
 # All the jar files, include the application jars
@@ -464,8 +484,18 @@ KEYALIAS = claudius
 # The password should not be stored in a makefile, for production
 # purposes, run something like:
 #
-# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD= jnlp_all
+# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" jnlp_all
 #
+# Note that there is chaos with using full paths like
+# "/users/ptII/adm/certs/ptkeystore"
+# Cygwin and make think this file is c:/cygwin/users/ptII/adm/certs/ptkeystore
+# Java thinks it is c:/users/ptII/adm/certs/ptkeystore
+# Thus, you should copy the same file to both locations.
+# Then try viewing the keystore:
+# make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=/users/ptII/adm/certs/ptkeystore
+# make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=c:/cygwin/users/ptII/adm/certs/ptkeystore
+#
+
 STOREPASSWORD = -storepass this.is.the.storePassword,change.it
 KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
 
@@ -804,6 +834,7 @@ $(JAR_DIST_DIR): $(NATIVE_SIGNED_LIB_JARS)
 CODEGEN_DOMAIN_JARS = \
 	ptolemy/domains/ci/ci.jar \
 	ptolemy/domains/ct/ct.jar \
+	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/domains/de/de.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/gr/gr.jar \
@@ -886,7 +917,7 @@ key_list:
 		$(STOREPASSWORD)
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII6.0/jnlp-$(PTVERSION)
+DIST_BASE = ptolemyII/ptII7.0/jnlp-$(PTVERSION)
 DIST_DIR = /export/home/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
@@ -911,7 +942,7 @@ jnlp_dist_update:
 	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
 
 # Used to update gr and codeDoc.jar
-DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII6.0/$(PTVERSION)
+DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII7.0/$(PTVERSION)
 update_gr_codeDoc:
 	scp ptolemy/domains/gr/gr.jar bennett:$(DIST_JAR)/ptolemy/domains/gr
 	ssh bennett "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-$(PTVERSION)/signed/doc/codeDoc.jar"
@@ -960,7 +991,7 @@ MKL4J = $(ROOT)/bin/mkl4j
 L4J_DIR=$(PTII)/vendors/launch4j
 
 # Cygpath command
-#PTCYGPATH=cygpath --windows
+#PTCYGPATH=cygpath --windows -a
 PTCYGPATH=$(ROOT)/bin/ptcygpath
 
 # Launch4J console application that reads in .xml files and creates .exe files.
@@ -981,7 +1012,7 @@ L4J_EXES =		$(L4J_DOC_EXES) $(L4J_PTOLEMY_EXES) $(L4J_PTPLOT_EXES)
 L4J_CONFIGS =		$(L4J_EXES:%.exe=%_l4j.xml)
 
 # Create all the .exe files
-exes: $(L4J_EXES)
+exes: $(L4J_CONFIGS) $(L4J_EXES)
 
 # Remove the .exe files and the .xml files used to create the .exe files
 clean_exes:
