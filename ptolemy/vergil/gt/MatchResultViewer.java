@@ -37,6 +37,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -68,6 +69,8 @@ import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.RoundedRectangle;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.gui.GUIUtilities;
@@ -270,16 +273,10 @@ public class MatchResultViewer extends GTFrame {
                 if (object instanceof NamedObj && cf != null && !_transformed
                         && _results != null
                         && _results.get(_currentPosition).containsValue(object)) {
-                    Stroke stroke = new BasicStroke(6f, BasicStroke.CAP_SQUARE,
-                            BasicStroke.JOIN_MITER, 10.0f);
                     Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
-                    float padding = 3.0f;
-                    bounds = new Rectangle2D.Double(bounds.getX() - padding,
-                            bounds.getY() - padding, bounds.getWidth()
-                                    + padding * 2.0, bounds.getHeight()
-                                    + padding * 2.0);
-                    BasicFigure bf = new BasicFigure(bounds);
-                    bf.setStroke(stroke);
+                    BasicFigure bf = new BasicRectangle(bounds.getX(),
+                            bounds.getY(), bounds.getWidth(),
+                            bounds.getHeight(), 5.0f);
                     bf.setStrokePaint(_HIGHLIGHT_COLOR);
 
                     int index = cf.getFigureCount();
@@ -336,23 +333,20 @@ public class MatchResultViewer extends GTFrame {
                 if (object instanceof NamedObj && cf != null && !_transformed
                         && _results != null
                         && _results.get(_currentPosition).containsValue(object)) {
-                    Stroke stroke = new BasicStroke(6f, BasicStroke.CAP_SQUARE,
-                            BasicStroke.JOIN_MITER, 10.0f);
                     Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
                     float padding = 3.0f;
-                    bounds = new Rectangle2D.Double(bounds.getX() - padding,
-                            bounds.getY() - padding, bounds.getWidth()
-                                    + padding * 2.0, bounds.getHeight()
-                                    + padding * 2.0);
-                    BasicFigure bf = new BasicFigure(bounds);
-                    bf.setStroke(stroke);
-                    bf.setStrokePaint(_HIGHLIGHT_COLOR);
+                    RoundedRectangle rf = new RoundedRectangle(
+                            bounds.getX() - padding, bounds.getY() - padding,
+                            bounds.getWidth() + padding * 2.0,
+                            bounds.getHeight() + padding * 2.0,
+                            null, 5.0f, 32.0, 32.0);
+                    rf.setStrokePaint(_HIGHLIGHT_COLOR);
 
                     int index = cf.getFigureCount();
                     if (index < 0) {
                         index = 0;
                     }
-                    cf.add(index, bf);
+                    cf.add(index, rf);
                 }
             }
         }
