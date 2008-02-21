@@ -1793,9 +1793,9 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                                 + tokenField);
                                     }
 
-                                    SootField replacementField = (SootField) fieldToReplacementField
+                                    SootField replacementField = (SootField) entry.getValue();
+                                    Local replacementLocal = (Local) fieldToReplacementLocal
                                             .get(tokenField);
-                                    Local replacementLocal = (Local) entry.getValue();
 
                                     if (debug) {
                                         System.out
@@ -2088,9 +2088,12 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                                 + tokenField);
                                     }
 
-                                    SootField replacementField = (SootField) fieldToReplacementField
+                                    //SootField replacementField = (SootField) fieldToReplacementField
+                                    //        .get(tokenField);
+                                    //Local replacementLocal = (Local) entry.getValue();
+                                    SootField replacementField = (SootField) entry.getValue();
+                                    Local replacementLocal = (Local) fieldToReplacementLocal
                                             .get(tokenField);
-                                    Local replacementLocal = (Local) entry.getValue();
                                     FieldRef fieldRef;
 
                                     if (stmt.getRightOp() instanceof InstanceFieldRef) {
