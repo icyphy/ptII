@@ -49,6 +49,10 @@ if {[info procs jdkCapture] == "" } then {
 test CodeStream-1.1 {Constructor that takes a CodeGeneratorHelper} {
     set model [sdfModel]
 
+    set codeGenerator \
+	    [java::new ptolemy.codegen.kernel.CodeGenerator \
+	    $model "myCodeGenerator"]
+
     set cgHelper [java::new ptolemy.codegen.kernel.CodeGeneratorHelper \
 		      $model]
     set codeStream [java::new ptolemy.codegen.kernel.CodeStream \
@@ -77,7 +81,7 @@ test CodeStream-3.1 {appendCodeBlock} {
     $codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] true 0
     catch {$codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] false 0} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "foo()".
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "foo()" in .
   in .<Unnamed Object>}}
 
 #####
@@ -114,8 +118,9 @@ test CodeStream-3.3 {appendCodeBlock: wrong number of args} {
     $args add [java::call Integer toString 3]
     $args add [java::call Integer toString 4]
     catch {$codeStream3_3 appendCodeBlock "initBlock" $args false 0} errMsg
-    list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "initBlock($, $)".}}
+    regsub {file:.*/testCodeBlock.c} $errMsg {file:<<path_substituted>>/testCodeBlock.c} results
+    list $results	
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "initBlock($, $)" in file:<<path_substituted>>/testCodeBlock.c.}}
 
 #####
 test CodeStream-3.4 {appendCodeBlock: arg name does not start with $} {
@@ -136,8 +141,9 @@ test CodeStream-3.5 {appendCodeBlock initBlock} {
 			[[$fileTestBlock toURL] toString] $codeGenerator]
 
     catch {$codeStream3_5 appendCodeBlock "initBlock"} errMsg
-    list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: initBlock -- is a code block that is appended by default.}}
+    regsub {file:.*/testCodeBlock.c} $errMsg {file:<<path_substituted>>/testCodeBlock.c} results
+    list $results
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "initBlock()" in file:<<path_substituted>>/testCodeBlock.c.}}
 
 #####
 test CodeStream-4.0 {appendCodeBlock(nameExpression)} {
