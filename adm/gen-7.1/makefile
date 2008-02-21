@@ -264,7 +264,7 @@ $(PTII_FULL): $(PTIIDIST)
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(PTIIDIST); chmod -R a+rX .)
+	-(cd $(PTIIDIST); chmod -R a+rX .)
 	@echo "For some reason under Cygwin, we need to build the compressed"
 	@echo "  tar file or we get errors"
 	(cd $(PTIIDIST)/..; \
