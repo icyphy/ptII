@@ -163,11 +163,14 @@ public class GTTools {
         String name = code.substring(2);
         if (abbreviation.equals("A:")) {
             return topContainer.getAttribute(name);
-        } else if (abbreviation.equals("E:")) {
+        } else if (abbreviation.equals("E:")
+                && topContainer instanceof CompositeEntity) {
             return ((CompositeEntity) topContainer).getEntity(name);
-        } else if (abbreviation.equals("P:")) {
+        } else if (abbreviation.equals("P:")
+                && topContainer instanceof Entity) {
             return ((Entity) topContainer).getPort(name);
-        } else if (abbreviation.equals("R:")) {
+        } else if (abbreviation.equals("R:")
+                && topContainer instanceof CompositeEntity) {
             return ((CompositeEntity) topContainer).getRelation(name);
         } else {
             return null;

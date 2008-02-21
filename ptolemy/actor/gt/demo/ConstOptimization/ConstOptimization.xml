@@ -2,19 +2,19 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ConstOptimization" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={56, 70, 918, 611}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={57, 71, 918, 637}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[695, 496]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[695, 523]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.5, 248.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.5, 261.5}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -33,20 +33,19 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 485.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model demonstrates how one can possibly optimize a model. The original input is
-the model in BaseModel.xml, which the FileReader actor reads in. The content of this
-model is then converted into an ActorToken by the ModelGenerator. OptimizeOnce is a
-transformation rule that gets repeatedly applied to this model until no further
-optimization is possible (i.e., a fixpoint is reached). In each application, two Consts that
-are wired to an AddSubtract actor, a MultiplyDivide actor, or a Maximum actor are
-replaced by a single Const with the statically computed value.</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model demonstrates how one can possibly optimize a model. The original input is the model in
+BaseModel.xml, which the FileReader actor reads in. The contents of this model are then converted
+into an ActorToken by the ModelGenerator. OptimizeOnce is a transformation rule that gets
+repeatedly applied to this model until no further optimization is possible (i.e., a fixpoint is reached).
+In each application, two Consts that are wired to an AddSubtract actor, a MultiplyDivide actor, or a
+Maximum actor are replaced by a single Const with the statically computed value.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -59,28 +58,72 @@ replaced by a single Const with the statically computed value.</text></svg></con
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 365.0]">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Click the run button to observe the behavior reflected in the popup windows. The
+new window to the left shows the original model. The one to the right shows the
+result of static evaluation step by step.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 30.0]">
+        </property>
+    </property>
+    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">Model Size Reduction</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 10.0]">
         </property>
     </property>
     <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 140.0]">
         </property>
     </entity>
     <entity name="OriginalModel" class="ptolemy.actor.gt.ModelView">
         <property name="title" class="ptolemy.actor.parameters.PortParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 105.0]">
+        <property name="screenLocation" class="ptolemy.data.expr.Parameter" value="{x=0, y=0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 150.0]">
         </property>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="BaseModel.xml">
         </property>
         <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 130.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 240.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -93,15 +136,15 @@ replaced by a single Const with the statically computed value.</text></svg></con
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 240.0]">
         </property>
     </entity>
     <entity name="OptimizeOnce" class="ptolemy.actor.gt.TransformationRule">
         <property name="mode" class="ptolemy.data.expr.StringParameter" value="replace any">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 230.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 239, 833, 571}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 240, 833, 570}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 428]">
         </property>
@@ -111,7 +154,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
         </property>
         <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
             <property name="Constraint1" class="ptolemy.actor.gt.Constraint">
-                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="A.criterion1.getWidth() == 2">
+                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="A.input.getWidth() == 2">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
@@ -124,11 +167,11 @@ replaced by a single Const with the statically computed value.</text></svg></con
           </svg>
         </configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 230.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 200.0]">
                 </property>
             </property>
             <property name="Constraint3" class="ptolemy.actor.gt.Constraint">
-                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="A.getClassName().equals(&quot;ptolemy.actor.lib.AddSubtract&quot;) ||&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.MultiplyDivide&quot;) ||&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.Maximum&quot;)">
+                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.AddSubtract&quot;) &amp;&amp; A.input.getName().equals(&quot;plus&quot;) ||&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.MultiplyDivide&quot;) &amp;&amp; A.input.getName().equals(&quot;multiply&quot;) ||&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.Maximum&quot;)">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -147,7 +190,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
           </svg>
         </configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 300.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 235.0]">
                 </property>
             </property>
             <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute">
@@ -164,11 +207,11 @@ replaced by a single Const with the statically computed value.</text></svg></con
           </svg>
         </configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 35.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 30.0]">
                 </property>
             </property>
             <property name="Constraint2" class="ptolemy.actor.gt.Constraint">
-                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="A.criterion2.getWidth() == 1">
+                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="A.output.getWidth() == 1">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
@@ -181,7 +224,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
           </svg>
         </configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 265.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 200.0]">
                 </property>
                 <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Constraint1">
                 </property>
@@ -189,7 +232,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
             <entity name="C1" class="ptolemy.actor.gt.AtomicActorMatcher">
                 <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.SubclassCriterion/true/&quot;ptolemy.actor.lib.Const&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//false/false/true/true/true/false)">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 90.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 80.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -201,7 +244,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
             <entity name="C2" class="ptolemy.actor.gt.AtomicActorMatcher">
                 <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.SubclassCriterion/true/&quot;ptolemy.actor.lib.Const&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//false/false/true/true/true/false)">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 170.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 160.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -211,15 +254,15 @@ replaced by a single Const with the statically computed value.</text></svg></con
                 </property>
             </entity>
             <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
-                <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/false/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//false/false/true/true/false/false)">
+                <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/false/false/true/&quot;input&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//false/false/true/true/false/false/true/&quot;output&quot;)">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 110.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 100.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <vertex name="vertex1" value="[345.0, 130.0]">
+                <vertex name="vertex1" value="[345.0, 120.0]">
                 </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -232,17 +275,17 @@ replaced by a single Const with the statically computed value.</text></svg></con
             </relation>
             <link port="C1.criterion2" relation="relation2"/>
             <link port="C2.criterion2" relation="relation3"/>
-            <link port="A.criterion1" relation="relation2"/>
-            <link port="A.criterion1" relation="relation3"/>
-            <link port="A.criterion2" relation="relation"/>
+            <link port="A.input" relation="relation2"/>
+            <link port="A.input" relation="relation3"/>
+            <link port="A.output" relation="relation"/>
         </entity>
         <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
             <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
-                <property name="operations" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.operations.AttributeOperation/true/&quot;value&quot;/false//true/&quot;$(A.getClassName().equals(\&quot;ptolemy.actor.lib.AddSubtract\&quot;) ? C1.value + C2.value : A.getClassName().equals(\&quot;ptolemy.actor.lib.MultiplyDivide\&quot;) ? C1.value * C2.value : C1.value &gt;= C2.value ? C1.value : C2.value)&quot;)">
+                <property name="operations" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.operations.AttributeOperation/false/&quot;value&quot;/false//false/&quot;$(A.getClassName().equals(\&quot;ptolemy.actor.lib.AddSubtract\&quot;) ? C1.value + C2.value : A.getClassName().equals(\&quot;ptolemy.actor.lib.MultiplyDivide\&quot;) ? C1.value * C2.value : C1.value &gt;= C2.value ? C1.value : C2.value)&quot;)">
                 </property>
                 <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="C1">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 125.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 90.0}">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -251,19 +294,21 @@ replaced by a single Const with the statically computed value.</text></svg></con
                     </property>
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <vertex name="vertex1" value="{290.0, 125.0}">
+                <vertex name="vertex1" value="{355.0, 130.0}">
                 </vertex>
                 <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
                 </property>
             </relation>
-            <link port="C.criterion2" relation="relation"/>
+            <link port="C.criterion2" relation="relation2"/>
         </entity>
     </entity>
     <entity name="OptimizedModel" class="ptolemy.actor.gt.ModelView">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 290.0]">
+        <property name="screenLocation" class="ptolemy.data.expr.Parameter" value="{x=662, y=0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 335.0]">
         </property>
     </entity>
     <entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect">
@@ -273,7 +318,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 200.0]">
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -285,7 +330,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 265.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -300,7 +345,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 265.0]">
         </property>
     </entity>
     <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
@@ -310,7 +355,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 230.0]">
         </property>
         <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -329,7 +374,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 290.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -341,7 +386,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[185.0, 95.0]">
+        <vertex name="vertex1" value="[185.0, 140.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -367,19 +412,19 @@ replaced by a single Const with the statically computed value.</text></svg></con
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[555.0, 280.0]">
+        <vertex name="vertex1" value="[555.0, 325.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[315.0, 235.0]">
+        <vertex name="vertex1" value="[315.0, 280.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[185.0, 280.0]">
+        <vertex name="vertex1" value="[185.0, 325.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

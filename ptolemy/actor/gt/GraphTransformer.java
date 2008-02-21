@@ -756,8 +756,9 @@ public class GraphTransformer extends ChangeRequest {
             }
 
             // Create new relations for the ports.
-            for (Port port : portLinks.keySet()) {
-                List<Object> linkedRelations = portLinks.get(port);
+            for (Map.Entry<Port, List<Object>> entry : portLinks.entrySet()) {
+                Port port = entry.getKey();
+                List<Object> linkedRelations = entry.getValue();
                 int width = 1;
                 for (Object relationObject : linkedRelations) {
                     Relation relation = (Relation) relationObject;
@@ -791,8 +792,9 @@ public class GraphTransformer extends ChangeRequest {
             }
 
             // Fix the connections between the moved entities and relations.
-            for (NamedObj originalObject : entityMap.keySet()) {
-                NamedObj newObject = entityMap.get(originalObject);
+            for (Map.Entry<NamedObj, NamedObj> entry : entityMap.entrySet()) {
+                NamedObj originalObject = entry.getKey();
+                NamedObj newObject = entry.getValue();
                 if (originalObject instanceof Relation
                         || originalObject instanceof Port
                         && newObject instanceof Relation) {
@@ -843,8 +845,7 @@ public class GraphTransformer extends ChangeRequest {
 
     private void _removeObjects(CompositeEntity host)
             throws TransformationException {
-        CompositeEntity replacement = (CompositeEntity) _replacementToHost
-                .getKey(host);
+        NamedObj replacement = _replacementToHost.getKey(host);
         Collection<?> children = GTTools.getChildren(host, false, false, true,
                 true);
         Map<NamedObj, Boolean> childrenToRemove = new HashMap<NamedObj, Boolean>();
@@ -869,9 +870,11 @@ public class GraphTransformer extends ChangeRequest {
                 }
             }
             newChildren.clear();
-            for (NamedObj child : childrenToRemove.keySet()) {
+            for (Map.Entry<NamedObj, Boolean> entry
+                    : childrenToRemove.entrySet()) {
+                NamedObj child = entry.getKey();
                 Set<NamedObj> newlyAddedChildren = _removeObject(child,
-                        childrenToRemove.get(child));
+                        entry.getValue());
                 if (newlyAddedChildren != null) {
                     newChildren.addAll(newlyAddedChildren);
                 }

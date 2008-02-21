@@ -69,8 +69,8 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
      */
     public TwoWayHashMap(Map<K, V> map) {
         super();
-        for (K key : map.keySet()) {
-            put(key, map.get(key));
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            put(entry.getKey(), entry.getValue());
         }
     }
 

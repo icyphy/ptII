@@ -27,6 +27,9 @@
  */
 package ptolemy.actor.gt;
 
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -40,13 +43,17 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.lib.Sink;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,6 +90,14 @@ public class ModelView extends Sink implements WindowListener {
         title = new PortParameter(this, "title");
         title.setStringMode(true);
         title.setExpression("");
+
+        Parameter NONE = new Parameter(this, "NONE");
+        NONE.setToken("{x=-1, y=-1}");
+        NONE.setVisibility(Settable.EXPERT);
+
+        screenLocation = new Parameter(this, "screenLocation");
+        screenLocation.setTypeAtMost(LocationType.LOCATION);
+        screenLocation.setToken("NONE");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -122,7 +137,30 @@ public class ModelView extends Sink implements WindowListener {
                             _tableaus[i].close();
                         }
                         _tableaus[i] = tableau;
-                        tableau.getFrame().addWindowListener(this);
+                        
+                        JFrame frame = tableau.getFrame();
+                        // Compute location of the new frame.
+                        RecordToken location =
+                            (RecordToken) screenLocation.getToken();
+                        int x = ((IntToken) location.get("x")).intValue();
+                        int y = ((IntToken) location.get("y")).intValue();
+                        Point newLocation = frame.getLocation();
+                        if (x >= 0) {
+                            newLocation.x = x;
+                        }
+                        if (y >= 0) {
+                            newLocation.y = y;
+                        }
+                        // Move the frame to the edge if it exceeds the screen.
+                        Dimension size = frame.getSize();
+                        Toolkit toolkit = Toolkit.getDefaultToolkit();
+                        Dimension screenSize = toolkit.getScreenSize();
+                        newLocation.x = Math.min(newLocation.x,
+                                screenSize.width - size.width);
+                        newLocation.y = Math.min(newLocation.y,
+                                screenSize.height - size.height);
+                        frame.setLocation(newLocation);
+                        frame.addWindowListener(this);
 
                         String titleString = null;
                         if (titleValue.equals("")) {
@@ -200,6 +238,8 @@ public class ModelView extends Sink implements WindowListener {
 
     public void windowOpened(WindowEvent e) {
     }
+
+    public Parameter screenLocation;
 
     public PortParameter title;
 

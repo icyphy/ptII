@@ -27,12 +27,14 @@
  */
 package ptolemy.actor.gt.ingredients.criteria;
 
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gt.GTIngredient;
 import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.ValidationException;
@@ -51,13 +53,14 @@ public class PortCriterion extends Criterion {
     }
 
     public PortCriterion(GTIngredientList owner, String values) {
-        this(owner, null, null, false, false, false);
+        this(owner, null, null, false, false, false, "");
         setValues(values);
     }
 
     public PortCriterion(GTIngredientList owner, String portName,
-            String portType, boolean input, boolean output, boolean multiport) {
-        super(owner, 5);
+            String portType, boolean input, boolean output, boolean multiport,
+            String matcherName) {
+        super(owner, 6);
 
         NamedObj container = owner.getOwner().getContainer();
         _portName = new RegularExpressionString(portName);
@@ -65,15 +68,24 @@ public class PortCriterion extends Criterion {
         _input = input;
         _output = output;
         _multiport = multiport;
+        _matcherName = matcherName;
     }
 
     public GTIngredientElement[] getElements() {
         return _ELEMENTS;
     }
 
+    public String getMatcherName() {
+        return _matcherName;
+    }
+
     public String getPortID(GTIngredientList list) {
-        int position = list.indexOf(this);
-        return "criterion" + (position + 1);
+        if (!isMatcherNameEnabled() || _matcherName.equals("")) {
+            int position = list.indexOf(this);
+            return _getUniqueName(list, "criterion" + (position + 1));
+        } else {
+            return _getUniqueName(list, _matcherName);
+        }
     }
 
     public String getPortName() {
@@ -96,6 +108,8 @@ public class PortCriterion extends Criterion {
             return _output;
         case 4:
             return _multiport;
+        case 5:
+            return _matcherName;
         default:
             return null;
         }
@@ -108,6 +122,7 @@ public class PortCriterion extends Criterion {
         _encodeBooleanField(buffer, 2, _input);
         _encodeBooleanField(buffer, 3, _output);
         _encodeBooleanField(buffer, 4, _multiport);
+        _encodeStringField(buffer, 5, _matcherName);
         return buffer.toString();
     }
 
@@ -117,6 +132,10 @@ public class PortCriterion extends Criterion {
 
     public boolean isInputEnabled() {
         return isEnabled(2);
+    }
+
+    public boolean isMatcherNameEnabled() {
+        return isEnabled(5);
     }
 
     public boolean isMultiport() {
@@ -203,6 +222,10 @@ public class PortCriterion extends Criterion {
         setEnabled(2, enabled);
     }
 
+    public void setMatcherNameEnabled(boolean enabled) {
+        setEnabled(5, enabled);
+    }
+
     public void setMultiportEnabled(boolean enabled) {
         setEnabled(4, enabled);
     }
@@ -236,6 +259,9 @@ public class PortCriterion extends Criterion {
         case 4:
             _multiport = ((Boolean) value).booleanValue();
             break;
+        case 5:
+            _matcherName = (String) value;
+            break;
         }
     }
 
@@ -246,6 +272,7 @@ public class PortCriterion extends Criterion {
         _input = _decodeBooleanField(2, fieldIterator);
         _output = _decodeBooleanField(3, fieldIterator);
         _multiport = _decodeBooleanField(4, fieldIterator);
+        _matcherName = _decodeStringField(5, fieldIterator);
     }
 
     public void validate() throws ValidationException {
@@ -276,14 +303,42 @@ public class PortCriterion extends Criterion {
         }
     }
 
+    private String _getUniqueName(GTIngredientList list, String name) {
+        int pos = 1;
+        String id = null;
+        boolean success = false;
+        while (!success) {
+            success = true;
+            id = pos >= 2 ? name + pos : name;
+            Iterator<GTIngredient> iterator = list.iterator();
+            while (iterator.hasNext()) {
+                GTIngredient ingredient = iterator.next();
+                if (ingredient == this) {
+                    break;
+                } else if (ingredient instanceof PortCriterion) {
+                    PortCriterion portCriterion = (PortCriterion) ingredient;
+                    String portId = portCriterion.getPortID(list);
+                    if (portId.equals(id)) {
+                        success = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return id;
+    }
+
     private static final CriterionElement[] _ELEMENTS = {
             new StringCriterionElement("name", true, true, false),
             new ChoiceCriterionElement("type", true, false, true, true),
             new BooleanCriterionElement("input", true),
             new BooleanCriterionElement("output", true),
-            new BooleanCriterionElement("multi", true) };
+            new BooleanCriterionElement("multi", true),
+            new StringCriterionElement("matcherName", true, false, false) };
 
     private boolean _input;
+
+    private String _matcherName;
 
     private boolean _multiport;
 
