@@ -2196,9 +2196,12 @@ $(PTII)/vendors/izpack:
 
 PTSETUP=ptII$(WINDOWS_VERSION)_setup
 # IzPack installer
-setup_jar: $(PTSETUP).jar
+setup_jar: $(PTSETUP).jar src/ptII$(VERSION)/bin/vergil
 $(PTSETUP).jar: $(PTSETUP).xml ../../ptiny.exe #ExtractJarFile.jar
 	sh "$(IZPACK_COMPILE)" $<
+
+src/ptII$(VERSION)/bin/vergil:
+	cp $(PTII)/bin/vergil $@
 
 #	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
 
