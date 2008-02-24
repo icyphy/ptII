@@ -123,6 +123,7 @@ PTII_TOPDIR=	.cshrc \
 		lib \
 		makefile \
 		mk \
+		org \
 		ptolemy \
 		thales \
 		util \
