@@ -185,18 +185,52 @@ test Complex-5.2 {divide} {
 } {-0.38461538461538464 - 0.9230769230769231i}
 
 ####################################################################
-test Complex-5.2.5 {equals} {
+test Complex-5.2.2 {equals} {
     # Copy the values of c2
     set ct4 [java::new ptolemy.math.Complex \
 	    [java::field $c2 real] \
 	    [java::field $c2 imag]]
     list \
-	    [$c0 equals $c0] \
-	    [$c1 equals $c1] \
-	    [$c2 equals $c2] \
-	    [$c2 equals $c1] \
-	    [$c2 equals $ct4]
-} {1 1 1 0 1}
+	[list [$c0 equals $c0] \
+	      [$c1 equals $c0] \
+	      [$c2 equals $c0] \
+	      [$ct4 equals $c0]] \
+	[list [$c0 equals $c1] \
+	      [$c1 equals $c1] \
+	      [$c2 equals $c1] \
+	      [$ct4 equals $c1]] \
+	[list [$c0 equals $c2] \
+	      [$c1 equals $c2] \
+	      [$c2 equals $c2] \
+	      [$ct4 equals $c2]] \
+	[list [$c0 equals $ct4] \
+	      [$c1 equals $ct4] \
+	      [$c2 equals $ct4] \
+	      [$ct4 equals $ct4]]
+
+} {{1 0 0 0} {0 1 0 0} {0 0 1 1} {0 0 1 1}}
+
+####################################################################
+test Complex-5.2.4 {hashCode} {
+    # uses 5.2.2 above
+    list \
+	[list [expr {[$c0 hashCode] == [$c0 hashCode]}] \
+	     [expr {[$c1 hashCode] == [$c0 hashCode]}] \
+	     [expr {[$c2 hashCode] == [$c0 hashCode]}] \
+  	     [expr {[$ct4 hashCode] == [$c0 hashCode]}]] \
+	[list [expr {[$c0 hashCode] == [$c1 hashCode]}] \
+	     [expr {[$c1 hashCode] == [$c1 hashCode]}] \
+	     [expr {[$c2 hashCode] == [$c1 hashCode]}] \
+  	     [expr {[$ct4 hashCode] == [$c1 hashCode]}]] \
+	[list [expr {[$c0 hashCode] == [$c2 hashCode]}] \
+	     [expr {[$c1 hashCode] == [$c2 hashCode]}] \
+	     [expr {[$c2 hashCode] == [$c2 hashCode]}] \
+  	     [expr {[$ct4 hashCode] == [$c2 hashCode]}]] \
+	[list [expr {[$c0 hashCode] == [$ct4 hashCode]}] \
+	     [expr {[$c1 hashCode] == [$ct4 hashCode]}] \
+	     [expr {[$c2 hashCode] == [$ct4 hashCode]}] \
+  	     [expr {[$ct4 hashCode] == [$ct4 hashCode]}]] \
+} {{1 0 0 0} {0 1 0 0} {0 0 1 1} {0 0 1 1}}
 
 ####################################################################
 test Complex-5.2.5 {isCloseTo} {
