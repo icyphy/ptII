@@ -69,7 +69,7 @@ test FixedPointDirector-3.1 {Test clone} {
     # NOTE: Uses the setup above
     set d4 [java::cast ptolemy.actor.sched.FixedPointDirector [$d2 clone $w]]
     $d4 setName D4
-    enumToFullNames [$w directory]
+    list [enumToFullNames [$w directory]]
 } {.M .D2 .E0}
 
 ######################################################################
@@ -80,3 +80,53 @@ test FixedPointDirector-4.1 {Test _makeDirectorOf} {
     $e0 setManager $manager
     list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
 } {.E0.D3 .D4 {.D2 .E0}}
+
+######################################################################
+####
+#
+test FixedPointDirector-5.1 {Test isFireFunctional} {
+    # NOTE: Uses the setup above
+    set w5 [java::new ptolemy.kernel.util.Workspace W5]
+    set d5 [java::cast ptolemy.actor.sched.FixedPointDirector [$d2 clone $w5]]
+    set e5 [java::new ptolemy.actor.CompositeActor $w5]
+    $e5 setName E5
+    $d5 setContainer $e5
+    set e5b [java::new ptolemy.actor.CompositeActor $e5 E5b]
+    # d5 is not yet fire functional because it contains only a composite
+    set result1	[$d5 isFireFunctional]
+
+    # Add an atomic actor, the top level is now fire functional
+    set a5b [java::new ptolemy.actor.test.TestActor $e5b A5b]
+    set result2	[$d5 isFireFunctional]
+
+    # Remove an atomic actor, the top level is no longer fire functional
+    $a5b setContainer [java::null]
+    set result3	[$d5 isFireFunctional]
+
+    set a5 [java::new ptolemy.actor.test.TestActor $e5 A5]
+    # d5 is fireFunctional because it contains an AtomicActor  
+    list [[$d5 getContainer] getFullName] \
+	$result1 $result2 $result3 \
+	[listToFullNames [$e5 deepEntityList]] \
+	[$d5 isFireFunctional]
+} {.E5 0 1 0 .E5.A5 1}
+
+######################################################################
+####
+#
+test FixedPointDirector-5.2 {Test isFireFunctional with no actors} {
+    # NOTE: Uses the setup above
+    # This returns false because there are no actors
+    list [[$d3 getContainer] getFullName] \
+	[listToFullNames [$e0 allAtomicEntityList]] \
+	[$d3 isFireFunctional]
+} {.E0 {} 0}
+
+######################################################################
+####
+#
+test FixedPointDirector-5.3 {Test isFireFunctional with no container} {
+    # NOTE: Uses the setup above
+    # This returns false because there is no container
+    list [java::isnull [$d4 getContainer]] [$d4 isFireFunctional]
+} {1 0}
