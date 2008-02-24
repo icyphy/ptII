@@ -129,6 +129,20 @@ test Fraction-2.7 {equals} {
 } {0 0 0 0 0 1 0}
 
 ####################################################################
+test Fraction-2.7.5 {hashCode} {
+    set c6 [java::new ptolemy.math.Fraction -1 3]
+    set i0 [java::new {Integer int} 5]
+    set c01 [expr [$c0 hashCode] == [$c1 hashCode]]
+    set c12 [expr [$c1 hashCode] == [$c2 hashCode]]
+    set c23 [expr [$c2 hashCode] == [$c3 hashCode]]
+    set c34 [expr [$c3 hashCode] == [$c4 hashCode]]
+    set c45 [expr [$c4 hashCode] == [$c5 hashCode]]
+    set c46 [expr [$c4 hashCode] == [$c6 hashCode]]
+    set ci0 [expr [$c1 hashCode] == [$i0 hashCode]]
+    list $c01 $c12 $c23 $c34 $c45 $c46 $ci0
+} {0 0 0 0 0 1 0}
+
+####################################################################
 test Fraction-2.8 {inverse} {
     catch {[set c01 [$c0 inverse]]} s1
     set c12 [$c1 inverse]
