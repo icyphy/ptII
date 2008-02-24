@@ -69,8 +69,8 @@ test Director-3.1 {Test clone} {
     # NOTE: Uses the setup above
     set d4 [java::cast ptolemy.actor.Director [$d2 clone $w]]
     $d4 setName D4
-    enumToFullNames [$w directory]
-} {.M .D2 .E0}
+    list [java::isnull [$d4 getContainer]] [enumToFullNames [$w directory]]
+} {1 {.M .D2 .E0}}
 
 ######################################################################
 ####
