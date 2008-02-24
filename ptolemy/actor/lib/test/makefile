@@ -88,6 +88,7 @@ JSIMPLE_TESTS = \
 	SubscriptionAggregator.tcl \
 	Test.tcl \
 	TestExceptionHandler.tcl \
+	UnionDisassembler.tcl \
 	VariableClock.tcl
 
 # Graphical Java tests that use Tcl.
