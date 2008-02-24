@@ -274,7 +274,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     /** Return true if all the controlled actors' isFireFunctional()
      *  methods return true. Otherwise, return false.
      *
-     *  @return True if all controlled actors are functional.
+     *  @return True if all controlled actors are functional.  Return
+     *  false if there is no container or no actors in the container.
      */
     public boolean isFireFunctional() {
         if (workspace().getVersion() == _functionalPropertyVersion) {
@@ -282,15 +283,23 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         }
 
         boolean result = true;
+        boolean containsActors = false;
 
-        Iterator actors = ((CompositeActor) getContainer()).deepEntityList()
-                .iterator();
+        CompositeActor container = (CompositeActor) getContainer();
+        if (container == null) {
+            return false;
+        }
+        Iterator actors = container.deepEntityList().iterator();
 
         while (result && actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor) actors.next();
             result = actor.isFireFunctional() && result;
+            containsActors = true;
         }
 
+        if (!containsActors) {
+            result = false;
+        } 
         _cachedFunctionalProperty = result;
         _functionalPropertyVersion = workspace().getVersion();
 
