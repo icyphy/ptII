@@ -95,7 +95,8 @@ test KernelRuntimeException-7.1 {Create a KernelRuntimeException with a Collecti
 	        [$stream toString] "\n" output
 
     list [$pe getMessage] [[$pe getCause] toString] "\n\n" \
-	    [string range $output 0 105]
+	    [string range $output 0 105] "\n\n" \
+	    [listToFullNames [$pe getNameables]]
 } {{Detail Message
   in .n1, .n2, .n3
 Because:
@@ -105,7 +106,9 @@ Cause Exception} {java.lang.Exception: Cause Exception} {
   in .n1, .n2, .n3
 Because:
 Cause Exception
-	at}}
+	at} {
+
+} {.n1 .n2 .n3}}
 
 test KernelRuntimeException-8.0 {printStackTrace()} {
     set cause [java::new Exception "Cause Exception"]
