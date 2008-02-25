@@ -26,7 +26,7 @@
 
 
  */
-package ptolemy.actor.lib;
+package ptolemy.actor.lib.jni;
 
 import ptolemy.actor.lib.jni.EmbeddedCActor;
 import ptolemy.kernel.CompositeEntity;

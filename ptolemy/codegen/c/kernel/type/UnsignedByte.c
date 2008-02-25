@@ -49,7 +49,7 @@ Token UnsignedByte_isCloseTo(Token thisToken, ...) {
 
 /***UnsignedByte_print***/
 Token UnsignedByte_print(Token thisToken, ...) {
-    printf("%d", thisToken.payload.UnsignedByte);
+    printf("%dub", thisToken.payload.UnsignedByte);
 }
 /**/
 

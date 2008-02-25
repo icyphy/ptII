@@ -48,6 +48,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	CodegenActor.java \
 	CompiledCompositeActor.java \
 	EmbeddedCActor.java \
 	PointerToken.java
