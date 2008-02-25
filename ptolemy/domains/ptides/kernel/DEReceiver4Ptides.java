@@ -17,6 +17,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.vergil.basic.GetDocumentationAction;
 
+/**
+ * @author Patricia Derler
+ */
 public class DEReceiver4Ptides extends PrioritizedTimedQueue {
     
 	

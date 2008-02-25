@@ -18,6 +18,9 @@ import ptolemy.domains.dde.kernel.TimeKeeper;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+/**
+ * @author Patricia Derler
+ */
 public class DDEThread4Ptides extends ProcessThread {
 
 	public DDEThread4Ptides(Actor actor, ProcessDirector director)

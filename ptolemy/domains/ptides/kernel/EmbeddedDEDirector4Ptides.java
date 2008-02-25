@@ -1,6 +1,5 @@
 package ptolemy.domains.ptides.kernel;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,16 +10,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TokenSentEvent;
 import ptolemy.actor.lib.Clock;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.FunctionDependency;
@@ -33,11 +28,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.dde.kernel.DDEDirector;
-import ptolemy.domains.dde.kernel.DDEReceiver;
-import ptolemy.domains.dde.kernel.DDEThread;
-import ptolemy.domains.dde.kernel.PrioritizedTimedQueue;
-import ptolemy.domains.dde.kernel.TimeKeeper;
 import ptolemy.domains.de.kernel.DECQEventQueue;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;
@@ -63,6 +53,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+/**
+ * @author Patricia Derler
+ */
 public class EmbeddedDEDirector4Ptides extends DEDirector {
 
 	public EmbeddedDEDirector4Ptides() throws IllegalActionException,
@@ -203,18 +196,18 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
             	DEEvent event = (DEEvent) eventsToFire.get(i);
             	Actor actorToFire = event.actor();
             	if (mustBeFiredAtRealTime(actorToFire)) {
-                	if (event.timeStamp().compareTo(physicalTime) > 0 && !_stopRequested) {
+                	if (event.timeStamp().compareTo(_physicalTime) > 0 && !_stopRequested) {
                 		_enqueueEventAgain(event); // fire the rest
                 		System.out.println(getContainer().getName() + ": ignore event that should be fired later");
-                		nextRealTimeEvent = event.timeStamp();
+                		_nextRealTimeEvent = event.timeStamp();
                 		continue;
                 	}
-                	nextRealTimeEvent = Time.POSITIVE_INFINITY;
-                	if (event.timeStamp().compareTo(physicalTime) < 0) {
+                	_nextRealTimeEvent = Time.POSITIVE_INFINITY;
+                	if (event.timeStamp().compareTo(_physicalTime) < 0) {
                 		_displaySchedule(actorToFire, event.timeStamp().getDoubleValue(), ScheduleListener.MISSEDEXECUTION);
-                		throw new IllegalActionException(actorToFire + " should have been fired at " + event.timeStamp() + " but physical time is already " + physicalTime + ".");
+                		throw new IllegalActionException(actorToFire + " should have been fired at " + event.timeStamp() + " but physical time is already " + _physicalTime + ".");
                 	}
-                } else if (!_preemptive && nextRealTimeEvent.compareTo(physicalTime.add(getWCET(actorToFire))) < 0) { // next execution does not fit into time before next real time event
+                } else if (!_preemptive && _nextRealTimeEvent.compareTo(_physicalTime.add(getWCET(actorToFire))) < 0) { // next execution does not fit into time before next real time event
                 	System.out.println(getContainer().getName() + ": ignore event that should be fired later");
                 	_enqueueEventAgain(event); // fire the rest
             		continue;
@@ -229,22 +222,22 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
                 }
             	
             	_currentModelTime = event.timeStamp();
-            	_displaySchedule(actorToFire, physicalTime.getDoubleValue(), ScheduleListener.START);
+            	_displaySchedule(actorToFire, _physicalTime.getDoubleValue(), ScheduleListener.START);
 	            actorToFire.fire();
 	            eventsfired++;
-	            System.out.println(getContainer().getName() + ": fired " + actorToFire + " at " + physicalTime + "/" + getModelTime());
-	            Time fireTime = physicalTime;
+	            System.out.println(getContainer().getName() + ": fired " + actorToFire + " at " + _physicalTime + "/" + getModelTime());
+	            Time fireTime = _physicalTime;
 	            double wcet = getWCET(actorToFire);
-	            _addSynchronizationPoint(physicalTime.add(EmbeddedDEDirector4Ptides.getWCET(actorToFire)));
-	            while (!(fireTime.add(wcet)).equals(physicalTime)) {
-	            	if (fireTime.add(wcet).compareTo(physicalTime) <  0) {
+	            _addSynchronizationPoint(_physicalTime.add(EmbeddedDEDirector4Ptides.getWCET(actorToFire)));
+	            while (!(fireTime.add(wcet)).equals(_physicalTime)) {
+	            	if (fireTime.add(wcet).compareTo(_physicalTime) <  0) {
 	            		_displaySchedule(actorToFire, event.timeStamp().add(wcet).getDoubleValue(), ScheduleListener.MISSEDEXECUTION);
 	            		throw new IllegalActionException("missed sync point");
 	            	}
 	            	_waitForPhysicalTime("actorExecuting");	
 	            	if (_stopRequested)	return;
 	            }
-	            _displaySchedule(actorToFire, physicalTime.getDoubleValue(), ScheduleListener.STOP);
+	            _displaySchedule(actorToFire, _physicalTime.getDoubleValue(), ScheduleListener.STOP);
 	            if (!actorToFire.postfire()) {
 	                _disableActor(actorToFire);
 	                break;
@@ -599,7 +592,7 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
                 ((BooleanToken) isCQAdaptive.getToken()).booleanValue()));
         }
         
-        physicalTime = _getExecutiveDirector().getModelTime();
+        _physicalTime = _getExecutiveDirector().getModelTime();
 
 
         // Call the preinitialize method of the super class.
@@ -777,7 +770,7 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
                 	Token t = receiver.get();
                     Time time = receiver.getReceiverTime();
                     if ((_getExecutiveDirector().usePtidesExecutionSemantics() && _isSafeToProcess(time, port)) ||
-                    		(!_getExecutiveDirector().usePtidesExecutionSemantics() && time.compareTo(physicalTime) > 0)) {
+                    		(!_getExecutiveDirector().usePtidesExecutionSemantics() && time.compareTo(_physicalTime) > 0)) {
                    // if (minDelayTime != Double.MAX_VALUE && this.physicalTime.compareTo(time.subtract(minDelayTime)) < 0) {
                     	System.out.println("cannot ti yet " + time);
                     	_addSynchronizationPoint(time); // at this time, the new input should be read
@@ -793,7 +786,7 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
                         for (int l = 0; l < farReceivers[k].length; l++) {
                             DEReceiver4Ptides farReceiver = (DEReceiver4Ptides) farReceivers[k][l];
                             farReceiver.put(t, time);
-                            _displaySchedule((Actor) port.getContainer(), physicalTime.getDoubleValue(), ScheduleListener.TRANSFERINPUT);
+                            _displaySchedule((Actor) port.getContainer(), _physicalTime.getDoubleValue(), ScheduleListener.TRANSFERINPUT);
                             System.out.println("	in " + t + " at " + time);
                             wasTransferred = true;
                         }
@@ -830,7 +823,7 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
                             DDEReceiver4Ptides outReceiver = (DDEReceiver4Ptides) outReceivers[k][l];
                             DDEThread4Ptides thread = (DDEThread4Ptides) Thread.currentThread();
                             outReceiver.put(token, ((Actor)port.getContainer()).getDirector().getModelTime());
-                            _displaySchedule((Actor)port.getContainer(), physicalTime.getDoubleValue(), ScheduleListener.TRANSFEROUTPUT);
+                            _displaySchedule((Actor)port.getContainer(), _physicalTime.getDoubleValue(), ScheduleListener.TRANSFEROUTPUT);
                             System.out.println("	out " + token + " at " + ((Actor)port.getContainer()).getDirector().getModelTime());
                         }
                     }
@@ -1478,7 +1471,7 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
 			DEEvent event = (DEEvent) eventsToFire.get(i);
 	    	Actor actorToFire = event.actor();
 	    	if (mustBeFiredAtRealTime(actorToFire))
-	    		if (event.timeStamp().compareTo(physicalTime) <= 0) // < will cause an exception - missed execution
+	    		if (event.timeStamp().compareTo(_physicalTime) <= 0) // < will cause an exception - missed execution
 	    			return false;
 	    		else if (nextRealTime.compareTo(event.timeStamp()) > 0)
 	    			nextRealTime = event.timeStamp();
@@ -1487,7 +1480,7 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
 			DEEvent event = (DEEvent) eventsToFire.get(i);
 	    	Actor actorToFire = event.actor();
 	    	// if execution fits before next real time event
-	    	if (!mustBeFiredAtRealTime(actorToFire) && physicalTime.add(getWCET(actorToFire)).compareTo(nextRealTime) < 0)
+	    	if (!mustBeFiredAtRealTime(actorToFire) && _physicalTime.add(getWCET(actorToFire)).compareTo(nextRealTime) < 0)
 	    		return false;
 		}
 		return true;
@@ -1531,7 +1524,7 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
 			time.subtract(minDelayTime)
 				.subtract(_getExecutiveDirector().getClockSyncError())
 				.subtract(_getExecutiveDirector().getNetworkDelay())
-				.compareTo(physicalTime) >= 0;
+				.compareTo(_physicalTime) >= 0;
 	}
 
 
@@ -1539,8 +1532,8 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
     	System.out.println(getContainer().getName() + ": " + reason);
     	if (_transferAllInputs())
     		return;
-        physicalTime = _getExecutiveDirector().waitForFuturePhysicalTime();
-        System.out.println("+" + this.getContainer().getName() +" " + physicalTime);
+        _physicalTime = _getExecutiveDirector().waitForFuturePhysicalTime();
+        System.out.println("+" + this.getContainer().getName() +" " + _physicalTime);
         _transferAllInputs();
 	}
 
@@ -1613,40 +1606,37 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
 		return false;
 	}
     
-
-    
-
-
-
     
     private DirectedAcyclicGraph _computeGraph() {
-    	CompositeActor actor = (CompositeActor) getContainer();
-    	FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (actor).getFunctionDependency();
-		DirectedAcyclicGraph graph = functionDependency.getDetailedDependencyGraph().toDirectedAcyclicGraph();
-		
-    	// add edges between timeddelay inputs and outputs
-		for (Iterator nodeIterator = graph.nodes().iterator(); nodeIterator.hasNext();) {
-    		IOPort port = (IOPort) ((Node)nodeIterator.next()).getWeight();
-    		Actor a = (Actor) port.getContainer();
-    		if (port.isOutput() && a instanceof TimedDelay) 
-    			graph.addEdge(a.inputPortList().get(0), a.outputPortList().get(0));
+    	if (_graph == null) {
+	    	CompositeActor actor = (CompositeActor) getContainer();
+	    	FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (actor).getFunctionDependency();
+			_graph = functionDependency.getDetailedDependencyGraph().toDirectedAcyclicGraph();
+			
+	    	// add edges between timeddelay inputs and outputs
+			for (Iterator nodeIterator = _graph.nodes().iterator(); nodeIterator.hasNext();) {
+	    		IOPort port = (IOPort) ((Node)nodeIterator.next()).getWeight();
+	    		Actor a = (Actor) port.getContainer();
+	    		if (port.isOutput() && a instanceof TimedDelay) 
+	    			_graph.addEdge(a.inputPortList().get(0), a.outputPortList().get(0));
+	    	}
+			// remove edges between actors and sensors
+			for (Iterator nodeIterator = _graph.nodes().iterator(); nodeIterator.hasNext();) {
+				IOPort sinkPort = (IOPort) ((Node)nodeIterator.next()).getWeight();
+	    		Actor a = (Actor) sinkPort.getContainer();
+	    		if (isSensor(a) && sinkPort.isInput()) {
+	    			Collection edgesToRemove = new java.util.ArrayList();
+	    			for (Iterator it = _graph.inputEdges(_graph.node(sinkPort)).iterator(); it.hasNext(); ) {
+	    				Edge edge = (Edge)it.next();
+	    				edgesToRemove.add(edge);
+	    			}
+	    			for (Iterator it = edgesToRemove.iterator(); it.hasNext(); ) {
+	    				_graph.removeEdge((Edge) it.next());
+	    			}
+	    		}
+			}
     	}
-		// remove edges between actors and sensors
-		for (Iterator nodeIterator = graph.nodes().iterator(); nodeIterator.hasNext();) {
-			IOPort sinkPort = (IOPort) ((Node)nodeIterator.next()).getWeight();
-    		Actor a = (Actor) sinkPort.getContainer();
-    		if (isSensor(a) && sinkPort.isInput()) {
-    			Collection edgesToRemove = new java.util.ArrayList();
-    			for (Iterator it = graph.inputEdges(graph.node(sinkPort)).iterator(); it.hasNext(); ) {
-    				Edge edge = (Edge)it.next();
-    				edgesToRemove.add(edge);
-    			}
-    			for (Iterator it = edgesToRemove.iterator(); it.hasNext(); ) {
-    				graph.removeEdge((Edge) it.next());
-    			}
-    		}
-		}
-    	return graph;
+    	return _graph;
     }
 
     
@@ -1700,8 +1690,10 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
     private Set equivalenceClasses;
     
 	private Time _currentModelTime;
-	private Time physicalTime;
-	private Time nextRealTimeEvent = Time.POSITIVE_INFINITY;
+	private Time _physicalTime;
+	private Time _nextRealTimeEvent = Time.POSITIVE_INFINITY;
+	
+	private DirectedAcyclicGraph _graph;
     
     private Hashtable _eventQueues;
 

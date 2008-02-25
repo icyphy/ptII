@@ -10,7 +10,9 @@ import ptolemy.actor.util.Time;
 import ptolemy.domains.dde.kernel.NullToken;
 import ptolemy.domains.dde.kernel.ReceiverComparator;
 import ptolemy.kernel.util.IllegalActionException;
-
+/**
+ * @author Patricia Derler
+ */
 public class TimeKeeper4Ptides extends TimeKeeper {
 
 	public TimeKeeper4Ptides(Actor actor) throws IllegalActionException {
@@ -27,17 +29,10 @@ public class TimeKeeper4Ptides extends TimeKeeper {
             return;
         }
 
-        //
-        // First Order The Ports
-        //
         while (inputPorts.hasNext()) {
             listOfPorts.addLast(inputPorts.next());
         }
 
-        //
-        // Now set the priorities of each port's receiver, set
-        // the receiving time keeper and initialize the receiverList.
-        //
         int cnt = 0;
         int currentPriority = 0;
 

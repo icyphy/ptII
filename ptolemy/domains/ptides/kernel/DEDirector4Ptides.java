@@ -52,6 +52,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+/**
+ * @author Patricia Derler
+ */
 public class DEDirector4Ptides extends CompositeProcessDirector implements
 		TimedDirector {
 
@@ -129,12 +132,9 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
     	_completionTime = new Time(this, ((DoubleToken) stopTime.getToken()).doubleValue());
     	if (!_completionTime.equals(Time.POSITIVE_INFINITY))
     		_nextFirings.add(_completionTime);
-    	for (Iterator it = ((CompositeActor)this.getContainer()).entityList().iterator(); it.hasNext();) {
-    		Actor actor = (Actor) it.next();
-	    	((EmbeddedDEDirector4Ptides)actor.getDirector()).getEquivalenceClasses();
-	    	((EmbeddedDEDirector4Ptides)actor.getDirector()).getMinDelays();
-    	}
-    	_transferDelaysFromOutputsToInputs();
+    	
+    	if (_calculateMinDelays)
+    		_calculateMinDelays();
     	
     	Hashtable table = new Hashtable();
     	for (Iterator it = ((CompositeActor)getContainer()).entityList().iterator(); it.hasNext(); ) {
@@ -156,9 +156,11 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
                 }
             }
         }
+    	
 	}
-	
-    public Receiver newReceiver() {
+
+
+	public Receiver newReceiver() {
         DDEReceiver4Ptides receiver = new DDEReceiver4Ptides();
         double timeValue;
 
@@ -348,8 +350,6 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
     
 
 	
-
-	
 	private void _adjustMinDelayAddingUpstreamDelays(DirectedAcyclicGraph graph) throws IllegalActionException {
 //		 adjust min delays by adding minDelays of upstream actors
 		for (Iterator it = ((CompositeActor)this.getContainer()).entityList().iterator(); it.hasNext();) {
@@ -389,6 +389,22 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 				}
 			}
 		}
+	}
+	
+    private void _calculateMinDelays() throws IllegalActionException {
+    	for (Iterator it = ((CompositeActor)this.getContainer()).entityList().iterator(); it.hasNext();) {
+    		Actor actor = (Actor) it.next();
+	    	((EmbeddedDEDirector4Ptides)actor.getDirector()).getEquivalenceClasses();
+	    	((EmbeddedDEDirector4Ptides)actor.getDirector()).getMinDelays();
+    	}
+    	CompositeActor container = (CompositeActor) getContainer();
+    	FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (container).getFunctionDependency();
+		DirectedAcyclicGraph graph = functionDependency.getDetailedDependencyGraph().toDirectedAcyclicGraph();
+
+    	_transferDelaysFromOutputsToInputs(graph);
+    	_adjustMinDelaysOfEquivalenceClasses();
+		_adjustMinDelayAddingUpstreamDelays(graph);
+		_adjustMinDelaysOfEquivalenceClasses();
 	}
 
 	private double _getMinDelayUpstream(DirectedAcyclicGraph graph, IOPort inputPort, List traversedActors) {
@@ -465,11 +481,8 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
         } 
 	}
 	
-	private void _transferDelaysFromOutputsToInputs() throws IllegalActionException {
-		CompositeActor container = (CompositeActor) getContainer();
-    	FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (container).getFunctionDependency();
-		DirectedAcyclicGraph graph = functionDependency.getDetailedDependencyGraph().toDirectedAcyclicGraph();
-
+	private void _transferDelaysFromOutputsToInputs(DirectedAcyclicGraph graph) throws IllegalActionException {
+		
 		// transferring min delays from outputs to inputs; outputs can have mindelays if 
 		// upstream actors are not connected to an input of the same actor
 		for (Iterator it = ((CompositeActor)this.getContainer()).entityList().iterator(); it.hasNext();) {
@@ -485,12 +498,6 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 				}
 			}
 		}
-
-		_adjustMinDelaysOfEquivalenceClasses();
-		
-		_adjustMinDelayAddingUpstreamDelays(graph);
-	
-		_adjustMinDelaysOfEquivalenceClasses();
 		
 	}
 	
@@ -507,6 +514,8 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 	private double _clockSyncError;
 	private double _networkDelay;
 	private boolean _usePtidesExecutionSemantics;
+	
+	/** calcuate minimum delays or use specified minimum delays in the model */
 	private boolean _calculateMinDelays;
 
 	

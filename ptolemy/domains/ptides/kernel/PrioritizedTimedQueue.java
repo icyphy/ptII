@@ -25,7 +25,9 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// PrioritizedTimedQueue
 
-
+/**
+ * @author Patricia Derler
+ */
 public class PrioritizedTimedQueue extends AbstractReceiver {
     /** Construct an empty queue with no container.
      */

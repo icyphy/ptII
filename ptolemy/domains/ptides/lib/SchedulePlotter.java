@@ -29,7 +29,9 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// SchedulePlotter
 
-
+/**
+ * @author Patricia Derler
+ */
 public class SchedulePlotter extends Attribute implements ScheduleListener {
     /** Construct a factory with the specified container and name.
      *  @param container The container.

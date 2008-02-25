@@ -17,7 +17,9 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// TimeKeeper
 
-
+/**
+ * @author Patricia Derler
+ */
 public class TimeKeeper {
     /** Construct a time keeper to manage the local time of an actor
      *  in the DDE domain. Set the receiver priorities of all receivers

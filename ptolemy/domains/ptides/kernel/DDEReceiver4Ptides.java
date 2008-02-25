@@ -17,6 +17,9 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// DDEReceiver
 
+/**
+ * @author Patricia Derler
+ */
 public class DDEReceiver4Ptides extends PrioritizedTimedQueue implements
         ProcessReceiver {
     /** Construct an empty receiver with no container.
