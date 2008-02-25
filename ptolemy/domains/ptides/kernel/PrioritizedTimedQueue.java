@@ -25,74 +25,7 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// PrioritizedTimedQueue
 
-/**
- A FIFO queue with time and priority attributes that is used for
- storing tokens with time stamps. A "time stamp" is a time value that
- is associated with a token and is used to order the consumption of a
- token with respect to other time stamped tokens. To help organize the
- tokens contained by this queue, two flags are maintained: <I>last time</I>
- and <I>receiver time</I>. The last time flag is defined to be equivalent
- to the time stamp of the token that was most recently placed in the queue.
- The receiver time flag is defined as the time stamp of the oldest token in
- the queue or the last token to be removed from the queue if the queue is
- empty. Both of these flags must have monotonically, non-decreasing values
- (with the exception of the IGNORE, INACTIVE and ETERNITY values). At the
- conclusion of a simulation run the receiver time is set to INACTIVE.
- <P>
- A PrioritizedTimedQueue is subclassed by DDEReceiver. Hence,
- PrioritizedTimedQueues serve as the foundation for receivers
- contained in the IO ports of actors operating within DDE models.
- A TimeKeeper object is assigned to each actor that operates according to
- the DDE model of computation. The TimeKeeper manages each of the receivers
- that are contained by an actor by keeping track of the receiver times of
- each receiver. As information flows through a PrioritizedTimedQueue, the
- TimeKeeper must be kept up to date with respect to the receiver times.
- The TimeKeeper orders the PrioritizedTimedQueues according to their receiver
- times and priorities. PrioritizedTimedQueues with smaller receiver times are
- ordered first.
- <P>
- PrioritizedTimedQueues with identical receiver times are sorted according
- to their respective priorities. PrioritizedTimedQueues are assigned
- priorities (a nonnegative integer) by a TimeKeeper when the TimeKeeper
- is instantiated. Receivers with higher receiver priorities are ordered
- before receivers with lower priorities. The priority of a receiver can be
- explicitly specified or it can be implicitly determined based on the
- topology. In the latter case, the priority of a receiver is set according
- to the inverse order in which it was connected to the model topology.
- I.e., if two input receivers (receiver A and receiver B) are added to
- an actor such that receiver A is connected in the model topology before
- receiver B, then receiver B will have a higher priority than receiver A.
- <P>
- If the oldest token in the queue has a time stamp of IGNORE, then the
- next oldest token from the other receivers contained by the actor in
- question will be consumed and the token time stamped IGNORE will be
- dropped. The IGNORE time stamp is useful in feedback topologies in which
- an actor should ignore inputs from a feedback cycle when the execution of
- the model is just beginning. FeedBackDelay actors output a single IGNORE
- token during their initialize() methods for just this reason. In general,
- IGNORE tokens should not be handled unless fundamental changes to the
- DDE kernel are intended.
- <P>
- The values of the package friendly variables IGNORE, INACTIVE and ETERNITY
- are arbitrary as long as they have unique, negative values. ETERNITY is
- used in conjunction with the completionTime to indicate that an actor
- should continue executing indefinitely.
- <P>
- Note that a PrioritizedTimedQueue is intended for use within a
- multi-threaded environment. PrioritizedTimedQueue does not
- require the synchronization facilities provided by
- ptolemy.kernel.util.Workspace. PrioritizedTimedQueue is subclassed
- by DDEReceiver which adds significant synchronization facilities
- and where appropriate employs workspace.
 
- @author John S. Davis II
- @version $Id$
- @since Ptolemy II 0.4
- @Pt.ProposedRating Green (davisj)
- @Pt.AcceptedRating Green (kienhuis)
- @see ptolemy.domains.dde.kernel.DDEReceiver
- @see ptolemy.domains.dde.kernel.TimeKeeper
- */
 public class PrioritizedTimedQueue extends AbstractReceiver {
     /** Construct an empty queue with no container.
      */

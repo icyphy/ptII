@@ -29,20 +29,7 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// SchedulePlotter
 
-/**
- This attribute is a visible attribute that when configured (by double
- clicking on it or by invoking Configure in the context menu) it displays
- a plot of the schedule while the model is being run.
 
- The SchedulePlotter attribute can be found under more libraries -&gt;
- experimental domains -&gt; timed multitasking
-
- @author Christopher Hylands, Contributor: Johan Ecker
- @version $Id$
- @since Ptolemy II 2.0
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (johnr)
- */
 public class SchedulePlotter extends Attribute implements ScheduleListener {
     /** Construct a factory with the specified container and name.
      *  @param container The container.

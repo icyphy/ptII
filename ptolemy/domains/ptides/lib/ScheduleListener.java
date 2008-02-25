@@ -7,16 +7,7 @@ import ptolemy.actor.Actor;
 //////////////////////////////////////////////////////////////////////////
 //// ScheduleListener
 
-/**
- Interface for listeners that receive schedule messages.
 
- @author  Johan Eker
- @version $Id$
- @since Ptolemy II 2.0
- @Pt.ProposedRating Red (johane)
- @Pt.AcceptedRating Red (johane)
- @see ptolemy.kernel.util.NamedObj
- */
 public interface ScheduleListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

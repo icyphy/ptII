@@ -17,66 +17,6 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// DDEReceiver
 
-/**
- A DDEReceiver stores time stamped tokens according to distributed
- discrete event semantics. A <I>time stamped token</I> is a token
- that has a time stamp associated with it. A DDEReceiver stores time
- stamped tokens by enforcing a blocking read and blocking write style.
- Time stamped tokens are appended to the queue with one of the two put()
- methods, both of which block on a write if the queue is full. Time
- stamped tokens are removed from the queue via the get() method. The
- get() method will throw a NoTokenException if it is invoked when the
- hasToken() method returns false.
- <P>
- Each DDEReceiver is managed by a TimeKeeper. A single time keeper is
- assigned to manage all of the receivers of a given actor by keeping
- track of the actor's local notion of time. As tokens are consumed
- (returned by the get() method) in a receiver, the local time of the
- actor will advance to the value of the consumed token's time stamp.
- The hasToken() method of a receiver will return true only if the
- receiver's get() method will result in the minimum advancement of local
- time with respect to all of the receivers controlled by the TimeKeeper.
- If the get() method of multiple receivers will result in a minimum
- but identical local time advancement, then the hasToken() method of the
- receiver with the highest priority will return true (the others will
- return false).
- <P>
- If a receiver with a nonnegative receiver time is empty, then the
- hasToken() method will perform a blocking read. Once, a token is
- available then hasToken() will return true or false according to
- the minimum time advancement rules cited in the preceding paragraph.
- Note that hasToken() blocks while get() does not block.
- <P>
- DDEReceivers process certain events that are hidden from view by
- ports and actors. In particular, NullTokens have time stamps with
- a value of PrioritizedTimedQueue.IGNORE. NullTokens allow actors
- to communicate information on their local time advancement to
- neighboring actors without the need for an actual data exchange.
- NullTokens are passed at the receiver level and circumvent the
- Ptolemy II data typing mechanism.
- <P>
- Time stamps of value PrioritizedTimedQueue.IGNORE are used to initiate
- execution in feedback cycles. If a receiver has a time stamp with
- value IGNORE, then it will not be considered when determining which
- receiver's get() method will result in the minimum local time
- advancement. Once a single token has been consumed by any other
- receiver, then the event with time stamp of value IGNORE will be
- removed. If all receivers have receiver times of IGNORE, then all
- such events will be removed.
- <P>
- IMPORTANT: This class assumes that valid time stamps have non-negative
- values. Reserved negative values exist for special purposes: INACTIVE
- and IGNORE. These values are attributes of PrioritizedTimedQueue.
-
-
- @author John S. Davis II
- @version $Id$
- @since Ptolemy II 0.3
- @Pt.ProposedRating Green (davisj)
- @Pt.AcceptedRating Green (kienhuis)
- @see ptolemy.domains.dde.kernel.PrioritizedTimedQueue
- @see ptolemy.domains.dde.kernel.DDEThread
- */
 public class DDEReceiver4Ptides extends PrioritizedTimedQueue implements
         ProcessReceiver {
     /** Construct an empty receiver with no container.
