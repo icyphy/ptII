@@ -441,7 +441,7 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
      */
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
-
+        _graph = null;
         // Reset the following private variables.
         _disabledActors = null;
         _exceedStopTime = false;
@@ -1521,8 +1521,8 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
 		double minDelayTime = getMinDelayTime(object);
 		return minDelayTime == Double.MAX_VALUE ||
 			time.subtract(minDelayTime)
-				.subtract(_getExecutiveDirector().getClockSyncError())
-				.subtract(_getExecutiveDirector().getNetworkDelay())
+				.add(_getExecutiveDirector().getClockSyncError())
+				.add(_getExecutiveDirector().getNetworkDelay())
 				.compareTo(_physicalTime) >= 0;
 	}
 
