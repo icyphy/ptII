@@ -788,8 +788,14 @@ public class UtilityFunctions {
 
             String osName = StringUtilities.getProperty("os.name");
 
-            if (osName.startsWith("SunOS") || osName.startsWith("Linux")) {
-                sharedLibrarySuffix = "so";
+            if (osName.startsWith("SunOS") || osName.startsWith("Linux") ||
+		osName.startsWith("Mac OS X")) {
+
+		if (osName.startsWith("Mac OS X")) {
+                    sharedLibrarySuffix = "dylib";
+		} else {
+                    sharedLibrarySuffix = "so";
+                }
 
                 // Under Solaris, libraries start with lib, so
                 // we find the last /, and if the next chars are not "lib"
