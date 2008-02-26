@@ -476,6 +476,9 @@ PTJNI_ARCHITECTURE =	@PTJNI_ARCHITECTURE@
 # $PTII/makefile if gcc or cc was found
 PTJNI_DIR =	@PTJNI_DIR@
 
+# set to jni include directory
+PTJNI_INCLUDE =    @PTJNI_INCLUDE@
+
 # Set to -ldl for use by jni/launcher/makefile under Linux
 PTJNI_DL_LIBRARY = @PTJNI_DL_LIBRARY@
 

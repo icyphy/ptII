@@ -2274,14 +2274,7 @@ else
 	CYGWIN_98-*) PTJNI_ARCHITECTURE=win32;;
 	Linux) PTJNI_ARCHITECTURE=linux;;
 	SunOS) PTJNI_ARCHITECTURE=solaris;;
-	Darwin) PTJNI_ARCHITECTURE=darwin
-		PTJNI_DIR=
-		AC_MSG_WARN([
-   The Ptolemy JNI facilty is not supported on MacOS
-   because Apple laid out the Java directory differently
-   than the Windows, Solaris and Linux Java directories.
-   As a result, the Ptolemy JNI facility will not work.]);
-		;;
+	Darwin) PTJNI_ARCHITECTURE=darwin;;
 	*) PTJNI_ARCHITECTURE=unknown;;
     esac
 
@@ -2289,11 +2282,16 @@ else
         PT_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
 
         AC_MSG_CHECKING([for the proper JNI architecture include directory])
-        if test ! -d "$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE"; then 
-	    AC_MSG_WARN(["$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE" was not found.
-    As a result, compilation of JNI actors will fail.])
-        else 
-	    PT_MSG_RESULT([$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE])
+       	if test $PTJNI_ARCHITECTURE = "darwin"; then
+		PTJNI_INCLUDE=$PTJAVA_HOME/../Headers
+	else
+		PTJNI_INCLUDE=$PTJAVA_HOME../include/$PTJNI_ARCHITECTURE
+	fi
+
+	if test ! -d $PTJNI_INCLUDE; then 
+	    	AC_MSG_WARN([$PTJNI_INCLUDE was not found.  As a result, compilation of JNI actors will fail.])
+	else 
+	    	PT_MSG_RESULT([$PTJNI_INCLUDE])
         fi
 
         AC_MSG_CHECKING([for the proper JNI library architecture])
@@ -2313,11 +2311,18 @@ else
         PT_MSG_RESULT(['$PTJNI_LIB_ARCHITECTURE'])
 
         AC_MSG_CHECKING([for the proper JNI architecture lib directory])
-        if test ! -d "$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"; then 
-	    AC_MSG_WARN(["$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE" was not found.
+
+	if test $PTJNI_ARCHITECTURE = "darwin"; then
+		PTJNI_LIB="$PTJAVA_HOME/../Libraries"
+	else
+		PTJNI_LIB="$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"
+	fi
+
+        if test ! -d $PTJNI_LIB; then 
+	    AC_MSG_WARN([$PTJNI_LIB was not found.
     As a result, $PTII/jni/launcher/launcher might not work.])
         else 
-	    PT_MSG_RESULT([$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE])
+	    PT_MSG_RESULT([$PTJNI_LIB])
         fi
 
         AC_MSG_CHECKING([for if the -mno-cygwin flag is available])
@@ -2368,6 +2373,7 @@ else
 	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
 	    SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
 	    Linux)   PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	    Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=dylib;;
 	    *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
         esac
         PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
@@ -2526,6 +2532,9 @@ PTMATLAB_LIBDIR=
 
 PTMATLAB_SUPPORTED=no
 case "`uname -s`" in
+Darwin)
+	PTMATLAB_SUPPORTED=yes
+	;;
 Linux)
 	PTMATLAB_SUPPORTED=yes
 	;;
@@ -2605,7 +2614,10 @@ changequote([, ])dnl
 		MATLAB_USE_MSVC="no"
 		case "`uname -s`" in
 		Linux)
-			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/glnx86
+            MATLAB_LIBDIR=${MATLAB_DIR}/bin/glnx86
+            if ! test -d ${MATLAB_DIR}; then
+			    MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/glnx86
+            fi
 			;;
 		CYGWIN*)
                         # As of 5/2007, we no longer use MSVC cl for Matlab
@@ -2621,6 +2633,9 @@ changequote([, ])dnl
 			        MATLAB_LIBDIR=${MATLAB_DIR}/bin/sol64
                             fi
                         fi  
+			;;
+		Darwin)
+			MATLAB_LIBDIR=${MATLAB_DIR}/bin/maci
 			;;
 		*)
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib
@@ -2649,7 +2664,12 @@ changequote([, ])dnl
 			fi
 		    fi
                 else 
-		    PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
+		    if test $PTJNI_ARCHITECTURE = "darwin"; then
+		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx"
+		    else
+		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
+		    fi
+
 
 		    AC_MSG_CHECKING([for gcc])
 		    AC_PATH_PROG(PTCC, gcc)
@@ -3735,6 +3755,9 @@ AC_SUBST(PTJNI_ARCHITECTURE)
 # Set to jni and used in 
 # $PTII/makefile if gcc or cc was found
 AC_SUBST(PTJNI_DIR)
+
+# set to jni include directory
+AC_SUBST(PTJNI_INCLUDE)
 
 # Set to -ldl for use by jni/launcher/makefile under Linux
 AC_SUBST(PTJNI_DL_LIBRARY)
