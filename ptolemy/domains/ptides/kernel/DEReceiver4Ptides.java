@@ -80,7 +80,7 @@ public class DEReceiver4Ptides extends PrioritizedTimedQueue {
 		
 		    // If there is no container, then perform no conversion.
 		    if (container == null) {
-		        ((DEReceiver4Ptides)receivers[j]).put(token, time);
+		        ((DEReceiver4Ptides)receivers[j]).put(container.convert(token), time);
 		    } else {
 		    	((DEReceiver4Ptides)receivers[j]).put(container.convert(token), time);
 		    }

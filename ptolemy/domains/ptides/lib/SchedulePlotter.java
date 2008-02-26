@@ -94,7 +94,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
         if (scheduleEvent == ScheduleListener.START || scheduleEvent == ScheduleListener.STOP) {
         	plot.addPoint(actorDataset, x, actorY, scheduleEvent == ScheduleListener.STOP);
         	plot.addPoint(nodeDataSet, x, nodeY, scheduleEvent == ScheduleListener.STOP);
-        	nodeActive[nodes.indexOf(node)] = scheduleEvent == ScheduleListener.STOP;
+        	nodeActive[nodes.indexOf(node)] = scheduleEvent == ScheduleListener.START;
         }
         else if (scheduleEvent == ScheduleListener.TRANSFERINPUT) {
         	plot.addPoint(nodeDataSet, x, nodeY, false || nodeActive[nodes.indexOf(node)]);
@@ -103,8 +103,8 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
         }
         else if (scheduleEvent == ScheduleListener.TRANSFEROUTPUT) {
         	plot.addPoint(nodeDataSet, x, nodeY, false || nodeActive[nodes.indexOf(node)]);
-        	plot.addPoint(nodeDataSet, x + 0.05, nodeY - 0.05, true);
-        	plot.addPoint(nodeDataSet, x, nodeY, false);
+        	plot.addPoint(nodeDataSet, x + 0.05, nodeY - 0.05, false);
+        	plot.addPoint(nodeDataSet, x, nodeY, true);
         } else if (scheduleEvent == ScheduleListener.MISSEDEXECUTION) {
         	plot.addPoint(actorDataset, x - 0.05, actorY + 0.05, false);
         	plot.addPoint(actorDataset, x + 0.05, actorY - 0.05, true);
@@ -153,6 +153,9 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
     }
 
 	public void initialize(Hashtable nodesActors) {
+		nodes.clear();
+		plot.clear(false);
+		plot.clearLegends();
 		nodes.addAll(nodesActors.keySet());
 		nodeActive = new boolean[nodes.size()];
 		this.nodeActors = nodesActors;

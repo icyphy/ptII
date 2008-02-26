@@ -188,53 +188,7 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 //        }
     }
     
-    @Override
-	public boolean _transferOutputs(IOPort port) throws IllegalActionException {
-		Token token = null;
-		boolean result = false;
-        if (_debugging) {
-            _debug("Calling transferOutputs on port: " + port.getFullName());
-        }
-
-        if (!port.isOutput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "Attempted to transferOutputs on a port that "
-                            + "is not an opaque input port.");
-        }
-
-        for (int i = 0; i < port.getWidthInside(); i++) {
-            try {
-                if (port.hasTokenInside(i)) {
-                    token = port.getInside(i);
-
-                    if (_debugging) {
-                        _debug(getName(), "transferring output from "
-                                + port.getName());
-                    }
-
-                    Receiver[][] outReceivers = port.getRemoteReceivers();
-                    for (int k = 0; k < outReceivers.length; k++) {
-                        for (int l = 0; l < outReceivers[k].length; l++) {
-                            DDEReceiver4Ptides outReceiver = (DDEReceiver4Ptides) outReceivers[k][l];
-                            Thread thread = Thread.currentThread();
-
-                            if (thread instanceof DDEThread4Ptides) {
-                                TimeKeeper4Ptides timeKeeper = ((DDEThread4Ptides) thread)
-                                        .getTimeKeeper();
-                                outReceiver.put(token, timeKeeper
-                                        .getModelTime());
-                            }
-                        }
-                    }
-                    result = true;
-                }
-            } catch (NoTokenException ex) {
-                // this shouldn't happen.
-                throw new InternalErrorException(this, ex, null);
-            }
-        }
-        return result;       
-	}
+    
 
 	public synchronized void requestRefiringAtPhysicalTime(Time time) throws IllegalActionException {
 		if (time.compareTo(getModelTime()) > 0)
@@ -348,10 +302,57 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 		return true;
 	}
     
+    @Override
+	protected boolean _transferOutputs(IOPort port) throws IllegalActionException {
+		Token token = null;
+		boolean result = false;
+        if (_debugging) {
+            _debug("Calling transferOutputs on port: " + port.getFullName());
+        }
+
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferOutputs on a port that "
+                            + "is not an opaque input port.");
+        }
+
+        for (int i = 0; i < port.getWidthInside(); i++) {
+            try {
+                if (port.hasTokenInside(i)) {
+                    token = port.getInside(i);
+
+                    if (_debugging) {
+                        _debug(getName(), "transferring output from "
+                                + port.getName());
+                    }
+
+                    Receiver[][] outReceivers = port.getRemoteReceivers();
+                    for (int k = 0; k < outReceivers.length; k++) {
+                        for (int l = 0; l < outReceivers[k].length; l++) {
+                            DDEReceiver4Ptides outReceiver = (DDEReceiver4Ptides) outReceivers[k][l];
+                            Thread thread = Thread.currentThread();
+
+                            if (thread instanceof DDEThread4Ptides) {
+                                TimeKeeper4Ptides timeKeeper = ((DDEThread4Ptides) thread)
+                                        .getTimeKeeper();
+                                outReceiver.put(token, timeKeeper
+                                        .getModelTime());
+                            }
+                        }
+                    }
+                    result = true;
+                }
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
+        return result;       
+	}
 
 	
 	private void _adjustMinDelayAddingUpstreamDelays(DirectedAcyclicGraph graph) throws IllegalActionException {
-//		 adjust min delays by adding minDelays of upstream actors
+		// adjust min delays by adding minDelays of upstream actors
 		for (Iterator it = ((CompositeActor)this.getContainer()).entityList().iterator(); it.hasNext();) {
 			Actor actor = (Actor) it.next();
 			for (Iterator inputs = actor.inputPortList().iterator(); inputs.hasNext(); ) {
@@ -408,6 +409,7 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 	}
 
 	private double _getMinDelayUpstream(DirectedAcyclicGraph graph, IOPort inputPort, List traversedActors) {
+		System.out.println("mdu");
 		double mindel = Double.MAX_VALUE;
 		double delay = EmbeddedDEDirector4Ptides.getMinDelayTime(inputPort);
 		for (Iterator it = graph.inputEdges(graph.node(inputPort)).iterator(); it.hasNext(); ) {

@@ -237,11 +237,10 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
 	            	_waitForPhysicalTime("actorExecuting");	
 	            	if (_stopRequested)	return;
 	            }
-	            _displaySchedule(actorToFire, _physicalTime.getDoubleValue(), ScheduleListener.STOP);
 	            if (!actorToFire.postfire()) {
 	                _disableActor(actorToFire);
-	                break;
 	            }
+	            _displaySchedule(actorToFire, _physicalTime.getDoubleValue(), ScheduleListener.STOP);
 	            if (_transferAllOutputs() && !_stopRequested) 
 	        		_getExecutiveDirector().notifyWaitingThreads();
 	            _currentModelTime = null;
@@ -990,16 +989,16 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
 			} else { // wcet1 > 0 && wcet2 > 0
 				if (fireAtRT1 && !fireAtRT2) {
 					// if execution of non real time actor can fit before real time actor
-					if ((!_preemptive && time2.getDoubleValue() + wcet2 < time1.getDoubleValue()) ||
-							(_preemptive && time2.getDoubleValue() < time1.getDoubleValue())) {
+					if ((!_preemptive && _physicalTime.getDoubleValue() + wcet2 < time1.getDoubleValue()) ||
+							(_preemptive && _physicalTime.getDoubleValue() < time1.getDoubleValue())) {
 						return 1;
 					} else {
 						return -1;
 					}
 				} else if (fireAtRT2 && !fireAtRT1) {	
 //					 if execution of non real time actor can fit before real time actor
-					if ((!_preemptive && time1.getDoubleValue() + wcet1 < time2.getDoubleValue()) ||
-							(_preemptive && time1.getDoubleValue() < time2.getDoubleValue()))	
+					if ((!_preemptive && _physicalTime.getDoubleValue() + wcet1 < time2.getDoubleValue()) ||
+							(_preemptive && _physicalTime.getDoubleValue() < time2.getDoubleValue()))	
 						return -1;
 					else { 
 						return 1;
