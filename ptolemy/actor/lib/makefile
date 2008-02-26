@@ -123,7 +123,6 @@ JSRCS = \
 	BusDisassembler.java \
 	ClassWrapper.java \
 	Clock.java \
-	CodegenActor.java \
 	Commutator.java \
 	ComputeHistogram.java \
 	Const.java \
