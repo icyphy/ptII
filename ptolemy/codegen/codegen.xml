@@ -14,6 +14,11 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode"/>
             </property>
         </entity>
+        <entity name="CodegenActor" class="ptolemy.actor.lib.jni.CodegenActor">
+            <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode"/>
+            </property>
+        </entity>
       </group>
     ?>
   </configure>
