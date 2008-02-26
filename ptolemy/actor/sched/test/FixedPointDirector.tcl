@@ -70,7 +70,7 @@ test FixedPointDirector-3.1 {Test clone} {
     set d4 [java::cast ptolemy.actor.sched.FixedPointDirector [$d2 clone $w]]
     $d4 setName D4
     list [enumToFullNames [$w directory]]
-} {.M .D2 .E0}
+} {{.M .D2 .E0}}
 
 ######################################################################
 ####
