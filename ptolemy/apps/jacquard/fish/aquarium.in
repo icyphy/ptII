@@ -1,0 +1,249 @@
+#!@PYTHON@
+
+import sys
+import Tkinter
+from Tkinter import *
+from tkSimpleDialog import Dialog
+from ScrolledText import ScrolledText
+import re
+
+n_fish_re = re.compile (r'n_fish:\s+(\d+)')
+time_re = re.compile (r'^(\S+)\s+\((\S+)\)')
+pt_re_str = r'\s+\(([^,]+),\s+([^)]+)\)'
+cg_re = re.compile (r'cg:' + pt_re_str)
+pt_re = re.compile (r'(\d+):' + pt_re_str)
+
+class FishReader:
+
+    def __init__ (self, f):
+        self.f = f
+
+    def __readline (self):
+        l = self.f.readline()
+        if l == "":
+            raise EOFError
+        while l[0] == '#':
+            l = self.f.readline()
+            if l == "":
+                raise EOFError
+        return l
+
+    def readHeader (self):
+        l = self.__readline()
+        self.n_fish = int(n_fish_re.search(l).group(1))
+
+        return self.n_fish
+
+    def readSet (self, pts):
+        l = self.__readline()
+        (self.t, self.dt) = map(float, time_re.search(l).groups())
+        
+        for i in xrange (self.n_fish):
+            l = self.__readline()
+            (j, x, y) = map(float, pt_re.search(l).groups())
+            assert (i == int(j))
+            pts[i] = complex(x, y)
+
+        l = self.__readline()
+        x, y = map(float, cg_re.search(l).groups())
+        self.cg = complex(x, y)
+        
+        return (self.t, self.dt, self.cg)
+    
+FILE = "File"
+COMMAND = "Command"
+FW = 2
+
+class AquariumConfigurator(Dialog):
+
+	def __init__ (self, aquarium):
+		self.aquarium = aquarium
+		Dialog.__init__(self, aquarium.root)
+
+	def body (self, master):
+		a = self.aquarium
+
+		f = Frame(master)
+		self.file_or_commandp = StringVar(f)
+		self.file_or_commandp.set(a.file_or_commandp)
+#		Radiobutton(f, text=COMMAND, value=COMMAND, 
+#			variable=self.file_or_commandp).grid(row=0,column=0)
+		Radiobutton(f, text=FILE, value=FILE, 
+			variable=self.file_or_commandp).grid(row=0,column=1)
+		f.pack(side=TOP, fill=X)
+
+		f = Frame(master)
+		f.pack()
+
+		Label(f, text="Source:").grid(row=1)
+		self.e1 = Entry(f, width=40)
+		self.e1.insert(END, a.inputfile)
+		self.e1.grid(row=1, column=1)
+
+		Label(f, text="Delay:").grid(row=2)
+		self.e2 = Entry(f, width=40)
+		self.e2.insert(END, a.delay)
+		self.e2.grid(row=2, column=1)
+
+	def apply (self):
+		a = self.aquarium
+		a.inputfile = self.e1.get()
+		a.delay = self.e2.get()
+		a.file_or_commandp = self.file_or_commandp.get()
+
+class Aquarium:
+
+	width = None
+	height = None
+
+	file_or_commandp = FILE
+	inputfile = None
+	f = None
+	fr = None
+
+	root = None
+	c = None
+
+	config_window = None
+
+	t = None
+	dt = None
+	cg_coords = None
+	cg = None
+	fish_coords = None
+	fishies = None
+
+	after_id = None
+
+        delay = None
+
+	def __init__ (self, root, inputfile, delay=10, width=500, height=500):
+		self.inputfile = inputfile
+                self.delay = delay
+		self.width = width
+		self.height = height
+
+		self.root = root
+		self.root.title("Aquarium")
+		self.root.bind('<Control-c>', self.handle_ctrl_c)
+
+		toolbar = Frame(self.root)
+
+		self.run_state = IntVar(root)
+		self.run_state.set(0)
+		self.runbutton = Checkbutton(toolbar, text="Run",
+					     variable=self.run_state,
+					     relief=RIDGE,
+					     command=self.toggle_run) \
+		  .pack(side=LEFT)
+
+		Label(toolbar, text="Time: ").pack(side=LEFT)
+		self.timelabel = Label(toolbar, text="")
+		self.timelabel.pack(side=LEFT)
+		
+		Button(toolbar, text="Quit", command=toolbar.quit) \
+		  .pack(side=RIGHT)
+		Button(toolbar, text="Configure", 
+		       command=self.configure).pack(side=RIGHT)
+
+		toolbar.pack(side=TOP, fill=X)
+
+		self.c = Canvas(self.root, width=500, height=500, bg="blue")
+		self.c.pack()
+
+#		self.capture = ScrolledText(self.root,
+#					    height=10,
+#					    width=60,
+#					    wrap=CHAR,
+#					    state=DISABLED)
+#		self.capture.pack(side=BOTTOM, fill=X)
+
+	def configure (self):
+		c = AquariumConfigurator(self)
+
+	def handle_ctrl_c (self, *args):
+		if self.run_state.get():
+			self.run_state.set(0)
+			self.toggle_run()
+
+	def toggle_run (self):
+		if self.run_state.get():
+			try:
+				self.run()
+			except:
+				self.run_state.set(0)
+				self.timelabel.config(text="")
+		else:
+			self.root.after_cancel (self.after_id)
+			self.timelabel.config(text="")
+
+	def transform_coords (self, c):
+		x_out = (c.real * (self.width - 8)) + 4
+		y_out = (c.imag * (self.width - 8)) + 4
+		return (x_out, y_out)
+
+	def display_fishies (self):
+		self.t, self.dt, self.cg_coords, = \
+		      self.fr.readSet(self.fish_coords)
+		self.fishies = [None] * self.n_fish
+		pts = self.fish_coords
+		c = self.c
+		self.timelabel.config(text="%g (%g)"%(self.t,self.dt))
+		x, y = self.transform_coords (self.cg_coords)
+		self.cg = c.create_oval (x-2*FW, y-2*FW, x+2*FW, y+2*FW,
+					 fill='red')
+		for i in xrange(len(pts)):
+			x, y = self.transform_coords (pts[i])
+			o = c.create_oval (x-FW,y-FW,x+FW,y+FW, fill='gold')
+			self.fishies[i] = o
+
+	def update_fishies (self):
+	    try:
+		self.t, self.dt, self.cg_coords, = \
+		      self.fr.readSet(self.fish_coords)
+		fishies = self.fishies
+		pts = self.fish_coords
+		c = self.c
+		self.timelabel.config(text="%.4e (%.4e)"%(self.t,self.dt))
+		x, y = self.transform_coords (self.cg_coords)
+		c.coords (self.cg, x-2*FW, y-2*FW, x+2*FW, y+2*FW)
+		for i in xrange(len(pts)):
+			x, y = self.transform_coords (pts[i])
+			c.coords (fishies[i], x-FW, y-FW, x+FW, y+FW)
+		self.after_id = self.root.after (self.delay, self.update_fishies)
+            except:
+		self.handle_ctrl_c()
+
+	def clear (self):
+		fishies = self.fishies
+		c = self.c
+		if fishies is None:
+			return
+		for i in xrange(len(fishies)):
+			c.delete(fishies[i])
+			fishies[i] = None
+
+	def run (self):
+		self.clear()
+		self.f = open(self.inputfile)
+		fr = FishReader(self.f)
+		self.fr = fr
+		self.n_fish = fr.readHeader()
+		self.fish_coords = [complex(0,0)] * self.n_fish
+		self.display_fishies()
+		self.after_id = self.root.after (self.delay, self.update_fishies)
+
+if __name__ == '__main__':
+	master = Tkinter.Tk()
+
+	fileout = 'fish.out'
+	delay = 10
+
+	if len(sys.argv) > 1:
+		fileout = sys.argv[1]
+
+	if len(sys.argv) > 2:
+		delay = sys.argv[2]
+
+	a = Aquarium(master, fileout, delay)
+	master.mainloop()

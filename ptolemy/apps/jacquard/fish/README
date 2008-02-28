@@ -1,0 +1,47 @@
+COMPILING AND RUNNING
+
+  Base sequential implementation:
+    fish/sequential
+  Primary parallel implementations:
+    fish/mpi
+    fish/pthreads
+    fish/openmp
+
+To compile the code, use a sequence like the following:
+
+  mkdir build
+  cd build
+  ../configure
+  make
+
+This will leave the source untouched and place executables
+in appropriate directories under build/.
+
+Run
+  sequential/fish -h
+to see the basic options all programs take.  The pthreads
+program takes an additional -p option to specify the number 
+of threads.
+
+Use batch scripts or interactive batch mode for running the MPI,
+OpenMP, and pthreads versions.  Note that there are only 2 processors
+per node in Jacquard, but there are 8 processors per node in
+Bassi.
+
+To see the "fish":
+
+  mpirun -np 4 build/mpi/fish -o fishies
+  ./aquarium fishies
+
+This should work on Jacquard, if you have X forwarding setup.  You may need
+to use the '-Y' option with ssh.
+
+
+OpenMP uses an environment variable to set the number of
+processors.  For four threads, use
+  env OMP_NUM_THREADS=4 build/openmp/fish
+
+Good luck, and let me know of the inevitable bugs.
+
+(modified by shoaib kamil <skamil@cs> feb 2008)
+
