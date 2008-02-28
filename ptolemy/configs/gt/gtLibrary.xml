@@ -6,7 +6,7 @@
   <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher"/>
   <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher"/>
   <entity name="FSMMatcher" class="ptolemy.actor.gt.FSMMatcher"/>
-  <entity name="PatternAttributes" class="ptolemy.moml.EntityLibrary">
+  <entity name="TransformationAttributes" class="ptolemy.moml.EntityLibrary">
     <property name="Constraint" class="ptolemy.actor.gt.Constraint">
       <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
         <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
