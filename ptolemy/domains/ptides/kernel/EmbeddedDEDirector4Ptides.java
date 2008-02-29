@@ -820,7 +820,6 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
                     for (int k = 0; k < outReceivers.length; k++) {
                         for (int l = 0; l < outReceivers[k].length; l++) {
                             DDEReceiver4Ptides outReceiver = (DDEReceiver4Ptides) outReceivers[k][l];
-                            DDEThread4Ptides thread = (DDEThread4Ptides) Thread.currentThread();
                             outReceiver.put(token, ((Actor)port.getContainer()).getDirector().getModelTime());
                             _displaySchedule((Actor)port.getContainer(), _physicalTime.getDoubleValue(), ScheduleListener.TRANSFEROUTPUT);
                             System.out.println("	out " + token + " at " + ((Actor)port.getContainer()).getDirector().getModelTime());
