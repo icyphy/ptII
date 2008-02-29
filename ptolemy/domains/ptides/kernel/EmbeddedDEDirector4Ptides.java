@@ -768,8 +768,8 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
                 	DDEReceiver4Ptides receiver = (DDEReceiver4Ptides) recv[0][0];
                 	Token t = receiver.get();
                     Time time = receiver.getReceiverTime();
-                    if ((_getExecutiveDirector().usePtidesExecutionSemantics() && _isSafeToProcess(time, port)) ||
-                    		(!_getExecutiveDirector().usePtidesExecutionSemantics() && time.compareTo(_physicalTime) > 0)) {
+                    if (!((_getExecutiveDirector().usePtidesExecutionSemantics() && _isSafeToProcess(time, port)) ||
+                    		(!_getExecutiveDirector().usePtidesExecutionSemantics() && time.compareTo(_physicalTime) > 0))) {
                    // if (minDelayTime != Double.MAX_VALUE && this.physicalTime.compareTo(time.subtract(minDelayTime)) < 0) {
                     	System.out.println("cannot ti yet " + time);
                     	_addSynchronizationPoint(time); // at this time, the new input should be read
@@ -805,7 +805,7 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
 
 	@Override
 	protected boolean _transferOutputs(IOPort port) throws IllegalActionException {
-		System.out.print(this.getContainer().getName() + ":to: ");
+		System.out.println(this.getContainer().getName() + ":to: ");
 		Token token = null;
 		boolean result = false;
 
@@ -1504,9 +1504,9 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
     		DEEventQueue queue = (DEEventQueue) _eventQueues.get(actor);
     		if (!queue.isEmpty()) {
     			DEEvent event = queue.get();
+    			events.add(event);
     			while (!queue.isEmpty() && queue.get().timeStamp().equals(event.timeStamp()) && 
     					_isSafeToProcess(event.timeStamp(), (NamedObj)actor)) {
-    				events.add(queue.get());
     				queue.take();
     			} 
     		}
@@ -1519,11 +1519,19 @@ public class EmbeddedDEDirector4Ptides extends DEDirector {
 	
 	private boolean _isSafeToProcess(Time time, NamedObj object) {
 		double minDelayTime = getMinDelayTime(object);
+		if (minDelayTime != Double.MAX_VALUE)
+		System.out.println(time.subtract(minDelayTime)
+				.add(_getExecutiveDirector().getClockSyncError())
+				.add(_getExecutiveDirector().getNetworkDelay()) + " <= " + 
+				_physicalTime + " " + (time.subtract(minDelayTime)
+				.add(_getExecutiveDirector().getClockSyncError())
+				.add(_getExecutiveDirector().getNetworkDelay())
+				.compareTo(_physicalTime) <= 0));
 		return minDelayTime == Double.MAX_VALUE ||
 			time.subtract(minDelayTime)
 				.add(_getExecutiveDirector().getClockSyncError())
 				.add(_getExecutiveDirector().getNetworkDelay())
-				.compareTo(_physicalTime) >= 0;
+				.compareTo(_physicalTime) <= 0;
 	}
 
 

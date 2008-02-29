@@ -235,9 +235,9 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 		Set set = null;
 		try { // TODO wrong
 			set = (Set) _waitingForPhysicalTime.clone();
-	} catch (Exception ex) {
-		return;
-	}
+		} catch (Exception ex) {
+			return;
+		}
 		Iterator it = set.iterator();
 		while (it.hasNext()) {
 			Thread thread = (Thread) it.next();
@@ -409,7 +409,6 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 	}
 
 	private double _getMinDelayUpstream(DirectedAcyclicGraph graph, IOPort inputPort, List traversedActors) {
-		System.out.println("mdu");
 		double mindel = Double.MAX_VALUE;
 		double delay = EmbeddedDEDirector4Ptides.getMinDelayTime(inputPort);
 		for (Iterator it = graph.inputEdges(graph.node(inputPort)).iterator(); it.hasNext(); ) {
@@ -444,7 +443,7 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 			return;
 		Time time = (Time) _nextFirings.first();
 		_nextFirings.remove(time);
-		if (time.compareTo(_completionTime) > 0 || _getActiveThreadsCount() == 1) {
+		if (time.compareTo(_completionTime) > 0) {
 			//notifyWaitingThreads();
 			System.out.println("STOP !!!!!!!!");
 			stopFire();
