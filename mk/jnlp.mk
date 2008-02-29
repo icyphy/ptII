@@ -313,13 +313,11 @@ PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
 PTJACL_JARS =
 
 # Jars for configurable run control panel
-RUN_JARS =
-
-# configurable run control panel not to be shipped in 7.0.beta
-#	com/jgoodies/jgoodies.jar \
-#	lib/bsh-2.0b4.jar \
-#	org/mlc/mlc.jar \
-#	ptolemy/actor/gui/run/run.jar
+RUN_JARS = \
+	com/jgoodies/jgoodies.jar \
+	lib/bsh-2.0b4.jar \
+	org/mlc/mlc.jar \
+	ptolemy/actor/gui/run/run.jar
 
 WIRELESS_JARS = \
 	ptolemy/domains/wireless/wireless.jar \
