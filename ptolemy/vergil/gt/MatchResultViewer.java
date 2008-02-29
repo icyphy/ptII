@@ -27,17 +27,14 @@
  */
 package ptolemy.vergil.gt;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Frame;
-import java.awt.Stroke;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
