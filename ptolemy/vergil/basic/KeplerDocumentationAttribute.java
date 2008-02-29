@@ -113,12 +113,23 @@ public class KeplerDocumentationAttribute extends Attribute implements
                 String portName = attName.substring(attName.indexOf(":") + 1,
                         attName.length());
                 String portDesc = att.getConfigureText();
-                portHash.put(portName, portDesc);
+                if(portName != null) {
+                  if(portDesc == null) {
+                    portDesc = "";
+                  }
+                  portHash.put(portName, portDesc);
+                }
+                
             } else if (attName.indexOf("prop:") != -1) { //add to the prop hash
                 String propName = attName.substring(attName.indexOf(":") + 1,
                         attName.length());
                 String propDesc = att.getConfigureText();
-                propertyHash.put(propName, propDesc);
+                if(propName != null) {
+                  if(propDesc == null) {
+                    propDesc = "";
+                  }
+                  propertyHash.put(propName, propDesc);
+                }
             }
         }
     }
