@@ -19,6 +19,11 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode"/>
             </property>
         </entity>
+        <entity name="EmbeddedCFileActor" class="ptolemy.actor.lib.jni.EmbeddedCFileActor">
+            <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="codeBlockFile"/>
+            </property>
+        </entity>
       </group>
     ?>
   </configure>
