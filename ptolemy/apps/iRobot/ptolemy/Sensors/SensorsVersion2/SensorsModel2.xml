@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 30, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 117, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -33,7 +33,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example simply drives forward if the play button&#10;is pushed, backward if the advance button is pushed and&#10;stops if the bump sensor is triggered.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 75.0]">
         </property>
     </property>
     <entity name="InitializeAndRun" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -47,7 +47,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 742}, maximized=true}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -107,44 +107,14 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <entity name="initializeIRobot" class="ptolemy.actor.lib.jni.EmbeddedCActor">
-                <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies***/&#10;oi.h&#10;iRobotFunctions.c&#10;/**/&#10;&#10;/***preinitBlock***/&#10;// Include the functions file if it has not already been included.&#10;#ifndef I_ROBOT_FUNCTIONS&#10;#define I_ROBOT_FUNCTIONS&#10;#include &quot;iRobotFunctions.c&quot;&#10;#endif&#10;/**/&#10;&#10;/***initBlock***/&#10;  // Initialize the microcontroller&#10;  initializeRobot();&#10;&#10;  // Turn on the Create power if off&#10;  powerOnRobot();&#10;&#10;  // Start the open interface&#10;  byteTx(CmdStart);&#10;&#10;  // Change to 28800 baud&#10;  baud28k();&#10;&#10;  // Take full control of the Create&#10;  byteTx(CmdFull);&#10;&#10;  // Get rid of unwanted data in the serial port receiver&#10;  flushRx();&#10;/**/&#10;&#10;/***fireBlock***/&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+            <entity name="initializeIRobot" class="ptolemy.actor.lib.jni.EmbeddedCFileActor">
+                <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="initialize.c">
                 </property>
-                <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 115.0]">
-                    </property>
-                </property>
-                <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode">
+                <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="codeBlockFile">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 140.0]">
-                </property>
-                <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-                    <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen/">
-                        <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
-                        <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
-                        </property>
-                    </property>
-                    <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
-                    </property>
-                    <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="ptolemy.codegen.c">
-                    </property>
-                    <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
-                    <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="run" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
-                    </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 180.0]">
                 </property>
             </entity>
         </entity>
@@ -238,34 +208,14 @@
                     </property>
                 </port>
             </entity>
-            <entity name="BusyWait" class="ptolemy.actor.lib.jni.EmbeddedCFileActor">
-                <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="busyWait.c">
-                </property>
-                <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="codeBlockFile">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 260.0]">
-                </property>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
-                    </property>
-                </port>
-                <port name="done" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
-                    </property>
-                </port>
-            </entity>
             <entity name="Sensors2" class="ptolemy.actor.lib.jni.EmbeddedCFileActor">
                 <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="sensors2.c">
                 </property>
                 <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                     </property>
-                </property>
-                <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="sensors2.c">
                 </property>
                 <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="codeBlockFile">
@@ -382,6 +332,28 @@
                     </property>
                 </port>
             </entity>
+            <entity name="busyWait" class="ptolemy.actor.lib.jni.EmbeddedCFileActor">
+                <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="busyWait.c">
+                </property>
+                <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="codeBlockFile">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 260.0]">
+                </property>
+                <property name="milliseconds" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+                    </property>
+                </port>
+                <port name="done" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+                    </property>
+                </port>
+            </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -402,10 +374,6 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
             <relation name="relation11" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -419,6 +387,10 @@
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </relation>
@@ -438,10 +410,10 @@
             <link port="Drive.velocity" relation="relation5"/>
             <link port="Drive.done" relation="relation3"/>
             <link port="Drive.radius" relation="relation4"/>
-            <link port="BusyWait.trigger" relation="relation3"/>
             <link port="Sensors2.bump" relation="relation"/>
             <link port="Sensors2.advanceButton" relation="relation9"/>
             <link port="Sensors2.playButton" relation="relation11"/>
+            <link port="busyWait.trigger" relation="relation3"/>
         </entity>
     </entity>
 </entity>
