@@ -1,0 +1,151 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SimplePassPointer2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 742}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 624]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 312.0}">
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+        <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 40.0]">
+        </property>
+    </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 260.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 180.0}">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 250.0}">
+        </property>
+    </entity>
+    <entity name="EmbeddedCFileActor" class="ptolemy.actor.lib.jni.EmbeddedCFileActor">
+        <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="mallocCode.c">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="codeBlockFile">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 180.0]">
+        </property>
+        <property name="input_file" class="ptolemy.data.expr.FileParameter" value="C:\projects\X-Tri8\Monkey.jpg">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+        <port name="ptr" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="pointer">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="EmbeddedCFileActor2" class="ptolemy.actor.lib.jni.EmbeddedCFileActor">
+        <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="codeForSimplePassPointer2.c">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="codeBlockFile">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 170.0}">
+        </property>
+        <property name="input_file" class="ptolemy.data.expr.FileParameter" value="C:\projects\X-Tri8\Monkey.jpg">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="pointer">
+            </property>
+        </port>
+        <port name="ptr" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="pointer">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{270.0, 170.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Display.input" relation="relation2"/>
+    <link port="Display.input" relation="relation"/>
+    <link port="Const.output" relation="relation3"/>
+    <link port="Display2.input" relation="relation4"/>
+    <link port="Display2.input" relation="relation5"/>
+    <link port="EmbeddedCFileActor.in" relation="relation3"/>
+    <link port="EmbeddedCFileActor.ptr" relation="relation"/>
+    <link port="EmbeddedCFileActor.value" relation="relation2"/>
+    <link port="EmbeddedCFileActor2.in" relation="relation"/>
+    <link port="EmbeddedCFileActor2.ptr" relation="relation5"/>
+    <link port="EmbeddedCFileActor2.value" relation="relation4"/>
+</entity>
