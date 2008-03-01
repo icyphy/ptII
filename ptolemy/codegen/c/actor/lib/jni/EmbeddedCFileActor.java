@@ -42,7 +42,7 @@ Code generator helper for EmbeddedCFileActor.
 @Pt.ProposedRating red (cavaness)
 @Pt.AcceptedRating Red (cavaness)
 */
-public class EmbeddedCFileActor extends EmbeddedCActor  {
+public class EmbeddedCFileActor extends CompiledCompositeActor  {
    /** Construct the code generator helper associated
     *  with the given TypedCompositeActor.
     *  @param component The associated component.
@@ -50,24 +50,39 @@ public class EmbeddedCFileActor extends EmbeddedCActor  {
    public EmbeddedCFileActor(ptolemy.actor.lib.jni.EmbeddedCFileActor actor) {
        super(actor);
    }
+   
+   ///////////////////////////////////////////////////////////////////
+   ////                         inner classes                     ////
 
-   public static class EmbeddedFileActor extends ptolemy.codegen.c.actor.lib.jni.EmbeddedCActor.EmbeddedActor {
+   /** A placeholder or dummy actor used in Embedded C code generation.
+    */
+   public static class EmbeddedFileActor extends CCodeGeneratorHelper {
 
-      
-      
+       /** Create a EmbeddedActor.
+        *  @param actor The associated actor.
+        */
        public EmbeddedFileActor(
-               ptolemy.actor.lib.jni.EmbeddedCActor.EmbeddedActor actor) {
+               ptolemy.actor.lib.jni.EmbeddedCFileActor.EmbeddedFileActor actor) {
            super(actor);
        }
 
+       /** Generate the shared code. Since this is the first generate
+        *  method invoked out of all, the CodeStream object is reset
+        *  so that its code table will be re-constructed.
+        *  @exception IllegalActionException Not thrown in this base class.
+        */
        public Set getSharedCode() throws IllegalActionException {
+          
            ((ptolemy.actor.lib.jni.EmbeddedCFileActor) getComponent().getContainer()).changeEmbeddedCCode();
            
+           _codeStream.reset();
+           _codeStream
+                   .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCFileActor) getComponent()
+                           .getContainer()).embeddedCCode.getExpression());
+           
            return super.getSharedCode();
-       } 
-       
+       }
    }
 
    
 }
-  
