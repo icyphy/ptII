@@ -96,14 +96,14 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
         }
         
         changeEmbeddedCCode();
-        System.out.println(embeddedCCode.getExpression());
+        //System.out.println(embeddedCCode.getExpression());
         
-        System.out.println("generating code");
+        //System.out.println("generating code");
         
         super._generateAndCompileCCode();
     }
     
-    protected void changeEmbeddedCCode() throws IllegalActionException{
+    public void changeEmbeddedCCode() throws IllegalActionException{
         BufferedReader reader = codeBlockFile.openForReading();
         
         if (reader == null){

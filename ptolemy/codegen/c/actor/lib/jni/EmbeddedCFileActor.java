@@ -42,7 +42,7 @@ Code generator helper for EmbeddedCFileActor.
 @Pt.ProposedRating red (cavaness)
 @Pt.AcceptedRating Red (cavaness)
 */
-public class EmbeddedCFileActor extends CCodeGeneratorHelper  {
+public class EmbeddedCFileActor extends EmbeddedCActor  {
    /** Construct the code generator helper associated
     *  with the given TypedCompositeActor.
     *  @param component The associated component.
@@ -50,5 +50,24 @@ public class EmbeddedCFileActor extends CCodeGeneratorHelper  {
    public EmbeddedCFileActor(ptolemy.actor.lib.jni.EmbeddedCFileActor actor) {
        super(actor);
    }
+
+   public static class EmbeddedFileActor extends ptolemy.codegen.c.actor.lib.jni.EmbeddedCActor.EmbeddedActor {
+
+      
+      
+       public EmbeddedFileActor(
+               ptolemy.actor.lib.jni.EmbeddedCActor.EmbeddedActor actor) {
+           super(actor);
+       }
+
+       public Set getSharedCode() throws IllegalActionException {
+           ((ptolemy.actor.lib.jni.EmbeddedCFileActor) getComponent().getContainer()).changeEmbeddedCCode();
+           
+           return super.getSharedCode();
+       } 
+       
+   }
+
    
 }
+  
