@@ -40,7 +40,7 @@
     <entity name="EmbeddedCFileActor" class="ptolemy.actor.lib.jni.EmbeddedCFileActor">
         <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="scaleCode.c">
+        <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="codeForScale2.c">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="codeBlockFile">
@@ -82,8 +82,6 @@
             <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="target" class="ptolemy.data.expr.StringParameter" value="default">
-            </property>
-            <property name="_codeGeneratorGUIFactory" class="ptolemy.codegen.gui.CodeGeneratorGUIFactory">
             </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
