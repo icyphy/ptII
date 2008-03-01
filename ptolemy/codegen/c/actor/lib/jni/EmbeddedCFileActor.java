@@ -51,28 +51,4 @@ public class EmbeddedCFileActor extends CCodeGeneratorHelper  {
        super(actor);
    }
    
-   public static class EmbeddedFileActor extends CCodeGeneratorHelper{
-
-       /** Create a EmbeddedActor.
-        *  @param actor The associated actor.
-        */
-       public EmbeddedFileActor(
-               ptolemy.actor.lib.jni.EmbeddedCFileActor.EmbeddedFileActor actor) {
-           super(actor);
-       }
-
-       public Set getSharedCode() throws IllegalActionException {
-           ((ptolemy.actor.lib.jni.EmbeddedCFileActor) getComponent().getContainer()).changeEmbeddedCCode();
-           _codeStream.reset();
-           _codeStream
-                   .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) getComponent()
-                           .getContainer()).embeddedCCode.getExpression());
-           return super.getSharedCode();
-       }
-       
-   }
-   
-   
-   
-   
 }
