@@ -56,7 +56,7 @@ FORMAT = ihex
 
 
 # Target file name (without extension).
-TARGET = Sensors
+TARGET = SensorsModel2
 
 
 # List C source files here. (C dependencies are automatically generated.)
