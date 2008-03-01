@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib.jni;
 
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.CompositeEntity;
@@ -97,13 +96,14 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
         }
         
         changeEmbeddedCCode();
-        //System.out.println(embeddedCCode.getExpression());
-        //System.out.println("generating code");
+        System.out.println(embeddedCCode.getExpression());
+        
+        System.out.println("generating code");
         
         super._generateAndCompileCCode();
     }
     
-    public void changeEmbeddedCCode() throws IllegalActionException{
+    protected void changeEmbeddedCCode() throws IllegalActionException{
         BufferedReader reader = codeBlockFile.openForReading();
         
         if (reader == null){
@@ -121,24 +121,6 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
             throw new IllegalActionException ("Could not read file" + codeBlockFile.getExpression());
         }
         embeddedCCode.setExpression(code);
-    }
-    
-    public static class EmbeddedFileActor extends TypedAtomicActor  {
-        /** Create a new instance of EmbeddedFileActor.
-         *  @param container The container.
-         *  @param name The name of this actor within the container.
-         *  @exception IllegalActionException If this actor cannot be contained
-         *   by the proposed container.
-         *  @exception NameDuplicationException If the name coincides with
-         *   an entity already in the container.
-         */
-        public EmbeddedFileActor(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-            // In case an exception occurs and wrapup can't destroy
-            // it, at least make sure it isn't saved.
-            setPersistent(false);
-        }
     }
     
     public FileParameter codeBlockFile;
