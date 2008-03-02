@@ -27,7 +27,9 @@
  */
 package ptolemy.codegen.c.kernel;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -277,9 +279,14 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
             //int nextIndex = _fireCode.length();
 
+            if (_typeInference == null) {
+                _typeInference = new ParseTreeTypeInference();
+            }
+            _typeInference.inferTypes(node, _scope);
+            
             tokens[i] = _evaluateChild(node, i);
 
-            Type valueType = tokens[i].getType();
+            Type valueType = ((ASTPtRootNode) node.jjtGetChild(i)).getType();
 
             if (CodeGeneratorHelper.isPrimitive(valueType)) {
                 //_fireCode.insert(nextIndex, "$new(" + CodeGeneratorHelper.codeGenType(valueType) + "(");
@@ -296,9 +303,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             }
         }
 
-        for (int i = 0; i < numChildren; i++) {
-            tokens[i] = elementType.convert(tokens[i]);
-        }
+        //for (int i = 0; i < numChildren; i++) {
+            //tokens[i] = elementType.convert(tokens[i]);
+        //}
 
         // Insert the elementType of the array as the last argument.
         if (CodeGeneratorHelper.targetType(elementType).equals("Token")) {
@@ -312,7 +319,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         //_fireCode.append("))");
         _childCode = result + "))";
 
-        _evaluatedChildToken = (new ArrayToken(elementType, tokens));
+        //_evaluatedChildToken = (new ArrayToken(elementType, tokens));
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);
@@ -474,6 +481,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                     return;
                 }
             }
+            
+            // Translate function to c functions.
+            String cFunction = (String) cFunctionMap.get(functionName);
+            if (cFunction != null) {
+                functionName = cFunction;
+            }
         }
 
         // The first child contains the function name as an id.  It is
@@ -521,7 +534,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                             + "arguments when applying function "
                             + value.toString());
                 }
-
                 // result = function.apply(argValues);
             } else {
                 // the value cannot be indexed or applied
@@ -1770,4 +1782,10 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
     /** The depth, used for debugging and indenting. */
     private int _depth = 0;
+
+    private static Map cFunctionMap = new HashMap(); 
+    static {
+        cFunctionMap.put("roundToInt", "(int)");
+    }
+
 }

@@ -56,6 +56,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
@@ -584,7 +585,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             director = ((Actor) _component).getDirector();
         }
         Director directorHelper = (Director) _getHelper(director);
-        
+        Receiver[][] r = port.getReceivers();
+        // FIXME: use receivers to generate the offset code.
         return processCode(directorHelper.generateOffset(
                 offsetString, port, channel, isWrite, this));        
     }
@@ -2177,9 +2179,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     // This will lead to recursive call until a variable found
                     // is either directly specified by a constant or it is a
                     // modified variable.
-                    return new ObjectToken("("
-                            + getParameterValue(name, result.getContainer())
-                            + ")");
+
+                    PtParser parser = new PtParser();
+                    ASTPtRootNode parseTree = parser.generateParseTree(
+                            getParameterValue(name, result.getContainer()));
+                    ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
+                    return evaluator.evaluateParseTree(parseTree, this);                    
                 }
             } else {
                 return null;
@@ -2336,7 +2341,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  found, or if there is a problem parsing the code block from
      *  the helper .c file.
      */
-    protected String _generateBlockCode(String blockName, ArrayList args)
+    protected String _generateBlockCode(String blockName, List args)
             throws IllegalActionException {
         // We use this method to reduce code duplication for simple blocks.
         _codeStream.clear();
