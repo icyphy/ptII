@@ -274,8 +274,9 @@ PTII_LOCALURL=`echo "file:///$PTII_DIR" | sed 's/ /%20/g'`
 #       NOTE: If your javac compiler is in /usr/bin, then PTJAVA_DIR is
 #       likely to be set to /usr.  Consider using PTJAVA_HOME if
 #       you are looking for Java jar files.
-#       Note that PTJAVA_HOME is set to the jre/ directory, wheras
-#       PTJAVA_DIR is set to the directory above the jre/ directory.
+#       Note that PTJAVA_HOME is set to the jre directory, wheras
+#       PTJAVA_DIR is set to the directory above the jre directory.
+#       PTJAVA_HOME will _not_ have a trailing slash.
 #--------------------------------------------------------------------
 
 AC_ARG_WITH(java, [  --with-java=DIR         use Java binaries from DIR,
@@ -2283,9 +2284,9 @@ else
 
         AC_MSG_CHECKING([for the proper JNI architecture include directory])
        	if test $PTJNI_ARCHITECTURE = "darwin"; then
-		PTJNI_INCLUDE=$PTJAVA_HOME/../Headers
+		PTJNI_INCLUDE="$PTJAVA_HOME/../Headers"
 	else
-		PTJNI_INCLUDE=$PTJAVA_HOME../include/$PTJNI_ARCHITECTURE
+		PTJNI_INCLUDE="$PTJAVA_HOME/../include"
 	fi
 
 	if test ! -d $PTJNI_INCLUDE; then 
