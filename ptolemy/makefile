@@ -35,7 +35,7 @@ ME =		ptolemy
 # so that when we compile in a directory we should have already compiled
 # any classes in other directories that we depend on.
 # Note that data.expr uses moml
-#
+# Tests in kernel.util use data.expr which uses math
 # PTCOPERNICUS_DIR is set to copernicus by configure in $PTII/mk/ptII.mk
 # if the Soot package was found.
 #
@@ -53,7 +53,7 @@ ME =		ptolemy
 # $PTII/configure looks for Java 1.5 and sets PTBACKTRACK_DIR to backtrack
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTBACKTRACK is empty.
 #
-DIRS = util kernel plot graph moml data actor gui math media	\
+DIRS = util math kernel plot graph moml data actor gui media	\
 	$(PTMATLAB_DIR)	domains	$(PTCOPERNICUS_DIR) \
 	vergil hsif $(PTCHIC_DIR) codegen component $(PTBACKTRACK_DIR) \
 	configs \
