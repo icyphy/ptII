@@ -357,7 +357,7 @@ The Ptiny pack is required.
 
             <file src="../../jar_dist/ptolemy/domains/dde/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/dde/demo"/>
-            <file src="../../jar_dist/ptolemy/domains/dde/doc/doc.jar"
+            <file src="../../jar_dist/tolemy/domains/dde/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/dde/doc"/>
 
             <file src="../../jar_dist/ptolemy/domains/dt/demo/demo.jar"
@@ -390,6 +390,15 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/tm/demo"/>
             <file src="../../jar_dist/ptolemy/domains/tm/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/tm/doc"/>
+
+            <file src="../../jar_dist/com/jgoodies/jgoodies.jar"
+                  targetdir="$INSTALL_PATH/com/jgoodies/jgoodies.jar"/>
+            <file src="../../jar_dist/lib/bsh-2.0b4.jar"
+                  targetdir="$INSTALL_PATH/lib/bsh-2.0b4.jar"/>
+            <file src="../../jar_dist/org/mlc/mlc.jar"
+                  targetdir="$INSTALL_PATH/org/mlc/mlc.jar"/>
+            <file src="../../jar_dist/ptolemy/actor/gui/run/run.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/gui/run/run.jar"/>
 
             <file src="../../jar_dist/ptolemy/domains/wireless/wireless.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/wireless"/>
