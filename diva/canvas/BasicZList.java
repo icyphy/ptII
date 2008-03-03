@@ -248,11 +248,11 @@ public class BasicZList implements ZList {
             return new Iterator() {
                 int cursor = _currentFigures.size();
 
-                public boolean hasNext() throws NoSuchElementException {
+                public boolean hasNext()
                     return cursor > 0;
                 }
 
-                public Object next() {
+                public Object next() throws NoSuchElementException {
                     if (cursor <= 0) {
                         throw new NoSuchElementException("Can't get " + cursor
                                 + "'th element from BasicZList of size "
