@@ -32,6 +32,7 @@ import java.awt.Frame;
 import ptolemy.util.ExecuteCommands;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.actor.gui.Effigy;
 
 //////////////////////////////////////////////////////////////////////////
 //// DocApplicationSpecializer
@@ -101,4 +102,19 @@ public interface DocApplicationSpecializer {
      */
     public void editDocumentation(Frame owner, Attribute attribute,
             NamedObj target);
+    
+    /** handle the state where there is no documentation attribute and the user
+     * tried to view the documentation
+     * @param classname the name of the class
+     * @param effigy the effigy of the entity that does not have a doc attribute
+     */
+    public void handleDocumentationNotFound(String classname, Effigy effigy);
+    
+    /** handle the state where the documentation attribute does not exist and 
+     * the user tried to edit the docs
+     * @param owner the editors gui parent
+     * @param attribute the documentation attribute to edit
+     * @param target the parent component to the attribute
+     */
+    public void handleDocumentationAttributeDoesNotExist(Frame owner, NamedObj target);
 }

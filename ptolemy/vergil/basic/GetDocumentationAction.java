@@ -51,6 +51,7 @@ import ptolemy.vergil.actor.DocEffigy;
 import ptolemy.vergil.actor.DocManager;
 import ptolemy.vergil.actor.DocTableau;
 import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.actor.DocApplicationSpecializer;
 
 //////////////////////////////////////////////////////////////////////////
 //// GetDocumentationAction
@@ -219,6 +220,21 @@ public class GetDocumentationAction extends FigureAction {
                 _lastClassName = null;
                 configuration.openModel(null, toRead, toRead.toExternalForm());
             } else {
+              Parameter docApplicationSpecializerParameter = (Parameter) configuration
+                        .getAttribute("_docApplicationSpecializer",
+                                Parameter.class);
+              if(docApplicationSpecializerParameter != null) {
+                //if there is a docApplicationSpecializer, let it handle the
+                //error instead of just throwing the exception
+                String docApplicationSpecializerClassName = docApplicationSpecializerParameter.getExpression();
+                Class docApplicationSpecializerClass = Class
+                            .forName(docApplicationSpecializerClassName);
+                final DocApplicationSpecializer docApplicationSpecializer = 
+                  (DocApplicationSpecializer) docApplicationSpecializerClass.newInstance();
+                docApplicationSpecializer.handleDocumentationNotFound(className, context);
+              } else {
+              
+                          
                 throw new Exception(
                         "Could not get find documentation for "
                                 + className
@@ -228,6 +244,7 @@ public class GetDocumentationAction extends FigureAction {
                                                 .getRemoteDocumentationURLBase()
                                         + "\"."
                                         : ""));
+              }
             }
         } catch (Exception ex) {
             // Try to open the DocBuilderGUI

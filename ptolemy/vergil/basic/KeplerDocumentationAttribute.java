@@ -28,11 +28,8 @@
 
 package ptolemy.vergil.basic;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Iterator;
+import java.io.*;
+import java.util.*;
 
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.Attribute;
@@ -44,6 +41,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Entity;
 
 /**
  A Documentation attribute for actors.
@@ -132,6 +131,54 @@ public class KeplerDocumentationAttribute extends Attribute implements
                 }
             }
         }
+    }
+    
+    /**
+     * create empty fields for the main attribute as well as any params or ports
+     * that exist in the target
+     * @param target the namedobj to create the empty attributes for
+     */
+    public void createEmptyFields(NamedObj target) {
+      try
+      {
+        ConfigurableAttribute authorAtt = new ConfigurableAttribute(this, "author");
+        ConfigurableAttribute versionAtt = new ConfigurableAttribute(this, "version");
+        ConfigurableAttribute descriptionAtt = new ConfigurableAttribute(this, "description");
+        ConfigurableAttribute uldAtt = new ConfigurableAttribute(this, "userLevelDocumentation");
+        
+        this.author = "";
+        this.version = "";
+        this.description = "";
+        this.userLevelDocumentation = "";
+        
+        Iterator attItt = target.attributeList().iterator();
+        while(attItt.hasNext())
+        {
+          Attribute a = (Attribute)attItt.next();
+          String aname = a.getName();
+          System.out.println("'" + aname + "'");
+          if(aname.trim().indexOf("_") != 0 && !aname.equals("KeplerDocumentation"))
+          {
+            //ConfigurableAttribute att = new ConfigurableAttribute(this, "prop:" + a.getName());
+            propertyHash.put(a.getName(), "");
+          }
+        }
+        
+        if(target instanceof Entity)
+        {
+          Iterator portItt = ((Entity)target).portList().iterator();
+          while(portItt.hasNext())
+          {
+            Port p = (Port)portItt.next();
+            //ConfigurableAttribute att = new ConfigurableAttribute(this, "port: " + p.getName());
+            portHash.put(p.getName(), "");
+          }
+        }
+      }
+      catch(Exception e)
+      {
+        System.out.println("Could not add KeplerDocumentation internal attributes: " + e.getMessage());
+      }
     }
 
     /** Write a MoML description of this object with the specified
@@ -349,6 +396,11 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @return the description
      */
     public String getDescription() {
+      if(description == null)
+      {
+        return "";
+      }
+      
       if(!description.equals("null"))
       {
         return this.description;
@@ -370,6 +422,11 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @return the author
      */
     public String getAuthor() {
+      if(author == null)
+      {
+        return "";
+      }
+      
       if(!author.equals("null"))
       {
         return this.author;
@@ -391,6 +448,11 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @return the version
      */
     public String getVersion() {
+      if(version == null)
+      {
+        return "";
+      }
+        
       if(!version.equals("null"))
       {
         return this.version;
@@ -412,6 +474,11 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @return the user level documentation
      */
     public String getUserLevelDocumentation() {
+      if(userLevelDocumentation == null)
+      {
+        return "";
+      }
+      
       if(!userLevelDocumentation.equals("null"))
       {
         return this.userLevelDocumentation;

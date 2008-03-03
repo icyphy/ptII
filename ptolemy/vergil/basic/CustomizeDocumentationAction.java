@@ -72,10 +72,8 @@ public class CustomizeDocumentationAction extends FigureAction {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-
         final NamedObj target = getTarget();
         boolean done = false;
-
         // If the object does not contain an attribute of class
         // DocAttribute, then create one.  Then open a dialog to edit
         // the parameters of the first such encountered attribute.
@@ -112,13 +110,11 @@ public class CustomizeDocumentationAction extends FigureAction {
             }
           
             if (docApplicationSpecializerParameter != null) {
-
                 // If there is a docApplicationSpecializer, use it to
                 // customize the documentation since it knows about
                 // the special doc attribute
 
                 String docApplicationSpecializerClassName = docApplicationSpecializerParameter.getExpression();
-                
                 try {
                     Class docApplicationSpecializerClass = Class
                             .forName(docApplicationSpecializerClassName);
@@ -131,8 +127,8 @@ public class CustomizeDocumentationAction extends FigureAction {
                     }
                     
                     if (docAttributeList.size() == 0) {
-                        //create a new attribute and edit it
-                        //TODO: 
+                      docApplicationSpecializer.handleDocumentationAttributeDoesNotExist(getFrame(), target);
+
                     } else { //edit the existing attribute
                       final Attribute docAttribute = (Attribute) docAttributeList.get(docAttributeList.size() - 1);
                       ChangeRequest request = new ChangeRequest(this,
