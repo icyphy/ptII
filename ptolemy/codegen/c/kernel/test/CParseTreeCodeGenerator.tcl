@@ -176,9 +176,10 @@ test CParseTreeCodeGenerator-16.2 {visitFunctionApplicationNode} {
     Node ptolemy.data.expr.ASTPtLeafNode evaluated to 2
     Entering node ptolemy.data.expr.ASTPtLeafNode
     Node ptolemy.data.expr.ASTPtLeafNode evaluated to 3
-  Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {0, 2, 3}
-Node ptolemy.data.expr.ASTPtFunctionApplicationNode evaluated to {0, 2, 3}
-} {map(, $new(Array(3, 3, $new(Int(0)), $new(Int(2)), $new(Int(3)), TYPE_Int)))}}
+  Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to 3
+Node ptolemy.data.expr.ASTPtFunctionApplicationNode evaluated to 3
+} {map(, $new(Array(3, 3, $new(Int(0)), $new(Int(2)), $new(Int(3)), TYPE_Int)))}
+
 
 test CParseTreeCodeGenerator-16.3 {visitFunctionApplicationNode} {
     set ptParser [java::new ptolemy.data.expr.PtParser]
