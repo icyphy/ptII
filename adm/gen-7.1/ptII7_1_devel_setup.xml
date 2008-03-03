@@ -357,7 +357,7 @@ The Ptiny pack is required.
 
             <file src="../../jar_dist/ptolemy/domains/dde/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/dde/demo"/>
-            <file src="../../jar_dist/tolemy/domains/dde/doc/doc.jar"
+            <file src="../../jar_dist/ptolemy/domains/dde/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/dde/doc"/>
 
             <file src="../../jar_dist/ptolemy/domains/dt/demo/demo.jar"
