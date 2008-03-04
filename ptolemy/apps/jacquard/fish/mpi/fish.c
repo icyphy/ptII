@@ -26,10 +26,11 @@ fish_t* local_fish;
 
 void make_fishtype (MPI_Datatype* fishtype);
 #define MIN_FISH_PER_PROC 2
+#define NUM_NEIGHBOR 8
 void split_fish (const int n_proc, int* fish_off, int* n_fish_split);
 
 void init_fish (const int rank,
-		const int* fish_off, const int* n_fish_split);
+		const int* fish_off, const int* n_fish_split, const int row, const int column);
 void interact_fish(fish_t* local_fish_, const int n_local_fish,
 		   const fish_t* fish_, const int n_fish);
 void bounce_fish (fish_t* fish);
@@ -92,15 +93,27 @@ main(int argc, char **argv)
 
   fish_off = malloc ( (n_proc+1) * sizeof(int) );
   n_fish_split = malloc ( (n_proc) * sizeof(int) );
-  split_fish (n_proc, fish_off, n_fish_split);
-  n_local_fish = n_fish_split[rank];
+  
+  //split each fish to different processors.
+  //fish_off: offset index of the fish in that processor
+  //n_fish_split is the # of fish in each processor
+  //ALL FUNCTIONALITY OF split_fish SHOULD BE DONE AFTER init_fish
+  //split_fish (n_proc, fish_off, n_fish_split); 
+  //n_local_fish = n_fish_split[rank];
 
   /*
     All fish are generated on proc 0 to ensure same random numbers.
     (Yes, the circle case could be parallelized.  Feel free to
     do it.)
-  */
-  init_fish (rank, fish_off, n_fish_split);
+  */ 
+  
+  //split physical box sizes
+  int row, column;
+  row = (int)sqrt((double)n_proc);
+  column = n_proc/row;
+  assert(n_proc % row == 0);
+
+  init_fish (rank, fish_off, n_fish_split, row, column);
 
   MPI_Scatterv (fish, n_fish_split, fish_off, fishtype,
 		local_fish, n_local_fish, fishtype,
@@ -134,9 +147,35 @@ main(int argc, char **argv)
        If you're dumping fish to a file, go ahead and do an
        Allgatherv _in the output steps_ if you want.  Or you could
        pipeline dumping the fish.
-    */
     MPI_Allgatherv (local_fish, n_local_fish, fishtype,
 		    fish, n_fish_split, fish_off, fishtype, comm);
+    */
+
+    int rankNeighbor[NUM_NEIGHBOR];
+    int messageTag = rank;
+    MPI_Request* sendReq, recvReq;
+    rankNeighbor[0] = rank - row - 1;
+    rankNeighbor[1] = rank - row;
+    rankNeighbor[2] = rank - row + 1;
+    rankNeighbor[3] = rank - 1;
+    rankNeighbor[4] = rank + 1;
+    rankNeighbor[5] = rank + row - 1;
+    rankNeighbor[6] = rank + row;
+    rankNeighbor[7] = rank + row + 1;
+
+    int j;
+
+    for (j = 0; j < NUM_NEIGHBOR; ++j) {
+
+        // FIXME: fish sizes and local fish.
+        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[j], messageTag, comm, sendReq);
+        MPI_Irecv(local_fish_recv, n_local_fish, fishtype, rankNeighbor[NUM_NEIGHBOR - j], messageTag, comm, recvReq);
+        // FIXME: MPI_Status
+        MPI_Wait(recvReq, MPI_STATUS_IGNORE);
+        interact_fish_mpi(local_fish, n_local_fish, fish, n_fish);
+
+    }
+
     stop_mpi_timer (&gather_timer);
     stop_mpi_timer (&mpi_timer);
     trace_end(TRACE_FISH_GATHER);
@@ -157,7 +196,8 @@ main(int argc, char **argv)
     trace_end(TRACE_OUTPUT);
 
     trace_begin (TRACE_LOCAL_COMP);
-    interact_fish (local_fish, n_local_fish, fish, n_fish);
+    //interact_fish (local_fish, n_local_fish, fish, n_fish);
+
     local_max_norm = compute_norm (local_fish, n_local_fish);
     trace_end (TRACE_LOCAL_COMP);
 
@@ -272,8 +312,20 @@ interact_fish(fish_t* local_fish_, const int n_local_fish,
 /* Allocate and initialize the fish positions / velocities / accelerations. */
 void
 init_fish (const int rank,
-	   const int* fish_off, const int* n_fish_split)
-{
+	   const int* fish_off, const int* n_fish_split, const int row, const int column)
+{  
+
+  // Calculate row and column distances 
+  double rowSep = WALL_SEP/row;
+  double columnSep = WALL_SEP/column;
+  assert(columnSep >= 1/40);
+ 
+  // Add n_proc # of arrays each holding ID of local fishes
+  // FIXME: what's the best way to store these fish in these arrays?
+  fish_t* fishProc[n_proc];
+  int n_fish_proc[n_proc];
+  //////////////////////////////////
+
   int i, li;
   fish = malloc(n_fish * sizeof(fish_t));
   local_fish = malloc(n_local_fish * sizeof(fish_t));
@@ -283,14 +335,24 @@ init_fish (const int rank,
 	fish[i].x = unscale_coord(drand48());
 	fish[i].y = unscale_coord(drand48());
       } else {
-	const double angle = i * (2.0 * M_PI / n_fish);
-	fish[i].x = unscale_coord(0.5 * cos(angle) + 0.5);
-	fish[i].y = unscale_coord(0.5 * sin(angle) + 0.5);
+        // this circle case could be parallelized
+	    const double angle = i * (2.0 * M_PI / n_fish);
+	    fish[i].x = unscale_coord(0.5 * cos(angle) + 0.5);
+	    fish[i].y = unscale_coord(0.5 * sin(angle) + 0.5);
       }
+     
       fish[i].vx = fish[i].vy = 0.0;
       fish[i].ax = fish[i].ay = 0.0;
+      
+      // which processor should this fish belong to?
+      int xnum = (int) ((fish[i].x - LEFT_WALL) / columnSep);
+      int ynum = (int) ((fish[i].y - LEFT_WALL) / rowSep);
+      fishProc[xnum + ynum * row][n_fish_proc[xnum + ynum * row]] = fish[i];
+      n_fish_proc[xnum + ynum * row]++;
+      ///////////////////////////////////////////////
     }
   }
+  // update n_fish_proc[], fishProc[]
 }
 
 
