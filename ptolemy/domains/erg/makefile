@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Thomas Huining Feng
 #
-# @Copyright (c) 1998-2008 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -58,8 +58,7 @@ MISC_FILES =	kernel
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	
+OPTIONAL_FILES =
 
 all: jclass
 install: jclass jars
