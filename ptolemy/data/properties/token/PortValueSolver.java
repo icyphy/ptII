@@ -94,7 +94,8 @@ public class PortValueSolver extends PropertySolver {
                 while (outportIterator.hasNext()) {
                     IOPort outport = (IOPort) outportIterator.next();
 
-                    outport.addTokenSentListener(listener);
+                    throw new Error ("FIXME: The next commented out line does not compile.");
+                    //outport.addTokenSentListener(listener);
                 }
             }
 
@@ -133,7 +134,8 @@ public class PortValueSolver extends PropertySolver {
                 while (outportIterator.hasNext()) {
                     IOPort outport = (IOPort) outportIterator.next();
 
-                    outport.removeTokenSentListener(listener);
+                    throw new Error("FIXME: The next commented out line does not compile");
+                    //outport.removeTokenSentListener(listener);
                 }
             }
 
