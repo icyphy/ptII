@@ -29,6 +29,7 @@
  */
 package ptolemy.vergil.toolbox;
 
+import java.io.File;
 import java.net.URL;
 
 import ptolemy.actor.gui.Configuration;
@@ -47,12 +48,13 @@ import ptolemy.kernel.util.StringAttribute;
 //// FileEditorTableauFactory
 
 /**
- This class is an attribute that creates a text editor to edit a specified
+ This class is an attribute that creates an editor to edit a specified
  file or URL given by an attribute in the container of this attribute.
  It is similar to TextEditorTableauFactory, but instead of editing an
  attribute in the container, it edits a file or URL referenced by that
  attribute.  The file or URL must be given in the container by an
- instance of FileParameter.
+ instance of FileParameter. If the file or URL does not exist, then
+ it attempts to create the file and open it.
 
  @author Edward A. Lee
  @version $Id$
@@ -117,6 +119,24 @@ public class FileEditorTableauFactory extends TableauFactory {
 
         URL url = ((FileParameter) attribute).asURL();
         Configuration configuration = (Configuration) effigy.toplevel();
-        return configuration.openModel(null, url, url.toExternalForm());
+        try {
+            return configuration.openModel(null, url, url.toExternalForm());
+        } catch (Exception ex) {
+            // Attempt to create a blank file with the specified name.
+            // If there is no specified name, first prompt the user for one.
+            FileParameter parameter = (FileParameter)attribute;
+            if (parameter.getExpression().trim().equals("")) {
+                // FIXME: prompt for a file name.
+                // Then set the parameter to match the file name.
+            }
+            File file = parameter.asFile();
+            if (!file.exists()) {
+                file.createNewFile();
+            } else {
+                // FIXME: Why did this fail? Prompt for new file name?
+            }
+            // Try again to open the model.
+            return configuration.openModel(null, url, url.toExternalForm());
+        }
     }
 }
