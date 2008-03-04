@@ -116,7 +116,7 @@ include $(ROOT)/mk/ptcommon.mk
 # $(PTMATLAB_cC) is set to cl or gcc by configure in $PTII/mk/ptII.mk
 $(PTLIB): ptmatlab.cc Engine.class
 	CLASSPATH="$(CLASSPATH)" "$(PTJAVA_DIR)/bin/javah" -jni -o ptmatlab.h ptolemy.matlab.Engine
-	"$(PTMATLAB_CC)" -m64 \
+	"$(PTMATLAB_CC)" $(PTMATLAB_CC_FLAGS) \
 		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJNI_INCLUDE)" \
 		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
