@@ -31,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.util.Random;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -47,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.ExecuteCommands;
+
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.verification.gui.MathematicalModelConverterGUIFactory;
@@ -84,7 +85,8 @@ public class MathematicalModelConverter extends Attribute {
 
         _model = (CompositeEntity) getContainer();
 
-        new MathematicalModelConverterGUIFactory(this, "_codeGeneratorGUIFactory");
+        new MathematicalModelConverterGUIFactory(this,
+                "_codeGeneratorGUIFactory");
 
     }
 
@@ -101,9 +103,10 @@ public class MathematicalModelConverter extends Attribute {
      *  @exception KernelException If a type conflict occurs or the model
      *  is running.
      */
-    public StringBuffer generateCode(String modelType, String inputTemporalFormula,
-            String formulaType, String variableSpanSize, String outputChoice,
-            String FSMBufferSize) throws Exception {
+    public StringBuffer generateCode(String modelType,
+            String inputTemporalFormula, String formulaType,
+            String variableSpanSize, String outputChoice, String FSMBufferSize)
+            throws Exception {
         StringBuffer returnStringBuffer = new StringBuffer("");
         // Perform deep traversal in order to generate .smv files.
         _codeFile = null;
@@ -209,24 +212,30 @@ public class MathematicalModelConverter extends Attribute {
                             // We can delete everything in the folder then delete the folder.
                             // The temporal file uses a random number generator to generate its name.
 
+                            Random rd = new Random();
                             String folderName = "SystemGeneratedTempFolder"
-                                    + Integer
-                                            .toString(((int) (Math.random() * 10000)))
-                                    + "/";
+                                    + Integer.toString(rd.nextInt(10000)) + "/";
                             File smvFolder = new File(folderName);
                             if (smvFolder.exists()) {
                                 while (smvFolder.exists() == true) {
                                     folderName = "SystemGeneratedTempFolder"
-                                            + Integer.toString(((int) (Math
-                                                    .random() * 10000))) + "/";
+                                            + Integer.toString(rd
+                                                    .nextInt(10000)) + "/";
                                     smvFolder = new File(folderName);
                                 }
                                 // Now create the directory.
-                                smvFolder.mkdir();
-                                System.out.println(smvFolder.getAbsolutePath());
+                                boolean isOpened = smvFolder.mkdir();
+                                if (isOpened == false) {
+                                    MessageHandler
+                                            .warning("Failed to invoke NuSMV correctly: \nUnable to open a temp folder.");
+                                }
                             } else {
-                                smvFolder.mkdir();
-                                System.out.println(smvFolder.getAbsolutePath());
+                                boolean isOpened = smvFolder.mkdir();
+                                if (isOpened == false) {
+                                    MessageHandler
+                                            .warning("Failed to invoke NuSMV correctly:\nUnable to open a temp folder.");
+                                }
+
                             }
                             // Now establish the file.
                             File smvFile = new File(folderName + "System.smv");
@@ -267,8 +276,8 @@ public class MathematicalModelConverter extends Attribute {
                             }
                             returnStringBuffer.append(str);
                             // StringBuffer str stores the information of the verification.
-                           // Query newQuery = new Query();
-                           // newQuery.setTextWidth(80);
+                            // Query newQuery = new Query();
+                            // newQuery.setTextWidth(80);
                             //newQuery.addTextArea("formula",
                             //        "Verification Results", str.toString());
                             //ComponentDialog newDialog = new ComponentDialog(
@@ -405,73 +414,69 @@ public class MathematicalModelConverter extends Attribute {
 
                     if (query.getStringValue("outputChoice").equalsIgnoreCase(
                             "Output to File")) {
-                        try {
-                            fmvFormat.append(model.convertToSMVFormat(pattern,
-                                    finalChoice, span));
-                            JFileChooser fileSaveDialog = new JFileChooser();
-                            // SMVFileFilter filter = new SMVFileFilter();
-                            // fileSaveDialog.setFileFilter(filter);
-                            fileSaveDialog
-                                    .setDialogType(JFileChooser.SAVE_DIALOG);
-                            fileSaveDialog
-                                    .setDialogTitle("Convert Ptolemy model into .smv file");
-                            if (_directory != null) {
-                                fileSaveDialog.setCurrentDirectory(_directory);
-                            } else {
-                                // The default on Windows is to open at user.home, which is
-                                // typically an absurd directory inside the O/S
-                                // installation.
-                                // So we use the current directory instead.
-                                // FIXME: Could this throw a security exception in an
-                                // applet?
-                                String cwd = StringUtilities
-                                        .getProperty("user.dir");
+                        //try {
+                        fmvFormat.append(model.convertToSMVFormat(pattern,
+                                finalChoice, span));
+                        JFileChooser fileSaveDialog = new JFileChooser();
+                        // SMVFileFilter filter = new SMVFileFilter();
+                        // fileSaveDialog.setFileFilter(filter);
+                        fileSaveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
+                        fileSaveDialog
+                                .setDialogTitle("Convert Ptolemy model into .smv file");
+                        if (_directory != null) {
+                            fileSaveDialog.setCurrentDirectory(_directory);
+                        } else {
+                            // The default on Windows is to open at user.home, which is
+                            // typically an absurd directory inside the O/S
+                            // installation.
+                            // So we use the current directory instead.
+                            // FIXME: Could this throw a security exception in an
+                            // applet?
+                            String cwd = StringUtilities
+                                    .getProperty("user.dir");
 
-                                if (cwd != null) {
-                                    fileSaveDialog
-                                            .setCurrentDirectory(new File(cwd));
-                                }
+                            if (cwd != null) {
+                                fileSaveDialog
+                                        .setCurrentDirectory(new File(cwd));
                             }
+                        }
 
-                            int returnValue = fileSaveDialog
-                                    .showOpenDialog(null);
+                        int returnValue = fileSaveDialog.showOpenDialog(null);
 
-                            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                                _directory = fileSaveDialog
-                                        .getCurrentDirectory();
+                        if (returnValue == JFileChooser.APPROVE_OPTION) {
+                            _directory = fileSaveDialog.getCurrentDirectory();
 
-                                File smvFile = fileSaveDialog.getSelectedFile()
-                                        .getCanonicalFile();
+                            File smvFile = fileSaveDialog.getSelectedFile()
+                                    .getCanonicalFile();
 
-                                if (smvFile.exists()) {
-                                    String queryString = "Overwrite "
-                                            + smvFile.getName() + "?";
-                                    int selected = JOptionPane
-                                            .showOptionDialog(
-                                                    null,
-                                                    queryString,
-                                                    "Overwrite?",
-                                                    JOptionPane.YES_NO_OPTION,
-                                                    JOptionPane.QUESTION_MESSAGE,
-                                                    null, null, null);
-                                    if (selected == 0) {
-                                        smvFileWriter = new FileWriter(smvFile);
-                                        smvFileWriter.write(fmvFormat
-                                                .toString());
-                                        _codeFile = smvFile;
-                                    }
-                                } else {
+                            if (smvFile.exists()) {
+                                String queryString = "Overwrite "
+                                        + smvFile.getName() + "?";
+                                int selected = JOptionPane.showOptionDialog(
+                                        null, queryString, "Overwrite?",
+                                        JOptionPane.YES_NO_OPTION,
+                                        JOptionPane.QUESTION_MESSAGE, null,
+                                        null, null);
+                                if (selected == 0) {
                                     smvFileWriter = new FileWriter(smvFile);
                                     smvFileWriter.write(fmvFormat.toString());
                                     _codeFile = smvFile;
                                 }
-
+                            } else {
+                                smvFileWriter = new FileWriter(smvFile);
+                                smvFileWriter.write(fmvFormat.toString());
+                                _codeFile = smvFile;
                             }
-                        } catch (Exception ex) {
-                            MessageHandler
-                                    .error("Failed to perform the conversion process:\n"
-                                            + ex.getMessage());
+
                         }
+                        //} catch (Exception ex) {
+                        //MessageHandler
+                        //        .error("Failed to perform the conversion process:\n"
+                        //                + ex.getMessage());
+                        //    throw new IllegalActionException(
+                        //            "Failed to perform the conversion process:\n"
+                        //                    + ex.getMessage());
+                        //}
                         try {
                             if (smvFileWriter != null)
                                 smvFileWriter.close();
@@ -501,88 +506,87 @@ public class MathematicalModelConverter extends Attribute {
                         }
                     } else {
                         // Also invoke NuSMV
+                        //try {
+                        fmvFormat.append(model.convertToSMVFormat(pattern,
+                                finalChoice, span));
+
+                        // Also invoke NuSMV. Create a temporal file and later delete it.
+                        // We first create a new folder which contains nothing.
+                        // Then generate the System.smv file, perform model checking.
+                        // If the system fails, all information would be stored in the folder.
+                        // We can delete everything in the folder then delete the folder.
+                        // The temporal file uses a random number generator to generate its name.
+                        Random rd = new Random();
+                        String folderName = "SystemGeneratedTempFolder"
+                                + Integer.toString(rd.nextInt(10000)) + "/";
+                        File smvFolder = new File(folderName);
+                        if (smvFolder.exists()) {
+                            while (smvFolder.exists() == true) {
+
+                                folderName = "SystemGeneratedTempFolder"
+                                        + Integer.toString(rd.nextInt(10000))
+                                        + "/";
+                                smvFolder = new File(folderName);
+                            }
+                            // Now create the directory.
+                            smvFolder.mkdir();
+                            System.out.println(smvFolder.getAbsolutePath());
+                        } else {
+                            smvFolder.mkdir();
+                            System.out.println(smvFolder.getAbsolutePath());
+                        }
+                        // Now establish the file.
+                        File smvFile = new File(folderName + "System.smv");
+                        //FileWriter smvFileWriter = null;
+                        String fileAbsolutePath = smvFile.getAbsolutePath();
+
                         try {
-                            fmvFormat.append(model.convertToSMVFormat(pattern,
-                                    finalChoice, span));
+                            smvFileWriter = new FileWriter(smvFile);
+                            smvFileWriter.write(fmvFormat.toString());
 
-                            // Also invoke NuSMV. Create a temporal file and later delete it.
-                            // We first create a new folder which contains nothing.
-                            // Then generate the System.smv file, perform model checking.
-                            // If the system fails, all information would be stored in the folder.
-                            // We can delete everything in the folder then delete the folder.
-                            // The temporal file uses a random number generator to generate its name.
-
-                            String folderName = "SystemGeneratedTempFolder"
-                                    + Integer
-                                            .toString(((int) (Math.random() * 10000)))
-                                    + "/";
-                            File smvFolder = new File(folderName);
-                            if (smvFolder.exists()) {
-                                while (smvFolder.exists() == true) {
-                                    folderName = "SystemGeneratedTempFolder"
-                                            + Integer.toString(((int) (Math
-                                                    .random() * 10000))) + "/";
-                                    smvFolder = new File(folderName);
-                                }
-                                // Now create the directory.
-                                smvFolder.mkdir();
-                                System.out.println(smvFolder.getAbsolutePath());
-                            } else {
-                                smvFolder.mkdir();
-                                System.out.println(smvFolder.getAbsolutePath());
+                        } finally {
+                            if (smvFileWriter != null) {
+                                smvFileWriter.close();
                             }
-                            // Now establish the file.
-                            File smvFile = new File(folderName + "System.smv");
-                            //FileWriter smvFileWriter = null;
-                            String fileAbsolutePath = smvFile.getAbsolutePath();
+                        }
 
-                            try {
-                                smvFileWriter = new FileWriter(smvFile);
-                                smvFileWriter.write(fmvFormat.toString());
-
-                            } finally {
-                                if (smvFileWriter != null) {
-                                    smvFileWriter.close();
-                                }
+                        StringBuffer str = new StringBuffer("");
+                        try {
+                            Runtime rt = Runtime.getRuntime();
+                            Process pr = rt.exec("NuSMV " + "\""
+                                    + fileAbsolutePath + "\"");
+                            InputStreamReader inputStream = new InputStreamReader(
+                                    pr.getInputStream());
+                            BufferedReader reader = new BufferedReader(
+                                    inputStream);
+                            String line = null;
+                            while ((line = reader.readLine()) != null) {
+                                str.append(line + "\n");
                             }
-
-                            StringBuffer str = new StringBuffer("");
-                            try {
-                                Runtime rt = Runtime.getRuntime();
-                                Process pr = rt.exec("NuSMV " + "\""
-                                        + fileAbsolutePath + "\"");
-                                InputStreamReader inputStream = new InputStreamReader(
-                                        pr.getInputStream());
-                                BufferedReader reader = new BufferedReader(
-                                        inputStream);
-                                String line = null;
-                                while ((line = reader.readLine()) != null) {
-                                    str.append(line + "\n");
-                                }
-                                reader.close();
-
-                            } catch (Exception ex) {
-                                MessageHandler
-                                        .warning("Failed to invoke NuSMV correctly: "
-                                                + ex.getMessage());
-
-                            }
-
-                            // StringBuffer str stores the information of the verification.
-                            Query newQuery = new Query();
-                            newQuery.setTextWidth(80);
-                            newQuery.addTextArea("formula",
-                                    "Verification Results", str.toString());
-                            ComponentDialog newDialog = new ComponentDialog(
-                                    null, "Terminal", newQuery);
-
-                            _deleteFolder(smvFolder);
+                            reader.close();
 
                         } catch (Exception ex) {
                             MessageHandler
-                                    .error("Failed to perform the conversion process:\n"
+                                    .warning("Failed to invoke NuSMV correctly: "
                                             + ex.getMessage());
+
                         }
+
+                        // StringBuffer str stores the information of the verification.
+                        Query newQuery = new Query();
+                        newQuery.setTextWidth(80);
+                        newQuery.addTextArea("formula", "Verification Results",
+                                str.toString());
+                        ComponentDialog newDialog = new ComponentDialog(null,
+                                "Terminal", newQuery);
+
+                        _deleteFolder(smvFolder);
+
+                        //} catch (Exception ex) {
+                        //    MessageHandler
+                        //            .error("Failed to perform the conversion process:\n"
+                        //                    + ex.getMessage());
+                        //}
 
                     }
 
@@ -603,8 +607,9 @@ public class MathematicalModelConverter extends Attribute {
 
     protected File _directory;
 
-    private void _deleteFolder(File folder) {
-        String childs[] = folder.list();
+    private void _deleteFolder(File folder) throws Exception {
+        String childs[] = null;
+        childs = folder.list();
         if (childs == null || childs.length <= 0) {
             folder.delete();
         }
@@ -626,18 +631,6 @@ public class MathematicalModelConverter extends Attribute {
         return _codeFileName;
     }
 
-    /** Set the command executor, which can be either non-graphical
-     *  or graphical.  The initial default is non-graphical, which
-     *  means that stderr and stdout from subcommands is written
-     *  to the console.
-     *  @param executeCommands The subprocess command executor.
-     *  @see #getExecuteCommands()
-     */
-    public void setExecuteCommands(ExecuteCommands executeCommands) {
-        _executeCommands = executeCommands;
-    }
-
-    
     public File getCodeFile() {
         return _codeFile;
     }
@@ -647,8 +640,5 @@ public class MathematicalModelConverter extends Attribute {
      */
     protected String _codeFileName = null;
     protected File _codeFile = null;
-    
-    /** Set of execute commands to run the generated code.
-     */
-    protected ExecuteCommands _executeCommands;
+
 }

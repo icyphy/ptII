@@ -288,11 +288,11 @@ public class SMVUtility {
 
         // Enumerate all states in the FmvAutomaton
         HashSet<State> frontier = null;
-        try {
-            frontier = _enumerateStateSet(actor);
-        } catch (Exception exception) {
+        //try {
+        frontier = _enumerateStateSet(actor);
+        //} catch (Exception exception) {
 
-        }
+        //}
 
         // Print out all these states
         Iterator<State> it = frontier.iterator();
@@ -309,13 +309,13 @@ public class SMVUtility {
         // Note that here the variable only contains inner variables.
         // 
         HashSet<String> variableSet = null;
-        try {
-            // Enumerate all variables used in the Kripke structure
-            int numSpan = Integer.parseInt(span);
-            variableSet = _decideVariableSet(actor, numSpan);
-        } catch (Exception exception) {
+        //try {
+        // Enumerate all variables used in the Kripke structure
+        int numSpan = Integer.parseInt(span);
+        variableSet = _decideVariableSet(actor, numSpan);
+        //} catch (Exception exception) {
 
-        }
+        //}
 
         Iterator<String> itVariableSet = variableSet.iterator();
         while (itVariableSet.hasNext()) {
@@ -332,7 +332,7 @@ public class SMVUtility {
             int lowerBound = Integer.parseInt(individual._minValue);
             int upperBound = Integer.parseInt(individual._maxValue);
             try {
-                int numSpan = Integer.parseInt(span);
+                numSpan = Integer.parseInt(span);
                 returnSmvFormat.append(" ls,");
                 for (int number = lowerBound; number <= upperBound; number++) {
                     returnSmvFormat.append(number);
@@ -353,17 +353,19 @@ public class SMVUtility {
         HashSet<String> signalVariableSet = null; // = new HashSet<String>();
         try {
             // Enumerate all variables used in the Kripke structure
-            int numSpan = Integer.parseInt(span);
+            numSpan = Integer.parseInt(span);
             signalVariableSet = _decideSignalVariableSet(actor, numSpan);
         } catch (Exception exception) {
 
         }
 
-        // Meanwhile, place elements in signalVariableSet into variableSet;  
-        Iterator<String> itSignalVariableSet = signalVariableSet.iterator();
-        while (itSignalVariableSet.hasNext()) {
-            String valName = (String) itSignalVariableSet.next();
-            variableSet.add(valName);
+        // Meanwhile, place elements in signalVariableSet into variableSet;
+        if (signalVariableSet != null) {
+            Iterator<String> itSignalVariableSet = signalVariableSet.iterator();
+            while (itSignalVariableSet.hasNext()) {
+                String valName = (String) itSignalVariableSet.next();
+                variableSet.add(valName);
+            }
         }
 
         // Now start the variable transition calculation process.
@@ -372,17 +374,17 @@ public class SMVUtility {
         returnSmvFormat.append("\tASSIGN \n");
 
         // setup initial state
-        try {
-            String name = actor.getInitialState().getName();
-            returnSmvFormat.append("\t\tinit(state) := " + name + ";\n");
-        } catch (Exception exception) {
+        //try {
+        String name = actor.getInitialState().getName();
+        returnSmvFormat.append("\t\tinit(state) := " + name + ";\n");
+        //} catch (Exception exception) {
 
-        }
-        try {
-            _generateAllVariableTransitions(actor, variableSet);
-        } catch (Exception ex) {
+        //}
+        //try {
+        _generateAllVariableTransitions(actor, variableSet);
+        //} catch (Exception ex) {
 
-        }
+        //}
         returnSmvFormat.append("\t\tnext(state) :=\n");
         returnSmvFormat.append("\t\t\tcase\n");
 
@@ -707,15 +709,14 @@ public class SMVUtility {
                                     if (innerActor instanceof FSMActor) {
                                         FSMActor innerFSMActor = (FSMActor) innerActor;
                                         HashSet<String> variableSet = null;
-                                        try {
-                                            // Enumerate all variables used in the Kripke structure
-                                            int numSpan = Integer
-                                                    .parseInt(span);
-                                            variableSet = _decideVariableSet(
-                                                    innerFSMActor, numSpan);
-                                        } catch (Exception exception) {
+                                        //try {
+                                        // Enumerate all variables used in the Kripke structure
+                                        int numSpan = Integer.parseInt(span);
+                                        variableSet = _decideVariableSet(
+                                                innerFSMActor, numSpan);
+                                        // } catch (Exception exception) {
 
-                                        }
+                                        //}
 
                                         // Decide variables encoded in the Kripke Structure.
                                         // Note that here the variable only contains Signal Variables.
@@ -723,7 +724,7 @@ public class SMVUtility {
                                         HashSet<String> signalVariableSet = null;
 
                                         // Enumerate all variables used in the Kripke structure
-                                        int numSpan = Integer.parseInt(span);
+                                        numSpan = Integer.parseInt(span);
                                         signalVariableSet = _decideSignalVariableSet(
                                                 innerFSMActor, numSpan);
 
@@ -738,17 +739,22 @@ public class SMVUtility {
                                             variableSet.add(valName);
                                         }
                                         HashSet<String> signalOfferedSet = new HashSet<String>();
-                                        Iterator<String> newItVariableSet = variableSet
-                                                .iterator();
-                                        while (newItVariableSet.hasNext()) {
-                                            String valName = (String) newItVariableSet
-                                                    .next();
-                                            boolean b = Pattern.matches(
-                                                    ".*_isPresent", valName);
-                                            if (b == true) {
-                                                signalOfferedSet.add(valName);
-                                            }
+                                        if (variableSet != null) {
+                                            Iterator<String> newItVariableSet = variableSet
+                                                    .iterator();
+                                            while (newItVariableSet.hasNext()) {
+                                                String valName = (String) newItVariableSet
+                                                        .next();
+                                                boolean b = Pattern
+                                                        .matches(
+                                                                ".*_isPresent",
+                                                                valName);
+                                                if (b == true) {
+                                                    signalOfferedSet
+                                                            .add(valName);
+                                                }
 
+                                            }
                                         }
 
                                         _globalSignalRetrivalInfo.put(
@@ -880,7 +886,9 @@ public class SMVUtility {
                         System.out.println("The component :" + component
                                 + " is null");
                     }
-                    signalOfferedSet.addAll(componentSignalSet);
+                    if (componentSignalSet != null) {
+                        signalOfferedSet.addAll(componentSignalSet);
+                    }
                     subSystemNameList.add(component);
                 }
                 if (_globalSignalNestedRetrivalInfo.get(controller.getName()) != null) {
@@ -989,12 +997,11 @@ public class SMVUtility {
                                 + "_isPresent";
 
                         // add it into the _variableInfo
-                        VariableInfo variable = (VariableInfo) _variableInfo
-                                .get(lValue_isPresent);
-                        if (variable == null) {
+                        // see if it exists
+                        if (_variableInfo.get(lValue_isPresent) == null) {
                             // Create a new one and insert all info.
-                            VariableInfo newVariable = new VariableInfo(
-                                    lValue_isPresent, "1", "0");
+                            VariableInfo newVariable = new VariableInfo("1",
+                                    "0");
                             _variableInfo.put(lValue_isPresent, newVariable);
                             if (returnVariableSet.contains(lValue_isPresent) == false)
                                 returnVariableSet.add(lValue_isPresent);
@@ -1288,8 +1295,7 @@ public class SMVUtility {
                                                 // Create a new one and
                                                 // insert all info.
                                                 VariableInfo newVariable = new VariableInfo(
-                                                        characterOfSubGuard[0]
-                                                                .trim(),
+
                                                         Integer
                                                                 .toString(numberRetrival),
                                                         Integer
@@ -1354,8 +1360,7 @@ public class SMVUtility {
                             if (variable == null) {
                                 // Create a new one and insert all info.
                                 VariableInfo newVariable = new VariableInfo(
-                                        lValue, Integer
-                                                .toString(numberRetrival),
+                                        Integer.toString(numberRetrival),
                                         Integer.toString(numberRetrival));
                                 _variableInfo.put(lValue, newVariable);
 
@@ -1650,11 +1655,11 @@ public class SMVUtility {
 
                             String lValue = characterOfSubSetAction[0].trim();
 
-                            try {
-                                variableUsedInTransitionSet.add(lValue);
-                            } catch (Exception ex) {
+                            //try {
+                            variableUsedInTransitionSet.add(lValue);
+                            //} catch (Exception ex) {
 
-                            }
+                            //}
 
                         }
                     }
@@ -2510,8 +2515,10 @@ public class SMVUtility {
         // 3. For rest cases (operatingSign=="+","-","*","/"), variable
         // has "X = X operatingSign offset".
 
+        //String[] keySetArray = (String[]) valueDomain.keySet().toArray(
+        //        new String[0]);
         String[] keySetArray = (String[]) valueDomain.keySet().toArray(
-                new String[0]);
+                new String[valueDomain.keySet().size()]);
 
         _recursiveStepGeneratePremiseAndResultEachTransition(statePrecondition,
                 0, keySetArray.length, keySetArray, valueDomain, lValue,
@@ -2566,7 +2573,7 @@ public class SMVUtility {
 
             VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
             newTransitionInfo._preCondition = currentPremise;
-            newTransitionInfo._variableName = lValue;
+            //newTransitionInfo._variableName = lValue;
             newTransitionInfo._varibleNewValue = newVariableValue;
             LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
                     .remove(lValue);
@@ -2697,7 +2704,7 @@ public class SMVUtility {
                                             .parseInt(((VariableInfo) _variableInfo
                                                     .get(lValue))._maxValue)) {
                                         // Use DOMAIN_GT to replace the value.
-                                        updatedVariableValue = new String("gt");
+                                        updatedVariableValue = "gt";
                                     }
 
                                     _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -2805,7 +2812,7 @@ public class SMVUtility {
                                             .parseInt(((VariableInfo) _variableInfo
                                                     .get(lValue))._minValue)) {
                                         // Use DOMAIN_LS to replace the value.
-                                        updatedVariableValue = new String("ls");
+                                        updatedVariableValue = "ls";
                                     }
 
                                     _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -4008,7 +4015,8 @@ public class SMVUtility {
                                 // these subsystems are controlled by the state
                                 // of the controller.
 
-                                if (signalInfo.size() > 0) {
+                                if ((signalInfo != null)
+                                        && (signalInfo.size() > 0)) {
                                     moduleDescription.append(", state );\n");
                                 } else {
                                     moduleDescription.append(" state );\n");
@@ -4141,7 +4149,8 @@ public class SMVUtility {
                                                     }
                                                 }
                                             }
-                                            if (signalInfo.size() > 0) {
+                                            if ((signalInfo != null)
+                                                    && (signalInfo.size() > 0)) {
                                                 moduleDescription
                                                         .append(" , state );\n");
                                             } else {
@@ -4253,7 +4262,8 @@ public class SMVUtility {
                                                     }
                                                 }
                                             }
-                                            if (signalInfo.size() > 0) {
+                                            if ((signalInfo != null)
+                                                    && (signalInfo.size() > 0)) {
                                                 moduleDescription
                                                         .append(", state );\n");
                                             } else {
@@ -4312,14 +4322,11 @@ public class SMVUtility {
     // /////////////////////////////////////////////////////////////////
     // // inner class ////
     private static class VariableInfo {
-        private VariableInfo(String paraVariableName, String paraMax,
-                String paraMin) {
-            _variableName = paraVariableName;
+        private VariableInfo(String paraMax, String paraMin) {
             _maxValue = paraMax;
             _minValue = paraMin;
         }
 
-        private String _variableName = null;
         private String _maxValue;
         private String _minValue;
 
@@ -4336,7 +4343,7 @@ public class SMVUtility {
         // Record set of conditions that leads to the change of variable
         // _variableName.
         private String _varibleNewValue = null;
-        private String _variableName = null;
+        //private String _variableName = null;
 
     }
 
