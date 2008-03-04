@@ -7477,6 +7477,12 @@ echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
 			        MATLAB_LIBDIR=${MATLAB_DIR}/bin/sol64
 				PTMATLAB_CC_FLAGS=-m64
                             fi
+			else
+			    if test ! -f "$MATLAB_LIBDIR/libmx.so"; then
+			        # Why, under Unix, are the libs in the bin dir?
+			        # matlab r2006a
+			        MATLAB_LIBDIR=${MATLAB_DIR}/bin/sol2
+			    fi
                         fi
 			;;
 		Darwin)
