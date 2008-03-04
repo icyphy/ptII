@@ -1,6 +1,6 @@
 /* An interface that find documentation.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2006-2008 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -113,7 +113,6 @@ public interface DocApplicationSpecializer {
     /** handle the state where the documentation attribute does not exist and 
      * the user tried to edit the docs
      * @param owner the editors gui parent
-     * @param attribute the documentation attribute to edit
      * @param target the parent component to the attribute
      */
     public void handleDocumentationAttributeDoesNotExist(Frame owner, NamedObj target);
