@@ -2632,6 +2632,7 @@ changequote([, ])dnl
 			    MATLAB_LIBDIR=${MATLAB_DIR}/bin
 			    if test ! -f "$MATLAB_LIBDIR/libmx.so"; then
 			        MATLAB_LIBDIR=${MATLAB_DIR}/bin/sol64
+				PTMATLAB_CC_FLAGS=-m64
                             fi
                         fi  
 			;;
@@ -3818,6 +3819,10 @@ AC_SUBST(PTLEJOS_DIR)
 # Set to gcc or cl and used in
 # $PTII/ptolemy/matlab/makefile if the Matlab was found.
 AC_SUBST(PTMATLAB_CC)
+
+# Set to -m64 under Solaris if libs are in bin/sol64
+# and used $PTII/ptolemy/matlab/makefile if the Matlab was found.
+AC_SUBST(PTMATLAB_CC_FLAGS)
 
 # Set to matlab and used in
 # $PTII/ptolemy/makefile if the Matlab was found.
