@@ -47,8 +47,9 @@ PTPACKAGE = 	kernel
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = \
-	CodeGenerator.java \
-	SMVUtility.java
+	MathematicalModelConverter.java \
+	SMVUtility.java \
+	REDUtility.java
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -62,9 +63,12 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'SMVUtility$$1.class' \
 	'SMVUtility$$VariableInfo.class' \
-	'SMVUtility$$VariableTransitionInfo.class'
+	'SMVUtility$$VariableTransitionInfo.class' \
+	'REDUtility$$REDModuleNameInitialBean.class' \
+	'REDUtility$$REDSingleEntityBean.class' \
+	'REDUtility$$REDSingleTransitionBean.class' \
+	'REDUtility$$VariableInfo.class' \ 
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SimpleTrafficLight" class="ptolemy.actor.TypedCompositeActor">
+<entity name="DE_SimpleTrafficLight" class="ptolemy.actor.TypedCompositeActor">
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 45.0}">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="30.0">
         </property>
@@ -20,9 +20,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 440]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.421875, 225.9942989864865}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{294.1764146959459, 170.1614231418919}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -39,7 +39,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this model, the undesired behavior is to have the &#10;car light and pedestrian light green at the same time.&#10;This would lead to accidents. To avoid this, we use&#10;temporal logic to describe the specification and &#10;generate a file acceptable by model checker NuSMV.&#10;&#10;CTL Specification (Copy the line below when double clicking the SMV CodeGenerator)&#10;! EF (SimpleTrafficLight.CarLightNormal-state = Cgrn &amp; SimpleTrafficLight.PedestrianLightNormal-state = Pgreen)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 275.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -69,7 +69,7 @@
         </property>
     </property>
     <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 95.0">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
@@ -186,7 +186,7 @@
         </property>
     </property>
     <property name="Ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 65.0">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
@@ -241,14 +241,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 410.0]">
         </property>
     </property>
-    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 65.0]">
-        </property>
-    </property>
     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
     </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 15.0]">
+        </property>
+    </property>
     <property name="Formal Model Converter" class="ptolemy.verification.kernel.MathematicalModelConverter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 225.0]">
         </property>
     </property>
     <entity name="CarLightNormal" class="ptolemy.domains.fsm.kernel.FSMActor">
@@ -257,7 +257,7 @@
     <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 95.0}">
         </property>
         <property name="count" class="ptolemy.data.expr.Parameter" value="0">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -525,7 +525,7 @@
     <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 70.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 85.0]">
         </property>
         <port name="Pgrn" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -664,7 +664,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 155.0]">
         </property>
     </entity>
     <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
@@ -678,7 +678,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 15.0]">
         </property>
     </entity>
     <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
@@ -692,7 +692,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 145.0]">
         </property>
     </entity>
     <entity name="SetVariable4" class="ptolemy.actor.lib.SetVariable">
@@ -723,24 +723,24 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 255.0]">
         </property>
     </entity>
-    <entity name="Sec" class="ptolemy.actor.lib.Ramp">
-        <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 145.0]">
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="BBTimedDelay" class="ptolemy.verification.lib.BoundedBufferTimedDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 25.0]">
+        </property>
+    </entity>
+    <entity name="BBNondeterministicDelay" class="ptolemy.verification.lib.BoundedBufferNondeterministicDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 95.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[120.0, 145.0]">
+        <vertex name="vertex1" value="[75.0, 165.0]">
         </vertex>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -762,21 +762,41 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="CarLightNormal.Sec" relation="relation"/>
     <link port="CarLightNormal.Pgo" relation="relation2"/>
-    <link port="CarLightNormal.Pstop" relation="relation3"/>
+    <link port="CarLightNormal.Pstop" relation="relation9"/>
     <link port="CarLightNormal.Cred" relation="relation4"/>
     <link port="CarLightNormal.Cyel" relation="relation5"/>
     <link port="CarLightNormal.Cgrn" relation="relation6"/>
     <link port="PedestrianLightNormal.Pgrn" relation="relation8"/>
     <link port="PedestrianLightNormal.Pred" relation="relation7"/>
     <link port="PedestrianLightNormal.Sec" relation="relation"/>
-    <link port="PedestrianLightNormal.Pgo" relation="relation2"/>
-    <link port="PedestrianLightNormal.Pstop" relation="relation3"/>
+    <link port="PedestrianLightNormal.Pgo" relation="relation3"/>
+    <link port="PedestrianLightNormal.Pstop" relation="relation10"/>
     <link port="SetVariable.input" relation="relation7"/>
     <link port="SetVariable2.input" relation="relation8"/>
     <link port="SetVariable3.input" relation="relation4"/>
     <link port="SetVariable4.input" relation="relation5"/>
     <link port="SetVariable5.input" relation="relation6"/>
-    <link port="Sec.output" relation="relation"/>
+    <link port="Clock.output" relation="relation"/>
+    <link port="BBTimedDelay.input" relation="relation2"/>
+    <link port="BBTimedDelay.output" relation="relation3"/>
+    <link port="BBNondeterministicDelay.input" relation="relation9"/>
+    <link port="BBNondeterministicDelay.output" relation="relation10"/>
 </entity>

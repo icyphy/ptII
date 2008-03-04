@@ -51,7 +51,9 @@ JSRCS =
 	
 OTHER_FILES_TO_BE_JARED = \
 	CarLightFmv.xml \
-	SimpleTrafficLight.xml
+	SimpleTrafficLight.xml \
+	DE_SimpleTrafficLight.xml \
+	HierarchicalTrafficLight.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

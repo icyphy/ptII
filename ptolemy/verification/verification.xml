@@ -9,10 +9,15 @@
             <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <doc>Code Generation Attributes</doc>
-            <property name="SMV CodeGenerator" class="ptolemy.verification.kernel.CodeGenerator">
+            <property name="Formal Model Converter" class="ptolemy.verification.kernel.MathematicalModelConverter">
 	    	
 			</property>
-            
+			<entity name="BoundedBufferTimedDelay" class="ptolemy.verification.lib.BoundedBufferTimedDelay" />
+           
+	    	<entity name="BoundedBufferNondeterministicDelay" class="ptolemy.verification.lib.BoundedBufferNondeterministicDelay" />
+	    	 <entity name="FmvAutomaton"
+                class="ptolemy.domains.fsm.kernel.fmv.FmvAutomaton">
+        </entity>
         </group>
     </configure>
 </entity>

@@ -1,6 +1,6 @@
 /* An attribute that creates an editor to configure and run a code generator.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,17 +30,21 @@ package ptolemy.verification.gui;
 import java.awt.Frame;
 
 import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFrame;
 
-import ptolemy.util.MessageHandler;
-import ptolemy.verification.kernel.CodeGenerator;
-
+import ptolemy.verification.kernel.MathematicalModelConverter;
+import ptolemy.verification.gui.MathematicalModelConverterGUI;
 import ptolemy.kernel.util.IllegalActionException;
 
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
-//// CodeGeneratorGUIFactory
+//// MathematicalModelConverterGUIFactory
 
 /**
  This is an attribute that creates an editor for configuring and
@@ -56,7 +60,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (patrickj)
  @Pt.AcceptedRating Red ()
  */
-public class CodeGeneratorGUIFactory extends EditorFactory {
+public class MathematicalModelConverterGUIFactory extends EditorFactory {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -65,7 +69,7 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public CodeGeneratorGUIFactory(NamedObj container, String name)
+    public MathematicalModelConverterGUIFactory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -81,14 +85,52 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
     public void createEditor(NamedObj object, Frame parent) {
         // This is always used to configure the container, so
         // we just use that.
-        CodeGenerator codeGenerator = (CodeGenerator) getContainer();
-        try {
-            int a = codeGenerator.generateCode();
-        } catch (Exception ex) {
-            MessageHandler
-                    .error("Error: CodeGeneratorGUIFactory.createEditor() clashes: \n"
-                            + ex.getMessage());
+        
+        MathematicalModelConverter modelConverter = (MathematicalModelConverter) getContainer();
+
+        if (!(parent instanceof TableauFrame)) {
+            throw new InternalErrorException(
+                    "Can't create a CodeGeneratorGUI without a tableau!");
         }
+
+        Effigy effigy = ((TableauFrame) parent).getEffigy();
+
+        // FIXME: Is the cast safe?
+        Tableau tableau = (Tableau) effigy.getEntity("codeGeneratorGUI");
+
+        if (tableau == null) {
+            try {
+                tableau = new Tableau(effigy, "codeGeneratorGUI");
+            } catch (KernelException e) {
+                throw new InternalErrorException(e);
+            }
+        }
+
+        Frame frame = tableau.getFrame();
+
+        if (frame == null) {
+            try {
+                frame = new MathematicalModelConverterGUI(modelConverter, tableau);
+            } catch (KernelException e) {
+                throw new InternalErrorException(e);
+            }
+        }
+
+        // Show the result.
+        //frame.pack();
+        frame.setSize(800, 350);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        
+        
+        //try {
+        //    int a = codeGenerator.generateCode();
+        //} catch (Exception ex) {
+        //    MessageHandler
+        //            .error("Error: CodeGeneratorGUIFactory.createEditor() clashes: \n"
+        //                    + ex.getMessage());
+        //}
 
     }
 

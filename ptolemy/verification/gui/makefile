@@ -46,7 +46,8 @@ PTPACKAGE = 	gui
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	CodeGeneratorGUIFactory.java
+	MathematicalModelConverterGUIFactory.java \
+	MathematicalModelConverterGUI.java 
 
 OTHER_FILES_TO_BE_JARED =
 

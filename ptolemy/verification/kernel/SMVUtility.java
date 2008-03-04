@@ -1,6 +1,6 @@
 /* An utility function for traversing the system and generate files for model checking.
 
- Copyright (c) 1998-2008 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -46,15 +46,17 @@ import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.Port;
+
+//////////////////////////////////////////////////////////////////////////
+////SMVUtility
 
 /**
- * This is an utility function for ptolemy models. It performs a systematic
- * traversal of the system and generate NuSMV acceptable files for 
- * model checking. 
+ * This is an utility function for Ptolemy II models. It performs a systematic
+ * traversal of the system and generate NuSMV (Cadence SMV) acceptable files 
+ * for model checking. 
  * 
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee
  * @version $Id$
@@ -64,74 +66,84 @@ import ptolemy.kernel.Port;
  */
 public class SMVUtility {
 
-    public static CompositeActor generateEquivalentSystemWithoutHierachy(
-            CompositeActor originalCompositeActor) {
+    public static StringBuffer generateSubSystemSMVDescription(
+            CompositeActor model, String span, String upperStateName)
+            throws IllegalActionException, NameDuplicationException {
 
-        ArrayList<FSMActor> list = new ArrayList<FSMActor>(); 
-        try {
-            if ((((CompositeActor) originalCompositeActor).entityList()).size() > 0) {
-                //for (int i = 0; i<(((CompositeActor) originalCompositeActor)
-                //        .entityList()).size() ; ) {
-                
-                    //Entity innerEntity = (Entity) (((CompositeActor) originalCompositeActor)
-                    //        .entityList()).get(i);
-                Iterator it = (((CompositeActor) originalCompositeActor)
-                                .entityList()).iterator();
-                while(it.hasNext()){
-                    Entity innerEntity = (Entity) it.next();
-                    if (innerEntity instanceof ModalModel) {
-                        FSMActor newActor = (FSMActor) _rewriteModalModelToFSMActor((ModalModel) innerEntity);
-                        (((CompositeActor) originalCompositeActor).entityList())
-                                .remove(innerEntity);
-                        list.add(newActor);
-                        //(((CompositeActor) originalCompositeActor).entityList())
-                        //        .add(i, (FSMActor) newActor);
-                        
-                    } 
+        StringBuffer returnFmvFormat = new StringBuffer("");
+
+        // List out all FSMs with their states.
+        for (Iterator actors = (((CompositeActor) model).entityList())
+                .iterator(); actors.hasNext();) {
+            Entity innerEntity = (Entity) actors.next();
+            if (innerEntity instanceof FSMActor) {
+                // Directly generate the whole description of the system.
+                returnFmvFormat
+                        .append(translateSingleFSMActor((FSMActor) innerEntity,
+                                span, false, "", upperStateName));
+            } else if (innerEntity instanceof ModalModel) {
+                // Perform analysis of the ModalModel
+                ArrayList<StringBuffer> subSystemDescription = _generateSMVFormatModalModelWithRefinement(
+                        (ModalModel) innerEntity, span, upperStateName);
+                for (int i = 0; i < subSystemDescription.size(); i++) {
+                    returnFmvFormat.append(subSystemDescription.get(i));
                 }
             }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
 
-        for(int i = 0; i< list.size(); i++){
-            (((CompositeActor) originalCompositeActor).entityList()).add(list.get(i));
-        }
-        return originalCompositeActor;
-
+        return returnFmvFormat;
     }
 
     /**
      * Return an StringBuffer that contains the converted .smv format of the system.
+     * Note that in this version we use modular approach instead of detecting 
+     * dependency checking. Modular approach would generate a bigger state space.
+     * Also the current algorithm enables us to deal with hierarchical systems.
      *
-     * @param model
+     * @param model The system under analysis.
      * @param pattern The temporal formula used to be attached in the .smv file.
      * @param choice The type of the formula. It may be either a CTL or LTL formula.
      * @param span A constant used to expand the size of the rough domain.
      * @return The converted .smv format of the system.
      */
-    public static StringBuffer generateSMVDescription(CompositeActor PreModel,
-            String pattern, String choice, String span)
-            throws IllegalActionException {
+    public static StringBuffer advancedGenerateSMVDescription(
+            CompositeActor model, String pattern, String choice, String span)
+            throws IllegalActionException, NameDuplicationException {
 
+        // Initialization of some global variable storages.
+        // See description for these variables at their variable definition. 
         _globalSignalDistributionInfo = new HashMap<String, ArrayList<String>>();
         _globalSignalRetrivalInfo = new HashMap<String, HashSet<String>>();
+        _globalSignalNestedRetrivalInfo = new HashMap<String, HashSet<String>>();
+        _variableInfo = new HashMap<String, VariableInfo>();
 
-        CompositeActor model = generateEquivalentSystemWithoutHierachy(PreModel);
- 
-        StringBuffer returnFmvFormat = new StringBuffer("");
+        // returnSMVFormat: a string storing the system description in SMV format
+        StringBuffer returnSMVFormat = new StringBuffer("");
 
-        // List out all FSMs with their states.
+        // Perform a scan of the whole system in order to retrieve signals
+        // used in the system and their locations/visibilities for later analysis.  
+        _advancedSystemSignalPreScan(model, span);
 
+        // List out all FSMs/ModalModels(with refinements) with their 
+        // states and transitions. 
+        // FIXME: Theoretically here we should also be able to deal with
+        //        CompositeActors with SR; this can be modified easily.
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
-            //Entity innerModel = innerEntity;
             if (innerEntity instanceof FSMActor) {
                 // Directly generate the whole description of the system.
-                returnFmvFormat.append(translateSingleFSMActor(
-                        (FSMActor) innerEntity, span));
+                returnSMVFormat.append(translateSingleFSMActor(
+                        (FSMActor) innerEntity, span, false, "", ""));
+            } else if (innerEntity instanceof ModalModel) {
+                // We need to generate the description of the subsystem,
+                // and also implement the finite state controller. 
+                // By calling the function, we are able to deal with it.
+                ArrayList<StringBuffer> subSystemDescription = _generateSMVFormatModalModelWithRefinement(
+                        (ModalModel) innerEntity, span, "");
+                for (int i = 0; i < subSystemDescription.size(); i++) {
+                    returnSMVFormat.append(subSystemDescription.get(i));
+                }
             }
         }
 
@@ -143,15 +155,15 @@ public class SMVUtility {
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             // Entity innerModel = innerEntity;
-            if (innerEntity instanceof FSMActor) {
+            if ((innerEntity instanceof FSMActor)
+                    || (innerEntity instanceof ModalModel)) {
                 mainModuleDescription.append("\t\t" + innerEntity.getName()
                         + ": " + innerEntity.getName() + "(");
-                // Check if the variable has variable outside; where is the location. 
+                // Check if the variable has variable outside (invisible 
+                // in the whole system); where is the location. 
                 ArrayList<String> signalInfo = _globalSignalDistributionInfo
                         .get(innerEntity.getName());
-                if (signalInfo == null) {
-
-                } else {
+                if (signalInfo != null) {
                     for (int i = 0; i < signalInfo.size(); i++) {
                         String signalName = signalInfo.get(i);
                         boolean contain = false;
@@ -169,16 +181,18 @@ public class SMVUtility {
                         }
                         if (contain == true) {
                             if (i == signalInfo.size() - 1) {
-                                mainModuleDescription.append(location.trim()+"."+signalName+" ");
+                                mainModuleDescription.append(location.trim()
+                                        + "." + signalName + " ");
                             } else {
-                                mainModuleDescription.append(location.trim()+"."+signalName+", ");
+                                mainModuleDescription.append(location.trim()
+                                        + "." + signalName + ", ");
                             }
                         } else {
                             // use 1 to represent the signal
                             if (i == signalInfo.size() - 1) {
-                                mainModuleDescription.append("1 ");
+                                mainModuleDescription.append(" 1");
                             } else {
-                                mainModuleDescription.append("1, ");
+                                mainModuleDescription.append(" 1,");
                             }
                         }
                     }
@@ -186,8 +200,10 @@ public class SMVUtility {
                 mainModuleDescription.append(");\n");
 
             }
+
         }
 
+        // Lastly, attach the specification into the file.
         if (choice.equalsIgnoreCase("CTL")) {
             mainModuleDescription.append("\n\tSPEC \n");
             mainModuleDescription.append("\t\t" + pattern + "\n");
@@ -196,8 +212,8 @@ public class SMVUtility {
             mainModuleDescription.append("\t\t" + pattern + "\n");
         }
 
-        returnFmvFormat.append(mainModuleDescription);
-        return returnFmvFormat;
+        returnSMVFormat.append(mainModuleDescription);
+        return returnSMVFormat;
     }
 
     /**
@@ -217,17 +233,61 @@ public class SMVUtility {
         }
     }
 
+    /**
+     * 
+     * @param actor
+     * @param span
+     * @param isController
+     * @param controllerName
+     * @param refinementStateName
+     * @return
+     * @throws IllegalActionException
+     */
     public static StringBuffer translateSingleFSMActor(FSMActor actor,
-            String span) {
+            String span, boolean isController, String controllerName,
+            String refinementStateName) throws IllegalActionException {
+
+        // This new version of utility function tries to translate a single 
+        // FSMActor into formats acceptable by model checker NuSMV.
+        // The main change lies in two parts:
+        // (1) Now a single FSMActor can be the controller of the ModalModel,
+        //     then in the description we need to instantiate each of the 
+        //     sub-models (which is generated by state refinement) contained 
+        //     within.
+        // (2) A single FSMActor can also be the a component of the subsystem
+        //     (state refinement with general model). In this way, we need to
+        //     add up information whether the current state in the upper
+        //     controller is the state holding this FSMActor.
+        //
+        // If refinementStateName is not empty string, then we know that
+        // we need to be sure that the upper state must be in the state
+        // "refinementStateName", otherwise, it is not allowed to perform
+        // any transition.
+
+        String refinementStateActivePremise = "UpperState = "
+                + refinementStateName.trim();
+
         StringBuffer returnSmvFormat = new StringBuffer("");
-
-        // returnSmvFormat.append("MODULE "+actor.getName()+"()"+);
-
         returnSmvFormat.append("\tVAR \n");
+
+        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+        // UNDER A REFINEMENT OF A STATE.
+        if (isController == true) {
+            // For a controller, it also needs to instantiate all of the
+            // inner modules existed below. Thus we use a function 
+            // _retrieveSubSystemModuleNameParameterInfo to retrieve 
+            // modules in the lower level.
+            ArrayList<StringBuffer> subModules = _retrieveSubSystemModuleNameParameterInfo(actor);
+            for (int i = 0; i < subModules.size(); i++) {
+                returnSmvFormat.append(subModules.get(i));
+                returnSmvFormat.append("\n ");
+            }
+        }
+
         returnSmvFormat.append("\t\tstate : {");
 
         // Enumerate all states in the FmvAutomaton
-        HashSet<State> frontier = null; // = new HashSet<State>();
+        HashSet<State> frontier = null;
         try {
             frontier = _enumerateStateSet(actor);
         } catch (Exception exception) {
@@ -248,7 +308,7 @@ public class SMVUtility {
         // Decide variables encoded in the Kripke Structure.
         // Note that here the variable only contains inner variables.
         // 
-        HashSet<String> variableSet = null; // = new HashSet<String>();
+        HashSet<String> variableSet = null;
         try {
             // Enumerate all variables used in the Kripke structure
             int numSpan = Integer.parseInt(span);
@@ -302,9 +362,7 @@ public class SMVUtility {
         // Meanwhile, place elements in signalVariableSet into variableSet;  
         Iterator<String> itSignalVariableSet = signalVariableSet.iterator();
         while (itSignalVariableSet.hasNext()) {
-
             String valName = (String) itSignalVariableSet.next();
-            returnSmvFormat.append("\t\t" + valName + " : boolean; \n");
             variableSet.add(valName);
         }
 
@@ -334,56 +392,78 @@ public class SMVUtility {
         if (infoList == null) {
 
         }
+
         for (int i = 0; i < infoList.size(); i++) {
             VariableTransitionInfo info = infoList.get(i);
-            returnSmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
-                    + info._varibleNewValue + " };\n");
+            // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+            // UNDER A REFINEMENT OF A STATE.
+            if (refinementStateName.equalsIgnoreCase("")) {
+                returnSmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
+                        + info._varibleNewValue + " };\n");
+            } else {
+                returnSmvFormat.append("\t\t\t\t"
+                        + refinementStateActivePremise + " & "
+                        + info._preCondition + " :{ " + info._varibleNewValue
+                        + " };\n");
+            }
+
         }
         returnSmvFormat.append("\t\t\t\t1             : state;\n");
         returnSmvFormat.append("\t\t\tesac;\n\n");
 
-        HashSet<String> signalOfferedSet = new HashSet<String>();
+        //HashSet<String> signalOfferedSet = new HashSet<String>();
 
         // Find out initial values for those variables.
         HashMap<String, String> variableInitialValue; // = new HashMap<String, String>();
         variableInitialValue = _retrieveVariableInitialValue(actor, variableSet);
 
-        // Generate all transitions; run for every variable used in Kripke
-        // structure.
+        // Generate all transitions; run for every variable used in 
+        // Kripke structure.
         Iterator<String> newItVariableSet = variableSet.iterator();
         while (newItVariableSet.hasNext()) {
 
             String valName = (String) newItVariableSet.next();
-            returnSmvFormat.append("\t\tinit(" + valName + ") := "
-                    + variableInitialValue.get(valName) + ";\n");
-            returnSmvFormat.append("\t\tnext(" + valName + ") :=\n");
-            returnSmvFormat.append("\t\t\tcase\n");
-
-            // Generate all transitions; start from "state"
-            List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
-                    .get(valName);
-            if (innerInfoList == null) {
-
-            }
-            for (int i = 0; i < innerInfoList.size(); i++) {
-                VariableTransitionInfo info = innerInfoList.get(i);
-                returnSmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
-                        + info._varibleNewValue + " };\n");
-
-            }
             boolean b = Pattern.matches(".*_isPresent", valName);
             if (b == true) {
-                returnSmvFormat.append("\t\t\t\t1             : { 0 };\n");
-                signalOfferedSet.add(valName);
+
             } else {
+                returnSmvFormat.append("\t\tinit(" + valName + ") := "
+                        + variableInitialValue.get(valName) + ";\n");
+                returnSmvFormat.append("\t\tnext(" + valName + ") :=\n");
+                returnSmvFormat.append("\t\t\tcase\n");
+
+                // Generate all transitions; start from "state"
+                List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
+                        .get(valName);
+                if (innerInfoList == null) {
+
+                }
+                for (int i = 0; i < innerInfoList.size(); i++) {
+                    VariableTransitionInfo info = innerInfoList.get(i);
+                    // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+                    // UNDER A REFINEMENT OF A STATE.
+                    if (refinementStateName.equalsIgnoreCase("")) {
+                        returnSmvFormat.append("\t\t\t\t" + info._preCondition
+                                + " :{ " + info._varibleNewValue + " };\n");
+                    } else {
+                        returnSmvFormat.append("\t\t\t\t"
+                                + refinementStateActivePremise + " & "
+                                + info._preCondition + " :{ "
+                                + info._varibleNewValue + " };\n");
+                    }
+
+                }
+
                 returnSmvFormat.append("\t\t\t\t1             : " + valName
                         + ";\n");
+
+                returnSmvFormat.append("\t\t\tesac;\n\n");
             }
 
-            returnSmvFormat.append("\t\t\tesac;\n\n");
         }
 
-        _globalSignalRetrivalInfo.put(actor.getName(), signalOfferedSet);
+        // MARK OUT THIS LINE BECAUSE THIS SHOULD HAVE BEEN DONE EARLIER.
+        //_globalSignalRetrivalInfo.put(actor.getName(), signalOfferedSet);
 
         // Lastly, attach the name and parameter required to use in the system.
         // In our current implementation, it corresponds to those variables 
@@ -396,16 +476,9 @@ public class SMVUtility {
         StringBuffer frontAttachment = new StringBuffer("MODULE "
                 + actor.getName() + "( ");
 
-        HashSet<String> guardSignalVariableSet = null; // = new HashSet<String>();
-        try {
-            // Enumerate all variables used in the Kripke structure
-            guardSignalVariableSet = _decideGuardSignalVariableSet(actor);
-        } catch (Exception exception) {
-
-        }
-
-        ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
+        //ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
         // Meanwhile, place elements in signalVariableSet into variableSet;  
+        /*
         Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
                 .iterator();
         while (itGuardSignalVariableSet.hasNext()) {
@@ -417,13 +490,433 @@ public class SMVUtility {
                 frontAttachment.append(valName);
             }
         }
-        frontAttachment.append(" )\n");
+        */
+        ArrayList<String> guardSignalVariableInfo = _globalSignalDistributionInfo
+                .get(actor.getName());
+        if (guardSignalVariableInfo == null) {
+            HashSet<String> guardSignalVariableSet = null;
+            // Enumerate all variables used in the Kripke structure
+            guardSignalVariableSet = _decideGuardSignalVariableSet(actor);
+
+            Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
+                    .iterator();
+            while (itGuardSignalVariableSet.hasNext()) {
+                String valName = (String) itGuardSignalVariableSet.next();
+                // guardSignalVariableInfo.add(valName);
+                if (itGuardSignalVariableSet.hasNext() == true) {
+                    frontAttachment.append(valName + ",");
+                } else {
+                    frontAttachment.append(valName);
+                }
+            }
+        } else {
+            for (int i = 0; i < guardSignalVariableInfo.size(); i++) {
+                String valName = guardSignalVariableInfo.get(i);
+                if (i != guardSignalVariableInfo.size() - 1) {
+                    frontAttachment.append(valName + ",");
+                } else {
+                    frontAttachment.append(valName);
+                }
+            }
+
+        }
+
+        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+        // UNDER A REFINEMENT OF A STATE.
+        if (refinementStateName.trim().equalsIgnoreCase("")) {
+            frontAttachment.append(" )\n");
+        } else {
+            if (guardSignalVariableInfo.size() == 0) {
+                frontAttachment.append(" UpperState  )\n");
+            } else {
+                frontAttachment.append(", UpperState )\n");
+            }
+
+        }
+
         frontAttachment.append(returnSmvFormat);
 
-        _globalSignalDistributionInfo.put(actor.getName(),
-                guardSignalVariableInfo);
+        if (signalVariableSet.size() != 0) {
+            frontAttachment.append("\n\tDEFINE\n");
+            Iterator<String> newItSignalVariableSet = signalVariableSet
+                    .iterator();
+            while (newItSignalVariableSet.hasNext()) {
+                String valName = (String) newItSignalVariableSet.next();
+                frontAttachment.append("\t\t" + valName + " := ");
+
+                List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
+                        .get(valName);
+                if (innerInfoList == null) {
+
+                }
+                for (int i = 0; i < innerInfoList.size(); i++) {
+                    VariableTransitionInfo info = innerInfoList.get(i);
+                    // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+                    // UNDER A REFINEMENT OF A STATE.
+                    if (i == innerInfoList.size() - 1) {
+                        if (refinementStateName.equalsIgnoreCase("")) {
+                            frontAttachment.append(" ( " + info._preCondition
+                                    + " ) ;\n\n ");
+                        } else {
+                            frontAttachment.append("("
+                                    + refinementStateActivePremise + " & "
+                                    + info._preCondition + " ) ;\n\n ");
+                        }
+                    } else {
+                        if (refinementStateName.equalsIgnoreCase("")) {
+                            frontAttachment.append(" ( " + info._preCondition
+                                    + " ) & ");
+                        } else {
+                            frontAttachment.append("("
+                                    + refinementStateActivePremise + " & "
+                                    + info._preCondition + " ) & ");
+                        }
+                    }
+
+                }
+
+            }
+        }
 
         return frontAttachment;
+
+    }
+
+    private static ArrayList<String> _advancedSystemSignalPreScan(
+            CompositeActor model, String span) throws IllegalActionException,
+            NameDuplicationException {
+        // This utility function performs a system pre-scanning and stores
+        // all signal information in two global variables:
+        //
+        // (1) HashMap<String, ArrayList<String>> _globalSignalDistributionInfo:
+        //     It tells you for a certain component, the set of signals emitted 
+        //     from that component.
+        //
+        // (2)HashMap<String, HashSet<String>> _globalSignalRetrivalInfo:
+        //    It tells you for a certain component, the set of signals 
+        //    used in its guard expression.
+        // 
+        // Thus if these two are established, we are able to retrieve
+        // the location of the signal.
+        //
+        // NEWLY ADDED FEATURE:
+        // (3) HashMap<String, HashSet<String>> _globalSignalNestedRetrivalInfo:
+        //     It tells you for a certain component, the set of signals emitted
+        //     from that component and from subsystems below that component in 
+        //     the overall hierarchy.
+
+        ArrayList<String> subSystemNameList = new ArrayList<String>();
+
+        for (Iterator actors = (((CompositeActor) model).entityList())
+                .iterator(); actors.hasNext();) {
+            Entity innerEntity = (Entity) actors.next();
+            if (innerEntity instanceof FSMActor) {
+                FSMActor innerFSMActor = (FSMActor) innerEntity;
+                HashSet<String> variableSet = null;
+
+                // Enumerate all variables used in the Kripke structure
+                int numSpan = Integer.parseInt(span);
+                variableSet = _decideVariableSet(innerFSMActor, numSpan);
+
+                // Decide variables encoded in the Kripke Structure.
+                // Note that here the variable only contains Signal Variables.
+                // For example, PGo_isPresent
+                HashSet<String> signalVariableSet = null;
+
+                // Enumerate all variables used in the Kripke structure
+                //int numSpan = Integer.parseInt(span);
+                signalVariableSet = _decideSignalVariableSet(innerFSMActor,
+                        numSpan);
+
+                // Meanwhile, place elements in signalVariableSet into variableSet;  
+                Iterator<String> itSignalVariableSet = signalVariableSet
+                        .iterator();
+                while (itSignalVariableSet.hasNext()) {
+                    String valName = (String) itSignalVariableSet.next();
+                    variableSet.add(valName);
+                }
+                HashSet<String> signalOfferedSet = new HashSet<String>();
+                Iterator<String> newItVariableSet = variableSet.iterator();
+                while (newItVariableSet.hasNext()) {
+                    String valName = (String) newItVariableSet.next();
+                    boolean b1 = Pattern.matches(".*_isPresent", valName);
+                    if (b1 == true) {
+                        signalOfferedSet.add(valName);
+                    }
+
+                }
+
+                _globalSignalRetrivalInfo.put(innerFSMActor.getName(),
+                        signalOfferedSet);
+                _globalSignalNestedRetrivalInfo.put(innerFSMActor.getName(),
+                        signalOfferedSet);
+                subSystemNameList.add(innerFSMActor.getName());
+
+                HashSet<String> guardSignalVariableSet = null;
+                // Enumerate all variables used in the Kripke structure
+                guardSignalVariableSet = _decideGuardSignalVariableSet(innerFSMActor);
+
+                ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
+
+                Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
+                        .iterator();
+                while (itGuardSignalVariableSet.hasNext()) {
+                    String valName = (String) itGuardSignalVariableSet.next();
+                    guardSignalVariableInfo.add(valName);
+
+                }
+
+                _globalSignalDistributionInfo.put(innerFSMActor.getName(),
+                        guardSignalVariableInfo);
+
+            } else if (innerEntity instanceof ModalModel) {
+
+                ArrayList<String> subsubSystemNameList = new ArrayList<String>();
+
+                // If innerEntity is an instance of a ModalModel,
+                // we need to perform a recursive scan of the 
+                // signal in the lower level.
+                //
+                // This includes the controller, and all rest FSMActors
+                // or ModalModels in the state refinement.
+
+                FSMActor controller = ((ModalModel) innerEntity)
+                        .getController();
+                controller.setName(innerEntity.getName());
+                Iterator states = controller.entityList().iterator();
+                // boolean noRefinement = true;
+                while (states.hasNext()) {
+                    NamedObj state = (NamedObj) states.next();
+                    if (state instanceof State) {
+                        String refinementList = ((State) state).refinementName
+                                .getExpression();
+                        if ((refinementList == null)
+                                || (refinementList.equalsIgnoreCase(""))) {
+
+                        } else {
+                            // noRefinement = false;
+                            TypedActor[] refinementSystemActors = ((State) state)
+                                    .getRefinement();
+                            //if (actors != null) {
+                            if (refinementSystemActors != null) {
+                                if (refinementSystemActors.length == 1) {
+                                    // It would only have the case where actor.length == 1. 
+                                    // If we encounter cases > 1, report error for further 
+                                    // bug fix. 
+                                    TypedActor innerActor = refinementSystemActors[0];
+                                    if (innerActor instanceof FSMActor) {
+                                        FSMActor innerFSMActor = (FSMActor) innerActor;
+                                        HashSet<String> variableSet = null;
+                                        try {
+                                            // Enumerate all variables used in the Kripke structure
+                                            int numSpan = Integer
+                                                    .parseInt(span);
+                                            variableSet = _decideVariableSet(
+                                                    innerFSMActor, numSpan);
+                                        } catch (Exception exception) {
+
+                                        }
+
+                                        // Decide variables encoded in the Kripke Structure.
+                                        // Note that here the variable only contains Signal Variables.
+                                        // For example, PGo_isPresent
+                                        HashSet<String> signalVariableSet = null;
+
+                                        // Enumerate all variables used in the Kripke structure
+                                        int numSpan = Integer.parseInt(span);
+                                        signalVariableSet = _decideSignalVariableSet(
+                                                innerFSMActor, numSpan);
+
+                                        // Meanwhile, place elements in signalVariableSet into variableSet;  
+                                        Iterator<String> itSignalVariableSet = signalVariableSet
+                                                .iterator();
+                                        while (itSignalVariableSet.hasNext()) {
+
+                                            String valName = (String) itSignalVariableSet
+                                                    .next();
+
+                                            variableSet.add(valName);
+                                        }
+                                        HashSet<String> signalOfferedSet = new HashSet<String>();
+                                        Iterator<String> newItVariableSet = variableSet
+                                                .iterator();
+                                        while (newItVariableSet.hasNext()) {
+                                            String valName = (String) newItVariableSet
+                                                    .next();
+                                            boolean b = Pattern.matches(
+                                                    ".*_isPresent", valName);
+                                            if (b == true) {
+                                                signalOfferedSet.add(valName);
+                                            }
+
+                                        }
+
+                                        _globalSignalRetrivalInfo.put(
+                                                innerFSMActor.getName().trim(),
+                                                signalOfferedSet);
+                                        _globalSignalNestedRetrivalInfo.put(
+                                                innerFSMActor.getName().trim(),
+                                                signalOfferedSet);
+                                        //subSystemNameList.add(innerFSMActor
+                                        //        .getName().trim());
+                                        subsubSystemNameList.add(innerFSMActor
+                                                .getName().trim());
+
+                                        HashSet<String> guardSignalVariableSet = null;
+                                        // Enumerate all variables used in the Kripke structure
+                                        guardSignalVariableSet = _decideGuardSignalVariableSet(innerFSMActor);
+
+                                        ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
+
+                                        Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
+                                                .iterator();
+                                        while (itGuardSignalVariableSet
+                                                .hasNext()) {
+                                            String valName = (String) itGuardSignalVariableSet
+                                                    .next();
+                                            guardSignalVariableInfo
+                                                    .add(valName);
+
+                                        }
+
+                                        _globalSignalDistributionInfo.put(
+                                                innerFSMActor.getName(),
+                                                guardSignalVariableInfo);
+
+                                    } else if (innerActor instanceof CompositeActor) {
+                                        // First see if its director is SR.
+                                        // If not, then it is beyond our current
+                                        // processing scope.
+                                        Director director = ((CompositeActor) innerActor)
+                                                .getDirector();
+                                        if (!(director instanceof SRDirector)) {
+                                            // This is not what we can process.
+                                            throw new IllegalActionException(
+                                                    "SMVUtility._rewriteModalModelWithGeneralRefinementToFSMActor(): "
+                                                            + "Inner director not SR.");
+                                        } else {
+                                            // This is OK for our analysis
+                                            // Generate system description 
+                                            // for these two.
+
+                                            ArrayList<String> subsubsubSystemNameList = _advancedSystemSignalPreScan(
+                                                    (CompositeActor) innerActor,
+                                                    span);
+                                            for (int j = 0; j < subsubsubSystemNameList
+                                                    .size(); j++) {
+                                                subsubSystemNameList
+                                                        .add(subsubsubSystemNameList
+                                                                .get(j));
+                                            }
+
+                                        }
+                                    } else {
+                                        // We are not able to deal with it.
+                                    }
+
+                                } else {
+                                    // Theoretically this should not happen.
+                                    // Once this happens, report an error to
+                                    // notify the author the situation.
+                                    throw new IllegalActionException(
+                                            "SMVUtility._rewriteModalModelWithGeneralRefinementToFSMActor(): "
+                                                    + "Refinement has two or more inner actors.");
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Lastly, store the signal information for the controller.
+
+                HashSet<String> variableSet = null;
+                // Enumerate all variables used in the Kripke structure
+                int numSpan = Integer.parseInt(span);
+                variableSet = _decideVariableSet(controller, numSpan);
+
+                // Decide variables encoded in the Kripke Structure.
+                // Note that here the variable only contains Signal Variables.
+                // For example, PGo_isPresent
+                HashSet<String> signalVariableSet = null;
+
+                // Enumerate all variables used in the Kripke structure
+                signalVariableSet = _decideSignalVariableSet(controller,
+                        numSpan);
+
+                // Meanwhile, place elements in signalVariableSet into variableSet;  
+                Iterator<String> itSignalVariableSet = signalVariableSet
+                        .iterator();
+                while (itSignalVariableSet.hasNext()) {
+
+                    String valName = (String) itSignalVariableSet.next();
+
+                    variableSet.add(valName);
+                }
+                HashSet<String> signalOfferedSet = new HashSet<String>();
+                Iterator<String> newItVariableSet = variableSet.iterator();
+                while (newItVariableSet.hasNext()) {
+                    String valName = (String) newItVariableSet.next();
+                    boolean b1 = Pattern.matches(".*_isPresent", valName);
+                    if (b1 == true) {
+                        signalOfferedSet.add(valName);
+                    }
+
+                }
+
+                // Use a new HashSet and copy all contents to avoid later modification.
+                HashSet<String> newSignalOfferedSet = new HashSet<String>();
+                newSignalOfferedSet.addAll(signalOfferedSet);
+                _globalSignalRetrivalInfo.put(controller.getName(),
+                        newSignalOfferedSet);
+
+                // Now retrieve every subComponent s' of s from subsubSystemNameList,
+                // retrieve the signal from _globalSignalRetrivalInfo(s')
+                // and add them to _globalSignalNestedRetrivalInfo(s)
+                for (int i = 0; i < subsubSystemNameList.size(); i++) {
+                    String component = subsubSystemNameList.get(i);
+                    HashSet<String> componentSignalSet = _globalSignalNestedRetrivalInfo
+                            .get(component);
+                    if (componentSignalSet == null) {
+                        System.out.println("The component :" + component
+                                + " is null");
+                    }
+                    signalOfferedSet.addAll(componentSignalSet);
+                    subSystemNameList.add(component);
+                }
+                if (_globalSignalNestedRetrivalInfo.get(controller.getName()) != null) {
+                    _globalSignalNestedRetrivalInfo.get(controller.getName())
+                            .addAll(signalOfferedSet);
+                } else {
+                    _globalSignalNestedRetrivalInfo.put(controller.getName(),
+                            signalOfferedSet);
+                }
+
+                HashSet<String> guardSignalVariableSet = null;
+                // Enumerate all variables used in the Kripke structure
+                guardSignalVariableSet = _decideGuardSignalVariableSet(controller);
+
+                ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
+
+                Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
+                        .iterator();
+                while (itGuardSignalVariableSet.hasNext()) {
+                    String valName = (String) itGuardSignalVariableSet.next();
+                    guardSignalVariableInfo.add(valName);
+
+                }
+
+                _globalSignalDistributionInfo.put(controller.getName(),
+                        guardSignalVariableInfo);
+
+                subSystemNameList.add(controller.getName());
+
+            } else if (innerEntity instanceof CompositeActor) {
+                //FIXME: No implementation here...
+            }
+
+        }
+        return subSystemNameList;
+
     }
 
     /**
@@ -503,6 +996,9 @@ public class SMVUtility {
                             VariableInfo newVariable = new VariableInfo(
                                     lValue_isPresent, "1", "0");
                             _variableInfo.put(lValue_isPresent, newVariable);
+                            if (returnVariableSet.contains(lValue_isPresent) == false)
+                                returnVariableSet.add(lValue_isPresent);
+                        } else {
                             if (returnVariableSet.contains(lValue_isPresent) == false)
                                 returnVariableSet.add(lValue_isPresent);
                         }
@@ -678,7 +1174,7 @@ public class SMVUtility {
         //try {
         // initialize
         HashMap<String, State> frontier = new HashMap<String, State>();
-        _variableInfo = new HashMap<String, VariableInfo>();
+        // _variableInfo = new HashMap<String, VariableInfo>();
 
         // create initial state
         State stateInThis = actor.getInitialState();
@@ -914,7 +1410,7 @@ public class SMVUtility {
 
             } catch (Exception ex) {
                 throw new IllegalActionException(
-                        "FmvAutomaton._decideVariableSet() clashes: "
+                        "SMVUtility._decideVariableSet() clashes: "
                                 + ex.getMessage());
             }
         }
@@ -1513,14 +2009,7 @@ public class SMVUtility {
 
                             // Generate all possible conditions that leads
                             // to this change.
-                            //try {
-                            // set up all possible transitions
-                            // regarding to this assignment.
 
-                            //String statePrecondition = new String(
-                            //        "state="
-                            //                + stateInThis
-                            //                        .getDisplayName());
                             String statePrecondition = "state="
                                     + stateInThis.getDisplayName();
                             _generatePremiseAndResultEachTransition(
@@ -1790,6 +2279,217 @@ public class SMVUtility {
             }
 
         }
+
+    }
+
+    /** This function is used to deal with general case and generate the 
+     *  Kripke structure acceptable by NuSMV from system model in Ptolemy II.
+     *  Here modular approach is applied to eliminate complexity of the 
+     *  conversion process. 
+     * 
+     */
+    private static ArrayList<StringBuffer> _generateSMVFormatModalModelWithRefinement(
+            ModalModel modalmodel, String span, String upperStateName)
+            throws IllegalActionException, NameDuplicationException {
+        // The sketch of the algorithm is roughly as follows:
+        // (Step 0) All signals has been detected prior to execute this function.
+        //
+        // First scan from top, for each FSMActor generate the modular description. 
+        // If an actor is a ModalModel, we try to scan through each state. In a 
+        // ModalModel, the transition may consist of two different types: 
+        // (1)reset = true: This means that after this transition, the status 
+        //                  of the source state would be reset. Two view exist: 
+        //                  [i] Therefore in a global view, the destination and 
+        //                      the source are exclusive.
+        //                  [ii]The FSM goes back to initial state. Thus we view 
+        //                      the whole ModalModel as the composition of state
+        //                      system where at any instant, there is one state
+        //                      existing in each refinement.
+        //               
+        // (2)reset = false: This means that after this transition, the status 
+        //                   of the source state would not be reset. Therefore 
+        //                   in a global view, the destination and the source 
+        //                   exist simultaneously (correspond to [ii]). For a 
+        //                   ModalModel having all its transitions to be this 
+        //                   type, it means that each state are executed  
+        //                   asynchronously based on the indication of  
+        //                   the transition.
+        //  
+        // An arbitrary combination of these two kinds of transition
+        // leads to extremely complicated behavior of the system. In fact
+        // the semantic should be contradictory when a state has two outgoing
+        // transition with two different type. Thus in our verification 
+        // context, we do not allow a single state to have two different kind
+        // of transitions.
+        // 
+        // Also for ModalModels, it may have two kinds of state refinements:
+        // (a)StateMachineRefinement: This means that the inner refinement is 
+        //                            a state machine. We may use existing 
+        //                            techniques to deal with it.
+        // (b)GeneralRefinement:  This means that the inner refinement is another
+        //                        system (it should also be SR, otherwise is beyond)
+        //                        our scope for manipulation. 
+        // (c)No refinement
+        // 
+        // Now we list out all possible combinations: 
+        // (1a): This can be done easily by a whole rewriting of the system into
+        //       a bigger FSM consisting all substates and possible connections.
+        // (1b): This case is extremely complicated: thus we do not allow end user
+        //       to operate in this way.
+        // (1ab): Same as (1b)
+        // (1*c): apply similar concept as (1a,1b,1ab)
+        // (2a*): This is contradictory; it is impossible to have a bigger FSM having
+        //       two states existing simultaneously.
+        // (2b): In this case we build up different submodules for each refinement, 
+        //        and construct the another FSMcontroller to send signals accepted
+        //        by ModalModel to it.
+        //
+        // FIXME: We only implement cases where transition reset is false; 
+        //        we are currently implementing the case for (2b) and (2a[ii])
+        //        We may extend the functionality later on.
+        //
+        // When writing the description of a module, one challenging problem is to
+        // understand the location of the signal. For a certain signal required 
+        // in the transition in the subsystem S'' in S, it may be passed from 
+        // another system S'. However, because the subsystem S'' is an instance of 
+        // the system S, S'' can not access the signal of S'. Instead, we need to
+        // pass the signal from S' to S, then assign the signal to S'' during
+        // the instantiation process of S''.
+        //
+        // In the description of _globalSignalDistributionInfo and 
+        // _globalSignalRetrivalInfo, it only tells you the signal needed for this
+        // component, and the signal generated by this component. Thus additional
+        // work must be done.
+
+        ArrayList<StringBuffer> modularDescription = new ArrayList<StringBuffer>();
+        FSMActor controller = modalmodel.getController();
+        controller.setName(modalmodel.getName());
+
+        boolean isStateMachineRefinementInLayer = false;
+        boolean isGeneralRefinementInLayer = false;
+
+        Iterator states = controller.entityList().iterator();
+        while (states.hasNext()) {
+            NamedObj state = (NamedObj) states.next();
+            if (state instanceof State) {
+                String refinementList = ((State) state).refinementName
+                        .getExpression();
+                if ((refinementList == null)
+                        || (refinementList.equalsIgnoreCase(""))) {
+                    continue;
+                } else {
+                    TypedActor[] actors = ((State) state).getRefinement();
+                    if (actors != null) {
+                        if (actors.length == 1) {
+                            TypedActor innerActor = actors[0];
+                            if (innerActor instanceof FSMActor) {
+                                isStateMachineRefinementInLayer = true;
+                            } else if (innerActor instanceof CompositeActor) {
+                                isGeneralRefinementInLayer = true;
+                            }
+                        } else {
+                            throw new IllegalActionException(
+                                    "FmvAutomaton._decideVariableSet() clashes: "
+                                            + "number of actor greater than 1 ");
+                        }
+                    }
+                }
+            }
+        }
+        if ((isStateMachineRefinementInLayer == false)
+                && (isGeneralRefinementInLayer == false)) {
+            // This means that there is no refinement in this ModalModel
+            // We simply take out the controller to perform the generation
+            // process. 
+            modularDescription.add(translateSingleFSMActor(controller, span,
+                    false, "", upperStateName));
+
+        } else {
+            // This means that it uses general refinement.
+            Iterator newStates = controller.entityList().iterator();
+            while (newStates.hasNext()) {
+                NamedObj state = (NamedObj) newStates.next();
+                if (state instanceof State) {
+                    String refinementList = ((State) state).refinementName
+                            .getExpression();
+                    if ((refinementList == null)
+                            || (refinementList.equalsIgnoreCase(""))) {
+
+                    } else {
+                        TypedActor[] actors = ((State) state).getRefinement();
+                        if (actors != null) {
+                            if (actors.length == 1) {
+                                // It would only have the case where actor.length == 1. 
+                                // If we encounter cases > 1, report error for further 
+                                // bug fix. 
+                                TypedActor innerActor = actors[0];
+                                if (innerActor instanceof FSMActor) {
+                                    // Here we also need to feed in 
+                                    // (1) name of the controller
+                                    // (2) name of the state
+
+                                    modularDescription
+                                            .add(translateSingleFSMActor(
+                                                    (FSMActor) innerActor,
+                                                    span, false, controller
+                                                            .getName(), state
+                                                            .getName()));
+                                } else if (innerActor instanceof CompositeActor) {
+                                    // First see if its director is SR.
+                                    // If not, then it is beyond our current
+                                    // processing scope.
+                                    Director director = ((CompositeActor) innerActor)
+                                            .getDirector();
+                                    if (!(director instanceof SRDirector)) {
+                                        // This is not what we can process.
+                                        throw new IllegalActionException(
+                                                "SMVUtility._rewriteModalModelWithGeneralRefinementToFSMActor(): "
+                                                        + "Inner director not SR.");
+                                    } else {
+                                        // This is OK for our analysis
+                                        // Generate system description for these two.
+                                        modularDescription
+                                                .add(generateSubSystemSMVDescription(
+                                                        (CompositeActor) innerActor,
+                                                        span, state.getName()));
+
+                                    }
+                                } else {
+                                    // We are not able to deal with it.
+                                }
+
+                            } else {
+                                // Theoretically this should not happen.
+                                // Once this happens, report an error to
+                                // notify the author the situation.
+                                throw new IllegalActionException(
+                                        "SMVUtility._rewriteModalModelWithGeneralRefinementToFSMActor(): "
+                                                + "Refinement has two or more inner actors.");
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Last, generate the Finite State Controller to mediate 
+            // the system. We can retrieve the controller directly from
+            // the ModalModel, but the conversion is different.
+            //
+            // Now we need to set up each state in controller as a variable. 
+            // As we switch from state to state, the state variable would be 
+            // set to zero or one. Each subsystem derived from the state
+            // refinement would need to attach the variable whether the state
+            // variable is true or not in its transition.
+
+            StringBuffer controllerDescription = translateSingleFSMActor(
+                    controller, span, true, controller.getName(), "");
+            if (controllerDescription != null) {
+                modularDescription.add(controllerDescription);
+            }
+
+        }
+
+        return modularDescription;
 
     }
 
@@ -3082,601 +3782,526 @@ public class SMVUtility {
      * edges (equalities/ inequalities) and retrieve all integer values in the
      * system. Currently the span is not taken into consideration.
      * 
-     * @param variableSet
-     *        Set of variables that expect to find initial values.
-     * 
+     * @param actor The actor under analysis
+     * @param variableSet Set of variables that expect to find initial values.
+     * @return A HashMap indicating the pair (variable name, initial value).
      */
     private static HashMap<String, String> _retrieveVariableInitialValue(
             FSMActor actor, HashSet<String> variableSet) {
-        // FIXME: 
-        //HashMap<String, String> returnMap = new HashMap<String, String>();
-        //Iterator<String> it = variableSet.iterator();
-        //while (it.hasNext()) {
-        //    String attribute = it.next();
-        //    String property = this.getAttribute(attribute).description();
-        //    System.out.print(property);
-        //    returnMap.put(attribute, property);
-        //}
-        //return returnMap;
+
+        // One problem regarding the initial value retrieval from parameters
+        // is that when retrieving parameters, the return value would consist
+        // of some undesirable infomation. We need to use split to do further
+        // analysis.
+
+        // FIXME: One potential problem happens when a user forgets
+        //        to specify the parameter. We need to establish a
+        //        mechanism to report this case (it is not difficult).
+
         HashMap<String, String> returnMap = new HashMap<String, String>();
-        try {
-
-            ComponentPort outPort = actor.getInitialState().outgoingPort;
-            Iterator transitions = outPort.linkedRelationList().iterator();
-            while (transitions.hasNext()) {
-                Transition transition = (Transition) transitions.next();
-                String setActionExpression = transition.setActions
-                        .getExpression();
-                if ((setActionExpression != null)
-                        && !setActionExpression.trim().equals("")) {
-                    // Retrieve possible value of the variable
-                    String[] splitExpression = setActionExpression.split(";");
-                    for (int i = 0; i < splitExpression.length; i++) {
-                        String[] characters = splitExpression[i].split("=");
-                        String lValue = characters[0].trim();
-                        String rValue = "";
-                        int numberRetrival = 0;
-                        boolean rvalueSingleNumber = true;
-                        try {
-                            rValue = characters[1].trim();
-                            numberRetrival = Integer.parseInt(rValue);
-                        } catch (Exception ex) {
-                            rvalueSingleNumber = false;
-                        }
-                        if (rvalueSingleNumber == true) {
-                            // see if the lValue is in variableSet
-                            if (variableSet.contains(lValue)) {
-                                returnMap.put(lValue, rValue);
-                            }
-                        }
-                    }
-                }
-
+        Iterator<String> it = variableSet.iterator();
+        while (it.hasNext()) {
+            String attribute = it.next();
+            String property = null;
+            boolean initialValueExist = true;
+            String[] propertyList = null;
+            try {
+                propertyList = actor.getAttribute(attribute).description()
+                        .split(" ");
+            } catch (Exception ex) {
+                initialValueExist = false;
             }
-        } catch (Exception ex) {
+            if (initialValueExist == true) {
+                property = propertyList[propertyList.length - 1];
+            } else {
+                property = "";
+            }
 
+            // Retrieve the value of the variable. Property contains 
+            // a huge trunk of string content, and only the last variable is useful.
+
+            returnMap.put(attribute, property);
         }
         return returnMap;
+
+        // DEPRECATED: Originally we try to scan the actor and retrieve the
+        //             value from the outgoing edges of the initial state.
+        //             This is unnecessary because initial values can be 
+        //             retrieved using parameters.
+        //
+        //HashMap<String, String> returnMap = new HashMap<String, String>();
+        //try {
+        //
+        //    ComponentPort outPort = actor.getInitialState().outgoingPort;
+        //    Iterator transitions = outPort.linkedRelationList().iterator();
+        //    while (transitions.hasNext()) {
+        //        Transition transition = (Transition) transitions.next();
+        //        String setActionExpression = transition.setActions
+        //                .getExpression();
+        //        if ((setActionExpression != null)
+        //                && !setActionExpression.trim().equals("")) {
+        //            // Retrieve possible value of the variable
+        //            String[] splitExpression = setActionExpression.split(";");
+        //            for (int i = 0; i < splitExpression.length; i++) {
+        //                String[] characters = splitExpression[i].split("=");
+        //                String lValue = characters[0].trim();
+        //                String rValue = "";
+        //                int numberRetrival = 0;
+        //                boolean rvalueSingleNumber = true;
+        //                try {
+        //                    rValue = characters[1].trim();
+        //                    numberRetrival = Integer.parseInt(rValue);
+        //                } catch (Exception ex) {
+        //                    rvalueSingleNumber = false;
+        //                }
+        //                if (rvalueSingleNumber == true) {
+        //                    // see if the lValue is in variableSet
+        //                    if (variableSet.contains(lValue)) {
+        //                        returnMap.put(lValue, rValue);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //
+        //    }
+        //} catch (Exception ex) {
+        //
+        //}
+        //return returnMap;
     }
 
-    /**
-     *  This is an experimental function which tries to analyze a ModalModel
-     *  and flatten it into a single FSMActor. The purpose of implementation is 
-     *  to understand the underlying structure of the ModalModel and Refinement,
-     *  so that in the future we may have better implementation. Also it would 
-     *  be suitable for the exhibition of BEAR 2008. 
-     *  
-     *  In our current implementation we only allow one additional layer for 
-     *  the refinement; an arbitrary layer of refinement would lead to state 
-     *  explosion of the system. Also the additional layer must be a finite 
-     *  state refinement so that the conversion is possible. But it is easy to
-     *  expand this functionality into multiple layer.
-     *  
-     *  @param model Whole System under analysis.
-     *  @return Equivalent FSMActor for later analysis.
+    /** This function is trying to generate the definition for modules 
+     *  contained in a controller. It need to check whether a signal is
+     *  visible by the controller. If not, then this signal should be
+     *  passed from outside, and the required signal set (extended by
+     *  guard signals) for the controller should add up this signal.
+     *  If a signal is visible by the controller, then we know that 
+     *  this signal is only passed between modules of the controller.
+     *  We can list out the location of the signal.
+     * 
+     * @param controller The controller which contains those modules
+     * @return An ArrayList containing all submodule definitions
+     * @throws IllegalActionException Undefined behavior happens.
      */
-    private static FSMActor _rewriteModalModelToFSMActor(ModalModel modelmodel)
-            throws IllegalActionException {
+    private static ArrayList<StringBuffer> _retrieveSubSystemModuleNameParameterInfo(
+            FSMActor controller) throws IllegalActionException {
 
-        // The algorithm is roughly constructed as follows:
-        //  
-        //  Step 1: For each state, check if there is refinement. 
-        //          If there is refinement, then jump into the refinement.
-        //          Copy the content of the refinement into the new FSMActor.
-        //          
-        //  Step 2: Scan all transition from the original actor; if there is a 
-        //          transition from state A to state B with condition C, then
-        //          for every refinement state in A, there is a transition
-        //          to the initial refinement state of B with transition C.   
-        //
-        // Note that we try to generate a similar FSMActor instead of modifying
-        // existing one; thus we offer utility functions which performs deep
-        // copy of states, transitions, and FSMActors.
+        // One important modification is that we need to see if the signal is 
+        // exchanged between subsystems of a certain controller.
+        // Because a subsystem can not see the signal outside the system,
+        // thus if a subsystem really uses a signal from outside, we 
+        // need to add up the signal name (without the position) as an invoker
+        // for example subModule(Sec_isPresent)
+        // 
 
-        FSMActor model = modelmodel.getController();
-        FSMActor returnFSMActor = new FSMActor(model.workspace());
-        try {
-            returnFSMActor.setName(modelmodel.getName());
-            Iterator states = model.entityList().iterator();
-            while (states.hasNext()) {
-                NamedObj state = (NamedObj) states.next();
-                if (state instanceof State) {
-                    String refinementList = ((State) state).refinementName
-                            .getExpression();
-                    if (refinementList == null) {
-                        // Copy the state into the returnFSMActor.
-                        // This is done in a reverse way, that is,
-                        // set the container of the state instead of 
-                        // adding component of a FSMActor.
-                        // Interesting :)
-                        State newState = (State) state.clone();
-                        newState.setName(state.getName());
-                        (newState).setContainer(returnFSMActor);
-                        if ((model.getInitialState() == state)) {
-                            newState.isInitialState.setToken("true");
-                        }
-                        newState.moveToFirst();
-
-                    } else if (refinementList.equalsIgnoreCase("")) {
-                        // Copy the state into the returnFSMActor.
-                        // This is done in a reverse way, that is,
-                        // set the container of the state instead of 
-                        // adding component of a FSMActor.
-                        // Interesting :)
-                        State newState = (State) state.clone();
-                        newState.setName(state.getName());
-                        (newState).setContainer(returnFSMActor);
-                        if ((model.getInitialState() == state)) {
-                            newState.isInitialState.setToken("true");
-                        }
-                        newState.moveToFirst();
-                    } else {
-                        // First check of the refinement is state refinement.
-                        // This can be checked by getting the refinement.
-
-                        TypedActor[] actors = ((State) state).getRefinement();
-                        if (actors != null) {
-                            if (actors.length > 1) {
-
-                                System.out
-                                        .println("We might not be able to deal with it");
-                            } else {
-
-                                // Retrieve the actor.
-                                TypedActor innerActor = actors[0];
-                                if (innerActor instanceof FSMActor) {
-
-                                    // This is what we want.
-                                    // Retrieve all states and place into returnFSMActor                                     
-                                    Iterator innerStates = ((FSMActor) innerActor)
-                                            .entityList().iterator();
-                                    while (innerStates.hasNext()) {
-                                        NamedObj innerState = (NamedObj) innerStates
-                                                .next();
-                                        if (innerState instanceof State) {
-                                            // We need to give it a new name based on our criteria.
-                                            // For example state S has refinement, then 
-                                            // a state S' in the refinement should be 
-                                            // renamed as S-S' for the analysis usage.
-
-                                            State newState = (State) innerState
-                                                    .clone();
-
-                                            newState.setName(state.getName()
-                                                    .trim()
-                                                    + "-"
-                                                    + innerState.getName()
-                                                            .trim());
-
-                                            newState
-                                                    .setContainer(returnFSMActor);
-                                            if ((model.getInitialState() == state)
-                                                    && ((FSMActor) innerActor)
-                                                            .getInitialState() == innerState) {
-                                                newState.isInitialState
-                                                        .setToken("true");
-                                            }
-                                            newState.moveToFirst();
-
-                                        }
-                                    }
-
-                                    // We also need to glue transitions into the system.
-
-                                    Iterator innerTransitions = ((FSMActor) innerActor)
-                                            .relationList().iterator();
-                                    while (innerTransitions.hasNext()) {
-                                        Relation innerTransition = (Relation) innerTransitions
-                                                .next();
-
-                                        if (!(innerTransition instanceof Transition)) {
-                                            continue;
-                                        }
-
-                                        State source = ((Transition) innerTransition)
-                                                .sourceState();
-                                        State destination = ((Transition) innerTransition)
-                                                .destinationState();
-
-                                        Transition newTransition = (Transition) innerTransition
-                                                .clone();
-
-                                        newTransition.setName(((State) state)
-                                                .getName()
-                                                + "-"
-                                                + innerTransition.getName());
-                                        // We need to attach states to it.
-                                        // The newly attached states should be in returnFSMActor.
-                                        Iterator returnFSMActorStates = returnFSMActor
-                                                .entityList().iterator();
-                                        State sCorresponding = null;
-                                        State dCorresponding = null;
-                                        while (returnFSMActorStates.hasNext()) {
-                                            NamedObj cState = (NamedObj) returnFSMActorStates
-                                                    .next();
-                                            if (cState instanceof State) {
-
-                                                if (((State) cState)
-                                                        .getName()
-                                                        .equalsIgnoreCase(
-                                                                ((State) state)
-                                                                        .getName()
-                                                                        .trim()
-                                                                        + "-"
-                                                                        + source
-                                                                                .getName()
-                                                                                .trim())) {
-
-                                                    sCorresponding = (State) cState;
-                                                }
-                                            }
-                                        }
-                                        returnFSMActorStates = returnFSMActor
-                                                .entityList().iterator();
-                                        while (returnFSMActorStates.hasNext()) {
-                                            NamedObj cState = (NamedObj) returnFSMActorStates
-                                                    .next();
-                                            if (cState instanceof State) {
-
-                                                if (((State) cState)
-                                                        .getName()
-                                                        .equalsIgnoreCase(
-                                                                ((State) state)
-                                                                        .getName()
-                                                                        .trim()
-                                                                        + "-"
-                                                                        + destination
-                                                                                .getName()
-                                                                                .trim())) {
-                                                    dCorresponding = (State) cState;
-
-                                                }
-                                            }
-                                        }
-
-                                        Port s = sCorresponding.outgoingPort;
-                                        Port d = dCorresponding.incomingPort;
-                                        newTransition.unlinkAll();
-                                        newTransition
-                                                .setContainer(returnFSMActor);
-                                        newTransition.moveToFirst();
-                                        s.link(newTransition);
-                                        d.link(newTransition);
-                                    }
-
-                                } else {
-                                    /* Problematic
-                                     * 
-                                     */
-                                }
-                            }
-                        } else {
-                            /* This should not happen
-                             * 
-                             */
-                        }
-
-                    } // end of null refinement case
-                }
-            }
-
-            // Now we have returnFSMActor having a flatten set of states.
-            // However, the transition is not complete. This is because we
-            // haven't establish the connection of between inner actors.
-            // 
-            // For each state S in the inner actor, if its upper state A has 
-            // a transition from A to another state B, then S must establish 
-            // a transition which connects itself with B; if B has refinements, 
-            // then S must establish a connection which connects to B's 
-            // refinement initial state. 
-            //  
-
-            Iterator Transitions = model.relationList().iterator();
-            while (Transitions.hasNext()) {
-                Relation transition = (Relation) Transitions.next();
-                if (!(transition instanceof Transition)) {
+        ArrayList<StringBuffer> returnList = new ArrayList<StringBuffer>();
+        Iterator states = controller.entityList().iterator();
+        while (states.hasNext()) {
+            NamedObj state = (NamedObj) states.next();
+            if (state instanceof State) {
+                String refinementList = ((State) state).refinementName
+                        .getExpression();
+                if ((refinementList == null)
+                        || (refinementList.equalsIgnoreCase(""))) {
                     continue;
-                }
-                State source = ((Transition) transition).sourceState();
-                State destination = ((Transition) transition)
-                        .destinationState();
-
-                // If the source state has refinement, then every state in the 
-                // refinement must have a state which connects to the destination;
-                // if the destination has refinements, then all of these newly added
-                // transitions must be connected to the refinement initial state.
-                TypedActor[] sActors = ((State) source).getRefinement();
-                TypedActor[] dActors = ((State) destination).getRefinement();
-                if ((sActors == null) && (dActors == null)) {
-
-                    // We only need to find the corresponding node in the 
-                    // system and set up a connecttion for that.
-
-                    Iterator returnFSMActorStates = returnFSMActor.entityList()
-                            .iterator();
-                    State sCorresponding = null;
-                    State dCorresponding = null;
-                    while (returnFSMActorStates.hasNext()) {
-                        NamedObj cState = (NamedObj) returnFSMActorStates
-                                .next();
-                        if (cState instanceof State) {
-                            if (((State) cState).getName().equalsIgnoreCase(
-                                    source.getName().trim())) {
-
-                                sCorresponding = (State) cState;
-                            }
-                        }
-                    }
-                    returnFSMActorStates = returnFSMActor.entityList()
-                            .iterator();
-                    while (returnFSMActorStates.hasNext()) {
-                        NamedObj cState = (NamedObj) returnFSMActorStates
-                                .next();
-                        if (cState instanceof State) {
-                            if (((State) cState).getName().equalsIgnoreCase(
-                                    destination.getName().trim())) {
-                                dCorresponding = (State) cState;
-
-                            }
-                        }
-                    }
-
-                    Port s = sCorresponding.outgoingPort;
-                    Port d = dCorresponding.incomingPort;
-                    Transition newTransition = (Transition) transition.clone();
-                    newTransition.unlinkAll();
-                    newTransition.setContainer(returnFSMActor);
-                    newTransition.moveToFirst();
-                    s.link(newTransition);
-                    d.link(newTransition);
-                    newTransition.setName(source.getName().trim() + "-"
-                            + destination.getName().trim());
-
-                } else if ((sActors == null) && (dActors != null)) {
-                    // We need to retrieve the source and connect with
-                    // the inner initial state of destination. 
-                    //
-                    // First retrieve the inner model initial state of 
-                    // destination.
-                    TypedActor dInnerActor = dActors[0];
-                    if (!(dInnerActor instanceof FSMActor)) {
-                        // This is currently beyond our scope.
-                    }
-
-                    Iterator returnFSMActorStates = returnFSMActor.entityList()
-                            .iterator();
-                    State sCorresponding = null;
-                    State dCorresponding = null;
-                    while (returnFSMActorStates.hasNext()) {
-                        NamedObj cState = (NamedObj) returnFSMActorStates
-                                .next();
-                        if (cState instanceof State) {
-                            if (((State) cState).getName().equalsIgnoreCase(
-                                    source.getName().trim())) {
-
-                                sCorresponding = (State) cState;
-                            }
-                        }
-                    }
-                    returnFSMActorStates = returnFSMActor.entityList()
-                            .iterator();
-                    while (returnFSMActorStates.hasNext()) {
-                        NamedObj cState = (NamedObj) returnFSMActorStates
-                                .next();
-                        if (cState instanceof State) {
-                            if (((State) cState).getName().equalsIgnoreCase(
-                                    destination.getName().trim()
-                                            + "-"
-                                            + ((FSMActor) dInnerActor)
-                                                    .getInitialState()
-                                                    .getName().trim())) {
-                                dCorresponding = (State) cState;
-                            }
-                        }
-                    }
-
-                    Port s = sCorresponding.outgoingPort;
-                    Port d = dCorresponding.incomingPort;
-                    Transition newTransition = (Transition) transition.clone();
-                    newTransition.unlinkAll();
-                    newTransition.setContainer(returnFSMActor);
-                    newTransition.moveToFirst();
-                    s.link(newTransition);
-                    d.link(newTransition);
-                    newTransition.setName(source.getName().trim()
-                            + "-"
-                            + destination.getName().trim()
-                            + "-"
-                            + ((FSMActor) dInnerActor).getInitialState()
-                                    .getName().trim());
-
-                } else if ((sActors != null) && (dActors == null)) {
-                    // We need to connect every inner state in the source and
-                    // with destination state. We may copy existing transitions
-                    // from the upper layer and modify it.
-
-                    TypedActor innerActor = sActors[0];
-                    if (innerActor instanceof FSMActor) {
-
-                        Iterator innerStates = ((FSMActor) innerActor)
-                                .entityList().iterator();
-                        while (innerStates.hasNext()) {
-                            NamedObj innerState = (NamedObj) innerStates.next();
-                            if (innerState instanceof State) {
-
-                                Iterator returnFSMActorStates = returnFSMActor
-                                        .entityList().iterator();
-                                State sCorresponding = null;
-                                State dCorresponding = null;
-                                while (returnFSMActorStates.hasNext()) {
-                                    NamedObj cState = (NamedObj) returnFSMActorStates
-                                            .next();
-                                    if (cState instanceof State) {
-                                        if (((State) cState)
-                                                .getName()
-                                                .equalsIgnoreCase(
-                                                        source.getName().trim()
-                                                                + "-"
-                                                                + innerState
-                                                                        .getName()
-                                                                        .trim())) {
-
-                                            sCorresponding = (State) cState;
-                                        }
-                                    }
-                                }
-                                returnFSMActorStates = returnFSMActor
-                                        .entityList().iterator();
-                                while (returnFSMActorStates.hasNext()) {
-                                    NamedObj cState = (NamedObj) returnFSMActorStates
-                                            .next();
-                                    if (cState instanceof State) {
-                                        if (((State) cState).getName()
-                                                .equalsIgnoreCase(
-                                                        destination.getName()
-                                                                .trim())) {
-                                            dCorresponding = (State) cState;
-                                        }
-                                    }
-                                }
-
-                                Port s = sCorresponding.outgoingPort;
-                                Port d = dCorresponding.incomingPort;
-                                Transition newTransition = (Transition) transition
-                                        .clone();
-                                newTransition.unlinkAll();
-                                newTransition.setContainer(returnFSMActor);
-                                newTransition.moveToFirst();
-                                s.link(newTransition);
-                                d.link(newTransition);
-                                newTransition.setName(source.getName().trim()
-                                        + "-" + innerState.getName().trim()
-                                        + "-" + destination.getName().trim());
-                            }
-                        }
-                    }
-
                 } else {
-                    // Do the combination of the previous two cases.
-                    // First retrieve the inner initial state 
+                    TypedActor[] actors = ((State) state).getRefinement();
+                    if (actors != null) {
+                        if (actors.length == 1) {
+                            // It would only have the case where actor.length == 1. 
+                            // If we encounter cases > 1, report error for further 
+                            // bug fix. 
+                            TypedActor innerActor = actors[0];
+                            if (innerActor instanceof FSMActor) {
+                                StringBuffer moduleDescription = new StringBuffer(
+                                        "");
+                                moduleDescription.append("\t\t"
+                                        + innerActor.getName() + ": "
+                                        + innerActor.getName() + "(");
+                                // Check if the variable has variable outside (invisible 
+                                // in the whole system); where is the location. 
+                                // We use two variables to indicate the possibilities:
+                                // (1) containInTheSystem: Signal visible in the system
+                                // (2) containInTheModule: Signal visible by module
+                                ArrayList<String> signalInfo = _globalSignalDistributionInfo
+                                        .get(innerActor.getName());
+                                if (signalInfo != null) {
+                                    for (int i = 0; i < signalInfo.size(); i++) {
+                                        String signalName = signalInfo.get(i);
+                                        boolean containInTheSystem = false;
+                                        boolean containInTheModule = false;
+                                        String location = "";
+                                        Iterator<String> it = _globalSignalRetrivalInfo
+                                                .keySet().iterator();
+                                        while (it.hasNext()) {
+                                            String place = it.next();
+                                            if (_globalSignalRetrivalInfo.get(
+                                                    place).contains(signalName)) {
+                                                location = place;
+                                                containInTheSystem = true;
+                                                break;
+                                            }
+                                        }
 
-                    TypedActor sInnerActor = sActors[0];
-                    TypedActor dInnerActor = dActors[0];
-                    String newDestName = "";
-                    if (dInnerActor instanceof FSMActor) {
-                        newDestName = destination.getName().trim()
-                                + "-"
-                                + ((FSMActor) dInnerActor).getInitialState()
-                                        .getName().trim();
-                    }
-                    if (sInnerActor instanceof FSMActor) {
-                        Iterator innerStates = ((FSMActor) sInnerActor)
-                                .entityList().iterator();
-                        while (innerStates.hasNext()) {
-                            NamedObj innerState = (NamedObj) innerStates.next();
-                            if (innerState instanceof State) {
-                                // Retrieve the name, generate a new transition
+                                        // Now we need to see whether this signal 
+                                        // is within the scope of the controller.
+                                        // If the signal is not in the module,
+                                        // we set the variable containInTheModule=false
+                                        if (_globalSignalNestedRetrivalInfo
+                                                .get(controller.getName())
+                                                .contains(signalName)) {
+                                            containInTheModule = true;
+                                        }
 
-                                Transition newTransition = (Transition) transition
-                                        .clone(model.workspace());
-                                newTransition.unlinkAll();
-                                // Find the corresponding State in the returnFSMActor
-                                Iterator returnFSMActorStates = returnFSMActor
-                                        .entityList().iterator();
-                                State sCorresponding = null;
-                                State dCorresponding = null;
-                                while (returnFSMActorStates.hasNext()) {
-                                    NamedObj cState = (NamedObj) returnFSMActorStates
-                                            .next();
-                                    if (cState instanceof State) {
-                                        if (((State) cState)
-                                                .getName()
-                                                .equalsIgnoreCase(
-                                                        source.getName().trim()
-                                                                + "-"
-                                                                + innerState
-                                                                        .getName()
-                                                                        .trim())) {
+                                        if (containInTheSystem == true) {
+                                            if (containInTheModule == true) {
+                                                if (i == signalInfo.size() - 1) {
+                                                    moduleDescription
+                                                            .append(location
+                                                                    .trim()
+                                                                    + "."
+                                                                    + signalName
+                                                                    + " ");
+                                                } else {
+                                                    moduleDescription
+                                                            .append(location
+                                                                    .trim()
+                                                                    + "."
+                                                                    + signalName
+                                                                    + ", ");
+                                                }
+                                            } else {
+                                                if (_globalSignalDistributionInfo
+                                                        .get(
+                                                                controller
+                                                                        .getName())
+                                                        .contains(signalName) == false) {
+                                                    _globalSignalDistributionInfo
+                                                            .get(
+                                                                    controller
+                                                                            .getName())
+                                                            .add(signalName);
+                                                }
 
-                                            sCorresponding = (State) cState;
+                                                if (i == signalInfo.size() - 1) {
+                                                    moduleDescription
+                                                            .append(signalName
+                                                                    + " ");
+                                                } else {
+                                                    moduleDescription
+                                                            .append(signalName
+                                                                    + ", ");
+                                                }
+                                            }
+
+                                        } else {
+                                            // use 1 to represent the signal
+                                            if (i == signalInfo.size() - 1) {
+                                                moduleDescription.append(" 1");
+                                            } else {
+                                                moduleDescription.append(" 1,");
+                                            }
                                         }
                                     }
                                 }
-                                returnFSMActorStates = returnFSMActor
-                                        .entityList().iterator();
-                                while (returnFSMActorStates.hasNext()) {
-                                    NamedObj cState = (NamedObj) returnFSMActorStates
-                                            .next();
-                                    if (cState instanceof State) {
-                                        if (((State) cState).getName()
-                                                .equalsIgnoreCase(newDestName)) {
-                                            dCorresponding = (State) cState;
+                                // Add up the state as parameter because
+                                // these subsystems are controlled by the state
+                                // of the controller.
 
-                                        }
-                                    }
+                                if (signalInfo.size() > 0) {
+                                    moduleDescription.append(", state );\n");
+                                } else {
+                                    moduleDescription.append(" state );\n");
                                 }
 
-                                Port s = sCorresponding.outgoingPort;
-                                Port d = dCorresponding.incomingPort;
-                                newTransition.unlinkAll();
-                                newTransition.setContainer(returnFSMActor);
-                                newTransition.moveToFirst();
-                                s.link(newTransition);
-                                d.link(newTransition);
-                                newTransition.setName(source.getName().trim()
-                                        + "-" + innerState.getName().trim()
-                                        + "-" + newDestName);
+                                returnList.add(moduleDescription);
 
+                            } else if (innerActor instanceof CompositeActor) {
+                                // First see if its director is SR.
+                                // If not, then it is beyond our current
+                                // processing scope.
+                                Director director = ((CompositeActor) innerActor)
+                                        .getDirector();
+                                if (!(director instanceof SRDirector)) {
+                                    // This is not what we can process.
+                                    throw new IllegalActionException(
+                                            "SMVUtility._retrieveSubSystemModuleNameParameterInfo(): "
+                                                    + "Inner director not SR.");
+                                } else {
+                                    // The general case, we need to list out 
+                                    // all modules in the lower level 
+                                    // (one layer lower only)
+
+                                    for (Iterator innerInnerActors = (((CompositeActor) innerActor)
+                                            .entityList()).iterator(); innerInnerActors
+                                            .hasNext();) {
+                                        StringBuffer moduleDescription = new StringBuffer(
+                                                "");
+                                        Entity innerInnerEntity = (Entity) innerInnerActors
+                                                .next();
+                                        // Entity innerModel = innerEntity;
+                                        if (innerInnerEntity instanceof FSMActor) {
+                                            moduleDescription.append("\t\t"
+                                                    + innerInnerEntity
+                                                            .getName()
+                                                    + ": "
+                                                    + innerInnerEntity
+                                                            .getName() + "(");
+                                            // Check if the variable has variable outside; where is the location. 
+                                            ArrayList<String> signalInfo = _globalSignalDistributionInfo
+                                                    .get(innerInnerEntity
+                                                            .getName());
+
+                                            if (signalInfo != null) {
+                                                for (int i = 0; i < signalInfo
+                                                        .size(); i++) {
+                                                    String signalName = signalInfo
+                                                            .get(i);
+                                                    boolean containInTheSystem = false;
+                                                    boolean containInTheModule = false;
+                                                    String location = "";
+                                                    Iterator<String> it = _globalSignalRetrivalInfo
+                                                            .keySet()
+                                                            .iterator();
+                                                    while (it.hasNext()) {
+                                                        String place = it
+                                                                .next();
+                                                        if (_globalSignalRetrivalInfo
+                                                                .get(place)
+                                                                .contains(
+                                                                        signalName)) {
+                                                            location = place;
+                                                            containInTheSystem = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (_globalSignalNestedRetrivalInfo
+                                                            .get(
+                                                                    controller
+                                                                            .getName())
+                                                            .contains(
+                                                                    signalName) == true) {
+                                                        containInTheModule = true;
+                                                    }
+
+                                                    if (containInTheSystem == true) {
+                                                        if (containInTheModule == true) {
+                                                            if (i == signalInfo
+                                                                    .size() - 1) {
+                                                                moduleDescription
+                                                                        .append(location
+                                                                                .trim()
+                                                                                + "."
+                                                                                + signalName
+                                                                                + ", ");
+                                                            } else {
+                                                                moduleDescription
+                                                                        .append(location
+                                                                                .trim()
+                                                                                + "."
+                                                                                + signalName
+                                                                                + ", ");
+                                                            }
+                                                        } else {
+                                                            if (_globalSignalDistributionInfo
+                                                                    .get(
+                                                                            controller
+                                                                                    .getName())
+                                                                    .contains(
+                                                                            signalName) == false) {
+                                                                _globalSignalDistributionInfo
+                                                                        .get(
+                                                                                controller
+                                                                                        .getName())
+                                                                        .add(
+                                                                                signalName);
+                                                            }
+                                                            if (i == signalInfo
+                                                                    .size() - 1) {
+                                                                moduleDescription
+                                                                        .append(signalName
+                                                                                + ", ");
+                                                            } else {
+                                                                moduleDescription
+                                                                        .append(signalName
+                                                                                + ", ");
+                                                            }
+                                                        }
+
+                                                    } else {
+                                                        // use 1 to represent the signal
+                                                        if (i == signalInfo
+                                                                .size() - 1) {
+                                                            moduleDescription
+                                                                    .append(" 1, state");
+                                                        } else {
+                                                            moduleDescription
+                                                                    .append(" 1,");
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if (signalInfo.size() > 0) {
+                                                moduleDescription
+                                                        .append(" , state );\n");
+                                            } else {
+                                                moduleDescription
+                                                        .append(" state );\n");
+                                            }
+
+                                            returnList.add(moduleDescription);
+
+                                        } else if (innerInnerEntity instanceof ModalModel) {
+                                            moduleDescription.append("\t\t"
+                                                    + innerInnerEntity
+                                                            .getName()
+                                                    + ": "
+                                                    + innerInnerEntity
+                                                            .getName() + "(");
+                                            // Check if the variable has variable outside; 
+                                            // where is the location. 
+                                            ArrayList<String> signalInfo = _globalSignalDistributionInfo
+                                                    .get(innerInnerEntity
+                                                            .getName());
+
+                                            if (signalInfo != null) {
+                                                for (int i = 0; i < signalInfo
+                                                        .size(); i++) {
+                                                    String signalName = signalInfo
+                                                            .get(i);
+                                                    boolean containInTheSystem = false;
+                                                    boolean containInTheModule = false;
+                                                    String location = "";
+                                                    Iterator<String> it = _globalSignalRetrivalInfo
+                                                            .keySet()
+                                                            .iterator();
+                                                    while (it.hasNext()) {
+                                                        String place = it
+                                                                .next();
+                                                        if (_globalSignalRetrivalInfo
+                                                                .get(place)
+                                                                .contains(
+                                                                        signalName)) {
+                                                            location = place;
+                                                            containInTheSystem = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (_globalSignalNestedRetrivalInfo
+                                                            .get(
+                                                                    controller
+                                                                            .getName())
+                                                            .contains(
+                                                                    signalName) == true) {
+                                                        containInTheModule = true;
+                                                    }
+
+                                                    if (containInTheSystem == true) {
+                                                        if (containInTheModule == true) {
+                                                            if (i == signalInfo
+                                                                    .size() - 1) {
+                                                                moduleDescription
+                                                                        .append(location
+                                                                                .trim()
+                                                                                + "."
+                                                                                + signalName
+                                                                                + " ");
+                                                            } else {
+                                                                moduleDescription
+                                                                        .append(location
+                                                                                .trim()
+                                                                                + "."
+                                                                                + signalName
+                                                                                + ", ");
+                                                            }
+                                                        } else {
+                                                            if (_globalSignalDistributionInfo
+                                                                    .get(
+                                                                            controller
+                                                                                    .getName())
+                                                                    .contains(
+                                                                            signalName) == false) {
+                                                                _globalSignalDistributionInfo
+                                                                        .get(
+                                                                                controller
+                                                                                        .getName())
+                                                                        .add(
+                                                                                signalName);
+                                                            }
+                                                            if (i == signalInfo
+                                                                    .size() - 1) {
+                                                                moduleDescription
+                                                                        .append(signalName
+                                                                                + " ");
+                                                            } else {
+                                                                moduleDescription
+                                                                        .append(signalName
+                                                                                + ", ");
+                                                            }
+                                                        }
+
+                                                    } else {
+                                                        // use 1 to represent the signal
+                                                        if (i == signalInfo
+                                                                .size() - 1) {
+                                                            moduleDescription
+                                                                    .append(" 1");
+                                                        } else {
+                                                            moduleDescription
+                                                                    .append(" 1,");
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if (signalInfo.size() > 0) {
+                                                moduleDescription
+                                                        .append(", state );\n");
+                                            } else {
+                                                moduleDescription
+                                                        .append(" state );\n");
+                                            }
+                                            returnList.add(moduleDescription);
+                                        }
+                                    }
+
+                                }
+                            } else {
+                                // We are not able to deal with it.
+                                // Simply skip without doing anything
                             }
+
+                        } else {
+                            // Theoretically this should not happen.
+                            // Once this happens, report an error to
+                            // notify the author the situation.
+                            throw new IllegalActionException(
+                                    "SMVUtility._rewriteModalModelWithGeneralRefinementToFSMActor(): "
+                                            + "Refinement has two or more inner actors.");
                         }
                     }
-
                 }
-
             }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
 
-        // Final print out the returnFSMActor
-        /*
-                try {
-                    Iterator states = returnFSMActor.entityList().iterator();
-                    while (states.hasNext()) {
-                        NamedObj state = (NamedObj) states.next();
-                        if (state instanceof State) {
-                            System.out.println("State name: " + state.getName());
-                        }
-                    }
-
-                    Iterator Transitions = returnFSMActor.relationList().iterator();
-
-                    while (Transitions.hasNext()) {
-                        Transition transition = (Transition) Transitions.next();
-                        if (transition instanceof Transition) {
-                            System.out.println("Transition name: "
-                                    + transition.getName()
-                                    + "; From "
-                                    + ((Transition) transition).sourceState().getName()
-                                    + " to "
-                                    + ((Transition) transition).destinationState()
-                                            .getName());
-                        }
-                    }
-                } catch (Exception ex) {
-
-                }
-         */
-        //System.out.println("The initial state of the FSMActor "
-        //        + returnFSMActor.getName() + " would be:"
-        //        + returnFSMActor.getInitialState().getName());
-        return returnFSMActor;
+        return returnList;
     }
 
     // Used to store information regarding the position of the variable.
+    // (1) HashMap<String, ArrayList<String>> _globalSignalDistributionInfo:
+    //     It tells you for a certain component, the set of signals emitted 
+    //     from that component.
+    //
+    // (2)HashMap<String, HashSet<String>> _globalSignalRetrivalInfo:
+    //    It tells you for a certain component, the set of signals 
+    //    used in its guard expression.
+    //
+    // (3)HashMap<String, HashSet<String>> _globalSignalNestedRetrivalInfo:
+    //    It tells you for a certain component, the set of all signals
+    //    that is emitted (including it subsystems/refinements)
+
     private static HashMap<String, ArrayList<String>> _globalSignalDistributionInfo;
     private static HashMap<String, HashSet<String>> _globalSignalRetrivalInfo;
+    private static HashMap<String, HashSet<String>> _globalSignalNestedRetrivalInfo;
 
     private static HashMap<String, VariableInfo> _variableInfo;
     private static HashMap<String, LinkedList<VariableTransitionInfo>> _variableTransitionInfo;
