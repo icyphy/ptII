@@ -13,8 +13,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.python.modules.synchronize;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
