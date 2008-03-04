@@ -47,7 +47,7 @@ PTCONTINUOUS_DIR = continuous
 DOMAINS =	ci $(PTCONTINUOUS_DIR) csp ct curriculum \
 	        dde ddf de fsm erg hdf pn sdf dt \
 	        giotto petrinet rendezvous \
-		$(PTPSDF_DIR) ptinyos \
+		$(PTPSDF_DIR) ptides ptinyos \
 		sr tm $(PTJAVA3D_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
@@ -76,9 +76,11 @@ PTAUXALLJARS = \
 		curriculum/curriculum.jar \
 		dde/dde.jar \
 	        dt/dt.jar \
+		erg/erg.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
 		petrinet/petrinet.jar \
+		ptides/ptides.jar \
 		tm/tm.jar \
 		wireless/wireless.jar
 
@@ -98,7 +100,6 @@ PTCLASSALLJARS = \
 		de/de.jar \
 		ddf/ddf.jar \
 		fsm/fsm.jar \
-		erg/erg.jar \
 		hdf/hdf.jar \
 		pn/pn.jar \
 		rendezvous/rendezvous.jar \
