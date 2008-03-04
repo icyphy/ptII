@@ -69,6 +69,8 @@ OTHER_FILES_TO_BE_JARED = \
 	codegen.xml \
 	customize.xml \
 	defaultFullConfiguration.xml \
+	ergEffigyFactory.xml \
+	ergTableauFactory.xml \
 	experimentalDirectors.xml \
 	extendedEffigyFactories.xml \
 	extendedTableauFactories.xml \
