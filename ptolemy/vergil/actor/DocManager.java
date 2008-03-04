@@ -162,7 +162,7 @@ public class DocManager extends HandlerBase {
                         .get(docAttributes.size() - 1);
                 // Populate fields from the attribute.
                 String descriptionValue = instanceDoc.description.stringValue();
-                if (!descriptionValue.trim().equals("")) {
+                if (descriptionValue != null && !descriptionValue.trim().equals("")) {
                     _isInstanceDoc = true;
                     _description = descriptionValue;
                 }
@@ -174,7 +174,7 @@ public class DocManager extends HandlerBase {
                  }
                  */
                 String authorValue = instanceDoc.author.getExpression();
-                if (!authorValue.trim().equals("")) {
+                if (authorValue != null && !authorValue.trim().equals("")) {
                     _isInstanceDoc = true;
                     _author = authorValue;
                 }
@@ -186,12 +186,12 @@ public class DocManager extends HandlerBase {
                  }
                  */
                 String sinceValue = instanceDoc.since.getExpression();
-                if (!sinceValue.trim().equals("")) {
+                if (sinceValue != null && !sinceValue.trim().equals("")) {
                     _isInstanceDoc = true;
                     _since = sinceValue;
                 }
                 String versionValue = instanceDoc.version.getExpression();
-                if (!versionValue.trim().equals("")) {
+                if (versionValue != null && !versionValue.trim().equals("")) {
                     _isInstanceDoc = true;
                     _version = versionValue;
                 }

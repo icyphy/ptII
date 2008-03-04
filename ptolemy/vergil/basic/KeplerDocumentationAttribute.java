@@ -139,8 +139,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @param target the namedobj to create the empty attributes for
      */
     public void createEmptyFields(NamedObj target) {
-      try
-      {
+      try {
         ConfigurableAttribute authorAtt = new ConfigurableAttribute(this, "author");
         ConfigurableAttribute versionAtt = new ConfigurableAttribute(this, "version");
         ConfigurableAttribute descriptionAtt = new ConfigurableAttribute(this, "description");
@@ -152,31 +151,22 @@ public class KeplerDocumentationAttribute extends Attribute implements
         this.userLevelDocumentation = "";
         
         Iterator attItt = target.attributeList().iterator();
-        while(attItt.hasNext())
-        {
+        while(attItt.hasNext()) {
           Attribute a = (Attribute)attItt.next();
           String aname = a.getName();
-          System.out.println("'" + aname + "'");
-          if(aname.trim().indexOf("_") != 0 && !aname.equals("KeplerDocumentation"))
-          {
-            //ConfigurableAttribute att = new ConfigurableAttribute(this, "prop:" + a.getName());
+          if(!aname.substring(0,1).equals("_") && !aname.equals("KeplerDocumentation")) {
             propertyHash.put(a.getName(), "");
           }
         }
         
-        if(target instanceof Entity)
-        {
+        if(target instanceof Entity) {
           Iterator portItt = ((Entity)target).portList().iterator();
-          while(portItt.hasNext())
-          {
+          while(portItt.hasNext()) {
             Port p = (Port)portItt.next();
-            //ConfigurableAttribute att = new ConfigurableAttribute(this, "port: " + p.getName());
             portHash.put(p.getName(), "");
           }
         }
-      }
-      catch(Exception e)
-      {
+      } catch(Exception e) {
         System.out.println("Could not add KeplerDocumentation internal attributes: " + e.getMessage());
       }
     }
