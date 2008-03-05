@@ -32,7 +32,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
@@ -55,20 +54,15 @@ public class NamedObjToken extends FakedRecordToken {
     }
 
     public boolean equals(Object object) {
-        return this == object
-                || (object instanceof NamedObjToken && ((NamedObjToken) object)._object
-                        .equals(_object));
+        return this == object || (object instanceof NamedObjToken
+                && ((NamedObjToken) object)._object.equals(_object));
     }
 
     public Token get(String label) {
         if (_object instanceof GTEntity) {
-            Criterion criterion = ((GTEntity) _object).get(label);
-            if (criterion != null) {
-                try {
-                    return new CriterionToken(criterion);
-                } catch (IllegalActionException e) {
-                    throw new InternalErrorException(e);
-                }
+            Token token = ((GTEntity) _object).getIngredientToken(label);
+            if (token != null) {
+                return token;
             }
         }
 
