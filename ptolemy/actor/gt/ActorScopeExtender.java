@@ -1,6 +1,6 @@
-/*
+/* A scope extender for CompositeActorMatcher that resolves entities inside.
 
- Copyright (c) 1997-2007 The Regents of the University of California.
+ Copyright (c) 2007-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-/**
+/** A scope extender for CompositeActorMatcher that resolves entities inside.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -51,19 +51,29 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class ActorScopeExtender extends ScopeExtendingAttribute {
 
-    /**
-     * @param container
-     * @param name
-     * @exception NameDuplicationException
-     * @exception IllegalActionException
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct a scope extender.
+     * 
+     *  @param container The CompositeActor or CompositeActorMatcher that
+     *   contains this scope extender.
+     *  @param name The name of the scope extender.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public ActorScopeExtender(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return a list of all entities contained in the container, wrapping each
+     *  entity in a {@link NamedObjVariable}.
+     * 
+     *  @return A list of all entities.
+     */
     public List<?> attributeList() {
         long version = workspace().getVersion();
         if (_attributeList == null || version > _version) {
@@ -88,10 +98,17 @@ public class ActorScopeExtender extends ScopeExtendingAttribute {
                     throw new InternalErrorException(e);
                 }
             }
+            _version = version;
         }
         return Collections.unmodifiableList(_attributeList);
     }
 
+    /** Return an entity in the container with the given name, wrapped in a
+     * {@link NamedObjVariable}.
+     * 
+     *  @param name The name of the entity.
+     *  @return The entity wrapped in a {@link NamedObjVariable}.
+     */
     public Attribute getAttribute(String name) {
         NamedObj scope = getContainer();
         NamedObj child = GTTools.getChild(scope, name, true, true, true, true);
@@ -111,8 +128,15 @@ public class ActorScopeExtender extends ScopeExtendingAttribute {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Cache of the list of entities in the container.
+     */
     private List<Object> _attributeList;
 
+    /** The workspace version the last time when _attributeList was updated.
+     */
     private long _version = -1;
 
 }
