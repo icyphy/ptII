@@ -5084,8 +5084,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                         .setContainer(null);
                             }
 
-                            throw new XmlException("Property is not an "
-                                    + "instance of Attribute. ",
+                            throw new XmlException("Property \""
+                                    + property + "\" is not an "
+                                    + "instance of Attribute.",
                                     _currentExternalEntity(), _getLineNumber(),
                                     _getColumnNumber());
                         }
