@@ -202,11 +202,14 @@ public class Expression extends TypedAtomicActor {
             throw new IllegalActionException(
                     this,
                     throwable,
-                    "There was a problem invoking the Ptolemy II Matlab interface"
-                            + ".\nThe interface has been tested under Windows and Linux,\n"
-                            + "requires that Matlab be installed on the local machine."
-                            + "Refer to $PTII/ptolemy/matlab/makefile for more"
-                            + "information.");
+                    "There was a problem invoking the Ptolemy II Matlab "
+                    + "interface.\nThe interface has been tested under "
+                    + "Windows and Linux.\n"
+                    + "The interface requires that Matlab be installed "
+                    + "on the local machine and that the ptmatlab "
+                    + "shared library available.\n"
+                    + "Refer to $PTII/ptolemy/matlab/makefile for more "
+                    + "information.");
         }
 
         // First set default debugging level, then check for more
