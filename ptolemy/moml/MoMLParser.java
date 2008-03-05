@@ -5021,7 +5021,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // No previously existing attribute with this name,
                     // or the class name of the previous entity doesn't
                     // match.
+                    boolean isNewClassSetToAttribute = false;
                     if (newClass == null) {
+                        isNewClassSetToAttribute = true;
                         newClass = Attribute.class;
                     }
 
@@ -5088,7 +5090,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                     + property.getFullName() + "\" is not an "
                                     + "instance of Attribute, it is a \""
                                     + property.getClass().getName()
-                                    + "\".",
+                                    + "\"."
+                                    + (property instanceof Entity
+                                            ? "The property is an instance "
+                                            + "of the Entity class, "
+                                            + "so if you were using "
+                                            + "the GUI, try \"Instantiate"
+                                            + "Entity\" or \"Instantiate"
+                                            + "Component\"."
+                                            : "")
+                                    + (isNewClassSetToAttribute
+                                            ? " The class \"" + className
+                                            + "\" was not found in the "
+                                            + "classpath."
+                                            : ""),
                                     _currentExternalEntity(), _getLineNumber(),
                                     _getColumnNumber());
                         }
