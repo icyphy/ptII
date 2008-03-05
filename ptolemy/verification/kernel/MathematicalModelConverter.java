@@ -442,44 +442,50 @@ public class MathematicalModelConverter extends Attribute {
                         }
 
                         int returnValue = fileSaveDialog.showOpenDialog(null);
+                        try {
+                            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                                _directory = fileSaveDialog
+                                        .getCurrentDirectory();
 
-                        if (returnValue == JFileChooser.APPROVE_OPTION) {
-                            _directory = fileSaveDialog.getCurrentDirectory();
+                                File smvFile = fileSaveDialog.getSelectedFile()
+                                        .getCanonicalFile();
 
-                            File smvFile = fileSaveDialog.getSelectedFile()
-                                    .getCanonicalFile();
-
-                            if (smvFile.exists()) {
-                                String queryString = "Overwrite "
-                                        + smvFile.getName() + "?";
-                                int selected = JOptionPane.showOptionDialog(
-                                        null, queryString, "Overwrite?",
-                                        JOptionPane.YES_NO_OPTION,
-                                        JOptionPane.QUESTION_MESSAGE, null,
-                                        null, null);
-                                if (selected == 0) {
+                                if (smvFile.exists()) {
+                                    String queryString = "Overwrite "
+                                            + smvFile.getName() + "?";
+                                    int selected = JOptionPane
+                                            .showOptionDialog(
+                                                    null,
+                                                    queryString,
+                                                    "Overwrite?",
+                                                    JOptionPane.YES_NO_OPTION,
+                                                    JOptionPane.QUESTION_MESSAGE,
+                                                    null, null, null);
+                                    if (selected == 0) {
+                                        smvFileWriter = new FileWriter(smvFile);
+                                        smvFileWriter.write(fmvFormat
+                                                .toString());
+                                        _codeFile = smvFile;
+                                    }
+                                } else {
                                     smvFileWriter = new FileWriter(smvFile);
                                     smvFileWriter.write(fmvFormat.toString());
                                     _codeFile = smvFile;
                                 }
-                            } else {
-                                smvFileWriter = new FileWriter(smvFile);
-                                smvFileWriter.write(fmvFormat.toString());
-                                _codeFile = smvFile;
-                            }
 
-                        }
-                        //} catch (Exception ex) {
-                        //MessageHandler
-                        //        .error("Failed to perform the conversion process:\n"
-                        //                + ex.getMessage());
-                        //    throw new IllegalActionException(
-                        //            "Failed to perform the conversion process:\n"
-                        //                    + ex.getMessage());
-                        //}
-                        try {
+                            }
+                            //} catch (Exception ex) {
+                            //MessageHandler
+                            //        .error("Failed to perform the conversion process:\n"
+                            //                + ex.getMessage());
+                            //    throw new IllegalActionException(
+                            //            "Failed to perform the conversion process:\n"
+                            //                    + ex.getMessage());
+                            //}
+
                             if (smvFileWriter != null)
                                 smvFileWriter.close();
+                            
                         } catch (Exception ex) {
                             MessageHandler
                                     .error("Failed to perform the file closing process:\n"
@@ -529,11 +535,17 @@ public class MathematicalModelConverter extends Attribute {
                                 smvFolder = new File(folderName);
                             }
                             // Now create the directory.
-                            smvFolder.mkdir();
-                            System.out.println(smvFolder.getAbsolutePath());
+                            boolean isOpened = smvFolder.mkdir();
+                            if (isOpened == false) {
+                                MessageHandler
+                                        .warning("Failed to invoke NuSMV correctly: \nUnable to open a temp folder.");
+                            }
                         } else {
-                            smvFolder.mkdir();
-                            System.out.println(smvFolder.getAbsolutePath());
+                            boolean isOpened = smvFolder.mkdir();
+                            if (isOpened == false) {
+                                MessageHandler
+                                        .warning("Failed to invoke NuSMV correctly: \nUnable to open a temp folder.");
+                            }
                         }
                         // Now establish the file.
                         File smvFile = new File(folderName + "System.smv");
@@ -571,14 +583,14 @@ public class MathematicalModelConverter extends Attribute {
                                             + ex.getMessage());
 
                         }
-
+                        returnStringBuffer.append(str);
                         // StringBuffer str stores the information of the verification.
-                        Query newQuery = new Query();
-                        newQuery.setTextWidth(80);
-                        newQuery.addTextArea("formula", "Verification Results",
-                                str.toString());
-                        ComponentDialog newDialog = new ComponentDialog(null,
-                                "Terminal", newQuery);
+                        //Query newQuery = new Query();
+                        //newQuery.setTextWidth(80);
+                        //newQuery.addTextArea("formula", "Verification Results",
+                        //        str.toString());
+                        //ComponentDialog newDialog = new ComponentDialog(null,
+                        //        "Terminal", newQuery);
 
                         _deleteFolder(smvFolder);
 
@@ -588,6 +600,7 @@ public class MathematicalModelConverter extends Attribute {
                         //                    + ex.getMessage());
                         //}
 
+                        return returnStringBuffer;
                     }
 
                 }
@@ -611,20 +624,22 @@ public class MathematicalModelConverter extends Attribute {
         String childs[] = null;
         childs = folder.list();
         if (childs == null || childs.length <= 0) {
-            folder.delete();
-        }
-        for (int i = 0; i < childs.length; i++) {
-            String childName = childs[i];
-            String childPath = folder.getPath() + File.separator + childName;
-            File filePath = new File(childPath);
-            if (filePath.exists() && filePath.isFile()) {
-                filePath.delete();
-            } else if (filePath.exists() && filePath.isDirectory()) {
-                _deleteFolder(filePath);
+            boolean isDeleted = folder.delete();
+        } else {
+            for (int i = 0; i < childs.length; i++) {
+                String childName = childs[i];
+                String childPath = folder.getPath() + File.separator
+                        + childName;
+                File filePath = new File(childPath);
+                if (filePath.exists() && filePath.isFile()) {
+                    filePath.delete();
+                } else if (filePath.exists() && filePath.isDirectory()) {
+                    _deleteFolder(filePath);
+                }
             }
+            boolean isDeleted = folder.delete();
         }
 
-        folder.delete();
     }
 
     public String getCodeFileName() {

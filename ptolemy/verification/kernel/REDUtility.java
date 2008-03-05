@@ -83,10 +83,10 @@ public class REDUtility {
      * @return a flattened equivalent system.
      */
     public static CompositeActor generateEquivalentSystemWithoutHierachy(
-            CompositeActor originalCompositeActor) {
+            CompositeActor originalCompositeActor) throws NameDuplicationException, IllegalActionException, CloneNotSupportedException{
 
         ArrayList<FSMActor> list = new ArrayList<FSMActor>();
-        try {
+        //try {
             if ((((CompositeActor) originalCompositeActor).entityList()).size() > 0) {
 
                 Iterator it = (((CompositeActor) originalCompositeActor)
@@ -106,9 +106,9 @@ public class REDUtility {
                 }
             }
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        //} catch (Exception ex) {
+        //    ex.printStackTrace();
+        //}
 
         for (int i = 0; i < list.size(); i++) {
             // Add back those previously generated new FSMActors.
@@ -135,7 +135,7 @@ public class REDUtility {
      */
     public static StringBuffer generateREDDescription(CompositeActor PreModel,
             String pattern, String choice, String span, String bufferSizeFSM)
-            throws IllegalActionException {
+            throws IllegalActionException, NameDuplicationException, CloneNotSupportedException {
         // returnREDFormat: Store StringBuffer format system description 
         //                  acceptable by RED converted by Ptolemy II. 
         StringBuffer returnREDFormat = new StringBuffer("");
@@ -2073,8 +2073,15 @@ public class REDUtility {
                 // Do the combination of the previous two cases.
                 // First retrieve the inner initial state 
 
-                TypedActor sInnerActor = sActors[0];
-                TypedActor dInnerActor = dActors[0];
+                TypedActor sInnerActor = null;
+                TypedActor dInnerActor = null;
+                if(sActors[0]!= null){ 
+                    sInnerActor = sActors[0];
+                }
+                if(dActors[0]!= null){ 
+                    dInnerActor = dActors[0];
+                }
+
                 String newDestName = "";
                 if (dInnerActor instanceof FSMActor) {
                     newDestName = destination.getName().trim()
@@ -2167,7 +2174,7 @@ public class REDUtility {
     private static REDSingleEntityBean _translateClockActor(Clock clockActor,
             String outputSignalName) throws IllegalActionException {
 
-        REDSingleEntityBean returnBean = new REDSingleEntityBean();
+        //REDSingleEntityBean returnBean = new REDSingleEntityBean();
 
         // If we expect to convert a clock into a timed automata,
         // we need to have the following information from the clockActor:
@@ -2474,10 +2481,10 @@ public class REDUtility {
         HashSet<String> variableSet = null; // = new HashSet<String>();
         HashMap<String, String> initialValueSet = null;
         //try {
-            // Enumerate all variables used in the Kripke structure
-            int numSpan = Integer.parseInt(span);
-            variableSet = _decideVariableSet(actor, numSpan);
-            initialValueSet = _retrieveVariableInitialValue(actor, variableSet);
+        // Enumerate all variables used in the Kripke structure
+        int numSpan = Integer.parseInt(span);
+        variableSet = _decideVariableSet(actor, numSpan);
+        initialValueSet = _retrieveVariableInitialValue(actor, variableSet);
         //} catch (Exception exception) {
         //    throw new IllegalActionException("REDUtility: _translateFSMActor():"
         //            + exception.getMessage());
@@ -3007,29 +3014,24 @@ public class REDUtility {
     // // inner class ////
     private static class REDModuleNameInitialBean {
         private REDModuleNameInitialBean() {
-            _name = new String("");
-            _initialStateDescription = new String("");
+            
         }
 
-        private String _name;
-        private String _initialStateDescription;
+        private String  _name = new String("");
+        private String _initialStateDescription = new String("");
     }
 
     // /////////////////////////////////////////////////////////////////
     // // inner class ////
     private static class REDTransitionBean {
         private REDTransitionBean() {
-            //_signal = new StringBuffer("");
-            //_preCondition = new StringBuffer("");
-            //_postCondition = new StringBuffer("");
-            //_newState = new StringBuffer("");
 
         }
 
-        private StringBuffer _signal= new StringBuffer("");
-        private StringBuffer _preCondition= new StringBuffer("");
-        private StringBuffer _postCondition= new StringBuffer("");
-        private StringBuffer _newState= new StringBuffer("");
+        private StringBuffer _signal = new StringBuffer("");
+        private StringBuffer _preCondition = new StringBuffer("");
+        private StringBuffer _postCondition = new StringBuffer("");
+        private StringBuffer _newState = new StringBuffer("");
 
     }
 }

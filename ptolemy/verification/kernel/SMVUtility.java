@@ -331,18 +331,18 @@ public class SMVUtility {
             VariableInfo individual = (VariableInfo) _variableInfo.get(valName);
             int lowerBound = Integer.parseInt(individual._minValue);
             int upperBound = Integer.parseInt(individual._maxValue);
-            try {
-                numSpan = Integer.parseInt(span);
-                returnSmvFormat.append(" ls,");
-                for (int number = lowerBound; number <= upperBound; number++) {
-                    returnSmvFormat.append(number);
-                    returnSmvFormat.append(",");
-                }
-                returnSmvFormat.append("gt };\n");
-
-            } catch (Exception exception) {
-
+            //try {
+            //numSpan = Integer.parseInt(span);
+            returnSmvFormat.append(" ls,");
+            for (int number = lowerBound; number <= upperBound; number++) {
+                returnSmvFormat.append(number);
+                returnSmvFormat.append(",");
             }
+            returnSmvFormat.append("gt };\n");
+
+            //} catch (Exception exception) {
+
+            //}
 
         }
 
@@ -351,13 +351,13 @@ public class SMVUtility {
         // For example, PGo_isPresent
 
         HashSet<String> signalVariableSet = null; // = new HashSet<String>();
-        try {
-            // Enumerate all variables used in the Kripke structure
-            numSpan = Integer.parseInt(span);
-            signalVariableSet = _decideSignalVariableSet(actor, numSpan);
-        } catch (Exception exception) {
+        //try {
+        // Enumerate all variables used in the Kripke structure
+        //numSpan = Integer.parseInt(span);
+        signalVariableSet = _decideSignalVariableSet(actor, numSpan);
+        //} catch (Exception exception) {
 
-        }
+        //}
 
         // Meanwhile, place elements in signalVariableSet into variableSet;
         if (signalVariableSet != null) {
@@ -538,46 +538,49 @@ public class SMVUtility {
 
         frontAttachment.append(returnSmvFormat);
 
-        if (signalVariableSet.size() != 0) {
-            frontAttachment.append("\n\tDEFINE\n");
-            Iterator<String> newItSignalVariableSet = signalVariableSet
-                    .iterator();
-            while (newItSignalVariableSet.hasNext()) {
-                String valName = (String) newItSignalVariableSet.next();
-                frontAttachment.append("\t\t" + valName + " := ");
+        if (signalVariableSet != null) {
+            if ((signalVariableSet.size() != 0)) {
+                frontAttachment.append("\n\tDEFINE\n");
+                Iterator<String> newItSignalVariableSet = signalVariableSet
+                        .iterator();
+                while (newItSignalVariableSet.hasNext()) {
+                    String valName = (String) newItSignalVariableSet.next();
+                    frontAttachment.append("\t\t" + valName + " := ");
 
-                List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
-                        .get(valName);
-                if (innerInfoList == null) {
+                    List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
+                            .get(valName);
+                    if (innerInfoList == null) {
 
-                }
-                for (int i = 0; i < innerInfoList.size(); i++) {
-                    VariableTransitionInfo info = innerInfoList.get(i);
-                    // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
-                    // UNDER A REFINEMENT OF A STATE.
-                    if (i == innerInfoList.size() - 1) {
-                        if (refinementStateName.equalsIgnoreCase("")) {
-                            frontAttachment.append(" ( " + info._preCondition
-                                    + " ) ;\n\n ");
+                    }
+                    for (int i = 0; i < innerInfoList.size(); i++) {
+                        VariableTransitionInfo info = innerInfoList.get(i);
+                        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+                        // UNDER A REFINEMENT OF A STATE.
+                        if (i == innerInfoList.size() - 1) {
+                            if (refinementStateName.equalsIgnoreCase("")) {
+                                frontAttachment.append(" ( "
+                                        + info._preCondition + " ) ;\n\n ");
+                            } else {
+                                frontAttachment.append("("
+                                        + refinementStateActivePremise + " & "
+                                        + info._preCondition + " ) ;\n\n ");
+                            }
                         } else {
-                            frontAttachment.append("("
-                                    + refinementStateActivePremise + " & "
-                                    + info._preCondition + " ) ;\n\n ");
+                            if (refinementStateName.equalsIgnoreCase("")) {
+                                frontAttachment.append(" ( "
+                                        + info._preCondition + " ) & ");
+                            } else {
+                                frontAttachment.append("("
+                                        + refinementStateActivePremise + " & "
+                                        + info._preCondition + " ) & ");
+                            }
                         }
-                    } else {
-                        if (refinementStateName.equalsIgnoreCase("")) {
-                            frontAttachment.append(" ( " + info._preCondition
-                                    + " ) & ");
-                        } else {
-                            frontAttachment.append("("
-                                    + refinementStateActivePremise + " & "
-                                    + info._preCondition + " ) & ");
-                        }
+
                     }
 
                 }
-
             }
+
         }
 
         return frontAttachment;
@@ -1291,21 +1294,7 @@ public class SMVUtility {
                                             VariableInfo variable = (VariableInfo) _variableInfo
                                                     .get(characterOfSubGuard[0]
                                                             .trim());
-                                            if (variable == null) {
-                                                // Create a new one and
-                                                // insert all info.
-                                                VariableInfo newVariable = new VariableInfo(
-
-                                                        Integer
-                                                                .toString(numberRetrival),
-                                                        Integer
-                                                                .toString(numberRetrival));
-                                                _variableInfo.put(
-                                                        characterOfSubGuard[0]
-                                                                .trim(),
-                                                        newVariable);
-
-                                            } else {
+                                            if (variable != null) {
                                                 // modify the existing one
                                                 if (Integer
                                                         .parseInt(variable._maxValue) < numberRetrival) {
@@ -1324,6 +1313,20 @@ public class SMVUtility {
                                                         characterOfSubGuard[0]
                                                                 .trim(),
                                                         variable);
+
+                                            } else {
+                                                // Create a new one and
+                                                // insert all info.
+                                                VariableInfo newVariable = new VariableInfo(
+
+                                                        Integer
+                                                                .toString(numberRetrival),
+                                                        Integer
+                                                                .toString(numberRetrival));
+                                                _variableInfo.put(
+                                                        characterOfSubGuard[0]
+                                                                .trim(),
+                                                        newVariable);
 
                                             }
                                         }
@@ -1681,12 +1684,12 @@ public class SMVUtility {
                             String lValue = characterOfSubOutputAction[0]
                                     .trim();
 
-                            try {
-                                variableUsedInTransitionSet.add(lValue
-                                        + "_isPresent");
-                            } catch (Exception ex) {
+                            //try {
+                            variableUsedInTransitionSet.add(lValue
+                                    + "_isPresent");
+                            //} catch (Exception ex) {
 
-                            }
+                            //}
 
                         }
                     }
@@ -1708,16 +1711,16 @@ public class SMVUtility {
                         // For those variables, they only have true (1) 
                         // and false (0) value.
 
-                        VariableInfo variableInfo = _variableInfo.get(val);
-                        if (variableInfo == null) {
+                        //VariableInfo variableInfo = _variableInfo.get(val);
+                        if (_variableInfo.get(val) == null) {
                             throw new IllegalActionException(
                                     "Internal error, removing \"" + val
                                             + "\" returned null?");
                         }
-                        int lowerBound = Integer
-                                .parseInt(variableInfo._minValue);
-                        int upperBound = Integer
-                                .parseInt(variableInfo._maxValue);
+                        int lowerBound = Integer.parseInt(_variableInfo
+                                .get(val)._minValue);
+                        int upperBound = Integer.parseInt(_variableInfo
+                                .get(val)._maxValue);
 
                         ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
 
@@ -1731,16 +1734,16 @@ public class SMVUtility {
 
                     } else {
                         // Retrieve the value in the 
-                        VariableInfo variableInfo = _variableInfo.get(val);
-                        if (variableInfo == null) {
+                        //VariableInfo variableInfo = _variableInfo.get(val);
+                        if (_variableInfo.get(val) == null) {
                             throw new IllegalActionException(
                                     "Internal error, removing \"" + val
                                             + "\" returned null?");
                         }
-                        int lowerBound = Integer
-                                .parseInt(variableInfo._minValue);
-                        int upperBound = Integer
-                                .parseInt(variableInfo._maxValue);
+                        int lowerBound = Integer.parseInt(_variableInfo
+                                .get(val)._minValue);
+                        int upperBound = Integer.parseInt(_variableInfo
+                                .get(val)._maxValue);
                         // Now perform the add up of new value: DOMAIN_GT and
                         // DOMAIN_LS into each of the
                         // variableDomainForTransition set. We make it a sorted
@@ -2928,7 +2931,7 @@ public class SMVUtility {
                                             .parseInt(((VariableInfo) _variableInfo
                                                     .get(lValue))._minValue)) {
                                         // Use DOMAIN_LS to replace the value.
-                                        updatedVariableValue = new String("ls");
+                                        updatedVariableValue = "ls";
                                     }
 
                                     _recursiveStepGeneratePremiseAndResultEachTransition(
