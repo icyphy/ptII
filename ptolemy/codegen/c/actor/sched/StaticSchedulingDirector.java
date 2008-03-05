@@ -131,18 +131,16 @@ public class StaticSchedulingDirector extends Director {
                 int count = firing.getIterationCount();
                 if (count > 1) {
                     if (!isIDefined) {
-                        code.append(CodeStream.indent("int i;" + _eol));
+                        code.append("int i;" + _eol);
                         isIDefined = true;
                     }
                     code.append(CodeStream.indent("for (i = 0; i < " + count
                             + " ; i++) {" + _eol));
-                    CodeStream.setIndentLevel(2);
                 }
 
-                code.append(CodeStream.indent(CodeGeneratorHelper
-                        .generateName((NamedObj) actor)
-                        + "();" + _eol));
-
+                code.append(CodeGeneratorHelper.generateName((NamedObj)
+                 actor) + "();" + _eol);
+                
                 // update buffer offset after firing each actor once
                 Iterator inputPorts = actor.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
@@ -158,9 +156,8 @@ public class StaticSchedulingDirector extends Director {
                     _updateConnectedPortsOffset(port, code, rate);
                 }
 
-                CodeStream.setIndentLevel(1);
                 if (count > 1) {
-                    code.append(CodeStream.indent("}" + _eol));
+                    code.append("}" + _eol);
                 }
             }
         }
@@ -190,22 +187,30 @@ public class StaticSchedulingDirector extends Director {
 
         Attribute iterations = _director.getAttribute("iterations");
         if (iterations == null) {
-            code.append(_eol + _INDENT1 + "while (true) {" + _eol);
+            code.append(_eol + "while (true) {" + _eol);
         } else {
             int iterationCount = ((IntToken) ((Variable) iterations).getToken())
                     .intValue();
             if (iterationCount <= 0) {
-                code.append(_eol + _INDENT1 + "while (true) {" + _eol);
+                code.append(_eol + "while (true) {" + _eol);
             } else {
                 // Declare iteration outside of the loop to avoid
                 // mode" with gcc-3.3.3
-                code.append(_eol + _INDENT1 + "int iteration;" + _eol);
-                code.append(_INDENT1 + "for (iteration = 0; iteration < "
+                code.append(_eol + "int iteration;" + _eol);
+                code.append("for (iteration = 0; iteration < "
                         + iterationCount + "; iteration ++) {" + _eol);
             }
         }
 
-        code.append(generateFireCode());
+        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
+        .booleanValue();
+        
+        if (inline) {
+            code.append(generateFireCode());
+        } else {
+            code.append(CodeGeneratorHelper.generateName(_director
+                    .getContainer()) + "();" + _eol);
+        }
 
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.
@@ -225,10 +230,9 @@ public class StaticSchedulingDirector extends Director {
             Double periodValue = ((DoubleToken) ((Variable) period).getToken())
                     .doubleValue();
             if (periodValue != 0.0) {
-                code.append(_INDENT1 + "_currentTime += " + periodValue + ";"
-                        + _eol);
+                code.append("_currentTime += " + periodValue + ";" + _eol);
             }
-            code.append(_INDENT1 + "}" + _eol);
+            code.append("}" + _eol);
         }
 
         return code.toString();
@@ -273,7 +277,7 @@ public class StaticSchedulingDirector extends Director {
                     .doubleValue();
             if (periodValue != 0.0) {
                 variableDeclarations.append(_eol
-                        + _codeGenerator.comment(1,
+                        + _codeGenerator.comment(
                                 "Director has a period attribute,"
                                         + " so we track current time."));
                 variableDeclarations.append("double _currentTime = 0;" + _eol);
