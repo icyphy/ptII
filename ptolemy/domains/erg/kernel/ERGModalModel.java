@@ -67,11 +67,17 @@ public class ERGModalModel extends CompositeActor {
         _init();
     }
 
+    public ERGController getERGController() {
+        return (ERGController) getEntity(_CONTROLLER_NAME);
+    }
+
     private void _init() throws IllegalActionException,
     NameDuplicationException {
         ERGDirector newDirector = new ERGDirector(this, "_Director");
-        newDirector.controllerName.setExpression("_Controller");
+        newDirector.controllerName.setExpression(_CONTROLLER_NAME);
 
-        new ERGController(this, "_Controller");
+        new ERGController(this, _CONTROLLER_NAME);
     }
+
+    private static final String _CONTROLLER_NAME = "_Controller";
 }
