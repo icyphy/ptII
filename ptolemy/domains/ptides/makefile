@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/domains/ptidesn
+ME =		ptolemy/domains/ptides
 
 DIRS =		kernel lib demo
 
