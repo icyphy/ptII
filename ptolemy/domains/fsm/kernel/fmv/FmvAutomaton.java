@@ -407,8 +407,6 @@ public class FmvAutomaton extends FSMActor {
                                                 // Create a new one and
                                                 // insert all info.
                                                 VariableInfo newVariable = new VariableInfo(
-                                                        characterOfSubGuard[0]
-                                                                .trim(),
                                                         Integer
                                                                 .toString(numberRetrival),
                                                         Integer
@@ -470,8 +468,7 @@ public class FmvAutomaton extends FSMActor {
                                 if (variable == null) {
                                     // Create a new one and insert all info.
                                     VariableInfo newVariable = new VariableInfo(
-                                            lValue, Integer
-                                                    .toString(numberRetrival),
+                                            Integer.toString(numberRetrival),
                                             Integer.toString(numberRetrival));
                                     _variableInfo.put(lValue, newVariable);
 
@@ -786,24 +783,26 @@ public class FmvAutomaton extends FSMActor {
                         throw new IllegalActionException(
                                 "Internal error, removing \"" + val
                                         + "\" returned null?");
+                    } else {
+                        int lowerBound = Integer
+                                .parseInt(variableInfo._minValue);
+                        int upperBound = Integer
+                                .parseInt(variableInfo._maxValue);
+                        // Now perform the add up of new value: DOMAIN_GT and
+                        // DOMAIN_LS into each of the
+                        // variableDomainForTransition set. We make it a sorted
+                        // list to facilitate further processing.
+                        ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
+                        variableDomainForTransition.add(DOMAIN_LS);
+                        for (int number = lowerBound; number <= upperBound; number++) {
+                            // Place each possible value within boundary into
+                            // the list.
+                            variableDomainForTransition.add(Integer
+                                    .valueOf(number));
+                        }
+                        variableDomainForTransition.add(DOMAIN_GT);
+                        valueDomain.put(val, variableDomainForTransition);
                     }
-                    int lowerBound = Integer.parseInt(variableInfo._minValue);
-                    int upperBound = Integer.parseInt(variableInfo._maxValue);
-                    // Now perform the add up of new value: DOMAIN_GT and
-                    // DOMAIN_LS into each of the
-                    // variableDomainForTransition set. We make it a sorted
-                    // list to facilitate further processing.
-                    ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
-                    variableDomainForTransition.add(DOMAIN_LS);
-                    for (int number = lowerBound; number <= upperBound; number++) {
-                        // Place each possible value within boundary into
-                        // the list.
-                        variableDomainForTransition
-                                .add(Integer.valueOf(number));
-                    }
-                    variableDomainForTransition.add(DOMAIN_GT);
-
-                    valueDomain.put(val, variableDomainForTransition);
 
                 }
 
@@ -1356,7 +1355,6 @@ public class FmvAutomaton extends FSMActor {
 
             VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
             newTransitionInfo._preCondition = currentPremise;
-            newTransitionInfo._variableName = lValue;
             newTransitionInfo._varibleNewValue = newVariableValue;
             LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
                     .remove(lValue);
@@ -1429,38 +1427,41 @@ public class FmvAutomaton extends FSMActor {
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
-                                    }
-
-                                    int minimumInBoundary = Integer
-                                            .parseInt(((VariableInfo) _variableInfo
-                                                    .get(lValue))._minValue);
-                                    for (int j = 0; j < (Integer
-                                            .parseInt(newVariableValue)); j++) {
-
-                                        // We need to make sure that it would
-                                        // never exceeds upper bound. If it
-                                        // is below lower bound, we must stop it
-                                        // and use GT to replace the value.
-
-                                        if ((minimumInBoundary + j) > Integer
+                                    } else {
+                                        int minimumInBoundary = Integer
                                                 .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue)) {
+                                                        .get(lValue))._minValue);
+                                        for (int j = 0; j < (Integer
+                                                .parseInt(newVariableValue)); j++) {
+
+                                            // We need to make sure that it
+                                            // would
+                                            // never exceeds upper bound. If it
+                                            // is below lower bound, we must
+                                            // stop it
+                                            // and use GT to replace the value.
+
+                                            if ((minimumInBoundary + j) > Integer
+                                                    .parseInt(((VariableInfo) _variableInfo
+                                                            .get(lValue))._maxValue)) {
+                                                _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        "gt", operatingSign);
+                                                break;
+                                            }
+
+                                            String updatedVariableValue = String
+                                                    .valueOf(minimumInBoundary
+                                                            + j);
                                             _recursiveStepGeneratePremiseAndResultEachTransition(
                                                     newPremise, index + 1,
                                                     maxIndex, keySetArray,
-                                                    valueDomain, lValue, "gt",
+                                                    valueDomain, lValue,
+                                                    updatedVariableValue,
                                                     operatingSign);
-                                            break;
                                         }
-
-                                        String updatedVariableValue = String
-                                                .valueOf(minimumInBoundary + j);
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue,
-                                                updatedVariableValue,
-                                                operatingSign);
                                     }
 
                                 } else {
@@ -1530,45 +1531,54 @@ public class FmvAutomaton extends FSMActor {
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
-                                    }
-
-                                    int maximumInBoundary = Integer
-                                            .parseInt(((VariableInfo) _variableInfo
-                                                    .get(lValue))._maxValue);
-                                    for (int j = 0; j > (Integer
-                                            .parseInt(newVariableValue)); j--) {
-                                        // here j-- because newVariableValue is
-                                        // negative
-
-                                        // We need to make sure that it would
-                                        // never exceeds upper bound. If it
-                                        // is below lower bound, we must stop it
-                                        // and use LS to replace the value.
-                                        if (_variableInfo.get(lValue) == null) {
-                                            throw new IllegalActionException(
-                                                    "Internal error, removing \""
-                                                            + lValue
-                                                            + "\" returned null?");
-                                        }
-                                        if ((maximumInBoundary + j) < Integer
+                                    } else {
+                                        int maximumInBoundary = Integer
                                                 .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._minValue)) {
-                                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                    newPremise, index + 1,
-                                                    maxIndex, keySetArray,
-                                                    valueDomain, lValue, "ls",
-                                                    operatingSign);
-                                            break;
-                                        }
+                                                        .get(lValue))._maxValue);
+                                        for (int j = 0; j > (Integer
+                                                .parseInt(newVariableValue)); j--) {
+                                            // here j-- because newVariableValue
+                                            // is
+                                            // negative
 
-                                        String updatedVariableValue = String
-                                                .valueOf(maximumInBoundary + j);
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue,
-                                                updatedVariableValue,
-                                                operatingSign);
+                                            // We need to make sure that it
+                                            // would
+                                            // never exceeds upper bound. If it
+                                            // is below lower bound, we must
+                                            // stop it
+                                            // and use LS to replace the value.
+                                            if (_variableInfo.get(lValue) == null) {
+                                                throw new IllegalActionException(
+                                                        "Internal error, removing \""
+                                                                + lValue
+                                                                + "\" returned null?");
+                                            } else {
+                                                if ((maximumInBoundary + j) < Integer
+                                                        .parseInt(((VariableInfo) _variableInfo
+                                                                .get(lValue))._minValue)) {
+                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue, "ls",
+                                                            operatingSign);
+                                                    break;
+                                                }
+
+                                                String updatedVariableValue = String
+                                                        .valueOf(maximumInBoundary
+                                                                + j);
+                                                _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        updatedVariableValue,
+                                                        operatingSign);
+                                            }
+
+                                        }
                                     }
 
                                 } else {
@@ -1753,40 +1763,44 @@ public class FmvAutomaton extends FSMActor {
                                                 "Internal error, removing \""
                                                         + lValue
                                                         + "\" returned null?");
-                                    }
-                                    int minimumInBoundary = Integer
-                                            .parseInt(((VariableInfo) _variableInfo
-                                                    .get(lValue))._minValue);
-
-                                    for (int j = 0; j > (Integer
-                                            .parseInt(newVariableValue)); j--) {
-
-                                        // We need to make sure that it would
-                                        // never exceeds upper bound. If it
-                                        // exceeds upper bound, we must stop it
-                                        // and use GT to replace the value.
-
-                                        if ((minimumInBoundary - j) < Integer
+                                    } else {
+                                        int minimumInBoundary = Integer
                                                 .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue)) {
+                                                        .get(lValue))._minValue);
+
+                                        for (int j = 0; j > (Integer
+                                                .parseInt(newVariableValue)); j--) {
+
+                                            // We need to make sure that it
+                                            // would
+                                            // never exceeds upper bound. If it
+                                            // exceeds upper bound, we must stop
+                                            // it
+                                            // and use GT to replace the value.
+
+                                            if ((minimumInBoundary - j) < Integer
+                                                    .parseInt(((VariableInfo) _variableInfo
+                                                            .get(lValue))._maxValue)) {
+                                                _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                        newPremise, index + 1,
+                                                        maxIndex, keySetArray,
+                                                        valueDomain, lValue,
+                                                        "gt", operatingSign);
+                                                break;
+                                            }
+
+                                            String updatedVariableValue = String
+                                                    .valueOf(minimumInBoundary
+                                                            - j);
+
                                             _recursiveStepGeneratePremiseAndResultEachTransition(
                                                     newPremise, index + 1,
                                                     maxIndex, keySetArray,
-                                                    valueDomain, lValue, "gt",
+                                                    valueDomain, lValue,
+                                                    updatedVariableValue,
                                                     operatingSign);
-                                            break;
+
                                         }
-
-                                        String updatedVariableValue = String
-                                                .valueOf(minimumInBoundary - j);
-
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue,
-                                                updatedVariableValue,
-                                                operatingSign);
-
                                     }
 
                                 } else {
@@ -1853,101 +1867,119 @@ public class FmvAutomaton extends FSMActor {
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
-                                    }
-                                    if (Integer
-                                            .parseInt(((VariableInfo) _variableInfo
-                                                    .get(lValue))._maxValue) >= 0) {
-                                        // when max>=0, GT * positive_const = GT
-                                        // Hence the updated value remains the
-                                        // same.
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue, "gt",
-                                                operatingSign);
                                     } else {
-                                        // Integer.parseInt(((VariableInfo)
-                                        // _variableInfo.get(lValue))._maxValue)
-                                        // < 0
-                                        //  
-                                        // Starting from the upper bound + 1,
-                                        // +2, +3, +4 ... calculate all possible
-                                        // values until the new set-value is
-                                        // greater than GT.
-                                        // 
-                                        // For example, if upper bound is -5,
-                                        // and if the offset is 2, then for
-                                        // values in GT that is greater or equal
-                                        // to -2, the new variable would be in
-                                        // GT. But if the lower bound is -7,
-                                        // then we need to replace cases that is
-                                        // lower to -7. For example, -4*2=-8. We
-                                        // should use LS to represent this
-                                        // value.
-                                        //
-                                        // Also we expect to record one LS as
-                                        // the new value only. So there are
-                                        // tricks that needs to be applied.
-
-                                        int starter = Integer
+                                        if (Integer
                                                 .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue) + 1;
+                                                        .get(lValue))._maxValue) >= 0) {
+                                            // when max>=0, GT * positive_const
+                                            // = GT
+                                            // Hence the updated value remains
+                                            // the
+                                            // same.
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue, "gt",
+                                                    operatingSign);
+                                        } else {
+                                            // Integer.parseInt(((VariableInfo)
+                                            // _variableInfo.get(lValue))._maxValue)
+                                            // < 0
+                                            //  
+                                            // Starting from the upper bound +
+                                            // 1,
+                                            // +2, +3, +4 ... calculate all
+                                            // possible
+                                            // values until the new set-value is
+                                            // greater than GT.
+                                            // 
+                                            // For example, if upper bound is
+                                            // -5,
+                                            // and if the offset is 2, then for
+                                            // values in GT that is greater or
+                                            // equal
+                                            // to -2, the new variable would be
+                                            // in
+                                            // GT. But if the lower bound is -7,
+                                            // then we need to replace cases
+                                            // that is
+                                            // lower to -7. For example,
+                                            // -4*2=-8. We
+                                            // should use LS to represent this
+                                            // value.
+                                            //
+                                            // Also we expect to record one LS
+                                            // as the new value only. So there
+                                            // are tricks that needs to be
+                                            // applied.
 
-                                        while (starter
-                                                * Integer
-                                                        .parseInt(newVariableValue) <= Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue)) {
-                                            if ((starter
-                                                    * Integer
-                                                            .parseInt(newVariableValue) < Integer
+                                            int starter = Integer
                                                     .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._minValue))
-                                                    && ((starter + 1)
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) >= Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._minValue))) {
-                                                // This IF statement represents
-                                                // tricks mentioned above.
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "ls", operatingSign);
+                                                            .get(lValue))._maxValue) + 1;
 
-                                            } else if ((starter
+                                            while (starter
                                                     * Integer
                                                             .parseInt(newVariableValue) <= Integer
                                                     .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._maxValue))
-                                                    && (starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) >= Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._minValue))) {
-                                                String updatedVariableValue = String
-                                                        .valueOf(starter
+                                                            .get(lValue))._maxValue)) {
+                                                if ((starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) < Integer
+                                                        .parseInt(((VariableInfo) _variableInfo
+                                                                .get(lValue))._minValue))
+                                                        && ((starter + 1)
                                                                 * Integer
-                                                                        .parseInt(newVariableValue));
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        updatedVariableValue,
-                                                        operatingSign);
+                                                                        .parseInt(newVariableValue) >= Integer
+                                                                .parseInt(((VariableInfo) _variableInfo
+                                                                        .get(lValue))._minValue))) {
+                                                    // This IF statement
+                                                    // represents
+                                                    // tricks mentioned above.
+                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue, "ls",
+                                                            operatingSign);
+
+                                                } else if ((starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) <= Integer
+                                                        .parseInt(((VariableInfo) _variableInfo
+                                                                .get(lValue))._maxValue))
+                                                        && (starter
+                                                                * Integer
+                                                                        .parseInt(newVariableValue) >= Integer
+                                                                .parseInt(((VariableInfo) _variableInfo
+                                                                        .get(lValue))._minValue))) {
+                                                    String updatedVariableValue = String
+                                                            .valueOf(starter
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue));
+                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue,
+                                                            updatedVariableValue,
+                                                            operatingSign);
+                                                }
+
+                                                starter++;
+
                                             }
 
-                                            starter++;
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue, "gt",
+                                                    operatingSign);
 
                                         }
-
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue, "gt",
-                                                operatingSign);
-
                                     }
 
                                 } else if (vList.get(i).intValue() == DOMAIN_LS) {
@@ -1960,80 +1992,90 @@ public class FmvAutomaton extends FSMActor {
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
-                                    }
-                                    if (Integer
-                                            .parseInt(((VariableInfo) _variableInfo
-                                                    .get(lValue))._minValue) <= 0) {
-                                        // when min<=0, LS * positive_const = LS
-                                        // Hence the updated value remains the
-                                        // same.
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue, "ls",
-                                                operatingSign);
                                     } else {
-                                        // Starting from the lower bound -1,
-                                        // -2, -3, -4 ...
-                                        // calculate all possible values until
-                                        // the value is greater than LS.
-
-                                        int starter = Integer
+                                        if (Integer
                                                 .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._minValue) - 1;
-                                        while (starter
-                                                * Integer
-                                                        .parseInt(newVariableValue) >= Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._minValue)) {
-                                            if ((starter
-                                                    * Integer
-                                                            .parseInt(newVariableValue) > Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._maxValue))
-                                                    && ((starter - 1)
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) <= Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._maxValue))) {
+                                                        .get(lValue))._minValue) <= 0) {
+                                            // when min<=0, LS * positive_const
+                                            // = LS
+                                            // Hence the updated value remains
+                                            // the
+                                            // same.
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue, "ls",
+                                                    operatingSign);
+                                        } else {
+                                            // Starting from the lower bound -1,
+                                            // -2, -3, -4 ...
+                                            // calculate all possible values
+                                            // until
+                                            // the value is greater than LS.
 
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "gt", operatingSign);
-
-                                            } else if ((starter
-                                                    * Integer
-                                                            .parseInt(newVariableValue) <= Integer
+                                            int starter = Integer
                                                     .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._maxValue))
-                                                    && (starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) >= Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._minValue))) {
-                                                String updatedVariableValue = String
-                                                        .valueOf(starter
+                                                            .get(lValue))._minValue) - 1;
+                                            while (starter
+                                                    * Integer
+                                                            .parseInt(newVariableValue) >= Integer
+                                                    .parseInt(((VariableInfo) _variableInfo
+                                                            .get(lValue))._minValue)) {
+                                                if ((starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) > Integer
+                                                        .parseInt(((VariableInfo) _variableInfo
+                                                                .get(lValue))._maxValue))
+                                                        && ((starter - 1)
                                                                 * Integer
-                                                                        .parseInt(newVariableValue));
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        updatedVariableValue,
-                                                        operatingSign);
-                                            }
+                                                                        .parseInt(newVariableValue) <= Integer
+                                                                .parseInt(((VariableInfo) _variableInfo
+                                                                        .get(lValue))._maxValue))) {
 
-                                            starter++;
+                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue, "gt",
+                                                            operatingSign);
+
+                                                } else if ((starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) <= Integer
+                                                        .parseInt(((VariableInfo) _variableInfo
+                                                                .get(lValue))._maxValue))
+                                                        && (starter
+                                                                * Integer
+                                                                        .parseInt(newVariableValue) >= Integer
+                                                                .parseInt(((VariableInfo) _variableInfo
+                                                                        .get(lValue))._minValue))) {
+                                                    String updatedVariableValue = String
+                                                            .valueOf(starter
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue));
+                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue,
+                                                            updatedVariableValue,
+                                                            operatingSign);
+                                                }
+
+                                                starter++;
+
+                                            }
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue, "ls",
+                                                    operatingSign);
 
                                         }
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue, "ls",
-                                                operatingSign);
-
                                     }
 
                                 } else {
@@ -2058,27 +2100,32 @@ public class FmvAutomaton extends FSMActor {
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
-                                    }
-                                    if (vList.get(i).intValue()
-                                            * (Integer
-                                                    .parseInt(newVariableValue)) < Integer
-                                            .parseInt(((VariableInfo) _variableInfo
-                                                    .get(lValue))._minValue)) {
-                                        // Use DOMAIN_LS to replace the value.
-                                        updatedVariableValue = "ls";
+                                    } else {
+                                        if (vList.get(i).intValue()
+                                                * (Integer
+                                                        .parseInt(newVariableValue)) < Integer
+                                                .parseInt(((VariableInfo) _variableInfo
+                                                        .get(lValue))._minValue)) {
+                                            // Use DOMAIN_LS to replace the
+                                            // value.
+                                            updatedVariableValue = "ls";
 
-                                    } else if (vList.get(i).intValue()
-                                            * (Integer
-                                                    .parseInt(newVariableValue)) > Integer
-                                            .parseInt(((VariableInfo) _variableInfo
-                                                    .get(lValue))._maxValue)) {
-                                        updatedVariableValue = "gt";
+                                        } else if (vList.get(i).intValue()
+                                                * (Integer
+                                                        .parseInt(newVariableValue)) > Integer
+                                                .parseInt(((VariableInfo) _variableInfo
+                                                        .get(lValue))._maxValue)) {
+                                            updatedVariableValue = "gt";
+                                        }
+
+                                        _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                newPremise, index + 1,
+                                                maxIndex, keySetArray,
+                                                valueDomain, lValue,
+                                                updatedVariableValue,
+                                                operatingSign);
                                     }
 
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            updatedVariableValue, operatingSign);
                                 }
                             } else if (Integer.parseInt(newVariableValue) < 0) {
                                 // Negative case (negative_const)
@@ -2093,94 +2140,31 @@ public class FmvAutomaton extends FSMActor {
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
-                                    }
-
-                                    if (Integer
-                                            .parseInt(((VariableInfo) _variableInfo
-                                                    .get(lValue))._maxValue) >= 0) {
-                                        // Starting from the upper bound + 1,
-                                        // +2, +3, +4 ...
-                                        // calculate all possible values until
-                                        // the value is less than LS.
-                                        // 
-                                        // For example, if upper bound = 1,
-                                        // lower bound = -7, and offset = -2,
-                                        // then we might have possible new
-                                        // set-values -4, -6, LS
-
-                                        int starter = Integer
+                                    } else {
+                                        if (Integer
                                                 .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue) + 1;
+                                                        .get(lValue))._maxValue) >= 0) {
+                                            // Starting from the upper bound
+                                            // +1, +2, +3, +4 ...
+                                            // calculate all possible values
+                                            // until the value is less than LS.
+                                            // 
+                                            // For example, if upper bound = 1,
+                                            // lower bound = -7, and offset =
+                                            // -2,
+                                            // then we might have possible new
+                                            // set-values -4, -6, LS
 
-                                        while (starter
-                                                * Integer
-                                                        .parseInt(newVariableValue) >= Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._minValue)) {
-
-                                            String updatedVariableValue = String
-                                                    .valueOf(starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue));
-                                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                    newPremise, index + 1,
-                                                    maxIndex, keySetArray,
-                                                    valueDomain, lValue,
-                                                    updatedVariableValue,
-                                                    operatingSign);
-
-                                            starter++;
-                                        }
-
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue, "ls",
-                                                operatingSign);
-
-                                    } else if (Integer
-                                            .parseInt(((VariableInfo) _variableInfo
-                                                    .get(lValue))._maxValue) < 0) {
-                                        // One important thing is that we may
-                                        // have cases where 0 * const = 0.
-                                        // Because 0 is in GT, so we would have
-                                        // new value GT as a choice.
-
-                                        int starter = Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue) + 1;
-                                        while (starter
-                                                * Integer
-                                                        .parseInt(newVariableValue) >= Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._minValue)) {
-                                            if ((starter
-                                                    * Integer
-                                                            .parseInt(newVariableValue) > Integer
+                                            int starter = Integer
                                                     .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._maxValue))
-                                                    && ((starter + 1)
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) <= Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._maxValue))) {
+                                                            .get(lValue))._maxValue) + 1;
 
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "gt", operatingSign);
-
-                                            } else if ((starter
+                                            while (starter
                                                     * Integer
-                                                            .parseInt(newVariableValue) <= Integer
+                                                            .parseInt(newVariableValue) >= Integer
                                                     .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._maxValue))
-                                                    && (starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) >= Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._minValue))) {
+                                                            .get(lValue))._minValue)) {
+
                                                 String updatedVariableValue = String
                                                         .valueOf(starter
                                                                 * Integer
@@ -2191,24 +2175,96 @@ public class FmvAutomaton extends FSMActor {
                                                         valueDomain, lValue,
                                                         updatedVariableValue,
                                                         operatingSign);
+
+                                                starter++;
                                             }
 
-                                            starter++;
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue, "ls",
+                                                    operatingSign);
+
+                                        } else if (Integer
+                                                .parseInt(((VariableInfo) _variableInfo
+                                                        .get(lValue))._maxValue) < 0) {
+                                            // One important thing is that we
+                                            // may
+                                            // have cases where 0 * const = 0.
+                                            // Because 0 is in GT, so we would
+                                            // have
+                                            // new value GT as a choice.
+
+                                            int starter = Integer
+                                                    .parseInt(((VariableInfo) _variableInfo
+                                                            .get(lValue))._maxValue) + 1;
+                                            while (starter
+                                                    * Integer
+                                                            .parseInt(newVariableValue) >= Integer
+                                                    .parseInt(((VariableInfo) _variableInfo
+                                                            .get(lValue))._minValue)) {
+                                                if ((starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) > Integer
+                                                        .parseInt(((VariableInfo) _variableInfo
+                                                                .get(lValue))._maxValue))
+                                                        && ((starter + 1)
+                                                                * Integer
+                                                                        .parseInt(newVariableValue) <= Integer
+                                                                .parseInt(((VariableInfo) _variableInfo
+                                                                        .get(lValue))._maxValue))) {
+
+                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue, "gt",
+                                                            operatingSign);
+
+                                                } else if ((starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) <= Integer
+                                                        .parseInt(((VariableInfo) _variableInfo
+                                                                .get(lValue))._maxValue))
+                                                        && (starter
+                                                                * Integer
+                                                                        .parseInt(newVariableValue) >= Integer
+                                                                .parseInt(((VariableInfo) _variableInfo
+                                                                        .get(lValue))._minValue))) {
+                                                    String updatedVariableValue = String
+                                                            .valueOf(starter
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue));
+                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue,
+                                                            updatedVariableValue,
+                                                            operatingSign);
+                                                }
+
+                                                starter++;
+
+                                            }
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue, "ls",
+                                                    operatingSign);
+
+                                            // Special case where 0 * const = 0
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue, "gt",
+                                                    operatingSign);
 
                                         }
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue, "ls",
-                                                operatingSign);
-
-                                        // Special case where 0 * const = 0
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue, "gt",
-                                                operatingSign);
-
                                     }
 
                                 } else if (vList.get(i).intValue() == DOMAIN_LS) {
@@ -2223,93 +2279,32 @@ public class FmvAutomaton extends FSMActor {
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
-                                    }
-                                    if (Integer
-                                            .parseInt(((VariableInfo) _variableInfo
-                                                    .get(lValue))._minValue) <= 0) {
-                                        // Starting from the lower bound -1,
-                                        // -2, -3, -4 ...
-                                        // calculate all possible values until
-                                        // the value is less than GT.
-                                        // 
-                                        // For example, if upper bound = 7,
-                                        // lower bound = -1, and offset = -2,
-                                        // then we might have possible new
-                                        // set-values 4, 6, GT
-
-                                        int starter = Integer
+                                    } else {
+                                        if (Integer
                                                 .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._minValue) - 1;
+                                                        .get(lValue))._minValue) <= 0) {
+                                            // Starting from the lower bound -1,
+                                            // -2, -3, -4 ...
+                                            // calculate all possible values
+                                            // until
+                                            // the value is less than GT.
+                                            // 
+                                            // For example, if upper bound = 7,
+                                            // lower bound = -1, and offset =
+                                            // -2,
+                                            // then we might have possible new
+                                            // set-values 4, 6, GT
 
-                                        while (starter
-                                                * Integer
-                                                        .parseInt(newVariableValue) <= Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue)) {
-
-                                            String updatedVariableValue = String
-                                                    .valueOf(starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue));
-                                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                    newPremise, index + 1,
-                                                    maxIndex, keySetArray,
-                                                    valueDomain, lValue,
-                                                    updatedVariableValue,
-                                                    operatingSign);
-
-                                            starter++;
-                                        }
-
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue, "gt",
-                                                operatingSign);
-
-                                    } else if (Integer
-                                            .parseInt(((VariableInfo) _variableInfo
-                                                    .get(lValue))._minValue) > 0) {
-                                        // One important thing is that we may
-                                        // have cases where 0 * const = 0.
-                                        // Because 0 is in LS, so we would have
-                                        // new value LS as a choice.
-
-                                        int starter = Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._minValue) - 1;
-                                        while (starter
-                                                * Integer
-                                                        .parseInt(newVariableValue) <= Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue)) {
-                                            if ((starter
-                                                    * Integer
-                                                            .parseInt(newVariableValue) < Integer
+                                            int starter = Integer
                                                     .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._minValue))
-                                                    && ((starter + 1)
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) >= Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._minValue))) {
+                                                            .get(lValue))._minValue) - 1;
 
-                                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                        newPremise, index + 1,
-                                                        maxIndex, keySetArray,
-                                                        valueDomain, lValue,
-                                                        "ls", operatingSign);
-
-                                            } else if ((starter
+                                            while (starter
                                                     * Integer
                                                             .parseInt(newVariableValue) <= Integer
                                                     .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._maxValue))
-                                                    && (starter
-                                                            * Integer
-                                                                    .parseInt(newVariableValue) >= Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._minValue))) {
+                                                            .get(lValue))._maxValue)) {
+
                                                 String updatedVariableValue = String
                                                         .valueOf(starter
                                                                 * Integer
@@ -2320,24 +2315,96 @@ public class FmvAutomaton extends FSMActor {
                                                         valueDomain, lValue,
                                                         updatedVariableValue,
                                                         operatingSign);
+
+                                                starter++;
                                             }
 
-                                            starter++;
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue, "gt",
+                                                    operatingSign);
+
+                                        } else if (Integer
+                                                .parseInt(((VariableInfo) _variableInfo
+                                                        .get(lValue))._minValue) > 0) {
+                                            // One important thing is that we
+                                            // may
+                                            // have cases where 0 * const = 0.
+                                            // Because 0 is in LS, so we would
+                                            // have
+                                            // new value LS as a choice.
+
+                                            int starter = Integer
+                                                    .parseInt(((VariableInfo) _variableInfo
+                                                            .get(lValue))._minValue) - 1;
+                                            while (starter
+                                                    * Integer
+                                                            .parseInt(newVariableValue) <= Integer
+                                                    .parseInt(((VariableInfo) _variableInfo
+                                                            .get(lValue))._maxValue)) {
+                                                if ((starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) < Integer
+                                                        .parseInt(((VariableInfo) _variableInfo
+                                                                .get(lValue))._minValue))
+                                                        && ((starter + 1)
+                                                                * Integer
+                                                                        .parseInt(newVariableValue) >= Integer
+                                                                .parseInt(((VariableInfo) _variableInfo
+                                                                        .get(lValue))._minValue))) {
+
+                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue, "ls",
+                                                            operatingSign);
+
+                                                } else if ((starter
+                                                        * Integer
+                                                                .parseInt(newVariableValue) <= Integer
+                                                        .parseInt(((VariableInfo) _variableInfo
+                                                                .get(lValue))._maxValue))
+                                                        && (starter
+                                                                * Integer
+                                                                        .parseInt(newVariableValue) >= Integer
+                                                                .parseInt(((VariableInfo) _variableInfo
+                                                                        .get(lValue))._minValue))) {
+                                                    String updatedVariableValue = String
+                                                            .valueOf(starter
+                                                                    * Integer
+                                                                            .parseInt(newVariableValue));
+                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue,
+                                                            updatedVariableValue,
+                                                            operatingSign);
+                                                }
+
+                                                starter++;
+
+                                            }
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue, "gt",
+                                                    operatingSign);
+
+                                            // Special case where 0 * const = 0
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue, "ls",
+                                                    operatingSign);
 
                                         }
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue, "gt",
-                                                operatingSign);
-
-                                        // Special case where 0 * const = 0
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue, "ls",
-                                                operatingSign);
-
                                     }
 
                                 } else {
@@ -2401,23 +2468,24 @@ public class FmvAutomaton extends FSMActor {
                                             "Internal error, getting \""
                                                     + lValue
                                                     + "\" returned null?");
+                                } else {
+                                    if (0 > Integer
+                                            .parseInt(((VariableInfo) _variableInfo
+                                                    .get(lValue))._maxValue)) {
+                                        // Use DOMAIN_LS to replace the value.
+                                        updatedVariableValue = "gt";
+                                    } else if (0 < Integer
+                                            .parseInt(((VariableInfo) _variableInfo
+                                                    .get(lValue))._minValue)) {
+                                        updatedVariableValue = "ls";
+                                    }
+
+                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                            newPremise, index + 1, maxIndex,
+                                            keySetArray, valueDomain, lValue,
+                                            updatedVariableValue, operatingSign);
                                 }
 
-                                if (0 > Integer
-                                        .parseInt(((VariableInfo) _variableInfo
-                                                .get(lValue))._maxValue)) {
-                                    // Use DOMAIN_LS to replace the value.
-                                    updatedVariableValue = "gt";
-                                } else if (0 < Integer
-                                        .parseInt(((VariableInfo) _variableInfo
-                                                .get(lValue))._minValue)) {
-                                    updatedVariableValue = "ls";
-                                }
-
-                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                        newPremise, index + 1, maxIndex,
-                                        keySetArray, valueDomain, lValue,
-                                        updatedVariableValue, operatingSign);
                             }
                         }
                     } else {
@@ -2592,14 +2660,12 @@ public class FmvAutomaton extends FSMActor {
     // /////////////////////////////////////////////////////////////////
     // // inner class ////
     private static class VariableInfo {
-        private VariableInfo(String paraVariableName, String paraMax,
-                String paraMin) {
-            _variableName = paraVariableName;
+        private VariableInfo(String paraMax, String paraMin) {
+
             _maxValue = paraMax;
             _minValue = paraMin;
         }
 
-        private String _variableName = null;
         private String _maxValue;
         private String _minValue;
 
@@ -2616,7 +2682,6 @@ public class FmvAutomaton extends FSMActor {
         // Record set of conditions that leads to the change of variable
         // _variableName.
         private String _varibleNewValue = null;
-        private String _variableName = null;
 
     }
 
