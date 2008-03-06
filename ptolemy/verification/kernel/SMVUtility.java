@@ -335,23 +335,21 @@ public class SMVUtility {
             // the system based on inequalities or assignments
             // Also, add up symbols "ls" and "gt" within the variable domain.
             if (_variableInfo.get(valName) == null) {
+                throw new IllegalActionException(
+                        "Error in SMVUtility.translateSingleFSMActor(): \n_variableInfo.get(valName) == null?");
+            } else {
+                VariableInfo individual = (VariableInfo) _variableInfo
+                        .get(valName);
+                int lowerBound = Integer.parseInt(individual._minValue);
+                int upperBound = Integer.parseInt(individual._maxValue);
 
+                returnSmvFormat.append(" ls,");
+                for (int number = lowerBound; number <= upperBound; number++) {
+                    returnSmvFormat.append(number);
+                    returnSmvFormat.append(",");
+                }
+                returnSmvFormat.append("gt };\n");
             }
-            VariableInfo individual = (VariableInfo) _variableInfo.get(valName);
-            int lowerBound = Integer.parseInt(individual._minValue);
-            int upperBound = Integer.parseInt(individual._maxValue);
-            // try {
-            // numSpan = Integer.parseInt(span);
-            returnSmvFormat.append(" ls,");
-            for (int number = lowerBound; number <= upperBound; number++) {
-                returnSmvFormat.append(number);
-                returnSmvFormat.append(",");
-            }
-            returnSmvFormat.append("gt };\n");
-
-            // } catch (Exception exception) {
-
-            // }
 
         }
 
@@ -963,10 +961,10 @@ public class SMVUtility {
 
         HashSet<String> returnVariableSet = new HashSet<String>();
         HashSet<State> stateSet = new HashSet<State>();
-        // try {
+       
         // initialize
         HashMap<String, State> frontier = new HashMap<String, State>();
-        // _variableInfo = new HashMap<String, VariableInfo>();
+
 
         // create initial state
         State stateInThis = actor.getInitialState();
@@ -1060,7 +1058,6 @@ public class SMVUtility {
         // try {
         // initialize
         HashMap<String, State> frontier = new HashMap<String, State>();
-        // _variableInfo = new HashMap<String, VariableInfo>();
 
         // create initial state
         State stateInThis = actor.getInitialState();
@@ -1171,7 +1168,6 @@ public class SMVUtility {
         // try {
         // initialize
         HashMap<String, State> frontier = new HashMap<String, State>();
-        // _variableInfo = new HashMap<String, VariableInfo>();
 
         // create initial state
         State stateInThis = actor.getInitialState();
@@ -1975,10 +1971,10 @@ public class SMVUtility {
                         String[] characters = splitExpression[i].split("=");
                         if (characters.length >= 1) {
                             String lValue = characters[0].trim();
-                            String rValue = characters[1].trim();  
+                            String rValue = characters[1].trim();
                             if (Pattern.matches("^-?\\d+$", characters[1]
                                     .trim()) == true) {
-                               
+
                                 // Generate all possible conditions that leads
                                 // to this change.
 
@@ -3835,7 +3831,6 @@ public class SMVUtility {
         }
         return returnMap;
 
-       
     }
 
     /**
