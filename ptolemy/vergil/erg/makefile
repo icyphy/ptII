@@ -45,13 +45,12 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE =     erg
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-        
+PTCLASSALLJARS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = 
 
 JSRCS = \
     ERGGraphTableau.java \
