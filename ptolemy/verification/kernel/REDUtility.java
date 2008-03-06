@@ -56,14 +56,14 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.verification.lib.BoundedBufferTimedDelay;
 import ptolemy.verification.lib.BoundedBufferNondeterministicDelay;
 
-//////////////////////////////////////////////////////////////////////////
-////REDUtility
+// ////////////////////////////////////////////////////////////////////////
+// //REDUtility
 
 /**
- * This is an utility for ptolemy model conversion. It performs a 
- * systematic traversal of the system and convert the Ptolemy model 
- * into communicating timed automata (CTA) with the format acceptable
- * by model checker RED (Regional Encoding Diagram Verification Engine).
+ * This is an utility for ptolemy model conversion. It performs a systematic
+ * traversal of the system and convert the Ptolemy model into communicating
+ * timed automata (CTA) with the format acceptable by model checker RED
+ * (Regional Encoding Diagram Verification Engine).
  * 
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee
  * @version $Id$
@@ -73,42 +73,44 @@ import ptolemy.verification.lib.BoundedBufferNondeterministicDelay;
  */
 public class REDUtility {
 
-    /** This function would try to generate an equivalent system with 
-     *  a flattened view. It would perform a rewriting of each ModalModel
-     *  with hierarchy to a FSMActor. Note that in our current 
-     *  implementation this kind of rewriting only supports to state 
-     *  refinements.
+    /**
+     * This function would try to generate an equivalent system with a flattened
+     * view. It would perform a rewriting of each ModalModel with hierarchy to a
+     * FSMActor. Note that in our current implementation this kind of rewriting
+     * only supports to state refinements.
      * 
-     * @param originalCompositeActor 
+     * @param originalCompositeActor
      * @return a flattened equivalent system.
      */
     public static CompositeActor generateEquivalentSystemWithoutHierachy(
-            CompositeActor originalCompositeActor) throws NameDuplicationException, IllegalActionException, CloneNotSupportedException{
+            CompositeActor originalCompositeActor)
+            throws NameDuplicationException, IllegalActionException,
+            CloneNotSupportedException {
 
         ArrayList<FSMActor> list = new ArrayList<FSMActor>();
-        //try {
-            if ((((CompositeActor) originalCompositeActor).entityList()).size() > 0) {
+        // try {
+        if ((((CompositeActor) originalCompositeActor).entityList()).size() > 0) {
 
-                Iterator it = (((CompositeActor) originalCompositeActor)
-                        .entityList()).iterator();
-                while (it.hasNext()) {
-                    Entity innerEntity = (Entity) it.next();
-                    if (innerEntity instanceof ModalModel) {
-                        // If the innerEntity is a ModalModel, try to rewrite it.
-                        FSMActor newActor = (FSMActor) _rewriteModalModelWithStateRefinementToFSMActor((ModalModel) innerEntity);
-                        // Remove the original ModalModel from the system 
-                        // (we would add an equivalent FSMActor back later).
-                        (((CompositeActor) originalCompositeActor).entityList())
-                                .remove(innerEntity);
-                        // Add the newly generated FSMActor to the list.
-                        list.add(newActor);
-                    }
+            Iterator it = (((CompositeActor) originalCompositeActor)
+                    .entityList()).iterator();
+            while (it.hasNext()) {
+                Entity innerEntity = (Entity) it.next();
+                if (innerEntity instanceof ModalModel) {
+                    // If the innerEntity is a ModalModel, try to rewrite it.
+                    FSMActor newActor = (FSMActor) _rewriteModalModelWithStateRefinementToFSMActor((ModalModel) innerEntity);
+                    // Remove the original ModalModel from the system
+                    // (we would add an equivalent FSMActor back later).
+                    (((CompositeActor) originalCompositeActor).entityList())
+                            .remove(innerEntity);
+                    // Add the newly generated FSMActor to the list.
+                    list.add(newActor);
                 }
             }
+        }
 
-        //} catch (Exception ex) {
-        //    ex.printStackTrace();
-        //}
+        // } catch (Exception ex) {
+        // ex.printStackTrace();
+        // }
 
         for (int i = 0; i < list.size(); i++) {
             // Add back those previously generated new FSMActors.
@@ -119,38 +121,46 @@ public class REDUtility {
 
     }
 
-    /** This is the main function which tries to generate the system 
-     *  description with the type StringBuffer where its content is 
-     *  acceptable by the tool RED (Regional Encoding Diagram). 
+    /**
+     * This is the main function which tries to generate the system description
+     * with the type StringBuffer where its content is acceptable by the tool
+     * RED (Regional Encoding Diagram).
      * 
-     * @param PreModel The original model in Ptolemy II
-     * @param pattern The temporal formula in TCTL
-     * @param choice  Specify the type of formula: buffer overflow detection
-     *                or general TCTL formula
-     * @param span The size of the span used for domain analysis.
-     * @param bufferSizeFSM Specify for each of the input port, the size of
-     *                      the buffer used for buffer overflow detection.
-     * @return A Communicating Timed Automata system description of the original system
+     * @param PreModel
+     *                The original model in Ptolemy II
+     * @param pattern
+     *                The temporal formula in TCTL
+     * @param choice
+     *                Specify the type of formula: buffer overflow detection or
+     *                general TCTL formula
+     * @param span
+     *                The size of the span used for domain analysis.
+     * @param bufferSizeFSM
+     *                Specify for each of the input port, the size of the buffer
+     *                used for buffer overflow detection.
+     * @return A Communicating Timed Automata system description of the original
+     *         system
      * @throws IllegalActionException
      */
     public static StringBuffer generateREDDescription(CompositeActor PreModel,
             String pattern, String choice, String span, String bufferSizeFSM)
-            throws IllegalActionException, NameDuplicationException, CloneNotSupportedException {
-        // returnREDFormat: Store StringBuffer format system description 
-        //                  acceptable by RED converted by Ptolemy II. 
+            throws IllegalActionException, NameDuplicationException,
+            CloneNotSupportedException {
+        // returnREDFormat: Store StringBuffer format system description
+        // acceptable by RED converted by Ptolemy II.
         StringBuffer returnREDFormat = new StringBuffer("");
 
-        // A pre-processing to generate equivalent system without hierarchy. 
+        // A pre-processing to generate equivalent system without hierarchy.
         CompositeActor model = generateEquivalentSystemWithoutHierachy(PreModel);
 
         // The format of RED is roughly organized as follows:
         // 
-        // (1) Constant Value Definition (#define CLOCK 1) 
+        // (1) Constant Value Definition (#define CLOCK 1)
         // (2) Process Count Definition (Process count = 8;)
-        // (3) Variable Declaration (global discrete a:0..8) 
+        // (3) Variable Declaration (global discrete a:0..8)
         // (4) Clock Declaration (global clock c)
-        // (5) Synchronizer Declaration (global synchronizer s;) 
-        // (6) Mode description 
+        // (5) Synchronizer Declaration (global synchronizer s;)
+        // (6) Mode description
         // (7) Initial Condition (initially...)
         // (8) Risk Condition (safety/risk/...)
         //
@@ -167,14 +177,14 @@ public class REDUtility {
         HashSet<String> globalSynchronizerSet = new HashSet<String>(); // (5)
         HashSet<String> variableAndItsInitialCondition = new HashSet<String>(); // (7)
 
-        // We need to record the order of Modules and Ports; these will 
+        // We need to record the order of Modules and Ports; these will
         // be processed later because the order decides the initial state
         // of each process.
         ArrayList<REDModuleNameInitialBean> processModuleNameList = new ArrayList<REDModuleNameInitialBean>();
         ArrayList<REDModuleNameInitialBean> processModulePortList = new ArrayList<REDModuleNameInitialBean>();
 
-        // Perform a search to determine the all useful synchronizers used 
-        // in the system.  
+        // Perform a search to determine the all useful synchronizers used
+        // in the system.
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
@@ -187,15 +197,15 @@ public class REDUtility {
 
         }
 
-        // For different kind of actors, the utility function would try to 
+        // For different kind of actors, the utility function would try to
         // call different processing functions.
-        // Currently we are able to deal with the following actors: 
+        // Currently we are able to deal with the following actors:
         // (1) FSMActor
         // (2) BoundedBufferNondeterministicDelay
         // (3) BoundedBufferTimedDelay
-        // (4) Clock 
+        // (4) Clock
         // 
-        // Note that the order is important. This is because 
+        // Note that the order is important. This is because
         // BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay.
         // If we place these two in the wrong order, it would always treat
         // BoundedBufferNondeterministicDelay as BoundedBufferTimedDelay.
@@ -233,12 +243,13 @@ public class REDUtility {
             } else if (innerEntity instanceof BoundedBufferNondeterministicDelay) {
 
                 // Because for BoundedBufferNondeterministicDelay, the port name
-                // is not modifiable. Thus we need to offer a mechanism to understand
+                // is not modifiable. Thus we need to offer a mechanism to
+                // understand
                 // the port name for the conjuncted signal.
                 // For example, in Sec---->BBNondeterministicDelay, we would use
                 // Sec as the incoming signal name.
                 //
-                // Decide output signal name 
+                // Decide output signal name
                 String outputSignalName = null;
                 Iterator outputConnectedPortList = ((BoundedBufferNondeterministicDelay) innerEntity).output
                         .connectedPortList().iterator();
@@ -351,10 +362,11 @@ public class REDUtility {
                             .next());
                 }
             } else if (innerEntity instanceof Clock) {
-                // Add up the name for the process. 
-                // Remember: we should use 1 as starting process (definition in RED)
+                // Add up the name for the process.
+                // Remember: we should use 1 as starting process (definition in
+                // RED)
 
-                //processModuleNameList.add(innerEntity.getName());
+                // processModuleNameList.add(innerEntity.getName());
 
                 String outputSignalName = null;
                 Iterator outputConnectedPortList = ((Clock) innerEntity).output
@@ -394,7 +406,7 @@ public class REDUtility {
             }
         }
 
-        // Lastly, combine the whole format based on the order of the 
+        // Lastly, combine the whole format based on the order of the
         // RED format.
 
         // First, attach a comment indicating the description.
@@ -406,7 +418,7 @@ public class REDUtility {
                 + "symbolic TCTL model-checker/simulator.\n\n");
         // Now retrieve the value in the processModuleNameList to understand
         // the corresponding name in the process. Also in RED, the first process
-        // starts at the number 1. 
+        // starts at the number 1.
         for (int i = 0; i < processModuleNameList.size(); i++) {
             returnREDFormat.append("Process " + String.valueOf(i + 1) + ": "
                     + processModuleNameList.get(i)._name + "\n");
@@ -505,12 +517,14 @@ public class REDUtility {
         return returnREDFormat;
     }
 
-    /** This function decides if the director of the current actor is DE.
-     *  If not, return false. This is because our current conversion to
-     *  CTA is only valid when the director is DE.
-     *  
-     *  @param model Model used for testing.
-     *  @return a boolean value indicating if the director is DE.
+    /**
+     * This function decides if the director of the current actor is DE. If not,
+     * return false. This is because our current conversion to CTA is only valid
+     * when the director is DE.
+     * 
+     * @param model
+     *                Model used for testing.
+     * @return a boolean value indicating if the director is DE.
      */
     public static boolean isValidModelForVerification(CompositeActor model) {
         Director director = ((CompositeActor) model).getDirector();
@@ -521,10 +535,11 @@ public class REDUtility {
         }
     }
 
-    /** This private function is used to decide the set of global 
-     *  synchronizers used in the entity. When we later return the set,
-     *  the system would use another set container to store the 
-     *  synchronizer to make sure that no duplication exists.
+    /**
+     * This private function is used to decide the set of global synchronizers
+     * used in the entity. When we later return the set, the system would use
+     * another set container to store the synchronizer to make sure that no
+     * duplication exists.
      * 
      * @param entity
      * @return
@@ -534,7 +549,8 @@ public class REDUtility {
             throws IllegalActionException {
         HashSet<String> returnVariableSet = new HashSet<String>();
 
-        // Note that BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay
+        // Note that BoundedBufferNondeterministicDelay extends
+        // BoundedBufferTimedDelay
         // Thus we only need to use one.
         if (entity instanceof FSMActor) {
 
@@ -550,7 +566,7 @@ public class REDUtility {
 
             // iterate
             while (!frontier.isEmpty()) {
-                // Pick a state from frontier. It seems that there isn't an 
+                // Pick a state from frontier. It seems that there isn't an
                 // easy way to pick an arbitrary entry from a HashMap, except
                 // through Iterator
                 Iterator<String> iterator = frontier.keySet().iterator();
@@ -605,7 +621,8 @@ public class REDUtility {
 
                                     String subGuardCondition = guardSplitExpression[i]
                                             .trim();
-                                    // Retrieve the left value of the inequality.
+                                    // Retrieve the left value of the
+                                    // inequality.
                                     String[] characterOfSubGuard = subGuardCondition
                                             .split("(>=)|(<=)|(==)|(!=)|[><]");
                                     // Here we may still have two cases:
@@ -617,9 +634,11 @@ public class REDUtility {
                                                 .trim().split("_isPresent");
 
                                         // When in a FSM, it has an edge showing
-                                        // XX_isPresent, we add up two synchronizers
+                                        // XX_isPresent, we add up two
+                                        // synchronizers
                                         // XX and ND_XX. XX is the signal from
-                                        // outside to the port, abd ND_XX represents
+                                        // outside to the port, abd ND_XX
+                                        // represents
                                         // the forwarded signal without delay.
                                         if (returnVariableSet.contains(sigs[0]) == false) {
                                             returnVariableSet.add(sigs[0]);
@@ -699,12 +718,14 @@ public class REDUtility {
         return returnVariableSet;
     }
 
-    /** This private function is used by the private function _translateFSMActor
-     *  to generate the set of signals used in the guard expression. Each of the
-     *  signal used by the guard expression would need to have a process representing
-     *  the port receiving the signal.
+    /**
+     * This private function is used by the private function _translateFSMActor
+     * to generate the set of signals used in the guard expression. Each of the
+     * signal used by the guard expression would need to have a process
+     * representing the port receiving the signal.
      * 
-     * @param actor The actor under analysis.
+     * @param actor
+     *                The actor under analysis.
      * @return Set of signals used in guard expressions in the FSMActor.
      * @throws IllegalActionException
      */
@@ -802,12 +823,15 @@ public class REDUtility {
         return returnVariableSet;
     }
 
-    /** This private function decides inner variables used in the actor.
-     *  It later perform a systematic scan to generate the initial rough
-     *  domain, and use a constant span to expand it.
+    /**
+     * This private function decides inner variables used in the actor. It later
+     * perform a systematic scan to generate the initial rough domain, and use a
+     * constant span to expand it.
      * 
-     * @param actor Actor under analysis.
-     * @param numSpan The size of the span to expand the variable domain.
+     * @param actor
+     *                Actor under analysis.
+     * @param numSpan
+     *                The size of the span to expand the variable domain.
      * @return The set of variables (variable names) used in the FSMActor.
      * @throws IllegalActionException
      */
@@ -828,7 +852,7 @@ public class REDUtility {
 
         // iterate
         while (!frontier.isEmpty()) {
-            // pick a state from frontier. It seems that there isn't an 
+            // pick a state from frontier. It seems that there isn't an
             // easy way to pick an arbitrary entry from a HashMap, except
             // through Iterator
             Iterator<String> iterator = frontier.keySet().iterator();
@@ -909,20 +933,13 @@ public class REDUtility {
                                         isTrue = true;
                                     }
                                     if (isTrue == false) {
-                                        int numberRetrival = 0;
-                                        boolean rvalueSingleNumber = true;
-                                        try {
-                                            numberRetrival = Integer
+                                        if (Pattern.matches("^-?\\d+$", rValue) == true) {
+                                            int numberRetrival = Integer
                                                     .parseInt(rValue);
-                                        } catch (Exception ex) {
-                                            rvalueSingleNumber = false;
-                                        }
-                                        if (rvalueSingleNumber == true) {
                                             // add it into the _variableInfo
                                             returnVariableSet
                                                     .add(characterOfSubGuard[0]
                                                             .trim());
-
                                             VariableInfo variable = (VariableInfo) _variableInfo
                                                     .get(characterOfSubGuard[0]
                                                             .trim());
@@ -978,42 +995,40 @@ public class REDUtility {
                     String[] splitExpression = expression.split(";");
                     for (int i = 0; i < splitExpression.length; i++) {
                         String[] characters = splitExpression[i].split("=");
-                        String lValue = characters[0].trim();
-                        String rValue;
-                        int numberRetrival = 0;
-                        boolean rvalueSingleNumber = true;
-                        try {
-                            rValue = characters[1].trim();
-                            numberRetrival = Integer.parseInt(rValue);
-                        } catch (Exception ex) {
-                            rvalueSingleNumber = false;
-                        }
-                        if (rvalueSingleNumber == true) {
-                            // add it into the _variableInfo
-                            VariableInfo variable = (VariableInfo) _variableInfo
-                                    .get(lValue);
-                            if (variable == null) {
-                                // Create a new one and insert all info.
-                                VariableInfo newVariable = new VariableInfo(
-                                        Integer.toString(numberRetrival),
-                                        Integer.toString(numberRetrival));
-                                _variableInfo.put(lValue, newVariable);
+                        if (characters.length >= 1) {
+                            String lValue = characters[0].trim();
+                            if (Pattern.matches("^-?\\d+$", characters[1]
+                                    .trim()) == true) {
+                                int numberRetrival = Integer
+                                        .parseInt(characters[1].trim());
+                                // add it into the _variableInfo
 
-                            } else {
-                                // modify the existing one
-                                if (Integer.parseInt(variable._maxValue) < numberRetrival) {
-                                    variable._maxValue = Integer
-                                            .toString(numberRetrival);
-                                }
-                                if (Integer.parseInt(variable._minValue) > numberRetrival) {
-                                    variable._minValue = Integer
-                                            .toString(numberRetrival);
-                                }
-                                _variableInfo.remove(lValue);
-                                _variableInfo.put(lValue, variable);
+                                VariableInfo variable = (VariableInfo) _variableInfo
+                                        .get(lValue);
+                                if (variable == null) {
+                                    // Create a new one and insert all info.
+                                    VariableInfo newVariable = new VariableInfo(
+                                            Integer.toString(numberRetrival),
+                                            Integer.toString(numberRetrival));
+                                    _variableInfo.put(lValue, newVariable);
 
+                                } else {
+                                    // modify the existing one
+                                    if (Integer.parseInt(variable._maxValue) < numberRetrival) {
+                                        variable._maxValue = Integer
+                                                .toString(numberRetrival);
+                                    }
+                                    if (Integer.parseInt(variable._minValue) > numberRetrival) {
+                                        variable._minValue = Integer
+                                                .toString(numberRetrival);
+                                    }
+                                    _variableInfo.remove(lValue);
+                                    _variableInfo.put(lValue, variable);
+
+                                }
                             }
                         }
+
                     }
                 }
 
@@ -1052,11 +1067,13 @@ public class REDUtility {
         return returnVariableSet;
     }
 
-    /** Perform an enumeration of the state in this actor and return the 
-     *  name of the states. It seems to have a better way to do this
-     *  (a mechanism to enumerate using existing member functions).
+    /**
+     * Perform an enumeration of the state in this actor and return the name of
+     * the states. It seems to have a better way to do this (a mechanism to
+     * enumerate using existing member functions).
      * 
-     * @param actor The actor under analysis
+     * @param actor
+     *                The actor under analysis
      * @return The set of states of the FSMActor.
      * @throws IllegalActionException
      */
@@ -1104,14 +1121,18 @@ public class REDUtility {
         return returnStateSet;
     }
 
-    /** This private function tries to generate all possible combinations
-     *  of string with length i with character 0 and 1. For example, for 
-     *  i = 2 it would generate {00, 01, 10, 11}. This is designed to invoke
-     *  recursively to achieve this goal.
+    /**
+     * This private function tries to generate all possible combinations of
+     * string with length i with character 0 and 1. For example, for i = 2 it
+     * would generate {00, 01, 10, 11}. This is designed to invoke recursively
+     * to achieve this goal.
      * 
-     * @param index The size of the index.
-     * @param paraEnumerateString Existing strings that need to be attached. 
-     * @return An list of all possible combination for char 0 and 1 of size index. 
+     * @param index
+     *                The size of the index.
+     * @param paraEnumerateString
+     *                Existing strings that need to be attached.
+     * @return An list of all possible combination for char 0 and 1 of size
+     *         index.
      */
     private static ArrayList<String> _enumerateString(int index,
             ArrayList<String> paraEnumerateString) {
@@ -1127,17 +1148,20 @@ public class REDUtility {
         return _enumerateString(index - 1, returnEnumerateString);
     }
 
-    /** This private function is used to generate the transition
-     *  description for a certain state in a certain actor. The output
-     *  format is CTA acceptable by model checker RED.
+    /**
+     * This private function is used to generate the transition description for
+     * a certain state in a certain actor. The output format is CTA acceptable
+     * by model checker RED.
      * 
-     * @param actor Actor under analysis
-     * @param state State under analysis
-     * @param variableSet 
-     * @param globalSynchronizerSet Set of useful synchronizers. There are some 
-     *                              synchronizers which is not useful. They are
-     *                              not connected to/from a valid actor where
-     *                              analysis is possible. 
+     * @param actor
+     *                Actor under analysis
+     * @param state
+     *                State under analysis
+     * @param variableSet
+     * @param globalSynchronizerSet
+     *                Set of useful synchronizers. There are some synchronizers
+     *                which is not useful. They are not connected to/from a
+     *                valid actor where analysis is possible.
      * @return A set of transition descriptions packed in a list.
      */
     private static ArrayList<REDTransitionBean> _generateTransition(
@@ -1176,20 +1200,25 @@ public class REDUtility {
                             // buffer.append(text);
                         }
 
-                        // Retrieve the variable used in the Kripke structure. 
+                        // Retrieve the variable used in the Kripke structure.
                         // Also analyze the guard expression to understand the
                         // possible value domain for the value to execute.
                         // 
                         // A guard expression would need to be separated into
-                        // separate sub-statements in order to estimate the boundary
-                        // of the variable. Note that we need to tackle cases where
+                        // separate sub-statements in order to estimate the
+                        // boundary
+                        // of the variable. Note that we need to tackle cases
+                        // where
                         // a>-1 and a<5 happen simultaneously. Also we expect to
                         // constrain the way that an end user can do for writing
-                        // codes. We do "not" expect him to write in the way like
+                        // codes. We do "not" expect him to write in the way
+                        // like
                         // -1<a.
                         // 
-                        // Also here we assume that every sub-guard expression is
-                        // connected using && but not || operator. But it is easy to
+                        // Also here we assume that every sub-guard expression
+                        // is
+                        // connected using && but not || operator. But it is
+                        // easy to
                         // modify the code such that it supports ||.
                         // 
 
@@ -1197,16 +1226,19 @@ public class REDUtility {
                         String outputAction = transition.outputActions
                                 .getExpression();
 
-                        // variableUsedInTransitionSet: Store variable names used in
+                        // variableUsedInTransitionSet: Store variable names
+                        // used in
                         // this transition as preconditions. If in the guard
-                        // expression, we have X<3 && Y>5, then X and Y are used as
+                        // expression, we have X<3 && Y>5, then X and Y are used
+                        // as
                         // variables in precondition and should be stored in the
                         // set "variableUsedInTransitionSet".
 
                         if ((guard != null) && !guard.trim().equals("")) {
                             if (hasAnnotation) {
                                 // FIXME: (2007/12/14 Patrick.Cheng) Currently I
-                                // don't know the meaning of annotation. Do nothing
+                                // don't know the meaning of annotation. Do
+                                // nothing
                                 // currently.
                             } else {
 
@@ -1220,7 +1252,8 @@ public class REDUtility {
                                                 .trim();
 
                                         // Retrieve the left value of the
-                                        // inequality. Here we may still have two
+                                        // inequality. Here we may still have
+                                        // two
                                         // cases for the lValue:
                                         // (1) XXX_isPresent (2) the normal case
                                         // (including "true").
@@ -1236,7 +1269,8 @@ public class REDUtility {
                                             // FIXME: (2008/02/07 Patrick.Cheng)
                                             // First case, synchronize usage.
                                             // Pgo_isPresent
-                                            // We add it into the list for transition.
+                                            // We add it into the list for
+                                            // transition.
                                             String[] signalName = characterOfSubGuard[0]
                                                     .trim().split("_isPresent");
                                             if (bean._signal.toString()
@@ -1249,12 +1283,16 @@ public class REDUtility {
                                             }
 
                                         } else {
-                                            // Split the expression, and rename the variable by adding up the
+                                            // Split the expression, and rename
+                                            // the variable by adding up the
                                             // name of the module.
 
-                                            // Check if the right value exists. We
-                                            // need to ward off cases like "true".
-                                            // This is achieved using try-catch and
+                                            // Check if the right value exists.
+                                            // We
+                                            // need to ward off cases like
+                                            // "true".
+                                            // This is achieved using try-catch
+                                            // and
                                             // retrieve the rValue from
                                             // characterOfSubGuard[1].
                                             boolean parse = true;
@@ -1266,28 +1304,27 @@ public class REDUtility {
                                                 parse = false;
                                             }
                                             if (parse == true) {
-                                                int numberRetrival = 0;
-                                                boolean rvalueSingleNumber = true;
-                                                try {
-                                                    numberRetrival = Integer
-                                                            .parseInt(rValue);
-                                                } catch (Exception ex) {
-                                                    rvalueSingleNumber = false;
-                                                }
-                                                if (rvalueSingleNumber == true) {
+                                                if (Pattern
+                                                        .matches("^-?\\d+$",
+                                                                rValue) == true) {
 
-                                                    // We need to understand what is
-                                                    // the operator of the value in
-                                                    // order to reason the bound of
+                                                    // We need to understand
+                                                    // what is
+                                                    // the operator of the value
+                                                    // in
+                                                    // order to reason the bound
+                                                    // of
                                                     // the variable for suitable
                                                     // transition.
 
                                                     if (Pattern.matches(
                                                             ".*==.*",
                                                             subGuardCondition)) {
-                                                        // equal than, restrict the
+                                                        // equal than, restrict
+                                                        // the
                                                         // set of all possible
-                                                        // values in the domain into
+                                                        // values in the domain
+                                                        // into
                                                         // one single value.
                                                         if (bean._preCondition
                                                                 .toString()
@@ -1461,102 +1498,109 @@ public class REDUtility {
                             for (int i = 0; i < splitExpression.length; i++) {
                                 String[] characters = splitExpression[i]
                                         .split("=");
-                                String lValue = characters[0].trim();
-                                String rValue = "";
-                                int numberRetrival = 0;
-                                boolean rvalueSingleNumber = true;
-                                try {
-                                    rValue = characters[1].trim();
-                                    numberRetrival = Integer.parseInt(rValue);
-                                } catch (Exception ex) {
-                                    rvalueSingleNumber = false;
-                                }
-                                if (rvalueSingleNumber == true) {
-
-                                    bean._postCondition.append(actor.getName()
-                                            + "_" + lValue + " = " + rValue
-                                            + ";");
-
-                                } else {
-                                    // The right hand side is actually complicated
-                                    // expression which needs to be carefully
-                                    // Designed for accepting various expression.
-                                    // If we expect to do this, it is necessary to
-                                    // construct a parse tree and
-                                    // evaluate the value.
-                                    // Currently let us assume that we are
-                                    // manipulating simple format
-                                    // a = a op constInt; or a = constInt;
-
-                                    if (Pattern.matches(".*[*].*", rValue)) {
-                                        //try {
-
-                                        String[] rValueOperends = rValue
-                                                .split("[*]");
-
+                                if (characters.length >= 1) {
+                                    String lValue = characters[0].trim();
+                                    String rValue = "";
+                                    if (Pattern.matches("^-?\\d+$",
+                                            characters[1].trim()) == true) {
+                                        rValue = characters[1].trim();
                                         bean._postCondition.append(actor
                                                 .getName()
                                                 + "_"
                                                 + lValue
                                                 + " = "
-                                                + actor.getName()
-                                                + "_"
-                                                + rValueOperends[0].trim()
-                                                + " * "
-                                                + rValueOperends[1].trim()
+                                                + rValue
                                                 + ";");
 
-                                    } else if (Pattern.matches(".*/.*", rValue)) {
-                                        //try {
-                                        String[] rValueOperends = rValue
-                                                .split("[/]");
+                                    } else {
+                                        // The right hand side is actually
+                                        // complicated
+                                        // expression which needs to be
+                                        // carefully
+                                        // Designed for accepting various
+                                        // expression.
+                                        // If we expect to do this, it is
+                                        // necessary
+                                        // to
+                                        // construct a parse tree and
+                                        // evaluate the value.
+                                        // Currently let us assume that we are
+                                        // manipulating simple format
+                                        // a = a op constInt; or a = constInt;
 
-                                        bean._postCondition.append(actor
-                                                .getName()
-                                                + "_"
-                                                + lValue
-                                                + " = "
-                                                + actor.getName()
-                                                + "_"
-                                                + rValueOperends[0].trim()
-                                                + " / "
-                                                + rValueOperends[1].trim()
-                                                + ";");
+                                        if (Pattern.matches(".*[*].*", rValue)) {
+                                            // try {
 
-                                    } else if (Pattern.matches(".*+.*", rValue)) {
-                                        //try {
-                                        String[] rValueOperends = rValue
-                                                .split("[+]");
+                                            String[] rValueOperends = rValue
+                                                    .split("[*]");
 
-                                        bean._postCondition.append(actor
-                                                .getName()
-                                                + "_"
-                                                + lValue
-                                                + " = "
-                                                + actor.getName()
-                                                + "_"
-                                                + rValueOperends[0].trim()
-                                                + " + "
-                                                + rValueOperends[1].trim()
-                                                + ";");
-                                    } else if (Pattern.matches(".*-.*", rValue)) {
-                                        //try {
-                                        String[] rValueOperends = rValue
-                                                .split("[-]");
+                                            bean._postCondition.append(actor
+                                                    .getName()
+                                                    + "_"
+                                                    + lValue
+                                                    + " = "
+                                                    + actor.getName()
+                                                    + "_"
+                                                    + rValueOperends[0].trim()
+                                                    + " * "
+                                                    + rValueOperends[1].trim()
+                                                    + ";");
 
-                                        bean._postCondition.append(actor
-                                                .getName()
-                                                + "_"
-                                                + lValue
-                                                + " = "
-                                                + actor.getName()
-                                                + "_"
-                                                + rValueOperends[0].trim()
-                                                + " - "
-                                                + rValueOperends[1].trim()
-                                                + ";");
+                                        } else if (Pattern.matches(".*/.*",
+                                                rValue)) {
+                                            // try {
+                                            String[] rValueOperends = rValue
+                                                    .split("[/]");
+
+                                            bean._postCondition.append(actor
+                                                    .getName()
+                                                    + "_"
+                                                    + lValue
+                                                    + " = "
+                                                    + actor.getName()
+                                                    + "_"
+                                                    + rValueOperends[0].trim()
+                                                    + " / "
+                                                    + rValueOperends[1].trim()
+                                                    + ";");
+
+                                        } else if (Pattern.matches(".*+.*",
+                                                rValue)) {
+                                            // try {
+                                            String[] rValueOperends = rValue
+                                                    .split("[+]");
+
+                                            bean._postCondition.append(actor
+                                                    .getName()
+                                                    + "_"
+                                                    + lValue
+                                                    + " = "
+                                                    + actor.getName()
+                                                    + "_"
+                                                    + rValueOperends[0].trim()
+                                                    + " + "
+                                                    + rValueOperends[1].trim()
+                                                    + ";");
+                                        } else if (Pattern.matches(".*-.*",
+                                                rValue)) {
+                                            // try {
+                                            String[] rValueOperends = rValue
+                                                    .split("[-]");
+
+                                            bean._postCondition.append(actor
+                                                    .getName()
+                                                    + "_"
+                                                    + lValue
+                                                    + " = "
+                                                    + actor.getName()
+                                                    + "_"
+                                                    + rValueOperends[0].trim()
+                                                    + " - "
+                                                    + rValueOperends[1].trim()
+                                                    + ";");
+                                        }
+
                                     }
-
                                 }
                             }
                         }
@@ -1594,9 +1638,10 @@ public class REDUtility {
 
     }
 
-    /** A private function used as to generate variable initial values for the
-     * initial variable set. The current approach is to retrieve from
-     * the parameter specified in the actor.  
+    /**
+     * A private function used as to generate variable initial values for the
+     * initial variable set. The current approach is to retrieve from the
+     * parameter specified in the actor.
      * 
      * @param actor
      * @param variableSet
@@ -1604,81 +1649,65 @@ public class REDUtility {
      */
     private static HashMap<String, String> _retrieveVariableInitialValue(
             FSMActor actor, HashSet<String> variableSet) {
+        // One problem regarding the initial value retrieval from parameters
+        // is that when retrieving parameters, the return value would consist
+        // of some undesirable infomation. We need to use split to do further
+        // analysis.
+
         // FIXME: One potential problem happens when a user forgets
-        //        to specify the parameter. We need to establish a
-        //        mechanism to report this case (it is not difficult). 
+        // to specify the parameter. We need to establish a
+        // mechanism to report this case (it is not difficult).
+
         HashMap<String, String> returnMap = new HashMap<String, String>();
         Iterator<String> it = variableSet.iterator();
         while (it.hasNext()) {
             String attribute = it.next();
-            String property = actor.getAttribute(attribute).description();
-            // System.out.print(property);
+            String property = null;
+            boolean initialValueExist = true;
+            String[] propertyList = null;
+            try {
+                propertyList = actor.getAttribute(attribute).description()
+                        .split(" ");
+            } catch (Exception ex) {
+                initialValueExist = false;
+            }
+            if (initialValueExist == true) {
+                property = propertyList[propertyList.length - 1];
+            } else {
+                property = "";
+            }
+
+            // Retrieve the value of the variable. Property contains
+            // a huge trunk of string content, and only the last variable is
+            // useful.
+
             returnMap.put(attribute, property);
         }
         return returnMap;
 
-        //HashMap<String, String> returnMap = new HashMap<String, String>();
-        //try {
-        //
-        //    ComponentPort outPort = actor.getInitialState().outgoingPort;
-        //    Iterator transitions = outPort.linkedRelationList().iterator();
-        //    while (transitions.hasNext()) {
-        //        Transition transition = (Transition) transitions.next();
-        //        String setActionExpression = transition.setActions
-        //                .getExpression();
-        //        if ((setActionExpression != null)
-        //                && !setActionExpression.trim().equals("")) {
-        //            // Retrieve possible value of the variable
-        //            String[] splitExpression = setActionExpression.split(";");
-        //            for (int i = 0; i < splitExpression.length; i++) {
-        //                String[] characters = splitExpression[i].split("=");
-        //                String lValue = characters[0].trim();
-        //                String rValue = "";
-        //                int numberRetrival = 0;
-        //                boolean rvalueSingleNumber = true;
-        //                try {
-        //                    rValue = characters[1].trim();
-        //                    numberRetrival = Integer.parseInt(rValue);
-        //                } catch (Exception ex) {
-        //                    rvalueSingleNumber = false;
-        //                }
-        //                if (rvalueSingleNumber == true) {
-        //                    // see if the lValue is in variableSet
-        //                    if (variableSet.contains(lValue)) {
-        //                        returnMap.put(lValue, rValue);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //
-        //    }
-        //} catch (Exception ex) {
-        //
-        //}
-        //return returnMap;
-
     }
 
     /**
-     *  This is an experimental function which tries to analyze a ModalModel
-     *  and flatten it into a single FSMActor. The purpose of implementation is 
-     *  to understand the underlying structure of the ModalModel and Refinement,
-     *  so that in the future we may have better implementation. Also it would 
-     *  be suitable for the exhibition of BEAR 2008. 
-     *  
-     *  In our current implementation we only allow one additional layer for 
-     *  the refinement; an arbitrary layer of refinement would lead to state 
-     *  explosion of the system. Also the additional layer must be a finite 
-     *  state refinement so that the conversion is possible. But it is easy to
-     *  expand this functionality into multiple layer. 
-     *  
-     *  Note that in the current context of ModalModel, when state machine
-     *  refinement is used, it is not possible to generate further refinement,
-     *  meaning that the current implementation is powerful enough to deal
-     *  with state refinement.
-     *  
-     *  @param model Whole System under analysis.
-     *  @return Equivalent FSMActor for later analysis.
+     * This is an experimental function which tries to analyze a ModalModel and
+     * flatten it into a single FSMActor. The purpose of implementation is to
+     * understand the underlying structure of the ModalModel and Refinement, so
+     * that in the future we may have better implementation. Also it would be
+     * suitable for the exhibition of BEAR 2008.
+     * 
+     * In our current implementation we only allow one additional layer for the
+     * refinement; an arbitrary layer of refinement would lead to state
+     * explosion of the system. Also the additional layer must be a finite state
+     * refinement so that the conversion is possible. But it is easy to expand
+     * this functionality into multiple layer.
+     * 
+     * Note that in the current context of ModalModel, when state machine
+     * refinement is used, it is not possible to generate further refinement,
+     * meaning that the current implementation is powerful enough to deal with
+     * state refinement.
+     * 
+     * @param model
+     *                Whole System under analysis.
+     * @return Equivalent FSMActor for later analysis.
      */
     private static FSMActor _rewriteModalModelWithStateRefinementToFSMActor(
             ModalModel modelmodel) throws IllegalActionException,
@@ -1686,14 +1715,14 @@ public class REDUtility {
 
         // The algorithm is roughly constructed as follows:
         //  
-        //  Step 1: For each state, check if there is refinement. 
-        //          If there is refinement, then jump into the refinement.
-        //          Copy the content of the refinement into the new FSMActor.
+        // Step 1: For each state, check if there is refinement.
+        // If there is refinement, then jump into the refinement.
+        // Copy the content of the refinement into the new FSMActor.
         //          
-        //  Step 2: Scan all transition from the original actor; if there is a 
-        //          transition from state A to state B with condition C, then
-        //          for every refinement state in A, there is a transition
-        //          to the initial refinement state of B with transition C.   
+        // Step 2: Scan all transition from the original actor; if there is a
+        // transition from state A to state B with condition C, then
+        // for every refinement state in A, there is a transition
+        // to the initial refinement state of B with transition C.
         //
         // Note that we try to generate a similar FSMActor instead of modifying
         // existing one; thus we offer utility functions which performs deep
@@ -1701,7 +1730,7 @@ public class REDUtility {
 
         FSMActor model = modelmodel.getController();
         FSMActor returnFSMActor = new FSMActor(model.workspace());
-        //try {
+        // try {
         returnFSMActor.setName(modelmodel.getName());
         Iterator states = model.entityList().iterator();
         while (states.hasNext()) {
@@ -1712,7 +1741,7 @@ public class REDUtility {
                 if (refinementList == null) {
                     // Copy the state into the returnFSMActor.
                     // This is done in a reverse way, that is,
-                    // set the container of the state instead of 
+                    // set the container of the state instead of
                     // adding component of a FSMActor.
                     // Interesting :)
                     State newState = (State) state.clone();
@@ -1726,7 +1755,7 @@ public class REDUtility {
                 } else if (refinementList.equalsIgnoreCase("")) {
                     // Copy the state into the returnFSMActor.
                     // This is done in a reverse way, that is,
-                    // set the container of the state instead of 
+                    // set the container of the state instead of
                     // adding component of a FSMActor.
                     // Interesting :)
                     State newState = (State) state.clone();
@@ -1753,17 +1782,22 @@ public class REDUtility {
                             if (innerActor instanceof FSMActor) {
 
                                 // This is what we want.
-                                // Retrieve all states and place into returnFSMActor                                     
+                                // Retrieve all states and place into
+                                // returnFSMActor
                                 Iterator innerStates = ((FSMActor) innerActor)
                                         .entityList().iterator();
                                 while (innerStates.hasNext()) {
                                     NamedObj innerState = (NamedObj) innerStates
                                             .next();
                                     if (innerState instanceof State) {
-                                        // We need to give it a new name based on our criteria.
-                                        // For example state S has refinement, then 
-                                        // a state S' in the refinement should be 
-                                        // renamed as S-S' for the analysis usage.
+                                        // We need to give it a new name based
+                                        // on our criteria.
+                                        // For example state S has refinement,
+                                        // then
+                                        // a state S' in the refinement should
+                                        // be
+                                        // renamed as S-S' for the analysis
+                                        // usage.
 
                                         State newState = (State) innerState
                                                 .clone();
@@ -1784,7 +1818,8 @@ public class REDUtility {
                                     }
                                 }
 
-                                // We also need to glue transitions into the system.
+                                // We also need to glue transitions into the
+                                // system.
 
                                 Iterator innerTransitions = ((FSMActor) innerActor)
                                         .relationList().iterator();
@@ -1808,7 +1843,8 @@ public class REDUtility {
                                             .getName()
                                             + "-" + innerTransition.getName());
                                     // We need to attach states to it.
-                                    // The newly attached states should be in returnFSMActor.
+                                    // The newly attached states should be in
+                                    // returnFSMActor.
                                     Iterator returnFSMActorStates = returnFSMActor
                                             .entityList().iterator();
                                     State sCorresponding = null;
@@ -1866,7 +1902,8 @@ public class REDUtility {
                                 }
 
                             } else {
-                                // Currently this is beyond our scope for analysis.
+                                // Currently this is beyond our scope for
+                                // analysis.
                                 throw new IllegalActionException(
                                         "It is currently allowed to have general refinement of states.");
                             }
@@ -1885,11 +1922,11 @@ public class REDUtility {
         // However, the transition is not complete. This is because we
         // haven't establish the connection of between inner actors.
         // 
-        // For each state S in the inner actor, if its upper state A has 
-        // a transition from A to another state B, then S must establish 
-        // a transition which connects itself with B; if B has refinements, 
-        // then S must establish a connection which connects to B's 
-        // refinement initial state. 
+        // For each state S in the inner actor, if its upper state A has
+        // a transition from A to another state B, then S must establish
+        // a transition which connects itself with B; if B has refinements,
+        // then S must establish a connection which connects to B's
+        // refinement initial state.
         //  
 
         Iterator Transitions = model.relationList().iterator();
@@ -1901,7 +1938,7 @@ public class REDUtility {
             State source = ((Transition) transition).sourceState();
             State destination = ((Transition) transition).destinationState();
 
-            // If the source state has refinement, then every state in the 
+            // If the source state has refinement, then every state in the
             // refinement must have a state which connects to the destination;
             // if the destination has refinements, then all of these newly added
             // transitions must be connected to the refinement initial state.
@@ -1909,7 +1946,7 @@ public class REDUtility {
             TypedActor[] dActors = ((State) destination).getRefinement();
             if ((sActors == null) && (dActors == null)) {
 
-                // We only need to find the corresponding node in the 
+                // We only need to find the corresponding node in the
                 // system and set up a connection for that.
 
                 Iterator returnFSMActorStates = returnFSMActor.entityList()
@@ -1951,9 +1988,9 @@ public class REDUtility {
 
             } else if ((sActors == null) && (dActors != null)) {
                 // We need to retrieve the source and connect with
-                // the inner initial state of destination. 
+                // the inner initial state of destination.
                 //
-                // First retrieve the inner model initial state of 
+                // First retrieve the inner model initial state of
                 // destination.
                 TypedActor dInnerActor = dActors[0];
                 if (!(dInnerActor instanceof FSMActor)) {
@@ -2071,14 +2108,14 @@ public class REDUtility {
 
             } else {
                 // Do the combination of the previous two cases.
-                // First retrieve the inner initial state 
+                // First retrieve the inner initial state
 
                 TypedActor sInnerActor = null;
                 TypedActor dInnerActor = null;
-                if(sActors[0]!= null){ 
+                if (sActors[0] != null) {
                     sInnerActor = sActors[0];
                 }
-                if(dActors[0]!= null){ 
+                if (dActors[0] != null) {
                     dInnerActor = dActors[0];
                 }
 
@@ -2100,7 +2137,8 @@ public class REDUtility {
                             Transition newTransition = (Transition) transition
                                     .clone(model.workspace());
                             newTransition.unlinkAll();
-                            // Find the corresponding State in the returnFSMActor
+                            // Find the corresponding State in the
+                            // returnFSMActor
                             Iterator returnFSMActorStates = returnFSMActor
                                     .entityList().iterator();
                             State sCorresponding = null;
@@ -2154,38 +2192,41 @@ public class REDUtility {
 
         }
 
-        //} catch (Exception ex) {
-        //    ex.printStackTrace();
-        //}
+        // } catch (Exception ex) {
+        // ex.printStackTrace();
+        // }
 
         return returnFSMActor;
     }
 
-    /** This is an utility function which performs the translation of a single
-     *  clock actor into the format of communicating timed automata (CTA) 
-     *  acceptable by model checker RED.
+    /**
+     * This is an utility function which performs the translation of a single
+     * clock actor into the format of communicating timed automata (CTA)
+     * acceptable by model checker RED.
      * 
-     * @param clockActor The actor which requires to be converted.
-     * @param outputSignalName The name of the output signal. This must 
-     *                         be derived externally.
+     * @param clockActor
+     *                The actor which requires to be converted.
+     * @param outputSignalName
+     *                The name of the output signal. This must be derived
+     *                externally.
      * @return clock description acceptable by model checker RED.
      * @throws IllegalActionException
      */
     private static REDSingleEntityBean _translateClockActor(Clock clockActor,
             String outputSignalName) throws IllegalActionException {
 
-        //REDSingleEntityBean returnBean = new REDSingleEntityBean();
+        // REDSingleEntityBean returnBean = new REDSingleEntityBean();
 
         // If we expect to convert a clock into a timed automata,
         // we need to have the following information from the clockActor:
-        // (1) period: 
+        // (1) period:
         // (2) numberOfCycles: UNBOUNDED means no limit on it.
-        //     If it is not unbounded, we need to set up a counter
-        //     to set the number of emit signals
+        // If it is not unbounded, we need to set up a counter
+        // to set the number of emit signals
         // (3) stopTime: Infinity means the clock would not stop
         // 
-        // Also, we need to retrieve the information for the name of 
-        // the signal which the receiver receives. 
+        // Also, we need to retrieve the information for the name of
+        // the signal which the receiver receives.
         // This (outputSignalName) should be analyzed by callers and
         // pass to this function.
         // 
@@ -2278,7 +2319,7 @@ public class REDUtility {
         } else {
             // We need to count on number of cycles.
             // We use a integer number to store the number of cycles
-            // When the system reaches the number, it would go to idol 
+            // When the system reaches the number, it would go to idol
             // state.
             if (sStopTime.equalsIgnoreCase("Infinity")) {
 
@@ -2409,14 +2450,22 @@ public class REDUtility {
 
         // Determine the number of ports required and specify their names.
         // Note that some input signals might be useless; this can be found
-        // in the mismatch of 
+        // in the mismatch of
         HashSet<String> guardSignalSet = _decideGuardSignalVariableSet(actor);
         Iterator<String> it = guardSignalSet.iterator();
         while (it.hasNext()) {
-            // mode CarLightNormal_Port_Sec (true) { 
-            //    when ?Sec (CarLightNormal_NumberOfSignals_Sec < CARLIGHTNORMAL_BUFFER_SIZE) may CarLightNormal_NumberOfSignals_Sec = CarLightNormal_NumberOfSignals_Sec + 1; goto CarLightNormal_Port_Sec; 
-            //    when !ND_Sec (CarLightNormal_NumberOfSignals_Sec > 0) may CarLightNormal_NumberOfSignals_Sec = CarLightNormal_NumberOfSignals_Sec - 1; goto CarLightNormal_Port_Sec; 
-            //    when ?Sec (CarLightNormal_NumberOfSignals_Sec == CARLIGHTNORMAL_BUFFER_SIZE) may goto Buffer_Overflow; 
+            // mode CarLightNormal_Port_Sec (true) {
+            // when ?Sec (CarLightNormal_NumberOfSignals_Sec <
+            // CARLIGHTNORMAL_BUFFER_SIZE) may
+            // CarLightNormal_NumberOfSignals_Sec =
+            // CarLightNormal_NumberOfSignals_Sec + 1; goto
+            // CarLightNormal_Port_Sec;
+            // when !ND_Sec (CarLightNormal_NumberOfSignals_Sec > 0) may
+            // CarLightNormal_NumberOfSignals_Sec =
+            // CarLightNormal_NumberOfSignals_Sec - 1; goto
+            // CarLightNormal_Port_Sec;
+            // when ?Sec (CarLightNormal_NumberOfSignals_Sec ==
+            // CARLIGHTNORMAL_BUFFER_SIZE) may goto Buffer_Overflow;
             // }
             String signalName = it.next();
             // Add this signal to the bean.
@@ -2469,26 +2518,26 @@ public class REDUtility {
 
         // Enumerate all states in the FmvAutomaton
         HashSet<State> frontier = null; // = new HashSet<State>();
-        //try {
+        // try {
         frontier = _enumerateStateSet(actor);
-        //} catch (Exception exception) {
+        // } catch (Exception exception) {
 
-        //}
+        // }
 
         // Decide variables encoded in the Kripke Structure.
         // Note that here the variable only contains inner variables.
         // 
         HashSet<String> variableSet = null; // = new HashSet<String>();
         HashMap<String, String> initialValueSet = null;
-        //try {
+        // try {
         // Enumerate all variables used in the Kripke structure
         int numSpan = Integer.parseInt(span);
         variableSet = _decideVariableSet(actor, numSpan);
         initialValueSet = _retrieveVariableInitialValue(actor, variableSet);
-        //} catch (Exception exception) {
-        //    throw new IllegalActionException("REDUtility: _translateFSMActor():"
-        //            + exception.getMessage());
-        //}
+        // } catch (Exception exception) {
+        // throw new IllegalActionException("REDUtility: _translateFSMActor():"
+        // + exception.getMessage());
+        // }
 
         if (variableSet != null) {
             // Add up variable into the variable.
@@ -2512,7 +2561,7 @@ public class REDUtility {
         Iterator<State> ite = frontier.iterator();
         while (ite.hasNext()) {
             State state = (State) ite.next();
-            //mode PedestrianLightNormal_State_Pgreen (true) {
+            // mode PedestrianLightNormal_State_Pgreen (true) {
             bean._moduleDescription.append("mode " + actor.getName().trim()
                     + "_State_" + state.getName().trim() + " ( true ) { \n");
 
@@ -2632,13 +2681,13 @@ public class REDUtility {
             String inputSignalName, String outputSignalName)
             throws IllegalActionException {
         // If we expect to convert a TimedDelayedActor into a timed automata,
-        // we need to have the following information from the 
+        // we need to have the following information from the
         // BoundedBufferTimedDelay actor:
-        // (1) delay time: 
-        // (2) size of buffer: 
+        // (1) delay time:
+        // (2) size of buffer:
         // 
-        // Also, we need to retrieve the information for the name of 
-        // input and output signals. These (inputSignalName, outputSignalName) 
+        // Also, we need to retrieve the information for the name of
+        // input and output signals. These (inputSignalName, outputSignalName)
         // should be analyzed by callers and pass to this function.
         // 
 
@@ -2650,12 +2699,12 @@ public class REDUtility {
 
         // /* Process name: TimedDelay1 */
         // mode TimedDelay1_S0 (true) {
-        //   when ?Pgo (true) may x1 = 0; goto TimedDelay1_S0; 
+        // when ?Pgo (true) may x1 = 0; goto TimedDelay1_S0;
         // }
         //
         // mode TimedDelay1_S1 (TimedDelay1_C1 <= TIMEDDELAY1_DELAY) {
-        //   when !D_Pgo (TimedDelay1_C1 == 1) may goto TimedDelay1_S1; 
-        //   when ?Pgo (true) may goto Buffer_Overflow;
+        // when !D_Pgo (TimedDelay1_C1 == 1) may goto TimedDelay1_S1;
+        // when ?Pgo (true) may goto Buffer_Overflow;
         // }
 
         REDSingleEntityBean bean = new REDSingleEntityBean();
@@ -2672,7 +2721,7 @@ public class REDUtility {
         }
         innerBean._initialStateDescription = str.toString();
         bean._nameInitialState = innerBean;
-        // Based on different buffer size, we need to generate the delayedActor 
+        // Based on different buffer size, we need to generate the delayedActor
         // which represents the buffer situation.
         // For a delayedActor with buffer size 1, the we need two states:
         // delayedActor_0 to represent no token.
@@ -2688,10 +2737,10 @@ public class REDUtility {
 
         }
 
-        // Generate strings with arbitrary combination of 0 and 1s of fixed 
+        // Generate strings with arbitrary combination of 0 and 1s of fixed
         // length bufferSize. For the case of buffer size is 3,
         // then we generate 000, 001, 010, 011, 100, 101, 110, 111.
-        // These separate numbers would represent different states 
+        // These separate numbers would represent different states
         // indicating the status of buffers.
 
         ArrayList<String> initial = new ArrayList<String>();
@@ -2718,12 +2767,16 @@ public class REDUtility {
 
                         // We don't need to add clock constraints.
 
-                        // when ?inputSignal(TimedDelay2_Ci <= TIMEDDELAY2_DELAY) may TimedDelay2_Ci = 0; goto TimedDelay2_SXX1;
+                        // when ?inputSignal(TimedDelay2_Ci <=
+                        // TIMEDDELAY2_DELAY) may TimedDelay2_Ci = 0; goto
+                        // TimedDelay2_SXX1;
                         //
                         // Note that we are not setting all clocks.
                         // Instead, we would set up only one clock.
-                        // For example, in 1(C0)0(C1)0(C2), we would only set up C2.
-                        // In 0(C0)0(C1)1(C2), we would only set up C1, but not C0.
+                        // For example, in 1(C0)0(C1)0(C2), we would only set up
+                        // C2.
+                        // In 0(C0)0(C1)1(C2), we would only set up C1, but not
+                        // C0.
                         if (clockAssigned == false) {
                             char[] newStateContent = content.toCharArray();
                             newStateContent[i] = '1';
@@ -2755,7 +2808,8 @@ public class REDUtility {
                                             + "_DELAY ");
                         }
 
-                        // when !D_Pgo (TimedDelay2_C1 == TIMEDDELAY2_DELAY) may goto TimedDelay2_S00;
+                        // when !D_Pgo (TimedDelay2_C1 == TIMEDDELAY2_DELAY) may
+                        // goto TimedDelay2_S00;
                         char[] newStateContent = content.toCharArray();
                         newStateContent[i] = '0';
                         StateTransitionCondition.append("    when !"
@@ -2768,7 +2822,8 @@ public class REDUtility {
                                 + String.valueOf(newStateContent) + "; \n");
                         if (i == 0) {
                             if (content.contains("0") == false) {
-                                // All true cases. then we need to represent one case
+                                // All true cases. then we need to represent one
+                                // case
                                 // for overflow.
                                 StateTransitionCondition
                                         .append("    when ?"
@@ -2795,16 +2850,20 @@ public class REDUtility {
         return bean;
     }
 
-    /** This is an utility function which performs the translation of a single
-     *  TimedDelay actor into the format of communicating timed automata (CTA) 
-     *  acceptable by model checker RED.
+    /**
+     * This is an utility function which performs the translation of a single
+     * TimedDelay actor into the format of communicating timed automata (CTA)
+     * acceptable by model checker RED.
      * 
-     * @param delayedActor actor which needs to be converted
-     * @param inputSignalName The name of the input signal. This must 
-     *                         be derived externally.
-     * @param outputSignalName The name of the output signal. This must 
-     *                         be derived externally.
-     * @return description of the TimedDelayActor acceptable by model checker 
+     * @param delayedActor
+     *                actor which needs to be converted
+     * @param inputSignalName
+     *                The name of the input signal. This must be derived
+     *                externally.
+     * @param outputSignalName
+     *                The name of the output signal. This must be derived
+     *                externally.
+     * @return description of the TimedDelayActor acceptable by model checker
      *         RED.
      * @throws IllegalActionException
      */
@@ -2812,14 +2871,15 @@ public class REDUtility {
             BoundedBufferTimedDelay delayedActor, String inputSignalName,
             String outputSignalName) throws IllegalActionException {
 
-        // If we expect to convert a BoundedBufferTimedDelayedActor into a timed automata,
-        // we need to have the following information from the 
+        // If we expect to convert a BoundedBufferTimedDelayedActor into a timed
+        // automata,
+        // we need to have the following information from the
         // BoundedBufferTimedDelay actor:
-        // (1) delay time: 
-        // (2) size of buffer: 
+        // (1) delay time:
+        // (2) size of buffer:
         // 
-        // Also, we need to retrieve the information for the name of 
-        // input and output signals. These (inputSignalName, outputSignalName) 
+        // Also, we need to retrieve the information for the name of
+        // input and output signals. These (inputSignalName, outputSignalName)
         // should be analyzed by callers and pass to this function.
         // 
 
@@ -2836,7 +2896,7 @@ public class REDUtility {
 
         REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
         innerBean._name = delayedActor.getName().trim();
-        //innerBean._initialStateDescription = 
+        // innerBean._initialStateDescription =
         StringBuffer str = new StringBuffer(delayedActor.getName().trim()
                 + "_S");
         for (int i = 0; i < bufferSize; i++) {
@@ -2845,7 +2905,7 @@ public class REDUtility {
         innerBean._initialStateDescription = str.toString();
         bean._nameInitialState = innerBean;
 
-        // Based on different buffer size, we need to generate the delayedActor 
+        // Based on different buffer size, we need to generate the delayedActor
         // which represents the buffer situation.
         // For a delayedActor with buffer size 1, the we need two states:
         // delayedActor_0 to represent no token.
@@ -2861,10 +2921,10 @@ public class REDUtility {
 
         }
 
-        // Generate strings with arbitrary combination of 0 and 1s of fixed 
+        // Generate strings with arbitrary combination of 0 and 1s of fixed
         // length bufferSize. For the case of buffer size is 3,
         // then we generate 000, 001, 010, 011, 100, 101, 110, 111.
-        // These separate numbers would represent different states 
+        // These separate numbers would represent different states
         // indicating the status of buffers.
 
         ArrayList<String> initial = new ArrayList<String>();
@@ -2891,12 +2951,16 @@ public class REDUtility {
 
                         // We don't need to add clock constraints.
 
-                        // when ?inputSignal(TimedDelay2_Ci <= TIMEDDELAY2_DELAY) may TimedDelay2_Ci = 0; goto TimedDelay2_SXX1;
+                        // when ?inputSignal(TimedDelay2_Ci <=
+                        // TIMEDDELAY2_DELAY) may TimedDelay2_Ci = 0; goto
+                        // TimedDelay2_SXX1;
                         //
                         // Note that we are not setting all clocks.
                         // Instead, we would set up only one clock.
-                        // For example, in 1(C0)0(C1)0(C2), we would only set up C2.
-                        // In 0(C0)0(C1)1(C2), we would only set up C1, but not C0.
+                        // For example, in 1(C0)0(C1)0(C2), we would only set up
+                        // C2.
+                        // In 0(C0)0(C1)1(C2), we would only set up C1, but not
+                        // C0.
                         if (clockAssigned == false) {
                             char[] newStateContent = content.toCharArray();
 
@@ -2929,7 +2993,8 @@ public class REDUtility {
                                             + "_DELAY ");
                         }
 
-                        // when !D_Pgo (TimedDelay2_C1 == TIMEDDELAY2_DELAY) may goto TimedDelay2_S00;
+                        // when !D_Pgo (TimedDelay2_C1 == TIMEDDELAY2_DELAY) may
+                        // goto TimedDelay2_S00;
                         char[] newStateContent = content.toCharArray();
                         newStateContent[i] = '0';
                         StateTransitionCondition.append("    when !"
@@ -2942,7 +3007,8 @@ public class REDUtility {
                                 + String.valueOf(newStateContent) + "; \n");
                         if (i == 0) {
                             if (content.contains("0") == false) {
-                                // All true cases. then we need to represent one case
+                                // All true cases. then we need to represent one
+                                // case
                                 // for overflow.
                                 StateTransitionCondition
                                         .append("    when ?"
@@ -3014,11 +3080,11 @@ public class REDUtility {
     // // inner class ////
     private static class REDModuleNameInitialBean {
         private REDModuleNameInitialBean() {
-            
+
         }
 
-        private String  _name = new String("");
-        private String _initialStateDescription = new String("");
+        private String _name = "";
+        private String _initialStateDescription = "";
     }
 
     // /////////////////////////////////////////////////////////////////

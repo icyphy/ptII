@@ -632,7 +632,7 @@ public class MathematicalModelConverter extends Attribute {
                         + childName;
                 File filePath = new File(childPath);
                 if (filePath.exists() && filePath.isFile()) {
-                    filePath.delete();
+                    boolean isDeleted = filePath.delete();
                 } else if (filePath.exists() && filePath.isDirectory()) {
                     _deleteFolder(filePath);
                 }
