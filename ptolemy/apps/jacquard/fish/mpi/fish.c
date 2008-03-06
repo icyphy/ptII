@@ -132,14 +132,16 @@ main(int argc, char **argv)
     int mesTag = 0;
     MPI_Request *req;
     for (k = 1; k < n_proc; ++k) {
+	//printf("n_fish_proc[%d], %d\n", k, n_fish_proc[k]);
 	    MPI_Isend(fishProc[k], n_fish_proc[k], fishtype, k, mesTag, comm, req);
     }
   } else {
+    MPI_Status status;
     // Processors of rank != 0 receives.
-    MPI_Recv( local_fish, n_fish, fishtype, 0, MPI_ANY_TAG, comm, MPI_STATUS_IGNORE);
-    n_local_fish = sizeof(local_fish);
+    MPI_Recv( local_fish, n_fish, fishtype, 0, MPI_ANY_TAG, comm, &status);
+    MPI_Get_count(&status, fishtype, &n_local_fish);
   }
-  printf("rank, n_local_fish: %d, %d\n", rank, n_local_fish);
+  printf("rank[%d], n_local_fish = %d\n", rank, n_local_fish);
   /*
   MPI_Scatterv (fish, n_fish_split, fish_off, fishtype,
 		local_fish, n_local_fish, fishtype,
@@ -152,6 +154,9 @@ main(int argc, char **argv)
 #endif
 
   start_mpi_timer(&total_timer);
+
+int iter= 0;
+int dbg = 0;
 
   for (output_time = 0.0, curr_time = 0.0, steps = 0;
        curr_time <= end_time && steps < max_steps;
@@ -188,24 +193,25 @@ main(int argc, char **argv)
     rankNeighbor[5] = rank + row - 1;
     rankNeighbor[6] = rank + row;
     rankNeighbor[7] = rank + row + 1;
-
     // Set aside buffer for fish received from other processes.
     fish_t impact_fish[NUM_NEIGHBOR][n_fish];
+    int n_impact_fish[NUM_NEIGHBOR];
 
 /*
     for (j = 0; j < NUM_NEIGHBOR; ++j) {
         //FIXME: which neighbors does not exist?
         if (rankNeighbor[j] >= 0) {
-            MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[j], MPI_ANY_TAG, comm, sendReqArray);
-            MPI_Irecv(impact_fish, n_fish, fishtype, rankNeighbor[NUM_NEIGHBOR - j], MPI_ANY_TAG, comm, sendReqArray);
+            MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[j], MPI_ANY_TAG, comm, &sendReqArray);
+            MPI_Irecv(impact_fish, n_fish, fishtype, rankNeighbor[NUM_NEIGHBOR - j], MPI_ANY_TAG, comm, &sendReqArray);
             MPI_Wait(recvReq, MPI_STATUS_IGNORE);
             interact_fish_mpi(local_fish, n_local_fish, impact_fish, sizeof(impact_fish));
         }
     }
 */
 
-    MPI_Request sendReqArray[NUM_NEIGHBOR - 1];
-    MPI_Request recvReqArray[NUM_NEIGHBOR - 1];
+    MPI_Request sendReqArray[NUM_NEIGHBOR];
+    MPI_Request recvReqArray[NUM_NEIGHBOR];
+    MPI_Status status[NUM_NEIGHBOR];
     int mesTag = 0;
 
     assert(n_proc >= 9);
@@ -214,7 +220,7 @@ main(int argc, char **argv)
     // sendrecv from neighbor 0, 7
     if (!(rank < column) && !(rank % column == 0)) {
         // neighbor 0
-        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[0], mesTag, comm, sendReqArray[0]);
+        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[0], mesTag, comm, &sendReqArray[0]);
         // neighbor 7
         MPI_Irecv(impact_fish[0], n_fish, fishtype, rankNeighbor[0], MPI_ANY_TAG, comm, &recvReqArray[0]);
     }
@@ -222,14 +228,13 @@ main(int argc, char **argv)
         // neighbor 0
         MPI_Irecv(impact_fish[7], n_fish, fishtype, rankNeighbor[7], MPI_ANY_TAG, comm, &recvReqArray[7]);
         // neighbor 7
-        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[7], mesTag, comm, sendReqArray[7]);
+        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[7], mesTag, comm, &sendReqArray[7]);
     }
     //j++;
-printf("here, %d\n", rank);
     // sendrecv from neighbor 1, 6
     if (!(rank < column)) {
         // neighbor 1
-        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[1], mesTag, comm, sendReqArray[1]);
+        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[1], mesTag, comm, &sendReqArray[1]);
         // neighbor 6
         MPI_Irecv(impact_fish[1], n_fish, fishtype, rankNeighbor[1], MPI_ANY_TAG, comm, &recvReqArray[1]);
     }
@@ -237,13 +242,12 @@ printf("here, %d\n", rank);
         // neighbor 1
         MPI_Irecv(impact_fish[6], n_fish, fishtype, rankNeighbor[6], MPI_ANY_TAG, comm, &recvReqArray[6]);
         // neighbor 6
-        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[6], mesTag, comm, sendReqArray[6]);
+        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[6], mesTag, comm, &sendReqArray[6]);
     }
-printf("there, %d\n", rank);
      // sendrecv from neighbor 2, 5
     if (!(rank < column) && ((rank + 1) % column != 0)) {
         // neighbor 2
-        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[2], mesTag, comm, sendReqArray[2]);
+        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[2], mesTag, comm, &sendReqArray[2]);
         // neighbor 5
         MPI_Irecv(impact_fish[2], n_fish, fishtype, rankNeighbor[2], MPI_ANY_TAG, comm, &recvReqArray[2]);
     }
@@ -251,13 +255,13 @@ printf("there, %d\n", rank);
         // neighbor 2
         MPI_Irecv(impact_fish[5], n_fish, fishtype, rankNeighbor[5], MPI_ANY_TAG, comm, &recvReqArray[5]);
         // neighbor 5
-        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[5], mesTag, comm, sendReqArray[5]);
+        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[5], mesTag, comm, &sendReqArray[5]);
     }
     //j++;
     // sendrecv from neighbor 3, 4
     if (rank % column != 0) {
         // neighbor 3
-        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[3], mesTag, comm, sendReqArray[3]);
+        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[3], mesTag, comm, &sendReqArray[3]);
         // neighbor 4
         MPI_Irecv(impact_fish[3], n_fish, fishtype, rankNeighbor[3], MPI_ANY_TAG, comm, &recvReqArray[3]);
     }
@@ -265,17 +269,26 @@ printf("there, %d\n", rank);
         // neighbor 3
         MPI_Irecv(impact_fish[4], n_fish, fishtype, rankNeighbor[4], MPI_ANY_TAG, comm, &recvReqArray[4]);
         // neighbor 4
-        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[4], mesTag, comm, sendReqArray[4]);
+        MPI_Isend(local_fish, n_local_fish, fishtype, rankNeighbor[4], mesTag, comm, &sendReqArray[4]);
     }   
 
-/*
     // Now wait for any recv to come back.
-    int* arrayIndex;
+    int arrayIndex;
+    int numNeighbor = NUM_NEIGHBOR;
+    if ((rank < column) || ((rank + 1) % column == 0) || (rank >= n_proc - column) || (rank % column == 0))
+        numNeighbor = 5;
+    if (rank == 0 || rank == column - 1 || rank == n_proc - 1 || rank == n_proc - column)
+        numNeighbor = 3;
+
+    MPI_Status statusArray[numNeighbor];
     for (k = 0; k < numNeighbor; ++k) {
-        MPI_Waitany(NUM_NEIGHBOR, recvReqArray, arrayIndex, MPI_STATUS_IGNORE);
-        interact_fish_mpi(local_fish, n_local_fish, impact_fish[arrayIndex], sizeof(impact_fish[arrayIndex]));
+        MPI_Waitany(NUM_NEIGHBOR, recvReqArray, &arrayIndex, &statusArray[k]);
+        MPI_Get_count(&statusArray[k], fishtype, &(n_impact_fish[arrayIndex]));
+//printf("rank == %d, from rank: %d, # of fishes == %d\n", rank, arrayIndex, n_impact_fish[arrayIndex]);
+	if (n_impact_fish[arrayIndex] != 0)
+            interact_fish_mpi(local_fish, n_local_fish, impact_fish[arrayIndex], n_impact_fish[arrayIndex]);
     }
-*/
+    
     // While waiting, interact with fish in its own pocket first
     interact_fish_mpi(local_fish, n_local_fish, local_fish, n_local_fish);
 
@@ -302,11 +315,14 @@ printf("there, %d\n", rank);
     //interact_fish (local_fish, n_local_fish, fish, n_fish);
 
     local_max_norm = compute_norm (local_fish, n_local_fish);
+printf("local_max_norm = %g, max_norm = %g\n", local_max_norm, max_norm);
     trace_end (TRACE_LOCAL_COMP);
 
     trace_begin (TRACE_MAX_NORM);
     start_mpi_timer (&mpi_timer);
+printf("rank = %d, iter = %d, here:%d\n", rank, iter, dbg++);
     MPI_Allreduce (&local_max_norm, &max_norm, 1, MPI_DOUBLE, MPI_MAX, comm);
+printf("rank = %d, iter = %d, here:%d\n", rank, iter, dbg++);
     stop_mpi_timer (&mpi_timer);
     trace_end (TRACE_MAX_NORM);
 
@@ -319,6 +335,7 @@ printf("there, %d\n", rank);
     
 
     trace_end (TRACE_LOCAL_COMP);
+iter++;
   }
 
   stop_mpi_timer(&total_timer);
@@ -447,13 +464,22 @@ init_fish (const int rank,
       // which processor should this fish belong to?
       int xnum = (int) ((fish[i].x - LEFT_WALL) / columnSep);
       int ynum = (int) ((fish[i].y - LEFT_WALL) / rowSep);
-      int fishInRank = xnum + ynum * row - 1;
+      if (fish[i].x == RIGHT_WALL)
+	 xnum = row - 1;
+      if (fish[i].y == RIGHT_WALL)
+         ynum = column - 1;
+      int fishInRank = xnum + ynum * row;
 //printf("fish[i].x, fish[i].y, columnSep, rowSep, %f, %f, %f, %f\n", fish[i].x, fish[i].y, columnSep, rowSep);
 //printf("xnum, ynum, fishInRank, %d, %d, %d\n", xnum, ynum, fishInRank);
       fishProc[fishInRank][n_fish_proc[fishInRank]] = fish[i];
       n_fish_proc[fishInRank]++;
       ///////////////////////////////////////////////
     }
+/*
+int ii;
+for (ii = 0; ii < 9; ii++)
+printf("n_fish_proc[%d], %d\n", ii, n_fish_proc[ii]);
+*/
   }
 }
 
