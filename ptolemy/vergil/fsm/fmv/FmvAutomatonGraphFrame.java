@@ -32,6 +32,7 @@ import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.swing.AbstractAction;
@@ -44,6 +45,7 @@ import ptolemy.domains.fsm.kernel.fmv.FmvAutomaton;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.util.MessageHandler;
@@ -61,9 +63,10 @@ import diva.gui.GUIUtilities;
  * composite entity and a tableau, it creates an editor and populates the menus
  * and toolbar. This overrides the base class to associate with the editor an
  * instance of FmvAutomatonGraphController.
- *
+ * 
  * @author Chihhong Patrick Cheng Contributor: Edward A. Lee
- * @version $Id$
+ * @version $Id: FmvAutomatonGraphFrame.java,v 1.9 2008/01/29 07:51:58 patrickj
+ *          Exp $
  * @since Ptolemy II 6.1
  * @Pt.ProposedRating Red (patrickj)
  * @Pt.AcceptedRating Red ()
@@ -71,53 +74,56 @@ import diva.gui.GUIUtilities;
 public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
     /**
-     * Construct a frame associated with the specified model. After
-     * constructing this, it is necessary to call setVisible(true) to
-     * make the frame appear.  This is typically done by calling
-     * show() on the controlling tableau. This constructor results in
-     * a graph frame that obtains its library either from the model
-     * (if it has one) or the default library defined in the
+     * Construct a frame associated with the specified model. After constructing
+     * this, it is necessary to call setVisible(true) to make the frame appear.
+     * This is typically done by calling show() on the controlling tableau. This
+     * constructor results in a graph frame that obtains its library either from
+     * the model (if it has one) or the default library defined in the
      * configuration.
-     *
+     * 
      * @see Tableau#show()
-     * @param entity The model to put in this frame.
-     * @param tableau The tableau responsible for this frame.
+     * @param entity
+     *                The model to put in this frame.
+     * @param tableau
+     *                The tableau responsible for this frame.
      */
     public FmvAutomatonGraphFrame(CompositeEntity entity, Tableau tableau) {
         this(entity, tableau, null);
     }
 
     /**
-     * Construct a frame associated with the specified model. After
-     * constructing this, it is necessary to call setVisible(true) to
-     * make the frame appear.  This is typically done by calling
-     * show() on the controlling tableau. This constructor results in
-     * a graph frame that obtains its library either from the model
-     * (if it has one), or the <i>defaultLibrary</i> argument (if it
-     * is non-null), or the default library defined in the
-     * configuration.
-     *
+     * Construct a frame associated with the specified model. After constructing
+     * this, it is necessary to call setVisible(true) to make the frame appear.
+     * This is typically done by calling show() on the controlling tableau. This
+     * constructor results in a graph frame that obtains its library either from
+     * the model (if it has one), or the <i>defaultLibrary</i> argument (if it
+     * is non-null), or the default library defined in the configuration.
+     * 
      * @see Tableau#show()
-     * @param entity The model to put in this frame.
-     * @param tableau The tableau responsible for this frame.
-     * @param defaultLibrary An attribute specifying the default
-     * library to use if the model does not have a library.
+     * @param entity
+     *                The model to put in this frame.
+     * @param tableau
+     *                The tableau responsible for this frame.
+     * @param defaultLibrary
+     *                An attribute specifying the default library to use if the
+     *                model does not have a library.
      */
     public FmvAutomatonGraphFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    // /////////////////////////////////////////////////////////////////
+    // // protected methods ////
 
     /**
-     * Create a new graph pane. Note that this method is called in
-     * constructor of the base class, so it must be careful to not
-     * reference local variables that may not have yet been created.
-     *
-     * @param entity The object to be displayed in the pane (which
-     * must be an instance of CompositeEntity).
+     * Create a new graph pane. Note that this method is called in constructor
+     * of the base class, so it must be careful to not reference local variables
+     * that may not have yet been created.
+     * 
+     * @param entity
+     *                The object to be displayed in the pane (which must be an
+     *                instance of CompositeEntity).
      * @return The pane that is created.
      */
     protected GraphPane _createGraphPane(NamedObj entity) {
@@ -157,8 +163,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
     /** The case menu. */
     protected JMenu _fmvMenu;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    // /////////////////////////////////////////////////////////////////
+    // // private methods ////
     // The action for composing with another Fmv automaton.
     private InvokeNuSMVAction _invokeNuSMVAction = new InvokeNuSMVAction();
     private TranslateSmvAction _translateSmvAction = new TranslateSmvAction();
@@ -166,10 +172,10 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
     // The directory of the current model.
     private File _directory;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                        inner classes                      ////
-    ///////////////////////////////////////////////////////////////////
-    //// TranslateSmvAction
+    // /////////////////////////////////////////////////////////////////
+    // // inner classes ////
+    // /////////////////////////////////////////////////////////////////
+    // // TranslateSmvAction
 
     /** An action to perform format translation to .smv file. */
     public class TranslateSmvAction extends AbstractAction {
@@ -237,7 +243,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                     if (_directory != null) {
                         fileSaveDialog.setCurrentDirectory(_directory);
                     } else {
-                        // The default on Windows is to open at user.home, which is
+                        // The default on Windows is to open at user.home, which
+                        // is
                         // typically an absurd directory inside the O/S
                         // installation.
                         // So we use the current directory instead.
@@ -275,11 +282,14 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
                     }
 
-                } catch (Exception ex) {
+                } catch (IOException ex) {
+                    MessageHandler.error("IO exception:\n" + ex.getMessage());
+                } catch (IllegalActionException ex) {
                     MessageHandler
                             .error("Failed to perform the conversion process:\n"
                                     + ex.getMessage());
                 }
+
                 try {
                     if (smvFileWriter != null)
                         smvFileWriter.close();
@@ -295,8 +305,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //// InvokeNuSMVAction
+    // /////////////////////////////////////////////////////////////////
+    // // InvokeNuSMVAction
 
     /** An action to perform format translation to .smv file. */
     public class InvokeNuSMVAction extends AbstractAction {
@@ -349,28 +359,32 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 _directory = fileDialog.getCurrentDirectory();
 
-                String filepath = new String(fileDialog.getSelectedFile()
-                        .getAbsolutePath());
+                String filepath = fileDialog.getSelectedFile()
+                        .getAbsolutePath();
 
                 StringBuffer str = new StringBuffer("");
+                BufferedReader reader = null;
                 try {
                     Runtime rt = Runtime.getRuntime();
                     Process pr = rt.exec("NuSMV " + "\"" + filepath + "\"");
                     InputStreamReader inputStream = new InputStreamReader(pr
                             .getInputStream());
-                    BufferedReader reader = new BufferedReader(inputStream);
+                    reader = new BufferedReader(inputStream);
                     String line = null;
                     while ((line = reader.readLine()) != null) {
                         str.append(line + "\n");
                     }
-                    reader.close();
 
-                } catch (Exception ex) {
-                    //try {
-                    //    MessageHandler.warning("Failed to create debug listener: "
-                    //            + ex);
-                    //} catch (CancelException exception) {
-                    //}
+                } catch (IOException ex) {
+                    MessageHandler.error("Failed to create debug listener: "
+                            + ex);
+                } finally {
+                    try {
+                        reader.close();
+                    } catch (IOException ex) {
+                        MessageHandler
+                                .error("Failed to create debug listener: " + ex);
+                    }
                 }
 
                 // StringBuffer str stores the information of the verification.
@@ -392,23 +406,28 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //// SMVFileFilter
+    // /////////////////////////////////////////////////////////////////
+    // // SMVFileFilter
     /** A file filter that accepts files that end with ".smv". */
     protected class SMVFileFilter extends javax.swing.filechooser.FileFilter {
 
-        /** Return true if the file name ends with ".smv".
-         *  @param file The file to be checked.
-         *  @return true if the file is a directory or the file name,
-         *  when converted to lower case, ends with ".smv".
+        /**
+         * Return true if the file name ends with ".smv".
+         * 
+         * @param file
+         *                The file to be checked.
+         * @return true if the file is a directory or the file name, when
+         *         converted to lower case, ends with ".smv".
          */
         public boolean accept(File file) {
             return file.isDirectory()
                     || file.getName().toLowerCase().endsWith(".smv");
         }
 
-        /** Return the description of this file filter.
-         *  @return The description of this file filter.
+        /**
+         * Return the description of this file filter.
+         * 
+         * @return The description of this file filter.
          */
         public String getDescription() {
             return "Software Model Verification (.smv) files";

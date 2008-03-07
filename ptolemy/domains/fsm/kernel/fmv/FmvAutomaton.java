@@ -199,20 +199,19 @@ public class FmvAutomaton extends FSMActor {
                         .get(valName);
                 int lowerBound = Integer.parseInt(individual._minValue);
                 int upperBound = Integer.parseInt(individual._maxValue);
-                try {
-                    int numSpan = Integer.parseInt(span);
+                if (Pattern.matches("^\\d+$", span) == true) {
                     returnSmvFormat.append(" ls,");
                     for (int number = lowerBound; number <= upperBound; number++) {
                         returnSmvFormat.append(number);
                         returnSmvFormat.append(",");
                     }
                     returnSmvFormat.append("gt };\n");
-
-                } catch (Exception exception) {
+                } else{
                     throw new IllegalActionException(
-                            "FmvAutomaton.convertToSMVFormat() clashes: "
-                                    + exception.getMessage());
+                            "FmvAutomaton.convertToSMVFormat() error: \n"
+                                    + "Span is not a nonegative integer");
                 }
+               
             }
 
         }
@@ -756,11 +755,11 @@ public class FmvAutomaton extends FSMActor {
 
                             String lValue = characterOfSubSetAction[0].trim();
 
-                            try {
+                            //try {
                                 variableUsedInTransitionSet.add(lValue);
-                            } catch (Exception ex) {
+                            //} catch (Exception ex) {
 
-                            }
+                            //}
 
                         }
                     }
@@ -778,16 +777,16 @@ public class FmvAutomaton extends FSMActor {
                 while (it.hasNext()) {
                     String val = (String) it.next();
                     // Retrieve the value in the
-                    VariableInfo variableInfo = _variableInfo.get(val);
-                    if (variableInfo == null) {
+                    // VariableInfo variableInfo = _variableInfo.get(val);
+                    if (_variableInfo.get(val) == null) {
                         throw new IllegalActionException(
                                 "Internal error, removing \"" + val
                                         + "\" returned null?");
                     } else {
                         int lowerBound = Integer
-                                .parseInt(variableInfo._minValue);
+                                .parseInt(_variableInfo.get(val)._minValue);
                         int upperBound = Integer
-                                .parseInt(variableInfo._maxValue);
+                                .parseInt(_variableInfo.get(val)._maxValue);
                         // Now perform the add up of new value: DOMAIN_GT and
                         // DOMAIN_LS into each of the
                         // variableDomainForTransition set. We make it a sorted

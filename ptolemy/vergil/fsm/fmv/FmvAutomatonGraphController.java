@@ -27,12 +27,34 @@
  */
 package ptolemy.vergil.fsm.fmv;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
 import java.io.File;
 
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
 
+import diva.canvas.Figure;
+import diva.graph.GraphException;
+import diva.graph.GraphPane;
+import diva.graph.NodeRenderer;
+import diva.gui.toolbox.FigureIcon;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.LibraryAttribute;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.fsm.FSMGraphController;
+import ptolemy.vergil.fsm.FSMGraphModel;
+import ptolemy.vergil.fsm.StateController;
+import ptolemy.vergil.toolbox.FigureAction;
 
 // ////////////////////////////////////////////////////////////////////////
 // // FmvAutomatonGraphController
@@ -78,16 +100,131 @@ public class FmvAutomatonGraphController extends FSMGraphController {
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
 
-        // Add an item that does composition.
-        // menu.addSeparator();
+        // Add an item that adds new states.
+        menu.addSeparator();
+        diva.gui.GUIUtilities.addMenuItem(menu, _newFmvStateAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newFmvStateAction);
+    }
+    
+    /** Prototype state for rendering. */
+    private static Location _prototypeFmvState;
+    
+    static {
+        CompositeEntity container = new CompositeEntity();
 
-        // _ruleMenu = new JMenu("Rule");
-        // _ruleMenu.setMnemonic(KeyEvent.VK_R);
-        // _menubar.add(_ruleMenu);
+        try {
+            State state = new State(container, "Fmv");
+            _prototypeFmvState = new Location(state, "_location");
+        } catch (KernelException ex) {
+            // This should not happen.
+            throw new InternalErrorException(null, ex, null);
+        }
+    }
+    
+    /** The action for creating states. */
+    private NewFmvStateAction _newFmvStateAction = new NewFmvStateAction();
+    
+    ///////////////////////////////////////////////////////////////////
+    //// NewStateAction
 
-        // diva.gui.GUIUtilities.addMenuItem(menu, _translateSmvAction);
-        // diva.gui.GUIUtilities.addMenuItem(menu, _invokeNuSMVAction);
-        // diva.gui.GUIUtilities.addToolBarButton(toolbar,_invokeNuSMVAction );
+    /** An action to create a new state. */
+    public class NewFmvStateAction extends FigureAction {
+        /** Construct a new state. */
+        public NewFmvStateAction() {
+            super("New FmvState");
+            putValue("tooltip", "New State");
+
+            NodeRenderer renderer = new StateController.StateRenderer(
+                    getGraphModel());
+            Figure figure = renderer.render(_prototypeFmvState);
+
+            // Standard toolbar icons are 25x25 pixels.
+            FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
+            putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+            putValue("tooltip", "New FmvState");
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
+                    .valueOf(KeyEvent.VK_W));
+        }
+
+        /** Execute the action. */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            double x;
+            double y;
+
+            if ((getSourceType() == TOOLBAR_TYPE)
+                    || (getSourceType() == MENUBAR_TYPE)) {
+                // No location in the action, so put it in the middle.
+                BasicGraphFrame frame = FmvAutomatonGraphController.this.getFrame();
+                Point2D center;
+
+                if (frame != null) {
+                    // Put in the middle of the visible part.
+                    center = frame.getCenter();
+                    x = center.getX();
+                    y = center.getY();
+                } else {
+                    // Put in the middle of the pane.
+                    GraphPane pane = getGraphPane();
+                    center = pane.getSize();
+                    x = center.getX() / 2;
+                    y = center.getY() / 2;
+                }
+            } else {
+                x = getX();
+                y = getY();
+            }
+
+            FSMGraphModel graphModel = (FSMGraphModel) getGraphModel();
+            NamedObj toplevel = graphModel.getPtolemyModel();
+
+            String stateName = toplevel.uniqueName("FmvState");
+
+            // Create the state.
+            String moml = null;
+            String locationName = "_location";
+
+            // Try to get the class name for the state from the library,
+            // so that the library and the toolbar are assured of creating
+            // the same object.
+            try {
+                LibraryAttribute attribute = (LibraryAttribute) toplevel
+                        .getAttribute("_library", LibraryAttribute.class);
+
+                if (attribute != null) {
+                    CompositeEntity library = attribute.getLibrary();
+                    Entity prototype = library.getEntity("state");
+
+                    if (prototype != null) {
+                        moml = prototype.exportMoML(stateName);
+
+                        // FIXME: Get location name from prototype.
+                    }
+                }
+            } catch (Exception ex) {
+                // Ignore and use the default.
+                
+            }
+
+            if (moml == null) {
+                moml = "<entity name=\"" + stateName
+                        + "\" class=\"ptolemy.domains.fsm.kernel.fmv.FmvState\">\n"
+                        + "<property name=\"" + locationName
+                        + "\" class=\"ptolemy.kernel.util.Location\""
+                        + " value=\"[" + x + ", " + y + "]\"/>\n"
+                        + "</entity>\n";
+            }
+
+            ChangeRequest request = new MoMLChangeRequest(this, toplevel, moml);
+            toplevel.requestChange(request);
+
+            try {
+                request.waitForCompletion();
+            } catch (Exception ex) {
+                throw new GraphException(ex);
+            }
+        }
     }
 
 }

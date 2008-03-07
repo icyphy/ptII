@@ -160,7 +160,6 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         buttonPanel.setMaximumSize(new Dimension(500, 50));
         left.add(buttonPanel);
 
-        //        Configurer configurer = new Configurer(codeGenerator);
         controlPanel = new JPanel();
         // controlPanel.setLayout(new SpringLayout());
         controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
@@ -185,7 +184,7 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         formulaTypeList.setSelectedIndex(0);
         controlPanel2.add(formulaTypeList);
         controlPanel2.add(new JLabel("Output Choice"));
-        String[] outputChoiceTypes = { "Text Only", "Also invoke NuSMV" };
+        String[] outputChoiceTypes = { "Text Only", "Invoke NuSMV" };
         outputChoiceTypeList = new JComboBox(outputChoiceTypes);
         outputChoiceTypeList.setSelectedIndex(0);
         controlPanel2.add(outputChoiceTypeList);
@@ -213,17 +212,6 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         bufferSize.setText("5");
         controlPanel5.add(bufferSize);
         controlPanel.add(controlPanel5);
-
-        //JPanel controlPanel6 = new JPanel();
-
-        //controlPanel6.add(new JLabel("Output Choice"),BorderLayout.LINE_START);
-        //String[] outputChoiceTypes = { "Text Only", "Also invoke NuSMV" };
-        //outputChoiceTypeList = new JComboBox(outputChoiceTypes);
-        //outputChoiceTypeList.setSelectedIndex(0);
-        //controlPanel6.add(outputChoiceTypeList);
-        //controlPanel.add(controlPanel6,BorderLayout.LINE_END);
-
-        //controlPanel.add(configurer);
 
         JScrollPane scrollPane = new JScrollPane(controlPanel);
 
@@ -285,8 +273,8 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                                 .toExternalForm());
 
                     }
-                    // Don't write the file to the window
-                    //exec.updateStatusBar(code.toString());
+                    
+                    exec.updateStatusBar(code.toString());
                     exec.updateStatusBar("// Model conversion " + "complete.");
                 } catch (Exception ex) {
                     MessageHandler.error("Conversion failed.", ex);

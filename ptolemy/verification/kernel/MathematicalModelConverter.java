@@ -28,6 +28,7 @@
 package ptolemy.verification.kernel;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
@@ -53,25 +54,33 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.verification.gui.MathematicalModelConverterGUIFactory;
 
-//////////////////////////////////////////////////////////////////////////
-//// MathematicalModelConverter
+// ////////////////////////////////////////////////////////////////////////
+// // MathematicalModelConverter
 
-/** 
- *
- *  @author  Chihhong Patrick Cheng, Contributors: Edward A. Lee , Christopher Brooks
- *  @version $Id$
- *  @since Ptolemy II 6.0
- *  @Pt.ProposedRating Red (patrickj)
- *  @Pt.AcceptedRating Red ()
+/**
+ * 
+ * @author Chihhong Patrick Cheng, Contributors: Edward A. Lee , Christopher
+ *         Brooks
+ * @version $Id: MathematicalModelConverter.java,v 1.4 2008/03/06 09:16:22
+ *          patrickj Exp $
+ * @since Ptolemy II 6.0
+ * @Pt.ProposedRating Red (patrickj)
+ * @Pt.AcceptedRating Red ()
  */
 public class MathematicalModelConverter extends Attribute {
-    /** Create a new instance of the code generator.
-     *  @param container The container.
-     *  @param name The name of the code generator.
-     *  @exception IllegalActionException If the super class throws the
-     *   exception or error occurs when setting the file path.
-     *  @exception NameDuplicationException If the super class throws the
-     *   exception or an error occurs when setting the file path.
+    /**
+     * Create a new instance of the code generator.
+     * 
+     * @param container
+     *                The container.
+     * @param name
+     *                The name of the code generator.
+     * @exception IllegalActionException
+     *                    If the super class throws the exception or error
+     *                    occurs when setting the file path.
+     * @exception NameDuplicationException
+     *                    If the super class throws the exception or an error
+     *                    occurs when setting the file path.
      */
     public MathematicalModelConverter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -90,18 +99,21 @@ public class MathematicalModelConverter extends Attribute {
 
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     parameters                            ////
+    // /////////////////////////////////////////////////////////////////
+    // // parameters ////
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    // /////////////////////////////////////////////////////////////////
+    // // public methods ////
 
-    /** Generate code.  This is the main entry point.
-     *  @param code The code buffer into which to generate the code.
-     *  @return The return value of the last subprocess that was executed.
-     *  or -1 if no commands were executed.
-     *  @exception KernelException If a type conflict occurs or the model
-     *  is running.
+    /**
+     * Generate code. This is the main entry point.
+     * 
+     * @param code
+     *                The code buffer into which to generate the code.
+     * @return The return value of the last subprocess that was executed. or -1
+     *         if no commands were executed.
+     * @exception KernelException
+     *                    If a type conflict occurs or the model is running.
      */
     public StringBuffer generateCode(String modelType,
             String inputTemporalFormula, String formulaType,
@@ -159,7 +171,7 @@ public class MathematicalModelConverter extends Attribute {
 
                             int returnValue = fileSaveDialog
                                     .showSaveDialog(null);
-                            //.showOpenDialog(ActorGraphFrame.this);
+                            // .showOpenDialog(ActorGraphFrame.this);
 
                             if (returnValue == JFileChooser.APPROVE_OPTION) {
                                 _directory = fileSaveDialog
@@ -205,12 +217,18 @@ public class MathematicalModelConverter extends Attribute {
                             }
 
                         } else {
-                            // Also invoke NuSMV. Create a temporal file and later delete it.
-                            // We first create a new folder which contains nothing.
-                            // Then generate the System.smv file, perform model checking.
-                            // If the system fails, all information would be stored in the folder.
-                            // We can delete everything in the folder then delete the folder.
-                            // The temporal file uses a random number generator to generate its name.
+                            // Also invoke NuSMV. Create a temporal file and
+                            // later delete it.
+                            // We first create a new folder which contains
+                            // nothing.
+                            // Then generate the System.smv file, perform model
+                            // checking.
+                            // If the system fails, all information would be
+                            // stored in the folder.
+                            // We can delete everything in the folder then
+                            // delete the folder.
+                            // The temporal file uses a random number generator
+                            // to generate its name.
 
                             Random rd = new Random();
                             String folderName = "SystemGeneratedTempFolder"
@@ -254,35 +272,28 @@ public class MathematicalModelConverter extends Attribute {
                             }
 
                             StringBuffer str = new StringBuffer("");
+                            BufferedReader reader = null;
                             try {
                                 Runtime rt = Runtime.getRuntime();
                                 Process pr = rt.exec("NuSMV " + "\""
                                         + fileAbsolutePath + "\"");
                                 InputStreamReader inputStream = new InputStreamReader(
                                         pr.getInputStream());
-                                BufferedReader reader = new BufferedReader(
-                                        inputStream);
+                                reader = new BufferedReader(inputStream);
                                 String line = null;
                                 while ((line = reader.readLine()) != null) {
                                     str.append(line + "\n");
                                 }
-                                reader.close();
 
-                            } catch (Exception ex) {
+                            } catch (IOException ex) {
                                 MessageHandler
                                         .warning("Failed to invoke NuSMV correctly: "
                                                 + ex);
 
+                            } finally {
+                                reader.close();
                             }
                             returnStringBuffer.append(str);
-                            // StringBuffer str stores the information of the verification.
-                            // Query newQuery = new Query();
-                            // newQuery.setTextWidth(80);
-                            //newQuery.addTextArea("formula",
-                            //        "Verification Results", str.toString());
-                            //ComponentDialog newDialog = new ComponentDialog(
-                            //        null, "Terminal", newQuery);
-
                             _deleteFolder(smvFolder);
                             return returnStringBuffer;
 
@@ -323,7 +334,6 @@ public class MathematicalModelConverter extends Attribute {
 
                             int returnValue = fileSaveDialog
                                     .showSaveDialog(null);
-                            //.showOpenDialog(ActorGraphFrame.this);
 
                             if (returnValue == JFileChooser.APPROVE_OPTION) {
                                 _directory = fileSaveDialog
@@ -414,7 +424,7 @@ public class MathematicalModelConverter extends Attribute {
 
                     if (query.getStringValue("outputChoice").equalsIgnoreCase(
                             "Output to File")) {
-                        //try {
+                        // try {
                         fmvFormat.append(model.convertToSMVFormat(pattern,
                                 finalChoice, span));
                         JFileChooser fileSaveDialog = new JFileChooser();
@@ -426,11 +436,13 @@ public class MathematicalModelConverter extends Attribute {
                         if (_directory != null) {
                             fileSaveDialog.setCurrentDirectory(_directory);
                         } else {
-                            // The default on Windows is to open at user.home, which is
+                            // The default on Windows is to open at user.home,
+                            // which is
                             // typically an absurd directory inside the O/S
                             // installation.
                             // So we use the current directory instead.
-                            // FIXME: Could this throw a security exception in an
+                            // FIXME: Could this throw a security exception in
+                            // an
                             // applet?
                             String cwd = StringUtilities
                                     .getProperty("user.dir");
@@ -474,54 +486,51 @@ public class MathematicalModelConverter extends Attribute {
                                 }
 
                             }
-                            //} catch (Exception ex) {
-                            //MessageHandler
-                            //        .error("Failed to perform the conversion process:\n"
-                            //                + ex.getMessage());
-                            //    throw new IllegalActionException(
-                            //            "Failed to perform the conversion process:\n"
-                            //                    + ex.getMessage());
-                            //}
 
-                            if (smvFileWriter != null)
-                                smvFileWriter.close();
-                            
-                        } catch (Exception ex) {
+                        } catch (IOException ex) {
                             MessageHandler
                                     .error("Failed to perform the file closing process:\n"
                                             + ex.getMessage());
+                        } finally {
+                            if (smvFileWriter != null)
+                                smvFileWriter.close();
                         }
 
                     } else if (query.getStringValue("outputChoice")
                             .equalsIgnoreCase("Open Text Editor")) {
-                        try {
-                            fmvFormat.append(model.convertToSMVFormat(pattern,
-                                    finalChoice, span));
-
-                            Query newQuery = new Query();
-                            newQuery.setTextWidth(90);
-                            newQuery.addTextArea("formula", _model.getName(),
-                                    fmvFormat.toString());
-                            ComponentDialog newDialog = new ComponentDialog(
-                                    null, "Converted SMV Format", newQuery);
-
-                        } catch (Exception ex) {
-                            MessageHandler
-                                    .error("Failed to perform the conversion process:\n"
-                                            + ex.getMessage());
-                        }
-                    } else {
-                        // Also invoke NuSMV
-                        //try {
+                        // try {
                         fmvFormat.append(model.convertToSMVFormat(pattern,
                                 finalChoice, span));
 
-                        // Also invoke NuSMV. Create a temporal file and later delete it.
+                        Query newQuery = new Query();
+                        newQuery.setTextWidth(90);
+                        newQuery.addTextArea("formula", _model.getName(),
+                                fmvFormat.toString());
+                        ComponentDialog newDialog = new ComponentDialog(null,
+                                "Converted SMV Format", newQuery);
+
+                        // } catch (Exception ex) {
+                        // MessageHandler
+                        // .error("Failed to perform the conversion process:\n"
+                        // + ex.getMessage());
+                        // }
+                    } else {
+                        // Also invoke NuSMV
+
+                        fmvFormat.append(model.convertToSMVFormat(pattern,
+                                finalChoice, span));
+
+                        // Also invoke NuSMV. Create a temporal file and later
+                        // delete it.
                         // We first create a new folder which contains nothing.
-                        // Then generate the System.smv file, perform model checking.
-                        // If the system fails, all information would be stored in the folder.
-                        // We can delete everything in the folder then delete the folder.
-                        // The temporal file uses a random number generator to generate its name.
+                        // Then generate the System.smv file, perform model
+                        // checking.
+                        // If the system fails, all information would be stored
+                        // in the folder.
+                        // We can delete everything in the folder then delete
+                        // the folder.
+                        // The temporal file uses a random number generator to
+                        // generate its name.
                         Random rd = new Random();
                         String folderName = "SystemGeneratedTempFolder"
                                 + Integer.toString(rd.nextInt(10000)) + "/";
@@ -549,7 +558,7 @@ public class MathematicalModelConverter extends Attribute {
                         }
                         // Now establish the file.
                         File smvFile = new File(folderName + "System.smv");
-                        //FileWriter smvFileWriter = null;
+                        // FileWriter smvFileWriter = null;
                         String fileAbsolutePath = smvFile.getAbsolutePath();
 
                         try {
@@ -563,42 +572,29 @@ public class MathematicalModelConverter extends Attribute {
                         }
 
                         StringBuffer str = new StringBuffer("");
+                        BufferedReader reader = null;
                         try {
                             Runtime rt = Runtime.getRuntime();
                             Process pr = rt.exec("NuSMV " + "\""
                                     + fileAbsolutePath + "\"");
                             InputStreamReader inputStream = new InputStreamReader(
                                     pr.getInputStream());
-                            BufferedReader reader = new BufferedReader(
-                                    inputStream);
+                            reader = new BufferedReader(inputStream);
                             String line = null;
                             while ((line = reader.readLine()) != null) {
                                 str.append(line + "\n");
                             }
-                            reader.close();
 
-                        } catch (Exception ex) {
+                        } catch (IOException ex) {
                             MessageHandler
                                     .warning("Failed to invoke NuSMV correctly: "
                                             + ex.getMessage());
 
+                        } finally {
+                            reader.close();
                         }
                         returnStringBuffer.append(str);
-                        // StringBuffer str stores the information of the verification.
-                        //Query newQuery = new Query();
-                        //newQuery.setTextWidth(80);
-                        //newQuery.addTextArea("formula", "Verification Results",
-                        //        str.toString());
-                        //ComponentDialog newDialog = new ComponentDialog(null,
-                        //        "Terminal", newQuery);
-
                         _deleteFolder(smvFolder);
-
-                        //} catch (Exception ex) {
-                        //    MessageHandler
-                        //            .error("Failed to perform the conversion process:\n"
-                        //                    + ex.getMessage());
-                        //}
 
                         return returnStringBuffer;
                     }
@@ -609,11 +605,11 @@ public class MathematicalModelConverter extends Attribute {
         }
 
         return returnStringBuffer;
-        //return returnValue;
+        // return returnValue;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    // /////////////////////////////////////////////////////////////////
+    // // protected variables ////
 
     /** The model we for which we are generating code. */
     protected CompositeEntity _model;
@@ -621,23 +617,31 @@ public class MathematicalModelConverter extends Attribute {
     protected File _directory;
 
     private void _deleteFolder(File folder) throws Exception {
-        String childs[] = null;
-        childs = folder.list();
-        if (childs == null || childs.length <= 0) {
+  
+        if (folder.list() == null || folder.list().length <= 0) {
             boolean isDeleted = folder.delete();
+            if(isDeleted == false){
+                throw new IllegalActionException("Temporary subfolder delete unsuccessful");
+            }
         } else {
-            for (int i = 0; i < childs.length; i++) {
-                String childName = childs[i];
+            for (int i = 0; i < folder.list().length; i++) {
+                String childName = folder.list()[i];
                 String childPath = folder.getPath() + File.separator
                         + childName;
                 File filePath = new File(childPath);
                 if (filePath.exists() && filePath.isFile()) {
                     boolean isDeleted = filePath.delete();
+                    if(isDeleted == false){
+                        throw new IllegalActionException("Temporary file delete unsuccessful");
+                    }
                 } else if (filePath.exists() && filePath.isDirectory()) {
                     _deleteFolder(filePath);
                 }
             }
             boolean isDeleted = folder.delete();
+            if(isDeleted == false){
+                throw new IllegalActionException("Temporary folder delete unsuccessful");
+            }
         }
 
     }
@@ -650,8 +654,9 @@ public class MathematicalModelConverter extends Attribute {
         return _codeFile;
     }
 
-    /** The name of the file that was written.
-     *  If no file was written, then the value is null.
+    /**
+     * The name of the file that was written. If no file was written, then the
+     * value is null.
      */
     protected String _codeFileName = null;
     protected File _codeFile = null;

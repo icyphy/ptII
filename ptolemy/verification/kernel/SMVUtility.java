@@ -961,10 +961,9 @@ public class SMVUtility {
 
         HashSet<String> returnVariableSet = new HashSet<String>();
         HashSet<State> stateSet = new HashSet<State>();
-       
+
         // initialize
         HashMap<String, State> frontier = new HashMap<String, State>();
-
 
         // create initial state
         State stateInThis = actor.getInitialState();
@@ -1689,21 +1688,23 @@ public class SMVUtility {
                             throw new IllegalActionException(
                                     "Internal error, removing \"" + val
                                             + "\" returned null?");
-                        }
-                        int lowerBound = Integer.parseInt(_variableInfo
-                                .get(val)._minValue);
-                        int upperBound = Integer.parseInt(_variableInfo
-                                .get(val)._maxValue);
+                        } else {
+                            int lowerBound = Integer.parseInt(_variableInfo
+                                    .get(val)._minValue);
+                            int upperBound = Integer.parseInt(_variableInfo
+                                    .get(val)._maxValue);
 
-                        ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
+                            ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
 
-                        for (int number = lowerBound; number <= upperBound; number++) {
-                            // Place each possible value within boundary into
-                            // the list.
-                            variableDomainForTransition.add(Integer
-                                    .valueOf(number));
+                            for (int number = lowerBound; number <= upperBound; number++) {
+                                // Place each possible value within boundary
+                                // into
+                                // the list.
+                                variableDomainForTransition.add(Integer
+                                        .valueOf(number));
+                            }
+                            valueDomain.put(val, variableDomainForTransition);
                         }
-                        valueDomain.put(val, variableDomainForTransition);
 
                     } else {
                         // Retrieve the value in the
@@ -2033,6 +2034,10 @@ public class SMVUtility {
                                             } catch (Exception exInner) {
                                                 // Return the format is not
                                                 // supported by the system.
+                                                throw new IllegalActionException(
+                                                        "Format not supported by the analysis:"
+                                                                + exInner
+                                                                        .getMessage());
                                             }
 
                                         }
