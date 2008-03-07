@@ -49,7 +49,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	FmvAutomaton.java
+	FmvAutomaton.java \
+	FmvState.java
 
 OTHER_FILES_TO_BE_JARED =
 
