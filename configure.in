@@ -2289,7 +2289,7 @@ else
 		PTJNI_INCLUDE="$PTJAVA_HOME/../include"
 	fi
 
-	if test ! -d $PTJNI_INCLUDE; then 
+	if test ! -d "$PTJNI_INCLUDE"; then 
 	    	AC_MSG_WARN([$PTJNI_INCLUDE was not found.  As a result, compilation of JNI actors will fail.])
 	else 
 	    	PT_MSG_RESULT([$PTJNI_INCLUDE])
@@ -2319,7 +2319,7 @@ else
 		PTJNI_LIB="$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"
 	fi
 
-        if test ! -d $PTJNI_LIB; then 
+        if test ! -d "$PTJNI_LIB"; then 
 	    AC_MSG_WARN([$PTJNI_LIB was not found.
     As a result, $PTII/jni/launcher/launcher might not work.])
         else 
