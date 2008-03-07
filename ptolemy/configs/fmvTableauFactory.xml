@@ -21,8 +21,8 @@
 					<input
 						source="ptolemy/configs/utilityParameters.xml" />
 					<input source="ptolemy/configs/utilityAnalysis.xml" />
-					<entity name="State"
-						class="ptolemy.domains.fsm.kernel.State">
+					<entity name="FmvState"
+						class="ptolemy.domains.fsm.kernel.fmv.FmvState">
 						<property name="_centerName"
 							class="ptolemy.kernel.util.Attribute" />
 					</entity>
