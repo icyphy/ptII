@@ -184,6 +184,9 @@ public class WindowPropertiesAttribute extends Parameter implements
             int y = ((IntToken) boundsToken.getElement(1)).intValue();
             int width = ((IntToken) boundsToken.getElement(2)).intValue();
             int height = ((IntToken) boundsToken.getElement(3)).intValue();
+            
+            //System.out.println("x: " + x + "  y: " + y);
+            //System.out.println("width: " + width + "  height: " + height);
 
             // If x or y is less than 0 or greater than the width or
             // height of the screen - 10, then offset them by 30 pixels so
@@ -192,14 +195,18 @@ public class WindowPropertiesAttribute extends Parameter implements
             // as dirty so it gets saved?
             // FIXME: will these changes cause problems with multiscreen
             // monitors?
+            
+            //CWB: changed behavior on 2008.03.06
+            //Now if any part of the window is off the screen, either the 
+            //x or y position is set to 0.  This fixes several problems
+            //with workflows being positioned off of the screen when saved
+            //on a multi-head machine, then reopened on a single-head machine
             x = (x < 0 ? 30 : x);
             y = (y < 0 ? 30 : y);
 
             Toolkit tk = Toolkit.getDefaultToolkit();
-            x = (x > tk.getScreenSize().width - 10 ? tk.getScreenSize().width - 30
-                    : x);
-            y = (y > tk.getScreenSize().height - 10 ? tk.getScreenSize().height - 30
-                    : y);
+            x = (x + width > tk.getScreenSize().width ? 0 : x);
+            y = (y + height > tk.getScreenSize().height ? 0 : y);
 
             frame.setBounds(x, y, width, height);
 
