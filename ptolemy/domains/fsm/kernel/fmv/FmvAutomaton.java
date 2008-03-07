@@ -206,12 +206,12 @@ public class FmvAutomaton extends FSMActor {
                         returnSmvFormat.append(",");
                     }
                     returnSmvFormat.append("gt };\n");
-                } else{
+                } else {
                     throw new IllegalActionException(
                             "FmvAutomaton.convertToSMVFormat() error: \n"
                                     + "Span is not a nonegative integer");
                 }
-               
+
             }
 
         }
@@ -549,7 +549,7 @@ public class FmvAutomaton extends FSMActor {
 
             // create initial state
             State stateInThis = this.getInitialState();
-            String name = stateInThis.getName();
+            String name = (stateInThis == null ? "" : stateInThis.getName());
             frontier.put(name, stateInThis);
             returnStateSet.add(stateInThis);
             // iterate
@@ -756,7 +756,7 @@ public class FmvAutomaton extends FSMActor {
                             String lValue = characterOfSubSetAction[0].trim();
 
                             //try {
-                                variableUsedInTransitionSet.add(lValue);
+                            variableUsedInTransitionSet.add(lValue);
                             //} catch (Exception ex) {
 
                             //}
@@ -783,24 +783,28 @@ public class FmvAutomaton extends FSMActor {
                                 "Internal error, removing \"" + val
                                         + "\" returned null?");
                     } else {
-                        int lowerBound = Integer
-                                .parseInt(_variableInfo.get(val)._minValue);
-                        int upperBound = Integer
-                                .parseInt(_variableInfo.get(val)._maxValue);
-                        // Now perform the add up of new value: DOMAIN_GT and
-                        // DOMAIN_LS into each of the
-                        // variableDomainForTransition set. We make it a sorted
-                        // list to facilitate further processing.
-                        ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
-                        variableDomainForTransition.add(DOMAIN_LS);
-                        for (int number = lowerBound; number <= upperBound; number++) {
-                            // Place each possible value within boundary into
-                            // the list.
-                            variableDomainForTransition.add(Integer
-                                    .valueOf(number));
+                        if (_variableInfo.get(val)._minValue != null
+                                && _variableInfo.get(val)._maxValue != null) {
+                            int lowerBound = Integer.parseInt(_variableInfo
+                                    .get(val)._minValue);
+                            int upperBound = Integer.parseInt(_variableInfo
+                                    .get(val)._maxValue);
+                            // Now perform the add up of new value: DOMAIN_GT and
+                            // DOMAIN_LS into each of the
+                            // variableDomainForTransition set. We make it a sorted
+                            // list to facilitate further processing.
+                            ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
+                            variableDomainForTransition.add(DOMAIN_LS);
+                            for (int number = lowerBound; number <= upperBound; number++) {
+                                // Place each possible value within boundary into
+                                // the list.
+                                variableDomainForTransition.add(Integer
+                                        .valueOf(number));
+                            }
+                            variableDomainForTransition.add(DOMAIN_GT);
+                            valueDomain.put(val, variableDomainForTransition);
                         }
-                        variableDomainForTransition.add(DOMAIN_GT);
-                        valueDomain.put(val, variableDomainForTransition);
+
                     }
 
                 }
