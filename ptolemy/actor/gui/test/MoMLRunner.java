@@ -1,3 +1,13 @@
+package ptolemy.actor.gui.test;
+
+import java.io.File;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
+
 // $Id$
 // Example code from Paul Allen (Cornell)
 public class MoMLRunner {
@@ -18,8 +28,8 @@ public class MoMLRunner {
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
         MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
 
-        CompositeActor toplevel = (CompositeActor) parser.parse(null,
-                new File(workflowLocation).toURI().toURL());
+        CompositeActor toplevel = (CompositeActor) parser.parse(null, new File(
+                workflowLocation).toURI().toURL());
         toplevel.setName(id);
 
         _manager = new Manager(toplevel.workspace(), "MoMLRunner");
