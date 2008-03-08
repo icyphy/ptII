@@ -213,7 +213,7 @@
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This ERG (Event Relationship Graph) models demonstrates a traffic light system, in
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This ERG (Event Relationship Graph) model demonstrates a traffic light system, in
 which the car light controls the pedestrian light. A node represents an event, which
 may schedule other events with edges, possibly after certain time delay.</text></svg></configure>
             </property>
