@@ -28,10 +28,16 @@
 
 package ptolemy.domains.erg.kernel;
 
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
@@ -70,6 +76,70 @@ public class SchedulingRelation extends Transition {
         _init();
     }
 
+    public void attributeChanged(Attribute attribute)
+    throws IllegalActionException {
+        if (attribute == delay) {
+            _delayParseTree = null;
+        }
+    }
+
+    public double getDelay() throws IllegalActionException {
+        ERGController controller = (ERGController) getContainer();
+        String expr = delay.getExpression();
+        if (_delayParseTree == null) {
+            // Parse the delay expression.
+            PtParser parser = new PtParser();
+            try {
+                _delayParseTree = parser.generateParseTree(expr);
+            } catch (IllegalActionException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to parse delay expression \"" + expr + "\"");
+            }
+        }
+        Token token = _parseTreeEvaluator.evaluateParseTree(_delayParseTree,
+                controller.getPortScope());
+        if (token == null) {
+            throw new IllegalActionException(this, "Unable to evaluate delay" +
+                    "expression \"" + expr + "\"");
+        }
+        double result = ((DoubleToken) token).doubleValue();
+        return result;
+    }
+
+    public String getLabel() {
+        StringBuffer buffer = new StringBuffer(super.getLabel());
+
+        String delayExpression = delay.getExpression();
+        if ((delayExpression != null) && !_isZeroDelay(delayExpression)) {
+            if (buffer.length() > 0) {
+                buffer.append("\n");
+            }
+            buffer.append("\u03B4: "); // Unicode for \delta
+            buffer.append(delayExpression);
+        }
+
+        String argumentsExpression = arguments.getExpression();
+        if ((argumentsExpression != null)
+                && !_isEmptyArguments(argumentsExpression)) {
+            if (buffer.length() > 0) {
+                buffer.append("\n");
+            }
+            buffer.append("arguments: ");
+            buffer.append(argumentsExpression);
+        }
+
+        return buffer.toString();
+    }
+
+    public boolean isEnabled() throws IllegalActionException {
+        String guard = getGuardExpression();
+        if (guard.trim().equals("")) {
+            return true;
+        } else {
+            return super.isEnabled();
+        }
+    }
+
     public Parameter arguments;
 
     public Parameter delay;
@@ -86,13 +156,29 @@ public class SchedulingRelation extends Transition {
         refinementName.setVisibility(Settable.NONE);
 
         delay = new Parameter(this, "delay");
+        delay.setDisplayName("delay (\u03B4)");
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("0.0");
-        delay.setPersistent(false);
 
         arguments = new Parameter(this, "arguments");
         arguments.setTypeEquals(new ArrayType(BaseType.GENERAL));
         arguments.setExpression("{}");
-        arguments.setPersistent(false);
     }
+
+    private static boolean _isEmptyArguments(String argumentsExpression) {
+        return argumentsExpression.trim().equals("{}");
+    }
+
+    private static boolean _isZeroDelay(String delayExpression) {
+        try {
+            double delay = Double.parseDouble(delayExpression);
+            return DoubleToken.ZERO.equals(new DoubleToken(delay));
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private ASTPtRootNode _delayParseTree;
+
+    private ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
 }

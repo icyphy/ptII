@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/domains/erg/kernel
+ME =            ptolemy/domains/erg/lib
 
 # Root of the ptII directory
 ROOT =		../../../..
@@ -44,19 +44,14 @@ DIRS =
 CLASSPATH =	$(ROOT)
 
 # Used to build zip files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	ActionsAttribute.java \
-	ERGController.java \
-	ERGDirector.java \
-	ERGModalModel.java \
-	Event.java \
-	SchedulingRelation.java
+	SynchronizeToRealtime.java
 
-OTHER_FILES_TO_BE_JARED = \
-	EventIcon.xml
+OTHER_FILES_TO_BE_JARED =
+	
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -28,8 +28,17 @@
 
 package ptolemy.domains.erg.kernel;
 
+import java.util.Iterator;
+import java.util.List;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.util.CalendarQueue;
+import ptolemy.actor.util.Time;
+import ptolemy.actor.util.TimedEvent;
+import ptolemy.data.BooleanToken;
+import ptolemy.domains.erg.lib.SynchronizeToRealtime;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -108,6 +117,66 @@ public class ERGDirector extends Director {
         return newObject;
     }
 
+    public void fire() throws IllegalActionException {
+        List<?> synchronizeAttributes =
+            getController().attributeList(SynchronizeToRealtime.class);
+        boolean synchronize = false;
+        if (synchronizeAttributes.size() > 0) {
+            SynchronizeToRealtime attribute =
+                (SynchronizeToRealtime) synchronizeAttributes.get(0);
+            synchronize = ((BooleanToken) attribute.getToken()).booleanValue();
+        }
+
+        Time nextEventTime;
+        Time modelTime = getModelTime();
+        while (!_queue.isEmpty()) {
+            TimedEvent timedEvent = (TimedEvent) _queue.get();
+            nextEventTime = timedEvent.timeStamp;
+            if (modelTime.equals(nextEventTime)) {
+                _queue.take();
+                if (synchronize) {
+                    long elapsedTime = System.currentTimeMillis()
+                            - _realStartTime;
+                    double elapsedTimeInSeconds = elapsedTime / 1000.0;
+                    long timeToWait = (long) (nextEventTime.subtract(
+                            elapsedTimeInSeconds).getDoubleValue()
+                            * 1000.0);
+                    if (timeToWait > 0) {
+                        try {
+                            _workspace.wait(_queue, timeToWait);
+                            if (_stopRequested) {
+                                return;
+                            }
+                        } catch (InterruptedException ex) {
+                        }
+                    }
+                    synchronize = false;
+                }
+                
+                Event event = (Event) timedEvent.contents;
+                event.fire();
+                
+                if (((BooleanToken) event.isFinalState.getToken())
+                        .booleanValue()) {
+                    _queue.clear();
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    public void fireAt(Event event, Time time) throws IllegalActionException {
+        if (time.compareTo(getModelTime()) < 0) {
+            throw new IllegalActionException(event,
+                    "Attempt to queue an event in the past:"
+                            + " Current time is " + getModelTime()
+                            + " while event time is " + time);
+        }
+
+        _queue.put(new TimedEvent(time, event));
+    }
+
     public ERGController getController() throws IllegalActionException {
         if (_controllerVersion == workspace().getVersion()) {
             return _controller;
@@ -150,6 +219,102 @@ public class ERGDirector extends Director {
         }
     }
 
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+
+        _queue.clear();
+
+        ERGController controller = getController();
+        Iterator<?> entities = controller.deepEntityList().iterator();
+        while (entities.hasNext()) {
+            Event event = (Event) entities.next();
+            boolean isInitial =
+                ((BooleanToken) event.isInitialState.getToken()).booleanValue();
+            if (isInitial) {
+                _queue.put(new TimedEvent(_startTime, event));
+            }
+        }
+
+        _realStartTime = System.currentTimeMillis();
+    }
+
+    public boolean postfire() throws IllegalActionException {
+        boolean result = super.postfire();
+        if (result && !_queue.isEmpty()) {
+            if (_isTopLevel()) {
+                TimedEvent event = (TimedEvent) _queue.get();
+                setModelTime(event.timeStamp);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean prefire() throws IllegalActionException {
+        boolean result = super.prefire();
+
+        if (_isTopLevel()) {
+            return result;
+        }
+
+        Time modelTime = getModelTime();
+        Time nextEventTime = Time.POSITIVE_INFINITY;
+
+        if (!_queue.isEmpty()) {
+            TimedEvent event = (TimedEvent) _queue.get();
+            nextEventTime = event.timeStamp;
+        }
+
+        while (modelTime.compareTo(nextEventTime) > 0) {
+            _queue.take();
+
+            if (!_queue.isEmpty()) {
+                TimedEvent event = (TimedEvent) _queue.get();
+                nextEventTime = event.timeStamp;
+            } else {
+                nextEventTime = Time.POSITIVE_INFINITY;
+            }
+        }
+
+        if (!nextEventTime.equals(modelTime)) {
+            CompositeActor container = (CompositeActor) getContainer();
+            Iterator<?> inputPorts = container.inputPortList().iterator();
+            boolean hasInput = false;
+
+            while (inputPorts.hasNext() && !hasInput) {
+                IOPort port = (IOPort) inputPorts.next();
+
+                for (int i = 0; i < port.getWidth(); i++) {
+                    if (port.hasToken(i)) {
+                        hasInput = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasInput) {
+                result = false;
+            }
+        }
+
+        if (_debugging) {
+            _debug("Prefire returns: " + result);
+        }
+        return result;
+    }
+
+    public void stop() {
+        if (_queue != null) {
+            synchronized (_queue) {
+                _stopRequested = true;
+                _queue.notifyAll();
+            }
+        }
+
+        super.stop();
+    }
+
     /** Attribute specifying the name of the mode controller in the
      *  container of this director. This director must have a mode
      *  controller that has the same container as this director,
@@ -164,6 +329,7 @@ public class ERGDirector extends Director {
     private void _init() throws IllegalActionException,
     NameDuplicationException {
         controllerName = new StringAttribute(this, "controllerName");
+        _startTime = new Time(this, 0.0);
     }
 
     // Cached reference to mode controller.
@@ -171,4 +337,11 @@ public class ERGDirector extends Director {
 
     // Version of cached reference to mode controller.
     private long _controllerVersion = -1;
+
+    private CalendarQueue _queue =
+        new CalendarQueue(new TimedEvent.TimeComparator());
+
+    private long _realStartTime;
+
+    private Time _startTime;
 }

@@ -14,6 +14,21 @@
             <entity name="Event" class="ptolemy.domains.erg.kernel.Event">
               <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
             </entity>
+            <property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime">
+              <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+              </property>
+              <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+                  <svg>
+                    <circle cx="3" cy="3" r="2" style="fill:#0000FF"/>
+                  </svg>
+                </configure>
+              </property>
+              <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+              </property>
+            </property>
           </entity>
         </configure>
       </property>

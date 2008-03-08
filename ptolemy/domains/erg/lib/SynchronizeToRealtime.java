@@ -26,14 +26,14 @@
 
  */
 
-package ptolemy.domains.erg.kernel;
+package ptolemy.domains.erg.lib;
 
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -44,15 +44,14 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ERGController extends FSMActor {
+public class SynchronizeToRealtime extends Parameter {
 
     /**
-     * @throws NameDuplicationException
      * @throws IllegalActionException
      *
      */
-    public ERGController() throws IllegalActionException,
-    NameDuplicationException {
+    public SynchronizeToRealtime() throws IllegalActionException {
+        _init();
     }
 
     /**
@@ -61,44 +60,36 @@ public class ERGController extends FSMActor {
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    public ERGController(CompositeEntity container, String name)
+    public SynchronizeToRealtime(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _init();
+    }
+
+    /**
+     * @param container
+     * @param name
+     * @param token
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
+    public SynchronizeToRealtime(NamedObj container, String name, Token token)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name, token);
+        _init();
     }
 
     /**
      * @param workspace
-     * @throws NameDuplicationException
      * @throws IllegalActionException
      */
-    public ERGController(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+    public SynchronizeToRealtime(Workspace workspace) throws IllegalActionException {
         super(workspace);
+        _init();
     }
 
-    public State getInitialState() {
-        return null;
-    }
-
-    /** Create a new instance of Transition with the specified name in
-     *  this actor, and return it.
-     *  This method is write-synchronized on the workspace.
-     *  @param name The name of the new transition.
-     *  @return A transition with the given name.
-     *  @exception IllegalActionException If the name argument is null.
-     *  @exception NameDuplicationException If name collides with that
-     *   of a transition already in this actor.
-     */
-    public ComponentRelation newRelation(String name)
-            throws IllegalActionException, NameDuplicationException {
-        try {
-            workspace().getWriteAccess();
-
-            //Director director = getDirector();
-            SchedulingRelation relation = new SchedulingRelation(this, name);
-            return relation;
-        } finally {
-            workspace().doneWriting();
-        }
+    private void _init() throws IllegalActionException {
+        setTypeEquals(BaseType.BOOLEAN);
+        setExpression("false");
     }
 }

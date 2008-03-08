@@ -53,8 +53,9 @@ PTCLASSALLJARS =
 PTCLASSALLJAR = 
 
 JSRCS = \
-    ERGGraphTableau.java \
-    ERGTableauFactory.java
+	ERGGraphTableau.java \
+	ERGTableauFactory.java \
+	EventIcon.java
 
 EXTRA_SRCS =    $(JSRCS)
 

@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy II Finite State Machine (FSM) Domain kernel
+# Makefile for Ptolemy II Discrete Event domain demo
 #
 # @Authors: Thomas Huining Feng
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,50 +29,54 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/domains/erg/kernel
+ME =		ptolemy/domains/erg/demo/TrafficLight
 
-# Root of the ptII directory
-ROOT =		../../../..
+# Root of the Java directory
+ROOT =		../../../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		
+# Used to build jar files
+PTPACKAGE = 	TrafficLight
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-CLASSPATH =	$(ROOT)
-
-# Used to build zip files
-PTPACKAGE = 	kernel
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-JSRCS = \
-	ActionsAttribute.java \
-	ERGController.java \
-	ERGDirector.java \
-	ERGModalModel.java \
-	Event.java \
-	SchedulingRelation.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	EventIcon.xml
+	$(JSRCS) \
+	TrafficLight.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
 install: all jars
 
+demo: demo_ptolemy demo_vergil
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" TrafficLight.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" TrafficLight.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

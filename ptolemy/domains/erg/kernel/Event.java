@@ -28,9 +28,12 @@
 
 package ptolemy.domains.erg.kernel;
 
+import java.util.List;
+
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
@@ -57,6 +60,32 @@ public class Event extends State {
         _init();
     }
 
+    public void attributeChanged(Attribute attribute)
+    throws IllegalActionException {
+        if (attribute != isInitialState) {
+            super.attributeChanged(attribute);
+        }
+    }
+
+    public void fire() throws IllegalActionException {
+        actions.execute();
+
+        ERGDirector director = null;
+        List<?> schedules = nonpreemptiveTransitionList();
+        for (Object scheduleObject : schedules) {
+            SchedulingRelation schedule = (SchedulingRelation) scheduleObject;
+            if (schedule.isEnabled()) {
+                double delay = schedule.getDelay();
+                Event nextEvent = (Event) schedule.destinationState();
+                if (director == null) {
+                    ERGController controller = (ERGController) getContainer();
+                    director = (ERGDirector) controller.getDirector();
+                }
+                director.fireAt(nextEvent, director.getModelTime().add(delay));
+            }
+        }
+    }
+
     public ActionsAttribute actions;
 
     private void _init() throws IllegalActionException,
@@ -66,7 +95,6 @@ public class Event extends State {
        isFinalState.setDisplayName("isFinalEvent");
 
        actions = new ActionsAttribute(this, "actions");
-       actions.setPersistent(false);
        Variable variable = new Variable(actions, "_textHeightHint");
        variable.setExpression("5");
        variable.setPersistent(false);

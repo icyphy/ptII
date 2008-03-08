@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy II Finite State Machine (FSM) Domain kernel
+# Makefile for Ptolemy II Discrete Event domain demos
 #
 # @Authors: Thomas Huining Feng
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 1998-2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,50 +29,47 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/domains/erg/kernel
+ME =		ptolemy/domains/erg/demo
 
-# Root of the ptII directory
+# Root of the Java directory
 ROOT =		../../../..
 
+DIRS =		TrafficLight
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		
+# Used to build jar files
+PTPACKAGE = 	demo
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
 
-CLASSPATH =	$(ROOT)
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	TrafficLight/TrafficLight.jar
 
-# Used to build zip files
-PTPACKAGE = 	kernel
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	ActionsAttribute.java \
-	ERGController.java \
-	ERGDirector.java \
-	ERGModalModel.java \
-	Event.java \
-	SchedulingRelation.java
-
-OTHER_FILES_TO_BE_JARED = \
-	EventIcon.xml
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+# Files that are not compiled, such as .tcl and .itcl files.
+EXTRA_SRCS =	index.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
-
-JCLASS = $(JSRCS:%.java=%.class)
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = mems
 
 all: jclass
-install: all jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: jclass jars
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
