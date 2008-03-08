@@ -28,15 +28,18 @@
 
 package ptolemy.vergil.erg;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelFigure;
 import diva.canvas.toolbox.RoundedRectangle;
+import diva.gui.toolbox.FigureIcon;
 import ptolemy.domains.erg.kernel.Event;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -110,13 +113,24 @@ public class EventIcon extends StateIcon {
                         _getLineWidth(), _roundingValue, _roundingValue));
             }
             figure.setBackgroundFigure(background);
-            
+
             label.translateTo(backBounds.getCenterX(), backBounds.getCenterY()
                     + 12 + stringBounds.getHeight() / 2);
             figure.add(label);
         }
 
         return figure;
+    }
+
+    public Icon createIcon() {
+        if (_iconCache != null) {
+            return _iconCache;
+        }
+
+        Figure figure = new RoundedRectangle(0, 0, 20, 10, Color.white, 1.0f,
+                5.0, 5.0);
+        _iconCache = new FigureIcon(figure, 20, 15);
+        return _iconCache;
     }
 
     private static final Font _ACTION_FONT =
