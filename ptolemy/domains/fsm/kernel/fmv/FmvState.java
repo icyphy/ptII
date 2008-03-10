@@ -19,9 +19,9 @@ public class FmvState extends State {
         isRiskAnalysisState = new Parameter(this, "isRiskAnalysisState");
         isRiskAnalysisState.setTypeEquals(BaseType.BOOLEAN);
         isRiskAnalysisState.setExpression("false");
-        isSafetyAnalysisState = new Parameter(this, "isSafetyAnalysisState");
-        isSafetyAnalysisState.setTypeEquals(BaseType.BOOLEAN);
-        isSafetyAnalysisState.setExpression("false");
+        isReachabilityAnalysisState = new Parameter(this, "isReachabilityAnalysisState");
+        isReachabilityAnalysisState.setTypeEquals(BaseType.BOOLEAN);
+        isReachabilityAnalysisState.setExpression("false");
 
     }
 
@@ -31,7 +31,7 @@ public class FmvState extends State {
 
     /** 
      */
-    public Parameter isSafetyAnalysisState;
+    public Parameter isReachabilityAnalysisState;
 
     /**
      * React to a change in an attribute. If the changed attribute is the
@@ -52,10 +52,10 @@ public class FmvState extends State {
             NamedObj container = getContainer();
             // Container might not be an FSMActor if, for example,
             // the state is in a library.
-            if (container instanceof FSMActor) {
+            if (container instanceof FmvAutomaton) {
                 if (((BooleanToken) isRiskAnalysisState.getToken())
                         .booleanValue()) {
-                    if (((BooleanToken) isSafetyAnalysisState.getToken())
+                    if (((BooleanToken) isReachabilityAnalysisState.getToken())
                             .booleanValue()) {
                         _attachText(
                                 "_iconDescription",
@@ -71,7 +71,7 @@ public class FmvState extends State {
                                         + "</svg>\n");
                     }
                 }  else{
-                    if (((BooleanToken) isSafetyAnalysisState.getToken())
+                    if (((BooleanToken) isReachabilityAnalysisState.getToken())
                             .booleanValue()) {
                         _attachText(
                                 "_iconDescription",
@@ -87,12 +87,12 @@ public class FmvState extends State {
                     }
                 }
             }
-        } else if (attribute == isSafetyAnalysisState) {
+        } else if (attribute == isReachabilityAnalysisState) {
             NamedObj container = getContainer();
             // Container might not be an FSMActor if, for example,
             // the state is in a library.
-            if (container instanceof FSMActor) {
-                if (((BooleanToken) isSafetyAnalysisState.getToken())
+            if (container instanceof FmvAutomaton) {
+                if (((BooleanToken) isReachabilityAnalysisState.getToken())
                         .booleanValue()) {
                     if (((BooleanToken) isRiskAnalysisState.getToken())
                             .booleanValue()) {
