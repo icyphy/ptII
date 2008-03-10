@@ -1,9 +1,10 @@
-# Makefile for Ptolemy II standalone applications
+# Makefile for CacheAwareScheduler kernel
+#
+# @Authors: Sanjeev Kohli
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
-# @Copyright (c) 1997-2005 The Regents of the University of California.
+# @Copyright (c) 1998-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,44 +28,39 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/apps
+ME =		ptolemy/apps/naomi
 
-# Alphabetical, please:
-# $PTII/configure looks for various packages and sets variables
-# in $PTII/mk/ptII.mk if these packages are found, otherwise
-# the variables are empty
-#
-# PTKVM_DIR is set to kvm by configure if the kvm runtime was found
-# PTJMF_DIR is set to jmf if the Java Media Framework was found.
-# PTLEGO_DIR is set to lego if the commapi was found.
-# PTLEJOS_DIR is set to lejos if Legos and the commapi was found.
-# PTSOOT_DIR is set to soot if Soot was fount.
-# PTWABA_DIR is set to waba if waba was found
-#DIRS =		agilent $(PTKVM_DIR) $(PTJMF_DIR) \
-#		$(PTLEGO_DIR) $(PTLEJOS) \
-#		tini $(PTSOOT_DIR) softwalls #$(PTWABA_DIR) 
-DIRS = $(PTSOOT_DIR) softwalls naomi #$(PTWABA_DIR) 
-# Root of Ptolemy II directory
-ROOT =		../..
+# Root of the Java directory
+ROOT =		../../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =
+PTPACKAGE = 	naomi
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-MISC_FILES =	$(DIRS)
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+JSRCS = \
+	Connector.java \
+	NaomiParameter.java
+
+EXTRA_SRCS = 	$(JSRCS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	'Connector$$1.class' \
+	'Connector$$Command.class' \
+	'Connector$$MappedNamespaceContext.class'
+	
+JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
@@ -72,3 +68,10 @@ install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+
+
+
+
+
+
