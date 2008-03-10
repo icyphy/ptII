@@ -94,6 +94,7 @@ JSRCS = \
 	RelationHidingAttribute.java \
 	Replacement.java \
 	ReplacementObjectAttribute.java \
+	StateMatcher.java \
 	SubgraphMatchingException.java \
 	TransformationAttribute.java \
 	TransformationException.java \
@@ -103,6 +104,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	ModelGeneratorIcon.xml \
 	ModelViewIcon.xml \
+	StateMatcherIcon.xml \
 	TransformationRuleIcon.xml
 
 EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)

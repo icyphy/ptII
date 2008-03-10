@@ -62,6 +62,7 @@ JSRCS = \
 	GTTableau.java \
 	MatchResultTableau.java \
 	MatchResultViewer.java \
+	StateMatcherIcon.java \
 	TransformationEditor.java
 
 EXTRA_SRCS =	$(JSRCS)
