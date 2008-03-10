@@ -42,10 +42,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	naomi
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	Connector.java \
@@ -59,7 +56,7 @@ OPTIONAL_FILES = \
 	'Connector$$1.class' \
 	'Connector$$Command.class' \
 	'Connector$$MappedNamespaceContext.class'
-	
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
