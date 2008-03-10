@@ -32,15 +32,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
@@ -48,12 +51,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
@@ -61,6 +64,8 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import ptolemy.actor.gui.Configuration;
@@ -118,6 +123,14 @@ public class Connector extends MoMLApplication {
     }
 
     public void processCommand() throws IllegalActionException {
+        if (_root == null) {
+            throw new IllegalActionException("NAOMI root directory is not "
+                    + "specified with -root argument.");
+        } else if (!_pathExists(_root)) {
+            throw new IllegalActionException("NAOMI root directory \""
+                    + _root + "\" does not exist.");
+        }
+
         if (_command == null) {
             throw new IllegalActionException(
                     "No command is specified with the -cmd argument.");
@@ -127,6 +140,19 @@ public class Connector extends MoMLApplication {
             throw new IllegalActionException(
                     "No input model is specified with the -in argument.");
         }
+
+        if (_owner == null) {
+            throw new IllegalActionException(
+                    "No owner is specified with the -owner argument.");
+        }
+
+        File interfaceFile = new File(new File(new File(_root, "interfaces"),
+                _owner), _owner + "_interface.xml");
+        if (!(interfaceFile.exists() && interfaceFile.isFile())) {
+            throw new IllegalActionException("Interface file " +
+                    interfaceFile.getPath() + " does not exist.");
+        }
+        _loadInterface(interfaceFile);
 
         NamedObj model;
         try {
@@ -147,16 +173,9 @@ public class Connector extends MoMLApplication {
                 }
             }
             break;
-        case SYNC:
-            if (_root == null) {
-                throw new IllegalActionException("NAOMI root directory is not "
-                        + "specified with -root argument.");
-            } else if (!_pathExists(_root)) {
-                throw new IllegalActionException("NAOMI root directory \""
-                        + _root + "\" does not exist.");
-            }
 
-            File attributesPath = new File(_root, "/attributes");
+        case SYNC:
+            File attributesPath = new File(_root, "attributes");
             if (!_pathExists(attributesPath)) {
                 throw new IllegalActionException("Attributes directory \""
                         + attributesPath + "\" does not exist.");
@@ -178,7 +197,8 @@ public class Connector extends MoMLApplication {
     };
 
     public static final String[][] NAMESPACES = new String[][] {
-        {"ns", "http://www.atl.lmco.com/naomi/attributes"},
+        {"att", "http://www.atl.lmco.com/naomi/attributes"},
+        {"inf", "http://www.atl.lmco.com/naomi/interfaces"},
         {"xsi", "http://www.w3.org/2001/XMLSchema-instance"}
     };
 
@@ -294,18 +314,14 @@ public class Connector extends MoMLApplication {
                 }
 
                 try {
-                    DocumentBuilderFactory docFactory =
-                        DocumentBuilderFactory.newInstance();
-                    docFactory.setNamespaceAware(true);
-                    DocumentBuilder builder = docFactory.newDocumentBuilder();
-                    Document document = builder.parse(attributeFile);
+                    Document document = _parseXML(attributeFile);
 
                     XPathFactory xpathFactory = XPathFactory.newInstance();
                     XPath xpath = xpathFactory.newXPath();
                     xpath.setNamespaceContext(new MappedNamespaceContext(
                             NAMESPACES));
                     XPathExpression expr = xpath.compile(
-                            "/ns:attribute/ns:value");
+                            "/att:attribute/att:value");
                     String value = (String) expr.evaluate(document);
                     System.out.println("Load: " + attributeName + " = " +
                             value);
@@ -323,21 +339,39 @@ public class Connector extends MoMLApplication {
                             ")\"/>";
                     request = new MoMLChangeRequest(this, attr, moml);
                     request.execute();
-                } catch (ParserConfigurationException e) {
-                    throw new IllegalActionException(null, e,
-                            "Cannot create DocumentBuilder.");
-                } catch (SAXException e) {
-                    throw new IllegalActionException(null, e,
-                            "Fail to parse attribute file: " + attributeFile);
-                } catch (IOException e) {
-                    throw new IllegalActionException(null, e,
-                            "Cannot read from attribute file: "
-                            + attributeFile);
                 } catch (XPathExpressionException e) {
                     throw new KernelRuntimeException(e, "Unexpected error.");
                 }
 
                 break;
+            }
+        }
+    }
+
+    protected void _loadInterface(File file) throws IllegalActionException {
+        Document document = _parseXML(file);
+
+        XPathFactory xpathFactory = XPathFactory.newInstance();
+        XPath xpath = xpathFactory.newXPath();
+        xpath.setNamespaceContext(new MappedNamespaceContext(NAMESPACES));
+        XPathExpression expr;
+
+        String[] nodeTypes = new String[] {"input", "output"};
+        List<Set<String>> sets = new LinkedList<Set<String>>();
+        sets.add(_inputAttributes);
+        sets.add(_outputAttributes);
+        for (int i = 0; i < nodeTypes.length; i++) {
+            try {
+                expr = xpath.compile("/inf:interface/inf:" + nodeTypes[i]);
+                NodeList nodes = (NodeList) expr.evaluate(document,
+                        XPathConstants.NODESET);
+                for (int j = 0; j < nodes.getLength(); j++) {
+                    Node node = nodes.item(j);
+                    String text = node.getTextContent();
+                    sets.get(i).add(text);
+                }
+            } catch (XPathExpressionException e) {
+                throw new KernelRuntimeException(e, "Unexpected error.");
             }
         }
     }
@@ -468,7 +502,7 @@ public class Connector extends MoMLApplication {
                     Element root = document.getDocumentElement();
                     Element owner = document.createElementNS(NAMESPACES[0][1],
                             "owner");
-                    owner.setTextContent(_owner == null ? "" : _owner);
+                    owner.setTextContent(_owner);
                     root.appendChild(owner);
                     Element value = document.createElementNS(NAMESPACES[0][1],
                             "value");
@@ -484,18 +518,7 @@ public class Connector extends MoMLApplication {
 
                     FileOutputStream stream =
                         new FileOutputStream(attributeFile);
-                    DOMSource domSource = new DOMSource(document);
-                    StreamResult streamResult = new StreamResult(stream);
-                    TransformerFactory transformerFactory =
-                        TransformerFactory.newInstance();
-                    Transformer serializer =
-                        transformerFactory.newTransformer();
-                    serializer.setOutputProperty(OutputKeys.ENCODING,
-                            "ISO-8859-1");
-                    serializer.setOutputProperty(OutputKeys.INDENT, "yes");
-                    serializer.transform(domSource, streamResult);
-                    stream.flush();
-                    stream.close();
+                    _serializeXML(document, stream);
 
                     attributeFile.setLastModified(attributeDate.getTime());
                 } catch (ParserConfigurationException e) {
@@ -505,14 +528,6 @@ public class Connector extends MoMLApplication {
                     throw new IllegalActionException(null, e,
                             "Cannot create attribute file: "
                             + attributeFile.getPath());
-                } catch (TransformerConfigurationException e) {
-                    throw new KernelRuntimeException(e, "Unexpected error.");
-                } catch (TransformerException e) {
-                    throw new IllegalActionException(null, e,
-                            "Unable to serialize XML stream.");
-                } catch (IOException e) {
-                    throw new IllegalActionException(null, e,
-                            "Unable to serialize XML stream.");
                 }
             }
         }
@@ -536,12 +551,53 @@ public class Connector extends MoMLApplication {
         return parser.parse(base, inURL);
     }
 
+    private Document _parseXML(File file) throws IllegalActionException {
+        try {
+            DocumentBuilderFactory docFactory =
+                DocumentBuilderFactory.newInstance();
+            docFactory.setNamespaceAware(true);
+            DocumentBuilder builder = docFactory.newDocumentBuilder();
+            return builder.parse(file);
+        } catch (ParserConfigurationException e) {
+            throw new IllegalActionException(null, e,
+                    "Cannot create DocumentBuilder.");
+        } catch (SAXException e) {
+            throw new IllegalActionException(null, e,
+                    "Fail to parse attribute file: " + file);
+        } catch (IOException e) {
+            throw new IllegalActionException(null, e,
+                    "Cannot read from attribute file: " + file);
+        }
+    }
+
     private boolean _pathExists(File path) {
         return path.exists() && path.isDirectory();
     }
 
     private boolean _pathExists(String path) {
         return _pathExists(new File(path));
+    }
+
+    private void _serializeXML(Document document, OutputStream stream)
+    throws IllegalActionException {
+        try {
+            DOMSource domSource = new DOMSource(document);
+            StreamResult streamResult = new StreamResult(stream);
+            TransformerFactory transformerFactory =
+                TransformerFactory.newInstance();
+            Transformer serializer = transformerFactory.newTransformer();
+            serializer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
+            serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+            serializer.transform(domSource, streamResult);
+            stream.flush();
+            stream.close();
+        } catch (TransformerException e) {
+            throw new IllegalActionException(null, e,
+                    "Unable to serialize XML stream.");
+        } catch (IOException e) {
+            throw new IllegalActionException(null, e,
+                    "Unable to serialize XML stream.");
+        }
     }
 
     private Command _command;
@@ -558,9 +614,13 @@ public class Connector extends MoMLApplication {
 
     private boolean _expectingRoot;
 
-    private String _inModelName;;
+    private String _inModelName;
 
-    private String _outModelName;
+    private Set<String> _inputAttributes = new HashSet<String>();
+
+    private String _outModelName;;
+
+    private Set<String> _outputAttributes = new HashSet<String>();
 
     private String _owner;
 
