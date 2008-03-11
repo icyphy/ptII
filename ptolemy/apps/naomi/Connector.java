@@ -169,7 +169,17 @@ public class Connector extends MoMLApplication {
                 for (Object paramObject
                         : attr.attributeList(NaomiParameter.class)) {
                     NaomiParameter naomiParam = (NaomiParameter) paramObject;
-                    System.out.println(naomiParam.getExpression());
+                    String attributeName = naomiParam.getAttributeName();
+                    boolean load = _inputAttributes.contains(attributeName);
+                    boolean save = _inputAttributes.contains(attributeName);
+                    String expression = naomiParam.getExpression();
+                    if (load && save) {
+                        System.out.println("Sync: " + expression);
+                    } else if (load) {
+                        System.out.println("Load: " + expression);
+                    } else if (save) {
+                        System.out.println("Save: " + expression);
+                    }
                 }
             }
             break;
@@ -297,13 +307,15 @@ public class Connector extends MoMLApplication {
 
     protected void _loadAttributes(NamedObj model, File attributesPath)
     throws IllegalActionException {
-
         for (Object attrObject : model.attributeList(Variable.class)) {
             Attribute attr = (Attribute) attrObject;
             for (Object paramObject
                     : attr.attributeList(NaomiParameter.class)) {
                 NaomiParameter naomiParam = (NaomiParameter) paramObject;
                 String attributeName = naomiParam.getAttributeName();
+                if (!_inputAttributes.contains(attributeName)) {
+                    continue;
+                }
                 File attributeFile = new File(attributesPath, attributeName);
 
                 Date attributeDate = naomiParam.getModifiedDate();
@@ -478,6 +490,10 @@ public class Connector extends MoMLApplication {
                     : attr.attributeList(NaomiParameter.class)) {
                 NaomiParameter naomiParam = (NaomiParameter) paramObject;
                 String attributeName = naomiParam.getAttributeName();
+                if (!_outputAttributes.contains(attributeName)) {
+                    continue;
+                }
+
                 File attributeFile = new File(attributesPath, attributeName);
 
                 Date attributeDate = naomiParam.getModifiedDate();

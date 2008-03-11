@@ -37,9 +37,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ptolemy.data.expr.StringParameter;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 
 /**
 
@@ -49,7 +52,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class NaomiParameter extends StringParameter {
+public class NaomiParameter extends StringParameter implements ChangeListener {
 
     /**
      * @param container
@@ -62,12 +65,54 @@ public class NaomiParameter extends StringParameter {
         super(container, name);
     }
 
+    public void changeExecuted(ChangeRequest change) {
+        if (change instanceof MoMLChangeRequest) {
+            NamedObj container = getContainer();
+            if (container != null && container.getContainer() ==
+                    ((MoMLChangeRequest) change).getContext()) {
+                String moml = "<property name=\"" + getName() + "\" value=\"" +
+                getExpression(_attributeName, new Date()) + "\"/>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        container, moml);
+                request.setUndoable(true);
+                request.setMergeWithPreviousUndo(true);
+                container.requestChange(request);
+            }
+        }
+    }
+
+    public void changeFailed(ChangeRequest change, Exception exception) {
+    }
+
     public String getAttributeName() {
         return _attributeName;
     }
 
+    public static String getExpression(String attributeName,
+            Date modifiedDate) {
+        return attributeName + " (" + DATE_FORMAT.format(modifiedDate) + ")";
+    }
+
     public Date getModifiedDate() {
         return _modifiedDate;
+    }
+
+    public void setAttributeName(String name) {
+        setExpression(getExpression(name, _modifiedDate));
+    }
+
+    public void setContainer(NamedObj container) throws IllegalActionException,
+    NameDuplicationException {
+        NamedObj oldContainer = getContainer();
+        if (container != oldContainer) {
+            super.setContainer(container);
+            if (oldContainer != null) {
+                oldContainer.removeChangeListener(this);
+            }
+            if (container != null) {
+                container.addChangeListener(this);
+            }
+        }
     }
 
     public void setExpression(String expr) {
@@ -75,6 +120,10 @@ public class NaomiParameter extends StringParameter {
             expr = "no_name (" + DATE_FORMAT.format(new Date()) + ")";
         }
         super.setExpression(expr);
+    }
+
+    public void setModifiedDate(Date date) {
+        setExpression(getExpression(_attributeName, date));
     }
 
     public Collection<?> validate() throws IllegalActionException {
