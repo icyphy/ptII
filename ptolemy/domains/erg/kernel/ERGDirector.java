@@ -30,11 +30,11 @@ package ptolemy.domains.erg.kernel;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
@@ -103,6 +103,18 @@ public class ERGDirector extends Director {
         }
     }
 
+    public Time cancel(Event event) {
+        Iterator<TimedEvent> iterator = _queue.iterator();
+        while (iterator.hasNext()) {
+            TimedEvent timedEvent = iterator.next();
+            if (timedEvent.contents == event) {
+                iterator.remove();
+                return timedEvent.timeStamp;
+            }
+        }
+        return null;
+    }
+
     /** Clone the director into the specified workspace. This calls the
      *  base class and then sets the attribute public members to refer
      *  to the attributes of the new director.
@@ -130,10 +142,10 @@ public class ERGDirector extends Director {
         Time nextEventTime;
         Time modelTime = getModelTime();
         while (!_queue.isEmpty()) {
-            TimedEvent timedEvent = (TimedEvent) _queue.get();
+            TimedEvent timedEvent = (TimedEvent) _queue.peek();
             nextEventTime = timedEvent.timeStamp;
             if (modelTime.equals(nextEventTime)) {
-                _queue.take();
+                _queue.poll();
                 if (synchronize) {
                     long elapsedTime = System.currentTimeMillis()
                             - _realStartTime;
@@ -152,10 +164,10 @@ public class ERGDirector extends Director {
                     }
                     synchronize = false;
                 }
-                
+
                 Event event = (Event) timedEvent.contents;
                 event.fire();
-                
+
                 if (((BooleanToken) event.isFinalState.getToken())
                         .booleanValue()) {
                     _queue.clear();
@@ -168,13 +180,12 @@ public class ERGDirector extends Director {
 
     public void fireAt(Event event, Time time) throws IllegalActionException {
         if (time.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException(event,
-                    "Attempt to queue an event in the past:"
+            throw new IllegalActionException(this,
+                    "Attempt to schedule an event in the past:"
                             + " Current time is " + getModelTime()
                             + " while event time is " + time);
         }
-
-        _queue.put(new TimedEvent(time, event));
+        _queue.add(new TimedEvent(time, event));
     }
 
     public ERGController getController() throws IllegalActionException {
@@ -231,7 +242,7 @@ public class ERGDirector extends Director {
             boolean isInitial =
                 ((BooleanToken) event.isInitialState.getToken()).booleanValue();
             if (isInitial) {
-                _queue.put(new TimedEvent(_startTime, event));
+                _queue.add(new TimedEvent(_startTime, event));
             }
         }
 
@@ -242,7 +253,7 @@ public class ERGDirector extends Director {
         boolean result = super.postfire();
         if (result && !_queue.isEmpty()) {
             if (_isTopLevel()) {
-                TimedEvent event = (TimedEvent) _queue.get();
+                TimedEvent event = (TimedEvent) _queue.peek();
                 setModelTime(event.timeStamp);
             }
             return true;
@@ -262,15 +273,15 @@ public class ERGDirector extends Director {
         Time nextEventTime = Time.POSITIVE_INFINITY;
 
         if (!_queue.isEmpty()) {
-            TimedEvent event = (TimedEvent) _queue.get();
+            TimedEvent event = (TimedEvent) _queue.peek();
             nextEventTime = event.timeStamp;
         }
 
         while (modelTime.compareTo(nextEventTime) > 0) {
-            _queue.take();
+            _queue.poll();
 
             if (!_queue.isEmpty()) {
-                TimedEvent event = (TimedEvent) _queue.get();
+                TimedEvent event = (TimedEvent) _queue.peek();
                 nextEventTime = event.timeStamp;
             } else {
                 nextEventTime = Time.POSITIVE_INFINITY;
@@ -338,8 +349,9 @@ public class ERGDirector extends Director {
     // Version of cached reference to mode controller.
     private long _controllerVersion = -1;
 
-    private CalendarQueue _queue =
-        new CalendarQueue(new TimedEvent.TimeComparator());
+    @SuppressWarnings("unchecked")
+    private PriorityQueue<TimedEvent> _queue =
+        new PriorityQueue<TimedEvent>(10, new TimedEvent.TimeComparator());
 
     private long _realStartTime;
 

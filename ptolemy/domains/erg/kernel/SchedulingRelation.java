@@ -28,7 +28,8 @@
 
 package ptolemy.domains.erg.kernel;
 
-import ptolemy.data.DoubleToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
@@ -81,6 +82,12 @@ public class SchedulingRelation extends Transition {
         if (attribute == delay) {
             _delayParseTree = null;
         }
+
+        if (canceling != null && delay != null && isCanceling() &&
+                !_isZeroDelay()) {
+            throw new IllegalActionException("For a canceling edge, the delay "
+                    + "must be const 0.0.");
+        }
     }
 
     public double getDelay() throws IllegalActionException {
@@ -98,11 +105,11 @@ public class SchedulingRelation extends Transition {
         }
         Token token = _parseTreeEvaluator.evaluateParseTree(_delayParseTree,
                 controller.getPortScope());
-        if (token == null) {
+        if (token == null || !(token instanceof ScalarToken)) {
             throw new IllegalActionException(this, "Unable to evaluate delay" +
                     "expression \"" + expr + "\"");
         }
-        double result = ((DoubleToken) token).doubleValue();
+        double result = ((ScalarToken) token).doubleValue();
         return result;
     }
 
@@ -110,7 +117,7 @@ public class SchedulingRelation extends Transition {
         StringBuffer buffer = new StringBuffer(super.getLabel());
 
         String delayExpression = delay.getExpression();
-        if ((delayExpression != null) && !_isZeroDelay(delayExpression)) {
+        if ((delayExpression != null) && !_isZeroDelay()) {
             if (buffer.length() > 0) {
                 buffer.append("\n");
             }
@@ -131,6 +138,14 @@ public class SchedulingRelation extends Transition {
         return buffer.toString();
     }
 
+    public boolean isCanceling() {
+        try {
+            return ((BooleanToken) canceling.getToken()).booleanValue();
+        } catch (IllegalActionException e) {
+            return false; // Assume it is not canceling edge by default.
+        }
+    }
+
     public boolean isEnabled() throws IllegalActionException {
         String guard = getGuardExpression();
         if (guard.trim().equals("")) {
@@ -141,6 +156,8 @@ public class SchedulingRelation extends Transition {
     }
 
     public Parameter arguments;
+
+    public Parameter canceling;
 
     public Parameter delay;
 
@@ -163,19 +180,25 @@ public class SchedulingRelation extends Transition {
         arguments = new Parameter(this, "arguments");
         arguments.setTypeEquals(new ArrayType(BaseType.GENERAL));
         arguments.setExpression("{}");
+
+        canceling = new Parameter(this, "canceling");
+        canceling.setTypeEquals(BaseType.BOOLEAN);
+        canceling.setExpression("false");
     }
 
     private static boolean _isEmptyArguments(String argumentsExpression) {
         return argumentsExpression.trim().equals("{}");
     }
 
-    private static boolean _isZeroDelay(String delayExpression) {
+    private boolean _isZeroDelay() {
         try {
-            double delay = Double.parseDouble(delayExpression);
-            return DoubleToken.ZERO.equals(new DoubleToken(delay));
-        } catch (NumberFormatException e) {
-            return false;
+            double d = getDelay();
+            if (d == 0.0) {
+                return true;
+            }
+        } catch (IllegalActionException e) {
         }
+        return false;
     }
 
     private ASTPtRootNode _delayParseTree;

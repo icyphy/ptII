@@ -33,7 +33,9 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.domains.erg.kernel.ERGController;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
@@ -59,6 +61,22 @@ public class ERGGraphTableau extends FSMGraphTableau {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // TODO Auto-generated constructor stub
+    }
+    
+    public void createGraphFrame(CompositeEntity model,
+            LibraryAttribute defaultLibrary) {
+        ERGGraphFrame frame = new ERGGraphFrame(model, this, defaultLibrary);
+
+        try {
+            setFrame(frame);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex);
+        }
+
+        frame.setBackground(BACKGROUND_COLOR);
+        frame.pack();
+        frame.centerOnScreen();
+        frame.setVisible(true);
     }
 
     /**

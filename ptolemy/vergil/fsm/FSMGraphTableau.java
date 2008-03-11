@@ -53,6 +53,7 @@ import ptolemy.moml.LibraryAttribute;
  @Pt.AcceptedRating Red (johnr)
  */
 public class FSMGraphTableau extends Tableau {
+    
     /** Create a new FSM editor tableau with the specified container
      *  and name, with no default library.
      *  @param container The container.
@@ -131,6 +132,11 @@ public class FSMGraphTableau extends Tableau {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                           public fields                   ////
+
+    public static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
+
+    ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
 
     /** A factory that creates graph editing tableaux for Ptolemy models.
@@ -179,8 +185,4 @@ public class FSMGraphTableau extends Tableau {
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 }

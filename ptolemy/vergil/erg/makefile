@@ -53,9 +53,12 @@ PTCLASSALLJARS =
 PTCLASSALLJAR = 
 
 JSRCS = \
+	ERGGraphController.java \
+	ERGGraphFrame.java \
 	ERGGraphTableau.java \
 	ERGTableauFactory.java \
-	EventIcon.java
+	EventIcon.java \
+	SchedulingRelationController.java
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -67,7 +70,8 @@ MISC_FILES =    $(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
     $(PTCLASSJAR) \
-    'ERGGraphTableau$Factory.class'
+    'ERGGraphTableau$$Factory.class' \
+    'SchedulingRelationController$$SchedulingRelationRenderer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

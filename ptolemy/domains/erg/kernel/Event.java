@@ -81,7 +81,12 @@ public class Event extends State {
                     ERGController controller = (ERGController) getContainer();
                     director = (ERGDirector) controller.getDirector();
                 }
-                director.fireAt(nextEvent, director.getModelTime().add(delay));
+                if (schedule.isCanceling()) {
+                    director.cancel(nextEvent);
+                } else {
+                    director.fireAt(nextEvent, director.getModelTime().add(
+                            delay));
+                }
             }
         }
     }
