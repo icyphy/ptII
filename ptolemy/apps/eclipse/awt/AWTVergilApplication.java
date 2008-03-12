@@ -54,12 +54,13 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
-import ptolemy.plot.Plot;
 import ptolemy.util.FileUtilities;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphModel;
@@ -70,88 +71,6 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 
 public class AWTVergilApplication {
-
-    /**
-     * Create a new graph pane. Note that this method is called in constructor
-     * of the base class, so it must be careful to not reference local variables
-     * that may not have yet been created.
-     *
-     * @param entity
-     *        The object to be displayed in the pane.
-     * @return The pane that is created.
-     */
-    protected static GraphPane _createGraphPane(NamedObj entity) {
-        _controller = new ActorEditorGraphController();
-        _readConfiguration();
-        _controller.setConfiguration(_configuration);
-        //_controller.setFrame();
-
-        // The cast is safe because the constructor only accepts
-        // CompositeEntity.
-        final ActorGraphModel graphModel = new ActorGraphModel(entity);
-        return new ActorGraphPane(_controller, graphModel, entity);
-    }
-
-    /** Create the component that goes to the right of the library.
-     *  @param entity The entity to display in the component.
-     *  @return The component that goes to the right of the library.
-     */
-    protected static JComponent _createRightComponent(NamedObj entity) {
-        GraphPane pane = _createGraphPane(entity);
-        pane.getForegroundLayer().setPickHalo(2);
-        pane.getForegroundEventLayer().setConsuming(false);
-        pane.getForegroundEventLayer().setEnabled(true);
-        pane.getForegroundEventLayer().addLayerListener(new LayerAdapter() {
-            /** Invoked when the mouse is pressed on a layer
-             * or figure.
-             */
-            public void mousePressed(LayerEvent event) {
-                Component component = event.getComponent();
-
-                if (!component.hasFocus()) {
-                    component.requestFocus();
-                }
-            }
-        });
-
-        setJGraph(new JGraph(pane));
-
-        //_dropTarget = new EditorDropTarget(_jgraph);
-        return _jgraph;
-    }
-
-    protected static NamedObj _openModel() {
-        try {
-            URL modelURL = FileUtilities
-                    .nameToURL(
-                            "$CLASSPATH/ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml",
-                            null, null);
-            System.out.println("modelURL: " + modelURL);
-            MoMLParser parser = new MoMLParser();
-            return parser.parse(null, modelURL);
-        } catch (Exception ex) {
-            System.out.println(ex);
-            throw new RuntimeException(ex);
-        }
-    }
-
-    // /////////////////////////////////////////////////////////////////
-    // // protected variables ////
-
-    protected static void _readConfiguration() {
-        try {
-            URL configurationURL = FileUtilities.nameToURL(
-                    "$CLASSPATH/ptolemy/configs/full/configuration.xml", null,
-                    null);
-            System.out.println("ConfigurationURL: " + configurationURL);
-            _configuration = MoMLApplication
-                    .readConfiguration(configurationURL);
-        } catch (Exception ex) {
-            System.out.println(ex);
-            throw new RuntimeException(ex);
-        }
-
-    }
 
     public static void main(String[] args) {
         final Display display = new Display();
@@ -210,6 +129,20 @@ public class AWTVergilApplication {
                 }
             }
         };
+        Listener runListener = new Listener() {
+            public void handleEvent(Event e) {
+                try {
+                    TypedCompositeActor toplevel = ((TypedCompositeActor)_toplevel);
+                    Manager manager = new Manager(_toplevel.workspace(), "myManager");
+                    
+                    toplevel.setManager(manager);
+                    manager.execute();
+                } catch (Throwable throwable) {
+                    throw new RuntimeException(throwable);
+                }
+               
+            }
+        };
         shell.addListener(SWT.Close, exitListener);
         Menu mb = new Menu(shell, SWT.BAR);
         MenuItem fileItem = new MenuItem(mb, SWT.CASCADE);
@@ -224,6 +157,12 @@ public class AWTVergilApplication {
         aboutItem.setText("&About\tCtrl+A");
         aboutItem.setAccelerator(SWT.CONTROL + 'A');
         aboutItem.addListener(SWT.Selection, aboutListener);
+        
+        MenuItem runItem = new MenuItem(fileMenu, SWT.PUSH);
+        runItem.setText("&Run\tCtrl+R");
+        runItem.setAccelerator(SWT.CONTROL + 'R');
+        runItem.addListener(SWT.Selection, runListener);
+       
         shell.setMenuBar(mb);
 
         RGB color = shell.getBackground().getRGB();
@@ -263,8 +202,8 @@ public class AWTVergilApplication {
         //final Plot plot = new Plot();
         //panel.add(plot);
 
-        NamedObj toplevel = _openModel();
-        final JComponent rightComponent = _createRightComponent(toplevel);
+        _toplevel = _openModel();
+        final JComponent rightComponent = _createRightComponent(_toplevel);
         panel.add(rightComponent);
 
         java.awt.Frame statusFrame = SWT_AWT.new_Frame(statusComp);
@@ -405,12 +344,96 @@ public class AWTVergilApplication {
         _jgraph = jgraph;
     }
 
+    /**
+     * Create a new graph pane. Note that this method is called in constructor
+     * of the base class, so it must be careful to not reference local variables
+     * that may not have yet been created.
+     *
+     * @param entity
+     *        The object to be displayed in the pane.
+     * @return The pane that is created.
+     */
+    protected static GraphPane _createGraphPane(NamedObj entity) {
+        _controller = new ActorEditorGraphController();
+        _readConfiguration();
+        _controller.setConfiguration(_configuration);
+        //_controller.setFrame();
+
+        // The cast is safe because the constructor only accepts
+        // CompositeEntity.
+        final ActorGraphModel graphModel = new ActorGraphModel(entity);
+        return new ActorGraphPane(_controller, graphModel, entity);
+    }
+
+    // /////////////////////////////////////////////////////////////////
+    // // protected variables ////
+
+    /** Create the component that goes to the right of the library.
+     *  @param entity The entity to display in the component.
+     *  @return The component that goes to the right of the library.
+     */
+    protected static JComponent _createRightComponent(NamedObj entity) {
+        GraphPane pane = _createGraphPane(entity);
+        pane.getForegroundLayer().setPickHalo(2);
+        pane.getForegroundEventLayer().setConsuming(false);
+        pane.getForegroundEventLayer().setEnabled(true);
+        pane.getForegroundEventLayer().addLayerListener(new LayerAdapter() {
+            /** Invoked when the mouse is pressed on a layer
+             * or figure.
+             */
+            public void mousePressed(LayerEvent event) {
+                Component component = event.getComponent();
+
+                if (!component.hasFocus()) {
+                    component.requestFocus();
+                }
+            }
+        });
+
+        setJGraph(new JGraph(pane));
+
+        //_dropTarget = new EditorDropTarget(_jgraph);
+        return _jgraph;
+    }
+
+    protected static NamedObj _openModel() {
+        try {
+            URL modelURL = FileUtilities
+                    .nameToURL(
+                            "$CLASSPATH/ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml",
+                            null, null);
+            System.out.println("modelURL: " + modelURL);
+            MoMLParser parser = new MoMLParser();
+            return parser.parse(null, modelURL);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw new RuntimeException(ex);
+        }
+    }
+
+    protected static void _readConfiguration() {
+        try {
+            URL configurationURL = FileUtilities.nameToURL(
+                    "$CLASSPATH/ptolemy/configs/full/configuration.xml", null,
+                    null);
+            System.out.println("ConfigurationURL: " + configurationURL);
+            _configuration = MoMLApplication
+                    .readConfiguration(configurationURL);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw new RuntimeException(ex);
+        }
+
+    }
+
     /** The graph controller. This is created in _createGraphPane(). */
     protected static ActorEditorGraphController _controller;
 
     protected static Configuration _configuration;
 
     protected static JGraph _jgraph;
+    
+    protected static NamedObj _toplevel;
 
     /**
      * Subclass that updates the background color on each repaint if there is a
@@ -421,6 +444,16 @@ public class AWTVergilApplication {
                 ActorGraphModel model, NamedObj entity) {
             super(controller, model);
             _entity = entity;
+        }
+
+        public void repaint() {
+            _setBackground();
+            super.repaint();
+        }
+
+        public void repaint(DamageRegion damage) {
+            _setBackground();
+            super.repaint(damage);
         }
 
         private void _setBackground() {
@@ -434,16 +467,6 @@ public class AWTVergilApplication {
                             preferences.backgroundColor.asColor());
                 }
             }
-        }
-
-        public void repaint() {
-            _setBackground();
-            super.repaint();
-        }
-
-        public void repaint(DamageRegion damage) {
-            _setBackground();
-            super.repaint(damage);
         }
 
         private NamedObj _entity;
