@@ -67,7 +67,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
             if (!(director instanceof PtidesDirector)) {
                 throw new IllegalActionException("Director '" + director
-                        + "' is not a DEDirector4Ptides, so adding a SchedulePlotter "
+                        + "' is not a PtidesDirector, so adding a SchedulePlotter "
                         + "makes no sense");
             }
 
