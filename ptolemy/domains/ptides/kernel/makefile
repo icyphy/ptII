@@ -48,14 +48,13 @@ PTPACKAGE = 	kernel
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	DDEReceiver4Ptides.java \
-	DDEThread4Ptides.java \
-	DEDirector4Ptides.java \
-	DEReceiver4Ptides.java \
-	EmbeddedDEDirector4Ptides.java \
 	PrioritizedTimedQueue.java \
-	TimeKeeper.java \
-	TimeKeeper4Ptides.java
+	PtidesDDEReceiver.java \
+	PtidesDEReceiver.java \
+	PtidesDirector.java \
+	PtidesEmbeddedDirector.java \
+	PtidesGraphUtilities.java \
+	PtidesPlatformThread.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
