@@ -17,7 +17,7 @@ import ptolemy.actor.gui.PlotEffigy;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
-import ptolemy.domains.ptides.kernel.DEDirector4Ptides;
+import ptolemy.domains.ptides.kernel.PtidesDirector;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -65,13 +65,13 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
             // is not a CompositeActor
             Director director = ((CompositeActor) container).getDirector();
 
-            if (!(director instanceof DEDirector4Ptides)) {
+            if (!(director instanceof PtidesDirector)) {
                 throw new IllegalActionException("Director '" + director
                         + "' is not a DEDirector4Ptides, so adding a SchedulePlotter "
                         + "makes no sense");
             }
 
-            ((DEDirector4Ptides) director).addScheduleListener(this);
+            ((PtidesDirector) director).addScheduleListener(this);
         }
     }
 
@@ -90,7 +90,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
     	double nodeY = getYForNode(node);
     	double x = time;
     	int actorDataset = nodeActorStrings.indexOf(node.getName() + ": " + actor.getName());
-    	int nodeDataSet = nodeActorStrings.indexOf(node.getName() + ": " + node.getName());
+    	int nodeDataSet = nodeActorStrings.indexOf(node.getName());
         if (scheduleEvent == ScheduleListener.START || scheduleEvent == ScheduleListener.STOP) {
         	plot.addPoint(actorDataset, x, actorY, scheduleEvent == ScheduleListener.STOP);
         	plot.addPoint(nodeDataSet, x, nodeY, scheduleEvent == ScheduleListener.STOP);
@@ -161,11 +161,10 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 		this.nodeActors = nodesActors;
 		for (int i = 0; i < nodes.size(); i++) {
 			Actor node = (Actor) nodes.get(i);
-			nodeActorStrings.add(node.getName() + ": " + node.getName());
-			//plot.setMarksStyle("none", nodes.indexOf(node)*2);
+			nodeActorStrings.add(node.getName());
 			if (plot == null)
 				return;
-			plot.addLegend(nodes.indexOf(node)*2, node.getName() );
+			plot.addLegend(nodeActorStrings.indexOf(node.getName()), node.getName());
 			List actors = (List) nodeActors.get(node);
 			for (int j = 0; j < actors.size(); j++) {
 				Actor actor = (Actor) actors.get(j);
