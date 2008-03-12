@@ -12,8 +12,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package ptolemy.apps.eclipse.awt;
- 
+
 /*
  * example snippet: embed Swing/AWT in SWT
  *
@@ -22,6 +21,8 @@ package ptolemy.apps.eclipse.awt;
  * 
  * @since 3.0
  */
+package ptolemy.apps.eclipse.awt;
+
 import java.awt.EventQueue;
 import java.io.*;
 import java.util.*;
