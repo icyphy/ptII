@@ -171,7 +171,7 @@ public class Connector extends MoMLApplication {
                     NaomiParameter naomiParam = (NaomiParameter) paramObject;
                     String attributeName = naomiParam.getAttributeName();
                     boolean load = _inputAttributes.contains(attributeName);
-                    boolean save = _inputAttributes.contains(attributeName);
+                    boolean save = _outputAttributes.contains(attributeName);
                     String expression = naomiParam.getExpression();
                     if (load && save) {
                         System.out.println("Sync: " + expression);
