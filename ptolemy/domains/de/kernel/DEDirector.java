@@ -1308,7 +1308,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  The results are cached in a hashtable _actorToDepth.
      *  Update the depths of existing events in the event queue.
      */
-    private void _computeActorDepth() throws IllegalActionException {
+    protected void _computeActorDepth() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
         LinkedList actors = (LinkedList) container.deepEntityList();
         // Add container.
@@ -1645,7 +1645,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  will be ignored. If the argument is null, then do nothing.
      *  @param actor The actor to disable.
      */
-    private void _disableActor(Actor actor) {
+    protected void _disableActor(Actor actor) {
         if (actor != null) {
             if (_debugging) {
                 _debug("Actor ", ((Nameable) actor).getName(), " is disabled.");
@@ -1665,7 +1665,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  @exception IllegalActionException If any port of this actor
      *  is not sorted.
      */
-    private int _getDepthOfActor(Actor actor) throws IllegalActionException {
+    protected int _getDepthOfActor(Actor actor) throws IllegalActionException {
         if ((_sortValid != workspace().getVersion()) || (_actorToDepth == null)) {
             _computePortDepth();
             _computeActorDepth();
@@ -1688,7 +1688,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  @return An int representing the depth of the given ioPort.
      *  @exception IllegalActionException If the ioPort is not sorted.
      */
-    private int _getDepthOfIOPort(IOPort ioPort) throws IllegalActionException {
+    protected int _getDepthOfIOPort(IOPort ioPort) throws IllegalActionException {
         if ((_sortValid != workspace().getVersion()) || (_portToDepth == null)) {
             _computePortDepth();
             _computeActorDepth();
