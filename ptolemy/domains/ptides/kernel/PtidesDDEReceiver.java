@@ -20,11 +20,11 @@ import ptolemy.kernel.util.Workspace;
 /**
  * @author Patricia Derler
  */
-public class DDEReceiver4Ptides extends PrioritizedTimedQueue implements
+public class PtidesDDEReceiver extends PrioritizedTimedQueue implements
         ProcessReceiver {
     /** Construct an empty receiver with no container.
      */
-    public DDEReceiver4Ptides() {
+    public PtidesDDEReceiver() {
         super();
         _boundaryDetector = new BoundaryDetector(this);
     }
@@ -34,7 +34,7 @@ public class DDEReceiver4Ptides extends PrioritizedTimedQueue implements
      *  @exception IllegalActionException If this receiver cannot be
      *   contained by the proposed container.
      */
-    public DDEReceiver4Ptides(IOPort container) throws IllegalActionException {
+    public PtidesDDEReceiver(IOPort container) throws IllegalActionException {
         super(container);
         _boundaryDetector = new BoundaryDetector(this);
     }
@@ -46,7 +46,7 @@ public class DDEReceiver4Ptides extends PrioritizedTimedQueue implements
      *  @exception IllegalActionException If this receiver cannot be
      *   contained by the proposed container.
      */
-    public DDEReceiver4Ptides(IOPort container, int priority)
+    public PtidesDDEReceiver(IOPort container, int priority)
             throws IllegalActionException {
         super(container, priority);
         _boundaryDetector = new BoundaryDetector(this);
@@ -83,7 +83,7 @@ public class DDEReceiver4Ptides extends PrioritizedTimedQueue implements
         }
     }
 
-    public DEDirector4Ptides getDirector() {
+    public PtidesDirector getDirector() {
         return _director;
     }
 
@@ -238,9 +238,8 @@ public class DDEReceiver4Ptides extends PrioritizedTimedQueue implements
         Thread thread = Thread.currentThread();
         Time time = _lastTime;
 
-        if (thread instanceof DDEThread4Ptides) {
-            TimeKeeper timeKeeper = ((DDEThread4Ptides) thread).getTimeKeeper();
-            time = timeKeeper.getOutputTime();
+        if (thread instanceof PtidesPlatformThread) {
+            time = ((PtidesPlatformThread) thread).getActor().getDirector().getModelTime();
         }
 
         put(token, time);
@@ -264,18 +263,12 @@ public class DDEReceiver4Ptides extends PrioritizedTimedQueue implements
      */
     public void put(Token token, Time time) {
         Workspace workspace = getContainer().workspace();
-
-        synchronized (_director) {
-            if (super.hasRoom() && !_terminate) {
-                super.put(token, time);
-                return;
-            }
-            if (_terminate) {
-                throw new TerminateProcessException(getContainer(), "This receiver has been terminated during _put()");
-            }
+        if (super.hasRoom() && !_terminate) { // super will always have room for now
+            super.put(token, time);
+            this._director.notifyWaitingThreads();
+            return;
         }
         
-        put(token, time);
     }
 
     /** Schedule this receiver to terminate. After this method is
@@ -340,13 +333,13 @@ public class DDEReceiver4Ptides extends PrioritizedTimedQueue implements
                 director = actor.getDirector();
             }
 
-            if (!(director instanceof DEDirector4Ptides)) {
+            if (!(director instanceof PtidesDirector)) {
                 throw new IllegalActionException(port,
                         "Cannot use an instance of PNQueueReceiver "
                                 + "since the director is not a PNDirector.");
             }
 
-            _director = (DEDirector4Ptides) director;
+            _director = (PtidesDirector) director;
         }
     }
 
@@ -358,7 +351,7 @@ public class DDEReceiver4Ptides extends PrioritizedTimedQueue implements
     private BoundaryDetector _boundaryDetector;
 
     /** The director in charge of this receiver. */
-    private DEDirector4Ptides _director;
+    private PtidesDirector _director;
 
     /** Indicator of the result of the most recent call to hasToken(). */
     private boolean _hasTokenCache = false;

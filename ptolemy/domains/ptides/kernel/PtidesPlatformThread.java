@@ -21,26 +21,15 @@ import ptolemy.kernel.util.InternalErrorException;
 /**
  * @author Patricia Derler
  */
-public class DDEThread4Ptides extends ProcessThread {
+public class PtidesPlatformThread extends ProcessThread {
 
-	public DDEThread4Ptides(Actor actor, ProcessDirector director)
+	public PtidesPlatformThread(Actor actor, ProcessDirector director)
 			throws IllegalActionException {
 		super(actor, director);
-		_timeKeeper = new TimeKeeper4Ptides(actor);
 	}
 
 	// /////////////////////////////////////////////////////////////////
 	// // public methods ////
-
-	/**
-	 * Return the time keeper that keeps time for the actor that this thread
-	 * controls.
-	 * 
-	 * @return The TimeKeeper of the actor that this thread controls.
-	 */
-	public TimeKeeper4Ptides getTimeKeeper() {
-		return _timeKeeper;
-	}
 
 	/**
 	 * Notify output-connected actors that the actor controlled by this thread
@@ -68,25 +57,6 @@ public class DDEThread4Ptides extends ProcessThread {
 	}
 
 	/**
-	 * Start this thread and initialize the time keeper to a future time if
-	 * specified in the director's initial time table. Use this method to
-	 * facilitate any calls to DDEDirector.fireAt() that occur prior to the
-	 * creation of this thread. If fireAt() was called for time 'T' with respect
-	 * to the actor that this thread controls, then set the current time of this
-	 * threads TimeKeeper to time 'T.'
-	 * <P>
-	 * NOTE: This method assumes an implementation of fireAt() that would be
-	 * more appropriately named <I>continueAt()</I>.
-	 */
-	public void start() {
-		Actor actor = getActor();
-		DEDirector4Ptides director = (DEDirector4Ptides) actor.getExecutiveDirector();
-		super.start();
-	}
-	
-	
-
-	/**
 	 * End the execution of the actor under the control of this thread. Notify
 	 * all actors connected to this actor that this actor is preparing to cease
 	 * execution.
@@ -100,7 +70,4 @@ public class DDEThread4Ptides extends ProcessThread {
 		super.wrapup();
 	}
 
-	// /////////////////////////////////////////////////////////////////
-	// // private variables ////
-	private TimeKeeper4Ptides _timeKeeper = null;
 }

@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
@@ -14,6 +15,7 @@ import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.domains.de.kernel.DECQEventQueue;
@@ -83,9 +85,17 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         Token token = null;
         Event event = (Event) _queue.first();
         _queue.remove(event);
-        setReceiverTime(event._timeStamp);
         token = event.getToken();
         return token;
+    }
+    
+    public Event getEvent() {
+        // Get a token and set all relevant
+        // local time parameters
+        Token token = null;
+        Event event = (Event) _queue.first();
+        _queue.remove(event);
+        return event;
     }
 
     /** Get the queue capacity of this receiver.
@@ -96,19 +106,6 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         return _queue.size();
     }
 
-    /** Return the receiver time of this receiver. The receiver
-     *  time is the time stamp associated with the oldest token that
-     *  is currently on the queue. If the queue is empty, then the
-     *  receiver time value is equal to the "last time."
-     * @return The receiver time of this PrioritizedTimedQueue.
-     */
-    public synchronized Time getReceiverTime() {
-        return _receiverTime;
-    }
-    
-    public synchronized void setReceiverTime(Time time) {
-        _receiverTime = time;
-    }
 
     /** Return true if the number of tokens stored in the queue is
      *  less than the capacity of the queue. Return false otherwise.
@@ -144,7 +141,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     public boolean hasToken(Time time) {
         if (_queue.size() == 0)
         	return false;
-        else 
+        else if ((((Event)_queue.first())._timeStamp.compareTo(time) < 0))
+        		System.out.println("... smaller " + (((Event)_queue.first())._timeStamp));
         	return (((Event)_queue.first())._timeStamp.equals(time));
     }
 
@@ -222,24 +220,17 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
          }
          }
          */
-        Time _lastTimeCache = _lastTime;
-        Time _receiverTimeCache = _receiverTime;
-        _lastTime = time;
 
         Event event = new Event(token, time);
-
-        if (_queue.size() == 0) {
-            _receiverTime = _lastTime;
-        }
+        _lastTime = time;
 
         try {
             if (!_queue.add(event)) {
-                throw new NoRoomException(getContainer(),
-                        "Queue is at capacity. Cannot insert token.");
+                // same event already exists
+            	System.out.println();
             }
         } catch (NoRoomException e) {
-            _lastTime = _lastTimeCache;
-            _receiverTime = _receiverTimeCache;
+
             throw e;
         }
     }
@@ -251,15 +242,18 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *  This method is not synchronized so the caller should be.
      */
     public void reset() {
-        EmbeddedDEDirector4Ptides director = (EmbeddedDEDirector4Ptides) ((Actor) getContainer()
-                .getContainer()).getDirector();
-        Time time = director.getModelTime();
-        _receiverTime = time;
-        _lastTime = time;
+        Director director = ((Actor) getContainer().getContainer().getContainer()).getDirector();
+        Time time;
+		try {
+			time = new Time(director, 0.0);
+			_lastTime = time;
+		} catch (IllegalActionException e) {
 
-        // I believe this is not needed anymore, because receivers are
-        // automatically recreated by the kernel each execution. -SN 3/19/2002
-        // _queue.clear();
+			e.printStackTrace();
+		}
+        
+        
+
     }
 
     /** Set the queue capacity of this receiver.
@@ -331,17 +325,6 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         _completionTime = time;
     }
 
-    /** Set the receiver time of this receiver to the specified
-     *  value. If this queue is not empty, then the receiver
-     *  time will not be set to the specified value. This method
-     *  is not synchronized so the caller should be.
-     * @param time The new receiver time.
-     */
-    public synchronized void _setReceiverTime(Time time) {
-        if (!(_queue.size() > 0)) {
-            _receiverTime = time;
-        }
-    }
 
     // Initialize some time variables.
     private void _initializeTimeVariables() {
@@ -350,7 +333,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         try {
             _completionTime = new Time(actor.getDirector(), ETERNITY);
             _lastTime = new Time(actor.getDirector());
-            _receiverTime = new Time(actor.getDirector());
+            //_receiverTime = new Time(actor.getDirector());
         } catch (IllegalActionException e) {
             // If the time resolution of the director is invalid,
             // it should have been caught before this.
@@ -366,10 +349,10 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     private Time _completionTime;
 
     // The queue in which this receiver stores tokens.
-    private TreeSet _queue = new TreeSet(new TimeComparator());
+    protected TreeSet _queue = new TreeSet(new TimeComparator());
 
     // The time stamp of the earliest token that is still in the queue.
-    private Time _receiverTime;
+    //private Time _receiverTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
@@ -379,7 +362,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     // values. This is particularly useful in situations
     // where the specification of the destination receiver
     // may be considered redundant.
-    private static class Event {
+    public static class Event {
         // Construct an Event with a token and time stamp.
         public Event(Token token, Time time) {
             _token = token;
@@ -413,9 +396,30 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 			Event event2 = (Event) arg1;
 			Time time1 = event1._timeStamp;
 			Time time2 = event2._timeStamp;
+			if (time1.compareTo(time2) != 0)
+				return time1.compareTo(time2);
 			
+			if (event1._token instanceof DoubleToken) {
+				DoubleToken token1 = (DoubleToken) event1._token;
+				DoubleToken token2 = (DoubleToken) event2._token;
+				if (token1.doubleValue() < token2.doubleValue())
+					return -1;
+				else if (token1.doubleValue() > token2.doubleValue())
+					return 1;
+				else
+					return 0;
+			} else if (event1._token instanceof IntToken) {
+				IntToken token1 = (IntToken) event1._token;
+				IntToken token2 = (IntToken) event2._token;
+				if (token1.intValue() < token2.intValue())
+					return -1;
+				else if (token1.intValue() > token2.intValue())
+					return 1;
+				else
+					return 0;
+			}
+			return 0;
 			
-			return time1.compareTo(time2);
 		}
     	
     }

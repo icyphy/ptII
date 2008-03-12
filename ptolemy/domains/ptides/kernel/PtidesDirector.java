@@ -2,33 +2,24 @@ package ptolemy.domains.ptides.kernel;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
-import ptolemy.actor.lib.Clock;
 import ptolemy.actor.process.CompositeProcessDirector;
 import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.ProcessThread;
-import ptolemy.actor.util.CalendarQueue;
-import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.actor.util.Time;
-import ptolemy.actor.util.TimedEvent;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -36,40 +27,35 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.lib.ScheduleListener;
 import ptolemy.domains.ptides.lib.SchedulePlotter;
-import ptolemy.domains.de.lib.TimedDelay;
-import ptolemy.graph.DirectedAcyclicGraph;
-import ptolemy.graph.Edge;
-import ptolemy.graph.Node;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /**
  * @author Patricia Derler
  */
-public class DEDirector4Ptides extends CompositeProcessDirector implements
+public class PtidesDirector extends CompositeProcessDirector implements
 		TimedDirector {
 
-	public DEDirector4Ptides() throws IllegalActionException,
+	public PtidesDirector() throws IllegalActionException,
 			NameDuplicationException {
 		super();
 		 
 		_initialize();
 	}
 
-	public DEDirector4Ptides(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+	public PtidesDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
 		super(workspace);
 
 		_initialize();
 	}
 
-	public DEDirector4Ptides(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+	public PtidesDirector(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
 		super(container, name);
 
 		_initialize();
@@ -126,24 +112,35 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 		super.initialize();
 		_completionTime = Time.POSITIVE_INFINITY;
         
-		_nextFirings = new TreeSet();
+		_nextFirings = new TreeSet<Time>();
     	_completionTime = new Time(this, ((DoubleToken) stopTime.getToken()).doubleValue());
     	if (!_completionTime.equals(Time.POSITIVE_INFINITY))
     		_nextFirings.add(_completionTime);
     	
-    	if (_calculateMinDelays)
-    		_calculateMinDelays();
+    	if (_calculateMinDelays) {
+    		PtidesGraphUtilities utilities = new PtidesGraphUtilities(this.getContainer());
+    		utilities.calculateMinDelays();
+    	}
     	
-    	Hashtable table = new Hashtable();
+    	Hashtable<Actor, List> table = new Hashtable<Actor, List>();
     	for (Iterator it = ((CompositeActor)getContainer()).entityList().iterator(); it.hasNext(); ) {
-    		CompositeActor actor = (CompositeActor) it.next();
-    		List actors = new ArrayList();
-    		for (Iterator it2 = actor.entityList().iterator(); it2.hasNext(); ) {
-    			Object o = it2.next();
-    			if (o instanceof Actor)
-    				actors.add(o);
+    		Object obj = it.next();
+    		if (obj instanceof CompositeActor) {
+	    		CompositeActor actor = (CompositeActor) obj;
+	    		if (actor.getDirector() instanceof PtidesEmbeddedDirector) {
+	    			PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor.getDirector();
+	    			dir.setUsePtidesExecutionSemantics(_usePtidesExecutionSemantics);
+	    			dir.setClockSyncError(_clockSyncError);
+	    			dir.setNetworkDelay(_networkDelay);
+	    		}
+	    		List<Actor> actors = new ArrayList<Actor>();
+	    		for (Iterator it2 = actor.entityList().iterator(); it2.hasNext(); ) {
+	    			Object o = it2.next();
+	    			if (o instanceof Actor)
+	    				actors.add((Actor)o);
+	    		}
+	    		table.put(actor, actors);
     		}
-    		table.put(actor, actors);
     	}
     	synchronized (this) {
             if (_scheduleListeners != null) {
@@ -159,7 +156,7 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 
 
 	public Receiver newReceiver() {
-        DDEReceiver4Ptides receiver = new DDEReceiver4Ptides();
+        PtidesDDEReceiver receiver = new PtidesDDEReceiver();
         double timeValue;
 
         try {
@@ -187,32 +184,28 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
     }
     
     
-
-	public synchronized void requestRefiringAtPhysicalTime(Time time) throws IllegalActionException {
-		if (time.compareTo(getModelTime()) > 0)
-			_nextFirings.add(time);
-	}
-    
     @Override
     public synchronized void setModelTime(Time newTime) throws IllegalActionException {
     	_currentTime = newTime;
     }
     
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
-        double ETERNITY = PrioritizedTimedQueue.ETERNITY;
-        DDEThread4Ptides ddeThread = null;
-        Thread thread = Thread.currentThread();
-
-        if (thread instanceof DDEThread4Ptides) {
-            ddeThread = (DDEThread4Ptides) thread;
-        }
-        if ((_completionTime.getDoubleValue() != ETERNITY) && (time.compareTo(_completionTime) > 0)) {
-            return;
-        }
-        Actor threadActor = ddeThread.getActor();
-        if (threadActor != actor) {
-            throw new IllegalActionException("Actor argument of DDEDirector.fireAt() must be contained by the DDEThread that calls fireAt()");
-        }
+//        double ETERNITY = PrioritizedTimedQueue.ETERNITY;
+//        PtidesPlatformThread ddeThread = null;
+//        Thread thread = Thread.currentThread();
+//
+//        if (thread instanceof PtidesPlatformThread) {
+//            ddeThread = (PtidesPlatformThread) thread;
+//        }
+//        if ((_completionTime.getDoubleValue() != ETERNITY) && (time.compareTo(_completionTime) > 0)) {
+//            return;
+//        }
+//        Actor threadActor = ddeThread.getActor();
+//        if (threadActor != actor) {
+//            throw new IllegalActionException("Actor argument of DDEDirector.fireAt() must be contained by the DDEThread that calls fireAt()");
+//        }
+    	if (time.compareTo(getModelTime()) > 0)
+			_nextFirings.add(time);
 
     }
     
@@ -221,6 +214,19 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
     	super.wrapup();
     	_waitingForPhysicalTime.clear();
     	_nextFirings.clear();
+    	setModelTime(new Time(this, 0.0));
+    	
+    	for (Iterator it = ((CompositeActor)getContainer()).entityList().iterator(); it.hasNext(); ) {
+    		Object obj = it.next();
+    		if (obj instanceof CompositeActor) {
+	    		CompositeActor actor = (CompositeActor) obj;
+	    		if (actor.getDirector() instanceof PtidesEmbeddedDirector) {
+	    			PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor.getDirector();
+	    			dir.setModelTime(getModelTime());
+	    		}
+    		}
+    	}
+	    		
     }
     
     @Override
@@ -246,10 +252,9 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 	}
     
     public synchronized Time waitForFuturePhysicalTime() throws IllegalActionException {
-		System.out.println("/// wait on " + ((DDEThread4Ptides)Thread.currentThread()).getActor().getName() + " " +  _getActiveThreadsCount() + " " + _getBlockedThreadsCount()  + " " + _waitingForPhysicalTime.size());
+		System.out.println("/// wait on " + ((PtidesPlatformThread)Thread.currentThread()).getActor().getName() + " " +  _getActiveThreadsCount() + " " + _getBlockedThreadsCount()  + " " + _waitingForPhysicalTime.size());
 		if ((!_waitingForPhysicalTime.contains(Thread.currentThread()) 
-				&& _getActiveThreadsCount() - _waitingForPhysicalTime.size() == 1)
-				) { // increase physical time when all threads are blocked
+				&& _getActiveThreadsCount() - _waitingForPhysicalTime.size() == 1)) { // increase physical time when all threads are blocked
 			
 			_increasePhysicalTime();
 			return getModelTime();
@@ -274,21 +279,19 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
     
     protected final void _displaySchedule(Actor node, Actor actor, double time,
             int scheduleEvent) {
-        synchronized (this) {
-            if (_scheduleListeners != null) {
-                Iterator listeners = _scheduleListeners.iterator();
+        if (_scheduleListeners != null) {
+            Iterator listeners = _scheduleListeners.iterator();
 
-                while (listeners.hasNext()) {
-                    ((ScheduleListener) listeners.next()).event(node, actor,
-                            time, scheduleEvent);
-                }
+            while (listeners.hasNext()) {
+                ((ScheduleListener) listeners.next()).event(node, actor,
+                        time, scheduleEvent);
             }
         }
     }
     
     protected ProcessThread _newProcessThread(Actor actor,
             ProcessDirector director) throws IllegalActionException {
-        return new DDEThread4Ptides(actor, director);
+        return new PtidesPlatformThread(actor, director);
     }
     
     @Override
@@ -327,14 +330,12 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
                     Receiver[][] outReceivers = port.getRemoteReceivers();
                     for (int k = 0; k < outReceivers.length; k++) {
                         for (int l = 0; l < outReceivers[k].length; l++) {
-                            DDEReceiver4Ptides outReceiver = (DDEReceiver4Ptides) outReceivers[k][l];
+                            PtidesDDEReceiver outReceiver = (PtidesDDEReceiver) outReceivers[k][l];
                             Thread thread = Thread.currentThread();
 
-                            if (thread instanceof DDEThread4Ptides) {
-                                TimeKeeper4Ptides timeKeeper = ((DDEThread4Ptides) thread)
-                                        .getTimeKeeper();
-                                outReceiver.put(token, timeKeeper
-                                        .getModelTime());
+                            if (thread instanceof PtidesPlatformThread) {
+                                Time time = ((PtidesPlatformThread) thread).getActor().getDirector().getModelTime();
+                                outReceiver.put(token, time);
                             }
                         }
                     }
@@ -349,87 +350,7 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
 	}
 
 	
-	private void _adjustMinDelayAddingUpstreamDelays(DirectedAcyclicGraph graph) throws IllegalActionException {
-		// adjust min delays by adding minDelays of upstream actors
-		for (Iterator it = ((CompositeActor)this.getContainer()).entityList().iterator(); it.hasNext();) {
-			Actor actor = (Actor) it.next();
-			for (Iterator inputs = actor.inputPortList().iterator(); inputs.hasNext(); ) {
-				IOPort input = (IOPort) inputs.next();
-				double oldMinDelay = EmbeddedDEDirector4Ptides.getMinDelayTime(input);
-				ArrayList list = new ArrayList();
-				double newMinDelay = _getMinDelayUpstream(graph, input, list);
-				if (oldMinDelay != newMinDelay) {
-					EmbeddedDEDirector4Ptides.setMinDelay(input, newMinDelay);
-				}
-			}
-		}
-	}
-
-	private void _adjustMinDelaysOfEquivalenceClasses() throws IllegalActionException {
-		// if ports are in the same equivalence class they get the maximum of their minimum delays
-		for (Iterator it = ((CompositeActor)this.getContainer()).entityList().iterator(); it.hasNext();) {
-			Actor actor = (Actor) it.next();
-			EmbeddedDEDirector4Ptides dir = (EmbeddedDEDirector4Ptides) actor.getDirector();
-			Set equivalenceClasses = dir.getEquivalenceClassesPortLists();
-			for (Iterator classes = equivalenceClasses.iterator(); classes.hasNext(); ) {
-				Set equivalenceClass = (Set) classes.next();
-				double minMinDelay = Double.MAX_VALUE;
-				for (Iterator ports = equivalenceClass.iterator(); ports.hasNext(); ) {
-					IOPort port = (IOPort) ports.next();
-					double minDelay = EmbeddedDEDirector4Ptides.getMinDelayTime(port);
-					if (minMinDelay > minDelay)
-						minMinDelay = minDelay;
-				}
-				for (Iterator ports = equivalenceClass.iterator(); ports.hasNext(); ) {
-					IOPort port = (IOPort) ports.next();
-					if (EmbeddedDEDirector4Ptides.getMinDelayTime(port) != minMinDelay) {
-						dir.setMinDelay(port, minMinDelay);
-					}
-				}
-			}
-		}
-	}
 	
-    private void _calculateMinDelays() throws IllegalActionException {
-    	for (Iterator it = ((CompositeActor)this.getContainer()).entityList().iterator(); it.hasNext();) {
-    		Actor actor = (Actor) it.next();
-	    	((EmbeddedDEDirector4Ptides)actor.getDirector()).getEquivalenceClasses();
-	    	((EmbeddedDEDirector4Ptides)actor.getDirector()).getMinDelays();
-    	}
-    	CompositeActor container = (CompositeActor) getContainer();
-    	FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (container).getFunctionDependency();
-		DirectedAcyclicGraph graph = functionDependency.getDetailedDependencyGraph().toDirectedAcyclicGraph();
-
-    	_transferDelaysFromOutputsToInputs(graph);
-    	_adjustMinDelaysOfEquivalenceClasses();
-		_adjustMinDelayAddingUpstreamDelays(graph);
-		_adjustMinDelaysOfEquivalenceClasses();
-	}
-
-	private double _getMinDelayUpstream(DirectedAcyclicGraph graph, IOPort inputPort, List traversedActors) {
-		double mindel = Double.MAX_VALUE;
-		double delay = EmbeddedDEDirector4Ptides.getMinDelayTime(inputPort);
-		for (Iterator it = graph.inputEdges(graph.node(inputPort)).iterator(); it.hasNext(); ) {
-			IOPort port = (IOPort)( (Edge)it.next()).source().getWeight();
-			Actor actor = (Actor) port.getContainer();
-			if (traversedActors.contains(actor))
-				break;
-			traversedActors.add(actor);
-			EmbeddedDEDirector4Ptides dir = (EmbeddedDEDirector4Ptides) actor.getDirector();
-			for(Iterator inputs = actor.inputPortList().iterator(); inputs.hasNext();) {
-				delay = EmbeddedDEDirector4Ptides.getMinDelayTime(inputPort);
-				IOPort input = (IOPort) inputs.next();
-				if (dir.isInputConnectedToOutput(input, port)) {
-					delay += _getMinDelayUpstream(graph, input, traversedActors);
-					if (mindel > delay)
-						mindel = delay;
-				}
-			}	
-		}
-		if (mindel == Double.MAX_VALUE)
-			mindel = delay;
-		return mindel;		
-	}
 	
 
 	
@@ -480,35 +401,15 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
         } 
 	}
 	
-	private void _transferDelaysFromOutputsToInputs(DirectedAcyclicGraph graph) throws IllegalActionException {
-		
-		// transferring min delays from outputs to inputs; outputs can have mindelays if 
-		// upstream actors are not connected to an input of the same actor
-		for (Iterator it = ((CompositeActor)this.getContainer()).entityList().iterator(); it.hasNext();) {
-			Actor actor = (Actor) it.next();
-			for (Iterator outputs = actor.outputPortList().iterator(); outputs.hasNext(); ) {
-				IOPort output = (IOPort) outputs.next();
-				Collection sinks = graph.outputEdges(graph.node(output));
-				for (Iterator sinksIt = sinks.iterator(); sinksIt.hasNext(); ) { // should only be one
-					Edge edge = (Edge) sinksIt.next();
-					IOPort sink = (IOPort) edge.sink().getWeight();
-					double minDelay = EmbeddedDEDirector4Ptides.getMinDelayTime(output);
-					EmbeddedDEDirector4Ptides.setMinDelay(sink, minDelay);
-				}
-			}
-		}
-		
-	}
+
 	
 
 	
 	
-	private HashSet _waitingForPhysicalTime = new HashSet();
-	private TreeSet _nextFirings;
-	
-	private PrioritizedTimedQueue _queue;
+	private HashSet<Thread> _waitingForPhysicalTime = new HashSet<Thread>();
+	private TreeSet<Time> _nextFirings;
 
-	private Collection _scheduleListeners = new LinkedList();
+	private Collection<ScheduleListener> _scheduleListeners = new LinkedList<ScheduleListener>();
 
 	private double _clockSyncError;
 	private double _networkDelay;
@@ -529,9 +430,5 @@ public class DEDirector4Ptides extends CompositeProcessDirector implements
      */
     private Time _completionTime;
 
-    /** The set of receivers blocked on a write to a receiver. */
-    private HashMap _writeBlockedQueues = new HashMap();
-
-    private Hashtable _initialTimeTable;
 
 }
