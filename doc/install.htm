@@ -159,12 +159,21 @@ Jython is covered by a
 <a href="http://www.jython.org/install.html" target="_top"><code>http://www.jython.org/install.html</code></a>
 <br>Basically, you should do something like
 <pre>
-java -classpath . jython-21
+java -jar jython_installer-2.2.1.jar
 </pre>
-and then install Jython in <code>$PTII/vendors/jython</code>
+and then select the <b>Standalone</b> Jython installation, which 
+will create <code>jython.jar</code> and then install Jython in
+<code>$PTII/vendors/jython</code>.
+
+<p>Note that if you <b>don't</b> select the <b>Standalone</b> Jython
+install, then a set of Jython directories will be created.  You should
+add the directory where Jython was installed to your path. 
+
 </ol>
-Configure looks for <code>$PTII/lib/jython.jar</code> and
-then <code>$PTII/vendors/jython/jython.jar</code>
+The <code>configure</code> script will look for <code>jython</code>
+and <code>jython.jar</code> in your path and then look for
+<code>$PTII/lib/jython.jar</code> and then
+<code>$PTII/vendors/jython/jython.jar</code>.
 
 
 <h3><a name="Jacl">Jacl</a></h3>
