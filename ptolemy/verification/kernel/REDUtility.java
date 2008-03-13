@@ -828,10 +828,8 @@ public class REDUtility {
      * perform a systematic scan to generate the initial rough domain, and use a
      * constant span to expand it.
      * 
-     * @param actor
-     *                Actor under analysis.
-     * @param numSpan
-     *                The size of the span to expand the variable domain.
+     * @param actor Actor under analysis.
+     * @param numSpan The size of the span to expand the variable domain.
      * @return The set of variables (variable names) used in the FSMActor.
      * @throws IllegalActionException
      */
@@ -888,7 +886,7 @@ public class REDUtility {
                 }
                 if (!text.trim().equals("")) {
                     hasAnnotation = true;
-                    // buffer.append(text);
+                
                 }
 
                 // Retrieve the guardExpression for checking the existence

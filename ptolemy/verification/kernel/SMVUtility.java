@@ -58,22 +58,22 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  * This is an utility function for Ptolemy II models. It performs a systematic
- * traversal of the system and generate NuSMV (Cadence SMV) acceptable files for
+ * traversal of the system and generate NuSMV (or Cadence SMV) acceptable files for
  * model checking.
  * 
- * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee
+ * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (patrickj)
- * @Pt.AcceptedRating Red ()
+ * @Pt.AcceptedRating Red (patrickj)
  */
 public class SMVUtility {
 
     /**
-     * Return an StringBuffer that contains the converted .smv format of the
+     * Return a StringBuffer that contains the converted .smv format of the
      * system. Note that in this version we use modular approach instead of
-     * detecting dependency checking. Modular approach would generate a bigger
-     * state space. Also the current algorithm enables us to deal with
+     * direct dependency checking detection. Modular approach would generate 
+     * a bigger state space. Also the current algorithm enables us to deal with
      * hierarchical systems.
      * 
      * @param model The system under analysis.
@@ -82,6 +82,8 @@ public class SMVUtility {
      *               formula.
      * @param span A constant used to expand the size of the rough domain.
      * @return The converted .smv format of the system.
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
      */
     public static StringBuffer advancedGenerateSMVDescription(
             CompositeActor model, String pattern, String choice, String span)
@@ -94,8 +96,7 @@ public class SMVUtility {
         _globalSignalNestedRetrivalInfo = new HashMap<String, HashSet<String>>();
         _variableInfo = new HashMap<String, VariableInfo>();
 
-        // returnSMVFormat: a string storing the system description in SMV
-        // format
+        // returnSMVFormat: a string storing the system description in SMV format.
         StringBuffer returnSMVFormat = new StringBuffer("");
 
         // Perform a scan of the whole system in order to retrieve signals
@@ -105,14 +106,16 @@ public class SMVUtility {
 
         // List out all FSMs/ModalModels(with refinements) with their
         // states and transitions.
+        //
         // FIXME: Theoretically here we should also be able to deal with
-        // CompositeActors with SR; this can be modified easily.
+        // CompositeActors inwith SR; this can be modified easily.
+        //
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
                 // Directly generate the whole description of the system.
-                returnSMVFormat.append(translateSingleFSMActor(
+                returnSMVFormat.append(_translateSingleFSMActor(
                         (FSMActor) innerEntity, span, false, "", ""));
             } else if (innerEntity instanceof ModalModel) {
                 // We need to generate the description of the subsystem,
@@ -123,6 +126,8 @@ public class SMVUtility {
                 for (int i = 0; i < subSystemDescription.size(); i++) {
                     returnSMVFormat.append(subSystemDescription.get(i));
                 }
+            } else if (innerEntity instanceof CompositeActor) {
+                // FIXME: Need to add functionalities for dealing with CompositeActors.
             }
         }
 
@@ -195,18 +200,24 @@ public class SMVUtility {
         return returnSMVFormat;
     }
 
-    /**
+    /** 
+     * This function tries to generate the reachability/risk specification of
+     * a system by scanning through the subsystem, and extract states which 
+     * have special risk or reachability labels.
      * 
-     * @param model
-     * @param specType
-     * @return
+     * @param model The system model under analysis.
+     * @param specType The type of the graphical specification, it may be either
+     *                 "Risk" or "Reachability" 
+     * @return A string indicating the CTL formula for risk/reachability analysis.
      * @throws IllegalActionException
      */
     public static String generateGraphicalSpecification(CompositeActor model,
             String specType) throws IllegalActionException {
+
         StringBuffer returnSpecStringBuffer = new StringBuffer("");
         HashSet<String> specificationStateSet = _generateGraphicalSpecificationRecursiveStep(
                 model, specType, new StringBuffer(""));
+        // Combine all these states with conjunctions.
         Iterator<String> stateSetSpecs = specificationStateSet.iterator();
         while (stateSetSpecs.hasNext()) {
             String stateSpec = stateSetSpecs.next();
@@ -216,41 +227,12 @@ public class SMVUtility {
                 returnSpecStringBuffer.append(stateSpec);
             }
         }
-
         if (specType.equalsIgnoreCase("Risk")) {
             return "!EF(" + returnSpecStringBuffer.toString() + ")";
         } else {
-            return "EF(" + returnSpecStringBuffer.toString() + ")";
+            return " EF(" + returnSpecStringBuffer.toString() + ")";
         }
 
-    }
-
-    public static StringBuffer generateSubSystemSMVDescription(
-            CompositeActor model, String span, String upperStateName)
-            throws IllegalActionException, NameDuplicationException {
-
-        StringBuffer returnFmvFormat = new StringBuffer("");
-
-        // List out all FSMs with their states.
-        for (Iterator actors = (((CompositeActor) model).entityList())
-                .iterator(); actors.hasNext();) {
-            Entity innerEntity = (Entity) actors.next();
-            if (innerEntity instanceof FSMActor) {
-                // Directly generate the whole description of the system.
-                returnFmvFormat
-                        .append(translateSingleFSMActor((FSMActor) innerEntity,
-                                span, false, "", upperStateName));
-            } else if (innerEntity instanceof ModalModel) {
-                // Perform analysis of the ModalModel
-                ArrayList<StringBuffer> subSystemDescription = _generateSMVFormatModalModelWithRefinement(
-                        (ModalModel) innerEntity, span, upperStateName);
-                for (int i = 0; i < subSystemDescription.size(); i++) {
-                    returnFmvFormat.append(subSystemDescription.get(i));
-                }
-            }
-        }
-
-        return returnFmvFormat;
     }
 
     /**
@@ -270,365 +252,24 @@ public class SMVUtility {
         }
     }
 
-    /**
+    /** Perform a systematic pre-scan to obtain information regarding the 
+     *  visibility of a signal. See the description in the source code for
+     *  technical details. 
      * 
-     * @param actor
-     * @param span
-     * @param isController
-     * @param controllerName
-     * @param refinementStateName
+     * @param model The whole system under analysis
+     * @param span The number to expand the domain of a variable. Note that it is 
+     *             in fact irrelevant to the signal generation. It is only used for
+     *             the reuse of existing functions. 
      * @return
      * @throws IllegalActionException
+     * @throws NameDuplicationException
      */
-    public static StringBuffer translateSingleFSMActor(FSMActor actor,
-            String span, boolean isController, String controllerName,
-            String refinementStateName) throws IllegalActionException {
-
-        // This new version of utility function tries to translate a single
-        // FSMActor into formats acceptable by model checker NuSMV.
-        // The main change lies in two parts:
-        // (1) Now a single FSMActor can be the controller of the ModalModel,
-        // then in the description we need to instantiate each of the
-        // sub-models (which is generated by state refinement) contained
-        // within.
-        // (2) A single FSMActor can also be the a component of the subsystem
-        // (state refinement with general model). In this way, we need to
-        // add up information whether the current state in the upper
-        // controller is the state holding this FSMActor.
-        //
-        // If refinementStateName is not empty string, then we know that
-        // we need to be sure that the upper state must be in the state
-        // "refinementStateName", otherwise, it is not allowed to perform
-        // any transition.
-
-        String refinementStateActivePremise = "UpperState = "
-                + refinementStateName.trim();
-
-        StringBuffer returnSmvFormat = new StringBuffer("");
-        returnSmvFormat.append("\tVAR \n");
-
-        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
-        // UNDER A REFINEMENT OF A STATE.
-        if (isController == true) {
-            // For a controller, it also needs to instantiate all of the
-            // inner modules existed below. Thus we use a function
-            // _retrieveSubSystemModuleNameParameterInfo to retrieve
-            // modules in the lower level.
-            ArrayList<StringBuffer> subModules = _retrieveSubSystemModuleNameParameterInfo(actor);
-            for (int i = 0; i < subModules.size(); i++) {
-                returnSmvFormat.append(subModules.get(i));
-                returnSmvFormat.append("\n ");
-            }
-        }
-
-        returnSmvFormat.append("\t\tstate : {");
-
-        // Enumerate all states in the FmvAutomaton
-        HashSet<State> frontier = null;
-        // try {
-        frontier = _enumerateStateSet(actor);
-        // } catch (Exception exception) {
-
-        // }
-
-        // Print out all these states
-        Iterator<State> it = frontier.iterator();
-        while (it.hasNext()) {
-            State val = (State) it.next();
-            returnSmvFormat.append(val.getDisplayName());
-            if (it.hasNext()) {
-                returnSmvFormat.append(",");
-            }
-        }
-        returnSmvFormat.append("};\n");
-
-        // Decide variables encoded in the Kripke Structure.
-        // Note that here the variable only contains inner variables.
-        // 
-        HashSet<String> variableSet = null;
-        // try {
-        // Enumerate all variables used in the Kripke structure
-        int numSpan = Integer.parseInt(span);
-        variableSet = _decideVariableSet(actor, numSpan);
-        // } catch (Exception exception) {
-
-        // }
-
-        Iterator<String> itVariableSet = variableSet.iterator();
-        while (itVariableSet.hasNext()) {
-
-            String valName = (String) itVariableSet.next();
-            returnSmvFormat.append("\t\t" + valName + " : {");
-            // Retrieve the lower bound and upper bound of the variable used in
-            // the system based on inequalities or assignments
-            // Also, add up symbols "ls" and "gt" within the variable domain.
-            if (_variableInfo.get(valName) == null) {
-                throw new IllegalActionException(
-                        "Error in SMVUtility.translateSingleFSMActor(): \n_variableInfo.get(valName) == null?");
-            } else {
-                VariableInfo individual = (VariableInfo) _variableInfo
-                        .get(valName);
-                int lowerBound = Integer.parseInt(individual._minValue);
-                int upperBound = Integer.parseInt(individual._maxValue);
-
-                returnSmvFormat.append(" ls,");
-                for (int number = lowerBound; number <= upperBound; number++) {
-                    returnSmvFormat.append(number);
-                    returnSmvFormat.append(",");
-                }
-                returnSmvFormat.append("gt };\n");
-            }
-
-        }
-
-        // Decide variables encoded in the Kripke Structure.
-        // Note that here the variable only contains Signal Variables.
-        // For example, PGo_isPresent
-
-        HashSet<String> signalVariableSet = null; // = new HashSet<String>();
-        // try {
-        // Enumerate all variables used in the Kripke structure
-        // numSpan = Integer.parseInt(span);
-        signalVariableSet = _decideSignalVariableSet(actor, numSpan);
-        // } catch (Exception exception) {
-
-        // }
-
-        // Meanwhile, place elements in signalVariableSet into variableSet;
-        if (signalVariableSet != null) {
-            Iterator<String> itSignalVariableSet = signalVariableSet.iterator();
-            while (itSignalVariableSet.hasNext()) {
-                String valName = (String) itSignalVariableSet.next();
-                variableSet.add(valName);
-            }
-        }
-
-        // Now start the variable transition calculation process.
-        // First we would perform on states.
-
-        returnSmvFormat.append("\tASSIGN \n");
-
-        // setup initial state
-        // try {
-        String name = actor.getInitialState().getName();
-        returnSmvFormat.append("\t\tinit(state) := " + name + ";\n");
-        // } catch (Exception exception) {
-
-        // }
-        // try {
-        _generateAllVariableTransitions(actor, variableSet);
-        // } catch (Exception ex) {
-
-        // }
-        returnSmvFormat.append("\t\tnext(state) :=\n");
-        returnSmvFormat.append("\t\t\tcase\n");
-
-        // Generate all transitions; start from "state"
-        LinkedList<VariableTransitionInfo> infoList = _variableTransitionInfo
-                .get("state");
-        if (infoList == null) {
-
-        }
-
-        for (int i = 0; i < infoList.size(); i++) {
-            VariableTransitionInfo info = infoList.get(i);
-            // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
-            // UNDER A REFINEMENT OF A STATE.
-            if (refinementStateName.equalsIgnoreCase("")) {
-                returnSmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
-                        + info._varibleNewValue + " };\n");
-            } else {
-                returnSmvFormat.append("\t\t\t\t"
-                        + refinementStateActivePremise + " & "
-                        + info._preCondition + " :{ " + info._varibleNewValue
-                        + " };\n");
-            }
-
-        }
-        returnSmvFormat.append("\t\t\t\t1             : state;\n");
-        returnSmvFormat.append("\t\t\tesac;\n\n");
-
-        // HashSet<String> signalOfferedSet = new HashSet<String>();
-
-        // Find out initial values for those variables.
-        HashMap<String, String> variableInitialValue; // = new HashMap<String,
-        // String>();
-        variableInitialValue = _retrieveVariableInitialValue(actor, variableSet);
-
-        // Generate all transitions; run for every variable used in
-        // Kripke structure.
-        Iterator<String> newItVariableSet = variableSet.iterator();
-        while (newItVariableSet.hasNext()) {
-
-            String valName = (String) newItVariableSet.next();
-            boolean b = Pattern.matches(".*_isPresent", valName);
-            if (b == true) {
-
-            } else {
-                returnSmvFormat.append("\t\tinit(" + valName + ") := "
-                        + variableInitialValue.get(valName) + ";\n");
-                returnSmvFormat.append("\t\tnext(" + valName + ") :=\n");
-                returnSmvFormat.append("\t\t\tcase\n");
-
-                // Generate all transitions; start from "state"
-                List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
-                        .get(valName);
-                if (innerInfoList == null) {
-
-                }
-                for (int i = 0; i < innerInfoList.size(); i++) {
-                    VariableTransitionInfo info = innerInfoList.get(i);
-                    // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
-                    // UNDER A REFINEMENT OF A STATE.
-                    if (refinementStateName.equalsIgnoreCase("")) {
-                        returnSmvFormat.append("\t\t\t\t" + info._preCondition
-                                + " :{ " + info._varibleNewValue + " };\n");
-                    } else {
-                        returnSmvFormat.append("\t\t\t\t"
-                                + refinementStateActivePremise + " & "
-                                + info._preCondition + " :{ "
-                                + info._varibleNewValue + " };\n");
-                    }
-
-                }
-
-                returnSmvFormat.append("\t\t\t\t1             : " + valName
-                        + ";\n");
-
-                returnSmvFormat.append("\t\t\tesac;\n\n");
-            }
-
-        }
-
-        // MARK OUT THIS LINE BECAUSE THIS SHOULD HAVE BEEN DONE EARLIER.
-        // _globalSignalRetrivalInfo.put(actor.getName(), signalOfferedSet);
-
-        // Lastly, attach the name and parameter required to use in the system.
-        // In our current implementation, it corresponds to those variables
-        // having format "XX_isPresent" in guard expression.
-
-        // Decide variables encoded in the Kripke Structure.
-        // Note that here the variable only contains Signal Variables.
-        // For example, PGo_isPresent
-
-        StringBuffer frontAttachment = new StringBuffer("MODULE "
-                + actor.getName() + "( ");
-
-        // ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
-        // Meanwhile, place elements in signalVariableSet into variableSet;
-        /*
-        Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
-                .iterator();
-        while (itGuardSignalVariableSet.hasNext()) {
-            String valName = (String) itGuardSignalVariableSet.next();
-            guardSignalVariableInfo.add(valName);
-            if (itGuardSignalVariableSet.hasNext() == true) {
-                frontAttachment.append(valName + ",");
-            } else {
-                frontAttachment.append(valName);
-            }
-        }
-        */
-        ArrayList<String> guardSignalVariableInfo = _globalSignalDistributionInfo
-                .get(actor.getName());
-        if (guardSignalVariableInfo == null) {
-            HashSet<String> guardSignalVariableSet = null;
-            // Enumerate all variables used in the Kripke structure
-            guardSignalVariableSet = _decideGuardSignalVariableSet(actor);
-
-            Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
-                    .iterator();
-            while (itGuardSignalVariableSet.hasNext()) {
-                String valName = (String) itGuardSignalVariableSet.next();
-                // guardSignalVariableInfo.add(valName);
-                if (itGuardSignalVariableSet.hasNext() == true) {
-                    frontAttachment.append(valName + ",");
-                } else {
-                    frontAttachment.append(valName);
-                }
-            }
-        } else {
-            for (int i = 0; i < guardSignalVariableInfo.size(); i++) {
-                String valName = guardSignalVariableInfo.get(i);
-                if (i != guardSignalVariableInfo.size() - 1) {
-                    frontAttachment.append(valName + ",");
-                } else {
-                    frontAttachment.append(valName);
-                }
-            }
-
-        }
-
-        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
-        // UNDER A REFINEMENT OF A STATE.
-        if (refinementStateName.trim().equalsIgnoreCase("")) {
-            frontAttachment.append(" )\n");
-        } else {
-            if (guardSignalVariableInfo.size() == 0) {
-                frontAttachment.append(" UpperState  )\n");
-            } else {
-                frontAttachment.append(", UpperState )\n");
-            }
-
-        }
-
-        frontAttachment.append(returnSmvFormat);
-
-        if (signalVariableSet != null) {
-            if ((signalVariableSet.size() != 0)) {
-                frontAttachment.append("\n\tDEFINE\n");
-                Iterator<String> newItSignalVariableSet = signalVariableSet
-                        .iterator();
-                while (newItSignalVariableSet.hasNext()) {
-                    String valName = (String) newItSignalVariableSet.next();
-                    frontAttachment.append("\t\t" + valName + " := ");
-
-                    List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
-                            .get(valName);
-                    if (innerInfoList == null) {
-
-                    }
-                    for (int i = 0; i < innerInfoList.size(); i++) {
-                        VariableTransitionInfo info = innerInfoList.get(i);
-                        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE
-                        // SUBSYSTEM
-                        // UNDER A REFINEMENT OF A STATE.
-                        if (i == innerInfoList.size() - 1) {
-                            if (refinementStateName.equalsIgnoreCase("")) {
-                                frontAttachment.append(" ( "
-                                        + info._preCondition + " ) ;\n\n ");
-                            } else {
-                                frontAttachment.append("("
-                                        + refinementStateActivePremise + " & "
-                                        + info._preCondition + " ) ;\n\n ");
-                            }
-                        } else {
-                            if (refinementStateName.equalsIgnoreCase("")) {
-                                frontAttachment.append(" ( "
-                                        + info._preCondition + " ) & ");
-                            } else {
-                                frontAttachment.append("("
-                                        + refinementStateActivePremise + " & "
-                                        + info._preCondition + " ) & ");
-                            }
-                        }
-
-                    }
-
-                }
-            }
-
-        }
-
-        return frontAttachment;
-
-    }
-
     private static ArrayList<String> _advancedSystemSignalPreScan(
             CompositeActor model, String span) throws IllegalActionException,
             NameDuplicationException {
+
         // This utility function performs a system pre-scanning and stores
-        // all signal information in two global variables:
+        // all signal information in three global variables:
         //
         // (1) HashMap<String, ArrayList<String>> _globalSignalDistributionInfo:
         // It tells you for a certain component, the set of signals emitted
@@ -638,14 +279,14 @@ public class SMVUtility {
         // It tells you for a certain component, the set of signals
         // used in its guard expression.
         // 
-        // Thus if these two are established, we are able to retrieve
-        // the location of the signal.
-        //
-        // NEWLY ADDED FEATURE:
         // (3) HashMap<String, HashSet<String>> _globalSignalNestedRetrivalInfo:
         // It tells you for a certain component, the set of signals emitted
         // from that component and from subsystems below that component in
         // the overall hierarchy.
+        //
+        // Thus if these three are established, we are able to retrieve
+        // the location of the signal.
+        //
 
         ArrayList<String> subSystemNameList = new ArrayList<String>();
 
@@ -666,9 +307,7 @@ public class SMVUtility {
                 HashSet<String> signalVariableSet = null;
 
                 // Enumerate all variables used in the Kripke structure
-                // int numSpan = Integer.parseInt(span);
-                signalVariableSet = _decideSignalVariableSet(innerFSMActor,
-                        numSpan);
+                signalVariableSet = _decideSignalVariableSet(innerFSMActor);
 
                 // Meanwhile, place elements in signalVariableSet into
                 // variableSet;
@@ -727,7 +366,7 @@ public class SMVUtility {
                         .getController();
                 controller.setName(innerEntity.getName());
                 Iterator states = controller.entityList().iterator();
-                // boolean noRefinement = true;
+
                 while (states.hasNext()) {
                     NamedObj state = (NamedObj) states.next();
                     if (state instanceof State) {
@@ -735,32 +374,26 @@ public class SMVUtility {
                                 .getExpression();
                         if ((refinementList == null)
                                 || (refinementList.equalsIgnoreCase(""))) {
-
                         } else {
-                            // noRefinement = false;
+                            // There is refinement in this state
                             TypedActor[] refinementSystemActors = ((State) state)
                                     .getRefinement();
-                            // if (actors != null) {
                             if (refinementSystemActors != null) {
                                 if (refinementSystemActors.length == 1) {
                                     // It would only have the case where
                                     // actor.length == 1.
                                     // If we encounter cases > 1, report error
-                                    // for further
-                                    // bug fix.
+                                    // for further bug fix.
                                     TypedActor innerActor = refinementSystemActors[0];
                                     if (innerActor instanceof FSMActor) {
                                         FSMActor innerFSMActor = (FSMActor) innerActor;
                                         HashSet<String> variableSet = null;
-                                        // try {
+
                                         // Enumerate all variables used in the
                                         // Kripke structure
                                         int numSpan = Integer.parseInt(span);
                                         variableSet = _decideVariableSet(
                                                 innerFSMActor, numSpan);
-                                        // } catch (Exception exception) {
-
-                                        // }
 
                                         // Decide variables encoded in the
                                         // Kripke Structure.
@@ -768,22 +401,15 @@ public class SMVUtility {
                                         // contains Signal Variables.
                                         // For example, PGo_isPresent
                                         HashSet<String> signalVariableSet = null;
-
-                                        // Enumerate all variables used in the
-                                        // Kripke structure
-                                        numSpan = Integer.parseInt(span);
-                                        signalVariableSet = _decideSignalVariableSet(
-                                                innerFSMActor, numSpan);
+                                        signalVariableSet = _decideSignalVariableSet(innerFSMActor);
 
                                         // Meanwhile, place elements in
                                         // signalVariableSet into variableSet;
                                         Iterator<String> itSignalVariableSet = signalVariableSet
                                                 .iterator();
                                         while (itSignalVariableSet.hasNext()) {
-
                                             String valName = (String) itSignalVariableSet
                                                     .next();
-
                                             variableSet.add(valName);
                                         }
                                         HashSet<String> signalOfferedSet = new HashSet<String>();
@@ -811,8 +437,6 @@ public class SMVUtility {
                                         _globalSignalNestedRetrivalInfo.put(
                                                 innerFSMActor.getName().trim(),
                                                 signalOfferedSet);
-                                        // subSystemNameList.add(innerFSMActor
-                                        // .getName().trim());
                                         subsubSystemNameList.add(innerFSMActor
                                                 .getName().trim());
 
@@ -847,7 +471,7 @@ public class SMVUtility {
                                         if (!(director instanceof SRDirector)) {
                                             // This is not what we can process.
                                             throw new IllegalActionException(
-                                                    "SMVUtility._rewriteModalModelWithGeneralRefinementToFSMActor(): "
+                                                    "SMVUtility._advancedSystemPreScan() clashes:\n"
                                                             + "Inner director not SR.");
                                         } else {
                                             // This is OK for our analysis
@@ -867,6 +491,7 @@ public class SMVUtility {
                                         }
                                     } else {
                                         // We are not able to deal with it.
+                                        // Simply omit those cases.
                                     }
 
                                 } else {
@@ -874,7 +499,7 @@ public class SMVUtility {
                                     // Once this happens, report an error to
                                     // notify the author the situation.
                                     throw new IllegalActionException(
-                                            "SMVUtility._rewriteModalModelWithGeneralRefinementToFSMActor(): "
+                                            "SMVUtility._advancedSystemPreScan() clashes: \n"
                                                     + "Refinement has two or more inner actors.");
                                 }
                             }
@@ -893,10 +518,7 @@ public class SMVUtility {
                 // Note that here the variable only contains Signal Variables.
                 // For example, PGo_isPresent
                 HashSet<String> signalVariableSet = null;
-
-                // Enumerate all variables used in the Kripke structure
-                signalVariableSet = _decideSignalVariableSet(controller,
-                        numSpan);
+                signalVariableSet = _decideSignalVariableSet(controller);
 
                 // Meanwhile, place elements in signalVariableSet into
                 // variableSet;
@@ -905,7 +527,6 @@ public class SMVUtility {
                 while (itSignalVariableSet.hasNext()) {
 
                     String valName = (String) itSignalVariableSet.next();
-
                     variableSet.add(valName);
                 }
                 HashSet<String> signalOfferedSet = new HashSet<String>();
@@ -935,10 +556,10 @@ public class SMVUtility {
                     String component = subsubSystemNameList.get(i);
                     HashSet<String> componentSignalSet = _globalSignalNestedRetrivalInfo
                             .get(component);
-                    if (componentSignalSet == null) {
-                        System.out.println("The component :" + component
-                                + " is null");
-                    }
+                    //if (componentSignalSet == null) {
+                    //    System.out.println("The component :" + component
+                    //            + " is null");
+                    //}
                     if (componentSignalSet != null) {
                         signalOfferedSet.addAll(componentSignalSet);
                     }
@@ -956,7 +577,6 @@ public class SMVUtility {
                 }
 
                 HashSet<String> guardSignalVariableSet = null;
-                // Enumerate all variables used in the Kripke structure
                 guardSignalVariableSet = _decideGuardSignalVariableSet(controller);
 
                 ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
@@ -975,7 +595,8 @@ public class SMVUtility {
                 subSystemNameList.add(controller.getName());
 
             } else if (innerEntity instanceof CompositeActor) {
-                // FIXME: No implementation here...
+                // FIXME: No implementation here; this corresponds to
+                //        the first fix-me statement.
             }
 
         }
@@ -984,12 +605,18 @@ public class SMVUtility {
     }
 
     /**
-     * This private function first decides signal variables that would be used
-     * in the Kripke structure. Note that signal variables only appears in
-     * outputActions
+     * This private function first decides signal variables that is emitted 
+     * from the actor. Note that signal variables only appears in outputActions. 
+     * In order to keep the signal "X" compatible with the appearance
+     * in the guard expression "X_isPresent" shown in other actors, we need to 
+     * attach "_isPresent" with the signal.   
+     * 
+     * @param actor The actor under analysis
+     * @return A set containing names of the signal
+     * @throws IllegalActionException
      */
-    private static HashSet<String> _decideSignalVariableSet(FSMActor actor,
-            int numSpan) throws IllegalActionException {
+    private static HashSet<String> _decideSignalVariableSet(FSMActor actor)
+            throws IllegalActionException {
 
         HashSet<String> returnVariableSet = new HashSet<String>();
         HashSet<State> stateSet = new HashSet<State>();
@@ -1052,7 +679,7 @@ public class SMVUtility {
                         String lValue_isPresent = characters[0].trim()
                                 + "_isPresent";
 
-                        // add it into the _variableInfo
+                        // add it into the _variableInfo 
                         // see if it exists
                         if (_variableInfo.get(lValue_isPresent) == null) {
                             // Create a new one and insert all info.
@@ -1077,16 +704,19 @@ public class SMVUtility {
     }
 
     /**
-     * This private function first decides signal variables that would be used
-     * in the Kripke structure. Note that signal variables only appears in
-     * outputActions
+     * This private function first decides signals used in the guard expression 
+     * of an actor. Those signals should be of the format XX_isPresent.
+     * 
+     * @param actor The actor under analysis.
+     * @return The set of signals used in the guard expression of the actor.
+     * @throws IllegalActionException
      */
     private static HashSet<String> _decideGuardSignalVariableSet(FSMActor actor)
             throws IllegalActionException {
 
         HashSet<String> returnVariableSet = new HashSet<String>();
         HashSet<State> stateSet = new HashSet<State>();
-        // try {
+
         // initialize
         HashMap<String, State> frontier = new HashMap<String, State>();
 
@@ -1133,9 +763,8 @@ public class SMVUtility {
                 }
                 if (!text.trim().equals("")) {
                     hasAnnotation = true;
-                    // buffer.append(text);
-                }
 
+                }
                 // Retrieve the guardExpression for checking the existence
                 // of inner variables used in FmcAutomaton.
                 String guard = transition.getGuardExpression();
@@ -1144,26 +773,18 @@ public class SMVUtility {
                         // do nothing
                     } else {
 
-                        // Rule II. For all variables that are used as
-                        // guards, they would be expanded as AP
-
                         // Separate each guard expression into substring
                         String[] guardSplitExpression = guard.split("(&&)");
                         if (guardSplitExpression.length != 0) {
                             for (int i = 0; i < guardSplitExpression.length; i++) {
-
                                 String subGuardCondition = guardSplitExpression[i]
                                         .trim();
-                                // Retrieve the left value of the
-                                // inequality.
+                                // Retrieve the left value of the inequality.
                                 String[] characterOfSubGuard = subGuardCondition
                                         .split("(>=)|(<=)|(==)|(!=)|[><]");
-                                // Here we may still have two cases:
-                                // (1) XXX_isPresent (2) the normal case.
                                 boolean b = Pattern.matches(".*_isPresent",
                                         characterOfSubGuard[0].trim());
                                 if (b == true) {
-
                                     if (returnVariableSet
                                             .contains(characterOfSubGuard[0]
                                                     .trim()) == false)
@@ -1186,17 +807,24 @@ public class SMVUtility {
         return returnVariableSet;
     }
 
-    /**
+    /**  
      * This private function first decides variables that would be used in the
-     * Kripke structure. Once when it is decided, it performs step 1 and 2 of
-     * the variable domain generation process.
+     * Kripke structure. It would first perform a system prescan to have a rough
+     * domain for each variable. Then it tries to expand the domain by using the
+     * constant span. 
+     * 
+     * @param actor The actor under analysis
+     * @param numSpan The size to expand the original domain 
+     * @return 
+     * @throws IllegalActionException
      */
     private static HashSet<String> _decideVariableSet(FSMActor actor,
             int numSpan) throws IllegalActionException {
-
+        // FIXME: The initial value stored in the parameter should also
+        //        be retrieved for the domain calculation.
         HashSet<String> returnVariableSet = new HashSet<String>();
         HashSet<State> stateSet = new HashSet<State>();
-        // try {
+
         // initialize
         HashMap<String, State> frontier = new HashMap<String, State>();
 
@@ -1303,25 +931,28 @@ public class SMVUtility {
                                                     .get(characterOfSubGuard[0]
                                                             .trim());
                                             if (variable != null) {
-                                                // modify the existing one
-                                                if (Integer
-                                                        .parseInt(variable._maxValue) < numberRetrival) {
-                                                    variable._maxValue = Integer
-                                                            .toString(numberRetrival);
+                                                if (variable._maxValue != null
+                                                        && variable._minValue != null) {
+                                                    // modify the existing one
+                                                    if (Integer
+                                                            .parseInt(variable._maxValue) < numberRetrival) {
+                                                        variable._maxValue = Integer
+                                                                .toString(numberRetrival);
+                                                    }
+                                                    if (Integer
+                                                            .parseInt(variable._minValue) > numberRetrival) {
+                                                        variable._minValue = Integer
+                                                                .toString(numberRetrival);
+                                                    }
+                                                    _variableInfo
+                                                            .remove(characterOfSubGuard[0]
+                                                                    .trim());
+                                                    _variableInfo
+                                                            .put(
+                                                                    characterOfSubGuard[0]
+                                                                            .trim(),
+                                                                    variable);
                                                 }
-                                                if (Integer
-                                                        .parseInt(variable._minValue) > numberRetrival) {
-                                                    variable._minValue = Integer
-                                                            .toString(numberRetrival);
-                                                }
-                                                _variableInfo
-                                                        .remove(characterOfSubGuard[0]
-                                                                .trim());
-                                                _variableInfo.put(
-                                                        characterOfSubGuard[0]
-                                                                .trim(),
-                                                        variable);
-
                                             } else {
                                                 // Create a new one and
                                                 // insert all info.
@@ -1433,11 +1064,13 @@ public class SMVUtility {
         return returnVariableSet;
     }
 
-    /**
+    /** 
      * Perform an enumeration of the state in this FmvAutomaton and return a
      * HashSet of states.
      * 
-     * @return A HashSet of states of a particular FmvAutomaton
+     * @param actor The actor under analysis
+     * @return A HashSet of states of a particular FSMActor
+     * @throws IllegalActionException
      */
     private static HashSet<State> _enumerateStateSet(FSMActor actor)
             throws IllegalActionException {
@@ -1486,16 +1119,21 @@ public class SMVUtility {
         return returnStateSet;
     }
 
-    /**
+    /** 
      * Generate all premise-action pairs regarding this FmvAutomaton. For
-     * example, this method may generate (state=red)&&(count=1):{grn}. This can
-     * only be applied when the domain of variable is decided.
+     * example, this method may generate (state=red)&&(count=1):{grn}. 
+     * The premise is "(state=red)&&(count=1)", and the action is "{grn}"
+     * This can only be applied when the domain of variable is decided.
+     * 
+     * @param actor The actor under analysis
+     * @param variableSet The set of variables used 
+     * @throws IllegalActionException
      */
     private static void _generateAllVariableTransitions(FSMActor actor,
             HashSet<String> variableSet) throws IllegalActionException {
 
         HashSet<State> stateSet = new HashSet<State>();
-        // try {
+
         // Initialize
         HashMap<String, State> frontier = new HashMap<String, State>();
 
@@ -1532,7 +1170,7 @@ public class SMVUtility {
             Iterator transitions = outPort.linkedRelationList().iterator();
 
             while (transitions.hasNext()) {
-                // FIXME: signalPremise is used to store premise of signals
+                // signalPremise: used to store premise of signals
                 StringBuffer signalPremise = new StringBuffer("");
 
                 Transition transition = (Transition) transitions.next();
@@ -1667,11 +1305,7 @@ public class SMVUtility {
 
                             String lValue = characterOfSubSetAction[0].trim();
 
-                            // try {
                             variableUsedInTransitionSet.add(lValue);
-                            // } catch (Exception ex) {
-
-                            // }
 
                         }
                     }
@@ -1710,24 +1344,23 @@ public class SMVUtility {
                 Iterator<String> it = variableUsedInTransitionSet.iterator();
                 while (it.hasNext()) {
                     String val = (String) it.next();
-
                     boolean b = Pattern.matches(".*_isPresent", val);
                     if (b == true) {
                         // For those variables, they only have true (1)
                         // and false (0) value.
 
-                        // VariableInfo variableInfo = _variableInfo.get(val);
-                        if (_variableInfo.get(val) == null) {
+                        VariableInfo variableInfo = _variableInfo.get(val);
+                        if (variableInfo == null) {
                             throw new IllegalActionException(
                                     "Internal error, removing \"" + val
                                             + "\" returned null?");
                         } else {
-                            if (_variableInfo.get(val)._minValue != null
-                                    && _variableInfo.get(val)._maxValue != null) {
-                                int lowerBound = Integer.parseInt(_variableInfo
-                                        .get(val)._minValue);
-                                int upperBound = Integer.parseInt(_variableInfo
-                                        .get(val)._maxValue);
+                            if (variableInfo._minValue != null
+                                    && variableInfo._maxValue != null) {
+                                int lowerBound = Integer
+                                        .parseInt(variableInfo._minValue);
+                                int upperBound = Integer
+                                        .parseInt(variableInfo._maxValue);
 
                                 ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
 
@@ -1743,19 +1376,19 @@ public class SMVUtility {
                             }
                         }
                     } else {
-                        // Retrieve the value in the
-                        // VariableInfo variableInfo = _variableInfo.get(val);
-                        if (_variableInfo.get(val) == null) {
+
+                        VariableInfo variableInfo = _variableInfo.get(val);
+                        if (variableInfo == null) {
                             throw new IllegalActionException(
                                     "Internal error, removing \"" + val
                                             + "\" returned null?");
                         } else {
-                            if (_variableInfo.get(val)._minValue != null
-                                    && _variableInfo.get(val)._maxValue != null) {
-                                int lowerBound = Integer.parseInt(_variableInfo
-                                        .get(val)._minValue);
-                                int upperBound = Integer.parseInt(_variableInfo
-                                        .get(val)._maxValue);
+                            if (variableInfo._minValue != null
+                                    && variableInfo._maxValue != null) {
+                                int lowerBound = Integer
+                                        .parseInt(variableInfo._minValue);
+                                int upperBound = Integer
+                                        .parseInt(variableInfo._maxValue);
                                 // Now perform the add up of new value: DOMAIN_GT and
                                 // DOMAIN_LS into each of the
                                 // variableDomainForTransition set. We make it a sorted
@@ -1867,15 +1500,16 @@ public class SMVUtility {
                                                             "Internal error, removing \""
                                                                     + lValue
                                                                     + "\" returned null?");
-                                                }
-
-                                                for (int j = domain.size() - 1; j >= 0; j--) {
-                                                    if (domain.get(j)
-                                                            .intValue() != numberRetrival) {
-                                                        domain.remove(j);
+                                                } else {
+                                                    for (int j = domain.size() - 1; j >= 0; j--) {
+                                                        if (domain.get(j)
+                                                                .intValue() != numberRetrival) {
+                                                            domain.remove(j);
+                                                        }
                                                     }
+                                                    valueDomain.put(lValue,
+                                                            domain);
                                                 }
-                                                valueDomain.put(lValue, domain);
 
                                             } else if (Pattern
                                                     .matches(".*!=.*",
@@ -1889,15 +1523,16 @@ public class SMVUtility {
                                                             "Internal error, removing \""
                                                                     + lValue
                                                                     + "\" returned null?");
-                                                }
-
-                                                for (int j = domain.size() - 1; j >= 0; j--) {
-                                                    if (domain.get(j)
-                                                            .intValue() == numberRetrival) {
-                                                        domain.remove(j);
+                                                } else {
+                                                    for (int j = domain.size() - 1; j >= 0; j--) {
+                                                        if (domain.get(j)
+                                                                .intValue() == numberRetrival) {
+                                                            domain.remove(j);
+                                                        }
                                                     }
+                                                    valueDomain.put(lValue,
+                                                            domain);
                                                 }
-                                                valueDomain.put(lValue, domain);
 
                                             } else if (Pattern
                                                     .matches(".*<=.*",
@@ -1911,15 +1546,16 @@ public class SMVUtility {
                                                             "Internal error, removing \""
                                                                     + lValue
                                                                     + "\" returned null?");
-                                                }
-
-                                                for (int j = domain.size() - 1; j >= 0; j--) {
-                                                    if (domain.get(j)
-                                                            .intValue() > numberRetrival) {
-                                                        domain.remove(j);
+                                                } else {
+                                                    for (int j = domain.size() - 1; j >= 0; j--) {
+                                                        if (domain.get(j)
+                                                                .intValue() > numberRetrival) {
+                                                            domain.remove(j);
+                                                        }
                                                     }
+                                                    valueDomain.put(lValue,
+                                                            domain);
                                                 }
-                                                valueDomain.put(lValue, domain);
 
                                             } else if (Pattern
                                                     .matches(".*>=.*",
@@ -1933,15 +1569,16 @@ public class SMVUtility {
                                                             "Internal error, removing \""
                                                                     + lValue
                                                                     + "\" returned null?");
-                                                }
-
-                                                for (int j = domain.size() - 1; j >= 0; j--) {
-                                                    if (domain.get(j)
-                                                            .intValue() < numberRetrival) {
-                                                        domain.remove(j);
+                                                } else {
+                                                    for (int j = domain.size() - 1; j >= 0; j--) {
+                                                        if (domain.get(j)
+                                                                .intValue() < numberRetrival) {
+                                                            domain.remove(j);
+                                                        }
                                                     }
+                                                    valueDomain.put(lValue,
+                                                            domain);
                                                 }
-                                                valueDomain.put(lValue, domain);
 
                                             } else if (Pattern.matches(".*>.*",
                                                     subGuardCondition)) {
@@ -1975,15 +1612,17 @@ public class SMVUtility {
                                                             "Internal error, removing \""
                                                                     + lValue
                                                                     + "\" returned null?");
+                                                } else {
+                                                    for (int j = domain.size() - 1; j >= 0; j--) {
+                                                        if (domain.get(j)
+                                                                .intValue() >= numberRetrival) {
+                                                            domain.remove(j);
+                                                        }
+                                                    }
+                                                    valueDomain.put(lValue,
+                                                            domain);
                                                 }
 
-                                                for (int j = domain.size() - 1; j >= 0; j--) {
-                                                    if (domain.get(j)
-                                                            .intValue() >= numberRetrival) {
-                                                        domain.remove(j);
-                                                    }
-                                                }
-                                                valueDomain.put(lValue, domain);
                                             }
 
                                         }
@@ -2056,8 +1695,7 @@ public class SMVUtility {
                                                 .parseInt(rValueOperends[1]
                                                         .trim());
                                     } catch (Exception ex) {
-                                        // check if the value is of format
-                                        // (-a)
+                                        // check if the value is of format (-a)
                                         if (rValueOperends[1].trim().endsWith(
                                                 ")")
                                                 && rValueOperends[1].trim()
@@ -2100,12 +1738,9 @@ public class SMVUtility {
                                             valueDomain, "state",
                                             destinationInThis.getDisplayName(),
                                             "S");
-                                    // } catch (Exception ex) {
-
-                                    // }
 
                                 } else if (Pattern.matches(".*/.*", rValue)) {
-                                    // try {
+
                                     String[] rValueOperends = rValue
                                             .split("[/]");
 
@@ -2116,8 +1751,7 @@ public class SMVUtility {
                                                 .parseInt(rValueOperends[1]
                                                         .trim());
                                     } catch (Exception ex) {
-                                        // check if the value is of format
-                                        // (-a)
+                                        // check if the value is of format (-a)
                                         if (rValueOperends[1].trim().endsWith(
                                                 ")")
                                                 && rValueOperends[1].trim()
@@ -2156,12 +1790,8 @@ public class SMVUtility {
                                             valueDomain, "state",
                                             destinationInThis.getDisplayName(),
                                             "S");
-                                    // } catch (Exception ex) {
-
-                                    // }
 
                                 } else if (Pattern.matches(".*+.*", rValue)) {
-                                    // try {
                                     String[] rValueOperends = rValue
                                             .split("[+]");
 
@@ -2172,8 +1802,7 @@ public class SMVUtility {
                                                 .parseInt(rValueOperends[1]
                                                         .trim());
                                     } catch (Exception ex) {
-                                        // check if the value is of format
-                                        // (-a)
+                                        // check if the value is of format (-a)
                                         if (rValueOperends[1].trim().endsWith(
                                                 ")")
                                                 && rValueOperends[1].trim()
@@ -2216,11 +1845,9 @@ public class SMVUtility {
                                             valueDomain, "state",
                                             destinationInThis.getDisplayName(),
                                             "S");
-                                    // } catch (Exception ex) {
 
-                                    // }
                                 } else if (Pattern.matches(".*-.*", rValue)) {
-                                    // try {
+
                                     String[] rValueOperends = rValue
                                             .split("[-]");
 
@@ -2272,9 +1899,7 @@ public class SMVUtility {
                                             valueDomain, "state",
                                             destinationInThis.getDisplayName(),
                                             "S");
-                                    // } catch (Exception ex) {
 
-                                    // }
                                 }
 
                             }
@@ -2456,6 +2081,8 @@ public class SMVUtility {
      * modular approach is applied to eliminate complexity of the conversion
      * process.
      * 
+     * @param span The size to expand the original domain 
+     * 
      */
     private static ArrayList<StringBuffer> _generateSMVFormatModalModelWithRefinement(
             ModalModel modalmodel, String span, String upperStateName)
@@ -2580,7 +2207,7 @@ public class SMVUtility {
             // This means that there is no refinement in this ModalModel
             // We simply take out the controller to perform the generation
             // process.
-            modularDescription.add(translateSingleFSMActor(controller, span,
+            modularDescription.add(_translateSingleFSMActor(controller, span,
                     false, "", upperStateName));
 
         } else {
@@ -2610,7 +2237,7 @@ public class SMVUtility {
                                     // (2) name of the state
 
                                     modularDescription
-                                            .add(translateSingleFSMActor(
+                                            .add(_translateSingleFSMActor(
                                                     (FSMActor) innerActor,
                                                     span, false, controller
                                                             .getName(), state
@@ -2631,7 +2258,7 @@ public class SMVUtility {
                                         // Generate system description for these
                                         // two.
                                         modularDescription
-                                                .add(generateSubSystemSMVDescription(
+                                                .add(_generateSubSystemSMVDescription(
                                                         (CompositeActor) innerActor,
                                                         span, state.getName()));
 
@@ -2663,7 +2290,7 @@ public class SMVUtility {
             // refinement would need to attach the variable whether the state
             // variable is true or not in its transition.
 
-            StringBuffer controllerDescription = translateSingleFSMActor(
+            StringBuffer controllerDescription = _translateSingleFSMActor(
                     controller, span, true, controller.getName(), "");
             if (controllerDescription != null) {
                 modularDescription.add(controllerDescription);
@@ -2673,6 +2300,47 @@ public class SMVUtility {
 
         return modularDescription;
 
+    }
+
+    /** This private function tries to generate the system description of a subsystem
+     * which has a ModalModel controller as its upperlayer.
+     * 
+     * @param model The subsystem which is the refinement of a state.
+     * @param span The size of span to expand the domain of variable.
+     * @param upperStateName The name of the upper level model name. This 
+     *                       upper state has the model as refinement.
+     * @return The StringBuffer description of the subsystem acceptable by the 
+     *         model checker.
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
+    private static StringBuffer _generateSubSystemSMVDescription(
+            CompositeActor model, String span, String upperStateName)
+            throws IllegalActionException, NameDuplicationException {
+
+        StringBuffer returnFmvFormat = new StringBuffer("");
+
+        // List out all FSMs with their states.
+        for (Iterator actors = (((CompositeActor) model).entityList())
+                .iterator(); actors.hasNext();) {
+            Entity innerEntity = (Entity) actors.next();
+            if (innerEntity instanceof FSMActor) {
+                // Directly generate the whole description of the system.
+                returnFmvFormat
+                        .append(_translateSingleFSMActor(
+                                (FSMActor) innerEntity, span, false, "",
+                                upperStateName));
+            } else if (innerEntity instanceof ModalModel) {
+                // Perform analysis of the ModalModel
+                ArrayList<StringBuffer> subSystemDescription = _generateSMVFormatModalModelWithRefinement(
+                        (ModalModel) innerEntity, span, upperStateName);
+                for (int i = 0; i < subSystemDescription.size(); i++) {
+                    returnFmvFormat.append(subSystemDescription.get(i));
+                }
+            }
+        }
+
+        return returnFmvFormat;
     }
 
     /**
@@ -2820,18 +2488,18 @@ public class SMVUtility {
                                             newPremise, index + 1, maxIndex,
                                             keySetArray, valueDomain, lValue,
                                             "ls", operatingSign);
-
-                                    if (_variableInfo.get(lValue) == null) {
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
                                         throw new IllegalActionException(
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
                                     } else {
-                                        if (_variableInfo.get(lValue)._minValue != null
-                                                && _variableInfo.get(lValue)._maxValue != null) {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
                                             int minimumInBoundary = Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._minValue);
+                                                    .parseInt(variableInfo._minValue);
                                             for (int j = 0; j < (Integer
                                                     .parseInt(newVariableValue)); j++) {
 
@@ -2841,8 +2509,7 @@ public class SMVUtility {
                                                 // and use GT to replace the value.
 
                                                 if ((minimumInBoundary + j) > Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._maxValue)) {
+                                                        .parseInt(variableInfo._maxValue)) {
                                                     _recursiveStepGeneratePremiseAndResultEachTransition(
                                                             newPremise,
                                                             index + 1,
@@ -2933,17 +2600,18 @@ public class SMVUtility {
                                             keySetArray, valueDomain, lValue,
                                             "gt", operatingSign);
 
-                                    if (_variableInfo.get(lValue) == null) {
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
                                         throw new IllegalActionException(
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
                                     } else {
-                                        if (_variableInfo.get(lValue)._minValue != null
-                                                && _variableInfo.get(lValue)._maxValue != null) {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
                                             int maximumInBoundary = Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._maxValue);
+                                                    .parseInt(variableInfo._maxValue);
                                             for (int j = 0; j > (Integer
                                                     .parseInt(newVariableValue)); j--) {
                                                 // here j-- because newVariableValue is
@@ -2953,15 +2621,9 @@ public class SMVUtility {
                                                 // never exceeds upper bound. If it
                                                 // is below lower bound, we must stop it
                                                 // and use LS to replace the value.
-                                                if (_variableInfo.get(lValue) == null) {
-                                                    throw new IllegalActionException(
-                                                            "Internal error, removing \""
-                                                                    + lValue
-                                                                    + "\" returned null?");
-                                                }
+
                                                 if ((maximumInBoundary + j) < Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._minValue)) {
+                                                        .parseInt(variableInfo._minValue)) {
                                                     _recursiveStepGeneratePremiseAndResultEachTransition(
                                                             newPremise,
                                                             index + 1,
@@ -3176,17 +2838,18 @@ public class SMVUtility {
                                             keySetArray, valueDomain, lValue,
                                             "ls", operatingSign);
 
-                                    if (_variableInfo.get(lValue) == null) {
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
                                         throw new IllegalActionException(
                                                 "Internal error, removing \""
                                                         + lValue
                                                         + "\" returned null?");
                                     } else {
-                                        if (_variableInfo.get(lValue)._minValue != null
-                                                && _variableInfo.get(lValue)._maxValue != null) {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
                                             int minimumInBoundary = Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._minValue);
+                                                    .parseInt(variableInfo._minValue);
 
                                             for (int j = 0; j > (Integer
                                                     .parseInt(newVariableValue)); j--) {
@@ -3197,8 +2860,7 @@ public class SMVUtility {
                                                 // and use GT to replace the value.
 
                                                 if ((minimumInBoundary - j) < Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._maxValue)) {
+                                                        .parseInt(variableInfo._maxValue)) {
                                                     _recursiveStepGeneratePremiseAndResultEachTransition(
                                                             newPremise,
                                                             index + 1,
@@ -3289,17 +2951,19 @@ public class SMVUtility {
                                     // const)
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "gt";
-                                    if (_variableInfo.get(lValue) == null) {
+
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
                                         throw new IllegalActionException(
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
                                     } else {
-                                        if (_variableInfo.get(lValue)._minValue != null
-                                                && _variableInfo.get(lValue)._maxValue != null) {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
                                             if (Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._maxValue) >= 0) {
+                                                    .parseInt(variableInfo._maxValue) >= 0) {
                                                 // when max>=0, GT * positive_const = GT
                                                 // Hence the updated value remains the
                                                 // same.
@@ -3333,24 +2997,20 @@ public class SMVUtility {
                                                 // tricks that needs to be applied.
 
                                                 int starter = Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._maxValue) + 1;
+                                                        .parseInt(variableInfo._maxValue) + 1;
 
                                                 while (starter
                                                         * Integer
                                                                 .parseInt(newVariableValue) <= Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._maxValue)) {
+                                                        .parseInt(variableInfo._maxValue)) {
                                                     if ((starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) < Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._minValue))
+                                                            .parseInt(variableInfo._minValue))
                                                             && ((starter + 1)
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
-                                                                    .parseInt(((VariableInfo) _variableInfo
-                                                                            .get(lValue))._minValue))) {
+                                                                    .parseInt(variableInfo._minValue))) {
                                                         // This IF statement represents
                                                         // tricks mentioned above.
                                                         _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -3365,13 +3025,11 @@ public class SMVUtility {
                                                     } else if ((starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) <= Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._maxValue))
+                                                            .parseInt(variableInfo._maxValue))
                                                             && (starter
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
-                                                                    .parseInt(((VariableInfo) _variableInfo
-                                                                            .get(lValue))._minValue))) {
+                                                                    .parseInt(variableInfo._minValue))) {
                                                         String updatedVariableValue = String
                                                                 .valueOf(starter
                                                                         * Integer
@@ -3405,17 +3063,18 @@ public class SMVUtility {
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
 
-                                    if (_variableInfo.get(lValue) == null) {
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
                                         throw new IllegalActionException(
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
                                     } else {
-                                        if (_variableInfo.get(lValue)._minValue != null
-                                                && _variableInfo.get(lValue)._maxValue != null) {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
                                             if (Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._minValue) <= 0) {
+                                                    .parseInt(variableInfo._minValue) <= 0) {
                                                 // when min<=0, LS * positive_const = LS
                                                 // Hence the updated value remains the
                                                 // same.
@@ -3431,23 +3090,19 @@ public class SMVUtility {
                                                 // the value is greater than LS.
 
                                                 int starter = Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._minValue) - 1;
+                                                        .parseInt(variableInfo._minValue) - 1;
                                                 while (starter
                                                         * Integer
                                                                 .parseInt(newVariableValue) >= Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._minValue)) {
+                                                        .parseInt(variableInfo._minValue)) {
                                                     if ((starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) > Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._maxValue))
+                                                            .parseInt(variableInfo._maxValue))
                                                             && ((starter - 1)
                                                                     * Integer
                                                                             .parseInt(newVariableValue) <= Integer
-                                                                    .parseInt(((VariableInfo) _variableInfo
-                                                                            .get(lValue))._maxValue))) {
+                                                                    .parseInt(variableInfo._maxValue))) {
 
                                                         _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                 newPremise,
@@ -3461,13 +3116,11 @@ public class SMVUtility {
                                                     } else if ((starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) <= Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._maxValue))
+                                                            .parseInt(variableInfo._maxValue))
                                                             && (starter
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
-                                                                    .parseInt(((VariableInfo) _variableInfo
-                                                                            .get(lValue))._minValue))) {
+                                                                    .parseInt(variableInfo._minValue))) {
                                                         String updatedVariableValue = String
                                                                 .valueOf(starter
                                                                         * Integer
@@ -3512,27 +3165,27 @@ public class SMVUtility {
                                                     * (Integer
                                                             .parseInt(newVariableValue)));
 
-                                    if (_variableInfo.get(lValue) == null) {
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
                                         throw new IllegalActionException(
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
                                     } else {
-                                        if (_variableInfo.get(lValue)._minValue != null
-                                                && _variableInfo.get(lValue)._maxValue != null) {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
                                             if (vList.get(i).intValue()
                                                     * (Integer
                                                             .parseInt(newVariableValue)) < Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._minValue)) {
+                                                    .parseInt(variableInfo._minValue)) {
                                                 // Use DOMAIN_LS to replace the value.
                                                 updatedVariableValue = "ls";
 
                                             } else if (vList.get(i).intValue()
                                                     * (Integer
                                                             .parseInt(newVariableValue)) > Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._maxValue)) {
+                                                    .parseInt(variableInfo._maxValue)) {
                                                 updatedVariableValue = "gt";
                                             }
 
@@ -3553,18 +3206,19 @@ public class SMVUtility {
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "gt";
 
-                                    if (_variableInfo.get(lValue) == null) {
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
                                         throw new IllegalActionException(
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
                                     } else {
-                                        if (_variableInfo.get(lValue)._minValue != null
-                                                && _variableInfo.get(lValue)._maxValue != null) {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
 
                                             if (Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._maxValue) >= 0) {
+                                                    .parseInt(variableInfo._maxValue) >= 0) {
                                                 // Starting from the upper bound + 1,
                                                 // +2, +3, +4 ...
                                                 // calculate all possible values until
@@ -3576,14 +3230,12 @@ public class SMVUtility {
                                                 // set-values -4, -6, LS
 
                                                 int starter = Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._maxValue) + 1;
+                                                        .parseInt(variableInfo._maxValue) + 1;
 
                                                 while (starter
                                                         * Integer
                                                                 .parseInt(newVariableValue) >= Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._minValue)) {
+                                                        .parseInt(variableInfo._minValue)) {
 
                                                     String updatedVariableValue = String
                                                             .valueOf(starter
@@ -3609,26 +3261,22 @@ public class SMVUtility {
                                                         "ls", operatingSign);
 
                                             } else if (Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._maxValue) < 0) {
+                                                    .parseInt(variableInfo._maxValue) < 0) {
                                                 // One important thing is that we may
                                                 // have cases where 0 * const = 0.
                                                 // Because 0 is in GT, so we would have
                                                 // new value GT as a choice.
 
                                                 int starter = Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._maxValue) + 1;
+                                                        .parseInt(variableInfo._maxValue) + 1;
                                                 while (starter
                                                         * Integer
                                                                 .parseInt(newVariableValue) >= Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._minValue)) {
+                                                        .parseInt(variableInfo._minValue)) {
                                                     if ((starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) > Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._maxValue))
+                                                            .parseInt(variableInfo._maxValue))
                                                             && ((starter + 1)
                                                                     * Integer
                                                                             .parseInt(newVariableValue) <= Integer
@@ -3647,13 +3295,11 @@ public class SMVUtility {
                                                     } else if ((starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) <= Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._maxValue))
+                                                            .parseInt(variableInfo._maxValue))
                                                             && (starter
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
-                                                                    .parseInt(((VariableInfo) _variableInfo
-                                                                            .get(lValue))._minValue))) {
+                                                                    .parseInt(variableInfo._minValue))) {
                                                         String updatedVariableValue = String
                                                                 .valueOf(starter
                                                                         * Integer
@@ -3695,17 +3341,18 @@ public class SMVUtility {
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
 
-                                    if (_variableInfo.get(lValue) == null) {
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
                                         throw new IllegalActionException(
                                                 "Internal error, getting \""
                                                         + lValue
                                                         + "\" returned null?");
                                     } else {
-                                        if (_variableInfo.get(lValue)._minValue != null
-                                                && _variableInfo.get(lValue)._maxValue != null) {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
                                             if (Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._minValue) <= 0) {
+                                                    .parseInt(variableInfo._minValue) <= 0) {
                                                 // Starting from the lower bound -1,
                                                 // -2, -3, -4 ...
                                                 // calculate all possible values until
@@ -3717,14 +3364,12 @@ public class SMVUtility {
                                                 // set-values 4, 6, GT
 
                                                 int starter = Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._minValue) - 1;
+                                                        .parseInt(variableInfo._minValue) - 1;
 
                                                 while (starter
                                                         * Integer
                                                                 .parseInt(newVariableValue) <= Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._maxValue)) {
+                                                        .parseInt(variableInfo._maxValue)) {
 
                                                     String updatedVariableValue = String
                                                             .valueOf(starter
@@ -3750,31 +3395,26 @@ public class SMVUtility {
                                                         "gt", operatingSign);
 
                                             } else if (Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._minValue) > 0) {
+                                                    .parseInt(variableInfo._minValue) > 0) {
                                                 // One important thing is that we may
                                                 // have cases where 0 * const = 0.
                                                 // Because 0 is in LS, so we would have
                                                 // new value LS as a choice.
 
                                                 int starter = Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._minValue) - 1;
+                                                        .parseInt(variableInfo._minValue) - 1;
                                                 while (starter
                                                         * Integer
                                                                 .parseInt(newVariableValue) <= Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._maxValue)) {
+                                                        .parseInt(variableInfo._maxValue)) {
                                                     if ((starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) < Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._minValue))
+                                                            .parseInt(variableInfo._minValue))
                                                             && ((starter + 1)
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
-                                                                    .parseInt(((VariableInfo) _variableInfo
-                                                                            .get(lValue))._minValue))) {
+                                                                    .parseInt(variableInfo._minValue))) {
 
                                                         _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                 newPremise,
@@ -3788,13 +3428,11 @@ public class SMVUtility {
                                                     } else if ((starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) <= Integer
-                                                            .parseInt(((VariableInfo) _variableInfo
-                                                                    .get(lValue))._maxValue))
+                                                            .parseInt(variableInfo._maxValue))
                                                             && (starter
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
-                                                                    .parseInt(((VariableInfo) _variableInfo
-                                                                            .get(lValue))._minValue))) {
+                                                                    .parseInt(variableInfo._minValue))) {
                                                         String updatedVariableValue = String
                                                                 .valueOf(starter
                                                                         * Integer
@@ -3890,22 +3528,22 @@ public class SMVUtility {
 
                                 String updatedVariableValue = "0";
 
-                                if (_variableInfo.get(lValue) == null) {
+                                VariableInfo variableInfo = _variableInfo
+                                        .get(lValue);
+                                if (variableInfo == null) {
                                     throw new IllegalActionException(
                                             "Internal error, getting \""
                                                     + lValue
                                                     + "\" returned null?");
                                 } else {
-                                    if (_variableInfo.get(lValue)._minValue != null
-                                            && _variableInfo.get(lValue)._maxValue != null) {
+                                    if (variableInfo._minValue != null
+                                            && variableInfo._maxValue != null) {
                                         if (0 > Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue)) {
+                                                .parseInt(variableInfo._maxValue)) {
                                             // Use DOMAIN_LS to replace the value.
                                             updatedVariableValue = "gt";
                                         } else if (0 < Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._minValue)) {
+                                                .parseInt(variableInfo._minValue)) {
                                             updatedVariableValue = "ls";
                                         }
 
@@ -4112,6 +3750,350 @@ public class SMVUtility {
             returnMap.put(attribute, property);
         }
         return returnMap;
+
+    }
+
+    /** This function tries to translate an single FSMActor into the 
+     *  format acceptable by model checker. 
+     * 
+     * @param actor
+     * @param span
+     * @param isController 
+     * @param controllerName
+     * @param refinementStateName
+     * @return
+     * @throws IllegalActionException
+     */
+    private static StringBuffer _translateSingleFSMActor(FSMActor actor,
+            String span, boolean isController, String controllerName,
+            String refinementStateName) throws IllegalActionException {
+
+        // This new version of utility function tries to translate a single
+        // FSMActor into formats acceptable by model checker NuSMV.
+        // The main change lies in two parts:
+        //
+        // (1) Now a single FSMActor can be the controller of the ModalModel,
+        // then in the description we need to instantiate each of the
+        // sub-models (which is generated by state refinement) contained
+        // within.
+        // 
+        // (2) A single FSMActor can also be the a component of the subsystem
+        // (state refinement with general model). In this way, we need to
+        // add up information whether the current state in the upper
+        // controller is the state holding this FSMActor.
+        //
+        // If refinementStateName is not empty string, then we know that
+        // we need to be sure that the upper state must be in the state
+        // "refinementStateName", otherwise, it is not allowed to perform
+        // any transition.
+
+        String refinementStateActivePremise = "UpperState = "
+                + refinementStateName.trim();
+
+        StringBuffer returnSmvFormat = new StringBuffer("");
+        returnSmvFormat.append("\tVAR \n");
+
+        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+        // UNDER A REFINEMENT OF A STATE.
+        if (isController == true) {
+            // For a controller, it also needs to instantiate all of the
+            // inner modules existed below. Thus we use a function
+            // _retrieveSubSystemModuleNameParameterInfo to retrieve
+            // modules in the lower level.
+            ArrayList<StringBuffer> subModules = _retrieveSubSystemModuleNameParameterInfo(actor);
+            for (int i = 0; i < subModules.size(); i++) {
+                returnSmvFormat.append(subModules.get(i));
+                returnSmvFormat.append("\n ");
+            }
+        }
+
+        returnSmvFormat.append("\t\tstate : {");
+
+        // Enumerate all states in the FmvAutomaton
+        HashSet<State> frontier = null;
+        // try {
+        frontier = _enumerateStateSet(actor);
+        // } catch (Exception exception) {
+
+        // }
+
+        // Print out all these states
+        Iterator<State> it = frontier.iterator();
+        while (it.hasNext()) {
+            State val = (State) it.next();
+            returnSmvFormat.append(val.getDisplayName());
+            if (it.hasNext()) {
+                returnSmvFormat.append(",");
+            }
+        }
+        returnSmvFormat.append("};\n");
+
+        // Decide variables encoded in the Kripke Structure.
+        // Note that here the variable only contains inner variables.
+        // 
+        HashSet<String> variableSet = null;
+        // try {
+        // Enumerate all variables used in the Kripke structure
+        int numSpan = Integer.parseInt(span);
+        variableSet = _decideVariableSet(actor, numSpan);
+        // } catch (Exception exception) {
+
+        // }
+
+        Iterator<String> itVariableSet = variableSet.iterator();
+        while (itVariableSet.hasNext()) {
+
+            String valName = (String) itVariableSet.next();
+            returnSmvFormat.append("\t\t" + valName + " : {");
+            // Retrieve the lower bound and upper bound of the variable used in
+            // the system based on inequalities or assignments
+            // Also, add up symbols "ls" and "gt" within the variable domain.
+            if (_variableInfo.get(valName) == null) {
+                throw new IllegalActionException(
+                        "Error in SMVUtility.translateSingleFSMActor(): \n_variableInfo.get(valName) == null?");
+            } else {
+                VariableInfo individual = (VariableInfo) _variableInfo
+                        .get(valName);
+                int lowerBound = Integer.parseInt(individual._minValue);
+                int upperBound = Integer.parseInt(individual._maxValue);
+
+                returnSmvFormat.append(" ls,");
+                for (int number = lowerBound; number <= upperBound; number++) {
+                    returnSmvFormat.append(number);
+                    returnSmvFormat.append(",");
+                }
+                returnSmvFormat.append("gt };\n");
+            }
+
+        }
+
+        // Decide variables encoded in the Kripke Structure.
+        // Note that here the variable only contains Signal Variables.
+        // For example, PGo_isPresent
+
+        HashSet<String> signalVariableSet = null;
+        signalVariableSet = _decideSignalVariableSet(actor);
+
+        // Meanwhile, place elements in signalVariableSet into variableSet;
+        if (signalVariableSet != null) {
+            Iterator<String> itSignalVariableSet = signalVariableSet.iterator();
+            while (itSignalVariableSet.hasNext()) {
+                String valName = (String) itSignalVariableSet.next();
+                variableSet.add(valName);
+            }
+        }
+
+        // Now start the variable transition calculation process.
+        // First we would perform on states.
+
+        returnSmvFormat.append("\tASSIGN \n");
+
+        // setup initial state
+        String name = actor.getInitialState().getName();
+        returnSmvFormat.append("\t\tinit(state) := " + name + ";\n");
+
+        _generateAllVariableTransitions(actor, variableSet);
+
+        returnSmvFormat.append("\t\tnext(state) :=\n");
+        returnSmvFormat.append("\t\t\tcase\n");
+
+        // Generate all transitions; start from "state"
+        LinkedList<VariableTransitionInfo> infoList = _variableTransitionInfo
+                .get("state");
+        if (infoList == null) {
+
+        }
+
+        for (int i = 0; i < infoList.size(); i++) {
+            VariableTransitionInfo info = infoList.get(i);
+            // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+            // UNDER A REFINEMENT OF A STATE.
+            if (refinementStateName.equalsIgnoreCase("")) {
+                returnSmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
+                        + info._varibleNewValue + " };\n");
+            } else {
+                returnSmvFormat.append("\t\t\t\t"
+                        + refinementStateActivePremise + " & "
+                        + info._preCondition + " :{ " + info._varibleNewValue
+                        + " };\n");
+            }
+
+        }
+        returnSmvFormat.append("\t\t\t\t1             : state;\n");
+        returnSmvFormat.append("\t\t\tesac;\n\n");
+
+        // HashSet<String> signalOfferedSet = new HashSet<String>();
+
+        // Find out initial values for those variables.
+        HashMap<String, String> variableInitialValue; // = new HashMap<String,
+        // String>();
+        variableInitialValue = _retrieveVariableInitialValue(actor, variableSet);
+
+        // Generate all transitions; run for every variable used in
+        // Kripke structure.
+        Iterator<String> newItVariableSet = variableSet.iterator();
+        while (newItVariableSet.hasNext()) {
+
+            String valName = (String) newItVariableSet.next();
+            boolean b = Pattern.matches(".*_isPresent", valName);
+            if (b == true) {
+
+            } else {
+                returnSmvFormat.append("\t\tinit(" + valName + ") := "
+                        + variableInitialValue.get(valName) + ";\n");
+                returnSmvFormat.append("\t\tnext(" + valName + ") :=\n");
+                returnSmvFormat.append("\t\t\tcase\n");
+
+                // Generate all transitions; start from "state"
+                List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
+                        .get(valName);
+                if (innerInfoList == null) {
+
+                }
+                for (int i = 0; i < innerInfoList.size(); i++) {
+                    VariableTransitionInfo info = innerInfoList.get(i);
+                    // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+                    // UNDER A REFINEMENT OF A STATE.
+                    if (refinementStateName.equalsIgnoreCase("")) {
+                        returnSmvFormat.append("\t\t\t\t" + info._preCondition
+                                + " :{ " + info._varibleNewValue + " };\n");
+                    } else {
+                        returnSmvFormat.append("\t\t\t\t"
+                                + refinementStateActivePremise + " & "
+                                + info._preCondition + " :{ "
+                                + info._varibleNewValue + " };\n");
+                    }
+
+                }
+
+                returnSmvFormat.append("\t\t\t\t1             : " + valName
+                        + ";\n");
+
+                returnSmvFormat.append("\t\t\tesac;\n\n");
+            }
+
+        }
+
+        // MARK OUT THIS LINE BECAUSE THIS SHOULD HAVE BEEN DONE EARLIER.
+        // _globalSignalRetrivalInfo.put(actor.getName(), signalOfferedSet);
+
+        // Lastly, attach the name and parameter required to use in the system.
+        // In our current implementation, it corresponds to those variables
+        // having format "XX_isPresent" in guard expression.
+
+        // Decide variables encoded in the Kripke Structure.
+        // Note that here the variable only contains Signal Variables.
+        // For example, PGo_isPresent
+
+        StringBuffer frontAttachment = new StringBuffer("MODULE "
+                + actor.getName() + "( ");
+
+        // ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
+        // Meanwhile, place elements in signalVariableSet into variableSet;
+        /*
+        Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
+                .iterator();
+        while (itGuardSignalVariableSet.hasNext()) {
+            String valName = (String) itGuardSignalVariableSet.next();
+            guardSignalVariableInfo.add(valName);
+            if (itGuardSignalVariableSet.hasNext() == true) {
+                frontAttachment.append(valName + ",");
+            } else {
+                frontAttachment.append(valName);
+            }
+        }
+        */
+        ArrayList<String> guardSignalVariableInfo = _globalSignalDistributionInfo
+                .get(actor.getName());
+        if (guardSignalVariableInfo == null) {
+            HashSet<String> guardSignalVariableSet = null;
+            // Enumerate all variables used in the Kripke structure
+            guardSignalVariableSet = _decideGuardSignalVariableSet(actor);
+
+            Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
+                    .iterator();
+            while (itGuardSignalVariableSet.hasNext()) {
+                String valName = (String) itGuardSignalVariableSet.next();
+                // guardSignalVariableInfo.add(valName);
+                if (itGuardSignalVariableSet.hasNext() == true) {
+                    frontAttachment.append(valName + ",");
+                } else {
+                    frontAttachment.append(valName);
+                }
+            }
+        } else {
+            for (int i = 0; i < guardSignalVariableInfo.size(); i++) {
+                String valName = guardSignalVariableInfo.get(i);
+                if (i != guardSignalVariableInfo.size() - 1) {
+                    frontAttachment.append(valName + ",");
+                } else {
+                    frontAttachment.append(valName);
+                }
+            }
+
+        }
+
+        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+        // UNDER A REFINEMENT OF A STATE.
+        if (refinementStateName.trim().equalsIgnoreCase("")) {
+            frontAttachment.append(" )\n");
+        } else {
+            if (guardSignalVariableInfo.size() == 0) {
+                frontAttachment.append(" UpperState  )\n");
+            } else {
+                frontAttachment.append(", UpperState )\n");
+            }
+
+        }
+
+        frontAttachment.append(returnSmvFormat);
+
+        if (signalVariableSet != null) {
+            if ((signalVariableSet.size() != 0)) {
+                frontAttachment.append("\n\tDEFINE\n");
+                Iterator<String> newItSignalVariableSet = signalVariableSet
+                        .iterator();
+                while (newItSignalVariableSet.hasNext()) {
+                    String valName = (String) newItSignalVariableSet.next();
+                    frontAttachment.append("\t\t" + valName + " := ");
+
+                    List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
+                            .get(valName);
+                    if (innerInfoList == null) {
+
+                    }
+                    for (int i = 0; i < innerInfoList.size(); i++) {
+                        VariableTransitionInfo info = innerInfoList.get(i);
+                        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE
+                        // SUBSYSTEM UNDER A REFINEMENT OF A STATE.
+                        if (i == innerInfoList.size() - 1) {
+                            if (refinementStateName.equalsIgnoreCase("")) {
+                                frontAttachment.append(" ( "
+                                        + info._preCondition + " ) ;\n\n ");
+                            } else {
+                                frontAttachment.append("("
+                                        + refinementStateActivePremise + " & "
+                                        + info._preCondition + " ) ;\n\n ");
+                            }
+                        } else {
+                            if (refinementStateName.equalsIgnoreCase("")) {
+                                frontAttachment.append(" ( "
+                                        + info._preCondition + " ) & ");
+                            } else {
+                                frontAttachment.append("("
+                                        + refinementStateActivePremise + " & "
+                                        + info._preCondition + " ) & ");
+                            }
+                        }
+
+                    }
+
+                }
+            }
+
+        }
+
+        return frontAttachment;
 
     }
 
@@ -4594,10 +4576,8 @@ public class SMVUtility {
         }
 
         private String _preCondition;
-        // Record set of conditions that leads to the change of variable
-        // _variableName.
+        // Record set of conditions that leads to the change of variable.
         private String _varibleNewValue = null;
-        // private String _variableName = null;
 
     }
 
