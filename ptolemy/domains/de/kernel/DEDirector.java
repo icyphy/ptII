@@ -1899,13 +1899,28 @@ public class DEDirector extends Director implements TimedDirector {
                             // the DE domain has an upper limit on running
                             // time of Double.MAX_VALUE milliseconds.
                             double elapsedTimeInSeconds = elapsedTime / 1000.0;
-
-                            if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
+                            ptolemy.actor.util.Time elapsed
+                                    = new ptolemy.actor.util.Time(this, elapsedTimeInSeconds);
+                            if (currentTime.compareTo(elapsed) <= 0) {
                                 break;
                             }
+                            
+                            // NOTE: We used to do the following, but it had a limitation.
+                            // In particular, if any user code also calculated the elapsed
+                            // time and then constructed a Time object to post an event
+                            // on the event queue, there was no assurance that the quantization
+                            // would be the same, and hence it was possible for that event
+                            // to be in the past when posted, even if done in the same thread.
+                            // To ensure that the comparison of current time against model time
+                            // always yields the same result, we have to do the comparison using
+                            // the Time class, which is what the event queue does.
+                            /*
+                            if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
+                                break;
+                            }*/
 
                             long timeToWait = (long) (currentTime.subtract(
-                                    elapsedTimeInSeconds).getDoubleValue() * 1000.0);
+                                    elapsed).getDoubleValue() * 1000.0);
 
                             if (timeToWait > 0) {
                                 if (_debugging) {
