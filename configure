@@ -671,6 +671,8 @@ PTCC
 CXX
 CXXFLAGS
 ac_ct_CXX
+PTJYTHON
+PTJYTHON_BAT
 JJTREE
 MATLAB
 PTMATLAB_CC
@@ -1424,7 +1426,8 @@ Optional Packages:
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-jython=DIR       use jython.jar from DIR,
-                          defaults to \$PTII/vendors/jython
+                          defaults to \$PTII/lib, though the path
+			  is searched for jython
   --with-jxta=DIR       use jxta.jar from DIR,
                           defaults to \$PTII/vendors/sun/jxta
   --with-lejos=DIR       use Java lejos from DIR,
@@ -6942,11 +6945,127 @@ fi
 	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $JYTHON_DIR" >&5
 echo "${ECHO_T}$JYTHON_DIR" >&6; }; fi
+        # Extract the first word of "jython", so it can be a program name with args.
+set dummy jython; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_PTJYTHON+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PTJYTHON in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTJYTHON="$PTJYTHON" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PTJYTHON="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PTJYTHON=$ac_cv_path_PTJYTHON
+if test -n "$PTJYTHON"; then
+  { echo "$as_me:$LINENO: result: $PTJYTHON" >&5
+echo "${ECHO_T}$PTJYTHON" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+	if test "${PTJYTHON:-none}" != "none"; then
+	    JYTHON_PROG_PARENT_DIR=`dirname "$PTJYTHON"`
+   	    if test -f "$JYTHON_PROG_PARENT_DIR/jython.jar"; then
+	        if test "$JYTHON_DIR" != "$JYTHON_PROG_PARENT_DIR"; then
+		        # Use changequote to protect the square brackets in sed
+			# Remove /cygdrive so we can compile with MSVC
+			JYTHON_TMP_DIR=`echo "$JYTHON_PROG_PARENT_DIR" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+		        { echo "$as_me:$LINENO: WARNING: Found $PTJYTHON,
+    using $JYTHON_TMP_DIR/jython.jar instead of
+          $JYTHON_DIR/jython.jar" >&5
+echo "$as_me: WARNING: Found $PTJYTHON,
+    using $JYTHON_TMP_DIR/jython.jar instead of
+          $JYTHON_DIR/jython.jar" >&2;}
+			JYTHON_DIR="$JYTHON_TMP_DIR"
+		fi
+            fi
+        else
+            # Extract the first word of "jython.bat", so it can be a program name with args.
+set dummy jython.bat; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_PTJYTHON_BAT+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PTJYTHON_BAT in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTJYTHON_BAT="$PTJYTHON_BAT" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PTJYTHON_BAT="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PTJYTHON_BAT=$ac_cv_path_PTJYTHON_BAT
+if test -n "$PTJYTHON_BAT"; then
+  { echo "$as_me:$LINENO: result: $PTJYTHON_BAT" >&5
+echo "${ECHO_T}$PTJYTHON_BAT" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+	    if test "${PTJYTHON_BAT:-none}" != "none"; then
+	        JYTHON_PROG_PARENT_DIR=`dirname "$PTJYTHON_BAT"`
+   	        if test -f "$JYTHON_PROG_PARENT_DIR/jython.jar"; then
+	            if test "$JYTHON_DIR" != "$JYTHON_PROG_PARENT_DIR"; then
+		        # Use changequote to protect the square brackets in sed
+			# Remove /cygdrive so we can compile with MSVC
+			JYTHON_TMP_DIR=`echo "$JYTHON_PROG_PARENT_DIR" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+		        { echo "$as_me:$LINENO: WARNING: Found $PTJYTHON_BAT,
+    using $JYTHON_TMP_DIR/jython.jar instead of
+          $JYTHON_DIR/jython.jar" >&5
+echo "$as_me: WARNING: Found $PTJYTHON_BAT,
+    using $JYTHON_TMP_DIR/jython.jar instead of
+          $JYTHON_DIR/jython.jar" >&2;}
+			JYTHON_DIR="$JYTHON_TMP_DIR"
+		    fi
+                fi
+            fi
+        fi
 	# FIXME: This is ugly, but we set to python instead of jython
 	# $PTII/ptolemy/actor/lib/makefile if jython was found
 	PTJYTHON_DIR=python
 	# PTJYTHON_PACKAGES is used in ptII/doc/makefile
 	PTJYTHON_PACKAGES=ptolemy.actor.lib.python
+
     fi
 
     if test "$PTJYTHON_DIR" = ""; then
@@ -10572,6 +10691,8 @@ PTCC!$PTCC$ac_delim
 CXX!$CXX$ac_delim
 CXXFLAGS!$CXXFLAGS$ac_delim
 ac_ct_CXX!$ac_ct_CXX$ac_delim
+PTJYTHON!$PTJYTHON$ac_delim
+PTJYTHON_BAT!$PTJYTHON_BAT$ac_delim
 JJTREE!$JJTREE$ac_delim
 MATLAB!$MATLAB$ac_delim
 PTMATLAB_CC!$PTMATLAB_CC$ac_delim
@@ -10610,8 +10731,6 @@ JODE_CLASSES!$JODE_CLASSES$ac_delim
 JYTHON_DIR!$JYTHON_DIR$ac_delim
 JXTA_DIR!$JXTA_DIR$ac_delim
 KVM_CLASSES!$KVM_CLASSES$ac_delim
-KVM_DIR!$KVM_DIR$ac_delim
-LEJOS_DIR!$LEJOS_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -10653,6 +10772,8 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+KVM_DIR!$KVM_DIR$ac_delim
+LEJOS_DIR!$LEJOS_DIR$ac_delim
 MAJOR_OS_NAME!$MAJOR_OS_NAME$ac_delim
 MATLAB_DIR!$MATLAB_DIR$ac_delim
 MATLAB_LIBDIR!$MATLAB_LIBDIR$ac_delim
@@ -10748,8 +10869,6 @@ TOSROOT_NO_CYGDRIVE!$TOSROOT_NO_CYGDRIVE$ac_delim
 TOSDIR_NO_CYGDRIVE!$TOSDIR_NO_CYGDRIVE$ac_delim
 GIOTTO_CLASSES!$GIOTTO_CLASSES$ac_delim
 GIOTTO_DIR!$GIOTTO_DIR$ac_delim
-WABA_CLASSES!$WABA_CLASSES$ac_delim
-WABA_DIR!$WABA_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -10791,13 +10910,15 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+WABA_CLASSES!$WABA_CLASSES$ac_delim
+WABA_DIR!$WABA_DIR$ac_delim
 X10_CLASSES!$X10_CLASSES$ac_delim
 X10_DIR!$X10_DIR$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 4; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 6; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
