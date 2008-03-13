@@ -71,10 +71,8 @@ public class MathematicalModelConverter extends Attribute {
     /**
      * Create a new instance of the code generator.
      * 
-     * @param container
-     *                The container.
-     * @param name
-     *                The name of the code generator.
+     * @param container The container.
+     * @param name The name of the code generator.
      * @exception IllegalActionException
      *                    If the super class throws the exception or error
      *                    occurs when setting the file path.
@@ -108,8 +106,7 @@ public class MathematicalModelConverter extends Attribute {
     /**
      * Generate code. This is the main entry point.
      * 
-     * @param code
-     *                The code buffer into which to generate the code.
+     * @param code The code buffer into which to generate the code.
      * @return The return value of the last subprocess that was executed. or -1
      *         if no commands were executed.
      * @exception KernelException
@@ -608,6 +605,16 @@ public class MathematicalModelConverter extends Attribute {
         // return returnValue;
     }
 
+    public String generateGraphicalSpec(String formulaType) throws IllegalActionException{
+        
+        if(_model instanceof CompositeActor){
+            return SMVUtility.generateGraphicalSpecification((CompositeActor)_model, formulaType);
+        } else {
+            throw new IllegalActionException("SMVUtility.generateGraphicalSpec error:\nModel not instance of CompositeActor");
+        }
+    }
+    
+    
     // /////////////////////////////////////////////////////////////////
     // // protected variables ////
 
@@ -617,11 +624,12 @@ public class MathematicalModelConverter extends Attribute {
     protected File _directory;
 
     private void _deleteFolder(File folder) throws Exception {
-  
+
         if (folder.list() == null || folder.list().length <= 0) {
             boolean isDeleted = folder.delete();
-            if(isDeleted == false){
-                throw new IllegalActionException("Temporary subfolder delete unsuccessful");
+            if (isDeleted == false) {
+                throw new IllegalActionException(
+                        "Temporary subfolder delete unsuccessful");
             }
         } else {
             for (int i = 0; i < folder.list().length; i++) {
@@ -631,16 +639,18 @@ public class MathematicalModelConverter extends Attribute {
                 File filePath = new File(childPath);
                 if (filePath.exists() && filePath.isFile()) {
                     boolean isDeleted = filePath.delete();
-                    if(isDeleted == false){
-                        throw new IllegalActionException("Temporary file delete unsuccessful");
+                    if (isDeleted == false) {
+                        throw new IllegalActionException(
+                                "Temporary file delete unsuccessful");
                     }
                 } else if (filePath.exists() && filePath.isDirectory()) {
                     _deleteFolder(filePath);
                 }
             }
             boolean isDeleted = folder.delete();
-            if(isDeleted == false){
-                throw new IllegalActionException("Temporary folder delete unsuccessful");
+            if (isDeleted == false) {
+                throw new IllegalActionException(
+                        "Temporary folder delete unsuccessful");
             }
         }
 
