@@ -179,7 +179,7 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         JPanel controlPanel2 = new JPanel();
         controlPanel2.setSize(400, 30);
         controlPanel2.add(new JLabel("Formula Type"));
-        String[] formulaTypes = { "CTL", "LTL", "TCTL", "Buffer Overflow" };
+        String[] formulaTypes = { "CTL", "LTL", "TCTL", "Buffer Overflow", "Risk", "Reachability" };
         formulaTypeList = new JComboBox(formulaTypes);
         formulaTypeList.setSelectedIndex(0);
         controlPanel2.add(formulaTypeList);
@@ -255,7 +255,11 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                             .getSelectedItem();
                     String FSMBufferSize = bufferSize.getText() == null ? ""
                             : bufferSize.getText().trim();
-
+                    if(formulaType.equalsIgnoreCase("Risk") || formulaType.equalsIgnoreCase("Reachability")){
+                        inputTemporalFormula = modelConverter.generateGraphicalSpec(formulaType);
+                        formulaType = "CTL";
+                    }
+                    
                     StringBuffer code = new StringBuffer("");
                     code.append(modelConverter.generateCode(modelType,
                             inputTemporalFormula, formulaType, varSpanSize,
