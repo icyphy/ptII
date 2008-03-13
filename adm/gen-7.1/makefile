@@ -1078,6 +1078,24 @@ bldmastrcoverage:
 		remote1jnlp \
 		test_setup
 
+# Just build a distribution
+bldmastr_dist:
+	$(MAKE) -k REMOTE1HOME=/home/bldmastr \
+		PTII=/home/bldmastr/ptII \
+		PTIIHOME=/home/bldmastr/ptII \
+		JFLAGS="-deprecation -g -source 1.5" \
+		JSDATABASE=/home/bldmastr/jsdatabase \
+		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
+		JSCLASSPATH=/usr/local/JavaScope/JavaScope.jar \
+		clean \
+		all \
+		remote1distclean \
+		remote1configure \
+		remote1build \
+		remote1ChangeLog \
+		remote1jnlp \
+		test_setup
+
 
 
 #		remote4
