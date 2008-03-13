@@ -1822,17 +1822,54 @@ if test ! -d "$JYTHON_USER_DIR"; then
 else
     AC_MSG_CHECKING([for Jython, the Java implementation of Python])
     AC_ARG_WITH(jython, [  --with-jython=DIR       use jython.jar from DIR,
-                          defaults to \$PTII/vendors/jython],
+                          defaults to \$PTII/lib, though the path
+			  is searched for jython],
 	JYTHON_DIR=$withval,
 	JYTHON_DIR=$PTII/lib)
 
     if test -f "$JYTHON_DIR/jython.jar"; then
 	PT_MSG_RESULT([$JYTHON_DIR])
+        AC_PATH_PROG(PTJYTHON, jython)
+	if test "${PTJYTHON:-none}" != "none"; then
+	    JYTHON_PROG_PARENT_DIR=`dirname "$PTJYTHON"`
+   	    if test -f "$JYTHON_PROG_PARENT_DIR/jython.jar"; then
+	        if test "$JYTHON_DIR" != "$JYTHON_PROG_PARENT_DIR"; then 
+		        # Use changequote to protect the square brackets in sed
+changequote(<<, >>)dnl
+			# Remove /cygdrive so we can compile with MSVC
+			JYTHON_TMP_DIR=`echo "$JYTHON_PROG_PARENT_DIR" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+changequote([, ])dnl
+		        AC_MSG_WARN([Found $PTJYTHON,
+    using $JYTHON_TMP_DIR/jython.jar instead of
+          $JYTHON_DIR/jython.jar])
+			JYTHON_DIR="$JYTHON_TMP_DIR"
+		fi    
+            fi
+        else
+            AC_PATH_PROG(PTJYTHON_BAT, jython.bat)
+	    if test "${PTJYTHON_BAT:-none}" != "none"; then
+	        JYTHON_PROG_PARENT_DIR=`dirname "$PTJYTHON_BAT"`
+   	        if test -f "$JYTHON_PROG_PARENT_DIR/jython.jar"; then
+	            if test "$JYTHON_DIR" != "$JYTHON_PROG_PARENT_DIR"; then 
+		        # Use changequote to protect the square brackets in sed
+changequote(<<, >>)dnl
+			# Remove /cygdrive so we can compile with MSVC
+			JYTHON_TMP_DIR=`echo "$JYTHON_PROG_PARENT_DIR" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+changequote([, ])dnl
+		        AC_MSG_WARN([Found $PTJYTHON_BAT,
+    using $JYTHON_TMP_DIR/jython.jar instead of
+          $JYTHON_DIR/jython.jar])
+			JYTHON_DIR="$JYTHON_TMP_DIR"
+		    fi    
+                fi
+            fi
+        fi
 	# FIXME: This is ugly, but we set to python instead of jython
 	# $PTII/ptolemy/actor/lib/makefile if jython was found
 	PTJYTHON_DIR=python
 	# PTJYTHON_PACKAGES is used in ptII/doc/makefile
 	PTJYTHON_PACKAGES=ptolemy.actor.lib.python
+
     fi	
 
     if test "$PTJYTHON_DIR" = ""; then
