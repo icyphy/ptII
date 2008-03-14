@@ -1,26 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
     <classpathentry
-        excluding="**/CVS/|**/adm/|**/codeDoc/|config/|diva/util/java2d/svg/|ptolemy/backtrack/eclipse/|ptolemy/backtrack/test/|ptolemy/copernicus/c/test/|ptolemy/copernicus/c/test/cm/|doc/coding/templates/|ptolemy/copernicus/kernel/fragment/|ptolemy/distributed/|doc/doclets/|ptolemy/apps/|ptolemy/domains/ct/demo/Saber/|ptolemy/domains/gr/|ptolemy/domains/gr/lib/experimental/|ptolemy/domains/pdf/|ptolemy/plot/servlet/|vendors/|ptolemy/copernicus/jhdl/|ptolemy/actor/lib/jai/|ptolemy/actor/lib/jmf/|ptolemy/actor/lib/joystick/|ptolemy/actor/lib/x10/|ptolemy/domains/gr/lib/quicktime/"
+        excluding="**/CVS/|**/adm/|**/codeDoc/|config/|diva/util/java2d/svg/|ptolemy/backtrack/eclipse/|ptolemy/backtrack/test/|ptolemy/copernicus/c/test/|ptolemy/copernicus/c/test/cm/|doc/coding/templates/|ptolemy/copernicus/kernel/fragment/|ptolemy/distributed/|doc/doclets/|ptolemy/actor/gui/run/|ptolemy/apps/|ptolemy/domains/ct/demo/Saber/|ptolemy/domains/gr/|ptolemy/domains/gr/lib/experimental/|ptolemy/domains/pdf/|ptolemy/plot/servlet/|vendors/|ptolemy/copernicus/jhdl/|ptolemy/actor/lib/io/comm/|ptolemy/actor/lib/jai/|ptolemy/actor/lib/jmf/|ptolemy/actor/lib/joystick/|ptolemy/actor/lib/x10/|ptolemy/domains/gr/lib/quicktime/|ptolemy/moml/jxta/"
         kind="src" path=""/>
     <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-    <classpathentry kind="lib" path="lib/bsh-2.0b4.jar"/>
     <classpathentry kind="lib" path="lib/ptCal.jar"/>
     <classpathentry kind="lib" path="lib/java_cup.jar"/>
     <classpathentry kind="lib" path="lib/saxon8.jar"/>
     <classpathentry kind="lib" path="lib/saxon8-dom.jar"/>
     <classpathentry kind="lib" path="lib/chic.jar"/>
-    <classpathentry kind="lib" path="vendors/sun/commapi/comm.jar"/>
     <classpathentry kind="lib" path="lib/jython.jar"/>
-    <classpathentry kind="lib" path="vendors/sun/jxta/jxta.jar"/>
-    <classpathentry kind="lib" path="vendors/sun/jxta/cryptix-asn1.jar"/>
-    <classpathentry kind="lib" path="vendors/sun/jxta/cryptix32.jar"/>
-    <classpathentry kind="lib" path="vendors/sun/jxta/beepcore.jar"/>
-    <classpathentry kind="lib" path="vendors/sun/jxta/minimalBC.jar"/>
-    <classpathentry kind="lib" path="vendors/sun/jxta/jxtasecurity.jar"/>
-    <classpathentry kind="lib" path="vendors/sun/jxta/log4j.jar"/>
-    <classpathentry kind="lib" path="vendors/sun/jxta/jxtaptls.jar"/>
     <classpathentry kind="lib" path="lib/ptcolt.jar"/>
     <classpathentry kind="lib" path="lib/ptjacl.jar"/>
     <classpathentry kind="lib" path="lib/mapss.jar"/>
