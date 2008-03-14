@@ -56,9 +56,9 @@ public class EmbeddedCFileActor extends CompiledCompositeActor  {
 
    /** A placeholder or dummy actor used in Embedded C code generation.
     */
-   public static class EmbeddedFileActor extends CCodeGeneratorHelper {
+   public static class EmbeddedFileActor extends ptolemy.codegen.c.actor.lib.jni.EmbeddedCActor.EmbeddedActor {
 
-       /** Create a EmbeddedActor.
+       /** Create a EmbeddedFileActor.
         *  @param actor The associated actor.
         */
        public EmbeddedFileActor(
@@ -66,19 +66,9 @@ public class EmbeddedCFileActor extends CompiledCompositeActor  {
            super(actor);
        }
 
-       /** Generate the shared code. Since this is the first generate
-        *  method invoked out of all, the CodeStream object is reset
-        *  so that its code table will be re-constructed.
-        *  @exception IllegalActionException Not thrown in this base class.
-        */
        public Set getSharedCode() throws IllegalActionException {
           
            ((ptolemy.actor.lib.jni.EmbeddedCFileActor) getComponent().getContainer()).changeEmbeddedCCode();
-           
-           _codeStream.reset();
-           _codeStream
-                   .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCFileActor) getComponent()
-                           .getContainer()).embeddedCCode.getExpression());
            
            return super.getSharedCode();
        }
