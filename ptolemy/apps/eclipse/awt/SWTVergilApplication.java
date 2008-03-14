@@ -29,6 +29,7 @@ import java.net.URL;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.UIManager;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -60,6 +61,7 @@ import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.VergilErrorHandler;
@@ -89,10 +91,61 @@ public class SWTVergilApplication {
     public SWTVergilApplication(String[] args) throws Exception {
         // FIXME: This constructor is way too long and does too much.
 
+        // FIXME: Code duplicated from MoMLApplication.  Perhaps refactoring
+        // would help here?
+        
         // Create register an error handler with the parser so that
         // MoML errors are tolerated more than the default.
         MoMLParser.setErrorHandler(new VergilErrorHandler());
+        
+        // The Java look & feel is pretty lame, so we use the native
+        // look and feel of the platform we are running on.
+        // NOTE: This creates the only dependence on Swing in this
+        // class.  Should this be left to derived classes?
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            // Ignore exceptions, which only result in the wrong look and feel.
+        }
+        
+        // Create a parser to use.
+        _parser = new MoMLParser();
 
+        // We set the list of MoMLFilters to handle Backward Compatibility.
+        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+
+        // 2/03: Moved the setMessageHandler() to before parseArgs() so
+        // that if we get an error in parseArgs() we will get a graphical
+        // stack trace.   Such an error could be caused by specifying a model
+        // as a command line argument and the model has an invalid parameter.
+        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
+
+        // Even if the user is set up for foreign locale, use the US locale.
+        // This is because certain parts of Ptolemy (like the expression
+        // language) are not localized.
+        // FIXME: This is a workaround for the locale problem, not a fix.
+        // FIXME: In March, 2001, Johan Ecker writes
+        // Ptolemy gave tons of exception when started on my laptop
+        // which has Swedish settings as default. The Swedish standard
+        // for floating points are "2,3", i.e. using a comma as
+        // delimiter. However, I think most Swedes are adaptable and
+        // do not mind using a dot instead since this more or less has
+        // become the world standard, at least in engineering. The
+        // problem is that I needed to change my global settings to
+        // start Ptolemy and this is quite annoying. I guess that the
+        // expression parser should just ignore the delimiter settings
+        // on the local computer and always use dot, otherwise Ptolemy
+        // will crash using its own init files.
+        try {
+            java.util.Locale.setDefault(java.util.Locale.US);
+        } catch (java.security.AccessControlException accessControl) {
+            // FIXME: If the application is run under Web Start, then this
+            // exception will be thrown.
+        }
+
+        // End of code duplication from MoMLApplication
+        
+        // Start of code from Snippet135
         final Display display = new Display();
         final Shell shell = new Shell(display);
         shell.setText("SWT and Swing/AWT Example with Vergil!");
@@ -444,10 +497,8 @@ public class SWTVergilApplication {
      * @exception Exception If the model cannot be found or cannot be parsed.
      */
     protected NamedObj _openModel(String model) throws Exception {
-        URL modelURL = FileUtilities.nameToURL(model, null, null);
-        System.out.println("modelURL: " + modelURL);
-        MoMLParser parser = new MoMLParser();
-        return parser.parse(null, modelURL);
+        URL modelURL = FileUtilities.nameToURL(model, null, null);     
+        return _parser.parse(null, modelURL);
     }
 
     /** Read the configuration.
@@ -473,6 +524,9 @@ public class SWTVergilApplication {
 
     protected JGraph _jgraph;
 
+    /** The parser used to construct the configuration. */
+    protected MoMLParser _parser;
+    
     /** The Ptolemy model.*/
     protected NamedObj _toplevel;
 
