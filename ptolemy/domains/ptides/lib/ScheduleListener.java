@@ -8,32 +8,35 @@ import ptolemy.actor.Actor;
 //// ScheduleListener
 
 /**
+ * A schedule listener reacts to given events.
+ * 
  * @author Patricia Derler
  */
 public interface ScheduleListener {
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+	// /////////////////////////////////////////////////////////////////
+	// // public methods ////
 
-    /** React to the given scheduling event.
-     *  @param actorName The name of the actor involved in the event.
-     *  @param time The time of the event.
-     *  @param scheduleEvent One of {@link #RESET_DISPLAY},
-     *  {@link #TASK_SLEEPING}, {@link #TASK_BLOCKED} or {@link #TASK_RUNNING}.
-     */
-    public void event(Actor node, Actor actor, double time, int scheduleEvent);
-    
-    public void initialize(Hashtable nodesActors);
+	/**
+	 * react to the given event.
+	 */
+	public void event(Actor node, Actor actor, double time, int scheduleEvent);
 
-    /** Reset display message. */
-    static final int START = 0;
+	/**
+	 * initialize the legend of the display
+	 * 
+	 * @param nodesActors
+	 *            contains platforms and actors running on that platform
+	 */
+	public void initialize(Hashtable nodesActors);
 
-    /** Task sleeping message. */
-    static final int STOP = 1;
-    
-    static final int TRANSFEROUTPUT = 2;
-    
-    static final int TRANSFERINPUT = 3;
-    
-    static final int MISSEDEXECUTION = 4;
+	static final int START = 0;
+
+	static final int STOP = 1;
+
+	static final int TRANSFEROUTPUT = 2;
+
+	static final int TRANSFERINPUT = 3;
+
+	static final int MISSEDEXECUTION = 4;
 
 }

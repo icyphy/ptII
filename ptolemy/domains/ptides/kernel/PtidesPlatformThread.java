@@ -19,10 +19,22 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
 /**
+ * This thread is created for a CompositeActor that represents a platform inside
+ * a PTIDES domain. The PtidesDirector creates this thread.
+ * 
  * @author Patricia Derler
  */
 public class PtidesPlatformThread extends ProcessThread {
 
+	/**
+	 * Construct a thread to be used for the execution of the iteration methods
+	 * of the actor. This increases the count of active actors in the director.
+	 * 
+	 * @param actor
+	 *            The actor that needs to be executed.
+	 * @param director
+	 *            The director responsible for the execution of this actor.
+	 */
 	public PtidesPlatformThread(Actor actor, ProcessDirector director)
 			throws IllegalActionException {
 		super(actor, director);

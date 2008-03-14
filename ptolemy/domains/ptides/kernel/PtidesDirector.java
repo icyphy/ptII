@@ -37,398 +37,465 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /**
+ * Top-level director for PTIDES models. The model time of this director is used
+ * as the physical time of the whole model. Actors inside a PTIDES domain are
+ * run in threads and ask for being refired at a certain time in the future.
+ * This director saves those times in a list and if all actors are waiting for a
+ * future time, the model time is increased.
+ * 
  * @author Patricia Derler
  */
 public class PtidesDirector extends CompositeProcessDirector implements
 		TimedDirector {
 
+	/**
+	 * Construct a director in the default workspace with an empty string as its
+	 * name. The director is added to the list of objects in the workspace.
+	 * Increment the version number of the workspace.
+	 */
 	public PtidesDirector() throws IllegalActionException,
 			NameDuplicationException {
 		super();
-		 
+
 		_initialize();
 	}
 
-	public PtidesDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+	/**
+	 * Construct a director in the workspace with an empty name. The director is
+	 * added to the list of objects in the workspace. Increment the version
+	 * number of the workspace.
+	 * 
+	 * @param workspace
+	 *            The workspace of this object.
+	 */
+	public PtidesDirector(Workspace workspace) throws IllegalActionException,
+			NameDuplicationException {
 		super(workspace);
 
 		_initialize();
 	}
 
-	public PtidesDirector(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+	/**
+	 * Construct a director in the given container with the given name. If the
+	 * container argument must not be null, or a NullPointerException will be
+	 * thrown. If the name argument is null, then the name is set to the empty
+	 * string. Increment the version number of the workspace.
+	 * 
+	 * @param container
+	 *            The container.
+	 * @param name
+	 *            Name of this director.
+	 * @exception IllegalActionException
+	 *                If the name contains a period, or if the director is not
+	 *                compatible with the specified container.
+	 * @exception NameDuplicationException
+	 *                If the container not a CompositeActor and the name
+	 *                collides with an entity in the container.
+	 */
+	public PtidesDirector(CompositeEntity container, String name)
+			throws IllegalActionException, NameDuplicationException {
 		super(container, name);
 
 		_initialize();
 	}
-	
-	
+
+	/**
+	 * if this Parameter is set to true, minimum delays according to Ptides on
+	 * the platform level are calculated. Otherwise, given minimum delays are
+	 * used.
+	 */
 	public Parameter calculateMinDelays;
+
+	/**
+	 * global clock synchronization error
+	 */
 	public Parameter clockSyncError;
+
+	/**
+	 * global network delay - in future developments, network delays could be
+	 * specified per network and not globally
+	 */
 	public Parameter networkDelay;
+
+	/**
+	 * defines if ptides execution strategy should be used. this is only
+	 * interesting when other distributed event simulations should be tried with
+	 * this framework.
+	 */
 	public Parameter usePtidesExecutionSemantics;
+
+	/**
+	 * time at which the simulation should be stopped
+	 */
 	public Parameter stopTime;
-	
-	
-	public double getClockSyncError() {
-		return _clockSyncError;
-	}
-	public double getNetworkDelay() {
-		return _networkDelay;
-	}
-	public boolean usePtidesExecutionSemantics() {
-		return _usePtidesExecutionSemantics;
-	}
-	
-	 public void attributeChanged(Attribute attribute)
-	     throws IllegalActionException {
-		 if (attribute == clockSyncError) {
-		     _clockSyncError = ((DoubleToken) clockSyncError.getToken()).doubleValue();
-		 } else if (attribute == networkDelay) {
-		     _networkDelay = ((DoubleToken) networkDelay.getToken()).doubleValue();
-		 } else if (attribute == usePtidesExecutionSemantics) { 
-			 _usePtidesExecutionSemantics = ((BooleanToken)usePtidesExecutionSemantics.getToken()).booleanValue();
-		 } else if (attribute == calculateMinDelays) {
-			 _calculateMinDelays = ((BooleanToken)calculateMinDelays.getToken()).booleanValue();
-		 } else 
-		     super.attributeChanged(attribute);
-	}
-	
-	
-	
+
+	/**
+	 * Add a new schedule listener that will receive events in the
+	 * _displaySchedule method
+	 * 
+	 * @param plotter
+	 */
 	public void addScheduleListener(SchedulePlotter plotter) {
 		_scheduleListeners.add(plotter);
 	}
-	
-    /**
-     * The stopTime parameter specifies the completion time of a model's
-     * execution. During the initialize() method the value of this parameter is
-     * passed to all receivers governed by this director. The default value of
-     * stopTime is <I>PrioritizedTimedQueue.ETERNITY</I> indicating that
-     * execution will continue indefinitely.
-     */
-    
-	@Override
+
+	/**
+	 * Override the base class to update local variables.
+	 */
+	public void attributeChanged(Attribute attribute)
+			throws IllegalActionException {
+		if (attribute == clockSyncError) {
+			_clockSyncError = ((DoubleToken) clockSyncError.getToken())
+					.doubleValue();
+		} else if (attribute == networkDelay) {
+			_networkDelay = ((DoubleToken) networkDelay.getToken())
+					.doubleValue();
+		} else if (attribute == usePtidesExecutionSemantics) {
+			_usePtidesExecutionSemantics = ((BooleanToken) usePtidesExecutionSemantics
+					.getToken()).booleanValue();
+		} else if (attribute == calculateMinDelays) {
+			_calculateMinDelays = ((BooleanToken) calculateMinDelays.getToken())
+					.booleanValue();
+		} else
+			super.attributeChanged(attribute);
+	}
+
+	/**
+	 * get physical time
+	 */
+	public synchronized Time getModelTime() {
+		return _currentTime;
+	}
+
+	/**
+	 * initialize parameters, calculate minimum delays for ports on platforms
+	 * according to Ptides and initalize scheduleplotters
+	 */
 	public void initialize() throws IllegalActionException {
 		super.initialize();
 		_completionTime = Time.POSITIVE_INFINITY;
-        
-		_nextFirings = new TreeSet<Time>();
-    	_completionTime = new Time(this, ((DoubleToken) stopTime.getToken()).doubleValue());
-    	if (!_completionTime.equals(Time.POSITIVE_INFINITY))
-    		_nextFirings.add(_completionTime);
-    	
-    	if (_calculateMinDelays) {
-    		PtidesGraphUtilities utilities = new PtidesGraphUtilities(this.getContainer());
-    		utilities.calculateMinDelays();
-    	}
-    	
-    	Hashtable<Actor, List> table = new Hashtable<Actor, List>();
-    	for (Iterator it = ((CompositeActor)getContainer()).entityList().iterator(); it.hasNext(); ) {
-    		Object obj = it.next();
-    		if (obj instanceof CompositeActor) {
-	    		CompositeActor actor = (CompositeActor) obj;
-	    		if (actor.getDirector() instanceof PtidesEmbeddedDirector) {
-	    			PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor.getDirector();
-	    			dir.setUsePtidesExecutionSemantics(_usePtidesExecutionSemantics);
-	    			dir.setClockSyncError(_clockSyncError);
-	    			dir.setNetworkDelay(_networkDelay);
-	    		}
-	    		List<Actor> actors = new ArrayList<Actor>();
-	    		for (Iterator it2 = actor.entityList().iterator(); it2.hasNext(); ) {
-	    			Object o = it2.next();
-	    			if (o instanceof Actor)
-	    				actors.add((Actor)o);
-	    		}
-	    		table.put(actor, actors);
-    		}
-    	}
-    	synchronized (this) {
-            if (_scheduleListeners != null) {
-                Iterator listeners = _scheduleListeners.iterator();
 
-                while (listeners.hasNext()) {
-                    ((ScheduleListener) listeners.next()).initialize(table);
-                }
-            }
-        }
-    	
+		_nextFirings = new TreeSet<Time>();
+		_completionTime = new Time(this, ((DoubleToken) stopTime.getToken())
+				.doubleValue());
+		if (!_completionTime.equals(Time.POSITIVE_INFINITY))
+			_nextFirings.add(_completionTime);
+
+		if (_calculateMinDelays) {
+			PtidesGraphUtilities utilities = new PtidesGraphUtilities(this
+					.getContainer());
+			utilities.calculateMinDelays();
+		}
+
+		Hashtable<Actor, List> table = new Hashtable<Actor, List>();
+		for (Iterator it = ((CompositeActor) getContainer()).entityList()
+				.iterator(); it.hasNext();) {
+			Object obj = it.next();
+			if (obj instanceof CompositeActor) {
+				CompositeActor actor = (CompositeActor) obj;
+				if (actor.getDirector() instanceof PtidesEmbeddedDirector) {
+					PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor
+							.getDirector();
+					dir
+							.setUsePtidesExecutionSemantics(_usePtidesExecutionSemantics);
+					dir.setClockSyncError(_clockSyncError);
+					dir.setNetworkDelay(_networkDelay);
+				}
+				List<Actor> actors = new ArrayList<Actor>();
+				for (Iterator it2 = actor.entityList().iterator(); it2
+						.hasNext();) {
+					Object o = it2.next();
+					if (o instanceof Actor)
+						actors.add((Actor) o);
+				}
+				table.put(actor, actors);
+			}
+		}
+		synchronized (this) {
+			if (_scheduleListeners != null) {
+				Iterator listeners = _scheduleListeners.iterator();
+
+				while (listeners.hasNext()) {
+					((ScheduleListener) listeners.next()).initialize(table);
+				}
+			}
+		}
+
 	}
 
-
-	public Receiver newReceiver() {
-        PtidesDDEReceiver receiver = new PtidesDDEReceiver();
-        double timeValue;
-
-        try {
-            timeValue = ((DoubleToken) stopTime.getToken()).doubleValue() + 1;
-            receiver._setCompletionTime(new Time(this, timeValue));
-            receiver._lastTime = new Time(this);
-        } catch (IllegalActionException e) {
-            // If the time resolution of the director or the stop
-            // time is invalid, it should have been caught before this.
-            throw new InternalErrorException(e);
-        }
-
-        return receiver;
-    }
-    
-    public synchronized Time getModelTime() {
-//        Thread thread = Thread.currentThread();
-
-//        if (thread instanceof DDEThread4Ptides) {
-//            TimeKeeper timeKeeper = ((DDEThread4Ptides) thread).getTimeKeeper();
-//            return timeKeeper.getModelTime();
-//        } else {
-            return _currentTime;
-//        }
-    }
-    
-    
-    @Override
-    public synchronized void setModelTime(Time newTime) throws IllegalActionException {
-    	_currentTime = newTime;
-    }
-    
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
-//        double ETERNITY = PrioritizedTimedQueue.ETERNITY;
-//        PtidesPlatformThread ddeThread = null;
-//        Thread thread = Thread.currentThread();
-//
-//        if (thread instanceof PtidesPlatformThread) {
-//            ddeThread = (PtidesPlatformThread) thread;
-//        }
-//        if ((_completionTime.getDoubleValue() != ETERNITY) && (time.compareTo(_completionTime) > 0)) {
-//            return;
-//        }
-//        Actor threadActor = ddeThread.getActor();
-//        if (threadActor != actor) {
-//            throw new IllegalActionException("Actor argument of DDEDirector.fireAt() must be contained by the DDEThread that calls fireAt()");
-//        }
-    	if (time.compareTo(getModelTime()) > 0)
+	/**
+	 * called by platforms to schedule a future time firing. This director does
+	 * not remember which platform wants to be fired again. Performance can be
+	 * improved here
+	 */
+	public void fireAt(Actor actor, Time time) throws IllegalActionException {
+		if (time.compareTo(getModelTime()) > 0)
 			_nextFirings.add(time);
+	}
 
-    }
-    
-    @Override
-    public void wrapup() throws IllegalActionException {
-    	super.wrapup();
-    	_waitingForPhysicalTime.clear();
-    	_nextFirings.clear();
-    	setModelTime(new Time(this, 0.0));
-    	
-    	for (Iterator it = ((CompositeActor)getContainer()).entityList().iterator(); it.hasNext(); ) {
-    		Object obj = it.next();
-    		if (obj instanceof CompositeActor) {
-	    		CompositeActor actor = (CompositeActor) obj;
-	    		if (actor.getDirector() instanceof PtidesEmbeddedDirector) {
-	    			PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor.getDirector();
-	    			dir.setModelTime(getModelTime());
-	    		}
-    		}
-    	}
-	    		
-    }
-    
-    @Override
-    public boolean prefire() throws IllegalActionException {
-    	
-    	return super.prefire();
-    }
-    
-    public void notifyWaitingThreads() {
-		Set set = null;
-		try { // TODO wrong
-			set = (Set) _waitingForPhysicalTime.clone();
-		} catch (Exception ex) {
-			return;
+	/**
+	 * return a new PtidesDEEReceiver
+	 */
+	public Receiver newReceiver() {
+		PtidesDDEReceiver receiver = new PtidesDDEReceiver();
+		double timeValue;
+
+		try {
+			timeValue = ((DoubleToken) stopTime.getToken()).doubleValue() + 1;
+			receiver._setCompletionTime(new Time(this, timeValue));
+			receiver._lastTime = new Time(this);
+		} catch (IllegalActionException e) {
+			// If the time resolution of the director or the stop
+			// time is invalid, it should have been caught before this.
+			throw new InternalErrorException(e);
 		}
+
+		return receiver;
+	}
+
+	/**
+	 * wake up all waiting threads. The threads decide themselves if they have
+	 * anything to do.
+	 */
+	public void notifyWaitingThreads() {
+		Set set = (Set) _waitingForPhysicalTime.clone();
 		Iterator it = set.iterator();
 		while (it.hasNext()) {
 			Thread thread = (Thread) it.next();
-			System.out.println(",,,,,, unblock: " + thread.getName() + " " ); 
+			if (_debugging)
+				_debug("unblock: " + thread.getName() + " ");
 			threadUnblocked(thread, null);
 		}
 		_waitingForPhysicalTime.clear();
 	}
-    
-    public synchronized Time waitForFuturePhysicalTime() throws IllegalActionException {
-		System.out.println("/// wait on " + ((PtidesPlatformThread)Thread.currentThread()).getActor().getName() + " " +  _getActiveThreadsCount() + " " + _getBlockedThreadsCount()  + " " + _waitingForPhysicalTime.size());
-		if ((!_waitingForPhysicalTime.contains(Thread.currentThread()) 
-				&& _getActiveThreadsCount() - _waitingForPhysicalTime.size() == 1)) { // increase physical time when all threads are blocked
-			
+
+	/**
+	 * set physical time
+	 */
+	public synchronized void setModelTime(Time newTime)
+			throws IllegalActionException {
+		_currentTime = newTime;
+	}
+
+	/**
+	 * If a platform has nothing to do at the current physical time, it waits
+	 * for the next physical time which means that the platform thread is
+	 * blocked. If all threads are about to be blocked, the physical time is
+	 * increased to the next physical time any platform is interested in being
+	 * fired again.
+	 * 
+	 * @return new physical time
+	 * @throws IllegalActionException
+	 */
+	public synchronized Time waitForFuturePhysicalTime()
+			throws IllegalActionException {
+		if (_debugging)
+			_debug("wait for "
+					+ ((PtidesPlatformThread) Thread.currentThread())
+							.getActor().getName()
+					+ ", number of active threads: " + _getActiveThreadsCount()
+					+ ", number of blocked threads: "
+					+ _getBlockedThreadsCount()
+					+ ", number of waiting threads: "
+					+ _waitingForPhysicalTime.size());
+		if ((!_waitingForPhysicalTime.contains(Thread.currentThread()) && _getActiveThreadsCount()
+				- _waitingForPhysicalTime.size() == 1)) {
 			_increasePhysicalTime();
 			return getModelTime();
 		}
 		if (_stopFireRequested)
 			return getModelTime();
 		_waitingForPhysicalTime.add(Thread.currentThread());
-		
 		threadBlocked(Thread.currentThread(), null);
-		
 		try {
 			workspace().wait(this);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (!_stopRequested)
-		//threadUnblocked(Thread.currentThread(), null);
-		_waitingForPhysicalTime.remove(Thread.currentThread());
+			_waitingForPhysicalTime.remove(Thread.currentThread());
 		return getModelTime();
 	}
-    
-    protected final void _displaySchedule(Actor node, Actor actor, double time,
-            int scheduleEvent) {
-        if (_scheduleListeners != null) {
-            Iterator listeners = _scheduleListeners.iterator();
 
-            while (listeners.hasNext()) {
-                ((ScheduleListener) listeners.next()).event(node, actor,
-                        time, scheduleEvent);
-            }
-        }
-    }
-    
-    protected ProcessThread _newProcessThread(Actor actor,
-            ProcessDirector director) throws IllegalActionException {
-        return new PtidesPlatformThread(actor, director);
-    }
-    
-    @Override
-	protected synchronized boolean _resolveDeadlock() throws IllegalActionException {
-		System.out.println("********* resolveDeadlock");
-//		increasePhysicalTime();
+	/**
+	 * clear list containing times platforms are interested in being fired in
+	 * the future clear list of actors waiting for being refired reset physical
+	 * time
+	 */
+	public void wrapup() throws IllegalActionException {
+		super.wrapup();
+		_waitingForPhysicalTime.clear();
+		_nextFirings.clear();
+		setModelTime(new Time(this, 0.0));
+
+		for (Iterator it = ((CompositeActor) getContainer()).entityList()
+				.iterator(); it.hasNext();) {
+			Object obj = it.next();
+			if (obj instanceof CompositeActor) {
+				CompositeActor actor = (CompositeActor) obj;
+				if (actor.getDirector() instanceof PtidesEmbeddedDirector) {
+					PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor
+							.getDirector();
+					dir.setModelTime(getModelTime());
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Forward display events from platforms to the schedule listeners.
+	 * 
+	 * @param node
+	 *            platform that forwards the event.
+	 * @param actor
+	 *            actor inside a platform for which the event was created. If
+	 *            the actor is null, the event is a platform event, e.g. input
+	 *            ports read or output ports written.
+	 * @param time
+	 *            physical time at which the event occured.
+	 * @param scheduleEvent
+	 *            type of event.
+	 */
+	protected final void _displaySchedule(Actor node, Actor actor, double time,
+			int scheduleEvent) {
+		if (_scheduleListeners != null) {
+			Iterator listeners = _scheduleListeners.iterator();
+
+			while (listeners.hasNext()) {
+				((ScheduleListener) listeners.next()).event(node, actor, time,
+						scheduleEvent);
+			}
+		}
+	}
+
+	/**
+	 * creates a new thread for a platform. A platform is a composite at the top
+	 * level of the model.
+	 * 
+	 * @param actor
+	 *            composite actor that represents a platform
+	 * @param director
+	 */
+	protected ProcessThread _newProcessThread(Actor actor,
+			ProcessDirector director) throws IllegalActionException {
+		return new PtidesPlatformThread(actor, director);
+	}
+
+	/**
+	 * Deadlocks can occur due to read or write accesses to the workspace. In
+	 * case of a deadlock, wake up all threads. They will decide themselves if
+	 * they have anything to do at current physical time.
+	 */
+	protected synchronized boolean _resolveDeadlock()
+			throws IllegalActionException {
+		if (_debugging) {
+			_debug("resolveDeadlock");
+		}
 		notifyWaitingThreads();
-		//stop();
 		return true;
 	}
-    
-    @Override
-	protected boolean _transferOutputs(IOPort port) throws IllegalActionException {
-		Token token = null;
-		boolean result = false;
-        if (_debugging) {
-            _debug("Calling transferOutputs on port: " + port.getFullName());
-        }
 
-        if (!port.isOutput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "Attempted to transferOutputs on a port that "
-                            + "is not an opaque input port.");
-        }
-
-        for (int i = 0; i < port.getWidthInside(); i++) {
-            try {
-                if (port.hasTokenInside(i)) {
-                    token = port.getInside(i);
-
-                    if (_debugging) {
-                        _debug(getName(), "transferring output from "
-                                + port.getName());
-                    }
-
-                    Receiver[][] outReceivers = port.getRemoteReceivers();
-                    for (int k = 0; k < outReceivers.length; k++) {
-                        for (int l = 0; l < outReceivers[k].length; l++) {
-                            PtidesDDEReceiver outReceiver = (PtidesDDEReceiver) outReceivers[k][l];
-                            Thread thread = Thread.currentThread();
-
-                            if (thread instanceof PtidesPlatformThread) {
-                                Time time = ((PtidesPlatformThread) thread).getActor().getDirector().getModelTime();
-                                outReceiver.put(token, time);
-                            }
-                        }
-                    }
-                    result = true;
-                }
-            } catch (NoTokenException ex) {
-                // this shouldn't happen.
-                throw new InternalErrorException(this, ex, null);
-            }
-        }
-        return result;       
-	}
-
-	
-	
-	
-
-	
-	
-	
-	
-	private synchronized void _increasePhysicalTime() throws IllegalActionException {
+	/**
+	 * increase physical time to next time that any of the platforms is
+	 * interested in doing something
+	 * 
+	 * @throws IllegalActionException
+	 */
+	private synchronized void _increasePhysicalTime()
+			throws IllegalActionException {
 		if (_nextFirings.size() == 0)
 			return;
 		Time time = (Time) _nextFirings.first();
 		_nextFirings.remove(time);
 		if (time.compareTo(_completionTime) > 0) {
-			//notifyWaitingThreads();
-			System.out.println("STOP !!!!!!!!");
 			stopFire();
 			stop();
 			return;
 		}
 		_currentTime = time;
-		System.out.println("\nphysical time: " + time + " set by " + Thread.currentThread().getName());
+		if (_debugging)
+			_debug("physical time " + time + " set by "
+					+ Thread.currentThread().getName());
 		notifyWaitingThreads();
 	}
 
-    private void _initialize() throws IllegalActionException, NameDuplicationException {
+	/**
+	 * initialize parameters
+	 * 
+	 * @throws IllegalActionException
+	 * @throws NameDuplicationException
+	 *             could occur if parameter with same name already exists
+	 */
+	private void _initialize() throws IllegalActionException,
+			NameDuplicationException {
 		double value = PrioritizedTimedQueue.ETERNITY;
 		stopTime = new Parameter(this, "stopTime", new DoubleToken(value));
-        timeResolution.setVisibility(Settable.FULL);
-        
-        try {
+		timeResolution.setVisibility(Settable.FULL);
+
+		try {
 			clockSyncError = new Parameter(this, "clockSyncError");
 			clockSyncError.setExpression("0.1");
 			clockSyncError.setTypeEquals(BaseType.DOUBLE);
-			
+
 			networkDelay = new Parameter(this, "networkDelay");
 			networkDelay.setExpression("0.1");
 			networkDelay.setTypeEquals(BaseType.DOUBLE);
-			
-			usePtidesExecutionSemantics = new Parameter(this, "usePtidesExecutionSemantics");
+
+			usePtidesExecutionSemantics = new Parameter(this,
+					"usePtidesExecutionSemantics");
 			usePtidesExecutionSemantics.setExpression("true");
 			usePtidesExecutionSemantics.setTypeEquals(BaseType.BOOLEAN);
-			
+
 			calculateMinDelays = new Parameter(this, "calculateMinDelays");
 			calculateMinDelays.setExpression("true");
 			calculateMinDelays.setTypeEquals(BaseType.BOOLEAN);
-        } catch (KernelException e) {
-            throw new InternalErrorException("Cannot set parameter:\n"
-                    + e.getMessage());
-        } 
+		} catch (KernelException e) {
+			throw new InternalErrorException("Cannot set parameter:\n"
+					+ e.getMessage());
+		}
 	}
-	
 
-	
-
-	
-	
-	private HashSet<Thread> _waitingForPhysicalTime = new HashSet<Thread>();
-	private TreeSet<Time> _nextFirings;
-
-	private Collection<ScheduleListener> _scheduleListeners = new LinkedList<ScheduleListener>();
-
-	private double _clockSyncError;
-	private double _networkDelay;
-	private boolean _usePtidesExecutionSemantics;
-	
-	/** calcuate minimum delays or use specified minimum delays in the model */
+	/**
+	 * calcuate minimum delays or use specified minimum delays in the model
+	 */
 	private boolean _calculateMinDelays;
 
-	
-	
-   
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+	/**
+	 * global clock sychronization error
+	 */
+	private double _clockSyncError;
 
-    /** The completion time. Since the completionTime is a constant,
-     *  we do not convert it to a time object.
-     */
-    private Time _completionTime;
+	/**
+	 * The completion time. Since the completionTime is a constant, we do not
+	 * convert it to a time object.
+	 */
+	private Time _completionTime;
 
+	/**
+	 * list of times that platforms want to be refired
+	 */
+	private TreeSet<Time> _nextFirings;
+
+	/**
+	 * global network delay
+	 */
+	private double _networkDelay;
+
+	/**
+	 * registered schedule listeners, this is used for the schedule plotter
+	 */
+	private Collection<ScheduleListener> _scheduleListeners = new LinkedList<ScheduleListener>();
+
+	/**
+	 * if true, minimum delays according to ptides should be used
+	 */
+	private boolean _usePtidesExecutionSemantics;
+
+	/**
+	 * list of threads (=platforms) that have nothing to do at current time and
+	 * want to be refired in the future.
+	 */
+	private HashSet<Thread> _waitingForPhysicalTime = new HashSet<Thread>();
 
 }

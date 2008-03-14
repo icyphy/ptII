@@ -45,142 +45,168 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
-
 /**
- * generates TDL code 
+ * generates TDL code
  * 
  * @author Patricia Derler
  */
 public class TDLCodeGenerator extends Attribute {
-    /** Construct a factory with the default workspace and "" as name.
-     *  @exception IllegalActionException If the factory is not of an
-     *   acceptable attribute for the container.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
-    public TDLCodeGenerator() throws IllegalActionException,
-            NameDuplicationException {
-        super();
-        _init();
-    }
+	/**
+	 * Construct a factory with the default workspace and "" as name.
+	 * 
+	 * @exception IllegalActionException
+	 *                If the factory is not of an acceptable attribute for the
+	 *                container.
+	 * @exception NameDuplicationException
+	 *                If the name coincides with an attribute already in the
+	 *                container.
+	 */
+	public TDLCodeGenerator() throws IllegalActionException,
+			NameDuplicationException {
+		super();
+		_init();
+	}
 
-    /** Construct a factory with the specified container and name.
-     *  @param container The container.
-     *  @param name The name of the factory.
-     *  @exception IllegalActionException If the factory is not of an
-     *   acceptable attribute for the container.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
-    public TDLCodeGenerator(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        _init();
-    }
+	/**
+	 * Construct a factory with the specified container and name.
+	 * 
+	 * @param container
+	 *            The container.
+	 * @param name
+	 *            The name of the factory.
+	 * @exception IllegalActionException
+	 *                If the factory is not of an acceptable attribute for the
+	 *                container.
+	 * @exception NameDuplicationException
+	 *                If the name coincides with an attribute already in the
+	 *                container.
+	 */
+	public TDLCodeGenerator(NamedObj container, String name)
+			throws IllegalActionException, NameDuplicationException {
+		super(container, name);
+		_init();
+	}
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+	// /////////////////////////////////////////////////////////////////
+	// // public methods ////
 
-    /** Generate Giotto code for the given Giotto model.
-     *  @param model The given Giotto model.
-     *  @return The Giotto code.
-     *  @exception IllegalActionException If code can not be generated.
-     */
-    public String generateTDLCode(TypedCompositeActor model)
-            throws IllegalActionException {
-        return TDLCodeGeneratorUtilities.generateTDLCode(model);
-    }
+	/**
+	 * Generate Giotto code for the given Giotto model.
+	 * 
+	 * @param model
+	 *            The given Giotto model.
+	 * @return The Giotto code.
+	 * @exception IllegalActionException
+	 *                If code can not be generated.
+	 */
+	public String generateTDLCode(TypedCompositeActor model)
+			throws IllegalActionException {
+		return TDLCodeGeneratorUtilities.generateTDLCode(model);
+	}
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+	// /////////////////////////////////////////////////////////////////
+	// // protected methods ////
 
-    /** Method to instantiate the Editor Factory class called from the
-     *  constructor. The reason for having this is that it can be
-     *  overridden by subclasses
-     *  @exception IllegalActionException If the editor factory can not be
-     *  created.
-     *  @exception NameDuplicationException If there is already another editor
-     *  factory with the same name.
-     */
-    protected void _instantiateEditorFactoryClass()
-            throws IllegalActionException, NameDuplicationException {
-        new TDLEditorFactory(this, "_editorFactory");
-    }
+	/**
+	 * Method to instantiate the Editor Factory class called from the
+	 * constructor. The reason for having this is that it can be overridden by
+	 * subclasses
+	 * 
+	 * @exception IllegalActionException
+	 *                If the editor factory can not be created.
+	 * @exception NameDuplicationException
+	 *                If there is already another editor factory with the same
+	 *                name.
+	 */
+	protected void _instantiateEditorFactoryClass()
+			throws IllegalActionException, NameDuplicationException {
+		new TDLEditorFactory(this, "_editorFactory");
+	}
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
-                + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
-                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-                + "Double click to\ngenerate code.</text></svg>");
+	// /////////////////////////////////////////////////////////////////
+	// // private methods ////
+	private void _init() throws IllegalActionException,
+			NameDuplicationException {
+		_attachText("_iconDescription", "<svg>\n"
+				+ "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
+				+ "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
+				+ "style=\"font-size:12; font-family:SansSerif; fill:white\">"
+				+ "Double click to\ngenerate code.</text></svg>");
 
-        _instantiateEditorFactoryClass();
+		_instantiateEditorFactoryClass();
 
-        SingletonParameter hide = new SingletonParameter(this, "_hideName");
-        hide.setToken(BooleanToken.TRUE);
-        hide.setVisibility(Settable.EXPERT);
-    }
+		SingletonParameter hide = new SingletonParameter(this, "_hideName");
+		hide.setToken(BooleanToken.TRUE);
+		hide.setVisibility(Settable.EXPERT);
+	}
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
+	// /////////////////////////////////////////////////////////////////
+	// // inner classes ////
 
-    /** An attribute that can create an Giotto code editor for a Giotto model.
-     */
-    protected class TDLEditorFactory extends EditorFactory {
-        /** Constructs a Giotto EditorFactory object for a Giotto model.
-         *
-         *  @param container The container, which is a Giotto model.
-         *  @param name The name for this attribute.
-         *  @exception IllegalActionException If the factory is not of an
-         *  acceptable attribute for the container.
-         *  @exception NameDuplicationException If the name coincides with
-         *  an attribute already in the container.
-         */
-        public TDLEditorFactory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-        }
+	/**
+	 * An attribute that can create an Giotto code editor for a Giotto model.
+	 */
+	protected class TDLEditorFactory extends EditorFactory {
+		/**
+		 * Constructs a Giotto EditorFactory object for a Giotto model.
+		 * 
+		 * @param container
+		 *            The container, which is a Giotto model.
+		 * @param name
+		 *            The name for this attribute.
+		 * @exception IllegalActionException
+		 *                If the factory is not of an acceptable attribute for
+		 *                the container.
+		 * @exception NameDuplicationException
+		 *                If the name coincides with an attribute already in the
+		 *                container.
+		 */
+		public TDLEditorFactory(NamedObj container, String name)
+				throws IllegalActionException, NameDuplicationException {
+			super(container, name);
+		}
 
-        /** Create an editor for configuring the specified object with the
-         *  specified parent window.
-         *  @param object The object to configure.
-         *  @param parent The parent window, or null if there is none.
-         */
-        public void createEditor(NamedObj object, Frame parent) {
-            try {
-                Configuration configuration = ((TableauFrame) parent)
-                        .getConfiguration();
+		/**
+		 * Create an editor for configuring the specified object with the
+		 * specified parent window.
+		 * 
+		 * @param object
+		 *            The object to configure.
+		 * @param parent
+		 *            The parent window, or null if there is none.
+		 */
+		public void createEditor(NamedObj object, Frame parent) {
+			try {
+				Configuration configuration = ((TableauFrame) parent)
+						.getConfiguration();
 
-                // NamedObj container = (NamedObj)object.getContainer();
-                TypedCompositeActor model = (TypedCompositeActor) TDLCodeGenerator.this
-                        .getContainer();
+				// NamedObj container = (NamedObj)object.getContainer();
+				TypedCompositeActor model = (TypedCompositeActor) TDLCodeGenerator.this
+						.getContainer();
 
-                // Preinitialize and resolve types.
-                CompositeActor toplevel = (CompositeActor) model.toplevel();
-                Manager manager = toplevel.getManager();
+				// Preinitialize and resolve types.
+				CompositeActor toplevel = (CompositeActor) model.toplevel();
+				Manager manager = toplevel.getManager();
 
-                if (manager == null) {
-                    manager = new Manager(toplevel.workspace(), "manager");
-                    toplevel.setManager(manager);
-                }
+				if (manager == null) {
+					manager = new Manager(toplevel.workspace(), "manager");
+					toplevel.setManager(manager);
+				}
 
-                manager.preinitializeAndResolveTypes();
+				manager.preinitializeAndResolveTypes();
 
-                TextEffigy codeEffigy = TextEffigy.newTextEffigy(configuration
-                        .getDirectory(), generateTDLCode(model));
-                codeEffigy.setModified(true);
-                configuration.createPrimaryTableau(codeEffigy);
+				TextEffigy codeEffigy = TextEffigy.newTextEffigy(configuration
+						.getDirectory(), generateTDLCode(model));
+				codeEffigy.setModified(true);
+				configuration.createPrimaryTableau(codeEffigy);
 
-                // end the model execution.
-                manager.stop();
-                manager.wrapup();
-            } catch (Exception ex) {
-                throw new InternalErrorException(object, ex,
-                        "Cannot generate code. Perhaps outside Vergil?");
-            }
-        }
-    }
+				// end the model execution.
+				manager.stop();
+				manager.wrapup();
+			} catch (Exception ex) {
+				throw new InternalErrorException(object, ex,
+						"Cannot generate code. Perhaps outside Vergil?");
+			}
+		}
+	}
 }

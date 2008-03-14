@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="incdec_final" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+<entity name="IncrementDecrement" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 341, 1003, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 341, 1003, 505}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[788, 400]">
     </property>
@@ -16,6 +16,12 @@
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model consists of two TDL modules, the incDecModule and the sumModule.&#10;The incDecModule consists of two tasks, an increment task and a decrement &#10;task. There are two modes in the incDecModule. In the regular mode, both, inc&#10;and dec run with the same speed. In the fast mode, the dec task runs double&#10;as fast which is achieved by setting the frequency of the dec task inside&#10;this mode to two thus decreasing its LET.&#10;The sum module produces the sum of the signals from the inc and the dec task.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 315.0]">
         </property>
     </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">

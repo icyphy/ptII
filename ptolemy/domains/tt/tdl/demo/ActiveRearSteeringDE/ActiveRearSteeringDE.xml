@@ -1,7 +1,9 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ars" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ActiveRearSteeringDE" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    </property>
     <property name="Tdl Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -12,13 +14,21 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={198, 38, 1180, 843}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={198, 38, 1180, 832}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[965, 727]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{482.5, 363.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The model consists of the two TDL modules RearActuatorController and&#10;VehicleDynamics and a subsystem Vehicle that represents the ‘plant’, &#10;that is, the relevant aspects of the vehicle that needs to be controlled. &#10;The TDL module RearActuatorController controls the DC motor of the rear &#10;axis. The TDL module VehicleDynamics computes the desired value of the &#10;rear steering angle, based on the following sensor data: the steering &#10;angle of the front wheels, the car speed (both of which are set by the &#10;human driver), and the yaw angle of the car.&#10;&#10;The vehicle is modeled as a DE actor but could also be modeled as a CT actor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 515.0}">
+        </property>
     </property>
     <entity name="signalGenerator_frontgAngle" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 150.0]">
@@ -985,7 +995,7 @@
             </property>
         </entity>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="period" class="ptolemy.data.expr.Parameter" value="0.002">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.002">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.001}">
             </property>
@@ -1672,11 +1682,11 @@
         <link relation1="relation15" relation2="relation26"/>
     </entity>
     <entity name="sigGen" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={77, 171, 558, 377}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={204, 423, 558, 371}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[550, 322]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 560.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 195.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
@@ -1687,17 +1697,17 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="25.0"/>
+<xRange min="0.0" max="10.574"/>
 <yRange min="0.0" max="60.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="speedProf" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 554, 508, 368}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 0, 508, 362}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 313]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 555.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 300.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
@@ -1708,8 +1718,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="25.0"/>
-<yRange min="1.4" max="13.4"/>
+<xRange min="0.0" max="10.574"/>
+<yRange min="1.4" max="11.666400000000282"/>
 </plot>?>
         </configure>
     </entity>
@@ -1769,7 +1779,7 @@
             </property>
         </port>
         <entity name="DCServo" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 295.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 300.0]">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={199, 30, 1129, 798}, maximized=false}">
             </property>
@@ -2226,7 +2236,7 @@
             </property>
         </entity>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="period" class="ptolemy.data.expr.Parameter" value="0.002">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.002">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.001}">
             </property>
@@ -2234,52 +2244,6 @@
             </property>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 390.0]">
-            </property>
-        </entity>
-        <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
-            <property name="delay" class="ptolemy.data.expr.Parameter" value="0.001">
-            </property>
-            <property name="TimedDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{0, 0}">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
-                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
-                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
-                    </property>
-                </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={137, 109, 815, 518}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
-                </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
-                </property>
-                <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                    <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
-                    </property>
-                    <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-                    </property>
-                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="delay of">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-23.0, -16.0]">
-                    </property>
-                </property>
-                <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="delay">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, -2.0]">
-                    </property>
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 295}">
             </property>
         </entity>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -2322,12 +2286,8 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
         <link port="delta_f" relation="relation9"/>
-        <link port="U" relation="relation6"/>
+        <link port="U" relation="relation"/>
         <link port="yaw_rate" relation="relation7"/>
         <link port="rear angle" relation="relation4"/>
         <link port="angle_rate" relation="relation3"/>
@@ -2343,8 +2303,6 @@
         <link port="Const.output" relation="relation5"/>
         <link port="Const.trigger" relation="relation8"/>
         <link port="Clock.output" relation="relation8"/>
-        <link port="TimedDelay.input" relation="relation6"/>
-        <link port="TimedDelay.output" relation="relation"/>
     </entity>
     <entity name="VehicleDynamics" class="ptolemy.domains.tt.tdl.kernel.TDLModule">
         <property name="_tdltableauFactory" class="ptolemy.vergil.tdl.TdlTableauFactory">
@@ -5260,11 +5218,11 @@
         <link port="state.delta_r_sp" relation="delta_r_spRelation"/>
     </entity>
     <entity name="out" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={551, 772, 502, 333}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={314, 267, 502, 327}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[494, 278]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 555.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 470.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
@@ -5275,8 +5233,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0010" max="25.0"/>
-<yRange min="-0.7999999047667333" max="8.356183420664204"/>
+<xRange min="0.0" max="10.574"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -5291,11 +5249,11 @@
         </property>
     </entity>
     <entity name="motorcurrent" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1111, 751, 492, 332}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={628, 562, 492, 326}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 277]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 565.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 460.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
@@ -5306,17 +5264,17 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0010" max="25.0"/>
-<yRange min="-1.351102964011461E-4" max="1.3500541861222024E-4"/>
+<xRange min="0.0" max="10.574"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="angle_rate" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1123, 354, 492, 373}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 354, 492, 367}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 318]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[800.0, 560.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 465.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
@@ -5327,17 +5285,17 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0010" max="25.0"/>
-<yRange min="-0.0012873967455428988" max="0.0012862373453600114"/>
+<xRange min="0.0" max="10.574"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="u" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={564, 248, 590, 341}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={564, 248, 590, 335}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[582, 286]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 570.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 295.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
@@ -5348,17 +5306,17 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="25.0"/>
-<yRange min="-0.0015563495671654937" max="0.001555176363296884"/>
+<xRange min="0.0" max="10.574"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="yawrate" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1128, 39, 468, 308}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={911, 571, 468, 302}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[460, 253]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 560.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 475.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
@@ -5369,8 +5327,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0010" max="25.0"/>
-<yRange min="-5.424573892329351" max="17.12785634925554"/>
+<xRange min="0.0" max="10.574"/>
+<yRange min="-4.0026021574794534E-7" max="16.59676059817462"/>
 </plot>?>
         </configure>
     </entity>

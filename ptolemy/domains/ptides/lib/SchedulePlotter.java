@@ -30,6 +30,21 @@ import ptolemy.plot.Plot;
 //// SchedulePlotter
 
 /**
+ * This Plotter shows the exeuction of actors in a model. This Plotter is used in 
+ * the Ptides domain to show the activity of a platform and of actors inside a 
+ * platform. The following events can be displayed:
+ * 
+ *              o---------------o
+ *   start execution       end execution
+ *   
+ *     o
+ *    /       transfer intput port
+ *   o
+ * 
+ *   o
+ *    \       transfer output port
+ *     o
+ * 
  * @author Patricia Derler
  */
 public class SchedulePlotter extends Attribute implements ScheduleListener {
