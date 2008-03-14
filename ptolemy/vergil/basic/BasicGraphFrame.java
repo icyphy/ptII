@@ -43,6 +43,11 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
@@ -153,14 +158,15 @@ import diva.util.java2d.ShapeUtilities;
  the hierarchy of a ptolemy model as a diva graph.  Cut, copy and
  paste operations are supported using MoML.
 
- @author  Steve Neuendorffer, Edward A. Lee, Contributor: Chad Berkeley (Kepler)
+ @author  Steve Neuendorffer, Edward A. Lee, Contributors: Chad Berkeley (Kepler), Ian Brown (HSBC)
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (johnr)
  */
 public abstract class BasicGraphFrame extends PtolemyFrame implements
-        Printable, ClipboardOwner, ChangeListener {
+        Printable, ClipboardOwner, ChangeListener,
+        MouseWheelListener, MouseListener, MouseMotionListener {
     /** Construct a frame associated with the specified Ptolemy II model
      *  or object. After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -291,6 +297,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // size and location.
         }
 
+        _rightComponent.addMouseWheelListener(this);
+        _rightComponent.addMouseMotionListener(this);
+        _rightComponent.addMouseListener(this);
+        
         // Create the panner.
         _graphPanner = new JCanvasPanner(getJGraph());
         _graphPanner.setPreferredSize(new Dimension(200, 150));
@@ -1302,6 +1312,109 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
+    /**
+     * Called when the mouse is clicked.
+     * This base class does nothing when the mouse is clicked.
+     * However, events _are_ handled by the components within this component.  
+     * @param event The mouse event.
+     */
+    public void mouseClicked(MouseEvent event) {
+        // Implementation of the MouseMotionListener interface.
+    }
+
+    /** Transform the graph by the amount the mouse is dragged
+     *  while the middle mouse button is held down.
+     * @param event The drag event.
+     */
+    public void mouseDragged(MouseEvent event){
+        // Implementation of the MouseMotionListener interface. 
+        // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=73
+
+        if (event.isAltDown()){
+            // Only interested in middle button. (defined as the alt modifier)
+            int deltaX = event.getX() - _previousMouseX;
+            int deltaY = event.getY() - _previousMouseY;
+            
+            AffineTransform newTransform = getJGraph().getCanvasPane()
+                    .getTransformContext().getTransform();
+            newTransform.translate(deltaX, deltaY);
+            getJGraph().getCanvasPane().setTransform(newTransform);
+        
+            _previousMouseX = event.getX();
+            _previousMouseY = event.getY();
+            event.consume();
+        }
+    }
+
+    /**
+     * Called when the mouse enters this component.
+     * This base class does nothing when the enters this component.
+     * However, events _are_ handled by the components within this component.  
+     * @param event The mouse event.
+     */
+    public void mouseEntered(MouseEvent event) {
+        // Implementation of the MouseMotionListener interface.
+    }
+
+   /**
+     * Called when the mouse leaves this component.
+     * This base class does nothing when the exits this component.
+     * However, events _are_ handled by the components within this component.  
+     * @param event The mouse event.
+     */
+    public void mouseExited(MouseEvent e) {
+        // Implementation of the MouseMotionListener interface.
+    }
+    
+    /** Called when the mouse is moved. 
+     * This base class does nothing when the mouse is moved.  
+     * @param event Contains details of the movement event.
+     * However, events _are_ handled by the components within this component.  
+     */
+    public void mouseMoved(MouseEvent event){
+        // Implementation of the MouseMotionListener interface.
+    }    
+    
+    /** Store the location of the middle mouse event.
+     * @param event The mouse event.
+     */
+    public void mousePressed(MouseEvent event) {
+        if (event.isAltDown()){
+            // Only interested in middle button. (defined as the alt modifier)
+            _previousMouseX = event.getX();
+            _previousMouseY = event.getY();
+            event.consume();
+        }
+    }
+      
+   /**
+     * Called when the mouse is released.
+     * This base class does nothing when the mouse is moved.  
+     * However, events _are_ handled by the components within this component.  
+     * @param event The mouse event.
+     */
+    public void mouseReleased(MouseEvent event) {
+        // Implementation of the MouseMotionListener interface.
+    }
+    
+    /** Scroll in when the mouse wheel is moved.
+     * @param event The mouse wheel event.
+     */
+    public void mouseWheelMoved(MouseWheelEvent event) {
+        // Scrolling the wheel away from you zooms in. This is arbitary and
+        // should be configurable by the user.
+        //
+        // TODO: It would be nice to centre the zoom on where the
+        // mouse is. That would mirror what apps like google earth do.
+
+        int notches = event.getWheelRotation();
+        double zoomFactor = 1.25;
+        if (notches > 0){
+            zoomFactor = 1.0 / zoomFactor;
+        }
+        zoom(zoomFactor);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -1879,6 +1992,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** List of references to graph frames that are open. */
     private static LinkedList _openGraphFrames = new LinkedList();
+
+    /** X coordinate of where we last processed a press or drag of the
+     *  middle mouse button.
+     */
+    private int _previousMouseX = 0;
+    
+    /** Y coordinate of where we last processed a press or drag of the
+     *  middle mouse button.
+     */
+    private int _previousMouseY = 0;    
 
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();
