@@ -18,10 +18,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 65}">
         </property>
     </property>
-    <property name="SchedulePlotter" class="ptolemy.domains.ptides.lib.SchedulePlotter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{390, 80}">
-        </property>
-    </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 215.0]">
         </property>
