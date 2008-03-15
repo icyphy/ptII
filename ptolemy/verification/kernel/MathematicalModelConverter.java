@@ -41,15 +41,12 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.domains.fsm.kernel.fmv.FmvAutomaton;
 import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.verification.gui.MathematicalModelConverterGUIFactory;
@@ -59,13 +56,12 @@ import ptolemy.verification.gui.MathematicalModelConverterGUIFactory;
 
 /**
  * 
- * @author Chihhong Patrick Cheng, Contributors: Edward A. Lee , Christopher
- *         Brooks
+ * @author Chihhong Patrick Cheng, Contributors: Edward A. Lee , Christopher Brooks
  * @version $Id: MathematicalModelConverter.java,v 1.4 2008/03/06 09:16:22
  *          patrickj Exp $
- * @since Ptolemy II 6.0
+ * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (patrickj)
- * @Pt.AcceptedRating Red ()
+ * @Pt.AcceptedRating Red (patrickj)
  */
 public class MathematicalModelConverter extends Attribute {
     /**
@@ -104,11 +100,12 @@ public class MathematicalModelConverter extends Attribute {
     // // public methods ////
 
     /**
-     * Generate code. This is the main entry point.
+     * Generate the model description for the system. This is the main entry 
+     * point.
      * 
      * @param code The code buffer into which to generate the code.
-     * @return The return value of the last subprocess that was executed. or -1
-     *         if no commands were executed.
+     * @return Textual format of the converted model based on the specification 
+     *         given. 
      * @exception KernelException
      *                    If a type conflict occurs or the model is running.
      */
@@ -142,8 +139,6 @@ public class MathematicalModelConverter extends Attribute {
 
                         if (outputChoice.equalsIgnoreCase("Text Only")) {
                             JFileChooser fileSaveDialog = new JFileChooser();
-                            // SMVFileFilter filter = new SMVFileFilter();
-                            // fileSaveDialog.setFileFilter(filter);
                             fileSaveDialog
                                     .setDialogType(JFileChooser.SAVE_DIALOG);
                             fileSaveDialog
@@ -151,12 +146,6 @@ public class MathematicalModelConverter extends Attribute {
                             if (_directory != null) {
                                 fileSaveDialog.setCurrentDirectory(_directory);
                             } else {
-                                // The default on Windows is to open at
-                                // user.home, which is typically an absurd
-                                // directory inside the O/S installation.
-                                // So we use the current directory instead.
-                                // FIXME: Could this throw a security
-                                // exception in an applet?
                                 String cwd = StringUtilities
                                         .getProperty("user.dir");
 
@@ -168,7 +157,6 @@ public class MathematicalModelConverter extends Attribute {
 
                             int returnValue = fileSaveDialog
                                     .showSaveDialog(null);
-                            // .showOpenDialog(ActorGraphFrame.this);
 
                             if (returnValue == JFileChooser.APPROVE_OPTION) {
                                 _directory = fileSaveDialog
@@ -214,16 +202,13 @@ public class MathematicalModelConverter extends Attribute {
                             }
 
                         } else {
-                            // Also invoke NuSMV. Create a temporal file and
-                            // later delete it.
-                            // We first create a new folder which contains
-                            // nothing.
-                            // Then generate the System.smv file, perform model
-                            // checking.
+                            // Invoke NuSMV. Create a temporal file and
+                            // later delete it. We first create a new folder 
+                            // which contains nothing. Then generate the System
+                            // in format .smv, and perform model checking.
                             // If the system fails, all information would be
-                            // stored in the folder.
-                            // We can delete everything in the folder then
-                            // delete the folder.
+                            // stored in the folder. We can delete everything 
+                            // in the folder then delete the folder.
                             // The temporal file uses a random number generator
                             // to generate its name.
 
@@ -305,8 +290,6 @@ public class MathematicalModelConverter extends Attribute {
 
                         if (outputChoice.equalsIgnoreCase("Text Only")) {
                             JFileChooser fileSaveDialog = new JFileChooser();
-                            // SMVFileFilter filter = new SMVFileFilter();
-                            // fileSaveDialog.setFileFilter(filter);
                             fileSaveDialog
                                     .setDialogType(JFileChooser.SAVE_DIALOG);
                             fileSaveDialog
@@ -314,12 +297,7 @@ public class MathematicalModelConverter extends Attribute {
                             if (_directory != null) {
                                 fileSaveDialog.setCurrentDirectory(_directory);
                             } else {
-                                // The default on Windows is to open at
-                                // user.home, which is typically an absurd
-                                // directory inside the O/S installation.
-                                // So we use the current directory instead.
-                                // FIXME: Could this throw a security
-                                // exception in an applet?
+
                                 String cwd = StringUtilities
                                         .getProperty("user.dir");
 
@@ -376,7 +354,7 @@ public class MathematicalModelConverter extends Attribute {
                             }
                         } else {
                             MessageHandler
-                                    .error("This is not executable by NuSMV.\n");
+                                    .error("The functionality for invoking RED is not implemented.\n");
                         }
                     }
 
@@ -387,60 +365,28 @@ public class MathematicalModelConverter extends Attribute {
 
             } else if (_model instanceof FSMActor) {
 
-                Query query = new Query();
-                query.addLine("formula", "Temporal formula", "");
-                String[] possibleFormulaChoice = new String[2];
-                possibleFormulaChoice[0] = "CTL";
-                possibleFormulaChoice[1] = "LTL";
-                query.addRadioButtons("choice", "Formula Type",
-                        possibleFormulaChoice, "CTL");
-                query.addLine("span", "Size of span", "0");
-                String[] possibleOutputChoice = new String[3];
-                possibleOutputChoice[0] = "Output to File";
-                possibleOutputChoice[1] = "Open Text Editor";
-                possibleOutputChoice[2] = "Invoke NuSMV";
-                query.addRadioButtons("outputChoice", "Output Choice",
-                        possibleOutputChoice, "Output to File");
+                // Retrieve the FSMActor and perform strong type conversion 
+                // into FmvAutomaton.
+                FmvAutomaton model = (FmvAutomaton) _model;
 
-                ComponentDialog dialog = new ComponentDialog(null,
-                        "Input Formula", query);
+                StringBuffer fmvFormat = new StringBuffer("");
+                FileWriter smvFileWriter = null;
 
-                String pattern = "";
-                String finalChoice = "";
-                String span = "";
-                if (dialog.buttonPressed().equals("OK")) {
-                    pattern = query.getStringValue("formula");
-                    finalChoice = query.getStringValue("choice");
-                    span = query.getStringValue("span");
-                    // Retrieve the Fmv Automaton
-                    FmvAutomaton model = (FmvAutomaton) _model;
-                    // StringBuffer = model
+                if (modelType
+                        .equalsIgnoreCase("Kripke Structures (Acceptable by NuSMV under SR)")) {
 
-                    StringBuffer fmvFormat = new StringBuffer("");
-                    FileWriter smvFileWriter = null;
-
-                    if (query.getStringValue("outputChoice").equalsIgnoreCase(
-                            "Output to File")) {
-                        // try {
-                        fmvFormat.append(model.convertToSMVFormat(pattern,
-                                finalChoice, span));
+                    if (outputChoice.equalsIgnoreCase("Text Only")) {
+                        fmvFormat.append(model.convertToSMVFormat(
+                                inputTemporalFormula, formulaType,
+                                variableSpanSize));
                         JFileChooser fileSaveDialog = new JFileChooser();
-                        // SMVFileFilter filter = new SMVFileFilter();
-                        // fileSaveDialog.setFileFilter(filter);
+
                         fileSaveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
                         fileSaveDialog
                                 .setDialogTitle("Convert Ptolemy model into .smv file");
                         if (_directory != null) {
                             fileSaveDialog.setCurrentDirectory(_directory);
                         } else {
-                            // The default on Windows is to open at user.home,
-                            // which is
-                            // typically an absurd directory inside the O/S
-                            // installation.
-                            // So we use the current directory instead.
-                            // FIXME: Could this throw a security exception in
-                            // an
-                            // applet?
                             String cwd = StringUtilities
                                     .getProperty("user.dir");
 
@@ -493,41 +439,18 @@ public class MathematicalModelConverter extends Attribute {
                                 smvFileWriter.close();
                         }
 
-                    } else if (query.getStringValue("outputChoice")
-                            .equalsIgnoreCase("Open Text Editor")) {
-                        // try {
-                        fmvFormat.append(model.convertToSMVFormat(pattern,
-                                finalChoice, span));
-
-                        Query newQuery = new Query();
-                        newQuery.setTextWidth(90);
-                        newQuery.addTextArea("formula", _model.getName(),
-                                fmvFormat.toString());
-                        ComponentDialog newDialog = new ComponentDialog(null,
-                                "Converted SMV Format", newQuery);
-
-                        // } catch (Exception ex) {
-                        // MessageHandler
-                        // .error("Failed to perform the conversion process:\n"
-                        // + ex.getMessage());
-                        // }
                     } else {
-                        // Also invoke NuSMV
-
-                        fmvFormat.append(model.convertToSMVFormat(pattern,
-                                finalChoice, span));
-
+                        // Invoke NuSMV
+                        fmvFormat.append(model.convertToSMVFormat(
+                                inputTemporalFormula, formulaType,
+                                variableSpanSize));
                         // Also invoke NuSMV. Create a temporal file and later
-                        // delete it.
-                        // We first create a new folder which contains nothing.
-                        // Then generate the System.smv file, perform model
-                        // checking.
-                        // If the system fails, all information would be stored
-                        // in the folder.
-                        // We can delete everything in the folder then delete
-                        // the folder.
-                        // The temporal file uses a random number generator to
-                        // generate its name.
+                        // delete it. We first create a new folder which contains 
+                        // nothing. Then generate the System.smv file, perform model
+                        // checking. If the system fails, all information would be 
+                        // stored in the folder. We can delete everything in the 
+                        // folder then delete the folder. The temporal file uses 
+                        // a random number generator to generate its name.
                         Random rd = new Random();
                         String folderName = "SystemGeneratedTempFolder"
                                 + Integer.toString(rd.nextInt(10000)) + "/";
@@ -555,7 +478,6 @@ public class MathematicalModelConverter extends Attribute {
                         }
                         // Now establish the file.
                         File smvFile = new File(folderName + "System.smv");
-                        // FileWriter smvFileWriter = null;
                         String fileAbsolutePath = smvFile.getAbsolutePath();
 
                         try {
@@ -568,7 +490,7 @@ public class MathematicalModelConverter extends Attribute {
                             }
                         }
 
-                        StringBuffer str = new StringBuffer("");
+                        //StringBuffer str = new StringBuffer("");
                         BufferedReader reader = null;
                         try {
                             Runtime rt = Runtime.getRuntime();
@@ -579,7 +501,8 @@ public class MathematicalModelConverter extends Attribute {
                             reader = new BufferedReader(inputStream);
                             String line = null;
                             while ((line = reader.readLine()) != null) {
-                                str.append(line + "\n");
+                                //str.append(line + "\n");
+                                returnStringBuffer.append(line + "\n");
                             }
 
                         } catch (IOException ex) {
@@ -590,39 +513,64 @@ public class MathematicalModelConverter extends Attribute {
                         } finally {
                             reader.close();
                         }
-                        returnStringBuffer.append(str);
+                        //returnStringBuffer.append(str);
                         _deleteFolder(smvFolder);
 
                         return returnStringBuffer;
                     }
-
                 }
+
             }
 
         }
 
         return returnStringBuffer;
-        // return returnValue;
     }
 
-    public String generateGraphicalSpec(String formulaType) throws IllegalActionException{
-        
-        if(_model instanceof CompositeActor){
-            return SMVUtility.generateGraphicalSpecification((CompositeActor)_model, formulaType);
+    /** 
+     * This is the main entry point to generate the graphical spec of the system.
+     * It would invoke SMVUtility.generateGraphicalSpecification and return
+     * the spec.
+     * 
+     * @param formulaType The type of the graphical spec. It may be either "Risk"
+     *                    or "Reachability".
+     * @return The textual format of the graphical spec.
+     * @throws IllegalActionException
+     */
+    public String generateGraphicalSpec(String formulaType)
+            throws IllegalActionException {
+
+        if (_model instanceof CompositeActor) {
+            return SMVUtility.generateGraphicalSpecification(
+                    (CompositeActor) _model, formulaType);
         } else {
-            throw new IllegalActionException("SMVUtility.generateGraphicalSpec error:\nModel not instance of CompositeActor");
+            throw new IllegalActionException(
+                    "SMVUtility.generateGraphicalSpec error:\nModel not instance of CompositeActor");
         }
     }
-    
-    
+
+    public File getCodeFile() {
+        return _codeFile;
+    }
+
     // /////////////////////////////////////////////////////////////////
     // // protected variables ////
+
+    /** The name of the file that was written. If no file was written, then the
+     * value is null.
+     */
+    protected File _codeFile = null;
+
+    protected File _directory;
 
     /** The model we for which we are generating code. */
     protected CompositeEntity _model;
 
-    protected File _directory;
+    // /////////////////////////////////////////////////////////////////
+    // // private methods ////
 
+    /** This is used to delete recursively the folder and files within.
+     */
     private void _deleteFolder(File folder) throws Exception {
 
         if (folder.list() == null || folder.list().length <= 0) {
@@ -655,20 +603,5 @@ public class MathematicalModelConverter extends Attribute {
         }
 
     }
-
-    public String getCodeFileName() {
-        return _codeFileName;
-    }
-
-    public File getCodeFile() {
-        return _codeFile;
-    }
-
-    /**
-     * The name of the file that was written. If no file was written, then the
-     * value is null.
-     */
-    protected String _codeFileName = null;
-    protected File _codeFile = null;
 
 }

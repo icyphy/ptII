@@ -126,9 +126,10 @@ public class SMVUtility {
                 for (int i = 0; i < subSystemDescription.size(); i++) {
                     returnSMVFormat.append(subSystemDescription.get(i));
                 }
-            } else if (innerEntity instanceof CompositeActor) {
-                // FIXME: Need to add functionalities for dealing with CompositeActors.
-            }
+            } 
+            //else if (innerEntity instanceof CompositeActor) {
+            // FIXME: Need to add functionalities for dealing with CompositeActors.
+            //}
         }
 
         StringBuffer mainModuleDescription = new StringBuffer("");
@@ -565,15 +566,17 @@ public class SMVUtility {
                     }
                     subSystemNameList.add(component);
                 }
-                if (signalOfferedSet != null) {
-                    if (_globalSignalNestedRetrivalInfo.get(controller
-                            .getName()) != null) {
+
+                if (_globalSignalNestedRetrivalInfo.get(controller.getName()) != null) {
+                    //if (signalOfferedSet != null) {
                         _globalSignalNestedRetrivalInfo.get(
                                 controller.getName()).addAll(signalOfferedSet);
-                    } else {
+                    //}
+                } else {
+                    //if (signalOfferedSet != null) {
                         _globalSignalNestedRetrivalInfo.put(controller
                                 .getName(), signalOfferedSet);
-                    }
+                    //}
                 }
 
                 HashSet<String> guardSignalVariableSet = null;
@@ -594,10 +597,10 @@ public class SMVUtility {
 
                 subSystemNameList.add(controller.getName());
 
-            } else if (innerEntity instanceof CompositeActor) {
-                // FIXME: No implementation here; this corresponds to
-                //        the first fix-me statement.
-            }
+            } //else if (innerEntity instanceof CompositeActor) {
+            // FIXME: No implementation here; this corresponds to
+            //        the first fix-me statement.
+            //}
 
         }
         return subSystemNameList;
@@ -1769,6 +1772,10 @@ public class SMVUtility {
                                             } catch (Exception exInner) {
                                                 // Return the format is not
                                                 // supported by the system.
+                                                throw new IllegalActionException(
+                                                        "Format not supported by the analysis:"
+                                                                + exInner
+                                                                        .getMessage());
                                             }
 
                                         }
@@ -2534,41 +2541,45 @@ public class SMVUtility {
                                         }
                                     }
                                 } else {
-                                    if (_variableInfo.get(lValue)._maxValue != null) {
-                                        // For ordinary cases, we only need to check
-                                        // if the new value would exceeds the upper
-                                        // bound. If so, then use DOMAIN_GT to
-                                        // replace the value.
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo != null) {
+                                        if (variableInfo._maxValue != null) {
+                                            // For ordinary cases, we only need to check
+                                            // if the new value would exceeds the upper
+                                            // bound. If so, then use DOMAIN_GT to
+                                            // replace the value.
 
-                                        String newPremise = currentPremise
-                                                + " & "
-                                                + keySetArray[index]
-                                                + "="
-                                                + String.valueOf(vList.get(i)
-                                                        .intValue());
+                                            String newPremise = currentPremise
+                                                    + " & "
+                                                    + keySetArray[index]
+                                                    + "="
+                                                    + String.valueOf(vList.get(
+                                                            i).intValue());
 
-                                        String updatedVariableValue = String
-                                                .valueOf(vList.get(i)
-                                                        .intValue()
-                                                        + (Integer
-                                                                .parseInt(newVariableValue)));
+                                            String updatedVariableValue = String
+                                                    .valueOf(vList.get(i)
+                                                            .intValue()
+                                                            + (Integer
+                                                                    .parseInt(newVariableValue)));
 
-                                        if (vList.get(i).intValue()
-                                                + (Integer
-                                                        .parseInt(newVariableValue)) > Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue)) {
-                                            // Use DOMAIN_GT to replace the value.
-                                            updatedVariableValue = "gt";
+                                            if (vList.get(i).intValue()
+                                                    + (Integer
+                                                            .parseInt(newVariableValue)) > Integer
+                                                    .parseInt(variableInfo._maxValue)) {
+                                                // Use DOMAIN_GT to replace the value.
+                                                updatedVariableValue = "gt";
+                                            }
+
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue,
+                                                    updatedVariableValue,
+                                                    operatingSign);
                                         }
-
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue,
-                                                updatedVariableValue,
-                                                operatingSign);
                                     }
+
                                 }
                             } else {
                                 // Offset negative case (negative_const)
@@ -2648,41 +2659,45 @@ public class SMVUtility {
                                         }
                                     }
                                 } else {
-                                    if (_variableInfo.get(lValue)._minValue != null) {
-                                        // For ordinary cases, we only need to check
-                                        // if the new value would exceeds the lower
-                                        // bound. If so, then use DOMAIN_LS to
-                                        // replace the value.
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo != null) {
+                                        if (variableInfo._minValue != null) {
+                                            // For ordinary cases, we only need to check
+                                            // if the new value would exceeds the lower
+                                            // bound. If so, then use DOMAIN_LS to
+                                            // replace the value.
 
-                                        String newPremise = currentPremise
-                                                + " & "
-                                                + keySetArray[index]
-                                                + "="
-                                                + String.valueOf(vList.get(i)
-                                                        .intValue());
+                                            String newPremise = currentPremise
+                                                    + " & "
+                                                    + keySetArray[index]
+                                                    + "="
+                                                    + String.valueOf(vList.get(
+                                                            i).intValue());
 
-                                        String updatedVariableValue = String
-                                                .valueOf(vList.get(i)
-                                                        .intValue()
-                                                        + (Integer
-                                                                .parseInt(newVariableValue)));
+                                            String updatedVariableValue = String
+                                                    .valueOf(vList.get(i)
+                                                            .intValue()
+                                                            + (Integer
+                                                                    .parseInt(newVariableValue)));
 
-                                        if (vList.get(i).intValue()
-                                                + (Integer
-                                                        .parseInt(newVariableValue)) < Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._minValue)) {
-                                            // Use DOMAIN_LS to replace the value.
-                                            updatedVariableValue = "ls";
+                                            if (vList.get(i).intValue()
+                                                    + (Integer
+                                                            .parseInt(newVariableValue)) < Integer
+                                                    .parseInt(variableInfo._minValue)) {
+                                                // Use DOMAIN_LS to replace the value.
+                                                updatedVariableValue = "ls";
+                                            }
+
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue,
+                                                    updatedVariableValue,
+                                                    operatingSign);
                                         }
-
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue,
-                                                updatedVariableValue,
-                                                operatingSign);
                                     }
+
                                 }
                             }
 
@@ -2722,93 +2737,101 @@ public class SMVUtility {
                                             "ls", operatingSign);
 
                                 } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                    if (_variableInfo.get(lValue)._minValue != null
-                                            && _variableInfo.get(lValue)._maxValue != null) {
-                                        // If original variable value is GT, we
-                                        // place conservative analysis and assert
-                                        // that it might lead to all its possible
-                                        // values.
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo != null) {
+                                        if ((variableInfo._minValue != null)
+                                                && (variableInfo._maxValue != null)) {
+                                            // If original variable value is GT, we
+                                            // place conservative analysis and assert
+                                            // that it might lead to all its possible
+                                            // values.
 
-                                        String newPremise = currentPremise
-                                                + " & " + keySetArray[index]
-                                                + "=" + "gt";
+                                            String newPremise = currentPremise
+                                                    + " & "
+                                                    + keySetArray[index] + "="
+                                                    + "gt";
 
-                                        // First, it may keep to be GT
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue, "gt",
-                                                operatingSign);
+                                            // First, it may keep to be GT
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue, "gt",
+                                                    operatingSign);
 
-                                        int maximumInBoundary = Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue);
-                                        for (int j = 0; j < (Integer
-                                                .parseInt(newVariableValue)); j++) {
+                                            int maximumInBoundary = Integer
+                                                    .parseInt(variableInfo._maxValue);
+                                            for (int j = 0; j < (Integer
+                                                    .parseInt(newVariableValue)); j++) {
 
-                                            // We need to make sure that it would
-                                            // never exceeds upper bound. If it
-                                            // is below lower bound, we must stop it
-                                            // and use LS to replace the value.
+                                                // We need to make sure that it would
+                                                // never exceeds upper bound. If it
+                                                // is below lower bound, we must stop it
+                                                // and use LS to replace the value.
 
-                                            if ((maximumInBoundary - j) < Integer
-                                                    .parseInt(((VariableInfo) _variableInfo
-                                                            .get(lValue))._minValue)) {
+                                                if ((maximumInBoundary - j) < Integer
+                                                        .parseInt(variableInfo._minValue)) {
+                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue, "ls",
+                                                            operatingSign);
+                                                    break;
+                                                }
+
+                                                String updatedVariableValue = String
+                                                        .valueOf(maximumInBoundary
+                                                                - j);
                                                 _recursiveStepGeneratePremiseAndResultEachTransition(
                                                         newPremise, index + 1,
                                                         maxIndex, keySetArray,
                                                         valueDomain, lValue,
-                                                        "ls", operatingSign);
-                                                break;
+                                                        updatedVariableValue,
+                                                        operatingSign);
                                             }
-
-                                            String updatedVariableValue = String
-                                                    .valueOf(maximumInBoundary
-                                                            - j);
-                                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                    newPremise, index + 1,
-                                                    maxIndex, keySetArray,
-                                                    valueDomain, lValue,
-                                                    updatedVariableValue,
-                                                    operatingSign);
                                         }
-
-                                    } else {
-                                        // For ordinary part, we only need to check
-                                        // if the new value would exceed the lower
-                                        // bound. If so, then use DOMAIN_LS to
-                                        // replace the value.
-
-                                        String newPremise = currentPremise
-                                                + " & "
-                                                + keySetArray[index]
-                                                + "="
-                                                + String.valueOf(vList.get(i)
-                                                        .intValue());
-
-                                        String updatedVariableValue = String
-                                                .valueOf(vList.get(i)
-                                                        .intValue()
-                                                        - (Integer
-                                                                .parseInt(newVariableValue)));
-
-                                        if (vList.get(i).intValue()
-                                                - (Integer
-                                                        .parseInt(newVariableValue)) < Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._minValue)) {
-                                            // Use DOMAIN_LS to replace the value.
-                                            updatedVariableValue = "ls";
-                                        }
-
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue,
-                                                updatedVariableValue,
-                                                operatingSign);
                                     }
+
+                                } else {
+                                    // For ordinary part, we only need to check
+                                    // if the new value would exceed the lower
+                                    // bound. If so, then use DOMAIN_LS to
+                                    // replace the value.
+
+                                    String newPremise = currentPremise
+                                            + " & "
+                                            + keySetArray[index]
+                                            + "="
+                                            + String.valueOf(vList.get(i)
+                                                    .intValue());
+
+                                    String updatedVariableValue = String
+                                            .valueOf(vList.get(i).intValue()
+                                                    - (Integer
+                                                            .parseInt(newVariableValue)));
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo != null) {
+                                        if (variableInfo._minValue != null) {
+                                            if (vList.get(i).intValue()
+                                                    - (Integer
+                                                            .parseInt(newVariableValue)) < Integer
+                                                    .parseInt(variableInfo._minValue)) {
+                                                // Use DOMAIN_LS to replace the value.
+                                                updatedVariableValue = "ls";
+                                            }
+                                        }
+                                    }
+
+                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                            newPremise, index + 1, maxIndex,
+                                            keySetArray, valueDomain, lValue,
+                                            updatedVariableValue, operatingSign);
                                 }
+
                             } else {
                                 // Offset negative case (negative_const)
 
@@ -2887,42 +2910,51 @@ public class SMVUtility {
                                         }
                                     }
                                 } else {
-                                    if (_variableInfo.get(lValue)._minValue != null
-                                            && _variableInfo.get(lValue)._maxValue != null) {
-                                        // For ordinary part, we only need to check
-                                        // if the new value would exceeds the upper
-                                        // bound. If so, then use DOMAIN_GT to
-                                        // replace the value.
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, removing \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    } else {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
+                                            // For ordinary part, we only need to check
+                                            // if the new value would exceeds the upper
+                                            // bound. If so, then use DOMAIN_GT to
+                                            // replace the value.
 
-                                        String newPremise = currentPremise
-                                                + " & "
-                                                + keySetArray[index]
-                                                + "="
-                                                + String.valueOf(vList.get(i)
-                                                        .intValue());
+                                            String newPremise = currentPremise
+                                                    + " & "
+                                                    + keySetArray[index]
+                                                    + "="
+                                                    + String.valueOf(vList.get(
+                                                            i).intValue());
 
-                                        String updatedVariableValue = String
-                                                .valueOf(vList.get(i)
-                                                        .intValue()
-                                                        - (Integer
-                                                                .parseInt(newVariableValue)));
+                                            String updatedVariableValue = String
+                                                    .valueOf(vList.get(i)
+                                                            .intValue()
+                                                            - (Integer
+                                                                    .parseInt(newVariableValue)));
 
-                                        if (vList.get(i).intValue()
-                                                - (Integer
-                                                        .parseInt(newVariableValue)) > Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue)) {
-                                            // Use DOMAIN_LS to replace the value.
-                                            updatedVariableValue = "gt";
+                                            if (vList.get(i).intValue()
+                                                    - (Integer
+                                                            .parseInt(newVariableValue)) > Integer
+                                                    .parseInt(variableInfo._maxValue)) {
+                                                // Use DOMAIN_LS to replace the value.
+                                                updatedVariableValue = "gt";
+                                            }
+
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue,
+                                                    updatedVariableValue,
+                                                    operatingSign);
                                         }
-
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue,
-                                                updatedVariableValue,
-                                                operatingSign);
                                     }
+
                                 }
                             }
                         }
@@ -3280,8 +3312,7 @@ public class SMVUtility {
                                                             && ((starter + 1)
                                                                     * Integer
                                                                             .parseInt(newVariableValue) <= Integer
-                                                                    .parseInt(((VariableInfo) _variableInfo
-                                                                            .get(lValue))._maxValue))) {
+                                                                    .parseInt(variableInfo._maxValue))) {
 
                                                         _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                 newPremise,
@@ -3468,41 +3499,51 @@ public class SMVUtility {
                                         }
                                     }
                                 } else {
-                                    if (_variableInfo.get(lValue)._maxValue != null) {
-                                        // For ordinary part, we only need to check
-                                        // if the new value would exceeds the upper
-                                        // bound. If so, then use DOMAIN_GT to
-                                        // replace the value.
+                                    VariableInfo variableInfo = _variableInfo
+                                            .get(lValue);
+                                    if (variableInfo == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, getting \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    } else {
+                                        if (variableInfo._minValue != null
+                                                && variableInfo._maxValue != null) {
+                                            // For ordinary part, we only need to check
+                                            // if the new value would exceeds the upper
+                                            // bound. If so, then use DOMAIN_GT to
+                                            // replace the value.
 
-                                        String newPremise = currentPremise
-                                                + " & "
-                                                + keySetArray[index]
-                                                + "="
-                                                + String.valueOf(vList.get(i)
-                                                        .intValue());
+                                            String newPremise = currentPremise
+                                                    + " & "
+                                                    + keySetArray[index]
+                                                    + "="
+                                                    + String.valueOf(vList.get(
+                                                            i).intValue());
 
-                                        String updatedVariableValue = String
-                                                .valueOf(vList.get(i)
-                                                        .intValue()
-                                                        - (Integer
-                                                                .parseInt(newVariableValue)));
+                                            String updatedVariableValue = String
+                                                    .valueOf(vList.get(i)
+                                                            .intValue()
+                                                            - (Integer
+                                                                    .parseInt(newVariableValue)));
 
-                                        if (vList.get(i).intValue()
-                                                - (Integer
-                                                        .parseInt(newVariableValue)) > Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue)) {
-                                            // Use DOMAIN_LS to replace the value.
-                                            updatedVariableValue = "gt";
+                                            if (vList.get(i).intValue()
+                                                    - (Integer
+                                                            .parseInt(newVariableValue)) > Integer
+                                                    .parseInt(variableInfo._maxValue)) {
+                                                // Use DOMAIN_LS to replace the value.
+                                                updatedVariableValue = "gt";
+                                            }
+
+                                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                    newPremise, index + 1,
+                                                    maxIndex, keySetArray,
+                                                    valueDomain, lValue,
+                                                    updatedVariableValue,
+                                                    operatingSign);
                                         }
-
-                                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                newPremise, index + 1,
-                                                maxIndex, keySetArray,
-                                                valueDomain, lValue,
-                                                updatedVariableValue,
-                                                operatingSign);
                                     }
+
                                 }
                             } else {
                                 // Integer.parseInt(newVariableValue)==0
@@ -3900,25 +3941,24 @@ public class SMVUtility {
         // Generate all transitions; start from "state"
         LinkedList<VariableTransitionInfo> infoList = _variableTransitionInfo
                 .get("state");
-        if (infoList == null) {
+        if (infoList != null) {
+            for (int i = 0; i < infoList.size(); i++) {
+                VariableTransitionInfo info = infoList.get(i);
+                // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+                // UNDER A REFINEMENT OF A STATE.
+                if (refinementStateName.equalsIgnoreCase("")) {
+                    returnSmvFormat.append("\t\t\t\t" + info._preCondition
+                            + " :{ " + info._varibleNewValue + " };\n");
+                } else {
+                    returnSmvFormat.append("\t\t\t\t"
+                            + refinementStateActivePremise + " & "
+                            + info._preCondition + " :{ "
+                            + info._varibleNewValue + " };\n");
+                }
 
-        }
-
-        for (int i = 0; i < infoList.size(); i++) {
-            VariableTransitionInfo info = infoList.get(i);
-            // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
-            // UNDER A REFINEMENT OF A STATE.
-            if (refinementStateName.equalsIgnoreCase("")) {
-                returnSmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
-                        + info._varibleNewValue + " };\n");
-            } else {
-                returnSmvFormat.append("\t\t\t\t"
-                        + refinementStateActivePremise + " & "
-                        + info._preCondition + " :{ " + info._varibleNewValue
-                        + " };\n");
             }
-
         }
+
         returnSmvFormat.append("\t\t\t\t1             : state;\n");
         returnSmvFormat.append("\t\t\tesac;\n\n");
 
@@ -3947,23 +3987,23 @@ public class SMVUtility {
                 // Generate all transitions; start from "state"
                 List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
                         .get(valName);
-                if (innerInfoList == null) {
+                if (innerInfoList != null) {
+                    for (int i = 0; i < innerInfoList.size(); i++) {
+                        VariableTransitionInfo info = innerInfoList.get(i);
+                        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+                        // UNDER A REFINEMENT OF A STATE.
+                        if (refinementStateName.equalsIgnoreCase("")) {
+                            returnSmvFormat.append("\t\t\t\t"
+                                    + info._preCondition + " :{ "
+                                    + info._varibleNewValue + " };\n");
+                        } else {
+                            returnSmvFormat.append("\t\t\t\t"
+                                    + refinementStateActivePremise + " & "
+                                    + info._preCondition + " :{ "
+                                    + info._varibleNewValue + " };\n");
+                        }
 
-                }
-                for (int i = 0; i < innerInfoList.size(); i++) {
-                    VariableTransitionInfo info = innerInfoList.get(i);
-                    // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
-                    // UNDER A REFINEMENT OF A STATE.
-                    if (refinementStateName.equalsIgnoreCase("")) {
-                        returnSmvFormat.append("\t\t\t\t" + info._preCondition
-                                + " :{ " + info._varibleNewValue + " };\n");
-                    } else {
-                        returnSmvFormat.append("\t\t\t\t"
-                                + refinementStateActivePremise + " & "
-                                + info._preCondition + " :{ "
-                                + info._varibleNewValue + " };\n");
                     }
-
                 }
 
                 returnSmvFormat.append("\t\t\t\t1             : " + valName
@@ -4059,33 +4099,34 @@ public class SMVUtility {
 
                     List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
                             .get(valName);
-                    if (innerInfoList == null) {
+                    if (innerInfoList != null) {
+                        for (int i = 0; i < innerInfoList.size(); i++) {
+                            VariableTransitionInfo info = innerInfoList.get(i);
+                            // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE
+                            // SUBSYSTEM UNDER A REFINEMENT OF A STATE.
+                            if (i == innerInfoList.size() - 1) {
+                                if (refinementStateName.equalsIgnoreCase("")) {
+                                    frontAttachment.append(" ( "
+                                            + info._preCondition + " ) ;\n\n ");
+                                } else {
+                                    frontAttachment.append("("
+                                            + refinementStateActivePremise
+                                            + " & " + info._preCondition
+                                            + " ) ;\n\n ");
+                                }
+                            } else {
+                                if (refinementStateName.equalsIgnoreCase("")) {
+                                    frontAttachment.append(" ( "
+                                            + info._preCondition + " ) & ");
+                                } else {
+                                    frontAttachment.append("("
+                                            + refinementStateActivePremise
+                                            + " & " + info._preCondition
+                                            + " ) & ");
+                                }
+                            }
 
-                    }
-                    for (int i = 0; i < innerInfoList.size(); i++) {
-                        VariableTransitionInfo info = innerInfoList.get(i);
-                        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE
-                        // SUBSYSTEM UNDER A REFINEMENT OF A STATE.
-                        if (i == innerInfoList.size() - 1) {
-                            if (refinementStateName.equalsIgnoreCase("")) {
-                                frontAttachment.append(" ( "
-                                        + info._preCondition + " ) ;\n\n ");
-                            } else {
-                                frontAttachment.append("("
-                                        + refinementStateActivePremise + " & "
-                                        + info._preCondition + " ) ;\n\n ");
-                            }
-                        } else {
-                            if (refinementStateName.equalsIgnoreCase("")) {
-                                frontAttachment.append(" ( "
-                                        + info._preCondition + " ) & ");
-                            } else {
-                                frontAttachment.append("("
-                                        + refinementStateActivePremise + " & "
-                                        + info._preCondition + " ) & ");
-                            }
                         }
-
                     }
 
                 }

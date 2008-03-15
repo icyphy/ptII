@@ -186,27 +186,29 @@ public class FmvAutomaton extends FSMActor {
             // Retrieve the lower bound and upper bound of the variable used in
             // the system based on inequalities or assignments
             // Also, add up symbols "ls" and "gt" within the variable domain.
-            if (_variableInfo.get(valName) == null) {
+            VariableInfo individual = _variableInfo.get(valName);
+            if (individual == null) {
                 throw new IllegalActionException(
                         "FmvAutomaton.convertToSMVFormat() clashes:\nInternal error, getting \""
                                 + valName
                                 + "\" from \"_variableInfo\" returned null?");
             } else {
-                VariableInfo individual = (VariableInfo) _variableInfo
-                        .get(valName);
-                int lowerBound = Integer.parseInt(individual._minValue);
-                int upperBound = Integer.parseInt(individual._maxValue);
-                if (Pattern.matches("^\\d+$", span) == true) {
-                    returnSmvFormat.append(" ls,");
-                    for (int number = lowerBound; number <= upperBound; number++) {
-                        returnSmvFormat.append(number);
-                        returnSmvFormat.append(",");
+                if ((individual._minValue != null)
+                        && (individual._minValue != null)) {
+                    int lowerBound = Integer.parseInt(individual._minValue);
+                    int upperBound = Integer.parseInt(individual._maxValue);
+                    if (Pattern.matches("^\\d+$", span) == true) {
+                        returnSmvFormat.append(" ls,");
+                        for (int number = lowerBound; number <= upperBound; number++) {
+                            returnSmvFormat.append(number);
+                            returnSmvFormat.append(",");
+                        }
+                        returnSmvFormat.append("gt };\n");
+                    } else {
+                        throw new IllegalActionException(
+                                "FmvAutomaton.convertToSMVFormat() error: \n"
+                                        + "Span is not a nonegative integer");
                     }
-                    returnSmvFormat.append("gt };\n");
-                } else {
-                    throw new IllegalActionException(
-                            "FmvAutomaton.convertToSMVFormat() error: \n"
-                                    + "Span is not a nonegative integer");
                 }
 
             }
@@ -1103,6 +1105,9 @@ public class FmvAutomaton extends FSMActor {
                                                 } catch (Exception exInner) {
                                                     // Return the format is not
                                                     // supported by the system.
+                                                    throw new IllegalActionException(
+                                                            "FmvAutomaton._generateAllVariableTransitions() clashes:\n"
+                                                                    + "format not supported by the conversion process.");
                                                 }
 
                                             }
@@ -1518,14 +1523,18 @@ public class FmvAutomaton extends FSMActor {
                                                         .intValue()
                                                         + (Integer
                                                                 .parseInt(newVariableValue)));
-
-                                        if (vList.get(i).intValue()
-                                                + (Integer
-                                                        .parseInt(newVariableValue)) > Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue)) {
-                                            // Use DOMAIN_GT to replace the value.
-                                            updatedVariableValue = "gt";
+                                        VariableInfo variableInfo = _variableInfo
+                                                .get(lValue);
+                                        if (variableInfo != null) {
+                                            if (variableInfo._maxValue != null) {
+                                                if (vList.get(i).intValue()
+                                                        + (Integer
+                                                                .parseInt(newVariableValue)) > Integer
+                                                        .parseInt(variableInfo._maxValue)) {
+                                                    // Use DOMAIN_GT to replace the value.
+                                                    updatedVariableValue = "gt";
+                                                }
+                                            }
                                         }
 
                                         _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -1721,20 +1730,21 @@ public class FmvAutomaton extends FSMActor {
                                                 valueDomain, lValue, "gt",
                                                 operatingSign);
 
-                                        int maximumInBoundary = Integer
-                                                .parseInt(((VariableInfo) _variableInfo
-                                                        .get(lValue))._maxValue);
-                                        for (int j = 0; j < (Integer
-                                                .parseInt(newVariableValue)); j++) {
+                                        VariableInfo variableInfo = _variableInfo
+                                                .get(lValue);
+                                        if (variableInfo != null) {
+                                            if ((variableInfo._minValue != null)
+                                                    && (variableInfo._maxValue != null)) {
+                                                int maximumInBoundary = Integer
+                                                        .parseInt(variableInfo._maxValue);
+                                                for (int j = 0; j < (Integer
+                                                        .parseInt(newVariableValue)); j++) {
 
-                                            // We need to make sure that it would
-                                            // never exceeds upper bound. If it
-                                            // is below lower bound, we must stop it
-                                            // and use LS to replace the value.
-                                            VariableInfo variableInfo = _variableInfo
-                                                    .get(lValue);
-                                            if (variableInfo != null) {
-                                                if (variableInfo._minValue != null) {
+                                                    // We need to make sure that it would
+                                                    // never exceeds upper bound. If it
+                                                    // is below lower bound, we must stop it
+                                                    // and use LS to replace the value.
+
                                                     if ((maximumInBoundary - j) < Integer
                                                             .parseInt(variableInfo._minValue)) {
                                                         _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -1747,18 +1757,22 @@ public class FmvAutomaton extends FSMActor {
                                                                 operatingSign);
                                                         break;
                                                     }
+
+                                                    String updatedVariableValue = String
+                                                            .valueOf(maximumInBoundary
+                                                                    - j);
+                                                    _recursiveStepGeneratePremiseAndResultEachTransition(
+                                                            newPremise,
+                                                            index + 1,
+                                                            maxIndex,
+                                                            keySetArray,
+                                                            valueDomain,
+                                                            lValue,
+                                                            updatedVariableValue,
+                                                            operatingSign);
                                                 }
                                             }
 
-                                            String updatedVariableValue = String
-                                                    .valueOf(maximumInBoundary
-                                                            - j);
-                                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                                    newPremise, index + 1,
-                                                    maxIndex, keySetArray,
-                                                    valueDomain, lValue,
-                                                    updatedVariableValue,
-                                                    operatingSign);
                                         }
 
                                     } else {
@@ -1910,8 +1924,7 @@ public class FmvAutomaton extends FSMActor {
                                                 if (vList.get(i).intValue()
                                                         - (Integer
                                                                 .parseInt(newVariableValue)) > Integer
-                                                        .parseInt(((VariableInfo) _variableInfo
-                                                                .get(lValue))._maxValue)) {
+                                                        .parseInt(variableInfo._maxValue)) {
                                                     // Use DOMAIN_LS to replace the value.
                                                     updatedVariableValue = "gt";
                                                 }

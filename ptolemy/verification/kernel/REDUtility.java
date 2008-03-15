@@ -886,7 +886,7 @@ public class REDUtility {
                 }
                 if (!text.trim().equals("")) {
                     hasAnnotation = true;
-                
+
                 }
 
                 // Retrieve the guardExpression for checking the existence
@@ -1045,15 +1045,20 @@ public class REDUtility {
             VariableInfo individual = (VariableInfo) _variableInfo
                     .remove(valName);
             try {
-                int lbOriginal = Integer.parseInt(individual._minValue);
-                int ubOriginal = Integer.parseInt(individual._maxValue);
-                int lbNew = lbOriginal - (ubOriginal - lbOriginal + 1)
-                        * numSpan;
-                int ubNew = ubOriginal + (ubOriginal - lbOriginal + 1)
-                        * numSpan;
-                individual._minValue = Integer.toString(lbNew);
-                individual._maxValue = Integer.toString(ubNew);
-                _variableInfo.put(valName, individual);
+                if (individual != null) {
+                    if ((individual._maxValue != null)
+                            && (individual._minValue != null)) {
+                        int lbOriginal = Integer.parseInt(individual._minValue);
+                        int ubOriginal = Integer.parseInt(individual._maxValue);
+                        int lbNew = lbOriginal - (ubOriginal - lbOriginal + 1)
+                                * numSpan;
+                        int ubNew = ubOriginal + (ubOriginal - lbOriginal + 1)
+                                * numSpan;
+                        individual._minValue = Integer.toString(lbNew);
+                        individual._maxValue = Integer.toString(ubNew);
+                        _variableInfo.put(valName, individual);
+                    }
+                }
 
             } catch (Exception ex) {
                 throw new IllegalActionException(
@@ -1276,7 +1281,8 @@ public class REDUtility {
                                                 bean._signal.append(" ?ND_"
                                                         + signalName[0]);
                                             } else {
-                                                bean._signal.append(" ?ND_"
+                                                // FIXME: 
+                                                bean._signal.append("  ?ND_"
                                                         + signalName[0]);
                                             }
 
@@ -1302,9 +1308,8 @@ public class REDUtility {
                                                 parse = false;
                                             }
                                             if (parse == true) {
-                                                if (Pattern
-                                                        .matches("^-?\\d+$",
-                                                                rValue) == true) {
+                                                if (Pattern.matches("^-?\\d+$",
+                                                        rValue) == true) {
 
                                                     // We need to understand
                                                     // what is
@@ -1993,6 +1998,9 @@ public class REDUtility {
                 TypedActor dInnerActor = dActors[0];
                 if (!(dInnerActor instanceof FSMActor)) {
                     // This is currently beyond our scope.
+                    throw new IllegalActionException(
+                            "REDUtility._rewriteModalModelWithStateRefinementToFSMActor() clashes:\n"
+                                    + "Beyond the scope for processing");
                 }
 
                 Iterator returnFSMActorStates = returnFSMActor.entityList()
@@ -2545,13 +2553,24 @@ public class REDUtility {
 
                 VariableInfo individual = (VariableInfo) _variableInfo
                         .get(variableName);
-                bean._declaredVariables.append("global discrete "
-                        + actor.getName().trim() + "_" + variableName + ":"
-                        + individual._minValue + ".." + individual._maxValue
-                        + "; \n");
-                bean._variableInitialDescriptionSet.add(actor.getName().trim()
-                        + "_" + variableName + " == "
-                        + initialValueSet.get(variableName) + " ");
+                if (individual != null) {
+                    if ((individual._maxValue != null)
+                            && (individual._minValue != null)) {
+                        bean._declaredVariables.append("global discrete "
+                                + actor.getName().trim() + "_" + variableName
+                                + ":" + individual._minValue + ".."
+                                + individual._maxValue + "; \n");
+                        bean._variableInitialDescriptionSet.add(actor.getName()
+                                .trim()
+                                + "_"
+                                + variableName
+                                + " == "
+                                + initialValueSet.get(variableName) + " ");
+
+                    }
+
+                }
+
             }
         }
 
