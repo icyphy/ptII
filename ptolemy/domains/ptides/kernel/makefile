@@ -49,8 +49,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	PrioritizedTimedQueue.java \
-	PtidesDDEReceiver.java \
-	PtidesDEReceiver.java \
 	PtidesDirector.java \
 	PtidesEmbeddedDirector.java \
 	PtidesGraphUtilities.java \
