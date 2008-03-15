@@ -1,7 +1,7 @@
 /* An actor that executes compiled embedded C code.  It takes in a file
- * parameter that specifies the file of C code. 
+ parameter that specifies the file of C code. 
 
- Copyright (c) 2007 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,8 +48,8 @@ import java.io.*;
  in copies of the EmbeddedCActor.
 
  @author Christine Avanessians, Edward Lee, and Man-Kit Leung 
- @version $Id
- @since Ptolemy II 6.1
+ @version $Id$
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (cavaness)
  @Pt.AcceptedRating Red (cavaness)
  */
@@ -125,7 +125,7 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
     }
     
     protected void setEmbeddedActor() throws IllegalActionException, NameDuplicationException{
-        _embeddedActor = new EmbeddedFileActor(this, "EmbeddedFileActor");
+        //_embeddedActor = new EmbeddedFileActor(this, "EmbeddedFileActor");
     }
 
 
