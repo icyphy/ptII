@@ -162,6 +162,15 @@ public class Connector extends MoMLApplication {
                     "Cannot parse input model.");
         }
 
+        File attributesPath = null;
+        if (_command != Command.LIST) {
+            attributesPath = new File(_root, "attributes");
+            if (!_pathExists(attributesPath)) {
+                throw new IllegalActionException("Attributes directory \""
+                        + attributesPath + "\" does not exist.");
+            }
+        }
+
         switch (_command) {
         case LIST:
             for (Object attrObject : model.attributeList(Variable.class)) {
@@ -184,21 +193,29 @@ public class Connector extends MoMLApplication {
             }
             break;
 
-        case SYNC:
-            File attributesPath = new File(_root, "attributes");
-            if (!_pathExists(attributesPath)) {
-                throw new IllegalActionException("Attributes directory \""
-                        + attributesPath + "\" does not exist.");
-            }
-            _loadAttributes(model, attributesPath);
-            _saveAttributes(model, attributesPath);
+        case LOAD:
+            _loadAttributes(model, attributesPath, true);
             _outputModel(model);
+            break;
+
+        case SAVE:
+            _saveAttributes(model, attributesPath, true);
+            _outputModel(model);
+            break;
+
+        case SYNC:
+            _loadAttributes(model, attributesPath, false);
+            _saveAttributes(model, attributesPath, false);
+            _outputModel(model);
+            break;
         }
     }
 
     public static final String[][] COMMAND_OPTIONS = new String[][] {
         {"-cmd", "<command>"},
         {"    ", "list (list NAOMI attributes)"},
+        {"    ", "load (load NAOMI attributes (irregard of modification time)"},
+        {"    ", "save (save NAOMI attributes (irregard of modification time)"},
         {"    ", "sync (synchronize NAOMI attributes)"},
         {"-in", "<input model>"},
         {"-out", "<output model>"},
@@ -252,7 +269,7 @@ public class Connector extends MoMLApplication {
     }
 
     public enum Command {
-        LIST("list"), SYNC("sync");
+        LIST("list"), LOAD("load"), SAVE("save"), SYNC("sync");
 
         public String toString() {
             return _name;
@@ -305,7 +322,8 @@ public class Connector extends MoMLApplication {
         return configuration;
     }
 
-    protected void _loadAttributes(NamedObj model, File attributesPath)
+    protected void _loadAttributes(NamedObj model, File attributesPath,
+            boolean force)
     throws IllegalActionException {
         for (Object attrObject : model.attributeList(Variable.class)) {
             Attribute attr = (Attribute) attrObject;
@@ -318,11 +336,13 @@ public class Connector extends MoMLApplication {
                 }
                 File attributeFile = new File(attributesPath, attributeName);
 
-                Date attributeDate = naomiParam.getModifiedDate();
                 Date fileDate = new Date(attributeFile.lastModified());
-                if (!attributeFile.exists() || !attributeFile.isFile()
-                        || !attributeDate.before(fileDate)) {
-                    continue;
+                if (!force) {
+                    Date attributeDate = naomiParam.getModifiedDate();
+                    if (!attributeFile.exists() || !attributeFile.isFile()
+                            || !attributeDate.before(fileDate)) {
+                        continue;
+                    }
                 }
 
                 try {
@@ -481,7 +501,8 @@ public class Connector extends MoMLApplication {
         return false;
     }
 
-    protected void _saveAttributes(NamedObj model, File attributesPath)
+    protected void _saveAttributes(NamedObj model, File attributesPath,
+            boolean force)
     throws IllegalActionException {
 
         for (Object attrObject : model.attributeList(Variable.class)) {
@@ -497,10 +518,12 @@ public class Connector extends MoMLApplication {
                 File attributeFile = new File(attributesPath, attributeName);
 
                 Date attributeDate = naomiParam.getModifiedDate();
-                Date fileDate = new Date(attributeFile.lastModified());
-                if (attributeFile.exists() && attributeFile.isFile()
-                        && !fileDate.before(attributeDate)) {
-                    continue;
+                if (!force) {
+                    Date fileDate = new Date(attributeFile.lastModified());
+                    if (attributeFile.exists() && attributeFile.isFile()
+                            && !fileDate.before(attributeDate)) {
+                        continue;
+                    }
                 }
 
                 String newValue = attr.getExpression();

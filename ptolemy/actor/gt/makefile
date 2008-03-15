@@ -124,6 +124,8 @@ OPTIONAL_FILES = \
 	'GTIngredient$$FieldIterator.class' \
 	'GTIngredient$$NamedObjMatchResult.class' \
 	'GTParameter$$Evaluator.class' \
+	'GTParameter$$LoopEvaluator.class' \
+	'GTParameter$$LoopFunction.class' \
 	'GTParameter$$Scope.class' \
 	'GraphAnalyzer$$IndexedList.class' \
 	'GraphAnalyzer$$IndexedLists.class' \

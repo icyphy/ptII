@@ -271,9 +271,12 @@ public class MatchResultViewer extends GTFrame {
                         && _results != null
                         && _results.get(_currentPosition).containsValue(object)) {
                     Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
-                    BasicFigure bf = new BasicRectangle(bounds.getX(),
-                            bounds.getY(), bounds.getWidth(),
-                            bounds.getHeight(), 5.0f);
+                    float padding = _HIGHLIGHT_PADDING;
+                    BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
+                            bounds.getY() - padding,
+                            bounds.getWidth() + padding * 2.0,
+                            bounds.getHeight() + padding * 2.0,
+                            _HIGHLIGHT_THICKNESS);
                     bf.setStrokePaint(_HIGHLIGHT_COLOR);
 
                     int index = cf.getFigureCount();
@@ -331,12 +334,12 @@ public class MatchResultViewer extends GTFrame {
                         && _results != null
                         && _results.get(_currentPosition).containsValue(object)) {
                     Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
-                    float padding = 3.0f;
+                    float padding = _HIGHLIGHT_PADDING;
                     RoundedRectangle rf = new RoundedRectangle(
                             bounds.getX() - padding, bounds.getY() - padding,
                             bounds.getWidth() + padding * 2.0,
                             bounds.getHeight() + padding * 2.0,
-                            null, 5.0f, 32.0, 32.0);
+                            null, _HIGHLIGHT_THICKNESS, 32.0, 32.0);
                     rf.setStrokePaint(_HIGHLIGHT_COLOR);
 
                     int index = cf.getFigureCount();
@@ -564,6 +567,10 @@ public class MatchResultViewer extends GTFrame {
     }
 
     private static final Color _HIGHLIGHT_COLOR = new Color(96, 32, 128, 128);
+    
+    private static final float _HIGHLIGHT_PADDING = 3.0f;
+    
+    private static final float _HIGHLIGHT_THICKNESS = 6.0f;
 
     private int _currentPosition;
 
