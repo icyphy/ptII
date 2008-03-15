@@ -73,9 +73,9 @@ public class NonPreemptivePlatformExecutionStrategy extends
 			Time time1 = event1.timeStamp();
 			Time time2 = event2.timeStamp();
 			boolean fireAtRT1 = PtidesGraphUtilities
-					.mustBeFiredAtRealTime(actor1);
+					.mustBeFiredAtRealTime(actor1, event1.ioPort());
 			boolean fireAtRT2 = PtidesGraphUtilities
-					.mustBeFiredAtRealTime(actor2);
+					.mustBeFiredAtRealTime(actor2, event2.ioPort());
 			int index1 = -1;
 			int index2 = -1;
 
@@ -191,7 +191,7 @@ public class NonPreemptivePlatformExecutionStrategy extends
 		for (int i = 0; i < eventsToFire.size(); i++) {
 			DEEvent event = (DEEvent) eventsToFire.get(i);
 			Actor actor = event.actor();
-			if (PtidesGraphUtilities.mustBeFiredAtRealTime(actor)) {
+			if (PtidesGraphUtilities.mustBeFiredAtRealTime(actor, event.ioPort())) {
 				if (event.timeStamp().compareTo(_nextRealTimeEvent) < 0)
 					_nextRealTimeEvent = event.timeStamp();
 			}
@@ -203,7 +203,7 @@ public class NonPreemptivePlatformExecutionStrategy extends
 			event = (DEEvent) eventsToFire.get(index);
 			Actor actorToFire = event.actor();
 
-			if (PtidesGraphUtilities.mustBeFiredAtRealTime(actorToFire)) {
+			if (PtidesGraphUtilities.mustBeFiredAtRealTime(actorToFire, event.ioPort())) {
 				if (_physicalTime.compareTo(event.timeStamp()) > 0) {
 					_displaySchedule(actorToFire, event.timeStamp()
 							.getDoubleValue(), ScheduleListener.MISSEDEXECUTION);

@@ -21,12 +21,12 @@ import ptolemy.kernel.util.Workspace;
  * 
  * @author Patricia Derler
  */
-public class PtidesDDEReceiver extends PrioritizedTimedQueue implements
+public class PtidesReceiver extends PrioritizedTimedQueue implements
 		ProcessReceiver {
 	/**
 	 * Construct an empty receiver with no container.
 	 */
-	public PtidesDDEReceiver() {
+	public PtidesReceiver() {
 		super();
 		_boundaryDetector = new BoundaryDetector(this);
 	}
@@ -40,7 +40,7 @@ public class PtidesDDEReceiver extends PrioritizedTimedQueue implements
 	 *                If this receiver cannot be contained by the proposed
 	 *                container.
 	 */
-	public PtidesDDEReceiver(IOPort container) throws IllegalActionException {
+	public PtidesReceiver(IOPort container) throws IllegalActionException {
 		super(container);
 		_boundaryDetector = new BoundaryDetector(this);
 	}
@@ -57,7 +57,7 @@ public class PtidesDDEReceiver extends PrioritizedTimedQueue implements
 	 *                If this receiver cannot be contained by the proposed
 	 *                container.
 	 */
-	public PtidesDDEReceiver(IOPort container, int priority)
+	public PtidesReceiver(IOPort container, int priority)
 			throws IllegalActionException {
 		super(container, priority);
 		_boundaryDetector = new BoundaryDetector(this);

@@ -1,12 +1,14 @@
 package ptolemy.domains.ptides.kernel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -15,9 +17,12 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.lib.Clock;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.Time;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -26,10 +31,16 @@ import ptolemy.domains.de.kernel.DECQEventQueue;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.de.kernel.DEEventQueue;
+import ptolemy.domains.de.lib.TimedDelay;
 import ptolemy.domains.ptides.kernel.PrioritizedTimedQueue.Event;
 import ptolemy.domains.ptides.lib.ScheduleListener;
 import ptolemy.domains.ptides.platform.NonPreemptivePlatformExecutionStrategy;
 import ptolemy.domains.ptides.platform.PlatformExecutionStrategy;
+import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.graph.DirectedGraph;
+import ptolemy.graph.Edge;
+import ptolemy.graph.Graph;
+import ptolemy.graph.Node;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -232,6 +243,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
 					displaySchedule(actorToFire,
 							_physicalTime.getDoubleValue(),
 							ScheduleListener.STOP);
+					if (actorToFire instanceof CompositeActor)
+						actorToFire.getDirector().setModelTime(getModelTime());
 					actorToFire.fire();
 					if (!actorToFire.postfire())
 						_disableActor(actorToFire);
@@ -250,7 +263,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 			if (event != null) {
 				Actor actorToFire = event.actor();
 				double wcet = PtidesGraphUtilities.getWCET(actorToFire);
-				if (!actorToFire.prefire()) {
+				if (actorToFire.getDirector() == this && !actorToFire.prefire()) {
 					_enqueueEventAgain(event);
 				} else {
 					_currentModelTime = event.timeStamp();
@@ -270,17 +283,13 @@ public class PtidesEmbeddedDirector extends DEDirector {
 				}
 			} else {
 				if (_transferAllInputs()) {
-					_enqueueRemainingEventsAgain(eventsToFire);
-					eventsToFire = _getNextEventsToFire();
+					continue;
 				}
 				_setPhysicalTime(_getExecutiveDirector()
 						.waitForFuturePhysicalTime());
 				if (_stopRequested)
 					return;
-				if (_transferAllInputs()) {
-					_enqueueRemainingEventsAgain(eventsToFire);
-					eventsToFire = _getNextEventsToFire();
-				}
+				_transferAllInputs();
 			}
 		}
 	}
@@ -373,7 +382,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		if (_debugging && _verbose) {
 			_debug("Creating a new DE receiver.");
 		}
-		return new PtidesDEReceiver();
+		return new PtidesPlatformReceiver();
 	}
 
 	/**
@@ -710,7 +719,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 			try {
 				while (port.hasToken(i)) {
 					Receiver[][] recv = port.getReceivers();
-					PtidesDDEReceiver receiver = (PtidesDDEReceiver) recv[0][0];
+					PtidesReceiver receiver = (PtidesReceiver) recv[0][0];
 					Event event = receiver.getEvent();
 					Time time = event._timeStamp;
 					Token t = event._token;
@@ -721,8 +730,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
 										+ ", tried to transfer event with timestamp "
 										+ time + " at physical time "
 										+ _physicalTime);
-					if (!((_usePtidesExecutionSemantics && isSafeToProcessOnNetwork(
-							time, port)) || (_usePtidesExecutionSemantics && time
+					if (!((isSafeToProcessOnNetwork(
+							time, port)) || (time
 							.compareTo(_physicalTime) > 0))) {
 
 						System.out.println("cannot ti yet " + time);
@@ -747,7 +756,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 					}
 					for (int k = 0; k < farReceivers.length; k++) {
 						for (int l = 0; l < farReceivers[k].length; l++) {
-							PtidesDEReceiver farReceiver = (PtidesDEReceiver) farReceivers[k][l];
+							PtidesPlatformReceiver farReceiver = (PtidesPlatformReceiver) farReceivers[k][l];
 							farReceiver.put(t, time);
 							displaySchedule((Actor) port.getContainer(),
 									_physicalTime.getDoubleValue(),
@@ -782,29 +791,29 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		}
 		for (int i = 0; i < port.getWidthInside(); i++) {
 			try {
-				Receiver[][] receivers = port.getInsideReceivers();
-				if (receivers[i] != null) {
-					for (int j = 0; j < receivers[i].length; j++) {
-						if (receivers[i][j] != null
-								&& ((PtidesDEReceiver) receivers[i][j])
-										.getNextTime() != null
-								&& ((PtidesDEReceiver) receivers[i][j])
-										.getNextTime().compareTo(_physicalTime) < 0) {
-							throw new IllegalActionException(
-									"Network constraints violated, token with timestamp "
-											+ ((PtidesDEReceiver) receivers[i][j])
-													.getNextTime()
-											+ " cannot be transferred to the output at physical time "
-											+ _physicalTime);
-						}
-					}
-				}
+//				Receiver[][] receivers = port.getInsideReceivers();
+//				if (receivers[i] != null) {
+//					for (int j = 0; j < receivers[i].length; j++) {
+//						if (receivers[i][j] != null
+//								&& ((PtidesPlatformReceiver) receivers[i][j])
+//										.getNextTime() != null
+//								&& ((PtidesPlatformReceiver) receivers[i][j])
+//										.getNextTime().compareTo(_physicalTime) < 0) {
+//							throw new IllegalActionException(
+//									"Network constraints violated, token with timestamp "
+//											+ ((PtidesPlatformReceiver) receivers[i][j])
+//													.getNextTime()
+//											+ " cannot be transferred to the output at physical time "
+//											+ _physicalTime);
+//						}
+//					}
+//				}
 				if (port.hasTokenInside(i)) {
 					token = port.getInside(i);
 					Receiver[][] outReceivers = port.getRemoteReceivers();
 					for (int k = 0; k < outReceivers.length; k++) {
 						for (int l = 0; l < outReceivers[k].length; l++) {
-							PtidesDDEReceiver outReceiver = (PtidesDDEReceiver) outReceivers[k][l];
+							PtidesReceiver outReceiver = (PtidesReceiver) outReceivers[k][l];
 							outReceiver.put(token,
 									((Actor) port.getContainer()).getDirector()
 											.getModelTime());
@@ -863,6 +872,52 @@ public class PtidesEmbeddedDirector extends DEDirector {
 			return null;
 	}
 
+	
+	private boolean isSafeToProcessDynamically(Time eventTimestamp, Node node, Set traversedEdges) throws IllegalActionException {
+		if (_usePtidesExecutionSemantics) 
+			return false;
+		IOPort port = (IOPort) (node).getWeight();
+		Collection inputs;
+		inputs = graph.inputEdges(node);
+		if (inputs.size() == 0) 
+			return false;
+		Iterator inputIt = inputs.iterator();
+		while (inputIt.hasNext()) {
+			Edge edge = (Edge) inputIt.next();
+			Node nextNode = edge.source();
+			Actor inputActor = (Actor) ((IOPort) nextNode.getWeight()).getContainer();
+			if (!traversedEdges.contains(edge)) {
+				traversedEdges.add(edge);
+				if (inputActor instanceof TimedDelay) {
+					TimedDelay delayActor = (TimedDelay) inputActor;
+					double delay = ((DoubleToken) (delayActor.delay.getToken())).doubleValue();
+					eventTimestamp = eventTimestamp.subtract(delay);
+				}
+				if (PtidesGraphUtilities.mustBeFiredAtRealTime(inputActor, null)) 
+					return false; // didn't find earlier events
+				else if (inputActor.equals(this.getContainer()))
+					return false; // didn't find earlier events in platform
+				for (Iterator it = inputActor.inputPortList().iterator(); it.hasNext();) {
+					IOPort p = (IOPort) it.next();
+					Receiver[][] receivers = p.getReceivers();
+					for (int i = 0; i < receivers.length; i++) {
+						Receiver[] recv = receivers[i];
+						for (int j = 0; j < recv.length; j++) {
+							PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) recv[j];
+							Time time = receiver.getNextTime();
+							if (time.compareTo(eventTimestamp) > 0)
+								return true;
+						}
+					}
+				}
+			}
+			for (Iterator it = inputActor.inputPortList().iterator(); it.hasNext();) {
+				return isSafeToProcessDynamically(eventTimestamp, graph.node(it.next()), traversedEdges);
+			}
+		}
+		return false; // should never come here
+	}
+
 	/**
 	 * Get the set of events that are safe to fire. Those events contain pure
 	 * events and triggered events.
@@ -896,13 +951,14 @@ public class PtidesEmbeddedDirector extends DEDirector {
 					for (int i = 0; i < receivers.length; i++) {
 						Receiver[] recv = receivers[i];
 						for (int j = 0; j < recv.length; j++) {
-							PtidesDEReceiver receiver = (PtidesDEReceiver) recv[j];
+							PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) recv[j];
 							Time time = receiver.getNextTime();
 							if (time != null
-									&& isSafeToProcessOnPlatform(time, port)) {
+									&& (isSafeToProcessOnPlatform(time, port) || isSafeToProcessDynamically(time, graph.node(port), new TreeSet()))) {
 								_removePureEvent(events, actor, time);
 								events.add(new DEEvent(port, time, 0,
-										_getDepthOfIOPort(port)));
+										//_getDepthOfIOPort(port)));
+										0));
 							}
 						}
 					}
@@ -933,33 +989,6 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		for (int i = 0; i < toRemove.size(); i++)
 			events.remove(toRemove.get(i));
 	}
-
-	/*
-	 * private List _getNextEventsToFire() throws IllegalActionException { List
-	 * events = new LinkedList(); for (Enumeration actors = _eventQueues.keys();
-	 * actors.hasMoreElements();) { Actor actor = (Actor) actors.nextElement();
-	 * DEEventQueue queue = (DEEventQueue) _eventQueues.get(actor); ArrayList
-	 * taken = new ArrayList(); //this gets all events that are safe to fire -
-	 * required if only one eventqueue at the actors is used if
-	 * (!queue.isEmpty()) { DEEvent event = queue.get(); while
-	 * (!queue.isEmpty()) { event = queue.take(); taken.add(event); boolean
-	 * isSafe = isSafeToProcessOnPlatform(event.timeStamp(), (NamedObj)actor);
-	 * if (isSafe) { events.add(event); taken.remove(event); } } } // if
-	 * (!queue.isEmpty()) { // DEEvent event = queue.get(); // boolean isSafe =
-	 * isSafeToProcessOnPlatform(event.timeStamp(), (NamedObj)actor); // if
-	 * (isSafe) { // events.add(event); // queue.take(); // } // } // // for
-	 * (Iterator it = actor.inputPortList().iterator(); it.hasNext(); ) { //
-	 * IOPort port = (IOPort) it.next(); // Receiver[][] receivers =
-	 * port.getReceivers(); // for (int i = 0; i < receivers.length; i++) { //
-	 * Receiver[] recv = receivers[i]; // for (int j = 0; j < recv.length; j++) { //
-	 * PtidesDEReceiver receiver = (PtidesDEReceiver) recv[j]; // Time time =
-	 * receiver.getNextTime(); // if (time != null) // events.add(new
-	 * DEEvent(port, time, 0, _getDepthOfIOPort(port))); // } // } // } for
-	 * (Iterator it = taken.iterator(); it.hasNext(); ) { DEEvent event =
-	 * (DEEvent) it.next(); _enqueueEventAgain(event); } }
-	 * System.out.println(this.getContainer().getName() + ": " + events.size() + " " +
-	 * events); return events; }
-	 */
 
 	/**
 	 * enqueue all remaining events because they were not processed.
@@ -1108,5 +1137,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * determines if safeToProcess is checked
 	 */
 	private boolean _usePtidesExecutionSemantics;
+	
+	public DirectedGraph graph; 
 
 }

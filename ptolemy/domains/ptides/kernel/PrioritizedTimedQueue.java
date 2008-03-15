@@ -96,6 +96,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 		Token token = null;
 		Event event = (Event) _queue.first();
 		_queue.remove(event);
+		_lastTime = event._timeStamp;
 		token = event.getToken();
 		return token;
 	}
@@ -111,6 +112,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 		// local time parameters
 		Event event = (Event) _queue.first();
 		_queue.remove(event);
+		_lastTime = event._timeStamp;
 		return event;
 	}
 

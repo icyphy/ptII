@@ -13,6 +13,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.Clock;
+import ptolemy.actor.lib.Source;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.data.ArrayToken;
@@ -233,7 +234,9 @@ public class PtidesGraphUtilities {
 		return equivalenceClasses;
 	}
 
-	public static boolean mustBeFiredAtRealTime(Actor actor) {
+	public static boolean mustBeFiredAtRealTime(Actor actor, Port port) {
+		if (actor instanceof Source && ((Source)actor).trigger == port) // trigger ports don't have to be fired at real time
+			return false;
 		return isSensor(actor) || isActuator(actor);
 	}
 
@@ -499,11 +502,10 @@ public class PtidesGraphUtilities {
 				}
 			}
 			graphs.put(container, _graph);
+			((PtidesEmbeddedDirector)container.getDirector()).graph = _graph; 
 		}
 		return (DirectedAcyclicGraph) graphs.get(container);
 	}
-
-	private Actor container1;
 
 	private Hashtable graphs = new Hashtable();
 

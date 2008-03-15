@@ -23,11 +23,13 @@ import ptolemy.vergil.basic.GetDocumentationAction;
 /**
  * Receiver used inside platforms of a ptides domain
  * 
+ * This Receiver will not work with non-opaque actors inside a platform
+ * 
  * @author Patricia Derler
  */
-public class PtidesDEReceiver extends PrioritizedTimedQueue {
+public class PtidesPlatformReceiver extends PrioritizedTimedQueue {
 
-	public PtidesDEReceiver() {
+	public PtidesPlatformReceiver() {
 		super();
 	}
 
@@ -39,7 +41,7 @@ public class PtidesDEReceiver extends PrioritizedTimedQueue {
 	 * @exception IllegalActionException
 	 *                If the container does not accept this receiver.
 	 */
-	public PtidesDEReceiver(IOPort container) throws IllegalActionException {
+	public PtidesPlatformReceiver(IOPort container) throws IllegalActionException {
 		super(container);
 	}
 
@@ -49,11 +51,32 @@ public class PtidesDEReceiver extends PrioritizedTimedQueue {
 	 * @return True if there are more tokens.
 	 */
 	public boolean hasToken() {
-		return hasToken(getModelTime())
+		return (getContainer().isOutput() && super.hasToken()) 
+			|| (!(((Actor) ((IOPort) getContainer())
+					.getContainer()).getDirector() instanceof PtidesEmbeddedDirector) && super.hasToken())			
+			|| (hasToken(getModelTime())
 				&& ((PtidesEmbeddedDirector) ((Actor) ((IOPort) getContainer())
 						.getContainer()).getDirector())
 						.isSafeToProcessOnPlatform(getModelTime(),
-								getContainer());
+								getContainer()));
+	}
+
+	/**
+	 * Put a token into this receiver.	
+	 * @param token
+	 *            The token to be put.
+	 */
+	public void put(Token token) {
+		IOPort containerPort = getContainer();
+        Actor containerActor = (Actor) containerPort.getContainer();
+        Director dir;
+        if (containerActor instanceof CompositeActor) {
+        	dir = containerActor.getExecutiveDirector();
+        } else {
+        	dir = containerActor.getDirector();
+        }
+        Time modelTime = dir.getModelTime();
+		put(token, modelTime);
 	}
 
 	/**
@@ -66,10 +89,6 @@ public class PtidesDEReceiver extends PrioritizedTimedQueue {
 	 * @param token
 	 *            The token to be put.
 	 */
-	public void put(Token token) {
-		put(token, getModelTime());
-	}
-
 	public void put(Token token, Time time) {
 		try {
 			PtidesEmbeddedDirector dir = _getDirector();
@@ -90,10 +109,10 @@ public class PtidesDEReceiver extends PrioritizedTimedQueue {
 
 			// If there is no container, then perform no conversion.
 			if (container == null) {
-				((PtidesDEReceiver) receivers[j]).put(container.convert(token),
+				((PtidesPlatformReceiver) receivers[j]).put(container.convert(token),
 						time);
 			} else {
-				((PtidesDEReceiver) receivers[j]).put(container.convert(token),
+				((PtidesPlatformReceiver) receivers[j]).put(container.convert(token),
 						time);
 			}
 		}

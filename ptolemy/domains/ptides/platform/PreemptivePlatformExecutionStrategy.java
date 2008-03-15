@@ -109,9 +109,9 @@ public class PreemptivePlatformExecutionStrategy extends
 			Time time1 = event1.timeStamp();
 			Time time2 = event2.timeStamp();
 			boolean fireAtRT1 = PtidesGraphUtilities
-					.mustBeFiredAtRealTime(actor1);
+					.mustBeFiredAtRealTime(actor1, event1.ioPort());
 			boolean fireAtRT2 = PtidesGraphUtilities
-					.mustBeFiredAtRealTime(actor2);
+					.mustBeFiredAtRealTime(actor2, event2.ioPort());
 			int index1 = -1;
 			int index2 = -1;
 

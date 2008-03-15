@@ -185,6 +185,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 			PtidesGraphUtilities utilities = new PtidesGraphUtilities(this
 					.getContainer());
 			utilities.calculateMinDelays();
+			
 		}
 
 		Hashtable<Actor, List> table = new Hashtable<Actor, List>();
@@ -237,7 +238,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 * return a new PtidesDEEReceiver
 	 */
 	public Receiver newReceiver() {
-		PtidesDDEReceiver receiver = new PtidesDDEReceiver();
+		PtidesReceiver receiver = new PtidesReceiver();
 		double timeValue;
 
 		try {
@@ -327,20 +328,6 @@ public class PtidesDirector extends CompositeProcessDirector implements
 		_waitingForPhysicalTime.clear();
 		_nextFirings.clear();
 		setModelTime(new Time(this, 0.0));
-
-		for (Iterator it = ((CompositeActor) getContainer()).entityList()
-				.iterator(); it.hasNext();) {
-			Object obj = it.next();
-			if (obj instanceof CompositeActor) {
-				CompositeActor actor = (CompositeActor) obj;
-				if (actor.getDirector() instanceof PtidesEmbeddedDirector) {
-					PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor
-							.getDirector();
-					dir.setModelTime(getModelTime());
-				}
-			}
-		}
-
 	}
 
 	/**
