@@ -65,11 +65,30 @@ foreach file [lsort [glob auto/*.xml]] {
 	    # FIXME: we should use $relativeFilename here, but it
 	    # might have backslashes under Windows, which causes no end
 	    # of trouble.
-        set application [createAndExecute $file]
+    	set timeout 100000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
+                  seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]}] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
         list {}
     } {{}}
     test "Auto-rerun" "Automatic test rerun in file $file" {
-	$application rerun
+    	set timeout 100000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
+                  seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+        if [catch {$application rerun}] {
+	    $watchDog cancel
+	    error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+
 	list {}
     } {{}}
 }
