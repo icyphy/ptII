@@ -51,6 +51,7 @@ JSRCS = \
 	CodegenActor.java \
 	CompiledCompositeActor.java \
 	EmbeddedCActor.java \
+	EmbeddedCFileActor.java \
 	PointerToken.java
 
 OTHER_FILES_TO_BE_JARED =
@@ -68,7 +69,9 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	'EmbeddedCActor$$DummyActor.class' \
-	'EmbeddedCActor$$EmbeddedActor.class'
+	'EmbeddedCActor$$EmbeddedActor.class' \
+	'PointerToken$$1.class' \
+	'PointerToken$$PointerType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
