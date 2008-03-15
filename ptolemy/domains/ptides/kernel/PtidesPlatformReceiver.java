@@ -93,9 +93,6 @@ public class PtidesPlatformReceiver extends PrioritizedTimedQueue {
 		try {
 			PtidesEmbeddedDirector dir = _getDirector();
 			dir._enqueueTriggerEvent(getContainer(), time);
-
-			if (token == null)
-				System.out.println(token);
 			super.put(token, time);
 		} catch (IllegalActionException ex) {
 			throw new InternalErrorException(null, ex, null);

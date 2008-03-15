@@ -80,34 +80,18 @@ public class PtidesGraphUtilities {
 							.indexOf(in)] = 1;
 			}
 		}
-		System.out.println("----------" + container.getName());
-		System.out.print("\t");
-		for (int j = 0; j < inputPortList.size(); j++) {
-			System.out.print(((IOPort) inputPortList.get(j)).getName() + "\t");
-		}
-		System.out.println();
-		for (int i = 0; i < outputPortList.size(); i++) {
-			System.out.print(((IOPort) outputPortList.get(i)).getName() + "\t");
-			for (int j = 0; j < inputPortList.size(); j++) {
-				System.out.print(connections[i][j] + "\t");
-			}
-			System.out.println();
-		}
-		System.out.println("------------------------------------------");
 	}
 
 	public void getMinDelays(Actor container) throws IllegalActionException {
 		DirectedAcyclicGraph graph = _computeGraph(container);
 		for (Iterator it = container.outputPortList().iterator(); it.hasNext();) {
 			IOPort out = (IOPort) it.next();
-			System.out.println("---------" + out.getName());
 			double minDelay = _getMinDelay(container, false, graph.node(out),
 					graph, Double.MAX_VALUE, new HashSet());
 			PtidesGraphUtilities.setMinDelay(out, minDelay);
 		}
 		for (Iterator it = container.inputPortList().iterator(); it.hasNext();) {
 			IOPort in = (IOPort) it.next();
-			System.out.println("---------" + in.getName());
 			if (!_isInputConnectedToAnyOutput(container, graph, in)) {
 				double minDelay = _getMinDelay(container, true, graph.node(in),
 						graph, Double.MAX_VALUE, new HashSet());
@@ -199,7 +183,6 @@ public class PtidesGraphUtilities {
 			}
 		else
 			parameter.setToken(new DoubleToken(minDelay));
-		System.out.println(out.getName() + ": " + minDelay);
 	}
 
 	public Set getEquivalenceClassesPortLists(Actor container)
@@ -221,15 +204,6 @@ public class PtidesGraphUtilities {
 			}
 			if (!ports.isEmpty())
 				equivalenceClasses.add(ports);
-		}
-		for (Iterator it = equivalenceClasses.iterator(); it.hasNext();) {
-			Set eqc = (Set) it.next();
-			System.out.print("c: ");
-			for (Iterator it2 = eqc.iterator(); it2.hasNext();) {
-				IOPort port = (IOPort) it2.next();
-				System.out.print(port.getName() + " ");
-			}
-			System.out.println();
 		}
 		return equivalenceClasses;
 	}
@@ -346,7 +320,6 @@ public class PtidesGraphUtilities {
 	private double _getMinDelay(Actor container, boolean forward, Node node,
 			DirectedAcyclicGraph graph, double minDelay, Set traversedEdges)
 			throws IllegalActionException {
-		System.out.println("fw");
 		IOPort port = (IOPort) (node).getWeight();
 		Collection inputs;
 		if (forward)

@@ -236,7 +236,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 						.get(_actorsInExecution.size() - 1);
 				double d = getDeadline((NamedObj) actorToFire);
 				if (d < _physicalTime.getDoubleValue()) {
-					System.out.println("missed sync!!!!");
+					// should not happen but would mean that a synchronization point was missed
 				}
 				if (d == _physicalTime.getDoubleValue()) {
 					_actorsInExecution.remove(actorToFire);
@@ -270,7 +270,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
 					displaySchedule(actorToFire,
 							_physicalTime.getDoubleValue(),
 							ScheduleListener.START);
-					System.out.println(this.getContainer().getName()
+					if (_debugging)
+						_debug(this.getContainer().getName()
 							+ "-fired " + actorToFire.getName());
 					_addSynchronizationPoint(_physicalTime.add(wcet));
 					setDeadline(actorToFire, _physicalTime.add(wcet)
@@ -733,8 +734,6 @@ public class PtidesEmbeddedDirector extends DEDirector {
 					if (!((isSafeToProcessOnNetwork(
 							time, port)) || (time
 							.compareTo(_physicalTime) > 0))) {
-
-						System.out.println("cannot ti yet " + time);
 						_addSynchronizationPoint(time.subtract(
 								PtidesGraphUtilities.getMinDelayTime(port))
 								.add(_clockSyncError).add(_networkDelay)); // at
@@ -761,13 +760,13 @@ public class PtidesEmbeddedDirector extends DEDirector {
 							displaySchedule((Actor) port.getContainer(),
 									_physicalTime.getDoubleValue(),
 									ScheduleListener.TRANSFERINPUT);
-							System.out.println("	in " + t + " at " + time);
+							if (_debugging)
+								_debug("transfer input value " + t + " at " + time);
 							wasTransferred = true;
 						}
 					}
 				}
 			} catch (ArithmeticException ex) {
-				System.out.println("cannot ti yet");
 				return false;
 			} catch (NoTokenException ex) {
 				throw new InternalErrorException(this, ex, null);
@@ -820,7 +819,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
 							displaySchedule((Actor) port.getContainer(),
 									_physicalTime.getDoubleValue(),
 									ScheduleListener.TRANSFEROUTPUT);
-							System.out.println("	out " + token + " at rt: "
+							if (_debugging)
+								_debug("transfer output value " + token + " at rt: "
 									+ _physicalTime + "/mt: " + getModelTime());
 						}
 					}
@@ -965,7 +965,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
 				}
 			}
 		}
-		System.out.println(this.getContainer().getName() + ": " + events.size()
+		if (_debugging)
+			_debug("events that are safe to fire: " + events.size()
 				+ " " + events);
 		return events;
 	}

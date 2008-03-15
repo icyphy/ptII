@@ -232,7 +232,6 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 		try {
 			if (!_queue.add(event)) {
 				// same event already exists
-				System.out.println();
 			}
 		} catch (NoRoomException e) {
 

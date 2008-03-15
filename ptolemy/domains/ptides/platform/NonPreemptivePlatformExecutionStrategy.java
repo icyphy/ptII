@@ -196,7 +196,6 @@ public class NonPreemptivePlatformExecutionStrategy extends
 					_nextRealTimeEvent = event.timeStamp();
 			}
 		}
-		System.out.println("next rt: " + _nextRealTimeEvent);
 		DEEvent event = null;
 		int index = 0;
 		while (index < eventsToFire.size()) {
