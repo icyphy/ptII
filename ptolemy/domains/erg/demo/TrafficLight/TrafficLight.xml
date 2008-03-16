@@ -7,188 +7,6 @@
     <property name="_tableauFactory" class="ptolemy.vergil.erg.ERGTableauFactory">
     </property>
     <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-        </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-        </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.0454545454545, 207.5454545454545}">
-        </property>
-        <property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime" value="true">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-                  <svg>
-                    <circle cx="3" cy="3" r="2" style="fill:#0000FF"></circle>
-                  </svg>
-                </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 35.0]">
-            </property>
-        </property>
-        <property name="Cred" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 170.0]">
-            </property>
-        </property>
-        <property name="Cyel" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 190.0]">
-            </property>
-        </property>
-        <property name="Cgrn" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 210.0]">
-            </property>
-        </property>
-        <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 80.0]">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cred == 1) ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="Ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 105.0]">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cyel == 1) ? {1.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Cars">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 45.0]">
-            </property>
-        </property>
-        <property name="Ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 130.0]">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cgrn == 1) ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="Pred" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 230.0]">
-            </property>
-        </property>
-        <property name="Pgrn" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 250.0]">
-            </property>
-        </property>
-        <property name="Ellipse4" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 80.0]">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Pred == 1) ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="Ellipse5" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 105.0]">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Pgrn == 1) ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pedestrian">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 45.0]">
-            </property>
-        </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -206,7 +24,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 375.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 365.0]">
             </property>
         </property>
         <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -228,26 +46,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 310.0]">
-            </property>
-        </property>
-        <property name="MaxTime" class="ptolemy.data.expr.Parameter" value="100.0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 60.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 300.0]">
             </property>
         </property>
         <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -267,8 +66,209 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 285.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 275.0]">
             </property>
+        </property>
+        <property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime" value="true">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+                  <svg>
+                    <circle cx="3" cy="3" r="2" style="fill:#0000FF"></circle>
+                  </svg>
+                </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 25.0]">
+            </property>
+        </property>
+        <property name="MaxTime" class="ptolemy.data.expr.Parameter" value="100.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 50.0]">
+            </property>
+        </property>
+        <property name="Cred" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 160.0]">
+            </property>
+        </property>
+        <property name="Cyel" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 180.0]">
+            </property>
+        </property>
+        <property name="Cgrn" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 200.0]">
+            </property>
+        </property>
+        <property name="Pred" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 220.0]">
+            </property>
+        </property>
+        <property name="Pgrn" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 240.0]">
+            </property>
+        </property>
+        <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 70.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cred == 1) ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="Ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 95.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cyel == 1) ? {1.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Cars">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 35.0]">
+            </property>
+        </property>
+        <property name="Ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 120.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cgrn == 1) ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="Ellipse4" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 70.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Pred == 1) ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="Ellipse5" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 95.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Pgrn == 1) ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pedestrian">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 35.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={300, 265, 800, 519}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[577, 405]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.5, 202.5}">
         </property>
         <entity name="CRed" class="ptolemy.domains.erg.kernel.Event">
             <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -277,7 +277,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 140.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 130.0]">
             </property>
         </entity>
         <entity name="CGreen" class="ptolemy.domains.erg.kernel.Event">
@@ -285,7 +285,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 240.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 230.0]">
             </property>
         </entity>
         <entity name="CYellow" class="ptolemy.domains.erg.kernel.Event">
@@ -293,7 +293,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 240.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 230.0]">
             </property>
         </entity>
         <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
@@ -301,7 +301,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 65.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 55.0]">
             </property>
         </entity>
         <entity name="PRed" class="ptolemy.domains.erg.kernel.Event">
@@ -309,7 +309,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 240.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 230.0]">
             </property>
         </entity>
         <entity name="PGreen" class="ptolemy.domains.erg.kernel.Event">
@@ -317,7 +317,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 145.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 135.0]">
             </property>
         </entity>
         <entity name="Stop" class="ptolemy.domains.erg.kernel.Event">
@@ -325,15 +325,15 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 75.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 65.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6429172666056284">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.06926223043480136">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.2356954268135723">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -343,9 +343,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.data.expr.Parameter" value="3.0">
-            </property>
-            <property name="arguments" class="ptolemy.data.expr.Parameter" value="{}">
+            <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="3.0">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
@@ -353,7 +351,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.591112100980067">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.12091678532652556">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.12091678532652594">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -363,9 +361,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.data.expr.Parameter" value="2.0">
-            </property>
-            <property name="arguments" class="ptolemy.data.expr.Parameter" value="{}">
+            <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="2.0">
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
@@ -383,9 +379,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="arguments" class="ptolemy.data.expr.Parameter" value="{}">
+            <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="1.0">
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
@@ -393,7 +387,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.42331827077829215">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.7158001324120237">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.682293381569953">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -402,10 +396,6 @@ may schedule other events with edges, possibly after certain time delay.</text><
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="delay" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="arguments" class="ptolemy.data.expr.Parameter" value="{}">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.domains.erg.kernel.SchedulingRelation">
@@ -423,10 +413,6 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="arguments" class="ptolemy.data.expr.Parameter" value="{}">
-            </property>
         </relation>
         <relation name="relation6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
@@ -442,10 +428,6 @@ may schedule other events with edges, possibly after certain time delay.</text><
             <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="delay" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="arguments" class="ptolemy.data.expr.Parameter" value="{}">
             </property>
         </relation>
         <relation name="relation7" class="ptolemy.domains.erg.kernel.SchedulingRelation">
@@ -463,9 +445,7 @@ may schedule other events with edges, possibly after certain time delay.</text><
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.data.expr.Parameter" value="MaxTime">
-            </property>
-            <property name="arguments" class="ptolemy.data.expr.Parameter" value="{}">
+            <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="MaxTime">
             </property>
         </relation>
         <link port="CRed.incomingPort" relation="relation3"/>

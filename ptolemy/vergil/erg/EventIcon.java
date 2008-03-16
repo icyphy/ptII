@@ -78,45 +78,13 @@ public class EventIcon extends StateIcon {
                 actions = "{ " + exp + " }";
             }
         }
+
+        if (event.parameters.getArgumentNameList().size() > 0) {
+            _addLabel(figure, event.parameters.getValueAsString());
+        }
+
         if (actions != null) {
-            LabelFigure label = new LabelFigure(actions, _ACTION_FONT, 1.0,
-                    SwingConstants.CENTER);
-            Rectangle2D stringBounds = label.getBounds();
-            Rectangle2D backBounds = figure.getBackgroundFigure().getBounds();
-
-            int width = (int) backBounds.getWidth();
-            int textWidth = (int) stringBounds.getWidth() + 20;
-            int left = 0;
-            if (textWidth > width) {
-                left = (width - textWidth) / 2;
-                width = textWidth - 6;
-            } else {
-                // Don't know why, but this helps to align the name center.
-                width -= 4;
-            }
-            int height = (int) backBounds.getHeight()
-                    + (int) stringBounds.getHeight() + 4;
-
-            Figure background;
-            if (_spacingValue == 0.0) {
-                background = new RoundedRectangle(left, 0, width, height,
-                        _getFill(), _getLineWidth(), _roundingValue,
-                        _roundingValue);
-            } else {
-                background = new CompositeFigure(new RoundedRectangle(
-                        left - _spacingValue, - _spacingValue, width,
-                        height + 2 * _spacingValue, null, _getLineWidth(),
-                        _roundingValue + _spacingValue,
-                        _roundingValue + _spacingValue));
-                ((CompositeFigure) background).add(new RoundedRectangle(left, 0,
-                        width - 2 * _spacingValue, height, _getFill(),
-                        _getLineWidth(), _roundingValue, _roundingValue));
-            }
-            figure.setBackgroundFigure(background);
-
-            label.translateTo(backBounds.getCenterX(), backBounds.getCenterY()
-                    + 12 + stringBounds.getHeight() / 2);
-            figure.add(label);
+            _addLabel(figure, actions);
         }
 
         return figure;
@@ -131,6 +99,44 @@ public class EventIcon extends StateIcon {
                 5.0, 5.0);
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
+    }
+
+    private void _addLabel(CompositeFigure figure, String text) {
+        LabelFigure label = new LabelFigure(text, _ACTION_FONT, 1.0,
+                SwingConstants.CENTER);
+        Rectangle2D stringBounds = label.getBounds();
+        Figure background = figure.getBackgroundFigure();
+        Rectangle2D backBounds = background.getBounds();
+
+        double width = backBounds.getWidth();
+        double textWidth = stringBounds.getWidth() + 12.0;
+        double left = backBounds.getX();
+        if (textWidth > width) {
+            left += (width - textWidth) / 2.0;
+            width = textWidth;
+        }
+        double height = backBounds.getHeight() + stringBounds.getHeight();
+
+        background.setParent(null);
+        if (_spacingValue == 0.0) {
+            background = new RoundedRectangle(left, 0, width, height,
+                    _getFill(), _getLineWidth(), _roundingValue,
+                    _roundingValue);
+        } else {
+            background = new CompositeFigure(new RoundedRectangle(
+                    left - _spacingValue, - _spacingValue,
+                    width + 2.0 * _spacingValue, height + 2.0 * _spacingValue,
+                    null, _getLineWidth(), _roundingValue + _spacingValue,
+                    _roundingValue + _spacingValue));
+            ((CompositeFigure) background).add(new RoundedRectangle(left, 0.0,
+                    width, height, _getFill(), _getLineWidth(), _roundingValue,
+                    _roundingValue));
+        }
+        figure.setBackgroundFigure(background);
+
+        label.translateTo(background.getBounds().getCenterX(),
+                backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0);
+        figure.add(label);
     }
 
     private static final Font _ACTION_FONT =

@@ -36,7 +36,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.Time;
-import ptolemy.actor.util.TimedEvent;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.domains.erg.lib.SynchronizeToRealtime;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -166,7 +166,7 @@ public class ERGDirector extends Director {
                 }
 
                 Event event = (Event) timedEvent.contents;
-                event.fire();
+                event.fire(timedEvent.arguments);
 
                 if (((BooleanToken) event.isFinalState.getToken())
                         .booleanValue()) {
@@ -179,13 +179,18 @@ public class ERGDirector extends Director {
     }
 
     public void fireAt(Event event, Time time) throws IllegalActionException {
+        fireAt(event, time, null);
+    }
+
+    public void fireAt(Event event, Time time, ArrayToken arguments)
+    throws IllegalActionException {
         if (time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this,
                     "Attempt to schedule an event in the past:"
                             + " Current time is " + getModelTime()
                             + " while event time is " + time);
         }
-        _queue.add(new TimedEvent(time, event));
+        _queue.add(new TimedEvent(time, event, arguments));
     }
 
     public ERGController getController() throws IllegalActionException {
@@ -242,7 +247,7 @@ public class ERGDirector extends Director {
             boolean isInitial =
                 ((BooleanToken) event.isInitialState.getToken()).booleanValue();
             if (isInitial) {
-                _queue.add(new TimedEvent(_startTime, event));
+                _queue.add(new TimedEvent(_startTime, event, null));
             }
         }
 
@@ -333,6 +338,25 @@ public class ERGDirector extends Director {
      *  methods of this director are called.
      */
     public StringAttribute controllerName = null;
+
+    public static class TimedEvent extends ptolemy.actor.util.TimedEvent {
+
+        public TimedEvent(Time time, Event event, ArrayToken arguments) {
+            super(time, event);
+            this.arguments = arguments;
+        }
+
+        /** Display timeStamp and contents. */
+        public String toString() {
+            if (arguments == null) {
+                return super.toString();
+            }
+            return "timeStamp: " + timeStamp + ", contents: " + contents + "(" +
+                    arguments + ")";
+        }
+
+        protected ArrayToken arguments;
+    }
 
     /** Create the controllerName attribute.
      * @throws NameDuplicationException

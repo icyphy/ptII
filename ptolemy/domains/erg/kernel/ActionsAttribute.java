@@ -89,19 +89,13 @@ public class ActionsAttribute extends StringAttribute {
         super(workspace);
     }
 
-    public void execute() throws IllegalActionException {
+    public void execute(ParserScope scope) throws IllegalActionException {
         if (_destinationsListVersion != workspace().getVersion()) {
             _updateDestinations();
         }
 
         if (_parseTreeEvaluator == null) {
             _parseTreeEvaluator = new ParseTreeEvaluator();
-        }
-
-        if (_scope == null) {
-            ERGController controller =
-                (ERGController) getContainer().getContainer();
-            _scope = controller.getPortScope();
         }
 
         if (_destinations != null) {
@@ -117,19 +111,9 @@ public class ActionsAttribute extends StringAttribute {
                 ASTPtRootNode parseTree = parseTrees.next();
                 Token token;
 
-                // In MultirateFSMDirector, the initial transition from
-                // the initial state is taken during preinitialize() if
-                // the initial state does not have a refinement, therefore
-                // _scope need to be initialized here. -- Gang
-                if (_scope == null) {
-                    ERGController fsmActor = (ERGController) getContainer()
-                            .getContainer();
-                    _scope = fsmActor.getPortScope();
-                }
-
                 try {
                     token = _parseTreeEvaluator.evaluateParseTree(parseTree,
-                            _scope);
+                            scope);
                 } catch (IllegalActionException ex) {
                     // Chain exceptions to get the actor that
                     // threw the exception.
@@ -364,9 +348,6 @@ public class ActionsAttribute extends StringAttribute {
 
     /** The list of parse trees. */
     protected List<ASTPtRootNode> _parseTrees;
-
-    /** The scope. */
-    protected ParserScope _scope;
 
     private void _updateDestinations() throws IllegalActionException {
         try {

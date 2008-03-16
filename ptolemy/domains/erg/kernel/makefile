@@ -53,6 +53,7 @@ JSRCS = \
 	ERGDirector.java \
 	ERGModalModel.java \
 	Event.java \
+	ParametersAttribute.java \
 	SchedulingRelation.java
 
 OTHER_FILES_TO_BE_JARED = \

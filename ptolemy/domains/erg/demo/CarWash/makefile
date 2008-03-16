@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Discrete Event domain demos
+# Makefile for Ptolemy II Discrete Event domain demo
 #
 # @Authors: Thomas Huining Feng
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2007 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/erg/demo
+ME =		ptolemy/domains/erg/demo/CarWash
 
 # Root of the Java directory
-ROOT =		../../../..
-
-DIRS =		CarWash TrafficLight
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,34 +41,42 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTPACKAGE = 	CarWash
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	CarWash/CarWash.jar \
-	TrafficLight/TrafficLight.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	CarWash.xml
 
-# Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS =
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all jars
 
-demo: subdemo
+demo: demo_ptolemy demo_vergil
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" CarWash.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" CarWash.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

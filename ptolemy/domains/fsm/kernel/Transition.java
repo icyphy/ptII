@@ -40,6 +40,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
@@ -159,24 +160,6 @@ import ptolemy.kernel.util.Workspace;
  @see OutputActionsAttribute
  */
 public class Transition extends ComponentRelation {
-    /** Construct a transition in the given workspace with an empty string
-     *  as a name.
-     *  If the workspace argument is null, use the default workspace.
-     *  The object is added to the workspace directory.
-     *  Increment the version of the workspace.
-     *  @param workspace The workspace for synchronization and version
-     *  tracking.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this transition.
-     *  @exception NameDuplicationException If the name coincides with
-     *   any relation already in the container.
-     */
-    public Transition(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
-        super(workspace);
-        _init();
-    }
-
     /** Construct a transition with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown. This transition will use the
@@ -195,78 +178,23 @@ public class Transition extends ComponentRelation {
         _init();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** An annotation that describes the transition. If this is non-empty,
-     *  then a visual editor will be expected to put this annotation on
-     *  or near the transition to document its function. This is a string
-     *  that defaults to the empty string. Note that it can reference
-     *  variables in scope using the notation $name.
+    /** Construct a transition in the given workspace with an empty string
+     *  as a name.
+     *  If the workspace argument is null, use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version of the workspace.
+     *  @param workspace The workspace for synchronization and version
+     *  tracking.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this transition.
+     *  @exception NameDuplicationException If the name coincides with
+     *   any relation already in the container.
      */
-    public StringParameter annotation;
-
-    /** Indicator that this transition is a default transition. A
-     *  default transition is enabled only if no other non-default
-     *  transition is enabled.  This is a boolean with default value
-     *  false. If the value is true, then the guard expression is
-     *  ignored.
-     */
-    public Parameter defaultTransition = null;
-
-    /** Attribute the exit angle of a visual rendition.
-     *  This parameter contains a DoubleToken, initially with value PI/5.
-     *  It must lie between -PI and PI.  Otherwise, it will be truncated
-     *  to lie within this range.
-     */
-    public Parameter exitAngle;
-
-    /** Attribute giving the orientation of a self-loop. This is equal to
-     * the tangent at the midpoint (more or less).
-     *  This parameter contains a DoubleToken, initially with value 0.0.
-     */
-    public Parameter gamma;
-
-    /** Attribute specifying the guard expression.
-     */
-    public StringAttribute guardExpression = null;
-
-    /** Parameter specifying whether this transition is nondeterministic.
-     *  Here nondeterministic means that this transition may not be the only
-     *  enabled transition at a time. The default value is a boolean token
-     *  with value as false, meaning that if this transition is enabled, it
-     *  must be the only enabled transition.
-     */
-    public Parameter nondeterministic = null;
-
-    /** The action commands that produce outputs when the transition is taken.
-     */
-    public OutputActionsAttribute outputActions;
-
-    /** Parameter specifying whether this transition is preemptive.
-     */
-    public Parameter preemptive = null;
-
-    /** Parameter specifying whether the refinement of the destination
-     *  state is reset when the transition is taken.
-     */
-    public Parameter reset = null;
-
-    /** The action commands that set parameters when the transition is taken.
-     */
-    public CommitActionsAttribute setActions;
-
-    /** Attribute specifying one or more names of refinements. The
-     *  refinements must be instances of TypedActor and have the same
-     *  container as the FSMActor containing this state, otherwise
-     *  an exception will be thrown when getRefinement() is called.
-     *  Usually, the refinement is a single name. However, if a
-     *  comma-separated list of names is provided, then all the specified
-     *  refinements will be executed.
-     *  This attribute has a null expression or a null string as
-     *  expression when the state is not refined.
-     */
-    public StringAttribute refinementName = null;
+    public Transition(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
+        super(workspace);
+        _init();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -538,8 +466,18 @@ public class Transition extends ComponentRelation {
      *  @exception IllegalActionException If thrown when evaluating the guard.
      */
     public boolean isEnabled() throws IllegalActionException {
-        ParseTreeEvaluator parseTreeEvaluator = getParseTreeEvaluator();
         FSMActor fsmActor = (FSMActor) getContainer();
+        return isEnabled(fsmActor.getPortScope());
+    }
+
+    /** Return true if the transition is enabled, that is the guard is true, or
+     *  some event has been detected due to crossing some level.
+     *  @param scope The parser scope in which the guard is to be evaluated.
+     *  @return True If the transition is enabled and some event is detected.
+     *  @exception IllegalActionException If thrown when evaluating the guard.
+     */
+    public boolean isEnabled(ParserScope scope) throws IllegalActionException {
+        ParseTreeEvaluator parseTreeEvaluator = getParseTreeEvaluator();
         if (_guardParseTree == null) {
             String expr = getGuardExpression();
             // Parse the guard expression.
@@ -552,7 +490,7 @@ public class Transition extends ComponentRelation {
             }
         }
         Token token = parseTreeEvaluator.evaluateParseTree(_guardParseTree,
-                fsmActor.getPortScope());
+                scope);
         if (token == null) {
             // FIXME: when could this happen??
             return false;
@@ -635,6 +573,79 @@ public class Transition extends ComponentRelation {
 
         return _sourceState;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** An annotation that describes the transition. If this is non-empty,
+     *  then a visual editor will be expected to put this annotation on
+     *  or near the transition to document its function. This is a string
+     *  that defaults to the empty string. Note that it can reference
+     *  variables in scope using the notation $name.
+     */
+    public StringParameter annotation;
+
+    /** Indicator that this transition is a default transition. A
+     *  default transition is enabled only if no other non-default
+     *  transition is enabled.  This is a boolean with default value
+     *  false. If the value is true, then the guard expression is
+     *  ignored.
+     */
+    public Parameter defaultTransition = null;
+
+    /** Attribute the exit angle of a visual rendition.
+     *  This parameter contains a DoubleToken, initially with value PI/5.
+     *  It must lie between -PI and PI.  Otherwise, it will be truncated
+     *  to lie within this range.
+     */
+    public Parameter exitAngle;
+
+    /** Attribute giving the orientation of a self-loop. This is equal to
+     * the tangent at the midpoint (more or less).
+     *  This parameter contains a DoubleToken, initially with value 0.0.
+     */
+    public Parameter gamma;
+
+    /** Attribute specifying the guard expression.
+     */
+    public StringAttribute guardExpression = null;
+
+    /** Parameter specifying whether this transition is nondeterministic.
+     *  Here nondeterministic means that this transition may not be the only
+     *  enabled transition at a time. The default value is a boolean token
+     *  with value as false, meaning that if this transition is enabled, it
+     *  must be the only enabled transition.
+     */
+    public Parameter nondeterministic = null;
+
+    /** The action commands that produce outputs when the transition is taken.
+     */
+    public OutputActionsAttribute outputActions;
+
+    /** Parameter specifying whether this transition is preemptive.
+     */
+    public Parameter preemptive = null;
+
+    /** Attribute specifying one or more names of refinements. The
+     *  refinements must be instances of TypedActor and have the same
+     *  container as the FSMActor containing this state, otherwise
+     *  an exception will be thrown when getRefinement() is called.
+     *  Usually, the refinement is a single name. However, if a
+     *  comma-separated list of names is provided, then all the specified
+     *  refinements will be executed.
+     *  This attribute has a null expression or a null string as
+     *  expression when the state is not refined.
+     */
+    public StringAttribute refinementName = null;
+
+    /** Parameter specifying whether the refinement of the destination
+     *  state is reset when the transition is taken.
+     */
+    public Parameter reset = null;
+
+    /** The action commands that set parameters when the transition is taken.
+     */
+    public CommitActionsAttribute setActions;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -843,18 +854,6 @@ public class Transition extends ComponentRelation {
     // Cached nondeterministic attribute value.
     private boolean _nondeterministic = false;
 
-    // Cached source state of this transition.
-    private State _sourceState = null;
-
-    // Version of cached source/destination state.
-    private long _stateVersion = -1;
-
-    // Cached reference to the refinement of this state.
-    private TypedActor[] _refinement = null;
-
-    // Version of the cached reference to the refinement.
-    private long _refinementVersion = -1;
-
     // The parse tree evaluator for the transition.
     // Note that this variable should not be accessed directly even inside
     // this class. Instead, always use the getParseTreeEvaluator() method.
@@ -862,4 +861,16 @@ public class Transition extends ComponentRelation {
 
     // Version of the cached parse tree evaluator
     private long _parseTreeEvaluatorVersion = -1;
+
+    // Cached reference to the refinement of this state.
+    private TypedActor[] _refinement = null;
+
+    // Version of the cached reference to the refinement.
+    private long _refinementVersion = -1;
+
+    // Cached source state of this transition.
+    private State _sourceState = null;
+
+    // Version of cached source/destination state.
+    private long _stateVersion = -1;
 }
