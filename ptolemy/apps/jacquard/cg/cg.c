@@ -101,6 +101,7 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
         rnorm2 = ddot(r, r, n);
 
         beta = -rz / rzold;
+	//beta++;
         axpy(s, -beta, s, z, n);
 
     }
