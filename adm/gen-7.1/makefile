@@ -2222,6 +2222,12 @@ $(PTSETUP).jar: $(PTSETUP).xml ../../ptiny.exe src/ptII$(VERSION)/bin/vergil
 	@echo "# `date`"
 	ls -l src/ptII$(VERSION)/bin/vergil
 	sh "$(IZPACK_COMPILE)" $<
+	if [ ! -f $@ ];  then \
+		error "$@ does not exist?"; \
+	else \
+		ls -l $@; \
+	fi
+
 
 src/ptII$(VERSION)/bin/vergil:
 	cp $(PTII)/bin/vergil $@
@@ -2278,7 +2284,16 @@ $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
 			../../lib/matlabWindows.jar \
 			$(PTSETUP)_l4j.xml \
 			$(PTSETUP).jar #ExtractJarFile.class
-		"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_l4j.xml`
+
+	@echo "#"
+	@echo "# Building $(PTSETUP).exe"
+	@echo "# `date`"
+	"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_l4j.xml`
+	if [ ! -f $@ ];  then \
+		error "$@ does not exist?"; \
+	else \
+		ls -l $@; \
+	fi
 
 ../../ptiny.exe:
 	 $(MAKE) -C ../.. exes
