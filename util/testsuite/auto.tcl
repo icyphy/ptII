@@ -69,7 +69,7 @@ foreach file [lsort [glob auto/*.xml]] {
         puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
-        if [catch {set application [createAndExecute $file]}] {
+        if [catch {set application [createAndExecute $file]} errMsg] {
 	    $watchDog cancel
 	    error $errMsg
         } else {
@@ -82,7 +82,7 @@ foreach file [lsort [glob auto/*.xml]] {
         puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
-        if [catch {$application rerun}] {
+        if [catch {$application rerun} errMsg] {
 	    $watchDog cancel
 	    error $errMsg
         } else {
