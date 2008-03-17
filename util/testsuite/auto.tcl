@@ -65,7 +65,7 @@ foreach file [lsort [glob auto/*.xml]] {
 	    # FIXME: we should use $relativeFilename here, but it
 	    # might have backslashes under Windows, which causes no end
 	    # of trouble.
-    	set timeout 100000
+    	set timeout 200000
         puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
