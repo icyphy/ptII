@@ -45,7 +45,7 @@ Code generator helper for EmbeddedCFileActor.
 public class EmbeddedCFileActor extends CompiledCompositeActor  {
    /** Construct the code generator helper associated
     *  with the given TypedCompositeActor.
-    *  @param component The associated component.
+    *  @param actor The associated actor.
     */
    public EmbeddedCFileActor(ptolemy.actor.lib.jni.EmbeddedCFileActor actor) {
        super(actor);

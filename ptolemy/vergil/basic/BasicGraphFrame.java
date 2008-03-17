@@ -1362,7 +1362,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      * However, events _are_ handled by the components within this component.  
      * @param event The mouse event.
      */
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(MouseEvent event) {
         // Implementation of the MouseMotionListener interface.
     }
     
