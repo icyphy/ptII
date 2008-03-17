@@ -630,3 +630,107 @@ csr_matrix_t *csr_mm_load(char *filename)
 
     return A;
 }
+
+#define MAX_N   10000
+#define MAX_NNZ 100000
+
+/* Load a sparse matrix in Matrix Market format and distribute
+ * the values among processors
+ */
+csr_matrix_t *csr_hb_load(char *filename)
+{
+    csr_matrix_t *initial_matrix = NULL;
+    csr_matrix_t *local_matrix = NULL;
+    int *start;
+    int i;
+    int n_per_proc, nlocal, nzlocal;
+    int first_nz;
+
+    static int shared n;
+    static shared [] int row_start[MAX_N];
+    static shared [] int col_idx[MAX_NNZ];
+    static shared [] double val[MAX_NNZ];
+
+    /* Read the initial matrix at processor 0 and copy it
+     * into shared space
+     */
+    if (MYTHREAD == 0) {
+        int nz;
+
+        initial_matrix = csr_mm_load(filename);
+        //n is the number of rows of x and b
+        //                   columns of A
+        n = initial_matrix->n;
+        nz = initial_matrix->nz;
+
+        assert(nz < MAX_NNZ);
+        assert(n < MAX_N);
+
+        //row_start is the array that stores the starting index of each row
+        for (i = 0; i <= n; ++i) 
+            row_start[i] = initial_matrix->row_start[i];
+	
+        for (i = 0; i < nz; ++i) {
+            col_idx[i] = initial_matrix->col_idx[i];
+            val[i] = initial_matrix->val[i];
+        }
+
+        free(initial_matrix->val);
+        free(initial_matrix->col_idx);
+        free(initial_matrix->row_start);
+        free(initial_matrix);
+    }
+
+    upc_barrier;
+
+
+    /* Share out sections of the matrix to each processor */
+
+    local_matrix = (csr_matrix_t *) malloc(sizeof(csr_matrix_t));
+    local_matrix->n = n;
+
+    // n_per_proc number of rows are distributed to each thread.
+    // all threads other than the last one are responsible for equal number of
+    // rows, the last one is responsible for the left over rows
+    n_per_proc = n / THREADS;
+    //start = local_matrix->start;
+    // start is the array that stores which row we are dealing with at each
+    // thread.
+    for (i = 0; i < THREADS; ++i) {
+        start[i] = i * n_per_proc;
+    }
+    start[THREADS] = n;
+    // nlocal is the number of rows for each thread
+    nlocal = start[MYTHREAD + 1] - start[MYTHREAD];
+    // store nlocal in m of local_matrix
+    local_matrix->m = nlocal;
+
+    local_matrix->row_start = (int *) malloc((nlocal + 1) * sizeof(int));
+
+    // index to the first none-zero for each processor
+    first_nz = row_start[start[MYTHREAD]];
+    for (i = 0; i <= nlocal; ++i) {
+        // find the starting pointer for each row, normalize it to for row 0, 1,
+        // etc, then set it to row_start's for local_matrix
+        local_matrix->row_start[i] = row_start[start[MYTHREAD] + i] - first_nz;
+    }
+
+    // number of none-zeros in the local processor
+    nzlocal = row_start[start[MYTHREAD + 1]] - row_start[start[MYTHREAD]];
+    local_matrix->nz = nzlocal;
+
+    local_matrix->col_idx = (int *) malloc(nzlocal * sizeof(int));
+    local_matrix->val = (double *) malloc(nzlocal * sizeof(double));
+    assert(local_matrix->col_idx != NULL);
+    assert(local_matrix->val != NULL);
+
+
+    for (i = 0; i < nzlocal; ++i) {
+        local_matrix->col_idx[i] = col_idx[first_nz + i];
+        local_matrix->val[i] = val[first_nz + i];
+    }
+
+    upc_barrier;
+
+    return local_matrix;
+}

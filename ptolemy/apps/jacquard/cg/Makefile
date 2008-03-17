@@ -1,8 +1,9 @@
 
 # -- Jacquard with ACML
 # make sure you 'module load acml' first
-CC= pathcc
-CFLAGS= -O3 
+#CC= pathcc
+CC= upcc
+#CFLAGS= -O3 
 LIBS= $(ACML) -lm -lpathfortran #-lblas #-llapack -lg2c
 
 # -- Franklin with libSci
