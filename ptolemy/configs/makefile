@@ -91,6 +91,7 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityAnalysis.xml \
 	utilityColorAttribute.xml \
 	utilityCompositeActor.xml \
+	utilityERGModalModel.xml \
 	utilityFileParameter.xml \
 	utilityIntRangeParameter.xml \
 	utilityModalModel.xml \

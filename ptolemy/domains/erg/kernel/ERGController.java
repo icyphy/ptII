@@ -28,9 +28,9 @@
 
 package ptolemy.domains.erg.kernel;
 
-import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.StateEvent;
+import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -45,16 +45,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ERGController extends FSMActor {
-
-    /**
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
-     *
-     */
-    public ERGController() throws IllegalActionException,
-    NameDuplicationException {
-    }
+public class ERGController extends ModalController {
 
     /**
      * @param container

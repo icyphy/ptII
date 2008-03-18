@@ -28,7 +28,8 @@
 
 package ptolemy.domains.erg.kernel;
 
-import ptolemy.actor.CompositeActor;
+import ptolemy.domains.fsm.modal.ModalModel;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -42,7 +43,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ERGModalModel extends CompositeActor {
+public class ERGModalModel extends ModalModel {
 
     /**
      * @param container
@@ -67,17 +68,17 @@ public class ERGModalModel extends CompositeActor {
         _init();
     }
 
-    public ERGController getERGController() {
-        return (ERGController) getEntity(_CONTROLLER_NAME);
-    }
-
-    private void _init() throws IllegalActionException,
+    protected void _init() throws IllegalActionException,
     NameDuplicationException {
-        ERGDirector newDirector = new ERGDirector(this, "_Director");
-        newDirector.controllerName.setExpression(_CONTROLLER_NAME);
+    	setClassName("ptolemy.domains.erg.kernel.ERGModalModel");
+    	
+    	directorClass.removeAllChoices();
+        directorClass.setExpression("ptolemy.domains.erg.kernel.ERGDirector");
 
-        new ERGController(this, _CONTROLLER_NAME);
+        ComponentEntity controller = getEntity("_Controller");
+        if (controller != null) {
+            controller.setContainer(null);
+        }
+        _controller = new ERGController(this, "_Controller");
     }
-
-    private static final String _CONTROLLER_NAME = "_Controller";
 }

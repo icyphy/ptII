@@ -48,6 +48,7 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
@@ -198,13 +199,23 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                         Constructor newDirectorConstructor = newDirectorClass
                                 .getConstructor(new Class[] {
                                         CompositeEntity.class, String.class });
-                        FSMDirector newDirector = (FSMDirector) newDirectorConstructor
+                        Director newDirector = (Director) newDirectorConstructor
                                 .newInstance(new Object[] { ModalModel.this,
                                         uniqueName("_Director") });
 
                         // The director should not be persistent.
                         newDirector.setPersistent(false);
-                        newDirector.controllerName.setExpression("_Controller");
+                        try {
+                        	StringAttribute newControllerName =
+                        		(StringAttribute) newDirector.getAttribute(
+                        				"controllerName");
+                        	newControllerName.setExpression("_Controller");
+                        } catch (Exception e) {
+                        	throw new IllegalActionException("Director class \""
+                        			+ newDirectorClass + "\" cannot be used "
+                        			+ "because it does not have a "
+                        			+ "\"controllerName\" attribute.");
+                        }
 
                         if ((director != null)
                                 && (director.getContainer() == ModalModel.this)) {

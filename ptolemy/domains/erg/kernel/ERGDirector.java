@@ -151,8 +151,7 @@ public class ERGDirector extends Director {
                             - _realStartTime;
                     double elapsedTimeInSeconds = elapsedTime / 1000.0;
                     long timeToWait = (long) (nextEventTime.subtract(
-                            elapsedTimeInSeconds).getDoubleValue()
-                            * 1000.0);
+                            elapsedTimeInSeconds).getDoubleValue() * 1000.0);
                     if (timeToWait > 0) {
                         try {
                             _workspace.wait(_queue, timeToWait);
