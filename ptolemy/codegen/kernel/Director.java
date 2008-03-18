@@ -194,6 +194,7 @@ public class Director implements ActorCodeGenerator {
      * @param port The referenced port.
      * @param channel The referenced port channel.
      * @param isWrite Whether to generate the write or read offset.
+     * @param helper The corresponding helper. 
      * @return The expression that represents the offset in the generated
      * code.
      * @exception IllegalActionException If there is problems getting

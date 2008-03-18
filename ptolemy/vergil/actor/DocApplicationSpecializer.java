@@ -40,7 +40,7 @@ import ptolemy.actor.gui.Effigy;
 /**
  An interface that specializes the documentation system to the application.
 
- The docClassNameToURL() method used by {@link DocManager} and other
+ <p>The docClassNameToURL() method used by {@link DocManager} and other
  classes to convert class names to URLs.  The buildCommands() method
  is used by {@link DocBuilder} to set up the build environment to
  build the documentation system if necessary.
@@ -50,7 +50,7 @@ import ptolemy.actor.gui.Effigy;
  the _docApplicationSpecializer parameter in the configuration to name
  the implementation class.
 
- @author Christopher Brooks
+ @author Chad Berkley
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Red (cxh)
@@ -89,13 +89,13 @@ public interface DocApplicationSpecializer {
     public List buildCommands(ExecuteCommands executeCommands);
     
     /** Return the class name of the attribute that this specializer
-     *  uses to store documentation
+     *  uses to store documentation.
      *  @return the name of the class of the specialized documentation
      *  attribute
      */
     public String getDocumentationAttributeClassName();
     
-    /** create a gui to edit the documentation in the attribute
+    /** Create a gui to edit the documentation in the attribute.
      * @param owner the editors gui parent
      * @param attribute the documentation attribute to edit
      * @param target the parent component to the attribute
@@ -103,17 +103,19 @@ public interface DocApplicationSpecializer {
     public void editDocumentation(Frame owner, Attribute attribute,
             NamedObj target);
     
-    /** handle the state where there is no documentation attribute and the user
-     * tried to view the documentation
+    /** Handle the state where there is no documentation attribute and
+     * the user tried to view the documentation.
      * @param classname the name of the class
-     * @param effigy the effigy of the entity that does not have a doc attribute
+     * @param effigy the effigy of the entity that does not have a doc
+     * attribute
      */
     public void handleDocumentationNotFound(String classname, Effigy effigy);
     
-    /** handle the state where the documentation attribute does not exist and 
-     * the user tried to edit the docs
+    /** Handle the state where the documentation attribute does not
+     * exist and the user tried to edit the docs.
      * @param owner the editors gui parent
      * @param target the parent component to the attribute
      */
-    public void handleDocumentationAttributeDoesNotExist(Frame owner, NamedObj target);
+    public void handleDocumentationAttributeDoesNotExist(Frame owner,
+            NamedObj target);
 }

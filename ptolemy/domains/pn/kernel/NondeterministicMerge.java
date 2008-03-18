@@ -95,6 +95,10 @@ public class NondeterministicMerge extends TypedCompositeActor {
      *  or to execute it. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
+     *  @exception NameDuplicationException If an actor
+     *   with an identical name already exists in the container.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
      */
     public NondeterministicMerge(Workspace workspace) 
             throws NameDuplicationException, IllegalActionException {

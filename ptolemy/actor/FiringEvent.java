@@ -245,12 +245,16 @@ public class FiringEvent implements DebugEvent {
             return "FiringEventType(" + getName() + ")";
         }
 
-        /** Return true if this event corresponds with a start event. */
+        /** Return true if this event corresponds with a start event.
+         *  @return true if this event corresponds with a start event.
+         */
         public boolean isStart() {
             return _isStart;
         }
 
-        /** Return the name of this event type. */
+        /** Return the name of this event type.
+         *  @return the name of this event type.
+         */
         public String getTypeName() {
             return _name;
         }

@@ -937,11 +937,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _setCurrentConnectionMap();
     }
     
-    /**
-     * Set the last chosen transition. This is required in the TDLModuleDirector.
-     * @param transition
+    /** Set the last chosen transition. 
+     * @param transition The last chosen transition.
      */
     public void setLastChosenTransition(Transition transition) {
+        // This method is used by the TDL director.
     	_lastChosenTransition = transition;
     }
 

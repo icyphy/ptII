@@ -134,6 +134,9 @@ public class FSMGraphTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                           public fields                   ////
 
+    /** The default background color.  To change the background color,
+     *  use a {@link ptolemy.actor.gui.PtolemyPreferences}.
+     */
     public static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
     ///////////////////////////////////////////////////////////////////

@@ -55,6 +55,9 @@ public class IOPortEvent implements DebugEvent {
      *  @param event The type of event.
      *  @param channel Channel the token was sent/received on. Use
      *  IOPortEvent.ALLCHANNELS to indicate a broadcast event.
+     *  @param outside True if the event is related the port's outside
+     *  activity, false if the event is related to the port's inside
+     *  activity.
      *  @param tokens The token array used for the send/receive.
      *  @param vectorLength The number of tokens sent/received.
      */
@@ -76,6 +79,9 @@ public class IOPortEvent implements DebugEvent {
      *  @param event The type of event.
      *  @param channel Channel the token was sent/received on. Use
      *  IOPortEvent.ALLCHANNELS to indicate a broadcast event.
+     *  @param outside True if the event is related the port's outside
+     *  activity, false if the event is related to the port's inside
+     *  activity.
      *  @param token The token that was sent/received.
      */
     public IOPortEvent(IOPort port, int event, int channel, boolean outside,

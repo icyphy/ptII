@@ -204,17 +204,28 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
      *  there is a preferences attribute.
      */
     public static class FSMGraphPane extends GraphPane {
+
+        /** Construct a pane that updates the background color on each
+         *  repait if there is a preference attribute.   
+         * @param controller The graph controller
+         * @param model The model
+         * @param entity The entity
+         */
         public FSMGraphPane(FSMGraphController controller, FSMGraphModel model,
                 NamedObj entity) {
             super(controller, model);
             _entity = entity;
         }
 
+        /** If the entity has a PtolemyPreference, set the background color.
+         */
         public void repaint() {
             _setBackground();
             super.repaint();
         }
 
+        /** If the entity has a PtolemyPreference, set the background color.
+         */
         public void repaint(DamageRegion damage) {
             _setBackground();
             super.repaint(damage);

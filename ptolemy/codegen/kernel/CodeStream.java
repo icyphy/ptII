@@ -297,7 +297,8 @@ public class CodeStream {
         _stream.append(codeBlock);
     }
 
-    /**
+    /** Return a codeBlock with a given name and substitute in the
+     * given arguments.  The codeBlock must exist or an exception is thrown.
      * @param blockName The given name that identifies the code block.
      * @param arguments The list of arguments to substitute in the code block.
      * @return The content contained by the code block with the given name.
@@ -308,14 +309,15 @@ public class CodeStream {
         return getCodeBlock(blockName, arguments, false);
     }
     
-    /**
+    /** Return a codeBlock with a given name and substitute in the
+     * given arguments.
      * @param blockName The given name that identifies the code block.
      * @param arguments The list of arguments to substitute in the code block.
      * @param mayNotExist False to require the codeblock to exist.
      * @return The content contained by the code block with the given name.
-     * @throws IllegalActionException Thrown if a problem occurs in constructing
-     *  the code block table, or the given code block name is required to exist
-     *  but does not.
+     * @throws IllegalActionException Thrown if a problem occurs in
+     * constructing the code block table, or the given code block name
+     * is required to exist but does not.
      */
     public String getCodeBlock(String blockName, List arguments, 
             boolean mayNotExist) throws IllegalActionException {
