@@ -81,6 +81,8 @@ public class Event extends State {
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
+        ((ERGController) getContainer())._debug(this);
+        
         List<?> names = parameters.getArgumentNameList();
         int paramCount = names == null ? 0 : names.size();
         int argCount = arguments == null ? 0 : arguments.length();

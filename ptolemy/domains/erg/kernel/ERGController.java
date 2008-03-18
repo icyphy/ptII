@@ -30,6 +30,7 @@ package ptolemy.domains.erg.kernel;
 
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.StateEvent;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -100,5 +101,9 @@ public class ERGController extends FSMActor {
         } finally {
             workspace().doneWriting();
         }
+    }
+
+    protected void _debug(Event event) {
+        _debug(new StateEvent(this, event));
     }
 }
