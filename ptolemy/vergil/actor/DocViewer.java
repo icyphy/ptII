@@ -38,6 +38,7 @@ import java.awt.geom.Rectangle2D;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -304,6 +305,24 @@ public class DocViewer extends HTMLViewer {
      *  @return Parameter table entries, or null if there are no parameters.
      */
     private String _getParameterEntries(NamedObj target, DocManager manager) {
+        //check for exclusion attributes in the configuration
+        //exclusion attributes can excluse params from the documentation
+        //by their name.  an exclusion can be "exact" or "contains".  an "exact"
+        //exclusion requires the name on the exclusion list to exactly match
+        //the name of the param.  a "contains" exclusion just requires that the
+        //name of exclusion is contained in the name of the exclusion.
+        Configuration config = getConfiguration();
+        Iterator itt = config.attributeList(ptolemy.kernel.util.StringAttribute.class).iterator();
+        Vector exclusions = new Vector();
+        while(itt.hasNext()) {
+          NamedObj att = (NamedObj)itt.next();
+          
+          if(att.getName().indexOf("docViewerExclude") != -1) {
+            String value = ((StringAttribute)att).getExpression();
+            exclusions.addElement(value);
+          }
+        }
+      
         StringBuffer parameters = new StringBuffer();
         parameters.append(_tr);
         parameters.append(_tdColSpan);
@@ -318,6 +337,24 @@ public class DocViewer extends HTMLViewer {
                 // Skip this one.
                 continue;
             }
+            
+            String parameterName = parameter.getName();
+            //check to see if this param is on the exclusion list
+            for(int i=0; i<exclusions.size(); i++) {
+              String exclusion = (String)exclusions.elementAt(i);
+              String type = exclusion.substring(0, exclusion.indexOf(":"));
+              exclusion = exclusion.substring(exclusion.indexOf(":") + 1, exclusion.length());
+              if(type.equals("contains")) {
+                if(parameterName.indexOf(exclusion) != -1) {
+                  parameter.setVisibility(Settable.NONE);
+                }
+              } else if(type.equals("exact")) {
+                if(parameterName.equals(exclusion)) {
+                  parameter.setVisibility(Settable.NONE);
+                }
+              }
+            }
+            
             String doc = manager.getPropertyDoc(parameter.getName());
             if (doc == null) {
                 doc = "No description.";
