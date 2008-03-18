@@ -197,8 +197,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 				if (actor.getDirector() instanceof PtidesEmbeddedDirector) {
 					PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor
 							.getDirector();
-					dir
-							.setUsePtidesExecutionSemantics(_usePtidesExecutionSemantics);
+					dir.setUsePtidesExecutionSemantics(_usePtidesExecutionSemantics);
 					dir.setClockSyncError(_clockSyncError);
 					dir.setNetworkDelay(_networkDelay);
 				}
@@ -259,7 +258,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 * anything to do.
 	 */
 	public void notifyWaitingThreads() {
-		Set set = (Set) _waitingForPhysicalTime.clone();
+		Set set = (Set) _waitingPlatforms.clone();
 		Iterator it = set.iterator();
 		while (it.hasNext()) {
 			Thread thread = (Thread) it.next();
@@ -267,7 +266,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 				_debug("unblock: " + thread.getName() + " ");
 			threadUnblocked(thread, null);
 		}
-		_waitingForPhysicalTime.clear();
+		_waitingPlatforms.clear();
 	}
 
 	/**
@@ -298,15 +297,15 @@ public class PtidesDirector extends CompositeProcessDirector implements
 					+ ", number of blocked threads: "
 					+ _getBlockedThreadsCount()
 					+ ", number of waiting threads: "
-					+ _waitingForPhysicalTime.size());
-		if ((!_waitingForPhysicalTime.contains(Thread.currentThread()) && _getActiveThreadsCount()
-				- _waitingForPhysicalTime.size() == 1)) {
+					+ _waitingPlatforms.size());
+		if ((!_waitingPlatforms.contains(Thread.currentThread()) && _getActiveThreadsCount()
+				- _waitingPlatforms.size() == 1)) {
 			_increasePhysicalTime();
 			return getModelTime();
 		}
 		if (_stopFireRequested)
 			return getModelTime();
-		_waitingForPhysicalTime.add(Thread.currentThread());
+		_waitingPlatforms.add(Thread.currentThread());
 		threadBlocked(Thread.currentThread(), null);
 		try {
 			workspace().wait(this);
@@ -314,7 +313,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 			e.printStackTrace();
 		}
 		if (!_stopRequested)
-			_waitingForPhysicalTime.remove(Thread.currentThread());
+			_waitingPlatforms.remove(Thread.currentThread());
 		return getModelTime();
 	}
 
@@ -325,7 +324,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 */
 	public void wrapup() throws IllegalActionException {
 		super.wrapup();
-		_waitingForPhysicalTime.clear();
+		_waitingPlatforms.clear();
 		_nextFirings.clear();
 		setModelTime(new Time(this, 0.0));
 	}
@@ -396,7 +395,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 		Time time = (Time) _nextFirings.first();
 		_nextFirings.remove(time);
 		if (time.compareTo(_completionTime) > 0) {
-			stopFire();
+			//stopFire();
 			stop();
 			return;
 		}
@@ -483,6 +482,6 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 * list of threads (=platforms) that have nothing to do at current time and
 	 * want to be refired in the future.
 	 */
-	private HashSet<Thread> _waitingForPhysicalTime = new HashSet<Thread>();
+	private HashSet<Thread> _waitingPlatforms = new HashSet<Thread>();
 
 }

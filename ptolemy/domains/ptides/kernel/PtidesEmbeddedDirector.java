@@ -872,8 +872,18 @@ public class PtidesEmbeddedDirector extends DEDirector {
 			return null;
 	}
 
-	
-	private boolean isSafeToProcessDynamically(Time eventTimestamp, Node node, Set traversedEdges) throws IllegalActionException {
+	/**
+	 * determine if there is an event with timestamp - minDelay > timestamp
+	 * of event at current node upstream. if so, the current event can be 
+	 * processed. 
+	 * 
+	 * @param eventTimestamp
+	 * @param node
+	 * @param traversedEdges
+	 * @return
+	 * @throws IllegalActionException
+	 */
+	private boolean _isSafeToProcess(Time eventTimestamp, Node node, Set traversedEdges) throws IllegalActionException {
 		if (_usePtidesExecutionSemantics) 
 			return false;
 		IOPort port = (IOPort) (node).getWeight();
@@ -912,7 +922,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 				}
 			}
 			for (Iterator it = inputActor.inputPortList().iterator(); it.hasNext();) {
-				return isSafeToProcessDynamically(eventTimestamp, graph.node(it.next()), traversedEdges);
+				return _isSafeToProcess(eventTimestamp, graph.node(it.next()), traversedEdges);
 			}
 		}
 		return false; // should never come here
@@ -954,7 +964,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 							PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) recv[j];
 							Time time = receiver.getNextTime();
 							if (time != null
-									&& (isSafeToProcessOnPlatform(time, port) || isSafeToProcessDynamically(time, graph.node(port), new TreeSet()))) {
+									&& (isSafeToProcessOnPlatform(time, port) || _isSafeToProcess(time, graph.node(port), new TreeSet()))) {
 								_removePureEvent(events, actor, time);
 								events.add(new DEEvent(port, time, 0,
 										//_getDepthOfIOPort(port)));
