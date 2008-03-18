@@ -126,7 +126,7 @@ public class SMVUtility {
                 for (int i = 0; i < subSystemDescription.size(); i++) {
                     returnSMVFormat.append(subSystemDescription.get(i));
                 }
-            } 
+            }
             //else if (innerEntity instanceof CompositeActor) {
             // FIXME: Need to add functionalities for dealing with CompositeActors.
             //}
@@ -157,12 +157,15 @@ public class SMVUtility {
                                 .keySet().iterator();
                         while (it.hasNext()) {
                             String place = it.next();
-                            if (_globalSignalRetrivalInfo.get(place).contains(
-                                    signalName)) {
-                                location = place;
-                                contain = true;
-                                break;
+                            if (_globalSignalRetrivalInfo.get(place) != null) {
+                                if (_globalSignalRetrivalInfo.get(place)
+                                        .contains(signalName)) {
+                                    location = place;
+                                    contain = true;
+                                    break;
+                                }
                             }
+
                         }
                         if (contain == true) {
                             if (i == signalInfo.size() - 1) {
@@ -569,13 +572,13 @@ public class SMVUtility {
 
                 if (_globalSignalNestedRetrivalInfo.get(controller.getName()) != null) {
                     //if (signalOfferedSet != null) {
-                        _globalSignalNestedRetrivalInfo.get(
-                                controller.getName()).addAll(signalOfferedSet);
+                    _globalSignalNestedRetrivalInfo.get(controller.getName())
+                            .addAll(signalOfferedSet);
                     //}
                 } else {
                     //if (signalOfferedSet != null) {
-                        _globalSignalNestedRetrivalInfo.put(controller
-                                .getName(), signalOfferedSet);
+                    _globalSignalNestedRetrivalInfo.put(controller.getName(),
+                            signalOfferedSet);
                     //}
                 }
 
@@ -1827,6 +1830,8 @@ public class SMVUtility {
                                             } catch (Exception exInner) {
                                                 // Return the format is not
                                                 // supported by the system.
+                                                throw new IllegalActionException("SMVUtility.generateAllVariableTransition() clashes:\n"
+                                                        + "Format not supported by the system.");
                                             }
 
                                         }
@@ -3889,21 +3894,24 @@ public class SMVUtility {
             // Retrieve the lower bound and upper bound of the variable used in
             // the system based on inequalities or assignments
             // Also, add up symbols "ls" and "gt" within the variable domain.
-            if (_variableInfo.get(valName) == null) {
+            VariableInfo individual = (VariableInfo) _variableInfo.get(valName);
+            if (individual == null) {
                 throw new IllegalActionException(
                         "Error in SMVUtility.translateSingleFSMActor(): \n_variableInfo.get(valName) == null?");
             } else {
-                VariableInfo individual = (VariableInfo) _variableInfo
-                        .get(valName);
-                int lowerBound = Integer.parseInt(individual._minValue);
-                int upperBound = Integer.parseInt(individual._maxValue);
+                if (individual._minValue != null
+                        && individual._maxValue != null) {
+                    int lowerBound = Integer.parseInt(individual._minValue);
+                    int upperBound = Integer.parseInt(individual._maxValue);
 
-                returnSmvFormat.append(" ls,");
-                for (int number = lowerBound; number <= upperBound; number++) {
-                    returnSmvFormat.append(number);
-                    returnSmvFormat.append(",");
+                    returnSmvFormat.append(" ls,");
+                    for (int number = lowerBound; number <= upperBound; number++) {
+                        returnSmvFormat.append(number);
+                        returnSmvFormat.append(",");
+                    }
+                    returnSmvFormat.append("gt };\n");
                 }
-                returnSmvFormat.append("gt };\n");
+
             }
 
         }
@@ -4211,12 +4219,18 @@ public class SMVUtility {
                                                 .keySet().iterator();
                                         while (it.hasNext()) {
                                             String place = it.next();
-                                            if (_globalSignalRetrivalInfo.get(
-                                                    place).contains(signalName)) {
-                                                location = place;
-                                                containInTheSystem = true;
-                                                break;
+
+                                            if (_globalSignalRetrivalInfo
+                                                    .get(place) != null) {
+                                                if (_globalSignalRetrivalInfo
+                                                        .get(place).contains(
+                                                                signalName)) {
+                                                    location = place;
+                                                    containInTheSystem = true;
+                                                    break;
+                                                }
                                             }
+
                                         }
 
                                         // Now we need to see whether this
@@ -4227,9 +4241,13 @@ public class SMVUtility {
                                         // we set the variable
                                         // containInTheModule=false
                                         if (_globalSignalNestedRetrivalInfo
-                                                .get(controller.getName())
-                                                .contains(signalName)) {
-                                            containInTheModule = true;
+                                                .get(controller.getName()) != null) {
+                                            if (_globalSignalNestedRetrivalInfo
+                                                    .get(controller.getName())
+                                                    .contains(signalName)) {
+                                                containInTheModule = true;
+                                            }
+
                                         }
 
                                         if (containInTheSystem == true) {
@@ -4251,15 +4269,20 @@ public class SMVUtility {
                                                 }
                                             } else {
                                                 if (_globalSignalDistributionInfo
-                                                        .get(
-                                                                controller
-                                                                        .getName())
-                                                        .contains(signalName) == false) {
-                                                    _globalSignalDistributionInfo
+                                                        .get(controller
+                                                                .getName()) != null) {
+                                                    if (_globalSignalDistributionInfo
                                                             .get(
                                                                     controller
                                                                             .getName())
-                                                            .add(signalName);
+                                                            .contains(
+                                                                    signalName) == false) {
+                                                        _globalSignalDistributionInfo
+                                                                .get(
+                                                                        controller
+                                                                                .getName())
+                                                                .add(signalName);
+                                                    }
                                                 }
 
                                                 if (i == signalInfo.size() - 1) {
@@ -4349,21 +4372,29 @@ public class SMVUtility {
                                                         String place = it
                                                                 .next();
                                                         if (_globalSignalRetrivalInfo
-                                                                .get(place)
-                                                                .contains(
-                                                                        signalName)) {
-                                                            location = place;
-                                                            containInTheSystem = true;
-                                                            break;
+                                                                .get(place) != null) {
+                                                            if (_globalSignalRetrivalInfo
+                                                                    .get(place)
+                                                                    .contains(
+                                                                            signalName)) {
+                                                                location = place;
+                                                                containInTheSystem = true;
+                                                                break;
+                                                            }
                                                         }
+
                                                     }
                                                     if (_globalSignalNestedRetrivalInfo
-                                                            .get(
-                                                                    controller
-                                                                            .getName())
-                                                            .contains(
-                                                                    signalName) == true) {
-                                                        containInTheModule = true;
+                                                            .get(controller
+                                                                    .getName()) != null) {
+                                                        if (_globalSignalNestedRetrivalInfo
+                                                                .get(
+                                                                        controller
+                                                                                .getName())
+                                                                .contains(
+                                                                        signalName) == true) {
+                                                            containInTheModule = true;
+                                                        }
                                                     }
 
                                                     if (containInTheSystem == true) {
@@ -4386,18 +4417,23 @@ public class SMVUtility {
                                                             }
                                                         } else {
                                                             if (_globalSignalDistributionInfo
-                                                                    .get(
-                                                                            controller
-                                                                                    .getName())
-                                                                    .contains(
-                                                                            signalName) == false) {
-                                                                _globalSignalDistributionInfo
+                                                                    .get(controller
+                                                                            .getName()) != null) {
+                                                                if (_globalSignalDistributionInfo
                                                                         .get(
                                                                                 controller
                                                                                         .getName())
-                                                                        .add(
-                                                                                signalName);
+                                                                        .contains(
+                                                                                signalName) == false) {
+                                                                    _globalSignalDistributionInfo
+                                                                            .get(
+                                                                                    controller
+                                                                                            .getName())
+                                                                            .add(
+                                                                                    signalName);
+                                                                }
                                                             }
+
                                                             if (i == signalInfo
                                                                     .size() - 1) {
                                                                 moduleDescription
@@ -4473,12 +4509,16 @@ public class SMVUtility {
                                                         }
                                                     }
                                                     if (_globalSignalNestedRetrivalInfo
-                                                            .get(
-                                                                    controller
-                                                                            .getName())
-                                                            .contains(
-                                                                    signalName) == true) {
-                                                        containInTheModule = true;
+                                                            .get(controller
+                                                                    .getName()) != null) {
+                                                        if (_globalSignalNestedRetrivalInfo
+                                                                .get(
+                                                                        controller
+                                                                                .getName())
+                                                                .contains(
+                                                                        signalName) == true) {
+                                                            containInTheModule = true;
+                                                        }
                                                     }
 
                                                     if (containInTheSystem == true) {
@@ -4501,18 +4541,23 @@ public class SMVUtility {
                                                             }
                                                         } else {
                                                             if (_globalSignalDistributionInfo
-                                                                    .get(
-                                                                            controller
-                                                                                    .getName())
-                                                                    .contains(
-                                                                            signalName) == false) {
-                                                                _globalSignalDistributionInfo
+                                                                    .get(controller
+                                                                            .getName()) != null) {
+                                                                if (_globalSignalDistributionInfo
                                                                         .get(
                                                                                 controller
                                                                                         .getName())
-                                                                        .add(
-                                                                                signalName);
+                                                                        .contains(
+                                                                                signalName) == false) {
+                                                                    _globalSignalDistributionInfo
+                                                                            .get(
+                                                                                    controller
+                                                                                            .getName())
+                                                                            .add(
+                                                                                    signalName);
+                                                                }
                                                             }
+
                                                             if (i == signalInfo
                                                                     .size() - 1) {
                                                                 moduleDescription
