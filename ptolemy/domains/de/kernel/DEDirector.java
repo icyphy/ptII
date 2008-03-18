@@ -1307,6 +1307,8 @@ public class DEDirector extends Director implements TimedDirector {
     /** Based on the depths of IO ports, calculate the depths of actors.
      *  The results are cached in a hashtable _actorToDepth.
      *  Update the depths of existing events in the event queue.
+     *  @exception IllegalActionException If thrown will getting the depth
+     *  of the IO ports or while updating the depth of the the actors.
      */
     protected void _computeActorDepth() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
