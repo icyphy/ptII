@@ -83,11 +83,19 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
 {
     double *b = (double *) malloc(n * sizeof(double));
     double *x = (double *) malloc(n * sizeof(double));
+<<<<<<< driver.c
+    double *rhist = NULL;
+=======
+>>>>>>> 1.2
 
     double rtol = 1e-3;
 
     int i, retval;
 
+<<<<<<< driver.c
+    FILE *rhist_fp = NULL;
+    FILE *x_fp = NULL;
+=======
     double *rhist = NULL;
     FILE *rhist_fp = NULL;
     FILE *x_fp = NULL;
@@ -100,10 +108,15 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
     }
 
     upc_barrier;
+>>>>>>> 1.2
 
-    for (i = 0; i < n; ++i)
-        b[i] = 1;
+  struct Timer total_timer;
 
+<<<<<<< driver.c
+    if (MYTHREAD == 0) {
+  initialize_timer(&total_timer);
+  start_timer(&total_timer);
+=======
     struct Timer total_timer;
 
     if (MYTHREAD == 0) {
@@ -166,24 +179,68 @@ void driver(int *start, int maxiter,
     }
 
     upc_barrier;
+>>>>>>> 1.2
 
+<<<<<<< driver.c
+        rhist = (double *) malloc(maxiter * sizeof(double));
+
+        rhist_fp = fopen("rhist.out", "w");
+        x_fp = fopen("x.out", "w");
+    }
+
+    upc_barrier;
+
+    // register blocking...
+
+    for (i = 0; i < n; ++i)
+        b[i] = 1;
+
+=======
     /* Set up the (local) RHS */
     for (i = 0; i < n; ++i)
         b[i] = 1;
 
     /* Do CG */
+>>>>>>> 1.2
     retval = precond_cg(matvec, psolve, Adata, Mdata,
                         b, x, rtol, n, rhist, maxiter);
 
+<<<<<<< driver.c
+    upc_barrier;
+
+    if (MYTHREAD == 0) {
+  stop_timer(&total_timer);
+=======
     /* Put local parts of the solution into the global space */
     for (i = 0; i < n; ++i)
         xglobal[start[MYTHREAD] + i] = x[i];
 
     upc_barrier;
+>>>>>>> 1.2
 
+<<<<<<< driver.c
+        printf("total time taken: %g \n", timer_duration(total_timer));
+
+        for (i = 0; i < n; ++i)
+            fprintf(x_fp, "%g\n", x[i]);
+=======
     /* I/O related output at thread 0 */
     if (MYTHREAD == 0) {
+>>>>>>> 1.2
 
+<<<<<<< driver.c
+        if (retval < 0) {
+            printf("Iteration failed to converge!\n");
+            for (i = 0; i < maxiter; ++i)
+                fprintf(rhist_fp, "%g\n", rhist[i]);
+        } else {
+            printf("Converged after %d iterations\n", retval);
+            for (i = 0; i <= retval; ++i)
+                fprintf(rhist_fp, "%g\n", rhist[i]);
+        }
+        fclose(x_fp);
+        fclose(rhist_fp);
+=======
         for (i = 0; i < n; ++i)
             fprintf(x_fp, "%g\n", xglobal[i]);
 
@@ -196,11 +253,16 @@ void driver(int *start, int maxiter,
             for (i = 0; i <= retval; ++i)
                 fprintf(rhist_fp, "%g\n", rhist[i]);
         }
+>>>>>>> 1.2
 
+<<<<<<< driver.c
+        free(rhist);
+=======
         fclose(x_fp);
         fclose(rhist_fp);
         free(rhist);
         upc_free(xglobal);
+>>>>>>> 1.2
     }
 
     free(x);

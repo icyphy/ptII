@@ -115,7 +115,6 @@ int mm_is_valid(MM_typecode matcode);   /* too complex for a macro */
 #define MM_SKEW_STR		"skew-symmetric"
 #define MM_PATTERN_STR  "pattern"
 
-
 /*  high level routines */
 
 int mm_write_mtx_crd(char fname[], int M, int N, int nz, int I[], int J[],
