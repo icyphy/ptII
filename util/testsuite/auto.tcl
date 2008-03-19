@@ -78,7 +78,7 @@ foreach file [lsort [glob auto/*.xml]] {
         list {}
     } {{}}
     test "Auto-rerun" "Automatic test rerun in file $file" {
-    	set timeout 100000
+    	set timeout 200000
         puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
