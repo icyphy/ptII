@@ -451,8 +451,8 @@ public class Connector extends MoMLApplication {
 
     protected boolean _parseConnectorArg(String arg)
     throws IllegalActionException {
-        arg = arg.toLowerCase();
         if (arg.startsWith("-")) {
+            arg = arg.toLowerCase();
             if (_isExpectingValue()) {
                 throw new IllegalActionException("Expecting value for argument "
                         + "\"" + arg + "\"");
