@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -130,6 +131,8 @@ public class ERGDirector extends Director {
     }
 
     public void fire() throws IllegalActionException {
+        getController().readInputs();
+
         List<?> synchronizeAttributes =
             getController().attributeList(SynchronizeToRealtime.class);
         boolean synchronize = false;
@@ -166,6 +169,21 @@ public class ERGDirector extends Director {
 
                 Event event = (Event) timedEvent.contents;
                 event.fire(timedEvent.arguments);
+
+                Actor[] actors = event.getRefinement();
+                if (actors != null) {
+                    for (int i = 0; i < actors.length; ++i) {
+                        if (_stopRequested) {
+                            break;
+                        }
+                        if (actors[i].prefire()) {
+                            actors[i].fire();
+                            actors[i].postfire();
+                        }
+                    }
+                }
+
+                getController().readOutputsFromRefinement();
 
                 if (((BooleanToken) event.isFinalState.getToken())
                         .booleanValue()) {
@@ -248,6 +266,10 @@ public class ERGDirector extends Director {
             if (isInitial) {
                 _queue.add(new TimedEvent(_startTime, event, null));
             }
+        }
+
+        if (_isEmbedded() && !_queue.isEmpty()) {
+            _requestFiring();
         }
 
         _realStartTime = System.currentTimeMillis();
@@ -364,6 +386,12 @@ public class ERGDirector extends Director {
     NameDuplicationException {
         controllerName = new StringAttribute(this, "controllerName");
         _startTime = new Time(this, 0.0);
+    }
+
+    private void _requestFiring() throws IllegalActionException {
+        TimedEvent nextEvent = _queue.peek();
+        CompositeActor container = (CompositeActor) getContainer();
+        container.getExecutiveDirector().fireAt(container, nextEvent.timeStamp);
     }
 
     // Cached reference to mode controller.

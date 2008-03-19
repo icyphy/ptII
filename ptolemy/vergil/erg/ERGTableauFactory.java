@@ -32,7 +32,6 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.domains.erg.kernel.ERGController;
-import ptolemy.domains.erg.kernel.ERGDirector;
 import ptolemy.domains.erg.kernel.ERGModalModel;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -81,8 +80,7 @@ public class ERGTableauFactory extends TableauFactory {
         Configuration configuration = (Configuration) effigy.toplevel();
         ERGModalModel model =
             (ERGModalModel) ((PtolemyEffigy) effigy).getModel();
-        ERGController controller = ((ERGDirector) model.getDirector())
-                .getController();
+        ERGController controller = (ERGController) model.getController();
         return configuration.openModel(controller);
     }
 }

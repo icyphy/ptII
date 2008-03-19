@@ -71,6 +71,10 @@ public class ERGController extends ModalController {
     public State getInitialState() {
         return null;
     }
+    
+    public void fire() throws IllegalActionException {
+        getDirector().fire();
+    }
 
     /** Create a new instance of Transition with the specified name in
      *  this actor, and return it.

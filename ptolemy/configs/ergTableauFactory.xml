@@ -9,10 +9,12 @@
 		class="ptolemy.vergil.erg.ERGGraphTableau$Factory">
       <property name="_library" class="ptolemy.moml.LibraryAttribute">
         <configure>
-          <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity">
+          <entity name="EventLibrary" class="ptolemy.kernel.CompositeEntity">
             <input source="ptolemy/configs/basicUtilities.xml"/>
             <entity name="Event" class="ptolemy.domains.erg.kernel.Event">
               <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
+              <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+              </property>
             </entity>
             <property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime">
               <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

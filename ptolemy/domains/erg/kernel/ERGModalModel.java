@@ -34,6 +34,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.erg.ERGTableauFactory;
 
 /**
 
@@ -68,11 +69,13 @@ public class ERGModalModel extends ModalModel {
         _init();
     }
 
+    public ERGTableauFactory tableauFactory;
+
     protected void _init() throws IllegalActionException,
     NameDuplicationException {
-    	setClassName("ptolemy.domains.erg.kernel.ERGModalModel");
-    	
-    	directorClass.removeAllChoices();
+        setClassName("ptolemy.domains.erg.kernel.ERGModalModel");
+
+        directorClass.removeAllChoices();
         directorClass.setExpression("ptolemy.domains.erg.kernel.ERGDirector");
 
         ComponentEntity controller = getEntity("_Controller");
@@ -80,5 +83,7 @@ public class ERGModalModel extends ModalModel {
             controller.setContainer(null);
         }
         _controller = new ERGController(this, "_Controller");
+
+        tableauFactory = new ERGTableauFactory(this, "_tableauFactory");
     }
 }

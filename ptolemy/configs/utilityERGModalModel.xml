@@ -4,5 +4,4 @@
 
 <!-- Modal model. -->
 <entity name="ERGModalModel" class="ptolemy.domains.erg.kernel.ERGModalModel">
-  <property name="_tableauFactory" class="ptolemy.vergil.erg.ERGTableauFactory"/>
 </entity>
