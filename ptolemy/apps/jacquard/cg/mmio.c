@@ -696,7 +696,7 @@ printf("T[%d]: here4\n", MYTHREAD);
     // rows, the last one is responsible for the left over rows
     n_per_proc = n / THREADS;
     //start = local_matrix->start;
-    start = NULL
+    start = NULL;
     // start is the array that stores which row we are dealing with at each
     // thread.
 printf("T[%d]: here5\n", MYTHREAD);

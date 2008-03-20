@@ -102,8 +102,6 @@ void driver(int m, int maxiter,
   initialize_timer(&total_timer);
   start_timer(&total_timer);
 
-    if (MYTHREAD == 0) {
-
         rhist = (double *) malloc(maxiter * sizeof(double));
         rhist_fp = fopen("rhist.out", "w");
         x_fp = fopen("x.out", "w");
