@@ -100,6 +100,7 @@ printf("T[%d]:there2\n", MYTHREAD);
 
 printf("T[%d]:there3\n", MYTHREAD);
     for (i = 0; i < maxiter && rnorm2 > bnorm2 * rtol * rtol; ++i) {
+printf("T[%d]:there4\n", MYTHREAD);
 
         if (rhist != NULL)
             rhist[i] = sqrt(rnorm2 / bnorm2);
@@ -119,7 +120,7 @@ printf("T[%d]:there3\n", MYTHREAD);
 
     }
 
-printf("T[%d]:there4\n", MYTHREAD);
+printf("T[%d]:there5\n", MYTHREAD);
     free(z);
     free(r);
     free(s);
@@ -129,7 +130,6 @@ printf("T[%d]:there4\n", MYTHREAD);
 
     if (rhist != NULL)
         rhist[i] = sqrt(rnorm2 / bnorm2);
-printf("T[%d]:there5\n", MYTHREAD);
 
     return i;
 }
