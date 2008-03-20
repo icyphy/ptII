@@ -37,6 +37,8 @@ double ddot(double *x, double *y, int n)
     for (i = 0; i < n; ++i)
         localSum += x[i] * y[i];
 
+    upc_barrier;
+
     *globalSum += localSum;
 
     upc_barrier;
@@ -98,8 +100,10 @@ printf("T[%d]:there2\n", MYTHREAD);
     rz = ddot(r, z, n);
     rnorm2 = ddot(r, r, n);
 
-printf("T[%d]: maxiter = %d\n", MYTHREAD, maxiter);
+printf("T[%d]:starting loop\n", MYTHREAD);
+
     for (i = 0; i < maxiter && rnorm2 > bnorm2 * rtol * rtol; ++i) {
+
 printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
 
         if (rhist != NULL)
@@ -120,7 +124,8 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
 
     }
 
-printf("T[%d]:there5\n", MYTHREAD);
+printf("T[%d]: maxiter = %d, tolerance = %g\n", MYTHREAD, maxiter, bnorm2*rtol*rtol);
+
     free(z);
     free(r);
     free(s);
