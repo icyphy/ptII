@@ -84,6 +84,8 @@ void driver(int m, int maxiter,
     double *x = (double *) malloc(m * sizeof(double));
     double *rhist = NULL;
 
+    shared double *x = (double *) malloc(n * sizeof(double));
+
     double rtol = 1e-3;
 
     int i, retval;
@@ -106,13 +108,6 @@ void driver(int m, int maxiter,
         rhist_fp = fopen("rhist.out", "w");
         x_fp = fopen("x.out", "w");
 
-        initialize_timer(&total_timer);
-        start_timer(&total_timer);
-
-        rhist = (double *) malloc(maxiter * sizeof(double));
-
-        rhist_fp = fopen("rhist.out", "w");
-        x_fp = fopen("x.out", "w");
     }
 
     upc_barrier;
@@ -122,45 +117,38 @@ void driver(int m, int maxiter,
     for (i = 0; i < n; ++i)
         b[i] = 1;
 
-    /* Set up the (local) RHS */
-    for (i = 0; i < n; ++i)
-        b[i] = 1;
-
-    /* Do CG */
     retval = precond_cg(matvec, psolve, Adata, Mdata,
-                        b, x, rtol, n, rhist, maxiter);
+                        b, x, rtol, m, rhist, maxiter);
+printf("T[%d]:here3\n", MYTHREAD);
 
-    upc_barrier;
+    //upc_barrier;
 
     if (MYTHREAD == 0) {
-  stop_timer(&total_timer);
+  //stop_timer(&total_timer);
 
-        printf("total time taken: %g \n", timer_duration(total_timer));
-
-        for (i = 0; i < n; ++i)
+        for (i = 0; i < m; ++i)
             fprintf(x_fp, "%g\n", x[i]);
 
         printf("total time taken: %g \n", timer_duration(total_timer));
 
         for (i = 0; i < m; ++i)
-            fprintf(x_fp, "%g\n", x[i]);
-        if (retval < 0) {
-            printf("Iteration failed to converge!\n");
-            for (i = 0; i < maxiter; ++i)
-                fprintf(rhist_fp, "%g\n", rhist[i]);
+    
         } else {
             printf("Converged after %d iterations\n", retval);
             for (i = 0; i <= retval; ++i)
                 fprintf(rhist_fp, "%g\n", rhist[i]);
         }
+
+
         fclose(x_fp);
         fclose(rhist_fp);
         free(rhist);
     }
-
+/*
     free(x);
     free(b);
-
+*/
+printf("here4\n");
     upc_barrier;
 }
 
@@ -177,7 +165,6 @@ int main(int argc, char **argv)
 
     } else {
         int block_size = 60;
-printf("here\n");
 
         csr_matrix_t *A = csr_hb_load(argv[1]);
 //        csr_jacobi_t *Mj = csr_jacobi_init(A, block_size);
@@ -192,9 +179,10 @@ printf("here\n");
 */
 
         printf("Vanilla CG:        ");
-printf("herehere\n");
+printf("T[%d]: here\n", MYTHREAD);
         driver(A->m, A->m, csr_matvec, A, dummy_psolve, NULL, A->n);
     }
 
+printf("T[%d]: finished\n", MYTHREAD);
     return 0;
 }

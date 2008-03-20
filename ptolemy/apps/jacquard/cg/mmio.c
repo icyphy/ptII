@@ -653,7 +653,6 @@ csr_matrix_t *csr_hb_load(char *filename)
     /* Read the initial matrix at processor 0 and copy it
      * into shared space
      */
-printf("T[%d]: here2\n", MYTHREAD);
     if (MYTHREAD == 0) {
         int nz;
 
@@ -666,7 +665,6 @@ printf("T[%d]: here2\n", MYTHREAD);
         assert(nz < MAX_NNZ);
         assert(n < MAX_N);
 
-printf("T[%d]: here3\n", MYTHREAD);
         //row_start is the array that stores the starting index of each row
         for (i = 0; i <= n; ++i) 
             row_start[i] = initial_matrix->row_start[i];
@@ -682,7 +680,6 @@ printf("T[%d]: here3\n", MYTHREAD);
         free(initial_matrix);
     }
 
-printf("T[%d]: here4\n", MYTHREAD);
     upc_barrier;
 
 
@@ -696,32 +693,28 @@ printf("T[%d]: here4\n", MYTHREAD);
     // rows, the last one is responsible for the left over rows
     n_per_proc = n / THREADS;
     //start = local_matrix->start;
-    start = NULL;
+    //start = NULL;
     // start is the array that stores which row we are dealing with at each
     // thread.
-printf("T[%d]: here5\n", MYTHREAD);
+    start = (int*) malloc((THREADS + 1) * sizeof(int));
     for (i = 0; i < THREADS; ++i) {
         start[i] = i * n_per_proc;
     }
-printf("T[%d]: here6\n", MYTHREAD);
     start[THREADS] = n;
     // nlocal is the number of rows for each thread
     nlocal = start[MYTHREAD + 1] - start[MYTHREAD];
     // store nlocal in m of local_matrix
     local_matrix->m = nlocal;
 
-printf("T[%d]: here7\n", MYTHREAD);
     local_matrix->row_start = (int *) malloc((nlocal + 1) * sizeof(int));
 
     // index to the first none-zero for each processor
     first_nz = row_start[start[MYTHREAD]];
-printf("T[%d]: here8\n", MYTHREAD);
     for (i = 0; i <= nlocal; ++i) {
         // find the starting pointer for each row, normalize it to for row 0, 1,
         // etc, then set it to row_start's for local_matrix
         local_matrix->row_start[i] = row_start[start[MYTHREAD] + i] - first_nz;
     }
-printf("T[%d]: here9\n", MYTHREAD);
 
     // number of none-zeros in the local processor
     nzlocal = row_start[start[MYTHREAD + 1]] - row_start[start[MYTHREAD]];
@@ -737,6 +730,8 @@ printf("T[%d]: here9\n", MYTHREAD);
         local_matrix->col_idx[i] = col_idx[first_nz + i];
         local_matrix->val[i] = val[first_nz + i];
     }
+
+    free(start);
 
     upc_barrier;
 
