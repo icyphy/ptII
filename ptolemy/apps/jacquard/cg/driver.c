@@ -78,13 +78,16 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
 void driver(int m, int maxiter,
             void (*matvec) (double *, void *, double *, int), void *Adata,
             void (*psolve) (double *, void *, double *, int), void *Mdata,
-            int n)
+            int n, static int localStart)
 {
+
+    // m < n, m is the columns allocated for this processor
     double *b = (double *) malloc(m * sizeof(double));
     double *x = (double *) malloc(m * sizeof(double));
     double *rhist = NULL;
 
-    shared double *x = (double *) malloc(n * sizeof(double));
+    static shared double *xall;
+    xall = (shared double*) upc_all_alloc(n * sizeof(double));
 
     double rtol = 1e-3;
 
@@ -95,14 +98,15 @@ void driver(int m, int maxiter,
 
     upc_barrier;
 
+    // register blocking...
     for (i = 0; i < m; ++i)
         b[i] = 1;
 
-  struct Timer total_timer;
+        struct Timer total_timer;
 
     if (MYTHREAD == 0) {
-  initialize_timer(&total_timer);
-  start_timer(&total_timer);
+        initialize_timer(&total_timer);
+        start_timer(&total_timer);
 
         rhist = (double *) malloc(maxiter * sizeof(double));
         rhist_fp = fopen("rhist.out", "w");
@@ -112,22 +116,21 @@ void driver(int m, int maxiter,
 
     upc_barrier;
 
-    // register blocking...
-
-    for (i = 0; i < n; ++i)
-        b[i] = 1;
-
     retval = precond_cg(matvec, psolve, Adata, Mdata,
                         b, x, rtol, m, rhist, maxiter);
+
 printf("T[%d]:here3\n", MYTHREAD);
 
-    //upc_barrier;
+    for (i = 0; i < n; ++i)
+        xall[localStart[MYTHREAD] + i] = x[i];
+
+    upc_barrier;
 
     if (MYTHREAD == 0) {
   //stop_timer(&total_timer);
 
-        for (i = 0; i < m; ++i)
-            fprintf(x_fp, "%g\n", x[i]);
+        for (i = 0; i < n; ++i)
+            fprintf(x_fp, "%g\n", xall[i]);
 
         printf("total time taken: %g \n", timer_duration(total_timer));
 
@@ -144,10 +147,9 @@ printf("T[%d]:here3\n", MYTHREAD);
         fclose(rhist_fp);
         free(rhist);
     }
-/*
     free(x);
     free(b);
-*/
+
 printf("here4\n");
     upc_barrier;
 }
@@ -180,7 +182,7 @@ int main(int argc, char **argv)
 
         printf("Vanilla CG:        ");
 printf("T[%d]: here\n", MYTHREAD);
-        driver(A->m, A->m, csr_matvec, A, dummy_psolve, NULL, A->n);
+        driver(A->m, A->m, csr_matvec, A, dummy_psolve, NULL, A->n, A->localStart);
     }
 
 printf("T[%d]: finished\n", MYTHREAD);

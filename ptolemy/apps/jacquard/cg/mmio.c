@@ -705,6 +705,8 @@ csr_matrix_t *csr_hb_load(char *filename)
     nlocal = start[MYTHREAD + 1] - start[MYTHREAD];
     // store nlocal in m of local_matrix
     local_matrix->m = nlocal;
+    // store the starting index to localStart
+    local_matrix->localStart = start[MYTHREAD];
 
     local_matrix->row_start = (int *) malloc((nlocal + 1) * sizeof(int));
 
