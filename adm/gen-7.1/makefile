@@ -483,7 +483,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		lib/saxon.jar \
 		lib/sootclasses.jar \
 		lib/synthesis.jar \
-		ptolemy/actor/gui/python \
 		ptolemy/actor/lib/conversions/test/auto/Round.xml \
 		ptolemy/actor/lib/ecsl \
 		ptolemy/actor/lib/io/comm \
