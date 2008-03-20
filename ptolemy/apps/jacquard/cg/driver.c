@@ -6,8 +6,6 @@
 #include <sys/time.h>
 #include <time.h>
 
-#include <upc_relaxed.h>
-
 #include "cg.h"
 #include "poisson_problem.h"
 #include "csr_problem.h"
@@ -77,111 +75,42 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
 
 /* Main routine -- test out the code on a sample problem
  */
-/*void driver(int n, int maxiter,
+void driver(int m, int maxiter,
             void (*matvec) (double *, void *, double *, int), void *Adata,
-            void (*psolve) (double *, void *, double *, int), void *Mdata)
+            void (*psolve) (double *, void *, double *, int), void *Mdata,
+            int n)
 {
-    double *b = (double *) malloc(n * sizeof(double));
-    double *x = (double *) malloc(n * sizeof(double));
-<<<<<<< driver.c
+    double *b = (double *) malloc(m * sizeof(double));
+    double *x = (double *) malloc(m * sizeof(double));
     double *rhist = NULL;
-=======
->>>>>>> 1.2
 
     double rtol = 1e-3;
 
     int i, retval;
 
-<<<<<<< driver.c
     FILE *rhist_fp = NULL;
     FILE *x_fp = NULL;
-=======
-    double *rhist = NULL;
-    FILE *rhist_fp = NULL;
-    FILE *x_fp = NULL;
-
-    if (MYTHREAD == 0) {
-	    rhist = (double *) malloc(maxiter * sizeof(double));
-
-        rhist_fp = fopen("rhist.out", "w");
-        x_fp = fopen("x.out", "w");
-    }
 
     upc_barrier;
->>>>>>> 1.2
+
+    for (i = 0; i < m; ++i)
+        b[i] = 1;
 
   struct Timer total_timer;
 
-<<<<<<< driver.c
     if (MYTHREAD == 0) {
   initialize_timer(&total_timer);
   start_timer(&total_timer);
-=======
-    struct Timer total_timer;
 
     if (MYTHREAD == 0) {
-	    initialize_timer(&total_timer);
-	    start_timer(&total_timer);
-    }
 
-    retval = precond_cg(matvec, psolve, Adata, Mdata, b, x, rtol, n, rhist, maxiter);
-
-    if (MYTHREAD == 0) {
-	    stop_timer(&total_timer);
-
-	    printf("total time taken: %g \n", timer_duration(total_timer));
-
-        for (i = 0; i < n; ++i) fprintf(x_fp, "%g\n", x[i]);
-
-        if (retval < 0) {
-            printf("Iteration failed to converge!\n");
-            for (i = 0; i < maxiter; ++i) fprintf(rhist_fp, "%g\n", rhist[i]);
-        } else {
-            printf("Converged after %d iterations\n", retval);
-            for (i = 0; i <= retval; ++i) fprintf(rhist_fp, "%g\n", rhist[i]);
-        }
-
-        fclose(x_fp);
-        fclose(rhist_fp);
-    }
-
-    free(rhist);
-    free(x);
-    free(b);
-}*/
-
-
-void driver(int *start, int maxiter,
-            void (*matvec) (double *, void *, double *, int), void *Adata,
-            void (*psolve) (double *, void *, double *, int), void *Mdata)
-{
-    int N = start[THREADS] - start[0];
-    static shared double *shared xglobal;
-
-    int n = start[MYTHREAD + 1] - start[MYTHREAD];
-    double *b = (double *) malloc(n * sizeof(double));
-    double *x = (double *) malloc(n * sizeof(double));
-    double *rhist = NULL;
-
-    double rtol = 1e-3;
-
-    int i, retval = 0;
-
-    FILE *rhist_fp = NULL;
-    FILE *x_fp = NULL;
-
-    /* I/O related initialization at thread 0 */
-    if (MYTHREAD == 0) {
-        xglobal = (shared double *) upc_local_alloc(sizeof(double), N);
         rhist = (double *) malloc(maxiter * sizeof(double));
         rhist_fp = fopen("rhist.out", "w");
         x_fp = fopen("x.out", "w");
-    }
 
-    upc_barrier;
->>>>>>> 1.2
+        initialize_timer(&total_timer);
+        start_timer(&total_timer);
 
-<<<<<<< driver.c
         rhist = (double *) malloc(maxiter * sizeof(double));
 
         rhist_fp = fopen("rhist.out", "w");
@@ -195,40 +124,28 @@ void driver(int *start, int maxiter,
     for (i = 0; i < n; ++i)
         b[i] = 1;
 
-=======
     /* Set up the (local) RHS */
     for (i = 0; i < n; ++i)
         b[i] = 1;
 
     /* Do CG */
->>>>>>> 1.2
     retval = precond_cg(matvec, psolve, Adata, Mdata,
                         b, x, rtol, n, rhist, maxiter);
 
-<<<<<<< driver.c
     upc_barrier;
 
     if (MYTHREAD == 0) {
   stop_timer(&total_timer);
-=======
-    /* Put local parts of the solution into the global space */
-    for (i = 0; i < n; ++i)
-        xglobal[start[MYTHREAD] + i] = x[i];
 
-    upc_barrier;
->>>>>>> 1.2
-
-<<<<<<< driver.c
         printf("total time taken: %g \n", timer_duration(total_timer));
 
         for (i = 0; i < n; ++i)
             fprintf(x_fp, "%g\n", x[i]);
-=======
-    /* I/O related output at thread 0 */
-    if (MYTHREAD == 0) {
->>>>>>> 1.2
 
-<<<<<<< driver.c
+        printf("total time taken: %g \n", timer_duration(total_timer));
+
+        for (i = 0; i < m; ++i)
+            fprintf(x_fp, "%g\n", x[i]);
         if (retval < 0) {
             printf("Iteration failed to converge!\n");
             for (i = 0; i < maxiter; ++i)
@@ -240,29 +157,7 @@ void driver(int *start, int maxiter,
         }
         fclose(x_fp);
         fclose(rhist_fp);
-=======
-        for (i = 0; i < n; ++i)
-            fprintf(x_fp, "%g\n", xglobal[i]);
-
-        if (retval < 0) {
-            printf("Iteration failed to converge!\n");
-            for (i = 0; i < maxiter; ++i)
-                fprintf(rhist_fp, "%g\n", rhist[i]);
-        } else {
-            printf("Converged after %d iterations\n", retval);
-            for (i = 0; i <= retval; ++i)
-                fprintf(rhist_fp, "%g\n", rhist[i]);
-        }
->>>>>>> 1.2
-
-<<<<<<< driver.c
         free(rhist);
-=======
-        fclose(x_fp);
-        fclose(rhist_fp);
-        free(rhist);
-        upc_free(xglobal);
->>>>>>> 1.2
     }
 
     free(x);
@@ -274,23 +169,22 @@ void driver(int *start, int maxiter,
 
 int main(int argc, char **argv)
 {
-    assert(MAX_THREADS - 1 >= THREADS);
-
     if (argc <= 1) {
 
 //        poisson_jacobi_t *M = poisson_jacobi_init(20);
 
         printf("Using default 1-d Poisson on a 500 point mesh\n");
 //        driver(500, 500, poisson_matvec, NULL, poisson_jacobi_psolve, M);
-        driver(500, 500, poisson_matvec, NULL, dummy_psolve, NULL);
+        driver(500, 500, poisson_matvec, NULL, dummy_psolve, NULL, (int)NULL);
 
     } else {
         int block_size = 60;
+printf("here\n");
 
         csr_matrix_t *A = csr_hb_load(argv[1]);
 //        csr_jacobi_t *Mj = csr_jacobi_init(A, block_size);
 
-	if(MYTHREAD == 0) printf("Using problem %s\n", argv[1]);
+        printf("Using problem %s\n", argv[1]);
 /*
         printf("With block Jacobi: ");
         driver(A->m, A->m, csr_matvec, A, csr_jacobi_psolve, Mj);
@@ -299,8 +193,9 @@ int main(int argc, char **argv)
         driver(A->m, A->m, csr_matvec, A, csr_ssor_psolve, A);
 */
 
-	if(MYTHREAD == 0) printf("Vanilla CG:        ");
-        driver(A->start, A->n, csr_matvec, A, dummy_psolve, NULL);
+        printf("Vanilla CG:        ");
+printf("herehere\n");
+        driver(A->m, A->m, csr_matvec, A, dummy_psolve, NULL, A->n);
     }
 
     return 0;

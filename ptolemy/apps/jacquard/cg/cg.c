@@ -29,10 +29,18 @@ void axpy(double *dest, double alpha, double *x, double *y, int n)
 double ddot(double *x, double *y, int n)
 {
     int i;
-    double sum = 0;
+    //double sum = 0;
+    double localSum = 0;
+    //shared double *globalSum;
     for (i = 0; i < n; ++i)
-        sum += x[i] * y[i];
-    return sum;
+        localSum += x[i] * y[i];
+
+    upc_barrier;
+
+    //*globalSum += localSum;
+
+    //return *globalSum;
+    return localSum;
 }
 
 
