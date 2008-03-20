@@ -38,10 +38,13 @@ double ddot(double *x, double *y, int n)
         localSum += x[i] * y[i];
 
     upc_barrier;
+printf("T[%d]: globalSum = %d\n", MYTHREAD, *globalSum);
 
     *globalSum += localSum;
 
     upc_barrier;
+
+printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
 
     return *globalSum;
     //return localSum;
