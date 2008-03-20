@@ -4,13 +4,14 @@
 #CC= pathcc
 CC= upcc
 #CFLAGS= -O3 
+#CFLAGS= -tv
 LIBS= $(ACML) -lm -lpathfortran #-lblas #-llapack -lg2c
 
 # -- Franklin with libSci
 # you shouldn't need to load the libsci module; it is loaded by default
 #CC= cc
 #CFLAGS= -O3 
-#LIBS= -pgf90libs -lm
+#LIBS= -pgf90libs -lm 
 
 
 
