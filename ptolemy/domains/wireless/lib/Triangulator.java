@@ -39,6 +39,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Triangulator
@@ -158,6 +159,22 @@ public class Triangulator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Clone this actor into the specified workspace. This overrides the
+     *  base class to handle private variables.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new ComponentEntity.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Triangulator newObject = (Triangulator)super.clone(workspace);
+        newObject._locationsX = new double[3];
+        newObject._locationsY = new double[3];
+        newObject._times = new double[3];
+        return newObject;
+    }
 
     /** Read all available input tokens and attempt to use them to triangulate
      *  the signal source. If the attempt is successful, then output
