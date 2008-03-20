@@ -78,7 +78,7 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
 void driver(int m, int maxiter,
             void (*matvec) (double *, void *, double *, int), void *Adata,
             void (*psolve) (double *, void *, double *, int), void *Mdata,
-            int n, static int localStart)
+            int n, int localStart)
 {
 
     // m < n, m is the columns allocated for this processor
@@ -87,7 +87,7 @@ void driver(int m, int maxiter,
     double *rhist = NULL;
 
     static shared double *xall;
-    xall = (shared double*) upc_all_alloc(n * sizeof(double));
+    xall = (shared double*) upc_alloc(n * sizeof(double));
 
     double rtol = 1e-3;
 
@@ -116,13 +116,15 @@ void driver(int m, int maxiter,
 
     upc_barrier;
 
+printf("T[%d]:here3\n", MYTHREAD);
+
     retval = precond_cg(matvec, psolve, Adata, Mdata,
                         b, x, rtol, m, rhist, maxiter);
 
-printf("T[%d]:here3\n", MYTHREAD);
+printf("T[%d]:here4\n", MYTHREAD);
 
     for (i = 0; i < n; ++i)
-        xall[localStart[MYTHREAD] + i] = x[i];
+        xall[localStart + i] = x[i];
 
     upc_barrier;
 
@@ -134,8 +136,11 @@ printf("T[%d]:here3\n", MYTHREAD);
 
         printf("total time taken: %g \n", timer_duration(total_timer));
 
-        for (i = 0; i < m; ++i)
-    
+        if (retval < 0) {
+            printf("Iteration failed to converge!\n");
+            for (i = 0; i < maxiter; ++i)
+                fprintf(rhist_fp, "%g\n", rhist[i]);
+
         } else {
             printf("Converged after %d iterations\n", retval);
             for (i = 0; i <= retval; ++i)
@@ -150,7 +155,6 @@ printf("T[%d]:here3\n", MYTHREAD);
     free(x);
     free(b);
 
-printf("here4\n");
     upc_barrier;
 }
 
@@ -163,7 +167,7 @@ int main(int argc, char **argv)
 
         printf("Using default 1-d Poisson on a 500 point mesh\n");
 //        driver(500, 500, poisson_matvec, NULL, poisson_jacobi_psolve, M);
-        driver(500, 500, poisson_matvec, NULL, dummy_psolve, NULL, (int)NULL);
+        driver(500, 500, poisson_matvec, NULL, dummy_psolve, NULL, (int)NULL, (int)NULL);
 
     } else {
         int block_size = 60;
@@ -174,10 +178,10 @@ int main(int argc, char **argv)
         printf("Using problem %s\n", argv[1]);
 /*
         printf("With block Jacobi: ");
-        driver(A->m, A->m, csr_matvec, A, csr_jacobi_psolve, Mj);
+        driver(A->m, A->m, csr_matvec, A, csr_jacobi_psolve, Mj, A->n, A->localStart);
 
         printf("With SSOR:         ");
-        driver(A->m, A->m, csr_matvec, A, csr_ssor_psolve, A);
+        driver(A->m, A->m, csr_matvec, A, csr_ssor_psolve, A, A->n, A->localStart);
 */
 
         printf("Vanilla CG:        ");
