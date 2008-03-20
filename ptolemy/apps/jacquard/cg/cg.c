@@ -98,10 +98,9 @@ printf("T[%d]:there2\n", MYTHREAD);
     rz = ddot(r, z, n);
     rnorm2 = ddot(r, r, n);
 
-printf("T[%d]:there3\n", MYTHREAD);
-    int iter = 0;
+printf("T[%d]: maxiter = %d\n", MYTHREAD, maxiter);
     for (i = 0; i < maxiter && rnorm2 > bnorm2 * rtol * rtol; ++i) {
-printf("T[%d]: In the loop for %d times.\n", MYTHREAD, iter++);
+printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
 
         if (rhist != NULL)
             rhist[i] = sqrt(rnorm2 / bnorm2);
