@@ -92,7 +92,6 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
     r = (double *) malloc(nbytes);
     z = (double *) malloc(nbytes);
 
-
     bnorm2 = ddot(b, b, n);
 
     memset(x, 0, nbytes);
@@ -117,6 +116,13 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
         temp = ddot(s, z, n);
         alpha = rz / temp;
         //alpha = rz / ddot(s, z, n);
+int j;
+printf("T[%d]: s =", MYTHREAD);
+for (j = 0; j < n; j++) 
+    printf("%g " s[z]);
+printf("T[%d]: z =", MYTHREAD);
+for (j = 0; j < n; j++) 
+    printf("%g " z[z]);
         
 printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
         axpy(x, alpha, s, x, n);
