@@ -45,7 +45,7 @@ printf("T[%d]: globalSum = %d\n", MYTHREAD, *globalSum);
 
     upc_barrier;
 
-printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
+//printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
 
     return *globalSum;
     //return localSum;
@@ -92,15 +92,14 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
     r = (double *) malloc(nbytes);
     z = (double *) malloc(nbytes);
 
-printf("T[%d]:there1\n", MYTHREAD);
 
     bnorm2 = ddot(b, b, n);
+
     memset(x, 0, nbytes);
     memcpy(r, b, nbytes);
     psolve(z, Mdata, r, n);
     memcpy(s, z, nbytes);
 
-printf("T[%d]:there2\n", MYTHREAD);
     rz = ddot(r, z, n);
     rnorm2 = ddot(r, r, n);
 
@@ -114,14 +113,21 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
             rhist[i] = sqrt(rnorm2 / bnorm2);
 
         matvec(z, Adata, s, n);
-        alpha = rz / ddot(s, z, n);
+        double temp;
+        temp = ddot(s, z, n);
+        alpha = rz / temp;
+        //alpha = rz / ddot(s, z, n);
+        
+printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
         axpy(x, alpha, s, x, n);
         axpy(r, -alpha, z, r, n);
 
         psolve(z, Mdata, r, n);
         rzold = rz;
         rz = ddot(r, z, n);
+printf("T[%d]: ddot(r,z,n) = %g\n", MYTHREAD, rz);
         rnorm2 = ddot(r, r, n);
+printf("T[%d]: ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
 
         beta = -rz / rzold;
         axpy(s, -beta, s, z, n);
