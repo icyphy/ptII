@@ -122,7 +122,7 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
         beta = -rz / rzold;
         axpy(s, -beta, s, z, n);
 
-printf("T[%d]: rnorm2 = %g", rnorm2);
+printf("T[%d]: rnorm2 = %g\n", MYTHREAD, rnorm2);
 
     }
 
