@@ -37,9 +37,9 @@ double ddot(double *x, double *y, int n)
     for (i = 0; i < n; ++i)
         localSum += x[i] * y[i];
 
-    upc_barrier;
-
     *globalSum += localSum;
+
+    upc_barrier;
 
     return *globalSum;
     //return localSum;
@@ -86,9 +86,7 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
     r = (double *) malloc(nbytes);
     z = (double *) malloc(nbytes);
 
-printf("T[%d]: this\n", MYTHREAD);
     bnorm2 = ddot(b, b, n);
-printf("T[%d]: is not the problem\n", MYTHREAD);
     memset(x, 0, nbytes);
     memcpy(r, b, nbytes);
     psolve(z, Mdata, r, n);
@@ -97,7 +95,6 @@ printf("T[%d]: is not the problem\n", MYTHREAD);
     rz = ddot(r, z, n);
     rnorm2 = ddot(r, r, n);
 
-printf("T[%d]: still not the problem\n", MYTHREAD);
     for (i = 0; i < maxiter && rnorm2 > bnorm2 * rtol * rtol; ++i) {
 
         if (rhist != NULL)
@@ -118,7 +115,6 @@ printf("T[%d]: still not the problem\n", MYTHREAD);
 
     }
 
-printf("T[%d]: still not the problem2\n", MYTHREAD);
     free(z);
     free(r);
     free(s);
