@@ -86,15 +86,19 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
     r = (double *) malloc(nbytes);
     z = (double *) malloc(nbytes);
 
+printf("T[%d]:there1\n", MYTHREAD);
+
     bnorm2 = ddot(b, b, n);
     memset(x, 0, nbytes);
     memcpy(r, b, nbytes);
     psolve(z, Mdata, r, n);
     memcpy(s, z, nbytes);
 
+printf("T[%d]:there2\n", MYTHREAD);
     rz = ddot(r, z, n);
     rnorm2 = ddot(r, r, n);
 
+printf("T[%d]:there3\n", MYTHREAD);
     for (i = 0; i < maxiter && rnorm2 > bnorm2 * rtol * rtol; ++i) {
 
         if (rhist != NULL)
@@ -115,6 +119,7 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
 
     }
 
+printf("T[%d]:there4\n", MYTHREAD);
     free(z);
     free(r);
     free(s);
@@ -124,6 +129,7 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
 
     if (rhist != NULL)
         rhist[i] = sqrt(rnorm2 / bnorm2);
+printf("T[%d]:there5\n", MYTHREAD);
 
     return i;
 }
