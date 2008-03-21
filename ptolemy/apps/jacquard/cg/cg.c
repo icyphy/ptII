@@ -39,7 +39,7 @@ double ddot(double *x, double *y, int n)
     for (i = 0; i < n; ++i)
         localSum += x[i] * y[i];
 
-printf("T[%d]: localSum = %d\n", MYTHREAD, localSum);
+//printf("T[%d]: localSum = %d\n", MYTHREAD, localSum);
     //upc_barrier;
     upc_notify;
 
@@ -53,7 +53,7 @@ printf("T[%d]: localSum = %d\n", MYTHREAD, localSum);
     for (i = 0; i < THREADS; ++i)
         localSum += globalSumEach[i];
 
-printf("T[%d]: globalSum = %g\n", MYTHREAD, localSum);
+//printf("T[%d]: globalSum = %g\n", MYTHREAD, localSum);
     return localSum;
 }
 
@@ -122,7 +122,7 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
         temp = ddot(s, z, n);
         alpha = rz / temp;
         //alpha = rz / ddot(s, z, n);
-
+/*
 if (i < 5) {
 int j;
 printf("T[%d]: s =", MYTHREAD);
@@ -134,6 +134,7 @@ for (j = 0; j < n; j++)
     printf("%g  ", z[j]);
 }
 printf("END \n");
+*/
 printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
         axpy(x, alpha, s, x, n);
         axpy(r, -alpha, z, r, n);
@@ -141,14 +142,14 @@ printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
         psolve(z, Mdata, r, n);
         rzold = rz;
         rz = ddot(r, z, n);
-printf("T[%d]: ddot(r,z,n) = %g\n", MYTHREAD, rz);
+//printf("T[%d]: ddot(r,z,n) = %g\n", MYTHREAD, rz);
         rnorm2 = ddot(r, r, n);
-printf("T[%d]: ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
+//printf("T[%d]: ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
 
         beta = -rz / rzold;
         axpy(s, -beta, s, z, n);
 
-printf("T[%d]: rnorm2 = %g\n", MYTHREAD, rnorm2);
+//printf("T[%d]: rnorm2 = %g\n", MYTHREAD, rnorm2);
 
     }
 
