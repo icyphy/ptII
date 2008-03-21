@@ -1388,7 +1388,9 @@ public class PortConfigurerDialog extends PtolemyDialog implements
      @Pt.ProposedRating Red (eal)
      @Pt.AcceptedRating Red (eal)
      */
-    public class ValidatingComboBoxCellEditor extends DefaultCellEditor {
+    public static class ValidatingComboBoxCellEditor extends DefaultCellEditor {
+        // FindBugs suggested refactoring this into a static class.
+
         /** Construct a validating combo box JTable Cell editor.
          *  @param comboBox The combo box that provides choices.
          */
