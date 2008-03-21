@@ -54,6 +54,7 @@ void poisson_matvec(double *Ax, void *Adata, double *x, int n)
 
 /* Multiply by a matrix in compressed sparse-row format
  */
+/*
 void csr_matvec(double *Ax, void *Adata, double *x, int n)
 {
     int i, j;
@@ -70,7 +71,7 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
         }
     }
 }
-
+*/
 
 
 /* Main routine -- test out the code on a sample problem
