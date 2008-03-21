@@ -31,7 +31,7 @@ double ddot(double *x, double *y, int n)
     int i;
     //double sum = 0;
     double localSum = 0;
-    shared double globalSumEach[THREADS];
+    static shared double globalSumEach[THREADS];
 
     //shared double* globalSum;
     //globalSum = (shared double*) upc_alloc(sizeof(double));
@@ -51,7 +51,7 @@ printf("T[%d]: localSum = %d\n", MYTHREAD, localSum);
 //printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
 
     for (i = 0; i < THREADS; ++i)
-        localSum += globalSumEach[i]
+        localSum += globalSumEach[i];
 
 printf("T[%d]: globalSum = %d\n", MYTHREAD, localSum);
     return localSum;
