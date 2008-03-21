@@ -3,7 +3,7 @@
 # Author: Christopher Hylands (makefile only)
 # Version: $Id$
 #
-# Copyright (c) 2001-2005 The Regents of the University of California.
+# Copyright (c) 2001-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -56,14 +56,26 @@ OTHER_FILES_TO_BE_JARED = \
 	pause_o.gif \
 	pause_on.gif \
 	pause_ov.gif \
+	print.gif \
+	print_o.gif \
+	print_on.gif \
+	print_ov.gif \
 	run.gif \
 	run_o.gif \
 	run_on.gif \
 	run_ov.gif \
+	save.gif \
+	save_o.gif \
+	save_on.gif \
+	save_ov.gif \
 	stop.gif \
 	stop_o.gif \
 	stop_on.gif \
 	stop_ov.gif \
+	up.gif \
+	up_o.gif \
+	up_on.gif \
+	up_ov.gif \
 	zoomfit.gif \
 	zoomfit_o.gif \
 	zoomfit_on.gif \

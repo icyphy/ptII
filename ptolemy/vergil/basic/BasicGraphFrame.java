@@ -53,6 +53,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
+import java.awt.print.Pageable;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.File;
@@ -402,10 +403,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _toolbar = new JToolBar();
         getContentPane().add(_toolbar, BorderLayout.NORTH);
 
+        GUIUtilities.addToolBarButton(_toolbar, _saveAction);
+        // Note that in Top we disable Print unless the class implements
+        // the Printable or Pageable interfaces.  By definition, this class
+        // implements the Printable interface, but we include that check
+        // here for completeness
+        if (this instanceof Printable
+                || this instanceof Pageable) {
+            GUIUtilities.addToolBarButton(_toolbar, _printAction);
+        }
         GUIUtilities.addToolBarButton(_toolbar, _zoomInAction);
         GUIUtilities.addToolBarButton(_toolbar, _zoomResetAction);
         GUIUtilities.addToolBarButton(_toolbar, _zoomFitAction);
         GUIUtilities.addToolBarButton(_toolbar, _zoomOutAction);
+
+        GUIUtilities.addToolBarButton(_toolbar, _openContainerAction);
+        if (entity == entity.toplevel()) {
+            // If we are at the top level, disable
+            _openContainerAction.setEnabled(false);
+        }
 
         _cutAction = new CutAction();
         _copyAction = new CopyAction();
@@ -1045,6 +1061,23 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Do nothing.
      */
     public void lostOwnership(Clipboard clipboard, Transferable transferable) {
+    }
+
+    /** Open the container, if any, of the entity.
+     *  If this entity has no container, then do nothing. 
+     */
+    public void openContainer() {
+        GraphModel model = _getGraphModel();
+        NamedObj toplevel = (NamedObj) model.getRoot();
+        if (toplevel != toplevel.toplevel()) {
+            try {
+                Configuration configuration = getConfiguration();
+                // FIXME: do what with the return value?
+                configuration.openInstance(toplevel.getContainer());
+            } catch (Throwable throwable) {
+                MessageHandler.error("Failed to open container", throwable);
+            }
+        }
     }
 
     /** Assuming the contents of the clipboard is MoML code, paste it into
@@ -1990,6 +2023,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** The instance of JGraph for this editor. */
     private JGraph _jgraph;
 
+    /** Action for opening the container, moving uplevel. */
+    private Action _openContainerAction = new OpenContainerAction("Open the container");
+
     /** List of references to graph frames that are open. */
     private static LinkedList _openGraphFrames = new LinkedList();
 
@@ -2003,11 +2039,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     private int _previousMouseY = 0;    
 
+    /**  Action to print the model. */
+    private Action _printAction = new PrintAction("Print"); 
+
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();
 
     /** The right component for this editor. */
     private JComponent _rightComponent;
+
+    /**  Action to save the model. */
+    private Action _saveAction = new SaveAction("Save"); 
 
     /** Action to undo the last MoML change. */
     private Action _undoAction = new UndoAction();
@@ -2513,6 +2555,45 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     ///////////////////////////////////////////////////////////////////
+    //// OpenContainerAction
+    /** An action to open the container of this entity. */
+    private class OpenContainerAction extends AbstractAction {
+        /** Construct an open container action.  This action opens
+         *  the container of this class.  If this entity is the toplevel
+         *  then the icon is disabled.
+         *  @param description A string that describes the action.  Spaces are
+         *  permitted, each word is usually capitalized.
+         */
+        public OpenContainerAction(String description) {
+            super(description);
+            // Load the image by using the absolute path to the gif.
+            // Using a relative location should work, but it does not.
+            // Use the resource locator of the class.
+            // For more information, see
+            // jdk1.3/docs/guide/resources/resources.html
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/basic/img/up.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/up_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/basic/img/up_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/up_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", description);
+
+        }
+
+        /** Open the parent container, if any.
+         *  @param event The action event, ignored by this method.
+         */
+        public void actionPerformed(ActionEvent event) {
+            openContainer();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     //// OpenLibraryMenuItemFactory
 
     /**
@@ -2539,6 +2620,44 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     .valueOf(KeyEvent.VK_O));
             return menu.add(action, (String) action.getValue(Action.NAME));
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// PrintAction 
+
+    /**
+     *  Print the current model.
+     */
+    private class PrintAction extends AbstractAction {
+       /** Construct a print action.
+        *  @param description A string that describes the action.  Spaces are
+        *  permitted, each word is usually capitalized.
+        */
+       public PrintAction(String description) {
+           super(description);
+           putValue("tooltip", description);
+
+           // Load the image by using the absolute path to the gif.
+           // Using a relative location should work, but it does not.
+           // Use the resource locator of the class.
+           // For more information, see
+           // jdk1.3/docs/guide/resources/resources.html
+           GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/basic/img/print.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/print_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/basic/img/print_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/print_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+       }
+        /** Print the current layout.
+         *  @param event The action event, ignored by this method.
+         */
+       public void actionPerformed(ActionEvent event) {
+           _print();
+       }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2570,6 +2689,44 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         public void actionPerformed(ActionEvent e) {
             redo();
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// SaveAction 
+
+    /**
+     *  Save the current model.
+     */
+    private class SaveAction extends AbstractAction {
+       /** Construct a save action.
+        *  @param description A string that describes the action.  Spaces are
+        *  permitted, each word is usually capitalized.
+        */
+       public SaveAction(String description) {
+           super(description);
+           putValue("tooltip", description);
+           // Load the image by using the absolute path to the gif.
+           // Using a relative location should work, but it does not.
+           // Use the resource locator of the class.
+           // For more information, see
+           // jdk1.3/docs/guide/resources/resources.html
+           GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/basic/img/save.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/save_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/basic/img/save_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/save_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
+       }
+        /** Save the current layout.
+         *  @param e The action event, ignored by this method.
+         */
+       public void actionPerformed(ActionEvent e) {
+           _save();
+       }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2606,7 +2763,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     //// ZoomInAction
     /** An action to zoom in. */
-    public class ZoomInAction extends AbstractAction {
+    private class ZoomInAction extends AbstractAction {
         /** Construct a zoom in action.
          *  @param description A string that describes the action.  Spaces are
          *  permitted, each word is usually capitalized.
@@ -2652,7 +2809,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     //// ZoomResetAction
     /** An action to reset zoom. */
-    public class ZoomResetAction extends AbstractAction {
+    private class ZoomResetAction extends AbstractAction {
         /** Construct a zoom reset action.
          *  @param description A string that describes the action.  Spaces are
          *  permitted, each word is usually capitalized.
@@ -2695,7 +2852,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     //// ZoomFitAction
     /** An action to zoom fit.*/
-    public class ZoomFitAction extends AbstractAction {
+    private class ZoomFitAction extends AbstractAction {
         /** Construct a zoom fit action.
          *  @param description A string that describes the action.  Spaces are
          *  permitted, each word is usually capitalized.
@@ -2737,7 +2894,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     //// ZoomOutAction
     /** An action to zoom out. */
-    public class ZoomOutAction extends AbstractAction {
+    private class ZoomOutAction extends AbstractAction {
         /** Construct a zoom fit action.
          *  @param description A string that describes the action.  Spaces are
          *  permitted, each word is usually capitalized.
