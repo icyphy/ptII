@@ -72,6 +72,34 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
     }
 }
 */
+void csr_matvec(double *Ax, void *Adata, double *x, int n)
+{
+    int i, j;
+
+    csr_matrix_t *Acsr = (csr_matrix_t *) Adata;
+    double *Aval = Acsr->val;
+    int *Arow = Acsr->row_start;
+    int *Acol = Acsr->col_idx;
+    int my_start = Acsr->start[MYTHREAD];
+
+    static shared double xglobal[MAX_NNZ];
+
+    /* Copy local vector section into shared memory */
+    for (i = 0; i < n; ++i) {
+        xglobal[my_start + i] = x[i];
+    }
+    upc_barrier;
+
+    for (i = 0; i < n; ++i) {
+        Ax[i] = 0;
+        for (j = Arow[i]; j < Arow[i + 1]; ++j) {
+            int col = *Acol++;
+            double Aelement = *Aval++;
+            Ax[i] += Aelement * xglobal[col];
+        }
+    }
+    upc_barrier;
+}
 
 
 /* Main routine -- test out the code on a sample problem
