@@ -125,13 +125,15 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
 
 if (i == 0 ) {
 int j;
-printf("T[%d]: s =", MYTHREAD);
+/*printf("T[%d]: s =", MYTHREAD);
 for (j = 0; j < n; j++) 
     printf("%g  ", s[j]);
-printf("END \n");
+printf("END \n");*/
 printf("T[%d]: z =", MYTHREAD);
-for (j = 0; j < n; j++) 
-    printf("%g  ", z[j]);
+for (j = 0; j < n; j++) {
+    if (z[j] != 0)
+        printf("%d:%g  ", j, z[j]);
+}
 printf("END \n");
 }
 printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
