@@ -47,6 +47,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -764,21 +766,24 @@ public abstract class Top extends JFrame {
      *  it.
      */
     protected void _print() {
+        // Build a set of attributes
+        PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
         PrinterJob job = PrinterJob.getPrinterJob();
 
         if (this instanceof Pageable) {
             job.setPageable((Pageable) this);
         } else if (this instanceof Printable) {
-            PageFormat format = job.pageDialog(job.defaultPage());
-            job.setPrintable((Printable) this, format);
+            //PageFormat format = job.pageDialog(job.defaultPage());
+            //job.setPrintable((Printable) this, format);
+            job.setPrintable((Printable)this);
         } else {
             // Can't print it.
             return;
         }
 
-        if (job.printDialog()) {
+        if (job.printDialog(aset)) {
             try {
-                job.print();
+                job.print(aset);
             } catch (Exception ex) {
                 MessageHandler.error("Printing Failed", ex);
             }
