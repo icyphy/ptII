@@ -124,12 +124,12 @@ int j;
 printf("T[%d]: s =", MYTHREAD);
 for (j = 0; j < n; j++) 
     printf("%g  ", s[j]);
-printf("\n");
+printf("END \n");
 printf("T[%d]: z =", MYTHREAD);
 for (j = 0; j < n; j++) 
     printf("%g  ", z[j]);
 }
-printf("\n");
+printf("END \n");
 printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
         axpy(x, alpha, s, x, n);
         axpy(r, -alpha, z, r, n);
