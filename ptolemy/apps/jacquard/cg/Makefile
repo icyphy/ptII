@@ -4,7 +4,8 @@
 #CC= pathcc
 CC= upcc
 #CFLAGS= -O3 
-CFLAGS= -network=mpi -save-temps
+#CFLAGS= -network=mpi -save-temps
+CFLAGS= -save-temps
 LIBS= $(ACML) -lm -lpathfortran #-lblas #-llapack -lg2c
 
 # -- Franklin with libSci
