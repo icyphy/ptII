@@ -122,8 +122,8 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
         temp = ddot(s, z, n);
         alpha = rz / temp;
         //alpha = rz / ddot(s, z, n);
-/*
-if (i < 5) {
+
+if (i == 0 ) {
 int j;
 printf("T[%d]: s =", MYTHREAD);
 for (j = 0; j < n; j++) 
@@ -132,9 +132,8 @@ printf("END \n");
 printf("T[%d]: z =", MYTHREAD);
 for (j = 0; j < n; j++) 
     printf("%g  ", z[j]);
-}
 printf("END \n");
-*/
+}
 printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
         axpy(x, alpha, s, x, n);
         axpy(r, -alpha, z, r, n);
