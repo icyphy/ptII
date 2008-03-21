@@ -28,15 +28,22 @@ package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterJob;
+import java.awt.print.PageFormat;
+import java.awt.print.Pageable;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -71,7 +78,7 @@ import diva.gui.GUIUtilities;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class PlotTableauFrame extends TableauFrame {
+public class PlotTableauFrame extends TableauFrame implements Printable {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -127,6 +134,24 @@ public class PlotTableauFrame extends TableauFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Print the plot to a printer,
+     *  which is represented by the specified graphics object.
+     *  @param graphics The context into which the page is drawn.
+     *  @param format The size and orientation of the page being drawn.
+     *  @param index The zero based index of the page to be drawn.
+     *  @return PAGE_EXISTS if the page is rendered successfully, or
+     *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
+     *  @exception PrinterException If the print job is terminated.
+     */
+    public int print(Graphics graphics, PageFormat format, int index)
+            throws PrinterException {
+        // Note that the Plot print menu does not directly call
+        // this method, instead it calls _print().  This method is 
+        // included so that this class implement printable and the
+        // print menu choice is enabled.
+        return plot.print(graphics, format, index);
+    }
 
     /** Create a sample plot.
      */
@@ -273,23 +298,6 @@ public class PlotTableauFrame extends TableauFrame {
                         + "  File formats understood: Ptplot ASCII.\n"
                         + "  Left mouse button: Zooming.",
                 "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    /** Print the plot.
-     */
-    protected void _print() {
-        PrinterJob job = PrinterJob.getPrinterJob();
-        job.setPrintable(plot);
-
-        if (job.printDialog()) {
-            try {
-                job.print();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Printing failed:\n"
-                        + ex.toString(), "Print Error",
-                        JOptionPane.WARNING_MESSAGE);
-            }
-        }
     }
 
     /** Write the plot to the specified file in PlotML syntax.
