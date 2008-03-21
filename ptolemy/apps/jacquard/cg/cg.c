@@ -53,7 +53,7 @@ printf("T[%d]: localSum = %d\n", MYTHREAD, localSum);
     for (i = 0; i < THREADS; ++i)
         localSum += globalSumEach[i];
 
-printf("T[%d]: globalSum = %d\n", MYTHREAD, localSum);
+printf("T[%d]: globalSum = %g\n", MYTHREAD, localSum);
     return localSum;
 }
 
