@@ -184,7 +184,9 @@ public class DependencyHighlighter extends NodeControllerFactory {
 
     /** The controller that adds commands to the context menu.
      */
-    public class DependencyController extends ActorInstanceController {
+    public /*static*/ class DependencyController extends ActorInstanceController {
+        // Findbugs suggests making this static, but if this class is static,
+        // we can't reference the non-static HighlightDependents class here. 
 
         /** Create a DependencyController that is associated with a controller.
          *  @param controller The controller.
