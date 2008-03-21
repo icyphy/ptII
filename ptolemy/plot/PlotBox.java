@@ -72,6 +72,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -1022,6 +1024,7 @@ public class PlotBox extends JPanel implements Printable {
      */
     public synchronized int print(Graphics graphics, PageFormat format,
             int index) throws PrinterException {
+
         if (graphics == null) {
             return Printable.NO_SUCH_PAGE;
         }
@@ -4107,15 +4110,18 @@ public class PlotBox extends JPanel implements Printable {
             if (event.getSource() == _fillButton) {
                 fillPlot();
             } else if (event.getSource() == _printButton) {
+                // FIXME:  Code duplication with PlotFrame._printCrossPlatform
+                PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
                 PrinterJob job = PrinterJob.getPrinterJob();
 
                 // rbeyer@LPL.Arizona.EDU: Get the Page Format and use it.
-                PageFormat format = job.pageDialog(job.defaultPage());
-                job.setPrintable(PlotBox.this, format);
+                //PageFormat format = job.pageDialog(job.defaultPage());
+                //job.setPrintable(PlotBox.this, format);
+                job.setPrintable(PlotBox.this);
 
-                if (job.printDialog()) {
+                if (job.printDialog(aset)) {
                     try {
-                        job.print();
+                        job.print(aset);
                     } catch (Exception ex) {
                         Component ancestor = getTopLevelAncestor();
                         JOptionPane.showMessageDialog(ancestor,
