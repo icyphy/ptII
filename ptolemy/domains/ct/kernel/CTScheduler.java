@@ -390,24 +390,35 @@ public class CTScheduler extends Scheduler {
             IOPort inPort = (IOPort) containerInPorts.next();
 
             if (!isCTCompositeActor) {
-                // If the container is not a CT composite actor,
-                // this actor is not embedded inside a CT or HS
-                // model. In most cases, the outside model is a discrete model.
-                // For example, a DE model. However, there is a possibility that
-                // the outside model is a Giotto or other domains that have
-                // their receivers with a "state" semantics.
-                // Solution: Set signal types according the receiver types.
-                // If the receiver is a state receiver, the signal type is
-                // set to "CONTINUOUS", otherwise, "DISCRETE".
+
+                // If the container is not a CT composite actor, this
+                // actor is not embedded inside a CT or HS model. In
+                // most cases, the outside model is a discrete model.
+                // For example, a DE model. However, there is a
+                // possibility that the outside model is a Giotto or
+                // other domains that have their receivers with a
+                // "state" semantics.  Solution: Set signal types
+                // according the receiver types.  If the receiver is a
+                // state receiver, the signal type is set to
+                // "CONTINUOUS", otherwise, "DISCRETE".
                 // NOTE: The implicit assumption is that all the receivers
                 // belonging to the same IO port have the same signal type.
                 Receiver[][] localReceivers = inPort.getReceivers();
-                Receiver localReceiver = localReceivers[0][0];
-
-                if (localReceiver instanceof StateReceiver) {
-                    _signalTypeMap.setType(inPort, CONTINUOUS);
-                } else {
-                    _signalTypeMap.setType(inPort, DISCRETE);
+                try {
+                    Receiver localReceiver = localReceivers[0][0];
+                    if (localReceiver instanceof StateReceiver) {
+                        _signalTypeMap.setType(inPort, CONTINUOUS);
+                    } else {
+                        _signalTypeMap.setType(inPort, DISCRETE);
+                    }
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    throw new IllegalActionException(this, ex, 
+                            "The container \"" + container.getFullName()
+                            + "\" is a \"" + container.getClass().getName()
+                            + "\", which is not a CT Composite actor, yet "
+                            + "the port \"" + inPort.getFullName()
+                            + "\" appears to have no receivers?  "
+                            + "Perhaps the port is not connected?");
                 }
             } else {
                 // If the container is a CT composite actor,
