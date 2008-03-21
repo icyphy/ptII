@@ -132,7 +132,7 @@ printf("END \n");*/
 printf("T[%d]: z =", MYTHREAD);
 for (j = 0; j < n; j++) {
     if (z[j] != 0)
-        printf("%d:%g  ", j, z[j]);
+        printf("%d:%g  ", j+450, z[j]);
 }
 printf("END \n");
 }
