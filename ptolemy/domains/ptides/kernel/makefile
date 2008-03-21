@@ -52,7 +52,9 @@ JSRCS = \
 	PtidesDirector.java \
 	PtidesEmbeddedDirector.java \
 	PtidesGraphUtilities.java \
-	PtidesPlatformThread.java 
+	PtidesPlatformThread.java \
+	PtidesReceiver.java \
+	PtidesPlatformReceiver.java
 
 EXTRA_SRCS =	$(JSRCS)
 

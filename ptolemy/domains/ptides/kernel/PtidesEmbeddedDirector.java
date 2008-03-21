@@ -161,14 +161,16 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	}
 
 	/**
-	 * Get deadline of actor in execution.
+	 * Get finishing time of actor in execution.
+	 * The finishing time is the point in time when the 
+	 * WCET of the actor is passed.
 	 * 
 	 * @param actor
 	 * @return
 	 */
-	public double getDeadline(NamedObj actor) {
-		if (_deadlinesOfActorsInExecution.get(actor) != null) {
-			return (Double) _deadlinesOfActorsInExecution.get(actor);
+	public double getFinishingTime(NamedObj actor) {
+		if (_finishingTimesOfActorsInExecution.get(actor) != null) {
+			return (Double) _finishingTimesOfActorsInExecution.get(actor);
 		}
 		return 0.0;
 	}
@@ -215,14 +217,14 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * Until _stopRequested, the director tries to fire actors or waits. First,
 	 * a set of events is calculated that can be fired at current time. Out of
 	 * this set of events, one event is chosen that is fired. The actor for this
-	 * event is added to the list of actors in execution and its deadline is set
-	 * to event.timestamp() + wcet. After the expiration of the deadline, the
+	 * event is added to the list of actors in execution and its finishing time is set
+	 * to event.timestamp() + wcet. After the expiration of the finishing time, the
 	 * actor is removed from the list and the fire() of the actor is executed.
 	 * If no actor is found that can execute now, this actor waits. It continues
 	 * execution when the phyiscal time is increased or when tokens are received
 	 * on the input ports. If an actor is preempted, the preempting actor is
-	 * added to the list of actors in execution and the deadlines for all other
-	 * actors in execution are updated to oldDeadline + wcet of the preempting
+	 * added to the list of actors in execution and the finishing times for all other
+	 * actors in execution are updated to oldFinishingTime + wcet of the preempting
 	 * actor.
 	 */
 	public void fire() throws IllegalActionException {
@@ -234,7 +236,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 			if (_actorsInExecution.size() > 0) {
 				Actor actorToFire = (Actor) _actorsInExecution
 						.get(_actorsInExecution.size() - 1);
-				double d = getDeadline((NamedObj) actorToFire);
+				double d = getFinishingTime((NamedObj) actorToFire);
 				if (d < _physicalTime.getDoubleValue()) {
 					// should not happen but would mean that a synchronization point was missed
 				}
@@ -274,11 +276,11 @@ public class PtidesEmbeddedDirector extends DEDirector {
 						_debug(this.getContainer().getName()
 							+ "-fired " + actorToFire.getName());
 					_addSynchronizationPoint(_physicalTime.add(wcet));
-					setDeadline(actorToFire, _physicalTime.add(wcet)
+					setFinishingTime(actorToFire, _physicalTime.add(wcet)
 							.getDoubleValue());
 					for (int i = 0; i < _actorsInExecution.size(); i++) {
 						Actor actor = (Actor) _actorsInExecution.get(i);
-						setDeadline(actor, getDeadline((NamedObj) actor) + wcet);
+						setFinishingTime(actor, getFinishingTime((NamedObj) actor) + wcet);
 					}
 					_actorsInExecution.add(actorToFire);
 				}
@@ -497,18 +499,18 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	}
 
 	/**
-	 * Set the deadline of an actor. This method is called after the execution
+	 * Set the finishing time of an actor. This method is called after the execution
 	 * of an actor is started.
 	 * 
 	 * @param actor
-	 * @param deadline
+	 * @param finishingTime
 	 * @throws IllegalActionException
 	 */
-	public void setDeadline(Actor actor, double deadline)
+	public void setFinishingTime(Actor actor, double finishingTime)
 			throws IllegalActionException {
-		if (_deadlinesOfActorsInExecution.get(actor) != null)
-			_deadlinesOfActorsInExecution.remove(actor);
-		_deadlinesOfActorsInExecution.put(actor, deadline);
+		if (_finishingTimesOfActorsInExecution.get(actor) != null)
+			_finishingTimesOfActorsInExecution.remove(actor);
+		_finishingTimesOfActorsInExecution.put(actor, finishingTime);
 	}
 
 	/**
@@ -1102,9 +1104,9 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	private Time _currentModelTime;
 
 	/**
-	 * Contains deadlines of actors in execution.
+	 * Contains finishing times of actors in execution.
 	 */
-	private Hashtable _deadlinesOfActorsInExecution = new Hashtable();
+	private Hashtable _finishingTimesOfActorsInExecution = new Hashtable();
 
 	/**
 	 * The set of actors that have returned false in their postfire() methods.

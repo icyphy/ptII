@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/demo/OnePlatform
+ME =		ptolemy/domains/ptides/demo/TriggerdSensors
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,14 +41,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	OnePlatform
+PTPACKAGE = 	TriggerdSensors
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	OnePlatform.xml 
+	TriggerdSensors.xml 
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
@@ -77,10 +77,10 @@ demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer 
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" OnePlatform.xml
+	"$(PTII)/bin/ptolemy" TriggerdSensors.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" OnePlatform.xml
+	"$(PTII)/bin/vergil" TriggerdSensors.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
