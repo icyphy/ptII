@@ -424,6 +424,8 @@ public class PlotFrame extends JFrame {
      *  the user's choice of portrait vs. landscape
      */
     protected void _printCrossPlatform() {
+        // FIXME: Code duplication with PlotBox.
+
         // Build a set of attributes
         PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
         PrinterJob job = PrinterJob.getPrinterJob();
