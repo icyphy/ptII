@@ -1,6 +1,6 @@
 /* Top-level window containing a simple text editor or viewer.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 1998-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,39 +25,42 @@
  COPYRIGHTENDKEY
 
  */
-// FIXME: To do:
-//  - Fix printing.
 package ptolemy.actor.gui;
 
-// Java imports
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
+import javax.swing.text.BadLocationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TextEditor
 
 /**
 
- TextEditor is a top-level window containing a simple text editor or viewer.
+ A top-level window containing a simple text editor or viewer.
  You can access the public member text to set the text, get the text,
  or set the number of rows or columns.
  After creating this, it is necessary to call show() for it to appear.
 
- @author Edward A. Lee
+ @author Edward A. Lee, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class TextEditor extends TableauFrame implements DocumentListener {
+public class TextEditor extends TableauFrame implements DocumentListener, Printable {
     /** Construct an empty text editor with no name.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -86,8 +89,9 @@ public class TextEditor extends TableauFrame implements DocumentListener {
     }
 
     /** Construct an empty text editor with the specified title and
-     *  document and associated placeable.  After constructing this, it is necessary
-     *  to call setVisible(true) to make the frame appear.
+     *  document and associated placeable.  After constructing this,
+     *  it is necessary to call setVisible(true) to make the frame
+     *  appear.
      *  @param title The title to put in the title bar.
      *  @param document The document containing text, or null if none.
      *  @param placeable The associated placeable.
@@ -136,6 +140,72 @@ public class TextEditor extends TableauFrame implements DocumentListener {
      */
     public void insertUpdate(DocumentEvent e) {
         setModified(true);
+    }
+
+    /** Print the text to a printer, which is represented by the
+     *  specified graphics object.
+     *  @param graphics The context into which the page is drawn.
+     *  @param format The size and orientation of the page being drawn.
+     *  @param index The zero based index of the page to be drawn.
+     *  @return PAGE_EXISTS if the page is rendered successfully, or
+     *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
+     *  @exception PrinterException If the print job is terminated.
+     */
+    public int print(Graphics graphics, PageFormat format, int index)
+            throws PrinterException {
+        if (graphics == null) {
+            return Printable.NO_SUCH_PAGE;
+        }
+
+        Graphics2D graphics2D = (Graphics2D) graphics;
+
+        // Loosely based on
+        // http://forum.java.sun.com/thread.jspa?threadID=217823&messageID=2361189
+        // Found it unwise to use the TextArea font's size,
+        // We area just printing text so use a a font size that will
+        // be generally useful.
+        graphics2D.setFont(getFont().deriveFont(9.0f));
+
+        double bottomMargin = format.getHeight()
+            - format.getImageableHeight()
+            - format.getImageableY();
+
+        double lineHeight = graphics2D.getFontMetrics().getHeight()
+            - (graphics2D.getFontMetrics().getLeading()/2);
+        
+        int linesPerPage = (int)Math.floor(
+                (format.getHeight() - format.getImageableY() - bottomMargin)
+                / lineHeight);
+
+        int startLine = linesPerPage * index;
+
+        if (startLine > text.getLineCount()) {
+            return NO_SUCH_PAGE;
+        }
+
+        int pageCount = (text.getLineCount()/linesPerPage) + 1;
+        int endLine = startLine + linesPerPage;
+        int linePosition = (int)Math.ceil(format.getImageableY() + lineHeight);
+
+        for (int line = startLine; line < endLine; line++) {
+            try {
+                String linetext = text.getText(
+                        text.getLineStartOffset(line),
+                        text.getLineEndOffset(line) - 
+                        text.getLineStartOffset(line));
+                graphics2D.drawString(linetext, (int)format.getImageableX(), linePosition);
+            } catch (BadLocationException e) {
+                // Ignore. Never a bad location.
+            }
+
+            linePosition += lineHeight;
+            if (linePosition > format.getHeight() - bottomMargin) {
+                break;
+            }
+        }
+
+        return PAGE_EXISTS;
+
     }
 
     /** React to notification that there was a removal from the document.
