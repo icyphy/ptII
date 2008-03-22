@@ -20,7 +20,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 85.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 85.0]">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -29,13 +29,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 108, 812, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 108, 812, 556}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[597, 401]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[597, 440]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.5, 200.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.5, 220.0}">
     </property>
     <property name="ParameterP2" class="ptolemy.data.expr.Parameter" value="100">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -53,7 +53,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 110.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 105.0]">
         </property>
     </property>
     <property name="ParameterP3" class="ptolemy.data.expr.Parameter" value="1000">
@@ -73,6 +73,12 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 125.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test for copy and paste, see&#10;http://bugzilla.ecoinformatics.org/show_bug.cgi?id=2870&#10;&#10;The test is to&#10;1. Open CompositeActorA&#10;2. Inside CompositeActorA, select and copy CompositeActorAB&#10;3. Create a new empty mode: File | New | Graph Editor&#10;4. Paste into the new graph editor&#10;5. You should get 4 parameters at the top level&#10;   ParameterP&#10;   ParameterAP&#10;   ParameterP2&#10;   ParameterP3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 200.0]">
         </property>
     </property>
     <entity name="CompositeActorA" class="ptolemy.actor.TypedCompositeActor">
@@ -146,7 +152,13 @@
                 </property>
             </port>
             <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{335, 70}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 70.0}">
+                </property>
+                <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="We test an Expression and a Scale because&#10;Expression.expression is a StringAttribute&#10;and Scale.factor is parameter.">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 20.0]">
+                    </property>
                 </property>
                 <port name="port" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -155,7 +167,7 @@
                 </port>
                 <port name="port2" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 210.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 210.0]">
                     </property>
                 </port>
                 <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -169,7 +181,7 @@
                         <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 205.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 210.0]">
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -182,7 +194,7 @@
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                         </property>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 250.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 210.0]">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
