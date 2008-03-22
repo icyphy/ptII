@@ -176,12 +176,14 @@ public class MoMLVariableChecker {
                             String portName = ((ptolemy.actor.IOPort) ports.next()).getName();
                             if (portName.equals(name)) {
                                 foundPort = true;
+                                break;
                             }
                         }
 
                         if (!foundPort) {
-                            _findUndefinedConstantsOrIdentifiers(name,
-                                    /* expressionActor.getFullName() + "." + name*/
+                            _findUndefinedConstantsOrIdentifiers(
+                                    name,
+                                    /* expressionActor.getFullName() + "." + */
                                     name,
                                     container, parsedContainer);
 
@@ -294,6 +296,15 @@ public class MoMLVariableChecker {
         boolean doRerun = false;
 
         Attribute masterAttribute = container.getAttribute(variableName);
+        if (masterAttribute == null) {
+            // Needed to find Parameters that are up scope
+            NamedObj searchContainer = container;
+            while (searchContainer != null
+                   && masterAttribute == null) {
+                masterAttribute = searchContainer.getAttribute(variableName);
+                searchContainer = searchContainer.getContainer();
+            }
+        }
         if (masterAttribute instanceof Variable) {
             Variable masterVariable = (Variable) masterAttribute;
             ParserScope parserScope = masterVariable.getParserScope();
@@ -304,6 +315,7 @@ public class MoMLVariableChecker {
                     if (node == null) {
                         node = masterVariable;
                     }
+
                     if (node == _previousNode) {
                         // We've already seen this node, so stop
                         // looping through the getToken() loop.
