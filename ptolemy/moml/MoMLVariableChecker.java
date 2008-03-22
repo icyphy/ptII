@@ -29,17 +29,28 @@ package ptolemy.moml;
 
 import java.io.StringWriter;
 import java.util.Iterator;
+import java.util.Set;
 
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.Expression;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.ParseTreeFreeVariableCollector;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.UndefinedConstantOrIdentifierException;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.Type;
+
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -145,6 +156,38 @@ public class MoMLVariableChecker {
                         ;
                     }
                 }
+
+                if (entity instanceof Expression) {
+                    // Look for missing variables in Expression
+                    Expression expressionActor = (Expression) entity;
+                    StringAttribute expression = expressionActor.expression;
+                    PtParser ptParser = new PtParser();
+                    ASTPtRootNode parseTree = ptParser.generateParseTree(
+                            expression.getExpression());
+                    ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
+
+                    Set set = variableCollector.collectFreeVariables(parseTree,
+                            /*scope*/ null);
+                    for (Iterator elements = set.iterator(); elements.hasNext();) {
+                        String name = (String) elements.next();
+
+                        boolean foundPort = false;
+                        for (Iterator ports = expressionActor.inputPortList().iterator(); ports.hasNext();) {
+                            String portName = ((ptolemy.actor.IOPort) ports.next()).getName();
+                            if (portName.equals(name)) {
+                                foundPort = true;
+                            }
+                        }
+
+                        if (!foundPort) {
+                            _findUndefinedConstantsOrIdentifiers(name,
+                                    /* expressionActor.getFullName() + "." + name*/
+                                    name,
+                                    container, parsedContainer);
+
+                        }
+                    }
+                }
             }
         }
         return _variableBuffer.toString();
@@ -203,7 +246,6 @@ public class MoMLVariableChecker {
             TypedCompositeActor parsedContainer) throws IllegalActionException {
 
         // True if we should rerun the outer parse or getToken
-        boolean doRerun = false;
 
         // Ok, we have a variable that might have an appropriate
         // undefined constant or identifier.
@@ -240,16 +282,28 @@ public class MoMLVariableChecker {
                 ((NamedObj) exception.getNameable1()).toplevel().getName()
                         .length() + 2);
 
-        Attribute masterAttribute = container.getAttribute(variableName);
 
+        return _findUndefinedConstantsOrIdentifiers(variableName,
+                idException.nodeName(), container, parsedContainer);
+    }
+
+    private boolean _findUndefinedConstantsOrIdentifiers(
+            String variableName, String nodeName,
+            NamedObj container, TypedCompositeActor parsedContainer)
+            throws IllegalActionException {
+        boolean doRerun = false;
+
+        Attribute masterAttribute = container.getAttribute(variableName);
         if (masterAttribute instanceof Variable) {
             Variable masterVariable = (Variable) masterAttribute;
             ParserScope parserScope = masterVariable.getParserScope();
             if (parserScope instanceof ModelScope) {
                 if (masterVariable != null) {
-                    Variable node = masterVariable.getVariable(idException
-                            .nodeName());
+                    Variable node = masterVariable.getVariable(nodeName);
 
+                    if (node == null) {
+                        node = masterVariable;
+                    }
                     if (node == _previousNode) {
                         // We've already seen this node, so stop
                         // looping through the getToken() loop.
@@ -258,7 +312,6 @@ public class MoMLVariableChecker {
                     _previousNode = node;
 
                     try {
-
                         String moml = node.exportMoML().replaceFirst(
                                 "<property",
                                 "<property createIfNecessary=\"true\"");

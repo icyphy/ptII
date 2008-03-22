@@ -537,3 +537,40 @@ test MoMLVariableChecker-2.3.4 {copy a class that does exist to a top level that
 
     list [$classDefinitions size] [$results toString]
 } {1 777}
+
+######################################################################
+####
+# 
+test MoMLVariableChecker-3.0 {copy a composite that has an expression that refers to a top-level parameter} {
+    set w [java::new ptolemy.kernel.util.Workspace w3_0]
+    set parser [java::new ptolemy.moml.MoMLParser $w]
+    $parser purgeModelRecord CompositeCopyAndPasteTest.xml
+
+    set toplevel3_0 [java::cast ptolemy.actor.CompositeActor \
+			 [$parser parseFile CompositeCopyAndPasteTest.xml]]
+    set compositeActorA [$toplevel3_0 getEntity CompositeActorA]
+
+    set compositeActorAMoML [$compositeActorA exportMoML]
+    set variableChecker3_0 [java::new ptolemy.moml.MoMLVariableChecker]
+    set copyMoML3_0 [$variableChecker3_0 checkCopy $compositeActorAMoML $toplevel3_0]
+  
+} {<property createIfNecessary="true" name="ParameterP" class="ptolemy.data.expr.Parameter" value="42">
+    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    </property>
+    <property name="_icon" class="ptolemy.kernel.util.Attribute">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+    </property>
+    <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 80.0]">
+    </property>
+</property>
+}
