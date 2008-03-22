@@ -574,3 +574,31 @@ test MoMLVariableChecker-3.0 {copy a composite that has an expression that refer
     </property>
 </property>
 }
+
+######################################################################
+####
+# 
+test MoMLVariableChecker-3.1 {copy a composite that has an expression that refers to a top-level parameter} {
+    set w [java::new ptolemy.kernel.util.Workspace w3_1]
+    set parser [java::new ptolemy.moml.MoMLParser $w]
+    $parser purgeModelRecord ComplexCompositeCopyAndPasteTest.xml
+
+    set toplevel3_1 [java::cast ptolemy.actor.CompositeActor \
+			 [$parser parseFile \
+			      ComplexCompositeCopyAndPasteTest.xml]]
+    set compositeActorA [java::cast ptolemy.actor.CompositeActor [$toplevel3_1 getEntity CompositeActorA]]
+    set compositeActorAB [$compositeActorA getEntity CompositeActorAB]
+
+    set compositeActorABMoML [$compositeActorAB exportMoML]
+    set variableChecker3_1 [java::new ptolemy.moml.MoMLVariableChecker]
+    set copyMoML3_1 [$variableChecker3_1 checkCopy $compositeActorABMoML $compositeActorA]
+  
+    set moml3_1  "$header $entityStart $copyMoML3_1 </entity>"
+    set copy [parseMoML $moml3_1 w3_1b]
+    list \
+	[[$copy getAttribute ParameterP] getName] \
+	[[$copy getAttribute ParameterAP] getName] \
+	[[$copy getAttribute ParameterP2] getName] \
+	[[$copy getAttribute ParameterP3] getName]
+
+} {ParameterP ParameterAP ParameterP2 ParameterP3}

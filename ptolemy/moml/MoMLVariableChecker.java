@@ -1,6 +1,6 @@
 /* Check that all the variables are defined in a piece of MoML.
 
-Copyright (c) 2007 The Regents of the University of California.
+Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -28,11 +28,11 @@ COPYRIGHTENDKEY
 package ptolemy.moml;
 
 import java.io.StringWriter;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.lib.Expression;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -51,6 +51,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -95,7 +96,6 @@ public class MoMLVariableChecker {
             ErrorHandler handler = MoMLParser.getErrorHandler();
             MoMLParser.setErrorHandler(null);
             try {
-
                 // Parse the momlToBeChecked.
                 parsedContainer = (TypedCompositeActor) parser
                         .parse("<entity name=\"auto\" class=\"ptolemy.actor.TypedCompositeActor\">"
@@ -129,7 +129,6 @@ public class MoMLVariableChecker {
         // that are variables, validate the variables and look for
         // errors.
 
-        // FIXME: what about classes?
         if (parsedContainer != null) {
             // parsedContainer might be null if we failed to parse because
             // of a missing class
@@ -157,13 +156,36 @@ public class MoMLVariableChecker {
                     }
                 }
 
-                if (entity instanceof Expression) {
-                    // Look for missing variables in Expression
-                    Expression expressionActor = (Expression) entity;
-                    StringAttribute expression = expressionActor.expression;
+                // Parse all the StringAttributes and Parameters and
+                // look for missing things.  Note that Expression.expression
+                // is a StringAttribute, so we pick that up here.
+                attributes = entity.attributeList().iterator();
+                while (attributes.hasNext()) {
+                    Attribute attribute = (Attribute) attributes.next();
+                    if (!(attribute instanceof AbstractSettableAttribute)) {
+                        continue;
+                    }
+                    AbstractSettableAttribute settable = (AbstractSettableAttribute) attribute;
                     PtParser ptParser = new PtParser();
-                    ASTPtRootNode parseTree = ptParser.generateParseTree(
-                            expression.getExpression());
+                    ASTPtRootNode parseTree;
+                    try {
+                        parseTree = ptParser.generateParseTree(
+                                settable.getExpression());
+                    } catch (Exception ex) {
+                        // Skip things we can't parse, like StringAttributes
+                        // that are docs.
+
+                        // FIXME: we could be smarter here and look
+                        // for Expression.expression and only parse
+                        // it.  However, this would mean that this
+                        // class then dependend on
+                        // actor.lib.Expression.  A better design
+                        // would be to have a marker interface
+                        // implemented by Expression.expression and
+                        // search for that interface.
+
+                        continue;
+                    }
                     ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
 
                     Set set = variableCollector.collectFreeVariables(parseTree,
@@ -171,22 +193,12 @@ public class MoMLVariableChecker {
                     for (Iterator elements = set.iterator(); elements.hasNext();) {
                         String name = (String) elements.next();
 
-                        boolean foundPort = false;
-                        for (Iterator ports = expressionActor.inputPortList().iterator(); ports.hasNext();) {
-                            String portName = ((ptolemy.actor.IOPort) ports.next()).getName();
-                            if (portName.equals(name)) {
-                                foundPort = true;
-                                break;
-                            }
-                        }
-
-                        if (!foundPort) {
+                        // Look for the variable in parsedContainer
+                        if (parsedContainer.getAttribute(name) == null) {
                             _findUndefinedConstantsOrIdentifiers(
                                     name,
-                                    /* expressionActor.getFullName() + "." + */
                                     name,
                                     container, parsedContainer);
-
                         }
                     }
                 }
@@ -246,7 +258,6 @@ public class MoMLVariableChecker {
     private boolean _findUndefinedConstantsOrIdentifiers(
             IllegalActionException exception, NamedObj container,
             TypedCompositeActor parsedContainer) throws IllegalActionException {
-
         // True if we should rerun the outer parse or getToken
 
         // Ok, we have a variable that might have an appropriate
@@ -313,6 +324,8 @@ public class MoMLVariableChecker {
                     Variable node = masterVariable.getVariable(nodeName);
 
                     if (node == null) {
+                        // Needed when we are copying a composite that contains
+                        // an Expression that refers to an upscope Parameter.
                         node = masterVariable;
                     }
 
@@ -322,7 +335,7 @@ public class MoMLVariableChecker {
                         return false;
                     }
                     _previousNode = node;
-
+                    
                     try {
                         String moml = node.exportMoML().replaceFirst(
                                 "<property",
