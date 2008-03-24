@@ -147,7 +147,7 @@ public class HierarchicalStateController extends StateController {
             // Default choices.
             String[] choiceClasses = { "ptolemy.domains.fsm.modal.Refinement",
                     "ptolemy.domains.fsm.modal.ModalController",
-                    "ptolemy.domains.erg.kernel.ERGModalModel" };
+                    "ptolemy.domains.erg.kernel.ERGController" };
             String[] choiceNames = { "Default Refinement",
                     "State Machine Refinement",
                     "Event Relation Graph Refinement" };

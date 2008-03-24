@@ -105,23 +105,25 @@ public abstract class AbstractActionsAttribute extends Action implements
     }
 
     /** Construct an action with the given name contained
-     *  by the specified transition. The <i>transition</i> argument must not
+     *  by the specified container (which should be a Transition when used in
+     *  the FSM domain, and an Event in the ERG domain). The <i>container</i>
+     *  argument must not
      *  be null, or a NullPointerException will be thrown. This action will
-     *  use the workspace of the transition for synchronization and
+     *  use the workspace of the container for synchronization and
      *  version counts. If the name argument is null, then the name is
      *  set to the empty string.
      *  This increments the version of the workspace.
-     *  @param transition The transition that contains this action.
+     *  @param container The container that contains this action.
      *  @param name The name of this action.
      *  @exception IllegalActionException If the action is not of an
      *   acceptable class for the container, or if the name contains
      *   a period.
-     *  @exception NameDuplicationException If the transition already
+     *  @exception NameDuplicationException If the container already
      *   has an attribute with the name.
      */
-    public AbstractActionsAttribute(Transition transition, String name)
+    public AbstractActionsAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(transition, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -26,6 +26,7 @@
  */
 package ptolemy.domains.fsm.kernel;
 
+import ptolemy.domains.erg.kernel.Event;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -36,7 +37,8 @@ import ptolemy.kernel.util.Workspace;
 //// Action
 
 /**
- An Action is contained by a Transition in an FSMActor.
+ An Action is contained by a Transition in an FSMActor or an Event in an
+ ERGController.
  <p>
  When the FSMActor is fired, an enabled transition among the outgoing
  transitions of the current state is chosen. The choice actions
@@ -74,23 +76,23 @@ public abstract class Action extends StringAttribute {
     }
 
     /** Construct an action with the given name contained by the
-     *  specified transition. The transition argument must not be
+     *  specified container. The container argument must not be
      *  null, or a NullPointerException will be thrown. This action
-     *  will use the workspace of the transition for synchronization
+     *  will use the workspace of the container for synchronization
      *  and version counts. If the name argument is null, then the
      *  name is set to the empty string.
      *  Increment the version of the workspace.
-     *  @param transition The transition.
+     *  @param container The container.
      *  @param name The name of this action.
      *  @exception IllegalActionException If the action is not of an
      *   acceptable class for the container, or if the name contains
      *   a period.
-     *  @exception NameDuplicationException If the transition already
+     *  @exception NameDuplicationException If the container already
      *   has an attribute with the name.
      */
-    public Action(Transition transition, String name)
+    public Action(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(transition, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -103,7 +105,7 @@ public abstract class Action extends StringAttribute {
     abstract public void execute() throws IllegalActionException;
 
     /** Set the container of this action. The proposed container must
-     *  be an instance of Transition or null, otherwise an
+     *  be an instance of Transition or Event or null, otherwise an
      *  IllegalActionException will be thrown. A null argument will
      *  remove the action from its container.
      *
@@ -117,10 +119,12 @@ public abstract class Action extends StringAttribute {
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
-        if (!(container instanceof Transition) && (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "Action can only be contained by instances of "
-                            + "Transition.");
+        // An Action is used in a Transition in the FSM domain, or an Event in
+        // the ERG domain.
+        if (!(container instanceof Transition) && !(container instanceof Event)
+                && (container != null)) {
+            throw new IllegalActionException(container, this, "Action can only "
+                    + "be contained by instances of Transition or Event.");
         }
 
         super.setContainer(container);

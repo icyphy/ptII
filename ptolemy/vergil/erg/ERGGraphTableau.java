@@ -62,7 +62,20 @@ public class ERGGraphTableau extends FSMGraphTableau {
         super(container, name);
         // TODO Auto-generated constructor stub
     }
-    
+
+    /**
+     * @param container
+     * @param name
+     * @param defaultLibrary
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
+    public ERGGraphTableau(PtolemyEffigy container, String name,
+            LibraryAttribute defaultLibrary) throws IllegalActionException,
+            NameDuplicationException {
+        super(container, name, defaultLibrary);
+    }
+
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
         ERGGraphFrame frame = new ERGGraphFrame(model, this, defaultLibrary);
@@ -77,19 +90,6 @@ public class ERGGraphTableau extends FSMGraphTableau {
         frame.pack();
         frame.centerOnScreen();
         frame.setVisible(true);
-    }
-
-    /**
-     * @param container
-     * @param name
-     * @param defaultLibrary
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
-     */
-    public ERGGraphTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary) throws IllegalActionException,
-            NameDuplicationException {
-        super(container, name, defaultLibrary);
     }
 
     ///////////////////////////////////////////////////////////////////

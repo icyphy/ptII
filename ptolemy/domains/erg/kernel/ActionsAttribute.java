@@ -29,20 +29,15 @@
 package ptolemy.domains.erg.kernel;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.data.Token;
-import ptolemy.data.expr.ASTPtAssignmentNode;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParserScope;
-import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
 import ptolemy.domains.fsm.kernel.CommitActionsAttribute;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -51,7 +46,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -63,13 +57,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ActionsAttribute extends StringAttribute {
-
-    /**
-     *
-     */
-    public ActionsAttribute() {
-    }
+public class ActionsAttribute extends AbstractActionsAttribute {
 
     /**
      * @param container
@@ -90,25 +78,19 @@ public class ActionsAttribute extends StringAttribute {
     }
 
     public void execute(ParserScope scope) throws IllegalActionException {
-        if (_destinationsListVersion != workspace().getVersion()) {
-            _updateDestinations();
-        }
-
-        if (_parseTreeEvaluator == null) {
-            _parseTreeEvaluator = new ParseTreeEvaluator();
-        }
+        super.execute();
 
         if (_destinations != null) {
-            Iterator<NamedObj> destinations = _destinations.iterator();
-            Iterator<Integer> channels = _numbers.iterator();
-            Iterator<ASTPtRootNode> parseTrees = _parseTrees.iterator();
+            Iterator<?> destinations = _destinations.iterator();
+            Iterator<?> channels = _numbers.iterator();
+            Iterator<?> parseTrees = _parseTrees.iterator();
 
             while (destinations.hasNext()) {
-                NamedObj nextDestination = destinations.next();
+                NamedObj nextDestination = (NamedObj) destinations.next();
 
                 // Need to get the next channel even if it's not used.
-                Integer channel = channels.next();
-                ASTPtRootNode parseTree = parseTrees.next();
+                Integer channel = (Integer) channels.next();
+                ASTPtRootNode parseTree = (ASTPtRootNode) parseTrees.next();
                 Token token;
 
                 try {
@@ -200,64 +182,6 @@ public class ActionsAttribute extends StringAttribute {
         }
     }
 
-    public void setExpression(String expression) throws IllegalActionException {
-        super.setExpression(expression);
-
-        _destinationNames = new LinkedList<String>();
-        _numbers = new LinkedList<Integer>();
-        _parseTrees = new LinkedList<ASTPtRootNode>();
-
-        if ((expression == null) || expression.trim().equals("")) {
-            return;
-        }
-
-        PtParser parser = new PtParser();
-        Map<?, ?> map = parser.generateAssignmentMap(expression);
-
-        for (Iterator<?> names = map.keySet().iterator(); names.hasNext();) {
-            String name = (String) names.next();
-            ASTPtAssignmentNode node = (ASTPtAssignmentNode) map.get(name);
-
-            // Parse the destination specification first.
-            String completeDestinationSpec = node.getIdentifier();
-            int openParen = completeDestinationSpec.indexOf("(");
-
-            if (openParen > 0) {
-                // A channel is being specified.
-                int closeParen = completeDestinationSpec.indexOf(")");
-
-                if (closeParen < openParen) {
-                    throw new IllegalActionException(this,
-                            "Malformed action: expected destination = "
-                                    + "expression. Got: "
-                                    + completeDestinationSpec);
-                }
-
-                _destinationNames.add(completeDestinationSpec.substring(0,
-                        openParen).trim());
-
-                String channelSpec = completeDestinationSpec.substring(
-                        openParen + 1, closeParen);
-
-                try {
-                    _numbers.add(Integer.valueOf(channelSpec));
-                } catch (NumberFormatException ex) {
-                    throw new IllegalActionException(this,
-                            "Malformed action: expected destination = "
-                                    + "expression. Got: "
-                                    + completeDestinationSpec);
-                }
-            } else {
-                // No channel is specified.
-                _destinationNames.add(completeDestinationSpec);
-                _numbers.add(null);
-            }
-
-            // Parse the expression
-            _parseTrees.add(node.getExpressionTree());
-        }
-    }
-
     protected NamedObj _getDestination(String name)
     throws IllegalActionException {
         Event event = (Event) getContainer();
@@ -326,49 +250,6 @@ public class ActionsAttribute extends StringAttribute {
             }
 
             return port;
-        }
-    }
-
-    /** List of destination names. */
-    protected List<String> _destinationNames;
-
-    /** List of destinations. */
-    protected List<NamedObj> _destinations;
-
-    /** The workspace version number when the _destinations list is last
-     *  updated.
-     */
-    protected long _destinationsListVersion = -1;
-
-    /** List of channels. */
-    protected List<Integer> _numbers;
-
-    /** The parse tree evaluator. */
-    protected ParseTreeEvaluator _parseTreeEvaluator;
-
-    /** The list of parse trees. */
-    protected List<ASTPtRootNode> _parseTrees;
-
-    private void _updateDestinations() throws IllegalActionException {
-        try {
-            workspace().getReadAccess();
-
-            if (_destinationNames != null) {
-                _destinations = new LinkedList<NamedObj>();
-
-                Iterator<String> destinationNames =
-                    _destinationNames.iterator();
-
-                while (destinationNames.hasNext()) {
-                    String destinationName = destinationNames.next();
-                    NamedObj destination = _getDestination(destinationName);
-                    _destinations.add(destination);
-                }
-            }
-
-            _destinationsListVersion = workspace().getVersion();
-        } finally {
-            workspace().doneReading();
         }
     }
 }

@@ -1,466 +1,601 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="TrafficLight" class="ptolemy.domains.erg.kernel.ERGModalModel">
+<entity name="TrafficLight" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
-    <property name="_tableauFactory" class="ptolemy.vergil.erg.ERGTableauFactory">
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 50.0]">
+        </property>
     </property>
-    <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-        <property name="annotation" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 540}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 426]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{299.9999999999997, 213.0}">
+    </property>
+    <property name="Pred" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
             </property>
-            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Thomas Huining Feng</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 35.0]">
+        </property>
+    </property>
+    <property name="Pgrn" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
             </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 55.0]">
+        </property>
+    </property>
+    <property name="Cred" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 35.0]">
+        </property>
+    </property>
+    <property name="Cyel" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 55.0]">
+        </property>
+    </property>
+    <property name="Cgrn" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 75.0]">
+        </property>
+    </property>
+    <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 55.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Pred == 1) ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 80.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Pgrn == 1) ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pedestrian">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 20.0]">
+        </property>
+    </property>
+    <property name="Ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 55.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cred == 1) ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="Ellipse4" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 80.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cyel == 1) ? {1.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Cars">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 20.0]">
+        </property>
+    </property>
+    <property name="Ellipse5" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 105.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cgrn == 1) ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Thomas Huining Feng</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
       <svg>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 365.0]">
-            </property>
         </property>
-        <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This ERG (Event Relationship Graph) model demonstrates a traffic light system, in
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 390.0]">
+        </property>
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This hierarchical model demonstrates a traffic light system modeled in ERG (Event
+Relationship Graph). The DE model simulates the execution environment for the ERG
+model. Look inside ERGModalModel to see its internal design.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 325.0]">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">TrafficLight</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 300.0]">
+        </property>
+    </property>
+    <entity name="ERGModalModel" class="ptolemy.domains.erg.kernel.ERGModalModel">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 195.0]">
+        </property>
+        <port name="Cred" class="ptolemy.domains.fsm.modal.ModalPort">
+            <property name="output"/>
+        </port>
+        <port name="Cgrn" class="ptolemy.domains.fsm.modal.ModalPort">
+            <property name="output"/>
+        </port>
+        <port name="Cyel" class="ptolemy.domains.fsm.modal.ModalPort">
+            <property name="output"/>
+        </port>
+        <port name="Pred" class="ptolemy.domains.fsm.modal.ModalPort">
+            <property name="output"/>
+        </port>
+        <port name="Pgrn" class="ptolemy.domains.fsm.modal.ModalPort">
+            <property name="output"/>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
+            <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This ERG (Event Relationship Graph) model represents a traffic light system, in
 which the car light controls the pedestrian light. A node represents an event, which
 may schedule other events with edges, possibly after certain time delay.</text></svg></configure>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
       <svg>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 300.0]">
-            </property>
-        </property>
-        <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">TrafficLight</text></svg></configure>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 275.0]">
-            </property>
-        </property>
-        <property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime" value="true">
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 320.0]">
                 </property>
             </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-                  <svg>
-                    <circle cx="3" cy="3" r="2" style="fill:#0000FF"></circle>
-                  </svg>
-                </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 25.0]">
-            </property>
-        </property>
-        <property name="MaxTime" class="ptolemy.data.expr.Parameter" value="100.0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            <port name="Cred" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 65.0]">
                 </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 50.0]">
-            </property>
-        </property>
-        <property name="Cred" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </port>
+            <port name="Cgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 115.0]">
                 </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 160.0]">
-            </property>
-        </property>
-        <property name="Cyel" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </port>
+            <port name="Cyel" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 170.0]">
                 </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 180.0]">
-            </property>
-        </property>
-        <property name="Cgrn" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </port>
+            <port name="Pred" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 220.0]">
                 </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 200.0]">
-            </property>
-        </property>
-        <property name="Pred" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </port>
+            <port name="Pgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 270.0]">
                 </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 220.0]">
-            </property>
-        </property>
-        <property name="Pgrn" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </port>
+            <entity name="CRed" class="ptolemy.domains.erg.kernel.Event">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 240.0]">
-            </property>
-        </property>
-        <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 70.0]">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cred == 1) ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="Ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 95.0]">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cyel == 1) ? {1.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Cars">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 35.0]">
-            </property>
-        </property>
-        <property name="Ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 120.0]">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Cgrn == 1) ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="Ellipse4" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 70.0]">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Pred == 1) ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="Ellipse5" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 95.0]">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="(Pgrn == 1) ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Pedestrian">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 35.0]">
-            </property>
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={300, 265, 800, 519}, maximized=false}">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[577, 405]">
-        </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-        </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.5, 202.5}">
-        </property>
-        <entity name="CRed" class="ptolemy.domains.erg.kernel.Event">
-            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 1;&#10;  Cyel = 0;&#10;  Cgrn = 0">
-            </property>
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 130.0]">
-            </property>
+                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 1;&#10;  Cyel = 0;&#10;  Cgrn = 0">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 140.0]">
+                </property>
+            </entity>
+            <entity name="CGreen" class="ptolemy.domains.erg.kernel.Event">
+                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 0;&#10;  Cyel = 0;&#10;  Cgrn = 1">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 240.0]">
+                </property>
+            </entity>
+            <entity name="CYellow" class="ptolemy.domains.erg.kernel.Event">
+                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 0;&#10;  Cyel = 1;&#10;  Cgrn = 0">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 240.0]">
+                </property>
+            </entity>
+            <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 65.0]">
+                </property>
+            </entity>
+            <entity name="PRed" class="ptolemy.domains.erg.kernel.Event">
+                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Pred = 1;&#10;  Pgrn = 0">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 240.0]">
+                </property>
+            </entity>
+            <entity name="PGreen" class="ptolemy.domains.erg.kernel.Event">
+                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Pred = 0;&#10;  Pgrn = 1">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 145.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6429172666056284">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.2356954268135723">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="3.0">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.591112100980067">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.12091678532652594">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="2.0">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6315163286994793">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.9842964840483566">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="1.0">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.42331827077829215">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.682293381569953">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.43077983974078776">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.1135326925717814">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3669905036546929">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.053587397578251">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <link port="CRed.incomingPort" relation="relation3"/>
+            <link port="CRed.incomingPort" relation="relation4"/>
+            <link port="CRed.outgoingPort" relation="relation"/>
+            <link port="CRed.outgoingPort" relation="relation5"/>
+            <link port="CGreen.incomingPort" relation="relation"/>
+            <link port="CGreen.outgoingPort" relation="relation2"/>
+            <link port="CGreen.outgoingPort" relation="relation6"/>
+            <link port="CYellow.incomingPort" relation="relation2"/>
+            <link port="CYellow.outgoingPort" relation="relation3"/>
+            <link port="Init.outgoingPort" relation="relation4"/>
+            <link port="PRed.incomingPort" relation="relation6"/>
+            <link port="PGreen.incomingPort" relation="relation5"/>
         </entity>
-        <entity name="CGreen" class="ptolemy.domains.erg.kernel.Event">
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 0;&#10;  Cyel = 0;&#10;  Cgrn = 1">
-            </property>
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 230.0]">
-            </property>
-        </entity>
-        <entity name="CYellow" class="ptolemy.domains.erg.kernel.Event">
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 0;&#10;  Cyel = 1;&#10;  Cgrn = 0">
-            </property>
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 230.0]">
-            </property>
-        </entity>
-        <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
-            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 55.0]">
-            </property>
-        </entity>
-        <entity name="PRed" class="ptolemy.domains.erg.kernel.Event">
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Pred = 1;&#10;  Pgrn = 0">
-            </property>
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 230.0]">
-            </property>
-        </entity>
-        <entity name="PGreen" class="ptolemy.domains.erg.kernel.Event">
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Pred = 0;&#10;  Pgrn = 1">
-            </property>
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 135.0]">
-            </property>
-        </entity>
-        <entity name="Stop" class="ptolemy.domains.erg.kernel.Event">
-            <property name="isFinalState" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 65.0]">
-            </property>
-        </entity>
-        <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6429172666056284">
-            </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.2356954268135723">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="3.0">
+        <relation name="CredRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.591112100980067">
-            </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.12091678532652594">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="2.0">
+        <relation name="CgrnRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="relation3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6315163286994793">
-            </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.9842964840483566">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="1.0">
+        <relation name="CyelRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="relation4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.42331827077829215">
-            </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.682293381569953">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        <relation name="PredRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="relation5" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.43077983974078776">
-            </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.1135326925717814">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        <relation name="PgrnRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="relation6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3669905036546929">
-            </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.053587397578251">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-        </relation>
-        <relation name="relation7" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4167790359340373">
-            </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.18701027464678535">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="MaxTime">
-            </property>
-        </relation>
-        <link port="CRed.incomingPort" relation="relation3"/>
-        <link port="CRed.incomingPort" relation="relation4"/>
-        <link port="CRed.outgoingPort" relation="relation"/>
-        <link port="CRed.outgoingPort" relation="relation5"/>
-        <link port="CGreen.incomingPort" relation="relation"/>
-        <link port="CGreen.outgoingPort" relation="relation2"/>
-        <link port="CGreen.outgoingPort" relation="relation6"/>
-        <link port="CYellow.incomingPort" relation="relation2"/>
-        <link port="CYellow.outgoingPort" relation="relation3"/>
-        <link port="Init.outgoingPort" relation="relation4"/>
-        <link port="Init.outgoingPort" relation="relation7"/>
-        <link port="PRed.incomingPort" relation="relation6"/>
-        <link port="PGreen.incomingPort" relation="relation5"/>
-        <link port="Stop.incomingPort" relation="relation7"/>
+        <link port="Cred" relation="CredRelation"/>
+        <link port="Cgrn" relation="CgrnRelation"/>
+        <link port="Cyel" relation="CyelRelation"/>
+        <link port="Pred" relation="PredRelation"/>
+        <link port="Pgrn" relation="PgrnRelation"/>
+        <link port="_Controller.Cred" relation="CredRelation"/>
+        <link port="_Controller.Cgrn" relation="CgrnRelation"/>
+        <link port="_Controller.Cyel" relation="CyelRelation"/>
+        <link port="_Controller.Pred" relation="PredRelation"/>
+        <link port="_Controller.Pgrn" relation="PgrnRelation"/>
     </entity>
+    <entity name="SetVariable4" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Pred">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="SetVariable5" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Pgrn">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="SetVariable1" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Cred">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Cyel">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Cgrn">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 160.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="ERGModalModel.Cred" relation="relation"/>
+    <link port="ERGModalModel.Cgrn" relation="relation2"/>
+    <link port="ERGModalModel.Cyel" relation="relation3"/>
+    <link port="ERGModalModel.Pred" relation="relation4"/>
+    <link port="ERGModalModel.Pgrn" relation="relation5"/>
+    <link port="SetVariable4.input" relation="relation4"/>
+    <link port="SetVariable5.input" relation="relation5"/>
+    <link port="SetVariable1.input" relation="relation"/>
+    <link port="SetVariable3.input" relation="relation3"/>
+    <link port="SetVariable2.input" relation="relation2"/>
 </entity>

@@ -28,6 +28,10 @@
 
 package ptolemy.domains.erg.kernel;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.StateEvent;
 import ptolemy.domains.fsm.modal.ModalController;
@@ -35,6 +39,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -56,6 +61,7 @@ public class ERGController extends ModalController {
     public ERGController(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _init();
     }
 
     /**
@@ -66,14 +72,32 @@ public class ERGController extends ModalController {
     public ERGController(Workspace workspace) throws IllegalActionException,
     NameDuplicationException {
         super(workspace);
+        _init();
+    }
+
+    public void fire() throws IllegalActionException {
+        director.fire();
     }
 
     public State getInitialState() {
         return null;
     }
-    
-    public void fire() throws IllegalActionException {
-        getDirector().fire();
+
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        director.initialize();
+    }
+
+    public boolean isFireFunctional() {
+        return director.isFireFunctional();
+    }
+
+    public boolean isStrict() {
+        return director.isStrict();
+    }
+
+    public int iterate(int count) throws IllegalActionException {
+        return director.iterate(count);
     }
 
     /** Create a new instance of Transition with the specified name in
@@ -90,7 +114,6 @@ public class ERGController extends ModalController {
         try {
             workspace().getWriteAccess();
 
-            //Director director = getDirector();
             SchedulingRelation relation = new SchedulingRelation(this, name);
             return relation;
         } finally {
@@ -98,7 +121,55 @@ public class ERGController extends ModalController {
         }
     }
 
+    public boolean postfire() throws IllegalActionException {
+        return director.postfire();
+    }
+
+    public boolean prefire() throws IllegalActionException {
+        return director.prefire();
+    }
+
+    public void stop() {
+        director.stop();
+    }
+
+    public void stopFire() {
+        director.stopFire();
+    }
+
+    public void terminate() {
+        director.terminate();
+    }
+
+    public List<?> typeConstraintList() {
+        List<Object> constraintList = new LinkedList<Object>(
+                (List<?>) super.typeConstraintList());
+        List<?> events = entityList(Event.class);
+        for (Object eventObject : events) {
+            Event event = (Event) eventObject;
+            List<?> attributes = event.attributeList(HasTypeConstraints.class);
+            for (Object attributeObject : attributes) {
+                HasTypeConstraints attribute =
+                    (HasTypeConstraints) attributeObject;
+                constraintList.addAll((List<?>) attribute.typeConstraintList());
+            }
+        }
+        return constraintList;
+    }
+
+    public ERGDirector director;
+
     protected void _debug(Event event) {
         _debug(new StateEvent(this, event));
+    }
+
+    protected void _setCurrentEvent(Event event) {
+        _currentState = event;
+    }
+
+    private void _init() throws IllegalActionException,
+    NameDuplicationException {
+        director = new ERGDirector(this, "_Director");
+        new SingletonAttribute(director, "_hide");
     }
 }

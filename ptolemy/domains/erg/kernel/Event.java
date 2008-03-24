@@ -46,6 +46,8 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.vergil.basic.NodeControllerFactory;
+import ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory;
 
 /**
 
@@ -82,7 +84,7 @@ public class Event extends State {
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
         ((ERGController) getContainer())._debug(this);
-        
+
         List<?> names = parameters.getArgumentNameList();
         int paramCount = names == null ? 0 : names.size();
         int argCount = arguments == null ? 0 : arguments.length();
@@ -132,6 +134,8 @@ public class Event extends State {
     }
 
     public ActionsAttribute actions;
+
+    public NodeControllerFactory controllerFactory;
 
     public ParametersAttribute parameters;
 
@@ -183,5 +187,8 @@ public class Event extends State {
        Variable variable = new Variable(actions, "_textHeightHint");
        variable.setExpression("5");
        variable.setPersistent(false);
+
+       controllerFactory = new HierarchicalStateControllerFactory(this,
+               "_controllerFactory");
     }
 }
