@@ -1,6 +1,6 @@
 /* The graph controller for vergil.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 1998-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -33,7 +33,9 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.Point2D;
+import java.util.Iterator;
 
 import javax.swing.Action;
 import javax.swing.JMenu;
@@ -45,6 +47,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.Vertex;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
@@ -56,6 +59,8 @@ import ptolemy.vergil.kernel.RelationController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.SnapConstraint;
+import diva.canvas.CanvasComponent;
+import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.Site;
@@ -74,6 +79,7 @@ import diva.graph.NodeRenderer;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.JContextMenu;
+import diva.util.UserObjectContainer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorEditorGraphController
@@ -257,7 +263,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             }
 
             ActorGraphModel graphModel = (ActorGraphModel) getGraphModel();
-            double[] point = SnapConstraint.constrainPoint(x, y);
+            double[] point = _offsetVertex(SnapConstraint.constrainPoint(x, y));
             final NamedObj toplevel = graphModel.getPtolemyModel();
 
             if (!(toplevel instanceof CompositeEntity)) {
@@ -328,7 +334,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected methods                 ////
 
     /** Initialize all interaction on the graph pane. This method
      *  is called by the setGraphPane() method of the superclass.
@@ -465,6 +471,96 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             setAction(_newRelationAction);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Find a point that does not have a Vertex at that location
+     */
+    private double[] _offsetVertex(double[] point) {
+        // Solve the problem of items from the toolbar overlapping.
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3002
+        double originalX = point[0];
+        double originalY = point[1];
+
+        // Look for a preexisting Vertex at that location
+        GraphPane pane = getGraphPane();
+        FigureLayer foregroundLayer = pane.getForegroundLayer();
+
+        // See EditorDropTarget for similar code.
+
+        double halo = foregroundLayer.getPickHalo();
+        double width = halo * 2;
+
+        // Set to true if we need to check for a Vertex at point
+        boolean checkVertex = false;
+        do {
+            // If we are looping again, we set checkVertex to false
+            // until we later possibly find a vertex.
+            checkVertex = false;
+            // The rectangle in which we search for a Vertex.
+            Rectangle2D region = new Rectangle2D.Double(
+                    point[0] - halo, point[1] - halo, width, width);
+
+            // Iterate through figures within the region.
+            Iterator foregroundFigures = foregroundLayer.getFigures().getIntersectedFigures(region).figuresFromFront();
+            Iterator pickFigures = CanvasUtilities.pickIter(foregroundFigures,
+                    region);
+            if (!pickFigures.hasNext()) {
+                // No hits, so the proposed location is fine.
+                break;
+            }
+
+            while(pickFigures.hasNext() && !checkVertex) {
+                CanvasComponent possibleVertex = (CanvasComponent)pickFigures.next();
+                if (possibleVertex == null) {
+                    // Nothing to see here, move along - there is no Vertex.
+                    break;
+                } else if (possibleVertex instanceof UserObjectContainer) {
+                    // Work our way up the CanvasComponent parent tree
+                    // See EditorDropTarget for similar code.
+
+                    Object userObject = null;
+        
+                    while (possibleVertex instanceof UserObjectContainer
+                            && userObject == null && !checkVertex) {
+                        userObject = ((UserObjectContainer) possibleVertex).getUserObject();
+                        if (userObject instanceof Vertex) {
+                            // We found a Vertex here, so we will loop again.
+                            checkVertex = true;
+                            point[0] += _PASTE_OFFSET;
+                            point[1] += _PASTE_OFFSET;
+                            
+                            // Check to make sure we are not outside the view
+                            BasicGraphFrame frame = ActorEditorGraphController.this
+                        .getFrame();
+                            Rectangle2D visibleRectangle;
+                            if (frame != null) {
+                                visibleRectangle = frame.getVisibleRectangle();
+                            } else {
+                                visibleRectangle = pane.getCanvas().getVisibleSize();
+                            }
+
+                            if (point[0] > visibleRectangle.getWidth()) {
+                                point[0] = originalX + 25;
+                            }
+                            if (point[1] > visibleRectangle.getHeight()) {
+                                point[1] = originalY + 25;
+                            }
+                        }
+                        possibleVertex = possibleVertex.getParent();
+                    }
+                }
+            }
+        } while (checkVertex);
+        return point;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Offset used when pasting objects. See also OffsetMoMLChangeRequest. */
+    private static int _PASTE_OFFSET = 10;
 
     private ConfigureUnitsAction _configureUnitsAction;
 
