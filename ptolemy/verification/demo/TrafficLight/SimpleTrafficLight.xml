@@ -16,7 +16,7 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 936, 557}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 936, 558}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 440]">
     </property>
@@ -37,7 +37,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this model, the undesired behavior is to have the &#10;car light and pedestrian light green at the same time.&#10;This would lead to accidents. To avoid this, we use&#10;temporal logic to describe the specification and &#10;generate a file acceptable by model checker NuSMV.&#10;&#10;CTL Specification (Copy the line below when double clicking the SMV CodeGenerator)&#10;! EF (SimpleTrafficLight.CarLightNormal-state = Cgrn &amp; SimpleTrafficLight.PedestrianLightNormal-state = Pgreen)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this model, the undesired behavior is to have the &#10;car light and pedestrian light green at the same time.&#10;This would lead to accidents. To avoid this, we use&#10;temporal logic to describe the specification and &#10;generate a file acceptable by model checker NuSMV.&#10;&#10;CTL Specification (Copy the line below when double clicking the SMV CodeGenerator)&#10;! EF (CarLightNormal.state = Cgrn &amp; PedestrianLightNormal.state = Pgreen)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 270.0]">
         </property>
@@ -147,7 +147,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 330.0]">
         </property>
     </property>
-    <property name="Cyel" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="Cyel" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -242,6 +242,10 @@
         </property>
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 65.0]">
         </property>
     </property>
