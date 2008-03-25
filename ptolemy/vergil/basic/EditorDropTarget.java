@@ -362,8 +362,7 @@ public class EditorDropTarget extends DropTarget {
                 if (config == null) {
                     throw new KernelRuntimeException(dropObj, "Could not find "
                             + "configuration, list of configurations was "
-                            + configsList.size()
-                            + " elements, all were null.");
+                            + configsList.size() + " elements, all were null.");
                 }
                 StringAttribute alternateGetMomlActionAttribute = (StringAttribute) config
                         .getAttribute("_alternateGetMomlAction");

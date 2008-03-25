@@ -290,7 +290,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
          *  either the original location or an offset location that
          *  does not obscure an object of class <i>figure</i>.
          */
-        protected double [] _offsetVertex(double[] point) {
+        protected double[] _offsetVertex(double[] point) {
 
             GraphPane pane = getGraphPane();
             FigureLayer foregroundLayer = pane.getForegroundLayer();
@@ -302,10 +302,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             } else {
                 visibleRectangle = pane.getCanvas().getVisibleSize();
             }
-            return _offsetFigure(point[0], point[1], 
-                    _PASTE_OFFSET, _PASTE_OFFSET,
-                    ptolemy.moml.Vertex.class,
-                    foregroundLayer,
+            return _offsetFigure(point[0], point[1], _PASTE_OFFSET,
+                    _PASTE_OFFSET, ptolemy.moml.Vertex.class, foregroundLayer,
                     visibleRectangle);
         }
     }

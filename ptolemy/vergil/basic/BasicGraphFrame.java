@@ -166,8 +166,8 @@ import diva.util.java2d.ShapeUtilities;
  @Pt.AcceptedRating Red (johnr)
  */
 public abstract class BasicGraphFrame extends PtolemyFrame implements
-        Printable, ClipboardOwner, ChangeListener,
-        MouseWheelListener, MouseListener, MouseMotionListener {
+        Printable, ClipboardOwner, ChangeListener, MouseWheelListener,
+        MouseListener, MouseMotionListener {
     /** Construct a frame associated with the specified Ptolemy II model
      *  or object. After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -301,7 +301,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _rightComponent.addMouseWheelListener(this);
         _rightComponent.addMouseMotionListener(this);
         _rightComponent.addMouseListener(this);
-        
+
         // Create the panner.
         _graphPanner = new JCanvasPanner(getJGraph());
         _graphPanner.setPreferredSize(new Dimension(200, 150));
@@ -408,8 +408,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // the Printable or Pageable interfaces.  By definition, this class
         // implements the Printable interface, but we include that check
         // here for completeness
-        if (this instanceof Printable
-                || this instanceof Pageable) {
+        if (this instanceof Printable || this instanceof Pageable) {
             GUIUtilities.addToolBarButton(_toolbar, _printAction);
         }
         GUIUtilities.addToolBarButton(_toolbar, _zoomInAction);
@@ -1359,20 +1358,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  while the middle mouse button is held down.
      * @param event The drag event.
      */
-    public void mouseDragged(MouseEvent event){
+    public void mouseDragged(MouseEvent event) {
         // Implementation of the MouseMotionListener interface. 
         // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=73
 
-        if (event.isAltDown()){
+        if (event.isAltDown()) {
             // Only interested in middle button. (defined as the alt modifier)
             int deltaX = event.getX() - _previousMouseX;
             int deltaY = event.getY() - _previousMouseY;
-            
+
             AffineTransform newTransform = getJGraph().getCanvasPane()
                     .getTransformContext().getTransform();
             newTransform.translate(deltaX, deltaY);
             getJGraph().getCanvasPane().setTransform(newTransform);
-        
+
             _previousMouseX = event.getX();
             _previousMouseY = event.getY();
             event.consume();
@@ -1389,47 +1388,47 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // Implementation of the MouseMotionListener interface.
     }
 
-   /**
-     * Called when the mouse leaves this component.
-     * This base class does nothing when the exits this component.
-     * However, events _are_ handled by the components within this component.  
-     * @param event The mouse event.
-     */
+    /**
+      * Called when the mouse leaves this component.
+      * This base class does nothing when the exits this component.
+      * However, events _are_ handled by the components within this component.  
+      * @param event The mouse event.
+      */
     public void mouseExited(MouseEvent event) {
         // Implementation of the MouseMotionListener interface.
     }
-    
+
     /** Called when the mouse is moved. 
      * This base class does nothing when the mouse is moved.  
      * @param event Contains details of the movement event.
      * However, events _are_ handled by the components within this component.  
      */
-    public void mouseMoved(MouseEvent event){
+    public void mouseMoved(MouseEvent event) {
         // Implementation of the MouseMotionListener interface.
-    }    
-    
+    }
+
     /** Store the location of the middle mouse event.
      * @param event The mouse event.
      */
     public void mousePressed(MouseEvent event) {
-        if (event.isAltDown()){
+        if (event.isAltDown()) {
             // Only interested in middle button. (defined as the alt modifier)
             _previousMouseX = event.getX();
             _previousMouseY = event.getY();
             event.consume();
         }
     }
-      
-   /**
-     * Called when the mouse is released.
-     * This base class does nothing when the mouse is moved.  
-     * However, events _are_ handled by the components within this component.  
-     * @param event The mouse event.
-     */
+
+    /**
+      * Called when the mouse is released.
+      * This base class does nothing when the mouse is moved.  
+      * However, events _are_ handled by the components within this component.  
+      * @param event The mouse event.
+      */
     public void mouseReleased(MouseEvent event) {
         // Implementation of the MouseMotionListener interface.
     }
-    
+
     /** Scroll in when the mouse wheel is moved.
      * @param event The mouse wheel event.
      */
@@ -1442,12 +1441,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         int notches = event.getWheelRotation();
         double zoomFactor = 1.25;
-        if (notches > 0){
+        if (notches > 0) {
             zoomFactor = 1.0 / zoomFactor;
         }
         zoom(zoomFactor);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -2024,7 +2023,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     private JGraph _jgraph;
 
     /** Action for opening the container, moving uplevel. */
-    private Action _openContainerAction = new OpenContainerAction("Open the container");
+    private Action _openContainerAction = new OpenContainerAction(
+            "Open the container");
 
     /** List of references to graph frames that are open. */
     private static LinkedList _openGraphFrames = new LinkedList();
@@ -2033,14 +2033,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  middle mouse button.
      */
     private int _previousMouseX = 0;
-    
+
     /** Y coordinate of where we last processed a press or drag of the
      *  middle mouse button.
      */
-    private int _previousMouseY = 0;    
+    private int _previousMouseY = 0;
 
     /**  Action to print the model. */
-    private Action _printAction = new PrintAction("Print"); 
+    private Action _printAction = new PrintAction("Print");
 
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();
@@ -2049,7 +2049,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     private JComponent _rightComponent;
 
     /**  Action to save the model. */
-    private Action _saveAction = new SaveAction("Save"); 
+    private Action _saveAction = new SaveAction("Save");
 
     /** Action to undo the last MoML change. */
     private Action _undoAction = new UndoAction();
@@ -2629,20 +2629,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  Print the current model.
      */
     private class PrintAction extends AbstractAction {
-       /** Construct a print action.
-        *  @param description A string that describes the action.  Spaces are
-        *  permitted, each word is usually capitalized.
-        */
-       public PrintAction(String description) {
-           super(description);
-           putValue("tooltip", description);
+        /** Construct a print action.
+         *  @param description A string that describes the action.  Spaces are
+         *  permitted, each word is usually capitalized.
+         */
+        public PrintAction(String description) {
+            super(description);
+            putValue("tooltip", description);
 
-           // Load the image by using the absolute path to the gif.
-           // Using a relative location should work, but it does not.
-           // Use the resource locator of the class.
-           // For more information, see
-           // jdk1.3/docs/guide/resources/resources.html
-           GUIUtilities.addIcons(this, new String[][] {
+            // Load the image by using the absolute path to the gif.
+            // Using a relative location should work, but it does not.
+            // Use the resource locator of the class.
+            // For more information, see
+            // jdk1.3/docs/guide/resources/resources.html
+            GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/print.gif",
                             GUIUtilities.LARGE_ICON },
                     { "/ptolemy/vergil/basic/img/print_o.gif",
@@ -2651,13 +2651,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             GUIUtilities.ROLLOVER_SELECTED_ICON },
                     { "/ptolemy/vergil/basic/img/print_on.gif",
                             GUIUtilities.SELECTED_ICON } });
-       }
+        }
+
         /** Print the current layout.
          *  @param event The action event, ignored by this method.
          */
-       public void actionPerformed(ActionEvent event) {
-           _print();
-       }
+        public void actionPerformed(ActionEvent event) {
+            _print();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2698,19 +2699,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  Save the current model.
      */
     private class SaveAction extends AbstractAction {
-       /** Construct a save action.
-        *  @param description A string that describes the action.  Spaces are
-        *  permitted, each word is usually capitalized.
-        */
-       public SaveAction(String description) {
-           super(description);
-           putValue("tooltip", description);
-           // Load the image by using the absolute path to the gif.
-           // Using a relative location should work, but it does not.
-           // Use the resource locator of the class.
-           // For more information, see
-           // jdk1.3/docs/guide/resources/resources.html
-           GUIUtilities.addIcons(this, new String[][] {
+        /** Construct a save action.
+         *  @param description A string that describes the action.  Spaces are
+         *  permitted, each word is usually capitalized.
+         */
+        public SaveAction(String description) {
+            super(description);
+            putValue("tooltip", description);
+            // Load the image by using the absolute path to the gif.
+            // Using a relative location should work, but it does not.
+            // Use the resource locator of the class.
+            // For more information, see
+            // jdk1.3/docs/guide/resources/resources.html
+            GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/save.gif",
                             GUIUtilities.LARGE_ICON },
                     { "/ptolemy/vergil/basic/img/save_o.gif",
@@ -2720,13 +2721,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     { "/ptolemy/vergil/basic/img/save_on.gif",
                             GUIUtilities.SELECTED_ICON } });
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
-       }
+        }
+
         /** Save the current layout.
          *  @param e The action event, ignored by this method.
          */
-       public void actionPerformed(ActionEvent e) {
-           _save();
-       }
+        public void actionPerformed(ActionEvent e) {
+            _save();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

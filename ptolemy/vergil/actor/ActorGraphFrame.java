@@ -180,8 +180,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         JMenuItem[] debugMenuItems = {
                 new JMenuItem("Listen to Director", KeyEvent.VK_L),
                 new JMenuItem("Animate Execution", KeyEvent.VK_A),
-                new JMenuItem("Stop Animating", KeyEvent.VK_S),
-               };
+                new JMenuItem("Stop Animating", KeyEvent.VK_S), };
 
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
@@ -400,7 +399,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                         _controller.clearAnimation();
                         _listeningTo = null;
                     }
-                } 
+                }
             } catch (KernelException ex) {
                 try {
                     MessageHandler.warning("Failed to create debug listener: "

@@ -189,7 +189,7 @@ public class IconController extends ParameterizedNodeController {
 
             if (result == null) {
                 throw new InternalErrorException("Failed to create icon.");
-            } else {    
+            } else {
                 result.setToolTipText(object.getClassName());
             }
 

@@ -241,28 +241,21 @@ public abstract class WithIconGraphController extends BasicGraphController {
                     if (_prototype != null) {
                         Rectangle2D visiblePart = frame.getVisibleRectangle();
 
-                        double [] p;
+                        double[] p;
                         if (_prototype.isInput() && _prototype.isOutput()) {
-                            p = _offsetFigure(center.getX(),
-                                    (visiblePart.getY()
-                                            + visiblePart.getHeight())
-                                    - _PORT_OFFSET,
-                                    _PASTE_OFFSET * 2, 0);
+                            p = _offsetFigure(center.getX(), (visiblePart
+                                    .getY() + visiblePart.getHeight())
+                                    - _PORT_OFFSET, _PASTE_OFFSET * 2, 0);
                         } else if (_prototype.isInput()) {
                             p = _offsetFigure(
-                                    visiblePart.getX() + _PORT_OFFSET,
-                                    center.getY(),
-                                    0, _PASTE_OFFSET * 2);
+                                    visiblePart.getX() + _PORT_OFFSET, center
+                                            .getY(), 0, _PASTE_OFFSET * 2);
                         } else if (_prototype.isOutput()) {
-                            p = _offsetFigure(
-                                    visiblePart.getX() + visiblePart.getWidth()
-                                    - _PORT_OFFSET,
-                                    center.getY(),
-                                    0, _PASTE_OFFSET * 2); 
+                            p = _offsetFigure(visiblePart.getX()
+                                    + visiblePart.getWidth() - _PORT_OFFSET,
+                                    center.getY(), 0, _PASTE_OFFSET * 2);
                         } else {
-                            p = _offsetFigure(
-                                    center.getX(),
-                                    center.getY(),
+                            p = _offsetFigure(center.getX(), center.getY(),
                                     _PASTE_OFFSET * 2, _PASTE_OFFSET * 2);
                         }
                         x = p[0];
@@ -381,8 +374,8 @@ public abstract class WithIconGraphController extends BasicGraphController {
          *  the original location or an offset location that does not obscure
          *  an object of class <i>figure</i>.
          */
-        protected double [] _offsetFigure(double x, double y, 
-                double xOffset, double yOffset) {
+        protected double[] _offsetFigure(double x, double y, double xOffset,
+                double yOffset) {
 
             GraphPane pane = getGraphPane();
             FigureLayer foregroundLayer = pane.getForegroundLayer();
@@ -394,11 +387,9 @@ public abstract class WithIconGraphController extends BasicGraphController {
             } else {
                 visibleRectangle = pane.getCanvas().getVisibleSize();
             }
-            double [] point = _offsetFigure(x, y, 
-                    xOffset, yOffset,
+            double[] point = _offsetFigure(x, y, xOffset, yOffset,
                     diva.canvas.connector.TerminalFigure.class,
-                    foregroundLayer,
-                    visibleRectangle);
+                    foregroundLayer, visibleRectangle);
             return point;
         }
     }
