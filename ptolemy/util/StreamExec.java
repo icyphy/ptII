@@ -87,20 +87,47 @@ public class StreamExec implements ExecuteCommands {
      *  @param directoryName The name of the directory to append to the path.
      */
     public void appendToPath(String directoryName) {
-        // stdout("StreamExec.appendToPath(): "
-        //        + directoryName + "\n");
-        String path = getenv("PATH");
-        //stdout("StreamExec.appendToPath() path: "
-        //        + path + "\n");
+        // FIXME: Code Duplication from JTextAreaExec.java
+        if (_debug) {
+            stdout("StreamExec.appendToPath(): "
+                    + directoryName + "\n");
+        }
 
-        if (path.indexOf(File.pathSeparatorChar + directoryName
+        // Might be Path, might be PATH
+        String keyPath = "PATH";
+        String path = getenv(keyPath);
+        if (path == null) {
+            path = getenv("Path");
+            if (path != null) {
+                keyPath = "Path";
+            }
+            if (_debug) {
+                stdout("StreamExec.appendToPath() Path: "
+                        + path + "\n");
+            }
+        } else {
+            if (_debug) {
+                stdout("StreamExec.appendToPath() PATH: "
+                        + path + "\n");
+            }
+        }
+
+        if (path == null
+                || path.indexOf(File.pathSeparatorChar + directoryName
                         + File.pathSeparatorChar) == -1) {
-            //stdout("StreamExec.appendToPath() updating\n");
-
-
-            _envp = StreamExec.updateEnvironment("PATH",
+            if (_debug) {
+                stdout("StreamExec.appendToPath() updating\n");
+            }
+            _envp = StreamExec.updateEnvironment(keyPath,
                     File.pathSeparatorChar + directoryName
                     + File.pathSeparatorChar);
+
+            if (_debug) {
+                // For debugging
+                for ( int i = 0; i < _envp.length; i++) {
+                    stdout("StreamExec.appendToPath() " + _envp[i]);
+                }
+            }
         }
     }
 
@@ -119,7 +146,7 @@ public class StreamExec implements ExecuteCommands {
     }
 
     /** Get the value of the environment of the subprocess.
-     *  @param key The key to be looked up.  
+     *  @param key   
      *  @return The value of the key.  If the key is not set, then 
      *  null is returned.  If appendToPath() has been called, and
      *  the then the environment for the subprocess is checked, which
@@ -130,7 +157,13 @@ public class StreamExec implements ExecuteCommands {
     public String getenv(String key) {
         // FIXME: Code Duplication from JTextAreaExec.java
         if (_envp == null) {
-            return System.getenv(key);
+            // Sigh.  System.getEnv("PATH") and System.getEnv("Path")
+            // will return the same thing, even though the variable
+            // is Path.  Updating PATH is wrong, the subprocess will
+            // not see the change.  So, we search the env for a direct
+            // match
+            Map<String,String> environmentMap = System.getenv(); 
+            return (String) environmentMap.get(key);
         }
         for ( int i = 0; i < _envp.length; i++) {
             if (key.regionMatches(false /*ignoreCase*/,
@@ -222,7 +255,7 @@ public class StreamExec implements ExecuteCommands {
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             envp[i++] = entry.getKey() + "=" + entry.getValue();
-//             System.out.println("StreamExec(): " + envp[i-1]);
+            // System.out.println("StreamExec(): " + envp[i-1]);
         }
         return envp;
     }
@@ -412,6 +445,8 @@ public class StreamExec implements ExecuteCommands {
      *  the command.
      */
     private List _commands;
+
+    private final boolean _debug = false;
 
     /** The environment, which is an array of Strings of the form
      *  <code>name=value</code>.  If this variable is null, then
