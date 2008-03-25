@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/wireless/lib
 
-DIRS = 		test network tinyOS
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -49,7 +49,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS =
 
-# We are not shipping networ
+# We are not shipping network
 #		network/network.jar
 #		tinyOS/tinyOS.jar
 
