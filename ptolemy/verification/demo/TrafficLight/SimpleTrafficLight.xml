@@ -16,7 +16,7 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 936, 558}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 936, 557}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 440]">
     </property>
@@ -27,7 +27,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Contrary to TrafficLight.xml in ptolemy/domains/sr/demo/TrafficLight, &#10;SimpleTrafficLight.xml is a simplified version of traffic control which &#10;only simulates the behavior of normal situation. &#10;&#10;Another difference is that SimpleTrafficLight.xml only uses FSMActors &#10;to represent extended state machines rather than ModalModels &#10;(which are used in TrafficLight.xml). An user may generate codes for&#10;both models using SMV code generator.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Contrary to TrafficLight.xml in ptolemy/domains/sr/demo/TrafficLight, &#10;SimpleTrafficLight.xml is a simplified version of traffic control which &#10;only simulates the behavior of normal situation. &#10;&#10;Another difference is that SimpleTrafficLight.xml only uses FSMActors &#10;to represent extended state machines rather than ModalModels &#10;(which are used in TrafficLight.xml). An user may generate codes for&#10;both models using Formal Model Converter.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 180.0]">
         </property>
