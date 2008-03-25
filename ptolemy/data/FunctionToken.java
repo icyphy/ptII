@@ -52,6 +52,17 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (liuxj)
  */
 public class FunctionToken extends Token {
+    /** Create a new FunctionToken that applies the given function.
+     *  The type of the function token will be the same as the given
+     *  type.
+     *  @param f The function.
+     *  @param type The function type.
+     */
+    public FunctionToken(Function f, FunctionType type) {
+        _function = f;
+        _type = type;
+    }
+
     /** Create a new FunctionToken from the given string.
      *  @param init The initialization string, for example
      *  <code>function(x,y) 4+x+y</code>.
@@ -75,17 +86,6 @@ public class FunctionToken extends Token {
         }
     }
 
-    /** Create a new FunctionToken that applies the given function.
-     *  The type of the function token will be the same as the given
-     *  type.
-     *  @param f The function.
-     *  @param type The function type.
-     */
-    public FunctionToken(Function f, FunctionType type) {
-        _function = f;
-        _type = type;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -98,6 +98,13 @@ public class FunctionToken extends Token {
      */
     public Token apply(Token[] args) throws IllegalActionException {
         return _function.apply(args);
+    }
+
+    /** Return the function of this token.
+     *  @return A Function.
+     */
+    public Function getFunction() {
+        return _function;
     }
 
     /** Return the number of arguments of the function.
