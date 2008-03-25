@@ -30,6 +30,8 @@ package ptolemy.vergil.toolbox;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -39,9 +41,11 @@ import javax.swing.JPopupMenu;
 
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Location;
 import diva.canvas.CanvasComponent;
 import diva.canvas.CanvasLayer;
 import diva.canvas.CanvasPane;
+import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.event.LayerEvent;
@@ -50,6 +54,7 @@ import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.gui.toolbox.JContextMenu;
+import diva.util.UserObjectContainer;
 
 //////////////////////////////////////////////////////////////////////////
 //// FigureAction
@@ -293,7 +298,7 @@ public class FigureAction extends AbstractAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         public variables                 ////
 
     /** When the action was fired from a canvas interactor.
      */
@@ -315,6 +320,133 @@ public class FigureAction extends AbstractAction {
     /** When the action was fired from a hotkey.
      */
     public static final SourceType HOTKEY_TYPE = new SourceType("hotkey");
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Determine a new location for a figure if another figure is
+     *  already at that location.
+     *  @param x The x value of the proposed location.
+     *  @param y The y value of the proposed location.
+     *  @param xOffset The x offset to be used if a figure is found.
+     *  @param yOffset The y offset to be used if a figure is found.
+     *  @param figureClass The Class of the figure to avoid.
+     *  @param foregroundLayer The layer containing the figures.
+     *  @param Rectangle The rectangle that describe the bounds of the
+     *  visible pane.
+     *  @return An array of two doubles (x and y) that represents either
+     *  the original location or an offset location that does not obscure
+     *  an object of class <i>figure</i>.
+     */
+    protected double [] _offsetFigure(double x, double y, 
+            double xOffset, double yOffset, Class figureClass,
+            FigureLayer foregroundLayer,
+            Rectangle2D visibleRectangle) {
+        // Solve the problem of items from the toolbar overlapping.
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3002
+
+        // This method is in this class so that we can handle
+        // ports and relations.
+
+        double [] point = new double[2];
+        point[0] = x; 
+        point[1] = y;
+
+        double originalX = x;
+        double originalY = y;
+
+        // See EditorDropTarget for similar code.
+
+        double halo = foregroundLayer.getPickHalo();
+        double width = halo * 2;
+
+        // Used to handle cases where we get to the edge. 
+        int xMax = 0;
+        int yMax = 0;
+
+        // Set to true if we need to check for a Figure at x and y
+        boolean checkFigure = false;
+        do {
+            // If we are looping again, we set checkFigure to false
+            // until we later possibly find a Figure.
+            checkFigure = false;
+
+            // The rectangle in which we search for a Figure.
+            Rectangle2D region = new Rectangle2D.Double(
+                    point[0] - halo, point[1] - halo, width, width);
+
+            // Iterate through figures within the region.
+            Iterator foregroundFigures = foregroundLayer.getFigures().getIntersectedFigures(region).figuresFromFront();
+            Iterator pickFigures = CanvasUtilities.pickIter(foregroundFigures,
+                    region);
+
+            while(pickFigures.hasNext() && !checkFigure) {
+                CanvasComponent possibleFigure = (CanvasComponent)pickFigures.next();
+                if (possibleFigure == null) {
+                    // Nothing to see here, move along - there is no Figure.
+                    break;
+                } else if (possibleFigure instanceof UserObjectContainer) {
+                    // Work our way up the CanvasComponent parent tree
+                    // See EditorDropTarget for similar code.
+                    Object userObject = null;
+                        
+                    while (possibleFigure instanceof UserObjectContainer
+                            && userObject == null && !checkFigure) {
+                        userObject = ((UserObjectContainer) possibleFigure).getUserObject();
+                        if (userObject instanceof Location
+                                && (figureClass.isInstance(userObject)
+                                        || figureClass.isInstance(possibleFigure))) {
+                            // We found a figure here, so we will
+                            // loop again.
+                            checkFigure = true;
+                            point[0] += xOffset;
+                            point[1] += yOffset;
+                            
+                            // Check to make sure we are not outside the view
+                            if (point[0] > visibleRectangle.getWidth()) {
+                                point[0] = originalX;
+                                point[1] = originalY
+                                    - _PASTE_OFFSET * 2 * ++xMax; 
+                                if (point[1] < 0) {
+                                    point[1] = originalY
+                                        + _PASTE_OFFSET * 2 * ++xMax; 
+                                }
+                            }
+
+                            if (point[1] > visibleRectangle.getHeight()) {
+                                point[0] = originalX
+                                    - _PASTE_OFFSET * 2 * ++yMax;
+                                if (point[0] < 0) {
+                                    point[0] = originalX
+                                        + _PASTE_OFFSET * 2 * ++xMax; 
+                                }
+                                point[1] = originalY;
+
+                            }
+
+                            // Fail safe. Don't try forever, just give up.
+                            if (point[0] < 0 || point[1] < 0
+                                    || point[0] > visibleRectangle.getWidth()
+                                    || point[1] > visibleRectangle.getHeight()) {
+                                // Can't do anything here, so return.
+                                point[0] = originalX + 0.5 * xOffset;
+                                point[1] = originalY + 0.5 * yOffset; 
+                                return point;
+                            }
+                        }
+                        possibleFigure = possibleFigure.getParent();
+                    }
+                }
+            }
+        } while (checkFigure);
+        return point;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Offset used when pasting objects. See also OffsetMoMLChangeRequest. */
+    protected static int _PASTE_OFFSET = 20;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

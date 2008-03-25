@@ -288,6 +288,31 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             request.setUndoable(true);
             toplevel.requestChange(request);
         }
+
+        /** Offset a figure if another figure is already at that location.
+         *  @param point An array of two doubles (x and y)
+         *  @return An array of two doubles (x and y) that represents
+         *  either the original location or an offset location that
+         *  does not obscure an object of class <i>figure</i>.
+         */
+        protected double [] _offsetVertex(double[] point) {
+
+            GraphPane pane = getGraphPane();
+            FigureLayer foregroundLayer = pane.getForegroundLayer();
+
+            Rectangle2D visibleRectangle;
+            BasicGraphFrame frame = ActorEditorGraphController.this.getFrame();
+            if (frame != null) {
+                visibleRectangle = frame.getVisibleRectangle();
+            } else {
+                visibleRectangle = pane.getCanvas().getVisibleSize();
+            }
+            return _offsetFigure(point[0], point[1], 
+                    _PASTE_OFFSET, _PASTE_OFFSET,
+                    ptolemy.moml.Vertex.class,
+                    foregroundLayer,
+                    visibleRectangle);
+        }
     }
 
     /** Create the controllers for nodes in this graph.
@@ -470,90 +495,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             super();
             setAction(_newRelationAction);
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Find a point that does not have a Vertex at that location
-     */
-    private double[] _offsetVertex(double[] point) {
-        // Solve the problem of items from the toolbar overlapping.
-        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3002
-        double originalX = point[0];
-        double originalY = point[1];
-
-        // Look for a preexisting Vertex at that location
-        GraphPane pane = getGraphPane();
-        FigureLayer foregroundLayer = pane.getForegroundLayer();
-
-        // See EditorDropTarget for similar code.
-
-        double halo = foregroundLayer.getPickHalo();
-        double width = halo * 2;
-
-        // Set to true if we need to check for a Vertex at point
-        boolean checkVertex = false;
-        do {
-            // If we are looping again, we set checkVertex to false
-            // until we later possibly find a vertex.
-            checkVertex = false;
-            // The rectangle in which we search for a Vertex.
-            Rectangle2D region = new Rectangle2D.Double(
-                    point[0] - halo, point[1] - halo, width, width);
-
-            // Iterate through figures within the region.
-            Iterator foregroundFigures = foregroundLayer.getFigures().getIntersectedFigures(region).figuresFromFront();
-            Iterator pickFigures = CanvasUtilities.pickIter(foregroundFigures,
-                    region);
-            if (!pickFigures.hasNext()) {
-                // No hits, so the proposed location is fine.
-                break;
-            }
-
-            while(pickFigures.hasNext() && !checkVertex) {
-                CanvasComponent possibleVertex = (CanvasComponent)pickFigures.next();
-                if (possibleVertex == null) {
-                    // Nothing to see here, move along - there is no Vertex.
-                    break;
-                } else if (possibleVertex instanceof UserObjectContainer) {
-                    // Work our way up the CanvasComponent parent tree
-                    // See EditorDropTarget for similar code.
-
-                    Object userObject = null;
-        
-                    while (possibleVertex instanceof UserObjectContainer
-                            && userObject == null && !checkVertex) {
-                        userObject = ((UserObjectContainer) possibleVertex).getUserObject();
-                        if (userObject instanceof Vertex) {
-                            // We found a Vertex here, so we will loop again.
-                            checkVertex = true;
-                            point[0] += _PASTE_OFFSET;
-                            point[1] += _PASTE_OFFSET;
-                            
-                            // Check to make sure we are not outside the view
-                            BasicGraphFrame frame = ActorEditorGraphController.this
-                        .getFrame();
-                            Rectangle2D visibleRectangle;
-                            if (frame != null) {
-                                visibleRectangle = frame.getVisibleRectangle();
-                            } else {
-                                visibleRectangle = pane.getCanvas().getVisibleSize();
-                            }
-
-                            if (point[0] > visibleRectangle.getWidth()) {
-                                point[0] = originalX + 25;
-                            }
-                            if (point[1] > visibleRectangle.getHeight()) {
-                                point[1] = originalY + 25;
-                            }
-                        }
-                        possibleVertex = possibleVertex.getParent();
-                    }
-                }
-            }
-        } while (checkVertex);
-        return point;
     }
 
     ///////////////////////////////////////////////////////////////////

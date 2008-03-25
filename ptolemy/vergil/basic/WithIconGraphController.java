@@ -32,6 +32,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
@@ -47,12 +48,17 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.RemoveIconAction;
 import ptolemy.vergil.toolbox.SnapConstraint;
+import diva.canvas.CanvasComponent;
+import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.connector.TerminalFigure;
 import diva.graph.GraphException;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FigureIcon;
+import diva.util.UserObjectContainer;
 
 //////////////////////////////////////////////////////////////////////////
 //// WithIconGraphController
@@ -145,6 +151,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
     ///////////////////////////////////////////////////////////////////
     //// NewPortAction
 
@@ -237,21 +244,33 @@ public abstract class WithIconGraphController extends BasicGraphController {
                     if (_prototype != null) {
                         Rectangle2D visiblePart = frame.getVisibleRectangle();
 
+                        double [] p;
                         if (_prototype.isInput() && _prototype.isOutput()) {
-                            x = center.getX();
-                            y = (visiblePart.getY() + visiblePart.getHeight())
-                                    - _PORT_OFFSET;
+                            p = _offsetFigure(center.getX(),
+                                    (visiblePart.getY()
+                                            + visiblePart.getHeight())
+                                    - _PORT_OFFSET,
+                                    _PASTE_OFFSET * 2, 0);
                         } else if (_prototype.isInput()) {
-                            x = visiblePart.getX() + _PORT_OFFSET;
-                            y = center.getY();
+                            p = _offsetFigure(
+                                    visiblePart.getX() + _PORT_OFFSET,
+                                    center.getY(),
+                                    0, _PASTE_OFFSET * 2);
                         } else if (_prototype.isOutput()) {
-                            x = (visiblePart.getX() + visiblePart.getWidth())
-                                    - _PORT_OFFSET;
-                            y = center.getY();
+                            p = _offsetFigure(
+                                    visiblePart.getX() + visiblePart.getWidth()
+                                    - _PORT_OFFSET,
+                                    center.getY(),
+                                    0, _PASTE_OFFSET * 2); 
                         } else {
-                            x = center.getX();
-                            y = center.getY();
+                            p = _offsetFigure(
+                                    center.getX(),
+                                    center.getY(),
+                                    _PASTE_OFFSET * 2, _PASTE_OFFSET * 2);
                         }
+                        x = p[0];
+                        y = p[1];
+
                     } else {
                         x = center.getX();
                         y = center.getY();
@@ -355,5 +374,35 @@ public abstract class WithIconGraphController extends BasicGraphController {
         }
 
         private IOPort _prototype;
+
+        /** Offset a figure if another figure is already at that location.
+         *  @param x The x value of the proposed location.
+         *  @param y The y value of the proposed location.
+         *  @param xOffset The x offset to be used if a figure is found.
+         *  @param yOffset The x offset to be used if a figure is found.
+         *  @return An array of two doubles (x and y) that represents either
+         *  the original location or an offset location that does not obscure
+         *  an object of class <i>figure</i>.
+         */
+        protected double [] _offsetFigure(double x, double y, 
+                double xOffset, double yOffset) {
+
+            GraphPane pane = getGraphPane();
+            FigureLayer foregroundLayer = pane.getForegroundLayer();
+
+            Rectangle2D visibleRectangle;
+            BasicGraphFrame frame = WithIconGraphController.this.getFrame();
+            if (frame != null) {
+                visibleRectangle = frame.getVisibleRectangle();
+            } else {
+                visibleRectangle = pane.getCanvas().getVisibleSize();
+            }
+            double [] point = _offsetFigure(x, y, 
+                    xOffset, yOffset,
+                    diva.canvas.connector.TerminalFigure.class,
+                    foregroundLayer,
+                    visibleRectangle);
+            return point;
+        }
     }
 }
