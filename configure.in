@@ -274,8 +274,9 @@ PTII_LOCALURL=`echo "file:///$PTII_DIR" | sed 's/ /%20/g'`
 #       NOTE: If your javac compiler is in /usr/bin, then PTJAVA_DIR is
 #       likely to be set to /usr.  Consider using PTJAVA_HOME if
 #       you are looking for Java jar files.
-#       Note that PTJAVA_HOME is set to the jre/ directory, wheras
-#       PTJAVA_DIR is set to the directory above the jre/ directory.
+#       Note that PTJAVA_HOME is set to the jre directory, wheras
+#       PTJAVA_DIR is set to the directory above the jre directory.
+#       PTJAVA_HOME will _not_ have a trailing slash.
 #--------------------------------------------------------------------
 
 AC_ARG_WITH(java, [  --with-java=DIR         use Java binaries from DIR,
@@ -1819,11 +1820,47 @@ if test ! -d "$JYTHON_USER_DIR"; then
     PT_MSG_STATUS([$JYTHON_USER_DIR is not present,
     so we need not find the Jython, the java implementation of Python.])
 else
+    AC_PATH_PROG(PTJYTHON, jython)
+    if test "${PTJYTHON:-none}" != "none"; then
+        JYTHON_PROG_PARENT_DIR=`dirname "$PTJYTHON"`
+   	if test -f "$JYTHON_PROG_PARENT_DIR/jython.jar"; then
+	    if test "$JYTHON_DIR" != "$JYTHON_PROG_PARENT_DIR"; then 
+		# Use changequote to protect the square brackets in sed
+changequote(<<, >>)dnl
+		# Remove /cygdrive so we can compile with MSVC
+		JYTHON_TMP_DIR=`echo "$JYTHON_PROG_PARENT_DIR" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+changequote([, ])dnl
+		AC_MSG_WARN([Found $PTJYTHON,
+    using $JYTHON_TMP_DIR/jython.jar instead of
+          $JYTHON_DIR/jython.jar])
+		JYTHON_DIR="$JYTHON_TMP_DIR"
+	    fi    
+        fi
+    else
+        AC_PATH_PROG(PTJYTHON_BAT, jython.bat)
+	if test "${PTJYTHON_BAT:-none}" != "none"; then
+	    JYTHON_PROG_PARENT_DIR=`dirname "$PTJYTHON_BAT"`
+   	    if test -f "$JYTHON_PROG_PARENT_DIR/jython.jar"; then
+	        if test "$JYTHON_DIR" != "$JYTHON_PROG_PARENT_DIR"; then 
+		    # Use changequote to protect the square brackets in sed
+changequote(<<, >>)dnl
+		    # Remove /cygdrive so we can compile with MSVC
+		    JYTHON_TMP_DIR=`echo "$JYTHON_PROG_PARENT_DIR" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+changequote([, ])dnl
+		    AC_MSG_WARN([Found $PTJYTHON_BAT,
+    using $JYTHON_TMP_DIR/jython.jar instead of
+          $JYTHON_DIR/jython.jar])
+		    JYTHON_DIR="$JYTHON_TMP_DIR"
+                fi
+            fi
+        fi
+    fi	
     AC_MSG_CHECKING([for Jython, the Java implementation of Python])
     AC_ARG_WITH(jython, [  --with-jython=DIR       use jython.jar from DIR,
-                          defaults to \$PTII/vendors/jython],
+                          defaults to \$PTII/lib, though the path
+			  is searched for jython],
 	JYTHON_DIR=$withval,
-	JYTHON_DIR=$PTII/lib)
+	JYTHON_DIR=$JYTHON_DIR)
 
     if test -f "$JYTHON_DIR/jython.jar"; then
 	PT_MSG_RESULT([$JYTHON_DIR])
@@ -1832,7 +1869,7 @@ else
 	PTJYTHON_DIR=python
 	# PTJYTHON_PACKAGES is used in ptII/doc/makefile
 	PTJYTHON_PACKAGES=ptolemy.actor.lib.python
-    fi	
+    fi
 
     if test "$PTJYTHON_DIR" = ""; then
         if test -f "$PTII/vendors/jython/jython.jar"; then
@@ -2274,14 +2311,7 @@ else
 	CYGWIN_98-*) PTJNI_ARCHITECTURE=win32;;
 	Linux) PTJNI_ARCHITECTURE=linux;;
 	SunOS) PTJNI_ARCHITECTURE=solaris;;
-	Darwin) PTJNI_ARCHITECTURE=darwin
-		PTJNI_DIR=
-		AC_MSG_WARN([
-   The Ptolemy JNI facilty is not supported on MacOS
-   because Apple laid out the Java directory differently
-   than the Windows, Solaris and Linux Java directories.
-   As a result, the Ptolemy JNI facility will not work.]);
-		;;
+	Darwin) PTJNI_ARCHITECTURE=darwin;;
 	*) PTJNI_ARCHITECTURE=unknown;;
     esac
 
@@ -2289,11 +2319,16 @@ else
         PT_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
 
         AC_MSG_CHECKING([for the proper JNI architecture include directory])
-        if test ! -d "$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE"; then 
-	    AC_MSG_WARN(["$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE" was not found.
-    As a result, compilation of JNI actors will fail.])
-        else 
-	    PT_MSG_RESULT([$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE])
+       	if test $PTJNI_ARCHITECTURE = "darwin"; then
+		PTJNI_INCLUDE="$PTJAVA_HOME/../Headers"
+	else
+		PTJNI_INCLUDE="$PTJAVA_HOME/../include"
+	fi
+
+	if test ! -d "$PTJNI_INCLUDE"; then 
+	    	AC_MSG_WARN([$PTJNI_INCLUDE was not found.  As a result, compilation of JNI actors will fail.])
+	else 
+	    	PT_MSG_RESULT([$PTJNI_INCLUDE])
         fi
 
         AC_MSG_CHECKING([for the proper JNI library architecture])
@@ -2313,11 +2348,18 @@ else
         PT_MSG_RESULT(['$PTJNI_LIB_ARCHITECTURE'])
 
         AC_MSG_CHECKING([for the proper JNI architecture lib directory])
-        if test ! -d "$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"; then 
-	    AC_MSG_WARN(["$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE" was not found.
+
+	if test $PTJNI_ARCHITECTURE = "darwin"; then
+		PTJNI_LIB="$PTJAVA_HOME/../Libraries"
+	else
+		PTJNI_LIB="$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"
+	fi
+
+        if test ! -d "$PTJNI_LIB"; then 
+	    AC_MSG_WARN([$PTJNI_LIB was not found.
     As a result, $PTII/jni/launcher/launcher might not work.])
         else 
-	    PT_MSG_RESULT([$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE])
+	    PT_MSG_RESULT([$PTJNI_LIB])
         fi
 
         AC_MSG_CHECKING([for if the -mno-cygwin flag is available])
@@ -2330,10 +2372,12 @@ else
         PT_MSG_RESULT(['$PTJNI_NO_CYGWIN'])
 
         AC_MSG_CHECKING([for the proper shared library cc flag])
+	# Under Cygwin with gcc, we need -D__int64="long long"
+	# FIXME: we should have a test for this instead of setting it explictly
         case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
-	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG=;;
+            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
+	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
+	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
 	    SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
 	    *) PTJNI_SHAREDLIBRARY_CFLAG=;;
         esac
@@ -2366,6 +2410,7 @@ else
 	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
 	    SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
 	    Linux)   PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	    Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=dylib;;
 	    *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
         esac
         PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
@@ -2524,6 +2569,9 @@ PTMATLAB_LIBDIR=
 
 PTMATLAB_SUPPORTED=no
 case "`uname -s`" in
+Darwin)
+	PTMATLAB_SUPPORTED=yes
+	;;
 Linux)
 	PTMATLAB_SUPPORTED=yes
 	;;
@@ -2603,7 +2651,10 @@ changequote([, ])dnl
 		MATLAB_USE_MSVC="no"
 		case "`uname -s`" in
 		Linux)
-			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/glnx86
+            MATLAB_LIBDIR=${MATLAB_DIR}/bin/glnx86
+            if ! test -d ${MATLAB_DIR}; then
+			    MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/glnx86
+            fi
 			;;
 		CYGWIN*)
                         # As of 5/2007, we no longer use MSVC cl for Matlab
@@ -2617,8 +2668,18 @@ changequote([, ])dnl
 			    MATLAB_LIBDIR=${MATLAB_DIR}/bin
 			    if test ! -f "$MATLAB_LIBDIR/libmx.so"; then
 			        MATLAB_LIBDIR=${MATLAB_DIR}/bin/sol64
+				PTMATLAB_CC_FLAGS=-m64
                             fi
+			else     
+			    if test ! -f "$MATLAB_LIBDIR/libmx.so"; then
+			        # Why, under Unix, are the libs in the bin dir? 
+			        # matlab r2006a
+			        MATLAB_LIBDIR=${MATLAB_DIR}/bin
+			    fi				
                         fi  
+			;;
+		Darwin)
+			MATLAB_LIBDIR=${MATLAB_DIR}/bin/maci
 			;;
 		*)
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib
@@ -2647,7 +2708,12 @@ changequote([, ])dnl
 			fi
 		    fi
                 else 
-		    PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
+		    if test $PTJNI_ARCHITECTURE = "darwin"; then
+		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx"
+		    else
+		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
+		    fi
+
 
 		    AC_MSG_CHECKING([for gcc])
 		    AC_PATH_PROG(PTCC, gcc)
@@ -3734,6 +3800,9 @@ AC_SUBST(PTJNI_ARCHITECTURE)
 # $PTII/makefile if gcc or cc was found
 AC_SUBST(PTJNI_DIR)
 
+# set to jni include directory
+AC_SUBST(PTJNI_INCLUDE)
+
 # Set to -ldl for use by jni/launcher/makefile under Linux
 AC_SUBST(PTJNI_DL_LIBRARY)
 
@@ -3792,6 +3861,10 @@ AC_SUBST(PTLEJOS_DIR)
 # Set to gcc or cl and used in
 # $PTII/ptolemy/matlab/makefile if the Matlab was found.
 AC_SUBST(PTMATLAB_CC)
+
+# Set to -m64 under Solaris if libs are in bin/sol64
+# and used $PTII/ptolemy/matlab/makefile if the Matlab was found.
+AC_SUBST(PTMATLAB_CC_FLAGS)
 
 # Set to matlab and used in
 # $PTII/ptolemy/makefile if the Matlab was found.
