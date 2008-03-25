@@ -67,7 +67,9 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	'EmbeddedCActor$$DummyActor.class' \
-	'EmbeddedCActor$$EmbeddedActor.class'
+	'EmbeddedCActor$$EmbeddedActor.class' \
+	'PointerToken$$1.class' \
+	'PointerToken$$PointerType.class
 
 JCLASS = $(JSRCS:%.java=%.class)
 
