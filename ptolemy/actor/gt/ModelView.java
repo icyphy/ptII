@@ -1,6 +1,6 @@
 /*  This actor opens a window to display the specified model and applies its inputs to the model.
 
- @Copyright (c) 1998-2007 The Regents of the University of California.
+ @Copyright (c) 1998-2008 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
