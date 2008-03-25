@@ -40,7 +40,7 @@ ME =		.
 #   if $PTII/mescal was found
 PTTHALES_DIR = thales
 
-DIRS = util com diva org ptolemy $(PTJNI_DIR) $(PTMESCAL_DIR) $(PTTHALES_DIR) \
+DIRS = util com diva ptolemy $(PTJNI_DIR) $(PTMESCAL_DIR) $(PTTHALES_DIR) \
 	contrib bin doc
 
 # Root of Ptolemy II directory
@@ -272,6 +272,9 @@ CLEAN_SHIPPING_FILES = \
 
 clean_shipping:
 	rm -rf $(CLEAN_SHIPPING_FILES)
+
+ls_clean_shipping:
+	ls -d $(CLEAN_SHIPPING_FILES)
 
 cvs_delete_clean_shipping:
 	for files in $(CLEAN_SHIPPING_FILES); do \
