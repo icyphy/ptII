@@ -547,7 +547,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         classMap.put("ptolemy.actor.lib.colt.ColtZeta", "lib/ptcolt.jar");
 
         classMap.put("ptolemy.actor.gui.MoMLApplet", "ptolemy/ptsupport.jar");
-        
+
         // Ptalon requires multiple jar files
         String ptalonJar = "ptolemy/actor/ptalon/ptalon.jar";
         classMap.put("ptolemy.actor.ptalon.PtalonActor", ptalonJar);

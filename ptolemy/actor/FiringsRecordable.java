@@ -49,7 +49,7 @@ public interface FiringsRecordable {
      */
     public void removeActorFiringListener(ActorFiringListener listener);
 
-    /** Record a firing event. 
+    /** Record a firing event.
      *  @param type The type of firing event to record.
      */
     public void recordFiring(FiringEvent.FiringEventType type);

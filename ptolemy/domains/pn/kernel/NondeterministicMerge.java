@@ -100,7 +100,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      */
-    public NondeterministicMerge(Workspace workspace) 
+    public NondeterministicMerge(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
         // Added for the sake of Kepler's KAR handling, which needs this
         // constructor to instantiate composite actors.
@@ -195,7 +195,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
     ////                         private methods                   ////
 
     /** Construct a NondeterministicMerge. */
-    private void _constructor() 
+    private void _constructor()
             throws NameDuplicationException, IllegalActionException {
 
         input = new TypedIOPort(this, "input", true, false);

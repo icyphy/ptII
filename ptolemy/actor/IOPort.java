@@ -786,9 +786,9 @@ public class IOPort extends ComponentPort {
                 token = localToken;
 		if (_hasPortEventListeners) {
 		    _notifyPortEventListeners(
-			new IOPortEvent(this, IOPortEvent.GET_END, 
+			new IOPortEvent(this, IOPortEvent.GET_END,
 				      channelIndex, true, token));
-		}            
+		}
 	    }
         }
 
@@ -870,7 +870,7 @@ public class IOPort extends ComponentPort {
 	    _notifyPortEventListeners(
 	        new IOPortEvent(this, IOPortEvent.GET_END,
 			      channelIndex, true, retArray, vectorLength));
-	}            
+	}
 
         int index = 1;
 
@@ -2254,10 +2254,10 @@ public class IOPort extends ComponentPort {
                     IOPort port = (IOPort) ports.next();
                     int depth = port.getContainer().depthInHierarchy();
 
-                    if (port.isInput() 
-                            && (depth >= depthOfDirector)) { 
+                    if (port.isInput()
+                            && (depth >= depthOfDirector)) {
                         result.addLast(port);
-                    } else if (port.isOutput() 
+                    } else if (port.isOutput()
                             && (depth < depthOfDirector)
                             && (port.numberOfSinks() > 0)) {
                         result.addLast(port);
@@ -2310,11 +2310,11 @@ public class IOPort extends ComponentPort {
                     IOPort port = (IOPort) ports.next();
                     int depth = port.depthInHierarchy();
 
-                    if (port.isInput() 
-                            && (depth <= depthOfDirector) 
+                    if (port.isInput()
+                            && (depth <= depthOfDirector)
                             && (port.numberOfSources() > 0)) {
                         result.addLast(port);
-                    } else if (port.isOutput() 
+                    } else if (port.isOutput()
                             && (depth > depthOfDirector)) {
                         result.addLast(port);
                     }
@@ -3740,7 +3740,7 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Send a PortEvent to all port event listeners that 
+    /** Send a PortEvent to all port event listeners that
      *  have registered with this IOPort.
      *  @param event The event.
      */
@@ -4085,7 +4085,7 @@ public class IOPort extends ComponentPort {
     // A cache of the number of sources, since it's expensive to compute.
     private transient int _numberOfSources;
     private transient long _numberOfSourcesVersion = -1;
-    
+
     // A cache of the sink port list.
     private transient LinkedList _sinkPortList;
     private transient long _sinkPortListVersion;

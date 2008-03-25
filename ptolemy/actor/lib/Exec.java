@@ -154,7 +154,7 @@ public class Exec extends TypedAtomicActor {
         output.setTypeEquals(BaseType.STRING);
         new Parameter(output, "_showName", BooleanToken.TRUE);
 
-        throwExceptionOnNonZeroReturn = new Parameter(this, 
+        throwExceptionOnNonZeroReturn = new Parameter(this,
                 "throwExceptionOnNonZeroReturn", BooleanToken.TRUE);
         throwExceptionOnNonZeroReturn.setTypeEquals(BaseType.BOOLEAN);
     }
@@ -247,7 +247,7 @@ public class Exec extends TypedAtomicActor {
     /** If true, then throw an exception if the subprocess returns
      *  non-zero.
      *  The default is a boolean of value true.
-     */   
+     */
     public Parameter throwExceptionOnNonZeroReturn;
 
     ///////////////////////////////////////////////////////////////////

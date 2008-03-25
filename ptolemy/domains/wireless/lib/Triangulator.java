@@ -159,7 +159,7 @@ public class Triangulator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone this actor into the specified workspace. This overrides the
      *  base class to handle private variables.
      *  @param workspace The workspace for the cloned object.

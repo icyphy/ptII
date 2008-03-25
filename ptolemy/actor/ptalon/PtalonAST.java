@@ -1,5 +1,5 @@
 /* FIXME comment
-  
+
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
 
@@ -44,7 +44,7 @@ import antlr.collections.AST;
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (acataldo)
- @Pt.AcceptedRating Red (acataldo)   
+ @Pt.AcceptedRating Red (acataldo)
  */
 public class PtalonAST extends CommonAST {
 

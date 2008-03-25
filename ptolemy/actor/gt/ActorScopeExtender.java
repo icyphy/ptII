@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
 public class ActorScopeExtender extends ScopeExtendingAttribute {
 
     /** Construct a scope extender.
-     * 
+     *
      *  @param container The CompositeActor or CompositeActorMatcher that
      *   contains this scope extender.
      *  @param name The name of the scope extender.
@@ -74,7 +74,7 @@ public class ActorScopeExtender extends ScopeExtendingAttribute {
 
     /** Return a list of all entities contained in the container, wrapping each
      *  entity in a {@link NamedObjVariable}.
-     * 
+     *
      *  @return A list of all entities.
      */
     public List<?> attributeList() {
@@ -108,7 +108,7 @@ public class ActorScopeExtender extends ScopeExtendingAttribute {
 
     /** Return an entity in the container with the given name, wrapped in a
      * {@link NamedObjVariable}.
-     * 
+     *
      *  @param name The name of the entity.
      *  @return The entity wrapped in a {@link NamedObjVariable}.
      */

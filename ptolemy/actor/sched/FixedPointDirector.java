@@ -299,7 +299,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
         if (!containsActors) {
             result = false;
-        } 
+        }
         _cachedFunctionalProperty = result;
         _functionalPropertyVersion = workspace().getVersion();
 

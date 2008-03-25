@@ -199,7 +199,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         String jreBinClientPath = javaHome + File.separator + "bin"
             + File.separator + "client";
-        executeCommands.stdout(_eol + _eol 
+        executeCommands.stdout(_eol + _eol
                 + "CCodeGeneratorHelper: appended to path "
                 + jreBinClientPath);
 
@@ -209,7 +209,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         if (javaHome.endsWith("/jre")) {
             javaHome = javaHome.substring(0, javaHome.length() - 4);
         }
-            
+
         if (!(new File(javaHome + "/include").isDirectory())) {
             // It could be that we are running under WebStart
             // or otherwise in a JRE, so we should look for the JDK.
@@ -235,7 +235,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                     potentialJavaHomeParentFile = new File("C:\\Program Files\\Java");
                 }
             }
-        } 
+        }
 
         getCodeGenerator().addInclude("-I\"" + javaHome + "/include\"");
 
@@ -249,7 +249,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
                 + platform + "\"");
 
-        // The directive we use to find jvm.dll, which is usually in 
+        // The directive we use to find jvm.dll, which is usually in
         // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
         String jvmLoaderDirective = "-ljvm";
 
@@ -257,7 +257,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
         String libjvmAbsoluteDirectory = ptIIDir + "/"
             + libjvmRelativeDirectory;
-        String libjvmFileName = "libjvm.dll.a"; 
+        String libjvmFileName = "libjvm.dll.a";
         String libjvmPath = libjvmAbsoluteDirectory + "/" + libjvmFileName;
 
         if ( !(new File(libjvmPath).canRead()) ) {
@@ -271,18 +271,18 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                 try {
                     // Look for libjvm.dll.a in the codegen directory
                     File libjvmFileCopy = new File(getCodeGenerator().codeDirectory.asFile(), "libjvm.dll.a");
-                        
+
                     if (!libjvmFileCopy.canRead()) {
                         // Create libjvm.dll.a in the codegen directory
-                        FileUtilities.binaryCopyURLToFile(libjvmURL, 
+                        FileUtilities.binaryCopyURLToFile(libjvmURL,
                                 libjvmFileCopy);
                     }
 
                     libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
-                        
+
                     if (libjvmFileCopy.canRead()) {
                         libjvmAbsolutePath = libjvmAbsolutePath.replace('\\',
-                                '/'); 
+                                '/');
                         libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
                                     libjvmAbsolutePath.lastIndexOf("/"));
 

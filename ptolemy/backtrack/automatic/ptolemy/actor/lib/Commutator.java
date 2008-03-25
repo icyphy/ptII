@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * A polymorphic commutator, which merges a set of input sequences into a
  * single output sequence.  The commutator has an input port (a
  * multiport) and an output port (a single port).  The types of the ports
@@ -82,19 +82,19 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The number of tokens read from each input channel on each firing.
      * This is an integer that defaults to 1.
      */
     public Parameter blockSize;
 
-    /**     
+    /**
      * The parameter controlling the input port consumption rate.
      * This parameter contains an IntToken, initially with a value of 1.
      */
     public Parameter input_tokenConsumptionRate;
 
-    /**     
+    /**
      * The parameter controlling the output port production rate.
      * This parameter contains an IntToken, initially with a value of 0.
      * When connections are made and/or the <i>blockSize</i> parameter
@@ -115,7 +115,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
 
     private int _tentativeInputPosition;
 
-    /**     
+    /**
      * Construct an actor in the specified container with the specified
      * name. Create ports and make the input port a multiport. Create
      * the actor parameters.
@@ -138,7 +138,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
         blockSize.setExpression("1");
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This calls the base
      * class method and sets the public variables to point to the new ports.
      * @param workspace The workspace for the new object.
@@ -152,7 +152,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
         return newObject;
     }
 
-    /**     
+    /**
      * Notify this entity that the links to the specified port have
      * been altered.  This sets the production rate of the output port
      * and notifies the director that the schedule is invalid, if there
@@ -165,7 +165,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
         }
     }
 
-    /**     
+    /**
      * Read <i>blockSize</i> tokens from each input channel and send them
      * to the output port. If an input channel does not have enough
      * tokens, suspend firing
@@ -193,7 +193,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
         }
     }
 
-    /**     
+    /**
      * Begin execution by setting the current input channel to zero.
      * @exception IllegalActionException If there is no director.
      */
@@ -202,7 +202,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
         $ASSIGN$_currentInputPosition(0);
     }
 
-    /**     
+    /**
      * Update the input position to equal that determined by the most
      * recent invocation of the fire() method.  The input position is
      * the channel number of the input port from which the next input
@@ -214,7 +214,7 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
         return super.postfire();
     }
 
-    /**     
+    /**
      * Return false if the current input position does not have an
      * input token.
      * @return False if the current input position has no token.

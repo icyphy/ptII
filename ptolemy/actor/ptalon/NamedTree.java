@@ -34,9 +34,9 @@ import java.util.List;
 
 /**
  This class is used for generic trees, where each node
- has a name. Subclasses will typically should set TreeType to 
+ has a name. Subclasses will typically should set TreeType to
  be the subclass itself.
- 
+
  For instance, IfTree extends NamedTree &lt IfTree &gt
  *
  <p>
@@ -44,12 +44,12 @@ import java.util.List;
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (celaine)
- @Pt.AcceptedRating Red (celaine)  
+ @Pt.AcceptedRating Red (celaine)
  */
 public abstract class NamedTree<TreeType extends NamedTree> {
 
     /** Create a new tree with the specified parent.  This
-     *  is null if the tree to create is a root.  
+     *  is null if the tree to create is a root.
      *  @param parent The parent for this tree.
      *  @param name The name for this tree.
      */
@@ -60,7 +60,7 @@ public abstract class NamedTree<TreeType extends NamedTree> {
     }
 
     /** Create a new child tree to this tree with the specified
-     *  name and return it. 
+     *  name and return it.
      *  @param name The name of the child.
      *  @return The child TreeType.
      */
@@ -69,7 +69,7 @@ public abstract class NamedTree<TreeType extends NamedTree> {
     /** Returns the child with the specified name.
      *  @param name The name for the desired child.
      *  @return A child with the specified name, if there
-     *  is any, or null otherwise. 
+     *  is any, or null otherwise.
      */
     public TreeType getChild(String name) {
         for (TreeType child : _children) {

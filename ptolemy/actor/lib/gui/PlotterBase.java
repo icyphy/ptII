@@ -118,7 +118,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
 
         _plotSize = new SizeAttribute(this, "_plotSize");
         _plotSize.setPersistent(true);
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
                 + "style=\"fill:lightGrey\"/>\n" + "<rect x=\"-12\" y=\"-12\" "

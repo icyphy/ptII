@@ -1906,7 +1906,7 @@ public class DEDirector extends Director implements TimedDirector {
                             if (currentTime.compareTo(elapsed) <= 0) {
                                 break;
                             }
-                            
+
                             // NOTE: We used to do the following, but it had a limitation.
                             // In particular, if any user code also calculated the elapsed
                             // time and then constructed a Time object to post an event

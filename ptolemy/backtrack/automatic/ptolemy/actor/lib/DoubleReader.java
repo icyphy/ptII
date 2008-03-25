@@ -42,7 +42,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
+/**
  * This actor reads tokens from an URL, and output them. Each entry in
  * the file corresponds to one iteration. If there are multiple fires in
  * the iteration, the same token will be repeated.  This actor has a
@@ -88,7 +88,7 @@ public class DoubleReader extends URLReader implements Rollbackable {
 
     private int _dataSize;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -101,7 +101,7 @@ public class DoubleReader extends URLReader implements Rollbackable {
         super(container, name);
     }
 
-    /**     
+    /**
      * Output the data read in the prefire.
      * @exception IllegalActionException If there's no director.
      */
@@ -112,7 +112,7 @@ public class DoubleReader extends URLReader implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Open the file at the URL, and set the width of the output.
      * @exception IllegalActionException Not thrown in this base class
      */
@@ -123,7 +123,7 @@ public class DoubleReader extends URLReader implements Rollbackable {
         attributeChanged(sourceURL);
     }
 
-    /**     
+    /**
      * Read one row from the input and prepare for output them.
      * @exception IllegalActionException If an IO error occurs.
      */

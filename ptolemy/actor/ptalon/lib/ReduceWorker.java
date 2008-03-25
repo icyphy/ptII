@@ -48,13 +48,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  A ReduceWorker actor, as a subsystem of the MapReduce system.
- 
+
  <p> This actor has a parameter <i>classNameForReduce</i> which is the
  qualified name for a Java class that extends
  ptolemy.actor.ptalon.lib.MapReduceAlgorithm.  It must also have a no
  argument constructor.  By extending this abstract class, it will
  implement a method named <i>reduce</i> with type signature:
- 
+
  <p> <code>public List&lt;String&gt; reduce(String key,
  BlockingQueue&lt;String&gt; value)</code>
 
@@ -134,13 +134,13 @@ public class ReduceWorker extends TypedAtomicActor {
      *  <code>public static List&lt;String[]&gt; map(String key, String value)</code>
      *  <p>
      *  Each element of each returned list should be a length two array of
-     *  Strings. 
+     *  Strings.
      */
     public StringParameter classNameForReduce;
 
     /**
      * A boolean input.  When this input is true, the
-     * actor is done reading values, and it may output 
+     * actor is done reading values, and it may output
      * tokens for each key it recieved.
      */
     public TypedIOPort doneReading;
@@ -291,7 +291,7 @@ public class ReduceWorker extends TypedAtomicActor {
         return super.prefire();
     }
 
-    /** 
+    /**
      * @return The base class return value.
      * @exception IllegalActionException If thrown in the base class.
      */
@@ -328,7 +328,7 @@ public class ReduceWorker extends TypedAtomicActor {
     ////                        private methods                    ////
 
     /**
-     * Set the map method using the class specified in <i>classNameForMap<i>. 
+     * Set the map method using the class specified in <i>classNameForMap<i>.
      * @exception IllegalActionException If the map method does not
      * exist, has the wrong type signature, or has the wrong
      * access modifiers.

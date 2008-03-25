@@ -73,7 +73,7 @@ import antlr.RecognitionException;
 public abstract class AbstractPtalonEvaluator {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////    
+    ////                         public methods                    ////
 
     /** Create a new AbstractPtalonEvaluator in the specified
      *  PtalonActor.
@@ -1044,7 +1044,7 @@ public abstract class AbstractPtalonEvaluator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////   
+    ////                      protected methods                    ////
 
     /** Return a number of spaces that is proportional to the
      *  argument. If the argument is negative or zero, return an empty
@@ -1233,7 +1233,7 @@ public abstract class AbstractPtalonEvaluator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private members                    ////  
+    ////                        private members                    ////
 
     /** A counter used to associate a unique number with each if-block.
      */
@@ -1261,7 +1261,7 @@ public abstract class AbstractPtalonEvaluator {
     private List<String> _unassignedParameterValues = new LinkedList<String>();
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected classes                    ////  
+    ////                      protected classes                    ////
 
     /** This is a representation of an if/else construct in Ptalon.
      *  The true branch and/or the false branch can point to a set of
@@ -1269,7 +1269,7 @@ public abstract class AbstractPtalonEvaluator {
      *  the Ptalon source code.  There are no dangling "if"s in Ptalon,
      *  so this class always knows when to use the true or false branch
      *  in the representation.
-     * 
+     *
      */
     protected class IfTree extends NamedTree<IfTree> {
 

@@ -1,5 +1,5 @@
 /*  A Parameter created in a Ptalon file.
-  
+
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
 
@@ -37,11 +37,11 @@ import ptolemy.kernel.util.NamedObj;
 /**
  A Parameter created in a Ptalon file.
  @see PtalonActor
-  
+
  @author Adam Cataldo, Elaine Cheong
  @version $Id$
  @Pt.ProposedRating Red (cxh)
- @Pt.AcceptedRating Red (cxh)   
+ @Pt.AcceptedRating Red (cxh)
  */
 public class PtalonParameter extends Parameter {
 

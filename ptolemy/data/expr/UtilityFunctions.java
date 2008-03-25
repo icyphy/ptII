@@ -812,7 +812,7 @@ public class UtilityFunctions {
                     if (!library.substring(index, index + 4).equals("/lib")) {
                         if (osName.startsWith("Mac OS X")) {
                             library = library.substring(index + 1);
-                            shortLibraryName = library;    
+                            shortLibraryName = library;
                         } else {
                             shortLibraryName = "/lib"
                                     + library.substring(index + 1);

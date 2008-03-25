@@ -69,7 +69,7 @@ public class StateMatcherIcon extends StateIcon {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
-    
+
     public Figure createFigure() {
         CompositeFigure figure = (CompositeFigure) super.createFigure();
         Iterator<?> subfigures = figure.figures();
@@ -81,7 +81,7 @@ public class StateMatcherIcon extends StateIcon {
         }
         return figure;
     }
-    
+
     public Icon createIcon() {
         if (_iconCache != null) {
             return _iconCache;
@@ -92,7 +92,7 @@ public class StateMatcherIcon extends StateIcon {
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
     }
-    
+
     public Figure createBackgroundFigure() {
         _spacingValue = 0.0;
         Figure figure = super.createBackgroundFigure();

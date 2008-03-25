@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  A DE actor that stores data from a MapWorker and distributes it to a ReduceWorker,
  upon request from the reduce worker.
- 
+
  @author Adam Cataldo
  @version $Id$
  @since Ptolemy II 6.1

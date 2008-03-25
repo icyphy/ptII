@@ -266,7 +266,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         return null;
     }
 
-    /** Get the stored unique name for a symbol in the PtalonActor.  
+    /** Get the stored unique name for a symbol in the PtalonActor.
      *  The unique name comes from a call to uniqueName().
      *  @param ptalonName The symbol.
      *  @return The unique name.
@@ -532,7 +532,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 if (inputURL == null) {
                     // We are probably just starting up
                     return;
-                } 
+                }
             } catch (IllegalActionException ex) {
                 // We might be under WebStart, try it as a jar URL
                 inputURL = Thread.currentThread().getContextClassLoader()
@@ -568,7 +568,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     } catch (IOException ex4) {
                         // Ignored, but print anyway
                         ex4.printStackTrace();
-                    } 
+                    }
                 }
             }
             _ast = (PtalonAST) rec.getAST();

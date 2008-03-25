@@ -63,7 +63,7 @@ import ptolemy.util.StringUtilities;
  * A code manager that manages the extra complexity of dealing with
  * parsing Ptalon actors or values and setting them to parameters of
  * PtalonActors (ones declared in a Ptalon file).
- * 
+ *
  * FIXME: This implementation could be improved by investigating ways
  * to better address partial evaluation.  A lot of memory gets eaten
  * up by IfTrees, and it would be better to keep only the minimum
@@ -97,7 +97,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////    
+    ////                         public methods                    ////
 
     /** Add an actor to the PtalonActor. In the case of an actor
      *  specified by an import statement, the actor will be a

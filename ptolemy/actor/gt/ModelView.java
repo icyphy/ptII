@@ -139,7 +139,7 @@ public class ModelView extends Sink implements WindowListener {
                             _tableaus[i].close();
                         }
                         _tableaus[i] = tableau;
-                        
+
                         JFrame frame = tableau.getFrame();
                         // Compute location of the new frame.
                         RecordToken location =

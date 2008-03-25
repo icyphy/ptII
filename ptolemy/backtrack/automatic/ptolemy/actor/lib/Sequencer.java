@@ -45,7 +45,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
+/**
  * This actor takes a sequence of inputs tagged with a sequence number
  * and produces them on the output port in the order given by the
  * sequence number.  The sequence numbers are integers starting
@@ -70,12 +70,12 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
-     * Input for the sequence number. The type is int. 
+    /**
+     * Input for the sequence number. The type is int.
      */
     public TypedIOPort sequenceNumber;
 
-    /**     
+    /**
      * The first number of the sequence.  This is an int that
      * defaults to 0.
      */
@@ -100,7 +100,7 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
 
     private int _sequenceNumberOfInput;
 
-    /**     
+    /**
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -118,7 +118,7 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
         startingSequenceNumber.setExpression("0");
     }
 
-    /**     
+    /**
      * Read a token from the <i>sequenceNumber</i> port and from
      * the <i>input</i> port, and output the next token(s) in the
      * sequence, or none if the next token in the sequence has not
@@ -136,7 +136,7 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
         }
     }
 
-    /**     
+    /**
      * Reset current sequence number to the value given by the
      * <i>startingSequenceNumber</i> parameter.
      * @exception IllegalActionException If accessing the
@@ -148,7 +148,7 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
         _pending.clear();
     }
 
-    /**     
+    /**
      * If the fire() method produced the input token then check to
      * whether any pending tokens have subsequent sequence numbers.
      * @exception IllegalActionException If there is no director.
@@ -177,7 +177,7 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
         return super.postfire();
     }
 
-    /**     
+    /**
      * Return false if either the <i>input</i> port or the
      * <i>sequenceNumber</i> port lacks an input token.
      * Otherwise, return whatever the superclass returns.

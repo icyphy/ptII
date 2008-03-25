@@ -33,7 +33,7 @@ import antlr.NoViableAltException;
 import antlr.RecognitionException;
 import antlr.collections.AST;
 
-/** 
+/**
   PtalonPopulator.java generated from populator.g by ANTLR.
 
   @author Adam Cataldo, Elaine Cheong
@@ -1442,7 +1442,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
     }
 
     /**
-     * This is for a top level actor declaration, which 
+     * This is for a top level actor declaration, which
      * requires separate treatement from a nested actor
      * declaration.
      */
