@@ -7,9 +7,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The undesired behavior is to have gate &#10;open when the train is crossing the gate. &#10;To avoid this, we use temporal logic to &#10;describe the specification and generate &#10;a file acceptable by model checker NuSMV.&#10;&#10;CTL Specification (Copy the line below when double clicking the SMV CodeGenerator)&#10;!EF (RailroadSystem.Train-state=within &amp; RailroadSystem.Gate-state=open)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The undesired behavior is to have gate &#10;open when the train is crossing the gate. &#10;To avoid this, we use temporal logic to &#10;describe the specification and generate &#10;a file acceptable by model checker NuSMV.&#10;&#10;CTL Specification (Copy the line below when double clicking the SMV CodeGenerator)&#10;!EF (Train.state=within &amp; Gate.state=open)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 315.0]">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -83,11 +83,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a simplified railroad system which simulates the &#10;interplay between a train and a crossing gate. When the &#10;train is approaching, it emits a signal to the gate and &#10;forces the gate to close. When it leaves the railroad &#10;crossing, it emits a signal to the gate to notify its &#10;leaving. In the right hand side is a simplified simulation, &#10;where the senerio is decided by signals emited">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 185.0]">
-        </property>
-    </property>
-    <property name="SMV CodeGenerator" class="ptolemy.verification.kernel.CodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 185.0]">
         </property>
     </property>
     <property name="Gate Open" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -306,6 +302,10 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Chihhong Patrick Cheng, Edward A. Lee, Christopher Brooks">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 455.0]">
+        </property>
+    </property>
+    <property name="Formal Model Converter" class="ptolemy.verification.kernel.MathematicalModelConverter">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 205.0]">
         </property>
     </property>
     <entity name="Train" class="ptolemy.domains.fsm.kernel.FSMActor">
