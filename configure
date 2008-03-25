@@ -310,7 +310,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH FIND JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP JAVADOC PTECLIPSE PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB PTMATLAB_CC CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR COLT_DIR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT ECLIPSE_DIR GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS IMAGEJ_JAR JAI_JARS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JAVAX_CRYPTO_JAR JDOCBREAKITERATOR JDOCSOURCEFLAGS JDOCTAG JDOCTAGLET JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBACKTRACK_DIR PTBACKTRACK_ECLIPSE_DIR PTBACKTRACK_ECLIPSE_DOC_JARS PTBACKTRACK_ECLIPSE_JARS PTBACKTRACK_ECLIPSE_PACKAGES PTBOOST_INCLUDE PTBSH_JAR PTBSH_MLC_DIR PTBSH_RUN_DIR PTBSH_PACKAGES PTCALTROP_DIR PTCHIC_DIR PTCM_DIR PTCOLT_DIR PTCOLT_JARS PTCOLT_PACKAGES PTCOMM_DIR PTCOMM_PACKAGES PTCOPERNICUS_DIR PTDISTRIBUTED_DIR PTDISTRIBUTED_JARS PTDISTRIBUTED_PACKAGES PTDOCLETS_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAI_PACKAGES PTJAVA_DIR PTJAVA_DIR_NO_CYGDRIVE PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJMF_PACKAGES PTJNI_DIR PTJNI_ARCHITECTURE PTJNI_INCLUDE PTJNI_DL_LIBRARY PTJNI_LIB_ARCHITECTURE PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJNI_LIBRARIES PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJYTHON_DIR PTJYTHON_PACKAGES PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_CC_FLAGS PTMATLAB_DIR PTMATLAB_LD_ARGS PTMESCAL_DIR PTPSDF_DIR PTSVG_DIR PTSVG_JAR PTPTALON_DIR PTPTALON_PACKAGES ANTLR_DIR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTTINYOS_DIR PTGIOTTO_DIR PTVR_DIR PTVR_JAR PTVR_PACKAGES PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR TOOLS_JAR TOSROOT_NO_CYGDRIVE TOSDIR_NO_CYGDRIVE GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH FIND JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP JAVADOC PTECLIPSE PTCC CXX CXXFLAGS ac_ct_CXX PTJYTHON PTJYTHON_BAT JJTREE MATLAB PTMATLAB_CC CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR COLT_DIR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT ECLIPSE_DIR GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS IMAGEJ_JAR JAI_JARS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JAVAX_CRYPTO_JAR JDOCBREAKITERATOR JDOCSOURCEFLAGS JDOCTAG JDOCTAGLET JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBACKTRACK_DIR PTBACKTRACK_ECLIPSE_DIR PTBACKTRACK_ECLIPSE_DOC_JARS PTBACKTRACK_ECLIPSE_JARS PTBACKTRACK_ECLIPSE_PACKAGES PTBOOST_INCLUDE PTBSH_JAR PTBSH_MLC_DIR PTBSH_RUN_DIR PTBSH_PACKAGES PTCALTROP_DIR PTCHIC_DIR PTCM_DIR PTCOLT_DIR PTCOLT_JARS PTCOLT_PACKAGES PTCOMM_DIR PTCOMM_PACKAGES PTCOPERNICUS_DIR PTDISTRIBUTED_DIR PTDISTRIBUTED_JARS PTDISTRIBUTED_PACKAGES PTDOCLETS_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAI_PACKAGES PTJAVA_DIR PTJAVA_DIR_NO_CYGDRIVE PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJMF_PACKAGES PTJNI_DIR PTJNI_ARCHITECTURE PTJNI_INCLUDE PTJNI_DL_LIBRARY PTJNI_LIB_ARCHITECTURE PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJNI_LIBRARIES PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJYTHON_DIR PTJYTHON_PACKAGES PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_CC_FLAGS PTMATLAB_DIR PTMATLAB_LD_ARGS PTMESCAL_DIR PTPSDF_DIR PTSVG_DIR PTSVG_JAR PTPTALON_DIR PTPTALON_PACKAGES ANTLR_DIR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTTINYOS_DIR PTGIOTTO_DIR PTVR_DIR PTVR_JAR PTVR_PACKAGES PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR TOOLS_JAR TOSROOT_NO_CYGDRIVE TOSDIR_NO_CYGDRIVE GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -880,7 +880,8 @@ Optional Packages:
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-jython=DIR       use jython.jar from DIR,
-                          defaults to \$PTII/vendors/jython
+                          defaults to \$PTII/lib, though the path
+			  is searched for jython
   --with-jxta=DIR       use jxta.jar from DIR,
                           defaults to \$PTII/vendors/sun/jxta
   --with-lejos=DIR       use Java lejos from DIR,
@@ -6266,6 +6267,119 @@ if test ! -d "$JYTHON_USER_DIR"; then
 echo "${ECHO_T}$JYTHON_USER_DIR is not present,
     so we need not find the Jython, the java implementation of Python." >&6; fi
 else
+    # Extract the first word of "jython", so it can be a program name with args.
+set dummy jython; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PTJYTHON+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PTJYTHON in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTJYTHON="$PTJYTHON" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PTJYTHON="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  ;;
+esac
+fi
+PTJYTHON=$ac_cv_path_PTJYTHON
+
+if test -n "$PTJYTHON"; then
+  echo "$as_me:$LINENO: result: $PTJYTHON" >&5
+echo "${ECHO_T}$PTJYTHON" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+    if test "${PTJYTHON:-none}" != "none"; then
+        JYTHON_PROG_PARENT_DIR=`dirname "$PTJYTHON"`
+   	if test -f "$JYTHON_PROG_PARENT_DIR/jython.jar"; then
+	    if test "$JYTHON_DIR" != "$JYTHON_PROG_PARENT_DIR"; then
+		# Use changequote to protect the square brackets in sed
+		# Remove /cygdrive so we can compile with MSVC
+		JYTHON_TMP_DIR=`echo "$JYTHON_PROG_PARENT_DIR" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+		{ echo "$as_me:$LINENO: WARNING: Found $PTJYTHON,
+    using $JYTHON_TMP_DIR/jython.jar instead of
+          $JYTHON_DIR/jython.jar" >&5
+echo "$as_me: WARNING: Found $PTJYTHON,
+    using $JYTHON_TMP_DIR/jython.jar instead of
+          $JYTHON_DIR/jython.jar" >&2;}
+		JYTHON_DIR="$JYTHON_TMP_DIR"
+	    fi
+        fi
+    else
+        # Extract the first word of "jython.bat", so it can be a program name with args.
+set dummy jython.bat; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PTJYTHON_BAT+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PTJYTHON_BAT in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTJYTHON_BAT="$PTJYTHON_BAT" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PTJYTHON_BAT="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  ;;
+esac
+fi
+PTJYTHON_BAT=$ac_cv_path_PTJYTHON_BAT
+
+if test -n "$PTJYTHON_BAT"; then
+  echo "$as_me:$LINENO: result: $PTJYTHON_BAT" >&5
+echo "${ECHO_T}$PTJYTHON_BAT" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+	if test "${PTJYTHON_BAT:-none}" != "none"; then
+	    JYTHON_PROG_PARENT_DIR=`dirname "$PTJYTHON_BAT"`
+   	    if test -f "$JYTHON_PROG_PARENT_DIR/jython.jar"; then
+	        if test "$JYTHON_DIR" != "$JYTHON_PROG_PARENT_DIR"; then
+		    # Use changequote to protect the square brackets in sed
+		    # Remove /cygdrive so we can compile with MSVC
+		    JYTHON_TMP_DIR=`echo "$JYTHON_PROG_PARENT_DIR" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+		    { echo "$as_me:$LINENO: WARNING: Found $PTJYTHON_BAT,
+    using $JYTHON_TMP_DIR/jython.jar instead of
+          $JYTHON_DIR/jython.jar" >&5
+echo "$as_me: WARNING: Found $PTJYTHON_BAT,
+    using $JYTHON_TMP_DIR/jython.jar instead of
+          $JYTHON_DIR/jython.jar" >&2;}
+		    JYTHON_DIR="$JYTHON_TMP_DIR"
+                fi
+            fi
+        fi
+    fi
     echo "$as_me:$LINENO: checking for Jython, the Java implementation of Python" >&5
 echo $ECHO_N "checking for Jython, the Java implementation of Python... $ECHO_C" >&6
 
@@ -6274,7 +6388,7 @@ if test "${with_jython+set}" = set; then
   withval="$with_jython"
   JYTHON_DIR=$withval
 else
-  JYTHON_DIR=$PTII/lib
+  JYTHON_DIR=$JYTHON_DIR
 fi;
 
     if test -f "$JYTHON_DIR/jython.jar"; then
@@ -7945,4 +8059,2451 @@ echo "${ECHO_T}ok" >&6; fi
     QuickTime for Java is only needed if you want to build in
     $QUICKTIME_USER_DIR,
     otherwise the build will proceed fine without Quicktime for Java." >&5
-echo "$as
+echo "$as_me: WARNING: '\"$JAVAC\" quickTime3dTest.java' failed.
+    You may need to install QuickTime with the 'QuickTime For
+    Java' option from http://developer.apple.com/quicktime/qtjava/
+    During installation, choose 'custom' and then 'select all'.
+    This drops QTJava.zip into the lib/ext of all your installed JREs.
+    Then you have to copy this zip file to the jre/lib/ext directory
+    of your SDK and rerun configure.
+    If configure still fails, you may need to unzip the QTJava.zip
+    file and create a QTJava.jar file:
+       # unzip QTJava.zip
+       cd QTJava
+       jar -cf ../QTJava.jar .
+    QuickTime for Java is only needed if you want to build in
+    $QUICKTIME_USER_DIR,
+    otherwise the build will proceed fine without Quicktime for Java." >&2;}
+        fi
+    fi
+    cd "$startdir"
+fi
+
+if test -z "$PTQUICKTIME_DIR"; then
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/quicktime/"
+else
+    if test ! -z "$QTJAVA_ZIP"; then
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        <classpathentry kind=\"lib\" path=\"$QTJAVA_ZIP\"/>"
+    fi
+fi
+
+#--------------------------------------------------------------------
+#       Soot is a Java Optimization Framework, see
+#	http://www.sable.mcgill.ca/soot/
+#       See if there was a command-line option for where Soot is
+#       If not, look in $PTII/vendors/sun/soot
+#--------------------------------------------------------------------
+
+# PTCOPERNICUS_DIR is set to copernicus and used in
+# $PTII/ptolemy/makefile if soot was found
+PTCOPERNICUS_DIR=
+
+# Directory that contains the soot jar files
+SOOT_DIR='${PTII}/lib'
+
+# Soot needs to find java.lang.Object
+# Use {} here instead of () because bin/ptinvoke uses JAVA_SYSTEM_JAR
+# and under /bin/sh $(FOO) does not work, but ${FOO} does
+JAVA_SYSTEM_JAR='${PTJAVA_HOME}/lib/rt.jar'
+
+# Java 1.5 has javax.crypto.Cipher in jce.jar
+JAVAX_CRYPTO_JAR='${PTJAVA_HOME}/lib/jce.jar'
+
+# We don't bother overriding this below so that something close
+# to the right default is in ptII.mk and the user can just change
+# SOOT_DIR or JAVA_SYSTEM_JAR
+# Use {} here instead of () because bin/ptinvoke uses SOOT_CLASSES
+SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/polyglotclasses-1.3.2.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}'
+
+# We only need to look for soot if $PTII/ptolemy/copernicus exists
+if test ! -d "$PTII/ptolemy/copernicus"; then
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus is not present,
+    so we need not find the Soot - a Java Optimization Framework." >&5
+echo "${ECHO_T}$PTII/ptolemy/copernicus is not present,
+    so we need not find the Soot - a Java Optimization Framework." >&6; fi
+    SOOT_DIR='${PTII}/lib'
+else
+    echo "$as_me:$LINENO: checking for soot directory" >&5
+echo $ECHO_N "checking for soot directory... $ECHO_C" >&6
+
+# Check whether --with-soot or --without-soot was given.
+if test "${with_soot+set}" = set; then
+  withval="$with_soot"
+  SOOT_DIR=$withval
+else
+  SOOT_DIR=$PTII/lib
+fi;
+
+    if test -d "$SOOT_DIR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $SOOT_DIR" >&5
+echo "${ECHO_T}$SOOT_DIR" >&6; fi
+        echo "$as_me:$LINENO: checking for \$SOOT_DIR/sootclasses.jar" >&5
+echo $ECHO_N "checking for \$SOOT_DIR/sootclasses.jar... $ECHO_C" >&6
+	if test -f "$SOOT_DIR/sootclasses.jar"; then
+	    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; fi
+	    echo "$as_me:$LINENO: checking for \$SOOT_DIR/jasminclasses.jar" >&5
+echo $ECHO_N "checking for \$SOOT_DIR/jasminclasses.jar... $ECHO_C" >&6
+  	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
+                if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; fi
+            fi
+	    echo "$as_me:$LINENO: checking for \$SOOT_DIR/polyglotclasses-1.3.2.jar" >&5
+echo $ECHO_N "checking for \$SOOT_DIR/polyglotclasses-1.3.2.jar... $ECHO_C" >&6
+  	    if test -f "$SOOT_DIR/polyglotclasses-1.3.2.jar"; then
+                if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; fi
+            fi
+	    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $SOOT_CLASSES" >&5
+echo "${ECHO_T}$SOOT_CLASSES" >&6; fi
+        else
+	    SOOT_CLASSES_FOUND=no
+        fi
+    # else
+    # We could look in other places . . .
+    fi
+
+    if test "$SOOT_CLASSES_FOUND" = "no"; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find soot/sootclasses.jar
+    perhaps Soot is not installed?
+    You need not download Soot unless you plan on using code generation
+    The Soot SDK can be downloaded from http://www.sable.mcgill.ca/soot/" >&5
+echo "$as_me: WARNING: Failed to find soot/sootclasses.jar
+    perhaps Soot is not installed?
+    You need not download Soot unless you plan on using code generation
+    The Soot SDK can be downloaded from http://www.sable.mcgill.ca/soot/" >&2;}
+	# Note that we don't substitute in the ${PTII} or $(SOOT_DIR) here
+	SOOT_DIR='${PTII}/lib'
+    else
+	# Set to copernicus and used in
+	# $PTII/ptolemy/makefile if soot was found
+	PTCOPERNICUS_DIR=copernicus
+    fi
+
+    echo "$as_me:$LINENO: checking for rt.jar by compiling config/SystemJar.java" >&5
+echo $ECHO_N "checking for rt.jar by compiling config/SystemJar.java... $ECHO_C" >&6
+
+# Check whether --with-javasystemjar or --without-javasystemjar was given.
+if test "${with_javasystemjar+set}" = set; then
+  withval="$with_javasystemjar"
+  JAVA_SYSTEM_JAR=$withval
+else
+  JAVA_SYSTEM_JAR='$(PTJAVA_HOME)/lib/rt.jar'
+fi;
+
+    startdir=$PTII
+    cd "$srcdir/config"
+    if "$JAVAC" SystemJar.java ; then
+	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; fi
+	echo "$as_me:$LINENO: checking the location or rt.jar" >&5
+echo $ECHO_N "checking the location or rt.jar... $ECHO_C" >&6
+	if env CLASSPATH="$PTII/config" "$JAVA" SystemJar > /dev/null; then
+	    # Run it again and get the results
+	    JAVA_SYSTEM_JAR=`CLASSPATH="$PTII/config" "$JAVA" SystemJar`
+   	    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: '$JAVA_SYSTEM_JAR'" >&5
+echo "${ECHO_T}'$JAVA_SYSTEM_JAR'" >&6; fi
+	else
+	    { echo "$as_me:$LINENO: WARNING: 'CLASSPATH=\"$PTII/config\" \"$JAVA\" SystemJar failed.
+    Classes that use Soot will compile, but will fail to run.'" >&5
+echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" \"$JAVA\" SystemJar failed.
+    Classes that use Soot will compile, but will fail to run.'" >&2;}
+        fi
+    else
+	{ echo "$as_me:$LINENO: WARNING: 'cd \"$srcdir/config\"; \"$JAVAC\" SystemJar.java failed.
+    Classes that use Soot will compile, but will fail to run.'" >&5
+echo "$as_me: WARNING: 'cd \"$srcdir/config\"; \"$JAVAC\" SystemJar.java failed.
+    Classes that use Soot will compile, but will fail to run.'" >&2;}
+    fi
+    cd "$startdir"
+fi
+
+if test -z "$PTCOPERNICUS_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/copernicus/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/sootclasses.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/polyglotclasses-1.3.2.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/jasminclasses.jar\"/>"
+    # What about JAVA_SYSTEM_JAR?
+fi
+
+#--------------------------------------------------------------------
+#       The Batik SVG toolkit is used by Kepler so we include Batik
+#	support in Diva.  See
+#	http://xmlgraphics.apache.org/batik/
+#       See if there was a command-line option for where Batikc
+#       is
+#       If not, look for for $PTII/vendors/eclipse
+#--------------------------------------------------------------------
+
+# PTSVG_DIR is set to svg and used in
+# $PTII/diva/util/java2d/makefile if Batik SVG jar files were found
+PTSVG_DIR=
+
+# Jar file used by diva/util/java2d/svg/makefile
+PTSVG_JAR=
+
+# We only need to look for Batik if $PTII/diva/util/java2d/svg exists
+if test ! -d "$PTII/diva/util/java2d/svg"; then
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/diva/util/java2d/svg is not present,
+    so we need not find Batik SVG." >&5
+echo "${ECHO_T}$PTII/diva/util/java2d/svg is not present,
+    so we need not find Batik SVG." >&6; fi
+else
+    echo "$as_me:$LINENO: checking for Batik SVG" >&5
+echo $ECHO_N "checking for Batik SVG... $ECHO_C" >&6
+
+# Check whether --with-batikjar or --without-batikjar was given.
+if test "${with_batikjar+set}" = set; then
+  withval="$with_batikjar"
+  PTSVG_JAR=$withval
+else
+  PTSVG_JAR=$KEPLER/lib/jar/batik-all-1.6.jar
+fi;
+
+    if test -f "$PTSVG_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTSVG_JAR" >&5
+echo "${ECHO_T}$PTSVG_JAR" >&6; fi
+	PTSVG_DIR=svg
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        <classpathentry kind=\"lib\" path=\"$PTSVG_JAR\"/>"
+    fi
+    if test "$PTSVG_DIR" = ""; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find Batik Jar file
+    You need only have Batik if you are planning on rebuilding diva.jar
+    for use with Kepler.
+    Batik can be downloaded from http://xmlgraphics.apache.org/batik/" >&5
+echo "$as_me: WARNING: Failed to find Batik Jar file
+    You need only have Batik if you are planning on rebuilding diva.jar
+    for use with Kepler.
+    Batik can be downloaded from http://xmlgraphics.apache.org/batik/" >&2;}
+	PTSVG_JAR=
+    fi
+fi
+
+if test -z "$PTSVG_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|diva/util/java2d/svg/"
+fi
+
+#--------------------------------------------------------------------
+#       TINI is the JDK for Dallas Tini board, see
+#	www.ibutton.com
+#	See if there was a command-line option for where
+#       tinisk is;  if not,
+#       check to see if $PTII/vendors/dalsemi/tini/bin/tiniclasses.jar exists
+#--------------------------------------------------------------------
+
+# PTTINI_DIR is set to tini and used in
+# $PTII/ptolemy/apps/makefile if tini was found
+PTTINI_DIR=
+#
+# We only need to look for tini if $PTII/ptolemy/apps/tini exists
+if test ! -d "$PTII/ptolemy/apps/tini"; then
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/apps/tini is not present,
+    so we need not find the Dallas Semiconductor tini." >&5
+echo "${ECHO_T}$PTII/ptolemy/apps/tini is not present,
+    so we need not find the Dallas Semiconductor tini." >&6; fi
+    TINI_DIR='${PTII}/vendors/dalsemi/tini'
+    TINI_CLASSES='${TINI_DIR}/bin/tini.jar'
+else
+    echo "$as_me:$LINENO: checking for tini directory" >&5
+echo $ECHO_N "checking for tini directory... $ECHO_C" >&6
+
+# Check whether --with-tini or --without-tini was given.
+if test "${with_tini+set}" = set; then
+  withval="$with_tini"
+  TINI_DIR=$withval
+else
+  TINI_DIR=$PTII/vendors/dalsemi/tini
+fi;
+
+    if test -d "$TINI_DIR"; then
+    	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $TINI_DIR" >&5
+echo "${ECHO_T}$TINI_DIR" >&6; fi
+      	echo "$as_me:$LINENO: checking for \$TINI_DIR/bin/tini.jar" >&5
+echo $ECHO_N "checking for \$TINI_DIR/bin/tini.jar... $ECHO_C" >&6
+	if test -f "$TINI_DIR/bin/tini.jar"; then
+	   if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $TINI_DIR/bin/tini.jar" >&5
+echo "${ECHO_T}$TINI_DIR/bin/tini.jar" >&6; fi
+	   TINI_CLASSES='${TINI_DIR}/bin/tini.jar'
+	else
+	   TINI_CLASSES=no
+        fi
+	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $TINI_CLASSES" >&5
+echo "${ECHO_T}$TINI_CLASSES" >&6; fi
+    fi
+    if test "$TINI_CLASSES" = "no"; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find tini/bin/tiniclasses.jar
+    perhaps Tini is not installed?
+    You need not download Tini unless you plan on building applications
+    for the Dallas Semiconductor Tini board.
+    The Tini SDK can be downloaded from http://www.ibutton.com" >&5
+echo "$as_me: WARNING: Failed to find tini/bin/tiniclasses.jar
+    perhaps Tini is not installed?
+    You need not download Tini unless you plan on building applications
+    for the Dallas Semiconductor Tini board.
+    The Tini SDK can be downloaded from http://www.ibutton.com" >&2;}
+	# Note that we don't substitute in the ${PTII} or $(TINI_DIR) here
+	TINI_DIR='${PTII}/vendors/dalsemi/tini'
+   	TINI_CLASSES='${TINI_DIR}/bin/tini.jar'
+    else
+	# Set to tini and used in
+	# $PTII/ptolemy/apps/makefile if tini was found
+	PTTINI_DIR=tini
+    fi
+fi
+
+#--------------------------------------------------------------------
+#	TinyOS
+#--------------------------------------------------------------------
+# PTTINYOS_DIR is set to ptinyos and used in
+# $PTII/ptolemy/domains/makefile if TinyOS is found
+PTTINYOS_DIR=
+
+# The problem is that the nesc/configure script does not understand
+# "c:/" style syntax, it works with "/cygdrive/c/", yet Java
+# does not understand /cygdrive/c syntax, so we hack
+PTINYOS_DIR=$PTII/ptolemy/domains/ptinyos
+
+if test ! -d "$PTINYOS_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTINYOS_DIR is not present
+    so we need not set up for TinyOS." >&5
+echo "${ECHO_T}$PTINYOS_DIR is not present
+    so we need not set up for TinyOS." >&6; fi
+
+    # Nothing to exclude
+    # ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/nc/"
+else
+    echo "$as_me:$LINENO: checking the for TinyOS" >&5
+echo $ECHO_N "checking the for TinyOS... $ECHO_C" >&6
+    if test -z "$TOSROOT"; then
+        { echo "$as_me:$LINENO: WARNING: \$TOSROOT is not set.  It must be set to use PtinyOS." >&5
+echo "$as_me: WARNING: \$TOSROOT is not set.  It must be set to use PtinyOS." >&2;}
+    fi
+    if test ! -d "$TOSROOT"; then
+        { echo "$as_me:$LINENO: WARNING: \$TOSROOT is set to '$TOSROOT',
+     but there is no directory by that name, so we will not set up for PtinyOS.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&5
+echo "$as_me: WARNING: \$TOSROOT is set to '$TOSROOT',
+     but there is no directory by that name, so we will not set up for PtinyOS.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&2;}
+    else
+        if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $TOSROOT" >&5
+echo "${ECHO_T}$TOSROOT" >&6; fi
+        # Use changequote to protect the square brackets in sed
+        TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+
+        echo "$as_me:$LINENO: checking for TOSDIR directory" >&5
+echo $ECHO_N "checking for TOSDIR directory... $ECHO_C" >&6
+        if test ! -d "$TOSDIR"; then
+	    { echo "$as_me:$LINENO: WARNING: \$TOSDIR is set to '$TOSDIR',
+     but there is no directory by that name.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&5
+echo "$as_me: WARNING: \$TOSDIR is set to '$TOSDIR',
+     but there is no directory by that name.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&2;}
+        else
+	    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $TOSDIR" >&5
+echo "${ECHO_T}$TOSDIR" >&6; fi
+        # Use changequote to protect the square brackets in sed
+        TOSDIR_NO_CYGDRIVE=`echo "$TOSDIR" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+
+        fi
+
+        echo "$as_me:$LINENO: checking for PTINYOS_MOMLROOT" >&5
+echo $ECHO_N "checking for PTINYOS_MOMLROOT... $ECHO_C" >&6
+	if test -z "$PTINYOS_MOMLROOT"; then
+	    { echo "$as_me:$LINENO: WARNING: \$PTINYOS_MOMLROOT is not set.
+    For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&5
+echo "$as_me: WARNING: \$PTINYOS_MOMLROOT is not set.
+    For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&2;}
+        else
+            if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; fi
+            if test ! -d "$PTINYOS_MOMLROOT"; then
+                # Try to make the directory
+	        mkdir -p "$PTINYOS_MOMLROOT"
+            fi
+            echo "$as_me:$LINENO: checking for PTINYOS_MOMLROOT directory" >&5
+echo $ECHO_N "checking for PTINYOS_MOMLROOT directory... $ECHO_C" >&6
+            if test ! -d "$PTINYOS_MOMLROOT"; then
+	        { echo "$as_me:$LINENO: WARNING: \$PTINYOS_MOMLROOT is set to '$PTINYOS_MOMLROOT',
+     but there is no directory by that name.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&5
+echo "$as_me: WARNING: \$PTINYOS_MOMLROOT is set to '$PTINYOS_MOMLROOT',
+     but there is no directory by that name.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&2;}
+            else
+	        PTINYOS_MOMLROOT_NO_CYGDRIVE=`echo "$PTINYOS_MOMLROOT" | sed 's@^/cygdrive/\(a-zA-Z\)/@\1:/@'`
+		if test -d "$PTINYOS_MOMLROOT_NO_CYGDRIVE"; then
+
+		    # If MOMLROOT is under $PTII, then add it to the classpat
+		    echo "$PTINYOS_MOMLROOT_NO_CYGDRIVE" | grep "$PTII" > /dev/null
+		    retval=$?
+		    if test "$retval" = "0"; then
+		        SHORT_PTINYOS_MOMLROOT_NO_CYGDRIVE=`echo "$PTINYOS_MOMLROOT_NO_CYGDRIVE" | sed "s@$PTII/@@"`
+		        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                            <classpathentry kind=\"lib\" path=\"$SHORT_PTINYOS_MOMLROOT_NO_CYGDRIVE\"/>"
+	            else
+		        { echo "$as_me:$LINENO: WARNING: \$PTINYOS_MOMLROOT ($PTINYOS_MOMLROOT)
+    is not under \$PTII ($PTII) so we are not
+    appending \$PTINYOS_MOMLROOT to the Eclipse classpath.
+    This is only a problem for Viptos users, who will not be able
+    to view .nc files when running under Eclipse." >&5
+echo "$as_me: WARNING: \$PTINYOS_MOMLROOT ($PTINYOS_MOMLROOT)
+    is not under \$PTII ($PTII) so we are not
+    appending \$PTINYOS_MOMLROOT to the Eclipse classpath.
+    This is only a problem for Viptos users, who will not be able
+    to view .nc files when running under Eclipse." >&2;}
+	            fi
+                else
+	            { echo "$as_me:$LINENO: WARNING: \$PTINYOS_MOMLROOT_NO_CYGDRIVE does not exist" >&5
+echo "$as_me: WARNING: \$PTINYOS_MOMLROOT_NO_CYGDRIVE does not exist" >&2;}
+                fi
+	        if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTINYOS_MOMLROOT" >&5
+echo "${ECHO_T}$PTINYOS_MOMLROOT" >&6; fi
+            fi
+        fi
+        # The jars to the classpath
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/nesc.jar\"/> \
+        <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/jdom.jar\"/>"
+
+	# If TOSROOT is under $PTII, then add it to the classpat
+	echo "$TOSROOT_NO_CYGDRIVE" | grep "$PTII" > /dev/null
+	retval=$?
+	if test "$retval" = "0"; then
+		SHORT_TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT_NO_CYGDRIVE" | sed "s@$PTII/@@"`
+	    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	        <classpathentry kind=\"lib\" path=\"$SHORT_TOSROOT_NO_CYGDRIVE\"/>"
+        else
+	    { echo "$as_me:$LINENO: WARNING: \$TOSROOT ($TOSROOT)is not
+    under \$PTII ($PTII) so we are not
+    appending \$TOSROOT to the Eclipse classpath.
+    This is only a problem for Viptos users, who will not be able
+    to view .nc files when running under Eclipse." >&5
+echo "$as_me: WARNING: \$TOSROOT ($TOSROOT)is not
+    under \$PTII ($PTII) so we are not
+    appending \$TOSROOT to the Eclipse classpath.
+    This is only a problem for Viptos users, who will not be able
+    to view .nc files when running under Eclipse." >&2;}
+        fi
+    fi
+fi
+
+if test ! -d "$TOSROOT"; then
+       ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/ptinyos/"
+else
+       PTTINYOS_DIR=ptinyos
+fi
+
+#--------------------------------------------------------------------
+#       GiottoSDK is an embedded implementation of the Giotto language
+#	www.eecs.berkeley.edu/~fresco/giotto
+#
+#       check to see if $PTII/vendors/giotto/giotto.jar exists
+#--------------------------------------------------------------------
+
+# PTGIOTTO_DIR is set to Giotto and used in
+# $PTII/ptolemy/apps/makefile if giotto was found
+PTGIOTTO_DIR=
+#
+if test ! -d "$PTII/ptolemy/domains/giotto"; then
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/domains/giotto is not present,
+    so we need not find the Giotto SDK." >&5
+echo "${ECHO_T}$PTII/ptolemy/domains/giotto is not present,
+    so we need not find the Giotto SDK." >&6; fi
+    GIOTTO_DIR='${PTII}/vendors/giotto'
+    GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
+else
+    echo "$as_me:$LINENO: checking for giotto directory" >&5
+echo $ECHO_N "checking for giotto directory... $ECHO_C" >&6
+
+# Check whether --with-giotto or --without-giotto was given.
+if test "${with_giotto+set}" = set; then
+  withval="$with_giotto"
+  GIOTTO_DIR=$withval
+else
+  GIOTTO_DIR=$PTII/vendors/giotto
+fi;
+
+    GIOTTO_CLASSES=no
+    if test -d "$GIOTTO_DIR"; then
+    	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $GIOTTO_DIR" >&5
+echo "${ECHO_T}$GIOTTO_DIR" >&6; fi
+      	echo "$as_me:$LINENO: checking for \$GIOTTO_DIR/gdk.jar" >&5
+echo $ECHO_N "checking for \$GIOTTO_DIR/gdk.jar... $ECHO_C" >&6
+	if test -f "$GIOTTO_DIR/gdk.jar"; then
+	   if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $GIOTTO_DIR/gdk.jar" >&5
+echo "${ECHO_T}$GIOTTO_DIR/gdk.jar" >&6; fi
+	   GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
+	else
+	   GIOTTO_CLASSES=no
+        fi
+	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $GIOTTO_CLASSES" >&5
+echo "${ECHO_T}$GIOTTO_CLASSES" >&6; fi
+    fi
+    if test "$GIOTTO_CLASSES" = "no"; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find giotto/gdk.jar
+    perhaps Giotto is not installed?
+    You need not download Giotto unless you plan on generating code for
+    Giotto models.
+    The Giotto SDK can be
+    downloaded from http://www-cad.eecs.berkeley.edu/~giotto/
+    Copy gdk.jar to $PTII/vendors/giotto, for example:
+        mkdir -p $PTII/vendors/giotto
+        cp C:/Program\ Files/Giotto*/gdk.jar $PTII/vendors/giotto/" >&5
+echo "$as_me: WARNING: Failed to find giotto/gdk.jar
+    perhaps Giotto is not installed?
+    You need not download Giotto unless you plan on generating code for
+    Giotto models.
+    The Giotto SDK can be
+    downloaded from http://www-cad.eecs.berkeley.edu/~giotto/
+    Copy gdk.jar to $PTII/vendors/giotto, for example:
+        mkdir -p $PTII/vendors/giotto
+        cp C:/Program\ Files/Giotto*/gdk.jar $PTII/vendors/giotto/" >&2;}
+	# Note that we don't substitute in the ${PTII} or $(GIOTTO_DIR) here
+	GIOTTO_DIR='${PTII}/vendors/giotto'
+   	GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
+    else
+	# Set to giotto and used in
+	# $PTII/ptolemy/copernicus/java/ if giotto was found
+	PTGIOTTO_DIR=giotto
+    fi
+fi
+
+#--------------------------------------------------------------------
+#       WABA is the JDK for PalmOS
+#	See if there was a command-line option for where
+#       wabask is;  if not,
+#       check to see if $PTII/vendors/misc/waba/wabasdk exists
+#--------------------------------------------------------------------
+
+# PTWABA_DIR is set to waba and used in
+# $PTII/ptolemy/makefile if waba was found
+PTWABA_DIR=
+#
+# We only need to look for waba if $PTII/ptolemy/apps/kvm exists
+if test ! -d "$PTII/ptolemy/apps/kvm"; then
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/apps/kvm is not present,
+    so we need not find the PalmOS waba." >&5
+echo "${ECHO_T}$PTII/ptolemy/apps/kvm is not present,
+    so we need not find the PalmOS waba." >&6; fi
+    WABA_DIR='${PTII}/vendors/misc/waba/wabasdk'
+    # Unfortunately, j2me_cldc does not ship with a jar of zip file
+    # It needs to be built
+    WABA_CLASSES='$(WABA_DIR)/classes'
+else
+    echo "$as_me:$LINENO: checking for waba directory" >&5
+echo $ECHO_N "checking for waba directory... $ECHO_C" >&6
+
+# Check whether --with-waba or --without-waba was given.
+if test "${with_waba+set}" = set; then
+  withval="$with_waba"
+  WABA_DIR=$withval
+else
+  WABA_DIR=$PTII/vendors/misc/waba/wabasdk
+fi;
+
+    if test -d "$WABA_DIR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $WABA_DIR" >&5
+echo "${ECHO_T}$WABA_DIR" >&6; fi
+        echo "$as_me:$LINENO: checking for \$WABA_DIR/classes" >&5
+echo $ECHO_N "checking for \$WABA_DIR/classes... $ECHO_C" >&6
+	if test -d "$WABA_DIR/classes"; then
+	    WABA_CLASSES='$(WABA_DIR)/classes'
+	    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $WABA_CLASSES" >&5
+echo "${ECHO_T}$WABA_CLASSES" >&6; fi
+        else
+	    WABA_CLASSES=no
+        fi
+    else
+	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: Not found in $WABA_DIR" >&5
+echo "${ECHO_T}Not found in $WABA_DIR" >&6; fi
+	echo "$as_me:$LINENO: checking for waba directory in /waba" >&5
+echo $ECHO_N "checking for waba directory in /waba... $ECHO_C" >&6
+	# Likely place for waba under windows
+	WABA_DIR=/waba/wabasdk
+        if test -d "$WABA_DIR"; then
+	    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $WABA_DIR" >&5
+echo "${ECHO_T}$WABA_DIR" >&6; fi
+            echo "$as_me:$LINENO: checking for \$WABA_DIR/classes" >&5
+echo $ECHO_N "checking for \$WABA_DIR/classes... $ECHO_C" >&6
+	    if test -d "$WABA_DIR/classes"; then
+	        WABA_CLASSES='$(WABA_DIR)/classes'
+	        if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $WABA_CLASSES" >&5
+echo "${ECHO_T}$WABA_CLASSES" >&6; fi
+            else
+	        WABA_CLASSES=no
+            fi
+        else
+		WABA_CLASSES=no
+        fi
+
+    fi
+    if test "$WABA_CLASSES" = "no"; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find waba/wabasdk
+    perhaps Waba is not installed?
+    You need not download Waba unless you plan on building applications
+    for the Palm Pilot or Handspring Visor.
+    Waba can be downloaded from http://www.wabasoft.com" >&5
+echo "$as_me: WARNING: Failed to find waba/wabasdk
+    perhaps Waba is not installed?
+    You need not download Waba unless you plan on building applications
+    for the Palm Pilot or Handspring Visor.
+    Waba can be downloaded from http://www.wabasoft.com" >&2;}
+	# Note that we don't substitute in the ${PTII} or $(WABA_DIR) here
+	WABA_DIR='${PTII}/vendors/misc/waba/wabasdk'
+   	WABA_CLASSES='$(WABA_DIR)/classes'
+    else
+	# Set to waba and used in
+	# $PTII/ptolemy/makefile if waba was found
+	PTWABA_DIR=waba
+    fi
+fi
+
+
+#--------------------------------------------------------------------
+#       X10 is the interface library for power line communication, see
+#	http://x10.homelinux.org/download.html
+#	See if there was a command-line option for where
+#       the X10 sdk is;  if not,
+#       check to see if $PTII/vendors/misc/x10 exists
+#--------------------------------------------------------------------
+
+# PTX10_DIR is set to x10 and used in
+# $PTII/ptolemy/actor/lib/x10/makefile if x10 was found
+PTX10_DIR=
+
+# Set to the location of the X10 classes
+X10_CLASSES=
+
+# We only need to look for x10 if $PTII/ptolemy/actor/lib/x10 exists
+X10_USER_DIR="$PTII/ptolemy/actor/lib/x10"
+if test ! -d "$X10_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $X10_USER_DIR is not present,
+    so we need not find the X10 SDK. X10 is the power line comm interface." >&5
+echo "${ECHO_T}$X10_USER_DIR is not present,
+    so we need not find the X10 SDK. X10 is the power line comm interface." >&6; fi
+else
+    if test "$COMMAPI_PRESENT" = "no"; then
+        { echo "$as_me:$LINENO: WARNING: The Java Serial Port Communications API is not installed.
+    The X10 Interface requires the commapi.
+    The commapi can be downloaded from http://java.sun.com/products/javacomm/
+    and placed  in \$PTII/vendors/sun/commapi" >&5
+echo "$as_me: WARNING: The Java Serial Port Communications API is not installed.
+    The X10 Interface requires the commapi.
+    The commapi can be downloaded from http://java.sun.com/products/javacomm/
+    and placed  in \$PTII/vendors/sun/commapi" >&2;}
+    else
+        echo "$as_me:$LINENO: checking for X10 directory" >&5
+echo $ECHO_N "checking for X10 directory... $ECHO_C" >&6
+
+# Check whether --with-x10 or --without-x10 was given.
+if test "${with_x10+set}" = set; then
+  withval="$with_x10"
+  X10_DIR=$withval
+else
+  X10_DIR=$PTII/vendors/misc/x10
+fi;
+
+        if test -d "$X10_DIR"; then
+	   if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $X10_DIR" >&5
+echo "${ECHO_T}$X10_DIR" >&6; fi
+           echo "$as_me:$LINENO: checking for \$X10_DIR/tjx10p-13/lib/x10.jar" >&5
+echo $ECHO_N "checking for \$X10_DIR/tjx10p-13/lib/x10.jar... $ECHO_C" >&6
+	   if test -f "$X10_DIR/tjx10p-13/lib/x10.jar"; then
+	       X10_CLASSES=${X10_DIR}/tjx10p-13/lib/x10.jar
+	       if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $X10_CLASSES" >&5
+echo "${ECHO_T}$X10_CLASSES" >&6; fi
+	       PTX10_DIR=x10
+	       # PTX10_PACKAGES is used in ptII/doc/makefile
+	       PTX10_PACKAGES=ptolemy.actor.lib.x10
+	   else
+               if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; fi
+      	       echo "$as_me:$LINENO: checking for \$X10_DIR/tjx10p-12/lib/x10.jar" >&5
+echo $ECHO_N "checking for \$X10_DIR/tjx10p-12/lib/x10.jar... $ECHO_C" >&6
+	       if test -f "$X10_DIR/tjx10p-12/lib/x10.jar"; then
+	           X10_CLASSES=${X10_DIR}/tjx10p-12/lib/x10.jar
+	           if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $X10_CLASSES" >&5
+echo "${ECHO_T}$X10_CLASSES" >&6; fi
+	           PTX10_DIR=x10
+	           # PTX10_PACKAGES is used in ptII/doc/makefile
+	           PTX10_PACKAGES=ptolemy.actor.lib.x10
+	       else
+                   if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; fi
+	           echo "$as_me:$LINENO: checking for \$X10_DIR/tjx10p-11/lib/x10.jar" >&5
+echo $ECHO_N "checking for \$X10_DIR/tjx10p-11/lib/x10.jar... $ECHO_C" >&6
+	           if test -f "$X10_DIR/tjx10p-11/lib/x10.jar"; then
+	               X10_CLASSES=${X10_DIR}/tjx10p-11/lib/x10.jar
+	               if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $X10_CLASSES" >&5
+echo "${ECHO_T}$X10_CLASSES" >&6; fi
+	               PTX10_DIR=x10
+                   else
+	               # PTX10_PACKAGES is used in ptII/doc/makefile
+	               PTX10_PACKAGES=
+	               X10_CLASSES=
+	               if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; fi
+                   fi
+               fi
+            fi
+        fi
+        if test -z "$PTX10_DIR"; then
+            { echo "$as_me:$LINENO: WARNING: Failed to find tjx10p-12/lib/x10.jar
+    or tjx10p-11/lib/x10.jar, perhaps X10 is not installed?
+    You need not download X10 unless you plan on building applications
+    using the X10 interface.
+    The X10 SDK can be downloaded from http://x10.homelinux.org.
+    See also $PTII/vendors/misc/x10/README.txt" >&5
+echo "$as_me: WARNING: Failed to find tjx10p-12/lib/x10.jar
+    or tjx10p-11/lib/x10.jar, perhaps X10 is not installed?
+    You need not download X10 unless you plan on building applications
+    using the X10 interface.
+    The X10 SDK can be downloaded from http://x10.homelinux.org.
+    See also $PTII/vendors/misc/x10/README.txt" >&2;}
+	    # Note that we don't substitute in the ${PTII} or $(X10_DIR) here
+	    X10_DIR='${PTII}/vendors/misc/x10'
+   	    X10_CLASSES='${X10_DIR}/tjx10p-12/lib/x10.jar'
+        else
+	    # Set to x10 and used in
+	    # $PTII/ptolemy/actor/lib/x10/makefile if x10 was found
+	    PTX10_DIR=x10
+        fi
+    fi
+fi
+
+if test -z "$PTX10_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/x10/|ptolemy/actor/lib/x10/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$X10_CLASSES\"/>"
+fi
+
+
+# Keep these substitutions alphabetical, with a description
+
+# Directory that contains the Caltrop jar file ptCal.jar
+# used by bin/ptinvoke.in
+
+
+# Directory that contains chic.jar.
+# Chic is a modular verifier for behavioral compatibility checking of
+# software and hardware components.
+# Used in bin/ptinvoke.in
+
+
+# Separator in CLASSPATH,  For Unix, this should be :, for Cygwin use ;
+
+
+# Directory that contains colt.jar
+# Colt is a "Open Source Libraries for High Performance Scientific
+# and Technical Computing in Java" used in bin/ptinvoke.in
+
+
+# Directory that contains the CaffeineMark Java Benchmark kit
+# used by C code generation in copernicus/c
+
+
+# Directory that contains the Java Serial Comm API
+
+
+# If Commapi is present, then set to yes, otherwise set to no
+
+
+# Location of Eclipse, which is used by ptolemy/backtracking
+
+
+# Directory that contains gc.h, used in copernicus/c
+
+
+# GC_LD_DIRECTIVE is set to the values to pass to cc or ld if
+# GC_malloc() can be found either in the default compiler location
+# or in $PTII/lib.
+# GC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
+
+
+# Eclipse .classpath excluding src values
+# of the form "vendors/|ptolemy/matlab/"
+
+
+# Eclipse .classpath lib elements of the format
+#    <classpathentry kind="lib" path="lib/diva.jar"/>
+
+
+# ImageJ jar file
+
+
+# Jar files for Java Advanced Imaging (JAI) used by ptolemy/actor/lib/jai/makefile
+
+
+# Command to run that indexes a jar file named tmp.jar
+# Usually it looks like '"$(JAR)" -i $@'
+
+
+# Location of rt.jar, usually $(PTJAVA_HOME)/lib/rt.jar
+# However, we have to be careful of backslashes and /cygwin
+# Soot uses this variable to find java.lang.Object
+
+
+# javacc binary
+
+
+# Directory that contains JavaCC, which is used in ptolemy/data/expr
+
+
+# The javadoc binary, used to create html documentation of java classes.
+
+
+# Location of jce.jar, usually $(PTJAVA_HOME)/lib/jce.jar
+# Java 1.5 has javax.crypto.Cipher in jce.jar
+# However, we have to be careful of backslashes and /cygwin
+# Soot uses this variable to find java.lang.Object
+
+
+# If we are running under JDK1.4, then set JDOCBREAKITERATOR = -breakiterator
+
+
+# Ptalon uses generics, if we are running JDK1.5,
+# then JDOCSOURCEFLAGS = -source 1.5
+
+
+# If we can compile in doc/doclets, we set JDOCTAG appropriately
+# and use JDOCTAG in doc/makefile
+
+
+# If we can compile in doc/doclets, we set JDOCTAGLET appropriately
+# and use JDOCTAGLET in doc/makefile
+
+
+# Jar file that contains JDHL, see http://www.jhdl.org
+
+
+# Jini home directory, see http://www.sun.com/jini/
+
+
+# If Jini is present, the set to yes, otherwise, set to no
+
+
+# Jar file that contains Joystick interface,
+# see http://sourceforge.net/projects/javajoystick/
+
+
+# jtclsh script, used for test suites
+
+
+# jtree binary
+
+
+# JDK Version determined by running confTest.class and getting java.version
+
+
+# Jar files for Java Media Framework (JMF) used by ptolemy/actor/lib/makefile
+
+
+# jode.jar used in bin/ptinvoke to start up Jode, the .class disassembler
+
+
+# Jython home directory that contains jython.jar, see http://www.jython.org
+
+
+# JXTA home directory that contains jxta.jar, see http://www.jxta.org
+
+
+# kvm/tools/classes.jar file used by the PalmOS KVM
+
+
+# Directory that contains the kvm used by PalmOS
+
+
+# Set to the location of the lejos installation, usually in
+# $PTII/vendors/lejos
+
+
+# The major type of OS we are running under.
+# Under all forms Windows, this should be Windows; ynder Linux: Linux, etc.
+# Used in ptolemy/matlab/makefile
+
+
+# Set to the location of the matlab installation, e.g. /matlabr11
+# This directory usually contains bin,...
+
+
+# Set the location of Matlab's engine libraries
+
+
+# Set to $PTII/lib if $PTII/lib/mapss.jar was found and used
+# in $PTII/bin/ptinvoke.in
+
+
+# Set to backtrack if Java 1.5 or later is present
+
+
+# Set to eclipse if Eclipse was found
+
+
+# Plugin Eclipse jar files, used by $PTII/doc
+
+
+# Eclipse jar files used by ptolemy/backtrack
+
+
+# Ptolemy II packages that use Eclipse
+# PTBACKTRACK_PACKAGES is used in ptII/doc/makefile
+
+
+# Set to -I$PTII/mescal/include or -I/usr/local/include
+# if we found boost/static_assert.hpp (mescal)
+
+
+# Set to the BSH jar file and used to compile org/mlc
+
+
+# Set to mlc and used in $PTII/org/makefile if Java Bean Shell is found.
+
+
+# PTBSH_RUN_DIR is set to run and used in
+# $PTII/ptolemy/actor/gui/makefile if bsh.jar was found.
+
+
+# Set to the packages that require bsh and used in $PTII/doc/makefile
+
+
+# Set to caltrop and used in $PTII/ptolemy/makefile if Cal was found.
+
+
+# Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
+
+
+# Set to chic and used in $PTII/ptolemy/makefile if chic was found.
+
+
+# PTCM_DIR is set to cm and used in $PTII/ptolemy/copernicus/c/test/makefile
+# if the CaffeineMark Java Benchmark kit is found
+
+
+# Set to colt and used in $PTII/ptolemy/actor/lib/makefile if colt was found.
+
+
+# Colt jar files.  We ship $PTII/lib/ptcolt.jar, which is a subset
+# of $PTII/vendors/misc/colt.jar
+
+
+# Ptolemy II packages that use COLT
+# PTCOLT_PACKAGES is used in ptII/doc/makefile
+
+
+# PTCOMM_DIR is set to comm and used in
+# $PTII/ptolemy/actor/lib/makefile if the Java Communications API was found
+#
+
+
+# Ptolemy II packages that use the Java Serial Communication facility
+# PTCOMM_PACKAGES is used in ptII/doc/makefile
+
+
+# Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
+
+
+# Set to distributed and used in
+# $PTII/ptolemy/makefile if jini was found
+
+
+# Set to jini jar file and used
+# $PTII/ptolemy/distributed/*/makefile if jini was found
+
+
+# Ptolemy II packages that use the distributed
+# PTDISTRIBUTED_PACKAGES is used in ptII/doc/makefile
+
+
+# PTDOCLETS_DIR is set to doclets and used in
+# $PTII/doc if tools.jar can be found.
+
+
+# Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
+# and used in $PTII/mescal/relsat
+
+
+# Set to -Wl,-R$PTII/mescal/lib or -Wl,-R/usr/local/lib if the gmp
+# libraries are found and used in $PTII/mescal/relsat
+
+
+# Set to -L$PTII/mescal/lib or -L/usr/local/lib if the gmp libraries are found
+# and used in $PTII/mescal/relsat
+
+
+# Name of the jar file that includes the GR domain if Java 3D was found.
+# Used in domains/makefile.
+
+
+# Ptolemy II packages that use the Java 3D facility
+# PTGR_PACKAGES is used in ptII/doc/makefile
+
+
+# Location of the the PTII directory
+# $PTII/ptolemy/plot/ptplot.jnlp.in reads this
+
+
+# Set to ptjacl and used in
+# $PTII/ptolemy/actor/gui/makefile if ptjacl.jar was found
+
+
+# ptjacl.jar file, used to run the test suites
+
+
+# Set to jai and used in
+# $PTII/ptolemy/actor/lib/makefile if Java Advanced Imaging was found
+
+
+# Ptolemy II packages that use Java Advanced Imaging
+# PTJAI_PACKAGES is used in ptII/doc/makefile
+
+
+# Location of the JDK
+
+
+# Location of the JDK
+
+
+# Value of java.home property, location of the JDK with /cygdrive/c/ converted to c:/
+
+
+# Set to gr and used in
+# $PTII/ptolemy/domains/makefile if Java 3D was found
+
+
+# Set to jhdl if JDHL.jar was found
+
+
+# Set to jmf if jmf.jar was found
+
+
+# Ptolemy II packages that use Java Media Framwork
+# PTJMF_PACKAGES is used in ptII/doc/makefile
+
+
+# Set to jni and used in
+# $PTII/makefile if gcc or cc was found
+
+
+# JNI architecture, used to compile C files
+
+
+# Set to jni and used in
+# $PTII/makefile if gcc or cc was found
+
+
+# set to jni include directory
+
+
+# Set to -ldl for use by jni/launcher/makefile under Linux
+
+
+# JNI lib architecture, used to run jni/launcher
+
+
+# Flag to use with TinyOS under Cygwin (-mno-cygwin)
+
+
+# JNI shared library C compiler flag, under Solaris this would be -fPIC.
+
+
+# JNI shared library linker flag, under Solaris this would be -fPIC.
+
+
+# JNI shared library prefix, under Solaris this would be lib.
+
+
+# JNI shared library suffix, under Windows this would be dll.
+
+
+# JNI libraries needed to link, such as -lcygwin (Used by Viptos)
+
+
+# Set to joystick if Joystick.jar was found
+
+
+# Ptolemy II packages that use the Java Joystick facilty
+# PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
+
+
+# Set to python if jython.jar was found
+
+
+# Ptolemy II packages that use Jython
+# PTJYTHON_PACKAGES is used in ptII/doc/makefile
+
+
+# Set to jxta ans used in
+# $PTII/actor/lib/makefile if jxta.jar was found
+
+
+# Set to kvm and used in
+# $PTII/ptolemy/apps/makefile if kvm was found
+
+
+# Set to lego and used in
+# $PTII/ptolemy/apps/makefile if the Java Communications API was found
+
+
+# Set to lejos and used in
+# $PTII/ptolemy/apps/makefile if the Java Communications API was found
+# and Legos was found
+
+
+# Set to gcc or cl and used in
+# $PTII/ptolemy/matlab/makefile if the Matlab was found.
+
+
+# Set to -m64 under Solaris if libs are in bin/sol64
+# and used $PTII/ptolemy/matlab/makefile if the Matlab was found.
+
+
+# Set to matlab and used in
+# $PTII/ptolemy/makefile if the Matlab was found.
+
+
+# Linker args for Matlab
+# $PTII/ptolemy/matlab/makefile
+
+
+# Set to mescal and used in $PTII/makefile
+# if $PTII/mescal was found
+
+
+# Set to psdf and used in $PTII/ptolemy/domains/makefile if
+# $PTII/lib/mapss.jar was found
+
+
+# PTSVG_DIR is set to svg and used in
+# $PTII/diva/util/java2d/makefile if Batik SVG jar files were found
+
+
+# Jar file used by diva/util/java2d/svg/makefile
+
+
+# PTPTALON_DIR is set to ptalon and used in
+# $PTII/ptolemy/actor/makefile if antlr.jar was found.
+
+
+# PTALON_PACKAGES is used in $PTII/doc/makefile
+
+
+# Directory that contains the antlr.jar file, used by ptalon
+
+
+# Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
+# QuickTime for Java was found.
+
+
+# Ptolemy II packages that use the Quicktime facility
+# PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
+
+
+# Set to tini and used in
+# $PTII/ptolemy/apps/makefile if TINI was found
+
+
+# PTTINYOS_DIR is set to ptinyos and used in
+# $PTII/ptolemy/domains/makefile if TinyOS is found
+
+
+# Set to giotto and used in
+# $PTII/ptolemy/apps/makefile if Giotto was found
+
+
+# Set to quicktime and used in
+# $PTII/ptolemy/domains/gr/lib/makefile if Quicktime for Java was found
+
+
+# Set to vr and used in
+# $PTII/ptolemy/domains/gr/lib if Volume Rendering code was found
+
+
+# $PTII/lib/ptvr.jar file, used to for Volume Rendering
+
+
+# Ptolemy II packages that use the Java 3D Volume Rendering
+# PTVR_PACKAGES is used in ptII/doc/makefile
+
+
+# Set to waba and used in
+# $PTII/ptolemy/apps/makefile if Waba was found
+
+
+# Set to x10 and used in
+# $PTII/ptolemy/actor/lib/x10/makefile if the X10 jar files were found
+
+
+# Ptolemy II packages that use the X10 facilty.
+# PTX10_PACKAGES is used in ptII/doc/makefile
+
+
+# Location of the local $PTII directory as a file:/// URL
+# This variable is used with the Java Network Launching Protocol files
+
+
+# Set to the location of the QTJava.zip file
+
+
+# tini/bin/tinclasses.jar file used Soot - a Java Optimization Framework
+
+
+# Directory that contains the Soot installation
+
+
+# tini/bin/tiniclasses.jar file used by the Dallas Semi Tini
+
+
+# Directory that contains the Tini installation
+
+
+# Location of tools.jar, usually $(PTJAVA_HOME)/../lib/tools.jar
+
+
+# Location of TinyOS, used by ptinyos domain
+
+
+
+# giotto/gdk.jar file used by GiottoSDK
+
+
+# Directory that contains the GiottoSDK installation
+
+
+# waba/tools/classes.jar file used by the PalmOS WABA
+
+
+# Directory that contains the waba used by PalmOS
+
+
+# tjx10p-11/lib/x10.jar file used for X10
+
+
+# Directory that contains the X10 installation
+
+
+# Files we substitute in
+                                                  ac_config_files="$ac_config_files mk/ptII.mk bin/ptinvoke .classpath bin/comm.policy lib/ptII.properties"
+          ac_config_commands="$ac_config_commands default"
+cat >confcache <<\_ACEOF
+# This file is a shell script that caches the results of configure
+# tests run on this system so they can be shared between configure
+# scripts and configure runs, see configure's option --config-cache.
+# It is not useful on other systems.  If it contains results you don't
+# want to keep, you may remove or edit it.
+#
+# config.status only pays attention to the cache file if you give it
+# the --recheck option to rerun configure.
+#
+# `ac_cv_env_foo' variables (set or unset) will be overridden when
+# loading this file, other *unset* `ac_cv_foo' will be assigned the
+# following values.
+
+_ACEOF
+
+# The following way of writing the cache mishandles newlines in values,
+# but we know of no workaround that is simple, portable, and efficient.
+# So, don't put newlines in cache variables' values.
+# Ultrix sh set writes to stderr and can't be redirected directly,
+# and sets the high bit in the cache file unless we assign to the vars.
+{
+  (set) 2>&1 |
+    case `(ac_space=' '; set | grep ac_space) 2>&1` in
+    *ac_space=\ *)
+      # `set' does not quote correctly, so add quotes (double-quote
+      # substitution turns \\\\ into \\, and sed turns \\ into \).
+      sed -n \
+	"s/'/'\\\\''/g;
+	  s/^\\([_$as_cr_alnum]*_cv_[_$as_cr_alnum]*\\)=\\(.*\\)/\\1='\\2'/p"
+      ;;
+    *)
+      # `set' quotes correctly as required by POSIX, so do not add quotes.
+      sed -n \
+	"s/^\\([_$as_cr_alnum]*_cv_[_$as_cr_alnum]*\\)=\\(.*\\)/\\1=\\2/p"
+      ;;
+    esac;
+} |
+  sed '
+     t clear
+     : clear
+     s/^\([^=]*\)=\(.*[{}].*\)$/test "${\1+set}" = set || &/
+     t end
+     /^ac_cv_env/!s/^\([^=]*\)=\(.*\)$/\1=${\1=\2}/
+     : end' >>confcache
+if diff $cache_file confcache >/dev/null 2>&1; then :; else
+  if test -w $cache_file; then
+    test "x$cache_file" != "x/dev/null" && echo "updating cache $cache_file"
+    cat confcache >$cache_file
+  else
+    echo "not updating unwritable cache $cache_file"
+  fi
+fi
+rm -f confcache
+
+test "x$prefix" = xNONE && prefix=$ac_default_prefix
+# Let make expand exec_prefix.
+test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
+
+# VPATH may cause trouble with some makes, so we remove $(srcdir),
+# ${srcdir} and @srcdir@ from VPATH if srcdir is ".", strip leading and
+# trailing colons and then remove the whole line if VPATH becomes empty
+# (actually we leave an empty line to preserve line numbers).
+if test "x$srcdir" = x.; then
+  ac_vpsub='/^[	 ]*VPATH[	 ]*=/{
+s/:*\$(srcdir):*/:/;
+s/:*\${srcdir}:*/:/;
+s/:*@srcdir@:*/:/;
+s/^\([^=]*=[	 ]*\):*/\1/;
+s/:*$//;
+s/^[^=]*=[	 ]*$//;
+}'
+fi
+
+# Transform confdefs.h into DEFS.
+# Protect against shell expansion while executing Makefile rules.
+# Protect against Makefile macro expansion.
+#
+# If the first sed substitution is executed (which looks for macros that
+# take arguments), then we branch to the quote section.  Otherwise,
+# look for a macro that doesn't take arguments.
+cat >confdef2opt.sed <<\_ACEOF
+t clear
+: clear
+s,^[	 ]*#[	 ]*define[	 ][	 ]*\([^	 (][^	 (]*([^)]*)\)[	 ]*\(.*\),-D\1=\2,g
+t quote
+s,^[	 ]*#[	 ]*define[	 ][	 ]*\([^	 ][^	 ]*\)[	 ]*\(.*\),-D\1=\2,g
+t quote
+d
+: quote
+s,[	 `~#$^&*(){}\\|;'"<>?],\\&,g
+s,\[,\\&,g
+s,\],\\&,g
+s,\$,$$,g
+p
+_ACEOF
+# We use echo to avoid assuming a particular line-breaking character.
+# The extra dot is to prevent the shell from consuming trailing
+# line-breaks from the sub-command output.  A line-break within
+# single-quotes doesn't work because, if this script is created in a
+# platform that uses two characters for line-breaks (e.g., DOS), tr
+# would break.
+ac_LF_and_DOT=`echo; echo .`
+DEFS=`sed -n -f confdef2opt.sed confdefs.h | tr "$ac_LF_and_DOT" ' .'`
+rm -f confdef2opt.sed
+
+
+ac_libobjs=
+ac_ltlibobjs=
+for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
+  # 1. Remove the extension, and $U if already installed.
+  ac_i=`echo "$ac_i" |
+	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
+  # 2. Add them.
+  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
+done
+LIBOBJS=$ac_libobjs
+
+LTLIBOBJS=$ac_ltlibobjs
+
+
+
+: ${CONFIG_STATUS=./config.status}
+ac_clean_files_save=$ac_clean_files
+ac_clean_files="$ac_clean_files $CONFIG_STATUS"
+{ echo "$as_me:$LINENO: creating $CONFIG_STATUS" >&5
+echo "$as_me: creating $CONFIG_STATUS" >&6;}
+cat >$CONFIG_STATUS <<_ACEOF
+#! $SHELL
+# Generated by $as_me.
+# Run this file to recreate the current configuration.
+# Compiler output produced by configure, useful for debugging
+# configure, is in config.log if it exists.
+
+debug=false
+ac_cs_recheck=false
+ac_cs_silent=false
+SHELL=\${CONFIG_SHELL-$SHELL}
+_ACEOF
+
+cat >>$CONFIG_STATUS <<\_ACEOF
+## --------------------- ##
+## M4sh Initialization.  ##
+## --------------------- ##
+
+# Be Bourne compatible
+if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
+  emulate sh
+  NULLCMD=:
+  # Zsh 3.x and 4.x performs word splitting on ${1+"$@"}, which
+  # is contrary to our usage.  Disable this feature.
+  alias -g '${1+"$@"}'='"$@"'
+elif test -n "${BASH_VERSION+set}" && (set -o posix) >/dev/null 2>&1; then
+  set -o posix
+fi
+DUALCASE=1; export DUALCASE # for MKS sh
+
+# Support unset when possible.
+if ( (MAIL=60; unset MAIL) || exit) >/dev/null 2>&1; then
+  as_unset=unset
+else
+  as_unset=false
+fi
+
+
+# Work around bugs in pre-3.0 UWIN ksh.
+$as_unset ENV MAIL MAILPATH
+PS1='$ '
+PS2='> '
+PS4='+ '
+
+# NLS nuisances.
+for as_var in \
+  LANG LANGUAGE LC_ADDRESS LC_ALL LC_COLLATE LC_CTYPE LC_IDENTIFICATION \
+  LC_MEASUREMENT LC_MESSAGES LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER \
+  LC_TELEPHONE LC_TIME
+do
+  if (set +x; test -z "`(eval $as_var=C; export $as_var) 2>&1`"); then
+    eval $as_var=C; export $as_var
+  else
+    $as_unset $as_var
+  fi
+done
+
+# Required to use basename.
+if expr a : '\(a\)' >/dev/null 2>&1; then
+  as_expr=expr
+else
+  as_expr=false
+fi
+
+if (basename /) >/dev/null 2>&1 && test "X`basename / 2>&1`" = "X/"; then
+  as_basename=basename
+else
+  as_basename=false
+fi
+
+
+# Name of the executable.
+as_me=`$as_basename "$0" ||
+$as_expr X/"$0" : '.*/\([^/][^/]*\)/*$' \| \
+	 X"$0" : 'X\(//\)$' \| \
+	 X"$0" : 'X\(/\)$' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X/"$0" |
+    sed '/^.*\/\([^/][^/]*\)\/*$/{ s//\1/; q; }
+  	  /^X\/\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\/\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+
+
+# PATH needs CR, and LINENO needs CR and PATH.
+# Avoid depending upon Character Ranges.
+as_cr_letters='abcdefghijklmnopqrstuvwxyz'
+as_cr_LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+as_cr_Letters=$as_cr_letters$as_cr_LETTERS
+as_cr_digits='0123456789'
+as_cr_alnum=$as_cr_Letters$as_cr_digits
+
+# The user is always right.
+if test "${PATH_SEPARATOR+set}" != set; then
+  echo "#! /bin/sh" >conf$$.sh
+  echo  "exit 0"   >>conf$$.sh
+  chmod +x conf$$.sh
+  if (PATH="/nonexistent;."; conf$$.sh) >/dev/null 2>&1; then
+    PATH_SEPARATOR=';'
+  else
+    PATH_SEPARATOR=:
+  fi
+  rm -f conf$$.sh
+fi
+
+
+  as_lineno_1=$LINENO
+  as_lineno_2=$LINENO
+  as_lineno_3=`(expr $as_lineno_1 + 1) 2>/dev/null`
+  test "x$as_lineno_1" != "x$as_lineno_2" &&
+  test "x$as_lineno_3"  = "x$as_lineno_2"  || {
+  # Find who we are.  Look in the path if we contain no path at all
+  # relative or not.
+  case $0 in
+    *[\\/]* ) as_myself=$0 ;;
+    *) as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  test -r "$as_dir/$0" && as_myself=$as_dir/$0 && break
+done
+
+       ;;
+  esac
+  # We did not find ourselves, most probably we were run as `sh COMMAND'
+  # in which case we are not to be found in the path.
+  if test "x$as_myself" = x; then
+    as_myself=$0
+  fi
+  if test ! -f "$as_myself"; then
+    { { echo "$as_me:$LINENO: error: cannot find myself; rerun with an absolute path" >&5
+echo "$as_me: error: cannot find myself; rerun with an absolute path" >&2;}
+   { (exit 1); exit 1; }; }
+  fi
+  case $CONFIG_SHELL in
+  '')
+    as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in /bin$PATH_SEPARATOR/usr/bin$PATH_SEPARATOR$PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for as_base in sh bash ksh sh5; do
+	 case $as_dir in
+	 /*)
+	   if ("$as_dir/$as_base" -c '
+  as_lineno_1=$LINENO
+  as_lineno_2=$LINENO
+  as_lineno_3=`(expr $as_lineno_1 + 1) 2>/dev/null`
+  test "x$as_lineno_1" != "x$as_lineno_2" &&
+  test "x$as_lineno_3"  = "x$as_lineno_2" ') 2>/dev/null; then
+	     $as_unset BASH_ENV || test "${BASH_ENV+set}" != set || { BASH_ENV=; export BASH_ENV; }
+	     $as_unset ENV || test "${ENV+set}" != set || { ENV=; export ENV; }
+	     CONFIG_SHELL=$as_dir/$as_base
+	     export CONFIG_SHELL
+	     exec "$CONFIG_SHELL" "$0" ${1+"$@"}
+	   fi;;
+	 esac
+       done
+done
+;;
+  esac
+
+  # Create $as_me.lineno as a copy of $as_myself, but with $LINENO
+  # uniformly replaced by the line number.  The first 'sed' inserts a
+  # line-number line before each line; the second 'sed' does the real
+  # work.  The second script uses 'N' to pair each line-number line
+  # with the numbered line, and appends trailing '-' during
+  # substitution so that $LINENO is not a special case at line end.
+  # (Raja R Harinath suggested sed '=', and Paul Eggert wrote the
+  # second 'sed' script.  Blame Lee E. McMahon for sed's syntax.  :-)
+  sed '=' <$as_myself |
+    sed '
+      N
+      s,$,-,
+      : loop
+      s,^\(['$as_cr_digits']*\)\(.*\)[$]LINENO\([^'$as_cr_alnum'_]\),\1\2\1\3,
+      t loop
+      s,-$,,
+      s,^['$as_cr_digits']*\n,,
+    ' >$as_me.lineno &&
+  chmod +x $as_me.lineno ||
+    { { echo "$as_me:$LINENO: error: cannot create $as_me.lineno; rerun with a POSIX shell" >&5
+echo "$as_me: error: cannot create $as_me.lineno; rerun with a POSIX shell" >&2;}
+   { (exit 1); exit 1; }; }
+
+  # Don't try to exec as it changes $[0], causing all sort of problems
+  # (the dirname of $[0] is not the place where we might find the
+  # original and so on.  Autoconf is especially sensible to this).
+  . ./$as_me.lineno
+  # Exit status is that of the last command.
+  exit
+}
+
+
+case `echo "testing\c"; echo 1,2,3`,`echo -n testing; echo 1,2,3` in
+  *c*,-n*) ECHO_N= ECHO_C='
+' ECHO_T='	' ;;
+  *c*,*  ) ECHO_N=-n ECHO_C= ECHO_T= ;;
+  *)       ECHO_N= ECHO_C='\c' ECHO_T= ;;
+esac
+
+if expr a : '\(a\)' >/dev/null 2>&1; then
+  as_expr=expr
+else
+  as_expr=false
+fi
+
+rm -f conf$$ conf$$.exe conf$$.file
+echo >conf$$.file
+if ln -s conf$$.file conf$$ 2>/dev/null; then
+  # We could just check for DJGPP; but this test a) works b) is more generic
+  # and c) will remain valid once DJGPP supports symlinks (DJGPP 2.04).
+  if test -f conf$$.exe; then
+    # Don't use ln at all; we don't have any links
+    as_ln_s='cp -p'
+  else
+    as_ln_s='ln -s'
+  fi
+elif ln conf$$.file conf$$ 2>/dev/null; then
+  as_ln_s=ln
+else
+  as_ln_s='cp -p'
+fi
+rm -f conf$$ conf$$.exe conf$$.file
+
+if mkdir -p . 2>/dev/null; then
+  as_mkdir_p=:
+else
+  test -d ./-p && rmdir ./-p
+  as_mkdir_p=false
+fi
+
+as_executable_p="test -f"
+
+# Sed expression to map a string onto a valid CPP name.
+as_tr_cpp="eval sed 'y%*$as_cr_letters%P$as_cr_LETTERS%;s%[^_$as_cr_alnum]%_%g'"
+
+# Sed expression to map a string onto a valid variable name.
+as_tr_sh="eval sed 'y%*+%pp%;s%[^_$as_cr_alnum]%_%g'"
+
+
+# IFS
+# We need space, tab and new line, in precisely that order.
+as_nl='
+'
+IFS=" 	$as_nl"
+
+# CDPATH.
+$as_unset CDPATH
+
+exec 6>&1
+
+# Open the log real soon, to keep \$[0] and so on meaningful, and to
+# report actual input values of CONFIG_FILES etc. instead of their
+# values after options handling.  Logging --version etc. is OK.
+exec 5>>config.log
+{
+  echo
+  sed 'h;s/./-/g;s/^.../## /;s/...$/ ##/;p;x;p;x' <<_ASBOX
+## Running $as_me. ##
+_ASBOX
+} >&5
+cat >&5 <<_CSEOF
+
+This file was extended by $as_me, which was
+generated by GNU Autoconf 2.59.  Invocation command line was
+
+  CONFIG_FILES    = $CONFIG_FILES
+  CONFIG_HEADERS  = $CONFIG_HEADERS
+  CONFIG_LINKS    = $CONFIG_LINKS
+  CONFIG_COMMANDS = $CONFIG_COMMANDS
+  $ $0 $@
+
+_CSEOF
+echo "on `(hostname || uname -n) 2>/dev/null | sed 1q`" >&5
+echo >&5
+_ACEOF
+
+# Files that config.status was made for.
+if test -n "$ac_config_files"; then
+  echo "config_files=\"$ac_config_files\"" >>$CONFIG_STATUS
+fi
+
+if test -n "$ac_config_headers"; then
+  echo "config_headers=\"$ac_config_headers\"" >>$CONFIG_STATUS
+fi
+
+if test -n "$ac_config_links"; then
+  echo "config_links=\"$ac_config_links\"" >>$CONFIG_STATUS
+fi
+
+if test -n "$ac_config_commands"; then
+  echo "config_commands=\"$ac_config_commands\"" >>$CONFIG_STATUS
+fi
+
+cat >>$CONFIG_STATUS <<\_ACEOF
+
+ac_cs_usage="\
+\`$as_me' instantiates files from templates according to the
+current configuration.
+
+Usage: $0 [OPTIONS] [FILE]...
+
+  -h, --help       print this help, then exit
+  -V, --version    print version number, then exit
+  -q, --quiet      do not print progress messages
+  -d, --debug      don't remove temporary files
+      --recheck    update $as_me by reconfiguring in the same conditions
+  --file=FILE[:TEMPLATE]
+		   instantiate the configuration file FILE
+
+Configuration files:
+$config_files
+
+Configuration commands:
+$config_commands
+
+Report bugs to <bug-autoconf@gnu.org>."
+_ACEOF
+
+cat >>$CONFIG_STATUS <<_ACEOF
+ac_cs_version="\\
+config.status
+configured by $0, generated by GNU Autoconf 2.59,
+  with options \\"`echo "$ac_configure_args" | sed 's/[\\""\`\$]/\\\\&/g'`\\"
+
+Copyright (C) 2003 Free Software Foundation, Inc.
+This config.status script is free software; the Free Software Foundation
+gives unlimited permission to copy, distribute and modify it."
+srcdir=$srcdir
+_ACEOF
+
+cat >>$CONFIG_STATUS <<\_ACEOF
+# If no file are specified by the user, then we need to provide default
+# value.  By we need to know if files were specified by the user.
+ac_need_defaults=:
+while test $# != 0
+do
+  case $1 in
+  --*=*)
+    ac_option=`expr "x$1" : 'x\([^=]*\)='`
+    ac_optarg=`expr "x$1" : 'x[^=]*=\(.*\)'`
+    ac_shift=:
+    ;;
+  -*)
+    ac_option=$1
+    ac_optarg=$2
+    ac_shift=shift
+    ;;
+  *) # This is not an option, so the user has probably given explicit
+     # arguments.
+     ac_option=$1
+     ac_need_defaults=false;;
+  esac
+
+  case $ac_option in
+  # Handling of the options.
+_ACEOF
+cat >>$CONFIG_STATUS <<\_ACEOF
+  -recheck | --recheck | --rechec | --reche | --rech | --rec | --re | --r)
+    ac_cs_recheck=: ;;
+  --version | --vers* | -V )
+    echo "$ac_cs_version"; exit 0 ;;
+  --he | --h)
+    # Conflict between --help and --header
+    { { echo "$as_me:$LINENO: error: ambiguous option: $1
+Try \`$0 --help' for more information." >&5
+echo "$as_me: error: ambiguous option: $1
+Try \`$0 --help' for more information." >&2;}
+   { (exit 1); exit 1; }; };;
+  --help | --hel | -h )
+    echo "$ac_cs_usage"; exit 0 ;;
+  --debug | --d* | -d )
+    debug=: ;;
+  --file | --fil | --fi | --f )
+    $ac_shift
+    CONFIG_FILES="$CONFIG_FILES $ac_optarg"
+    ac_need_defaults=false;;
+  --header | --heade | --head | --hea )
+    $ac_shift
+    CONFIG_HEADERS="$CONFIG_HEADERS $ac_optarg"
+    ac_need_defaults=false;;
+  -q | -quiet | --quiet | --quie | --qui | --qu | --q \
+  | -silent | --silent | --silen | --sile | --sil | --si | --s)
+    ac_cs_silent=: ;;
+
+  # This is an error.
+  -*) { { echo "$as_me:$LINENO: error: unrecognized option: $1
+Try \`$0 --help' for more information." >&5
+echo "$as_me: error: unrecognized option: $1
+Try \`$0 --help' for more information." >&2;}
+   { (exit 1); exit 1; }; } ;;
+
+  *) ac_config_targets="$ac_config_targets $1" ;;
+
+  esac
+  shift
+done
+
+ac_configure_extra_args=
+
+if $ac_cs_silent; then
+  exec 6>/dev/null
+  ac_configure_extra_args="$ac_configure_extra_args --silent"
+fi
+
+_ACEOF
+cat >>$CONFIG_STATUS <<_ACEOF
+if \$ac_cs_recheck; then
+  echo "running $SHELL $0 " $ac_configure_args \$ac_configure_extra_args " --no-create --no-recursion" >&6
+  exec $SHELL $0 $ac_configure_args \$ac_configure_extra_args --no-create --no-recursion
+fi
+
+_ACEOF
+
+
+
+
+
+cat >>$CONFIG_STATUS <<\_ACEOF
+for ac_config_target in $ac_config_targets
+do
+  case "$ac_config_target" in
+  # Handling of arguments.
+  "mk/ptII.mk" ) CONFIG_FILES="$CONFIG_FILES mk/ptII.mk" ;;
+  "bin/ptinvoke" ) CONFIG_FILES="$CONFIG_FILES bin/ptinvoke" ;;
+  ".classpath" ) CONFIG_FILES="$CONFIG_FILES .classpath" ;;
+  "bin/comm.policy" ) CONFIG_FILES="$CONFIG_FILES bin/comm.policy" ;;
+  "lib/ptII.properties" ) CONFIG_FILES="$CONFIG_FILES lib/ptII.properties" ;;
+  "default" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;
+  *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
+echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
+   { (exit 1); exit 1; }; };;
+  esac
+done
+
+# If the user did not use the arguments to specify the items to instantiate,
+# then the envvar interface is used.  Set only those that are not.
+# We use the long form for the default assignment because of an extremely
+# bizarre bug on SunOS 4.1.3.
+if $ac_need_defaults; then
+  test "${CONFIG_FILES+set}" = set || CONFIG_FILES=$config_files
+  test "${CONFIG_COMMANDS+set}" = set || CONFIG_COMMANDS=$config_commands
+fi
+
+# Have a temporary directory for convenience.  Make it in the build tree
+# simply because there is no reason to put it here, and in addition,
+# creating and moving files from /tmp can sometimes cause problems.
+# Create a temporary directory, and hook for its removal unless debugging.
+$debug ||
+{
+  trap 'exit_status=$?; rm -rf $tmp && exit $exit_status' 0
+  trap '{ (exit 1); exit 1; }' 1 2 13 15
+}
+
+# Create a (secure) tmp directory for tmp files.
+
+{
+  tmp=`(umask 077 && mktemp -d -q "./confstatXXXXXX") 2>/dev/null` &&
+  test -n "$tmp" && test -d "$tmp"
+}  ||
+{
+  tmp=./confstat$$-$RANDOM
+  (umask 077 && mkdir $tmp)
+} ||
+{
+   echo "$me: cannot create a temporary directory in ." >&2
+   { (exit 1); exit 1; }
+}
+
+_ACEOF
+
+cat >>$CONFIG_STATUS <<_ACEOF
+
+#
+# CONFIG_FILES section.
+#
+
+# No need to generate the scripts if there are no CONFIG_FILES.
+# This happens for instance when ./config.status config.h
+if test -n "\$CONFIG_FILES"; then
+  # Protect against being on the right side of a sed subst in config.status.
+  sed 's/,@/@@/; s/@,/@@/; s/,;t t\$/@;t t/; /@;t t\$/s/[\\\\&,]/\\\\&/g;
+   s/@@/,@/; s/@@/@,/; s/@;t t\$/,;t t/' >\$tmp/subs.sed <<\\CEOF
+s,@SHELL@,$SHELL,;t t
+s,@PATH_SEPARATOR@,$PATH_SEPARATOR,;t t
+s,@PACKAGE_NAME@,$PACKAGE_NAME,;t t
+s,@PACKAGE_TARNAME@,$PACKAGE_TARNAME,;t t
+s,@PACKAGE_VERSION@,$PACKAGE_VERSION,;t t
+s,@PACKAGE_STRING@,$PACKAGE_STRING,;t t
+s,@PACKAGE_BUGREPORT@,$PACKAGE_BUGREPORT,;t t
+s,@exec_prefix@,$exec_prefix,;t t
+s,@prefix@,$prefix,;t t
+s,@program_transform_name@,$program_transform_name,;t t
+s,@bindir@,$bindir,;t t
+s,@sbindir@,$sbindir,;t t
+s,@libexecdir@,$libexecdir,;t t
+s,@datadir@,$datadir,;t t
+s,@sysconfdir@,$sysconfdir,;t t
+s,@sharedstatedir@,$sharedstatedir,;t t
+s,@localstatedir@,$localstatedir,;t t
+s,@libdir@,$libdir,;t t
+s,@includedir@,$includedir,;t t
+s,@oldincludedir@,$oldincludedir,;t t
+s,@infodir@,$infodir,;t t
+s,@mandir@,$mandir,;t t
+s,@build_alias@,$build_alias,;t t
+s,@host_alias@,$host_alias,;t t
+s,@target_alias@,$target_alias,;t t
+s,@DEFS@,$DEFS,;t t
+s,@ECHO_C@,$ECHO_C,;t t
+s,@ECHO_N@,$ECHO_N,;t t
+s,@ECHO_T@,$ECHO_T,;t t
+s,@LIBS@,$LIBS,;t t
+s,@CMD_PATH@,$CMD_PATH,;t t
+s,@FIND@,$FIND,;t t
+s,@JAVAC@,$JAVAC,;t t
+s,@JAVA@,$JAVA,;t t
+s,@CC@,$CC,;t t
+s,@CFLAGS@,$CFLAGS,;t t
+s,@LDFLAGS@,$LDFLAGS,;t t
+s,@CPPFLAGS@,$CPPFLAGS,;t t
+s,@ac_ct_CC@,$ac_ct_CC,;t t
+s,@EXEEXT@,$EXEEXT,;t t
+s,@OBJEXT@,$OBJEXT,;t t
+s,@CPP@,$CPP,;t t
+s,@EGREP@,$EGREP,;t t
+s,@JAVADOC@,$JAVADOC,;t t
+s,@PTECLIPSE@,$PTECLIPSE,;t t
+s,@PTCC@,$PTCC,;t t
+s,@CXX@,$CXX,;t t
+s,@CXXFLAGS@,$CXXFLAGS,;t t
+s,@ac_ct_CXX@,$ac_ct_CXX,;t t
+s,@PTJYTHON@,$PTJYTHON,;t t
+s,@PTJYTHON_BAT@,$PTJYTHON_BAT,;t t
+s,@JJTREE@,$JJTREE,;t t
+s,@MATLAB@,$MATLAB,;t t
+s,@PTMATLAB_CC@,$PTMATLAB_CC,;t t
+s,@CALTROP_DIR@,$CALTROP_DIR,;t t
+s,@CHIC_DIR@,$CHIC_DIR,;t t
+s,@CLASSPATHSEPARATOR@,$CLASSPATHSEPARATOR,;t t
+s,@COLT_DIR@,$COLT_DIR,;t t
+s,@CMKIT_DIR@,$CMKIT_DIR,;t t
+s,@COMMAPI_DIR@,$COMMAPI_DIR,;t t
+s,@COMMAPI_PRESENT@,$COMMAPI_PRESENT,;t t
+s,@ECLIPSE_DIR@,$ECLIPSE_DIR,;t t
+s,@GC_INCLUDE_DIR@,$GC_INCLUDE_DIR,;t t
+s,@GC_LD_DIRECTIVE@,$GC_LD_DIRECTIVE,;t t
+s,@ECLIPSE_EXCLUDING_SRC@,$ECLIPSE_EXCLUDING_SRC,;t t
+s,@ECLIPSE_CLASSPATHENTRY_LIBS@,$ECLIPSE_CLASSPATHENTRY_LIBS,;t t
+s,@IMAGEJ_JAR@,$IMAGEJ_JAR,;t t
+s,@JAI_JARS@,$JAI_JARS,;t t
+s,@JAR_INDEX@,$JAR_INDEX,;t t
+s,@JAVA_SYSTEM_JAR@,$JAVA_SYSTEM_JAR,;t t
+s,@JAVACC@,$JAVACC,;t t
+s,@JAVACC_DIR@,$JAVACC_DIR,;t t
+s,@JAVAX_CRYPTO_JAR@,$JAVAX_CRYPTO_JAR,;t t
+s,@JDOCBREAKITERATOR@,$JDOCBREAKITERATOR,;t t
+s,@JDOCSOURCEFLAGS@,$JDOCSOURCEFLAGS,;t t
+s,@JDOCTAG@,$JDOCTAG,;t t
+s,@JDOCTAGLET@,$JDOCTAGLET,;t t
+s,@JHDL_JAR@,$JHDL_JAR,;t t
+s,@JINI_DIR@,$JINI_DIR,;t t
+s,@JINI_PRESENT@,$JINI_PRESENT,;t t
+s,@JOYSTICK_JAR@,$JOYSTICK_JAR,;t t
+s,@JTCLSH@,$JTCLSH,;t t
+s,@JTREE@,$JTREE,;t t
+s,@JVERSION@,$JVERSION,;t t
+s,@JMF_JARS@,$JMF_JARS,;t t
+s,@JODE_CLASSES@,$JODE_CLASSES,;t t
+s,@JYTHON_DIR@,$JYTHON_DIR,;t t
+s,@JXTA_DIR@,$JXTA_DIR,;t t
+s,@KVM_CLASSES@,$KVM_CLASSES,;t t
+s,@KVM_DIR@,$KVM_DIR,;t t
+s,@LEJOS_DIR@,$LEJOS_DIR,;t t
+s,@MAJOR_OS_NAME@,$MAJOR_OS_NAME,;t t
+s,@MATLAB_DIR@,$MATLAB_DIR,;t t
+s,@MATLAB_LIBDIR@,$MATLAB_LIBDIR,;t t
+s,@PSDF_DIR@,$PSDF_DIR,;t t
+s,@PTBACKTRACK_DIR@,$PTBACKTRACK_DIR,;t t
+s,@PTBACKTRACK_ECLIPSE_DIR@,$PTBACKTRACK_ECLIPSE_DIR,;t t
+s,@PTBACKTRACK_ECLIPSE_DOC_JARS@,$PTBACKTRACK_ECLIPSE_DOC_JARS,;t t
+s,@PTBACKTRACK_ECLIPSE_JARS@,$PTBACKTRACK_ECLIPSE_JARS,;t t
+s,@PTBACKTRACK_ECLIPSE_PACKAGES@,$PTBACKTRACK_ECLIPSE_PACKAGES,;t t
+s,@PTBOOST_INCLUDE@,$PTBOOST_INCLUDE,;t t
+s,@PTBSH_JAR@,$PTBSH_JAR,;t t
+s,@PTBSH_MLC_DIR@,$PTBSH_MLC_DIR,;t t
+s,@PTBSH_RUN_DIR@,$PTBSH_RUN_DIR,;t t
+s,@PTBSH_PACKAGES@,$PTBSH_PACKAGES,;t t
+s,@PTCALTROP_DIR@,$PTCALTROP_DIR,;t t
+s,@PTCHIC_DIR@,$PTCHIC_DIR,;t t
+s,@PTCM_DIR@,$PTCM_DIR,;t t
+s,@PTCOLT_DIR@,$PTCOLT_DIR,;t t
+s,@PTCOLT_JARS@,$PTCOLT_JARS,;t t
+s,@PTCOLT_PACKAGES@,$PTCOLT_PACKAGES,;t t
+s,@PTCOMM_DIR@,$PTCOMM_DIR,;t t
+s,@PTCOMM_PACKAGES@,$PTCOMM_PACKAGES,;t t
+s,@PTCOPERNICUS_DIR@,$PTCOPERNICUS_DIR,;t t
+s,@PTDISTRIBUTED_DIR@,$PTDISTRIBUTED_DIR,;t t
+s,@PTDISTRIBUTED_JARS@,$PTDISTRIBUTED_JARS,;t t
+s,@PTDISTRIBUTED_PACKAGES@,$PTDISTRIBUTED_PACKAGES,;t t
+s,@PTDOCLETS_DIR@,$PTDOCLETS_DIR,;t t
+s,@PTGMP_INCLUDE@,$PTGMP_INCLUDE,;t t
+s,@PTGMP_LD_FLAGS@,$PTGMP_LD_FLAGS,;t t
+s,@PTGMP_LIB@,$PTGMP_LIB,;t t
+s,@PTGRDOMAIN_JAR@,$PTGRDOMAIN_JAR,;t t
+s,@PTGR_PACKAGES@,$PTGR_PACKAGES,;t t
+s,@PTII@,$PTII,;t t
+s,@PTJACL_DIR@,$PTJACL_DIR,;t t
+s,@PTJACL_JAR@,$PTJACL_JAR,;t t
+s,@PTJAI_DIR@,$PTJAI_DIR,;t t
+s,@PTJAI_PACKAGES@,$PTJAI_PACKAGES,;t t
+s,@PTJAVA_DIR@,$PTJAVA_DIR,;t t
+s,@PTJAVA_DIR_NO_CYGDRIVE@,$PTJAVA_DIR_NO_CYGDRIVE,;t t
+s,@PTJAVA_HOME@,$PTJAVA_HOME,;t t
+s,@PTJAVA3D_DIR@,$PTJAVA3D_DIR,;t t
+s,@PTJHDL_DIR@,$PTJHDL_DIR,;t t
+s,@PTJMF_DIR@,$PTJMF_DIR,;t t
+s,@PTJMF_PACKAGES@,$PTJMF_PACKAGES,;t t
+s,@PTJNI_DIR@,$PTJNI_DIR,;t t
+s,@PTJNI_ARCHITECTURE@,$PTJNI_ARCHITECTURE,;t t
+s,@PTJNI_INCLUDE@,$PTJNI_INCLUDE,;t t
+s,@PTJNI_DL_LIBRARY@,$PTJNI_DL_LIBRARY,;t t
+s,@PTJNI_LIB_ARCHITECTURE@,$PTJNI_LIB_ARCHITECTURE,;t t
+s,@PTJNI_NO_CYGWIN@,$PTJNI_NO_CYGWIN,;t t
+s,@PTJNI_SHAREDLIBRARY_CFLAG@,$PTJNI_SHAREDLIBRARY_CFLAG,;t t
+s,@PTJNI_SHAREDLIBRARY_LDFLAG@,$PTJNI_SHAREDLIBRARY_LDFLAG,;t t
+s,@PTJNI_SHAREDLIBRARY_PREFIX@,$PTJNI_SHAREDLIBRARY_PREFIX,;t t
+s,@PTJNI_SHAREDLIBRARY_SUFFIX@,$PTJNI_SHAREDLIBRARY_SUFFIX,;t t
+s,@PTJNI_LIBRARIES@,$PTJNI_LIBRARIES,;t t
+s,@PTJOYSTICK_DIR@,$PTJOYSTICK_DIR,;t t
+s,@PTJOYSTICK_PACKAGES@,$PTJOYSTICK_PACKAGES,;t t
+s,@PTJYTHON_DIR@,$PTJYTHON_DIR,;t t
+s,@PTJYTHON_PACKAGES@,$PTJYTHON_PACKAGES,;t t
+s,@PTJXTA_DIR@,$PTJXTA_DIR,;t t
+s,@PTKVM_DIR@,$PTKVM_DIR,;t t
+s,@PTLEGO_DIR@,$PTLEGO_DIR,;t t
+s,@PTLEJOS_DIR@,$PTLEJOS_DIR,;t t
+s,@PTMATLAB_CC_FLAGS@,$PTMATLAB_CC_FLAGS,;t t
+s,@PTMATLAB_DIR@,$PTMATLAB_DIR,;t t
+s,@PTMATLAB_LD_ARGS@,$PTMATLAB_LD_ARGS,;t t
+s,@PTMESCAL_DIR@,$PTMESCAL_DIR,;t t
+s,@PTPSDF_DIR@,$PTPSDF_DIR,;t t
+s,@PTSVG_DIR@,$PTSVG_DIR,;t t
+s,@PTSVG_JAR@,$PTSVG_JAR,;t t
+s,@PTPTALON_DIR@,$PTPTALON_DIR,;t t
+s,@PTPTALON_PACKAGES@,$PTPTALON_PACKAGES,;t t
+s,@ANTLR_DIR@,$ANTLR_DIR,;t t
+s,@PTQUICKTIME_DIR@,$PTQUICKTIME_DIR,;t t
+s,@PTQUICKTIME_PACKAGES@,$PTQUICKTIME_PACKAGES,;t t
+s,@PTTINI_DIR@,$PTTINI_DIR,;t t
+s,@PTTINYOS_DIR@,$PTTINYOS_DIR,;t t
+s,@PTGIOTTO_DIR@,$PTGIOTTO_DIR,;t t
+s,@PTVR_DIR@,$PTVR_DIR,;t t
+s,@PTVR_JAR@,$PTVR_JAR,;t t
+s,@PTVR_PACKAGES@,$PTVR_PACKAGES,;t t
+s,@PTWABA_DIR@,$PTWABA_DIR,;t t
+s,@PTX10_DIR@,$PTX10_DIR,;t t
+s,@PTX10_PACKAGES@,$PTX10_PACKAGES,;t t
+s,@PTII_LOCALURL@,$PTII_LOCALURL,;t t
+s,@QTJAVA_ZIP@,$QTJAVA_ZIP,;t t
+s,@SOOT_CLASSES@,$SOOT_CLASSES,;t t
+s,@SOOT_DIR@,$SOOT_DIR,;t t
+s,@TINI_CLASSES@,$TINI_CLASSES,;t t
+s,@TINI_DIR@,$TINI_DIR,;t t
+s,@TOOLS_JAR@,$TOOLS_JAR,;t t
+s,@TOSROOT_NO_CYGDRIVE@,$TOSROOT_NO_CYGDRIVE,;t t
+s,@TOSDIR_NO_CYGDRIVE@,$TOSDIR_NO_CYGDRIVE,;t t
+s,@GIOTTO_CLASSES@,$GIOTTO_CLASSES,;t t
+s,@GIOTTO_DIR@,$GIOTTO_DIR,;t t
+s,@WABA_CLASSES@,$WABA_CLASSES,;t t
+s,@WABA_DIR@,$WABA_DIR,;t t
+s,@X10_CLASSES@,$X10_CLASSES,;t t
+s,@X10_DIR@,$X10_DIR,;t t
+s,@LIBOBJS@,$LIBOBJS,;t t
+s,@LTLIBOBJS@,$LTLIBOBJS,;t t
+CEOF
+
+_ACEOF
+
+  cat >>$CONFIG_STATUS <<\_ACEOF
+  # Split the substitutions into bite-sized pieces for seds with
+  # small command number limits, like on Digital OSF/1 and HP-UX.
+  ac_max_sed_lines=48
+  ac_sed_frag=1 # Number of current file.
+  ac_beg=1 # First line for current file.
+  ac_end=$ac_max_sed_lines # Line after last line for current file.
+  ac_more_lines=:
+  ac_sed_cmds=
+  while $ac_more_lines; do
+    if test $ac_beg -gt 1; then
+      sed "1,${ac_beg}d; ${ac_end}q" $tmp/subs.sed >$tmp/subs.frag
+    else
+      sed "${ac_end}q" $tmp/subs.sed >$tmp/subs.frag
+    fi
+    if test ! -s $tmp/subs.frag; then
+      ac_more_lines=false
+    else
+      # The purpose of the label and of the branching condition is to
+      # speed up the sed processing (if there are no `@' at all, there
+      # is no need to browse any of the substitutions).
+      # These are the two extra sed commands mentioned above.
+      (echo ':t
+  /@[a-zA-Z_][a-zA-Z_0-9]*@/!b' && cat $tmp/subs.frag) >$tmp/subs-$ac_sed_frag.sed
+      if test -z "$ac_sed_cmds"; then
+	ac_sed_cmds="sed -f $tmp/subs-$ac_sed_frag.sed"
+      else
+	ac_sed_cmds="$ac_sed_cmds | sed -f $tmp/subs-$ac_sed_frag.sed"
+      fi
+      ac_sed_frag=`expr $ac_sed_frag + 1`
+      ac_beg=$ac_end
+      ac_end=`expr $ac_end + $ac_max_sed_lines`
+    fi
+  done
+  if test -z "$ac_sed_cmds"; then
+    ac_sed_cmds=cat
+  fi
+fi # test -n "$CONFIG_FILES"
+
+_ACEOF
+cat >>$CONFIG_STATUS <<\_ACEOF
+for ac_file in : $CONFIG_FILES; do test "x$ac_file" = x: && continue
+  # Support "outfile[:infile[:infile...]]", defaulting infile="outfile.in".
+  case $ac_file in
+  - | *:- | *:-:* ) # input from stdin
+	cat >$tmp/stdin
+	ac_file_in=`echo "$ac_file" | sed 's,[^:]*:,,'`
+	ac_file=`echo "$ac_file" | sed 's,:.*,,'` ;;
+  *:* ) ac_file_in=`echo "$ac_file" | sed 's,[^:]*:,,'`
+	ac_file=`echo "$ac_file" | sed 's,:.*,,'` ;;
+  * )   ac_file_in=$ac_file.in ;;
+  esac
+
+  # Compute @srcdir@, @top_srcdir@, and @INSTALL@ for subdirectories.
+  ac_dir=`(dirname "$ac_file") 2>/dev/null ||
+$as_expr X"$ac_file" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$ac_file" : 'X\(//\)[^/]' \| \
+	 X"$ac_file" : 'X\(//\)$' \| \
+	 X"$ac_file" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_file" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+  { if $as_mkdir_p; then
+    mkdir -p "$ac_dir"
+  else
+    as_dir="$ac_dir"
+    as_dirs=
+    while test ! -d "$as_dir"; do
+      as_dirs="$as_dir $as_dirs"
+      as_dir=`(dirname "$as_dir") 2>/dev/null ||
+$as_expr X"$as_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$as_dir" : 'X\(//\)[^/]' \| \
+	 X"$as_dir" : 'X\(//\)$' \| \
+	 X"$as_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$as_dir" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+    done
+    test ! -n "$as_dirs" || mkdir $as_dirs
+  fi || { { echo "$as_me:$LINENO: error: cannot create directory \"$ac_dir\"" >&5
+echo "$as_me: error: cannot create directory \"$ac_dir\"" >&2;}
+   { (exit 1); exit 1; }; }; }
+
+  ac_builddir=.
+
+if test "$ac_dir" != .; then
+  ac_dir_suffix=/`echo "$ac_dir" | sed 's,^\.[\\/],,'`
+  # A "../" for each directory in $ac_dir_suffix.
+  ac_top_builddir=`echo "$ac_dir_suffix" | sed 's,/[^\\/]*,../,g'`
+else
+  ac_dir_suffix= ac_top_builddir=
+fi
+
+case $srcdir in
+  .)  # No --srcdir option.  We are building in place.
+    ac_srcdir=.
+    if test -z "$ac_top_builddir"; then
+       ac_top_srcdir=.
+    else
+       ac_top_srcdir=`echo $ac_top_builddir | sed 's,/$,,'`
+    fi ;;
+  [\\/]* | ?:[\\/]* )  # Absolute path.
+    ac_srcdir=$srcdir$ac_dir_suffix;
+    ac_top_srcdir=$srcdir ;;
+  *) # Relative path.
+    ac_srcdir=$ac_top_builddir$srcdir$ac_dir_suffix
+    ac_top_srcdir=$ac_top_builddir$srcdir ;;
+esac
+
+# Do not use `cd foo && pwd` to compute absolute paths, because
+# the directories may not exist.
+case `pwd` in
+.) ac_abs_builddir="$ac_dir";;
+*)
+  case "$ac_dir" in
+  .) ac_abs_builddir=`pwd`;;
+  [\\/]* | ?:[\\/]* ) ac_abs_builddir="$ac_dir";;
+  *) ac_abs_builddir=`pwd`/"$ac_dir";;
+  esac;;
+esac
+case $ac_abs_builddir in
+.) ac_abs_top_builddir=${ac_top_builddir}.;;
+*)
+  case ${ac_top_builddir}. in
+  .) ac_abs_top_builddir=$ac_abs_builddir;;
+  [\\/]* | ?:[\\/]* ) ac_abs_top_builddir=${ac_top_builddir}.;;
+  *) ac_abs_top_builddir=$ac_abs_builddir/${ac_top_builddir}.;;
+  esac;;
+esac
+case $ac_abs_builddir in
+.) ac_abs_srcdir=$ac_srcdir;;
+*)
+  case $ac_srcdir in
+  .) ac_abs_srcdir=$ac_abs_builddir;;
+  [\\/]* | ?:[\\/]* ) ac_abs_srcdir=$ac_srcdir;;
+  *) ac_abs_srcdir=$ac_abs_builddir/$ac_srcdir;;
+  esac;;
+esac
+case $ac_abs_builddir in
+.) ac_abs_top_srcdir=$ac_top_srcdir;;
+*)
+  case $ac_top_srcdir in
+  .) ac_abs_top_srcdir=$ac_abs_builddir;;
+  [\\/]* | ?:[\\/]* ) ac_abs_top_srcdir=$ac_top_srcdir;;
+  *) ac_abs_top_srcdir=$ac_abs_builddir/$ac_top_srcdir;;
+  esac;;
+esac
+
+
+
+  if test x"$ac_file" != x-; then
+    { echo "$as_me:$LINENO: creating $ac_file" >&5
+echo "$as_me: creating $ac_file" >&6;}
+    rm -f "$ac_file"
+  fi
+  # Let's still pretend it is `configure' which instantiates (i.e., don't
+  # use $as_me), people would be surprised to read:
+  #    /* config.h.  Generated by config.status.  */
+  if test x"$ac_file" = x-; then
+    configure_input=
+  else
+    configure_input="$ac_file.  "
+  fi
+  configure_input=$configure_input"Generated from `echo $ac_file_in |
+				     sed 's,.*/,,'` by configure."
+
+  # First look for the input files in the build tree, otherwise in the
+  # src tree.
+  ac_file_inputs=`IFS=:
+    for f in $ac_file_in; do
+      case $f in
+      -) echo $tmp/stdin ;;
+      [\\/$]*)
+	 # Absolute (can't be DOS-style, as IFS=:)
+	 test -f "$f" || { { echo "$as_me:$LINENO: error: cannot find input file: $f" >&5
+echo "$as_me: error: cannot find input file: $f" >&2;}
+   { (exit 1); exit 1; }; }
+	 echo "$f";;
+      *) # Relative
+	 if test -f "$f"; then
+	   # Build tree
+	   echo "$f"
+	 elif test -f "$srcdir/$f"; then
+	   # Source tree
+	   echo "$srcdir/$f"
+	 else
+	   # /dev/null tree
+	   { { echo "$as_me:$LINENO: error: cannot find input file: $f" >&5
+echo "$as_me: error: cannot find input file: $f" >&2;}
+   { (exit 1); exit 1; }; }
+	 fi;;
+      esac
+    done` || { (exit 1); exit 1; }
+_ACEOF
+cat >>$CONFIG_STATUS <<_ACEOF
+  sed "$ac_vpsub
+$extrasub
+_ACEOF
+cat >>$CONFIG_STATUS <<\_ACEOF
+:t
+/@[a-zA-Z_][a-zA-Z_0-9]*@/!b
+s,@configure_input@,$configure_input,;t t
+s,@srcdir@,$ac_srcdir,;t t
+s,@abs_srcdir@,$ac_abs_srcdir,;t t
+s,@top_srcdir@,$ac_top_srcdir,;t t
+s,@abs_top_srcdir@,$ac_abs_top_srcdir,;t t
+s,@builddir@,$ac_builddir,;t t
+s,@abs_builddir@,$ac_abs_builddir,;t t
+s,@top_builddir@,$ac_top_builddir,;t t
+s,@abs_top_builddir@,$ac_abs_top_builddir,;t t
+" $ac_file_inputs | (eval "$ac_sed_cmds") >$tmp/out
+  rm -f $tmp/stdin
+  if test x"$ac_file" != x-; then
+    mv $tmp/out $ac_file
+  else
+    cat $tmp/out
+    rm -f $tmp/out
+  fi
+
+done
+_ACEOF
+cat >>$CONFIG_STATUS <<\_ACEOF
+
+#
+# CONFIG_COMMANDS section.
+#
+for ac_file in : $CONFIG_COMMANDS; do test "x$ac_file" = x: && continue
+  ac_dest=`echo "$ac_file" | sed 's,:.*,,'`
+  ac_source=`echo "$ac_file" | sed 's,[^:]*:,,'`
+  ac_dir=`(dirname "$ac_dest") 2>/dev/null ||
+$as_expr X"$ac_dest" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$ac_dest" : 'X\(//\)[^/]' \| \
+	 X"$ac_dest" : 'X\(//\)$' \| \
+	 X"$ac_dest" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dest" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+  { if $as_mkdir_p; then
+    mkdir -p "$ac_dir"
+  else
+    as_dir="$ac_dir"
+    as_dirs=
+    while test ! -d "$as_dir"; do
+      as_dirs="$as_dir $as_dirs"
+      as_dir=`(dirname "$as_dir") 2>/dev/null ||
+$as_expr X"$as_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$as_dir" : 'X\(//\)[^/]' \| \
+	 X"$as_dir" : 'X\(//\)$' \| \
+	 X"$as_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$as_dir" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+    done
+    test ! -n "$as_dirs" || mkdir $as_dirs
+  fi || { { echo "$as_me:$LINENO: error: cannot create directory \"$ac_dir\"" >&5
+echo "$as_me: error: cannot create directory \"$ac_dir\"" >&2;}
+   { (exit 1); exit 1; }; }; }
+
+  ac_builddir=.
+
+if test "$ac_dir" != .; then
+  ac_dir_suffix=/`echo "$ac_dir" | sed 's,^\.[\\/],,'`
+  # A "../" for each directory in $ac_dir_suffix.
+  ac_top_builddir=`echo "$ac_dir_suffix" | sed 's,/[^\\/]*,../,g'`
+else
+  ac_dir_suffix= ac_top_builddir=
+fi
+
+case $srcdir in
+  .)  # No --srcdir option.  We are building in place.
+    ac_srcdir=.
+    if test -z "$ac_top_builddir"; then
+       ac_top_srcdir=.
+    else
+       ac_top_srcdir=`echo $ac_top_builddir | sed 's,/$,,'`
+    fi ;;
+  [\\/]* | ?:[\\/]* )  # Absolute path.
+    ac_srcdir=$srcdir$ac_dir_suffix;
+    ac_top_srcdir=$srcdir ;;
+  *) # Relative path.
+    ac_srcdir=$ac_top_builddir$srcdir$ac_dir_suffix
+    ac_top_srcdir=$ac_top_builddir$srcdir ;;
+esac
+
+# Do not use `cd foo && pwd` to compute absolute paths, because
+# the directories may not exist.
+case `pwd` in
+.) ac_abs_builddir="$ac_dir";;
+*)
+  case "$ac_dir" in
+  .) ac_abs_builddir=`pwd`;;
+  [\\/]* | ?:[\\/]* ) ac_abs_builddir="$ac_dir";;
+  *) ac_abs_builddir=`pwd`/"$ac_dir";;
+  esac;;
+esac
+case $ac_abs_builddir in
+.) ac_abs_top_builddir=${ac_top_builddir}.;;
+*)
+  case ${ac_top_builddir}. in
+  .) ac_abs_top_builddir=$ac_abs_builddir;;
+  [\\/]* | ?:[\\/]* ) ac_abs_top_builddir=${ac_top_builddir}.;;
+  *) ac_abs_top_builddir=$ac_abs_builddir/${ac_top_builddir}.;;
+  esac;;
+esac
+case $ac_abs_builddir in
+.) ac_abs_srcdir=$ac_srcdir;;
+*)
+  case $ac_srcdir in
+  .) ac_abs_srcdir=$ac_abs_builddir;;
+  [\\/]* | ?:[\\/]* ) ac_abs_srcdir=$ac_srcdir;;
+  *) ac_abs_srcdir=$ac_abs_builddir/$ac_srcdir;;
+  esac;;
+esac
+case $ac_abs_builddir in
+.) ac_abs_top_srcdir=$ac_top_srcdir;;
+*)
+  case $ac_top_srcdir in
+  .) ac_abs_top_srcdir=$ac_abs_builddir;;
+  [\\/]* | ?:[\\/]* ) ac_abs_top_srcdir=$ac_top_srcdir;;
+  *) ac_abs_top_srcdir=$ac_abs_builddir/$ac_top_srcdir;;
+  esac;;
+esac
+
+
+  { echo "$as_me:$LINENO: executing $ac_dest commands" >&5
+echo "$as_me: executing $ac_dest commands" >&6;}
+  case $ac_dest in
+    default ) chmod a+x bin/ptinvoke ;;
+  esac
+done
+_ACEOF
+
+cat >>$CONFIG_STATUS <<\_ACEOF
+
+{ (exit 0); exit 0; }
+_ACEOF
+chmod +x $CONFIG_STATUS
+ac_clean_files=$ac_clean_files_save
+
+
+# configure is writing to config.log, and then calls config.status.
+# config.status does its own redirection, appending to config.log.
+# Unfortunately, on DOS this fails, as config.log is still kept open
+# by configure, so config.status won't be able to write to it; its
+# output is simply discarded.  So we exec the FD to /dev/null,
+# effectively closing config.log, so it can be properly (re)opened and
+# appended to by config.status.  When coming back to configure, we
+# need to make the FD available again.
+if test "$no_create" != yes; then
+  ac_cs_success=:
+  ac_config_status_args=
+  test "$silent" = yes &&
+    ac_config_status_args="$ac_config_status_args --quiet"
+  exec 5>/dev/null
+  $SHELL $CONFIG_STATUS $ac_config_status_args || ac_cs_success=false
+  exec 5>>config.log
+  # Use ||, not &&, to avoid exiting from the if with $? = 1, which
+  # would make configure fail if this is the last instruction.
+  $ac_cs_success || { (exit 1); exit 1; }
+fi
+
+
