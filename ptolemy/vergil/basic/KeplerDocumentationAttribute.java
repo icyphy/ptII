@@ -1,6 +1,6 @@
 /* A documentation attribute for Kepler.
 
- Copyright (c) 2007 The Regents of the University of California.
+ Copyright (c) 2007-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -35,6 +35,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 
 import ptolemy.data.expr.StringParameter;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.ConfigurableAttribute;
@@ -113,13 +115,69 @@ public class KeplerDocumentationAttribute extends Attribute implements
                 String portName = attName.substring(attName.indexOf(":") + 1,
                         attName.length());
                 String portDesc = att.getConfigureText();
-                portHash.put(portName, portDesc);
+                if (portName != null) {
+                    if (portDesc == null) {
+                        portDesc = "";
+                    }
+                    portHash.put(portName, portDesc);
+                }
+
             } else if (attName.indexOf("prop:") != -1) { //add to the prop hash
                 String propName = attName.substring(attName.indexOf(":") + 1,
                         attName.length());
                 String propDesc = att.getConfigureText();
-                propertyHash.put(propName, propDesc);
+                if (propName != null) {
+                    if (propDesc == null) {
+                        propDesc = "";
+                    }
+                    propertyHash.put(propName, propDesc);
+                }
             }
+        }
+    }
+
+    /**
+     * Create empty fields for the main attribute as well as any
+     * params or ports that exist in the target
+     * @param target the namedobj to create the empty attributes for
+     */
+    public void createEmptyFields(NamedObj target) {
+        try {
+            ConfigurableAttribute authorAtt = new ConfigurableAttribute(this,
+                    "author");
+            ConfigurableAttribute versionAtt = new ConfigurableAttribute(this,
+                    "version");
+            ConfigurableAttribute descriptionAtt = new ConfigurableAttribute(
+                    this, "description");
+            ConfigurableAttribute uldAtt = new ConfigurableAttribute(this,
+                    "userLevelDocumentation");
+
+            this.author = "";
+            this.version = "";
+            this.description = "";
+            this.userLevelDocumentation = "";
+
+            Iterator attItt = target.attributeList().iterator();
+            while (attItt.hasNext()) {
+                Attribute a = (Attribute) attItt.next();
+                String aname = a.getName();
+                if (!aname.substring(0, 1).equals("_")
+                        && !aname.equals("KeplerDocumentation")) {
+                    propertyHash.put(a.getName(), "");
+                }
+            }
+
+            if (target instanceof Entity) {
+                Iterator portItt = ((Entity) target).portList().iterator();
+                while (portItt.hasNext()) {
+                    Port p = (Port) portItt.next();
+                    portHash.put(p.getName(), "");
+                }
+            }
+        } catch (Exception e) {
+            System.out
+                    .println("Could not add KeplerDocumentation internal attributes: "
+                            + e.getMessage());
         }
     }
 
@@ -292,11 +350,33 @@ public class KeplerDocumentationAttribute extends Attribute implements
         this.docName = name;
     }
 
+    /** return the document name
+     * @return the document name
+     */
+    public String getDocName() {
+        if (!docName.equals("null")) {
+            return this.docName;
+        } else {
+            return "";
+        }
+    }
+
     /** Set the name of this docClass.
      *  @param className The name of this docClass.
      */
     public void setDocClass(String className) {
         this.docClass = className;
+    }
+
+    /** return the document class
+     * @return the document class
+     */
+    public String getDocClass() {
+        if (!docClass.equals("null")) {
+            return this.docClass;
+        } else {
+            return "";
+        }
     }
 
     /** Set the description.
@@ -306,11 +386,41 @@ public class KeplerDocumentationAttribute extends Attribute implements
         this.description = description;
     }
 
+    /** return the description
+     * @return the description
+     */
+    public String getDescription() {
+        if (description == null) {
+            return "";
+        }
+
+        if (!description.equals("null")) {
+            return this.description;
+        } else {
+            return "";
+        }
+    }
+
     /** Set the author.
      *  @param author The author.
      */
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    /** return the author
+     * @return the author
+     */
+    public String getAuthor() {
+        if (author == null) {
+            return "";
+        }
+
+        if (!author.equals("null")) {
+            return this.author;
+        } else {
+            return "";
+        }
     }
 
     /** Set the version.
@@ -320,11 +430,41 @@ public class KeplerDocumentationAttribute extends Attribute implements
         this.version = version;
     }
 
+    /** return the version
+     * @return the version
+     */
+    public String getVersion() {
+        if (version == null) {
+            return "";
+        }
+
+        if (!version.equals("null")) {
+            return this.version;
+        } else {
+            return "";
+        }
+    }
+
     /** Set the user level documentation.
      *  @param userLevelDocumentation The user level documentation.
      */
     public void setUserLevelDocumentation(String userLevelDocumentation) {
         this.userLevelDocumentation = userLevelDocumentation;
+    }
+
+    /** return the user level documentation
+     * @return the user level documentation
+     */
+    public String getUserLevelDocumentation() {
+        if (userLevelDocumentation == null) {
+            return "";
+        }
+
+        if (!userLevelDocumentation.equals("null")) {
+            return this.userLevelDocumentation;
+        } else {
+            return "";
+        }
     }
 
     /** Set the port hash.
@@ -334,12 +474,29 @@ public class KeplerDocumentationAttribute extends Attribute implements
         this.portHash = portHash;
     }
 
+    /** return the port hash
+     * @return the port has
+     */
+    public Hashtable getPortHash() {
+        return this.portHash;
+    }
+
     /** Add port to the port hashtable.
      *  @param name The name of the port.
      *  @param value A String representing the port.
      */
-    public void addPort(String name, String value) {
+    public void addPort(String name, String value)
+            throws IllegalActionException, NameDuplicationException {
         portHash.put(name, value);
+        ConfigurableAttribute port = new ConfigurableAttribute(this, "port:"
+                + name);
+    }
+
+    /** return the port docs
+     * @return the port docs
+     */
+    public String getPort(String name) {
+        return (String) portHash.get(name);
     }
 
     /** Set the property hashtable.
@@ -349,12 +506,29 @@ public class KeplerDocumentationAttribute extends Attribute implements
         this.propertyHash = propertyHash;
     }
 
+    /** return the property hash
+     * @return the property hash
+     */
+    public Hashtable getPropertyHash() {
+        return this.propertyHash;
+    }
+
     /** Add a property to the property hashtable.
      *  @param name The name of the property.
      *  @param value A string representing the propety.
      */
-    public void addProperty(String name, String value) {
+    public void addProperty(String name, String value)
+            throws NameDuplicationException, IllegalActionException {
         propertyHash.put(name, value);
+        ConfigurableAttribute ca = new ConfigurableAttribute(this, "prop:"
+                + name);
+    }
+
+    /** return the property docs
+     * @return the property docs
+     */
+    public String getProperty(String name) {
+        return (String) this.propertyHash.get(name);
     }
 
     /** Configure this documentation attribute.
