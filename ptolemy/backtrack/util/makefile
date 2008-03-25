@@ -154,7 +154,7 @@ gcc-source:
 	  -classpath gcc \
 	  $$files
 
-transform: gcc-source
+transform:
 	@echo Transform GCC source files.
 	@rm -rf java
 	@for javafile in $(GCC_FILES); do \

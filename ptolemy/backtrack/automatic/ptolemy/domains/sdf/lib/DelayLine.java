@@ -29,7 +29,6 @@
 //// DelayLine
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
-import java.lang.Object;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
@@ -65,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class DelayLine extends SDFTransformer implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // set the output type to be an ArrayType, and input type to
     // be the corresponding token type.
@@ -214,11 +213,11 @@ public class DelayLine extends SDFTransformer implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_delayLine = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_delayLine = new FieldRecord(1);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_delayLine
         };
 

@@ -29,8 +29,8 @@
 //// RandomSource
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import java.util.Random;
+
 import ptolemy.actor.lib.Source;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -79,7 +79,7 @@ import ptolemy.moml.SharedParameter;
  */
 public abstract class RandomSource extends Source implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -291,9 +291,9 @@ public abstract class RandomSource extends Source implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
         };
 
 }

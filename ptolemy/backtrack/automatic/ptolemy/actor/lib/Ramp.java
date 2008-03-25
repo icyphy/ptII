@@ -29,7 +29,6 @@
 //// Ramp
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.lib.SequenceSource;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.backtrack.Checkpoint;
@@ -69,7 +68,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class Ramp extends SequenceSource implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // set the type constraints.
     ///////////////////////////////////////////////////////////////////
@@ -290,13 +289,13 @@ public class Ramp extends SequenceSource implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_stateToken = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_stateToken = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_resultArray = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_resultArray = new FieldRecord(1);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_stateToken,
             $RECORD$_resultArray
         };

@@ -81,7 +81,7 @@ public class PtolemyPreferencePage extends FieldEditorPreferencePage implements
                 getFieldEditorParent(), true) {
             protected void fireValueChanged(String property, Object oldValue,
                     Object newValue) {
-                if ((property == VALUE) && isValid()) {
+                if ((property.equals(VALUE)) && isValid()) {
                     String PTII = getStringValue();
                     File sourceList = new File(PTII
                             + "/ptolemy/backtrack/automatic/source.lst");

@@ -29,7 +29,6 @@
 //// PoissonClock
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.TimedSource;
 import ptolemy.actor.util.Time;
@@ -96,7 +95,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class PoissonClock extends TimedSource implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Set the values parameter
     // Call this so that we don't have to copy its code here...
@@ -392,19 +391,19 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_length = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_length = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_tentativeCurrentOutputIndex = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tentativeCurrentOutputIndex = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_currentOutputIndex = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_currentOutputIndex = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_nextFiringTime = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_nextFiringTime = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_boundaryCrossed = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_boundaryCrossed = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_length,
             $RECORD$_tentativeCurrentOutputIndex,
             $RECORD$_currentOutputIndex,

@@ -138,9 +138,9 @@ public class Gaussian extends RandomSource implements Rollbackable {
         super.$RESTORE(timestamp, trim);
     }
 
-    private FieldRecord $RECORD$_current = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_current = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_current
         };
 

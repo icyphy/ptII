@@ -31,7 +31,6 @@
 ////                         public methods                    ////
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -53,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class Differential extends Transformer implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
@@ -160,13 +159,13 @@ public class Differential extends Transformer implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_currentInput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_currentInput = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_lastInput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_lastInput = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_currentInput,
             $RECORD$_lastInput
         };

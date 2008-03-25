@@ -31,7 +31,6 @@
 //// GradientAdaptiveLattice
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Lattice;
 import ptolemy.backtrack.Checkpoint;
@@ -65,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Parameters
     // The currently adapted reflection coefficients
@@ -346,19 +345,19 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_alpha = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_alpha = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_oneMinusAlpha = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_oneMinusAlpha = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_estimatedErrorPower = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_estimatedErrorPower = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_estimatedErrorPowerCache = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_estimatedErrorPowerCache = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_reflectionCoefficientsCache = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_reflectionCoefficientsCache = new FieldRecord(1);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_alpha,
             $RECORD$_oneMinusAlpha,
             $RECORD$_estimatedErrorPower,

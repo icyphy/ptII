@@ -29,7 +29,6 @@
 //// Interpolation
 package ptolemy.backtrack.automatic.ptolemy.math;
 
-import java.lang.Object;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
@@ -67,7 +66,7 @@ import ptolemy.math.DoubleMatrixMath;
  */
 public class Interpolation implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -427,17 +426,17 @@ public class Interpolation implements Rollbackable {
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_indexes = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_indexes = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_values = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_values = new FieldRecord(1);
 
-    private FieldRecord $RECORD$_period = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_period = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_order = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_order = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_indexes,
             $RECORD$_values,
             $RECORD$_period,

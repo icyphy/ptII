@@ -217,11 +217,11 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
      *  chapter of the Ptolemy II design document for a view of the
      *  current (nondeprecated) DTD.
      */
-    public static String MoML_DTD_1 = MoMLParser.MoML_DTD_1;
+    public static final String MoML_DTD_1 = MoMLParser.MoML_DTD_1;
 
     /** The public ID for version 1 MoML.
      */
-    public static String MoML_PUBLIC_ID_1 = MoMLParser.MoML_PUBLIC_ID_1;
+    public static final String MoML_PUBLIC_ID_1 = MoMLParser.MoML_PUBLIC_ID_1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////

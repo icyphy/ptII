@@ -29,7 +29,6 @@
 //// Distributor
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
@@ -80,7 +79,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class Distributor extends Transformer implements SequenceActor, Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // These parameters are required for SDF
     ///////////////////////////////////////////////////////////////////
@@ -309,13 +308,13 @@ public class Distributor extends Transformer implements SequenceActor, Rollbacka
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_currentOutputPosition = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_currentOutputPosition = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_tentativeOutputPosition = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_tentativeOutputPosition = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_currentOutputPosition,
             $RECORD$_tentativeOutputPosition
         };

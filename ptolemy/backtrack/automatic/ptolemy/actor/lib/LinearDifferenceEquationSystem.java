@@ -29,7 +29,6 @@
 //// LinearDifferenceEquationSystem
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
@@ -79,7 +78,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class LinearDifferenceEquationSystem extends Transformer implements Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+    protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // icon
     ///////////////////////////////////////////////////////////////////
@@ -424,19 +423,19 @@ public class LinearDifferenceEquationSystem extends Transformer implements Rollb
         return this;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected transient CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_x = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_x = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_xPrime = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_xPrime = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_initialStateChanged = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_initialStateChanged = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_singleOutput = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_singleOutput = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_singleState = new FieldRecord(0);
+    private transient FieldRecord $RECORD$_singleState = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
+    private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_x,
             $RECORD$_xPrime,
             $RECORD$_initialStateChanged,
