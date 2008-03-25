@@ -153,6 +153,10 @@ public class Exec extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
         new Parameter(output, "_showName", BooleanToken.TRUE);
+
+        throwExceptionOnNonZeroReturn = new Parameter(this, 
+                "throwExceptionOnNonZeroReturn", BooleanToken.TRUE);
+        throwExceptionOnNonZeroReturn.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -240,6 +244,12 @@ public class Exec extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
+    /** If true, then throw an exception if the subprocess returns
+     *  non-zero.
+     *  The default is a boolean of value true.
+     */   
+    public Parameter throwExceptionOnNonZeroReturn;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -307,12 +317,21 @@ public class Exec extends TypedAtomicActor {
                     outputString = ex.toString();
                 }
 
-                throw new IllegalActionException(this, "Executing command \""
-                        + ((StringToken) command.getToken()).stringValue()
-                        + "\" returned a non-zero return value of "
-                        + processReturnCode + ".\nThe last input was: " + line
-                        + ".\nThe standard output was: " + outputString
-                        + "\nThe error output was: " + errorString);
+                boolean throwExceptionOnNonZeroReturnValue = ((BooleanToken) throwExceptionOnNonZeroReturn.getToken()).booleanValue();
+
+                if (throwExceptionOnNonZeroReturnValue) {
+                    throw new IllegalActionException(this,
+                            "Executing command \""
+                            + ((StringToken) command.getToken()).stringValue()
+                            + "\" returned a non-zero return value of "
+                            + processReturnCode + ".\nThe last input was: "
+                            + line
+                            + ".\nThe standard output was: " + outputString
+                            + "\nThe error output was: " + errorString);
+                } else {
+                    error.send(0, new StringToken(errorString));
+                    output.send(0, new StringToken(outputString));
+                }
             }
         } catch (InterruptedException interrupted) {
             throw new InternalErrorException(this, interrupted,
