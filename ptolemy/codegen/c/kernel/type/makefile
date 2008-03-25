@@ -63,6 +63,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Int.c \
 	Long.c \
 	Matrix.c \
+	Pointer.c \
 	String.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
