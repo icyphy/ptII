@@ -269,7 +269,9 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
         }
 
         this._background = background;
-        background.setParent(this);
+        if (background != null) {
+            background.setParent(this);
+        }
         repaint();
     }
 
