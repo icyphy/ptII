@@ -162,7 +162,8 @@ public class DocManager extends HandlerBase {
                         .get(docAttributes.size() - 1);
                 // Populate fields from the attribute.
                 String descriptionValue = instanceDoc.description.stringValue();
-                if (descriptionValue != null && !descriptionValue.trim().equals("")) {
+                if (descriptionValue != null
+                        && !descriptionValue.trim().equals("")) {
                     _isInstanceDoc = true;
                     _description = descriptionValue;
                 }
@@ -423,8 +424,7 @@ public class DocManager extends HandlerBase {
                 toRead = referenceClassLoader.getResource(docNames[0]);
             }
 
-            if (toRead == null && lookForPtDoc
-                    && !applicationName.equals("")) {
+            if (toRead == null && lookForPtDoc && !applicationName.equals("")) {
                 // applicationName was set, try looking in the
                 // documentation for the default application (vergil).
                 docNameList.add(docNames[1]);

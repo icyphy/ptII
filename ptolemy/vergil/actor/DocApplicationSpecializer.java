@@ -87,14 +87,14 @@ public interface DocApplicationSpecializer {
      *  command to be executed.
      */
     public List buildCommands(ExecuteCommands executeCommands);
-    
+
     /** Return the class name of the attribute that this specializer
      *  uses to store documentation.
      *  @return the name of the class of the specialized documentation
      *  attribute
      */
     public String getDocumentationAttributeClassName();
-    
+
     /** Create a gui to edit the documentation in the attribute.
      * @param owner the editors gui parent
      * @param attribute the documentation attribute to edit
@@ -102,7 +102,7 @@ public interface DocApplicationSpecializer {
      */
     public void editDocumentation(Frame owner, Attribute attribute,
             NamedObj target);
-    
+
     /** Handle the state where there is no documentation attribute and
      * the user tried to view the documentation.
      * @param classname the name of the class
@@ -110,7 +110,7 @@ public interface DocApplicationSpecializer {
      * attribute
      */
     public void handleDocumentationNotFound(String classname, Effigy effigy);
-    
+
     /** Handle the state where the documentation attribute does not
      * exist and the user tried to edit the docs.
      * @param owner the editors gui parent
