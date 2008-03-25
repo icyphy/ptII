@@ -41,9 +41,11 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.DocApplicationSpecializer;
 import ptolemy.vergil.actor.DocBuilderEffigy;
 import ptolemy.vergil.actor.DocBuilderTableau;
 import ptolemy.vergil.actor.DocEffigy;
@@ -218,15 +220,33 @@ public class GetDocumentationAction extends FigureAction {
                 _lastClassName = null;
                 configuration.openModel(null, toRead, toRead.toExternalForm());
             } else {
-                throw new Exception(
-                        "Could not get find documentation for "
-                                + className
-                                + "."
-                                + (DocManager.getRemoteDocumentationURLBase() != null ? " Also tried looking on \""
-                                        + DocManager
-                                                .getRemoteDocumentationURLBase()
-                                        + "\"."
-                                        : ""));
+                Parameter docApplicationSpecializerParameter = (Parameter) configuration
+                        .getAttribute("_docApplicationSpecializer",
+                                Parameter.class);
+                if (docApplicationSpecializerParameter != null) {
+                    //if there is a docApplicationSpecializer, let it handle the
+                    //error instead of just throwing the exception
+                    String docApplicationSpecializerClassName = docApplicationSpecializerParameter
+                            .getExpression();
+                    Class docApplicationSpecializerClass = Class
+                            .forName(docApplicationSpecializerClassName);
+                    final DocApplicationSpecializer docApplicationSpecializer = (DocApplicationSpecializer) docApplicationSpecializerClass
+                            .newInstance();
+                    docApplicationSpecializer.handleDocumentationNotFound(
+                            className, context);
+                } else {
+
+                    throw new Exception(
+                            "Could not get find documentation for "
+                                    + className
+                                    + "."
+                                    + (DocManager
+                                            .getRemoteDocumentationURLBase() != null ? " Also tried looking on \""
+                                            + DocManager
+                                                    .getRemoteDocumentationURLBase()
+                                            + "\"."
+                                            : ""));
+                }
             }
         } catch (Exception ex) {
             // Try to open the DocBuilderGUI
@@ -365,6 +385,11 @@ public class GetDocumentationAction extends FigureAction {
             if (config != null) {
                 break;
             }
+        }
+        if (config == null) {
+            throw new KernelRuntimeException("Could not find "
+                    + "configuration, list of configurations was "
+                    + configsList.size() + " elements, all were null.");
         }
         // Look up the attribute (if it exists)
         StringAttribute multipleDocumentationAllowed = (StringAttribute) config
