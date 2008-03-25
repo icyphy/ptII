@@ -137,8 +137,8 @@ public class KeplerDocumentationAttribute extends Attribute implements
     }
 
     /**
-     * create empty fields for the main attribute as well as any params or ports
-     * that exist in the target
+     * Create empty fields for the main attribute as well as any
+     * params or ports that exist in the target
      * @param target the namedobj to create the empty attributes for
      */
     public void createEmptyFields(NamedObj target) {
