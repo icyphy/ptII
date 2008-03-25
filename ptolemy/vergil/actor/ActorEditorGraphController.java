@@ -360,7 +360,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                             GUIUtilities.SELECTED_ICON } });
 
     /** Action for creating a new relation. */
-    private Action _newRelationAction = new NewRelationAction(
+    protected Action _newRelationAction = new NewRelationAction(
             new String[][] {
                     { "/ptolemy/vergil/actor/img/relation.gif",
                             GUIUtilities.LARGE_ICON },
