@@ -27,10 +27,8 @@
  */
 package ptolemy.vergil.gt;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Frame;
-import java.awt.Stroke;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -52,7 +50,8 @@ import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
@@ -60,15 +59,20 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.fsm.FSMGraphController;
+import ptolemy.vergil.fsm.StateController;
+import ptolemy.vergil.gt.GTFrameController.GTActorGraphModel;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.RoundedRectangle;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.gui.GUIUtilities;
 
-public class MatchResultViewer extends AbstractGTFrame {
+public class MatchResultViewer extends GTFrame {
 
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -206,44 +210,26 @@ public class MatchResultViewer extends AbstractGTFrame {
         _enableOrDisableActions();
     }
 
-    protected ActorEditorGraphController _createController() {
-        return new MatchResultViewerController();
-    }
-
     protected static void _setTableauFactory(Object originator,
             final CompositeEntity entity) {
-        List<?> factoryList = entity
-                .attributeList(MatchResultTableau.Factory.class);
+        Class<?> tableauFactoryClass = MatchResultTableau.Factory.class;
+        List<?> factoryList = entity.attributeList(tableauFactoryClass);
         if (factoryList.isEmpty()) {
-            String momlTxt = "<group name=\"auto\">"
-                    + "<property name=\"_tableauFactory\""
-                    + "  class=\"ptolemy.vergil.gt.MatchResultTableau$Factory\">"
-                    + "</property>" + "</group>";
-            MoMLChangeRequest request = new MoMLChangeRequest(originator,
-                    entity, momlTxt);
-            entity.requestChange(request);
-            entity.requestChange(new ChangeRequest(originator,
-                    "Unset _tableauFactory persistence") {
-                protected void _execute() throws Exception {
-                    _unsetPersistent(entity);
-                }
-
-                private void _unsetPersistent(CompositeEntity entity) {
-                    List<?> factoryList = entity
-                            .attributeList(MatchResultTableau.Factory.class);
-                    for (Object attributeObject : factoryList) {
-                        MatchResultTableau.Factory factory = (MatchResultTableau.Factory) attributeObject;
-                        factory.setPersistent(false);
-                    }
-                    for (Object subentity : entity
-                            .entityList(CompositeEntity.class)) {
-                        _unsetPersistent((CompositeEntity) subentity);
-                    }
-                }
-            });
+            try {
+                new MatchResultTableau.Factory(entity,
+                        entity.uniqueName("_tableauFactory"))
+                .setPersistent(false);
+            } catch (KernelException e) {
+                throw new KernelRuntimeException(e, "Unexpected exception");
+            }
         }
         for (Object subentity : entity.entityList(CompositeEntity.class)) {
             _setTableauFactory(originator, (CompositeEntity) subentity);
+        }
+        for (Object subentity : entity.classDefinitionList()) {
+            if (subentity instanceof CompositeEntity) {
+                _setTableauFactory(originator, (CompositeEntity) subentity);
+            }
         }
     }
 
@@ -269,6 +255,104 @@ public class MatchResultViewer extends AbstractGTFrame {
             synchronized (_topFrame) {
                 _topFrame._subviewers.remove(this);
             }
+        }
+    }
+
+    protected class MatchResultActorController extends ActorController {
+
+        protected Figure _renderNode(Object node) {
+            if ((node != null) && !_hide(node)) {
+                Figure nf = super._renderNode(node);
+                GraphModel model = getController().getGraphModel();
+                Object object = model.getSemanticObject(node);
+                CompositeFigure cf = _getCompositeFigure(nf);
+
+                if (object instanceof NamedObj && cf != null && !_transformed
+                        && _results != null
+                        && _results.get(_currentPosition).containsValue(object)) {
+                    Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
+                    float padding = _HIGHLIGHT_PADDING;
+                    BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
+                            bounds.getY() - padding,
+                            bounds.getWidth() + padding * 2.0,
+                            bounds.getHeight() + padding * 2.0,
+                            _HIGHLIGHT_THICKNESS);
+                    bf.setStrokePaint(_HIGHLIGHT_COLOR);
+
+                    int index = cf.getFigureCount();
+                    if (index < 0) {
+                        index = 0;
+                    }
+                    cf.add(index, bf);
+                }
+                return nf;
+            }
+
+            return super._renderNode(node);
+        }
+
+        MatchResultActorController(GraphController controller) {
+            super(controller);
+        }
+    }
+
+    protected class MatchResultActorGraphController extends
+            ActorEditorGraphController {
+
+        protected void _createControllers() {
+            super._createControllers();
+
+            _entityController = new MatchResultActorController(this);
+        }
+    }
+
+    protected class MatchResultFSMGraphController extends FSMGraphController {
+
+        public Figure drawNode(Object node) {
+            Figure figure = super.drawNode(node);
+            ((MatchResultStateController) _stateController)._highlightNode(node,
+                    figure);
+            return figure;
+        }
+
+        protected void _createControllers() {
+            super._createControllers();
+
+            _stateController = new MatchResultStateController(this);
+        }
+    }
+
+    protected class MatchResultStateController extends StateController {
+
+        protected void _highlightNode(Object node, Figure figure) {
+            if ((node != null) && !_hide(node)) {
+                GraphModel model = getController().getGraphModel();
+                Object object = model.getSemanticObject(node);
+                CompositeFigure cf = _getCompositeFigure(figure);
+
+                if (object instanceof NamedObj && cf != null && !_transformed
+                        && _results != null
+                        && _results.get(_currentPosition).containsValue(object)) {
+                    Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
+                    float padding = _HIGHLIGHT_PADDING;
+                    RoundedRectangle rf = new RoundedRectangle(
+                            bounds.getX() - padding, bounds.getY() - padding,
+                            bounds.getWidth() + padding * 2.0,
+                            bounds.getHeight() + padding * 2.0,
+                            null, _HIGHLIGHT_THICKNESS, 32.0, 32.0);
+                    rf.setStrokePaint(_HIGHLIGHT_COLOR);
+
+                    int index = cf.getFigureCount();
+                    if (index < 0) {
+                        index = 0;
+                    }
+                    cf.add(index, rf);
+                }
+            }
+        }
+
+        MatchResultStateController(GraphController controller) {
+            super(controller);
         }
     }
 
@@ -450,7 +534,8 @@ public class MatchResultViewer extends AbstractGTFrame {
 
         MoMLParser parser = new MoMLParser();
         try {
-            Tableau tableau = _getConfiguration().openModel(parser.parse(moml));
+            Tableau tableau = getFrameController().getConfiguration().openModel(
+                    parser.parse(moml));
             Frame frame = tableau.getFrame();
             if (modified && (frame instanceof TableauFrame)) {
                 ((TableauFrame) tableau.getFrame()).setModified(true);
@@ -482,6 +567,10 @@ public class MatchResultViewer extends AbstractGTFrame {
     }
 
     private static final Color _HIGHLIGHT_COLOR = new Color(96, 32, 128, 128);
+    
+    private static final float _HIGHLIGHT_PADDING = 3.0f;
+    
+    private static final float _HIGHLIGHT_THICKNESS = 6.0f;
 
     private int _currentPosition;
 
@@ -562,57 +651,6 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
     }
 
-    private class MatchResultNodeController extends ActorController {
-
-        protected Figure _renderNode(Object node) {
-            if ((node != null) && !_hide(node)) {
-                Figure nf = super._renderNode(node);
-                GraphModel model = getController().getGraphModel();
-                Object object = model.getSemanticObject(node);
-                CompositeFigure cf = _getCompositeFigure(nf);
-
-                if (object instanceof NamedObj && cf != null && !_transformed
-                        && _results != null
-                        && _results.get(_currentPosition).containsValue(object)) {
-                    Stroke stroke = new BasicStroke(6f, BasicStroke.CAP_SQUARE,
-                            BasicStroke.JOIN_MITER, 10.0f);
-                    Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
-                    float padding = 3.0f;
-                    bounds = new Rectangle2D.Double(bounds.getX() - padding,
-                            bounds.getY() - padding, bounds.getWidth()
-                                    + padding * 2.0, bounds.getHeight()
-                                    + padding * 2.0);
-                    BasicFigure bf = new BasicFigure(bounds);
-                    bf.setStroke(stroke);
-                    bf.setStrokePaint(_HIGHLIGHT_COLOR);
-
-                    int index = cf.getFigureCount();
-                    if (index < 0) {
-                        index = 0;
-                    }
-                    cf.add(index, bf);
-                }
-                return nf;
-            }
-
-            return super._renderNode(node);
-        }
-
-        MatchResultNodeController(GraphController controller) {
-            super(controller);
-        }
-    }
-
-    private class MatchResultViewerController extends
-            ActorEditorGraphController {
-
-        protected void _createControllers() {
-            super._createControllers();
-
-            _entityController = new MatchResultNodeController(this);
-        }
-    }
-
     private class NextAction extends FigureAction {
 
         public NextAction() {
@@ -643,7 +681,6 @@ public class MatchResultViewer extends AbstractGTFrame {
                 _next();
             }
         }
-
     }
 
     private class NextFileAction extends FigureAction {

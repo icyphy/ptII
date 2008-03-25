@@ -55,13 +55,15 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	AbstractGTFrame.java \
 	CellPanelEditor.java \
+	GTFrame.java \
+	GTFrameController.java \
 	GTIngredientsEditor.java \
-	GTRuleGraphFrame.java \
-	GTRuleGraphTableau.java \
+	GTTableau.java \
 	MatchResultTableau.java \
-	MatchResultViewer.java
+	MatchResultViewer.java \
+	StateMatcherIcon.java \
+	TransformationEditor.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -72,9 +74,17 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'AbstractGTFrame$$1.class' \
-	'AbstractGTFrame$$2.class' \
-	'AbstractGTFrame$$GTActorGraphModel.class' \
+	'GTFrame$$ConfigureOperationsAction.class' \
+	'GTFrame$$GTActorGraphController$$EntityController.class' \
+	'GTFrame$$GTActorGraphController$$NewRelationAction.class' \
+	'GTFrame$$GTActorGraphController$$PortController.class' \
+	'GTFrame$$GTActorGraphController.class' \
+	'GTFrame$$GTFSMGraphController.class' \
+	'GTFrame$$GTMenuActionFactory.class' \
+	'GTFrameController$$1.class' \
+	'GTFrameController$$2.class' \
+	'GTFrameController$$GTActorGraphModel.class' \
+	'GTFrameController$$GTFSMGraphModel.class' \
 	'GTIngredientsEditor$$1.class' \
 	'GTIngredientsEditor$$2.class' \
 	'GTIngredientsEditor$$3.class' \
@@ -88,39 +98,35 @@ OPTIONAL_FILES = \
 	'GTIngredientsEditor$$IngredientContentEditor.class' \
 	'GTIngredientsEditor$$Row$$CheckBoxActionListener.class' \
 	'GTIngredientsEditor$$Row.class' \
-	'GTRuleGraphFrame$$1.class' \
-	'GTRuleGraphFrame$$2.class' \
-	'GTRuleGraphFrame$$3.class' \
-	'GTRuleGraphFrame$$BatchMatchAction$$ModelFileFilter.class' \
-	'GTRuleGraphFrame$$BatchMatchAction$$MultipleViewController.class' \
-	'GTRuleGraphFrame$$BatchMatchAction.class' \
-	'GTRuleGraphFrame$$CellEditor.class' \
-	'GTRuleGraphFrame$$ConfigureOperationsAction.class' \
-	'GTRuleGraphFrame$$FileComparator.class' \
-	'GTRuleGraphFrame$$GTActionGraphController$$EntityController.class' \
-	'GTRuleGraphFrame$$GTActionGraphController$$NewRelationAction.class' \
-	'GTRuleGraphFrame$$GTActionGraphController.class' \
-	'GTRuleGraphFrame$$GTMenuActionFactory.class' \
-	'GTRuleGraphFrame$$LayoutAction.class' \
-	'GTRuleGraphFrame$$MatchAction.class' \
-	'GTRuleGraphFrame$$MatchResultRecorder.class' \
-	'GTRuleGraphFrame$$SingleMatchAction$$SingleViewController.class' \
-	'GTRuleGraphFrame$$SingleMatchAction.class' \
-	'GTRuleGraphFrame$$ViewController.class' \
-	'GTRuleGraphTableau$$Factory.class' \
+	'GTTableau$$Factory.class' \
 	'MatchResultTableau$$Factory.class' \
 	'MatchResultViewer$$1.class' \
-	'MatchResultViewer$$2.class' \
 	'MatchResultViewer$$CloseAction.class' \
 	'MatchResultViewer$$FileSelectionStatus.class' \
-	'MatchResultViewer$$MatchResultNodeController.class' \
-	'MatchResultViewer$$MatchResultViewerController.class' \
+	'MatchResultViewer$$MatchResultActorController.class' \
+	'MatchResultViewer$$MatchResultActorGraphController.class' \
+	'MatchResultViewer$$MatchResultFSMGraphController.class' \
+	'MatchResultViewer$$MatchResultStateController.class' \
 	'MatchResultViewer$$NextAction.class' \
 	'MatchResultViewer$$NextFileAction.class' \
 	'MatchResultViewer$$PreviousAction.class' \
 	'MatchResultViewer$$PreviousFileAction.class' \
 	'MatchResultViewer$$TransformAction.class' \
-	'MatchResultViewer$$TransformAllAction.class'
+	'MatchResultViewer$$TransformAllAction.class' \
+	'TransformationEditor$$1.class' \
+	'TransformationEditor$$2.class' \
+	'TransformationEditor$$3.class' \
+	'TransformationEditor$$BatchMatchAction$$ModelFileFilter.class' \
+	'TransformationEditor$$BatchMatchAction$$MultipleViewController.class' \
+	'TransformationEditor$$BatchMatchAction.class' \
+	'TransformationEditor$$CellEditor.class' \
+	'TransformationEditor$$FileComparator.class' \
+	'TransformationEditor$$LayoutAction.class' \
+	'TransformationEditor$$MatchAction.class' \
+	'TransformationEditor$$MatchResultRecorder.class' \
+	'TransformationEditor$$SingleMatchAction$$SingleViewController.class' \
+	'TransformationEditor$$SingleMatchAction.class' \
+	'TransformationEditor$$ViewController.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
