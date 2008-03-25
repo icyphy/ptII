@@ -33,7 +33,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.io.FileWriter;
 import java.util.List;
 
 import javax.swing.AbstractAction;

@@ -28,7 +28,6 @@
  */
 package ptolemy.actor.ptalon;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
@@ -44,7 +43,6 @@ import ptolemy.actor.parameters.LocationParameter;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParseTreeFreeVariableCollector;
@@ -57,7 +55,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.ParserAttribute;
-import ptolemy.util.StringUtilities;
 
 /**
  * A code manager that manages the extra complexity of dealing with

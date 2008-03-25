@@ -8,17 +8,15 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.sched.Scheduler;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.domains.tt.kernel.LetModeScheduler;
-import ptolemy.domains.tt.kernel.TTModeSchedulerException;
 import ptolemy.domains.tt.kernel.LetTask;
+import ptolemy.domains.tt.kernel.TTModeSchedulerException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
 
 /**
  * The TDLModeScheduler uses the TTModeScheduler to schedule tasks and 

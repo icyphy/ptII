@@ -1,24 +1,15 @@
 package ptolemy.domains.ptides.kernel;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
-import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
-import ptolemy.domains.de.kernel.DEEvent;
-import ptolemy.domains.de.kernel.DEReceiver;
-import ptolemy.domains.ptides.kernel.PrioritizedTimedQueue.Event;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.vergil.basic.GetDocumentationAction;
 
 /**
  * Receiver used inside platforms of a ptides domain

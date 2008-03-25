@@ -1,7 +1,6 @@
 package ptolemy.domains.tt.tdl.kernel;
 
 import ptolemy.domains.fsm.modal.ModalModel;
-import ptolemy.domains.fsm.modal.RefinementPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;

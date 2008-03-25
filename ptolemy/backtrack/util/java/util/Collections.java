@@ -38,7 +38,6 @@ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
 import java.io.Serializable;
-import java.lang.Object;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -46,13 +45,11 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.Collection;
-import ptolemy.backtrack.util.java.util.Set;
-import ptolemy.backtrack.util.java.util.SortedSet;
 
 /** 
  * Utility class consisting of static methods that operate on, or return

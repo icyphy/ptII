@@ -32,7 +32,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
+
+import javax.swing.Action;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
@@ -48,17 +49,13 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.RemoveIconAction;
 import ptolemy.vergil.toolbox.SnapConstraint;
-import diva.canvas.CanvasComponent;
-import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
-import diva.canvas.connector.TerminalFigure;
 import diva.graph.GraphException;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FigureIcon;
-import diva.util.UserObjectContainer;
 
 //////////////////////////////////////////////////////////////////////////
 //// WithIconGraphController

@@ -28,30 +28,23 @@ COPYRIGHTENDKEY
 package ptolemy.moml;
 
 import java.io.StringWriter;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
-import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.ParseTreeFreeVariableCollector;
+import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.UndefinedConstantOrIdentifierException;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.type.Type;
-
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////

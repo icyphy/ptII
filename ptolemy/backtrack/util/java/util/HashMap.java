@@ -46,16 +46,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.Object;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.Set;
 
 /** 
  * This class provides a hashtable-backed implementation of the

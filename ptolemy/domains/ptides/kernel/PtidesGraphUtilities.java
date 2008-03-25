@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -14,7 +13,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.Clock;
 import ptolemy.actor.lib.Source;
-import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -25,10 +23,8 @@ import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
 /**

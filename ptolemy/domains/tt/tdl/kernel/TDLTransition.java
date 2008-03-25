@@ -1,13 +1,11 @@
 package ptolemy.domains.tt.tdl.kernel;
 
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.Settable.Visibility;
 
 /**
  * A TDL transition has some specific TDL parameters. - frequency: together with

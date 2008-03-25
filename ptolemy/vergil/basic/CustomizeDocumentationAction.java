@@ -29,20 +29,20 @@ package ptolemy.vergil.basic;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.vergil.actor.DocApplicationSpecializer;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.vergil.toolbox.FigureAction;
 
 //////////////////////////////////////////////////////////////////////////
 //// CustomizeDocumentationAction

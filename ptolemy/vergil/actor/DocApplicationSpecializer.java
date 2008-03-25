@@ -25,14 +25,14 @@
 
 package ptolemy.vergil.actor;
 
+import java.awt.Frame;
 import java.net.URL;
 import java.util.List;
-import java.awt.Frame;
 
-import ptolemy.util.ExecuteCommands;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.ExecuteCommands;
 
 //////////////////////////////////////////////////////////////////////////
 //// DocApplicationSpecializer

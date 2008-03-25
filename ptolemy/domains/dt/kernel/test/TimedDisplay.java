@@ -33,7 +33,6 @@ import java.awt.Container;
 import javax.swing.text.BadLocationException;
 
 import ptolemy.actor.Director;
-import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.data.IntToken;

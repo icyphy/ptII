@@ -32,9 +32,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.print.PrinterJob;
 import java.awt.print.PageFormat;
-import java.awt.print.Pageable;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.File;
@@ -42,8 +40,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;

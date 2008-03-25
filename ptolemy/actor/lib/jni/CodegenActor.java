@@ -28,7 +28,6 @@
  */
 package ptolemy.actor.lib.jni;
 
-import ptolemy.actor.lib.jni.EmbeddedCActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

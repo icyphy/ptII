@@ -5,15 +5,10 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.FSMDirector;
-import ptolemy.domains.fsm.modal.ModalModel;
-import ptolemy.domains.tt.tdl.kernel.TDLModule;
 import ptolemy.domains.tt.tdl.kernel.TDLTask;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.fsm.modal.ModalTableauFactory;
 
 public class TdlTaskTableauFactory extends TableauFactory {
 

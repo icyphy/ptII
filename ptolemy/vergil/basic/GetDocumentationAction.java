@@ -45,13 +45,13 @@ import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.DocApplicationSpecializer;
 import ptolemy.vergil.actor.DocBuilderEffigy;
 import ptolemy.vergil.actor.DocBuilderTableau;
 import ptolemy.vergil.actor.DocEffigy;
 import ptolemy.vergil.actor.DocManager;
 import ptolemy.vergil.actor.DocTableau;
 import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.actor.DocApplicationSpecializer;
 
 //////////////////////////////////////////////////////////////////////////
 //// GetDocumentationAction

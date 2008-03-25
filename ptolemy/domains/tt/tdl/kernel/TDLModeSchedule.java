@@ -1,9 +1,6 @@
 package ptolemy.domains.tt.tdl.kernel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-
-import ptolemy.actor.util.Time;
 
 /**
  * hold runtime information for every schedule for a mode

@@ -1,6 +1,5 @@
 package ptolemy.domains.ptides.kernel;
 
-import java.util.Hashtable;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
@@ -8,15 +7,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.ProcessThread;
-import ptolemy.actor.process.TerminateProcessException;
-import ptolemy.actor.util.Time;
-import ptolemy.domains.dde.kernel.DDEDirector;
-import ptolemy.domains.dde.kernel.DDEReceiver;
-import ptolemy.domains.dde.kernel.DDEThread;
-import ptolemy.domains.dde.kernel.PrioritizedTimedQueue;
-import ptolemy.domains.dde.kernel.TimeKeeper;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 /**
  * This thread is created for a CompositeActor that represents a platform inside

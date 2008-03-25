@@ -33,15 +33,12 @@ import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
-
-import ptolemy.verification.kernel.MathematicalModelConverter;
-import ptolemy.verification.gui.MathematicalModelConverterGUI;
 import ptolemy.kernel.util.IllegalActionException;
-
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.verification.kernel.MathematicalModelConverter;
 
 //////////////////////////////////////////////////////////////////////////
 //// MathematicalModelConverterGUIFactory

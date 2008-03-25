@@ -29,7 +29,6 @@
 //// DelayLine
 package ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib;
 
-import java.lang.Object;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;

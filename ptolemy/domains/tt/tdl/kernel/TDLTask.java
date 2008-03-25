@@ -1,9 +1,6 @@
 package ptolemy.domains.tt.tdl.kernel;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;

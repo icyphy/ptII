@@ -29,12 +29,10 @@
  */
 package ptolemy.actor.ptalon;
 
-import java.io.File;
 import java.util.Hashtable;
 
 import ptolemy.data.StringToken;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.util.StringUtilities;
 
 import com.microstar.xml.HandlerBase;
 

@@ -27,12 +27,12 @@
  */
 package ptolemy.domains.ddf.lib;
 
+import ptolemy.actor.lib.SingleTokenCommutator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.lib.SingleTokenCommutator;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;

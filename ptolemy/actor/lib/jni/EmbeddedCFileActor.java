@@ -28,13 +28,15 @@
 package ptolemy.actor.lib.jni;
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.io.*;
 
 
 

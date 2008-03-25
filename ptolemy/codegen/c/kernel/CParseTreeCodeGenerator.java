@@ -34,7 +34,6 @@ import java.util.Set;
 
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.FunctionToken;

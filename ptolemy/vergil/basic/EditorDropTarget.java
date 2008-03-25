@@ -45,11 +45,11 @@ import javax.swing.JComponent;
 import javax.swing.ToolTipManager;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Singleton;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AnimationRenderer;

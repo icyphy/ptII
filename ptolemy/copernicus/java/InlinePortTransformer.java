@@ -37,7 +37,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.data.type.Typeable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;

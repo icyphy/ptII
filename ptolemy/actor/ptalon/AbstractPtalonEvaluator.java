@@ -29,7 +29,6 @@
  */
 package ptolemy.actor.ptalon;
 
-import java.io.File;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Hashtable;

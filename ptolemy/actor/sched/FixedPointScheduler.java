@@ -27,15 +27,9 @@
  */
 package ptolemy.actor.sched;
 
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;

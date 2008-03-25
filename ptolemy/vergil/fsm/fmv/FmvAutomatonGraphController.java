@@ -35,11 +35,6 @@ import java.io.File;
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
 
-import diva.canvas.Figure;
-import diva.graph.GraphException;
-import diva.graph.GraphPane;
-import diva.graph.NodeRenderer;
-import diva.gui.toolbox.FigureIcon;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -55,6 +50,11 @@ import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.FSMGraphModel;
 import ptolemy.vergil.fsm.StateController;
 import ptolemy.vergil.toolbox.FigureAction;
+import diva.canvas.Figure;
+import diva.graph.GraphException;
+import diva.graph.GraphPane;
+import diva.graph.NodeRenderer;
+import diva.gui.toolbox.FigureIcon;
 
 // ////////////////////////////////////////////////////////////////////////
 // // FmvAutomatonGraphController

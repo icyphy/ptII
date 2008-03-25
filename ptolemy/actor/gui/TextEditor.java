@@ -41,8 +41,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 //////////////////////////////////////////////////////////////////////////
 //// TextEditor

@@ -28,7 +28,6 @@
 package ptolemy.verification.gui;
 
 import java.awt.BorderLayout;
-
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,23 +37,23 @@ import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.JComboBox;
 import javax.swing.JTextField;
-import javax.swing.JLabel;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.verification.kernel.MathematicalModelConverter;
 import ptolemy.gui.JTextAreaExec;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.MessageHandler;
+import ptolemy.verification.kernel.MathematicalModelConverter;
 
 //////////////////////////////////////////////////////////////////////////
 //// MathematicalModelConverter

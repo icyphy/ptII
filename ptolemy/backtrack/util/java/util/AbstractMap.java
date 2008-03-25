@@ -39,14 +39,13 @@ exception statement from your version. */
 // Package visible for use by subclasses.
 package ptolemy.backtrack.util.java.util;
 
-import java.lang.Object;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.Collection;
-import ptolemy.backtrack.util.java.util.Set;
 
 /** 
  * An abstract implementation of Map to make it easier to create your own

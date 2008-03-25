@@ -12,8 +12,6 @@ import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.process.CompositeProcessDirector;
@@ -22,7 +20,6 @@ import ptolemy.actor.process.ProcessThread;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.lib.ScheduleListener;

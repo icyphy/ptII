@@ -28,10 +28,15 @@
 
 package ptolemy.vergil.basic;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
 
 import ptolemy.data.expr.StringParameter;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.ConfigurableAttribute;
@@ -41,8 +46,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Entity;
 
 /**
  A Documentation attribute for actors.

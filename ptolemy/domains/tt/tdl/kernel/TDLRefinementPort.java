@@ -1,9 +1,6 @@
 package ptolemy.domains.tt.tdl.kernel;
 
-import java.util.List;
-
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.fsm.modal.ModalPort;
 import ptolemy.domains.fsm.modal.RefinementPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;

@@ -21,12 +21,9 @@ package ptolemy.apps.eclipse.awt;
  * 
  * @since 3.0
  */
-import java.awt.EventQueue;
 import java.io.File;
 import java.util.Date;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import org.eclipse.swt.SWT;

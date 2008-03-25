@@ -33,9 +33,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.Point2D;
-import java.util.Iterator;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.Action;
 import javax.swing.JMenu;
@@ -47,7 +46,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.Vertex;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
@@ -59,8 +57,6 @@ import ptolemy.vergil.kernel.RelationController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.SnapConstraint;
-import diva.canvas.CanvasComponent;
-import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.Site;
@@ -79,7 +75,6 @@ import diva.graph.NodeRenderer;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.JContextMenu;
-import diva.util.UserObjectContainer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorEditorGraphController

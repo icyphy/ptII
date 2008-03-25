@@ -37,7 +37,7 @@ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
 import java.io.Serializable;
-import java.lang.Object;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;

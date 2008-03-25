@@ -36,8 +36,9 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
-import java.lang.Object;
+import java.util.Arrays;
 import java.util.Iterator;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 

@@ -37,8 +37,8 @@ import java.util.regex.Pattern;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.lib.Clock;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.lib.Clock;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.domains.de.kernel.DEDirector;
@@ -53,8 +53,8 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.verification.lib.BoundedBufferTimedDelay;
 import ptolemy.verification.lib.BoundedBufferNondeterministicDelay;
+import ptolemy.verification.lib.BoundedBufferTimedDelay;
 
 // ////////////////////////////////////////////////////////////////////////
 // //REDUtility

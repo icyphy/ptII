@@ -1,10 +1,7 @@
 package ptolemy.domains.ptides.platform;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Actor;

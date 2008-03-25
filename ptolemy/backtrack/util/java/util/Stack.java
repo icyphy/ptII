@@ -64,6 +64,7 @@ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
 import java.util.EmptyStackException;
+
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 

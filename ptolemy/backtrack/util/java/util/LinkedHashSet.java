@@ -38,6 +38,7 @@ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
 import java.io.Serializable;
+
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 

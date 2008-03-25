@@ -44,9 +44,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.SortedMap;
 
 /** 
  * This class provides a TreeMap-backed implementation of the SortedSet

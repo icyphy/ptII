@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.c.kernel;
 
-import java.io.IOException;
 import java.io.File;
 import java.io.FileFilter;
 import java.net.URL;
@@ -37,7 +36,6 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;

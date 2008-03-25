@@ -45,19 +45,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.Object;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Dictionary;
 import java.util.Enumeration;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.Collection;
-import ptolemy.backtrack.util.java.util.Set;
 
 /** 
  * A class which implements a hashtable data structure.

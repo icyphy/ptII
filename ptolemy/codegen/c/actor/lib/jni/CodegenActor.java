@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.c.actor.lib.jni;
 
-import ptolemy.codegen.c.actor.lib.jni.EmbeddedCActor;
 
 //////////////////////////////////////////////////////////////////////////
 //// CodegenActor

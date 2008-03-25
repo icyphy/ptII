@@ -41,11 +41,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.Object;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.RandomAccess;
+
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 

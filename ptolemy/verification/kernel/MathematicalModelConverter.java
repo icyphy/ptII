@@ -28,9 +28,9 @@
 package ptolemy.verification.kernel;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
 
@@ -39,8 +39,8 @@ import javax.swing.JOptionPane;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.domains.fsm.kernel.fmv.FmvAutomaton;
 import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.fmv.FmvAutomaton;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

@@ -29,7 +29,6 @@ package ptolemy.codegen.c.actor.lib.jni;
 
 import java.util.Set;
 
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**

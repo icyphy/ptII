@@ -10,7 +10,6 @@ import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////

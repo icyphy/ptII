@@ -3,15 +3,7 @@ package ptolemy.domains.tt.tdl.kernel;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
-import ptolemy.actor.util.FunctionDependency;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.ct.kernel.CTCompositeActor;
-import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.domains.fsm.modal.ModalPort;
 import ptolemy.domains.fsm.modal.Refinement;
@@ -19,13 +11,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 ////TDLModule

@@ -9,19 +9,12 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
-import ptolemy.actor.util.CQComparator;
-import ptolemy.actor.util.CalendarQueue;
-import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.domains.de.kernel.DECQEventQueue;
-import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// PrioritizedTimedQueue

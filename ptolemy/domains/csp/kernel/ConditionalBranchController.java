@@ -36,7 +36,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
-import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;

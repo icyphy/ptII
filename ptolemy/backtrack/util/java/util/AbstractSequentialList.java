@@ -38,6 +38,7 @@ package ptolemy.backtrack.util.java.util;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 
