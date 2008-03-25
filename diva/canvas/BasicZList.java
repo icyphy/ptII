@@ -248,7 +248,7 @@ public class BasicZList implements ZList {
             return new Iterator() {
                 int cursor = _currentFigures.size();
 
-                public boolean hasNext()
+                public boolean hasNext() {
                     return cursor > 0;
                 }
 
