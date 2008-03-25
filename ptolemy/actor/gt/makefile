@@ -28,6 +28,8 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+#
+#
 
 ME =		ptolemy/actor/gt
 
