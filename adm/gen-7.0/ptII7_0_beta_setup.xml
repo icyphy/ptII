@@ -17,8 +17,8 @@
     -->
     <info>
         <appname>Ptolemy II</appname>
-        <appversion>7.0.beta</appversion>
-	<appsubpath>Ptolemy/ptII7.0.beta</appsubpath>
+        <appversion>7.0.1</appversion>
+	<appsubpath>Ptolemy/ptII7.0.1</appsubpath>
         <url>http://ptolemy.eecs.berkeley.edu/ptolemyII</url>
 	<javaversion>1.5</javaversion>
     </info>
@@ -441,34 +441,34 @@ The Ptiny pack is required.
             <description>The Ptolemy II sources.</description>
 	    <!-- Can't just copy the directory, need to spec files -->
 	    <!-- If you edit this, also edit PTII_TOPDIR in the makefile. -->
-	    <file src="src/ptII7.0.beta/README.txt" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/bin" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/com" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/config" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/configure" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/configure.in" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/copyright.txt" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/diva" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/doc" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/jni" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/lib" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/makefile" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/mk" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/ptolemy" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/thales" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/util" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/vergil.jnlp.in" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/vergilDSP.jnlp.in" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/vergilHyVisual.jnlp.in" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/vergilPtiny.jnlp.in" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/vergilPtinySandbox.jnlp.in" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/vergilVisualSense.jnlp.in" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/.classpath.default" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/.classpath.in" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/.cshrc" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/.eclipse.epf" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/.glimpse_exclude" targetdir="$INSTALL_PATH"/>
-            <!-- file src="ptII7.0.beta.src.jar" targetdir="$INSTALL_PATH"/ -->
+	    <file src="src/ptII7.0.1/README.txt" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/bin" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/com" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/config" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/configure" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/configure.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/copyright.txt" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/diva" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/doc" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/jni" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/lib" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/makefile" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/mk" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/ptolemy" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/thales" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/util" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/vergil.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/vergilDSP.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/vergilHyVisual.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/vergilPtiny.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/vergilPtinySandbox.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/vergilVisualSense.jnlp.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/.classpath.default" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/.classpath.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/.cshrc" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/.eclipse.epf" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.0.1/.glimpse_exclude" targetdir="$INSTALL_PATH"/>
+            <!-- file src="ptII7.0.1.src.jar" targetdir="$INSTALL_PATH"/ -->
             <!-- file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/ -->
         </pack>
     </packs>
