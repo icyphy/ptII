@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/wireless/lib
 
-DIRS = 		test network tinyOS
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../../..
