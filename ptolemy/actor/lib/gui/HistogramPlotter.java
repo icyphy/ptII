@@ -33,7 +33,6 @@ import java.net.URL;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.gui.PlotEffigy;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -81,7 +80,7 @@ import ptolemy.plot.plotml.HistogramMLParser;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (cxh)
  */
-public class HistogramPlotter extends PlotterBase implements Placeable {
+public class HistogramPlotter extends PlotterBase {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
