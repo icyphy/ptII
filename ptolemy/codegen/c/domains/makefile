@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/c/domains
 
-DIRS =		fsm hdf pn sdf 
+DIRS =		fsm hdf sdf 
 
 # Root of the Java directory
 ROOT =		../../../..
