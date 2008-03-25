@@ -95,7 +95,7 @@ install: jclass jars $(PTPACKAGE).jar #$(PTPACKAGE_NATIVE_JAR)
 
 #--- Specialized part of the makefile: ---
 libjvm.dll.a: jvm.def
-	@echo "This is only necessary under Windows, it will faile elsewhere"
+	@echo "This is only necessary under Windows, it will fail elsewhere"
 	-dlltool --input-def jvm.def --kill-at --dllname jvm.dll \
 		--output-lib libjvm.dll.a
 
