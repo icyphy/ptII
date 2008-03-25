@@ -42,9 +42,11 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.fsm.StateIcon;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.LabelFigure;
 import diva.canvas.toolbox.RoundedRectangle;
 import diva.gui.toolbox.FigureIcon;
+import diva.util.java2d.Polygon2D;
 
 /**
 
@@ -71,20 +73,33 @@ public class EventIcon extends StateIcon {
         CompositeFigure figure = (CompositeFigure) super.createFigure();
 
         String actions = null;
+        String parameters = null;
+        boolean fireOnInput = false;
+
         Event event = (Event) getContainer();
         if (event != null) {
+            if (event.parameters.getArgumentNameList().size() > 0) {
+                parameters = event.parameters.getValueAsString();
+            }
+
             String exp = event.actions.getExpression();
             if (exp != null && !exp.trim().equals("")) {
                 actions = "{ " + exp + " }";
             }
+
+            fireOnInput = event.fireOnInput();
         }
 
-        if (event.parameters.getArgumentNameList().size() > 0) {
-            _addLabel(figure, event.parameters.getValueAsString());
+        if (parameters != null) {
+            _addLabel(figure, parameters);
         }
 
         if (actions != null) {
             _addLabel(figure, actions);
+        }
+
+        if (fireOnInput) {
+            _addInputIcon(figure);
         }
 
         return figure;
@@ -99,6 +114,20 @@ public class EventIcon extends StateIcon {
                 5.0, 5.0);
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
+    }
+
+    private void _addInputIcon(CompositeFigure figure) {
+        Rectangle2D bounds = figure.getBounds();
+        Polygon2D.Double polygon = new Polygon2D.Double();
+        polygon.moveTo(-5, 0);
+        polygon.lineTo(-5, 5);
+        polygon.lineTo(5, 0);
+        polygon.lineTo(-5, -5);
+        polygon.lineTo(-5, 0);
+        polygon.closePath();
+        polygon.translate(bounds.getMinX() + 4, bounds.getMinY() + 12.5);
+        Figure inputIcon = new BasicFigure(polygon, Color.red, 1.5f);
+        figure.add(inputIcon);
     }
 
     private void _addLabel(CompositeFigure figure, String text) {
@@ -118,19 +147,17 @@ public class EventIcon extends StateIcon {
         double height = backBounds.getHeight() + stringBounds.getHeight();
 
         background.setParent(null);
+        RoundedRectangle border = new RoundedRectangle(left, 0.0, width, height,
+                _getFill(), _getLineWidth(), _roundingValue, _roundingValue);
         if (_spacingValue == 0.0) {
-            background = new RoundedRectangle(left, 0, width, height,
-                    _getFill(), _getLineWidth(), _roundingValue,
-                    _roundingValue);
+            background = border;
         } else {
             background = new CompositeFigure(new RoundedRectangle(
                     left - _spacingValue, - _spacingValue,
                     width + 2.0 * _spacingValue, height + 2.0 * _spacingValue,
                     null, _getLineWidth(), _roundingValue + _spacingValue,
                     _roundingValue + _spacingValue));
-            ((CompositeFigure) background).add(new RoundedRectangle(left, 0.0,
-                    width, height, _getFill(), _getLineWidth(), _roundingValue,
-                    _roundingValue));
+            ((CompositeFigure) background).add(border);
         }
         figure.setBackgroundFigure(background);
 

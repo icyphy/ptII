@@ -187,6 +187,7 @@ public class ERGGraphController extends FSMGraphController {
     protected void _createControllers() {
         super._createControllers();
         _transitionController = new SchedulingRelationController(this);
+        _modalTransitionController = _transitionController;
     }
 
     /** The action for creating event. */

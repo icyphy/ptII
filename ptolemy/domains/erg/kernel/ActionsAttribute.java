@@ -97,8 +97,6 @@ public class ActionsAttribute extends AbstractActionsAttribute {
                     token = _parseTreeEvaluator.evaluateParseTree(parseTree,
                             scope);
                 } catch (IllegalActionException ex) {
-                    // Chain exceptions to get the actor that
-                    // threw the exception.
                     throw new IllegalActionException(this, ex,
                             "Expression invalid.");
                 }
@@ -108,42 +106,20 @@ public class ActionsAttribute extends AbstractActionsAttribute {
 
                     try {
                         if (channel != null) {
-                            if (token == null) {
-                                destination.sendClear(channel.intValue());
-
-                                if (_debugging) {
-                                    _debug(getFullName() + " port: "
-                                            + destination.getName()
-                                            + " channel: " + channel.intValue()
-                                            + ", Clear!");
-                                }
-                            } else {
+                            // Clear the far receivers before sending out a
+                            // token, so later outputs in the same firing
+                            // overwrite previous ones.
+                            destination.sendClear(channel.intValue());
+                            if (token != null) {
                                 destination.send(channel.intValue(), token);
-
-                                if (_debugging) {
-                                    _debug(getFullName() + " port: "
-                                            + destination.getName()
-                                            + " channel: " + channel.intValue()
-                                            + ", token: " + token);
-                                }
                             }
                         } else {
-                            if (token == null) {
-                                destination.broadcastClear();
-
-                                if (_debugging) {
-                                    _debug(getFullName() + " port: "
-                                            + destination.getName()
-                                            + " broadcast Clear!");
-                                }
-                            } else {
+                            // Clear the far receivers before sending out a
+                            // token, so later outputs in the same firing
+                            // overwrite previous ones.
+                            destination.broadcastClear();
+                            if (token != null) {
                                 destination.broadcast(token);
-
-                                if (_debugging) {
-                                    _debug(getFullName() + " port: "
-                                            + destination.getName()
-                                            + " broadcast token: " + token);
-                                }
                             }
                         }
                     } catch (NoRoomException ex) {
@@ -156,20 +132,8 @@ public class ActionsAttribute extends AbstractActionsAttribute {
                     Variable destination = (Variable) nextDestination;
 
                     try {
-                        //Token token = variable.getToken();
                         destination.setToken(token);
-
-                        // Force all dependents to re-evaluate.
-                        // This makes the parameters in the actors of
-                        // the refinement take on new values immediately
-                        // after the action is committed.
                         destination.validate();
-
-                        if (_debugging) {
-                            _debug(getFullName() + " variable: "
-                                    + destination.getName() + ", value: "
-                                    + token);
-                        }
                     } catch (UnknownResultException ex) {
                         destination.setUnknown(true);
                     }
@@ -237,8 +201,8 @@ public class ActionsAttribute extends AbstractActionsAttribute {
             } else {
                 if (!(variable instanceof Variable)) {
                     throw new IllegalActionException(erg, this,
-                            "The attribute with name \"" + name
-                                    + "\" is not an " + "instance of Variable.");
+                            "The attribute with name \"" + name + "\" is not "
+                            + "an instance of Variable.");
                 }
 
                 return variable;

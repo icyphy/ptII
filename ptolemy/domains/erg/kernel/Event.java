@@ -35,9 +35,12 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.graph.InequalityTerm;
@@ -83,7 +86,8 @@ public class Event extends State {
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
-        ((ERGController) getContainer())._debug(this);
+        ERGController controller = (ERGController) getContainer();
+        controller._debug(this);
 
         List<?> names = parameters.getArgumentNameList();
         int paramCount = names == null ? 0 : names.size();
@@ -94,7 +98,6 @@ public class Event extends State {
                     + "parameters, which is " + paramCount + ".");
         }
 
-        ERGController controller = (ERGController) getContainer();
         ParserScope scope = controller.getPortScope();
 
         if (paramCount > 0) {
@@ -116,26 +119,41 @@ public class Event extends State {
         actions.execute(scope);
 
         ERGDirector director = (ERGDirector) controller.getDirector();
-        List<?> schedules = nonpreemptiveTransitionList();
-        for (Object scheduleObject : schedules) {
-            SchedulingRelation schedule = (SchedulingRelation) scheduleObject;
-            if (schedule.isEnabled(scope)) {
-                double delay = schedule.getDelay(scope);
-                Event nextEvent = (Event) schedule.destinationState();
-                if (schedule.isCanceling()) {
-                    director.cancel(nextEvent);
-                } else {
-                    ArrayToken edgeArguments = schedule.getArguments(scope);
-                    director.fireAt(nextEvent, director.getModelTime().add(
-                            delay), edgeArguments);
+        List<?>[] schedulesArray = new List<?>[2];
+        schedulesArray[0] = preemptiveTransitionList();
+        schedulesArray[1] = nonpreemptiveTransitionList();
+        for (List<?> schedules : schedulesArray) {
+            for (Object scheduleObject : schedules) {
+                SchedulingRelation schedule =
+                    (SchedulingRelation) scheduleObject;
+                if (schedule.isEnabled(scope)) {
+                    double delay = schedule.getDelay(scope);
+                    Event nextEvent = (Event) schedule.destinationState();
+                    if (schedule.isCanceling()) {
+                        director.cancel(nextEvent);
+                    } else {
+                        ArrayToken edgeArguments = schedule.getArguments(scope);
+                        director.fireAt(nextEvent, director.getModelTime().add(
+                                delay), edgeArguments);
+                    }
                 }
             }
+        }
+    }
+
+    public boolean fireOnInput() {
+        try {
+            return ((BooleanToken) fireOnInput.getToken()).booleanValue();
+        } catch (IllegalActionException e) {
+            return false;
         }
     }
 
     public ActionsAttribute actions;
 
     public NodeControllerFactory controllerFactory;
+
+    public Parameter fireOnInput;
 
     public ParametersAttribute parameters;
 
@@ -187,6 +205,10 @@ public class Event extends State {
        Variable variable = new Variable(actions, "_textHeightHint");
        variable.setExpression("5");
        variable.setPersistent(false);
+
+       fireOnInput = new Parameter(this, "fireOnInput");
+       fireOnInput.setToken(BooleanToken.FALSE);
+       fireOnInput.setTypeEquals(BaseType.BOOLEAN);
 
        controllerFactory = new HierarchicalStateControllerFactory(this,
                "_controllerFactory");

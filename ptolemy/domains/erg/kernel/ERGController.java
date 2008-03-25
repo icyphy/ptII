@@ -28,10 +28,15 @@
 
 package ptolemy.domains.erg.kernel;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.IOPort;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.HasTypeConstraints;
+import ptolemy.domains.erg.lib.SynchronizeToRealtime;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.StateEvent;
 import ptolemy.domains.fsm.modal.ModalController;
@@ -62,6 +67,36 @@ public class ERGController extends ModalController {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
+    }
+    
+    public boolean synchronizeToRealtime() {
+        List<?> synchronizeAttributes =
+            attributeList(SynchronizeToRealtime.class);
+        boolean synchronize = false;
+        if (synchronizeAttributes.size() > 0) {
+            SynchronizeToRealtime attribute =
+                (SynchronizeToRealtime) synchronizeAttributes.get(0);
+            try {
+                synchronize = ((BooleanToken) attribute.getToken()).booleanValue();
+            } catch (IllegalActionException e) {
+                return false;
+            }
+        }
+        return synchronize;
+    }
+    
+    public boolean hasInput() throws IllegalActionException {
+        Iterator<?> inPorts = ((ERGModalModel) getContainer()).inputPortList()
+                .iterator();
+        while (inPorts.hasNext() && !_stopRequested) {
+            IOPort p = (IOPort) inPorts.next();
+            Token token =
+                (Token) _inputTokenMap.get(p.getName() + "_isPresent");
+            if (token != null && BooleanToken.TRUE.equals(token)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

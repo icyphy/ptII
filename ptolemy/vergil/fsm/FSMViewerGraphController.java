@@ -237,7 +237,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
     protected TransitionController _transitionController;
 
     /** The modal transition controller. */
-    protected ModalTransitionController _modalTransitionController;
+    protected TransitionController _modalTransitionController;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

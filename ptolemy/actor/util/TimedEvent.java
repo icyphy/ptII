@@ -105,7 +105,7 @@ public class TimedEvent {
          *  @exception ClassCastException If either argument is not an instance
          *   of TimedEvent.
          */
-        public final int compare(Object object1, Object object2) {
+        public int compare(Object object1, Object object2) {
             TimedEvent a = (TimedEvent) object1;
             TimedEvent b = (TimedEvent) object2;
             return a.timeStamp.compareTo(b.timeStamp);
