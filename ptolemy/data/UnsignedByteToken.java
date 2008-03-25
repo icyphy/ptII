@@ -322,7 +322,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return The value contained in this token as a short.
      */
     public short shortValue() {
-        return _value;
+        return unsignedConvert(_value);
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -355,8 +355,8 @@ public class UnsignedByteToken extends ScalarToken {
      *  @param value The byte to convert to an unsigned byte.
      *  @return An integer in the range 0 through 255.
      */
-    public static int unsignedConvert(byte value) {
-        int intValue = value;
+    public static short unsignedConvert(byte value) {
+        short intValue = value;
 
         if (intValue < 0) {
             intValue += 256;
