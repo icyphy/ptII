@@ -57,7 +57,7 @@ DIRS = util math kernel plot graph moml data actor gui media	\
 	$(PTMATLAB_DIR)	domains	$(PTCOPERNICUS_DIR) verification \
 	vergil hsif $(PTCHIC_DIR) codegen component $(PTBACKTRACK_DIR) \
 	configs \
-	$(PTDISTRIBUTED_DIR) ptp apps $(PTCALTROP_DIR) \
+	$(PTDISTRIBUTED_DIR) ptp $(PTCALTROP_DIR) \
 	contrib demo
 
 # Root of Ptolemy II directory
