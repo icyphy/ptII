@@ -1,6 +1,6 @@
 /* Class providing additional functions in the Ptolemy II expression language.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 1998-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -87,7 +87,7 @@ import ptolemy.util.StringUtilities;
  types of the arguments.
 
  @author Christopher Hylands Brooks, Tobin Fricke, Bart Kienhuis, Edward A. Lee,
- Steve Neuendorffer, Neil Smyth, Yang Zhao
+ Steve Neuendorffer, Neil Smyth, Yang Zhao.  Contributor: Daniel Crawl
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (eal)
@@ -789,11 +789,11 @@ public class UtilityFunctions {
             String osName = StringUtilities.getProperty("os.name");
 
             if (osName.startsWith("SunOS") || osName.startsWith("Linux") ||
-		osName.startsWith("Mac OS X")) {
+                osName.startsWith("Mac OS X")) {
 
-		if (osName.startsWith("Mac OS X")) {
+                if (osName.startsWith("Mac OS X")) {
                     sharedLibrarySuffix = "dylib";
-		} else {
+                } else {
                     sharedLibrarySuffix = "so";
                 }
 
@@ -810,10 +810,15 @@ public class UtilityFunctions {
                     shortLibraryName = library;
                 } else {
                     if (!library.substring(index, index + 4).equals("/lib")) {
-                        shortLibraryName = "/lib"
-                                + library.substring(index + 1);
-                        library = library.substring(0, index)
-                                + shortLibraryName;
+                        if (osName.startsWith("Mac OS X")) {
+                            library = library.substring(index + 1);
+                            shortLibraryName = library;    
+                        } else {
+                            shortLibraryName = "/lib"
+                                    + library.substring(index + 1);
+                            library = library.substring(0, index)
+                                    + shortLibraryName;
+                        }
                     }
                 }
             } else {
