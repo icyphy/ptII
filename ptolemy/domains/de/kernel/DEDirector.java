@@ -1307,8 +1307,10 @@ public class DEDirector extends Director implements TimedDirector {
     /** Based on the depths of IO ports, calculate the depths of actors.
      *  The results are cached in a hashtable _actorToDepth.
      *  Update the depths of existing events in the event queue.
+     *  @exception IllegalActionException If thrown will getting the depth
+     *  of the IO ports or while updating the depth of the the actors.
      */
-    private void _computeActorDepth() throws IllegalActionException {
+    protected void _computeActorDepth() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
         LinkedList actors = (LinkedList) container.deepEntityList();
         // Add container.
@@ -1645,7 +1647,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  will be ignored. If the argument is null, then do nothing.
      *  @param actor The actor to disable.
      */
-    private void _disableActor(Actor actor) {
+    protected void _disableActor(Actor actor) {
         if (actor != null) {
             if (_debugging) {
                 _debug("Actor ", ((Nameable) actor).getName(), " is disabled.");
@@ -1665,7 +1667,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  @exception IllegalActionException If any port of this actor
      *  is not sorted.
      */
-    private int _getDepthOfActor(Actor actor) throws IllegalActionException {
+    protected int _getDepthOfActor(Actor actor) throws IllegalActionException {
         if ((_sortValid != workspace().getVersion()) || (_actorToDepth == null)) {
             _computePortDepth();
             _computeActorDepth();
@@ -1688,7 +1690,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  @return An int representing the depth of the given ioPort.
      *  @exception IllegalActionException If the ioPort is not sorted.
      */
-    private int _getDepthOfIOPort(IOPort ioPort) throws IllegalActionException {
+    protected int _getDepthOfIOPort(IOPort ioPort) throws IllegalActionException {
         if ((_sortValid != workspace().getVersion()) || (_portToDepth == null)) {
             _computePortDepth();
             _computeActorDepth();
@@ -1899,13 +1901,28 @@ public class DEDirector extends Director implements TimedDirector {
                             // the DE domain has an upper limit on running
                             // time of Double.MAX_VALUE milliseconds.
                             double elapsedTimeInSeconds = elapsedTime / 1000.0;
-
-                            if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
+                            ptolemy.actor.util.Time elapsed
+                                    = new ptolemy.actor.util.Time(this, elapsedTimeInSeconds);
+                            if (currentTime.compareTo(elapsed) <= 0) {
                                 break;
                             }
+                            
+                            // NOTE: We used to do the following, but it had a limitation.
+                            // In particular, if any user code also calculated the elapsed
+                            // time and then constructed a Time object to post an event
+                            // on the event queue, there was no assurance that the quantization
+                            // would be the same, and hence it was possible for that event
+                            // to be in the past when posted, even if done in the same thread.
+                            // To ensure that the comparison of current time against model time
+                            // always yields the same result, we have to do the comparison using
+                            // the Time class, which is what the event queue does.
+                            /*
+                            if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
+                                break;
+                            }*/
 
                             long timeToWait = (long) (currentTime.subtract(
-                                    elapsedTimeInSeconds).getDoubleValue() * 1000.0);
+                                    elapsed).getDoubleValue() * 1000.0);
 
                             if (timeToWait > 0) {
                                 if (_debugging) {
