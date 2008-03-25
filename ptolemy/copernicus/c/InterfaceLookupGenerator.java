@@ -1,7 +1,7 @@
 /* A class that generates code that performs lookup operations for
  disambiguation of interfaces.
 
- Copyright (c) 2003-2005 The University of Maryland.
+ Copyright (c) 2003-2008 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

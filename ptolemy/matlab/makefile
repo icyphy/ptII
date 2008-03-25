@@ -6,7 +6,7 @@
 #
 # This directory contains the matlab engine interface
 #
-# @Copyright (c) 1997-2007 The Regents of the University of California and
+# @Copyright (c) 1997-2008 The Regents of the University of California and
 # Research in Motion Limited.
 # All rights reserved.
 #

@@ -941,7 +941,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     protected String copyrightString = "/*"
             + _endLine
             + _endLine
-            + " Copyright (c) 2001-2005 The Regents of the University of California."
+            + " Copyright (c) 2001-2008 The Regents of the University of California."
             + _endLine
             + " All rights reserved."
             + _endLine
