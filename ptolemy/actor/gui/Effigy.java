@@ -177,14 +177,17 @@ public class Effigy extends CompositeEntity {
                     // then bar is the fragment.  Unfortunately,
                     // new File(file:/C%7C/foo.txt#bar) will fail,
                     // so we add the path.
-                    File file = new File(uriValue.getPath());
+                    String path = uriValue.getPath();
+                    if (path != null) {
+                        File file = new File(path);
 
-                    try {
-                        _modifiableURI = file.canWrite();
-                    } catch (java.security.AccessControlException accessControl) {
-                        // If we are running in a sandbox, then canWrite()
-                        // may throw an AccessControlException.
-                        _modifiableURI = false;
+                        try {
+                            _modifiableURI = file.canWrite();
+                        } catch (java.security.AccessControlException accessControl) {
+                            // If we are running in a sandbox, then canWrite()
+                            // may throw an AccessControlException.
+                            _modifiableURI = false;
+                        }
                     }
                 }
             }
@@ -271,7 +274,6 @@ public class Effigy extends CompositeEntity {
      */
     public boolean isModifiable() {
         Effigy master = masterEffigy();
-
         if (!master._modifiable) {
             return false;
         } else {
