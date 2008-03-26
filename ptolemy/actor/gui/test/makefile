@@ -71,7 +71,10 @@ JGRAPHICAL_TESTS = \
 	PtExecuteApplication.tcl
 
 EXTRA_SRCS =	\
-	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS) test.xml
+	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS) \
+	"model with spaces.xml" \
+	test.xml
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

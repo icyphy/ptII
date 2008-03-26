@@ -134,3 +134,20 @@ test UserActorLibrary-7.0 {_effigyIdentifier} {
 } {.configuration.directory.myNamedObj.simpleTableau .configuration.directory.test .configuration.directory.test}
 
 
+######################################################################
+####
+#
+test UserActorLibrary-8.0 {isModifiable on a model with spaces in the name} {
+    # See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=153
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    $parser purgeModelRecord {model with spaces.xml}
+    set tableau [$configuration \openModel [java::null] \
+		     [java::new java.net.URL \
+			  {file:./model%20with%20spaces.xml}] \
+		     foo [java::null]]
+
+    set modelDirectory [$configuration getDirectory]
+    set effigy1 [$modelDirectory getEffigy foo]
+    list [$effigy1 isModifiable]
+} {1}
