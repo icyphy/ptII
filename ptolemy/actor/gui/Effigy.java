@@ -45,6 +45,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Effigy
@@ -182,7 +183,22 @@ public class Effigy extends CompositeEntity {
                         File file = new File(path);
 
                         try {
-                            _modifiableURI = file.canWrite();
+                            if (path.indexOf("%20") == -1) {
+                                _modifiableURI = file.canWrite();
+                            } else {
+                                // FIXME: we need a better way to check if
+                                // a URL is writable.  
+
+                                // Sigh.  If the filename has spaces in it,
+                                // then the URL will have %20s.  However,
+                                // the file does not have %20s.
+                                // See 
+                                // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=153
+                                path = StringUtilities.substitute(
+                                        path, "%20", " ");
+                                file = new File(path);
+                                _modifiableURI = file.canWrite();
+                            }
                         } catch (java.security.AccessControlException accessControl) {
                             // If we are running in a sandbox, then canWrite()
                             // may throw an AccessControlException.
