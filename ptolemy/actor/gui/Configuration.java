@@ -626,6 +626,8 @@ public class Configuration extends CompositeEntity implements
                         // Sigh.  If the filename has spaces in it,
                         // then the URL will have %20s.  However,
                         // the file does not have %20s.
+                        // See 
+                        // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=153
                         filename = StringUtilities.substitute(
                             filename, "%20", " ");
                         file = new File(filename);
