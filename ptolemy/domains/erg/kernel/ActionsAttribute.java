@@ -236,8 +236,8 @@ public class ActionsAttribute extends AbstractActionsAttribute {
                                 .getEntity(refinementName);
 
                         if (refinement != null) {
-                            Attribute entry = refinement
-                                    .getAttribute(entryName);
+                            Attribute entry =
+                                refinement.getAttribute(entryName);
 
                             if (entry instanceof Variable) {
                                 return entry;
@@ -268,29 +268,23 @@ public class ActionsAttribute extends AbstractActionsAttribute {
     }
 
     protected ParserScope _getParserScope() {
-        if (_scopeVersion != workspace().getVersion()) {
-            Event event = (Event) getContainer();
-            ERGController controller = (ERGController) event.getContainer();
-            ParserScope portScope = controller.getPortScope();
-            Type[] types = event.parameters.getArgumentTypes();
-            if (types.length > 0) {
-                List<?> names = event.parameters.getArgumentNameList();
-                Iterator<?> namesIter = names.iterator();
-                Map<String, Type> paramMap = new HashMap<String, Type>();
-                for (int i = 0; namesIter.hasNext(); i++) {
-                    String name = (String) namesIter.next();
-                    paramMap.put(name, types[i]);
-                }
-                _scope = new ParametersParserScope(paramMap, portScope);
-            } else {
-                _scope = portScope;
-            }
-            _scopeVersion = workspace().getVersion();
-        }
         return _scope;
     }
 
-    private ParserScope _scope;
+    protected void _updateParserScope(ParserScope superscope, List<?> names,
+            Type[] types) {
+        if (types != null && types.length > 0) {
+            Iterator<?> namesIter = names.iterator();
+            Map<String, Type> paramMap = new HashMap<String, Type>();
+            for (int i = 0; namesIter.hasNext(); i++) {
+                String name = (String) namesIter.next();
+                paramMap.put(name, types[i]);
+            }
+            _scope = new ParametersParserScope(paramMap, superscope);
+        } else {
+            _scope = superscope;
+        }
+    }
 
-    private long _scopeVersion = -1;
+    private ParserScope _scope;
 }

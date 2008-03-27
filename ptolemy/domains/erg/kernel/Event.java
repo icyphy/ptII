@@ -52,6 +52,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.basic.NodeControllerFactory;
 import ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory;
@@ -80,7 +81,18 @@ public class Event extends State {
 
     public void attributeChanged(Attribute attribute)
     throws IllegalActionException {
-        if (attribute != isInitialState) {
+        if (attribute == parameters) {
+            super.attributeChanged(attribute);
+
+            NamedObj container = getContainer();
+            if (container instanceof ERGController) {
+                ERGController controller = (ERGController) getContainer();
+                ParserScope portScope = controller.getPortScope();
+                actions._updateParserScope(portScope,
+                        parameters.getArgumentNameList(),
+                        parameters.getArgumentTypes());
+            }
+        } else if (attribute != isInitialState) {
             super.attributeChanged(attribute);
         }
     }
@@ -205,12 +217,13 @@ public class Event extends State {
        isFinalState.setDisplayName("isFinalEvent");
 
        parameters = new ParametersAttribute(this, "parameters");
-       parameters.setExpression("()");
 
        actions = new ActionsAttribute(this, "actions");
        Variable variable = new Variable(actions, "_textHeightHint");
        variable.setExpression("5");
        variable.setPersistent(false);
+
+       parameters.setExpression("()");
 
        fireOnInput = new Parameter(this, "fireOnInput");
        fireOnInput.setToken(BooleanToken.FALSE);

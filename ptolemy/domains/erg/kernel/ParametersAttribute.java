@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -86,20 +86,20 @@ public class ParametersAttribute extends StringAttribute {
     }
 
     public void setExpression(String expression) throws IllegalActionException {
-        super.setExpression(expression);
-
-        expression = "function" + expression + " 1";
+        String function = "function" + expression + " 1";
 
         try {
             ASTPtFunctionDefinitionNode parseTree =
                 (ASTPtFunctionDefinitionNode) _parser.generateParseTree(
-                        expression);
+                        function);
             _argumentNameList = parseTree.getArgumentNameList();
             _argumentTypes = parseTree.getArgumentTypes();
         } catch (Exception e) {
             throw new IllegalActionException("The argument list must be in the "
                     + "form of (v1 : type1, v2 : type2, ...).");
         }
+
+        super.setExpression(expression);
     }
 
     protected PtParser _parser = new PtParser();
