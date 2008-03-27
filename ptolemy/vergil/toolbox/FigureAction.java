@@ -332,8 +332,8 @@ public class FigureAction extends AbstractAction {
      *  @param yOffset The y offset to be used if a figure is found.
      *  @param figureClass The Class of the figure to avoid.
      *  @param foregroundLayer The layer containing the figures.
-     *  @param Rectangle The rectangle that describe the bounds of the
-     *  visible pane.
+     *  @param visibleRectangle The rectangle that describe the bounds
+     *  of the visible pane.
      *  @return An array of two doubles (x and y) that represents either
      *  the original location or an offset location that does not obscure
      *  an object of class <i>figure</i>.
