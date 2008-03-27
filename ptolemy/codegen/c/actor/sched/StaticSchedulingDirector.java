@@ -111,20 +111,7 @@ public class StaticSchedulingDirector extends Director {
                     code.append(helper.generateFireCode());
                     code.append(helper.generateTypeConvertFireCode());
 
-                    // update buffer offset after firing each actor once
-                    Iterator inputPorts = actor.inputPortList().iterator();
-                    while (inputPorts.hasNext()) {
-                        IOPort port = (IOPort) inputPorts.next();
-                        int rate = DFUtilities.getRate(port);
-                        _updatePortOffset(port, code, rate);
-                    }
-
-                    Iterator outputPorts = actor.outputPortList().iterator();
-                    while (outputPorts.hasNext()) {
-                        IOPort port = (IOPort) outputPorts.next();
-                        int rate = DFUtilities.getRate(port);
-                        _updateConnectedPortsOffset(port, code, rate);
-                    }
+                    _generateUpdatePortOffsetCode(code, actor);
                 }
             } else {
 
@@ -134,27 +121,14 @@ public class StaticSchedulingDirector extends Director {
                         code.append("int i;" + _eol);
                         isIDefined = true;
                     }
-                    code.append(CodeStream.indent("for (i = 0; i < " + count
-                            + " ; i++) {" + _eol));
+                    code.append("for (i = 0; i < " + count
+                            + " ; i++) {" + _eol);
                 }
 
                 code.append(CodeGeneratorHelper.generateName((NamedObj)
                  actor) + "();" + _eol);
                 
-                // update buffer offset after firing each actor once
-                Iterator inputPorts = actor.inputPortList().iterator();
-                while (inputPorts.hasNext()) {
-                    IOPort port = (IOPort) inputPorts.next();
-                    int rate = DFUtilities.getRate(port);
-                    _updatePortOffset(port, code, rate);
-                }
-
-                Iterator outputPorts = actor.outputPortList().iterator();
-                while (outputPorts.hasNext()) {
-                    IOPort port = (IOPort) outputPorts.next();
-                    int rate = DFUtilities.getRate(port);
-                    _updateConnectedPortsOffset(port, code, rate);
-                }
+                _generateUpdatePortOffsetCode(code, actor);
 
                 if (count > 1) {
                     code.append("}" + _eol);
@@ -162,6 +136,32 @@ public class StaticSchedulingDirector extends Director {
             }
         }
         return code.toString();
+    }
+
+    /**
+     * Generate the code that updates the input/output port offset.
+     * @param code The given code buffer.
+     * @param actor The given actor.
+     * @exception IllegalActionException Thrown if 
+     *  _updatePortOffset(IOPort, StringBuffer, int) or getRate(IOPort)
+     *  throw it.  
+     */
+    private void _generateUpdatePortOffsetCode(StringBuffer code, Actor actor)
+            throws IllegalActionException {
+        // update buffer offset after firing each actor once
+        Iterator inputPorts = actor.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort port = (IOPort) inputPorts.next();
+            int rate = DFUtilities.getRate(port);
+            _updatePortOffset(port, code, rate);
+        }
+
+        Iterator outputPorts = actor.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort port = (IOPort) outputPorts.next();
+            int rate = DFUtilities.getRate(port);
+            _updateConnectedPortsOffset(port, code, rate);
+        }
     }
 
     /** Generate a main loop for an execution under the control of
@@ -223,8 +223,11 @@ public class StaticSchedulingDirector extends Director {
                     + "break;" + _eol + _INDENT2 + "}" + _eol);
         }
          */
-        code.append(generatePostfireCode());
+        _generateUpdatePortOffsetCode(code, 
+                (Actor) _director.getContainer());
 
+        code.append(generatePostfireCode());
+        
         Attribute period = _director.getAttribute("period");
         if (period != null) {
             Double periodValue = ((DoubleToken) ((Variable) period).getToken())

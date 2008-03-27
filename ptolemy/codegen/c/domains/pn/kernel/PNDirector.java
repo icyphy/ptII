@@ -42,6 +42,7 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.Director;
+import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -84,31 +85,6 @@ public class PNDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Generate code for declaring read and write offset variables if needed.
-    *
-    *  @return The generated code.
-    *  @exception IllegalActionException If thrown while creating
-    *  offset variables.
-    */
-   public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-       StringBuffer code = new StringBuffer();
-       //code.append(_createOffsetVariablesIfNeeded());
-       code.append(super.createOffsetVariablesIfNeeded());
-       List actorList = 
-           ((CompositeEntity) _director.getContainer()).deepEntityList();
-       
-       Iterator actors = actorList.iterator();
-       while (actors.hasNext()) {
-           Entity actor = (Entity) actors.next();
-           Iterator ports = actor.portList().iterator();
-           
-           while (ports.hasNext()) {
-               IOPort port = (IOPort) ports.next();
-               code.append(_createDynamicOffsetVariables(port));
-           }
-       }
-       return code.toString();
-   }
    
    /** Generate the body code that lies between variable declaration
     *  and wrapup.
@@ -213,7 +189,7 @@ public class PNDirector extends Director {
         //code.append(super.generateInitializeCode());
 
         List args = new LinkedList();
-        args.add(_generateDirectorHeader());
+        args.add(generateDirectorHeader());
 
         // Initialize the director head variable.
         code.append(_codeStream.getCodeBlock("initBlock", args));
@@ -252,22 +228,39 @@ public class PNDirector extends Director {
      *   an actor throws it while generating preinitialize code for the actor.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = 
-            new StringBuffer(super.generatePreinitializeCode());
+        StringBuffer bufferCode = new StringBuffer();
+
+        _buffers.clear();
+
+        List actorList = 
+            ((CompositeEntity) _director.getContainer()).deepEntityList();
+        
+        Iterator actors = actorList.iterator();
+        while (actors.hasNext()) {
+            Entity actor = (Entity) actors.next();
+            Iterator ports = actor.portList().iterator();
+            
+            while (ports.hasNext()) {
+                IOPort port = (IOPort) ports.next();
+                bufferCode.append(_createDynamicOffsetVariables(port));
+            }
+        }
+        StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
 
         List args = new LinkedList();
-        args.add(_generateDirectorHeader());
+        args.add(generateDirectorHeader());
 
         args.add(((CompositeActor) 
                 _director.getContainer()).deepEntityList().size());
                 
+        args.add(_buffers.size());
         code.append(_codeStream.getCodeBlock("preinitBlock", args));
         
         if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
             _generateThreadFunctionCode(code);
         }
         
-        return code.toString();
+        return code.toString() + bufferCode.toString();
     }
 
     public String generatePostfireCode() throws IllegalActionException {
@@ -348,7 +341,7 @@ public class PNDirector extends Director {
         // thread function code.
 
         List args = new LinkedList();
-        args.add(_generateDirectorHeader());
+        args.add(generateDirectorHeader());
 
         code.append(_codeStream.getCodeBlock("wrapupBlock", args));
 
@@ -360,28 +353,12 @@ public class PNDirector extends Director {
         IntToken sizeToken = (IntToken)
             ((ptolemy.domains.pn.kernel.PNDirector) _director)
         .initialQueueCapacity.getToken();
+                
+        // FIXME: Force buffer size to be at least 2.
+        // We need to handle size 1 as special case.
+        return Math.max(sizeToken.intValue(), 2);
+    }
         
-        return sizeToken.intValue();
-    }
-    
-    
-    public String generateOffset(String offsetString, IOPort port, 
-        int channel, boolean isWrite, CodeGeneratorHelper helper)
-            throws IllegalActionException {
-
-        String result;
-        if (offsetString.length() == 0 || offsetString.equals("0")) {
-            result = (isWrite) ? 
-                    "$getWriteOffset(" : "$getReadOffset(";
-        } else {
-            result = (isWrite) ? 
-                    "$getAdvancedWriteOffset(" : "$getAdvancedReadOffset(";            
-        }
-        result += "&" + _generatePortHeader(port, channel) + ", ";
-        result += "&" + _generateDirectorHeader() + ")";
-        return "[" + result + "]";
-    }
-    
     public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
         //sharedCode.add(_codeStream.getCodeBlock("sharedBlock"));
@@ -402,6 +379,8 @@ public class PNDirector extends Director {
     protected String _createDynamicOffsetVariables(IOPort port)
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        code.append(_eol + _codeGenerator.comment(
+                "PN Director's offset variable declarations."));
 
         int width;
         if (port.isInput()) {
@@ -421,21 +400,21 @@ public class PNDirector extends Director {
             
             // FIXME: Do some filtering, only generate needed buffer.
             for (int i = 0; i < width; i++) {
-                args.set(0, _generatePortHeader(port, i));
-                args.set(1, _generateDirectorHeader());
+                args.set(0, generatePortHeader(port, i));
+                args.set(1, generateDirectorHeader());
                 args.set(2, getBufferSize(port, i));
-                args.set(3, i);
+                args.set(3, _buffers.size());
                 
                 code.append(_codeStream.getCodeBlock("declareBufferHeader", args));
 
                 // Record all the buffer instantiated.
-                _buffers.add(_generatePortHeader(port, i));
+                _buffers.add(generatePortHeader(port, i));
             }
         }
         return code.toString();
     }
 
-    private String _generatePortHeader(IOPort port, int i) {
+    public static String generatePortHeader(IOPort port, int i) {
         return CodeGeneratorHelper.generateName(port)
         + "_" + i + "_pnHeader";
     }
@@ -449,7 +428,7 @@ public class PNDirector extends Director {
         return "true";//"director_controlBlock.controlBlock";
     }
 
-    protected String _generateDirectorHeader() {
+    public String generateDirectorHeader() {
         return CodeGeneratorHelper.generateName(_director) + "_controlBlock";
     }
 
@@ -494,7 +473,10 @@ public class PNDirector extends Director {
                 // If so, it should contain a different Director.
                 assert (directorHelper != this);
                 
-                code.append(directorHelper.generateMainLoop());                    
+                code.append(directorHelper.generateMainLoop());            
+                
+                code.append("incrementReadBlockingThreads(&" +
+                        generateDirectorHeader() + ");" + _eol);
             } else {
 
                 String pnPostfireCode = "";
@@ -524,40 +506,17 @@ public class PNDirector extends Director {
                 
                 code.append(helper.generatePostfireCode());
 
+                // Increment port offset.
                 for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
                     // Determine the amount to increment.
                     int rate = DFUtilities.getRate(port);
 
-                    String incrementFunction = (port.isInput()) ? 
-                            "$incrementReadOffset" : "$incrementWriteOffset";
+                    PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
                     
-                    if (rate <= 0) {
-                        assert false;
-                    }
-
-                    String incrementArg = "";
-                    if (rate > 1) {
-                        incrementFunction += "By";
-                        
-                        // Supply the increment argument.
-                        incrementArg += rate + ", ";
-                    }
-                    
-                    // FIXME: generate the right buffer reference from
-                    // both input and output ports.
-
-                    int width = port.getWidth();
-                    for (int i = 0; i < width; i++) {
-                        List<Channel> channels = _getReferencedChannels(port, i);
-
-                        for (Channel channel : channels) {
-                            pnPostfireCode +=  incrementFunction + "(" + 
-                                incrementArg + "&" +
-                                _generatePortHeader(channel.port, 
-                                        channel.channelNumber) + ", &" +
-                                _generateDirectorHeader() + ");" + _eol;
-                        }
-                    }
+                    //int width = port.getWidth();
+                    //for (int i = 0; i < width; i++) {
+                        pnPostfireCode += portHelper.updateOffset(rate, this);
+                    //}
                 }
 
                 // Code for incrementing buffer offsets.
@@ -565,7 +524,7 @@ public class PNDirector extends Director {
                 
                 code.append("}" + _eol);
                 code.append("incrementReadBlockingThreads(&" +
-                        _generateDirectorHeader() + ");" + _eol);
+                        generateDirectorHeader() + ");" + _eol);
             }            
 
             // wrapup
@@ -587,7 +546,7 @@ public class PNDirector extends Director {
 
     
     // See CodeGeneratorHelper._getReference(String, boolean)
-    protected List<Channel> _getReferencedChannels(IOPort port, int channelNumber)
+    public List<Channel> getReferencedChannels(IOPort port, int channelNumber)
             throws IllegalActionException {
 
         boolean forComposite = false;
@@ -615,21 +574,6 @@ public class PNDirector extends Director {
             result.add(new Channel(port, channelNumber));
         }
         return result;
-    }
-
-    /** Update the offsets of the buffers associated with the ports connected
-     *  with the given port in its downstream.
-     *
-     *  @param port The port whose directly connected downstream actors update
-     *   their write offsets.
-     *  @param code The string buffer that the generated code is appended to.
-     *  @param rate The rate, which must be greater than or equal to 0.
-     *  @exception IllegalActionException If thrown while reading or writing
-     *   offsets, or getting the buffer size, or if the rate is less than 0.
-     */
-    protected void _updateConnectedPortsOffset(IOPort port, StringBuffer code,
-            int rate) throws IllegalActionException {
-        code.append(_codeStream.getCodeBlock("updateOffset"));
     }
     
     private HashSet<String> _buffers = new HashSet<String>();

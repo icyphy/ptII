@@ -219,14 +219,14 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                             + portName + i;
                     String pointerToTokensFromOneChannel = "pointerTo"
                             + tokensFromOneChannel;
-                    code.append(_INDENT2);
+
                     code.append("jobject "
                             + tokensFromOneChannel
                             + " = "
                             + CCodegenUtilities.jniGetObjectArrayElement(
                                     portName, String.valueOf(i), targetCpp)
                             + ";" + _eol);
-                    code.append(_INDENT2);
+
                     if (type == BaseType.INT) {
                         code.append("jint * "
                                 + pointerToTokensFromOneChannel
@@ -263,7 +263,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                         portNameWithChannelNumber = portName + '#' + i;
                     }
                     for (int k = 0; k < rate; k++) {
-                        code.append(_INDENT2);
+
                         code.append(getReference("@"
                                 + portNameWithChannelNumber + "," + k));
                         if (type == PointerToken.POINTER) {
@@ -276,7 +276,6 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                         }
                     }
 
-                    code.append(_INDENT2);
                     if (type == BaseType.INT) {
                         code.append(CCodegenUtilities.jniReleaseArrayElements(
                                 "Int", tokensFromOneChannel,

@@ -1467,6 +1467,43 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return code.toString();
     }
 
+    /** 
+     * Get the code generator helper associated with the given object.
+     * @param object The given object.
+     * @return The code generator helper.
+     * @throws IllegalActionException If the helper class cannot be found.
+     */
+    protected Object _getHelper(Object object)
+        throws IllegalActionException {
+        
+        if (_helperStore.containsKey(object)) {
+            return _helperStore.get(object);
+        }
+
+        String packageName = generatorPackage.stringValue();
+
+        String className = object.getClass().getName();
+        String helperClassName = className.replaceFirst("ptolemy",
+                packageName);
+        if (helperClassName.equals(className)) {
+            throw new IllegalActionException(
+                    "The component class name \""
+                            + className
+                            + "\" and the helper class name \""
+                            + helperClassName
+                            + "\" are the same?  Perhaps the "
+                            + "substitution of the value of the generatorPackage "
+                            + "parameter \"" + packageName + "\" failed?");
+        }
+        ActorCodeGenerator castHelperObject = _instantiateHelper(object,
+                helperClassName);
+        _helperStore.put(object, castHelperObject);
+        
+        return castHelperObject;
+
+    }
+    
+    
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
      *  @return The code generator helper.
@@ -1474,31 +1511,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected ActorCodeGenerator _getHelper(NamedObj component)
             throws IllegalActionException {
-        if (_helperStore.containsKey(component)) {
-            return (ActorCodeGenerator) _helperStore.get(component);
-        }
-
-        String packageName = generatorPackage.stringValue();
-
-        String componentClassName = component.getClass().getName();
-        String helperClassName = componentClassName.replaceFirst("ptolemy",
-                packageName);
-        if (helperClassName.equals(componentClassName)) {
-            throw new IllegalActionException(
-                    component,
-                    "The component class name \""
-                            + componentClassName
-                            + "\" and the helper class name \""
-                            + helperClassName
-                            + "\" are the same?  Perhaps the "
-                            + "substitution of the value of the generatorPackage "
-                            + "parameter \"" + packageName + "\" failed?");
-        }
-        ActorCodeGenerator castHelperObject = _instantiateHelper(component,
-                helperClassName);
-        _helperStore.put(component, castHelperObject);
-        return castHelperObject;
-
+        return (ActorCodeGenerator) _getHelper((Object) component);
     }
 
     /** Generate the code for printing the execution time since
@@ -1769,7 +1782,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return The code generator helper.
      *  @exception IllegalActionException If the helper class cannot be found.
      */
-    private ActorCodeGenerator _instantiateHelper(NamedObj component,
+    private ActorCodeGenerator _instantiateHelper(Object component,
             String helperClassName) throws IllegalActionException {
         Class helperClass = null;
 
@@ -1798,8 +1811,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         try {
             helperObject = constructor.newInstance(new Object[] { component });
         } catch (Exception ex) {
-            throw new IllegalActionException(component, ex,
-                    "Failed to create helper class code generator.");
+            throw new IllegalActionException(null, ex,
+                    "Failed to create helper class code generator for "
+                    + helperClassName + ".");
         }
 
         if (!(helperObject instanceof ActorCodeGenerator)) {
@@ -1982,7 +1996,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ////                         private variables                 ////
 
     /** A map giving the code generator helpers for each actor. */
-    private Map<NamedObj, ActorCodeGenerator> _helperStore = new HashMap<NamedObj, ActorCodeGenerator>();
+    private Map _helperStore = new HashMap();
 
     /** The current indent level when pretty printing code. */
     private int _indent;

@@ -194,7 +194,6 @@ public class Director implements ActorCodeGenerator {
      * @param port The referenced port.
      * @param channel The referenced port channel.
      * @param isWrite Whether to generate the write or read offset.
-     * @param helper The corresponding helper. 
      * @return The expression that represents the offset in the generated
      * code.
      * @exception IllegalActionException If there is problems getting
@@ -203,9 +202,9 @@ public class Director implements ActorCodeGenerator {
     public String generateOffset(String offsetString, IOPort port, 
         int channel, boolean isWrite, CodeGeneratorHelper helper)
             throws IllegalActionException {
-        
-        return helper._generateOffset(offsetString, port, channel,
-                isWrite);
+        assert false;
+        return "";
+        //return helper._generateOffset(offsetString, port, channel, isWrite);
     }
 
     /** Generate the postfire code of the associated composite actor.
@@ -337,8 +336,8 @@ public class Director implements ActorCodeGenerator {
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(_codeGenerator
-                .comment("Transfer tokens to the outside")));
+        code.append(_codeGenerator
+                .comment("Transfer tokens to the outside"));
 
         // FIXME: The codegen.kernel class should not depend on codegen.c.
         // What if we wanted to generate code in another language.
@@ -354,11 +353,8 @@ public class Director implements ActorCodeGenerator {
                     name = name + '#' + i;
                 }
 
-                code.append(CodeStream.indent(_compositeActorHelper
-                        .getReference(name)));
-                code.append(" =" + _eol);
-                code.append(CodeStream.indent(_INDENT2
-                        + _compositeActorHelper.getReference("@" + name)));
+                code.append(_compositeActorHelper.getReference(name) + " = ");
+                code.append(_compositeActorHelper.getReference("@" + name));
                 code.append(";" + _eol);
             }
         }
@@ -621,49 +617,15 @@ public class Director implements ActorCodeGenerator {
      */
     protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
             throws IllegalActionException {
-        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
-                .getToken()).booleanValue();
-
         if (rate == 0) {
             return;
         } else if (rate < 0) {
             throw new IllegalActionException(port, "the rate: " + rate
                     + " is negative.");
         }
-
-        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
-                .getContainer());
-
-        int length = 0;
-        if (port.isInput()) {
-            length = port.getWidth();
-        } else {
-            length = port.getWidthInside();
-        }
-
-        for (int j = 0; j < length; j++) {
-            // Update the offset for each channel.
-            if (helper.getReadOffset(port, j) instanceof Integer) {
-                int offset = ((Integer) helper.getReadOffset(port, j))
-                        .intValue();
-                if (helper.getBufferSize(port, j) != 0) {
-                    offset = (offset + rate) % helper.getBufferSize(port, j);
-                }
-                helper.setReadOffset(port, j, Integer.valueOf(offset));
-            } else { // If offset is a variable.
-                String offsetVariable = (String) helper.getReadOffset(port, j);
-                if (padBuffers) {
-                    int modulo = helper.getBufferSize(port, j) - 1;
-                    code.append(CodeStream.indent(offsetVariable + " = ("
-                            + offsetVariable + " + " + rate + ")&" + modulo
-                            + ";" + _eol));
-                } else {
-                    code.append(CodeStream.indent(offsetVariable + " = ("
-                            + offsetVariable + " + " + rate + ") % "
-                            + helper.getBufferSize(port, j) + ";" + _eol));
-                }
-            }
-        }
+        
+        PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
+        code.append(portHelper.updateOffset(rate, this));
     }
 
     /** Update the offsets of the buffers associated with the ports connected
@@ -678,67 +640,16 @@ public class Director implements ActorCodeGenerator {
      */
     protected void _updateConnectedPortsOffset(IOPort port, StringBuffer code,
             int rate) throws IllegalActionException {
-        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
-                .getToken()).booleanValue();
-
         if (rate == 0) {
             return;
         } else if (rate < 0) {
             throw new IllegalActionException(port, "the rate: " + rate
                     + " is negative.");
         }
-
-        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
-                .getContainer());
-
-        int length = 0;
-        if (port.isInput()) {
-            length = port.getWidthInside();
-        } else {
-            length = port.getWidth();
-        }
-
-        for (int j = 0; j < length; j++) {
-            List sinkChannels = helper.getSinkChannels(port, j);
-
-            for (int k = 0; k < sinkChannels.size(); k++) {
-                Channel channel = (Channel) sinkChannels.get(k);
-                IOPort sinkPort = channel.port;
-                int sinkChannelNumber = channel.channelNumber;
-
-                Object offsetObject = helper.getWriteOffset(sinkPort,
-                        sinkChannelNumber);
-                if (offsetObject instanceof Integer) {
-                    int offset = ((Integer) offsetObject).intValue();
-                    int bufferSize = helper.getBufferSize(sinkPort,
-                            sinkChannelNumber);
-                    if (bufferSize != 0) {
-                        offset = (offset + rate) % bufferSize;
-                    }
-                    helper.setWriteOffset(sinkPort, sinkChannelNumber, Integer
-                            .valueOf(offset));
-                } else { // If offset is a variable.
-                    String offsetVariable = (String) helper.getWriteOffset(
-                            sinkPort, sinkChannelNumber);
-                    if (padBuffers) {
-                        int modulo = helper.getBufferSize(sinkPort,
-                                sinkChannelNumber) - 1;
-                        code.append(CodeStream.indent(offsetVariable + " = ("
-                                + offsetVariable + " + " + rate + ")&" + modulo
-                                + ";" + _eol));
-                    } else {
-                        code.append(CodeStream.indent(offsetVariable
-                                + " = ("
-                                + offsetVariable
-                                + " + "
-                                + rate
-                                + ") % "
-                                + helper.getBufferSize(sinkPort,
-                                        sinkChannelNumber) + ";" + _eol));
-                    }
-                }
-            }
-        }
+        
+        PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
+        code.append(portHelper.updateConnectedPortsOffset(rate, this));
+        
     }
 
     ////////////////////////////////////////////////////////////////////

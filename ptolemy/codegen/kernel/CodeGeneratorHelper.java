@@ -74,7 +74,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+
 ////CodeGeneratorHelper
 
 /**
@@ -110,6 +110,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         this(null);
     }
 
+    /** Construct a code generator helper.
+     */
+    public CodeGeneratorHelper(Object object) {
+        this(null);
+    }
+
     /** Construct the code generator helper associated
      *  with the given component.
      *  @param component The associated component.
@@ -117,7 +123,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public CodeGeneratorHelper(NamedObj component) {
         // FIXME: Why is this a namedObj when the analyzeActor()
         // method requires an Actor?
-        _component = component;
+        _object = component;
 
         _parseTreeCodeGenerator = new ParseTreeCodeGenerator() {
             /** Given a string, escape special characters as necessary for the
@@ -147,7 +153,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
              */
             public String generateFireCode() {
                 return "/* ParseTreeCodeGenerator.generateFireCode() "
-                        + "not implemented in codegen.kernel.CodeGenerator */";
+                + "not implemented in codegen.kernel.CodeGenerator */";
             }
         };
     }
@@ -191,7 +197,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         // reset the previous type convert info.
         _portConversions.clear();
 
-        Actor actor = (Actor) _component;
+        Actor actor = (Actor) _object;
 
         ArrayList sourcePorts = new ArrayList();
         sourcePorts.addAll(actor.outputPortList());
@@ -300,7 +306,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         if (fileDependencies.length() > 0) {
             LinkedList fileDependenciesList = StringUtilities
-                    .readLines(fileDependencies);
+            .readLines(fileDependencies);
             File codeDirectoryFile = codeGenerator._codeDirectoryAsFile();
             String necessaryFileName = null;
             Iterator iterator = fileDependenciesList.iterator();
@@ -333,7 +339,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 String necessaryFileShortName = necessaryURL.getPath();
                 if (necessaryURL.getPath().lastIndexOf("/") > -1) {
                     necessaryFileShortName = necessaryFileShortName
-                            .substring(necessaryFileShortName.lastIndexOf("/"));
+                    .substring(necessaryFileShortName.lastIndexOf("/"));
                 }
 
                 File necessaryFileDestination = new File(codeDirectoryFile,
@@ -355,14 +361,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         String directory = "unknown";
                         if (!StringUtilities.getProperty("user.dir").equals("")) {
                             directory = "\""
-                                    + StringUtilities.getProperty("user.dir")
-                                    + "\"";
+                                + StringUtilities.getProperty("user.dir")
+                                + "\"";
                         }
                         throw new IllegalActionException(namedObj, ex,
                                 "Failed to copy \"" + necessaryURL + "\" to \""
-                                        + necessaryFileDestination
-                                        + "\". Current directory is "
-                                        + directory);
+                                + necessaryFileDestination
+                                + "\". Current directory is "
+                                + directory);
                     }
                 }
                 // Reopen the destination file and get its time for
@@ -395,11 +401,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public static Type ptolemyType(String cgType) {
         Type result = cgType.equals("Int") ? BaseType.INT : cgType
                 .equals("Long") ? BaseType.LONG
-                : cgType.equals("String") ? BaseType.STRING : cgType
-                        .equals("Boolean") ? BaseType.BOOLEAN : cgType
-                        .equals("Double") ? BaseType.DOUBLE : cgType
-                        .equals("Complex") ? BaseType.COMPLEX : cgType
-                        .equals("Pointer") ? PointerToken.POINTER : null;
+                        : cgType.equals("String") ? BaseType.STRING : cgType
+                                .equals("Boolean") ? BaseType.BOOLEAN : cgType
+                                        .equals("Double") ? BaseType.DOUBLE : cgType
+                                                .equals("Complex") ? BaseType.COMPLEX : cgType
+                                                        .equals("Pointer") ? PointerToken.POINTER : null;
 
         if (cgType.endsWith("Array")) {
             String elementType = cgType.replace("Array", "");
@@ -413,7 +419,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                                     : elementType.equals("Boolean") ? BaseType.BOOLEAN_MATRIX
                                             : elementType.equals("Fix") ? BaseType.FIX_MATRIX
                                                     : elementType
-                                                            .equals("Long") ? BaseType.LONG_MATRIX
+                                                    .equals("Long") ? BaseType.LONG_MATRIX
                                                             : null;
 
         }
@@ -483,7 +489,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             copyFilesToCodeDirectory(getComponent(), _codeGenerator);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Problem copying files from the necessaryFiles parameter.");
+            "Problem copying files from the necessaryFiles parameter.");
         }
         return processCode(_codeStream.toString());
     }
@@ -548,7 +554,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void generateModeTransitionCode(StringBuffer code)
-            throws IllegalActionException {
+    throws IllegalActionException {
     }
 
     /** Generate sanitized name for the given named object. Remove all
@@ -577,121 +583,26 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String generateOffset(String offsetString, IOPort port, int channel,
             boolean isWrite) throws IllegalActionException {
+
+
         ptolemy.actor.Director director = 
-            ((Actor) _component).getExecutiveDirector();
-        
+            ((Actor) _object).getExecutiveDirector();
+
         if (director == null) {
-            // _component is at the top level. Use it's local director.
-            director = ((Actor) _component).getDirector();
+            // getComponent() is at the top level. Use it's local director.
+            director = ((Actor) _object).getDirector();
         }
         Director directorHelper = (Director) _getHelper(director);
-        Receiver[][] r = port.getReceivers();
-        // FIXME: use receivers to generate the offset code.
-        return processCode(directorHelper.generateOffset(
-                offsetString, port, channel, isWrite, this));        
+
+        //Receiver receiver = _getReceiver(port, channel);
+
+        PortCodeGenerator portHelper = 
+            (PortCodeGenerator) _getHelper(port);
+
+        return processCode(portHelper.generateOffset(
+                offsetString, channel, isWrite, directorHelper));
     }
 
-    /**
-     * Generate the expression that represents the offset in the generated
-     * code.
-     * @param offsetString The specified offset from the user.
-     * @param port The referenced port.
-     * @param channel The referenced port channel.
-     * @param isWrite Whether to generate the write or read offset.
-     * @return The expression that represents the offset in the generated code.
-     * @exception IllegalActionException If there is problems getting the port
-     *  buffer size or the offset in the channel and offset map.
-     */
-    protected String _generateOffset(String offsetString, IOPort port, int channel, boolean isWrite) throws IllegalActionException {
-        boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
-                .getToken()).booleanValue();
-        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
-                .getToken()).booleanValue();
-
-        // When dynamic references are allowed, any input ports require
-        // offsets.
-        if (dynamicReferencesAllowed && port.isInput()) {
-            if (!(port.isMultiport() || getBufferSize(port) > 1)) {
-                return "";
-            }
-        } else {
-            if (!(getBufferSize(port) > 1)) {
-                return "";
-            }
-        }
-
-        String result = null;
-        Object offsetObject;
-
-        // Get the offset index.
-        if (isWrite) {
-            offsetObject = getWriteOffset(port, channel);
-        } else {
-            offsetObject = getReadOffset(port, channel);
-        }
-
-        if (!offsetString.equals("")) {
-            // Specified offset.
-
-            String temp;
-            if (offsetObject instanceof Integer && _isInteger(offsetString)) {
-
-                int offset = ((Integer) offsetObject).intValue()
-                        + (Integer.valueOf(offsetString)).intValue();
-
-                offset %= getBufferSize(port, channel);
-                temp = Integer.toString(offset);
-                /*
-                 int divisor = getBufferSize(sinkPort,
-                 sinkChannelNumber);
-                 temp = "("
-                 + getWriteOffset(sinkPort,
-                 sinkChannelNumber) + " + "
-                 + channelAndOffset[1] + ")%" + divisor;
-                 */
-
-            } else {
-                // FIXME: We haven't check if modulo is 0. But this
-                // should never happen. For offsets that need to be
-                // represented by string expression,
-                // getBufferSize(port, channelNumber) will always
-                // return a value at least 2.
-
-                if (padBuffers) {
-                    int modulo = getBufferSize(port, channel) - 1;
-                    temp = "(" + offsetObject.toString() + " + " + offsetString
-                            + ")&" + modulo;
-                } else {
-                    int modulo = getBufferSize(port, channel);
-                    temp = "(" + offsetObject.toString() + " + " + offsetString
-                            + ")%" + modulo;
-                }
-            }
-
-            result = "[" + temp + "]";
-
-        } else {
-            // Did not specify offset, so the receiver buffer
-            // size is 1. This is multiple firing.
-
-            if (offsetObject instanceof Integer) {
-                int offset = ((Integer) offsetObject).intValue();
-
-                offset %= getBufferSize(port, channel);
-
-                result = "[" + offset + "]";
-            } else {
-                if (padBuffers) {
-                    int modulo = getBufferSize(port, channel) - 1;
-                    result = "[" + offsetObject + "&" + modulo + "]";
-                } else {
-                    result = "[" + offsetObject + "%"
-                            + getBufferSize(port, channel) + "]";
-                }
-            }
-        }
-        return result;
-    }
 
     /**
      * Generate the postfire code. In this base class, do nothing. Subclasses
@@ -738,7 +649,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateTypeConvertFireCode(boolean forComposite)
-            throws IllegalActionException {
+    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         // Type conversion code for inter-actor port conversion.
@@ -750,7 +661,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     && source.port.isInput()) {
 
                 Iterator sinkChannels = _getTypeConvertSinkChannels(source)
-                        .iterator();
+                .iterator();
 
                 while (sinkChannels.hasNext()) {
                     Channel sink = (Channel) sinkChannels.next();
@@ -777,13 +688,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *   director cannot be found.
      */
     public String generateVariableInitialization()
-            throws IllegalActionException {
+    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         //  Generate variable initialization for referenced parameters.
         if (!_referencedParameters.isEmpty()) {
             code.append(_eol
-                    + _codeGenerator.comment(1, _component.getName()
+                    + _codeGenerator.comment(1, getComponent().getName()
                             + "'s parameter initialization"));
 
             Iterator parameters = _referencedParameters.iterator();
@@ -795,15 +706,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     if (!_codeGenerator._modifiedVariables.contains(parameter)) {
                         code.append(_INDENT1
                                 + _codeGenerator
-                                        .generateVariableName(parameter)
+                                .generateVariableName(parameter)
                                 + " = "
                                 + getParameterValue(parameter.getName(),
-                                        _component) + ";" + _eol);
+                                        getComponent()) + ";" + _eol);
                     }
                 } catch (Throwable throwable) {
-                    throw new IllegalActionException(_component, throwable,
+                    throw new IllegalActionException(getComponent(), throwable,
                             "Failed to generate variable initialization for \""
-                                    + parameter + "\"");
+                            + parameter + "\"");
                 }
             }
         }
@@ -835,7 +746,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public int getBufferSize(IOPort port) throws IllegalActionException {
         int bufferSize = 1;
 
-        if (port.getContainer() == _component) {
+        if (port.getContainer() == getComponent()) {
             int length = 0;
 
             if (port.isInput()) {
@@ -869,11 +780,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @see #setBufferSize(IOPort, int, int)
      */
     public int getBufferSize(IOPort port, int channelNumber)
-            throws IllegalActionException {
-        if (port.getContainer() == _component) {
+    throws IllegalActionException {
+        if (port.getContainer() == getComponent()) {
             if (_bufferSizes == null) {
                 throw new InternalErrorException(this, null,
-                        "_bufferSizes is null?");
+                "_bufferSizes is null?");
             }
             if (_bufferSizes.get(port) == null) {
                 StringBuffer buffers = new StringBuffer();
@@ -887,9 +798,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 }
                 throw new InternalErrorException(this, null,
                         "_bufferSizes.get(" + port
-                                + ") is null?, _bufferSizes.size(): "
-                                + _bufferSizes.size() + " ports: "
-                                + buffers.toString());
+                        + ") is null?, _bufferSizes.size(): "
+                        + _bufferSizes.size() + " ports: "
+                        + buffers.toString());
             }
             return ((int[]) _bufferSizes.get(port))[channelNumber];
         } else {
@@ -911,7 +822,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @return The associated component.
      */
     public NamedObj getComponent() {
-        return _component;
+        return (NamedObj) _object;
+    }
+
+    /** Get the object associated with this helper.
+     *  @return The associated object.
+     */
+    public NamedObj getObject() {
+        return (NamedObj) _object;
     }
 
     /**
@@ -934,7 +852,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *   not well-formed.
      */
     public String getFunctionInvocation(String functionString, boolean isStatic)
-            throws IllegalActionException {
+    throws IllegalActionException {
         functionString = processCode(functionString);
 
         // i.e. "$tokenFunc(token::add(arg1, arg2, ...))"
@@ -951,8 +869,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 || (closeFuncParenIndex != (functionString.length() - 1))) {
             throw new IllegalActionException(
                     "Bad Syntax with the $tokenFunc / $typeFunc macro. "
-                            + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
-                            + "String was:\n:" + functionString);
+                    + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
+                    + "String was:\n:" + functionString);
         }
 
         String typeOrToken = functionString.substring(0, commaIndex).trim();
@@ -960,7 +878,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 openFuncParenIndex).trim();
 
         String argumentList = functionString.substring(openFuncParenIndex + 1)
-                .trim();
+        .trim();
 
         if (isStatic) {
             // Record the referenced type function in the infoTable.
@@ -968,11 +886,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
             if (argumentList.length() == 0) {
                 throw new IllegalActionException(
-                        "Static type function requires at least one argument(s).");
+                "Static type function requires at least one argument(s).");
             }
 
             return "functionTable[(int)" + typeOrToken + "][FUNC_"
-                    + functionName + "](" + argumentList;
+            + functionName + "](" + argumentList;
 
         } else {
             // Record the referenced type function in the infoTable.
@@ -984,7 +902,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             }
 
             return "functionTable[(int)" + typeOrToken + ".type][FUNC_"
-                    + functionName + "](" + typeOrToken + argumentList;
+            + functionName + "](" + typeOrToken + argumentList;
         }
     }
 
@@ -1005,7 +923,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             LinkedList includeFilesList = new LinkedList();
             try {
                 includeFilesList = StringUtilities
-                        .readLines(includeFilesString);
+                .readLines(includeFilesString);
             } catch (IOException e) {
                 throw new IllegalActionException(
                         "Unable to read include files for " + getName());
@@ -1032,7 +950,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             LinkedList includeDirectoriesList = new LinkedList();
             try {
                 includeDirectoriesList = StringUtilities
-                        .readLines(includeDirectoriesString);
+                .readLines(includeDirectoriesString);
             } catch (IOException e) {
                 throw new IllegalActionException(
                         "Unable to read include directories for " + getName());
@@ -1085,7 +1003,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             LinkedList libraryDirectoryList = new LinkedList();
             try {
                 libraryDirectoryList = StringUtilities
-                        .readLines(libraryDirectoriesString);
+                .readLines(libraryDirectoriesString);
             } catch (IOException e) {
                 throw new IllegalActionException(
                         "Unable to read library directories for " + getName());
@@ -1106,12 +1024,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public Set getModifiedVariables() throws IllegalActionException {
         Set set = new HashSet();
-        if (_component instanceof ExplicitChangeContext) {
-            set.addAll(((ExplicitChangeContext) _component)
+        if (_object instanceof ExplicitChangeContext) {
+            set.addAll(((ExplicitChangeContext) _object)
                     .getModifiedVariables());
         }
 
-        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
+        Iterator inputPorts = ((Actor) _object).inputPortList().iterator();
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             if (inputPort instanceof ParameterPort && inputPort.getWidth() > 0) {
@@ -1131,7 +1049,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *   not well-formed.
      */
     public String getNewInvocation(String constructorString)
-            throws IllegalActionException {
+    throws IllegalActionException {
         constructorString = processCode(constructorString);
 
         // i.e. "$new(Array(8, 8, arg1, arg2, ...))"
@@ -1145,17 +1063,17 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 || (closeFuncParenIndex != (constructorString.length() - 1))) {
             throw new IllegalActionException(
                     "Bad Syntax with the $new() macro. "
-                            + "[i.e. -- $new(Array(8, 8, arg1, arg2, ...))]");
+                    + "[i.e. -- $new(Array(8, 8, arg1, arg2, ...))]");
         }
 
         String typeName = constructorString.substring(0, openFuncParenIndex)
-                .trim();
+        .trim();
 
         // Record the referenced type function in the infoTable.
         _codeGenerator._newTypesUsed.add(typeName);
 
         return typeName + "_new"
-                + constructorString.substring(openFuncParenIndex);
+        + constructorString.substring(openFuncParenIndex);
     }
 
     /** Return the value or an expression in the target language for
@@ -1175,7 +1093,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *   does not have a value.
      */
     public String getParameterValue(String name, NamedObj container)
-            throws IllegalActionException {
+    throws IllegalActionException {
         name = processCode(name);
 
         StringTokenizer tokenizer = new StringTokenizer(name, ",");
@@ -1188,7 +1106,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             offset = tokenizer.nextToken().trim();
 
             if (tokenizer.hasMoreTokens()) {
-                throw new IllegalActionException(_component, name
+                throw new IllegalActionException(getComponent(), name
                         + " does not have the correct format for"
                         + " accessing the parameter value.");
             }
@@ -1198,7 +1116,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         StringTokenizer tokenizer2 = new StringTokenizer(attributeName, "()",
                 false);
         if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
-            throw new IllegalActionException(_component, "Invalid cast type: "
+            throw new IllegalActionException(getComponent(), "Invalid cast type: "
                     + attributeName);
         }
 
@@ -1236,9 +1154,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 if (variable.isStringMode()) {
                     return _generateTypeConvertMethod("\""
                             + parseTreeCodeGenerator
-                                    .escapeForTargetLanguage(variable
-                                            .getExpression()) + "\"", castType,
-                            "String");
+                            .escapeForTargetLanguage(variable
+                                    .getExpression()) + "\"", castType,
+                    "String");
                 }
 
                 PtParser parser = new PtParser();
@@ -1249,7 +1167,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(variable, throwable,
                             "Failed to generate parse tree for \"" + name
-                                    + "\". in \"" + container + "\"");
+                            + "\". in \"" + container + "\"");
                 }
                 parseTreeCodeGenerator.evaluateParseTree(parseTree,
                         new VariableScope(variable));
@@ -1272,7 +1190,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
             // FIXME: Are there any other values that a
             // parameter might have?
-            //throw new IllegalActionException(_component,
+            //throw new IllegalActionException(getComponent(),
             //        "Attribute does not have a value: " + name);
         } else {
             // FIXME: if offset != null, for now we assume the value of
@@ -1288,11 +1206,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                             castType, codeGenType(element.getType()));
                 }
 
-                throw new IllegalActionException(_component, attributeName
+                throw new IllegalActionException(getComponent(), attributeName
                         + " does not contain an ArrayToken.");
             }
 
-            throw new IllegalActionException(_component, attributeName
+            throw new IllegalActionException(getComponent(), attributeName
                     + " is not a parameter.");
         }
     }
@@ -1324,8 +1242,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @see #setReadOffset(IOPort, int, Object)
      */
     public Object getReadOffset(IOPort inputPort, int channelNumber)
-            throws IllegalActionException {
-        if (inputPort.getContainer() == _component) {
+    throws IllegalActionException {
+        if (inputPort.getContainer() == _object) {
             return ((Object[]) _readOffsets.get(inputPort))[channelNumber];
         } else {
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(inputPort
@@ -1354,16 +1272,16 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     private String getReference(String name, boolean isWrite) 
-            throws IllegalActionException {
+    throws IllegalActionException {
         ptolemy.actor.Director director = 
-            ((Actor) _component).getExecutiveDirector();
-        
+            ((Actor) _object).getExecutiveDirector();
+
         if (director == null) {
             // _component is at the top level. Use it's local director.
-            director = ((Actor) _component).getDirector();
+            director = ((Actor) _object).getDirector();
         }
         Director directorHelper = (Director) _getHelper(director);
-        
+
         return directorHelper.getReference(name, isWrite, this);
     }
 
@@ -1380,7 +1298,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *   exist or does not have a value.
      */
     protected String _getReference(String name, boolean isWrite)
-            throws IllegalActionException {
+    throws IllegalActionException {
         boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
                 .getToken()).booleanValue();
 
@@ -1394,7 +1312,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         if ((tokenizer.countTokens() != 1) && (tokenizer.countTokens() != 3)
                 && (tokenizer.countTokens() != 5)) {
-            throw new IllegalActionException(_component,
+            throw new IllegalActionException(getComponent(),
                     "Reference not found: " + name);
         }
 
@@ -1404,7 +1322,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         // Get the cast type (if any), so we can add the proper convert method.
         StringTokenizer tokenizer2 = new StringTokenizer(refName, "()", false);
         if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
-            throw new IllegalActionException(_component, "Invalid cast type: "
+            throw new IllegalActionException(getComponent(), "Invalid cast type: "
                     + refName);
         }
 
@@ -1461,19 +1379,19 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 if (port.isOutput()) {
                     throw new IllegalActionException(
                             "Variable channel reference not supported"
-                                    + "for output ports");
+                            + "for output ports");
                 } else {
 
                     String channelOffset;
                     if (channelAndOffset[1] == "") {
                         channelOffset = CodeGeneratorHelper
-                                .generateChannelOffset(port, isWrite,
-                                        channelAndOffset[0]);
+                        .generateChannelOffset(port, isWrite,
+                                channelAndOffset[0]);
                     } else {
                         channelOffset = channelAndOffset[1];
                     }
 
-                    result.append(generateName(_component));
+                    result.append(generateName(getComponent()));
                     result.append("_");
                     result.append(port.getName());
                     if (port.isMultiport()) {
@@ -1504,7 +1422,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
                 if (remoteReceivers.length == 0) {
                     // The channel of this output port doesn't have any sink.
-                    result.append(generateName(_component));
+                    result.append(generateName(getComponent()));
                     result.append("_");
                     result.append(port.getName());
                     return _generateTypeConvertMethod(result.toString(),
@@ -1539,8 +1457,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                                     result.append("[" + channelAndOffset[1].trim() + "]");
                                 } else {
                                     result.append("[" + 
-                                        CodeGeneratorHelper.generateChannelOffset(
-                                        port, isWrite, channelAndOffset[0]) + "]");
+                                            CodeGeneratorHelper.generateChannelOffset(
+                                                    port, isWrite, channelAndOffset[0]) + "]");
                                 }
                             } else {
                                 int rate = Math.max(
@@ -1604,7 +1522,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
 
         // Try if the name is a parameter.
-        Attribute attribute = _component.getAttribute(refName);
+        Attribute attribute = getComponent().getAttribute(refName);
 
         if (attribute != null) {
             //FIXME: potential bug: if the attribute is not a parameter,
@@ -1617,8 +1535,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             result.append(_codeGenerator.generateVariableName(attribute));
 
             if (!channelAndOffset[0].equals("")) {
-                throw new IllegalActionException(_component,
-                        "a parameter cannot have channel number.");
+                throw new IllegalActionException(getComponent(),
+                "a parameter cannot have channel number.");
             }
 
             if (!channelAndOffset[1].equals("")) {
@@ -1637,7 +1555,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     refType);
         }
 
-        throw new IllegalActionException(_component, "Reference not found: "
+        throw new IllegalActionException(getComponent(), "Reference not found: "
                 + name);
     }
 
@@ -1647,8 +1565,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @return The port that has the given name.
      */
     public TypedIOPort getPort(String refName) {
-        Actor actor = (Actor) _component;
-
+        Actor actor = (Actor) _object;
         Iterator inputPorts = actor.inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
@@ -1728,7 +1645,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         + "\" was null! Total number of channels: "
                         + remoteReceivers.length);
             }
-            */
+             */
             return sinkChannels;
         }
 
@@ -1767,7 +1684,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public String getSize(String name) throws IllegalActionException {
 
         // Try if the name is a parameter.
-        Attribute attribute = ModelScope.getScopedVariable(null, _component,
+        Attribute attribute = ModelScope.getScopedVariable(null, getComponent(),
                 name);
 
         if (attribute != null) {
@@ -1799,7 +1716,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             }
         }
 
-        throw new IllegalActionException(_component, "Attribute not found: "
+        throw new IllegalActionException(getComponent(), "Attribute not found: "
                 + name);
     }
 
@@ -1812,7 +1729,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  information about the receivers or constructing the new Channel.
      */
     public Channel getSourceChannel(IOPort port, int channelNumber)
-            throws IllegalActionException {
+    throws IllegalActionException {
         Receiver[][] receivers;
 
         if (port.isInput()) {
@@ -1841,8 +1758,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @see #setWriteOffset(IOPort, int, Object)
      */
     public Object getWriteOffset(IOPort inputPort, int channelNumber)
-            throws IllegalActionException {
-        if (inputPort.getContainer() == _component) {
+    throws IllegalActionException {
+        if (inputPort.getContainer() == _object) {
             return ((Object[]) _writeOffsets.get(inputPort))[channelNumber];
         } else {
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(inputPort
@@ -1859,7 +1776,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  corresponding codegen type.
      */
     public static boolean isPrimitive(Type ptType)
-            throws IllegalActionException {
+    throws IllegalActionException {
         return CodeGenerator._primitiveTypes.contains(codeGenType(ptType));
     }
 
@@ -1891,7 +1808,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         while (currentPos < code.length()) {
             int openParenIndex = code.indexOf("(", currentPos + 1);
             if (openParenIndex == -1) {
-                throw new IllegalActionException(_component,
+                throw new IllegalActionException(getComponent(),
                         "Failed to find open paren in \"" + code + "\".");
             }
             int closeParenIndex = _findClosedParen(code, openParenIndex);
@@ -1939,7 +1856,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to replace the parameter \"" + name
-                                + "\" in the macro \"" + macro + "\"");
+                        + "\" in the macro \"" + macro + "\"");
             }
 
             String string = code.substring(closeParenIndex + 1, nextPos);
@@ -1979,7 +1896,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String resetInputPortsOffset() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
+        Iterator inputPorts = ((Actor) _object).inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
             IOPort port = (IOPort) inputPorts.next();
@@ -2035,7 +1952,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public void setReadOffset(IOPort inputPort, int channelNumber,
             Object readOffset) throws IllegalActionException {
-        if (inputPort.getContainer() == _component) {
+        if (inputPort.getContainer() == _object) {
             Object[] readOffsets = (Object[]) _readOffsets.get(inputPort);
             readOffsets[channelNumber] = readOffset;
         } else {
@@ -2056,7 +1973,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public void setWriteOffset(IOPort inputPort, int channelNumber,
             Object writeOffset) throws IllegalActionException {
-        if (inputPort.getContainer() == _component) {
+        if (inputPort.getContainer() == _object) {
             Object[] writeOffsets = (Object[]) _writeOffsets.get(inputPort);
             writeOffsets[channelNumber] = writeOffset;
         } else {
@@ -2093,8 +2010,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
          */
         public boolean equals(Object object) {
             return object instanceof Channel
-                    && port.equals(((Channel) object).port)
-                    && channelNumber == ((Channel) object).channelNumber;
+            && port.equals(((Channel) object).port)
+            && channelNumber == ((Channel) object).channelNumber;
         }
 
         /**
@@ -2159,7 +2076,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
          */
         public Token get(String name) throws IllegalActionException {
 
-            NamedObj container = _component;
+            NamedObj container = getComponent();
             if (_variable != null) {
                 container = _variable.getContainer();
             }
@@ -2200,7 +2117,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.data.type.Type getType(String name)
-                throws IllegalActionException {
+        throws IllegalActionException {
             if (_variable != null) {
                 return _variable.getParserScope().getType(name);
             }
@@ -2217,7 +2134,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
+        throws IllegalActionException {
             if (_variable != null) {
                 return _variable.getParserScope().getTypeTerm(name);
             }
@@ -2260,7 +2177,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *
      */
     protected void _createBufferSizeAndOffsetMap()
-            throws IllegalActionException {
+    throws IllegalActionException {
 
         _createInputBufferSizeAndOffsetMap();
 
@@ -2271,14 +2188,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  getting port information.
      */
     protected void _createInputBufferSizeAndOffsetMap()
-            throws IllegalActionException {
+    throws IllegalActionException {
 
         //We only care about input ports where data are actually stored
         //except when an output port is not connected to any input port.
         //In that case the variable corresponding to the unconnected output
         //port always has size 1 and the assignment to this variable is
         //performed just for the side effect.
-        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
+        Iterator inputPorts = ((Actor) _object).inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
             IOPort port = (IOPort) inputPorts.next();
@@ -2290,11 +2207,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             int[] bufferSizes = new int[length];
             _bufferSizes.put(port, bufferSizes);
 
-            ptolemy.actor.Director director = ((Actor) _component)
-                    .getExecutiveDirector();
+            ptolemy.actor.Director director = ((Actor) _object)
+            .getExecutiveDirector();
             if (director == null) {
                 // _component is at the top level. Use it's local director.
-                director = ((Actor) _component).getDirector();
+                director = ((Actor) _object).getDirector();
             }
             Director directorHelper = (Director) _getHelper(director);
 
@@ -2326,7 +2243,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  the helper .c file.
      */
     protected String _generateBlockCode(String blockName)
-            throws IllegalActionException {
+    throws IllegalActionException {
         // We use this method to reduce code duplication for simple blocks.
         return _generateBlockCode(blockName, new ArrayList());
     }
@@ -2342,7 +2259,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  the helper .c file.
      */
     protected String _generateBlockCode(String blockName, List args)
-            throws IllegalActionException {
+    throws IllegalActionException {
         // We use this method to reduce code duplication for simple blocks.
         _codeStream.clear();
         _codeStream.appendCodeBlock(blockName, args);
@@ -2389,7 +2306,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * helpers for the ports or if the conversion cannot be handled.
      */
     protected String _generateTypeConvertStatements(Channel source, Channel sink)
-            throws IllegalActionException {
+    throws IllegalActionException {
 
         StringBuffer statements = new StringBuffer();
 
@@ -2433,12 +2350,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         // The references are associated with their own helper, so we need
         // to find the associated helper.
         String sourcePortChannel = source.port.getName() + "#"
-                + source.channelNumber + ", " + offset;
+        + source.channelNumber + ", " + offset;
         String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
                 .getContainer())).getReference(sourcePortChannel);
 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
-                + ", " + offset;
+        + ", " + offset;
 
         // For composite actor, generate a variable corresponding to
         // the inside receiver of an output port.
@@ -2467,11 +2384,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         if (!sinkType.equals(sourceType)) {
             if (isPrimitive(sinkType)) {
                 result = codeGenType(sourceType) + "to" + codeGenType(sinkType)
-                        + "(" + result + ")";
+                + "(" + result + ")";
 
             } else if (isPrimitive(sourceType)) {
                 result = "$new(" + codeGenType(sourceType) + "(" + result
-                        + "))";
+                + "))";
             }
 
             if (sinkType != BaseType.SCALAR && sinkType != BaseType.GENERAL
@@ -2479,30 +2396,30 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 if (sinkType instanceof ArrayType) {
                     if (isPrimitive(sourceType)) {
                         result = "$new(Array(1, 1, " + result + ", TYPE_"
-                                + codeGenType(sourceType) + "))";
+                        + codeGenType(sourceType) + "))";
                     }
 
                     // Deep converting for ArrayType.
                     Type elementType = ((ArrayType) sinkType).getElementType();
                     while (elementType instanceof ArrayType) {
                         elementType = ((ArrayType) elementType)
-                                .getElementType();
+                        .getElementType();
                     }
 
                     if (elementType != BaseType.SCALAR
                             && elementType != BaseType.GENERAL) {
                         result = "$typeFunc(TYPE_"
-                                + codeGenType(sinkType)
-                                + "::convert("
-                                + result
-                                + ", TYPE_"
-                                + codeGenType(((ArrayType) sinkType)
-                                        .getElementType()) + "))";
+                            + codeGenType(sinkType)
+                            + "::convert("
+                            + result
+                            + ", TYPE_"
+                            + codeGenType(((ArrayType) sinkType)
+                                    .getElementType()) + "))";
                     }
 
                 } else {
                     result = "$typeFunc(TYPE_" + codeGenType(sinkType)
-                            + "::convert(" + result + "))";
+                    + "::convert(" + result + "))";
                 }
             }
         }
@@ -2521,7 +2438,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  specified in the given string is illegal.
      */
     protected String[] _getChannelAndOffset(String name)
-            throws IllegalActionException {
+    throws IllegalActionException {
 
         String[] result = { "", "" };
 
@@ -2563,7 +2480,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  contain the same number of open and closed parentheses.
      */
     private static int _indexOf(char ch, String string, int fromIndex)
-            throws IllegalActionException {
+    throws IllegalActionException {
 
         int parenIndex = fromIndex;
         int result = -1;
@@ -2589,8 +2506,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @exception IllegalActionException If the helper class cannot be found.
      */
     protected ComponentCodeGenerator _getHelper(NamedObj component)
-            throws IllegalActionException {
+    throws IllegalActionException {
         return _codeGenerator._getHelper(component);
+    }
+
+    protected Object _getHelper(Object object)
+    throws IllegalActionException {
+        return _codeGenerator._getHelper(object);
     }
 
     /** Return a number of spaces that is proportional to the argument.
@@ -2632,7 +2554,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  parameter is not valid.
      */
     protected String _replaceMacro(String macro, String parameter)
-            throws IllegalActionException {
+    throws IllegalActionException {
         if (macro.equals("ref")) {
             return getReference(parameter);
         } else if (macro.equals("targetType")) {
@@ -2658,21 +2580,21 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return type + codeGenType(port.getType());
 
         } else if (macro.equals("val")) {
-            return getParameterValue(parameter, _component);
+            return getParameterValue(parameter, getComponent());
 
         } else if (macro.equals("size")) {
             return "" + getSize(parameter);
 
         } else if (macro.equals("actorSymbol")) {
             if (parameter.trim().length() == 0) {
-                return generateVariableName(_component);
+                return generateVariableName(getComponent());
             } else {
-                return generateVariableName(_component) + "_"
-                        + processCode(parameter);
+                return generateVariableName(getComponent()) + "_"
+                + processCode(parameter);
             }
         } else if (macro.equals("actorClass")) {
-            return _component.getClassName().replace('.', '_') + "_"
-                    + processCode(parameter);
+            return getComponent().getClassName().replace('.', '_') + "_"
+            + processCode(parameter);
 
             // Handle type function macros.
         } else if (macro.equals("new")) {
@@ -2773,7 +2695,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *   if the index is less than 0 or past the end of the string.
      */
     private static int _findClosedParen(String string, int pos)
-            throws IllegalActionException {
+    throws IllegalActionException {
         if (pos < 0 || pos >= string.length()) {
             throw new IllegalActionException("The character index " + pos
                     + " is past the end of string \"" + string
@@ -2840,7 +2762,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  the block or processing the macros.
      */
     public String _generateBlockByName(String blockName)
-            throws IllegalActionException {
+    throws IllegalActionException {
         _codeStream.clear();
         _codeStream.appendCodeBlock(blockName, true);
         // There is no need to generate comment for empty code block.
@@ -2885,13 +2807,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         if (namedObj != null
                 && namedObj instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
             helper = (CodeGeneratorHelper) codeGenerator
-                    ._getHelper(codeGenerator.getContainer());
+            ._getHelper(codeGenerator.getContainer());
             codeStream = new CodeStream(helper);
             // We have an EmbeddedCActor, read the codeBlocks from
             // the embeddedCCode parameter.
             codeStream
-                    .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) namedObj).embeddedCCode
-                            .getExpression());
+            .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) namedObj).embeddedCCode
+                    .getExpression());
         } else {
             helper = (CodeGeneratorHelper) codeGenerator._getHelper(namedObj);
             codeStream = new CodeStream(helper);
@@ -2914,21 +2836,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return new ArrayList();
     }
 
-    /**
-     * Return true if the given string can be parse as an integer; otherwise,
-     * return false.
-     * @param numberString The given number string.
-     * @return True if the given string can be parse as an integer; otherwise,
-     *  return false.
-     */
-    private boolean _isInteger(String numberString) {
-        try {
-            Integer.parseInt(numberString);
-            return true;
-        } catch (NumberFormatException ex) {
-            return false;
-        }
-    }
 
     /**
      * Mark the given connection between the source and the sink channels
@@ -2950,15 +2857,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The associated component. */
-    private NamedObj _component;
+    /** The associated object. */
+    private Object _object;
 
     /**
      * The code block table that stores the code block body (StringBuffer)
      * with the code block name (String) as key.
      */
     private static final String[] _defaultBlocks = { "preinitBlock",
-            "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
+        "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
 
     private boolean printedNullPortWarnings = false;
 }
