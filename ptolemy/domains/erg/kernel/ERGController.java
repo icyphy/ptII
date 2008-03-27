@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -35,6 +35,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -46,6 +48,7 @@ import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -71,36 +74,6 @@ public class ERGController extends ModalController {
         super(container, name);
         _init();
     }
-    
-    public boolean synchronizeToRealtime() {
-        List<?> synchronizeAttributes =
-            attributeList(SynchronizeToRealtime.class);
-        boolean synchronize = false;
-        if (synchronizeAttributes.size() > 0) {
-            SynchronizeToRealtime attribute =
-                (SynchronizeToRealtime) synchronizeAttributes.get(0);
-            try {
-                synchronize = ((BooleanToken) attribute.getToken()).booleanValue();
-            } catch (IllegalActionException e) {
-                return false;
-            }
-        }
-        return synchronize;
-    }
-    
-    public boolean hasInput() throws IllegalActionException {
-        Iterator<?> inPorts = ((ERGModalModel) getContainer()).inputPortList()
-                .iterator();
-        while (inPorts.hasNext() && !_stopRequested) {
-            IOPort p = (IOPort) inPorts.next();
-            Token token =
-                (Token) _inputTokenMap.get(p.getName() + "_isPresent");
-            if (token != null && BooleanToken.TRUE.equals(token)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * @param workspace
@@ -117,8 +90,61 @@ public class ERGController extends ModalController {
         director.fire();
     }
 
+    public Director getExecutiveDirector() {
+        Workspace workspace = workspace();
+        try {
+            workspace.getReadAccess();
+            if (_executiveDirectorVersion != workspace.getVersion()) {
+                ERGModalModel modalModel = (ERGModalModel) getContainer();
+                if (modalModel.getController() == this) {
+                    _executiveDirector = super.getExecutiveDirector();
+                } else {
+                    for (Object atomicEntity
+                            : modalModel.allAtomicEntityList()) {
+                        if (atomicEntity instanceof Event) {
+                            Event event = (Event) atomicEntity;
+                            Actor[] refinements;
+                            try {
+                                refinements = event.getRefinement();
+                            } catch (IllegalActionException e) {
+                                throw new InternalErrorException(e);
+                            }
+                            if (refinements != null) {
+                                for (Actor refinement : refinements) {
+                                    if (refinement == this) {
+                                        _executiveDirector = ((ERGController)
+                                                event.getContainer()).director;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                _executiveDirectorVersion = workspace.getVersion();
+            }
+        } finally {
+            workspace.doneReading();
+        }
+        return _executiveDirector;
+    }
+
     public State getInitialState() {
         return null;
+    }
+
+    public boolean hasInput() throws IllegalActionException {
+        Iterator<?> inPorts = ((ERGModalModel) getContainer()).inputPortList()
+                .iterator();
+        while (inPorts.hasNext() && !_stopRequested) {
+            IOPort p = (IOPort) inPorts.next();
+            Token token =
+                (Token) _inputTokenMap.get(p.getName() + "_isPresent");
+            if (token != null && BooleanToken.TRUE.equals(token)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void initialize() throws IllegalActionException {
@@ -175,6 +201,22 @@ public class ERGController extends ModalController {
         director.stopFire();
     }
 
+    public boolean synchronizeToRealtime() {
+        List<?> synchronizeAttributes =
+            attributeList(SynchronizeToRealtime.class);
+        boolean synchronize = false;
+        if (synchronizeAttributes.size() > 0) {
+            SynchronizeToRealtime attribute =
+                (SynchronizeToRealtime) synchronizeAttributes.get(0);
+            try {
+                synchronize = ((BooleanToken) attribute.getToken()).booleanValue();
+            } catch (IllegalActionException e) {
+                return false;
+            }
+        }
+        return synchronize;
+    }
+
     public void terminate() {
         director.terminate();
     }
@@ -210,4 +252,8 @@ public class ERGController extends ModalController {
         director = new ERGDirector(this, "_Director");
         new SingletonAttribute(director, "_hide");
     }
+
+    private Director _executiveDirector;
+
+    private long _executiveDirectorVersion = -1;
 }

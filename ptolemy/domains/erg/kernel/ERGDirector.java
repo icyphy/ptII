@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -113,12 +113,22 @@ public class ERGDirector extends Director implements TimedDirector {
         }
     }
 
-    public Time cancel(Event event) {
+    public Time cancel(Event event) throws IllegalActionException {
         Iterator<TimedEvent> iterator = _eventQueue.iterator();
         while (iterator.hasNext()) {
             TimedEvent timedEvent = iterator.next();
-            if (timedEvent.contents == event) {
+            boolean found = timedEvent.contents == event;
+            if (!found) {
+                for (Actor refinement : event.getRefinement()) {
+                    if (timedEvent.contents == refinement) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if (found) {
                 iterator.remove();
+                _inputQueue.remove(timedEvent);
                 return timedEvent.timeStamp;
             }
         }
@@ -152,67 +162,49 @@ public class ERGDirector extends Director implements TimedDirector {
         boolean hasInput = controller.hasInput();
         boolean synchronize = controller.synchronizeToRealtime();
         Time modelTime = getModelTime();
-        boolean firstFire = true;
-        while (true) {
-            boolean fired = false;
-            if (hasInput) {
-                while (!_inputQueue.isEmpty()) {
-                    TimedEvent timedEvent = _inputQueue.poll();
+        boolean fired = false;
+
+        if (hasInput && !_inputQueue.isEmpty()) {
+            Iterator<TimedEvent> iterator = _inputQueue.iterator();
+            while (!fired && iterator.hasNext()) {
+                TimedEvent timedEvent = iterator.next();
+                if (timedEvent.contents instanceof Event) {
+                    iterator.remove();
                     _eventQueue.remove(timedEvent);
                     _fire(timedEvent);
                     fired = true;
-                    firstFire = false;
-                }
-            }
-
-            if (!_eventQueue.isEmpty()) {
-                TimedEvent timedEvent = _eventQueue.peek();
-                if (firstFire) {
-                    Time nextEventTime = timedEvent.timeStamp;
-                    if (nextEventTime.compareTo(modelTime) <= 0) {
-                        _eventQueue.poll();
-                        if (timedEvent.contents instanceof Event) {
-                            Event event = (Event) timedEvent.contents;
-                            if (event.fireOnInput()) {
-                                _inputQueue.remove(timedEvent);
-                            }
-                        }
-                        if (synchronize) {
-                            if (!_synchronizeToRealtime(nextEventTime)) {
-                                return;
-                            }
-                            synchronize = false;
-                        }
-
-                        _fire(timedEvent);
-                        fired = true;
-                        firstFire = false;
-                    }
-                }
-            }
-
-            if (!fired) {
-                break;
-            }
-        }
-
-        if (hasInput) {
-            TimedEvent[] queue = _eventQueue.toArray(
-                    new TimedEvent[_eventQueue.size()]);
-            for (TimedEvent timedEvent : queue) {
-                if (timedEvent.contents instanceof Actor) {
-                    if (_fire(timedEvent)) {
-                        _eventQueue.remove(timedEvent);
-                    }
                 }
             }
         }
 
-        if (!_isInController()) {
-            ERGModalModel modalModel = (ERGModalModel) getContainer();
-            List<?> ergControllers = modalModel.entityList(ERGController.class);
-            for (Object controllerObject : ergControllers) {
-                ((ERGController) controllerObject).readInputs();
+        if (hasInput && !fired && !_inputQueue.isEmpty()) {
+            TimedEvent timedEvent = _inputQueue.poll();
+            _eventQueue.remove(timedEvent);
+            _fire(timedEvent);
+            fired = true;
+        }
+
+        if (!fired && !_eventQueue.isEmpty()) {
+            TimedEvent timedEvent = _eventQueue.peek();
+            Time nextEventTime = timedEvent.timeStamp;
+            if (nextEventTime.compareTo(modelTime) <= 0) {
+                _eventQueue.poll();
+                Object contents = timedEvent.contents;
+                if (contents instanceof Actor) {
+                    _inputQueue.remove(timedEvent);
+                } else if (timedEvent.contents instanceof Event &&
+                        ((Event) contents).fireOnInput()) {
+                    _inputQueue.remove(timedEvent);
+                }
+                if (synchronize) {
+                    if (!_synchronizeToRealtime(nextEventTime)) {
+                        return;
+                    }
+                    synchronize = false;
+                }
+
+                _fire(timedEvent);
+                fired = true;
             }
         }
     }
@@ -275,34 +267,7 @@ public class ERGDirector extends Director implements TimedDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        if (_isInController()) {
-            ERGModalModel modalModel =
-                (ERGModalModel) getContainer().getContainer();
-            _currentTime = modalModel.getDirector().getModelTime();
-        }
-
-        _eventQueue.clear();
-        _inputQueue.clear();
-
-        ERGController controller = getController();
-        Iterator<?> entities = controller.deepEntityList().iterator();
-        while (entities.hasNext()) {
-            Event event = (Event) entities.next();
-            boolean isInitial =
-                ((BooleanToken) event.isInitialState.getToken()).booleanValue();
-            if (isInitial) {
-                _eventQueue.add(new TimedEvent(_startTime, event, null));
-            }
-        }
-
-        if (_isEmbedded() && !_eventQueue.isEmpty()) {
-            _requestFiring();
-            _delegateFireAt = true;
-        } else {
-            _delegateFireAt = false;
-        }
-
-        _realStartTime = System.currentTimeMillis();
+        _initializeSchedule();
     }
 
     public boolean postfire() throws IllegalActionException {
@@ -317,11 +282,8 @@ public class ERGDirector extends Director implements TimedDirector {
                 result = false;
             }
         }
-        if (_isEmbedded() && !_eventQueue.isEmpty()) {
-            _requestFiring();
-        }
         if (_isEmbedded()) {
-            _delegateFireAt = true;
+            _requestFiring();
         }
         return result;
     }
@@ -329,37 +291,28 @@ public class ERGDirector extends Director implements TimedDirector {
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
 
-        if (_isTopLevel() || _hasInput()) {
+        if (_hasInput() && !_inputQueue.isEmpty()) {
             return result;
         }
 
-        Time modelTime = getModelTime();
-        Time nextEventTime = Time.POSITIVE_INFINITY;
-
         if (!_eventQueue.isEmpty()) {
-            TimedEvent event = (TimedEvent) _eventQueue.peek();
-            nextEventTime = event.timeStamp;
-        }
+            Time modelTime = getModelTime();
+            Time nextEventTime = ((TimedEvent) _eventQueue.peek()).timeStamp;
+            while (modelTime.compareTo(nextEventTime) > 0) {
+                _eventQueue.poll();
 
-        while (modelTime.compareTo(nextEventTime) > 0) {
-            _eventQueue.poll();
-
-            if (!_eventQueue.isEmpty()) {
-                TimedEvent event = (TimedEvent) _eventQueue.peek();
-                nextEventTime = event.timeStamp;
-            } else {
-                nextEventTime = Time.POSITIVE_INFINITY;
+                if (!_eventQueue.isEmpty()) {
+                    TimedEvent event = (TimedEvent) _eventQueue.peek();
+                    nextEventTime = event.timeStamp;
+                } else {
+                    nextEventTime = Time.POSITIVE_INFINITY;
+                }
             }
-        }
 
-        if (!nextEventTime.equals(modelTime)) {
-            result = false;
-        }
+            if (!nextEventTime.equals(modelTime)) {
+                result = false;
+            }
 
-        if (result) {
-            _delegateFireAt = false;
-        } else {
-            _delegateFireAt = true;
         }
 
         if (_debugging) {
@@ -367,6 +320,14 @@ public class ERGDirector extends Director implements TimedDirector {
         }
 
         return result;
+    }
+
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        if (!_isInController()) {
+            getController().director.preinitialize();
+        }
+        _realStartTime = System.currentTimeMillis();
     }
 
     public void stop() {
@@ -392,11 +353,40 @@ public class ERGDirector extends Director implements TimedDirector {
      */
     public StringAttribute controllerName = null;
 
+    protected void _initializeSchedule() throws IllegalActionException {
+        _eventQueue.clear();
+        _inputQueue.clear();
+
+        if (_isInController()) {
+            ERGModalModel modalModel =
+                (ERGModalModel) getContainer().getContainer();
+            _currentTime = modalModel.getDirector().getModelTime();
+        }
+
+        ERGController controller = getController();
+        if (_isInController()) {
+            Iterator<?> entities = controller.deepEntityList().iterator();
+            while (entities.hasNext()) {
+                Event event = (Event) entities.next();
+                boolean isInitial = ((BooleanToken) event.isInitialState
+                        .getToken()).booleanValue();
+                if (isInitial) {
+                    _eventQueue.add(new TimedEvent(_currentTime, event, null));
+                }
+            }
+        } else {
+            _eventQueue.add(new TimedEvent(_currentTime, controller, null));
+            if (_isEmbedded()) {
+                _requestFiring();
+            }
+        }
+    }
+
     protected boolean _isTopLevel() {
         return super._isTopLevel() && !_isInController();
     }
 
-    private boolean _fire(TimedEvent timedEvent) throws IllegalActionException {
+    private void _fire(TimedEvent timedEvent) throws IllegalActionException {
         ERGController controller = getController();
         Object contents = timedEvent.contents;
         if (contents instanceof Actor) {
@@ -406,21 +396,24 @@ public class ERGDirector extends Director implements TimedDirector {
                 actor.fire();
                 actor.postfire();
             }
-            return prefire;
         } else if (contents instanceof Event) {
             Event event = (Event) timedEvent.contents;
             controller._setCurrentEvent(event);
             event.fire(timedEvent._arguments);
 
-            Actor[] actors = event.getRefinement();
-            if (actors != null) {
-                for (int i = 0; i < actors.length; ++i) {
+            Actor[] refinements = event.getRefinement();
+            if (refinements != null) {
+                for (Actor refinement : refinements) {
                     if (_stopRequested) {
                         break;
                     }
-                    if (actors[i].prefire()) {
-                        actors[i].fire();
-                        actors[i].postfire();
+                    if (refinement instanceof ERGController) {
+                        ((ERGController) refinement).director
+                                ._initializeSchedule();
+                    }
+                    if (refinement.prefire()) {
+                        refinement.fire();
+                        refinement.postfire();
                     }
                 }
             }
@@ -428,8 +421,6 @@ public class ERGDirector extends Director implements TimedDirector {
             if (((BooleanToken) event.isFinalState.getToken()).booleanValue()) {
                 _eventQueue.clear();
             }
-
-            return true;
         } else {
             throw new InternalErrorException(this, null, "The contents of a "
                     + "TimedEvent can only be Actor or Event.");
@@ -455,11 +446,6 @@ public class ERGDirector extends Director implements TimedDirector {
                 _inputQueue.add(timedEvent);
             }
         }
-
-        if (_delegateFireAt) {
-            Actor container = (Actor) getContainer();
-            container.getExecutiveDirector().fireAt(container, time);
-        }
     }
 
     private boolean _hasInput() throws IllegalActionException {
@@ -477,7 +463,6 @@ public class ERGDirector extends Director implements TimedDirector {
                 IOPort port = (IOPort) portObject;
                 for (int i = 0; i < port.getWidth(); i++) {
                     if (port.hasToken(i)) {
-                        System.out.println(port);
                         return true;
                     }
                 }
@@ -493,7 +478,6 @@ public class ERGDirector extends Director implements TimedDirector {
     private void _init() throws IllegalActionException,
     NameDuplicationException {
         controllerName = new StringAttribute(this, "controllerName");
-        _startTime = new Time(this, 0.0);
     }
 
     private boolean _isInController() {
@@ -501,15 +485,20 @@ public class ERGDirector extends Director implements TimedDirector {
     }
 
     private void _requestFiring() throws IllegalActionException {
-        TimedEvent nextEvent = _eventQueue.peek();
-        Time time = nextEvent.timeStamp;
         NamedObj container = getContainer();
-        if (_isInController()) {
+        if (!_eventQueue.isEmpty()) {
+            Time time = _eventQueue.peek().timeStamp;
+            if (_isInController()) {
+                ERGController controller = (ERGController) container;
+                controller.getExecutiveDirector().fireAt(controller, time);
+            } else {
+                CompositeActor composite = (CompositeActor) container;
+                composite.getExecutiveDirector().fireAt(composite, time);
+            }
+        } else if (!_inputQueue.isEmpty()) {
             ERGController controller = (ERGController) container;
-            controller.getExecutiveDirector().fireAt(controller, time);
-        } else {
-            CompositeActor composite = (CompositeActor) container;
-            composite.getExecutiveDirector().fireAt(composite, time);
+            controller.getExecutiveDirector().fireAt(controller,
+                    Time.POSITIVE_INFINITY);
         }
     }
 
@@ -537,11 +526,6 @@ public class ERGDirector extends Director implements TimedDirector {
     // Version of cached reference to mode controller.
     private long _controllerVersion = -1;
 
-    /** Indicator that calls to fireAt() should be delegated
-     *  to the executive director.
-     */
-    private boolean _delegateFireAt = false;
-
     @SuppressWarnings("unchecked")
     private Comparator<TimedEvent> _eventComparator =
         new TimedEvent.TimeComparator();
@@ -553,8 +537,6 @@ public class ERGDirector extends Director implements TimedDirector {
         new PriorityQueue<TimedEvent>(5, _eventComparator);
 
     private long _realStartTime;
-
-    private Time _startTime;
 
     private static class TimedEvent extends ptolemy.actor.util.TimedEvent {
 

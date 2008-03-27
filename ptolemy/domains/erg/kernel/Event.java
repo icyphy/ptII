@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -32,6 +32,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.erg.kernel;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -116,12 +117,12 @@ public class Event extends State {
                 }
                 argumentMap.put(name, argument);
             }
-            scope = new ParametersParserScope(argumentMap, scope);
+            scope = new ArgumentsParserScope(argumentMap, scope);
         }
 
         actions.execute(scope);
 
-        ERGDirector director = (ERGDirector) controller.getDirector();
+        ERGDirector director = (ERGDirector) controller.director;
         List<?>[] schedulesArray = new List<?>[2];
         schedulesArray[0] = preemptiveTransitionList();
         schedulesArray[1] = nonpreemptiveTransitionList();
@@ -160,7 +161,7 @@ public class Event extends State {
 
     public ParametersAttribute parameters;
 
-    public class ParametersParserScope implements ParserScope {
+    public static class ArgumentsParserScope implements ParserScope {
 
         public Token get(String name) throws IllegalActionException {
             if (_argumentMap.containsKey(name)) {
@@ -180,10 +181,12 @@ public class Event extends State {
         }
 
         public Set<?> identifierSet() throws IllegalActionException {
-            return _argumentMap.keySet();
+            Set<Object> set = new HashSet<Object>(_argumentMap.keySet());
+            set.addAll((Set<?>) _superscope.identifierSet());
+            return set;
         }
 
-        ParametersParserScope(Map<String, Token> argumentMap,
+        ArgumentsParserScope(Map<String, Token> argumentMap,
                 ParserScope superscope) {
             _argumentMap = argumentMap;
             _superscope = superscope;

@@ -160,7 +160,7 @@ public class OutputActionsAttribute extends AbstractActionsAttribute implements
 
                 try {
                     token = _parseTreeEvaluator.evaluateParseTree(parseTree,
-                            _scope);
+                            _getParserScope());
                 } catch (IllegalActionException ex) {
                     // Chain exceptions to get the actor that
                     // threw the exception.

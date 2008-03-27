@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -31,7 +31,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.erg.kernel;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
@@ -40,8 +45,10 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
 import ptolemy.domains.fsm.kernel.CommitActionsAttribute;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -149,6 +156,46 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         }
     }
 
+    public static class ParametersParserScope implements ParserScope {
+
+        public Token get(String name) throws IllegalActionException {
+            throw new IllegalActionException("This parser scope is for "
+                    + "type-checking only, and the get() method is not "
+                    + "implemented.");
+        }
+
+        public Type getType(String name) throws IllegalActionException {
+            if (_paramMap.containsKey(name)) {
+                return _paramMap.get(name);
+            } else {
+                return _superscope.getType(name);
+            }
+        }
+
+        public InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            return _superscope.getTypeTerm(name);
+        }
+
+        public Set<?> identifierSet() throws IllegalActionException {
+            Set<Object> set = new HashSet<Object>(_paramMap.keySet());
+            set.addAll((Set<?>) _superscope.identifierSet());
+            return set;
+
+        }
+
+        ParametersParserScope(Map<String, Type> argumentMap,
+                ParserScope superscope) {
+            _paramMap = argumentMap;
+            _superscope = superscope;
+        }
+
+        private Map<String, Type> _paramMap;
+
+        private ParserScope _superscope;
+
+    }
+
     protected NamedObj _getDestination(String name)
     throws IllegalActionException {
         Event event = (Event) getContainer();
@@ -219,4 +266,31 @@ public class ActionsAttribute extends AbstractActionsAttribute {
             return port;
         }
     }
+
+    protected ParserScope _getParserScope() {
+        if (_scopeVersion != workspace().getVersion()) {
+            Event event = (Event) getContainer();
+            ERGController controller = (ERGController) event.getContainer();
+            ParserScope portScope = controller.getPortScope();
+            Type[] types = event.parameters.getArgumentTypes();
+            if (types.length > 0) {
+                List<?> names = event.parameters.getArgumentNameList();
+                Iterator<?> namesIter = names.iterator();
+                Map<String, Type> paramMap = new HashMap<String, Type>();
+                for (int i = 0; namesIter.hasNext(); i++) {
+                    String name = (String) namesIter.next();
+                    paramMap.put(name, types[i]);
+                }
+                _scope = new ParametersParserScope(paramMap, portScope);
+            } else {
+                _scope = portScope;
+            }
+            _scopeVersion = workspace().getVersion();
+        }
+        return _scope;
+    }
+
+    private ParserScope _scope;
+
+    private long _scopeVersion = -1;
 }

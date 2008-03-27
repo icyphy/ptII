@@ -94,16 +94,6 @@ import ptolemy.kernel.util.Workspace;
  */
 public abstract class AbstractActionsAttribute extends Action implements
         HasTypeConstraints {
-    /** Construct an action in the specified workspace with an empty
-     *  string as a name.
-     *  The object is added to the directory of the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the attribute.
-     */
-    public AbstractActionsAttribute(Workspace workspace) {
-        super(workspace);
-    }
-
     /** Construct an action with the given name contained
      *  by the specified container (which should be a Transition when used in
      *  the FSM domain, and an Event in the ERG domain). The <i>container</i>
@@ -124,6 +114,16 @@ public abstract class AbstractActionsAttribute extends Action implements
     public AbstractActionsAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+    }
+
+    /** Construct an action in the specified workspace with an empty
+     *  string as a name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     */
+    public AbstractActionsAttribute(Workspace workspace) {
+        super(workspace);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -350,28 +350,37 @@ public abstract class AbstractActionsAttribute extends Action implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** List of channels. */
-    protected List _numbers;
-
-    /** List of destinations. */
-    protected List _destinations;
+    /** Return a parser scope used to evaluate or type-check this action.
+     *
+     *  @return The parser scope.
+     */
+    protected ParserScope _getParserScope() {
+        if (_scope == null) {
+            FSMActor fsmActor = (FSMActor) getContainer().getContainer();
+            _scope = fsmActor.getPortScope();
+        }
+        return _scope;
+    }
 
     /** List of destination names. */
     protected List _destinationNames;
+
+    /** List of destinations. */
+    protected List _destinations;
 
     /** The workspace version number when the _destinations list is last
      *  updated.
      */
     protected long _destinationsListVersion = -1;
 
-    /** The list of parse trees. */
-    protected List _parseTrees;
+    /** List of channels. */
+    protected List _numbers;
 
     /** The parse tree evaluator. */
     protected ParseTreeEvaluator _parseTreeEvaluator;
 
-    /** The scope. */
-    protected ParserScope _scope;
+    /** The list of parse trees. */
+    protected List _parseTrees;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -404,6 +413,9 @@ public abstract class AbstractActionsAttribute extends Action implements
             workspace().doneReading();
         }
     }
+
+    /** The scope. */
+    private ParserScope _scope;
 
     // This class implements a monotonic function of the type of
     // the output port.
@@ -447,13 +459,7 @@ public abstract class AbstractActionsAttribute extends Action implements
                 ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees
                         .get(_destinationNames.indexOf(_name));
 
-                if (_scope == null) {
-                    FSMActor fsmActor = (FSMActor) getContainer()
-                            .getContainer();
-                    _scope = fsmActor.getPortScope();
-                }
-
-                Type type = _typeInference.inferTypes(parseTree, _scope);
+                Type type = _typeInference.inferTypes(parseTree, _getParserScope());
                 return type;
             } catch (Exception ex) {
                 throw new IllegalActionException(AbstractActionsAttribute.this,
@@ -476,19 +482,13 @@ public abstract class AbstractActionsAttribute extends Action implements
                 ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees
                         .get(_destinationNames.indexOf(_name));
 
-                if (_scope == null) {
-                    FSMActor fsmActor = (FSMActor) getContainer()
-                            .getContainer();
-                    _scope = fsmActor.getPortScope();
-                }
-
                 Set set = _variableCollector.collectFreeVariables(parseTree,
-                        _scope);
+                        _getParserScope());
                 List termList = new LinkedList();
 
                 for (Iterator elements = set.iterator(); elements.hasNext();) {
                     String name = (String) elements.next();
-                    InequalityTerm term = _scope.getTypeTerm(name);
+                    InequalityTerm term = _getParserScope().getTypeTerm(name);
 
                     if ((term != null) && term.isSettable()) {
                         termList.add(term);
@@ -510,11 +510,14 @@ public abstract class AbstractActionsAttribute extends Action implements
         }
 
         ///////////////////////////////////////////////////////////////
-        ////                       private inner variable          ////
+        ////                      private inner variables          ////
+        
         private String _name;
 
-        private ParseTreeTypeInference _typeInference = new ParseTreeTypeInference();
+        private ParseTreeTypeInference _typeInference =
+            new ParseTreeTypeInference();
 
-        private ParseTreeFreeVariableCollector _variableCollector = new ParseTreeFreeVariableCollector();
+        private ParseTreeFreeVariableCollector _variableCollector =
+            new ParseTreeFreeVariableCollector();
     }
 }
