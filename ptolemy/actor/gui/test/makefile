@@ -72,7 +72,7 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS =	\
 	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS) \
-	"model with spaces.xml" \
+	model\ with\ spaces.xml \
 	test.xml
 
 
