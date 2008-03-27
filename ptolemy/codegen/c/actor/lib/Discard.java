@@ -27,7 +27,10 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.LinkedList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Discard
@@ -47,5 +50,27 @@ public class Discard extends CCodeGeneratorHelper {
      */
     public Discard(ptolemy.actor.lib.Discard actor) {
         super(actor);
+    }
+    /**
+     * Generate fire code.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
+
+        LinkedList args = new LinkedList();
+        args.add("");
+        
+        ptolemy.actor.lib.Discard actor = (ptolemy.actor.lib.Discard) getComponent();
+
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            code.append(_generateBlockCode("fireBlock", args));
+        }
+        return processCode(code.toString());
     }
 }
