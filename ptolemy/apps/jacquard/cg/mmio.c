@@ -647,16 +647,17 @@ csr_matrix_t *csr_hb_load(char *filename)
     int first_nz;
     static int shared n;
 
-    static shared int * row_start;
+    /*
+    static shared int* row_start;
     row_start = (shared int*) upc_alloc(MAX_N * sizeof(int));
-    static shared int * col_idx;
+    static shared int* col_idx;
     col_idx = (shared int*) upc_alloc(MAX_NNZ * sizeof(int));
     static shared double* val;
     val = (shared double*) upc_alloc(MAX_NNZ * sizeof(double));
-    
-    //static shared [] int row_start[MAX_N];
-    //static shared [] int col_idx[MAX_NNZ];
-    //static shared [] double val[MAX_NNZ];
+    */
+    static shared [] int row_start[MAX_N];
+    static shared [] int col_idx[MAX_NNZ];
+    static shared [] double val[MAX_NNZ];
     //static int shared nz;
 
     /* Read the initial matrix at processor 0 and copy it
