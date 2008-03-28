@@ -696,7 +696,7 @@ csr_matrix_t *csr_hb_load(char *filename)
     // thread.
     start = (int*) malloc((THREADS + 1) * sizeof(int));
 
-    assert(n <= MAX_THREADS);
+    assert(THREADS <= MAX_THREADS);
     for (i = 0; i < THREADS; ++i) {
         start[i] = i * n_per_proc;
         local_matrix->localStart[i] = start[i];
