@@ -154,7 +154,7 @@ void driver(int m, int maxiter,
 printf("T[%d]:here3\n", MYTHREAD);
 
     retval = precond_cg(matvec, psolve, Adata, Mdata,
-                        b, x, rtol, m, rhist, maxiter, nz);
+                        b, x, rtol, m, rhist, maxiter);
 
 printf("T[%d]:here4\n", MYTHREAD);
 
