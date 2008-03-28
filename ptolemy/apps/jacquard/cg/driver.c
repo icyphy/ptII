@@ -76,7 +76,7 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
 #define MAX_N   10000
 #define MAX_NNZ 100000
 
-void csr_matvec(double *Ax, void *Adata, double *x, int n)
+void csr_matvec(double *Ax, void *Adata, double *x, int n, int nz)
 {
     int i, j;
 
@@ -86,7 +86,9 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
     double *Aval = Acsr->val;
     int my_start = Acsr->localStart[MYTHREAD];
 
-    static shared [] double xglobal[MAX_NNZ];
+    //static shared [] double xglobal[MAX_NNZ];
+    shared double* xglobal;
+    xglobal = (shared double*) upc_alloc(nz * sizeof(double));
 
     /* Copy local vector section into shared memory */
     for (i = 0; i < n; ++i) {
@@ -111,7 +113,7 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
 void driver(int m, int maxiter,
             void (*matvec) (double *, void *, double *, int), void *Adata,
             void (*psolve) (double *, void *, double *, int), void *Mdata,
-            int n, int localStart)
+            int n, int localStart, int nz)
 {
 
     // m < n, m is the columns allocated for this processor
@@ -152,7 +154,7 @@ void driver(int m, int maxiter,
 printf("T[%d]:here3\n", MYTHREAD);
 
     retval = precond_cg(matvec, psolve, Adata, Mdata,
-                        b, x, rtol, m, rhist, maxiter, n);
+                        b, x, rtol, m, rhist, maxiter, nz);
 
 printf("T[%d]:here4\n", MYTHREAD);
 
@@ -219,7 +221,7 @@ int main(int argc, char **argv)
 
         printf("Vanilla CG:        ");
 printf("T[%d]: here\n", MYTHREAD);
-        driver(A->m, A->m, csr_matvec, A, dummy_psolve, NULL, A->n, A->localStart);
+        driver(A->m, A->m, csr_matvec, A, dummy_psolve, NULL, A->n, A->localStart, A->totalnz);
     }
 
 printf("T[%d]: finished\n", MYTHREAD);

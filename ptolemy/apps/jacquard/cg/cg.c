@@ -83,7 +83,7 @@ double ddot(double *x, double *y, int n)
 int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
                void (*psolve) (double *Minvx, void *Adata, double *x, int n), 
                void *Adata, void *Mdata, double *b,
-               double *x, double rtol, int n, double *rhist, int maxiter, int realn)
+               double *x, double rtol, int n, double *rhist, int maxiter, int nz)
 {
     // n is actually m
     // realn is the actual n
@@ -128,7 +128,7 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
 
         // matrix multiplied by vector:
         // z = A * s
-        matvec(z, Adata, s, n);
+        matvec(z, Adata, s, n, nz);
         double temp;
         temp = ddot(s, z, n);
         alpha = rz / temp;

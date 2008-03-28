@@ -10,6 +10,7 @@ typedef struct csr_matrix_t {
     double *val;
 
     int localStart[MAX_THREADS];
+    int totalnz;
 } csr_matrix_t;
 
 
@@ -23,7 +24,7 @@ typedef struct csr_jacobi_t {
 csr_matrix_t *csr_mm_load(char *filename);
 csr_matrix_t *csr_hb_load(char *filename);
 
-void csr_matvec(double *Ax, void *Adata, double *x, int n);
+void csr_matvec(double *Ax, void *Adata, double *x, int n, int nz);
 
 //void csr_jacobi_psolve(double *Minvx, void *Mdata, double *x, int n);
 //csr_jacobi_t *csr_jacobi_init(csr_matrix_t * A, int block_size);
