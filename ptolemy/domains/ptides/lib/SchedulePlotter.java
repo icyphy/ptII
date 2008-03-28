@@ -197,25 +197,27 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
 	public void initialize(Hashtable nodesActors) {
 		nodes.clear();
-		plot.clear(false);
-		plot.clearLegends();
-		nodes.addAll(nodesActors.keySet());
-		nodeActive = new boolean[nodes.size()];
-		this.nodeActors = nodesActors;
-		for (int i = 0; i < nodes.size(); i++) {
-			Actor node = (Actor) nodes.get(i);
-			nodeActorStrings.add(node.getName());
-			if (plot == null)
-				return;
-			plot.addLegend(nodeActorStrings.indexOf(node.getName()), node.getName());
-			List actors = (List) nodeActors.get(node);
-			for (int j = 0; j < actors.size(); j++) {
-				Actor actor = (Actor) actors.get(j);
-				nodeActorStrings.add(node.getName() + ": " + actor.getName());
-		        plot.addLegend(nodeActorStrings.indexOf(node.getName() + ": " + actor.getName()), node.getName() + ": " + actor.getName());
+		if (plot != null) {
+			plot.clear(false);
+			plot.clearLegends();
+			nodes.addAll(nodesActors.keySet());
+			nodeActive = new boolean[nodes.size()];
+			this.nodeActors = nodesActors;
+			for (int i = 0; i < nodes.size(); i++) {
+				Actor node = (Actor) nodes.get(i);
+				nodeActorStrings.add(node.getName());
+				if (plot == null)
+					return;
+				plot.addLegend(nodeActorStrings.indexOf(node.getName()), node.getName());
+				List actors = (List) nodeActors.get(node);
+				for (int j = 0; j < actors.size(); j++) {
+					Actor actor = (Actor) actors.get(j);
+					nodeActorStrings.add(node.getName() + ": " + actor.getName());
+			        plot.addLegend(nodeActorStrings.indexOf(node.getName() + ": " + actor.getName()), node.getName() + ": " + actor.getName());
+				}
 			}
+			plot.doLayout();
 		}
-		plot.doLayout();
 	}
 	
     ///////////////////////////////////////////////////////////////////

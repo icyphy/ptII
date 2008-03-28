@@ -283,6 +283,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 * anything to do.
 	 */
 	public void notifyWaitingThreads() {
+		try {
 		Set set = (Set) _waitingPlatforms.clone();
 		Iterator it = set.iterator();
 		while (it.hasNext()) {
@@ -292,6 +293,9 @@ public class PtidesDirector extends CompositeProcessDirector implements
 			threadUnblocked(thread, null);
 		}
 		_waitingPlatforms.clear();
+		} catch (Exception ex) {
+			// concurrent modification exceptions can occur here
+		}
 	}
 
 	/**
