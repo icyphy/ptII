@@ -649,12 +649,13 @@ csr_matrix_t *csr_hb_load(char *filename)
     static shared [] int row_start[MAX_N];
     static shared [] int col_idx[MAX_NNZ];
     static shared [] double val[MAX_NNZ];
-    static int shared nz;
+    //static int shared nz;
 
     /* Read the initial matrix at processor 0 and copy it
      * into shared space
      */
     if (MYTHREAD == 0) {
+        int nz;
 
         initial_matrix = csr_mm_load(filename);
         //n is the number of rows of x and b
@@ -687,7 +688,6 @@ csr_matrix_t *csr_hb_load(char *filename)
 
     local_matrix = (csr_matrix_t *) malloc(sizeof(csr_matrix_t));
     local_matrix->n = n;
-    local_matrix->nz = nz;
 
     // n_per_proc number of rows are distributed to each thread.
     // all threads other than the last one are responsible for equal number of

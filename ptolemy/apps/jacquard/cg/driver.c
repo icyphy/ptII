@@ -88,7 +88,7 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n, int nz)
 
     //static shared [] double xglobal[MAX_NNZ];
     shared double* xglobal;
-    xglobal = (shared double*) upc_alloc(nz * sizeof(double));
+    xglobal = (shared double*) upc_alloc(MAX_NNZ * sizeof(double));
 
     /* Copy local vector section into shared memory */
     for (i = 0; i < n; ++i) {
@@ -113,7 +113,7 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n, int nz)
 void driver(int m, int maxiter,
             void (*matvec) (double *, void *, double *, int), void *Adata,
             void (*psolve) (double *, void *, double *, int), void *Mdata,
-            int n, int localStart, int nz)
+            int n, int localStart)
 {
 
     // m < n, m is the columns allocated for this processor
@@ -202,7 +202,7 @@ int main(int argc, char **argv)
 
         printf("Using default 1-d Poisson on a 500 point mesh\n");
 //        driver(500, 500, poisson_matvec, NULL, poisson_jacobi_psolve, M);
-        driver(500, 500, poisson_matvec, NULL, dummy_psolve, NULL, (int)NULL, (int)NULL, (int) NULL);
+        driver(500, 500, poisson_matvec, NULL, dummy_psolve, NULL, (int)NULL, (int)NULL);
 
     } else {
         int block_size = 60;
@@ -221,7 +221,7 @@ int main(int argc, char **argv)
 
         printf("Vanilla CG:        ");
 printf("T[%d]: here\n", MYTHREAD);
-        driver(A->m, A->m, csr_matvec, A, dummy_psolve, NULL, A->n, A->localStart, A->totalnz);
+        driver(A->m, A->m, csr_matvec, A, dummy_psolve, NULL, A->n, A->localStart);
     }
 
 printf("T[%d]: finished\n", MYTHREAD);
