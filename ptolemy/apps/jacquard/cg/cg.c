@@ -36,7 +36,7 @@ double ddot(double *x, double *y, int n)
     //shared double* globalSum;
     static shared double* shared globalSumEach;
     globalSumEach = (shared double* shared) upc_alloc(THREADS * sizeof(double));
-    double* localSumEach;
+    double localSumEach[THREADS];
     localSumEach = (double*) globalSumEach;
     //globalSum = (shared double*) upc_alloc(sizeof(double));
     //*globalSum = 0.0;
