@@ -86,7 +86,6 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
                double *x, double rtol, int n, double *rhist, int maxiter)
 {
     // n is actually m
-    // realn is the actual n
     const int nbytes = n * sizeof(double);
 
     double bnorm2;              /* ||b||^2 */
@@ -115,7 +114,9 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
 
     // b dot x => z is the guess for x, r is copied b
     rz = ddot(r, z, n);
+printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, rz);
     rnorm2 = ddot(r, r, n);
+printf("T[%d]: first ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
 
 printf("T[%d]:starting loop\n", MYTHREAD);
 
