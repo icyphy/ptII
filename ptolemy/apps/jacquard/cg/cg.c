@@ -141,9 +141,9 @@ for (j = 0; j < n; j++) {
     if (z[j] != 0)
         printf("%d:%g  ", j+450, z[j]);
 }
-printf("END \n");
+printf("END \n");*/
 }
-printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);*/
+//printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
 
         axpy(x, alpha, s, x, n);
         axpy(r, -alpha, z, r, n);
