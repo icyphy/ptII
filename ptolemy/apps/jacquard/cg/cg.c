@@ -41,12 +41,12 @@ double ddot(double *x, double *y, int n)
 
 //printf("T[%d]: localSum = %d\n", MYTHREAD, localSum);
     //upc_barrier;
-    upc_notify;
+    //upc_notify;
 
     globalSumEach[MYTHREAD] = localSum;
 
-    //upc_barrier;
-    upc_wait;
+    upc_barrier;
+    //upc_wait;
 
 //printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
 
