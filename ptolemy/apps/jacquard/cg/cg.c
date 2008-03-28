@@ -26,6 +26,7 @@ void axpy(double *dest, double alpha, double *x, double *y, int n)
  *  x, y - vector inputs
  *  n    - vector size
  */
+/*
 double ddot(double *x, double *y, int n)
 {
     int i;
@@ -59,7 +60,14 @@ printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
     for (i = 0; i < THREADS; ++i) printf("T[%d]: globalSumEach[%d] = %g\n", MYTHREAD, i, globalSumEach[i]);
 //printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
 
-    for (i = 0; i < THREADS; ++i) {
+//    for (i = 0; i < THREADS; ++i) {
+//        double temp = globalSumEach[i];
+//        //*globalSum += globalSumEach[i];
+//        printf("T[%d]: temp globalSumEach[%d] = %g\n", MYTHREAD, i, temp);
+//        globalSum += temp;
+//    }
+
+    upc_forall (i = 0; i < THREADS; ++i) {
         double temp = globalSumEach[i];
         //*globalSum += globalSumEach[i];
         printf("T[%d]: temp globalSumEach[%d] = %g\n", MYTHREAD, i, temp);
@@ -69,6 +77,42 @@ printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
 //printf("T[%d]: globalSum = %g\n", MYTHREAD, localSum);
     //return localSum;
 printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, globalSum);
+    return globalSum;
+}
+*/
+double ddot(double *x, double *y, int n)
+{
+    int i;
+    //double sum = 0;
+    double localSum = 0;
+    //static shared double globalSumEach[THREADS];
+
+    //shared double* globalSum;
+    shared double globalSums[THREADS];
+    shared double* shared finalSum;
+    finalSum = (shared double* shared) upc_alloc(sizeof(double));
+
+    for (i = 0; i < n; ++i)
+        localSum += x[i] * y[i];
+
+printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
+    //upc_barrier;
+    //upc_notify;
+
+    globalSums[MYTHREAD] = localSum;
+
+    upc_barrier;
+    //upc_wait;
+
+    if (MYTHREAD == 0) {
+        for (i = 0; i < THREADS; i++) *finalSum += globalSums[i];
+    }
+    for (i = 0; i < THREADS; ++i) printf("T[%d]: globalSums[%d] = %g\n", MYTHREAD, i, globalSums[i]);
+//printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
+
+//printf("T[%d]: globalSum = %g\n", MYTHREAD, localSum);
+    //return localSum;
+printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, *finalSum);
     return globalSum;
 }
 
