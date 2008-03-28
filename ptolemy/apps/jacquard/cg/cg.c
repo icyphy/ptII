@@ -88,7 +88,8 @@ double ddot(double *x, double *y, int n)
     //static shared double globalSumEach[THREADS];
 
     //shared double* globalSum;
-    shared double globalSums[THREADS];
+    shared double* globalSums;
+    globalSums = (shared double*) upc_alloc(THREADS * sizeof(double));
     shared double* shared finalSum;
     finalSum = (shared double* shared) upc_alloc(sizeof(double));
 
