@@ -202,7 +202,7 @@ int main(int argc, char **argv)
 
         printf("Using default 1-d Poisson on a 500 point mesh\n");
 //        driver(500, 500, poisson_matvec, NULL, poisson_jacobi_psolve, M);
-        driver(500, 500, poisson_matvec, NULL, dummy_psolve, NULL, (int)NULL, (int)NULL);
+        driver(500, 500, poisson_matvec, NULL, dummy_psolve, NULL, (int)NULL, (int)NULL, (int) NULL);
 
     } else {
         int block_size = 60;
