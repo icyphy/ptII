@@ -58,9 +58,9 @@ printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
 //printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
 
     for (i = 0; i < THREADS; ++i) {
-        double temp = globalSumEach[i];
+        double* temp = (double*) globalSumEach[i];
         //*globalSum += globalSumEach[i];
-        printf("T[%d]: temp globalSumEach[%d] = %g\n", MYTHREAD, i, temp);
+        printf("T[%d]: temp globalSumEach[%d] = %g\n", MYTHREAD, i, *temp);
         *globalSum += temp;
     }
 
