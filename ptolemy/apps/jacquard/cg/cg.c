@@ -114,7 +114,7 @@ printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
 //printf("T[%d]: globalSum = %g\n", MYTHREAD, localSum);
     //return localSum;
 printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, *finalSum);
-    return finalSum;
+    return *finalSum;
 }
 
 
