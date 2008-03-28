@@ -357,14 +357,12 @@ public class ERGDirector extends Director implements TimedDirector {
         _eventQueue.clear();
         _inputQueue.clear();
 
+        ERGController controller = getController();
         if (_isInController()) {
             ERGModalModel modalModel =
                 (ERGModalModel) getContainer().getContainer();
             _currentTime = modalModel.getDirector().getModelTime();
-        }
 
-        ERGController controller = getController();
-        if (_isInController()) {
             Iterator<?> entities = controller.deepEntityList().iterator();
             while (entities.hasNext()) {
                 Event event = (Event) entities.next();
@@ -410,10 +408,12 @@ public class ERGDirector extends Director implements TimedDirector {
                     if (refinement instanceof ERGController) {
                         ((ERGController) refinement).director
                                 ._initializeSchedule();
-                    }
-                    if (refinement.prefire()) {
-                        refinement.fire();
-                        refinement.postfire();
+                        _fireAt(refinement, _currentTime, null);
+                    } else {
+                        if (refinement.prefire()) {
+                            refinement.fire();
+                            refinement.postfire();
+                        }
                     }
                 }
             }
