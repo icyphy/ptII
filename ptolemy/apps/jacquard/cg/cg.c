@@ -136,14 +136,15 @@ int j;
 for (j = 0; j < n; j++) 
     printf("%g  ", s[j]);
 printf("END \n");*/
-printf("T[%d]: z =", MYTHREAD);
+/*printf("T[%d]: z =", MYTHREAD);
 for (j = 0; j < n; j++) {
     if (z[j] != 0)
         printf("%d:%g  ", j+450, z[j]);
 }
 printf("END \n");
 }
-printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
+printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);*/
+
         axpy(x, alpha, s, x, n);
         axpy(r, -alpha, z, r, n);
 
@@ -152,7 +153,7 @@ printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
         rz = ddot(r, z, n);
 //printf("T[%d]: ddot(r,z,n) = %g\n", MYTHREAD, rz);
         rnorm2 = ddot(r, r, n);
-//printf("T[%d]: ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
+printf("T[%d]: ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
 
         beta = -rz / rzold;
         axpy(s, -beta, s, z, n);
@@ -161,7 +162,7 @@ printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
 
     }
 
-printf("T[%d]: maxiter = %d, tolerance = %g\n", MYTHREAD, maxiter, bnorm2*rtol*rtol);
+//printf("T[%d]: maxiter = %d, tolerance = %g\n", MYTHREAD, maxiter, bnorm2*rtol*rtol);
 
     free(z);
     free(r);
