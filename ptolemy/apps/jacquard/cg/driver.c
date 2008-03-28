@@ -72,15 +72,19 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
     }
 }
 */
+
+#define MAX_N   10000
+#define MAX_NNZ 100000
+
 void csr_matvec(double *Ax, void *Adata, double *x, int n)
 {
     int i, j;
 
     csr_matrix_t *Acsr = (csr_matrix_t *) Adata;
-    double *Aval = Acsr->val;
     int *Arow = Acsr->row_start;
     int *Acol = Acsr->col_idx;
-    int my_start = Acsr->start[MYTHREAD];
+    double *Aval = Acsr->val;
+    int my_start = Acsr->localStart[MYTHREAD];
 
     static shared double xglobal[MAX_NNZ];
 
@@ -131,7 +135,7 @@ void driver(int m, int maxiter,
     for (i = 0; i < m; ++i)
         b[i] = 1;
 
-        struct Timer total_timer;
+    struct Timer total_timer;
 
     if (MYTHREAD == 0) {
         initialize_timer(&total_timer);
@@ -148,7 +152,7 @@ void driver(int m, int maxiter,
 printf("T[%d]:here3\n", MYTHREAD);
 
     retval = precond_cg(matvec, psolve, Adata, Mdata,
-                        b, x, rtol, m, rhist, maxiter);
+                        b, x, rtol, m, rhist, maxiter, n);
 
 printf("T[%d]:here4\n", MYTHREAD);
 

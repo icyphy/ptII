@@ -79,8 +79,10 @@ double ddot(double *x, double *y, int n)
 int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
                void (*psolve) (double *Minvx, void *Adata, double *x,
                                int n), void *Adata, void *Mdata, double *b,
-               double *x, double rtol, int n, double *rhist, int maxiter)
+               double *x, double rtol, int n, double *rhist, int maxiter, int realn)
 {
+    // n is actually m
+    // realn is the actual n
     const int nbytes = n * sizeof(double);
 
     double bnorm2;              /* ||b||^2 */
@@ -102,9 +104,12 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
 
     memset(x, 0, nbytes);
     memcpy(r, b, nbytes);
+    // z is the preconditioned x?
     psolve(z, Mdata, r, n);
+    // s is the dummy variable used to solve?
     memcpy(s, z, nbytes);
 
+    // b dot x => z is the guess for x, r is copied b
     rz = ddot(r, z, n);
     rnorm2 = ddot(r, r, n);
 
@@ -117,6 +122,8 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
         if (rhist != NULL)
             rhist[i] = sqrt(rnorm2 / bnorm2);
 
+        // matrix multiplied by vector:
+        // z = A * s
         matvec(z, Adata, s, n);
         double temp;
         temp = ddot(s, z, n);

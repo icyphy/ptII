@@ -9,7 +9,7 @@ typedef struct csr_matrix_t {
     int *col_idx;
     double *val;
 
-    int localStart;
+    int localStart[MAX_THREADS];
 } csr_matrix_t;
 
 

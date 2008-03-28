@@ -692,15 +692,17 @@ csr_matrix_t *csr_hb_load(char *filename)
     // all threads other than the last one are responsible for equal number of
     // rows, the last one is responsible for the left over rows
     n_per_proc = n / THREADS;
-    //start = local_matrix->start;
-    //start = NULL;
     // start is the array that stores which row we are dealing with at each
     // thread.
     start = (int*) malloc((THREADS + 1) * sizeof(int));
+
+    assert(n <= MAX_THREADS);
     for (i = 0; i < THREADS; ++i) {
         start[i] = i * n_per_proc;
+        local_matrix->start[i] = start[i];
     }
     start[THREADS] = n;
+    local_matrix->start[THREADS] = start[THREADS];
     // nlocal is the number of rows for each thread
     nlocal = start[MYTHREAD + 1] - start[MYTHREAD];
     // store nlocal in m of local_matrix
