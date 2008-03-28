@@ -51,7 +51,7 @@ printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
     upc_barrier;
     //upc_wait;
 
-    for (i = 0; i < THREADS; ++i) printf("T[%d]: globalSumEach[i] = %g\n");
+    for (i = 0; i < THREADS; ++i) printf("T[%d]: globalSumEach[i] = %g\n", MYTHREAD, globalSumEach[i]);
 //printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
 
     for (i = 0; i < THREADS; ++i)
