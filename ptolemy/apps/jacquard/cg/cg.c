@@ -93,7 +93,7 @@ double ddot(double *x, double *y, int n)
     //shared double* shared finalSum;
     //finalSum = (shared double* shared) upc_alloc(sizeof(double));
     shared double globalSums[THREADS * sizeof(double)];
-    strict shared double finalSums;
+    strict shared double finalSum;
     //globalSums = (shared double*) upc_alloc(THREADS * sizeof(double));
 
     for (i = 0; i < n; ++i)
@@ -110,14 +110,14 @@ printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
     for (i = 0; i < THREADS; ++i) printf("T[%d]: globalSums[%d] = %g\n", MYTHREAD, i, globalSums[i]);
 
     if (MYTHREAD == 0) {
-        for (i = 0; i < THREADS; i++) *finalSum += globalSums[i];
+        for (i = 0; i < THREADS; i++) finalSum += globalSums[i];
     }
 //printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
 
 //printf("T[%d]: globalSum = %g\n", MYTHREAD, localSum);
     //return localSum;
-printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, *finalSum);
-    return *finalSum;
+printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, finalSum);
+    return finalSum;
 }
 
 
