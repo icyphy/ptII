@@ -42,7 +42,7 @@ double ddot(double *x, double *y, int n)
     for (i = 0; i < n; ++i)
         localSum += x[i] * y[i];
 
-printf("T[%d]: localSum = %d\n", MYTHREAD, localSum);
+printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
     //upc_barrier;
     //upc_notify;
 

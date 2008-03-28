@@ -118,7 +118,7 @@ void driver(int m, int maxiter,
 
     // m < n, m is the columns allocated for this processor
     double *b = (double *) malloc(m * sizeof(double));
-    double *x = (double *) malloc(m * sizeof(double));
+    double *x = (double *) malloc(n * sizeof(double));
     double *rhist = NULL;
 
     static shared double *xall;
