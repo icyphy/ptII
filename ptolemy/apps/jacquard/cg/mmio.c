@@ -699,10 +699,10 @@ csr_matrix_t *csr_hb_load(char *filename)
     assert(n <= MAX_THREADS);
     for (i = 0; i < THREADS; ++i) {
         start[i] = i * n_per_proc;
-        local_matrix->start[i] = start[i];
+        local_matrix->localStart[i] = start[i];
     }
     start[THREADS] = n;
-    local_matrix->start[THREADS] = start[THREADS];
+    local_matrix->localStart[THREADS] = start[THREADS];
     // nlocal is the number of rows for each thread
     nlocal = start[MYTHREAD + 1] - start[MYTHREAD];
     // store nlocal in m of local_matrix

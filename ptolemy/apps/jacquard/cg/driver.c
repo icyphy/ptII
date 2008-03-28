@@ -86,7 +86,7 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
     double *Aval = Acsr->val;
     int my_start = Acsr->localStart[MYTHREAD];
 
-    static shared double xglobal[MAX_NNZ];
+    static shared [] double xglobal[MAX_NNZ];
 
     /* Copy local vector section into shared memory */
     for (i = 0; i < n; ++i) {

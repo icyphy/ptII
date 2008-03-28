@@ -77,8 +77,8 @@ double ddot(double *x, double *y, int n)
  *  Iteration count on success, -1 on failure
  */
 int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
-               void (*psolve) (double *Minvx, void *Adata, double *x,
-                               int n), void *Adata, void *Mdata, double *b,
+               void (*psolve) (double *Minvx, void *Adata, double *x, int n), 
+               void *Adata, void *Mdata, double *b,
                double *x, double rtol, int n, double *rhist, int maxiter, int realn)
 {
     // n is actually m
