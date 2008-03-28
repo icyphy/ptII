@@ -87,7 +87,7 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
     int my_start = Acsr->localStart[MYTHREAD];
 
     //static shared [] double xglobal[MAX_NNZ];
-    shared double* xglobal;
+    static shared double* xglobal;
     xglobal = (shared double*) upc_alloc(MAX_NNZ * sizeof(double));
 
     /* Copy local vector section into shared memory */
