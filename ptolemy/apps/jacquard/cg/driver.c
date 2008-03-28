@@ -76,7 +76,7 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
 #define MAX_N   10000
 #define MAX_NNZ 100000
 
-void csr_matvec(double *Ax, void *Adata, double *x, int n, int nz)
+void csr_matvec(double *Ax, void *Adata, double *x, int n)
 {
     int i, j;
 

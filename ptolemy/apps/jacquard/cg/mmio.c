@@ -646,7 +646,11 @@ csr_matrix_t *csr_hb_load(char *filename)
     int n_per_proc, nlocal, nzlocal;
     int first_nz;
     static int shared n;
-    static shared [] int row_start[MAX_N];
+
+    static shared int * row_start;
+    row_start = (static shared int*) upc_alloc(MAX_N * sizeof(int));
+    
+    //static shared [] int row_start[MAX_N];
     static shared [] int col_idx[MAX_NNZ];
     static shared [] double val[MAX_NNZ];
     //static int shared nz;
