@@ -150,6 +150,7 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
     z = (double *) malloc(nbytes);
 
     bnorm2 = ddot(b, b, n);
+printf("T[%d]: first bnorm2) = %g\n", MYTHREAD, bnorm2);
 
     memset(x, 0, nbytes);
     memcpy(r, b, nbytes);
@@ -160,9 +161,9 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
 
     // b dot x => z is the guess for x, r is copied b
     rz = ddot(r, z, n);
-printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, rz);
+printf("T[%d]: first rz = %g\n", MYTHREAD, rz);
     rnorm2 = ddot(r, r, n);
-printf("T[%d]: first ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
+printf("T[%d]: first rnorm2) = %g\n", MYTHREAD, rnorm2);
 
 fflush(stdout);
 printf("T[%d]:starting loop\n", MYTHREAD);
