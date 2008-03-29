@@ -161,7 +161,9 @@ for (i = 0; i < n; i++) {
     printf("T[%d]: x[%d] = %g\n", MYTHREAD, i, x[i]);
 }
     // z is the preconditioned x?
-    psolve(z, Mdata, r, n);
+    //psolve(z, Mdata, r, n);
+    //replaced with:
+    memcpy(z, r, nbytes);
     // s is the dummy variable used to solve?
     memcpy(s, z, nbytes);
 for (i = 0; i < n; i++) {
