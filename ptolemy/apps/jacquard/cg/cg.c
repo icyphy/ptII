@@ -182,6 +182,7 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
         alpha = rz / temp;
         //alpha = rz / ddot(s, z, n);
 printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
+printf("T[%d]: alpha = %g\n", MYTHREAD, alpha);
 
 if (i == 0 ) {
 int j;
@@ -209,6 +210,7 @@ printf("END \n");*/
 printf("T[%d]: ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
 
         beta = -rz / rzold;
+printf("T[%d]: beta = %g\n", MYTHREAD, beta);
         axpy(s, -beta, s, z, n);
 
 //printf("T[%d]: rnorm2 = %g\n", MYTHREAD, rnorm2);
