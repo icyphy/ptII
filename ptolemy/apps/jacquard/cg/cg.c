@@ -61,20 +61,20 @@ printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
     for (i = 0; i < THREADS; ++i) printf("T[%d]: globalSumEach[%d] = %g\n", MYTHREAD, i, globalSumEach[i]);
 //printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
 
-//    for (i = 0; i < THREADS; ++i) {
-//        double temp = globalSumEach[i];
-//        //*globalSum += globalSumEach[i];
-//        printf("T[%d]: temp globalSumEach[%d] = %g\n", MYTHREAD, i, temp);
-//        globalSum += temp;
-//    }
-
+    for (i = 0; i < THREADS; ++i) {
+        double temp = globalSumEach[i];
+        //*globalSum += globalSumEach[i];
+        printf("T[%d]: temp globalSumEach[%d] = %g\n", MYTHREAD, i, temp);
+        globalSum += temp;
+    }
+/*
     upc_forall (i = 0; i < THREADS; ++i) {
         double temp = globalSumEach[i];
         //*globalSum += globalSumEach[i];
         printf("T[%d]: temp globalSumEach[%d] = %g\n", MYTHREAD, i, temp);
         globalSum += temp;
     }
-
+*/
 //printf("T[%d]: globalSum = %g\n", MYTHREAD, localSum);
     //return localSum;
 printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, globalSum);
