@@ -154,27 +154,29 @@ printf("T[%d]: first bnorm2 = %g\n", MYTHREAD, bnorm2);
 
     memset(x, 0, nbytes);
     memcpy(r, b, nbytes);
-for (i = 0; i < n; i++) {
-    printf("T[%d]: r[%d] = %g\n", MYTHREAD, i, r[i]);
-}
-for (i = 0; i < n; i++) {
-    printf("T[%d]: x[%d] = %g\n", MYTHREAD, i, x[i]);
-}
     // z is the preconditioned x?
     //psolve(z, Mdata, r, n);
     //replaced with:
     memcpy(z, r, nbytes);
     // s is the dummy variable used to solve?
     memcpy(s, z, nbytes);
+
+/*
+for (i = 0; i < n; i++) {
+    printf("T[%d]: r[%d] = %g\n", MYTHREAD, i, r[i]);
+}
+for (i = 0; i < n; i++) {
+    printf("T[%d]: x[%d] = %g\n", MYTHREAD, i, x[i]);
+}
 for (i = 0; i < n; i++) {
     printf("T[%d]: s[%d] = %g\n", MYTHREAD, i, s[i]);
 }
-
-    // b dot x => z is the guess for x, r is copied b
 for (i = 0; i < n; i++) {
     printf("T[%d]: z[%d] = %g\n", MYTHREAD, i, z[i]);
 }
+*/
 
+    // b dot x => z is the guess for x, r is copied b
     rz = ddot(r, z, n);
 printf("T[%d]: first rz = %g\n", MYTHREAD, rz);
     rnorm2 = ddot(r, r, n);
