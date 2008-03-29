@@ -6,6 +6,7 @@
 #include <sys/time.h>
 #include <time.h>
 
+#include <upc.h>
 #include "cg.h"
 #include "poisson_problem.h"
 #include "csr_problem.h"
