@@ -77,7 +77,6 @@ printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
 */
 //printf("T[%d]: globalSum = %g\n", MYTHREAD, localSum);
     //return localSum;
-printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, globalSum);
     return globalSum;
 }
 
@@ -161,10 +160,11 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
 
     // b dot x => z is the guess for x, r is copied b
     rz = ddot(r, z, n);
-//printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, rz);
+printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, rz);
     rnorm2 = ddot(r, r, n);
-//printf("T[%d]: first ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
+printf("T[%d]: first ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
 
+fflush(stdout);
 printf("T[%d]:starting loop\n", MYTHREAD);
 
     for (i = 0; i < maxiter && rnorm2 > bnorm2 * rtol * rtol; ++i) {
@@ -181,6 +181,7 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
         temp = ddot(s, z, n);
         alpha = rz / temp;
         //alpha = rz / ddot(s, z, n);
+printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
 
 if (i == 0 ) {
 int j;
