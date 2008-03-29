@@ -180,7 +180,7 @@ for (i = 0; i < n; i++) {
     rz = ddot(r, z, n);
 printf("T[%d]: first rz = %g\n", MYTHREAD, rz);
     rnorm2 = ddot(r, r, n);
-printf("T[%d]: first rnorm2) = %g\n", MYTHREAD, rnorm2);
+printf("T[%d]: first rnorm2 = %g\n", MYTHREAD, rnorm2);
 
 fflush(stdout);
 printf("T[%d]:starting loop\n", MYTHREAD);
