@@ -154,15 +154,21 @@ printf("T[%d]: first bnorm2 = %g\n", MYTHREAD, bnorm2);
 
     memset(x, 0, nbytes);
     memcpy(r, b, nbytes);
+for (i = 0; i < n; i++) {
+    printf("r[%d] = %g\n", i, r[i]);
+}
     // z is the preconditioned x?
     psolve(z, Mdata, r, n);
     // s is the dummy variable used to solve?
     memcpy(s, z, nbytes);
+for (i = 0; i < n; i++) {
+    printf("s[%d] = %g\n", i, s[i]);
+}
 
     // b dot x => z is the guess for x, r is copied b
-    for (i = 0; i < n; i++) {
-        printf("z[%d] = %g\n", i, z[i]);
-    }
+for (i = 0; i < n; i++) {
+    printf("z[%d] = %g\n", i, z[i]);
+}
 
     rz = ddot(r, z, n);
 printf("T[%d]: first rz = %g\n", MYTHREAD, rz);
