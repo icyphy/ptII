@@ -179,6 +179,7 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
         matvec(z, Adata, s, n);
         double temp;
         temp = ddot(s, z, n);
+printf("T[%d]: rz = %g\n", MYTHREAD, rz);
         alpha = rz / temp;
         //alpha = rz / ddot(s, z, n);
 printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
