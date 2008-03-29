@@ -27,7 +27,7 @@ void axpy(double *dest, double alpha, double *x, double *y, int n)
  *  x, y - vector inputs
  *  n    - vector size
  */
-/*
+
 double ddot(double *x, double *y, int n)
 {
     int i;
@@ -80,7 +80,8 @@ printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
 printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, globalSum);
     return globalSum;
 }
-*/
+
+/*
 double ddot(double *x, double *y, int n)
 {
     int i;
@@ -106,7 +107,7 @@ printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
 //printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, finalSum);
     return globalSum;
 }
-
+*/
 
 /* Solve Ax = b using a preconditioned conjugate-gradient iteration.
  * 

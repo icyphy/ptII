@@ -7,7 +7,7 @@
 *   (Modifications by dbindel, 10/4 -- see end of file)
 * 
 */
-
+#include <upc.h>
 
 #include <stdio.h>
 #include <stdlib.h>
