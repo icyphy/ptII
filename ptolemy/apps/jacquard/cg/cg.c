@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <bupc_collectivev.h>
 
 
 /* Compute alpha*x + y and store in dest (daxpy-like operation)
@@ -83,41 +84,27 @@ printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, globalSum);
 double ddot(double *x, double *y, int n)
 {
     int i;
-    //double sum = 0;
-    double localSum = 0;
-    //static shared double globalSumEach[THREADS];
-
-    //shared double* globalSum;
-    //shared double* globalSums;
-    //globalSums = (shared double*) upc_alloc(THREADS * sizeof(double));
-    //shared double* shared finalSum;
-    //finalSum = (shared double* shared) upc_alloc(sizeof(double));
-    static shared [] double globalSums[THREADS];
-    shared [sizeof(double)] double finalSum[sizeof(double)];
-    //globalSums = (shared double*) upc_alloc(THREADS * sizeof(double));
+    double localSum = 0.0;
+    double globalSum = 0.0;
 
     for (i = 0; i < n; ++i)
         localSum += x[i] * y[i];
 
 printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
-    //upc_barrier;
-    //upc_notify;
-
-    globalSums[MYTHREAD] = localSum;
 
     upc_barrier;
-    //upc_wait;
-    for (i = 0; i < THREADS; ++i) printf("T[%d]: globalSums[%d] = %g\n", MYTHREAD, i, globalSums[i]);
 
-    if (MYTHREAD == 0) {
-        for (i = 0; i < THREADS; i++) finalSum += globalSums[i];
-    }
+    bupc_allv_reduce(double, localSum, MYTHREAD, UPC_ADD);
+
+    //upc_wait;
+    printf("T[%d]: globalSum = %g\n", MYTHREAD, globalSum);
+
 //printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
 
 //printf("T[%d]: globalSum = %g\n", MYTHREAD, localSum);
     //return localSum;
-printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, finalSum);
-    return finalSum;
+//printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, finalSum);
+    return globalSum;
 }
 
 
