@@ -157,6 +157,9 @@ printf("T[%d]: first bnorm2 = %g\n", MYTHREAD, bnorm2);
 for (i = 0; i < n; i++) {
     printf("T[%d]: r[%d] = %g\n", MYTHREAD, i, r[i]);
 }
+for (i = 0; i < n; i++) {
+    printf("T[%d]: x[%d] = %g\n", MYTHREAD, i, x[i]);
+}
     // z is the preconditioned x?
     psolve(z, Mdata, r, n);
     // s is the dummy variable used to solve?
