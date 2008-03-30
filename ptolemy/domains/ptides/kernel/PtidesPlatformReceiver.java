@@ -123,11 +123,9 @@ public class PtidesPlatformReceiver extends PrioritizedTimedQueue {
 		for (int j = 0; j < receivers.length; j++) {
 			IOPort container = receivers[j].getContainer();
 
-			// If there is no container, then perform no conversion.
-			if (container == null) {
-				((PtidesPlatformReceiver) receivers[j]).put(container.convert(token),
-						time);
-			} else {
+			// If there is no container, then perform no
+			// conversion.
+			if (container != null) {
 				((PtidesPlatformReceiver) receivers[j]).put(container.convert(token),
 						time);
 			}
