@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/c/actor
 
-DIRS =		sched lib test
+DIRS =		sched parameters lib test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -54,6 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	lib/lib.jar \
+	parameters/parameters.jar \
 	sched/sched.jar
 
 # Keep this list alphabetized.
