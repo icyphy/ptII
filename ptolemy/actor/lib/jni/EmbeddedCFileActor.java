@@ -107,23 +107,37 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
     }
 
     public void changeEmbeddedCCode() throws IllegalActionException{
-        BufferedReader reader = codeBlockFile.openForReading();
+        BufferedReader reader = null;
 
-        if (reader == null){
-            System.out.println("reader is null");
-        }
-        String code = new String();
-        // Is there a better way of reading in file into a string???
-        try{
-            String str;
-            while ((str = reader.readLine()) !=null){
-                code = code.concat(str + "\n");
+        try {
+            reader = codeBlockFile.openForReading();
+            if (reader == null){
+                throw new IllegalActionException("Failed to open \""
+                        + codeBlockFile + "\"");
+            } else {
+                String code = new String();
+                // Is there a better way of reading in file into a string???
+                try{
+                    String str;
+                    while ((str = reader.readLine()) !=null){
+                        code = code.concat(str + "\n");
+                    }
+                }catch (IOException e){
+                    // Does codeBlockFile.getExpression() actually get the name of the name of the file???
+                    throw new IllegalActionException ("Could not read file" + codeBlockFile.getExpression());
+                }
+                embeddedCCode.setExpression(code);
+            } 
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to open \"" + codeBlockFile + "\"");
+                }
             }
-        }catch (IOException e){
-            // Does codeBlockFile.getExpression() actually get the name of the name of the file???
-            throw new IllegalActionException ("Could not read file" + codeBlockFile.getExpression());
         }
-        embeddedCCode.setExpression(code);
     }
     
     protected void setEmbeddedActor() throws IllegalActionException, NameDuplicationException{

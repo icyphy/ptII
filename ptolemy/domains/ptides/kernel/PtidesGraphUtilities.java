@@ -169,18 +169,20 @@ public class PtidesGraphUtilities {
 
 	public static boolean isActuator(Actor actor) {
 		try {
-			if (actor == null)
-				actor = null;
+                    if (actor == null) {
+                        return false;
+                    } else {
 			Parameter parameter = (Parameter) ((NamedObj) actor)
-					.getAttribute("isActuator");
+                            .getAttribute("isActuator");
 
 			if (parameter != null) {
-				BooleanToken intToken = (BooleanToken) parameter.getToken();
+                            BooleanToken intToken = (BooleanToken) parameter.getToken();
 
-				return intToken.booleanValue();
+                            return intToken.booleanValue();
 			} else {
 				return false;
 			}
+                    }
 		} catch (ClassCastException ex) {
 			return false;
 		} catch (IllegalActionException ex) {
@@ -240,8 +242,9 @@ public class PtidesGraphUtilities {
 
 	public static boolean isSensor(Actor actor) {
 		try {
-			if (actor == null)
-				actor = null;
+                    if (actor == null) {
+                        return false;
+                    } else {
 			Parameter parameter = (Parameter) ((NamedObj) actor)
 					.getAttribute("isSensor");
 
@@ -252,6 +255,7 @@ public class PtidesGraphUtilities {
 			} else {
 				return false;
 			}
+                    }
 		} catch (ClassCastException ex) {
 			return false;
 		} catch (IllegalActionException ex) {
