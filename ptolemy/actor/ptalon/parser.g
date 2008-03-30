@@ -197,25 +197,25 @@ transparent_relation_declaration!
  */
 qualified_identifier!
 {
-	String identifier = "";
+	StringBuffer identifier = new StringBuffer();
 }
 :
 	(p:ID COLON
 	{
-		identifier = identifier + #p.getText() + ":";
+		identifier.append(#p.getText() + ":");
 	}
 	)?
 	a:keyword_or_identifier 
 	{
-		identifier = identifier + #a.getText();
+		identifier.append(identifier + #a.getText());
 	} 
 	(DOT b:keyword_or_identifier
 	{
-		identifier = identifier + "." +  #b.getText();
+		identifier.append("." +  #b.getText());
 	}
 	)*
 	{
-		#qualified_identifier = #[QUALID, identifier];
+		#qualified_identifier = #[QUALID, identifier.toString()];
 	}
 ;
 
