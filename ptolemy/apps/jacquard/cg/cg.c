@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <bupc_collectivev.h>
 
 
 /* Compute alpha*x + y and store in dest (daxpy-like operation)
