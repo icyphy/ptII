@@ -22,12 +22,12 @@
           <doc>Create an array of rician random variables</doc>
         </entity>
 
-	<entity name="Uniform" class="ptolemy.actor.lib.Uniform">
-	  <doc>Create a sequence of uniformly distributed random numbers</doc>
-	</entity>
-
 	<entity name="Triangular" class="ptolemy.actor.lib.Triangular">
 	  <doc>Create a sequence of random numbers with a triangular distribution</doc>
+	</entity>
+
+	<entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+	  <doc>Create a sequence of uniformly distributed random numbers</doc>
 	</entity>
 
         <!-- Colt actors generate random numbers -->
