@@ -50,8 +50,14 @@ import ptolemy.data.UnionToken;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeEvaluator
@@ -1292,6 +1298,29 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         if (argValues[0] instanceof ObjectToken) {
             Object object = ((ObjectToken) argValues[0]).getValue();
             if (object != null) {
+                if (object instanceof NamedObj) {
+                    Object result = ((NamedObj) object).getAttribute(
+                            methodName);
+                    if (result == null && object instanceof Entity) {
+                        result = ((Entity) object).getPort(methodName);
+                    }
+                    if (result == null && object instanceof CompositeEntity) {
+                        result = ((CompositeEntity) object).getEntity(
+                                methodName);
+                        if (result == null) {
+                            result = ((CompositeEntity) object).getRelation(
+                                    methodName);
+                        }
+                    }
+                    if (result != null) {
+                        if (result instanceof Variable) {
+                            return ((Variable) result).getToken();
+                        } else {
+                            return new ObjectToken(result, result.getClass());
+                        }
+                    }
+                }
+                
                 Class<?> valueClass = object.getClass();
                 Set<Class<?>> classes = new HashSet<Class<?>>();
                 classes.add(valueClass);

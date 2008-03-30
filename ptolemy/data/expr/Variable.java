@@ -43,6 +43,7 @@ import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.StructuredType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeConstant;
@@ -2080,20 +2081,20 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     if (reference instanceof Entity) {
                         Port port = ((Entity) reference).getPort(insideName);
                         if (port != null) {
-                            return new BaseType.ObjectType(port.getClass());
+                            return new ObjectType(port.getClass());
                         }
                     }
                     if (reference instanceof CompositeEntity) {
                         ComponentEntity entity =
                             ((CompositeEntity) reference).getEntity(insideName);
                         if (entity != null) {
-                            return new BaseType.ObjectType(entity.getClass());
+                            return new ObjectType(entity.getClass());
                         }
 
                         ComponentRelation relation =
                             ((CompositeEntity) reference).getRelation(insideName);
                         if (relation != null) {
-                            return new BaseType.ObjectType(relation.getClass());
+                            return new ObjectType(relation.getClass());
                         }
                     }
                     reference = reference.getContainer();

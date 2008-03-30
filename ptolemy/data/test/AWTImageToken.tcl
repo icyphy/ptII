@@ -56,7 +56,7 @@ test AWTImageToken-1.1 {Create a  AWTImageToken} {
 	[java::field java.awt.image.BufferedImage TYPE_INT_RGB]]
     set a [java::new ptolemy.data.AWTImageToken $image]
     list [$a toString] [[$a getType] toString]
-} {{{type="class ptolemy.data.AWTImageToken" width="1" height="1"}} Object}
+} {{{type="class ptolemy.data.AWTImageToken" width="1" height="1"}} object(null)}
 
 ######################################################################
 ####

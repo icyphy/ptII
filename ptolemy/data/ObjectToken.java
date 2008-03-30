@@ -29,6 +29,7 @@
 package ptolemy.data;
 
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -72,7 +73,7 @@ public class ObjectToken extends Token {
      *  @param value The value.
      *  @param valueClass The class of the value.
      */
-    public ObjectToken(Object value, Class valueClass)
+    public ObjectToken(Object value, Class<?> valueClass)
     throws IllegalActionException {
         if (value != null && valueClass != null &&
                 !valueClass.isInstance(value)) {
@@ -142,7 +143,7 @@ public class ObjectToken extends Token {
         if (_class == null) {
             return BaseType.OBJECT;
         } else {
-            return new BaseType.ObjectType(_class);
+            return new ObjectType(_class);
         }
     }
 

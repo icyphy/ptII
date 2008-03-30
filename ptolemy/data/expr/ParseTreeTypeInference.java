@@ -42,11 +42,11 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FixType;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.MatrixType;
+import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeConstant;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.data.type.BaseType.ObjectType;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -249,7 +249,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     String className = ((StringToken) token).stringValue();
                     try {
                         Class clazz = Class.forName(className);
-                        _setType(node, new BaseType.ObjectType(clazz));
+                        _setType(node, new ObjectType(clazz));
                     } catch (ClassNotFoundException e) {
                         throw new IllegalActionException("Unable to load class "
                                 + className);
