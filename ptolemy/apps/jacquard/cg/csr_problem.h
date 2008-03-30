@@ -12,7 +12,6 @@ typedef struct csr_matrix_t {
     double *val;
 
     int myStart;
-    //int localStart[MAX_THREADS];
     //int totalnz;
 } csr_matrix_t;
 

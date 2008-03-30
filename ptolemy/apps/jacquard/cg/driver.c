@@ -81,22 +81,16 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
 {
     int i, j;
 
-    csr_matrix_t *Acsr = (csr_matrix_t *) Adata;
-    int *Arow = Acsr->row_start;
-    int *Acol = Acsr->col_idx;
-    double *Aval = Acsr->val;
-    //int my_start = Acsr->localStart[MYTHREAD];
-    int my_start = Acsr->myStart;
+    csr_matrix_t *Atemp = (csr_matrix_t *) Adata;
+    int *Arow = Atemp->row_start;
+    int *Acol = Atemp->col_idx;
+    double *Aval = Atemp->val;
+    int mystart = Atemp->myStart;
 
-    //static shared double xglobal[MAX_NNZ];
     static shared [] double xglobal[MAX_NNZ];
-    //static shared double* xglobal;
-    //xglobal = (shared double*) upc_all_alloc(MAX_NNZ, MAX_NNZ * sizeof(double));
 
-    //upc_barrier;
-    /* Copy local vector section into shared memory */
     for (i = 0; i < n; ++i) {
-        xglobal[my_start + i] = x[i];
+        xglobal[mystart + i] = x[i];
     }
     upc_barrier;
 
@@ -104,11 +98,12 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
         Ax[i] = 0;
         for (j = Arow[i]; j < Arow[i + 1]; ++j) {
             int col = *Acol++;
-            double Aelement = *Aval++;
-            Ax[i] += Aelement * xglobal[col];
+            //double Aelement = *Aval++;
+            //Ax[i] += Aelement * xglobal[col];
+            Ax[i] += *Aval * xglobal[col];
+            Aval++;
         }
     }
-    //upc_free(xglobal);
     upc_barrier;
 }
 
@@ -229,10 +224,10 @@ int main(int argc, char **argv)
 */
 
         printf("Vanilla CG:        ");
-printf("T[%d]: here\n", MYTHREAD);
+//printf("T[%d]: here\n", MYTHREAD);
         driver(A->m, A->m, csr_matvec, A, dummy_psolve, NULL, A->n, A->myStart);
     }
 
-printf("T[%d]: finished\n", MYTHREAD);
+//printf("T[%d]: finished\n", MYTHREAD);
     return 0;
 }
