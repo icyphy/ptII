@@ -111,10 +111,12 @@ test Functions-IEEEremainder {test IEEEremainder.  IEEEremainder is dnot documen
 test Function-acos {Test acos} {
     list [evaluatePtClose {acos(0.0)} 1.5707963267949] \
          [evaluate {acos(1.0)}] \
+         [evaluate {acos(1.0f)}] \
          [evaluate {acos(1)}] \
+         [evaluate {acos(1s)}] \
          [evaluate {acos(1ub)}] \
          [evaluatePtClose {acos(1.0+0.0i)} {0.0 + 0.0i}] \
-     } {1 0.0 0.0 0.0 1}
+} {1 0.0 0.0 0.0 0.0 0.0 1}
 
 test Functions-acos-2 {test acos} {
     list [evaluate {acos(identityMatrixDouble(2))}] \
@@ -129,10 +131,13 @@ test Functions-acos-2 {test acos} {
 test Function-asin {Test asin} {
     list [evaluatePtClose {asin(1.0)} 1.5707963267949] \
          [evaluate {asin(0.0)}] \
+         [evaluate {asin(0.0f)}] \
          [evaluate {asin(0)}] \
+         [evaluate {asin(-0.0)}] \
+         [evaluate {asin(0s)}] \
          [evaluate {asin(0ub)}] \
          [evaluatePtClose {asin(1.0+0.0i)} {1.5707963267949 + 0.0i}] \
-     } {1 0.0 0.0 0.0 1}
+     } {1 0.0 0.0 0.0 0.0 0.0 0.0 1}
 
 test Functions-asin {test asin-2} {
     list [evaluate {asin(identityMatrixDouble(2))}] \
@@ -147,10 +152,12 @@ test Functions-asin {test asin-2} {
 test Function-atan {Test atan} {
     list [evaluatePtClose {atan(1.0)} 0.7853981633974] \
          [evaluatePtClose {atan(-1)} -0.7853981633974] \
+         [evaluatePtClose {atan(-1.0f)} -0.7853981633974] \
+         [evaluatePtClose {atan(-1s)} -0.7853981633974] \
          [evaluate {atan(0ub)}] \
          [evaluatePtClose {atan(Infinity)} 1.5707963267949] \
          [evaluatePtClose {atan(0.0+0.0i)} {0.0 + 0.0i}]
-     } {1 1 0.0 1 1}
+     } {1 1 1 1 0.0 1 1}
 
 test Functions-atan-2 {test atan} {
     list [evaluate {atan(identityMatrixDouble(2))}] \
@@ -327,11 +334,13 @@ test Function-tanh {Test tanh} {
 test Function-abs {Test abs on scalars} {
     list [evaluatePtClose {abs(1+i)} 1.4142135623731] \
          [evaluate {abs(-1.0)}] \
+         [evaluate {abs(-1.0f)}] \
          [evaluate {abs(-1)}] \
-         [evaluate {abs(1ub)}] \
+         [evaluate {abs(-1s)}] \
+         [evaluate {abs(-1ub)}] \
          [evaluate {abs(-1L)}] \
          [evaluate {abs(1ub)}] \
-} {1 1.0 1 1 1L 1}
+} {1 1.0 1.0 1 1 255 1L 1}
 
 test Function-abs-2 {Test abs on arrays} {
     list [evaluatePtClose {abs({1+i, 1-i})} {{1.4142135623731, 1.4142135623731}}] \
@@ -368,11 +377,16 @@ test Function-abs-3 {Test abs on matrices} {
 
 test Function-ceil {Test ceil} {
     list [evaluate {ceil(-1.1)}] \
-         [evaluate {ceil(-1)}] \
+         [evaluate {ceil(-2)}] \
+         [evaluate {ceil(-3s)}] \
+         [evaluate {ceil(-4ub)}] \
+         [evaluate {ceil(0)}] \
          [evaluate {ceil(1ub)}] \
+         [evaluate {ceil(2s)}] \
+         [evaluate {ceil(3.0f)}] \
          [evaluate {ceil({1.1, 2.1})}] \
          [evaluate {ceil([1.1, 2.1])}] \
-     } {-1.0 -1.0 1.0 {{2.0, 3.0}} {[2.0, 3.0]}}
+} {-1.0 -2.0 -3.0 252.0 0.0 1.0 2.0 3.0 {{2.0, 3.0}} {[2.0, 3.0]}}
 
 test Functions-ceil-2 {test ceil} {
     list [evaluate {ceil(identityMatrixDouble(2) + 0.5)}] \
@@ -380,6 +394,16 @@ test Functions-ceil-2 {test ceil} {
         [evaluate {ceil({-1.0, 0.5})}] \
         [evaluate {ceil(1.5)}]
 } {{[2.0, 1.0; 1.0, 2.0]} -1.0 {{-1.0, 1.0}} 2.0}
+
+test Function-ceil {Test ceil with boundary} {
+    list [evaluate {ceil(NaN)}] \
+         [evaluate {ceil(Infinity)}] \
+         [evaluate {ceil(-Infinity)}] \
+         [evaluate {ceil(MaxDouble)}] \
+         [evaluate {ceil(0.0)}] \
+         [evaluate {ceil(-0.0)}]
+} {NaN Infinity -Infinity 1.7976931348623E308 0.0 0.0}
+
 ####################################################################
 # compare
 
@@ -1148,6 +1172,14 @@ test Function-cast-2 {cast that fails} {
 
 Because:
 Conversion is not supported from ptolemy.data.DoubleToken '3.0' to the type int because the type of the token is higher or incomparable with the given type.}}
+
+test Function-cast-3 {cast that fails} {
+    catch {[evaluate {cast(int, 1f)}]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Error invoking function public static ptolemy.data.Token ptolemy.data.expr.UtilityFunctions.cast(ptolemy.data.Token,ptolemy.data.Token) throws ptolemy.kernel.util.IllegalActionException
+
+Because:
+Conversion is not supported from ptolemy.data.FloatToken '1.0f' to the type int because the type of the token is higher or incomparable with the given type.}}
 
 proc tokenInfo {token} {
     return [list [$token toString] \

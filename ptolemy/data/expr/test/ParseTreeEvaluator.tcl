@@ -127,12 +127,16 @@ test ParseTreeEvaluator-2.4.1 {Test out power op '^' on doubles} {
 	[evaluate "pow(3.0, -3.0)"] \
 	[evaluate "3.0 ^ 0"] \
 	[evaluate "3.0 ^ 0ub"] \
+	[evaluate "3.0 ^ 0s"] \
 	[evaluate "3.0 ^ 3"] \
 	[evaluate "3.0 ^ 3ub"] \
+	[evaluate "3.0 ^ 3s"] \
 	[evaluate "(3 + 0i) ^ 3ub"] \
 	[evaluate "(3 + 2i) ^ 3ub"] \
-	[evaluate "(3 + 0i) ^ -3"] 
-} {0.037037037037 0.037037037037 1.0 1.0 27.0 27.0 {27.0 + 0.0i} {-9.0 + 46.0i} {0.037037037037037035 + 0.0i}}
+	[evaluate "(3 + 2i) ^ 3s"] \
+	[evaluate "(3 + 0i) ^ -3"] \
+	[evaluate "(3 + 0i) ^ -3s"] 
+} {0.037037037037 0.037037037037 1.0 1.0 1.0 27.0 27.0 27.0 {27.0 + 0.0i} {-9.0 + 46.0i} {-9.0 + 46.0i} {0.037037037037037035 + 0.0i} {0.037037037037037035 + 0.0i}}
 
 ######################################################################
 ####
@@ -149,6 +153,18 @@ test ParseTreeEvaluator-2.4.2 {Test out power op '^' on matrices} {
   [1, 2; 3, 4]
   [7, 10; 15, 22]
   [7, 10; 15, 22]}}
+
+######################################################################
+####
+# 
+test ParseTreeEvaluator-2.4.3 {Test out power op '^' on longs and non-scalars} {
+    catch {evaluate {2 ^ 3.0}} errMsg
+    catch {evaluate {2 ^ 3L}} errMsg2
+    list "$errMsg\n$errMsg2"
+} {{ptolemy.kernel.util.IllegalActionException: Exponent must have a valid lossless conversion to integer. Integer, short or unsigned byte meet these criteria.
+Use pow(10, 3.5) for non-integer exponents
+ptolemy.kernel.util.IllegalActionException: Exponent must have a valid lossless conversion to integer. Integer, short or unsigned byte meet these criteria.
+Use pow(10, 3.5) for non-integer exponents}}
 
 ######################################################################
 ####

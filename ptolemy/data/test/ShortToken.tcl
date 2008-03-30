@@ -70,6 +70,16 @@ test ShortToken-1.2 {Create a non-empty instance from an String} {
 ######################################################################
 ####
 # 
+test ShortToken-1.2.5 {Out of range} {
+    catch {java::new ptolemy.data.ShortToken "-2147483648"} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Failed to parse "-2147483648" as a number.
+Because:
+Value out of range. Value:"-2147483648" Radix:10}}
+
+######################################################################
+####
+# 
 test ShortToken-1.3 {NIL} { 
     set nil [java::field ptolemy.data.ShortToken NIL]
     list [$nil toString]
