@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
@@ -50,6 +51,11 @@ import ptolemy.data.type.Typeable;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -233,18 +239,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         setPersistent(false);
     }
 
-    /** Construct a variable in the specified workspace with an empty
-     *  string as its name. The name can be later changed with setName().
-     *  If the workspace argument is null, then use the default workspace.
-     *  The variable is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the variable.
-     */
-    public Variable(Workspace workspace) {
-        super(workspace);
-        setPersistent(false);
-    }
-
     /** Construct a variable with the given name as an attribute of the
      *  given container. The container argument must not be null, otherwise
      *  a NullPointerException will be thrown. This variable will use the
@@ -283,41 +277,17 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         this(container, name, token, true);
     }
 
-    /** Construct a variable with the given container, name, and token.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown. This variable will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty
-     *  string. Increment the version of the workspace.
-     *  @param container The container.
-     *  @param name The name.
-     *  @param token The token contained by this variable.
-     *  @param incrementWorkspaceVersion False to not add this to the workspace
-     *   or do anything else that might change the workspace version number.
-     *  @exception IllegalActionException If the container does not accept
-     *   a variable as its attribute.
-     *  @exception NameDuplicationException If the name coincides with a
-     *   variable already in the container.
+    /** Construct a variable in the specified workspace with an empty
+     *  string as its name. The name can be later changed with setName().
+     *  If the workspace argument is null, then use the default workspace.
+     *  The variable is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the variable.
      */
-    protected Variable(NamedObj container, String name,
-            ptolemy.data.Token token, boolean incrementWorkspaceVersion)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name, incrementWorkspaceVersion);
-        if (token != null) {
-            // Notification is important here so that the attributeChanged()
-            // method of the container is called.
-            _setToken(token);
-
-            // Record the initial value so "Restore Defaults" works.
-            // Note that we call the superclass only to avoid getting the
-            // other effects of setting the expression.
-            super.setExpression(token.toString());
-        }
+    public Variable(Workspace workspace) {
+        super(workspace);
         setPersistent(false);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     /** Add a listener to be notified when the value of this variable changes.
      *  @param listener The listener to add.
@@ -332,6 +302,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _valueListeners.add(listener);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the variable.  This creates a new variable containing the
      *  same token (if the value was set with setToken()) or the same
@@ -395,26 +368,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         return _declaredType;
     }
 
-    /** Return the list of identifiers referenced by the current expression.
-     *  @return A set of Strings.
-     *  @exception IllegalActionException If the expression cannot be parsed.
-     */
-    public Set getFreeIdentifiers() throws IllegalActionException {
-        if (_currentExpression == null) {
-            return Collections.EMPTY_SET;
-        }
-
-        try {
-            workspace().getReadAccess();
-            _parseIfNecessary();
-
-            ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
-            return collector.collectFreeVariables(_parseTree);
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
     /** Get the expression currently used by this variable. The expression
      *  is either the value set by setExpression(), or a string representation
      *  of the value set by setToken(), or an empty string if no value
@@ -447,6 +400,26 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
 
         return value;
+    }
+
+    /** Return the list of identifiers referenced by the current expression.
+     *  @return A set of Strings.
+     *  @exception IllegalActionException If the expression cannot be parsed.
+     */
+    public Set getFreeIdentifiers() throws IllegalActionException {
+        if (_currentExpression == null) {
+            return Collections.EMPTY_SET;
+        }
+
+        try {
+            workspace().getReadAccess();
+            _parseIfNecessary();
+
+            ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
+            return collector.collectFreeVariables(_parseTree);
+        } finally {
+            workspace().doneReading();
+        }
     }
 
     /** Return the parser scope for this variable.
@@ -1053,6 +1026,26 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
     }
 
+    /** Set the expression for this variable by calling
+     *  setExpression(), and then evaluate it by calling
+     *  validate().  This will cause any other variables
+     *  that are dependent on it to be evaluated, and will
+     *  also cause the container to be notified of the change,
+     *  unlike setExpression().
+     *  @param expression The expression.
+     *  @exception IllegalActionException If this variable or a
+     *   variable dependent on this variable cannot be evaluated (and is
+     *   not lazy) and the model error handler throws an exception.
+     *   Also thrown if the change is not acceptable to the container.
+     *  @see #getToken()
+     *  @see #setExpression(String)
+     *  @see #validate()
+     */
+    public void setToken(String expression) throws IllegalActionException {
+        setExpression(expression);
+        validate();
+    }
+
     /** Put a new token in this variable and notify the container and
      *  and value listeners. If an expression had been
      *  previously given using setExpression(), then that expression
@@ -1094,24 +1087,26 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         setUnknown(false);
     }
 
-    /** Set the expression for this variable by calling
-     *  setExpression(), and then evaluate it by calling
-     *  validate().  This will cause any other variables
-     *  that are dependent on it to be evaluated, and will
-     *  also cause the container to be notified of the change,
-     *  unlike setExpression().
-     *  @param expression The expression.
-     *  @exception IllegalActionException If this variable or a
-     *   variable dependent on this variable cannot be evaluated (and is
-     *   not lazy) and the model error handler throws an exception.
-     *   Also thrown if the change is not acceptable to the container.
-     *  @see #getToken()
-     *  @see #setExpression(String)
-     *  @see #validate()
+    /** Constrain the type of this variable to be equal to or
+     *  greater than the type represented by the specified InequalityTerm.
+     *  This constraint is not enforced here, but is returned by the
+     *  typeConstraintList() method for use by a type system.
+     *  @param typeTerm An InequalityTerm object.
      */
-    public void setToken(String expression) throws IllegalActionException {
-        setExpression(expression);
-        validate();
+    public void setTypeAtLeast(InequalityTerm typeTerm) {
+        if (_debugging) {
+            String name = "not named";
+
+            if (typeTerm.getAssociatedObject() instanceof Nameable) {
+                name = ((Nameable) typeTerm.getAssociatedObject())
+                        .getFullName();
+            }
+
+            _debug("setTypeAtLeast: " + name);
+        }
+
+        Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
+        _constraints.add(ineq);
     }
 
     /** Constrain the type of this variable to be equal to or
@@ -1134,28 +1129,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         Inequality ineq = new Inequality(lesser.getTypeTerm(), this
                 .getTypeTerm());
-        _constraints.add(ineq);
-    }
-
-    /** Constrain the type of this variable to be equal to or
-     *  greater than the type represented by the specified InequalityTerm.
-     *  This constraint is not enforced here, but is returned by the
-     *  typeConstraintList() method for use by a type system.
-     *  @param typeTerm An InequalityTerm object.
-     */
-    public void setTypeAtLeast(InequalityTerm typeTerm) {
-        if (_debugging) {
-            String name = "not named";
-
-            if (typeTerm.getAssociatedObject() instanceof Nameable) {
-                name = ((Nameable) typeTerm.getAssociatedObject())
-                        .getFullName();
-            }
-
-            _debug("setTypeAtLeast: " + name);
-        }
-
-        Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
         _constraints.add(ineq);
     }
 
@@ -1256,6 +1229,30 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
     }
 
+    /** Constrain the type of this variable to be the same as the
+     *  type of the specified object.  This constraint is not enforced
+     *  here, but is returned by the typeConstraintList() method for use
+     *  by a type system.
+     *  @param equal A Typeable object.
+     */
+    public void setTypeSameAs(Typeable equal) {
+        if (_debugging) {
+            String name = "not named";
+
+            if (equal instanceof Nameable) {
+                name = ((Nameable) equal).getFullName();
+            }
+
+            _debug("setTypeSameAs: " + name);
+        }
+
+        Inequality ineq = new Inequality(this.getTypeTerm(), equal
+                .getTypeTerm());
+        _constraints.add(ineq);
+        ineq = new Inequality(equal.getTypeTerm(), this.getTypeTerm());
+        _constraints.add(ineq);
+    }
+
     /** Mark the value of this variable to be unknown if the argument is
      *  <i>true</i>, or known if the argument is <i>false</i>.  In domains
      *  with fixed-point semantics, such as SR, a variable that depends on
@@ -1282,30 +1279,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
 
         _visibility = visibility;
-    }
-
-    /** Constrain the type of this variable to be the same as the
-     *  type of the specified object.  This constraint is not enforced
-     *  here, but is returned by the typeConstraintList() method for use
-     *  by a type system.
-     *  @param equal A Typeable object.
-     */
-    public void setTypeSameAs(Typeable equal) {
-        if (_debugging) {
-            String name = "not named";
-
-            if (equal instanceof Nameable) {
-                name = ((Nameable) equal).getFullName();
-            }
-
-            _debug("setTypeSameAs: " + name);
-        }
-
-        Inequality ineq = new Inequality(this.getTypeTerm(), equal
-                .getTypeTerm());
-        _constraints.add(ineq);
-        ineq = new Inequality(equal.getTypeTerm(), this.getTypeTerm());
-        _constraints.add(ineq);
     }
 
     /** Same as getExpression().
@@ -1507,6 +1480,39 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
             _notifyValueListeners();
         }
+    }
+
+    /** Construct a variable with the given container, name, and token.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown. This variable will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string. Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name.
+     *  @param token The token contained by this variable.
+     *  @param incrementWorkspaceVersion False to not add this to the workspace
+     *   or do anything else that might change the workspace version number.
+     *  @exception IllegalActionException If the container does not accept
+     *   a variable as its attribute.
+     *  @exception NameDuplicationException If the name coincides with a
+     *   variable already in the container.
+     */
+    protected Variable(NamedObj container, String name,
+            ptolemy.data.Token token, boolean incrementWorkspaceVersion)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name, incrementWorkspaceVersion);
+        if (token != null) {
+            // Notification is important here so that the attributeChanged()
+            // method of the container is called.
+            _setToken(token);
+
+            // Record the initial value so "Restore Defaults" works.
+            // Note that we call the superclass only to avoid getting the
+            // other effects of setting the expression.
+            super.setExpression(token.toString());
+        }
+        setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1966,17 +1972,230 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      */
     protected boolean _needsEvaluation = false;
 
-    /** The instance of VariableScope. */
-    protected ParserScope _parserScope = null;
-
     /** Indicator that the parse tree is valid. */
     protected boolean _parseTreeValid = false;
+
+    /** The instance of VariableScope. */
+    protected ParserScope _parserScope = null;
 
     /** Listeners for changes in value. */
     protected List _valueListeners;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Scope implementation with local caching. */
+    protected class VariableScope extends ModelScope {
+        /** Construct a scope consisting of the variables
+         *  of the container of the the enclosing instance of
+         *  Variable and its containers and their scope-extending
+         *  attributes.
+         */
+        public VariableScope() {
+            this(null);
+        }
+
+        /** Construct a scope consisting of the variables
+         *  of the specified container its containers and their
+         *  scope-extending attributes. If the argument is null,
+         *  then use the container of the enclosing instance of
+         *  Variable as the reference for the scope.
+         *  @param reference The reference for the scope.
+         */
+        public VariableScope(NamedObj reference) {
+            _reference = reference;
+        }
+
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @param name The name of the attribute.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.Token get(String name)
+                throws IllegalActionException {
+            Variable results = getVariable(name);
+            if (results != null) {
+                return results.getToken();
+            } else {
+                NamedObj reference;
+                if (_reference == null) {
+                    reference = Variable.this.getContainer();
+                } else {
+                    reference = _reference;
+                }
+                String insideName = name.replaceAll("::", ".");
+                while (reference != null) {
+                    if (reference instanceof Entity) {
+                        Port port = ((Entity) reference).getPort(insideName);
+                        if (port != null) {
+                            return new ObjectToken(port, port.getClass());
+                        }
+                    }
+                    if (reference instanceof CompositeEntity) {
+                        ComponentEntity entity =
+                            ((CompositeEntity) reference).getEntity(insideName);
+                        if (entity != null) {
+                            return new ObjectToken(entity, entity.getClass());
+                        }
+
+                        ComponentRelation relation = ((CompositeEntity)
+                                reference).getRelation(insideName);
+                        if (relation != null) {
+                            return new ObjectToken(relation,
+                                    relation.getClass());
+                        }
+                    }
+                    reference = reference.getContainer();
+                }
+
+                return null;
+            }
+        }
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @param name The name of the attribute.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.type.Type getType(String name)
+                throws IllegalActionException {
+            NamedObj reference = _reference;
+
+            if (_reference == null) {
+                reference = Variable.this.getContainer();
+            }
+
+            Variable result = getScopedVariable(Variable.this, reference, name);
+
+            if (result != null) {
+                return result.getType();
+            } else {
+                String insideName = name.replaceAll("::", ".");
+                while (reference != null) {
+                    if (reference instanceof Entity) {
+                        Port port = ((Entity) reference).getPort(insideName);
+                        if (port != null) {
+                            return new BaseType.ObjectType(port.getClass());
+                        }
+                    }
+                    if (reference instanceof CompositeEntity) {
+                        ComponentEntity entity =
+                            ((CompositeEntity) reference).getEntity(insideName);
+                        if (entity != null) {
+                            return new BaseType.ObjectType(entity.getClass());
+                        }
+
+                        ComponentRelation relation =
+                            ((CompositeEntity) reference).getRelation(insideName);
+                        if (relation != null) {
+                            return new BaseType.ObjectType(relation.getClass());
+                        }
+                    }
+                    reference = reference.getContainer();
+                }
+
+                return null;
+            }
+        }
+
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @param name The name of the attribute.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            NamedObj reference = _reference;
+
+            if (_reference == null) {
+                reference = Variable.this.getContainer();
+            }
+
+            Variable result = getScopedVariable(Variable.this, reference, name);
+
+            if (result != null) {
+                return result.getTypeTerm();
+            } else {
+                return null;
+            }
+        }
+
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @param name The name of the attribute.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public Variable getVariable(String name) throws IllegalActionException {
+            if (_variablesDependentOn == null) {
+                _variablesDependentOn = new HashMap();
+            } else {
+                // Variable might be cached.
+                if (_variablesDependentOnVersion == workspace().getVersion()) {
+                    // Cache is valid. Look up the variable.
+                    Variable result = (Variable) _variablesDependentOn
+                            .get(name);
+
+                    if (result != null) {
+                        return result;
+                    }
+                } else {
+                    // Cache is invalid.  Clear it.
+                    _variablesDependentOn.clear();
+                }
+            }
+
+            // Either cache is not valid, or the variable is not in the cache.
+            _variablesDependentOnVersion = workspace().getVersion();
+
+            NamedObj reference = _reference;
+
+            if (_reference == null) {
+                reference = Variable.this.getContainer();
+            }
+
+            Variable result = getScopedVariable(Variable.this, reference, name);
+
+            if (result != null) {
+                // If the variable is not in the cache, then we also
+                // may not be a value listener for it.
+                if (!_variablesDependentOn.containsValue(result)) {
+                    result.addValueListener(Variable.this);
+                    _variablesDependentOn.put(name, result);
+                }
+
+                return result;
+            } else {
+                return null;
+            }
+        }
+
+        /** Return the list of identifiers within the scope.
+         *  @return The list of variable names within the scope.
+         */
+        public Set identifierSet() {
+            NamedObj reference = _reference;
+
+            if (_reference == null) {
+                reference = Variable.this.getContainer();
+            }
+
+            return getAllScopedVariableNames(Variable.this, reference);
+        }
+
+        // Reference object for the scope.
+        private NamedObj _reference;
+    }
 
     /** Invalidate any variables contained by the specified object
      *  or by instances of ScopeExtendingAttribute that it contains
@@ -2027,18 +2246,30 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
     }
 
+    // Empty string token.
+    private static StringToken _EMPTY_STRING_TOKEN = new StringToken("");
+
+    // Type constraints.
+    private List _constraints = new LinkedList();
+
+    // The type set by setTypeEquals(). If _declaredType is not
+    // BaseType.UNKNOWN, the type of this Variable is fixed to that type.
+    private Type _declaredType = BaseType.UNKNOWN;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Used to check for dependency loops among variables.
     private transient boolean _dependencyLoop = false;
 
-    // Empty string token.
-    private static StringToken _EMPTY_STRING_TOKEN = new StringToken("");
-
     // Stores the expression used to initialize this variable. It is null if
     // the first token placed in the variable is not the result of evaluating
     // an expression.
     private String _initialExpression;
+
+    // Stores the first token placed in this variable. It is null if the
+    // first token contained by this variable was the result of evaluating
+    // an expression.
+    private ptolemy.data.Token _initialToken;
 
     // Indicator that this variable is lazy.
     private boolean _isLazy;
@@ -2052,19 +2283,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     // Flags whether the variable has not yet contained a token.
     private boolean _noTokenYet = true;
 
-    // Stores the first token placed in this variable. It is null if the
-    // first token contained by this variable was the result of evaluating
-    // an expression.
-    private ptolemy.data.Token _initialToken;
-
-    /** Stores the variables that are referenced by this variable. */
-    private HashMap _variablesDependentOn = null;
-
-    /** Version of the workspace when _variablesDependentOn was updated. */
-    private transient long _variablesDependentOnVersion = -1;
-
-    // Stores the Class object which represents the type of this variable.
-    private Type _varType = BaseType.UNKNOWN;
+    // If the variable was last set from an expression, this stores
+    //  the parse tree for that expression.
+    private ASTPtRootNode _parseTree;
 
     // the parse tree evaluator used by this variable.
     private ParseTreeEvaluator _parseTreeEvaluator;
@@ -2075,22 +2296,20 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     // The token contained by this variable.
     private ptolemy.data.Token _token;
 
-    // Type constraints.
-    private List _constraints = new LinkedList();
-
-    // The type set by setTypeEquals(). If _declaredType is not
-    // BaseType.UNKNOWN, the type of this Variable is fixed to that type.
-    private Type _declaredType = BaseType.UNKNOWN;
-
-    // If the variable was last set from an expression, this stores
-    //  the parse tree for that expression.
-    private ASTPtRootNode _parseTree;
-
     // If setTypeAtMost() has been called, then the type bound is stored here.
     private Type _typeAtMost = BaseType.UNKNOWN;
 
     // Reference to the inner class that implements InequalityTerm.
     private TypeTerm _typeTerm = null;
+
+    // Stores the Class object which represents the type of this variable.
+    private Type _varType = BaseType.UNKNOWN;
+
+    /** Stores the variables that are referenced by this variable. */
+    private HashMap _variablesDependentOn = null;
+
+    /** Version of the workspace when _variablesDependentOn was updated. */
+    private transient long _variablesDependentOnVersion = -1;
 
     // The visibility of this variable.
     private Settable.Visibility _visibility = Settable.EXPERT;
@@ -2210,162 +2429,5 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         public String toString() {
             return "(" + Variable.this.toString() + ", " + getType() + ")";
         }
-    }
-
-    /** Scope implementation with local caching. */
-    protected class VariableScope extends ModelScope {
-        /** Construct a scope consisting of the variables
-         *  of the container of the the enclosing instance of
-         *  Variable and its containers and their scope-extending
-         *  attributes.
-         */
-        public VariableScope() {
-            this(null);
-        }
-
-        /** Construct a scope consisting of the variables
-         *  of the specified container its containers and their
-         *  scope-extending attributes. If the argument is null,
-         *  then use the container of the enclosing instance of
-         *  Variable as the reference for the scope.
-         *  @param reference The reference for the scope.
-         */
-        public VariableScope(NamedObj reference) {
-            _reference = reference;
-        }
-
-        /** Look up and return the attribute with the specified name in the
-         *  scope. Return null if such an attribute does not exist.
-         *  @param name The name of the attribute.
-         *  @return The attribute with the specified name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public ptolemy.data.Token get(String name)
-                throws IllegalActionException {
-            Variable results = getVariable(name);
-            if (results != null) {
-                return results.getToken();
-            }
-            return null;
-        }
-
-        /** Look up and return the type of the attribute with the
-         *  specified name in the scope. Return null if such an
-         *  attribute does not exist.
-         *  @param name The name of the attribute.
-         *  @return The attribute with the specified name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public ptolemy.data.type.Type getType(String name)
-                throws IllegalActionException {
-            NamedObj reference = _reference;
-
-            if (_reference == null) {
-                reference = Variable.this.getContainer();
-            }
-
-            Variable result = getScopedVariable(Variable.this, reference, name);
-
-            if (result != null) {
-                return result.getType();
-            } else {
-                return null;
-            }
-        }
-
-        /** Look up and return the type term for the specified name
-         *  in the scope. Return null if the name is not defined in this
-         *  scope, or is a constant type.
-         *  @param name The name of the attribute.
-         *  @return The InequalityTerm associated with the given name in
-         *  the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
-            NamedObj reference = _reference;
-
-            if (_reference == null) {
-                reference = Variable.this.getContainer();
-            }
-
-            Variable result = getScopedVariable(Variable.this, reference, name);
-
-            if (result != null) {
-                return result.getTypeTerm();
-            } else {
-                return null;
-            }
-        }
-
-        /** Look up and return the attribute with the specified name in the
-         *  scope. Return null if such an attribute does not exist.
-         *  @param name The name of the attribute.
-         *  @return The attribute with the specified name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public Variable getVariable(String name) throws IllegalActionException {
-            if (_variablesDependentOn == null) {
-                _variablesDependentOn = new HashMap();
-            } else {
-                // Variable might be cached.
-                if (_variablesDependentOnVersion == workspace().getVersion()) {
-                    // Cache is valid. Look up the variable.
-                    Variable result = (Variable) _variablesDependentOn
-                            .get(name);
-
-                    if (result != null) {
-                        return result;
-                    }
-                } else {
-                    // Cache is invalid.  Clear it.
-                    _variablesDependentOn.clear();
-                }
-            }
-
-            // Either cache is not valid, or the variable is not in the cache.
-            _variablesDependentOnVersion = workspace().getVersion();
-
-            NamedObj reference = _reference;
-
-            if (_reference == null) {
-                reference = Variable.this.getContainer();
-            }
-
-            Variable result = getScopedVariable(Variable.this, reference, name);
-
-            if (result != null) {
-                // If the variable is not in the cache, then we also
-                // may not be a value listener for it.
-                if (!_variablesDependentOn.containsValue(result)) {
-                    result.addValueListener(Variable.this);
-                    _variablesDependentOn.put(name, result);
-                }
-
-                return result;
-            } else {
-                return null;
-            }
-        }
-
-        /** Return the list of identifiers within the scope.
-         *  @return The list of variable names within the scope.
-         */
-        public Set identifierSet() {
-            NamedObj reference = _reference;
-
-            if (_reference == null) {
-                reference = Variable.this.getContainer();
-            }
-
-            return getAllScopedVariableNames(Variable.this, reference);
-        }
-
-        // Reference object for the scope.
-        private NamedObj _reference;
     }
 }
