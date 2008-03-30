@@ -48,8 +48,10 @@ double ddot(double *x, double *y, int n)
     globalSum = 0.0;
 
     upc_notify;
+
     for (i = 0; i < n; ++i)
         localSum += x[i] * y[i];
+
     upc_wait;
 
 //printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
@@ -65,7 +67,7 @@ double ddot(double *x, double *y, int n)
     for (i = 0; i < THREADS; ++i) {
         globalSum += globalSumEach[i];
         //*globalSum += globalSumEach[i];
-        printf("T[%d]: globalSumEach2[%d] = %g\n", MYTHREAD, i, globalSumEach[i]);
+        //printf("T[%d]: globalSumEach2[%d] = %g\n", MYTHREAD, i, globalSumEach[i]);
     }
 /*
     upc_forall (i = 0; i < THREADS; ++i) {
@@ -195,23 +197,24 @@ for (i = 0; i < n; i++) {
         // matrix multiplied by vector:
         // z = A * s
         matvec(z, Adata, s, n);
-printf("T[%d]: rz = %g\n", MYTHREAD, rz);
+//printf("T[%d]: rz = %g\n", MYTHREAD, rz);
         alpha = rz / ddot(s, z, n);
-printf("T[%d]: alpha = %g\n", MYTHREAD, alpha);
-
+//printf("T[%d]: alpha = %g\n", MYTHREAD, alpha);
+/*
 if (i == 0 ) {
 int j;
-/*printf("T[%d]: s =", MYTHREAD);
+printf("T[%d]: s =", MYTHREAD);
 for (j = 0; j < n; j++) 
     printf("%g  ", s[j]);
-printf("END \n");*/
-/*printf("T[%d]: z =", MYTHREAD);
+printf("END \n");
+printf("T[%d]: z =", MYTHREAD);
 for (j = 0; j < n; j++) {
     if (z[j] != 0)
         printf("%d:%g  ", j+450, z[j]);
 }
-printf("END \n");*/
+printf("END \n");
 }
+*/
 //printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
 
         axpy(x, alpha, s, x, n);
@@ -225,7 +228,7 @@ printf("END \n");*/
 //printf("T[%d]: ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
 
         beta = -rz / rzold;
-printf("T[%d]: beta = %g\n", MYTHREAD, beta);
+//printf("T[%d]: beta = %g\n", MYTHREAD, beta);
         axpy(s, -beta, s, z, n);
 
 //printf("T[%d]: rnorm2 = %g\n", MYTHREAD, rnorm2);
