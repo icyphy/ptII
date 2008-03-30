@@ -369,7 +369,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             registerFunctionClass("java.lang.String");
             registerFunctionClass("ptolemy.data.MatrixToken");
             registerFunctionClass("ptolemy.data.RecordToken");
-            registerFunctionClass("ptolemy.data.ObjectToken");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
             registerFunctionClass("ptolemy.data.expr.FixPointFunctions");
             registerFunctionClass("ptolemy.math.Complex");
@@ -1746,8 +1745,7 @@ String tidied, x;
                     jjtn003._ptToken = new LongToken(Long.parseLong(x, radix));
                 } else if (mustBeShort) {
                     // If the size was specified as short, then create a short.
-                    jjtn003._ptToken = new ShortToken(Integer
-                            .parseInt(x, radix));
+                    jjtn003._ptToken = new ShortToken(Short.parseShort(x, radix));
                 } else if (mustBeUnsignedByte) {
                     // If the size was specified as unsignedbyte, 
                     // then create an unsigned byte, truncating if necessary.
@@ -2536,15 +2534,15 @@ String tidied, x;
     return false;
   }
 
-  final private boolean jj_3_8() {
-    if (jj_scan_token(OPENBRACE)) return true;
-    if (jj_scan_token(CLOSEBRACE)) return true;
-    return false;
-  }
-
   final private boolean jj_3_2() {
     if (jj_scan_token(FUNCTION)) return true;
     if (jj_scan_token(OPENPAREN)) return true;
+    return false;
+  }
+
+  final private boolean jj_3_8() {
+    if (jj_scan_token(OPENBRACE)) return true;
+    if (jj_scan_token(CLOSEBRACE)) return true;
     return false;
   }
 
@@ -2571,12 +2569,12 @@ String tidied, x;
     return false;
   }
 
-  final private boolean jj_3_4() {
+  final private boolean jj_3_3() {
     if (jj_scan_token(OPENPAREN)) return true;
     return false;
   }
 
-  final private boolean jj_3_3() {
+  final private boolean jj_3_4() {
     if (jj_scan_token(OPENPAREN)) return true;
     return false;
   }

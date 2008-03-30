@@ -516,7 +516,7 @@ TOKEN : /* Numeric literals */
       | <OCTAL_LITERAL> (<INTEGER_FORMAT_SPEC>)?
   >
 |
-  < #INTEGER_FORMAT_SPEC: (["l","L"]) | (["u","U"] ["b","B"]) >
+  < #INTEGER_FORMAT_SPEC: (["l","L"]) | (["s", "S"]) | (["u","U"] ["b","B"]) >
 |
   < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
 |
@@ -1072,8 +1072,7 @@ String tidied, x;
                     jjtThis._ptToken = new LongToken(Long.parseLong(x, radix));
                 } else if (mustBeShort) {
                     // If the size was specified as short, then create a short.
-                    jjtThis._ptToken = new ShortToken(Integer
-                            .parseInt(x, radix));
+                    jjtThis._ptToken = new ShortToken(Short.parseShort(x, radix));
                 } else if (mustBeUnsignedByte) {
                     // If the size was specified as unsignedbyte, 
                     // then create an unsigned byte, truncating if necessary.
