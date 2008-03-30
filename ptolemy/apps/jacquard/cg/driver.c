@@ -126,7 +126,7 @@ void driver(int m, int maxiter,
     double *x = (double *) malloc(n * sizeof(double));
     double *rhist = NULL;
 
-    static shared [] double xall[n * sizeof(double)];
+    static shared [n] double xall[n * sizeof(double)];
     //xall = (shared double*) upc_alloc(n * sizeof(double));
 
     double rtol = 1e-3;
