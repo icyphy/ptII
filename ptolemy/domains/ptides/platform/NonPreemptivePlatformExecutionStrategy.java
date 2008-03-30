@@ -112,6 +112,8 @@ public class NonPreemptivePlatformExecutionStrategy extends
 					.getDetailedDependencyGraph().toDirectedAcyclicGraph();
 			Object[] objects = graph.topologicalSort();
 			for (int i = 0; i < objects.length; i++) {
+                            // FIXME: FindBugs says: Call to equals()
+                            // comparing different types
 				if (((IOPort) objects[i]).equals(actor1))
 					index1 = i;
 				else if (((IOPort) objects[i]).equals(actor2))
