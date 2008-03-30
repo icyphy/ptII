@@ -331,7 +331,7 @@ public class TDLCodeGeneratorUtilities {
 				}
 			}
 			if (taskoutputPorts.toString().length() > 0)
-                            taskoutputPorts = new StringBuffer(taskoutputPorts.toString().substring(0, taskoutputPorts.toString().length() - 2);
+                            taskoutputPorts = new StringBuffer(taskoutputPorts.toString().substring(0, taskoutputPorts.toString().length() - 2));
 			sb.append("      [freq=" + frequency + "] " + actor.getName() + "{"
 					+ taskoutputPorts.toString() + "}\n"); // TODO: import
 		}
