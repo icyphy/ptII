@@ -65,7 +65,7 @@ double ddot(double *x, double *y, int n)
     for (i = 0; i < THREADS; ++i) {
         globalSum += globalSumEach[i];
         //*globalSum += globalSumEach[i];
-        //printf("T[%d]: globalSumEach2[%d] = %g\n", MYTHREAD, i, globalSumEach[i]);
+        printf("T[%d]: globalSumEach2[%d] = %g\n", MYTHREAD, i, globalSumEach[i]);
     }
 /*
     upc_forall (i = 0; i < THREADS; ++i) {
