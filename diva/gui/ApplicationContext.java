@@ -66,7 +66,8 @@ public class ApplicationContext extends JFrame implements AppContext {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
-            // Ignored
+            System.err.println("Failed to set look and feel");
+            ex.printStackTrace();
         }
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);

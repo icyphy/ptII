@@ -75,6 +75,8 @@ public class AppletContext extends JApplet implements AppContext {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
+            System.err.println("Failed to set look and feel");
+            ex.printStackTrace();
         }
     }
 

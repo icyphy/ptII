@@ -112,7 +112,13 @@ public class SVGParser {
 
             PaintedShape ps = new PaintedShape(new Rectangle2D.Double(x, y,
                     width, height));
-            processPaintedShapeAttributes(ps, attributes);
+            try {
+                processPaintedShapeAttributes(ps, attributes);
+            } catch (NumberFormatException ex) {
+                // FIXME: should throw non-runtime exception
+                throw new RuntimeException("Failed to parse color in "
+                        + ps, ex);
+            }
             return ps;
         } else if (type.equals("circle")) {
             double cx;
@@ -124,7 +130,13 @@ public class SVGParser {
 
             PaintedShape ps = new PaintedShape(new Ellipse2D.Double(cx - r, cy
                     - r, 2 * r, 2 * r));
-            processPaintedShapeAttributes(ps, attributes);
+            try {
+                processPaintedShapeAttributes(ps, attributes);
+            } catch (NumberFormatException ex) {
+                // FIXME: should throw non-runtime exception
+                throw new RuntimeException("Failed to parse color in "
+                        + ps, ex);
+            }
             return ps;
         } else if (type.equals("ellipse")) {
             double cx;
@@ -138,7 +150,15 @@ public class SVGParser {
 
             PaintedShape ps = new PaintedShape(new Ellipse2D.Double(cx - rx, cy
                     - ry, 2 * rx, 2 * ry));
-            processPaintedShapeAttributes(ps, attributes);
+
+            try {
+                processPaintedShapeAttributes(ps, attributes);
+            } catch (NumberFormatException ex) {
+                // FIXME: should throw non-runtime exception
+                throw new RuntimeException("Failed to parse color in "
+                        + ps, ex);
+            }
+
             return ps;
         } else if (type.equals("line")) {
             double x1;
@@ -152,7 +172,13 @@ public class SVGParser {
 
             Line2D line = new Line2D.Double(x1, y1, x2, y2);
             PaintedPath pp = new PaintedPath(line);
-            processPaintedPathAttributes(pp, attributes);
+            try {
+                processPaintedPathAttributes(pp, attributes);
+            } catch (NumberFormatException ex) {
+                // FIXME: should throw non-runtime exception
+                throw new RuntimeException("Failed to parse color in "
+                        + pp, ex);
+            }
             return pp;
         } else if (type.equals("polyline")) {
             double[] coords = parseCoordString((String) attributes
@@ -165,7 +191,15 @@ public class SVGParser {
             }
 
             PaintedPath pp = new PaintedPath(poly);
-            processPaintedPathAttributes(pp, attributes);
+
+            try {
+                processPaintedPathAttributes(pp, attributes);
+            } catch (NumberFormatException ex) {
+                // FIXME: should throw non-runtime exception
+                throw new RuntimeException("Failed to parse color in "
+                        + pp, ex);
+            }
+
             return pp;
         } else if (type.equals("polygon")) {
             double[] coords = parseCoordString((String) attributes
@@ -180,7 +214,13 @@ public class SVGParser {
             poly.closePath();
 
             PaintedShape ps = new PaintedShape(poly);
-            processPaintedShapeAttributes(ps, attributes);
+            try {
+                processPaintedShapeAttributes(ps, attributes);
+            } catch (NumberFormatException ex) {
+                // FIXME: should throw non-runtime exception
+                throw new RuntimeException("Failed to parse color in "
+                        + ps, ex);
+            }
             return ps;
         } else if (type.equals("text")) {
             double x;
@@ -189,7 +229,13 @@ public class SVGParser {
             y = _getDouble(attributes, "y", 0);
 
             PaintedString string = new PaintedString(content);
-            processPaintedStringAttributes(string, attributes);
+            try { 
+                processPaintedStringAttributes(string, attributes);
+            } catch (NumberFormatException ex) {
+                // FIXME: should throw non-runtime exception
+                throw new RuntimeException("Failed to parse color in "
+                        + string, ex);
+            }
             string.translate(x, y);
             return string;
         } else if (type.equals("image")) {
@@ -292,6 +338,7 @@ public class SVGParser {
             try {
                 ttype = t.nextToken();
             } catch (Exception e) {
+                throw new RuntimeException(e);
             }
 
             if (ttype == StreamTokenizer.TT_EOF) {
@@ -307,6 +354,7 @@ public class SVGParser {
             try {
                 ttype = t.nextToken();
             } catch (Exception e) {
+                throw new RuntimeException(e);
             }
 
             if (ttype == StreamTokenizer.TT_EOF) {
@@ -326,7 +374,8 @@ public class SVGParser {
 
     /** Given a string, return a color.
      */
-    private static Color lookupColor(String color) {
+    private static Color lookupColor(String color)
+            throws NumberFormatException {
         String s = color.toLowerCase();
 
         if (s.equals("black")) {
@@ -365,10 +414,8 @@ public class SVGParser {
             Color c = Color.getColor(s);
 
             if (c == null) {
-                try {
-                    c = Color.decode(s);
-                } catch (Exception e) {
-                }
+                // Color.decode throws NumberFormatException
+                c = Color.decode(s);
             }
 
             if (c == null) {
@@ -414,7 +461,7 @@ public class SVGParser {
     /** Set the attributes of a PaintedShape from a hash-table
      */
     private static void processPaintedShapeAttributes(PaintedShape ps,
-            Map attributes) {
+            Map attributes) throws NumberFormatException {
         String style = (String) attributes.get("style");
 
         if (style != null) {
@@ -440,7 +487,7 @@ public class SVGParser {
     /** Set the attributes of a PaintedPath from a hash-table
      */
     private static void processPaintedPathAttributes(PaintedPath pp,
-            Map attributes) {
+            Map attributes) throws NumberFormatException {
         String style = (String) attributes.get("style");
 
         if (style != null) {
@@ -464,7 +511,8 @@ public class SVGParser {
     /** Set the attributes of a PaintedString from a hash-table
      */
     private static void processPaintedStringAttributes(PaintedString pp,
-            Map attributes) {
+            Map attributes) throws NumberFormatException {
+
         String style = (String) attributes.get("style");
 
         if (style != null) {

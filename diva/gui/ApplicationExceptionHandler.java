@@ -54,6 +54,9 @@ public class ApplicationExceptionHandler {
             // Ignore an errors that we get here..  which mean that we
             // aren't allowed to set that property.  Applets will just have
             // to deal with crappy messages.
+            System.err.println("Failed to set property "
+                    + "\"sun.awt.exception.handler\", perhaps we are in "
+                    + "an applet?");
         }
     }
 

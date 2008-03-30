@@ -168,6 +168,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
             try {
                 closeStreams(source);
             } catch (Exception e) {
+                throw new SAXException(e);
             }
 
             ;
