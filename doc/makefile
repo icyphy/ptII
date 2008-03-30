@@ -282,6 +282,12 @@ HYVISUAL_DOCS = \
 # Currently, there are no .java files in fsm.lib
 #			ptolemy.domains.fsm.lib
 
+# PTIDES packages
+PTIDES_PACKAGES = \
+	ptolemy.domains.ptides.kernel \
+	ptolemy.domains.ptides.lib \
+	ptolemy.domains.ptides.platform
+
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
 	$(HYVISUALPACKAGES) \
@@ -299,6 +305,11 @@ THALESPACKAGES = \
 	thales.actor.gui \
 	thales.vergil \
 	thales.vergil.navigable
+
+# Time Triggered (TT) domain packages
+TT_PACKAGES = \
+	ptolemy.domains.tt.kernel \
+	ptolemy.domains.tt.tdl.kernel
 
 # All the Viptos generated documentation
 VIPTOS_DOCS = \
@@ -359,6 +370,7 @@ ALL1_4PACKAGES = \
 	$(PTCOMM_PACKAGES) \
 	$(PTDISTRIBUTED_PACKAGES) \
 	$(PTGR_PACKAGES) \
+	$(PTIDES_PACKAGES) \
 	$(PTINYPACKAGES) \
 	$(PTJAI_PACKAGES) \
 	$(PTJMF_PACKAGES) \
@@ -367,6 +379,7 @@ ALL1_4PACKAGES = \
 	$(PTX10_PACKAGES) \
 	$(SUPERBPACKAGES) \
 	$(THALESPACKAGES) \
+	$(TT_PACKAGES) \
 	$(VIPTOSPACKAGES) \
 	$(VISUALSENSEPACKAGES) \
 	doc.doclets \
@@ -679,6 +692,9 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/petrinet/kernel/*.java \
 			../ptolemy/domains/rendezvous/kernel/*.java \
 			../ptolemy/domains/rendezvous/lib/*.java \
+			../ptolemy/domains/ptides/kernel/*.java \
+			../ptolemy/domains/ptides/lib/*.java \
+			../ptolemy/domains/ptides/platform/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
@@ -928,7 +944,7 @@ doccheck/index.html:
 #
 
 # Location of the FindBugs sources
-FINDBUGS=../vendors/findbugs-1.3.1
+FINDBUGS=../vendors/findbugs-1.3.3-rc1
 
 # findbugs.xml is special to findbugs, if we use findbugs.xml, we get:
 # Warning: could not load plugin file:/c:/cxh/ptII/vendors/findbugs-1.3.1/plugin/coreplugin.jar: java.security.PrivilegedActionException: edu.umd.cs.findbugs.PluginException: Couldn't parse "findbugs.xml"
@@ -955,7 +971,7 @@ ptII.fb:
 	fi
 	echo $(TOOLS_JAR) >> ptII.fb 
 
-FINDBUGS_ARGS = -maxHeap 900 -low -effort:max -textui -exclude findbugs-exclude.xml -project ptII.fb
+FINDBUGS_ARGS = -maxHeap 900 -experimental -effort:max -textui -exclude findbugs-exclude.xml -project ptII.fb
 
 findbugs.htm:  ptII.fb findbugs-exclude.xml makefile
 	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
