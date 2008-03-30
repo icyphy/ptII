@@ -72,8 +72,8 @@ public class Transform {
         AffineTransform rotateAffineTransform = new AffineTransform();
 
         // Convert rotate to radians.
-        rotateAffineTransform.rotate(rotate * (Math.PI / 180.0F), width / 2,
-                height / 2);
+        rotateAffineTransform.rotate(rotate * (Math.PI / 180.0F), width / 2.0,
+                height / 2.0);
 
         if (!((rotate == 180) || (rotate == 360))) {
             rotateAffineTransform.translate((width / 2) - (height / 2),
