@@ -404,13 +404,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         getContentPane().add(_toolbar, BorderLayout.NORTH);
 
         GUIUtilities.addToolBarButton(_toolbar, _saveAction);
+
         // Note that in Top we disable Print unless the class implements
         // the Printable or Pageable interfaces.  By definition, this class
-        // implements the Printable interface, but we include that check
-        // here for completeness
-        if (this instanceof Printable || this instanceof Pageable) {
-            GUIUtilities.addToolBarButton(_toolbar, _printAction);
-        }
+        // implements the Printable interface
+        GUIUtilities.addToolBarButton(_toolbar, _printAction);
+
         GUIUtilities.addToolBarButton(_toolbar, _zoomInAction);
         GUIUtilities.addToolBarButton(_toolbar, _zoomResetAction);
         GUIUtilities.addToolBarButton(_toolbar, _zoomFitAction);
