@@ -631,8 +631,8 @@ csr_matrix_t *csr_mm_load(char *filename)
     return A;
 }
 
-#define MAX_N   10000
-#define MAX_NNZ 100000
+#define MAX_N   100
+#define MAX_NNZ 1000
 
 /* Load a sparse matrix in Matrix Market format and distribute
  * the values among processors
