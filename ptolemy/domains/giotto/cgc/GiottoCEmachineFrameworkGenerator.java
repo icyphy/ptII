@@ -900,7 +900,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
 
             String portSeparator = ",";
 
-            if (inputPorts.equals("") || outputPorts.equals("")) {
+            if (inputPorts.toString().equals("") || outputPorts.toString().equals("")) {
                 portSeparator = "";
             }
 
