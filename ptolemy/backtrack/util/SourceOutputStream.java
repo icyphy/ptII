@@ -78,7 +78,10 @@ public class SourceOutputStream extends FileOutputStream {
         File rootFile = new File(root);
 
         if (!rootFile.exists()) {
-            rootFile.mkdirs();
+            if (!rootFile.mkdirs()) {
+                throw new IOException("Failed to make directory \""
+                        + root + "\"");
+            }
         }
 
         String fullName = root + File.separator + fileName;
@@ -110,7 +113,10 @@ public class SourceOutputStream extends FileOutputStream {
             File path = new File(file.getParent());
 
             if (!path.exists()) {
-                path.mkdirs();
+                if (!path.mkdirs()) {
+                    throw new IOException("Failed to make directory \""
+                            + file.getParent() + "\"");
+                }
             }
         }
 

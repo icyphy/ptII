@@ -559,7 +559,11 @@ public class Connector extends MoMLApplication {
                         new FileOutputStream(attributeFile);
                     _serializeXML(document, stream);
 
-                    attributeFile.setLastModified(attributeDate.getTime());
+                    if (!attributeFile.setLastModified(attributeDate.getTime())) {
+                        throw new IllegalActionException("Failed to set last "
+                                + "modified time of \""
+                                + attributeFile.getName() + "\"");
+                    }
                 } catch (ParserConfigurationException e) {
                     throw new IllegalActionException(null, e,
                             "Cannot create DocumentBuilder.");

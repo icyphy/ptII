@@ -758,7 +758,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         File destinationFile = new File(destinationDirectory,
                 destinationFileName);
         File destinationParent = new File(destinationFile.getParent());
-        destinationParent.mkdirs();
+        if (!destinationParent.exists()) {
+            if (!destinationParent.mkdirs()) {
+                throw new IOException("Failed to make directory \""
+                        + destinationParent.getName() + "\"");
+            }
+        }
 
         System.out.println("AppletWriter: Copying " + sourceFile + " ("
                 + (sourceFile.length() / 1024) + "K) to " + destinationFile);

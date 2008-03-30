@@ -131,7 +131,10 @@ public class FileEditorTableauFactory extends TableauFactory {
             }
             File file = parameter.asFile();
             if (!file.exists()) {
-                file.createNewFile();
+                if (!file.createNewFile()) {
+                    throw new Exception("Failed to create \""
+                        + file.getName() + "\"");
+                }
             } else {
                 // FIXME: Why did this fail? Prompt for new file name?
             }
