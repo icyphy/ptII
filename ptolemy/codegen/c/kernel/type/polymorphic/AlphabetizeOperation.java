@@ -54,14 +54,14 @@ public class AlphabetizeOperation {
                 TreeSet sortedSet = new TreeSet(stream
                         .getAllCodeBlockSignatures());
 
-                String code = "";
+                StringBuffer code = new StringBuffer();
                 for (Object signature : sortedSet) {
-                    code += stream.getCodeBlockTemplate(signature);
+                    code.append(stream.getCodeBlockTemplate(signature));
                 }
 
-                if (code.trim().length() > 0) {
+                if (code.toString().trim().length() > 0) {
                     FileWriter writer = new FileWriter(new File(filename));
-                    writer.write(code);
+                    writer.write(code.toString());
                     writer.close();
                 }
             }

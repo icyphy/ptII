@@ -1281,14 +1281,14 @@ public class CodeStream {
                 Object[] codeObject = (Object[]) table.get(signature);
                 Iterator parameters = ((List) codeObject[2]).iterator();
 
-                String header = signature.functionName + "(";
+                StringBuffer header = new StringBuffer(signature.functionName + "(");
                 while (parameters.hasNext()) {
-                    header += "$" + parameters.next();
+                    header.append("$" + parameters.next());
                     if (parameters.hasNext()) {
-                        header += ", ";
+                        header.append(", ");
                     }
                 }
-                return header + ")";
+                return header.toString() + ")";
             }
         }
 

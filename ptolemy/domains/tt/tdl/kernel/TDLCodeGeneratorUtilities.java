@@ -303,7 +303,7 @@ public class TDLCodeGeneratorUtilities {
 		while (taskIterator.hasNext()) {
 			Actor actor = (Actor) taskIterator.next();
 			int frequency = TDLModeScheduler.getFrequency((NamedObj) actor);
-			String taskoutputPorts = "";
+			StringBuffer taskoutputPorts = new StringBuffer();
 
 			// get all input ports that are connected to another module's output
 			// ports
@@ -326,15 +326,14 @@ public class TDLCodeGeneratorUtilities {
 					fromPortName.replace(fromPortName.substring(fromPortName
 							.indexOf('.'), fromPortName.indexOf('.',
 							fromPortName.indexOf('.') + 1) + 1), "");
-					taskoutputPorts += port.getName() + " := " + fromPortName
-							+ "; ";
+					taskoutputPorts.append(port.getName() + " := " + fromPortName
+							+ "; ");
 				}
 			}
-			if (taskoutputPorts.length() > 0)
-				taskoutputPorts = taskoutputPorts.substring(0, taskoutputPorts
-						.length() - 2);
+			if (taskoutputPorts.toString().length() > 0)
+                            taskoutputPorts = new StringBuffer(taskoutputPorts.toString().substring(0, taskoutputPorts.toString().length() - 2);
 			sb.append("      [freq=" + frequency + "] " + actor.getName() + "{"
-					+ taskoutputPorts + "}\n"); // TODO: import
+					+ taskoutputPorts.toString() + "}\n"); // TODO: import
 		}
 
 		Iterator actorIterator = refinement.outputPortList().iterator();
