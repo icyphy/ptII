@@ -320,13 +320,13 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements
                         + " in " + method);
             }
         } else {
-            String string = "More than one definition of = " + local + "\n";
+            StringBuffer message = new StringBuffer("More than one definition of = " + local + "\n");
 
             for (Iterator i = definitionList.iterator(); i.hasNext();) {
-                string += ("Definition = " + i.next().toString());
+                message.append("Definition = " + i.next().toString());
             }
 
-            throw new RuntimeException(string);
+            throw new RuntimeException(message.toString());
         }
     }
 
