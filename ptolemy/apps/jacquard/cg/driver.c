@@ -147,14 +147,10 @@ void driver(int m, int maxiter,
 
     upc_barrier;
 
-//printf("T[%d]:here3\n", MYTHREAD);
-
-printf("m = %d\n", m);
+printf("T[%d]: m = %d\n", MYTHREAD, m);
 
     retval = precond_cg(matvec, psolve, Adata, Mdata,
                         b, x, rtol, m, rhist, maxiter);
-
-//printf("T[%d]:here4\n", MYTHREAD);
 
     for (i = 0; i < m; ++i) xall[myStart + i] = x[i];
     upc_barrier;
