@@ -126,7 +126,7 @@ void driver(int m, int maxiter,
     double *x = (double *) malloc(n * sizeof(double));
     double *rhist = NULL;
 
-    static shared [] double xall;
+    static shared [] double xall[n * sizeof(double)];
     //xall = (shared double*) upc_alloc(n * sizeof(double));
 
     double rtol = 1e-3;
@@ -165,13 +165,9 @@ printf("m = %d\n", m);
 
 //printf("T[%d]:here4\n", MYTHREAD);
 
-    for (i = 0; i < n; ++i) {
-        int temp = myStart + i;
-        printf("index is: %d", temp);
-        //xall[myStart + i] = x[i];
-        xall[temp] = x[i];
-    }
-
+    for (i = 0; i < n; ++i) 
+        xall[myStart + i] = x[i];
+    
     upc_barrier;
 
     if (MYTHREAD == 0) {
