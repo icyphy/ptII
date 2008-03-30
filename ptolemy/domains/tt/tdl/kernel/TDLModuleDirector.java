@@ -261,7 +261,7 @@ public class TDLModuleDirector extends ModalDirector {
 	 * check if at the current time there is something to do
 	 */
 	public boolean prefire() throws IllegalActionException {
-		return super.prefire() & _executeNow();
+		return super.prefire() && _executeNow();
 	}
 
 	/**
@@ -712,7 +712,7 @@ public class TDLModuleDirector extends ModalDirector {
 		formatter
 				.format(
 						"%1$5f state %2$10s schedTime %3$2d of %4$2d schedPos %5$2d of %6$2d",
-						new Object[] { new Double(d),
+						new Object[] { new Double.valueOf(d),
 								getController().currentState().getName(),
 								_currentSchedule.currentScheduleTime,
 								_currentSchedule.modeSchedule.size(),
