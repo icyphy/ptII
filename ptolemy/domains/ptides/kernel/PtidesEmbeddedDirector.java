@@ -190,7 +190,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * WCET of the actor is passed.
 	 * 
 	 * @param actor
-	 * @return
+	 * @return The finishing time of the actor
 	 */
 	public double getFinishingTime(NamedObj actor) {
 		if (_finishingTimesOfActorsInExecution.get(actor) != null) {

@@ -188,7 +188,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 * returns true if there is a token with the specified timestamp
 	 * 
 	 * @param time
-	 * @return
+	 * @return True if the first element in the queue has the specified
+         * timestamp.  
 	 */
 	public boolean hasToken(Time time) {
 		if (_queue.size() == 0)
