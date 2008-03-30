@@ -99,19 +99,22 @@ public class UtilityFunctions {
 
     /** Return a new UnsizedArrayToken whose element type is the same
      * as the given type.
-     * @return a new ArrayToken.
+     * @return a new UnsizedArrayToken.
      */
     public static ArrayToken arrayType(Token t) {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         return new UnsizedArrayToken(t.getType());
     }
 
-    /** Return the (exact) return type of the arrayType function above.
-     *  This function always returns an ArrayType whose element type
-     *  is the first argument, with length equal to the second argument.
+    /** Return a new ArrayType whose element type is the same as the given
+     *  type.
      *  @param type The type of the array.
-     *  @return The type of the value returned from the corresponding function.
+     *  @return a new ArrayType.
      */
     public static Type arrayTypeReturnType(Type type) {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         return new ArrayType(type);
     }
 
@@ -122,6 +125,8 @@ public class UtilityFunctions {
      *  @return a new ArrayToken.
      */
     public static ArrayToken arrayType(Token t, IntToken numberOfTimes) {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         return repeat(numberOfTimes, t);
     }
 
@@ -138,10 +143,16 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type arrayTypeReturnType(Type type1, Type type2) {
+        // FIXME: The method comment makes no sense, the type1
+        // argument is not used.
+
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         return new ArrayType(type2);
     }
 
-    /** Convert the argument from a fileName to a URL that begins with "file:".
+    /** Convert the argument from a fileName to a URL that begins with
+     *  "file:".
      *  @param fileName The name of the file to be converted.
      *  @return the URL that is equivalent to the file
      */
@@ -348,6 +359,8 @@ public class UtilityFunctions {
      */
     public static Type filterReturnType(Type predicateType, Type arrayTokenType)
             throws IllegalActionException {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         return filterReturnType(predicateType, arrayTokenType, null);
     }
 
@@ -366,6 +379,8 @@ public class UtilityFunctions {
     public static Type filterReturnType(Type predicateType,
             Type arrayTokenType, Type sizeLimitType)
             throws IllegalActionException {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         if (predicateType instanceof FunctionType) {
             FunctionType castPredicateType = (FunctionType) predicateType;
 
@@ -437,8 +452,10 @@ public class UtilityFunctions {
 
             try {
                 return new ArrayToken(BaseType.INT, resultArray);
-            } catch (IllegalActionException e) {
-                throw new InternalErrorException(e);
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(null, ex,
+                        "UtilityFunctions.find: "
+                        + "cannot create an an Array of Integers");
             }
         } else {
             return new ArrayToken(array.getElementType());
@@ -552,9 +569,10 @@ public class UtilityFunctions {
 
         try {
             return new ArrayToken(BaseType.DOUBLE, result);
-        } catch (IllegalActionException illegalAction) {
+        } catch (IllegalActionException ex) {
             // This should not happen since result should not be null.
-            throw new InternalErrorException("UtilityFunction.gaussian: "
+            throw new InternalErrorException(null, ex,
+                    "UtilityFunction.gaussian: "
                     + "Cannot create the array that contains "
                     + "Gaussian random numbers.");
         }
@@ -584,9 +602,10 @@ public class UtilityFunctions {
 
         try {
             return new DoubleMatrixToken(result);
-        } catch (IllegalActionException illegalAction) {
+        } catch (IllegalActionException ex) {
             // This should not happen since result should not be null.
-            throw new InternalErrorException("UtilityFunction.gaussian: "
+            throw new InternalErrorException(null, ex,
+                    "UtilityFunction.gaussian: "
                     + "Cannot create the DoubleMatrixToken that contains "
                     + "Gaussian random numbers.");
         }
@@ -632,7 +651,10 @@ public class UtilityFunctions {
      *  @param string The string to be parsed and evaluated.
      *  @return A string representing an inferred type.
      */
-    public static String inferType(String string) throws IllegalActionException {
+    public static String inferType(String string)
+            throws IllegalActionException {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         PtParser parser = new PtParser();
         ASTPtRootNode parseTree = parser.generateParseTree(string);
         ParseTreeTypeInference typeInference = new ParseTreeTypeInference();
@@ -894,10 +916,11 @@ public class UtilityFunctions {
                             + library + "' in path, searched " + "user.home ("
                             + userDir + ") user.dir (" + userHome
                             + ") and the classpath for '" + libraryPath
-                            + "', but that " + "was not found either.\n"
-                            + "classpath was: " + classpath
-                            + " Also tried loadLibrary(\"" + shortLibraryName
-                            + "\", exception for loadLibrary was: " + ex2);
+                            + "', but that was not found either.\n"
+                            + "The Java classpath was: " + classpath
+                            + "\nIn addition, loadLibrary(\"" + shortLibraryName
+                            + "\") was called, the exception for the "
+                            + "loadLibrary() call was: " + ex2);
 
                     error.initCause(ex);
                     throw error;
@@ -988,6 +1011,8 @@ public class UtilityFunctions {
      */
     public static Type mapReturnType(Type functionType, Type arrayTokenType)
             throws IllegalActionException {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         if (functionType instanceof FunctionType) {
             FunctionType castFunctionType = (FunctionType) functionType;
 
@@ -1054,7 +1079,8 @@ public class UtilityFunctions {
      *  @param y An unsigned byte.
      *  @return The maximum of x and y.
      */
-    public static UnsignedByteToken max(UnsignedByteToken x, UnsignedByteToken y) {
+    public static UnsignedByteToken max(UnsignedByteToken x,
+            UnsignedByteToken y) {
         if (x.intValue() > y.intValue()) {
             return x;
         } else {
@@ -1093,9 +1119,12 @@ public class UtilityFunctions {
      *  If the argument is an array type, then return its element type,
      *  otherwise return BaseType.UNKNOWN.
      *  @param type The type of the argument to the corresponding function.
-     *  @return The type of the value returned from the corresponding function.
+     *  @return The type of the value returned from the corresponding
+     *  function.
      */
     public static Type maxReturnType(Type type) {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         if (type instanceof ArrayType) {
             ArrayType arrayType = (ArrayType) type;
             return arrayType.getElementType();
@@ -1109,7 +1138,8 @@ public class UtilityFunctions {
      *  @param y An unsigned byte.
      *  @return The minimum of x and y.
      */
-    public static UnsignedByteToken min(UnsignedByteToken x, UnsignedByteToken y) {
+    public static UnsignedByteToken min(UnsignedByteToken x,
+            UnsignedByteToken y) {
         if (x.intValue() < y.intValue()) {
             return x;
         } else {
@@ -1151,6 +1181,8 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type minReturnType(Type type) {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         if (type instanceof ArrayType) {
             ArrayType arrayType = (ArrayType) type;
             return arrayType.getElementType();
@@ -1205,9 +1237,10 @@ public class UtilityFunctions {
 
         try {
             return new ArrayToken(BaseType.DOUBLE, result);
-        } catch (IllegalActionException illegalAction) {
+        } catch (IllegalActionException ex) {
             // This should not happen since result should not be null.
-            throw new InternalErrorException("UtilityFunction.random: "
+            throw new InternalErrorException(null, ex,
+                    "UtilityFunction.random: "
                     + "Cannot create the array that contains "
                     + "random numbers.");
         }
@@ -1230,9 +1263,10 @@ public class UtilityFunctions {
 
         try {
             return new DoubleMatrixToken(result);
-        } catch (IllegalActionException illegalAction) {
+        } catch (IllegalActionException ex) {
             // This should not happen since result should not be null.
-            throw new InternalErrorException("UtilityFunction.random: "
+            throw new InternalErrorException(null, ex,
+                    "UtilityFunction.random: "
                     + "Cannot create the DoubleMatrixToken that contains "
                     + "random numbers.");
         }
@@ -1245,6 +1279,8 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type randomReturnType(Type type) {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         if (type.equals(BaseType.INT)) {
             return new ArrayType(BaseType.DOUBLE);
         } else {
@@ -1321,10 +1357,16 @@ public class UtilityFunctions {
      */
     public static DoubleMatrixToken readMatrix(String filename)
             throws IllegalActionException {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is deprecated.
+
         DoubleMatrixToken returnMatrix = null;
 
-        File file = new File(filename);
-        FileReader fin = null;
+        File file = new File(findFile(filename));
+        if (!file.exists()) {
+            throw new IllegalActionException("readMatrix: File " + filename
+                    + " not found.");
+        }
 
         // Vector containing the matrix
         Vector k = null;
@@ -1337,12 +1379,14 @@ public class UtilityFunctions {
         int columnPosition = 0;
         double[][] mtr = null;
 
-        if (file.exists()) {
+        FileReader fin = null;
+        try {
             try {
                 // Open the matrix file
                 fin = new FileReader(file);
             } catch (FileNotFoundException e) {
-                throw new IllegalActionException("FIle Not FOUND");
+                throw new IllegalActionException("readMatrix: file \""
+                        + file.getName() + "\" not found");
             }
 
             // Read the file and convert it into a matrix
@@ -1392,11 +1436,16 @@ public class UtilityFunctions {
             // in double[][].
             k.removeAll(k);
             returnMatrix = new DoubleMatrixToken(mtr);
-        } else {
-            throw new IllegalActionException("ReadMatrix: File " + filename
-                    + " not Found");
+        } finally {
+            if (fin != null) {
+                try {
+                    fin.close();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(null, ex,
+                            "Problem closing '" + file + "'");
+                }
+            }
         }
-
         return returnMatrix;
     }
 
@@ -1476,18 +1525,18 @@ public class UtilityFunctions {
 
         try {
             arrayToken = new ArrayToken(element.getType(), result);
-        } catch (IllegalActionException illegalAction) {
+        } catch (IllegalActionException ex) {
             // This should not happen since the elements of the array always
             // have the same type.
-            throw new InternalErrorException("UtilityFunctions.repeat: "
-                    + "Cannot construct ArrayToken. "
-                    + illegalAction.getMessage());
-        } catch (IllegalArgumentException illegalArgument) {
+            throw new InternalErrorException(null, ex,
+                    "UtilityFunctions.repeat: "
+                    + "Cannot construct an ArrayToken.");
+        } catch (IllegalArgumentException ex2) {
             // This should not happen since the elements of the array always
             // have the same type.
-            throw new InternalErrorException("UtilityFunctions.repeat: "
-                    + "Cannot construct ArrayToken. "
-                    + illegalArgument.getMessage());
+            throw new InternalErrorException(null, ex2,
+                    "UtilityFunctions.repeat: "
+                    + "Cannot construct an ArrayToken.");
         }
 
         return arrayToken;
@@ -1503,6 +1552,8 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type repeatReturnType(Type type1, Type type2) {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         return new ArrayType(type2);
     }
 
@@ -1535,6 +1586,9 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type sortReturnType(Type type) {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
+
         // NOTE: This logic indicates which tokens are comparable
         // by the TokenComparator inner class. If that class is changed,
         // then this logic needs to be changed too.
@@ -1579,6 +1633,8 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type sortAscendingReturnType(Type type) {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         return sortReturnType(type);
     }
 
@@ -1611,6 +1667,8 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type sortDescendingReturnType(Type type) {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         return sortReturnType(type);
     }
 
@@ -1644,6 +1702,8 @@ public class UtilityFunctions {
      */
     public static Type subarrayReturnType(Type arrayType, Type indexType,
             Type countType) {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         return arrayType;
     }
 
@@ -1701,6 +1761,8 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type sumReturnType(Type type) {
+        // Note that this method is deliberately not listed in the Expression
+        // chapter because it is very specialized.
         if (type instanceof ArrayType) {
             ArrayType arrayType = (ArrayType) type;
             return arrayType.getElementType();
@@ -1769,9 +1831,9 @@ public class UtilityFunctions {
         try {
             return new ComplexMatrixToken(ComplexMatrixMath.zero(rows, columns));
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("UtilityFunctions"
-                    + ".zeroMatrixComplex: "
-                    + "Cannot create ComplexMatrixToken. " + ex.getMessage());
+            throw new InternalErrorException(null, ex,
+                    "UtilityFunctions.zeroMatrixComplex: "
+                    + "Cannot create a ComplexMatrixToken.");
         }
     }
 
@@ -1787,9 +1849,9 @@ public class UtilityFunctions {
         try {
             result = new DoubleMatrixToken(mtr, DoubleMatrixToken.DO_NOT_COPY);
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("UtilityFunctions"
-                    + ".zeroMatrixDouble: "
-                    + "Cannot create DoubleMatrixToken. " + ex.getMessage());
+            throw new InternalErrorException(null, ex,
+                    "UtilityFunctions.zeroMatrixDouble: "
+                    + "Cannot create a DoubleMatrixToken.");
         }
 
         return result;
@@ -1807,8 +1869,9 @@ public class UtilityFunctions {
         try {
             result = new IntMatrixToken(mtr, IntMatrixToken.DO_NOT_COPY);
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("UtilityFunctions.zeroMatrixInt: "
-                    + "Cannot create IntMatrixToken. " + ex.getMessage());
+            throw new InternalErrorException(null, ex,
+                    "UtilityFunctions.zeroMatrixInt: "
+                    + "Cannot create a IntMatrixToken.");
         }
 
         return result;
@@ -1826,10 +1889,9 @@ public class UtilityFunctions {
         try {
             result = new LongMatrixToken(mtr, LongMatrixToken.DO_NOT_COPY);
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(
+            throw new InternalErrorException(null, ex,
                     "UtilityFunctions.zeroMatrixLong: "
-                            + "Cannot create LongMatrixToken. "
-                            + ex.getMessage());
+                    + "Cannot create a LongMatrixToken.");
         }
 
         return result;
