@@ -168,7 +168,8 @@ printf("m = %d\n", m);
     for (i = 0; i < n; ++i) {
         int temp = myStart + i;
         printf("index is: %d", temp);
-        xall[myStart + i] = x[i];
+        //xall[myStart + i] = x[i];
+        xall[temp] = x[i];
     }
 
     upc_barrier;
