@@ -388,13 +388,13 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	}
 
 	/**
-	 * Tokens between Platform elements are only safe to process if timestamp -
-	 * minimumDelay <= physicalTime. The minimum delay must be specified als a
-	 * parameter at the port.
+	 * Tokens between Platform elements are only safe to process
+	 * if timestamp - minimumDelay <= physicalTime. The minimum
+	 * delay must be specified as a parameter at the port.
 	 * 
-	 * @param time
-	 * @param object
-	 * @return
+	 * @param time The time.
+	 * @param object  The object to to check the minimum delay time.
+	 * @return True if it is safe to process a token.
 	 */
 	public boolean isSafeToProcessOnPlatform(Time time, NamedObj object) {
 		double minDelayTime = PtidesGraphUtilities.getMinDelayTime(object);
@@ -694,19 +694,18 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	}
 
 	/**
-	 * Put an event into the event queue for the given actor to fire at the
-	 * specified timestamp. The depth for the queued event is the minimum of the
-	 * depths of all the ports of the destination actor. If there is no event
-	 * queue or the given actor is disabled, then this method does nothing.
+	 * Put an event into the event queue for the IOPort to
+	 * fire at the specified timestamp. The depth for the queued
+	 * event is the minimum of the depths of all the ports of the
+	 * destination actor. If there is no event queue or the given
+	 * actor is disabled, then this method does nothing.
 	 * 
-	 * @param actor
-	 *            The actor to be fired.
-	 * @param time
-	 *            The timestamp of the event.
-	 * @exception IllegalActionException
-	 *                If the time argument is less than the current model time,
-	 *                or the depth of the actor has not be calculated, or the
-	 *                new event can not be enqueued.
+	 * @param ioPort
+	 * @param time The timestamp of the event.
+	 * @exception IllegalActionException If the time argument is
+	 * less than the current model time, or the depth of the actor
+	 * has not be calculated, or the new event can not be
+	 * enqueued.
 	 */
 	protected synchronized void _enqueueTriggerEvent(IOPort ioPort, Time time)
 			throws IllegalActionException {

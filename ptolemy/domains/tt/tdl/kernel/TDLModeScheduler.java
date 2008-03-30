@@ -134,10 +134,10 @@ public class TDLModeScheduler extends LetModeScheduler {
 	}
 
 	/**
-	 * get frequency of task
-	 * default value is 1 if there is no frequency defined
+	 * Return the frequency of task.
+	 * The default value is 1 if there is no frequency attribute defined.
 	 * @param obj
-	 * @return
+	 * @return The frequency of the task.
 	 */
 	public static int getFrequency(NamedObj obj) {
 		try {

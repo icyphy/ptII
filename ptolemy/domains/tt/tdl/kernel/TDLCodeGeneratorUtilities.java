@@ -187,11 +187,9 @@ public class TDLCodeGeneratorUtilities {
 	 * Generate code for the actuator. Usually, there is only one actuator.
 	 * 
 	 * @param sb
-	 * @param model
-	 *            The model.
-	 * @return The actuator code.
-	 * @exception IllegalActionException
-	 *                If there is a problem accessing the ports.
+	 * @param model The mudole
+	 * @exception IllegalActionException If there is a problem
+	 * accessing the ports.
 	 */
 	protected static void _actuatorCode(StringBuffer sb, TDLModule module)
 			throws IllegalActionException {
@@ -239,14 +237,13 @@ public class TDLCodeGeneratorUtilities {
 	}
 
 	/**
-	 * Generate header code for the file. Usually, there is only one header.
+	 * Generate header code for the file. Usually, there is only
+	 * one header.
 	 * 
 	 * @param sb
-	 * @param model
-	 *            The model.
-	 * @return The header code.
-	 * @exception IllegalActionException
-	 *                If there is a problem getting the model name.
+	 * @param module The module
+	 * @exception IllegalActionException If there is a problem
+	 * getting the model name.
 	 */
 	protected static void _headerCode(StringBuffer sb, TypedCompositeActor model)
 			throws IllegalActionException {
@@ -269,12 +266,10 @@ public class TDLCodeGeneratorUtilities {
 	 * Generate code for the modes.
 	 * 
 	 * @param sb
-	 * @param model
-	 *            The model.
-	 * @return The modes code.
-	 * @exception IllegalActionException
-	 *                If there is a problem getting the director or accessing
-	 *                the ports.
+	 * @param State The state
+	 * @param module The module
+	 * @exception IllegalActionException If there is a problem
+	 * getting the director or accessing the ports.
 	 */
 	protected static void _modeCode(StringBuffer sb, State state,
 			TDLModule module) throws IllegalActionException {
@@ -371,11 +366,9 @@ public class TDLCodeGeneratorUtilities {
 	 * Generate code for the sensors.
 	 * 
 	 * @param sb
-	 * @param model
-	 *            The model from which we generate code.
-	 * @return The sensors code.
-	 * @exception IllegalActionException
-	 *                If there is a problem iterating over the actors.
+	 * @param module The model from which we generate code.
+	 * @exception IllegalActionException If there is a problem
+	 * iterating over the actors.
 	 */
 	protected static void _sensorCode(StringBuffer sb, TDLModule module)
 			throws IllegalActionException {
@@ -422,9 +415,7 @@ public class TDLCodeGeneratorUtilities {
 	 * Generate code for the tasks.
 	 * 
 	 * @param sb
-	 * @param model
-	 *            The model from which we generate code.
-	 * @return The task code.
+	 * @param module The model from which we generate code.
 	 * @exception IllegalActionException
 	 *                If there is a problem iterating over the actors.
 	 */
