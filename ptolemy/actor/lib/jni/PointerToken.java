@@ -115,7 +115,7 @@ public class PointerToken extends Token {
 
     /** The pointer type.
      */
-    public static class PointerType implements Type, Serializable {
+    public static class PointerType implements Cloneable, Type, Serializable {
         ///////////////////////////////////////////////////////////////////
         ////                         constructors                      ////
         // The constructor is private to make a type safe enumeration.
@@ -143,6 +143,7 @@ public class PointerToken extends Token {
          *  @return A PointerType
          */
         public Object clone() {
+
             // FIXME: Note that we do not call super.clone() here.  Is that right?
             return this;
         }

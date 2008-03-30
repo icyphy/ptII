@@ -61,7 +61,7 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.ProposedRating Red (yuhongx)
  @Pt.AcceptedRating Red (cxh)
  */
-public class UnionType extends StructuredType {
+public class UnionType extends StructuredType implements Cloneable {
     /** Construct a new UnionType with the specified labels and types.
      *  To leave the types of some fields undeclared, use BaseType.UNKNOWN.
      *  The labels and the types are specified in two arrays. These two

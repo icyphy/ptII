@@ -103,7 +103,7 @@ public class TestToken extends Token {
         return "TestToken(" + _object + ")";
     }
 
-    public static class TestType implements Type, Serializable {
+    public static class TestType implements Type, Serializable, Cloneable  {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 

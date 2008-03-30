@@ -63,7 +63,7 @@ import ptolemy.math.FixPoint;
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red
  */
-public class MatrixType extends StructuredType implements Serializable {
+public class MatrixType extends StructuredType implements Cloneable, Serializable {
 
     /** Construct a new matrix type that represents matrix tokens of the
      *  given class with the given number of rows and columns.

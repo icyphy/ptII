@@ -50,7 +50,7 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
-public class TupleType extends StructuredType {
+public class TupleType extends StructuredType implements Cloneable {
     /** Construct a new TupleType with the specified argument types
      *  and the given return type.  To leave the types of some fields
      *  undeclared, use BaseType.UNKNOWN.  To construct the type for a

@@ -145,7 +145,7 @@ public class KeyToken extends Token {
 
     /** The cryptographic key type.
      */
-    public static class KeyType implements Type, Serializable {
+    public static class KeyType implements Cloneable, Type, Serializable {
         ///////////////////////////////////////////////////////////////////
         ////                         constructors                      ////
         // The constructor is private to make a type safe enumeration.

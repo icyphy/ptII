@@ -45,7 +45,7 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
-public class FunctionType extends StructuredType {
+public class FunctionType extends StructuredType implements Cloneable {
     /** Construct a new FunctionType with the specified argument types
      *  and the given return type.  To leave the types of some fields
      *  undeclared, use BaseType.UNKNOWN.  To construct the type for a

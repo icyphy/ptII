@@ -54,7 +54,8 @@ import ptolemy.math.Rounding;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red
  */
-public class FixType extends StructuredType implements Serializable {
+public class FixType extends StructuredType
+    implements Cloneable, Serializable {
     /** Construct a new fix type, with no integer bits and no
      * fractional bits.  This (rather useless) type represents the
      * bottom of the FixPoint type lattice.
@@ -97,6 +98,7 @@ public class FixType extends StructuredType implements Serializable {
      *  @return A FixType.
      */
     public Object clone() {
+        // FIXME: Note that we do not call super.clone() here.  Is that right?
         return this;
     }
 

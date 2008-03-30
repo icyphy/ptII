@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class ActorToken extends Token {
+public class ActorToken extends Token implements Cloneable {
     /** Construct an ActorToken.
      *  @param entity The entity that this Token contains.
      *  @exception IllegalActionException If cloning the entity fails.

@@ -108,7 +108,7 @@ public class Scene2DToken extends Token {
 
     /** The two dimensional scene type corresponding with a SceneToken.
      */
-    public static class Scene2DType implements Type, Serializable {
+    public static class Scene2DType implements Type, Serializable, Cloneable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 

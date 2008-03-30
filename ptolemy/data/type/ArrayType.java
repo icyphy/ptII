@@ -33,6 +33,7 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+import java.io.Serializable;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayType
 
@@ -46,7 +47,8 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class ArrayType extends StructuredType implements java.io.Serializable {
+public class ArrayType extends StructuredType
+    implements Cloneable, Serializable {
     /** Construct a new ArrayType with the specified type for the array
      *  elements. To leave the element type undeclared, use BaseType.UNKNOWN.
      *  @param elementType The type of the array elements.

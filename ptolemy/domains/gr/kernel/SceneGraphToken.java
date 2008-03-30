@@ -108,7 +108,8 @@ public class SceneGraphToken extends Token {
     }
 
     /** The SceneGraphToken type. */
-    public static class SceneGraphType implements Type, Serializable {
+    public static class SceneGraphType
+        implements Type, Serializable, Cloneable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -126,6 +127,8 @@ public class SceneGraphToken extends Token {
          *  @return A BaseType.
          */
         public Object clone() {
+            // FIXME: Note that we do not call super.clone() here.  Is
+            // that right?
             return this;
         }
 
