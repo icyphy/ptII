@@ -44,15 +44,25 @@ import ptolemy.kernel.util.StringAttribute;
 //// EnabledComposite
 
 /**
- * This composite actor, designed for use in the SR domain, will have
- * clock ticks only when provided with a true-valued token on the
- * <i>enabled</i> input port. Thus, it can be used to create subclocks
- * of the master clock.
- * <p>
- * Note that this mechanism is a hierarchical version of what is
+ * A composite actor whose clock ticks only when enabled.
+
+ * <p>This actor will only have clock ticks when provided with a
+ * true-valued token on the <i>enabled</i> input port. Thus, it can be
+ * used to create subclocks of the master clock.
+ *
+ * <p> Note that this mechanism is a hierarchical version of what is
  * provided by the Lustre and SIGNAL clock calculi, but it
  * circumvents the undecidability of clock signals by requiring
  * the model designer to be explicit about subclocks.
+ *
+ * <p>P. Caspi, D. Pilaud, N. Halbwachs, and J. A. Plaice, "LUSTRE: A
+ * Declarative Language for Programming Synchronous Systems,"
+ * Conference Record of the 14th Annual ACM Symp. on Principles of
+ * Programming Languages, Munich, Germany, January, 1987.
+ *
+ * <p>A. Benveniste and P. Le Guernic, "Hybrid Dynamical Systems Theory
+ * and the SIGNAL Language," IEEE Tr. on Automatic Control, Vol. 35,
+ * No. 5, pp. 525-546, May 1990.
  *
  * @author Edward A. Lee
  * @version $Id$

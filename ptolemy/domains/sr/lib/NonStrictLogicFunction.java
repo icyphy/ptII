@@ -38,7 +38,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// NonStrictLogicFunction
 
 /**
- On each firing, produce an output token with a value that is
+ A nonstrict actor that performs a specified logic operation on the input.
+ <p>On each firing, produce an output token with a value that is
  equal to the specified logic operator of the input(s) if that output
  can be determined.
  The functions are:

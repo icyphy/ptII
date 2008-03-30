@@ -1,4 +1,4 @@
-/* An actor that outputs the most recent input received.
+/* Output the most recent input received.
 
  Copyright (c) 2004-2005 The Regents of the University of California.
  All rights reserved.
@@ -37,9 +37,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Current
 
 /**
- * At each tick of the clock, this actor outputs the most recently received
+ * Output the most recent input received.
+ *
+ * <p>At each tick of the clock, this actor outputs the most recently received
  * non-absent input. If no input has been received, then the output is absent.
  * This implements the Lustre "current" operator.
+ *
+ * <p>P. Caspi, D. Pilaud, N. Halbwachs, and J. A. Plaice, "LUSTRE: A
+ * Declarative Language for Programming Synchronous Systems,"
+ * Conference Record of the 14th Annual ACM Symp. on Principles of
+ * Programming Languages, Munich, Germany, January, 1987.
  *
  * @author Paul Whitaker, Christopher Hylands, Edward A. Lee
  * @version $Id$

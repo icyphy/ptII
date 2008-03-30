@@ -40,10 +40,12 @@ import ptolemy.kernel.util.StringAttribute;
 //// Undefined
 
 /**
- This actor outputs no values.  It produces no tokens.  In domains such as
- SR, the output will never converge to a defined value. This actor is
- different from the {@link ptolemy.domains.sr.lib.Absent} actor, which
- produces an <i>absent</i> value.
+ An actor that produces no outputs or tokens.
+
+ <p>In domains such as SR, the output of this actor will never
+ converge to a defined value. This actor is different from the 
+ {@link ptolemy.domains.sr.lib.Absent} actor, which produces an <i>absent</i>
+ value.
 
  @author Paul Whitaker, Haiyang Zheng
  @deprecated This actor does not work. It returns false in prefire(), but that is interpreted by the director to mean that all outputs are absent.

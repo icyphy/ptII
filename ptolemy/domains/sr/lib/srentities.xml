@@ -82,7 +82,6 @@
 
 <entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
 </entity>
-
 <entity name="When" class="ptolemy.domains.sr.lib.When">
 </entity>
 

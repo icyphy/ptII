@@ -38,7 +38,9 @@ import ptolemy.kernel.util.StringAttribute;
 //// Default
 
 /**
- When the <i>preferred</i> input has a token, then the output is equal
+ A default operator for the SR domain.
+
+ <p>When the <i>preferred</i> input has a token, then the output is equal
  to that token. If the <i>preferred</i> input is absent, then the output is
  equal to the <i>alternate</i> input (whether it is absent or not).
  This actor is non-strict, in that can produce an output even if
@@ -54,6 +56,15 @@ import ptolemy.kernel.util.StringAttribute;
  by contrast, this actor can be used to "upsample" to a higher rate
  clock; however, without considerable care, its use in SIGNAL results
  in nondeterminism.
+
+ <p>P. Caspi, D. Pilaud, N. Halbwachs, and J. A. Plaice, "LUSTRE: A
+ Declarative Language for Programming Synchronous Systems,"
+ Conference Record of the 14th Annual ACM Symp. on Principles of
+ Programming Languages, Munich, Germany, January, 1987.
+
+ <p>A. Benveniste and P. Le Guernic, "Hybrid Dynamical Systems Theory
+ and the SIGNAL Language," IEEE Tr. on Automatic Control, Vol. 35,
+ No. 5, pp. 525-546, May 1990.
 
  @author Edward A. Lee
  @version $Id$

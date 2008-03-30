@@ -1,5 +1,4 @@
-/* An actor that generates the current wall clock time in response to a
- click of a button.
+/*  Output the current wall clock time in response to a click of a button.
 
  @Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.

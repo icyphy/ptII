@@ -1,4 +1,5 @@
-/* An actor that displays the status and value of input tokens in a text area.
+/* Display the values of the tokens arriving on the input channels along
+ with the associated time in a text area on the screen.
 
  @Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
@@ -36,8 +37,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
+ Display the status and value of input tokens in a text area.
  Display the values of the tokens arriving on the input channels along
- with the associated time in a text area on the screen.  If the value is
+ with the associated time in a text area on the screen. If the value is
  undefined or known to be absent, that information is indicated instead.
  Each input token is written on a separate line.  The input type can be
  of any type.  If the input happens to be a StringToken,

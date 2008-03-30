@@ -1,4 +1,4 @@
-/* A placeholder that represents the absence of a token.
+/*  A placeholder token that represents the absence of a token.
 
  Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
@@ -32,7 +32,8 @@ import ptolemy.data.Token;
 //// AbsentToken
 
 /**
- A placeholder that represents the absence of a token.
+ A placeholder token that represents the absence of a token.
+
  @author Paul Whitaker
  @version $Id$
  @since Ptolemy II 2.0

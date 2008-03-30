@@ -1,6 +1,5 @@
-/* An instance of FunctionDependencyOfEnabledCompositeActor describes the
- function dependency between the outputs and the inputs of an enabled
- composite actor.
+/*  A description of the dependency that data at an output port has on
+ data at an input port in a firing of an EnabledComposite actor.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -42,11 +41,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// FunctionDependenceOfEnabledCompositeActor
 
 /**
- An instance of this class describes the dependency that data at an output port
- has on data at an input port in a firing of an EnabledComposite actor.
- In particular, all output ports depend on the enable input port. The
- dependencies of the ouput ports having on the other inptus are inferred from
- the dependencies of the contained actors.
+ A description of the dependency that data at an output port has on
+ data at an input port in a firing of an EnabledComposite actor.
+
+ <p>Note that all output ports depend on the enable input port. The
+ dependencies of the ouput ports having on the other inptus are
+ inferred from the dependencies of the contained actors.
 
  @see ptolemy.actor.util.FunctionDependencyOfCompositeActor
  @author Haiyang Zheng

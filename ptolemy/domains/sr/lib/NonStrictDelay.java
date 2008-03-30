@@ -42,7 +42,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// NonstrictDelay
 
 /**
- This actor provides a one-tick delay.  On each firing, it produces
+ A nonstrict actor that delays tokens by one iteration.
+
+ <p>This actor provides a one-tick delay.  On each firing, it produces
  on the output port whatever value it read on the input port in the
  previous tick of the clock. If the input was absent on the previous
  tick of the clock, then the output will be absent. On the first tick,

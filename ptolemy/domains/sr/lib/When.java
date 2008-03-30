@@ -1,4 +1,4 @@
-/* A when operator for the SR domain.
+/* When the control input is true, copy the input to the output.
 
  Copyright (c) 2004-2005 The Regents of the University of California.
  All rights reserved.
@@ -46,6 +46,15 @@ import ptolemy.kernel.util.Workspace;
  <i>input</i> is absent, then the output is absent.
  This actor is inspired by the "when" operator in the synchronous
  languages LUSTRE and SIGNAL.
+
+ <p>P. Caspi, D. Pilaud, N. Halbwachs, and J. A. Plaice, "LUSTRE: A
+ Declarative Language for Programming Synchronous Systems,"
+ Conference Record of the 14th Annual ACM Symp. on Principles of
+ Programming Languages, Munich, Germany, January, 1987.
+
+ <p>A. Benveniste and P. Le Guernic, "Hybrid Dynamical Systems Theory
+ and the SIGNAL Language," IEEE Tr. on Automatic Control, Vol. 35,
+ No. 5, pp. 525-546, May 1990.
 
  @author Edward A. Lee
  @version $Id$

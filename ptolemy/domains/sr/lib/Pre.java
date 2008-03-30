@@ -1,4 +1,4 @@
-/* A pre operator for the SR domain.
+/* When the input is present, the output is the previously received input.
 
  Copyright (c) 2004-2005 The Regents of the University of California.
  All rights reserved.
@@ -42,21 +42,23 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Pre
 
 /**
- * When the input is present, the output is the previously received input. When
- * the input is absent, the output is absent. The first time the input is
- * present, the output is given by <i>initialValue </i>, or if <i>initialValue
- * </i> is not given, then the output is absent. The output data type is greater
- * than or equal to the input and the <i>initialValue </i> parameter, if it is
- * given. Note that in contrast to the NonStrictDelay actor, this actor is
- * strict. It cannot fire until the input is known.  While NonStrictDelay
- * delays by one clock tick, regardless of whether the input is present,
- * this actor delays only present values, and produces an output only when
+ * When the input is present, the output is the previously received
+ * input. When the input is absent, the output is absent. The first
+ * time the input is present, the output is given by <i>initialValue
+ * </i>, or if <i>initialValue </i> is not given, then the output is
+ * absent. The output data type is greater than or equal to the input
+ * and the <i>initialValue </i> parameter, if it is given. Note that
+ * in contrast to the NonStrictDelay actor, this actor is strict. It
+ * cannot fire until the input is known.  While NonStrictDelay delays
+ * by one clock tick, regardless of whether the input is present, this
+ * actor delays only present values, and produces an output only when
  * the input is present.
+
  *
  * @see NonStrictDelay
  * @author Edward A. Lee
  * @version $Id$
- @since Ptolemy II 4.1
+ * @since Ptolemy II 4.1
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (cxh)
  */
