@@ -514,7 +514,7 @@ public class Solution {
         _varState = new int[_numVariables];
         _constraintState = new int[_numConstraints];
 
-        String inconsistencyDesc = "";
+        StringBuffer inconsistencyDesc = new StringBuffer();
 
         for (int i = 0; i < _numConstraints; i++) {
             _constraintState[i] = _UNKNOWN;
@@ -598,7 +598,8 @@ public class Solution {
                             .getContainer());
                 }
 
-                inconsistencyDesc += (" " + sourceName + " " + _constraintExplanations[i]);
+                inconsistencyDesc.append(" " + sourceName + " "
+                        + _constraintExplanations[i]);
                 break;
             }
 
@@ -616,7 +617,8 @@ public class Solution {
         for (int j = 0; j < _numVariables; j++) {
             if (_varState[j] == _INCONSISTENT) {
                 stateInconsistent = true;
-                inconsistencyDesc += (" " + _variables[j] + "=" + _varBindings[j]);
+                inconsistencyDesc.append(" " + _variables[j] + "="
+                        + _varBindings[j]);
             }
         }
 

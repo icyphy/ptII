@@ -318,16 +318,18 @@ public class GiottoCodeGeneratorUtilities {
 
         first = true;
 
-        for (Iterator sourceNames = driverIOMap.keySet().iterator(); sourceNames
+        for (Iterator sourceNames = driverIOMap.entrySet().iterator(); sourceNames
                 .hasNext();) {
+            Map.Entry entry = (Map.Entry) sourceNames.next();
+
             if (first) {
                 first = false;
             } else {
                 code.append(", ");
             }
 
-            String sourceName = (String) sourceNames.next();
-            String destName = (String) driverIOMap.get(sourceName);
+            String sourceName = (String) entry.getKey();
+            String destName = (String) entry.getValue();
             code.append(sourceName + ", " + destName);
         }
 
@@ -648,7 +650,7 @@ public class GiottoCodeGeneratorUtilities {
         // Write the input port specification of the task
         first = true;
 
-        String inputPorts = "";
+        StringBuffer inputPorts = new StringBuffer();
 
         for (Iterator inPorts = actor.inputPortList().iterator(); inPorts
                 .hasNext();) {
@@ -659,7 +661,7 @@ public class GiottoCodeGeneratorUtilities {
                 if (first) {
                     first = false;
                 } else {
-                    inputPorts += ", ";
+                    inputPorts.append(", ");
                     code.append(", ");
                 }
 
@@ -668,7 +670,7 @@ public class GiottoCodeGeneratorUtilities {
                 String portTypeID = _getTypeString(port);
 
                 code.append(portTypeID + " " + portID);
-                inputPorts += portID;
+                inputPorts.append(portID);
             }
         }
 
@@ -677,7 +679,7 @@ public class GiottoCodeGeneratorUtilities {
         // write the output port specification of the task.
         first = true;
 
-        String outputPorts = "";
+        StringBuffer outputPorts = new StringBuffer();
 
         for (Iterator outPorts = actor.outputPortList().iterator(); outPorts
                 .hasNext();) {
@@ -689,13 +691,13 @@ public class GiottoCodeGeneratorUtilities {
                     first = false;
                 } else {
                     code.append(", ");
-                    outputPorts += ", ";
+                    outputPorts.append(", ");
                 }
 
                 String portID = StringUtilities.sanitizeName(port
                         .getName(model));
                 code.append(portID);
-                outputPorts += portID;
+                outputPorts.append(portID);
             }
         }
 
@@ -703,11 +705,13 @@ public class GiottoCodeGeneratorUtilities {
 
         String portSeparator = ", ";
 
-        if (inputPorts.equals("") || outputPorts.equals("")) {
+        if (inputPorts.toString().equals("")
+                || outputPorts.toString().equals("")) {
             portSeparator = "";
         }
 
-        code.append("        schedule CG" + taskName + "_Task(" + inputPorts
+        code.append("        schedule CG" + taskName + "_Task("
+                + inputPorts.toString()
                 + portSeparator + outputPorts + ")\n" + "}\n");
 
         return code.toString();
