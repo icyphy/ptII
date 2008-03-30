@@ -85,7 +85,8 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
     int *Arow = Acsr->row_start;
     int *Acol = Acsr->col_idx;
     double *Aval = Acsr->val;
-    int my_start = Acsr->localStart[MYTHREAD];
+    //int my_start = Acsr->localStart[MYTHREAD];
+    int my_start = Acsr->myStart;
 
     //static shared double xglobal[MAX_NNZ];
     static shared [] double xglobal[MAX_NNZ];
@@ -117,7 +118,7 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
 void driver(int m, int maxiter,
             void (*matvec) (double *, void *, double *, int), void *Adata,
             void (*psolve) (double *, void *, double *, int), void *Mdata,
-            int n, int localStart)
+            int n, int myStart)
 {
 
     // m < n, m is the columns allocated for this processor
@@ -125,8 +126,8 @@ void driver(int m, int maxiter,
     double *x = (double *) malloc(n * sizeof(double));
     double *rhist = NULL;
 
-    static shared double *xall;
-    xall = (shared double*) upc_alloc(n * sizeof(double));
+    static shared [] double xall;
+    //xall = (shared double*) upc_alloc(n * sizeof(double));
 
     double rtol = 1e-3;
 
@@ -165,16 +166,16 @@ printf("m = %d\n", m);
 //printf("T[%d]:here4\n", MYTHREAD);
 
     for (i = 0; i < n; ++i)
-        xall[localStart + i] = x[i];
+        xall[myStart + i] = x[i];
 
     upc_barrier;
 
     if (MYTHREAD == 0) {
-  //stop_timer(&total_timer);
 
         for (i = 0; i < n; ++i)
             fprintf(x_fp, "%g\n", xall[i]);
 
+        stop_timer(&total_timer);
         printf("total time taken: %g \n", timer_duration(total_timer));
 
         if (retval < 0) {
@@ -219,15 +220,15 @@ int main(int argc, char **argv)
         printf("Using problem %s\n", argv[1]);
 /*
         printf("With block Jacobi: ");
-        driver(A->m, A->m, csr_matvec, A, csr_jacobi_psolve, Mj, A->n, A->localStart);
+        driver(A->m, A->m, csr_matvec, A, csr_jacobi_psolve, Mj, A->n, A->myStart);
 
         printf("With SSOR:         ");
-        driver(A->m, A->m, csr_matvec, A, csr_ssor_psolve, A, A->n, A->localStart);
+        driver(A->m, A->m, csr_matvec, A, csr_ssor_psolve, A, A->n, A->myStart);
 */
 
         printf("Vanilla CG:        ");
 printf("T[%d]: here\n", MYTHREAD);
-        driver(A->m, A->m, csr_matvec, A, dummy_psolve, NULL, A->n, A->localStart);
+        driver(A->m, A->m, csr_matvec, A, dummy_psolve, NULL, A->n, A->myStart);
     }
 
 printf("T[%d]: finished\n", MYTHREAD);
