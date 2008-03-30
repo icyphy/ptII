@@ -127,8 +127,9 @@ void driver(int m, int maxiter,
     double *rhist = NULL;
 
     //static shared [n] double xall[n * sizeof(double)];
-    static shared double* xall;
-    xall = (shared double*) upc_alloc(n * sizeof(double));
+    //static shared double* xall;
+    shared double* shared xall;
+    xall = (shared double* shared) upc_alloc(n * sizeof(double));
 
     double rtol = 1e-3;
 
