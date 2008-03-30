@@ -44,6 +44,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+import ptolemy.gui.UndoListener;
+
 //////////////////////////////////////////////////////////////////////////
 //// TextEditor
 
@@ -54,7 +56,7 @@ import javax.swing.text.Document;
  or set the number of rows or columns.
  After creating this, it is necessary to call show() for it to appear.
 
- @author Edward A. Lee, contributor: Christopher Brooks
+ @author Edward A. Lee, contributors: Christopher Brooks, Ben Leinfelder
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (eal)
@@ -110,6 +112,10 @@ public class TextEditor extends TableauFrame implements DocumentListener, Printa
 
         getContentPane().add(_scrollPane, BorderLayout.CENTER);
         _initialSaveAsFileName = "data.txt";
+        
+        // Set the undo listener, with default key mappings.
+        text.getDocument().addUndoableEditListener(new UndoListener(text));
+
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -1924,6 +1924,10 @@ public class Query extends JPanel {
         QueryScrollPane(JTextArea c) {
             super(c);
             textArea = c;
+            
+            // Set the undo listener
+            textArea.getDocument().addUndoableEditListener(new UndoListener(textArea));
+
         }
 
         public String getText() {

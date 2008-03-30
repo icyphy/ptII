@@ -61,7 +61,8 @@ JSRCS = \
 	ShellTextArea.java \
 	StatusBar.java \
 	SwingWorker.java \
-	Top.java
+	Top.java \
+	UndoListener.java
 
 EXTRA_SRCS =	$(JSRCS)
 
