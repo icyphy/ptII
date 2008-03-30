@@ -105,6 +105,7 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
             Ax[i] += Aelement * xglobal[col];
         }
     }
+    upc_free(xglobal);
     upc_barrier;
 }
 
