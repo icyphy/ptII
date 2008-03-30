@@ -389,6 +389,9 @@ public abstract class GraphAnalyzer {
     public static class Path extends IndexedLists implements Cloneable {
 
         public Object clone() {
+            // FIXME: Note that we do not call super.clone() here.  Is
+            // that right?
+
             Path path = new Path(_startPort);
             Entry entry = getHead();
             while (entry != null) {

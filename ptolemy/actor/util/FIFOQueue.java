@@ -106,6 +106,7 @@ public class FIFOQueue implements Cloneable {
      *  @return A clone of this queue.
      */
     public Object clone() {
+        // FIXME: Note that we do not call super.clone() here.  Is that right?
         return new FIFOQueue(this);
     }
 

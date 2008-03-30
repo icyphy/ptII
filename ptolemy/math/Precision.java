@@ -216,6 +216,7 @@ public class Precision implements Cloneable, Serializable {
      *  @return This Precision.
      */
     public Object clone() {
+        // FIXME: Note that we do not call super.clone() here.  Is that right?
         return this;
     }
 

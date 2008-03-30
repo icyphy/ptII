@@ -349,6 +349,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  @return This FixPoint.
      */
     public Object clone() {
+        // FIXME: Note that we do not call super.clone() here.  Is that right?
         return this;
     }
 
