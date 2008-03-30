@@ -44,7 +44,8 @@ public class IteratorAdapter implements Iterator {
     }
 
     public Object next() throws NoSuchElementException {
-        throw new UnsupportedOperationException(
+        // FindBugs: throw NoSuchElementException here.
+        throw new NoSuchElementException(
                 "This method must be overridden");
     }
 
