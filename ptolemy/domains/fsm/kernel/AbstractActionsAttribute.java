@@ -262,9 +262,9 @@ public abstract class AbstractActionsAttribute extends Action implements
         PtParser parser = new PtParser();
         Map map = parser.generateAssignmentMap(expression);
 
-        for (Iterator names = map.keySet().iterator(); names.hasNext();) {
-            String name = (String) names.next();
-            ASTPtAssignmentNode node = (ASTPtAssignmentNode) map.get(name);
+        for (Iterator names = map.entrySet().iterator(); names.hasNext();) {
+            Map.Entry entry = (Map.Entry) names.next();
+            ASTPtAssignmentNode node = (ASTPtAssignmentNode) entry.getValue();
 
             // Parse the destination specification first.
             String completeDestinationSpec = node.getIdentifier();
