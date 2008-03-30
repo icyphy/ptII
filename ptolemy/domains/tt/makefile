@@ -1,9 +1,7 @@
-# Makefile for the Timing Definition Language domain kernel
-#
-#
-# @Authors: Patricia Derler (makefile only)
+# Makefile for Java Time Triggered domain
 #
 # @Version: $Id$
+# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
@@ -29,13 +27,14 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
-ME =		ptolemy/domains/tt/tdl/kernel
+ME =		ptolemy/domains/tt
 
-DIRS =
+DIRS =		kernel tdl
 
-# Root of the Java directory
-ROOT =		../../../../..
+# Root of Ptolemy II directory
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,44 +44,29 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
 
-JSRCS = \
-	MathUtilities.java \
-	TDLActor.java  \
-	TDLCodeGenerator.java \
-	TDLCodeGeneratorUtilities.java \
-	TDLController.java \
-	TDLMode.java \
-	TDLModeException.java \
-	TDLModeSchedule.java \
-	TDLModeScheduler.java \
-	TDLModule.java \
-	TDLModuleDirector.java \
-	TDLReceiver.java \
-	TDLRefinement.java \
-	TDLRefinementPort.java \
-	TDLTask.java \
-	TDLTaskOutputPort.java \
-	TDLTransition.java 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		kernel/kernel.jar \
+		tdl/tdl.jar
 
-EXTRA_SRCS =	$(JSRCS)
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) #test
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =  kernel lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	demo \
 	doc
-
-JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

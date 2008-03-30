@@ -1,7 +1,6 @@
-# Makefile for the TT domain kernel
-# PTIDES: Programming Temporally Integrated Distributed Embedded Systems
+# Makefile for the Time Triggered domain kernel
 #
-# @Authors: Patricia Derler (makefile only)
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
