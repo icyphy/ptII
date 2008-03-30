@@ -1383,7 +1383,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 } else {
 
                     String channelOffset;
-                    if (channelAndOffset[1] == "") {
+                    if (channelAndOffset[1].equals("")) {
                         channelOffset = CodeGeneratorHelper
                         .generateChannelOffset(port, isWrite,
                                 channelAndOffset[0]);
