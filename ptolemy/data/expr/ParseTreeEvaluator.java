@@ -47,7 +47,6 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.UnionToken;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
@@ -1291,7 +1290,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
 
         if (argValues[0] instanceof ObjectToken) {
-            Object object = _getObject(argValues[0]);
+            Object object = ((ObjectToken) argValues[0]).getValue();
             if (object != null) {
                 Class<?> valueClass = object.getClass();
                 Set<Class<?>> classes = new HashSet<Class<?>>();
@@ -1379,20 +1378,6 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Get the object contained in the value if it is an ObjectToken, or return
-     *  a token converted from the value.
-     */
-    private Object _getObject(Object value) throws IllegalActionException {
-        if (value instanceof ObjectToken) {
-            return ((ObjectToken) value).getValue();
-        } else if (value instanceof ptolemy.data.Token) {
-            return ConversionUtilities.convertTokenToJavaType(
-                    (ptolemy.data.Token) value);
-        } else {
-            return value;
-        }
-    }
-
     /** Invoke a method of the class for the given object, or retrieve a field
      *  of it.
      */
@@ -1416,25 +1401,34 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
 
         Method[] methods = clazz.getMethods();
+        int argCount = argTypes.length - 1;
+        Object[] args = new Object[argCount];
         for (Method method : methods) {
             if (method.getName().equals(methodName)
                     && Modifier.isPublic(method.getModifiers())) {
                 Class<?>[] parameterTypes = method.getParameterTypes();
-                if (parameterTypes.length != argTypes.length - 1) {
+                if (parameterTypes.length != argCount) {
                     continue;
                 }
                 boolean compatible = true;
-                for (int i = 0; compatible && i < parameterTypes.length; i++) {
-                    if (!parameterTypes[i].isInstance(_getObject(
-                            argValues[i + 1]))) {
+                for (int i = 0; compatible && i < argCount; i++) {
+                    Class<?> argumentType = ConversionUtilities
+                            .convertTokenTypeToJavaType(argTypes[i+1]);
+                    if (!parameterTypes[i].isAssignableFrom(argumentType)) {
                         compatible = false;
+                    } else {
+                        Object argument = argValues[i + 1];
+                        if (argument instanceof ObjectToken) {
+                            args[i] = ((ObjectToken) argument).getValue();
+                        } else if (argument instanceof ptolemy.data.Token) {
+                            args[i] = ConversionUtilities.convertTokenToJavaType
+                                    ((ptolemy.data.Token) argument);
+                        } else {
+                            args[i] = argument;
+                        }
                     }
                 }
                 if (compatible) {
-                    Object[] args = new Object[argValues.length - 1];
-                    for (int i = 1; i < argValues.length; i++) {
-                        args[i - 1] = _getObject(argValues[i]);
-                    }
                     try {
                         result = method.invoke(object, args);
                         break;

@@ -623,15 +623,16 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
 
         Method[] methods = clazz.getMethods();
+        int argCount = argTypes.length - 1;
         for (Method method : methods) {
             if (method.getName().equals(methodName)
                     && Modifier.isPublic(method.getModifiers())) {
                 Class<?>[] parameterTypes = method.getParameterTypes();
-                if (parameterTypes.length != argTypes.length - 1) {
+                if (parameterTypes.length != argCount) {
                     continue;
                 }
                 boolean compatible = true;
-                for (int i = 0; compatible && i < parameterTypes.length; i++) {
+                for (int i = 0; compatible && i < argCount; i++) {
                     Class<?> argumentType = ConversionUtilities
                             .convertTokenTypeToJavaType(argTypes[i+1]);
                     if (!parameterTypes[i].isAssignableFrom(argumentType)) {
