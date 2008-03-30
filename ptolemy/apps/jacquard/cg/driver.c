@@ -89,9 +89,7 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
 
     static shared [] double xall[MAX_NNZ];
 
-    for (i = 0; i < n; ++i) {
-        xall[mystart + i] = x[i];
-    }
+    for (i = 0; i < n; ++i) xall[mystart + i] = x[i];
     upc_barrier;
 
     for (i = 0; i < n; ++i) {
@@ -158,9 +156,7 @@ printf("m = %d\n", m);
 
 //printf("T[%d]:here4\n", MYTHREAD);
 
-    for (i = 0; i < n; ++i) 
-        xall[myStart + i] = x[i];
-    
+    for (i = 0; i < m; ++i) xall[myStart + i] = x[i];
     upc_barrier;
 
     if (MYTHREAD == 0) {
