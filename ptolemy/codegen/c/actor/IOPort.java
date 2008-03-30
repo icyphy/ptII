@@ -1,6 +1,6 @@
-/* Code generator helper for typed composite actor.
+/* Codex generator helper for typed composite actor.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2005-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -287,7 +287,6 @@ public class IOPort extends CodeGeneratorHelper implements PortCodeGenerator {
      * Generate the expression that represents the offset in the generated
      * code.
      * @param offsetString The specified offset from the user.
-     * @param port The referenced port.
      * @param channel The referenced port channel.
      * @param isWrite Whether to generate the write or read offset.
      * @return The expression that represents the offset in the generated code.
