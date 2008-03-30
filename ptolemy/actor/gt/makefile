@@ -86,7 +86,6 @@ JSRCS = \
 	MatchCallback.java \
 	ModelGenerator.java \
 	ModelView.java \
-	NamedObjToken.java \
 	NamedObjVariable.java \
 	ParameterAttribute.java \
 	Pattern.java \
@@ -125,6 +124,7 @@ OPTIONAL_FILES = \
 	'GTEntityUtils$$RestoreAppearanceChangeRequest.class' \
 	'GTIngredient$$FieldIterator.class' \
 	'GTIngredient$$NamedObjMatchResult.class' \
+	'GTParameter$$Evaluator$$TypeInference.class' \
 	'GTParameter$$Evaluator.class' \
 	'GTParameter$$LoopEvaluator.class' \
 	'GTParameter$$LoopFunction.class' \

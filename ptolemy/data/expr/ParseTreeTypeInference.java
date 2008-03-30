@@ -25,12 +25,18 @@
  */
 package ptolemy.data.expr;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import ptolemy.data.ScalarToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FixType;
@@ -40,6 +46,7 @@ import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeConstant;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.data.type.BaseType.ObjectType;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -231,6 +238,24 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             // We can't infer the type of matlab expressions...
             _setType(node, BaseType.GENERAL);
             return;
+        }
+
+        if (functionName.equals("object") && argCount == 1) {
+            ASTPtRootNode classNameNode = ((ASTPtRootNode) node.jjtGetChild(1));
+            if (classNameNode instanceof ASTPtLeafNode) {
+                ptolemy.data.Token token =
+                    ((ASTPtLeafNode) classNameNode).getToken();
+                if (token != null && token instanceof StringToken) {
+                    String className = ((StringToken) token).stringValue();
+                    try {
+                        Class clazz = Class.forName(className);
+                        _setType(node, new BaseType.ObjectType(clazz));
+                    } catch (ClassNotFoundException e) {
+                        throw new IllegalActionException("Unable to load class "
+                                + className);
+                    }
+                }
+            }
         }
 
         // Otherwise, try to reflect the method name.
@@ -433,29 +458,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             }
         }
 
-        CachedMethod cachedMethod = CachedMethod.findMethod(node
-                .getMethodName(), childTypes, CachedMethod.METHOD);
-
-        if (cachedMethod.isValid()) {
-            Type type = cachedMethod.getReturnType();
-            _setType(node, type);
-        } else {
-            // If we reach this point it means the function was not found on
-            // the search path.
-            StringBuffer buffer = new StringBuffer();
-
-            for (int i = 1; i < childTypes.length; i++) {
-                if (i == 1) {
-                    buffer.append(childTypes[i].toString());
-                } else {
-                    buffer.append(", " + childTypes[i].toString());
-                }
-            }
-
-            throw new IllegalActionException("No matching method "
-                    + childTypes[0].toString() + "." + node.getMethodName()
-                    + "( " + buffer + " ).");
-        }
+        _setType(node, _methodCall(node.getMethodName(), childTypes));
     }
 
     /** Set the type of the given node to be the type of the first
@@ -601,6 +604,58 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
     }
 
+    /** Get the return type of a method belonging to the specified class, or the
+     *  type of a field belonging to it.
+     */
+    protected Type _getMethodReturnType(Class<?> clazz, String methodName,
+            Type[] argTypes) throws IllegalActionException {
+        Class<?> result = null;
+
+        if (argTypes.length == 1) {
+            Field[] fields = clazz.getFields();
+            for (Field field : fields) {
+                if (field.getName().equals(methodName)
+                        && Modifier.isPublic(field.getModifiers())) {
+                    result = field.getType();
+                    break;
+                }
+            }
+        }
+
+        Method[] methods = clazz.getMethods();
+        for (Method method : methods) {
+            if (method.getName().equals(methodName)
+                    && Modifier.isPublic(method.getModifiers())) {
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                if (parameterTypes.length != argTypes.length - 1) {
+                    continue;
+                }
+                boolean compatible = true;
+                for (int i = 0; compatible && i < parameterTypes.length; i++) {
+                    Class<?> argumentType = ConversionUtilities
+                            .convertTokenTypeToJavaType(argTypes[i+1]);
+                    if (!parameterTypes[i].isAssignableFrom(argumentType)) {
+                        compatible = false;
+                    }
+                }
+                if (compatible) {
+                    result = method.getReturnType();
+                    break;
+                }
+            }
+        }
+
+        if (result == null) {
+            return null;
+        } else {
+            if (Variable.class.isAssignableFrom(result)) {
+                return BaseType.UNKNOWN;
+            } else {
+                return ConversionUtilities.convertJavaTypeToTokenType(result);
+            }
+        }
+    }
+
     /** Return the type of the identifier with the given name.
      *  @exception IllegalActionException If the identifier is undefined.
      */
@@ -673,13 +728,73 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
     }
 
+    /** Infer the type of the specified method.  The type of the object on which
+     *  the method is evaluated should be the first argument.
+     *  @param methodName The method name.
+     *  @param argTypes An array of argument types.
+     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @see ParseTreeEvaluator#_methodCall(String, Type[], Object[])
+     */
+    protected Type _methodCall(String methodName, Type[] argTypes)
+            throws IllegalActionException {
+        CachedMethod cachedMethod = CachedMethod.findMethod(methodName,
+                argTypes, CachedMethod.METHOD);
+
+        if (cachedMethod.isValid()) {
+            Type type = cachedMethod.getReturnType();
+            return type;
+        }
+
+        if (argTypes[0] instanceof ObjectType) {
+            Class<?> valueClass = ((ObjectType) argTypes[0]).getValueClass();
+            Set<Class<?>> classes = new HashSet<Class<?>>();
+            classes.add(valueClass);
+            while (!classes.isEmpty()) {
+                Iterator<Class<?>> iterator = classes.iterator();
+                valueClass = iterator.next();
+                iterator.remove();
+
+                if (!Modifier.isPublic(valueClass.getModifiers())) {
+                    for (Class<?> interf : valueClass.getInterfaces()) {
+                        classes.add(interf);
+                    }
+                    Class<?> superclass = valueClass.getSuperclass();
+                    if (superclass != null) {
+                        classes.add(superclass);
+                    }
+                } else {
+                    Type result = _getMethodReturnType(valueClass, methodName,
+                            argTypes);
+                    if (result != null) {
+                        return result;
+                    }
+                }
+            }
+        }
+
+        // If we reach this point it means the function was not found on
+        // the search path.
+        StringBuffer buffer = new StringBuffer();
+
+        for (int i = 1; i < argTypes.length; i++) {
+            if (i == 1) {
+                buffer.append(argTypes[i].toString());
+            } else {
+                buffer.append(", " + argTypes[i].toString());
+            }
+        }
+
+        throw new IllegalActionException("No matching method " + argTypes[0]
+                + "." + methodName + "( " + buffer + " ).");
+    }
+
     protected void _setType(ASTPtRootNode node, Type type) {
         //      System.out.println("type of " + node + " is " + type);
         _inferredChildType = type;
         node.setType(type);
     }
 
-    protected ParserScope _scope;
-
     protected Type _inferredChildType;
+
+    protected ParserScope _scope;
 }

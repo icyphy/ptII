@@ -27,6 +27,12 @@
  */
 package ptolemy.data.expr;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -36,10 +42,12 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.UnionToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
@@ -399,6 +407,19 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                                 + " a string matlab expression argument followed by"
                                 + " a list of variable names that the matlab expression"
                                 + " refers to.");
+            }
+        }
+        
+        if (functionName.equals("object") && argCount == 1) {
+            ASTPtRootNode classNameNode = ((ASTPtRootNode) node.jjtGetChild(1));
+            if (classNameNode instanceof ASTPtLeafNode) {
+                ptolemy.data.Token token =
+                    ((ASTPtLeafNode) classNameNode).getToken();
+                if (token != null && token instanceof StringToken) {
+                    String className = ((StringToken) token).stringValue();
+                    _evaluatedChildToken = ObjectToken.object(className);
+                    return;
+                }
             }
         }
 
@@ -1251,8 +1272,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param argValues An array of argument values.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
-    protected ptolemy.data.Token _methodCall(String methodName,
-            Type[] argTypes, Object[] argValues) throws IllegalActionException {
+    protected ptolemy.data.Token _methodCall(String methodName, Type[] argTypes,
+            Object[] argValues) throws IllegalActionException {
+
         CachedMethod method = CachedMethod.findMethod(methodName, argTypes,
                 CachedMethod.METHOD);
 
@@ -1264,10 +1286,40 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
             ptolemy.data.Token result = method.invoke(argValues);
             return result;
-        } else {
-            throw new IllegalActionException("No method found matching "
-                    + method.toString());
         }
+
+        if (argValues[0] instanceof ObjectToken) {
+            Object object = _getObject(argValues[0]);
+            if (object != null) {
+                Class<?> valueClass = object.getClass();
+                Set<Class<?>> classes = new HashSet<Class<?>>();
+                classes.add(valueClass);
+                while (!classes.isEmpty()) {
+                    Iterator<Class<?>> iterator = classes.iterator();
+                    valueClass = iterator.next();
+                    iterator.remove();
+
+                    if (!Modifier.isPublic(valueClass.getModifiers())) {
+                        for (Class<?> interf : valueClass.getInterfaces()) {
+                            classes.add(interf);
+                        }
+                        Class<?> superclass = valueClass.getSuperclass();
+                        if (superclass != null) {
+                            classes.add(superclass);
+                        }
+                    } else {
+                        ptolemy.data.Token result = _invokeMethod(valueClass,
+                                object, methodName, argTypes, argValues);
+                        if (result != null) {
+                            return result;
+                        }
+                    }
+                }
+            }
+        }
+
+        throw new IllegalActionException("No method found matching "
+                + method.toString());
     }
 
     /** Add a record to the current trace corresponding to the given message.
@@ -1316,17 +1368,99 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
     // Temporary storage for the result of evaluating a child node.
     // This is protected so that derived classes can access it.
     protected ptolemy.data.Token _evaluatedChildToken = null;
 
-    private ParserScope _scope = null;
+    protected ParseTreeTypeInference _typeInference = null;
 
-    private ParseTreeTypeInference _typeInference = null;
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
-    private StringBuffer _trace = null;
+    /** Get the object contained in the value if it is an ObjectToken, or return
+     *  a token converted from the value.
+     */
+    private Object _getObject(Object value) throws IllegalActionException {
+        if (value instanceof ObjectToken) {
+            return ((ObjectToken) value).getValue();
+        } else if (value instanceof ptolemy.data.Token) {
+            return ConversionUtilities.convertTokenToJavaType(
+                    (ptolemy.data.Token) value);
+        } else {
+            return value;
+        }
+    }
+
+    /** Invoke a method of the class for the given object, or retrieve a field
+     *  of it.
+     */
+    private ptolemy.data.Token _invokeMethod(Class<?> clazz, Object object,
+            String methodName, Type[] argTypes, Object[] argValues)
+            throws IllegalActionException {
+        Object result = null;
+
+        if (argTypes.length == 1) {
+            Field[] fields = clazz.getFields();
+            for (Field field : fields) {
+                if (field.getName().equals(methodName)
+                        && Modifier.isPublic(field.getModifiers())) {
+                    try {
+                        result = field.get(object);
+                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalAccessException e) {
+                    }
+                }
+            }
+        }
+
+        Method[] methods = clazz.getMethods();
+        for (Method method : methods) {
+            if (method.getName().equals(methodName)
+                    && Modifier.isPublic(method.getModifiers())) {
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                if (parameterTypes.length != argTypes.length - 1) {
+                    continue;
+                }
+                boolean compatible = true;
+                for (int i = 0; compatible && i < parameterTypes.length; i++) {
+                    if (!parameterTypes[i].isInstance(_getObject(
+                            argValues[i + 1]))) {
+                        compatible = false;
+                    }
+                }
+                if (compatible) {
+                    Object[] args = new Object[argValues.length - 1];
+                    for (int i = 1; i < argValues.length; i++) {
+                        args[i - 1] = _getObject(argValues[i]);
+                    }
+                    try {
+                        result = method.invoke(object, args);
+                        break;
+                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalAccessException e) {
+                    } catch (InvocationTargetException e) {
+                    }
+                }
+            }
+        }
+
+        if (result == null) {
+            return null;
+        } else {
+            if (result instanceof Variable) {
+                return ((Variable) result).getToken();
+            } else {
+                return ConversionUtilities.convertJavaTypeToToken(result);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _depth = 0;
+
+    private ParserScope _scope = null;
+
+    private StringBuffer _trace = null;
 }

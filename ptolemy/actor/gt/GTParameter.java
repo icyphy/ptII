@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -31,12 +31,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gt;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.gt.data.MatchResult;
@@ -50,9 +46,9 @@ import ptolemy.data.expr.ASTPtFunctionalIfNode;
 import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtMethodCallNode;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ConversionUtilities;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParseTreeTypeInference;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
@@ -89,6 +85,7 @@ public class GTParameter extends Parameter {
         public Evaluator(Pattern pattern, MatchResult matchResult) {
             _pattern = pattern;
             _matchResult = matchResult;
+            _typeInference = new TypeInference();
         }
 
         public Token evaluateParseTree(ASTPtRootNode node, ParserScope scope)
@@ -97,9 +94,8 @@ public class GTParameter extends Parameter {
                     _matchResult, scope));
         }
 
-        public void visitFunctionApplicationNode(
-                ASTPtFunctionApplicationNode node)
-        throws IllegalActionException {
+        public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode
+                node) throws IllegalActionException {
             String functionName = node.getFunctionName();
             if (functionName != null && functionName.equals("loop")) {
                 if (node.jjtGetNumChildren() != 5) {
@@ -228,22 +224,21 @@ public class GTParameter extends Parameter {
             int argCount = node.jjtGetNumChildren();
             if (argCount == 1) {
                 Token firstChild = _evaluateChild(node, 0);
-                if (firstChild instanceof NamedObjToken) {
-                    NamedObjToken objectToken = (NamedObjToken) firstChild;
-                    NamedObj object = objectToken.getObject();
-                    NamedObj patternObject = (NamedObj) _matchResult
-                            .getKey(object);
-                    String methodName = node.getMethodName();
-                    if (patternObject != null) {
-                        NamedObj patternChild = GTTools.getChild(patternObject,
-                                methodName, true, true, true, true);
-                        if (patternChild != null) {
-                            NamedObj child = (NamedObj) _matchResult
-                                    .get(patternChild);
-                            if (child != null) {
-                                _evaluatedChildToken = NamedObjVariable
-                                        .getNamedObjVariable(child, true)
-                                        .getToken();
+                if (firstChild instanceof ObjectToken) {
+                    ObjectToken objectToken = (ObjectToken) firstChild;
+                    Object object = objectToken.getValue();
+                    if (object instanceof NamedObj) {
+                        NamedObj patternObject = (NamedObj) _matchResult.getKey(
+                                object);
+                        if (patternObject != null) {
+                            String methodName = node.getMethodName();
+                            NamedObj patternChild = GTTools.getChild(
+                                    patternObject, methodName, true, true, true,
+                                    true);
+                            if (patternChild != null
+                                    && _matchResult.containsKey(patternChild)) {
+                                _evaluatedChildToken = new ObjectToken(
+                                        _matchResult.get(patternChild));
                                 return;
                             }
                         }
@@ -254,102 +249,8 @@ public class GTParameter extends Parameter {
             super.visitMethodCallNode(node);
         }
 
-        protected Token _methodCall(String methodName, Type[] argTypes,
-                Object[] argValues) throws IllegalActionException {
-
-            Object object = argValues[0];
-            if (!(object instanceof ObjectToken)
-                    && !(object instanceof NamedObjToken)) {
-                return super._methodCall(methodName, argTypes, argValues);
-            }
-            object = _getObject(object);
-            if (object == null) {
-                throw new IllegalActionException("Method " + methodName
-                        + " cannot be found because the object invoked on is "
-                        + "null.");
-            }
-
-            Class<?> clazz = object.getClass();
-            Set<Class<?>> classes = new HashSet<Class<?>>();
-            classes.add(clazz);
-            while (!classes.isEmpty()) {
-                Iterator<Class<?>> iterator = classes.iterator();
-                clazz = iterator.next();
-                iterator.remove();
-
-                if (!Modifier.isPublic(clazz.getModifiers())) {
-                    for (Class<?> interf : clazz.getInterfaces()) {
-                        classes.add(interf);
-                    }
-                    Class<?> superclass = clazz.getSuperclass();
-                    if (superclass != null) {
-                        classes.add(superclass);
-                    }
-                } else {
-                    Token result = _methodCall(clazz, object, methodName,
-                            argTypes, argValues);
-                    if (result != null) {
-                        return result;
-                    }
-                }
-            }
-
-            return super._methodCall(methodName, argTypes, argValues);
-        }
-
-        private Object _getObject(Object value) throws IllegalActionException {
-            if (value instanceof ObjectToken) {
-                return ((ObjectToken) value).getValue();
-            } else if (value instanceof NamedObjToken) {
-                return ((NamedObjToken) value).getObject();
-            } else if (value instanceof Token) {
-                return ConversionUtilities
-                        .convertTokenToJavaType((Token) value);
-            } else {
-                return value;
-            }
-        }
-
-        private Token _methodCall(Class<?> clazz, Object object,
-                String methodName, Type[] argTypes, Object[] argValues)
-                throws IllegalActionException {
-            Method[] methods = clazz.getMethods();
-            for (Method method : methods) {
-                if (method.getName().equals(methodName)
-                        && Modifier.isPublic(method.getModifiers())) {
-                    Class<?>[] parameterTypes = method.getParameterTypes();
-                    if (parameterTypes.length != argTypes.length - 1) {
-                        continue;
-                    }
-                    boolean compatible = true;
-                    for (int i = 0; compatible && i < parameterTypes.length; i++) {
-                        if (!parameterTypes[i]
-                                .isInstance(_getObject(argValues[i + 1]))) {
-                            compatible = false;
-                        }
-                    }
-                    if (compatible) {
-                        Object[] args = new Object[argValues.length - 1];
-                        for (int i = 1; i < argValues.length; i++) {
-                            args[i - 1] = _getObject(argValues[i]);
-                        }
-                        try {
-                            Object result = method.invoke(object, args);
-                            if (result instanceof NamedObj) {
-                                return NamedObjVariable.getNamedObjVariable(
-                                        (NamedObj) result, true).getToken();
-                            } else {
-                                return ConversionUtilities
-                                        .convertJavaTypeToToken(result);
-                            }
-                        } catch (IllegalArgumentException e) {
-                        } catch (IllegalAccessException e) {
-                        } catch (InvocationTargetException e) {
-                        }
-                    }
-                }
-            }
-            return null;
+        public class TypeInference extends ParseTreeTypeInference {
+            // TODO: Override the methods of superclass, as Evaluator does.
         }
 
         private MatchResult _matchResult;
@@ -459,8 +360,7 @@ public class GTParameter extends Parameter {
             if (patternChild != null &&
                     _matchResult.containsKey(patternChild)) {
                 NamedObj child = (NamedObj) _matchResult.get(patternChild);
-                return NamedObjVariable.getNamedObjVariable(child, true)
-                        .getToken();
+                return new ObjectToken(child);
             } else {
                 Token superToken = _superscope.get(name);
                 if (superToken == null) {

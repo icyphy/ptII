@@ -63,6 +63,24 @@ public class ObjectToken extends Token {
      */
     public ObjectToken(Object value) throws IllegalActionException {
         _value = value;
+        _class = null;
+    }
+
+    /** Construct a token with the given value and the given class as the
+     *  value's type.
+     *
+     *  @param value The value.
+     *  @param valueClass The class of the value.
+     */
+    public ObjectToken(Object value, Class valueClass)
+    throws IllegalActionException {
+        if (value != null && valueClass != null &&
+                !valueClass.isInstance(value)) {
+            throw new IllegalActionException("The value " + value + " is not "
+                    + "an instance of class " + valueClass);
+        }
+        _value = value;
+        _class = valueClass;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,18 +125,25 @@ public class ObjectToken extends Token {
             return false;
         }
 
-        if (((ObjectToken) object).getValue().equals(_value)) {
-            return true;
+        ObjectToken objectToken = (ObjectToken) object;
+        if (_class == null && objectToken._class == null ||
+                _class != null && _class.equals(objectToken._class)) {
+            return _value == null && objectToken._value == null ||
+                    _value != null && _value.equals(objectToken._value);
+        } else {
+            return false;
         }
-
-        return false;
     }
 
     /** Return the type of this token.
      *  @return BaseType.OBJECT
      */
     public Type getType() {
-        return BaseType.OBJECT;
+        if (_class == null) {
+            return BaseType.OBJECT;
+        } else {
+            return new BaseType.ObjectType(_class);
+        }
     }
 
     /** Return the value of the token, a reference to an object.
@@ -128,12 +153,46 @@ public class ObjectToken extends Token {
         return _value;
     }
 
+    /** Return the class of the object contained in this token.
+     *  @return The class of the object.
+     */
+    public Class getValueClass() {
+        return _class;
+    }
+
     /** Return a hash code value for this token. This method returns the
      *  hash code of the contained object.
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-        return _value.hashCode();
+        if (_value == null && _class == null) {
+            return 0;
+        } else if (_value == null) {
+            return _class.hashCode();
+        } else if (_class == null) {
+            return _value.hashCode();
+        } else {
+            return _value.hashCode() + _class.hashCode();
+        }
+    }
+
+    /** Return an ObjectToken with value null and class specified by the
+     *  className argument.
+     *
+     *  @param className The className.
+     *  @return The ObjectToken.
+     *  @throws IllegalActionException If the class with className as its name
+     *   cannot be loaded.
+     */
+    public static ObjectToken object(String className)
+    throws IllegalActionException {
+        try {
+            Class objectClass = Class.forName(className);
+            return new ObjectToken(null, objectClass);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalActionException(null, e, "Unable to load class "
+                    + className);
+        }
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -145,15 +204,17 @@ public class ObjectToken extends Token {
      *  @return A String representing the object.
      */
     public String toString() {
-        if (_value != null) {
-            return "object(" + _value.toString() + ")";
-        } else {
-            return "object(null)";
-        }
+        String value = _value == null ? "null" : _value.toString();
+        String clazz = _class == null ? "" : ": " + _class.getName();
+        return "object(" + value + clazz + ")";
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The class of the object.
+     */
+    protected Class _class = null;
 
     /** The actual Object.
      *  This is protected to allow access in derived classes only.

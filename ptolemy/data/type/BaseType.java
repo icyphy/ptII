@@ -555,15 +555,35 @@ public abstract class BaseType implements Type, Serializable {
     public static class ObjectType extends BaseType {
         private ObjectType() {
             super(ObjectToken.class, "Object");
+            _valueClass = Object.class;
+        }
+        
+        public ObjectType(Class objectClass) {
+            this();
+            if (objectClass != null) {
+                _valueClass = objectClass;
+            }
+        }
+        
+        public Token convert(Token t) throws IllegalActionException {
+            if (t instanceof ObjectToken) {
+                ObjectToken objetToken = (ObjectToken) t;
+                if (_valueClass.isAssignableFrom(objetToken.getValueClass())) {
+                    return new ObjectToken(objetToken.getValue(), _valueClass);
+                }
+            }
+            return ObjectToken.convert(t);
         }
 
-        public Token convert(Token t) throws IllegalActionException {
-            return ObjectToken.convert(t);
+        public Class getValueClass() {
+            return _valueClass;
         }
 
         public int getTypeHash() {
             return 8;
         }
+        
+        private Class _valueClass;
     }
 
     /** The object data type. */

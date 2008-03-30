@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gt;
 
+import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -71,7 +72,7 @@ public class Replacement extends CompositeActorMatcher {
             Pattern pattern = ((TransformationRule) container).getPattern();
             if (pattern != null) {
                 patternParameter = new Parameter(this, "pattern");
-                patternParameter.setToken(new NamedObjToken(pattern));
+                patternParameter.setToken(new ObjectToken(pattern));
                 patternParameter.setPersistent(false);
             }
         }

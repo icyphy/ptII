@@ -33,6 +33,7 @@ package ptolemy.actor.gt;
 
 import java.util.List;
 
+import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.IllegalActionException;
@@ -59,7 +60,7 @@ public class NamedObjVariable extends Variable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        setToken(new NamedObjToken(container));
+        setToken(new ObjectToken(container));
         _setTokenWithContainer = true;
         setPersistent(false);
     }
@@ -71,13 +72,13 @@ public class NamedObjVariable extends Variable {
         NamedObj oldContainer = getContainer();
         super.setContainer(container);
         if (_setTokenWithContainer && container != oldContainer) {
-            setToken(new NamedObjToken(container));
+            setToken(new ObjectToken(container));
         }
     }
 
     public void setToken(Token token) throws IllegalActionException {
-        if (token instanceof NamedObjToken) {
-            if (!((NamedObjToken) token).getObject().equals(getContainer())) {
+        if (token instanceof ObjectToken) {
+            if (!getContainer().equals(((ObjectToken) token).getValue())) {
                 throw new IllegalActionException("The NamedObj in the token "
                         + "is not equal to the container of this variable.");
             }
