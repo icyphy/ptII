@@ -155,14 +155,14 @@ void driver(int m, int maxiter,
 
     upc_barrier;
 
-printf("T[%d]:here3\n", MYTHREAD);
+//printf("T[%d]:here3\n", MYTHREAD);
 
 printf("m = %d\n", m);
 
     retval = precond_cg(matvec, psolve, Adata, Mdata,
                         b, x, rtol, m, rhist, maxiter);
 
-printf("T[%d]:here4\n", MYTHREAD);
+//printf("T[%d]:here4\n", MYTHREAD);
 
     for (i = 0; i < n; ++i)
         xall[localStart + i] = x[i];
