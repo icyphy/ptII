@@ -128,7 +128,8 @@ public abstract class Polygon2D implements Shape {
         }
 
         // True if odd number of crossings
-        return (crossings % 2) == 1;
+        // FindBugs: Check for oddness that won't work for negative numbers
+        return (crossings % 2) != 0;
     }
 
     /** Return true if the given point is inside the polygon.
