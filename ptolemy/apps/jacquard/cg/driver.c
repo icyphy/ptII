@@ -81,27 +81,23 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
 {
     int i, j;
 
-    csr_matrix_t *Atemp = (csr_matrix_t *) Adata;
-    int *Arow = Atemp->row_start;
-    int *Acol = Atemp->col_idx;
-    double *Aval = Atemp->val;
-    int mystart = Atemp->myStart;
+    csr_matrix_t *Acsr = (csr_matrix_t *) Adata;
+    int *Arow = Acsr->row_start;
+    int *Acol = Acsr->col_idx;
+    double *Aval = Acsr->val;
+    int mystart = Acsr->myStart;
 
-    static shared [] double xglobal[MAX_NNZ];
+    static shared [] double xall[MAX_NNZ];
 
     for (i = 0; i < n; ++i) {
-        xglobal[mystart + i] = x[i];
+        xall[mystart + i] = x[i];
     }
     upc_barrier;
 
     for (i = 0; i < n; ++i) {
-        Ax[i] = 0;
+        Ax[i] = 0.0;
         for (j = Arow[i]; j < Arow[i + 1]; ++j) {
-            int col = *Acol++;
-            //double Aelement = *Aval++;
-            //Ax[i] += Aelement * xglobal[col];
-            Ax[i] += *Aval * xglobal[col];
-            Aval++;
+            Ax[i] += (*Aval++) * xall[*Acol++];
         }
     }
     upc_barrier;
@@ -123,7 +119,7 @@ void driver(int m, int maxiter,
 
     //static shared [n] double xall[n * sizeof(double)];
     //static shared double* xall;
-    static shared [] double xall[MAX_N];
+    static shared [] double xall[MAX_NNZ];
     //xall = (shared double* shared) upc_alloc(n * sizeof(double));
 
     double rtol = 1e-3;
