@@ -2,8 +2,8 @@
 #define CSR_PROBLEM_H
 
 #define MAX_THREADS 100
-#define MAX_N   100
-#define MAX_NNZ 1000
+#define MAX_N   1000
+#define MAX_NNZ 10000
 
 typedef struct csr_matrix_t {
     int m, n, nz;
