@@ -51,6 +51,8 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	automatic
 PTCLASSJAR =
+# We use OTHER_JARS instead of PTCLASSJAR because the directories under
+# this one do not follow our coding standards.
 OTHER_JARS = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
