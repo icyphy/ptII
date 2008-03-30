@@ -333,10 +333,6 @@ public class PathGeometry implements Geometry {
 
             switch (_type[_vertexCount]) {
             case PathIterator.SEG_MOVETO:
-                _coordinate[_coordCount++] = segment[0];
-                _coordinate[_coordCount++] = segment[1];
-                break;
-
             case PathIterator.SEG_LINETO:
                 _coordinate[_coordCount++] = segment[0];
                 _coordinate[_coordCount++] = segment[1];

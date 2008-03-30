@@ -1006,9 +1006,8 @@ public class PxgraphParser {
 
                             break;
 
-                        case 'e':
-
-                            // End of set name.
+                        case 'e': // End of set name.
+                        case 'm': // a disconnected point
                             connected = false;
                             break;
 
@@ -1027,12 +1026,6 @@ public class PxgraphParser {
                             _plot.addLegend(_currentdataset, datasetname
                                     .toString());
                             _plot.setConnected(true);
-                            break;
-
-                        case 'm':
-
-                            // a disconnected point
-                            connected = false;
                             break;
 
                         default:
