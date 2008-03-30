@@ -59,14 +59,11 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	ActorScopeExtender.java \
 	AtomicActorMatcher.java \
 	CompositeActorMatcher.java \
 	Constraint.java \
-	CriterionToken.java \
 	DefaultDirectoryAttribute.java \
 	DefaultModelAttribute.java \
-	FakedRecordToken.java \
 	FSMMatcher.java \
 	GTEntity.java \
 	GTEntityUtils.java \
@@ -118,7 +115,6 @@ MISC_FILES =	data ingredients test util
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'FakedRecordToken$$FakedRecordType.class' \
 	'GTEntityUtils$$1.class' \
 	'GTEntityUtils$$LoadActorIconChangeRequest.class' \
 	'GTEntityUtils$$RestoreAppearanceChangeRequest.class' \

@@ -95,7 +95,6 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
         patternObject.addValueListener(this);
 
         editorFactory = new GTIngredientsEditor.Factory(this, "editorFactory");
-        scopeExtender = new ActorScopeExtender(this, "scopeExtender");
 
         _attachText("_iconDescription", _ICON_DESCRIPTION);
     }
@@ -200,11 +199,6 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *  pattern.
      */
     public PatternObjectAttribute patternObject;
-
-    /** The scope extender that expression evaluators use to resolve objects
-     *  within this matcher.
-     */
-    public ActorScopeExtender scopeExtender;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////

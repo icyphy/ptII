@@ -38,6 +38,7 @@ import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.actor.gt.ingredients.operations.Operation;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -139,7 +140,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
                 GTIngredientList list = criteria.getIngredientList();
                 GTIngredient ingredient = list.get(index - 1);
                 if (ingredient instanceof AttributeCriterion) {
-                    return new CriterionToken((Criterion) ingredient);
+                    return new ObjectToken(ingredient, ingredient.getClass());
                 }
             } catch (MalformedStringException e) {
             } catch (IllegalActionException e) {
