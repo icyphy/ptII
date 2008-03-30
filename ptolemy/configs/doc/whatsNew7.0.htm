@@ -25,6 +25,7 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
      - <a href="#ptalon">Ptalon</a>
      - <a href="#backtracking">Backtracking</a>
      - <a href="#continuousDomain">Continuous Domain</a>
+     - <a href="#ergDomain">ERG Domain</a>
      - <a href="#modelTransformation">Model Transformation</a>
 <li> <a href="#demos">New demonstrations</a>
 <li> <a href="#other">Other Key New Capabilities</a>
@@ -194,6 +195,36 @@ Domain interactions are documented in the following paper:
 </ul>
 
  <p>Primary Continuous Domain Developers: Haiyang Zheng, Edward A. Lee
+
+
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="ergDomain">Event Relationship Graph Domain</h3>
+
+<p>The ERG (Event Relationship Graph) domain is a discrete-event model of computation. A model in ERG is represented with a graph of nodes and edges, where nodes represent events and directed edges between events represent scheduling relation. One or more events can be selected as initial events, which are scheduled
+at model time 0.0. When an event is fired, it possibly performs certain actions, and if there are outgoing edges from that event, the events at the end points of those edges are scheduled after non-negative delays. One or more events can also be selected as final events. The firing of final events causes the event
+queue to be emptied after their actions are performed, and therefore no more events can be processed.
+
+<p>The ERG domain supports a different kind of modal models called ERGModalModels, compared to modal models using FSMs (Finite State Machines) as the control. An ERGModalModel uses ERG at the top level, and each event is refined into a sub-model. The refinements can use ERG and any other Ptolemy models of computation.
+
+<p>An ERG model is timed. Although it should work in many domains, the DE (Discrete-Event) domain or ERG domain itself are recommended. When embedded in those domains, the scheduling of the ERG model is delegated to the container by calling the fireAt() function of its director.
+
+<p>There are many useful additional features for ERG, such as canceling edges and parameters. A canceling edge, denoted by a dotted line, cancels a previously scheduled event instead of scheduling a new one. If the pointed to event has multiple instances in the event queue, then the first instance is cancelled.
+Events may also have parameters, and the actual values for those parameters are specified by the expressions on the edges that schedule them. Those expressions are evaluated at run-time. The events may refer to the values of those parameters in their actions by parameter names.
+
+<p>The following paper by Lee W. Schruben provides indepth information about ERG:
+
+<ul>
+<li> Lee W. Schruben, "Simulation Modeling with Event Graphs," Communications of the ACM (CACM), 26(11): 957-963, 1983.
+</ul>
+
+<h4>Event Relationship Graph Domain Demonstrations</h4>
+
+<p>Primary Model Transformation Developer: Thomas Huining Feng
+ <ul>
+   <li> <a href="../../../ptolemy/domains/erg/demo/CarWash/CarWash.xml">CarWash</a> </li>
+   <li> <a href="../../../ptolemy/domains/erg/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> </li>
+ </ul>
 
 <!-- a little space -->
 <p> &nbsp;
