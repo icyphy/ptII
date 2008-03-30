@@ -50,7 +50,7 @@ double ddot(double *x, double *y, int n)
     for (i = 0; i < n; ++i)
         localSum += x[i] * y[i];
 
-printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
+//printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
     //upc_barrier;
     //upc_notify;
 
@@ -65,7 +65,7 @@ printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
     for (i = 0; i < THREADS; ++i) {
         globalSum += globalSumEach[i];
         //*globalSum += globalSumEach[i];
-        printf("T[%d]: globalSumEach2[%d] = %g\n", MYTHREAD, i, globalSumEach[i]);
+        //printf("T[%d]: globalSumEach2[%d] = %g\n", MYTHREAD, i, globalSumEach[i]);
     }
 /*
     upc_forall (i = 0; i < THREADS; ++i) {
@@ -150,7 +150,7 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
     z = (double *) malloc(nbytes);
 
     bnorm2 = ddot(b, b, n);
-printf("T[%d]: first bnorm2 = %g\n", MYTHREAD, bnorm2);
+//printf("T[%d]: first bnorm2 = %g\n", MYTHREAD, bnorm2);
 
     memset(x, 0, nbytes);
     memcpy(r, b, nbytes);
@@ -178,16 +178,16 @@ for (i = 0; i < n; i++) {
 
     // b dot x => z is the guess for x, r is copied b
     rz = ddot(r, z, n);
-printf("T[%d]: first rz = %g\n", MYTHREAD, rz);
+//printf("T[%d]: first rz = %g\n", MYTHREAD, rz);
     rnorm2 = ddot(r, r, n);
-printf("T[%d]: first rnorm2 = %g\n", MYTHREAD, rnorm2);
+//printf("T[%d]: first rnorm2 = %g\n", MYTHREAD, rnorm2);
 
-fflush(stdout);
-printf("T[%d]:starting loop\n", MYTHREAD);
+//fflush(stdout);
+//printf("T[%d]:starting loop\n", MYTHREAD);
 
     for (i = 0; i < maxiter && rnorm2 > bnorm2 * rtol * rtol; ++i) {
 
-printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
+//printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
 
         if (rhist != NULL)
             rhist[i] = sqrt(rnorm2 / bnorm2);
@@ -197,11 +197,11 @@ printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
         matvec(z, Adata, s, n);
         double temp;
         temp = ddot(s, z, n);
-printf("T[%d]: rz = %g\n", MYTHREAD, rz);
+//printf("T[%d]: rz = %g\n", MYTHREAD, rz);
         alpha = rz / temp;
         //alpha = rz / ddot(s, z, n);
-printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
-printf("T[%d]: alpha = %g\n", MYTHREAD, alpha);
+//printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
+//printf("T[%d]: alpha = %g\n", MYTHREAD, alpha);
 
 if (i == 0 ) {
 int j;
@@ -226,10 +226,10 @@ printf("END \n");*/
         rz = ddot(r, z, n);
 //printf("T[%d]: ddot(r,z,n) = %g\n", MYTHREAD, rz);
         rnorm2 = ddot(r, r, n);
-printf("T[%d]: ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
+//printf("T[%d]: ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
 
         beta = -rz / rzold;
-printf("T[%d]: beta = %g\n", MYTHREAD, beta);
+//printf("T[%d]: beta = %g\n", MYTHREAD, beta);
         axpy(s, -beta, s, z, n);
 
 //printf("T[%d]: rnorm2 = %g\n", MYTHREAD, rnorm2);
