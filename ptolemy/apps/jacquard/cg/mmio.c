@@ -707,16 +707,16 @@ csr_matrix_t *csr_hb_load(char *filename)
     assert(THREADS <= MAX_THREADS);
     for (i = 0; i < THREADS; ++i) {
         start[i] = i * n_per_proc;
-        local_matrix->localStart[i] = start[i];
+        //local_matrix->localStart[i] = start[i];
     }
     start[THREADS] = n;
-    local_matrix->localStart[THREADS] = start[THREADS];
+    //local_matrix->localStart[THREADS] = start[THREADS];
     // nlocal is the number of rows for each thread
     nlocal = start[MYTHREAD + 1] - start[MYTHREAD];
     // store nlocal in m of local_matrix
     local_matrix->m = nlocal;
     // store the starting index to localStart
-    local_matrix->localStart[MYTHREAD] = start[MYTHREAD];
+    local_matrix->myStart = start[MYTHREAD];
 
     local_matrix->row_start = (int *) malloc((nlocal + 1) * sizeof(int));
 

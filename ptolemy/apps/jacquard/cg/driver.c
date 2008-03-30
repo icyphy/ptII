@@ -165,8 +165,11 @@ printf("m = %d\n", m);
 
 //printf("T[%d]:here4\n", MYTHREAD);
 
-    for (i = 0; i < n; ++i)
+    for (i = 0; i < n; ++i) {
+        int temp = myStart + i;
+        printf("index is: %d", temp);
         xall[myStart + i] = x[i];
+    }
 
     upc_barrier;
 
