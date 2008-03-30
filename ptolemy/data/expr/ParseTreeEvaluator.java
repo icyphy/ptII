@@ -771,12 +771,13 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
             // Note that we check for ScalarTokens because anything
             // that has a meaningful intValue() method, such as
-            // UnsignedByteToken will also work here.
+            // ShortToken or UnsignedByteToken will also work here.
             if (!(token instanceof ScalarToken)) {
                 throw new IllegalActionException(
                         "Exponent must be ScalarToken and have a valid "
-                                + "lossless conversion to integer. Integer or "
-                                + "unsigned byte meet these criteria.\n"
+                                + "lossless conversion to integer. "
+                                + "Integer, short or unsigned byte meet "
+                                + "these criteria.\n"
                                 + "Use pow(10, 3.5) for non-integer exponents");
             }
 
@@ -784,8 +785,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 times = ((ptolemy.data.ScalarToken) token).intValue();
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException("Exponent must have a valid "
-                        + "lossless conversion to integer. Integer or "
-                        + "unsigned byte meet this criterion.\n"
+                        + "lossless conversion to integer. "
+                        + "Integer, short or unsigned byte meet "
+                        + "these criteria.\n"
                         + "Use pow(10, 3.5) for non-integer exponents");
             }
 
