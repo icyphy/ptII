@@ -145,8 +145,10 @@ public abstract class ModelScope implements ParserScope {
                         && (result != exclude)) {
                     return (Variable) result;
                 }
-
-                return null;
+                
+                // Should not return null here. The next extender should be
+                // searched. (tfeng)
+                // return null;
             }
         }
 
