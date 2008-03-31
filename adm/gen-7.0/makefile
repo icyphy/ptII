@@ -156,6 +156,7 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 # Targets
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
+
 release_newton_all:
 	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.0.1 COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=c:/tmp/cxh/ptII7.0.1/adm/gen-7.0/test/ptII$(VERSION)
 
@@ -575,7 +576,7 @@ JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
 $(PTII_SRC_JAR): src_jar
-	(cd src_jar/ptII$(VERSION); $(JAR) -cf ../../ptII$(VERSION).src.jar .)
+	(cd src_jar/ptII$(VERSION); "$(JAR)"-cf ../../ptII$(VERSION).src.jar .)
 
 # The directory we jar up.
 src_jar: #$(PTII_SRC) 
@@ -599,7 +600,7 @@ HYVISUAL_SRC_JAR = hyvisual$(VERSION).src.jar
 # The Jar file that we create.
 hyvisual.jar: $(HYVISUAL_SRC_JAR)
 $(HYVISUAL_SRC_JAR): src_jar/hyvisual$(VERSION)
-	(cd src_jar/hyvisual$(VERSION); $(JAR) -cf ../../hyvisual$(VERSION).src.jar .)
+	(cd src_jar/hyvisual$(VERSION); "$(JAR)" -cf ../../hyvisual$(VERSION).src.jar .)
 
 HYVISUAL_SRC_TAR = hyvisual$(VERSION).src.tar.gz
 # The Jar file that we create.
@@ -620,7 +621,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		 mkdir -p src_jar/hyvisual$(VERSION); \
 	fi
 	(cd src_jar/hyvisual$(VERSION); \
-		$(JAR) -xf ../../ptII$(VERSION).src.jar)
+		"$(JAR)" -xf ../../ptII$(VERSION).src.jar)
 
 	(cd src_jar/hyvisual$(VERSION); \
 		echo "About to remove unneeded sources from `pwd`"; \
@@ -693,7 +694,7 @@ VIPTOS_SRC_JAR = viptos$(VIPTOS_VERSION).src.jar
 # The Jar file that we create.
 viptos.jar: $(VIPTOS_SRC_JAR)
 $(VIPTOS_SRC_JAR): src_jar/viptos$(VIPTOS_VERSION)
-	(cd src_jar/viptos$(VIPTOS_VERSION); $(JAR) -cf ../../viptos$(VIPTOS_VERSION).src.jar .)
+	(cd src_jar/viptos$(VIPTOS_VERSION); "$(JAR)" -cf ../../viptos$(VIPTOS_VERSION).src.jar .)
 
 VIPTOS_SRC_TAR = viptos$(VIPTOS_VERSION).src.tar.gz
 # The Jar file that we create.
@@ -716,7 +717,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 		 mkdir -p src_jar/viptos$(VIPTOS_VERSION); \
 	fi
 	(cd src_jar/viptos$(VIPTOS_VERSION); \
-		$(JAR) -xf ../../ptII$(VERSION).src.jar)
+		"$(JAR)" -xf ../../ptII$(VERSION).src.jar)
 	(cd src_jar/viptos$(VIPTOS_VERSION); \
 		echo "About to remove unneeded sources from `pwd`"; \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
