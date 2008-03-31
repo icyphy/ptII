@@ -229,6 +229,17 @@ public class ConversionUtilities {
             }
 
             returnValue = new ArrayToken(temp);
+        } else if (object.getClass().isArray()) {
+            Class elementClass = object.getClass().getComponentType();
+            Type elementType = convertJavaTypeToTokenType(elementClass);
+
+            Object[] array = (Object[]) object;
+            ptolemy.data.Token[] tokens = new ptolemy.data.Token[array.length];
+            for (int i = 0; i < array.length; i++) {
+                tokens[i] = convertJavaTypeToToken(array[i]);
+            }
+
+            return new ArrayToken(elementType, tokens);
         } else {
             // Package into an ObjectToken.
             returnValue = new ObjectToken(object);
@@ -311,6 +322,10 @@ public class ConversionUtilities {
                         .getComponentType()));
             } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
                 return BaseType.OBJECT;
+            } else if (tokenClass.isArray()) {
+                Class elementClass = tokenClass.getComponentType();
+                Type elementType = convertJavaTypeToTokenType(elementClass);
+                return new ArrayType(elementType);
             } else {
                 // This should really never happen, since every class
                 // should be caught by the isAssignable test above,
