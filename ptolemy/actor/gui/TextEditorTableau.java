@@ -87,6 +87,9 @@ public class TextEditorTableau extends Tableau {
 
         if (frame == null) {
             frame = new TextEditor(title, container.getDocument());
+            // Set the title for the Kepler R actor
+            // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3187
+            setTitle(frame.getTitle());
         }
 
         frame.text.setColumns(80);
