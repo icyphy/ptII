@@ -747,7 +747,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
 
         if (argTypes[0] instanceof ObjectType) {
-            Class<?> valueClass = ((ObjectType) argTypes[0]).getValueClass();
+            Class<?> valueClass = ((ObjectType) argTypes[0]).getContentClass();
             Set<Class<?>> classes = new HashSet<Class<?>>();
             classes.add(valueClass);
             while (!classes.isEmpty()) {
