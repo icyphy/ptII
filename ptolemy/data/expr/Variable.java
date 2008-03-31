@@ -57,6 +57,7 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -2027,6 +2028,13 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     reference = _reference;
                 }
                 String insideName = name.replaceAll("::", ".");
+                if (insideName.equals("this")) {
+                    if (reference instanceof Variable) {
+                        return ((Variable) reference).getToken();
+                    } else {
+                        return new ObjectToken(reference, reference.getClass());
+                    }
+                }
                 while (reference != null) {
                     if (reference instanceof Entity) {
                         Port port = ((Entity) reference).getPort(insideName);
@@ -2077,6 +2085,13 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 return result.getType();
             } else {
                 String insideName = name.replaceAll("::", ".");
+                if (insideName.equals("this")) {
+                    if (reference instanceof Variable) {
+                        return ((Variable) reference).getType();
+                    } else {
+                        return new ObjectType(reference.getClass());
+                    }
+                }
                 while (reference != null) {
                     if (reference instanceof Entity) {
                         Port port = ((Entity) reference).getPort(insideName);
@@ -2191,7 +2206,30 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 reference = Variable.this.getContainer();
             }
 
-            return getAllScopedVariableNames(Variable.this, reference);
+            Set identifiers = new HashSet(getAllScopedVariableNames(
+                    Variable.this, reference));
+            identifiers.add("this");
+            while (reference != null) {
+                if (reference instanceof Entity) {
+                    for (Object port : ((Entity) reference).portList()) {
+                        identifiers.add(((Port) port).getName());
+                    }
+                }
+                if (reference instanceof CompositeEntity) {
+                    for (Object entity : ((CompositeEntity) reference)
+                            .entityList()) {
+                        identifiers.add(((Entity) entity).getName());
+                    }
+
+                    for (Object relation : ((CompositeEntity) reference)
+                            .relationList()) {
+                        identifiers.add(((Relation) relation).getName());
+                    }
+                }
+                reference = reference.getContainer();
+            }
+            
+            return identifiers;
         }
 
         // Reference object for the scope.
