@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/06/07 10:36:25">
+<meta name="LASTUPDATED" content="03/31/08 14:03:47">
 <link href="../../default.css" rel="stylesheet" type="text/css">
 <title>2.10 Hybrid Systems and Modal Models</title>
 </head>
@@ -45,13 +45,13 @@
 </h4>
 
 
-<a name="176111"> </a>Consider the bouncing ball example, which can be found under "Bouncing Ball" in figure <a href="usingVergila3.htm#165846">2.3</a> (in the "Hybrid Systems" entry). The top-level contents of this model is shown in figure <img src="images/usingVergil69.gif" height="591" width="934" align="left" border="0" hspace="0" vspace="0">
+<a name="176111"> </a>Consider the bouncing ball example, which can be found under "Bouncing Ball" in figure <a href="usingVergila3.htm#165846">2.3</a> (in the "Hybrid Systems" entry). The top-level contents of this model is shown in figure <img src="images/usingVergil68.gif" height="591" width="934" align="left" border="0" hspace="0" vspace="0">
 <a href="usingVergila11.htm#176111">2.56</a>. It contains a <i>Ball Model</i>, a <i>TimedPlotter</i>, and <i>PeriodicSampler</i>, and an <i>Animate Ball</i> composite actor. The <i>Ball Model </i>is an instance of the <i>ModalModel</i> found in the <i>HigherOrderActors</i> library, but renamed. If you execute the model, you should see a plot like that in the figure and a 3-D animation that is constructed using the GR (graphics) domain. The continuous dynamics correspond to the times when the ball is in the air, and the discrete events correspond to the times when the ball hits the surface and bounces.<br>
 
 
 <p>
-  <a name="176143"> </a>If you invoke "Open Actor" on the <i>Ball Model</i>, you will see something like figure <img src="images/usingVergil54.gif" usemap="#usingVergil54_gif" height="550" width="937" align="left" border="0" hspace="0" vspace="0">
-<map name="usingVergil54_gif">
+  <a name="176143"> </a>If you invoke "Open Actor" on the <i>Ball Model</i>, you will see something like figure <img src="images/usingVergil57.gif" usemap="#usingVergil57_gif" height="550" width="937" align="left" border="0" hspace="0" vspace="0">
+<map name="usingVergil57_gif">
 
 <area href="usingVergila11.htm#176111" shape=rect coords="4,509,926,544">
 </map>
@@ -60,13 +60,13 @@
 
 
 <p>
-  <a name="176154"> </a>The state machine in figure <a href="usingVergila11.htm#176143">2.57</a> has three states, named <i>init</i>, <i>free</i>, and <i>stop</i>. The <i>init</i> state is the initial state, which is set as shown in figure <img src="images/usingVergil57.gif" height="539" width="937" align="left" border="0" hspace="0" vspace="0">
+  <a name="176154"> </a>The state machine in figure <a href="usingVergila11.htm#176143">2.57</a> has three states, named <i>init</i>, <i>free</i>, and <i>stop</i>. The <i>init</i> state is the initial state, which is set as shown in figure <img src="images/usingVergil61.gif" height="539" width="937" align="left" border="0" hspace="0" vspace="0">
 <a href="usingVergila11.htm#176154">2.58</a>. The <i>free</i> state represents the mode of operation where the ball is in free fall, and the <i>stop</i> state represents the mode where the ball has stopped bouncing.
 </p>
 
 
 <p>
-  <a name="176166"> </a>At any time during the execution of the model, the modal model is in one of these three states. When the model begins executing, it is in the <i>init</i> state. During the time a modal model is in a state, the behavior of the modal model is specified by the <i>refinement</i> of the state. The refinement can be examined by looking inside the state. As shown in figure <img src="images/usingVergil61.gif" height="248" width="937" align="left" border="0" hspace="0" vspace="0">
+  <a name="176166"> </a>At any time during the execution of the model, the modal model is in one of these three states. When the model begins executing, it is in the <i>init</i> state. During the time a modal model is in a state, the behavior of the modal model is specified by the <i>refinement</i> of the state. The refinement can be examined by looking inside the state. As shown in figure <img src="images/usingVergil64.gif" height="248" width="937" align="left" border="0" hspace="0" vspace="0">
 <a href="usingVergila11.htm#176166">2.59</a>, the <i>init</i> state has no refinement. 
 </p>
 
@@ -86,8 +86,8 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17618
 
 
 <p>
-  <a name="176202"> </a>If you look inside the <i>free</i> state, you will see the refinement shown in figure <img src="images/usingVergil64.gif" height="300" width="937" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergila11.htm#176202">2.60</a>. This model represents the laws of gravity, which state that an object of any mass will have an acceleration of roughly <img src="images/usingVergil67.gif" height="18" width="26" border="0" hspace="0" vspace="0">
+  <a name="176202"> </a>If you look inside the <i>free</i> state, you will see the refinement shown in figure <img src="images/usingVergil67.gif" height="300" width="937" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila11.htm#176202">2.60</a>. This model represents the laws of gravity, which state that an object of any mass will have an acceleration of roughly <img src="images/usingVergil69.gif" height="18" width="26" border="0" hspace="0" vspace="0">
  meters/second2. The acceleration is integrated to get the velocity, which is, in turn, integrated to get the vertical position.
 </p>
 
@@ -108,7 +108,7 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17618
 
 
 <p>
-  <a name="176229"> </a>The bouncing ball model of figures <a href="usingVergila11.htm#176111">2.56</a> and <a href="usingVergila11.htm#176143">2.57</a> illustrates an interesting property of hybrid system modeling. The <i>stop</i> state, it turns out, is essential. Without it, the time between bounces keeps decreasing, as does the magnitude of each bounce. At some point, these numbers get smaller than the representable precision, and large errors start to occur. If you remove the <i>stop</i> state from the FSM, and re-run the model, you get the result shown in figure <img src="images/usingVergil68.gif" height="372" width="937" align="left" border="0" hspace="0" vspace="0">
+  <a name="176229"> </a>The bouncing ball model of figures <a href="usingVergila11.htm#176111">2.56</a> and <a href="usingVergila11.htm#176143">2.57</a> illustrates an interesting property of hybrid system modeling. The <i>stop</i> state, it turns out, is essential. Without it, the time between bounces keeps decreasing, as does the magnitude of each bounce. At some point, these numbers get smaller than the representable precision, and large errors start to occur. If you remove the <i>stop</i> state from the FSM, and re-run the model, you get the result shown in figure <img src="images/usingVergil70.gif" height="372" width="937" align="left" border="0" hspace="0" vspace="0">
 <a href="usingVergila11.htm#176229">2.61</a>. The ball, in effect, falls through the surface on which it is bouncing and then goes into a free-fall in the space below.
 </p>
 
@@ -139,7 +139,7 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17618
 
 
 <p>
-  <a name="176252"> </a>If you create a new modal model by dragging it in from the <i>HigherOrderActors</i> library, create an output port and name it <i>output</i>, and then look inside, you will get an FSM editor like that shown in figure <img src="images/usingVergil70.gif" height="575" width="937" align="left" border="0" hspace="0" vspace="0">
+  <a name="176252"> </a>If you create a new modal model by dragging it in from the <i>HigherOrderActors</i> library, create an output port and name it <i>output</i>, and then look inside, you will get an FSM editor like that shown in figure <img src="images/usingVergil72.gif" height="575" width="937" align="left" border="0" hspace="0" vspace="0">
 <a href="usingVergila11.htm#176252">2.62</a>. Note that the output port is (regrettably) located at the upper left, and is only partially visible. The annotation text suggests that you delete it once you no longer need it. You may want to move the port to a more reasonable location (where it is visible).
 </p>
 
@@ -160,8 +160,8 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17618
 
 
 <p>
-  <a name="176282"> </a>To create transitions, you must hold the control button<a href="#178761"><sup>1</sup></a> on the keyboard while clicking and dragging from one state to the next (a transition can also go back to the same state). The handles on the transition can be used to customize its curvature and orientation. Double clicking on the transition (or right clicking and selecting "Configure") allows you to configure the transition. The dialog for the transition from <i>init</i> to <i>free </i>is shown in figure <img src="images/usingVergil73.gif" usemap="#usingVergil73_gif" height="324" width="934" align="left" border="0" hspace="0" vspace="0">
-<map name="usingVergil73_gif">
+  <a name="176282"> </a>To create transitions, you must hold the control button<a href="#178761"><sup>1</sup></a> on the keyboard while clicking and dragging from one state to the next (a transition can also go back to the same state). The handles on the transition can be used to customize its curvature and orientation. Double clicking on the transition (or right clicking and selecting "Configure") allows you to configure the transition. The dialog for the transition from <i>init</i> to <i>free </i>is shown in figure <img src="images/usingVergil75.gif" usemap="#usingVergil75_gif" height="324" width="934" align="left" border="0" hspace="0" vspace="0">
+<map name="usingVergil75_gif">
 
 <area href="usingVergila11.htm#176143" shape=rect coords="5,284,927,320">
 </map>
@@ -201,7 +201,7 @@ free.initialPosition = initialPosition; free.initialVelocity = 0.0<a name="17630
 
 
 <p>
-  <a name="176312"> </a>Both states and transitions can have <i>refinements. </i>To create a refinement, right click<a href="#177192"><sup>2</sup></a> on the state or transition, and select "Add Refinement." You will see a dialog like that in figure <img src="images/usingVergil75.gif" height="295" width="598" align="left" border="0" hspace="0" vspace="0">
+  <a name="176312"> </a>Both states and transitions can have <i>refinements. </i>To create a refinement, right click<a href="#177192"><sup>2</sup></a> on the state or transition, and select "Add Refinement." You will see a dialog like that in figure <img src="images/usingVergil77.gif" height="295" width="598" align="left" border="0" hspace="0" vspace="0">
 <a href="usingVergila11.htm#176312">2.64</a>. As shown in the figure, you will be offered the alternatives of a "Default Refinement" or a "State Machine Refinement." The first of these provides a block diagram model as the refinement. The second provides another finite state machine as the refinement. In the former case (the default), a blank refinement model will open, as shown in the figure. As before, the output port will appear in an inconvenient location. You will almost certainly want to move it to a more convenient location. You will have to create a director in the refinement. The modal model will not operate without a director in the refinement.
 </p>
 

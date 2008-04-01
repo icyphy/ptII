@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/10/07 09:00:01">
+<meta name="LASTUPDATED" content="03/31/08 14:03:47">
 <link href="../../default.css" rel="stylesheet" type="text/css">
 <title>2.7 Classes and Inheritance</title>
 </head>
@@ -35,7 +35,7 @@
 </h2>
 
 
-<a name="177350"> </a>One of the major new capabilities introduced with version 4.0 of Ptolemy II is the ability to define <i>actor-oriented classes</i> with instances and subclasses with inheritance. The key idea is that you can specify that a component definition is a <i>class</i>, in which case all instances and subclasses inherit its structure. This improves modularity in designs. We will illustrate this capability with an example.<br>
+<a name="177350"> </a>Ptolemy II includes the ability to define <i>actor-oriented classes</i> with instances and subclasses with inheritance. The key idea is that you can specify that a component definition is a <i>class</i>, in which case all instances and subclasses inherit its structure. This improves modularity in designs. We will illustrate this capability with an example.<br>
 
 
 <h4>
@@ -44,9 +44,9 @@
 
 
 <p>
-  <a name="177363"> </a>Consider the model that we developed in <a href="usingVergila5.htm#166138">section 2.4</a>, shown for reference in figure <img src="images/usingVergil5.gif" height="437" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergila8.htm#177363">2.34</a>. Suppose that we wish to create multiple instances of the channel, as shown in figure <img src="images/usingVergil7.gif" usemap="#usingVergil7_gif" height="490" width="937" align="center" border="0" hspace="0" vspace="0">
-<map name="usingVergil7_gif">
+  <a name="177363"> </a>Consider the model that we developed in <a href="usingVergila5.htm#166138">section 2.4</a>, shown for reference in figure <img src="images/usingVergil7.gif" height="437" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila8.htm#177363">2.34</a>. Suppose that we wish to create multiple instances of the channel, as shown in figure <img src="images/usingVergil10.gif" usemap="#usingVergil10_gif" height="490" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil10_gif">
 
 <area href="usingVergila8.htm#177363" shape=rect coords="5,439,933,481">
 </map>
@@ -55,14 +55,14 @@
 
 
 <p>
-  <a name="177455"> </a>A better solution is to define a channel class. To do this, begin with the design in figure <a href="usingVergila8.htm#177363">2.34</a>, and remove the connections to the channel, as shown in figure <img src="images/usingVergil11.gif" height="1065" width="937" align="center" border="0" hspace="0" vspace="0">
+  <a name="177455"> </a>A better solution is to define a channel class. To do this, begin with the design in figure <a href="usingVergila8.htm#177363">2.34</a>, and remove the connections to the channel, as shown in figure <img src="images/usingVergil14.gif" height="1065" width="937" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila8.htm#177455">2.36</a>. Then right click and select "Convert to Class". (Note that if you fail to first remove the connections, you will get an error message when you try to convert to class. A class is not permitted to have connections.) The actor icon acquires a blue halo, which serves as a visual indication that it is a class, rather than an ordinary actor (which is an instance). Classes play no role in the execution of the model, and merely serve as definitions of components that must then be instantiated. By convention, we put classes at the top of the model, near the director, since they function as declarations.
 </p>
 
 
 <p>
-  <a name="177548"> </a>Once you have a class, you can create an instance by right clicking and selecting "Create Instance" or typing Control-N. Do this five times to create five instances of the class, as shown in figure <a href="usingVergila8.htm#177455">2.36</a>. Although this looks similar to the design in figure <a href="usingVergila8.htm#177363">2.35</a>, it is, in fact, a much better design. To verify this, try making a change to the class, for example by creating a custom icon for it, as shown in figure <img src="images/usingVergil15.gif" usemap="#usingVergil15_gif" height="457" width="937" align="center" border="0" hspace="0" vspace="0">
-<map name="usingVergil15_gif">
+  <a name="177548"> </a>Once you have a class, you can create an instance by right clicking and selecting "Create Instance" or typing Control-N. Do this five times to create five instances of the class, as shown in figure <a href="usingVergila8.htm#177455">2.36</a>. Although this looks similar to the design in figure <a href="usingVergila8.htm#177363">2.35</a>, it is, in fact, a much better design. To verify this, try making a change to the class, for example by creating a custom icon for it, as shown in figure <img src="images/usingVergil18.gif" usemap="#usingVergil18_gif" height="457" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil18_gif">
 
 <area href="usingVergila8.htm#177455" shape=rect coords="2,414,929,455">
 </map>
@@ -80,8 +80,8 @@
 </h4>
 
 
-<a name="177646"> </a>By default, all instances of Channel in figure <a href="usingVergila8.htm#177548">2.37</a> have the same icon and the same parameter values. However, each instance can be customized by overriding these values. In figure <img src="images/usingVergil19.gif" usemap="#usingVergil19_gif" height="457" width="937" align="center" border="0" hspace="0" vspace="0">
-<map name="usingVergil19_gif">
+<a name="177646"> </a>By default, all instances of Channel in figure <a href="usingVergila8.htm#177548">2.37</a> have the same icon and the same parameter values. However, each instance can be customized by overriding these values. In figure <img src="images/usingVergil22.gif" usemap="#usingVergil22_gif" height="457" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil22_gif">
 
 <area href="usingVergila8.htm#177548" shape=rect coords="2,414,929,455">
 </map>
@@ -93,8 +93,8 @@
 </h4>
 
 
-<a name="177687"> </a>Suppose now that we wish to modify some of the channels to add interference in the form of another sinewave. A good way to do this is to create a subclass of the Channel class, as shown in figure <img src="images/usingVergil23.gif" usemap="#usingVergil23_gif" height="504" width="937" align="center" border="0" hspace="0" vspace="0">
-<map name="usingVergil23_gif">
+<a name="177687"> </a>Suppose now that we wish to modify some of the channels to add interference in the form of another sinewave. A good way to do this is to create a subclass of the Channel class, as shown in figure <img src="images/usingVergil26.gif" usemap="#usingVergil26_gif" height="504" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil26_gif">
 
 <area href="usingVergila8.htm#177646" shape=rect coords="3,472,931,513">
 </map>
@@ -102,17 +102,17 @@
 
 
 <p>
-  <a name="177864"> </a>Looking inside the subclass reveals that it contains all the elements of the class, but with their icons now surrounded by a dashed pink outline. These elements are <i>inherited</i>. They cannot be removed from the subclass (try to do so, and you will get an error message). You can, however, change their parameter values and add additional elements. Consider the design shown in figure <img src="images/usingVergil27.gif" usemap="#usingVergil27_gif" height="412" width="937" align="center" border="0" hspace="0" vspace="0">
-<map name="usingVergil27_gif">
+  <a name="179526"> </a>Looking inside the subclass reveals that it contains all the elements of the class, but with their icons now surrounded by a dashed pink outline. These elements are <i>inherited</i>. They cannot be removed from the subclass (try to do so, and you will get an error message). You can, however, change their parameter values and add additional elements. Consider the design shown in figure <img src="images/usingVergil78.gif" usemap="#usingVergil78_gif" height="412" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil78_gif">
 
 <area href="usingVergila8.htm#177687" shape=rect coords="4,385,931,426">
 </map>
-<a href="usingVergila8.htm#177864">2.40</a>, which adds an additional pair of parameters named "interferenceAmplitude" and "interferenceFrequency" and an additional pair of actors implementing the interference. A model that replaces the last channel with an instance of the subclass is shown in figure <img src="images/usingVergil31.gif" usemap="#usingVergil31_gif" height="516" width="937" align="center" border="0" hspace="0" vspace="0">
-<map name="usingVergil31_gif">
+<a href="usingVergila8.htm#179526">2.40</a>, which adds an additional pair of parameters named "interferenceAmplitude" and "interferenceFrequency" and an additional pair of actors implementing the interference. A model that replaces the last channel with an instance of the subclass is shown in figure <img src="images/usingVergil30.gif" usemap="#usingVergil30_gif" height="516" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil30_gif">
 
-<area href="usingVergila8.htm#177864" shape=rect coords="4,489,931,531">
+<area href="usingVergila8.htm#179526" shape=rect coords="4,489,931,531">
 </map>
-<a href="usingVergila8.htm#177864">2.41</a>, along with a plot where you can see the sinusoidal interference.
+<a href="usingVergila8.htm#179526">2.41</a>, along with a plot where you can see the sinusoidal interference.
 </p>
 
 
@@ -142,7 +142,7 @@
 
 
 <p>
-  <a name="178152"> </a>Once you have an instance of the Channel class that is defined in its own file, you can add it to the UserLibrary that appears in the library browser to the left in Vergil windows, as shown in figure <img src="images/usingVergil49.gif" height="863" width="937" align="center" border="0" hspace="0" vspace="0">
+  <a name="178152"> </a>Once you have an instance of the Channel class that is defined in its own file, you can add it to the UserLibrary that appears in the library browser to the left in Vergil windows, as shown in figure <img src="images/usingVergil48.gif" height="863" width="937" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila8.htm#178152">2.44</a>. To do this, right click on the instance and select "Save Actor in Library." As shown in the figure, this causes another window to open, which is actually the user library. The user library is a Ptolemy II model like any other, stored in an XML file. If you now save that library model, then the class instance will be available in the UserLibrary henceforth in any Vergil window.
 </p>
 
