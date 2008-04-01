@@ -576,7 +576,7 @@ JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
 $(PTII_SRC_JAR): src_jar
-	(cd src_jar/ptII$(VERSION); "$(JAR)"-cf ../../ptII$(VERSION).src.jar .)
+	(cd src_jar/ptII$(VERSION); "$(JAR)" -cf ../../ptII$(VERSION).src.jar .)
 
 # The directory we jar up.
 src_jar: #$(PTII_SRC) 
