@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/10/07 09:00:01">
+<meta name="LASTUPDATED" content="03/31/08 14:03:47">
 <link href="../../default.css" rel="stylesheet" type="text/css">
 <title>2.5 Annotations and Parameterization</title>
 </head>
@@ -44,15 +44,15 @@
 
 
 <p>
-  <a name="177156"> </a>First, notice from figure <a href="usingVergila5.htm#168725">2.26</a> that the noise overwhelms the sinusoid, making it barely visible. A useful channel model would have a parameter that sets the level of the noise. Open the channel model by right clicking on the channel model, and select "Open Actor". In the channel model, add a parameter by dragging one in from the <i>Utilities</i> library, <i>Parameters</i> sublibrary, as shown in figure <img src="images/usingVergil82.gif" height="867" width="937" align="center" border="0" hspace="0" vspace="0">
+  <a name="177156"> </a>First, notice from figure <a href="usingVergila5.htm#168725">2.26</a> that the noise overwhelms the sinusoid, making it barely visible. A useful channel model would have a parameter that sets the level of the noise. Open the channel model by right clicking on the channel model, and select "Open Actor". In the channel model, add a parameter by dragging one in from the <i>Utilities</i> library, <i>Parameters</i> sublibrary, as shown in figure <img src="images/usingVergil84.gif" height="867" width="937" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila6.htm#177156">2.27</a>. Right click<a href="#177181"><sup>1</sup></a> on the parameter to change its name to "noisePower". (In order to be able to use this parameter in expressions, the name cannot have any spaces in it.) Also, right click or double click on the parameter to change its default value to 0.1.
 </p>
 
 
 <p>
-  <a name="168902"> </a>Now we can use this parameter. First, let's use it to set the amount of noise. The <i>Gaussian</i> actor has a parameter called <i>standardDeviation</i>. In this case, the power of the noise is equal to the variance of the Gaussian, not the standard deviation. If you recall from basic statistics, the standard deviation is equal to the square root of the variance. Change the <i>standardDeviation </i>parameter of the <i>Gaussian</i> actor so its value is "sqrt(noisePower)", as shown in figure <img src="images/usingVergil50.gif" height="258" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergila6.htm#168902">2.28</a>. This is an expression that references the <i>noisePower</i> parameter. We will explain the expression language in the next chapter. But first, let check our improved model. Return to the top-level model, and edit the parameters of the <i>Channel</i> actor (by either double clicking or right clicking and selecting "Configure"). Change the noise power from the default 0.1 to 0.01. Run the model. You should now get a relatively clean sinusoid like that shown in figure <img src="images/usingVergil88.gif" usemap="#usingVergil88_gif" height="271" width="600" align="center" border="0" hspace="0" vspace="0">
-<map name="usingVergil88_gif">
+  <a name="168902"> </a>Now we can use this parameter. First, let's use it to set the amount of noise. The <i>Gaussian</i> actor has a parameter called <i>standardDeviation</i>. In this case, the power of the noise is equal to the variance of the Gaussian, not the standard deviation. If you recall from basic statistics, the standard deviation is equal to the square root of the variance. Change the <i>standardDeviation </i>parameter of the <i>Gaussian</i> actor so its value is "sqrt(noisePower)", as shown in figure <img src="images/usingVergil49.gif" height="258" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila6.htm#168902">2.28</a>. This is an expression that references the <i>noisePower</i> parameter. We will explain the expression language in the next chapter. But first, let check our improved model. Return to the top-level model, and edit the parameters of the <i>Channel</i> actor (by either double clicking or right clicking and selecting "Configure"). Change the noise power from the default 0.1 to 0.01. Run the model. You should now get a relatively clean sinusoid like that shown in figure <img src="images/usingVergil90.gif" usemap="#usingVergil90_gif" height="271" width="600" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil90_gif">
 
 <area href="usingVergila5.htm#168725" shape=rect coords="3,238,597,265">
 </map>
@@ -80,8 +80,8 @@
 </h4>
 
 
-<a name="177270"> </a>A (rather primitive) icon editor is also provided with Vergil. To create a custom icon, right click on the icon and select "Edit Custom Icon," as shown in figure <img src="images/usingVergil91.gif" height="907" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergila6.htm#177270">2.30</a>. The box in the middle of the icon editor displays the size of the default icon, for reference. Try creating an icon like the one shown in figure <img src="images/usingVergil3.gif" height="796" width="937" align="center" border="0" hspace="0" vspace="0">
+<a name="177270"> </a>A (rather primitive) icon editor is also provided with Vergil. To create a custom icon, right click on the icon and select "Edit Custom Icon," as shown in figure <img src="images/usingVergil3.gif" height="907" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila6.htm#177270">2.30</a>. The box in the middle of the icon editor displays the size of the default icon, for reference. Try creating an icon like the one shown in figure <img src="images/usingVergil5.gif" height="796" width="937" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila6.htm#177270">2.31</a>. Hint: The fill color of the rectangle is set to "none" and the fill color of the trapezoid is first selected using the color selector, then modified to have an <i>alpha</i> (transparency) of 0.5. Finally, since the icon itself has the actor name in it, the Customize Name dialog is used to deselect "show name."<br>
 
 

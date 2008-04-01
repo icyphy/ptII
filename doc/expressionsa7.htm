@@ -5,8 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/05/07 18:39:43">
-<link href="default.css" rel="stylesheet" type="text/css">
+<meta name="LASTUPDATED" content="03/31/08 13:40:44">
+<link href="../../default.css" rel="stylesheet" type="text/css">
 <title>3.6 Defining Functions</title>
 </head>
 
@@ -85,7 +85,7 @@ function(x:double) x*5.0<a name="184140"> </a>
 </pre>
 
 <p>
-  <a name="191864"> </a>Functions can be passed as arguments to certain "higher-order functions" that have been defined (see table <a href="expressionsa12.htm#195813">Table 9 on page 131</a>). For example, the iterate() function takes three arguments, a function, an integer, and an initial value to which to apply the function. It applies the function first to the initial value, then to the result of the application, then to that result, collecting the results into an array whose length is given by the second argument. For example, to get an array whose values are multiples of 3, try
+  <a name="191864"> </a>Functions can be passed as arguments to certain "higher-order functions" that have been defined (see table <a href="expressionsa12.htm#195813">Table 9 on page 134</a>). For example, the iterate() function takes three arguments, a function, an integer, and an initial value to which to apply the function. It applies the function first to the initial value, then to the result of the application, then to that result, collecting the results into an array whose length is given by the second argument. For example, to get an array whose values are multiples of 3, try
 </p>
 
 <pre>
@@ -112,7 +112,7 @@ function(x:double) x*5.0<a name="184140"> </a>
 
 
 <p>
-  <a name="193773"> </a>A typical use of functions in a Ptolemy II model is to define a parameter in a model whose value is a function. Suppose that the parameter named "f" has value "function(x:double) x*5.0". Then within the scope of that parameter, the expression "f(10.0)" will yield result 50.0.
+  <a name="193773"> </a>A typical use of functions in a Ptolemy II model is to define a parameter in a model whose value is a function. Suppose that the parameter named "f</font>" has value "function(x:double) x*5.0</font>". Then within the scope of that parameter, the expression "f(10.0)" will yield result 50.0.
 </p>
 
 
@@ -137,9 +137,11 @@ function(x:double) x*5.0<a name="184140"> </a>
 &gt;&gt; fact = function(x:int,f:(function(x,f) int)) (x&lt;1?1:x*f(x-1,f))<a name="193854"> </a>
 (function(x:int, f:function(a0:general, a1:general) int) (x&lt;1)?1:(x*f((x-1), f)))<a name="193855"> </a>
 &gt;&gt; factorial = function(x:int) fact(x,fact)<a name="193856"> </a>
-(function(x:int) (function(x:int, f:function(a0:general, a1:general) int) \
-   (x&lt;1)?1:(x*f((x-1), f)))(x, (function(x:int, f:function(a0:gen-eral, a1:general) int) \
-   (x&lt;1)?1:(x*f((x-1), f)))))<a name="193857"> </a>
+(function(x:int) \
+    (function(x:int, f:function(a0:general, a1:general) int) \
+        (x&lt;1)?1:(x*f((x-1), f))) \
+    (x, (function(x:int, f:function(a0:gen-eral, a1:general) int) \
+    (x&lt;1)?1:(x*f((x-1), f)))))<a name="193857"> </a>
 &gt;&gt; map(factorial, [1:1:5].toArray())<a name="193858"> </a>
 {1, 2, 6, 24, 120}<a name="193859"> </a>
 &gt;&gt; <a name="193838"> </a>

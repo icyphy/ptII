@@ -5,8 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/05/07 18:39:43">
-<link href="default.css" rel="stylesheet" type="text/css">
+<meta name="LASTUPDATED" content="03/31/08 13:40:44">
+<link href="../../default.css" rel="stylesheet" type="text/css">
 <title>3.7 Built-In Functions</title>
 </head>
 
@@ -37,7 +37,7 @@
 
 <p>
   <a name="190441"> </a>The expression language includes a set of functions, such as sin(), cos(), etc. The functions that are built in include all static methods of the classes shown <img src="img/expressions20.gif" height="256" width="600" align="left" border="0" hspace="0" vspace="0">
-in <a href="expressionsa8.htm#190441">Table 2 on page 115</a>, which together provide a rich set<a href="#190502"><sup>1</sup></a>. The functions currently available are shown in the tables in the appendix, which also show the argument types and return types.
+in <a href="expressionsa8.htm#190441">Table 2 on page 117</a>, which together provide a rich set<a href="#190502"><sup>1</sup></a>. The functions currently available are shown in the tables in the appendix, which also show the argument types and return types.
 </p>
 
 
@@ -61,11 +61,11 @@ sin({0.0, 0.1, 0.2, 0.3})<a name="182379"> </a>
 <a name="182380"> </a>
 </pre>
 
-<a name="182375"> </a>Functions that operate on type <i>double</i> will also generally operate on <i>int</i> or <i>unsignedByte</i>, because these can be losslessly converted to <i>double</i>, but not generally on <i>long</i> or <i>complex</i>.<br>
+<a name="182375"> </a>Functions that operate on type <i>double</i> will also generally operate on <i>int</i>, <i>short</i>, or <i>unsignedByte</i>, because these can be losslessly converted to <i>double</i>, but not generally on <i>long</i> or <i>complex</i>.<br>
 
 
 <p>
-  <a name="194173"> </a>Tables of available functions are shown in the appendix. For example, <a href="expressionsa12.htm#194565">Table 4 on page 124</a> shows trigonometric functions. Note that these operate on <i>double</i> or <i>complex</i>, and hence on <i>int</i> and <i>unsignedByte</i>, which can be losslessly converted to <i>double</i>. The result will always be double. For example,
+  <a name="194173"> </a>Tables of available functions are shown in the appendix. For example, <a href="expressionsa12.htm#194565">Table 4 on page 125</a> shows trigonometric functions. Note that these operate on <i>double</i> or <i>complex</i>, and hence on <i>int, short </i>and <i>unsignedByte</i>, which can be losslessly converted to <i>double</i>. The result will always be double. For example,
 </p>
 
 <pre>
@@ -79,7 +79,7 @@ sin({0.0, 0.1, 0.2, 0.3})<a name="182379"> </a>
 
 
 <p>
-  <a name="187455"> </a><a href="expressionsa12.htm#194754">Table 5 on page 125</a> shows other arithmetic functions beyond the trigonometric functions. As with the trigonometric functions, those that indicate that they operate on <i>double</i> will also work on <i>int</i> and <i>unsignedByte</i>, and unless they indicate otherwise, they will return whatever they return when the argument is <i>double</i>. Those functions in the table that take scalar arguments will also operate on matrices and arrays. For example, since the table indicates that the max() function can take <i>int, int</i> as arguments, then by implication, it can also take {<i>int</i>}, {<i>int</i>}. For example,
+  <a name="187455"> </a><a href="expressionsa12.htm#194754">Table 5 on page 127</a> shows other arithmetic functions beyond the trigonometric functions. As with the trigonometric functions, those that indicate that they operate on <i>double</i> will also work on <i>int, short </i>and <i>unsignedByte</i>, and unless they indicate otherwise, they will return whatever they return when the argument is <i>double</i>. Those functions in the table that take scalar arguments will also operate on matrices and arrays. For example, since the table indicates that the max() function can take <i>int, int</i> as arguments, then by implication, it can also take {<i>int</i>}, {<i>int</i>}. For example,
 </p>
 
 <pre>
@@ -102,7 +102,7 @@ sin({0.0, 0.1, 0.2, 0.3})<a name="182379"> </a>
 
 
 <p>
-  <a name="193300"> </a><a href="expressionsa12.htm#195091">Table 6</a> shows functions that only work with matrices, arrays, or records (that is, there is no corresponding scalar operation). Recall that most functions that operate on scalars will also operate on arrays and matrices<a href="expressionsa12.htm#195405">Table 7</a> shows utility functions for evaluating expressions given as strings or representing numbers as strings. Of these, the eval() function is the most flexible (see <a href="expressionsa8.htm#185006">page 117</a>). 
+  <a name="193300"> </a><a href="expressionsa12.htm#195091">Table 6</a> shows functions that only work with matrices, arrays, or records (that is, there is no corresponding scalar operation). Recall that most functions that operate on scalars will also operate on arrays and matrices<a href="expressionsa12.htm#195405">Table 7</a> shows utility functions for evaluating expressions given as strings or representing numbers as strings. Of these, the eval() function is the most flexible (see <a href="expressionsa8.htm#185006">page 118</a>). 
 </p>
 
 
@@ -151,7 +151,7 @@ eval(readFile("filename"))<a name="177806"> </a>
 
 
 <p>
-  <a name="192140"> </a>The functions random() and gaussian() shown in <a href="expressionsa12.htm#194754">Table 5 on page 125</a> return one or more random numbers. With the minimum number of arguments (zero or two, respectively), they return a single number. With one additional argument, they return an array of the specified length. With a second additional argument, they return a matrix with the specified number of rows and columns.
+  <a name="192140"> </a>The functions random() and gaussian() shown in <a href="expressionsa12.htm#194754">Table 5 on page 127</a> return one or more random numbers. With the minimum number of arguments (zero or two, respectively), they return a single number. With one additional argument, they return an array of the specified length. With a second additional argument, they return a matrix with the specified number of rows and columns.
 </p>
 
 
@@ -203,7 +203,7 @@ eval(readFile("filename"))<a name="177806"> </a>
 1<a name="186903"> </a>
 </pre>
 
-<a name="186898"> </a>which is different in two ways. The result numerically different and is of type <i>int</i>, whereas remainder() always yields a result of type <i>double</i>. The remainder() function is implemented by the java.lang.Math class, which calls it IEEEremainder(). The documentation for that class gives the following special cases:<br>
+<a name="186898"> </a>which is different in two ways. The result numerically different and is of type <i>int</i>, whereas remainder()</font> always yields a result of type <i>double</i>. The remainder()</font> function is implemented by the java.lang.Math class, which calls it IEEEremainder(). The documentation for that class gives the following special cases:<br>
 
 
 <a name="186856"> </a>	 If either argument is NaN, or the first argument is infinite, or the second argument is positive zero or negative zero, then the result is NaN. <br>
@@ -246,19 +246,19 @@ eval(readFile("filename"))<a name="177806"> </a>
     <td><div align="center"><a name="192194"> </a>Normalized</div></td>
     <td><div align="center"><a name="192196"> </a>0</div></td>
     <td><a name="192201"> </a><img src="img/expressions3.gif" height="54" width="139" border="0" hspace="0" vspace="0">
-</td>
+</font></td>
   </tr>
   <tr>
     <td><div align="center"><a name="192203"> </a>Unnormalized</div></td>
     <td><div align="center"><a name="192205"> </a>1</div></td>
     <td><a name="192210"> </a><img src="img/expressions4.gif" height="21" width="45" border="0" hspace="0" vspace="0">
-</td>
+</font></td>
   </tr>
   <tr>
     <td><div align="center"><a name="192212"> </a>Orthonormal</div></td>
     <td><div align="center"><a name="192214"> </a>2</div></td>
     <td><a name="192219"> </a><img src="img/expressions6.gif" height="78" width="159" border="0" hspace="0" vspace="0">
-</td>
+</font></td>
   </tr>
 </table>
 
@@ -290,7 +290,13 @@ eval(readFile("filename"))<a name="177806"> </a>
 
 <table align="right" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td align="right">
+    <td align="right"><font size="1">
+    
+
+
+
+
+
     </td>
   </tr>
 </table>

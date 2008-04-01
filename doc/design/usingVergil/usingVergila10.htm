@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/06/07 10:36:25">
+<meta name="LASTUPDATED" content="03/31/08 14:03:47">
 <link href="../../default.css" rel="stylesheet" type="text/css">
 <title>2.9 Domains</title>
 </head>
@@ -80,13 +80,36 @@
 
 
 <p>
-  <a name="170224"> </a>A second subtlety with SDF models is that if there is a feedback loop, as in figure <img src="images/usingVergil81.gif" height="183" width="600" align="center" border="0" hspace="0" vspace="0">
+  <a name="170224"> </a>A second subtlety with SDF models is that if there is a feedback loop, as in figure <img src="images/usingVergil83.gif" height="183" width="600" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila10.htm#170224">2.52</a>, then the loop must have at least one instance of the <i>SampleDelay</i> actor in it (found in the <i>FlowControl</i> library, <i>SequenceControl</i> sublibrary). Without this actor, the loop will deadlock. The <i>SampleDelay</i> actor produces initial tokens on its output, before the model begins firing. The initial tokens produced are given by a the <i>initialOutputs</i> parameter, which specifies an array of tokens. These initial tokens enable downstream actors and break the circular dependencies that would result otherwise from a feedback loop.
 </p>
 
 
 <p>
-  <a name="170292"> </a>A final issue to consider with the SDF domain is time. Notice that in all the examples above we have suggested using the <i>SequencePlotter</i> actor, not the <i>TimedPlotter</i> actor, which is in <i>Sinks </i>library, <i>TimedSinks</i> sublibrary. This is because the SDF domain does not include in its semantics a notion of time. Time does not advance as an SDF model executes, so the <i>TimedPlotter</i> actor would produce very uninteresting results, where the horizontal axis value would always be zero. The <i>SequencePlotter</i> actor uses the index in the sequence for the horizontal axis. The first token received is plotted at horizontal position 0, the second at 1, the third at 2, etc. The next domain we consider, DE, includes much stronger notion of time, and it is almost always more appropriate in the DE domain to use the <i>TimedPlotter</i> actor.
+  <a name="179431"> </a>A few actors in the actor library are particularly useful for building SDF models that manipulate token streams in nontrivial ways. These are:
+</p>
+
+
+<a name="179436"> </a>	 ArrayToElements, </font>ArrayToSequence, </font>ElementsToArray, and </font>SequenceToArray, found in Array.<br>
+
+
+<a name="179439"> </a>	 <i>Commutator</i> and <i>Distributor</i>, found under FlowControl-&gt; Aggregators,<br>
+
+
+<a name="179442"> </a>	 <i>Chop</i> and <i>Repeat</i>, found under FlowControl-&gt;Sequencers, <br>
+
+
+<a name="179446"> </a>	 <i>Downsample</i>, <i>UpSample</i>, and <i>FIR</i>, found under SignalProcessing-&gt;Filtering, and<br>
+
+
+<a name="179449"> </a>	 <i>Case </i>and <i>ModalModel</i>, found in HigherOrderActors (<i>ModalModel</i>, which is a very expressive actor, is also explained further below).<br>
+
+
+<a name="170292"> </a>The reader is encouraged to explore the documentation for these actors (right click on the actor select Get Documentation).<br>
+
+
+<p>
+  <a name="179465"> </a>A final issue to consider with the SDF domain is time. Notice that in all the examples above we have suggested using the <i>SequencePlotter</i> actor, not the <i>TimedPlotter</i> actor, which is in <i>Sinks </i>library, <i>TimedSinks</i> sublibrary. This is because the SDF domain does not include in its semantics a notion of time. By default, time does not advance as an SDF model executes, so the <i>TimedPlotter</i> actor would produce very uninteresting results, where the horizontal axis value would always be zero. The <i>SequencePlotter</i> actor uses the index in the sequence for the horizontal axis. The first token received is plotted at horizontal position 0, the second at 1, the third at 2, etc. However, the SDFDirector does contain a parameter called <i>period</i> that can be used to advance time by a fixed amount on each iteration of the model. The next domain we consider, DE, includes much stronger notion of time, and it is almost always more appropriate in the DE domain to use the <i>TimedPlotter</i> actor.
 </p>
 
 
@@ -96,7 +119,7 @@
 
 
 <p>
-  <a name="178815"> </a>Several domains generalize SDF to support data-dependent rates. The most mature of these is the process networks domain (PN), which associates with each actor its own thread of control. PSDF (parameterized SDF) and HDF (heterochronous dataflow) are more experimental, but are possibly more efficient and formally analyzable than PN. See volume 3 for details about domains.
+  <a name="179479"> </a>Several domains generalize SDF to support data-dependent rates. The most mature of these are the process networks domain (PN), which associates with each actor its own thread of control, and the dynamic dataflow domain (DDF), which dynamically schedules actor firings. PSDF (parameterized SDF) and HDF (heterochronous dataflow) are more experimental, but are possibly more efficient and formally analyzable than PN. See volume 3 for details about domains.
 </p>
 
 
@@ -114,8 +137,8 @@
 
 
 <p>
-  <a name="170593"> </a>Consider the DE model shown in figure <img src="images/usingVergil83.gif" height="378" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergila10.htm#170593">2.53</a>. This model includes a <i>PoissonClock</i> actor, a <i>CurrentTime</i> actor, and a <i>WallClockTime</i> actor, all found in the <i>Sources</i> library, <i>TimedSources</i> sublibrary. The <i>PoissonClock</i> actor generates a sequence of events with random times, where the time between events is exponentially distributed. Such an event sequence is known as a Poisson process. The value of the events produced by the <i>PoissonClock</i> actor is a constant, but the value of that constant is ignored in this model. Instead, these events trigger the <i>CurrentTime</i> and <i>WallClockTime</i> actors. The <i>CurrentTime</i> actor outputs an event with the same time stamp as the input, but whose value is the current model time (equal to the time stamp of the input). The <i>WallClockTime</i> actor produces an event with the same time stamp as the input, but whose value is the current real time, in seconds since initialization of the model.
+  <a name="170593"> </a>Consider the DE model shown in figure <img src="images/usingVergil85.gif" height="378" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila10.htm#170593">2.53</a>. This model includes a <i>PoissonClock</i> actor, a <i>CurrentTime</i> actor, a <i>WallClockTime</i> actor, all found in the <i>TimedSources</i> sublibrary and <i>RealTime</i> sublibrary of the <i>Sources</i> library. The <i>PoissonClock</i> actor generates a sequence of events with random times, where the time between events is exponentially distributed. Such an event sequence is known as a Poisson process. The value of the events produced by the <i>PoissonClock</i> actor is a constant, but the value of that constant is ignored in this model. Instead, these events trigger the <i>CurrentTime</i> and <i>WallClockTime</i> actors. The <i>CurrentTime</i> actor outputs an event with the same time stamp as the input, but whose value is the current model time (equal to the time stamp of the input). The <i>WallClockTime</i> actor produces an event with the same time stamp as the input, but whose value is the current real time, in seconds since initialization of the model.
 </p>
 
 
@@ -130,7 +153,7 @@
 
 
 <p>
-  <a name="170730"> </a>Consider the model shown in figure <img src="images/usingVergil85.gif" height="365" width="600" align="center" border="0" hspace="0" vspace="0">
+  <a name="170730"> </a>Consider the model shown in figure <img src="images/usingVergil87.gif" height="365" width="600" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila10.htm#170730">2.54</a>, which produces a histogram of the interarrival times of events from the <i>PoissonClock</i> actor. In this model, we calculate the difference between the current event time and the previous event time, resulting in the plot that is shown in the figure. The <i>Previous </i>actor is a <i>zero-delay</i> actor, meaning that it produces an output with the same time stamp as the input (except on the first firing, where in this case it produces no output). Thus, when the <i>PoissonClock </i>actor produces an output, there will be two simultaneous events, one at the input to the <i>plus</i> port of the <i>AddSubtract</i> actor, and one at the input of the <i>Previous</i> actor. Should the director fire the <i>AddSubtract </i>actor or the <i>Previous</i> actor? Either seems OK if it is to respect chronological order, but it seems intuitive that the <i>Previous</i> actor should be fired first.
 </p>
 
@@ -157,7 +180,7 @@
 
 
 <p>
-  <a name="170882"> </a>There remains one key subtlety. If the model has a directed loop, then a topological sort is not possible. In the DE domain, every feedback loop is required to have at least one actor in it that introduces a time delay, such as the <i>TimedDelay</i> actor, which can be found in the <i>DomainSpecific</i> library under <i>DiscreteEvent</i> (this library is shown on the left in figure <img src="images/usingVergil87.gif" height="777" width="937" align="center" border="0" hspace="0" vspace="0">
+  <a name="170882"> </a>There remains one key subtlety. If the model has a directed loop, then a topological sort is not possible. In the DE domain, every feedback loop is required to have at least one actor in it that introduces a time delay, such as the <i>TimedDelay</i> actor, which can be found in the <i>DomainSpecific</i> library under <i>DiscreteEvent</i> (this library is shown on the left in figure <img src="images/usingVergil89.gif" height="777" width="937" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila10.htm#170882">2.55</a>). Consider for example the model shown in figure <a href="usingVergila10.htm#170882">2.55</a>. That model has a <i>Clock</i> actor, which is set to produce events every 1.0 time units. Those events trigger the <i>Ramp</i> actor, which produces outputs that start at 0 and increase by 1 on each firing. In this model, the output of the <i>Ramp</i> goes into an <i>AddSubtract</i> actor, which subtracts from the <i>Ramp</i> output its own prior output delayed by one time unit. The result is shown in the plot in the figure.
 </p>
 

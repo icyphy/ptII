@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/06/07 10:36:25">
+<meta name="LASTUPDATED" content="03/31/08 14:03:47">
 <link href="../../default.css" rel="stylesheet" type="text/css">
 <title>2.8 Higher-Order Components</title>
 </head>
@@ -43,8 +43,8 @@
 </h4>
 
 
-<a name="177935"> </a>Consider the model in figure <a href="usingVergila8.htm#177548">2.37</a>, which has five instances of the Channel class wired in parallel. This model has the unfortunate feature that the number of instances is hardwired into the diagram. It is awkward, therefore, to change this number, and particularly awkward to create a larger number of instances. This problem is solved by the MultiInstanceComposite actor<a href="#177954"><sup>1</sup></a>. A model equivalent to that of figure <a href="usingVergila8.htm#177548">2.37</a> but using the MultiInstanceComposite actor is shown in figure <img src="images/usingVergil35.gif" usemap="#usingVergil35_gif" height="469" width="937" align="center" border="0" hspace="0" vspace="0">
-<map name="usingVergil35_gif">
+<a name="177935"> </a>Consider the model in figure <a href="usingVergila8.htm#177548">2.37</a>, which has five instances of the Channel class wired in parallel. This model has the unfortunate feature that the number of instances is hardwired into the diagram. It is awkward, therefore, to change this number, and particularly awkward to create a larger number of instances. This problem is solved by the MultiInstanceComposite actor<a href="#177954"><sup>1</sup></a>. A model equivalent to that of figure <a href="usingVergila8.htm#177548">2.37</a> but using the MultiInstanceComposite actor is shown in figure <img src="images/usingVergil34.gif" usemap="#usingVergil34_gif" height="469" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil34_gif">
 
 <area href="usingVergila8.htm#177548" shape=rect coords="4,420,931,462">
 </map>
@@ -52,7 +52,7 @@
 
 
 <p>
-  <a name="178237"> </a>The MultiInstanceComposite actor has two parameters, <i>nInstances</i> and <i>instance</i>, shown in figure <img src="images/usingVergil39.gif" height="248" width="937" align="center" border="0" hspace="0" vspace="0">
+  <a name="178237"> </a>The MultiInstanceComposite actor has two parameters, <i>nInstances</i> and <i>instance</i>, shown in figure <img src="images/usingVergil38.gif" height="248" width="937" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila9.htm#178237">2.46</a>. The first of these specifies the number of instances to create. At run time, this actor replicates itself this number of times, connecting the inputs and outputs to the same sources and destinations as the first (prototype) instance. In figure <a href="usingVergila9.htm#177935">2.45</a>, notice that the input of the MultiInstanceComposite is connected to a relation (the black diamond), and the output is connected directly to a multiport input of the AddSubtract actor. As a consequence, the multiple instances will be wired in a manner similar to figure <a href="usingVergila8.htm#177548">2.37</a>, where the same input value is broadcast to all instances, but distinct output values are supplied to the AddSubtract actor.
 </p>
 

@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/06/07 10:36:25">
+<meta name="LASTUPDATED" content="03/31/08 14:03:47">
 <link href="../../default.css" rel="stylesheet" type="text/css">
 <title>2.3 Tokens and Data Types</title>
 </head>
@@ -51,7 +51,7 @@
 
 
 <p>
-  <a name="168209"> </a>To explore data types a bit further, try creating the model in figure<img src="images/usingVergil16.gif" height="241" width="600" align="center" border="0" hspace="0" vspace="0">
+  <a name="168209"> </a>To explore data types a bit further, try creating the model in figure<img src="images/usingVergil15.gif" height="241" width="600" align="center" border="0" hspace="0" vspace="0">
  <a href="usingVergila4.htm#168209">2.16</a>. The <i>Ramp</i> actor is listed under <i>Sources</i>, <i>SequenceSources</i>, and the <i>AddSubtract</i> actor is listed under <i>Math</i>. Set the <i>value</i> parameter of the constant to be 0 and the <i>iterations</i> parameter of the director to 5. Running the model should result in 5 numbers between 0 and 4, as shown in the figure. These are the values produced by the <i>Ramp</i>, which are having the value of the <i>Const</i> actor subtracted from them. Experiment with changing the value of the <i>Const</i> actor and see how it changes the 5 numbers at the output.
 </p>
 
@@ -63,8 +63,8 @@
 
 
 <p>
-  <a name="168136"> </a>Exceptions can be a very useful debugging tool, particularly if you are developing your own components in Java. To illustrate how to use them, click on the Display Stack Trace button in the exception window of figure <a href="usingVergila4.htm#168231">2.17</a>. You should see the stack trace shown in figure <img src="images/usingVergil24.gif" usemap="#usingVergil24_gif" height="533" width="937" align="center" border="0" hspace="0" vspace="0">
-<map name="usingVergil24_gif">
+  <a name="168136"> </a>Exceptions can be a very useful debugging tool, particularly if you are developing your own components in Java. To illustrate how to use them, click on the Display Stack Trace button in the exception window of figure <a href="usingVergila4.htm#168231">2.17</a>. You should see the stack trace shown in figure <img src="images/usingVergil23.gif" usemap="#usingVergil23_gif" height="533" width="937" align="center" border="0" hspace="0" vspace="0">
+<map name="usingVergil23_gif">
 
 <area href="usingVergila4.htm#168231" shape=rect coords="5,482,933,523">
 </map>
@@ -86,7 +86,7 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 
 <p>
-  <a name="168116"> </a>Let's try a small change to the model to get something that does not trigger an exception. Disconnect the <i>Const</i> from the lower port of the <i>AddSubtract</i> actor and connect it instead to the upper port, as shown in figure <img src="images/usingVergil32.gif" height="245" width="600" align="center" border="0" hspace="0" vspace="0">
+  <a name="168116"> </a>Let's try a small change to the model to get something that does not trigger an exception. Disconnect the <i>Const</i> from the lower port of the <i>AddSubtract</i> actor and connect it instead to the upper port, as shown in figure <img src="images/usingVergil31.gif" height="245" width="600" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila4.htm#168116">2.19</a>. You can do this by selecting the connection and deleting it (using the delete key), then adding a new connection, or by selecting it and dragging one of its endpoints to the new location. Notice that the upper port is an unfilled triangle; this indicates that it is a <i>multiport</i>, meaning that you can make more than one connection to it. Now when you run the model you should see strings like "0HelloWorld", as shown in the figure.
 </p>
 

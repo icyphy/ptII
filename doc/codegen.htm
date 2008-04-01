@@ -1,22 +1,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/11/07 15:14:42">
+<meta name="LASTUPDATED" content="03/31/08 11:51:02">
 <link href="default.css" rel="stylesheet" type="text/css">
-<title>7  Code Generation  </title>
+<title>8.1 Motivation   </title>
 </head>
 
 <body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
 
 <blockquote>
 <div align="center">
-<h2>
-  <a name="184713"> </a>7  <br>Code Generation
-</h2>
+<a name="184713"> </a>8  <br>Code Generation<br>
 </div>
 
 <p>This version is in HTML, a PDF version can be found in Chapter 7 of 
@@ -24,7 +23,7 @@
 
 .<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm#in_browser">(Ptolemy Web Site PDF)</a> 
 
-<a name="191630"> </a>Authors: 	Man-Kit Leung<br>
+<p><a name="191630"> </a>Authors: 	Man-Kit Leung<br>
 
 
 <a name="191621"> </a>	Gang Zhou<br>
@@ -34,28 +33,28 @@
 
 
 <h3>
-  <a name="190264"> </a>7.1   Motivation 
+  <a name="190264"> </a>8.1   Motivation 
 </h3>
 
 
 <a name="190271"> </a>Ptolemy II is a software lab for experimenting with multiple concurrency formalisms for embedded system design. Many features in Ptolemy II contribute to the ease of its use as a rapid prototyping environment. In particular, modular components make systems more flexible and extensible. Different compositions of the same components can implement different functionality. However, component designs are often slower than custom-built code. The cost of inter-component communication through the component interface introduces overhead, and generic components are highly parameterized for the reusability and thus less efficient.<br>
 
 
-<a name="191651"> </a>To regain the efficiency for the implementation, the users could write big monolithic components to reduce inter-component communication, and write highly specialized components rather than general ones. However, manually implementing these solutions is not an option. Partial evaluation [65] provides a mechanism to automate the whole process. In the past, partial evaluation has been mostly used for general purpose software. Recently, partial evaluation has begun to see its use in the embedded world, e.g, see [71]. In our research partial evaluation is used as a code generation technique, which is really a compilation technique for transforming an actor-oriented model into the target code while preserving the model's semantics. However, compared with traditional compiler optimization, partial evaluation for embedded software works at the component level and heavily leverages the domain-specific knowledge. Through model analysis, the tool can discover data type, buffer size, parameter value, model structure and model execution schedule, and then partially evaluate all the known information to reach a very efficient implementation. The end result is that the benefit offered by the high level abstraction comes with (almost) no performance penalty.<br>
+<a name="191651"> </a>To regain the efficiency for the implementation, the users could write big monolithic components to reduce inter-component communication, and write highly specialized components rather than general ones. However, manually implementing these solutions is not an option. Partial evaluation [66] provides a mechanism to automate the whole process. In the past, partial evaluation has been mostly used for general purpose software. Recently, partial evaluation has begun to see its use in the embedded world, e.g., see [72]. In our research partial evaluation is used as a code generation technique, which is really a compilation technique for transforming an actor-oriented model into the target code while preserving the model's semantics. However, compared with traditional compiler optimization, partial evaluation for embedded software works at the component level and heavily leverages the domain-specific knowledge. Through model analysis, the tool can discover data type, buffer size, parameter value, model structure and model execution schedule, and then partially evaluate all the known information to reach a very efficient implementation. The end result is that the benefit offered by the high level abstraction comes with (almost) no performance penalty.<br>
 
 
 <a name="190269"> </a><br>
 
 
 <h3>
-  <a name="184715"> </a>7.2   A Helper-based Mechanism
+  <a name="184715"> </a>8.2   A Helper-based Mechanism
 </h3>
 
 
 <a name="190350"> </a>Our code generation framework uses a helper-based mechanism. A codegen helper is essentially a component that generates code for a Ptolemy II actor. Each Ptolemy II actor for which code will be generated in a specific language has one associated helper. An actor may have multiple helpers to support multiple target languages (C, VHDL, etc.). <br>
 
 
-<a name="190367"> </a>To achieve readability and maintainability in the implementation of helper classes, the target code blocks (for example, the initialize block, fire block, and wrapup block) of each helper are placed in a separate file under the same directory. So a helper essentially consists of two files: a java class file and a code template file. This not only decouples the writing of Java code and target code (otherwise the target code would be wrapped in strings and interspersed with java code), but also allows using a target language specific editor while working on the target language code blocks. For example, in the Eclipse Integrated Development Environment, the C/C++ Development Toolkit (CDT) provides C and C++ extensions to the Eclipse workbench as a set of Eclipse plug-ins, see figure <a href="codegen.htm#190367">7.1</a><img src="img/codegen28.gif" height="482" width="600" align="left" border="0" hspace="0" vspace="0">
+<a name="190367"> </a>To achieve readability and maintainability in the implementation of helper classes, the target code blocks (for example, the initialize block, fire block, and wrapup block) of each helper are placed in a separate file under the same directory. So a helper essentially consists of two files: a java class file and a code template file. This not only decouples the writing of Java code and target code (otherwise the target code would be wrapped in strings and interspersed with java code), but also allows using a target language specific editor while working on the target language code blocks. For example, in the Eclipse Integrated Development Environment, the C/C++ Development Toolkit (CDT) provides C and C++ extensions to the Eclipse workbench as a set of Eclipse plug-ins, see figure <a href="codegen.htm#190367">8.1</a><img src="img/codegen28.gif" height="482" width="600" align="left" border="0" hspace="0" vspace="0">
 . The convenient features such as keyword highlights in the C/C++ specific editor could help the writing of C code, resulting in improved productivity.  <br>
 
 
@@ -65,12 +64,12 @@
 
 
 <h4>
-  <a name="192831"> </a>7.2.1   What is in a C Code Template File?
+  <a name="192831"> </a>8.2.1   What is in a C Code Template File?
 </h4>
 
 
 <p>
-  <a name="190469"> </a>A C code template file has a .c file extension but it is not C-compilable due to its unique structure. Only the CodeStream object understands how to parse and use these files. Figure <a href="codegen.htm#190469">7.2</a><img src="img/codegen2.gif" height="268" width="600" align="left" border="0" hspace="0" vspace="0">
+  <a name="190469"> </a>A C code template file has a .c file extension but it is not C-compilable due to its unique structure. Only the CodeStream object understands how to parse and use these files. Figure <a href="codegen.htm#190469">8.2</a><img src="img/codegen2.gif" height="268" width="600" align="left" border="0" hspace="0" vspace="0">
  shows the C code template file for the CountTrues helper, located in $PTII/ptolemy/codegen/c/domains/sdf/lib. 
 </p>
 
@@ -86,7 +85,7 @@
 
 
 <h4>
-  <a name="190375"> </a>7.2.2   What is in a Helper Java Class File?
+  <a name="190375"> </a>8.2.2   What is in a Helper Java Class File?
 </h4>
 
 
@@ -94,13 +93,13 @@
 
 
 <p>
-  <a name="193050"> </a>Figure <a href="codegen.htm#193050">7.3</a><img src="img/codegen6.gif" height="248" width="600" align="left" border="0" hspace="0" vspace="0">
+  <a name="193050"> </a>Figure <a href="codegen.htm#193050">8.3</a><img src="img/codegen6.gif" height="248" width="600" align="left" border="0" hspace="0" vspace="0">
  is the ElementsToArray helper's implementation of the generateFireCode() method, found in $PTII/ptolemy/codegen/c/actor/lib. This method uses the channel number of the actor input port as the parameter and fetches the "fillArray" code block from the ElementsToArray.c code template file inside the for-loop. It generates multiple copies of the "fillAarray" code block, each customized with a different channel number. It then fetches and appends a different code block with the name "sendOutput" (with no parameters). Finally, it invokes the processCode() function to process the embedded macros in the code string. Note that a helper java class needs to understand the semantics of its corresponding actor in order to implement these generate methods. 
 </p>
 
 
 <h4>
-  <a name="185430"> </a>7.2.3   The Macro Language
+  <a name="185430"> </a>8.2.3   The Macro Language
 </h4>
 
 
@@ -118,7 +117,7 @@
 
 
 <p>
-  <a name="192522"> </a><b>$ref(name)</b> 
+  <a name="192522"> </a>$ref(name)
 </p>
 
 
@@ -290,24 +289,24 @@ $typeFunc(TYPE_String::convert($new(Int(2))))<a name="192610"> </a>
 </pre>
 
 <h4>
-  <a name="189277"> </a>7.2.4   The CountTrues Example
+  <a name="189277"> </a>8.2.4   The CountTrues Example
 </h4>
 
 
 <p>
-  <a name="189278"> </a>Figure <a href="codegen.htm#189278">7.4</a><img src="img/codegen10.gif" height="411" width="600" align="left" border="0" hspace="0" vspace="0">
+  <a name="189278"> </a>Figure <a href="codegen.htm#189278">8.4</a><img src="img/codegen10.gif" height="411" width="600" align="left" border="0" hspace="0" vspace="0">
  shows a model in the synchronous dataflow (SDF) domain that counts the true values produced from the data source, which in this case is the Pulse actor. The CountTrues actor has its blockSize parameter set to 2, which means it reads 2 tokens from its input port for each firing. The Pulse actor' parameters are set to the values shown in the figure. When the model is simulated in the Ptolemy II framework, the produced result is also shown in the figure (the model is fired 4 times because the SDFDirector's "iterations" parameter is set to 4).
 </p>
 
 
 <p>
-  <a name="186646"> </a>Let's look at the C code template files of the actors in the model. Macros are used extensively in the code blocks, and we will see how they are processed and changed in the generated code. Figure <a href="codegen.htm#186646">7.5</a><img src="img/codegen13.gif" height="608" width="600" align="left" border="0" hspace="0" vspace="0">
+  <a name="186646"> </a>Let's look at the C code template files of the actors in the model. Macros are used extensively in the code blocks, and we will see how they are processed and changed in the generated code. Figure <a href="codegen.htm#186646">8.5</a><img src="img/codegen13.gif" height="608" width="600" align="left" border="0" hspace="0" vspace="0">
  shows the C code template files for the Pulse and CountTrues helpers.
 </p>
 
 
 <p>
-  <a name="186956"> </a>Double clicking on the StaticSchedulingCodeGenerator icon brings up the code generator window. Clicking the "Generate" button in the code generator window starts the code generation for this model. It generates a stand-alone C application program that executes and produces the same result as the simulation model. Figure <a href="codegen.htm#186956">7.6</a><img src="img/codegen17.gif" height="803" width="600" align="left" border="0" hspace="0" vspace="0">
+  <a name="186956"> </a>Double clicking on the StaticSchedulingCodeGenerator icon brings up the code generator window. Clicking the "Generate" button in the code generator window starts the code generation for this model. It generates a stand-alone C application program that executes and produces the same result as the simulation model. Figure <a href="codegen.htm#186956">8.6</a><img src="img/codegen17.gif" height="803" width="600" align="left" border="0" hspace="0" vspace="0">
  shows the main function of the generated C program.
 </p>
 
@@ -316,21 +315,31 @@ $typeFunc(TYPE_String::convert($new(Int(2))))<a name="192610"> </a>
   <a name="187017"> </a>The generated code is essentially the result of combining the helpers' code blocks. The $ref() and $actorSymbol() macro are replaced with unique labels to represent different variable references. The $val() macro in the CountTrues' "fireBlock" code block is replaced by the parameter value of the CountTrue instance in the model. When the generated C program is compiled and executed, the same result is produced as from the Ptolemy II simulation:
 </p>
 
-<pre>
-<a name="187027"> </a>
-Display: 1<a name="190338"> </a>
-Display: 1<a name="187028"> </a>
-Display: 1<a name="187029"> </a>
-Display: 1<a name="187030"> </a>
-<a name="190291"> </a>
-</pre>
+
+<a name="187027"> </a><br>
+
+
+<a name="190338"> </a>Display: 1<br>
+
+
+<a name="187028"> </a>Display: 1<br>
+
+
+<a name="187029"> </a>Display: 1<br>
+
+
+<a name="187030"> </a>Display: 1<br>
+
+
+<a name="190291"> </a><br>
+
 
 <h3>
-  <a name="189522"> </a>7.3   Overview of The Software Architecture
+  <a name="189522"> </a>8.3   Overview of The Software Architecture
 </h3>
 
 
-<a name="189325"> </a>Our code generation framework has the flavor of CG (i.e., Code Generation) domain and other derived domains in Ptolemy Classic [126]. However, in Ptolemy Classic, code generation domains and simulation domains are separate and so are the actors (called stars in Ptolemy Classic terminology) used in these domains. In ptolemy Classic, the actors in the simulation domains participate in simulation whereas the corresponding actors in the code generation domains participate in code generation. Separate domains (simulation vs. code generation) make it inconvenient to integrate the model design phase with the code generation phase and streamline the whole process. Separate actor libraries make it difficult to maintain a consistent interface for a simulation actor and the corresponding code generation actor.<br>
+<a name="189325"> </a>Our code generation framework has the flavor of CG (i.e., Code Generation) domain and other derived domains in Ptolemy Classic [127]. However, in Ptolemy Classic, code generation domains and simulation domains are separate and so are the actors (called stars in Ptolemy Classic terminology) used in these domains. In ptolemy Classic, the actors in the simulation domains participate in simulation whereas the corresponding actors in the code generation domains participate in code generation. Separate domains (simulation vs. code generation) make it inconvenient to integrate the model design phase with the code generation phase and streamline the whole process. Separate actor libraries make it difficult to maintain a consistent interface for a simulation actor and the corresponding code generation actor.<br>
 
 
 <a name="184722"> </a>In Ptolemy II, there are no separate code generations domains. Once a model has been designed, simulated and verified to satisfy the given specification in the simulation domain, code can be directly generated from the model. Each helper doesn't have its own interface. Instead, it interrogates the associated actor to find its interface (ports and parameters) during the code generation. Thus the interface consistency is maintained naturally. The generated code, when executed, should present the same behavior as the original model. Compared with the Ptolemy Classic approach, this new approach allows the seamless integration between the model design phase and the code generation phase.<br>
@@ -365,7 +374,7 @@ Display: 1<a name="187030"> </a>
 <a name="184756"> </a>Finally the StaticSchedulingCodeGenerator class is used to orchestrate the whole code generation process. An instance of this class is contained by the top level composite actor as an attribute and interacts with it directly. Therefore the code generation starts at the top level composite actor and the code for the whole model is generated hierarchically, much similar to how a model is simulated in Ptolemy II environment.<br>
 
 
-<a name="184758"> </a>The flow chart in figure <a href="codegen.htm#184758">7.7</a><img src="img/codegen23.gif" height="803" width="600" align="left" border="0" hspace="0" vspace="0">
+<a name="184758"> </a>The flow chart in figure <a href="codegen.htm#184758">8.7</a><img src="img/codegen23.gif" height="803" width="600" align="left" border="0" hspace="0" vspace="0">
  sketches the whole code generation process step by step. The details of some steps are MoC-specific and will be presented in the next section. Notice that the steps outlined do not necessarily follow the same order the generated codes are assembled together. For example, only those parameters that are referenced during the code generation will be defined. Therefore those definitions will be generated last but attached to variable definition segment at the beginning of the generated code. <br>
 
 
@@ -373,16 +382,16 @@ Display: 1<a name="187030"> </a>
 
 
 <h3>
-  <a name="184759"> </a>7.4   Domains
+  <a name="184759"> </a>8.4   Domains
 </h3>
 
 
 <h4>
-  <a name="184760"> </a>7.4.1   SDF
+  <a name="184760"> </a>8.4.1   SDF
 </h4>
 
 
-<a name="191694"> </a>The synchronous dataflow (SDF) domain is one of the most mature domains in Ptolemy II. The details of this domain can be found in Volume 3. Under the SDF domain, the execution order of actors is statically determined prior to execution. This opens the door for generating some very efficient code. In fact, the SDF software synthesis has been studied extensively. One book [18], several Ph.D. dissertations [17][112] and numerous papers have been written about it. Many optimization techniques have been designed according to different criteria such as minimization of program size, buffer size [18][113], or actor activation rate [133]. Hardware synthesis from SDF specification has also been studied by many researchers, e.g., see [62]. <br>
+<a name="191694"> </a>The synchronous dataflow (SDF) domain is one of the most mature domains in Ptolemy II. The details of this domain can be found in Volume 3. Under the SDF domain, the execution order of actors is statically determined prior to execution. This opens the door for generating some very efficient code. In fact, the SDF software synthesis has been studied extensively. One book [18], several Ph.D. dissertations [17][113] and numerous papers have been written about it. Many optimization techniques have been designed according to different criteria such as minimization of program size, buffer size [18][114], or actor activation rate [134]. Hardware synthesis from SDF specification has also been studied by many researchers, e.g., see [63]. <br>
 
 
 <a name="184762"> </a>In parallel with the software architecture in the simulation domain, the helper for the SDFDirector is inherited from the helper for the StaticSchedulingDirector, which is further inherited from the helper for the Director. The helper for the StaticSchedulingDirector is responsible for generating the target code semantically equivalent to a predetermined sequence of actor firings in one complete static schedule. The helper for the SDFDirector utilizes the SDFScheduler implemented in the current SDF domain, but the framework allows to plug in any optimizing scheduler and then generates the corresponding code for that scheduler. <br>
@@ -397,7 +406,7 @@ Display: 1<a name="187030"> </a>
 
 
 <p>
-  <a name="191802"> </a>Several interesting demos for the SDF code generation are presented next. Figure <a href="codegen.htm#191802">7.8</a><img src="img/codegen27.gif" height="381" width="600" align="left" border="0" hspace="0" vspace="0">
+  <a name="191802"> </a>Several interesting demos for the SDF code generation are presented next. Figure <a href="codegen.htm#191802">8.8</a><img src="img/codegen27.gif" height="381" width="600" align="left" border="0" hspace="0" vspace="0">
  shows the Butterfly demo in $PTII/ptolemy/domains/sdf/demo/Butterfly. During code generation, the helper for the Expression actor uses a PtParser to parse the Ptolemy expression specified in the actor and then uses a CParseTreeCodeGenerator to generate the corresponding C code. The C code generated by the helper for the XYPlotter actor invokes JVM (Java Virtual Machine) through JNI (Java Native Interface) and then calls the methods of the classes in the plot package for two-dimensional graphical display. Notice the generated C code does not need the Ptolemy framework to run. It merely uses the plot utilities (which happen to be written in Java) for displaying data. One could write a different helper for the XYPlotter actor to generate the customized code for displaying data in a specific target system.
 </p>
 
@@ -408,11 +417,11 @@ Display: 1<a name="187030"> </a>
 
 
 <h4>
-  <a name="184767"> </a>7.4.2   FSM
+  <a name="184767"> </a>8.4.2   FSM
 </h4>
 
 
-<a name="184768"> </a>Finite state machines (FSMs) have been the subject of a long history of research work. In ptolemy II, an FSM actor serves two purposes: traditional FSM modeling and modal models. In traditional FSM modeling, an FSM actor reacts to the inputs by making state transitions and sending tokens to the output ports like a regular Ptolemy actor. In the *charts formalism with modal models [46], modes are represented by states of an FSM actor that controls mode switching. Each mode has one or more refinements that specify the behavior of the mode. A modal model is constructed in a ModalModel actor having the FSM director as local director. The ModalModel actor contains a ModalController (essentially an FSM actor) and a set of Refinement actors that model the refinements associated with states and possibly a set of TransitionRefinement actors that model the refinements associated with transitions. The FSM director mediates the interaction with the outside domain, and coordinates the execution of the refinements with the ModalController. The details of this domain can be found in Volume 3.<br>
+<a name="184768"> </a>Finite state machines (FSMs) have been the subject of a long history of research work. In ptolemy II, an FSM actor serves two purposes: traditional FSM modeling and modal models. In traditional FSM modeling, an FSM actor reacts to the inputs by making state transitions and sending tokens to the output ports like a regular Ptolemy actor. In the *charts formalism with modal models [47], modes are represented by states of an FSM actor that controls mode switching. Each mode has one or more refinements that specify the behavior of the mode. A modal model is constructed in a ModalModel actor having the FSM director as local director. The ModalModel actor contains a ModalController (essentially an FSM actor) and a set of Refinement actors that model the refinements associated with states and possibly a set of TransitionRefinement actors that model the refinements associated with transitions. The FSM director mediates the interaction with the outside domain, and coordinates the execution of the refinements with the ModalController. The details of this domain can be found in Volume 3.<br>
 
 
 <p>
@@ -420,7 +429,7 @@ Display: 1<a name="187030"> </a>
 </p>
 
 
-<a name="184771"> </a>The internal execution of a ModalModel is controlled by a local director, which can be an FSMDirector, a MultirateFSMDirector, or an HDFFSMDirector. A user can choose a director for a ModalModel. Usually only one specific director makes sense for the behavior the user wants for the model. For example, an FSMDirector is used when the rate for all the ports of a ModalModel is 1 and the ModalModel tries a transition from the current state during every firing of the ModalModel. A MultirateFSMDirector is inherited from FSMDirector to model multirate behavior. To guarantee static schedulability under SDF, all state refinements must present the same rate to the outside for all the ports mirrored to the same port in the ModalModel. In addition, a MultirateFSMDirector makes only non-preemptive transitions so that the refinement for the current state gets fired before trying a transition and tokens are consumed from input ports and sent to output ports according to the rate of each port. If the refinement associated with different state presents a different rate, an HDFFSMDirector must be used. It is further inherited from MultirateFSMDirector and only tries a transition after the whole model finishes the execution of one complete schedule. Together with HDFDirector, it implements the HDF domain (see <a href="codegen.htm#192429">section 7.4.3</a>). No matter which FSM director the user chooses, the corresponding helper generates the target code which preserves the original model behavior.<br>
+<a name="184771"> </a>The internal execution of a ModalModel is controlled by a local director, which can be an FSMDirector, a MultirateFSMDirector, or an HDFFSMDirector. A user can choose a director for a ModalModel. Usually only one specific director makes sense for the behavior the user wants for the model. For example, an FSMDirector is used when the rate for all the ports of a ModalModel is 1 and the ModalModel tries a transition from the current state during every firing of the ModalModel. A MultirateFSMDirector is inherited from FSMDirector to model multirate behavior. To guarantee static schedulability under SDF, all state refinements must present the same rate to the outside for all the ports mirrored to the same port in the ModalModel. In addition, a MultirateFSMDirector makes only non-preemptive transitions so that the refinement for the current state gets fired before trying a transition and tokens are consumed from input ports and sent to output ports according to the rate of each port. If the refinement associated with different state presents a different rate, an HDFFSMDirector must be used. It is further inherited from MultirateFSMDirector and only tries a transition after the whole model finishes the execution of one complete schedule. Together with HDFDirector, it implements the HDF domain (see <a href="codegen.htm#192429">section 8.4.3</a>). No matter which FSM director the user chooses, the corresponding helper generates the target code which preserves the original model behavior.<br>
 
 
 <a name="190164"> </a>To support code generation for modal models, four helpers are also created including ModalController, ModalModel, Refinement and TransitionRefinement. They are inherited from the helpers for FSMActor or TypedCompositeActor but add no new functionality because their associated actor classes are used to build modal model structures (such as mirroring ports). These helpers inherit their functionality from their base classes.<br>
@@ -442,7 +451,7 @@ Display: 1<a name="187030"> </a>
 
 
 <h4>
-  <a name="192429"> </a>7.4.3   HDF
+  <a name="192429"> </a>8.4.3   HDF
 </h4>
 
 
@@ -486,22 +495,30 @@ th configuration.
  for each opaque actor are derived in a recursive bottom-up fashion:
 </p>
 
-<ol type="1">
-  <li value="1"><a name="188427"> </a><i><b>Atomic actor</b></i>: <img src="img/codegen21.gif" height="16" width="36" border="0" hspace="0" vspace="0">
+
+<a name="188427"> </a>1.	 <i><b>Atomic actor</b></i>: <img src="img/codegen21.gif" height="16" width="36" border="0" hspace="0" vspace="0">
 , <img src="img/codegen39.gif" height="19" width="16" border="0" hspace="0" vspace="0">
- = the rate signature of the atomic actor.
-  <li value="2"><a name="184791"> </a><i><b>Composite actor with a local SDFDirector</b></i>: <img src="img/codegen42.gif" height="16" width="36" border="0" hspace="0" vspace="0">
+ = the rate signature of the atomic actor.<br>
+
+
+<a name="184791"> </a>2.	 <i><b>Composite actor with a local SDFDirector</b></i>: <img src="img/codegen42.gif" height="16" width="36" border="0" hspace="0" vspace="0">
 , <img src="img/codegen43.gif" height="19" width="16" border="0" hspace="0" vspace="0">
- = the rate signature of the composite actor inferred from the local SDF schedule. <i>Precondition</i>: each contained actor has only one rate signature (i.e., one configuration).
-  <li value="3"><a name="184794"> </a><i><b>Modal model with a local FSMDirector</b></i>: <img src="img/codegen44.gif" height="16" width="36" border="0" hspace="0" vspace="0">
+ = the rate signature of the composite actor inferred from the local SDF schedule. <i>Precondition</i>: each contained actor has only one rate signature (i.e., one configuration).<br>
+
+
+<a name="184794"> </a>3.	 <i><b>Modal model with a local FSMDirector</b></i>: <img src="img/codegen44.gif" height="16" width="36" border="0" hspace="0" vspace="0">
 , <img src="img/codegen45.gif" height="19" width="61" border="0" hspace="0" vspace="0">
  where <img src="img/codegen47.gif" height="19" width="41" border="0" hspace="0" vspace="0">
  for all <img src="img/codegen48.gif" height="16" width="7" border="0" hspace="0" vspace="0">
-. <i>Precondition</i>: all the refinements have only one rate signature and all the port rates are 1.
-  <li value="4"><a name="184797"> </a><i><b>Modal model with a local MultirateFSMDirector</b></i>: <img src="img/codegen49.gif" height="16" width="36" border="0" hspace="0" vspace="0">
+. <i>Precondition</i>: all the refinements have only one rate signature and all the port rates are 1.<br>
+
+
+<a name="184797"> </a>4.	 <i><b>Modal model with a local MultirateFSMDirector</b></i>: <img src="img/codegen49.gif" height="16" width="36" border="0" hspace="0" vspace="0">
 , <img src="img/codegen50.gif" height="19" width="16" border="0" hspace="0" vspace="0">
- = the rate signature of any refinement. <i>Precondition</i>: all the refinements have only one and same rate signature.
-  <li value="5"><a name="184800"> </a><i><b>Modal model with a local HDFFSMDirector</b></i>: <img src="img/codegen51.gif" height="50" width="64" border="0" hspace="0" vspace="0">
+ = the rate signature of any refinement. <i>Precondition</i>: all the refinements have only one and same rate signature.<br>
+
+
+<a name="184800"> </a>5.	 <i><b>Modal model with a local HDFFSMDirector</b></i>: <img src="img/codegen51.gif" height="50" width="64" border="0" hspace="0" vspace="0">
  where <img src="img/codegen52.gif" height="19" width="15" border="0" hspace="0" vspace="0">
  is the number of configurations of the <img src="img/codegen53.gif" height="16" width="7" border="0" hspace="0" vspace="0">
 th refinement, <img src="img/codegen38.gif" height="16" width="13" border="0" hspace="0" vspace="0">
@@ -514,8 +531,10 @@ th configuration, where <img src="img/codegen4.gif" height="16" width="9" border
  and <img src="img/codegen7.gif" height="50" width="68" border="0" hspace="0" vspace="0">
 , <img src="img/codegen26.gif" height="16" width="9" border="0" hspace="0" vspace="0">
  is derived from <img src="img/codegen25.gif" height="50" width="74" border="0" hspace="0" vspace="0">
-.
-  <li value="6"><a name="184805"> </a><i><b>Composite actor with a local HDFDirector</b></i>: <img src="img/codegen8.gif" height="50" width="64" border="0" hspace="0" vspace="0">
+.<br>
+
+
+<a name="184805"> </a>6.	 <i><b>Composite actor with a local HDFDirector</b></i>: <img src="img/codegen8.gif" height="50" width="64" border="0" hspace="0" vspace="0">
  where <img src="img/codegen9.gif" height="19" width="15" border="0" hspace="0" vspace="0">
  is the number of configurations of the <img src="img/codegen11.gif" height="16" width="7" border="0" hspace="0" vspace="0">
 th contained actor, <img src="img/codegen12.gif" height="16" width="13" border="0" hspace="0" vspace="0">
@@ -526,8 +545,8 @@ th contained actor, for <img src="img/codegen46.gif" height="16" width="83" bord
 , presents its rate signature in its <img src="img/codegen16.gif" height="19" width="12" border="0" hspace="0" vspace="0">
 th configuration , where <img src="img/codegen18.gif" height="19" width="12" border="0" hspace="0" vspace="0">
  is derived from <img src="img/codegen19.gif" height="55" width="116" border="0" hspace="0" vspace="0">
-.
-</ol>
+.<br>
+
 
 <a name="184814"> </a>The above computation is performed in the generatePreinitializeCode() method of each director helper.  After the computation is complete, the helper for each actor has recorded its number of configurations, the rate signature presented to the outside in each configuration, and the local SDF schedule in each configuration. During this step, the maximum capacity of each receiver under all schedules is also recorded, except the receivers of modal controllers, whose maximum capacity must be computed in the next step, because a modal controller may potentially access all received data during one global iteration (of the whole model) and the number of times the modal model containing the modal controller is fired in one global iteration is not available in the bottom-up traversal.   <br>
 
@@ -541,69 +560,85 @@ th configuration , where <img src="img/codegen18.gif" height="19" width="12" bor
 <a name="191986"> </a>Several interesting demos for the HDF code generation are presented next. The Merge demo in $PTII/ptolemy/domains/hdf/demo/Merge shows an interesting way to merge two increasing sequences of numbers into one increasing sequence. The AdaptiveCoding demo in $PTII/ptolemy/domains/hdf/demo/AdaptiveCoding shows the modeling of two modes of Hamming codec, a (7, 4) Hamming code and a (3,1) Hamming code. The model switches between the two coding/decoding schemes depending on the channel condition. <br>
 
 <div align="center">
-<h2>
-  <a name="191987"> </a>Appendix C:  CodeStream and CodeGen Types
-</h2>
+<a name="191987"> </a>Appendix C:  CodeStream and CodeGen Types<br>
 </div>
 
-<h3>
-  <a name="187077"> </a>C.1   The CodeStream Mechanism
-</h3>
+<a name="187077"> </a>C.1   The CodeStream Mechanism<br>
 
 
-<h4>
-  <a name="187099"> </a>C.1.1  Code Block Structure
-</h4>
+<a name="187099"> </a>C.1.1  Code Block Structure<br>
 
 
 <a name="187117"> </a>For a helper, a code block is uniquely defined by its signature which consists of its code block name and the number of parameters it takes. A proper code block should have the following grammar:<br>
 
-<pre>
-<a name="187191"> </a>
-/*** CodeBlockName [($parameter1, $parameter2, ...)] ***/<a name="187194"> </a>
-CodeBlockBody<a name="187120"> </a>
-/**/<a name="187197"> </a>
-</pre>
+
+<a name="187191"> </a><br>
+
+
+<a name="187194"> </a>/*** CodeBlockName [($parameter1, $parameter2, ...)] ***/<br>
+
+
+<a name="187120"> </a>CodeBlockBody<br>
+
+
+<a name="187197"> </a>/**/<br>
+
 
 <a name="187123"> </a>Parameterized code blocks can contain parameters which the user can specify. Parameter substitution syntax is straight-forward string pattern substitution, so the user is responsible for declaring unique parameter names. For example, a code block is declared to be the following:<br>
 
-<pre>
-<a name="187124"> </a>
-/*** initBlock ($arg) ***/<a name="187125"> </a>
-if ($ref(input) != $arg) {<a name="187126"> </a>
-	$ref(output) = $arg;<a name="187127"> </a>
-}<a name="187128"> </a>
-/**/<a name="187129"> </a>
-</pre>
+
+<a name="187124"> </a><br>
+
+
+<a name="187125"> </a>/*** initBlock ($arg) ***/<br>
+
+
+<a name="187126"> </a>if ($ref(input) != $arg) {<br>
+
+
+<a name="187127"> </a>	$ref(output) = $arg;<br>
+
+
+<a name="187128"> </a>}<br>
+
+
+<a name="187129"> </a>/**/<br>
+
 
 <a name="187131"> </a>If the helper invokes the appendCodeBlock() method with a single parameter, which is the integer 3,<br>
 
-<pre>
-ArrayList args = new ArrayList();<a name="187133"> </a>
-args.add(Integer.toString(3));<a name="187134"> </a>
-appendCodeBlock("initBlock", args);<a name="187135"> </a>
-</pre>
+
+<a name="187133"> </a>ArrayList args = new ArrayList();<br>
+
+
+<a name="187134"> </a>args.add(Integer.toString(3));<br>
+
+
+<a name="187135"> </a>appendCodeBlock("initBlock", args);<br>
+
 
 <a name="187137"> </a>then after parameter substitution, the code block would become:<br>
 
-<pre>
-<a name="187217"> </a>
-if ($ref(input) != 3) {<a name="187138"> </a>
-	$ref(output) = 3;<a name="187140"> </a>
-}<a name="187141"> </a>
-</pre>
 
-<h4>
-  <a name="187227"> </a>C.1.2  Overriding and Overloading
-</h4>
+<a name="187217"> </a><br>
+
+
+<a name="187138"> </a>if ($ref(input) != 3) {<br>
+
+
+<a name="187140"> </a>	$ref(output) = 3;<br>
+
+
+<a name="187141"> </a>}<br>
+
+
+<a name="187227"> </a>C.1.2  Overriding and Overloading<br>
 
 
 <a name="187258"> </a>CodeStream supports overriding superclass code blocks with same signature. However, it does not support call to superclass code blocks that have been overridden (i.e., there is not a function call like super()), so far. It also supports overloading code blocks with different number of parameters.<br>
 
 
-<h3>
-  <a name="187286"> </a>C.2   Type Conversion: CodeGen Types
-</h3>
+<a name="187286"> </a>C.2   Type Conversion: CodeGen Types<br>
 
 
 <p>
@@ -615,28 +650,50 @@ if ($ref(input) != 3) {<a name="187138"> </a>
   <a name="187292"> </a>For each Ptolemy token type, there is an associated codegen Token type. In the $PTII/ptolemy/codegen/kernel/type directory, there is a target-language specific file which contains functionality code for each Ptolemy type. The code generator uses the code stream mechanism to harvest the code blocks in these files.  E.g. The Int.c file contains code to operate on an integer token.
 </p>
 
-<pre>
-<a name="187293"> </a>
-/***negateBlock***/<a name="187294"> </a>
-Token Int_negate(Token this, ...) {<a name="187295"> </a>
-	this.payload.Int = -this.payload.Int;<a name="187296"> </a>
-	return this;<a name="187297"> </a>
-}<a name="187298"> </a>
-/**/<a name="187299"> </a>
-</pre>
+
+<a name="187293"> </a><br>
+
+
+<a name="187294"> </a>/***negateBlock***/<br>
+
+
+<a name="187295"> </a>Token Int_negate(Token this, ...) {<br>
+
+
+<a name="187296"> </a>	this.payload.Int = -this.payload.Int;<br>
+
+
+<a name="187297"> </a>	return this;<br>
+
+
+<a name="187298"> </a>}<br>
+
+
+<a name="187299"> </a>/**/<br>
+
 
 <p>
   <a name="187301"> </a>The code generator handles three kinds of type conversion. The first case is converting between primitive (non-Token) types. The target languages often support some of the Ptolemy types as primitive types. The code generator can take advantage of the language constructs to avoid storage and processing time overhead by using these primitive types. For example, the c code generator uses int, double and char array (char*) to represent the Ptolemy int, double and string types. The c code generator generates functions to convert int and double to char* type (because string is higher than int and double in the type lattice).
 </p>
 
-<pre>
-<a name="187302"> </a>
-char* InttoString (int i) {<a name="187303"> </a>
-	char* string = (char*) malloc(sizeof(char) * 12);<a name="187304"> </a>
-	sprintf((char*) string, "%d", i);<a name="187305"> </a>
-	return string;       <a name="187306"> </a>
-}<a name="187307"> </a>
-</pre>
+
+<a name="187302"> </a><br>
+
+
+<a name="187303"> </a>char* InttoString (int i) {<br>
+
+
+<a name="187304"> </a>	char* string = (char*) malloc(sizeof(char) * 12);<br>
+
+
+<a name="187305"> </a>	sprintf((char*) string, "%d", i);<br>
+
+
+<a name="187306"> </a>	return string;       <br>
+
+
+<a name="187307"> </a>}<br>
+
 
 <p>
   <a name="187309"> </a>The second case is to upgrade a primitive type to a Token type. This happens often in a multiport connection where the sink port (multiport) is resolved to type 'general' and the source ports are resolved to concrete types, like int, string, etc. The code generator takes care of this by using the $new() macro to create a new Token for the given primitive value (there is an associated codegen Token type for each Ptolemy type including the primitive type). 
@@ -647,263 +704,671 @@ char* InttoString (int i) {<a name="187303"> </a>
   <a name="193181"> </a>The third case is to convert between different Token types. The functionality code for each codegen type has a convert function that converts the given token. For example, in $PTII/ptolemy/codegen/kernel/type/String.c, the convertBlock looks like<a href="#192458"><sup>2</sup></a>:
 </p>
 
-<pre>
-/***convertBlock***/<a name="187716"> </a>
-Token String_convert(Token token, ...) {<a name="187717"> </a>
-	char* stringPointer;<a name="187718"> </a>
-<a name="187768"> </a>
-	switch (token.type) {<a name="187720"> </a>
-		#ifdef TYPE_Boolean<a name="187721"> </a>
-		case TYPE_Boolean:<a name="187722"> </a>
-			stringPointer = BooleantoString(token.payload.Boolean);<a name="187723"> </a>
-			break;<a name="187724"> </a>
-		#endif<a name="187725"> </a>
-<a name="187726"> </a>
-		#ifdef TYPE_Int<a name="187727"> </a>
-		case TYPE_Int:<a name="187728"> </a>
-			stringPointer = InttoString(token.payload.Int);<a name="187729"> </a>
-			break;<a name="187730"> </a>
-		#endif<a name="187731"> </a>
-<a name="187732"> </a>
-		#ifdef TYPE_Double<a name="187733"> </a>
-		case TYPE_Double:<a name="187734"> </a>
-			stringPointer = DoubletoString(token.payload.Double);<a name="187735"> </a>
-			break;<a name="187736"> </a>
-		#endif<a name="187737"> </a>
-<a name="187738"> </a>
-		default:<a name="187739"> </a>
-			// FIXME: not finished<a name="187740"> </a>
-			fprintf(stderr, "String_convert(): <a name="187741"> </a>
-					Conversion from an unsupported type. (%d)\n", token.type);<a name="187742"> </a>
-			break;<a name="187743"> </a>
-	}<a name="187744"> </a>
-	token.payload.String = stringPointer;<a name="187745"> </a>
-	token.type = TYPE_String;<a name="187746"> </a>
-	return token;<a name="187747"> </a>
-}<a name="187748"> </a>
-/**/<a name="187749"> </a>
-</pre>
 
-<h3>
-  <a name="187479"> </a>C.3   Examples
-</h3>
+<a name="187716"> </a>/***convertBlock***/<br>
 
 
-<h4>
-  <a name="187517"> </a>C.3.1  How to write the helper for a polymorphic actor (AddSubtract)
-</h4>
+<a name="187717"> </a>Token String_convert(Token token, ...) {<br>
+
+
+<a name="187718"> </a>	char* stringPointer;<br>
+
+
+<a name="187768"> </a><br>
+
+
+<a name="187720"> </a>	switch (token.type) {<br>
+
+
+<a name="187721"> </a>		#ifdef TYPE_Boolean<br>
+
+
+<a name="187722"> </a>		case TYPE_Boolean:<br>
+
+
+<a name="187723"> </a>			stringPointer = BooleantoString(token.payload.Boolean);<br>
+
+
+<a name="187724"> </a>			break;<br>
+
+
+<a name="187725"> </a>		#endif<br>
+
+
+<a name="187726"> </a><br>
+
+
+<a name="187727"> </a>		#ifdef TYPE_Int<br>
+
+
+<a name="187728"> </a>		case TYPE_Int:<br>
+
+
+<a name="187729"> </a>			stringPointer = InttoString(token.payload.Int);<br>
+
+
+<a name="187730"> </a>			break;<br>
+
+
+<a name="187731"> </a>		#endif<br>
+
+
+<a name="187732"> </a><br>
+
+
+<a name="187733"> </a>		#ifdef TYPE_Double<br>
+
+
+<a name="187734"> </a>		case TYPE_Double:<br>
+
+
+<a name="187735"> </a>			stringPointer = DoubletoString(token.payload.Double);<br>
+
+
+<a name="187736"> </a>			break;<br>
+
+
+<a name="187737"> </a>		#endif<br>
+
+
+<a name="187738"> </a><br>
+
+
+<a name="187739"> </a>		default:<br>
+
+
+<a name="187740"> </a>			// FIXME: not finished<br>
+
+
+<a name="187741"> </a>			fprintf(stderr, "String_convert(): <br>
+
+
+<a name="187742"> </a>					Conversion from an unsupported type. (%d)\n", token.type);<br>
+
+
+<a name="187743"> </a>			break;<br>
+
+
+<a name="187744"> </a>	}<br>
+
+
+<a name="187745"> </a>	token.payload.String = stringPointer;<br>
+
+
+<a name="187746"> </a>	token.type = TYPE_String;<br>
+
+
+<a name="187747"> </a>	return token;<br>
+
+
+<a name="187748"> </a>}<br>
+
+
+<a name="187749"> </a>/**/<br>
+
+
+<a name="187479"> </a>C.3   Examples<br>
+
+
+<a name="187517"> </a>C.3.1  How to write the helper for a polymorphic actor (AddSubtract)<br>
 
 
 <p>
   <a name="187501"> </a>The following is the code generation fire method in the AddSubtract helper (AddSubtract.java):
 </p>
 
-<pre>
-public String generateFireCode() throws IllegalActionException {<a name="187811"> </a>
-	super.generateFireCode();<a name="187812"> </a>
-<a name="187813"> </a>
-	ptolemy.actor.lib.AddSubtract actor = <a name="191464"> </a>
-		(ptolemy.actor.lib.AddSubtract) getComponent();<a name="191465"> </a>
-<a name="191466"> </a>
-	Type type = actor.output.getType();<a name="187817"> </a>
-	boolean minusOnly = actor.plus.getWidth() == 0;<a name="187818"> </a>
-<a name="187819"> </a>
-	ArrayList args = new ArrayList();<a name="187820"> </a>
-	args.add(new Integer(0));<a name="187821"> </a>
-<a name="187822"> </a>
-	if (type == BaseType.STRING) {<a name="187823"> </a>
-		_codeStream.appendCodeBlock("StringPreFireBlock");<a name="187824"> </a>
-		for (int i = 0; i &lt; actor.plus.getWidth(); i++) {<a name="187825"> </a>
-			args.set(0, new Integer(i));<a name="187826"> </a>
-			_codeStream.appendCodeBlock("StringLengthBlock", args);<a name="187827"> </a>
-		}<a name="187828"> </a>
-		_codeStream.appendCodeBlock("StringAllocBlock");<a name="187829"> </a>
-	} else {<a name="187830"> </a>
-		String blockType = isPrimitive(type) ? "" : "Token";<a name="187831"> </a>
-		String blockPort = (minusOnly) ? "Minus" : "";<a name="187832"> </a>
-<a name="187833"> </a>
-		_codeStream.appendCodeBlock(blockType + blockPort + "PreFireBlock");<a name="187834"> </a>
-	}<a name="187835"> </a>
-<a name="187836"> </a>
-	String blockType = isPrimitive(type) ? codeGenType(type) : "Token";<a name="187837"> </a>
-<a name="187838"> </a>
-	for (int i = 1; i &lt; actor.plus.getWidth(); i++) {<a name="187839"> </a>
-		args.set(0, new Integer(i));<a name="187840"> </a>
-		_codeStream.appendCodeBlock(blockType + "AddBlock", args);<a name="187841"> </a>
-	}<a name="187842"> </a>
-<a name="187843"> </a>
-	for (int i = minusOnly ? 1 : 0; i &lt; actor.minus.getWidth(); i++) {<a name="187844"> </a>
-		args.set(0, new Integer(i));<a name="187845"> </a>
-		_codeStream.appendCodeBlock(blockType + "MinusBlock", args);<a name="187846"> </a>
-	}<a name="187847"> </a>
-<a name="187848"> </a>
-	_codeStream.appendCodeBlock("PostFireBlock");<a name="187849"> </a>
-<a name="187850"> </a>
-	return processCode(_codeStream.toString());<a name="187851"> </a>
-}<a name="187852"> </a>
-<a name="187528"> </a>
-</pre>
+
+<a name="187811"> </a>public String generateFireCode() throws IllegalActionException {<br>
+
+
+<a name="187812"> </a>	super.generateFireCode();<br>
+
+
+<a name="187813"> </a><br>
+
+
+<a name="191464"> </a>	ptolemy.actor.lib.AddSubtract actor = <br>
+
+
+<a name="191465"> </a>		(ptolemy.actor.lib.AddSubtract) getComponent();<br>
+
+
+<a name="191466"> </a><br>
+
+
+<a name="187817"> </a>	Type type = actor.output.getType();<br>
+
+
+<a name="187818"> </a>	boolean minusOnly = actor.plus.getWidth() == 0;<br>
+
+
+<a name="187819"> </a><br>
+
+
+<a name="187820"> </a>	ArrayList args = new ArrayList();<br>
+
+
+<a name="187821"> </a>	args.add(new Integer(0));<br>
+
+
+<a name="187822"> </a><br>
+
+
+<a name="187823"> </a>	if (type == BaseType.STRING) {<br>
+
+
+<a name="187824"> </a>		_codeStream.appendCodeBlock("StringPreFireBlock");<br>
+
+
+<a name="187825"> </a>		for (int i = 0; i &lt; actor.plus.getWidth(); i++) {<br>
+
+
+<a name="187826"> </a>			args.set(0, new Integer(i));<br>
+
+
+<a name="187827"> </a>			_codeStream.appendCodeBlock("StringLengthBlock", args);<br>
+
+
+<a name="187828"> </a>		}<br>
+
+
+<a name="187829"> </a>		_codeStream.appendCodeBlock("StringAllocBlock");<br>
+
+
+<a name="187830"> </a>	} else {<br>
+
+
+<a name="187831"> </a>		String blockType = isPrimitive(type) ? "" : "Token";<br>
+
+
+<a name="187832"> </a>		String blockPort = (minusOnly) ? "Minus" : "";<br>
+
+
+<a name="187833"> </a><br>
+
+
+<a name="187834"> </a>		_codeStream.appendCodeBlock(blockType + blockPort + "PreFireBlock");<br>
+
+
+<a name="187835"> </a>	}<br>
+
+
+<a name="187836"> </a><br>
+
+
+<a name="187837"> </a>	String blockType = isPrimitive(type) ? codeGenType(type) : "Token";<br>
+
+
+<a name="187838"> </a><br>
+
+
+<a name="187839"> </a>	for (int i = 1; i &lt; actor.plus.getWidth(); i++) {<br>
+
+
+<a name="187840"> </a>		args.set(0, new Integer(i));<br>
+
+
+<a name="187841"> </a>		_codeStream.appendCodeBlock(blockType + "AddBlock", args);<br>
+
+
+<a name="187842"> </a>	}<br>
+
+
+<a name="187843"> </a><br>
+
+
+<a name="187844"> </a>	for (int i = minusOnly ? 1 : 0; i &lt; actor.minus.getWidth(); i++) {<br>
+
+
+<a name="187845"> </a>		args.set(0, new Integer(i));<br>
+
+
+<a name="187846"> </a>		_codeStream.appendCodeBlock(blockType + "MinusBlock", args);<br>
+
+
+<a name="187847"> </a>	}<br>
+
+
+<a name="187848"> </a><br>
+
+
+<a name="187849"> </a>	_codeStream.appendCodeBlock("PostFireBlock");<br>
+
+
+<a name="187850"> </a><br>
+
+
+<a name="187851"> </a>	return processCode(_codeStream.toString());<br>
+
+
+<a name="187852"> </a>}<br>
+
+
+<a name="187528"> </a><br>
+
 
 <a name="187709"> </a>These are the corresponding code blocks in the code template (AddSubtract.c):<br>
 
-<pre>
-/***PreFireBlock***/<a name="187873"> </a>
-$actorSymbol(result) = $ref(plus#0);<a name="187874"> </a>
-/**/<a name="187875"> </a>
-<a name="187876"> </a>
-/***MinusPreFireBlock***/<a name="187877"> </a>
-$actorSymbol(result) = -$ref(minus#0);<a name="187878"> </a>
-/**/<a name="187879"> </a>
-<a name="187880"> </a>
-/***TokenPreFireBlock***/<a name="187881"> </a>
-$actorSymbol(result) = $ref(plus#0);<a name="187882"> </a>
-/**/<a name="187883"> </a>
-<a name="187884"> </a>
-/***TokenMinusPreFireBlock***/<a name="187885"> </a>
-$actorSymbol(result) = $tokenFunc($ref(minus#0)::negate());<a name="187886"> </a>
-/**/<a name="187887"> </a>
-<a name="187888"> </a>
-/***IntAddBlock($channel)***/<a name="187889"> </a>
-$actorSymbol(result) += $ref(plus#$channel);<a name="187890"> </a>
-/**/<a name="187891"> </a>
-<a name="187892"> </a>
-/***IntMinusBlock($channel)***/<a name="187893"> </a>
-$actorSymbol(result) -= $ref(minus#$channel);<a name="187894"> </a>
-/**/<a name="187895"> </a>
-<a name="187896"> </a>
-/***DoubleAddBlock($channel)***/<a name="187897"> </a>
-$actorSymbol(result) += $ref(plus#$channel);<a name="187898"> </a>
-/**/<a name="187899"> </a>
-<a name="187900"> </a>
-/***DoubleMinusBlock($channel)***/<a name="187901"> </a>
-$actorSymbol(result) -= $ref(minus#$channel);<a name="187902"> </a>
-/**/<a name="187903"> </a>
-<a name="187904"> </a>
-<a name="187905"> </a>
-/***BooleanAddBlock($channel)***/<a name="187906"> </a>
-$actorSymbol(result) |= $ref(plus#$channel);<a name="187907"> </a>
-/**/<a name="187908"> </a>
-<a name="187909"> </a>
-/***StringPreFireBlock***/<a name="188102"> </a>
-$actorSymbol(length) = 1;		// null terminator.<a name="188103"> </a>
-/**/<a name="188104"> </a>
-<a name="187913"> </a>
-/***StringLengthBlock($channel)***/<a name="187914"> </a>
-$actorSymbol(length) += strlen($ref(plus#$channel));	<a name="187915"> </a>
-/**/<a name="187916"> </a>
-<a name="187917"> </a>
-/***StringAllocBlock***/<a name="187918"> </a>
-$actorSymbol(result) = (char*) realloc($ref(output), $actorSymbol(length));<a name="187919"> </a>
-strcpy($actorSymbol(result), $ref(plus#0));	<a name="187920"> </a>
-/**/<a name="187921"> </a>
-<a name="187922"> </a>
-/***StringAddBlock($channel)***/<a name="187923"> </a>
-strcat($actorSymbol(result), $ref(plus#$channel));<a name="187924"> </a>
-/**/<a name="187925"> </a>
-<a name="187926"> </a>
-/***TokenAddBlock($channel)***/<a name="187927"> </a>
-$actorSymbol(result) = $tokenFunc($actorSymbol(result)::add($ref(plus#$channel)));<a name="187928"> </a>
-/**/<a name="187929"> </a>
-<a name="187930"> </a>
-/***TokenMinusBlock($channel)***/<a name="187931"> </a>
-$actorSymbol(result) = $tokenFunc($actorSymbol(result)::substract($ref(minus#$channel)));<a name="187932"> </a>
-/**/<a name="187933"> </a>
-<a name="187934"> </a>
-/***PostFireBlock***/<a name="187935"> </a>
-$ref(output) = $actorSymbol(result);<a name="187936"> </a>
-/**/<a name="187937"> </a>
-</pre>
 
-<h4>
-  <a name="187871"> </a>C.3.2  How to write the helper that extends another concrete helper
-</h4>
+<a name="187873"> </a>/***PreFireBlock***/<br>
+
+
+<a name="187874"> </a>$actorSymbol(result) = $ref(plus#0);<br>
+
+
+<a name="187875"> </a>/**/<br>
+
+
+<a name="187876"> </a><br>
+
+
+<a name="187877"> </a>/***MinusPreFireBlock***/<br>
+
+
+<a name="187878"> </a>$actorSymbol(result) = -$ref(minus#0);<br>
+
+
+<a name="187879"> </a>/**/<br>
+
+
+<a name="187880"> </a><br>
+
+
+<a name="187881"> </a>/***TokenPreFireBlock***/<br>
+
+
+<a name="187882"> </a>$actorSymbol(result) = $ref(plus#0);<br>
+
+
+<a name="187883"> </a>/**/<br>
+
+
+<a name="187884"> </a><br>
+
+
+<a name="187885"> </a>/***TokenMinusPreFireBlock***/<br>
+
+
+<a name="187886"> </a>$actorSymbol(result) = $tokenFunc($ref(minus#0)::negate());<br>
+
+
+<a name="187887"> </a>/**/<br>
+
+
+<a name="187888"> </a><br>
+
+
+<a name="187889"> </a>/***IntAddBlock($channel)***/<br>
+
+
+<a name="187890"> </a>$actorSymbol(result) += $ref(plus#$channel);<br>
+
+
+<a name="187891"> </a>/**/<br>
+
+
+<a name="187892"> </a><br>
+
+
+<a name="187893"> </a>/***IntMinusBlock($channel)***/<br>
+
+
+<a name="187894"> </a>$actorSymbol(result) -= $ref(minus#$channel);<br>
+
+
+<a name="187895"> </a>/**/<br>
+
+
+<a name="187896"> </a><br>
+
+
+<a name="187897"> </a>/***DoubleAddBlock($channel)***/<br>
+
+
+<a name="187898"> </a>$actorSymbol(result) += $ref(plus#$channel);<br>
+
+
+<a name="187899"> </a>/**/<br>
+
+
+<a name="187900"> </a><br>
+
+
+<a name="187901"> </a>/***DoubleMinusBlock($channel)***/<br>
+
+
+<a name="187902"> </a>$actorSymbol(result) -= $ref(minus#$channel);<br>
+
+
+<a name="187903"> </a>/**/<br>
+
+
+<a name="187904"> </a><br>
+
+
+<a name="187905"> </a><br>
+
+
+<a name="187906"> </a>/***BooleanAddBlock($channel)***/<br>
+
+
+<a name="187907"> </a>$actorSymbol(result) |= $ref(plus#$channel);<br>
+
+
+<a name="187908"> </a>/**/<br>
+
+
+<a name="187909"> </a><br>
+
+
+<a name="188102"> </a>/***StringPreFireBlock***/<br>
+
+
+<a name="188103"> </a>$actorSymbol(length) = 1;		// null terminator.<br>
+
+
+<a name="188104"> </a>/**/<br>
+
+
+<a name="187913"> </a><br>
+
+
+<a name="187914"> </a>/***StringLengthBlock($channel)***/<br>
+
+
+<a name="187915"> </a>$actorSymbol(length) += strlen($ref(plus#$channel));	<br>
+
+
+<a name="187916"> </a>/**/<br>
+
+
+<a name="187917"> </a><br>
+
+
+<a name="187918"> </a>/***StringAllocBlock***/<br>
+
+
+<a name="187919"> </a>$actorSymbol(result) = (char*) realloc($ref(output), $actorSymbol(length));<br>
+
+
+<a name="187920"> </a>strcpy($actorSymbol(result), $ref(plus#0));	<br>
+
+
+<a name="187921"> </a>/**/<br>
+
+
+<a name="187922"> </a><br>
+
+
+<a name="187923"> </a>/***StringAddBlock($channel)***/<br>
+
+
+<a name="187924"> </a>strcat($actorSymbol(result), $ref(plus#$channel));<br>
+
+
+<a name="187925"> </a>/**/<br>
+
+
+<a name="187926"> </a><br>
+
+
+<a name="187927"> </a>/***TokenAddBlock($channel)***/<br>
+
+
+<a name="187928"> </a>$actorSymbol(result) = $tokenFunc($actorSymbol(result)::add($ref(plus#$channel)));<br>
+
+
+<a name="187929"> </a>/**/<br>
+
+
+<a name="187930"> </a><br>
+
+
+<a name="187931"> </a>/***TokenMinusBlock($channel)***/<br>
+
+
+<a name="187932"> </a>$actorSymbol(result) = $tokenFunc($actorSymbol(result)::substract($ref(minus#$channel)));<br>
+
+
+<a name="187933"> </a>/**/<br>
+
+
+<a name="187934"> </a><br>
+
+
+<a name="187935"> </a>/***PostFireBlock***/<br>
+
+
+<a name="187936"> </a>$ref(output) = $actorSymbol(result);<br>
+
+
+<a name="187937"> </a>/**/<br>
+
+
+<a name="187871"> </a>C.3.2  How to write the helper that extends another concrete helper<br>
 
 
 <a name="187963"> </a>The following is the Uniform helper, which extends the RandomSource helper:<br>
 
-<pre>
-  <a name="187964"> </a>
-// Uniform.java<a name="187965"> </a>
-public class Uniform extends RandomSource {<a name="187966"> </a>
-<a name="187967"> </a>
-	public Uniform(ptolemy.actor.lib.Uniform actor) {<a name="187968"> </a>
-		super(actor);<a name="187969"> </a>
-	}<a name="187970"> </a>
-<a name="187971"> </a>
-	protected String _generateRandomNumber() throws IllegalActionException {<a name="187972"> </a>
-		return _generateBlockCode("randomBlock");<a name="187973"> </a>
-	}<a name="187974"> </a>
-}<a name="187975"> </a>
-<a name="187976"> </a>
-</pre>
+
+<a name="187964"> </a>  <br>
+
+
+<a name="187965"> </a>// Uniform.java<br>
+
+
+<a name="187966"> </a>public class Uniform extends RandomSource {<br>
+
+
+<a name="187967"> </a><br>
+
+
+<a name="187968"> </a>	public Uniform(ptolemy.actor.lib.Uniform actor) {<br>
+
+
+<a name="187969"> </a>		super(actor);<br>
+
+
+<a name="187970"> </a>	}<br>
+
+
+<a name="187971"> </a><br>
+
+
+<a name="187972"> </a>	protected String _generateRandomNumber() throws IllegalActionException {<br>
+
+
+<a name="187973"> </a>		return _generateBlockCode("randomBlock");<br>
+
+
+<a name="187974"> </a>	}<br>
+
+
+<a name="187975"> </a>}<br>
+
+
+<a name="187976"> </a><br>
+
 
 <a name="187977"> </a>This is the Uniform helper's code template file (Uniform.c):<br>
 
-<pre>
-<a name="187978"> </a>
-/*** randomBlock ***/<a name="187979"> </a>
-$ref(output) = (RandomSource_nextDouble(&amp;$actorSymbol(seed)) <a name="187980"> </a>
-		* ($val(upperBound) - $val(lowerBound))) + $val(lowerBound);<a name="191617"> </a>
-/**/<a name="187981"> </a>
-<a name="187982"> </a>
-</pre>
+
+<a name="187978"> </a><br>
+
+
+<a name="187979"> </a>/*** randomBlock ***/<br>
+
+
+<a name="187980"> </a>$ref(output) = (RandomSource_nextDouble(&amp;$actorSymbol(seed)) <br>
+
+
+<a name="191617"> </a>		* ($val(upperBound) - $val(lowerBound))) + $val(lowerBound);<br>
+
+
+<a name="187981"> </a>/**/<br>
+
+
+<a name="187982"> </a><br>
+
 
 <a name="187983"> </a>It references the function RandomSource_nextDouble from its parent's code template. The following is the code template for the RandomSource helper (RandomSource.c):<br>
 
-<pre>
-<a name="187984"> </a>
-/*** sharedBlock ***/<a name="187985"> </a>
-int RandomSource_next(int bits, double* seed) {<a name="187986"> </a>
-	*seed = (((long long) *seed * 0x5DEECE66DLL) + 0xBLL) &amp; ((1LL &lt;&lt; 48) - 1);<a name="187987"> </a>
-	return (int)((signed long long) *seed &gt;&gt; (48 - bits));<a name="187988"> </a>
-}<a name="187989"> </a>
-<a name="187990"> </a>
-double RandomSource_nextDouble(double* seed) {<a name="187991"> </a>
-	return (((long long)RandomSource_next(26, seed) &lt;&lt; 27) <a name="187992"> </a>
-			+ RandomSource_next(27, seed)) / (double)(1LL &lt;&lt; 53);<a name="191505"> </a>
-}<a name="187993"> </a>
-/**/<a name="187994"> </a>
-<a name="187995"> </a>
-/*** gaussianBlock ***/<a name="187996"> </a>
-double RandomSource_nextGaussian(double* seed, boolean* haveNextNextGaussian, double* nextNextGaussian) {<a name="187997"> </a>
-	double multiplier;<a name="187998"> </a>
-	double v1;<a name="187999"> </a>
-	double v2;<a name="188000"> </a>
-	double s;<a name="188001"> </a>
-<a name="188002"> </a>
-	if (*haveNextNextGaussian) {<a name="188003"> </a>
-		*haveNextNextGaussian = false;<a name="188004"> </a>
-		return *nextNextGaussian;<a name="188005"> </a>
-	} else {<a name="188006"> </a>
-		do { <a name="188007"> </a>
-			v1 = 2 * RandomSource_nextDouble(seed) - 1;   // between -1.0 and 1.0<a name="188008"> </a>
-			v2 = 2 * RandomSource_nextDouble(seed) - 1;   // between -1.0 and 1.0<a name="188009"> </a>
-			s = v1 * v1 + v2 * v2;<a name="188010"> </a>
-		} while (s &gt;= 1 || s == 0);<a name="188011"> </a>
-<a name="188012"> </a>
-		multiplier = sqrt(-2 * log(s)/s);<a name="188013"> </a>
-		*nextNextGaussian = v2 * multiplier;<a name="188014"> </a>
-		*haveNextNextGaussian = true;<a name="188015"> </a>
-		return v1 * multiplier;<a name="188016"> </a>
-	}<a name="188017"> </a>
-}<a name="188018"> </a>
-/**/<a name="188019"> </a>
-<a name="188020"> </a>
-/*** setSeedBlock0($hashCode) ***/<a name="188021"> </a>
-$actorSymbol(seed) = $actorSymbol(seed) = time (NULL) + $hashCode;<a name="188022"> </a>
-/**/<a name="188023"> </a>
-<a name="188024"> </a>
-/*** setSeedBlock1 ***/<a name="188025"> </a>
-/* see documentation from http://java.sun.com/j2se/1.4.2/docs/api/java/util/Random.htm#setSeed(long) */<a name="188026"> </a>
-//this.seed = (seed ^ 0x5DEECE66DL) &amp; ((1L &lt;&lt; 48) - 1);<a name="188027"> </a>
-$actorSymbol(seed) = ((long long) $val(seed) ^ 0x5DEECE66DLL)  &amp; ((1LL &lt;&lt; 48) - 1);<a name="188028"> </a>
-/**/<a name="188029"> </a>
-<a name="188030"> </a>
-/*** preinitBlock ***/<a name="188031"> </a>
-double $actorSymbol(seed);<a name="188032"> </a>
-/**/<a name="188033"> </a>
-<a name="188034"> </a>
-</pre>
+
+<a name="187984"> </a><br>
+
+
+<a name="187985"> </a>/*** sharedBlock ***/<br>
+
+
+<a name="187986"> </a>int RandomSource_next(int bits, double* seed) {<br>
+
+
+<a name="187987"> </a>	*seed = (((long long) *seed * 0x5DEECE66DLL) + 0xBLL) &amp; ((1LL &lt;&lt; 48) - 1);<br>
+
+
+<a name="187988"> </a>	return (int)((signed long long) *seed &gt;&gt; (48 - bits));<br>
+
+
+<a name="187989"> </a>}<br>
+
+
+<a name="187990"> </a><br>
+
+
+<a name="187991"> </a>double RandomSource_nextDouble(double* seed) {<br>
+
+
+<a name="187992"> </a>	return (((long long)RandomSource_next(26, seed) &lt;&lt; 27) <br>
+
+
+<a name="191505"> </a>			+ RandomSource_next(27, seed)) / (double)(1LL &lt;&lt; 53);<br>
+
+
+<a name="187993"> </a>}<br>
+
+
+<a name="187994"> </a>/**/<br>
+
+
+<a name="187995"> </a><br>
+
+
+<a name="187996"> </a>/*** gaussianBlock ***/<br>
+
+
+<a name="187997"> </a>double RandomSource_nextGaussian(double* seed, boolean* haveNextNextGaussian, double* nextNextGaussian) {<br>
+
+
+<a name="187998"> </a>	double multiplier;<br>
+
+
+<a name="187999"> </a>	double v1;<br>
+
+
+<a name="188000"> </a>	double v2;<br>
+
+
+<a name="188001"> </a>	double s;<br>
+
+
+<a name="188002"> </a><br>
+
+
+<a name="188003"> </a>	if (*haveNextNextGaussian) {<br>
+
+
+<a name="188004"> </a>		*haveNextNextGaussian = false;<br>
+
+
+<a name="188005"> </a>		return *nextNextGaussian;<br>
+
+
+<a name="188006"> </a>	} else {<br>
+
+
+<a name="188007"> </a>		do { <br>
+
+
+<a name="188008"> </a>			v1 = 2 * RandomSource_nextDouble(seed) - 1;   // between -1.0 and 1.0<br>
+
+
+<a name="188009"> </a>			v2 = 2 * RandomSource_nextDouble(seed) - 1;   // between -1.0 and 1.0<br>
+
+
+<a name="188010"> </a>			s = v1 * v1 + v2 * v2;<br>
+
+
+<a name="188011"> </a>		} while (s &gt;= 1 || s == 0);<br>
+
+
+<a name="188012"> </a><br>
+
+
+<a name="188013"> </a>		multiplier = sqrt(-2 * log(s)/s);<br>
+
+
+<a name="188014"> </a>		*nextNextGaussian = v2 * multiplier;<br>
+
+
+<a name="188015"> </a>		*haveNextNextGaussian = true;<br>
+
+
+<a name="188016"> </a>		return v1 * multiplier;<br>
+
+
+<a name="188017"> </a>	}<br>
+
+
+<a name="188018"> </a>}<br>
+
+
+<a name="188019"> </a>/**/<br>
+
+
+<a name="188020"> </a><br>
+
+
+<a name="188021"> </a>/*** setSeedBlock0($hashCode) ***/<br>
+
+
+<a name="188022"> </a>$actorSymbol(seed) = $actorSymbol(seed) = time (NULL) + $hashCode;<br>
+
+
+<a name="188023"> </a>/**/<br>
+
+
+<a name="188024"> </a><br>
+
+
+<a name="188025"> </a>/*** setSeedBlock1 ***/<br>
+
+
+<a name="188026"> </a>/* see documentation from http://java.sun.com/j2se/1.4.2/docs/api/java/util/Random.htm#setSeed(long) */<br>
+
+
+<a name="188027"> </a>//this.seed = (seed ^ 0x5DEECE66DL) &amp; ((1L &lt;&lt; 48) - 1);<br>
+
+
+<a name="188028"> </a>$actorSymbol(seed) = ((long long) $val(seed) ^ 0x5DEECE66DLL)  &amp; ((1LL &lt;&lt; 48) - 1);<br>
+
+
+<a name="188029"> </a>/**/<br>
+
+
+<a name="188030"> </a><br>
+
+
+<a name="188031"> </a>/*** preinitBlock ***/<br>
+
+
+<a name="188032"> </a>double $actorSymbol(seed);<br>
+
+
+<a name="188033"> </a>/**/<br>
+
+
+<a name="188034"> </a><br>
+
 
 <a name="188035"> </a>Since the Uniform helper does not override any of code generation methods, the parent's methods are called instead. The sharedBlock, setSeedBlock and preinitBlock code blocks are harvested from the RandomSource code template. The child helper may override its parent's code blocks while using its parent's code generation methods. A child helper can also override the code generation method.  Neither way of overriding the super class's code harvesting increases run-time overhead in the generated code. The code generator handles method /code block overrides during compile time and add no extra logic in the final code.<br>
 
@@ -921,20 +1386,6 @@ double $actorSymbol(seed);<a name="188032"> </a>
 <br>
 </blockquote>
 
-
-
-<table align="right" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td align="right"><font size="1">
-    
-
-
-
-
-
-    </td>
-  </tr>
-</table>
 
 </body>
 </html>

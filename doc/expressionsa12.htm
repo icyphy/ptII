@@ -5,8 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/05/07 18:39:43">
-<link href="default.css" rel="stylesheet" type="text/css">
+<meta name="LASTUPDATED" content="03/31/08 13:40:44">
+<link href="../../default.css" rel="stylesheet" type="text/css">
 <title>Appendix A. Tables of Functions</title>
 </head>
 
@@ -19,13 +19,8 @@
     border="0" alt="TOC"> </a></td>
     <td><a href="expressionsa11.htm"><img src="img/navprev.gif" width="81" height="23"
     border="0" alt="PREV"> </a></td>
-    <td>&nbsp;</td>
-
   </tr>
 </table>
-
-
-
 
 <blockquote>
 <h2>
@@ -34,6 +29,11 @@
 
 
 <a name="194543"> </a>In this appendix, we tabulate the functions available in the expression language. Further explanation of many of these functions is given in section <a href="expressionsa8.htm#199012">section 3.7</a> above.<br>
+
+
+<p>
+  <a name="199274"> </a>The argument and return types are the widest type that can be used. For example, acos() will take any argument that can be losslessly cast to a double, such as unsigned byte, short, integer, float. Long cannot be cast losslessly cast to double, so acos(1L) will fail.
+</p>
 
 
 <a name="194547"> </a>A.1   Trigonometric Functions<br>
@@ -152,7 +152,7 @@
   </tr>
   <tr>
     <td><a name="194771"> </a>abs</td>
-    <td><a name="194773"> </a><i>double</i> or <i>int</i> or <i>long</i> or <i>complex</i></td>
+    <td><a name="194773"> </a><i>double</i> or <i>complex</i></td>
     <td><a name="194775"> </a><i>double</i> or <i>int</i> or <i>long</i></font><a name="194776"> </a>(<i>complex</i> returns double)</td>
     <td><a name="194778"> </a>absolute value<a name="194782"> </a>complex case: <img src="img/expressions40.gif" height="23" width="150" border="0" hspace="0" vspace="0">
 </font></td>
@@ -166,7 +166,7 @@
   </tr>
   <tr>
     <td><a name="194797"> </a>ceil</td>
-    <td><a name="194799"> </a>double</td>
+    <td><a name="194799"> </a>double or float</td>
     <td><a name="194801"> </a>double</td>
     <td><a name="194803"> </a>ceiling function, which returns the smallest (closest to negative infinity) <i>double</i> value that is not less than the argument and is an integer.</td>
   </tr>
@@ -199,7 +199,7 @@
     <td><a name="194847"> </a>gaussian</td>
     <td><a name="194849"> </a><i>double</i>, <i>double</i> or</font><a name="194850"> </a><i>double</i>, <i>double</i>, <i>int</i>, or</font><a name="194851"> </a><i>double</i>, <i>double</i>, <i>int</i>, <i>int</i></td>
     <td><a name="194853"> </a><i>double</i> or</font><a name="194854"> </a>{<i>double</i>} or</font><a name="194855"> </a>[<i>double</i>]</td>
-    <td><a name="194857"> </a>one or more Gaussian random variables with the specified mean and standard deviation (see <a href="expressionsa8.htm#192134">page 117</a>).</td>
+    <td><a name="194857"> </a>one or more Gaussian random variables with the specified mean and standard deviation (see <a href="expressionsa8.htm#192134">page 118</a>).</td>
   </tr>
   <tr>
     <td><a name="194863"> </a>imag</td>
@@ -240,14 +240,14 @@
   </tr>
   <tr>
     <td><a name="194923"> </a>max</td>
-    <td><a name="194925"> </a><i>double</i>, <i>double</i> or</font><a name="194926"> </a><i>int</i>, <i>int</i> or</font><a name="194927"> </a><i>long</i>, <i>long </i>or</font><a name="194928"> </a><i>unsignedByte, unsignedByte</i> or</font><a name="194929"> </a>{<i>double</i>} or</font><a name="194930"> </a>{<i>int</i>} or</font><a name="194931"> </a>{<i>long</i>} or</font><a name="194932"> </a>{<i>unsignedByte</i>}</td>
-    <td><a name="194934"> </a><i>double</i> or</font><a name="194935"> </a><i>int</i> or</font><a name="194936"> </a>long or</font></font><a name="194937"> </a>unsignedByte</td>
+    <td><a name="194925"> </a><i>double</i>, <i>double</i> or</font><a name="194929"> </a>{<i>double</i>}</td>
+    <td><a name="194937"> </a>a scalar of the same type as the arguments</td>
     <td><a name="194939"> </a>maximum</td>
   </tr>
   <tr>
     <td><a name="194942"> </a>min</td>
-    <td><a name="194944"> </a><i>double</i>, <i>double</i> or</font><a name="194945"> </a><i>int</i>, <i>int</i> or</font><a name="194946"> </a><i>long</i>, <i>long </i>or</font><a name="194947"> </a><i>unsignedByte, unsignedByte</i> or</font><a name="194948"> </a>{<i>double</i>} or</font><a name="194949"> </a>{<i>int</i>} or</font><a name="194950"> </a>{<i>long</i>} or</font><a name="194951"> </a>{<i>unsignedByte</i>}</td>
-    <td><a name="194953"> </a><i>double</i> or</font><a name="194954"> </a><i>int</i> or</font><a name="194955"> </a>long or</font></font><a name="194956"> </a>unsignedByte</td>
+    <td><a name="194944"> </a><i>double</i>, <i>double</i> or</font><a name="194948"> </a>{<i>double</i>}</td>
+    <td><a name="194956"> </a>a scalar of the same type as the arguments</td>
     <td><a name="194958"> </a>minimum</td>
   </tr>
   <tr>
@@ -266,7 +266,7 @@
     <td><a name="194981"> </a>random</td>
     <td><a name="194983"> </a>no arguments or</font><a name="194984"> </a><i>int</i> or</font><a name="194985"> </a><i>int, int</i></td>
     <td><a name="194987"> </a>double or</font></font><a name="194988"> </a>{<i>double</i>} or</font><a name="194989"> </a>[<i>double</i>]</td>
-    <td><a name="194991"> </a>one or more random numbers between 0.0 and 1.0 (see <a href="expressionsa8.htm#192134">page 117</a>)</td>
+    <td><a name="194991"> </a>one or more random numbers between 0.0 and 1.0 (see <a href="expressionsa8.htm#192134">page 118</a>)</td>
   </tr>
   <tr>
     <td><a name="194997"> </a>real</td>
@@ -278,7 +278,7 @@
     <td><a name="195006"> </a>remainder</td>
     <td><a name="195008"> </a><i>double</i>, <i>double</i></td>
     <td><a name="195010"> </a>double</td>
-    <td><a name="195012"> </a>remainder after division, according to the IEEE 754 floating-point standard (see <a href="expressionsa8.htm#186842">page 118</a>).</td>
+    <td><a name="195012"> </a>remainder after division, according to the IEEE 754 floating-point standard (see <a href="expressionsa8.htm#186842">page 119</a>).</td>
   </tr>
   <tr>
     <td><a name="195018"> </a>round</td>
@@ -393,6 +393,12 @@
     <td><a name="198528"> </a>type</td>
     <td><a name="198530"> </a>{<i>type</i>}</td>
     <td><a name="198532"> </a>Return an empty array whose element type matches the specified token.</td>
+  </tr>
+  <tr>
+    <td><a name="199283"> </a>emptyRecord</td>
+    <td><a name="199285"> </a><br></td>
+    <td><a name="199287"> </a><i>record</i></td>
+    <td><a name="199289"> </a>Return an empty record.</td>
   </tr>
   <tr>
     <td><a name="198474"> </a>find</td>
@@ -588,7 +594,7 @@
     <td><a name="195422"> </a>eval</td>
     <td><a name="195424"> </a>string</td>
     <td><a name="195426"> </a>any type</td>
-    <td><a name="195431"> </a>evaluate the specified expression (see <a href="expressionsa8.htm#185006">page 117</a>).</td>
+    <td><a name="195431"> </a>evaluate the specified expression (see <a href="expressionsa8.htm#185006">page 118</a>).</td>
   </tr>
   <tr>
     <td><a name="195434"> </a>parseInt</td>
@@ -624,7 +630,7 @@
     <td><a name="195485"> </a>traceEvaluation</td>
     <td><a name="195487"> </a>string</td>
     <td><a name="195489"> </a>string</td>
-    <td><a name="195491"> </a>evaluate the specified expression and report details on how it was evaluated (see <a href="expressionsa8.htm#185006">page 117</a>).</td>
+    <td><a name="195491"> </a>evaluate the specified expression and report details on how it was evaluated (see <a href="expressionsa8.htm#185006">page 118</a>).</td>
   </tr>
 </table>
 
@@ -654,7 +660,7 @@
     <td><a name="195531"> </a>DCT</td>
     <td><a name="195533"> </a>{</font>double} or</font></font><a name="195534"> </a>{</font>double}, </font>int or</font></font><a name="195535"> </a>{</font>double}, </font>int, int</td>
     <td><a name="195537"> </a>{</font>double}</font></td>
-    <td><a name="195539"> </a>Return the discrete cosine transform of the specified array, using the specified (optional) length and normalization strategy (see <a href="expressionsa8.htm#192146">page 118</a>).</td>
+    <td><a name="195539"> </a>Return the discrete cosine transform of the specified array, using the specified (optional) length and normalization strategy (see <a href="expressionsa8.htm#192146">page 119</a>).</td>
   </tr>
   <tr>
     <td><a name="195545"> </a>downsample</td>
@@ -737,7 +743,7 @@
     <td><a name="195690"> </a>IDCT</td>
     <td><a name="195692"> </a>{</font>double} or</font></font><a name="195693"> </a>{</font>double}, </font>int or</font></font><a name="195694"> </a>{</font>double}, </font>int, int</td>
     <td><a name="195696"> </a>{</font>double}</font></td>
-    <td><a name="195698"> </a>Return the inverse discrete cosine transform of the specified array, using the specified (optional) length and normalization strategy (see <a href="expressionsa8.htm#192146">page 118</a>).</td>
+    <td><a name="195698"> </a>Return the inverse discrete cosine transform of the specified array, using the specified (optional) length and normalization strategy (see <a href="expressionsa8.htm#192146">page 119</a>).</td>
   </tr>
   <tr>
     <td><a name="195704"> </a>IFFT</td>
@@ -918,11 +924,10 @@
 
 <table width="331" border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
-    alt="TOC"> </a></td>
-    <td><a href="expressionsa11.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
-    alt="PREV"> </a></td>
-    <td>&nbsp;</td>
+    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23"
+    border="0" alt="TOC"> </a></td>
+    <td><a href="expressionsa11.htm"><img src="img/navprev.gif" width="81" height="23"
+    border="0" alt="PREV"> </a></td>
   </tr>
 </table>
 

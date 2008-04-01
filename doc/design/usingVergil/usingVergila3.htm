@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/06/07 10:36:25">
+<meta name="LASTUPDATED" content="03/31/08 14:03:47">
 <link href="../../default.css" rel="stylesheet" type="text/css">
 <title>2.2 Quick Start</title>
 </head>
@@ -47,7 +47,7 @@
 
 <p>
   <a name="165846"> </a>First start Vergil. From the command line, enter "vergil", or if you installed on Windows, select Ptolemy II and Vergil in the Start menu<a href="#176974"><sup>1</sup></a>, or click on a Web Start link on a web page supporting the web edition. You should see an initial welcome window that looks like the one in figure <img src="images/usingVergil46.gif" height="264" width="599" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergila3.htm#165846">2.2</a>. Feel free to explore the links in this window. The "Quick tour" link takes you to the page shown in figure <img src="images/usingVergil90.gif" height="587" width="600" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#165846">2.2</a>. Feel free to explore the links in this window. The "Quick tour" link takes you to the page shown in figure <img src="images/usingVergila.gif" height="550" width="600" align="left" border="0" hspace="0" vspace="0">
 <a href="usingVergila3.htm#165846">2.3</a>.
 </p>
 
@@ -58,8 +58,8 @@
 
 
 <p>
-  <a name="175696"> </a>The first example listed under "Basic Modeling Capabilities" on the quick tour page is the model shown in figure <a href="usingVergila2.htm#167754">2.1</a>. It creates a sinusoidal signal, multiplies it by a sinusoidal carrier, adds noise, and then estimates the power spectrum. You can execute this model in either of two ways. First, you can select Run Window in the View menu, and then click on Go. The result is shown in figure <img src="images/usingVergila.gif" usemap="#usingVergila_gif" height="436" width="600" align="left" border="0" hspace="0" vspace="0">
-<map name="usingVergila_gif">
+  <a name="175696"> </a>The first example listed under "Basic Modeling Capabilities" on the quick tour page is the model shown in figure <a href="usingVergila2.htm#167754">2.1</a>. It creates a sinusoidal signal, multiplies it by a sinusoidal carrier, adds noise, and then estimates the power spectrum. You can execute this model in either of two ways. First, you can select Run Window in the View menu, and then click on Go. The result is shown in figure <img src="images/usingVergil4.gif" usemap="#usingVergil4_gif" height="436" width="600" align="left" border="0" hspace="0" vspace="0">
+<map name="usingVergil4_gif">
 
 <area href="usingVergila2.htm#167754" shape=rect coords="0,416,597,434">
 </map>
@@ -78,7 +78,7 @@
 
 
 <p>
-  <a name="175749"> </a>Three of the actors in figure <a href="usingVergila2.htm#167754">2.1</a> are <i>composite actors</i>, which means that their implementation is itself given as a block diagram. Composite actors are indicated visually by the red outline. You can invoke the "Open Actor" context menu choice to reveal the implementation, as shown in figure <img src="images/usingVergil4.gif" height="567" width="600" align="left" border="0" hspace="0" vspace="0">
+  <a name="175749"> </a>Three of the actors in figure <a href="usingVergila2.htm#167754">2.1</a> are <i>composite actors</i>, which means that their implementation is itself given as a block diagram. Composite actors are indicated visually by the red outline. You can invoke the "Open Actor" context menu choice to reveal the implementation, as shown in figure <img src="images/usingVergil6.gif" height="567" width="600" align="left" border="0" hspace="0" vspace="0">
 <a href="usingVergila3.htm#175749">2.5</a>, which shows the implementation of the Signal Source in figure <a href="usingVergila2.htm#167754">2.1</a>. It is evident from the block diagram how a sinusoidal signal is generated.
 </p>
 
@@ -91,21 +91,21 @@
 <a name="175978"> </a>A key principle of the Ptolemy II system is that the model of computation that defines the meaning of a block diagram is not built-in, but is rather specified by the <i>director</i> component that is included in the model. The box labeled "SDF Director" in figures <a href="usingVergila2.htm#167754">2.1</a> and <a href="usingVergila3.htm#175749">2.5</a> specifies that these block diagrams have <i>synchronous dataflow</i> semantics, which is explained further below. The second example under "Basic Modeling Capabilities" in the quick tour of figure <a href="usingVergila3.htm#165846">2.3</a>, by contrast, has continuous-time semantics (the one labeled "Continuous-Time Modeling"). The example is the well-known <i>Lorenz attractor</i>, a non-linear feedback system that exhibits chaotic behavior.<br>
 
 
-<a name="175992"> </a>The Lorenz attractor model, shown in figure <img src="images/usingVergil6.gif" height="422" width="600" align="center" border="0" hspace="0" vspace="0">
+<a name="175992"> </a>The Lorenz attractor model, shown in figure <img src="images/usingVergil9.gif" height="422" width="600" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila3.htm#175992">2.6</a>, is a block diagram representation of a set of nonlinear ordinary differential equations. The blocks with integration signs in their icons are integrators. At any given time <i>t</i>, their output is given by<br>
 
 <div align="center">
-<a name="175849"> </a>(1) <img src="images/usingVergil9.gif" height="63" width="144" border="0" hspace="0" vspace="0">
+<a name="175849"> </a>(1) <img src="images/usingVergil12.gif" height="63" width="144" border="0" hspace="0" vspace="0">
 ,<br>
 </div>
 
-<a name="175859"> </a>where <img src="images/usingVergil10.gif" height="21" width="33" border="0" hspace="0" vspace="0">
- is the initial state of the integrator, <img src="images/usingVergil13.gif" height="21" width="13" border="0" hspace="0" vspace="0">
- is the start time of the model, and <img src="images/usingVergil14.gif" height="22" width="10" border="0" hspace="0" vspace="0">
+<a name="175859"> </a>where <img src="images/usingVergil13.gif" height="21" width="33" border="0" hspace="0" vspace="0">
+ is the initial state of the integrator, <img src="images/usingVergil16.gif" height="21" width="13" border="0" hspace="0" vspace="0">
+ is the start time of the model, and <img src="images/usingVergil17.gif" height="22" width="10" border="0" hspace="0" vspace="0">
  is the input signal. Note that since the output is the integral of the input, then at any given time, the input is the derivative of the output,<br>
 
 <div align="center">
-<a name="175863"> </a>(2) <img src="images/usingVergil17.gif" height="36" width="86" border="0" hspace="0" vspace="0">
+<a name="175863"> </a>(2) <img src="images/usingVergil20.gif" height="36" width="86" border="0" hspace="0" vspace="0">
 .<br>
 </div>
 
@@ -113,35 +113,35 @@
 
 
 <p>
-  <a name="175874"> </a>Let the output of the top integrator in figure <a href="usingVergila3.htm#175992">2.6</a> be <img src="images/usingVergil18.gif" height="21" width="16" border="0" hspace="0" vspace="0">
-, the output of the middle integrator be <img src="images/usingVergil21.gif" height="21" width="16" border="0" hspace="0" vspace="0">
-, and the output of the bottom integrator be <img src="images/usingVergil22.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+  <a name="175874"> </a>Let the output of the top integrator in figure <a href="usingVergila3.htm#175992">2.6</a> be <img src="images/usingVergil21.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+, the output of the middle integrator be <img src="images/usingVergil24.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+, and the output of the bottom integrator be <img src="images/usingVergil25.gif" height="21" width="16" border="0" hspace="0" vspace="0">
 . Then the equations described by figure <a href="usingVergila3.htm#175992">2.6</a> are
 </p>
 
 <div align="center">
-<a name="175884"> </a>(3) <img src="images/usingVergil25.gif" height="82" width="193" border="0" hspace="0" vspace="0">
+<a name="175884"> </a>(3) <img src="images/usingVergil28.gif" height="82" width="193" border="0" hspace="0" vspace="0">
 .<br>
 </div>
 
-<a name="175885"> </a>For each equation, the expression on the right is implemented by an Expression actor, whose icon shows the expression. Each expression refers to parameters (such as <i>lambda</i> for <img src="images/usingVergil26.gif" height="18" width="12" border="0" hspace="0" vspace="0">
- and <i>sigma</i> for <img src="images/usingVergil29.gif" height="18" width="12" border="0" hspace="0" vspace="0">
-) and input ports of the actor (such as <i>x1</i> for <img src="images/usingVergil30.gif" height="21" width="16" border="0" hspace="0" vspace="0">
- and <i>x2</i> for <img src="images/usingVergil33.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+<a name="175885"> </a>For each equation, the expression on the right is implemented by an Expression actor, whose icon shows the expression. Each expression refers to parameters (such as <i>lambda</i> for <img src="images/usingVergil29.gif" height="18" width="12" border="0" hspace="0" vspace="0">
+ and <i>sigma</i> for <img src="images/usingVergil32.gif" height="18" width="12" border="0" hspace="0" vspace="0">
+) and input ports of the actor (such as <i>x1</i> for <img src="images/usingVergil33.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+ and <i>x2</i> for <img src="images/usingVergil36.gif" height="21" width="16" border="0" hspace="0" vspace="0">
 ). The names of the input ports are not shown in the diagram, but if you linger over them with the mouse cursor, the name will pop up in a tooltip. The expression in each Expression actor can be edited by double clicking on the actor, and the parameter values can be edited by double clicking on the parameters, which are shown next to bullets on the right.<br>
 
 
 <p>
-  <a name="175898"> </a>The integrators each also have initial values, which you can examine and change by double clicking on the corresponding integrator icon. These define the initial values of <img src="images/usingVergil34.gif" height="21" width="16" border="0" hspace="0" vspace="0">
-, <img src="images/usingVergil37.gif" height="21" width="16" border="0" hspace="0" vspace="0">
-, and <img src="images/usingVergil38.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+  <a name="175898"> </a>The integrators each also have initial values, which you can examine and change by double clicking on the corresponding integrator icon. These define the initial values of <img src="images/usingVergil37.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+, <img src="images/usingVergil40.gif" height="21" width="16" border="0" hspace="0" vspace="0">
+, and <img src="images/usingVergil41.gif" height="21" width="16" border="0" hspace="0" vspace="0">
 , respectively. For this example, all three are set to 1.0.
 </p>
 
 
 <p>
-  <a name="175908"> </a>The Continuous-Time (CT) Solver, shown at the upper left, manages a simulation of the model. It contains a sophisticated ODE solver, and to use it effectively, you will need to understand some of its parameters. The parameters are accessed by double clicking on the solver box, which results in the dialog shown in figure <img src="images/usingVergil41.gif" usemap="#usingVergil41_gif" height="292" width="600" align="left" border="0" hspace="0" vspace="0">
-<map name="usingVergil41_gif">
+  <a name="175908"> </a>The Continuous-Time (CT) Solver, shown at the upper left, manages a simulation of the model. It contains a sophisticated ODE solver, and to use it effectively, you will need to understand some of its parameters. The parameters are accessed by double clicking on the solver box, which results in the dialog shown in figure <img src="images/usingVergil44.gif" usemap="#usingVergil44_gif" height="292" width="600" align="left" border="0" hspace="0" vspace="0">
+<map name="usingVergil44_gif">
 
 <area href="usingVergila3.htm#175992" shape=rect coords="0,269,594,288">
 </map>
@@ -150,9 +150,9 @@
 
 
 <p>
-  <a name="175922"> </a>To execute the model, you can click on the run button in the toolbar (with a red triangle icon), or you can open the Run Window in the View menu. In the former case, the model executes, and the results are plotted in their own window, as shown in figure <img src="images/usingVergil44.gif" height="546" width="937" align="left" border="0" hspace="0" vspace="0">
-<a href="usingVergila3.htm#175922">2.8</a>. What is plotted is <img src="images/usingVergil47.gif" height="21" width="33" border="0" hspace="0" vspace="0">
- vs. <img src="images/usingVergil48.gif" height="21" width="33" border="0" hspace="0" vspace="0">
+  <a name="175922"> </a>To execute the model, you can click on the run button in the toolbar (with a red triangle icon), or you can open the Run Window in the View menu. In the former case, the model executes, and the results are plotted in their own window, as shown in figure <img src="images/usingVergil47.gif" height="546" width="937" align="left" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#175922">2.8</a>. What is plotted is <img src="images/usingVergil50.gif" height="21" width="33" border="0" hspace="0" vspace="0">
+ vs. <img src="images/usingVergil51.gif" height="21" width="33" border="0" hspace="0" vspace="0">
  for values of <i>t</i> in between <i>startTime</i> and <i>stopTime</i>.
 </p>
 
@@ -175,7 +175,7 @@
 
 <p>
   <a name="165895"> </a>Now you should have something that looks like figure <img src="images/usingVergil8.gif" height="608" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergila3.htm#165895">2.10</a>. The <i>Const</i> actor is going to create our string, and the <i>Display</i> actor is going to print it out for us. We need to take care of one small detail to make it look like figure <a href="usingVergila3.htm#165895">2.10</a>: we need to tell the <i>Const</i> actor that we want the string "Hello World". To do this we need to edit one of the parameters of the <i>Const</i>. To do this, either double click on the <i>Const</i> actor icon, or right click<a href="#176997"><sup>2</sup></a> on the <i>Const</i> actor icon and select "Configure". You should see the dialog box in figure <img src="images/usingVergil20.gif" height="374" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergila3.htm#165895">2.10</a>. The <i>Const</i> actor is going to create our string, and the <i>Display</i> actor is going to print it out for us. We need to take care of one small detail to make it look like figure <a href="usingVergila3.htm#165895">2.10</a>: we need to tell the <i>Const</i> actor that we want the string "Hello World". To do this we need to edit one of the parameters of the <i>Const</i>. To do this, either double click on the <i>Const</i> actor icon, or right click<a href="#176997"><sup>2</sup></a> on the <i>Const</i> actor icon and select "Configure". You should see the dialog box in figure <img src="images/usingVergil19.gif" height="374" width="937" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila3.htm#165895">2.11</a>. Enter the string "Hello World" for the value parameter and click the Commit button. Be sure to include the double quotes, so that the expression is interpreted as a string.
 </p>
 
@@ -191,7 +191,7 @@
 
 
 <p>
-  <a name="166518"> </a>To run the example, go to the View menu and select the Run Window. If you click the "Go" button, you will see a large number of strings in the display at the right. To stop the execution, click the "Stop" button. To see only one string, change the <i>iterations</i> parameter of the SDF Director to 1, which can be done in the run window, or in the graph editor in the same way you edited the parameter of the <i>Const</i> actor before. The run window is shown in figure <img src="images/usingVergil28.gif" height="456" width="937" align="center" border="0" hspace="0" vspace="0">
+  <a name="166518"> </a>To run the example, go to the View menu and select the Run Window. If you click the "Go" button, you will see a large number of strings in the display at the right. To stop the execution, click the "Stop" button. To see only one string, change the <i>iterations</i> parameter of the SDF Director to 1, which can be done in the run window, or in the graph editor in the same way you edited the parameter of the <i>Const</i> actor before. The run window is shown in figure <img src="images/usingVergil27.gif" height="292" width="600" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila3.htm#166518">2.12</a>.
 </p>
 
@@ -237,7 +237,7 @@ in .relation.Ramp.output and .relation.relation2<a name="177012"> </a>
 
 
 <p>
-  <a name="177201"> </a>So how do we get the output of the <i>Ramp</i> to the other two actors? We need an explicit <i>relation</i> in the diagram. A relation is represented in the diagram by a black diamond, as shown in figure <img src="images/usingVergil51.gif" height="359" width="937" align="center" border="0" hspace="0" vspace="0">
+  <a name="177201"> </a>So how do we get the output of the <i>Ramp</i> to the other two actors? We need an explicit <i>relation</i> in the diagram. A relation is represented in the diagram by a black diamond, as shown in figure <img src="images/usingVergil54.gif" height="359" width="937" align="center" border="0" hspace="0" vspace="0">
 <a href="usingVergila3.htm#177201">2.15</a>. It can be created by either control-clicking on the background or by clicking on the button in the toolbar with the black diamond on it.
 </p>
 
@@ -246,7 +246,7 @@ in .relation.Ramp.output and .relation.relation2<a name="177012"> </a>
 </dl>
 
 <p>
-  <a name="170023"> </a>In the model shown in figure <a href="usingVergila3.htm#177201">2.15</a>, the relation is used to broadcast the output from a single port to a number of places. The single port still has only one connection to it, a connection to a relation. Relations can also be used to control the routing of wires in the diagram. However, as of the 4.0 release of Ptolemy II, a connection can only have a single relation on it, so the degree to which routing can be controlled is limited.
+  <a name="170023"> </a>In the model shown in figure <a href="usingVergila3.htm#177201">2.15</a>, the relation is used to broadcast the output from a single port to a number of places. The single port still has only one connection to it, a connection to a relation. Relations can also be used to control the routing of wires in the diagram. Relations may be linked to other relations. Any two relations that are linked are said to be members of the same <i>relation group</i>. Semantically, a relation group has the same meaning as a single relation. In a relation group, there is no significance to the order in which relations are linked.
 </p>
 
 
