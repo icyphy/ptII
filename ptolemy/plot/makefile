@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2007 The Regents of the University of California.
+# @Copyright (c) 1997-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -47,7 +47,7 @@ PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java,
 #    doc/main.htm, doc/changes.htm, doc/install.htm, doc/download/index.htm
-PTVERSION =	5.6.1.devel
+PTVERSION =	5.7.1.devel
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
 
@@ -102,9 +102,7 @@ EXTRA_SRCS = $(JSRCS) \
 	$(ISJAVA_SRC) \
 	copyright.txt \
 	index.htm \
-	ptplot.jnlp.in \
-	ptplot.iap_xml \
-	ptplot_ismp.xml
+	ptplot.jnlp.in
 
 # Non-source files such as README files and subdirectories
 MISC_FILES = test img servlet #bean
@@ -407,6 +405,11 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
+	@echo "Remove test from ptolemy/plot/makefile"
+	cat "$(PTII)/ptolemy/plot/makefile" | \
+		sed "s/ test / /" | \
+		sed "s/\ttest/\t/" > \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/plot/makefile
 	#@echo "JShield needs the ico file to be in the top level directory"
 	#cp $(PTTMPME)/doc/img/ptplot.ico \
 	#	$(PTTMPDIR)/$(PTDIST)
@@ -417,9 +420,6 @@ fixtmpdist:
 	@echo "Copy over bin"
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/bin
 	cp -r   "$(PTII)/bin/ptinvoke.in" \
-		"$(PTII)/bin/histogram.bat" \
-		"$(PTII)/bin/ptplot.bat" \
-		"$(PTII)/bin/pxgraph.bat" \
 		$(PTTMPDIR)/$(PTDIST)/bin
 	@echo "Create bin/makefile"
 	echo "ME =		bin" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
@@ -444,8 +444,8 @@ fixtmpdist:
 	echo "foo" | \
 		awk '{	 printf("\t%c%s\n", 36, "(BAT_FILES)")}' \
 		>> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo '	$(BAT_FILES)' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "all: ptinvoke" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo 'all: ptinvoke $$(BAT_FILES)' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	-chmod a+x ptinvoke" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	rm -f histogram" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	ln -s ptinvoke histogram" >> \
@@ -471,13 +471,22 @@ fixtmpdist:
 	echo "	(cd ..; /bin/sh ./configure)" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo 'makebat: ptinvoke' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo '	rm -f makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo '	ln -s ptinvoke makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo '$$(BAT_FILES): makebat' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo '	rm -f "$@"' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo '	./makebat -q "`basename $@ .bat`"' \
+		>> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "# Get the rest of the rules" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "foo" | \
 		awk '{	 printf("include %c%s/mk/ptcommon.mk\n", 36, "(ROOT)")}' >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	@echo "Copy over gui stuff"
-	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	mkdir -p $(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	cp "$(PTII)/ptolemy/gui/Query.java" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	cp "$(PTII)/ptolemy/gui/QueryListener.java" \
@@ -490,7 +499,9 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	# Remove most of the .java files
 	egrep -v "BasicJApplet|CancelException|GraphicalMessageHandler|JTextAreaExec|MessageHandler|ShellInterpreter|ShellTextArea|StatusBar|StreamExec|SwingWorker|Top.java" \
-		"$(PTII)/ptolemy/gui/makefile" > \
+		"$(PTII)/ptolemy/gui/makefile" | \
+		sed "s/ test / /" | \
+		sed "s/\ttest//" > \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui/makefile
 	@echo "Copy over util stuff"
 	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/util
@@ -503,10 +514,11 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	cp "$(PTII)/ptolemy/util/package.html" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	egrep -v "CancelException|ExecuteCommands|MessageHandler|StreamExec|XSLTUtilities" \
-		"$(PTII)/ptolemy/util/makefile" > \
+	egrep -v "CancelException|ExecuteCommands|MessageHandler|StreamExec|StringBufferExec.java|XSLTUtilities" \
+		"$(PTII)/ptolemy/util/makefile" | \
+		sed "s/ test / /" | \
+		sed "s/\ttest/\t/" > \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util/makefile
-
 	# Get rid of CVS directories in com and gui
 	-(cd $(PTTMPDIR)/$(PTDIST); \
 		$(FIND) . \( -name CVS -o -name "META-INF" -o -name ".#*" -o -name "#*" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*~" -o -name "adm" -o -name "autom4te.cache" -o -name "*Build_output" -o -name ".buildinstaller*" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
