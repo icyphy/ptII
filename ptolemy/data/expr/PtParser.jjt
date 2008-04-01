@@ -516,7 +516,7 @@ TOKEN : /* Numeric literals */
       | <OCTAL_LITERAL> (<INTEGER_FORMAT_SPEC>)?
   >
 |
-  < #INTEGER_FORMAT_SPEC: (["l","L"]) | (["u","U"] ["b","B"]) >
+  < #INTEGER_FORMAT_SPEC: (["l","L"]) | (["s", "S"]) | (["u","U"] ["b","B"]) >
 |
   < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
 |
