@@ -643,7 +643,8 @@ csr_matrix_t *csr_hb_load(char *filename)
     int i;
     int n_per_proc, nlocal, nzlocal;
     int first_nz;
-    static int shared n;
+
+	static int shared n;
 
     /*
     static shared int* row_start;
@@ -661,6 +662,8 @@ csr_matrix_t *csr_hb_load(char *filename)
     /* Read the initial matrix at processor 0 and copy it
      * into shared space
      */
+	
+
     if (MYTHREAD == 0) {
         int nz;
 
@@ -668,6 +671,9 @@ csr_matrix_t *csr_hb_load(char *filename)
         //n is the number of rows of x and b
         //                   columns of A
         n = initial_matrix->n;
+
+		printf("n = %d\n", n);
+
         nz = initial_matrix->nz;
 
         assert(nz < MAX_NNZ);
@@ -695,7 +701,7 @@ csr_matrix_t *csr_hb_load(char *filename)
 
     local_matrix = (csr_matrix_t *) malloc(sizeof(csr_matrix_t));
     local_matrix->n = n;
-
+/*
     // n_per_proc number of rows are distributed to each thread.
     // all threads other than the last one are responsible for equal number of
     // rows, the last one is responsible for the left over rows
@@ -709,10 +715,48 @@ csr_matrix_t *csr_hb_load(char *filename)
         start[i] = i * n_per_proc;
         //local_matrix->localStart[i] = start[i];
     }
+*/
+	//more on balancing issue	
+    start = (int*) malloc((THREADS + 1) * sizeof(int));
+
+	start[0] = 0;
+	int last_start = 0;
+
+	int load_per_proc = (row_start[n] - row_start[0])/THREADS;
+
+	//find the load for each proc nearest to the load per proc
+	for(i = 1; i <= n; i++)
+	{
+		int cur_load = row_start[i] - row_start[start[last_start]]; 
+
+		if(cur_load >= load_per_proc)
+		{
+			//compare with the previous to find the nearest 
+			int pre_load = row_start[i - 1] - row_start[start[last_start]];
+
+			last_start++;	
+
+			if((load_per_proc - pre_load) > (cur_load - load_per_proc))
+			{
+				start[last_start] = i;	
+			}
+			else
+			{
+				start[last_start] = i - 1;
+			}
+			
+			//make sure that the number of threads does not exceed THREADS
+			if(last_start == THREADS) 
+				break;
+		}
+	}	
+
+
     start[THREADS] = n;
     //local_matrix->localStart[THREADS] = start[THREADS];
     // nlocal is the number of rows for each thread
     nlocal = start[MYTHREAD + 1] - start[MYTHREAD];
+
     // store nlocal in m of local_matrix
     local_matrix->m = nlocal;
     // store the starting index to localStart
@@ -730,6 +774,9 @@ csr_matrix_t *csr_hb_load(char *filename)
 
     // number of none-zeros in the local processor
     nzlocal = row_start[start[MYTHREAD + 1]] - row_start[start[MYTHREAD]];
+
+	//printf("thread: %d,n = %d, load per proc %d, start %d, last start %d, nzlocal = %d\n", MYTHREAD, n, load_per_proc, start[MYTHREAD], last_start, nzlocal);
+
     local_matrix->nz = nzlocal;
 
     local_matrix->col_idx = (int *) malloc(nzlocal * sizeof(int));
@@ -737,10 +784,17 @@ csr_matrix_t *csr_hb_load(char *filename)
     assert(local_matrix->col_idx != NULL);
     assert(local_matrix->val != NULL);
 
+#define max(a, b) (a > b ? a : b)
+#define min(a, b) (a < b ? a : b)
+	local_matrix->last_col = 0;
+	local_matrix->first_col = n;
 
     for (i = 0; i < nzlocal; ++i) {
         local_matrix->col_idx[i] = col_idx[first_nz + i];
         local_matrix->val[i] = val[first_nz + i];
+
+		local_matrix->last_col = max(local_matrix->last_col, col_idx[first_nz + i]);
+		local_matrix->first_col = min(local_matrix->first_col, col_idx[first_nz + i]);
     }
 
     free(start);

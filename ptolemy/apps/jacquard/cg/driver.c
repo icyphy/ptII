@@ -11,8 +11,10 @@
 #include "poisson_problem.h"
 #include "csr_problem.h"
 
-void
-initialize_timer (struct Timer * t)
+double* jacobi_init(void* data);
+void jacobi_psolve(double *Minvx, void *Mdata, double *x, int n);
+
+void initialize_timer (struct Timer * t)
 {
   t->clock_holder.tv_sec = 0;
   t->clock_holder.tv_usec = 0;
@@ -20,14 +22,12 @@ initialize_timer (struct Timer * t)
   t->duration.tv_usec = 0;
 }
 
-void
-start_timer(struct Timer * t)
+void start_timer(struct Timer * t)
 {
   gettimeofday (&t->clock_holder, NULL);
 }
 
-void
-stop_timer(struct Timer * t)
+void stop_timer(struct Timer * t)
 {
   struct timeval end_tv;
   gettimeofday (&end_tv, NULL);
@@ -35,8 +35,7 @@ stop_timer(struct Timer * t)
   t->duration.tv_usec += (end_tv.tv_usec - t->clock_holder.tv_usec);
 }
 
-double
-timer_duration(const struct Timer t)
+double timer_duration(const struct Timer t)
 {
   return t.duration.tv_sec + 1.0e-6 * (double)t.duration.tv_usec;
 }
@@ -55,7 +54,7 @@ void poisson_matvec(double *Ax, void *Adata, double *x, int n)
 
 /* Multiply by a matrix in compressed sparse-row format
  */
-/*
+
 void csr_matvec(double *Ax, void *Adata, double *x, int n)
 {
     int i, j;
@@ -72,11 +71,10 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
         }
     }
 }
-*/
 
 //#define MAX_N   100
 //#define MAX_NNZ 1000
-
+/*
 void csr_matvec(double *Ax, void *Adata, double *x, int n)
 {
     int i, j;
@@ -89,7 +87,9 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
 
     static shared [] double xall[MAX_NNZ];
 
-    for (i = 0; i < n; ++i) xall[mystart + i] = x[i];
+    for (i = 0; i < n; ++i) 
+		xall[mystart + i] = x[i];
+
     upc_barrier;
 
     for (i = 0; i < n; ++i) {
@@ -98,9 +98,8 @@ void csr_matvec(double *Ax, void *Adata, double *x, int n)
             Ax[i] += (*Aval++) * xall[*Acol++];
         }
     }
-    upc_barrier;
 }
-
+*/
 
 /* Main routine -- test out the code on a sample problem
  */
@@ -147,12 +146,11 @@ void driver(int m, int maxiter,
 
     upc_barrier;
 
-printf("T[%d]: m = %d\n", MYTHREAD, m);
-
     retval = precond_cg(matvec, psolve, Adata, Mdata,
                         b, x, rtol, m, rhist, maxiter);
 
     for (i = 0; i < m; ++i) xall[myStart + i] = x[i];
+
     upc_barrier;
 
     if (MYTHREAD == 0) {
@@ -201,21 +199,75 @@ int main(int argc, char **argv)
 
         csr_matrix_t *A = csr_hb_load(argv[1]);
 //        csr_jacobi_t *Mj = csr_jacobi_init(A, block_size);
-
+	double* Aj = jacobi_init(A);
         printf("Using problem %s\n", argv[1]);
-/*
-        printf("With block Jacobi: ");
-        driver(A->m, A->m, csr_matvec, A, csr_jacobi_psolve, Mj, A->n, A->myStart);
 
-        printf("With SSOR:         ");
-        driver(A->m, A->m, csr_matvec, A, csr_ssor_psolve, A, A->n, A->myStart);
-*/
+	if ( MYTHREAD == 0)
+	  printf("With Jacobi: ");
+        driver(A->m, A->n, csr_matvec, A, jacobi_psolve, Aj, A->n, A->myStart);
 
-        printf("Vanilla CG:        ");
-//printf("T[%d]: here\n", MYTHREAD);
-        driver(A->m, A->m, csr_matvec, A, dummy_psolve, NULL, A->n, A->myStart);
+/*         printf("With SSOR:         "); */
+/*         driver(A->m, A->m, csr_matvec, A, csr_ssor_psolve, A, A->n, A->myStart); */
+
+		if(MYTHREAD == 0)
+        	printf("Vanilla CG:        \n");
+
+		driver(A->m, A->n, csr_matvec, A, dummy_psolve, NULL, A->n, A->myStart);
     }
 
-//printf("T[%d]: finished\n", MYTHREAD);
     return 0;
+}
+void jacobi_psolve(double *Minvx, void *Mdata, double *x, int n)
+{
+  //csr_matrix_t* Mj = (csr_matrix_t*)Mdata;
+  double* Mj = (double*)Mdata;
+  int i;
+
+  //printf("thread %d entering psolve\n", MYTHREAD);
+  for (i =0; i<n; i++)
+    Minvx[i] = x[i] / Mj[i];
+
+}
+
+
+double* jacobi_init(void* data)
+{
+  csr_matrix_t* Mdata = (csr_matrix_t *) data;
+  int m = Mdata->m;
+  double* jMdata = (double*)malloc(sizeof(double) * m);
+  int* Mrows = Mdata -> row_start;
+  int* Mcols = Mdata -> col_idx;
+  //double * jMval;
+  int i, k;
+  assert(jMdata != NULL);
+
+  printf ("thread %d m = %d\n", MYTHREAD, m);
+
+  //jMdata -> m = m;
+  //jMdata -> n = Mdata -> n;
+  //jMdata -> nz = m*m-m;
+  //jMdata -> rowstart = (int*) malloc(sizeof(int) * m);
+  //jMdata -> col_idx = (int*)malloc(sizeof(int) * m);
+
+  //jMdata -> val = (double*)malloc (sizeof(double) * m);
+  //jMdata = jMdata -> val;
+  memset( jMdata, 0, m);
+  
+  assert ( jMdata != NULL );
+  
+
+  for ( i = 0; i < m; i++)
+    for ( k = Mrows[i] ; k < Mrows[i+1]; k++) {
+    /*   if (MYTHREAD == 2) */
+/* 	printf ("row %d, col %d\n", i + MYTHREAD *m,Mcols[k]); */
+	  if ( i + Mdata->myStart == Mcols[k] )
+	    jMdata[i] = (Mdata -> val) [k];
+    }
+
+  /* if ( MYTHREAD == 2) { */
+/*   for (i = 0; i < m; i++) */
+/*     printf("%g, ", jMdata[i]); */
+/*   printf("\n%d rows\n", m); */
+/*   } */
+  return jMdata;
 }

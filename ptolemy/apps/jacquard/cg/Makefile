@@ -27,7 +27,7 @@ tgz: tar
 	cp cg.tar.gz cg.tgz
 
 tar:
-	tar -cf cg.tar Makefile $(SRCS) *.h
+	tar -cf cg.tar Makefile $(SRCS) *.h run.batch gr_30_30.mtx bcsstk18.mtx
 
 clean:
 	rm -f cg *.out *.o *~

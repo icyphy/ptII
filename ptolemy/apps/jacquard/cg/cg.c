@@ -3,6 +3,17 @@
 #include <string.h>
 #include <math.h>
 
+#include <sys/time.h>
+#include <time.h>
+
+#include <bupc_collectivev.h>
+#include "csr_problem.h"
+#include "cg.h"
+
+void initialize_timer (struct Timer * t);
+void start_timer(struct Timer * t);
+void stop_timer(struct Timer * t);
+double timer_duration(const struct Timer t);
 
 /* Compute alpha*x + y and store in dest (daxpy-like operation)
  *
@@ -12,13 +23,19 @@
  *  x, y  - vector inputs
  *  n     - vector size
  */
+/*
 void axpy(double *dest, double alpha, double *x, double *y, int n)
 {
     int i;
     for (i = 0; i < n; ++i)
         dest[i] = alpha * x[i] + y[i];
 }
+*/
 
+#define axpy(dest, alpha, x, y, n) {	\
+    int i;								\
+    for (i = 0; i < n; ++i)				\
+        dest[i] = alpha * x[i] + y[i];};
 
 /* Compute the dot product of two vectors x'*y
  *
@@ -26,88 +43,17 @@ void axpy(double *dest, double alpha, double *x, double *y, int n)
  *  x, y - vector inputs
  *  n    - vector size
  */
-
-double ddot(double *x, double *y, int n)
-{
-    int i;
-    //double sum = 0;
-    double localSum = 0.0;
-    //static shared double globalSumEach[THREADS];
-
-    //shared double* globalSum;
-    //static shared double* shared globalSumEach;
-    //globalSumEach = (shared double* shared) upc_local_alloc(THREADS * sizeof(double));
-    static shared double globalSumEach[THREADS];
-    //globalSum = (shared double*) upc_alloc(sizeof(double));
-    //*globalSum = 0.0;
-    //double* globalSum;
-    //globalSum = (double*) malloc(sizeof(double));
-    //*globalSum = 0.0;
-    double globalSum;
-    globalSum = 0.0;
-
-    upc_notify;
-
-    for (i = 0; i < n; ++i)
-        localSum += x[i] * y[i];
-
-    upc_wait;
-
-//printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
-    //upc_barrier;
-
-    globalSumEach[MYTHREAD] = localSum;
-
-    upc_barrier;
-
-    //for (i = 0; i < THREADS; ++i) printf("T[%d]: globalSumEach[%d] = %g\n", MYTHREAD, i, globalSumEach[i]);
-//printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
-
-    for (i = 0; i < THREADS; ++i) {
-        globalSum += globalSumEach[i];
-        //*globalSum += globalSumEach[i];
-        //printf("T[%d]: globalSumEach2[%d] = %g\n", MYTHREAD, i, globalSumEach[i]);
-    }
-/*
-    upc_forall (i = 0; i < THREADS; ++i) {
-        double temp = globalSumEach[i];
-        //*globalSum += globalSumEach[i];
-        printf("T[%d]: temp globalSumEach[%d] = %g\n", MYTHREAD, i, temp);
-        globalSum += temp;
-    }
-*/
-//printf("T[%d]: globalSum = %g\n", MYTHREAD, localSum);
-    //return localSum;
-    return globalSum;
-}
-
-/*
 double ddot(double *x, double *y, int n)
 {
     int i;
     double localSum = 0.0;
-    double globalSum = 0.0;
+	//static shared double sum;
 
     for (i = 0; i < n; ++i)
         localSum += x[i] * y[i];
 
-printf("T[%d]: localSum = %g\n", MYTHREAD, localSum);
-
-    upc_barrier;
-
-    bupc_allv_reduce(double, localSum, MYTHREAD, UPC_ADD);
-
-    //upc_wait;
-    printf("T[%d]: globalSum = %g\n", MYTHREAD, globalSum);
-
-//printf("T[%d]: should be all the same: globalSum = %d\n", MYTHREAD, *globalSum);
-
-//printf("T[%d]: globalSum = %g\n", MYTHREAD, localSum);
-    //return localSum;
-//printf("T[%d]: first ddot(r,z,n) = %g\n", MYTHREAD, finalSum);
-    return globalSum;
+	return  bupc_allv_reduce_all(double, localSum, UPC_ADD);
 }
-*/
 
 /* Solve Ax = b using a preconditioned conjugate-gradient iteration.
  * 
@@ -141,80 +87,83 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
     double alpha, beta;
 
     double *s;                  /* Search direction */
+	double *localSAll;
     double *r;                  /* Residual         */
     double *z;                  /* Temporary vector */
 
+	//shared double* sall;
+
     int i;                      /* Current iteration */
 
-    s = (double *) malloc(nbytes);
+    struct Timer total_timer;
+
+	csr_matrix_t *Acsr = (csr_matrix_t *) Adata;
+    int *Arow = Acsr->row_start;
+    int *Acol = Acsr->col_idx;
+    double *Aval = Acsr->val;
+    int mystart = Acsr->myStart;
+	int nall = Acsr->n;
+
+
+    localSAll = (double *) malloc(nall * sizeof(double));
+	s = &localSAll[mystart];
     r = (double *) malloc(nbytes);
     z = (double *) malloc(nbytes);
 
+   	//assumming all threads have the same number of rows
+	//and last threads have less
+	//int allocSize = nall/THREADS + (nall%THREADS ? 1 : 0);
+	//sall = (shared double *) upc_all_alloc(THREADS, allocSize * sizeof(double));
+	static shared [] double sall[MAX_NNZ];
+
     bnorm2 = ddot(b, b, n);
-//printf("T[%d]: first bnorm2 = %g\n", MYTHREAD, bnorm2);
 
     memset(x, 0, nbytes);
     memcpy(r, b, nbytes);
+
     // z is the preconditioned x?
-    //psolve(z, Mdata, r, n);
+    psolve(z, Mdata, r, n);
     //replaced with:
-    memcpy(z, r, nbytes);
+    //memcpy(z, r, nbytes);
     // s is the dummy variable used to solve?
     memcpy(s, z, nbytes);
 
-/*
-for (i = 0; i < n; i++) {
-    printf("T[%d]: r[%d] = %g\n", MYTHREAD, i, r[i]);
-}
-for (i = 0; i < n; i++) {
-    printf("T[%d]: x[%d] = %g\n", MYTHREAD, i, x[i]);
-}
-for (i = 0; i < n; i++) {
-    printf("T[%d]: s[%d] = %g\n", MYTHREAD, i, s[i]);
-}
-for (i = 0; i < n; i++) {
-    printf("T[%d]: z[%d] = %g\n", MYTHREAD, i, z[i]);
-}
-*/
+	//upc_barrier;
+
+	if(MYTHREAD == 0)
+	{
+		initialize_timer(&total_timer);
+		start_timer(&total_timer);
+	}
 
     // b dot x => z is the guess for x, r is copied b
     rz = ddot(r, z, n);
-//printf("T[%d]: first rz = %g\n", MYTHREAD, rz);
-    rnorm2 = ddot(r, r, n);
-//printf("T[%d]: first rnorm2 = %g\n", MYTHREAD, rnorm2);
 
-//fflush(stdout);
-//printf("T[%d]:starting loop\n", MYTHREAD);
+    rnorm2 = ddot(r, r, n);
+
 
     for (i = 0; i < maxiter && rnorm2 > bnorm2 * rtol * rtol; ++i) {
-
-//printf("T[%d]: In the loop for %d times.\n", MYTHREAD, i);
 
         if (rhist != NULL)
             rhist[i] = sqrt(rnorm2 / bnorm2);
 
         // matrix multiplied by vector:
         // z = A * s
-        matvec(z, Adata, s, n);
-//printf("T[%d]: rz = %g\n", MYTHREAD, rz);
+        //matvec(z, Adata, s, n);
+
+		//collect data to the shared memory space
+		upc_memput(&sall[mystart], s, nbytes);
+		
+		upc_barrier;
+
+		//copy data back
+		int copy_size = Acsr->last_col - Acsr->first_col + 1;
+		upc_memget(&localSAll[Acsr->first_col], &sall[Acsr->first_col], copy_size * sizeof(double));
+
+		matvec(z, Adata, localSAll, n);
+
+
         alpha = rz / ddot(s, z, n);
-//printf("T[%d]: alpha = %g\n", MYTHREAD, alpha);
-/*
-if (i == 0 ) {
-int j;
-printf("T[%d]: s =", MYTHREAD);
-for (j = 0; j < n; j++) 
-    printf("%g  ", s[j]);
-printf("END \n");
-printf("T[%d]: z =", MYTHREAD);
-for (j = 0; j < n; j++) {
-    if (z[j] != 0)
-        printf("%d:%g  ", j+450, z[j]);
-}
-printf("END \n");
-}
-*/
-//printf("T[%d]: ddot(s,z,n) = %g\n", MYTHREAD, temp);
 
         axpy(x, alpha, s, x, n);
         axpy(r, -alpha, z, r, n);
@@ -222,23 +171,24 @@ printf("END \n");
         psolve(z, Mdata, r, n);
         rzold = rz;
         rz = ddot(r, z, n);
-//printf("T[%d]: ddot(r,z,n) = %g\n", MYTHREAD, rz);
+
         rnorm2 = ddot(r, r, n);
-//printf("T[%d]: ddot(r,r,n) = %g\n", MYTHREAD, rnorm2);
 
         beta = -rz / rzold;
-//printf("T[%d]: beta = %g\n", MYTHREAD, beta);
         axpy(s, -beta, s, z, n);
-
-//printf("T[%d]: rnorm2 = %g\n", MYTHREAD, rnorm2);
-
     }
 
-//printf("T[%d]: maxiter = %d, tolerance = %g\n", MYTHREAD, maxiter, bnorm2*rtol*rtol);
+	upc_barrier;
+
+	if(MYTHREAD == 0)
+	{
+		stop_timer(&total_timer);
+		printf("time for the loop: %g\t", timer_duration(total_timer));
+	}
 
     free(z);
     free(r);
-    free(s);
+    free(localSAll);
 
     if (i >= maxiter)
         return -1;
@@ -256,3 +206,4 @@ void dummy_psolve(double *Minvx, void *Mdata, double *x, int n)
 {
     memcpy(Minvx, x, n * sizeof(double));
 }
+

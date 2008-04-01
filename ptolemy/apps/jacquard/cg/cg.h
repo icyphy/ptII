@@ -16,6 +16,7 @@ void axpy(double *dest, double alpha, double *x, double *y, int n);
 
 double ddot(double *x, double *y, int n);
 
+//int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
 int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
                void (*psolve) (double *Minvx, void *Adata, double *x,
                                int n), void *Adata, void *Mdata, double *b,
