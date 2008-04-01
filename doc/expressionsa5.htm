@@ -5,8 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/05/07 18:39:43">
-<link href="default.css" rel="stylesheet" type="text/css">
+<meta name="LASTUPDATED" content="03/31/08 13:40:44">
+<link href="../../default.css" rel="stylesheet" type="text/css">
 <title>3.4 Composite Data Types</title>
 </head>
 
@@ -41,7 +41,7 @@
 
 
 <p>
-  <a name="167020"> </a>Arrays are specified with curly brackets, e.g., "{1, 2, 3}" is an array of <i>int</i>, while "{"x", "y", "z"}" is an array of <i>string</i>. The types are denoted "{int}" and "{string}" respectively. An array is an ordered list of tokens of any type, with the only constraint being that the elements all have the same type. If an array is given with mixed types, the expression evaluator will attempt to losslessly convert the elements to a common type. Thus, for example, 
+  <a name="167020"> </a>Arrays are specified with curly brackets, e.g., "{1, 2, 3}</font>" is an array of <i>int</i>, while "{"x", "y", "z"}</font>" is an array of <i>string</i>. The types are denoted "{int}</font>" and "{string}" respectively. An array is an ordered list of tokens of any type, with the only constraint being that the elements all have the same type. If an array is given with mixed types, the expression evaluator will attempt to losslessly convert the elements to a common type. Thus, for example, 
 </p>
 
 <pre>
@@ -58,7 +58,7 @@
 <a name="183829"> </a>
 </pre>
 
-<a name="183821"> </a>Its type is {double}. The common type might be <i>scalar</i>, which is a union type (a type that can contain multiple distinct types). For example,<br>
+<a name="183821"> </a>Its type is {double}</font>. The common type might be <i>scalar</i>, which is a union type (a type that can contain multiple distinct types). For example,<br>
 
 <pre>
 <a name="198941"> </a>
@@ -78,7 +78,7 @@
 
 
 <p>
-  <a name="198940"> </a>The elements of the array can be given by expressions, as in the example "{2*pi, 3*pi}." Arrays can be nested; for example, "{{1, 2}, {3, 4, 5}}" is an array of arrays of integers. The elements of an array can be accessed as follows:
+  <a name="198940"> </a>The elements of the array can be given by expressions, as in the example "{2*pi, 3*pi}</font>." Arrays can be nested; for example, "{{1, 2}, {3, 4, 5}}" is an array of arrays of integers. The elements of an array can be accessed as follows:
 </p>
 
 <pre>
@@ -182,7 +182,7 @@ true<a name="186579"> </a>
 <a name="186425"> </a>
 </pre>
 
-<a name="186430"> </a>For other comparisons of arrays, use the compare() function (see <a href="expressionsa12.htm#194754">Table 5 on page 125</a>). As with scalars, testing for equality using the == or != operators tests the values, independent of type. For example,<br>
+<a name="186430"> </a>For other comparisons of arrays, use the compare() function (see <a href="expressionsa12.htm#194754">Table 5 on page 127</a>). As with scalars, testing for equality using the ==</font> or != operators tests the values, independent of type. For example,<br>
 
 <pre>
 <a name="188887"> </a>
@@ -229,13 +229,35 @@ true<a name="188891"> </a>
 <a name="198883"> </a>
 </pre>
 
+<p>
+  <a name="199086"> </a>You can create an empty array with a specific element type using the emptyArray() function. For example, to create an empty array of integers, use:
+</p>
+
+<pre>
+<a name="199092"> </a>
+&gt;&gt; emptyArray(int)<a name="199100"> </a>
+{}<a name="199101"> </a>
+<a name="199102"> </a>
+</pre>
+
+<p>
+  <a name="199110"> </a>You can combine arrays into a single array using the concatenate() function. For example, 
+</p>
+
+<pre>
+<a name="199112"> </a>
+&gt;&gt; concatenate({1, 2}, {3})<a name="199135"> </a>
+{1, 2, 3}<a name="199113"> </a>
+<a name="199114"> </a>
+</pre>
+
 <h4>
   <a name="198884"> </a>3.4.2   Matrices
 </h4>
 
 
 <p>
-  <a name="169058"> </a>In Ptolemy II, <i>arrays</i> are ordered sets of tokens. Ptolemy II also supports <i>matrices</i>, which are more specialized than arrays. They contain only certain primitive types, currently <i>boolean</i>, <i>complex</i>, <i>double</i>, <i>fixedpoint</i>, <i>int</i>, and <i>long. </i>Currently <i>unsignedByte</i> matrices are not supported. Matrices cannot contain arbitrary tokens, so they cannot, for example, contain matrices. They are intended for data intensive computations.
+  <a name="169058"> </a>In Ptolemy II, <i>arrays</i> are ordered sets of tokens. Ptolemy II also supports <i>matrices</i>, which are more specialized than arrays. They contain only certain primitive types, currently <i>boolean</i>, <i>complex</i>, <i>double</i>, <i>fixedpoint</i>, <i>int</i>, and <i>long. </i>Currently <i>float</i>, <i>short</i> and <i>unsignedByte</i> matrices are not supported. Matrices cannot contain arbitrary tokens, so they cannot, for example, contain matrices. They are intended for data intensive computations.
 </p>
 
 
@@ -270,7 +292,7 @@ true<a name="188891"> </a>
 <a name="183175"> </a>
 </pre>
 
-<a name="190332"> </a>Of course, if the dimensions of the matrix don't match, then you will get an error message. To do element wise multiplication, use the multipyElements() function (see <a href="expressionsa12.htm#195091">Table 6 on page 127</a>). Matrix addition and subtraction are element wise, as expected, but the division operator is not supported. Element wise division can be accomplished with the divideElements() function, and multiplication by a matrix inverse can be accomplished using the inverse() function (see <a href="expressionsa12.htm#195091">Table 6 on page 127</a>). A matrix can be raised to an <i>int</i> or <i>unsignedByte</i> power, which is equivalent to multiplying it by itself some number of times. For instance,<br>
+<a name="199432"> </a>Of course, if the dimensions of the matrix don't match, then you will get an error message. To do element wise multiplication, use the multipyElements() function (see <a href="expressionsa12.htm#195091">Table 6 on page 129</a>). Matrix addition and subtraction are element wise, as expected, but the division operator is not supported. Element wise division can be accomplished with the divideElements() function, and multiplication by a matrix inverse can be accomplished using the inverse() function (see <a href="expressionsa12.htm#195091">Table 6 on page 129</a>). A matrix can be raised to an <i>int, short </i>or <i>unsignedByte</i> power, which is equivalent to multiplying it by itself some number of times. For instance,<br>
 
 <pre>
 <a name="183193"> </a>
@@ -311,7 +333,7 @@ true<a name="183271"> </a>
 <a name="183279"> </a>
 </pre>
 
-<a name="188905"> </a>For other comparisons of matrices, use the compare() function (see <a href="expressionsa12.htm#194754">Table 5 on page 125</a>). As with scalars, testing for equality using the == or != operators tests the values, independent of type. For example,<br>
+<a name="188905"> </a>For other comparisons of matrices, use the compare() function (see <a href="expressionsa12.htm#194754">Table 5 on page 127</a>). As with scalars, testing for equality using the ==</font> or != operators tests the values, independent of type. For example,<br>
 
 <pre>
 <a name="188906"> </a>
@@ -448,7 +470,17 @@ true<a name="188865"> </a>
 &gt;&gt; <a name="188855"> </a>
 </pre>
 
-<a name="198992"> </a><br>
+<a name="199334"> </a><br>
+
+
+<a name="199336"> </a>Finally, You can create an empty record using the emptyRecord() function:<br>
+
+<pre>
+<a name="199337"> </a>
+&gt;&gt; emptyRecord()<a name="199151"> </a>
+{}<a name="199152"> </a>
+<a name="199153"> </a>
+</pre>
 </blockquote>
 
 

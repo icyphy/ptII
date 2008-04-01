@@ -5,8 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="01/05/07 18:39:43">
-<link href="default.css" rel="stylesheet" type="text/css">
+<meta name="LASTUPDATED" content="03/31/08 13:40:44">
+<link href="../../default.css" rel="stylesheet" type="text/css">
 <title>3.9 Fixed Point Numbers</title>
 </head>
 
@@ -77,35 +77,36 @@ fix(5.375, 8, 3)<a name="171779"> </a>
 <pre>
 fix(5.34, 10, 4)<a name="171807"> </a>
 </pre>
-
-<a name="175175"> </a>This will create a FixToken. In this case, we try to fit the number 5.34 into a 10 bit representation with 4 bits used in the integer part. This may lead to quantization errors. By default the round quantizer is used. <br>
-
+<dl>
+  <dt> <a name="175175"> </a>This will create a FixToken. In this case, we try to fit the number 5.34 into a 10 bit representation with 4 bits used in the integer part. This may lead to quantization errors. By default the round quantizer is used. 
+</dl>
 
 <a name="175176"> </a>	 To create a Matrix with FixPoint values using the expression language:<br>
 
 <pre>
 fix([ -.040609, -.001628, .17853 ], 10, 2) <a name="175177"> </a>
 </pre>
-
-<a name="175181"> </a>This will create a FixMatrixToken with 1 row and 3 columns, in which each element is a FixPoint value with precision(10/2). The resulting FixMatrixToken will try to fit each element of the given double matrix into a 10 bit representation with 2 bits used for the integer part. By default the round quantizer is used.<br>
-
+<dl>
+  <dt> <a name="175181"> </a>This will create a FixMatrixToken with 1 row and 3 columns, in which each element is a FixPoint value with precision(10/2). The resulting FixMatrixToken will try to fit each element of the given double matrix into a 10 bit representation with 2 bits used for the integer part. By default the round quantizer is used.
+</dl>
 
 <a name="175178"> </a>	 To create a single DoubleToken, which is the quantized version of the double value given, using the expression language:<br>
 
 <pre>
 quantize(5.34, 10, 4)<a name="171813"> </a>
 </pre>
-
-<a name="171814"> </a>This will create a DoubleToken. The resulting DoubleToken contains the double value obtained by fitting the number 5.34 into a 10 bit representation with 4 bits used in the integer part. This may lead to quantization errors. By default the round quantizer is used. <br>
-
+<dl>
+  <dt> <a name="171814"> </a>This will create a DoubleToken. The resulting DoubleToken contains the double value obtained by fitting the number 5.34 into a 10 bit representation with 4 bits used in the integer part. This may lead to quantization errors. By default the round quantizer is used. 
+</dl>
 
 <a name="171815"> </a>	 To create a Matrix with doubles quantized to a particular precision using the expression language:<br>
 
 <pre>
 quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
 </pre>
-
-<a name="171817"> </a>This will create a DoubleMatrixToken with 1 row and 3 columns. The elements of the token are obtained by fitting the given matrix elements into a 10 bit representation with 2 bits used for the integer part. Instead of being a fixed point value, the values are converted back to their double representation and by default the round quantizer is used.<br>
+<dl>
+  <dt> <a name="171817"> </a>This will create a DoubleMatrixToken with 1 row and 3 columns. The elements of the token are obtained by fitting the given matrix elements into a 10 bit representation with 2 bits used for the integer part. Instead of being a fixed point value, the values are converted back to their double representation and by default the round quantizer is used.
+</dl>
 </blockquote>
 
 
