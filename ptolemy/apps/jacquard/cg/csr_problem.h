@@ -14,6 +14,7 @@ typedef struct csr_matrix_t {
     int myStart;
 	int last_col, first_col;
     //int totalnz;
+    int *currentCol;
 } csr_matrix_t;
 
 

@@ -38,14 +38,12 @@ initialize_timer (struct Timer * t)
   t->duration.tv_usec = 0;
 }
 
-void
-start_timer(struct Timer * t)
+void start_timer(struct Timer * t)
 {
   gettimeofday (&t->clock_holder, NULL);
 }
 
-void
-stop_timer(struct Timer * t)
+void stop_timer(struct Timer * t)
 {
   struct timeval end_tv;
   gettimeofday (&end_tv, NULL);
@@ -53,8 +51,7 @@ stop_timer(struct Timer * t)
   t->duration.tv_usec += (end_tv.tv_usec - t->clock_holder.tv_usec);
 }
 
-double
-timer_duration(const struct Timer t)
+double timer_duration(const struct Timer t)
 {
   return t.duration.tv_sec + 1.0e-6 * (double)t.duration.tv_usec;
 }

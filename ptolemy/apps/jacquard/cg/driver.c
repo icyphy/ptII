@@ -14,7 +14,26 @@
 double* jacobi_init(void* data);
 void jacobi_psolve(double *Minvx, void *Mdata, double *x, int n);
 
-void initialize_timer (struct Timer * t)
+
+
+#if !defined(L1_BLOCK_W)
+#define L1_BLOCK_W 300	// **has to be multiple of REG_BLOCK_L and REG_BLOCK_W
+#endif
+
+#if !defined(L1_BLOCK_L)
+#define L1_BLOCK_L 300	// **has to be multiple of REG_BLOCK_L and REG_BLOCK_W
+#endif
+
+#if !defined(REG_BLOCK_W)
+#define REG_BLOCK_W 50
+#endif
+
+#if !defined(REG_BLOCK_L)
+#define REG_BLOCK_L 50
+#endif
+
+void
+initialize_timer (struct Timer * t)
 {
   t->clock_holder.tv_sec = 0;
   t->clock_holder.tv_usec = 0;
@@ -52,8 +71,93 @@ void poisson_matvec(double *Ax, void *Adata, double *x, int n)
     Ax[n - 1] = -x[n - 2] + 2 * x[n - 1];
 }
 
+#define min(x, y) ((x > y)? y : x)
 /* Multiply by a matrix in compressed sparse-row format
  */
+
+void register_matvec(double *Ax, void *Adata, double *x, int n, const int blockI, const int blockJ) {
+
+
+	int i, j;
+
+	csr_matrix_t *Acsr = (csr_matrix_t *) Adata;
+    double *Aval = Acsr->val;
+    int *Arow = Acsr->row_start;
+    int *Acol = Acsr->col_idx;
+
+	// FIXME: don't forget to initialize. (i.e. Ax[i] = 0).
+
+	const int n_blocks_w = min(blockI + REG_BLOCK_W, n);
+    const int n_blocks_l = min(blockJ + REG_BLOCK_L, n);
+
+	// blockJ <= col < n_blocks_l
+	//printf("blockI[%d], blockJ[%d], n_blocks_w[%d], n_blocks_l[%d]\n", blockI, blockJ, n_blocks_w, n_blocks_l);
+
+	for (j = blockJ; j < n_blocks_l; ++j) {
+
+		// initialize for every iteration.
+		if (blockI == 0) {
+			// initialize result vector.
+			Ax[j] = 0;
+
+			// initialize tmp index for column.
+			Acsr->currentCol[j] = Arow[j];
+		}
+
+		// Do this to avoid read-write dependency.
+		double Axj = Ax[j];
+
+		for (i = Acsr->currentCol[j]; i < Arow[j + 1]; ++i) {
+
+			if (Acol[i] >= blockI) {
+				if (Acol[i] < n_blocks_w) {
+					//printf("blockI[%d], blockJ[%d], row[%d], Acol[%d]\n", blockI, blockJ, j, Acol[k]);
+					/*
+					if (j == 0) {
+						printf("blockI[%d], blockJ[%d], row[%d], Acol[%d], k[%d]\n", blockI, blockJ, j, Acol[k], k);
+						//printf("row[%d], Acol[%d]\n", i, Acol[k]);
+					}
+					*/
+					Axj += (Aval[i]) * x[Acol[i]];					
+				} else {
+					// Remember we left off from this column, so we can start from this next time.
+					Acsr->currentCol[j] = i;
+
+					// next row.
+					break;
+				}
+			}
+        }
+
+		Ax[j] = Axj;
+    }
+}
+
+void register_do_block(double *Ax, void *Adata, double *x, int n, const int blockI, const int blockJ)
+{
+    int i, j;
+    const int n_blocks_w = blockI + L1_BLOCK_W;
+    const int n_blocks_l = blockJ + L1_BLOCK_L;
+
+
+	for (i = blockI; i < n_blocks_w; i+=REG_BLOCK_W) {
+		for (j = blockJ; j < n_blocks_l; j+=REG_BLOCK_L) {
+			register_matvec(Ax, Adata, x, n, i, j);			
+        }
+    }
+}
+
+void L1_do_block(double *Ax, void *Adata, double *x, int n)
+{
+    int i, j;
+
+	for (i = 0; i < n; i+=L1_BLOCK_W) {
+		for (j = 0; j < n; j+=L1_BLOCK_L) {
+			register_do_block(Ax, Adata, x, n, i, j);			
+        }
+    }
+}
+
 
 void csr_matvec(double *Ax, void *Adata, double *x, int n)
 {
@@ -183,6 +287,12 @@ void driver(int m, int maxiter,
     upc_barrier;
 }
 
+void blocking_init(csr_matrix_t *A) {
+	//printf("init\n");
+    // FIXME: something is wrong with the malloc amount..
+    A->currentCol = (int *) malloc((2 * A->nz - A->m) * sizeof(int));
+	//A->currentCol = (int*) malloc(A->m * sizeof(int));
+}
 
 int main(int argc, char **argv)
 {
@@ -199,7 +309,8 @@ int main(int argc, char **argv)
 
         csr_matrix_t *A = csr_hb_load(argv[1]);
 //        csr_jacobi_t *Mj = csr_jacobi_init(A, block_size);
-	double* Aj = jacobi_init(A);
+		blocking_init(A);
+	    double* Aj = jacobi_init(A);
         printf("Using problem %s\n", argv[1]);
 
 	if ( MYTHREAD == 0)
@@ -209,8 +320,7 @@ int main(int argc, char **argv)
 /*         printf("With SSOR:         "); */
 /*         driver(A->m, A->m, csr_matvec, A, csr_ssor_psolve, A, A->n, A->myStart); */
 
-		if(MYTHREAD == 0)
-        	printf("Vanilla CG:        \n");
+		if(MYTHREAD == 0) printf("Vanilla CG:        \n");
 
 		driver(A->m, A->n, csr_matvec, A, dummy_psolve, NULL, A->n, A->myStart);
     }
