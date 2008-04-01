@@ -182,6 +182,9 @@ release_fortytwo_remote4_test:
 release_laptop:
 	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.0.1 COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
 
+release_laptop_setup:
+	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.0.1 COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar setup
+
 # Rebuild the distributions
 rebuild: clean all installshield_app build_unixPtII
 
