@@ -8,31 +8,33 @@ package ptolemy.domains.tt.tdl.kernel;
 public class MathUtilities {
 
 	/**
-	 * greatest common divisor
+	 * Return the greatest common divisor.
 	 * 
 	 * @param a
 	 * @param b
-	 * @return
+	 * @return The geatest common divisor.
 	 */
 	public static int gcd(int a, int b) {
-		if (b == 0)
-			return a;
-		else
-			return MathUtilities.gcd(b, a % b);
+            if (b == 0) {
+                return a;
+            } else {
+                return MathUtilities.gcd(b, a % b);
+            }
 	}
 
 	/**
-	 * greatest common divisor
+	 * Return the greatest common divisor.
 	 * 
 	 * @param a
 	 * @param b
-	 * @return
+	 * @return The greatest common divisor.
 	 */
 	public static long gcd(long a, long b) {
-		if (b == 0)
-			return a;
-		else
-			return MathUtilities.gcd(b, a % b);
+            if (b == 0) {
+                return a;
+            } else {
+                return MathUtilities.gcd(b, a % b);
+            }
 	}
 
 }
