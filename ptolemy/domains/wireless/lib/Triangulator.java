@@ -159,7 +159,7 @@ public class Triangulator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone this actor into the specified workspace. This overrides the
      *  base class to handle private variables.
      *  @param workspace The workspace for the cloned object.
@@ -239,6 +239,9 @@ public class Triangulator extends TypedAtomicActor {
             }
 
             if (!foundMatch) {
+                if (_debugging) {
+                    _debug("Did not find match");
+                }
                 _locationsX[oldestTimeIndex] = locationX;
                 _locationsY[oldestTimeIndex] = locationY;
                 _times[oldestTimeIndex] = time;
@@ -265,6 +268,9 @@ public class Triangulator extends TypedAtomicActor {
 
             if (timeSpan > timeWindowValue) {
                 // We do not have enough data.
+                if (_debugging) {
+                    _debug("We do not have enough data: " + timeSpan + " > " + timeWindowValue);
+                }
                 return;
             }
 
@@ -280,6 +286,9 @@ public class Triangulator extends TypedAtomicActor {
 
             if (Double.isInfinite(result[2]) || Double.isNaN(result[2])) {
                 // Result is not valid (inconsistent data).
+                if (_debugging) {
+                    _debug("Result is not valid: " + result[2]);
+                }
                 return;
             }
 
@@ -306,26 +315,28 @@ public class Triangulator extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    //  Check whether the calculated location and time of a sound event is
-    //  consistent with the observations.
-    // @param result The calculated location and time of a sound event.
-    // @param x1 The x-coordinate of the first observation.
-    // @param y1 The y-coordinate of the first observation.
-    // @param t1 The time of the first observation.
-    // @param x2 The x-coordinate of the second observation.
-    // @param y2 The y-coordinate of the second observation.
-    // @param t2 The time of the second observation.
-    // @param x3 The x-coordinate of the third observation.
-    // @param y3 The y-coordinate of the third observation.
-    // @param t3 The time of the third observation.
-    // @param v The speed of sound propagation.
-    // @return True if the calculated location and time is consistent with the
-    //  observations.
-    private static boolean _checkResult(double[] result, double x1, double y1,
+    /**  Check whether the calculated location and time of a sound event is
+     *  consistent with the observations.
+     * @param result The calculated location and time of a sound event.
+     * @param x1 The x-coordinate of the first observation.
+     * @param y1 The y-coordinate of the first observation.
+     * @param t1 The time of the first observation.
+     * @param x2 The x-coordinate of the second observation.
+     * @param y2 The y-coordinate of the second observation.
+     * @param t2 The time of the second observation.
+     * @param x3 The x-coordinate of the third observation.
+     * @param y3 The y-coordinate of the third observation.
+     * @param t3 The time of the third observation.
+     * @param v The speed of sound propagation.
+     * @return The sum of the differences between the calculated distances
+     * and the result argument.  Double.POSITIVE_INFINITY is returned if
+     * any one of the times (t1, t2, t3) is greater than result[2].
+     */
+    private double _checkResult(double[] result, double x1, double y1,
             double t1, double x2, double y2, double t2, double x3, double y3,
             double t3, double v) {
         if ((result[2] > t1) || (result[2] > t2) || (result[2] > t3)) {
-            return false;
+            return Double.POSITIVE_INFINITY;
         }
 
         double tdiff1 = Math.abs((_distance(x1, y1, result[0], result[1]) / v)
@@ -335,12 +346,10 @@ public class Triangulator extends TypedAtomicActor {
         double tdiff3 = Math.abs((_distance(x3, y3, result[0], result[1]) / v)
                 - (t3 - result[2]));
 
-        // FIXME: make the check threshold a parameter?
-        if ((tdiff1 > 1e-5) || (tdiff2 > 1e-5) || (tdiff3 > 1e-5)) {
-            return false;
-        } else {
-            return true;
+        if (_debugging) {
+            _debug("tdiff1: " + tdiff1 + " tdiff2:" + tdiff2 + " tdiff3: " +  tdiff3);
         }
+        return tdiff1 + tdiff2 + tdiff3;
     }
 
     /** Return the Cartesian distance between (x1, y1) and (x2, y2).
@@ -384,7 +393,7 @@ public class Triangulator extends TypedAtomicActor {
      * @return The location and time of the sound event consistent with
      *  the observations.
      */
-    private static double[] _locate(double x1, double y1, double t1, double x2,
+    private double[] _locate(double x1, double y1, double t1, double x2,
             double y2, double t2, double x3, double y3, double t3, double v) {
         double[] result = new double[3];
         double v2 = v * v;
@@ -416,24 +425,35 @@ public class Triangulator extends TypedAtomicActor {
         double delta = (eb * eb) - (4 * ea * ec);
 
         //System.out.println("delta is " + delta);
-        if (delta >= 0) {
+        if (delta > 0) {
+            // Try both roots and compare
+            // Solution #1
             result[2] = (-eb + Math.sqrt(delta)) / ea / 2;
             result[0] = (m_inv_b[0] * result[2]) + m_inv_c[0];
             result[1] = (m_inv_b[1] * result[2]) + m_inv_c[1];
+            double tdiff1 = _checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v);
 
-            if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v)) {
+            // Solution #2
+            double[] result2 = new double[3];
+            result2[2] = (-eb - Math.sqrt(delta)) / ea / 2;
+            result2[0] = (m_inv_b[0] * result2[2]) + m_inv_c[0];
+            result2[1] = (m_inv_b[1] * result2[2]) + m_inv_c[1];
+
+            double tdiff2 = _checkResult(result2, x1, y1, t1, x2, y2, t2, x3, y3, t3, v);
+            if (_debugging) {
+                _debug("tdiff1: " + tdiff1 + " tdiff2: " + tdiff2);
+            }
+            if (tdiff1 > _EPSILON * 3 && tdiff2 > _EPSILON * 3) {
+                // We are more than three times _EPSILON, so we are boned.
+                result[0] = Double.NEGATIVE_INFINITY;
+                result[1] = Double.NEGATIVE_INFINITY;
+                result[2] = Double.NEGATIVE_INFINITY;
                 return result;
             } else {
-                result[2] = (-eb - Math.sqrt(delta)) / ea / 2;
-                result[0] = (m_inv_b[0] * result[2]) + m_inv_c[0];
-                result[1] = (m_inv_b[1] * result[2]) + m_inv_c[1];
-
-                if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v)) {
-                    return result;
+                // Return the closest results.
+                if (tdiff1 > tdiff2) {
+                    return result2;
                 } else {
-                    result[0] = Double.NEGATIVE_INFINITY;
-                    result[1] = Double.NEGATIVE_INFINITY;
-                    result[2] = Double.NEGATIVE_INFINITY;
                     return result;
                 }
             }
@@ -442,7 +462,7 @@ public class Triangulator extends TypedAtomicActor {
             result[0] = (m_inv_b[0] * result[2]) + m_inv_c[0];
             result[1] = (m_inv_b[1] * result[2]) + m_inv_c[1];
 
-            if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v)) {
+            if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v) < _EPSILON*3) {
                 return result;
             } else {
                 result[0] = Double.NEGATIVE_INFINITY;
@@ -461,4 +481,6 @@ public class Triangulator extends TypedAtomicActor {
     private double[] _locationsY = new double[3];
 
     private double[] _times = new double[3];
+
+    private static final double _EPSILON = ptolemy.math.Complex.EPSILON;
 }
