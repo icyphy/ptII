@@ -133,8 +133,8 @@ void register_matvec(double *Ax, void *Adata, double *x, int n, const int blockI
     }
 }
 
-//void register_do_block(double *Ax, void *Adata, double *x, int n, const int blockI, const int blockJ)
-void register_do_block(double *Ax, void *Adata, double *x, int n)
+void register_do_block(double *Ax, void *Adata, double *x, int n, const int blockI, const int blockJ)
+//void register_do_block(double *Ax, void *Adata, double *x, int n)
 {
     int i, j;
     const int n_blocks_w = blockI + L1_BLOCK_W;
@@ -315,14 +315,14 @@ int main(int argc, char **argv)
 
 	if ( MYTHREAD == 0)
 	  printf("With Jacobi: ");
-        driver(A->m, A->n, register_do_block, A, jacobi_psolve, Aj, A->n, A->myStart);
+        driver(A->m, A->n, L1_do_block, A, jacobi_psolve, Aj, A->n, A->myStart);
 
 /*         printf("With SSOR:         "); */
 /*         driver(A->m, A->m, csr_matvec, A, csr_ssor_psolve, A, A->n, A->myStart); */
 
 		if(MYTHREAD == 0) printf("Vanilla CG:        \n");
 
-		driver(A->m, A->n, register_do_block, A, dummy_psolve, NULL, A->n, A->myStart);
+		driver(A->m, A->n, L1_do_block, A, dummy_psolve, NULL, A->n, A->myStart);
     }
 
     return 0;
