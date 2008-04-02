@@ -153,10 +153,12 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * get mode period from state parameter "period"
+	 * Get mode period from state parameter "period".
 	 * 
-	 * @param obj
-	 * @return
+	 * @param obj The object
+	 * @return The value of the "period" parameter.  If there is
+         * no period parameter or it cannot be converted to a double, then
+         * return 1.0
 	 */
 	public double getModePeriod(NamedObj obj) {
 		try {
@@ -226,10 +228,10 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * find out if taks (=actor) or actuator (=output port) is fast task
+	 * Find out if task (=actor) or actuator (=output port) is fast task.
 	 * 
 	 * @param obj
-	 * @return
+	 * @return True if it is a fast task.
 	 */
 	public static boolean isFast(NamedObj obj) {
 		try {

@@ -187,7 +187,7 @@ public class TDLCodeGeneratorUtilities {
 	 * Generate code for the actuator. Usually, there is only one actuator.
 	 * 
 	 * @param sb
-	 * @param model The mudole
+	 * @param module The module.
 	 * @exception IllegalActionException If there is a problem
 	 * accessing the ports.
 	 */
@@ -241,7 +241,7 @@ public class TDLCodeGeneratorUtilities {
 	 * one header.
 	 * 
 	 * @param sb
-	 * @param module The module
+	 * @param model The model
 	 * @exception IllegalActionException If there is a problem
 	 * getting the model name.
 	 */
@@ -266,7 +266,7 @@ public class TDLCodeGeneratorUtilities {
 	 * Generate code for the modes.
 	 * 
 	 * @param sb
-	 * @param State The state
+	 * @param state The state
 	 * @param module The module
 	 * @exception IllegalActionException If there is a problem
 	 * getting the director or accessing the ports.

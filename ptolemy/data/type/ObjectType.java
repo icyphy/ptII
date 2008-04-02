@@ -149,7 +149,7 @@ public class ObjectType implements Type {
     /** Get the Java class specified in this type, of which the contents of
      *  ObjectTokens conforming to this type must be instances.
      *
-     *  @return
+     *  @return The Java class specified in this type.
      */
     public Class<?> getContentClass() {
         return _contentClass;
@@ -221,7 +221,6 @@ public class ObjectType implements Type {
      *  argument is compatible if it is the same or less than this type in
      *  the type lattice; If this type is a variable, the argument is
      *  compatible if it is a substitution instance of this type.
-     *  @param type An instance of Type.
      *  @return True if the argument is compatible with this type.
      */
     public boolean isConstant() {
