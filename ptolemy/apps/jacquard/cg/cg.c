@@ -160,9 +160,12 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
 		int copy_size = Acsr->last_col - Acsr->first_col + 1;
 		upc_memget(&localSAll[Acsr->first_col], &sall[Acsr->first_col], copy_size * sizeof(double));
 
+int j;
+for (j = 0; j < nz; j++) printf("thread %d: Adata[%d] = %g\n", MYTHREAD, j, z[j]);
+for (j = 0; j < nall; j++) printf("thread %d: localSAll[%d] = %g\n", MYTHREAD, j, z[j]);
+
 		matvec(z, Adata, localSAll, n);
 
-int j;
 for (j = 0; j < n; j++) printf("thread %d: z[%d] = %g\n", MYTHREAD, j + 300 * MYTHREAD, z[j]);
 
         alpha = rz / ddot(s, z, n);
