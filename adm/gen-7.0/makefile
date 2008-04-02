@@ -574,7 +574,7 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
-JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
+JAR=c:/Program Files/Java/jdk1.5.0_15/bin/jar
 
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
@@ -2181,8 +2181,8 @@ indent_all:
 
 #IZPACKDIR=c:/Program Files/IzPack
 IZPACKDIR=$(PTII)/vendors/izpack
-IZPACK_COMPILE=$(IZPACKDIR)/_dist/bin/compile
-IZPACK_TAR=IzPack.src.3.10.2.tar.gz
+IZPACK_COMPILE=$(IZPACKDIR)/bin/compile
+IZPACK_TAR=IzPack.src.3.11.0.tar.gz
 
 # Under Solaris: gmake make_izpack TAR=gtar
 make_izpack: $(IZPACK_COMPILE)
