@@ -157,12 +157,13 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
 		upc_barrier;
 
 		//copy data back
+        memset(localSAll, 0, nall * sizeof(double));
 		int copy_size = Acsr->last_col - Acsr->first_col + 1;
 		upc_memget(&localSAll[Acsr->first_col], &sall[Acsr->first_col], copy_size * sizeof(double));
 
 int j;
 //for (j = 0; j < nz; j++) printf("thread %d: Adata[%d] = %g\n", MYTHREAD, j, z[j]);
-for (j = 0; j < nall; j++) printf("thread %d: localSAll[%d] = %g\n", MYTHREAD, j, localSAll[j]);
+if (MYTHREAD == 0) {for (j = 0; j < nall; j++) printf("thread %d: localSAll[%d] = %g\n", MYTHREAD, j, localSAll[j]);}
 
 		matvec(z, Adata, localSAll, n);
 
