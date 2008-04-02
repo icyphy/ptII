@@ -315,7 +315,7 @@ int main(int argc, char **argv)
 
 	if ( MYTHREAD == 0)
 	  printf("With Jacobi: ");
-        driver(A->m, A->n, L1_do_block, A, jacobi_psolve, Aj, A->n, A->myStart);
+        //driver(A->m, A->n, L1_do_block, A, jacobi_psolve, Aj, A->n, A->myStart);
 
 /*         printf("With SSOR:         "); */
 /*         driver(A->m, A->m, csr_matvec, A, csr_ssor_psolve, A, A->n, A->myStart); */

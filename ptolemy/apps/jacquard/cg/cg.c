@@ -162,7 +162,7 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
 
 int j;
 //for (j = 0; j < nz; j++) printf("thread %d: Adata[%d] = %g\n", MYTHREAD, j, z[j]);
-for (j = 0; j < nall; j++) printf("thread %d: localSAll[%d] = %g\n", MYTHREAD, j, z[j]);
+for (j = 0; j < nall; j++) printf("thread %d: localSAll[%d] = %g\n", MYTHREAD, j, localSAll[j]);
 
 		matvec(z, Adata, localSAll, n);
 
