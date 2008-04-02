@@ -162,7 +162,8 @@ int precond_cg(void (*matvec) (double *Ax, void *Adata, double *x, int n),
 
 		matvec(z, Adata, localSAll, n);
 
-for (i = 0; i < n; i++) printf("thread %d: z[%d] = %g\n", MYTHREAD, i, z[i]);
+int j;
+for (j = 0; j < n; j++) printf("thread %d: z[%d] = %g\n", MYTHREAD, j, z[j]);
 
         alpha = rz / ddot(s, z, n);
 

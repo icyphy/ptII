@@ -17,19 +17,19 @@ void jacobi_psolve(double *Minvx, void *Mdata, double *x, int n);
 
 
 #if !defined(L1_BLOCK_W)
-#define L1_BLOCK_W 300	// **has to be multiple of REG_BLOCK_L and REG_BLOCK_W
+#define L1_BLOCK_W 40 // **has to be multiple of REG_BLOCK_L and REG_BLOCK_W
 #endif
 
 #if !defined(L1_BLOCK_L)
-#define L1_BLOCK_L 300	// **has to be multiple of REG_BLOCK_L and REG_BLOCK_W
+#define L1_BLOCK_L 40 // **has to be multiple of REG_BLOCK_L and REG_BLOCK_W
 #endif
 
 #if !defined(REG_BLOCK_W)
-#define REG_BLOCK_W 50
+#define REG_BLOCK_W 4
 #endif
 
 #if !defined(REG_BLOCK_L)
-#define REG_BLOCK_L 50
+#define REG_BLOCK_L 1
 #endif
 
 void
@@ -290,8 +290,8 @@ void driver(int m, int maxiter,
 void blocking_init(csr_matrix_t *A) {
 	//printf("init\n");
     // FIXME: something is wrong with the malloc amount..
-    A->currentCol = (int *) malloc((2 * A->nz - A->m) * sizeof(int));
-	//A->currentCol = (int*) malloc(A->m * sizeof(int));
+    //A->currentCol = (int *) malloc((2 * A->nz - A->m) * sizeof(int));
+	A->currentCol = (int*) malloc(A->m * sizeof(int));
 }
 
 int main(int argc, char **argv)
