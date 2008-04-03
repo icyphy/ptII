@@ -1,0 +1,184 @@
+<html>
+
+<head>
+<title>The Java X10 Project</title>
+</head>
+
+<body>
+
+<h1 align="center">The Java X10 Project</h1>
+
+<h2 align="center">Version 1.3</h2>
+
+<h3 align="center">TJX10P-13</h3>
+
+<h2 align="left">Copyright</h2>
+
+<p align="left">All files contianed within this package are the copyright of <a
+href="mailto:x10@wass.homelinux.net">Wade Wassenberg</a> with the exception of the
+LICENSE.txt file which is copyrighted by GNU.&nbsp; All files within this package are
+subject to the GNU.</p>
+
+<h2 align="left">License</h2>
+
+<p align="left">By using this package you agree to the terms specified by the <a
+href="LICENSE.txt">GNU PUBLIC LICENSE (GPL)</a>.&nbsp; This package is distributed under
+the GPL without warranty.</p>
+
+<h2 align="left">Change Log</h2>
+
+<p align="left">This release has been elevated to version 1.3.&nbsp; This release includes
+a synchronization enhancement that should help eliminate the CM11ASerialController from
+getting into a race condition with the actual CM11A hardware module.  This release also
+includes a change that should eliminate the possibility of losing commands due to the
+CM11A arbitrarily deciding to split commands across multiple messages.
+</p>
+
+<h2 align="left">Download</h2>
+
+<p align="left">To download this package, please visit <a href="http://x10.homelinux.org">http://x10.homelinux.org</a>
+or follow this link:</p>
+
+<h3 align="center"><a href="http://x10.homelinux.org/servlet/Download/tjx10p-13.zip"><big><big>Download
+Binaries Now</big></big></a></h3>
+
+<p align="left">Or choose from the following list:</p>
+
+<table border="1">
+  <tr>
+    <td bgcolor="#000080" width="175"><font color="#FFFFFF"><strong>Version</strong></font></td>
+    <td bgcolor="#000080" width="175"><font color="#FFFFFF"><strong>Binary Package</strong></font></td>
+    <td bgcolor="#000080" width="175"><font color="#FFFFFF"><strong>Source Package</strong></font></td>
+  </tr>
+  <tr>
+    <td width="175"><big><big>Version 1.3</big></big></td>
+    <td width="175"><big><big><a
+    href="http://x10.homelinux.org/servlet/Download/tjx10p-13.zip">Download Now</a></big></big></td>
+    <td width="175"><big><big><a
+    href="http://x10.homelinux.org/servlet/Download/tjx10p-13src.zip">Download Now</a></big></big></td>
+  </tr>
+  <tr>
+    <td width="175">Version 1.2</td>
+    <td width="175"><a href="http://x10.homelinux.org/servlet/Download/tjx10p-12.zip">Download
+    Now</a></td>
+    <td width="175"><a href="http://x10.homelinux.org/servlet/Download/tjx10p-12src.zip">Download
+    Now</a></td>
+  </tr>
+  <tr>
+    <td width="175">Version 1.1</td>
+    <td width="175"><a href="http://x10.homelinux.org/servlet/Download/tjx10p-11.zip">Download
+    Now</a></td>
+    <td width="175"><a href="http://x10.homelinux.org/servlet/Download/tjx10p-11src.zip">Download
+    Now</a></td>
+  </tr>
+  <tr>
+    <td width="175">Version 1.0</td>
+    <td width="175"><a href="http://x10.homelinux.org/servlet/Download/tjx10p-10.zip">Download
+    Now</a></td>
+    <td width="175"><a href="http://x10.homelinux.org/servlet/Download/tjx10p-10src.zip">Download
+    Now</a></td>
+  </tr>
+  <tr>
+    <td width="175">Beta 0.4</td>
+    <td width="175"><a href="http://x10.homelinux.org/servlet/Download/tjx10p-04.zip">Download
+    Now</a></td>
+    <td width="175">Source not released</td>
+  </tr>
+  <tr>
+    <td width="175">Alpha 0.3</td>
+    <td width="175"><a href="http://x10.homelinux.org/servlet/Download/tjx10p-03.zip">Download
+    Now</a></td>
+    <td width="175">Source not released</td>
+  </tr>
+  <tr>
+    <td width="175">Pre-Alpha 0.2</td>
+    <td width="175"><a href="http://x10.homelinux.org/servlet/Download/tjx10p-02.zip">Download
+    Now</a></td>
+    <td width="175">Source not released</td>
+  </tr>
+  <tr>
+    <td width="175">Pre-Alpha 0.1</td>
+    <td width="175"><a href="http://x10.homelinux.org/servlet/Download/tjx10p-01.zip">Download
+    Now</a></td>
+    <td width="175">Source not released</td>
+  </tr>
+</table>
+
+<h2 align="left">Installation</h2>
+
+<p align="left">This package requires the use of the Java Communications package
+(COMM).&nbsp; You can obtain a copy of this package from Sun's website:</p>
+
+<p align="left"><a href="http://java.sun.com/products/javacomm/">http://java.sun.com/products/javacomm/</a></p>
+
+<p align="left">Download the Java Communications package and follow the instructions for
+installation.&nbsp; Make a copy of the comm.jar file from the Java Communications package
+in the lib directory of this distribution (This is only necessary to get the examples to
+work without modification).</p>
+
+<p align="left">For linux users, I've put together a <a
+href="http://wass.homelinux.net/howtos/Comm_How-To.shtml">Java Comm How-To</a> on my
+sister site <a href="http://wass.homelinux.net">wass.homelinux.net</a>.</p>
+
+<h2 align="left">Examples</h2>
+
+<table border="1" width="52%">
+  <tr>
+    <td width="31%" bgcolor="#000080"><strong><font color="#FFFFFF">Directory</font></strong></td>
+    <td width="69%" bgcolor="#000080"><strong><font color="#FFFFFF">Explanation</font></strong></td>
+  </tr>
+  <tr>
+    <td width="31%">/examples/light/</td>
+    <td width="69%">Example of a dimmable light controller.</td>
+  </tr>
+  <tr>
+    <td width="31%">/examples/appliance/</td>
+    <td width="69%">Example of an On/Off appliance controller.</td>
+  </tr>
+  <tr>
+    <td width="31%">/examples/master/</td>
+    <td width="69%">Example of a master controller.</td>
+  </tr>
+  <tr>
+    <td width="31%">/examples/server/</td>
+    <td width="69%">Network X10 server.</td>
+  </tr>
+</table>
+
+<p align="left"><br>
+Each of the examples come with shell scripts to run them.&nbsp; These shell scripts assume
+that the Comm API has already been installed and is on the classpath.&nbsp; The other
+assumption made by these scripts is that the Java interpreter (java) is on the executable
+path.&nbsp; There are shell scripts for both Linux (these may work on Unix, but haven't
+been tested) and Windows.</p>
+
+<p align="left">The light, appliance, and master examples all require that the server
+example is already running.&nbsp; </p>
+
+<h2 align="left">Contact Information</h2>
+
+<p align="left">The official website of The Java X10 Project is <a
+href="http://x10.homelinux.org">http://x10.homelinux.org</a>.&nbsp; Bug reports,
+questions, or comments may be mailed to <a href="mailto:x10@wass.homelinux.net">x10@wass.homelinux.net</a>.</p>
+
+<h2 align="left">Project Plan</h2>
+
+<p align="left">To see the current project plan, and to learn about what is to come in
+this project, see the <a href="projectplan.shtml">project plan</a>.</p>
+
+<h2 align="left">Additional Information</h2>
+
+<p align="left">There will be additional packages and functionalities added in future
+releases.&nbsp; </p>
+
+<hr>
+<font size="-2">
+
+<p>Copyright ©2000-2005 Wade Wassenberg.<br>
+On the web: <a href="http://x10.homelinux.org">http://x10.homelinux.org</a>.<br>
+Send bug reports to <a href="mailto:x10@wass.homelinux.net">x10@wass.homelinux.net</a>.</font></p>
+
+<p><small><small><em>Last Modified: June 1, 2005</em></small></small><font size="-2"><br>
+</font></p>
+</body>
+</html>
