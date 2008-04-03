@@ -207,7 +207,7 @@ qualified_identifier!
 	)?
 	a:keyword_or_identifier 
 	{
-		identifier.append(identifier + #a.getText());
+		identifier.append(#a.getText());
 	} 
 	(DOT b:keyword_or_identifier
 	{
