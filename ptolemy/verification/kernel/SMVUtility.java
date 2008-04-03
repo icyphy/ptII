@@ -1270,7 +1270,7 @@ public class SMVUtility {
                                     // First case, synchronize usage.
                                     // Pgo_isPresent
                                     // We add it into the list for transition.
-
+                                  
                                     signalPremise.append(characterOfSubGuard[0]
                                             .trim()
                                             + " & ");
@@ -4117,20 +4117,23 @@ public class SMVUtility {
                                     frontAttachment.append(" ( "
                                             + info._preCondition + " ) ;\n\n ");
                                 } else {
+                                    
                                     frontAttachment.append("("
                                             + refinementStateActivePremise
                                             + " & " + info._preCondition
                                             + " ) ;\n\n ");
                                 }
                             } else {
+                             // FIXME: I modify from & to |
                                 if (refinementStateName.equalsIgnoreCase("")) {
                                     frontAttachment.append(" ( "
-                                            + info._preCondition + " ) & ");
+                                            + info._preCondition + " ) | ");
                                 } else {
+                                 // FIXME: I modify from & to |
                                     frontAttachment.append("("
                                             + refinementStateActivePremise
                                             + " & " + info._preCondition
-                                            + " ) & ");
+                                            + " ) | ");
                                 }
                             }
 
