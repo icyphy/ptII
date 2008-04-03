@@ -1880,7 +1880,17 @@ changequote([, ])dnl
 	    PTJYTHON_DIR=python
    	    PTJYTHON_PACKAGES=ptolemy.actor.lib.python
 	else     
-            AC_MSG_WARN([Failed to find PTII/lib/jython.jar
+	    if test -f "$PTII/lib/jython.jar"; then
+	       JYTHON_DIR="$PTII/lib"
+	       PT_MSG_RESULT([$JYTHON_DIR])
+	       # FIXME: This is ugly, but we set to python instead of jython
+	       # $PTII/ptolemy/actor/lib/makefile if jython was found
+	       PTJYTHON_DIR=python
+   	       PTJYTHON_PACKAGES=ptolemy.actor.lib.python
+            else 
+               AC_MSG_WARN([Failed to find 
+    $PTII/lib/jython.jar and
+    $PTII/vendors/jython/jython.jar
     perhaps Jython is not installed?
     Jython is a java implementation of Python.
     You need not download Jython unless you plan on using the Jython
@@ -1888,6 +1898,7 @@ changequote([, ])dnl
     The Jython can be downloaded http://www.jython.org/download.html])
 	# Note that we don't substitute in the ${PTII} here
 	JYTHON_DIR='${PTII}/vendors/jython'
+            fi
         fi
     fi
 fi
