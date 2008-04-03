@@ -6930,22 +6930,7 @@ if test ! -d "$JYTHON_USER_DIR"; then
 echo "${ECHO_T}$JYTHON_USER_DIR is not present,
     so we need not find the Jython, the java implementation of Python." >&6; }; fi
 else
-    { echo "$as_me:$LINENO: checking for Jython, the Java implementation of Python" >&5
-echo $ECHO_N "checking for Jython, the Java implementation of Python... $ECHO_C" >&6; }
-
-# Check whether --with-jython was given.
-if test "${with_jython+set}" = set; then
-  withval=$with_jython; JYTHON_DIR=$withval
-else
-  JYTHON_DIR=$PTII/lib
-fi
-
-
-    if test -f "$JYTHON_DIR/jython.jar"; then
-	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $JYTHON_DIR" >&5
-echo "${ECHO_T}$JYTHON_DIR" >&6; }; fi
-        # Extract the first word of "jython", so it can be a program name with args.
+    # Extract the first word of "jython", so it can be a program name with args.
 set dummy jython; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
@@ -6985,24 +6970,24 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
-	if test "${PTJYTHON:-none}" != "none"; then
-	    JYTHON_PROG_PARENT_DIR=`dirname "$PTJYTHON"`
-   	    if test -f "$JYTHON_PROG_PARENT_DIR/jython.jar"; then
-	        if test "$JYTHON_DIR" != "$JYTHON_PROG_PARENT_DIR"; then
-		        # Use changequote to protect the square brackets in sed
-			# Remove /cygdrive so we can compile with MSVC
-			JYTHON_TMP_DIR=`echo "$JYTHON_PROG_PARENT_DIR" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
-		        { echo "$as_me:$LINENO: WARNING: Found $PTJYTHON,
+    if test "${PTJYTHON:-none}" != "none"; then
+        JYTHON_PROG_PARENT_DIR=`dirname "$PTJYTHON"`
+   	if test -f "$JYTHON_PROG_PARENT_DIR/jython.jar"; then
+	    if test "$JYTHON_DIR" != "$JYTHON_PROG_PARENT_DIR"; then
+		# Use changequote to protect the square brackets in sed
+		# Remove /cygdrive so we can compile with MSVC
+		JYTHON_TMP_DIR=`echo "$JYTHON_PROG_PARENT_DIR" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+		{ echo "$as_me:$LINENO: WARNING: Found $PTJYTHON,
     using $JYTHON_TMP_DIR/jython.jar instead of
           $JYTHON_DIR/jython.jar" >&5
 echo "$as_me: WARNING: Found $PTJYTHON,
     using $JYTHON_TMP_DIR/jython.jar instead of
           $JYTHON_DIR/jython.jar" >&2;}
-			JYTHON_DIR="$JYTHON_TMP_DIR"
-		fi
-            fi
-        else
-            # Extract the first word of "jython.bat", so it can be a program name with args.
+		JYTHON_DIR="$JYTHON_TMP_DIR"
+	    fi
+        fi
+    else
+        # Extract the first word of "jython.bat", so it can be a program name with args.
 set dummy jython.bat; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
@@ -7042,30 +7027,44 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
-	    if test "${PTJYTHON_BAT:-none}" != "none"; then
-	        JYTHON_PROG_PARENT_DIR=`dirname "$PTJYTHON_BAT"`
-   	        if test -f "$JYTHON_PROG_PARENT_DIR/jython.jar"; then
-	            if test "$JYTHON_DIR" != "$JYTHON_PROG_PARENT_DIR"; then
-		        # Use changequote to protect the square brackets in sed
-			# Remove /cygdrive so we can compile with MSVC
-			JYTHON_TMP_DIR=`echo "$JYTHON_PROG_PARENT_DIR" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
-		        { echo "$as_me:$LINENO: WARNING: Found $PTJYTHON_BAT,
+	if test "${PTJYTHON_BAT:-none}" != "none"; then
+	    JYTHON_PROG_PARENT_DIR=`dirname "$PTJYTHON_BAT"`
+   	    if test -f "$JYTHON_PROG_PARENT_DIR/jython.jar"; then
+	        if test "$JYTHON_DIR" != "$JYTHON_PROG_PARENT_DIR"; then
+		    # Use changequote to protect the square brackets in sed
+		    # Remove /cygdrive so we can compile with MSVC
+		    JYTHON_TMP_DIR=`echo "$JYTHON_PROG_PARENT_DIR" | sed 's@/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+		    { echo "$as_me:$LINENO: WARNING: Found $PTJYTHON_BAT,
     using $JYTHON_TMP_DIR/jython.jar instead of
           $JYTHON_DIR/jython.jar" >&5
 echo "$as_me: WARNING: Found $PTJYTHON_BAT,
     using $JYTHON_TMP_DIR/jython.jar instead of
           $JYTHON_DIR/jython.jar" >&2;}
-			JYTHON_DIR="$JYTHON_TMP_DIR"
-		    fi
+		    JYTHON_DIR="$JYTHON_TMP_DIR"
                 fi
             fi
         fi
+    fi
+    { echo "$as_me:$LINENO: checking for Jython, the Java implementation of Python" >&5
+echo $ECHO_N "checking for Jython, the Java implementation of Python... $ECHO_C" >&6; }
+
+# Check whether --with-jython was given.
+if test "${with_jython+set}" = set; then
+  withval=$with_jython; JYTHON_DIR=$withval
+else
+  JYTHON_DIR=$JYTHON_DIR
+fi
+
+
+    if test -f "$JYTHON_DIR/jython.jar"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $JYTHON_DIR" >&5
+echo "${ECHO_T}$JYTHON_DIR" >&6; }; fi
 	# FIXME: This is ugly, but we set to python instead of jython
 	# $PTII/ptolemy/actor/lib/makefile if jython was found
 	PTJYTHON_DIR=python
 	# PTJYTHON_PACKAGES is used in ptII/doc/makefile
 	PTJYTHON_PACKAGES=ptolemy.actor.lib.python
-
     fi
 
     if test "$PTJYTHON_DIR" = ""; then
@@ -7079,13 +7078,27 @@ echo "${ECHO_T}$JYTHON_DIR" >&6; }; fi
 	    PTJYTHON_DIR=python
    	    PTJYTHON_PACKAGES=ptolemy.actor.lib.python
 	else
-            { echo "$as_me:$LINENO: WARNING: Failed to find PTII/lib/jython.jar
+	    if test -f "$PTII/lib/jython.jar"; then
+	       JYTHON_DIR="$PTII/lib"
+	       if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $JYTHON_DIR" >&5
+echo "${ECHO_T}$JYTHON_DIR" >&6; }; fi
+	       # FIXME: This is ugly, but we set to python instead of jython
+	       # $PTII/ptolemy/actor/lib/makefile if jython was found
+	       PTJYTHON_DIR=python
+   	       PTJYTHON_PACKAGES=ptolemy.actor.lib.python
+            else
+               { echo "$as_me:$LINENO: WARNING: Failed to find
+    $PTII/lib/jython.jar and
+    $PTII/vendors/jython/jython.jar
     perhaps Jython is not installed?
     Jython is a java implementation of Python.
     You need not download Jython unless you plan on using the Jython
     actors in ptolemy/actor/lib/python
     The Jython can be downloaded http://www.jython.org/download.html" >&5
-echo "$as_me: WARNING: Failed to find PTII/lib/jython.jar
+echo "$as_me: WARNING: Failed to find
+    $PTII/lib/jython.jar and
+    $PTII/vendors/jython/jython.jar
     perhaps Jython is not installed?
     Jython is a java implementation of Python.
     You need not download Jython unless you plan on using the Jython
@@ -7093,6 +7106,7 @@ echo "$as_me: WARNING: Failed to find PTII/lib/jython.jar
     The Jython can be downloaded http://www.jython.org/download.html" >&2;}
 	# Note that we don't substitute in the ${PTII} here
 	JYTHON_DIR='${PTII}/vendors/jython'
+            fi
         fi
     fi
 fi
