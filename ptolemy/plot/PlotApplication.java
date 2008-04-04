@@ -232,7 +232,7 @@ public class PlotApplication extends PlotFrame {
                                 + ", Build: $Id$\n\n"
                                 + "For more information, see\n"
                                 + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                                + "Copyright (c) 1997-2007, "
+                                + "Copyright (c) 1997-2008, "
                                 + "The Regents of the University of California.",
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
