@@ -90,15 +90,15 @@ supporting large block-diagram models.
 
 <h4>Ptalon Demonstrations</h4>
   <ul>
-  <li> <a href="../ptolemy/actor/ptalon/demo/CruiseControl/CruiseControl.htm">CruiseControl</a>
-  <li> <a href="../ptolemy/actor/ptalon/demo/EightChannelFFT/EightChannelFFT.htm">EightChannelFFT</a>
-  <li> <a href="../ptolemy/actor/ptalon/demo/GameOfLife/GameOfLife.htm">GameOfLife</a>
-  <li> <a href="../ptolemy/actor/ptalon/demo/MapReduce/MapReduce.htm">MapReduce</a>
-  <li> <a href="../ptolemy/actor/ptalon/demo/Unicycle/Unicycle.htm">Unicycle</a>
-  <li> <a href="../ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweep-SmallWorld-fsm.htm">ParameterSweep-SmallWorld-fsm</a>
-  <li> <a href="../ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweep-SmallWorld-sdf.htm">ParameterSweep-SmallWorld-sdf</a>
-  <li> <a href="../ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld-MultiInstanceComposite.htm">SmallWorld-MultiInstanceComposite</a>
-  <li> <a href="../ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld-PtalonActor.htm">SmallWorld-PtalonActor</a>
+  <li> CruiseControl
+  <li> EightChannelFFT
+  <li> GameOfLife
+  <li> MapReduce
+  <li> Unicycle
+  <li> ParameterSweep-SmallWorld-fsm
+  <li> ParameterSweep-SmallWorld-sdf
+  <li> SmallWorld-MultiInstanceComposite
+  <li> SmallWorld-PtalonActor
   </ul>
 
 <h3>Backtracking</h3>
@@ -136,9 +136,9 @@ operations to achieve some form of laziness.
  <p>Primary Developer: Thomas Huining Feng
 <h4>Backtracking Demonstrations</h4>
  <ul>
-   <li> <a href="../ptolemy/backtrack/demo/PrimeTest/PrimeTest.htm">Prime Test</a> </li>
-   <li> <a href="../ptolemy/backtrack/demo/RampRollback/RampRollback.htm">Ramp Rollback</a> </li>
-   <li> <a href="../ptolemy/backtrack/demo/TrialModule/TrialModule.htm">Trial Module</a> </li>
+   <li> Prime Test </li>
+   <li> Ramp Rollback </li>
+   <li> Trial Module </li>
  </ul>
 
 <h3>The
@@ -276,6 +276,64 @@ it will not work in an applet</i>
 
 
 <h2><a name="other">Other Key New Capabilities</a></h2>
+<h3>ArrayType changes surrounding length</h3>
+
+The <a href="codeDoc/ptolemy/data/type/ArrayType.html">ArrayType</a> class
+now represents the length of arrays.  New methods were added:
+
+<pre>
+boolean hasKnownLength()
+int length()
+</pre>          
+The length() method throws a RuntimeException if invoked on an 
+ArrayType with hasKnownLength() == false.
+          
+<p>Existing ArrayType instances (creating using the ArrayType(Type)
+constructor have unknown length.  A new constructor ArrayType(Type,
+int) creates array types with a known length.  Generally speaking,
+array types with known length are incomparable with array types with
+different lengths, and can be converted to an array type with unknown
+length and compatible element type.  Scalars are convertible to array
+types with length 1.  Getting the code to do this right was
+significantly more complex than inferring sizes of Fix-point types
+because:
+
+<ol>
+
+<li>The FixType modifications were easily factored since any FixType
+with a known length is less than the single FixType with an unknown
+length.  ArrayType could not be factored this way because of the more
+complex type relations.
+
+<li>FixType doesn't have a contained type variable.
+</ol>
+          
+ArrayTypes now have a type construction functions: arrayType(int) and
+arrayType(int, 4) represent the types that you might expect.
+
+<p> Unfortunately, this means that there is <b>a signficant
+backward-compatibility issue</b> Previously, if you wanted to force an
+arbitrary integer array type, you used {int}, which is really an array
+with one element.  This now has the type arrayType(int, 1), which is
+more specific than you probably want.
+
+<p>The existing models have been updated using the new description
+of an array type with an unknown length.
+
+<p>Note that arrayType(int) returns an instance of the special class
+UnsizedArrayToken, whose only purpose is to have an unknown array
+size.  Regular array tokens always have a known length.
+          
+<p>Note also that arrayType(unknown) is no longer the GLB of all of
+the arrayTypes.  The GLB is now represented by BaseType.ARRAY_BOTTOM
+(which is not an instance of ArrayType).  This required moving farther
+along the path of decoupling type constraints on array element types
+from the type objects themselves.  TypeableElementTypeTerm can now
+refer to the element type of a typeable which may never esolve to a
+valid array type (resulting in an unsatisifed inequality term).
+
+<p>Primary Developer of ArrayType changes: Stephen Neuendorffer
+
 <ul>
 <li><a href="codeDoc/ptolemy/actor/Initializable.html">Initializable</a>
 <li><a href="codeDoc/ptolemy/actor/TokenGotEvent.html">TokenGotEvent</a>
@@ -328,7 +386,6 @@ it will not work in an applet</i>
 <li><a href="codeDoc/ptolemy/actor/FiringsRecordable.html">FiringsRecordable</a>
 <li><a href="codeDoc/ptolemy/actor/TokenGotEvent.html">TokenGotEvent</a>
 <li><a href="codeDoc/ptolemy/actor/TokenGotListener.html">TokenGotListener</a>
-<li><a href="codeDoc/ptolemy/actor/TypedCompositeActorWithCoSimulation.html">TypedCompositeActorWithCoSimulation</a>
 <li><a href="codeDoc/ptolemy/actor/gui/AbstractPlaceableActor.html">AbstractPlaceableActor</a>
 <li><a href="codeDoc/ptolemy/actor/gui/DependencyHighlighter.html">DependencyHighlighter</a>
 <li><a href="codeDoc/ptolemy/data/FloatToken.html">FloatToken</a>
