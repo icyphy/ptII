@@ -51,6 +51,7 @@ JSRCS = \
 	AttributeOperation.java \
 	Operation.java \
 	OperationElement.java \
+	PortRemovalOperation.java \
 	RenameOperation.java \
 	StringOperationElement.java
 
