@@ -193,7 +193,9 @@ PTOLEMYGUIFILES = \
 
 # PlotFrame uses StringUtilities.getProperty() 
 # ptolemy.util has lots of classes, we need only a few of them.
-PTOLEMYUTILFILES = ptolemy/util/StringUtilities.class
+PTOLEMYUTILFILES = \
+	ptolemy/util/FileUtilities.class \
+	ptolemy/util/StringUtilities.class
 
 # Class files used in all applets and applications
 BASECLASSFILES = \
