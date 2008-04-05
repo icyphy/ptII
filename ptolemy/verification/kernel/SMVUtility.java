@@ -1688,11 +1688,11 @@ public class SMVUtility {
                                 // manipulating simple format
                                 // a = a op constInt; or a = constInt;
 
-                                if (Pattern.matches(".*[*].*", rValue)) {
-                                    // try {
+                                if (Pattern.matches(".*\\*.*", rValue)) {
+                                    
 
                                     String[] rValueOperends = rValue
-                                            .split("[*]");
+                                            .split("\\*");
 
                                     String offset = rValueOperends[1].trim();
 
@@ -1801,9 +1801,9 @@ public class SMVUtility {
                                             destinationInThis.getDisplayName(),
                                             "S");
 
-                                } else if (Pattern.matches(".*+.*", rValue)) {
+                                } else if (Pattern.matches(".*\\+.*", rValue)) {
                                     String[] rValueOperends = rValue
-                                            .split("[+]");
+                                            .split("\\+");
 
                                     String offset = rValueOperends[1].trim();
 
@@ -1858,10 +1858,10 @@ public class SMVUtility {
                                             destinationInThis.getDisplayName(),
                                             "S");
 
-                                } else if (Pattern.matches(".*-.*", rValue)) {
+                                } else if (Pattern.matches(".*\\-.*", rValue)) {
 
                                     String[] rValueOperends = rValue
-                                            .split("[-]");
+                                            .split("\\-");
 
                                     String offset = rValueOperends[1].trim();
 

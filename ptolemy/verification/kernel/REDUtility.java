@@ -1531,11 +1531,11 @@ public class REDUtility {
                                         // manipulating simple format
                                         // a = a op constInt; or a = constInt;
 
-                                        if (Pattern.matches(".*[*].*", rValue)) {
+                                        if (Pattern.matches(".*\\*.*", rValue)) {
                                             // try {
 
                                             String[] rValueOperends = rValue
-                                                    .split("[*]");
+                                                    .split("\\*");
 
                                             bean._postCondition.append(actor
                                                     .getName()
@@ -1567,11 +1567,11 @@ public class REDUtility {
                                                     + rValueOperends[1].trim()
                                                     + ";");
 
-                                        } else if (Pattern.matches(".*+.*",
+                                        } else if (Pattern.matches(".*\\+.*",
                                                 rValue)) {
                                             // try {
                                             String[] rValueOperends = rValue
-                                                    .split("[+]");
+                                                    .split("\\+");
 
                                             bean._postCondition.append(actor
                                                     .getName()
@@ -1584,11 +1584,11 @@ public class REDUtility {
                                                     + " + "
                                                     + rValueOperends[1].trim()
                                                     + ";");
-                                        } else if (Pattern.matches(".*-.*",
+                                        } else if (Pattern.matches(".*\\-.*",
                                                 rValue)) {
                                             // try {
                                             String[] rValueOperends = rValue
-                                                    .split("[-]");
+                                                    .split("\\-");
 
                                             bean._postCondition.append(actor
                                                     .getName()
