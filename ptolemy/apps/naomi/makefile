@@ -54,8 +54,19 @@ EXTRA_SRCS = 	$(JSRCS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'Connector$$1.class' \
+	'Connector$$2.class' \
 	'Connector$$Command.class' \
-	'Connector$$MappedNamespaceContext.class'
+	'Connector$$LinkNaomiAttributeAction.class' \
+	'Connector$$ListAction.class' \
+	'Connector$$LoadAction$$1.class' \
+	'Connector$$LoadAction.class' \
+	'Connector$$MappedNamespaceContext.class' \
+	'Connector$$SaveAction$$1.class' \
+	'Connector$$SaveAction.class' \
+	'Connector$$SyncAction$$1.class' \
+	'Connector$$SyncAction.class' \
+	'Connector$$UnlinkNaomiAttributeAction.class' \
+	'NaomiParameter$$Method.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

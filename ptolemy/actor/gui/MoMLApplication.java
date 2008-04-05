@@ -767,6 +767,47 @@ public class MoMLApplication implements ExecutionListener {
     protected Configuration _createEmptyConfiguration() throws Exception {
         return _createDefaultConfiguration();
     }
+    
+    /** Open the specified Ptolemy II model. If a model already has
+     *  open tableaux, then put those in the foreground and
+     *  return the first one.  Otherwise, create a new tableau and,
+     *  if necessary, a new effigy. Unless there is a more natural
+     *  place for the effigy (e.g. it is a hierarchical model), then if a new
+     *  effigy is created, it is put into the <i>container</i> argument,
+     *  or if that is null, into the directory of the configuration.
+     *  Any new tableau created will be contained by that effigy.
+     *  @param entity The model.
+     *  @param container The container for any new effigy.
+     *  @return The tableau that is created, or the first one found,
+     *   or null if none is created or found.
+     *  @exception IllegalActionException If constructing an effigy or tableau
+     *   fails.
+     *  @exception NameDuplicationException If a name conflict occurs (this
+     *   should not be thrown).
+     */
+    protected Tableau _openModel(NamedObj entity) throws IllegalActionException,
+            NameDuplicationException {
+        return _configuration.openModel(entity);
+    }
+
+
+    /** Open the specified URL.
+     *  If a model with the specified identifier is present in the directory,
+     *  then find all the tableaux of that model and make them
+     *  visible; otherwise, read a model from the specified URL <i>in</i>
+     *  and create a default tableau for the model and add the tableau
+     *  to this directory.
+     *  @param base The base for relative file references, or null if
+     *   there are no relative file references.
+     *  @param in The input URL.
+     *  @param identifier The identifier that uniquely identifies the model.
+     *  @return The tableau that is created, or null if none.
+     *  @exception Exception If the URL cannot be read.
+     */
+    protected Tableau _openModel(URL base, URL in, String identifier)
+    throws Exception {
+        return _configuration.openModel(base, in, identifier);
+    }
 
     /** Parse a command-line argument.
      *  @param arg The command-line argument to be parsed.
@@ -827,7 +868,7 @@ public class MoMLApplication implements ExecutionListener {
                 System.out.println("-class: _configuration: " + _configuration);
 
                 if (_configuration != null) {
-                    _configuration.openModel(newModel);
+                    _openModel(newModel);
 
                     // FIXME: we can probably delete this code.
                     //                     // Create an effigy for the model.
@@ -896,8 +937,7 @@ public class MoMLApplication implements ExecutionListener {
 
                         //long startTime = (new Date()).getTime();
                         // Now defer to the model reader.
-                        /*Tableau tableau = */_configuration.openModel(base,
-                                inURL, key);
+                        /*Tableau tableau = */ _openModel(base, inURL, key);
 
                         // FIXME: If the -run option was given, then start a run.
                         // FIXME: If the -fullscreen option was given, open full screen.
