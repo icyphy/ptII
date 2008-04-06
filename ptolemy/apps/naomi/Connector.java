@@ -67,6 +67,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -973,6 +974,13 @@ public class Connector extends MoMLApplication {
                     Document document = impl.createDocument(NAMESPACES[0][1],
                             "attribute", null);
                     Element root = document.getDocumentElement();
+                    Attr attribute = document.createAttributeNS(
+                            "http://www.w3.org/2001/XMLSchema-instance",
+                            "schemaLocation");
+                    attribute.setPrefix("xsi");
+                    attribute.setValue("http://www.atl.lmco.com/naomi attribute"
+                            + "_simple.xsd");
+                    root.setAttributeNodeNS(attribute);
                     Element owner = document.createElementNS(NAMESPACES[0][1],
                             "owner");
                     owner.setTextContent(_owner);
@@ -993,7 +1001,8 @@ public class Connector extends MoMLApplication {
                         new FileOutputStream(attributeFile);
                     _serializeXML(document, stream);
 
-                    if (!attributeFile.setLastModified(attributeDate.getTime())) {
+                    if (!attributeFile.setLastModified(attributeDate
+                            .getTime())) {
                         throw new IllegalActionException("Failed to set last "
                                 + "modified time of \""
                                 + attributeFile.getName() + "\"");
