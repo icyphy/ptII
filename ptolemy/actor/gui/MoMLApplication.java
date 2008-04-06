@@ -770,14 +770,12 @@ public class MoMLApplication implements ExecutionListener {
     
     /** Open the specified Ptolemy II model. If a model already has
      *  open tableaux, then put those in the foreground and
-     *  return the first one.  Otherwise, create a new tableau and,
-     *  if necessary, a new effigy. Unless there is a more natural
-     *  place for the effigy (e.g. it is a hierarchical model), then if a new
-     *  effigy is created, it is put into the <i>container</i> argument,
-     *  or if that is null, into the directory of the configuration.
+     *  return the first one.  Otherwise, create a new tableau and if
+     *  necessary, a new effigy.  Unless there is a more natural container
+     *  for the effigy (e.g. it is a hierarchical model), then if a new
+     *  effigy is created, it is put into the directory of the configuration.
      *  Any new tableau created will be contained by that effigy.
      *  @param entity The model.
-     *  @param container The container for any new effigy.
      *  @return The tableau that is created, or the first one found,
      *   or null if none is created or found.
      *  @exception IllegalActionException If constructing an effigy or tableau
