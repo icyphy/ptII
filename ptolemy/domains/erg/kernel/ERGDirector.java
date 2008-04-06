@@ -119,10 +119,13 @@ public class ERGDirector extends Director implements TimedDirector {
             TimedEvent timedEvent = iterator.next();
             boolean found = timedEvent.contents == event;
             if (!found) {
-                for (Actor refinement : event.getRefinement()) {
-                    if (timedEvent.contents == refinement) {
-                        found = true;
-                        break;
+                Actor[] refinements = event.getRefinement();
+                if (refinements != null) {
+                    for (Actor refinement : refinements) {
+                        if (timedEvent.contents == refinement) {
+                            found = true;
+                            break;
+                        }
                     }
                 }
             }
