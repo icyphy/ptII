@@ -61,6 +61,7 @@ OPTIONAL_FILES = \
 	'Connector$$LoadAction$$1.class' \
 	'Connector$$LoadAction.class' \
 	'Connector$$MappedNamespaceContext.class' \
+	'Connector$$Pair.class' \
 	'Connector$$SaveAction$$1.class' \
 	'Connector$$SaveAction.class' \
 	'Connector$$SyncAction$$1.class' \

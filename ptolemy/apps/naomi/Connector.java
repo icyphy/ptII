@@ -257,6 +257,7 @@ public class Connector extends MoMLApplication {
                     iterator.remove();
                 }
             }
+
             if (attributes.isEmpty()) {
                 MessageHandler.message("No more parameter can be linked to a "
                         + "NAOMI attribute.");
@@ -270,22 +271,20 @@ public class Connector extends MoMLApplication {
             for (Attribute attribute : attributes) {
                 choices[i++] = attribute.getName(model);
             }
-            query.addChoice("parameter", "parameter", choices, choices[0]);
+            query.addChoice("parameter", "Parameter", choices, choices[0]);
 
             NaomiParameter.Method[] methods = NaomiParameter.Method.values();
             choices = new String[methods.length];
             for (i = 0; i < methods.length; i++) {
                 choices[i] = methods[i].toString();
             }
-            query.addChoice("method", "method", choices, choices[0]);
+            query.addChoice("method", "Method", choices, choices[0]);
             query.addLine("naomiName", "NAOMI attribute", "");
             ComponentDialog dialog = new ComponentDialog(_frame,
                     (String) getValue("tooltip"), query);
             if (dialog.buttonPressed().equals("OK")) {
                 String paramName = query.getStringValue("parameter");
                 String methodName = query.getStringValue("method");
-                String naomiName = query.getStringValue("naomiName");
-                Attribute attribute = model.getAttribute(paramName);
                 NaomiParameter.Method method = null;
                 for (NaomiParameter.Method m : NaomiParameter.Method.values()) {
                     if (m.toString().equals(methodName)) {
@@ -293,6 +292,27 @@ public class Connector extends MoMLApplication {
                         break;
                     }
                 }
+                String naomiName = query.getStringValue("naomiName");
+
+                if (naomiName.equals("")) {
+                    MessageHandler.error("The \"NAOMI attribute\" must not be "
+                            + "empty, and must contain a valid name of NAOMI "
+                            + "attribute.");
+                    return;
+                }
+
+                if (method == NaomiParameter.Method.GET) {
+                    File attributesPath = new File(_root, "attributes");
+                    try {
+                        _loadAttribute(attributesPath, naomiName);
+                    } catch (IllegalActionException e1) {
+                        MessageHandler.error("Unable to locate NAOMI attribute "
+                                + "with name \"" + naomiName + "\".");
+                        return;
+                    }
+                }
+
+                Attribute attribute = model.getAttribute(paramName);
                 String expression = NaomiParameter.getExpression(method,
                         naomiName, new Date());
                 String moml = "<property name=\"" +
@@ -418,6 +438,26 @@ public class Connector extends MoMLApplication {
         private Map<String, String> _map;
     }
 
+    public static class Pair<T1, T2> {
+
+        public Pair(T1 v1, T2 v2) {
+            _v1 = v1;
+            _v2 = v2;
+        }
+
+        public T1 getV1() {
+            return _v1;
+        }
+
+        public T2 getV2() {
+            return _v2;
+        }
+
+        private T1 _v1;
+
+        private T2 _v2;
+    }
+
     public class SaveAction extends AbstractAction {
 
         public SaveAction(PtolemyFrame frame) {
@@ -515,7 +555,7 @@ public class Connector extends MoMLApplication {
             for (Attribute attribute : attributes) {
                 choices[i++] = attribute.getName(model);
             }
-            query.addChoice("parameter", "parameter", choices, choices[0]);
+            query.addChoice("parameter", "Parameter", choices, choices[0]);
             ComponentDialog dialog = new ComponentDialog(_frame,
                     (String) getValue("tooltip"), query);
             boolean mergeWithPrevious = false;
@@ -635,6 +675,27 @@ public class Connector extends MoMLApplication {
         }
     }
 
+    protected Pair<String, Date> _loadAttribute(File attributesPath,
+            String attributeName) throws IllegalActionException {
+        File attributeFile = new File(attributesPath, attributeName);
+        Date fileDate = new Date(attributeFile.lastModified());
+        try {
+            Document document = _parseXML(attributeFile);
+
+            XPathFactory xpathFactory = XPathFactory.newInstance();
+            XPath xpath = xpathFactory.newXPath();
+            xpath.setNamespaceContext(new MappedNamespaceContext(
+                    NAMESPACES));
+            XPathExpression expr = xpath.compile(
+                    "/att:attribute/att:value");
+            String value = (String) expr.evaluate(document);
+            value = StringUtilities.unescapeForXML(value);
+            return new Pair<String, Date>(value, fileDate);
+        } catch (XPathExpressionException e) {
+            throw new KernelRuntimeException(e, "Unexpected error.");
+        }
+    }
+
     protected void _loadAttributes(NamedObj model, File attributesPath,
             boolean force)
     throws IllegalActionException {
@@ -647,57 +708,44 @@ public class Connector extends MoMLApplication {
                 if (!_inputAttributes.contains(attributeName)) {
                     continue;
                 }
-                File attributeFile = new File(attributesPath, attributeName);
 
-                Date fileDate = new Date(attributeFile.lastModified());
+                Pair<String, Date> pair = _loadAttribute(attributesPath,
+                        attributeName);
+                String value = pair.getV1();
+                Date date = pair.getV2();
+
                 if (!force) {
                     Date attributeDate = naomiParam.getModifiedDate();
-                    if (!attributeFile.exists() || !attributeFile.isFile()
-                            || !attributeDate.before(fileDate)) {
+                    if (!attributeDate.before(date)) {
                         continue;
                     }
                 }
 
-                try {
-                    Document document = _parseXML(attributeFile);
+                System.out.println("Load: " + attributeName + " = " + value);
 
-                    XPathFactory xpathFactory = XPathFactory.newInstance();
-                    XPath xpath = xpathFactory.newXPath();
-                    xpath.setNamespaceContext(new MappedNamespaceContext(
-                            NAMESPACES));
-                    XPathExpression expr = xpath.compile(
-                            "/att:attribute/att:value");
-                    String value = (String) expr.evaluate(document);
-                    System.out.println("Load: " + attributeName + " = " +
-                            value);
-                    value = StringUtilities.unescapeForXML(value);
-
-                    String moml = "<property name=\"" + attr.getName() + "\" " +
-                            "value=\"" + value + "\"/>";
-                    MoMLChangeRequest request =
-                        new MoMLChangeRequest(this, attr.getContainer(), moml);
-                    if (_undoable) {
-                        request.setUndoable(true);
-                        request.setMergeWithPreviousUndo(_mergeWithPrevious);
-                        _mergeWithPrevious = true;
-                    }
-                    request.execute();
-
-                    moml = "<property name=\"" + naomiParam.getName() + "\" " +
-                            "value=\"" + NaomiParameter.getExpression(
-                                    naomiParam.getMethod(),
-                                    naomiParam.getAttributeName(), fileDate) +
-                            "\"/>";
-                    request = new MoMLChangeRequest(this, attr, moml);
-                    if (_undoable) {
-                        request.setUndoable(true);
-                        request.setMergeWithPreviousUndo(_mergeWithPrevious);
-                        _mergeWithPrevious = true;
-                    }
-                    request.execute();
-                } catch (XPathExpressionException e) {
-                    throw new KernelRuntimeException(e, "Unexpected error.");
+                String moml = "<property name=\"" + attr.getName() + "\" " +
+                        "value=\"" + value + "\"/>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        attr.getContainer(), moml);
+                if (_undoable) {
+                    request.setUndoable(true);
+                    request.setMergeWithPreviousUndo(_mergeWithPrevious);
+                    _mergeWithPrevious = true;
                 }
+                request.execute();
+
+                moml = "<property name=\"" + naomiParam.getName() + "\" " +
+                        "value=\"" + NaomiParameter.getExpression(
+                                naomiParam.getMethod(),
+                                naomiParam.getAttributeName(), date) +
+                        "\"/>";
+                request = new MoMLChangeRequest(this, attr, moml);
+                if (_undoable) {
+                    request.setUndoable(true);
+                    request.setMergeWithPreviousUndo(_mergeWithPrevious);
+                    _mergeWithPrevious = true;
+                }
+                request.execute();
 
                 break;
             }
