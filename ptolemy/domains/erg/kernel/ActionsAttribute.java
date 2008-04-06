@@ -40,6 +40,7 @@ import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
+import ptolemy.actor.TypedActor;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParserScope;
@@ -49,12 +50,12 @@ import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
 import ptolemy.domains.fsm.kernel.CommitActionsAttribute;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
@@ -215,48 +216,25 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         IOPort port = (IOPort) erg.getPort(name);
 
         if (port == null) {
-            // No port found.  Try for a variable.
-            Attribute variable = erg.getAttribute(name);
+            NamedObj container = erg;
+            Attribute variable = null;
+            while (variable == null && container != null) {
+                variable = _getAttribute(container, name);
+                container = container.getContainer();
+            }
 
             if (variable == null) {
-                // Try for a refinement variable.
-                int period = name.indexOf(".");
-
-                if (period > 0) {
-                    String refinementName = name.substring(0, period);
-                    String entryName = name.substring(period + 1);
-
-                    // FIXME: Look in the container of the fsm???
-                    // Below we look for an attribute only in the fsm
-                    // itself.
-                    Nameable container = erg.getContainer();
-
-                    if (container instanceof CompositeEntity) {
-                        Entity refinement = ((CompositeEntity) container)
-                                .getEntity(refinementName);
-
-                        if (refinement != null) {
-                            Attribute entry =
-                                refinement.getAttribute(entryName);
-
-                            if (entry instanceof Variable) {
-                                return entry;
-                            }
-                        }
-                    }
-                }
-
                 throw new IllegalActionException(erg, this,
                         "Cannot find port or variable with the name: " + name);
-            } else {
-                if (!(variable instanceof Variable)) {
-                    throw new IllegalActionException(erg, this,
-                            "The attribute with name \"" + name + "\" is not "
-                            + "an instance of Variable.");
-                }
-
-                return variable;
             }
+
+            if (!(variable instanceof Variable)) {
+                throw new IllegalActionException(erg, this,
+                        "The attribute with name \"" + name + "\" is not "
+                        + "an instance of Variable.");
+            }
+
+            return variable;
         } else {
             if (!port.isOutput()) {
                 throw new IllegalActionException(erg, this,
@@ -284,6 +262,45 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         } else {
             _scope = superscope;
         }
+    }
+
+    private Attribute _getAttribute(NamedObj container, String name)
+    throws IllegalActionException {
+        Attribute attribute = container.getAttribute(name);
+        if (attribute != null) {
+            return attribute;
+        }
+
+        int period = name.indexOf(".");
+        if (period > 0) {
+            String componentName = name.substring(0, period);
+            String nameWithinComponent = name.substring(period + 1);
+            if (container instanceof ERGController) {
+                Entity entity =
+                    ((ERGController) container).getEntity(componentName);
+                if (entity instanceof Event) {
+                    TypedActor[] refinements = ((Event) entity).getRefinement();
+                    if (refinements != null) {
+                        for (TypedActor refinement : refinements) {
+                            attribute = _getAttribute((NamedObj) refinement,
+                                    nameWithinComponent);
+                            if (attribute != null) {
+                                return attribute;
+                            }
+                        }
+                    }
+                }
+                return null;
+            } else if (container instanceof CompositeEntity) {
+                ComponentEntity entity = ((CompositeEntity) container)
+                        .getEntity(componentName);
+                if (entity != null) {
+                    return _getAttribute(entity, nameWithinComponent);
+                }
+            }
+        }
+
+        return null;
     }
 
     private ParserScope _scope;
