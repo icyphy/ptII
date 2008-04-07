@@ -52,12 +52,6 @@ import ptolemy.data.type.Typeable;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -2027,39 +2021,14 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 } else {
                     reference = _reference;
                 }
-                String insideName = name.replaceAll("::", ".");
-                if (insideName.equals("this")) {
-                    if (reference instanceof Variable) {
-                        return ((Variable) reference).getToken();
-                    } else {
-                        return new ObjectToken(reference, reference.getClass());
-                    }
+                NamedObj object = getScopedObject(reference, name);
+                if (object instanceof Variable) {
+                    return ((Variable) object).getToken();
+                } else if (object != null) {
+                    return new ObjectToken(object, object.getClass());
+                } else {
+                    return null;
                 }
-                while (reference != null) {
-                    if (reference instanceof Entity) {
-                        Port port = ((Entity) reference).getPort(insideName);
-                        if (port != null) {
-                            return new ObjectToken(port, port.getClass());
-                        }
-                    }
-                    if (reference instanceof CompositeEntity) {
-                        ComponentEntity entity =
-                            ((CompositeEntity) reference).getEntity(insideName);
-                        if (entity != null) {
-                            return new ObjectToken(entity, entity.getClass());
-                        }
-
-                        ComponentRelation relation = ((CompositeEntity)
-                                reference).getRelation(insideName);
-                        if (relation != null) {
-                            return new ObjectToken(relation,
-                                    relation.getClass());
-                        }
-                    }
-                    reference = reference.getContainer();
-                }
-
-                return null;
             }
         }
 
@@ -2073,48 +2042,18 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          */
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
-            NamedObj reference = _reference;
-
+            NamedObj reference;
             if (_reference == null) {
                 reference = Variable.this.getContainer();
-            }
-
-            Variable result = getScopedVariable(Variable.this, reference, name);
-
-            if (result != null) {
-                return result.getType();
             } else {
-                String insideName = name.replaceAll("::", ".");
-                if (insideName.equals("this")) {
-                    if (reference instanceof Variable) {
-                        return ((Variable) reference).getType();
-                    } else {
-                        return new ObjectType(reference.getClass());
-                    }
-                }
-                while (reference != null) {
-                    if (reference instanceof Entity) {
-                        Port port = ((Entity) reference).getPort(insideName);
-                        if (port != null) {
-                            return new ObjectType(port.getClass());
-                        }
-                    }
-                    if (reference instanceof CompositeEntity) {
-                        ComponentEntity entity =
-                            ((CompositeEntity) reference).getEntity(insideName);
-                        if (entity != null) {
-                            return new ObjectType(entity.getClass());
-                        }
-
-                        ComponentRelation relation =
-                            ((CompositeEntity) reference).getRelation(insideName);
-                        if (relation != null) {
-                            return new ObjectType(relation.getClass());
-                        }
-                    }
-                    reference = reference.getContainer();
-                }
-
+                reference = _reference;
+            }
+            NamedObj object = getScopedObject(reference, name);
+            if (object instanceof Variable) {
+                return ((Variable) object).getType();
+            } else if (object != null) {
+                return new ObjectType(object.getClass());
+            } else {
                 return null;
             }
         }
@@ -2208,27 +2147,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
             Set identifiers = new HashSet(getAllScopedVariableNames(
                     Variable.this, reference));
-            identifiers.add("this");
-            while (reference != null) {
-                if (reference instanceof Entity) {
-                    for (Object port : ((Entity) reference).portList()) {
-                        identifiers.add(((Port) port).getName());
-                    }
-                }
-                if (reference instanceof CompositeEntity) {
-                    for (Object entity : ((CompositeEntity) reference)
-                            .entityList()) {
-                        identifiers.add(((Entity) entity).getName());
-                    }
+            identifiers.addAll(getAllScopedObjectNames(reference));
 
-                    for (Object relation : ((CompositeEntity) reference)
-                            .relationList()) {
-                        identifiers.add(((Relation) relation).getName());
-                    }
-                }
-                reference = reference.getContainer();
-            }
-            
             return identifiers;
         }
 

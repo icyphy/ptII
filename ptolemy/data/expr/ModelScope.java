@@ -33,6 +33,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 
@@ -51,6 +57,36 @@ import ptolemy.kernel.util.NamedObj;
  @see ptolemy.data.expr.PtParser
  */
 public abstract class ModelScope implements ParserScope {
+    /** Return a list of object names in scope for variables in the
+     * given container.
+     * @param container The container of this scope.
+     */
+    public static Set getAllScopedObjectNames(NamedObj container) {
+        Set identifiers = new HashSet();
+        identifiers.add("this");
+        while (container != null) {
+            if (container instanceof Entity) {
+                for (Object port : ((Entity) container).portList()) {
+                    identifiers.add(((Port) port).getName());
+                }
+            }
+            if (container instanceof CompositeEntity) {
+                for (Object entity : ((CompositeEntity) container)
+                        .entityList()) {
+                    identifiers.add(((Entity) entity).getName());
+                }
+
+                for (Object relation : ((CompositeEntity) container)
+                        .relationList()) {
+                    identifiers.add(((Relation) relation).getName());
+                }
+            }
+            container = container.getContainer();
+        }
+
+        return identifiers;
+    }
+
     /** Return a list of variable names in scope for variables in the
      * given container.  Exclude the given variable from being
      * considered in scope.
@@ -92,6 +128,47 @@ public abstract class ModelScope implements ParserScope {
         }
 
         return nameSet;
+    }
+
+    /** Get the NamedObj with the given name in the scope of the given
+     *  container.  If the name contains the "::" scoping specifier,
+     *  then an attribute more deeply in the hierarchy is searched
+     *  for.
+     *  @param container The container to search upwards from.
+     *  @param name The object name to search for.
+     *  @return The NamedObj with the given name or null if the NamedObj
+     *  does not exist.
+     */
+    public static NamedObj getScopedObject(NamedObj container, String name) {
+        NamedObj reference = container;
+        String insideName = name.replaceAll("::", ".");
+        if (insideName.equals("this")) {
+            return reference;
+        }
+        while (reference != null) {
+            if (reference instanceof Entity) {
+                Port port = ((Entity) reference).getPort(insideName);
+                if (port != null) {
+                    return port;
+                }
+            }
+            if (reference instanceof CompositeEntity) {
+                ComponentEntity entity =
+                    ((CompositeEntity) reference).getEntity(insideName);
+                if (entity != null) {
+                    return entity;
+                }
+
+                ComponentRelation relation = ((CompositeEntity)
+                        reference).getRelation(insideName);
+                if (relation != null) {
+                    return relation;
+                }
+            }
+            reference = reference.getContainer();
+        }
+
+        return null;
     }
 
     /** Get the variable with the given name in the scope of the given
@@ -145,7 +222,7 @@ public abstract class ModelScope implements ParserScope {
                         && (result != exclude)) {
                     return (Variable) result;
                 }
-                
+
                 // Should not return null here. The next extender should be
                 // searched. (tfeng)
                 // return null;

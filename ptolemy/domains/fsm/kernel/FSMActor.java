@@ -1061,6 +1061,110 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
+    /** This class implements a scope, which is used to evaluate the
+     *  parsed expressions.  This class is currently rather simple,
+     *  but in the future should allow the values of input ports to
+     *  be referenced without having shadow variables.
+     */
+    public class PortScope extends ModelScope {
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.Token get(String name)
+                throws IllegalActionException {
+            // Check to see if it is something we refer to.
+            Token token = (Token) _inputTokenMap.get(name);
+
+            if (token != null) {
+                return token;
+            }
+
+            Variable result = getScopedVariable(null, FSMActor.this, name);
+
+            if (result != null) {
+                return result.getToken();
+            } else {
+                return null;
+            }
+        }
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.type.Type getType(String name)
+                throws IllegalActionException {
+            // Check to see if this is something we refer to.
+            Port port = (Port) _identifierToPort.get(name);
+
+            if ((port != null) && port instanceof Typeable) {
+                if (name.endsWith("_isPresent")) {
+                    return BaseType.BOOLEAN;
+
+                } else if (name.endsWith("Array")) {
+
+                    // We need to explicit return an ArrayType here
+                    // because the port type may not be an ArrayType.
+                    String portName = name.substring(0, name.length() - 5);
+                    if (port == _identifierToPort.get(portName)) {
+                        Type portType = ((Typeable) port).getType();
+                        return new ArrayType(portType);
+                    }
+                }
+                return ((Typeable) port).getType();
+            }
+
+            Variable result = getScopedVariable(null, FSMActor.this, name);
+
+            if (result != null) {
+                return result.getType();
+            } else {
+                return null;
+            }
+        }
+
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            // Check to see if this is something we refer to.
+            Port port = (Port) _identifierToPort.get(name);
+
+            if ((port != null) && port instanceof Typeable) {
+                return ((Typeable) port).getTypeTerm();
+            }
+
+            Variable result = getScopedVariable(null, FSMActor.this, name);
+
+            if (result != null) {
+                return result.getTypeTerm();
+            } else {
+                return null;
+            }
+        }
+
+        /** Return the list of identifiers within the scope.
+         *  @return The list of identifiers within the scope.
+         */
+        public Set identifierSet() {
+            Set set = getAllScopedVariableNames(null, FSMActor.this);
+            set.addAll(_identifierToPort.keySet());
+            return set;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1376,6 +1480,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Current state. */
     protected State _currentState = null;
 
+    // A map that associates each identifier with the unique port that
+    // that identifier describes.  This map is used to detect port
+    // names that result in ambiguous identifier bindings.
+    protected HashMap _identifierToPort;
+
     /** List of objects whose (pre)initialize() and wrapup() methods
      *  should be slaved to these.
      */
@@ -1597,110 +1706,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _inputTokenMap.put(name, token);
     }
 
-    /** This class implements a scope, which is used to evaluate the
-     *  parsed expressions.  This class is currently rather simple,
-     *  but in the future should allow the values of input ports to
-     *  be referenced without having shadow variables.
-     */
-    private class PortScope extends ModelScope {
-        /** Look up and return the attribute with the specified name in the
-         *  scope. Return null if such an attribute does not exist.
-         *  @return The attribute with the specified name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public ptolemy.data.Token get(String name)
-                throws IllegalActionException {
-            // Check to see if it is something we refer to.
-            Token token = (Token) _inputTokenMap.get(name);
-
-            if (token != null) {
-                return token;
-            }
-
-            Variable result = getScopedVariable(null, FSMActor.this, name);
-
-            if (result != null) {
-                return result.getToken();
-            } else {
-                return null;
-            }
-        }
-
-        /** Look up and return the type of the attribute with the
-         *  specified name in the scope. Return null if such an
-         *  attribute does not exist.
-         *  @return The attribute with the specified name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public ptolemy.data.type.Type getType(String name)
-                throws IllegalActionException {
-            // Check to see if this is something we refer to.
-            Port port = (Port) _identifierToPort.get(name);
-
-            if ((port != null) && port instanceof Typeable) {
-                if (name.endsWith("_isPresent")) {
-                    return BaseType.BOOLEAN;
-
-                } else if (name.endsWith("Array")) {
-
-                    // We need to explicit return an ArrayType here
-                    // because the port type may not be an ArrayType.
-                    String portName = name.substring(0, name.length() - 5);
-                    if (port == _identifierToPort.get(portName)) {
-                        Type portType = ((Typeable) port).getType();
-                        return new ArrayType(portType);
-                    }
-                }
-                return ((Typeable) port).getType();
-            }
-
-            Variable result = getScopedVariable(null, FSMActor.this, name);
-
-            if (result != null) {
-                return result.getType();
-            } else {
-                return null;
-            }
-        }
-
-        /** Look up and return the type term for the specified name
-         *  in the scope. Return null if the name is not defined in this
-         *  scope, or is a constant type.
-         *  @return The InequalityTerm associated with the given name in
-         *  the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
-            // Check to see if this is something we refer to.
-            Port port = (Port) _identifierToPort.get(name);
-
-            if ((port != null) && port instanceof Typeable) {
-                return ((Typeable) port).getTypeTerm();
-            }
-
-            Variable result = getScopedVariable(null, FSMActor.this, name);
-
-            if (result != null) {
-                return result.getTypeTerm();
-            } else {
-                return null;
-            }
-        }
-
-        /** Return the list of identifiers within the scope.
-         *  @return The list of identifiers within the scope.
-         */
-        public Set identifierSet() {
-            Set set = getAllScopedVariableNames(null, FSMActor.this);
-            set.addAll(_identifierToPort.keySet());
-            return set;
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                package friendly variables                 ////
 
@@ -1737,11 +1742,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // Map of final state names recording in the obsolete finalStateNames
     // parameter.
     private HashSet<String> _finalStateNames = null;
-
-    // A map that associates each identifier with the unique port that
-    // that identifier describes.  This map is used to detect port
-    // names that result in ambiguous identifier bindings.
-    private HashMap _identifierToPort;
 
     /** The function dependency, if it is present. */
     private FunctionDependency _functionDependency;

@@ -34,13 +34,20 @@ package ptolemy.domains.erg.kernel;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.HasTypeConstraints;
+import ptolemy.data.type.ObjectType;
+import ptolemy.data.type.Type;
 import ptolemy.domains.erg.lib.SynchronizeToRealtime;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.StateEvent;
@@ -50,6 +57,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 
@@ -131,6 +139,16 @@ public class ERGController extends ModalController {
 
     public State getInitialState() {
         return null;
+    }
+
+    /** Return a scope object that has current values from input ports
+     *  of this FSMActor in scope.  This scope is used to evaluate
+     *  guard expressions and set and output actions.
+     *  @return A scope object that has current values from input ports of
+     *  this FSMActor in scope.
+     */
+    public ParserScope getPortScope() {
+        return _objectScope;
     }
 
     public boolean hasInput() throws IllegalActionException {
@@ -256,4 +274,65 @@ public class ERGController extends ModalController {
     private Director _executiveDirector;
 
     private long _executiveDirectorVersion = -1;
+
+    private PortScope _objectScope = new ERGObjectScope();
+
+    /** This class implements a scope, which is used to evaluate the
+     *  parsed expressions.  This class is currently rather simple,
+     *  but in the future should allow the values of input ports to
+     *  be referenced without having shadow variables.
+     */
+    private class ERGObjectScope extends PortScope {
+
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public Token get(String name) throws IllegalActionException {
+            Token token = super.get(name);
+            if (token == null) {
+                NamedObj object = ModelScope.getScopedObject(ERGController.this,
+                        name);
+                if (object instanceof Variable) {
+                    token = ((Variable) object).getToken();
+                } else if (object != null) {
+                    token = new ObjectToken(object, object.getClass());
+                }
+            }
+            return token;
+        }
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public Type getType(String name) throws IllegalActionException {
+            Type type = super.getType(name);
+            if (type == null) {
+                NamedObj object = ModelScope.getScopedObject(ERGController.this,
+                        name);
+                if (object instanceof Variable) {
+                    type = ((Variable) object).getType();
+                } else if (object != null) {
+                    type = new ObjectType(object.getClass());
+                }
+            }
+            return type;
+        }
+
+        /** Return the list of identifiers within the scope.
+         *  @return The list of identifiers within the scope.
+         */
+        @SuppressWarnings("unchecked")
+        public Set<?> identifierSet() {
+            Set<?> set = super.identifierSet();
+            set.addAll(ModelScope.getAllScopedObjectNames(ERGController.this));
+            return set;
+        }
+    }
 }
