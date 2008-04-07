@@ -2052,7 +2052,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             if (object instanceof Variable) {
                 return ((Variable) object).getType();
             } else if (object != null) {
-                return new ObjectType(object.getClass());
+                return new ObjectType(object, object.getClass());
             } else {
                 return null;
             }

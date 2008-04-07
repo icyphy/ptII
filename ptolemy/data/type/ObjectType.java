@@ -76,10 +76,28 @@ public class ObjectType implements Type {
     /** Construct an ObjectType with the given Java class as the class specified
      *  in it.
      *
-     *  @param objectClass The Java class.
+     *  @param valueClass The Java class.
      */
-    public ObjectType(Class<?> objectClass) {
-        _contentClass = objectClass;
+    public ObjectType(Class<?> valueClass) {
+        _class = valueClass;
+    }
+
+    /** Construct an ObjectType with the given Java class as the class specified
+     *  in it.
+     *
+     *  @param value The actual object value, or null if the value is unknown.
+     *  @param valueClass The Java class.
+     *  @exception IllegalActionException
+     */
+    public ObjectType(Object value, Class<?> valueClass)
+    throws IllegalActionException {
+        if (value != null && valueClass != null &&
+                !valueClass.isInstance(value)) {
+            throw new IllegalActionException("The value " + value + " is not "
+                    + "an instance of class " + valueClass);
+        }
+        _value = value;
+        _class = valueClass;
     }
 
     /** Return a new type which represents the type that results from
@@ -95,10 +113,12 @@ public class ObjectType implements Type {
 
     /** Return a deep clone of this type.
      *  @return A Type.
-     *  @exception CloneNotSupportedException If an instance cannot be cloned.
      */
     public Object clone() {
-        return new ObjectType(_contentClass);
+        ObjectType type = new ObjectType();
+        type._value = _value;
+        type._class = _class;
+        return type;
     }
 
     /** Convert the specified token into a token having the type
@@ -112,8 +132,8 @@ public class ObjectType implements Type {
         if (token instanceof ObjectToken) {
             ObjectToken objectToken = (ObjectToken) token;
             Object value = objectToken.getValue();
-            if (_contentClass == null || _contentClass.isInstance(value)) {
-                return new ObjectToken(value, _contentClass);
+            if (_class == null || _class.isInstance(value)) {
+                return new ObjectToken(value, _class);
             }
         }
         throw new IllegalArgumentException(Token
@@ -140,19 +160,10 @@ public class ObjectType implements Type {
         if (!(object instanceof ObjectType)) {
             return false;
         } else {
-            Class<?> class1 = _contentClass;
-            Class<?> class2 = ((ObjectType) object)._contentClass;
+            Class<?> class1 = _class;
+            Class<?> class2 = ((ObjectType) object)._class;
             return class1 == class2 || class1 != null && class1.equals(class2);
         }
-    }
-
-    /** Get the Java class specified in this type, of which the contents of
-     *  ObjectTokens conforming to this type must be instances.
-     *
-     *  @return The Java class specified in this type.
-     */
-    public Class<?> getContentClass() {
-        return _contentClass;
     }
 
     /** Return the class for tokens that this type represents. The returned
@@ -178,14 +189,31 @@ public class ObjectType implements Type {
         return Type.HASH_INVALID;
     }
 
+    /** Get the actual value.
+     *
+     *  @return The actual value, or null if it is unknown.
+     */
+    public Object getValue() {
+        return _value;
+    }
+
+    /** Get the Java class specified in this type, of which the contents of
+     *  ObjectTokens conforming to this type must be instances.
+     *
+     *  @return The Java class specified in this type.
+     */
+    public Class<?> getValueClass() {
+        return _class;
+    }
+
     /** Return the hash code for this object.
      *
      *  @return The hash code.
      */
     public int hashCode() {
         int hash = 324342;
-        if (_contentClass != null) {
-            hash += _contentClass.hashCode();
+        if (_class != null) {
+            hash += _class.hashCode();
         }
         return hash;
     }
@@ -197,7 +225,7 @@ public class ObjectType implements Type {
      *  class.
      */
     public boolean isAbstract() {
-        return _contentClass != null;
+        return _class != null;
     }
 
     /** Return true if this type does not correspond to a single token
@@ -295,10 +323,10 @@ public class ObjectType implements Type {
      *  @return A string.
      */
     public String toString() {
-        if (_contentClass == null) {
+        if (_class == null) {
             return "object(null)";
         } else {
-            return "object(\"" + _contentClass.getName() + "\")";
+            return "object(\"" + _class.getName() + "\")";
         }
     }
 
@@ -373,8 +401,8 @@ public class ObjectType implements Type {
         } else if (_isLessThanOrEqualTo(objectType, this)) {
             return this;
         } else {
-            Class<?> class1 = _contentClass;
-            Class<?> class2 = objectType._contentClass;
+            Class<?> class1 = _class;
+            Class<?> class2 = objectType._class;
             if (class2 != null) {
                 while (class1 != null) {
                     if (class1.isAssignableFrom(class2)) {
@@ -397,8 +425,8 @@ public class ObjectType implements Type {
      *   false otherwise.
      */
     private boolean _isLessThanOrEqualTo(ObjectType t1, ObjectType t2) {
-        Class<?> class1 = t1._contentClass;
-        Class<?> class2 = t2._contentClass;
+        Class<?> class1 = t1._class;
+        Class<?> class2 = t2._class;
         if (class1 == null && class2 == null) {
             return true;
         } else if (class1 == null) {
@@ -414,6 +442,10 @@ public class ObjectType implements Type {
 
     /** The Java class specified in this type.
      */
-    private Class<?> _contentClass;
+    private Class<?> _class;
+
+    /** The actual Object, or null if the actual object is unknown.
+     */
+    private Object _value;
 
 }

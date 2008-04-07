@@ -319,7 +319,7 @@ public class ERGController extends ModalController {
                 if (object instanceof Variable) {
                     type = ((Variable) object).getType();
                 } else if (object != null) {
-                    type = new ObjectType(object.getClass());
+                    type = new ObjectType(object, object.getClass());
                 }
             }
             return type;

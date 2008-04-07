@@ -40,6 +40,9 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -141,50 +144,6 @@ public class State extends ComponentEntity {
         isFinalState.setExpression("false");
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The port linking incoming transitions.
-     */
-    public ComponentPort incomingPort = null;
-
-    /** An indicator of whether this state is a final state.
-     *  This is a boolean that defaults to false. Setting it to true
-     *  will cause the containing FSMActor to return false from its
-     *  postfire() method, which indicates to the director that the
-     *  FSMActor should not be fired again.
-     */
-    public Parameter isFinalState;
-
-    /** An indicator of whether this state is the initial state.
-     *  This is a boolean that defaults to false, unless this state
-     *  is the only one in the container, in which case it defaults
-     *  to true. Setting it to true
-     *  will cause this parameter to become false for whatever
-     *  other state is currently the initial state in the same
-     *  container.
-     */
-    public Parameter isInitialState;
-
-    /** The port linking outgoing transitions.
-     */
-    public ComponentPort outgoingPort = null;
-
-    /** Attribute specifying one or more names of refinements. The
-     *  refinements must be instances of TypedActor and have the same
-     *  container as the FSMActor containing this state, otherwise
-     *  an exception will be thrown when getRefinement() is called.
-     *  Usually, the refinement is a single name. However, if a
-     *  comma-separated list of names is provided, then all the specified
-     *  refinements will be executed.
-     *  This attribute has a null expression or a null string as
-     *  expression when the state is not refined.
-     */
-    public StringAttribute refinementName = null;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** React to a change in an attribute. If the changed attribute is
      *  the <i>refinementName</i> attribute, record the change but do
      *  not check whether there is a TypedActor with the specified name
@@ -227,6 +186,9 @@ public class State extends ComponentEntity {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
     /** Clone the state into the specified workspace. This calls the
      *  base class and then sets the attribute and port public members
      *  to refer to the attributes and ports of the new state.
@@ -248,6 +210,49 @@ public class State extends ComponentEntity {
         newObject._nonpreemptiveTransitionList = new LinkedList();
         newObject._preemptiveTransitionList = new LinkedList();
         return newObject;
+    }
+
+    /** Get a NamedObj with the given name in the refinement of this state, if
+     *  any.
+     *
+     *  @param name The name of the NamedObj.
+     *  @return The NamedObj in the refinement, or null if not found.
+     *  @exception IllegalActionException If the refinement cannot be found, or
+     *   if a comma-separated list is malformed.
+     */
+    public NamedObj getObjectInRefinement(String name)
+    throws IllegalActionException {
+        TypedActor[] refinements = getRefinement();
+        if (refinements == null) {
+            return null;
+        }
+
+        for (TypedActor refinement : refinements) {
+            if (refinement instanceof NamedObj) {
+                Attribute attribute = ((NamedObj) refinement).getAttribute(
+                        name);
+                if (attribute != null) {
+                    return attribute;
+                } else if (refinement instanceof Entity) {
+                    Port port = ((Entity) refinement).getPort(name);
+                    if (port != null) {
+                        return port;
+                    } else if (refinement instanceof CompositeEntity) {
+                        ComponentEntity entity = ((CompositeEntity) refinement)
+                                .getEntity(name);
+                        if (entity != null) {
+                            return entity;
+                        }
+                        Relation relation = ((CompositeEntity) refinement)
+                                .getRelation(name);
+                        if (relation != null) {
+                            return relation;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     /** Return the refinements of this state. The names of the refinements
@@ -350,6 +355,9 @@ public class State extends ComponentEntity {
         return _nonpreemptiveTransitionList;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Return the list of preemptive outgoing transitions from
      *  this state.
      *  @return The list of preemptive outgoing transitions from
@@ -371,6 +379,44 @@ public class State extends ComponentEntity {
     public void setVisited(boolean visited) {
         _visited = visited;
     }
+
+    /** The port linking incoming transitions.
+     */
+    public ComponentPort incomingPort = null;
+
+    /** An indicator of whether this state is a final state.
+     *  This is a boolean that defaults to false. Setting it to true
+     *  will cause the containing FSMActor to return false from its
+     *  postfire() method, which indicates to the director that the
+     *  FSMActor should not be fired again.
+     */
+    public Parameter isFinalState;
+
+    /** An indicator of whether this state is the initial state.
+     *  This is a boolean that defaults to false, unless this state
+     *  is the only one in the container, in which case it defaults
+     *  to true. Setting it to true
+     *  will cause this parameter to become false for whatever
+     *  other state is currently the initial state in the same
+     *  container.
+     */
+    public Parameter isInitialState;
+
+    /** The port linking outgoing transitions.
+     */
+    public ComponentPort outgoingPort = null;
+
+    /** Attribute specifying one or more names of refinements. The
+     *  refinements must be instances of TypedActor and have the same
+     *  container as the FSMActor containing this state, otherwise
+     *  an exception will be thrown when getRefinement() is called.
+     *  Usually, the refinement is a single name. However, if a
+     *  comma-separated list of names is provided, then all the specified
+     *  refinements will be executed.
+     *  This attribute has a null expression or a null string as
+     *  expression when the state is not refined.
+     */
+    public StringAttribute refinementName = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -400,11 +446,6 @@ public class State extends ComponentEntity {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // Flag indicating whether this state has been visited.
-    private boolean _visited = false;
-
     // Cached list of non-preemptive outgoing transitions from this state.
     private List _nonpreemptiveTransitionList = new LinkedList();
 
@@ -419,4 +460,9 @@ public class State extends ComponentEntity {
 
     // Version of cached transition lists.
     private long _transitionListVersion = -1;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    // Flag indicating whether this state has been visited.
+    private boolean _visited = false;
 }

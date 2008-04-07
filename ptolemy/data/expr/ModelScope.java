@@ -65,6 +65,9 @@ public abstract class ModelScope implements ParserScope {
         Set identifiers = new HashSet();
         identifiers.add("this");
         while (container != null) {
+            for (Object attribute : container.attributeList()) {
+                identifiers.add(((Attribute) attribute).getName());
+            }
             if (container instanceof Entity) {
                 for (Object port : ((Entity) container).portList()) {
                     identifiers.add(((Port) port).getName());
@@ -141,34 +144,53 @@ public abstract class ModelScope implements ParserScope {
      */
     public static NamedObj getScopedObject(NamedObj container, String name) {
         NamedObj reference = container;
-        String insideName = name.replaceAll("::", ".");
-        if (insideName.equals("this")) {
+        if (name.equals("this")) {
             return reference;
         }
-        while (reference != null) {
-            if (reference instanceof Entity) {
-                Port port = ((Entity) reference).getPort(insideName);
-                if (port != null) {
-                    return port;
-                }
-            }
-            if (reference instanceof CompositeEntity) {
-                ComponentEntity entity =
-                    ((CompositeEntity) reference).getEntity(insideName);
-                if (entity != null) {
-                    return entity;
-                }
 
-                ComponentRelation relation = ((CompositeEntity)
-                        reference).getRelation(insideName);
-                if (relation != null) {
-                    return relation;
+        String[] parts = name.replaceAll("::", ".").split("\\.");
+        NamedObj result = null;
+        boolean lookup = true;
+        for (String part : parts) {
+            result = null;
+            while (reference != null) {
+                Attribute attribute = reference.getAttribute(part);
+                if (attribute != null) {
+                    result = attribute;
+                } else {
+                    if (reference instanceof Entity) {
+                        Port port = ((Entity) reference).getPort(part);
+                        if (port != null) {
+                            result = port;
+                        } else if (reference instanceof CompositeEntity) {
+                            ComponentEntity entity =
+                                ((CompositeEntity) reference).getEntity(part);
+                            if (entity != null) {
+                                result = entity;
+                            } else {
+                                ComponentRelation relation = ((CompositeEntity)
+                                        reference).getRelation(part);
+                                if (relation != null) {
+                                    result = relation;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (lookup && result == null) {
+                    reference = reference.getContainer();
+                } else {
+                    break;
                 }
             }
-            reference = reference.getContainer();
+            if (result == null) {
+                break;
+            }
+            reference = result;
+            lookup = false;
         }
 
-        return null;
+        return result;
     }
 
     /** Get the variable with the given name in the scope of the given

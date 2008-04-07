@@ -47,9 +47,13 @@ import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeConstant;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.math.Precision;
 
 //////////////////////////////////////////////////////////////////////////
@@ -747,7 +751,40 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
 
         if (argTypes[0] instanceof ObjectType) {
-            Class<?> valueClass = ((ObjectType) argTypes[0]).getContentClass();
+            Object object = ((ObjectType) argTypes[0]).getValue();
+            if (object != null) {
+                if (object instanceof NamedObj) {
+                    Object result = ((NamedObj) object).getAttribute(
+                            methodName);
+                    if (result == null && object instanceof Entity) {
+                        result = ((Entity) object).getPort(methodName);
+                    }
+                    if (result == null && object instanceof CompositeEntity) {
+                        result = ((CompositeEntity) object).getEntity(
+                                methodName);
+                        if (result == null) {
+                            result = ((CompositeEntity) object).getRelation(
+                                    methodName);
+                        }
+                    }
+                    if (result == null && object instanceof State) {
+                        NamedObj objectInRefinement = ((State) object)
+                                .getObjectInRefinement(methodName);
+                        if (objectInRefinement != null) {
+                            result = objectInRefinement;
+                        }
+                    }
+                    if (result != null) {
+                        if (result instanceof Variable) {
+                            return ((Variable) result).getType();
+                        } else {
+                            return new ObjectType(result, result.getClass());
+                        }
+                    }
+                }
+            }
+
+            Class<?> valueClass = ((ObjectType) argTypes[0]).getValueClass();
             Set<Class<?>> classes = new HashSet<Class<?>>();
             classes.add(valueClass);
             while (!classes.isEmpty()) {

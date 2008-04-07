@@ -52,6 +52,7 @@ import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FixType;
+import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -321,7 +322,7 @@ public class ConversionUtilities {
                 return new ArrayType(convertJavaTypeToTokenType(tokenClass
                         .getComponentType()));
             } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
-                return BaseType.OBJECT;
+                return new ObjectType(tokenClass);
             } else if (tokenClass.isArray()) {
                 Class elementClass = tokenClass.getComponentType();
                 Type elementType = convertJavaTypeToTokenType(elementClass);

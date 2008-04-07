@@ -50,11 +50,9 @@ import ptolemy.data.UnionToken;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.kernel.ComponentEntity;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
@@ -414,7 +412,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                                 + " refers to.");
             }
         }
-        
+
         if (functionName.equals("object") && argCount == 1) {
             ASTPtRootNode classNameNode = ((ASTPtRootNode) node.jjtGetChild(1));
             if (classNameNode instanceof ASTPtLeafNode) {
@@ -1312,6 +1310,13 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                                     methodName);
                         }
                     }
+                    if (result == null && object instanceof State) {
+                        NamedObj objectInRefinement = ((State) object)
+                                .getObjectInRefinement(methodName);
+                        if (objectInRefinement != null) {
+                            result = objectInRefinement;
+                        }
+                    }
                     if (result != null) {
                         if (result instanceof Variable) {
                             return ((Variable) result).getToken();
@@ -1320,7 +1325,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                         }
                     }
                 }
-                
+
                 Class<?> valueClass = object.getClass();
                 Set<Class<?>> classes = new HashSet<Class<?>>();
                 classes.add(valueClass);
