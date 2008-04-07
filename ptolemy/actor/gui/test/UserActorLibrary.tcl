@@ -162,11 +162,13 @@ test UserActorLibrary-1.2 {Sinewave, which is a class} {
     set entityMoML [$entity exportMoML]
 
     # Get rid of the header
-    set results [diffText [string range $entityMoML 153 \
+    # The nightly build changes the version number, so we use
+    # ptFilterOutVersion
+    set results [ptFilterOutVersion [string range $entityMoML 153 \
 			       [string length $entityMoML]] \
 		     [$restoredEntity exportMoML]]
     list $results	
-} {{}}
+} {0}
 
 
 ######################################################################
