@@ -135,7 +135,7 @@ import ptolemy.kernel.util.Workspace;
  ports and actors is that the depth of an actor is the smallest of the depths
  of its IO ports. Pure events can only be produced by calling the fireAt()
  method, and trigger events can only be produced by actors that produce
- outputs. See {@link ptolemy.domains.de.kernel.DEReceiver#PUT}.
+ outputs. See {@link ptolemy.domains.de.kernel.DEReceiver#put(Token)}.
  </p><p>
  Directed loops of IO ports with no delay are not permitted because it is
  impossible to do a topological sort to assign depths. Such a loop can be
