@@ -107,7 +107,8 @@ public class EffigyFactory extends CompositeEntity {
     }
 
     /** Check the URL input for a DTD.  Only the first 5 lines are read
-     *  from the URL.
+     *  from the URL.  Any text that matches <code>&lt;?xml.*?&gt;</code>
+     *  is removed before checking.
      *  @param input The DTD to check.
      *  @param dtdStart The start of the DTD, typically "<!DOCTYPE".
      *  @param dtdEndRegExp The optional ending regular expression.  If
@@ -147,6 +148,11 @@ public class EffigyFactory extends CompositeEntity {
                 if (contents == null) {
                     break;
                 }
+                // Change from Ian Brown to handle XSLT where after using XSLT,
+                // lines looked like:
+                // <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+
+                contents = contents.replaceFirst("<\\?xml.*\\?>", "");
                 if (dtdEndRegExp != null) {
                     if (contents.startsWith(dtdStart)
                             && contents.matches(dtdEndRegExp)) {
