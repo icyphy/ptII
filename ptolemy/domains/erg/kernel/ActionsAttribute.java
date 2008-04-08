@@ -49,6 +49,8 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
 import ptolemy.domains.fsm.kernel.CommitActionsAttribute;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -220,7 +222,18 @@ public class ActionsAttribute extends AbstractActionsAttribute {
             Attribute variable = null;
             while (variable == null && container != null) {
                 variable = _getAttribute(container, name);
-                container = container.getContainer();
+                NamedObj containerContainer = container.getContainer();
+                if (container instanceof ModalController) {
+                    State state = (State) ((ModalController) container)
+                            .getRefinedState();
+                    if (state == null) {
+                        container = containerContainer;
+                    } else {
+                        container = state.getContainer();
+                    }
+                } else {
+                    container = containerContainer;
+                }
             }
 
             if (variable == null) {

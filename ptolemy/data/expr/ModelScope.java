@@ -33,6 +33,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.domains.erg.kernel.ERGController;
+import ptolemy.domains.erg.kernel.Event;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -40,6 +44,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -143,9 +148,8 @@ public abstract class ModelScope implements ParserScope {
      *  does not exist.
      */
     public static NamedObj getScopedObject(NamedObj container, String name) {
-        NamedObj reference = container;
         if (name.equals("this")) {
-            return reference;
+            return container;
         }
 
         String[] parts = name.replaceAll("::", ".").split("\\.");
@@ -153,23 +157,23 @@ public abstract class ModelScope implements ParserScope {
         boolean lookup = true;
         for (String part : parts) {
             result = null;
-            while (reference != null) {
-                Attribute attribute = reference.getAttribute(part);
+            while (container != null) {
+                Attribute attribute = container.getAttribute(part);
                 if (attribute != null) {
                     result = attribute;
                 } else {
-                    if (reference instanceof Entity) {
-                        Port port = ((Entity) reference).getPort(part);
+                    if (container instanceof Entity) {
+                        Port port = ((Entity) container).getPort(part);
                         if (port != null) {
                             result = port;
-                        } else if (reference instanceof CompositeEntity) {
+                        } else if (container instanceof CompositeEntity) {
                             ComponentEntity entity =
-                                ((CompositeEntity) reference).getEntity(part);
+                                ((CompositeEntity) container).getEntity(part);
                             if (entity != null) {
                                 result = entity;
                             } else {
                                 ComponentRelation relation = ((CompositeEntity)
-                                        reference).getRelation(part);
+                                        container).getRelation(part);
                                 if (relation != null) {
                                     result = relation;
                                 }
@@ -178,7 +182,22 @@ public abstract class ModelScope implements ParserScope {
                     }
                 }
                 if (lookup && result == null) {
-                    reference = reference.getContainer();
+                    NamedObj containerContainer = container.getContainer();
+                    if (container instanceof ModalController) {
+                        try {
+                            State state = (State) ((ModalController) container)
+                                    .getRefinedState();
+                            if (state == null) {
+                                container = containerContainer;
+                            } else {
+                                container = state.getContainer();
+                            }
+                        } catch (IllegalActionException e) {
+                            container = containerContainer;
+                        }
+                    } else {
+                        container = containerContainer;
+                    }
                 } else {
                     break;
                 }
@@ -186,7 +205,7 @@ public abstract class ModelScope implements ParserScope {
             if (result == null) {
                 break;
             }
-            reference = result;
+            container = result;
             lookup = false;
         }
 
@@ -215,7 +234,22 @@ public abstract class ModelScope implements ParserScope {
             if (result != null) {
                 return result;
             } else {
-                container = container.getContainer();
+                NamedObj containerContainer = container.getContainer();
+                if (container instanceof ModalController) {
+                    try {
+                        State state = (State) ((ModalController) container)
+                                .getRefinedState();
+                        if (state == null) {
+                            container = containerContainer;
+                        } else {
+                            container = state.getContainer();
+                        }
+                    } catch (IllegalActionException e) {
+                        container = containerContainer;
+                    }
+                } else {
+                    container = containerContainer;
+                }
             }
         }
 

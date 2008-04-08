@@ -148,6 +148,10 @@ public class ERGController extends ModalController {
      *  this FSMActor in scope.
      */
     public ParserScope getPortScope() {
+        if (_objectScopeVersion != workspace().getVersion()) {
+            _objectScope = new ERGObjectScope();
+            _objectScopeVersion = workspace().getVersion();
+        }
         return _objectScope;
     }
 
@@ -276,6 +280,8 @@ public class ERGController extends ModalController {
     private long _executiveDirectorVersion = -1;
 
     private PortScope _objectScope = new ERGObjectScope();
+
+    private long _objectScopeVersion = -1;
 
     /** This class implements a scope, which is used to evaluate the
      *  parsed expressions.  This class is currently rather simple,

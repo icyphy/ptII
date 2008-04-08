@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -98,7 +98,8 @@ public class SchedulingRelation extends Transition {
             _delayTree = _parser.generateParseTree(delay.getExpression());
         }
 
-        if (canceling != null && delay != null && isCanceling()) {
+        if (canceling != null && delay != null && isCanceling()
+                && getContainer() != null) {
             if (!_isZeroDelay()) {
                 throw new IllegalActionException("For a canceling edge, the "
                         + "delay must be const 0.0.");

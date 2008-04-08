@@ -26,7 +26,11 @@
  */
 package ptolemy.domains.fsm.modal;
 
+import java.util.List;
+
+import ptolemy.actor.TypedActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -34,6 +38,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 // NOTE: This class duplicates code in Refinement, but
@@ -65,6 +70,38 @@ public class ModalController extends FSMActor {
      */
     public ModalController(Workspace workspace) {
         super(workspace);
+    }
+    
+    /** Get the state in any ModalController within this ModalModel that has the
+     *  given TypedActor as its refinement, if any. Return null if no such state
+     *  is found.
+     *
+     *  @return The state with the given refinement as its refinement, or null.
+     *  @exception IllegalActionException If the specified refinement cannot be
+     *   found in a state, or if a comma-separated list is malformed.
+     */
+    public State getRefinedState() throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container instanceof ModalModel) {
+            List<?> controllers = ((ModalModel) container).entityList(
+                    ModalController.class);
+            for (Object controllerObject : controllers) {
+                ModalController controller = (ModalController) controllerObject;
+                List<?> states = controller.entityList(State.class);
+                for (Object stateObject : states) {
+                    State state = (State) stateObject;
+                    TypedActor[] refinements = state.getRefinement();
+                    if (refinements != null) {
+                        for (TypedActor refinement : refinements) {
+                            if (refinement == this) {
+                                return state;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     /** Construct a modal controller with a name and a container.
