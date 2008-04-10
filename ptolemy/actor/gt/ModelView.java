@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
  */
@@ -39,10 +39,11 @@ import java.net.URI;
 
 import javax.swing.JFrame;
 
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.lib.Sink;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
 import ptolemy.data.IntToken;
@@ -73,7 +74,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
 */
-public class ModelView extends Sink implements WindowListener {
+public class ModelView extends TypedAtomicActor implements WindowListener {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -87,7 +88,13 @@ public class ModelView extends Sink implements WindowListener {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
         input.setTypeEquals(ActorToken.TYPE);
+
+        output = new TypedIOPort(this, "output", false, true);
+        output.setMultiport(true);
+        output.setTypeEquals(ActorToken.TYPE);
 
         title = new PortParameter(this, "title");
         title.setStringMode(true);
@@ -124,7 +131,8 @@ public class ModelView extends Sink implements WindowListener {
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 synchronized (this) {
-                    Entity model = ((ActorToken) input.get(0)).getEntity();
+                    ActorToken token = (ActorToken) input.get(i);
+                    Entity model = token.getEntity();
                     Effigy effigy = Configuration.findEffigy(toplevel());
                     Configuration configuration = (Configuration) effigy
                             .toplevel();
@@ -139,7 +147,7 @@ public class ModelView extends Sink implements WindowListener {
                             _tableaus[i].close();
                         }
                         _tableaus[i] = tableau;
-                        
+
                         JFrame frame = tableau.getFrame();
                         // Compute location of the new frame.
                         RecordToken location =
@@ -180,6 +188,7 @@ public class ModelView extends Sink implements WindowListener {
                             titleString = titleValue;
                         }
                         tableau.setTitle(titleString);
+                        output.send(i, token);
                     } catch (NameDuplicationException e) {
                         throw new IllegalActionException(this, e,
                                 "Cannot open model.");
@@ -240,6 +249,10 @@ public class ModelView extends Sink implements WindowListener {
 
     public void windowOpened(WindowEvent e) {
     }
+
+    public TypedIOPort input;
+
+    public TypedIOPort output;
 
     public Parameter screenLocation;
 
