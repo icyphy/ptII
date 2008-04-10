@@ -31,6 +31,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -411,6 +412,68 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                                 + " a list of variable names that the matlab expression"
                                 + " refers to.");
             }
+        }
+
+        if (node.getFunctionName().compareTo("fold") == 0) {
+            if (argCount == 3) {
+                if (argValues[0] instanceof FunctionToken) {
+                    FunctionToken function = (FunctionToken) argValues[0];
+                    if (((FunctionType) function.getType()).getArgCount()
+                            != 2) {
+                        throw new IllegalActionException("The first argument " +
+                                "to the function \"fold\" must be a function " +
+                                "that accepts two arguments.");
+                    }
+                    ptolemy.data.Token current = argValues[1];
+                    if (argValues[2] instanceof ArrayToken) {
+                        ArrayToken array = (ArrayToken) argValues[2];
+                        for (int i = 0; i < array.length(); i++) {
+                            current = function.apply(new ptolemy.data.Token[] {
+                                    current, array.getElement(i)});
+                        }
+                        _evaluatedChildToken = current;
+                        return;
+                    } else if (argValues[2] instanceof ObjectToken) {
+                        Object object = ((ObjectToken) argValues[2]).getValue();
+                        if (object.getClass().isArray()) {
+                            Object[] array = (Object[]) object;
+                            for (int i = 0; i < array.length; i++) {
+                                Object second = array[i];
+                                if (!(second instanceof ptolemy.data.Token)) {
+                                    second = ConversionUtilities
+                                            .convertJavaTypeToToken(second);
+                                }
+                                current = function.apply(new ptolemy.data.Token[] {
+                                        current, (ptolemy.data.Token) second});
+                            }
+                            _evaluatedChildToken = current;
+                            return;
+                        } else if (object instanceof Iterable) {
+                            Iterator iterator = ((Iterable) object).iterator();
+                            while (iterator.hasNext()) {
+                                Object second = iterator.next();
+                                if (!(second instanceof ptolemy.data.Token)) {
+                                    second = ConversionUtilities
+                                            .convertJavaTypeToToken(second);
+                                }
+                                current = function.apply(new ptolemy.data.Token[] {
+                                        current, (ptolemy.data.Token) second});
+                            }
+                            _evaluatedChildToken = current;
+                            return;
+                        }
+                    }
+                }
+            }
+
+            throw new IllegalActionException("The function \"fold\" is " +
+                    "a higher-order function that takes exactly 3 " +
+                    "arguments. The first argument must be a function " +
+                    "that takes 2 arguments. The second must be a value " +
+                    "that can be passed to the function as its first " +
+                    "argument. The third must be a list of values that " +
+                    "can be passed to the function as its second " +
+                    "argument.");
         }
 
         if (functionName.equals("object") && argCount == 1) {

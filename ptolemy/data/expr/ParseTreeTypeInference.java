@@ -244,6 +244,40 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             return;
         }
 
+        if (functionName.compareTo("fold") == 0) {
+            if (argCount == 3) {
+                if (childTypes[0] instanceof FunctionType) {
+                    FunctionType function = (FunctionType) childTypes[0];
+                    if (function.getArgCount() != 2) {
+                        throw new IllegalActionException("The first argument " +
+                                "to the function \"fold\" must be a function " +
+                                "that accepts two arguments.");
+                    }
+                    if (!function.getArgType(0).isCompatible(childTypes[1])) {
+                        throw new IllegalActionException("The second " +
+                                "argument of the function \"fold\" is not " +
+                                "compatible with the first parameter to the " +
+                                "function provided to \"fold\".");
+                    }
+                    // Do not check the type of the second argument of the
+                    // function, because if the collection is a Java collection,
+                    // then it is impossible to infer the types of the elements
+                    // in it without actually knowing the collection.
+                    _setType(node, function.getReturnType());
+                    return;
+                }
+            }
+
+            throw new IllegalActionException("The function \"fold\" is " +
+                    "a higher-order function that takes exactly 3 " +
+                    "arguments. The first argument must be a function " +
+                    "that takes 2 arguments. The second must be a value " +
+                    "that can be passed to the function as its first " +
+                    "argument. The third must be a list of values that " +
+                    "can be passed to the function as its second " +
+                    "argument.");
+        }
+
         if (functionName.equals("object") && argCount == 1) {
             ASTPtRootNode classNameNode = ((ASTPtRootNode) node.jjtGetChild(1));
             if (classNameNode instanceof ASTPtLeafNode) {
@@ -254,6 +288,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     try {
                         Class clazz = Class.forName(className);
                         _setType(node, new ObjectType(clazz));
+                        return;
                     } catch (ClassNotFoundException e) {
                         throw new IllegalActionException("Unable to load class "
                                 + className);
