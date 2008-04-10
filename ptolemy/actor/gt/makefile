@@ -120,11 +120,9 @@ OPTIONAL_FILES = \
 	'GTEntityUtils$$RestoreAppearanceChangeRequest.class' \
 	'GTIngredient$$FieldIterator.class' \
 	'GTIngredient$$NamedObjMatchResult.class' \
-	'GTParameter$$Evaluator$$TypeInference.class' \
 	'GTParameter$$Evaluator.class' \
-	'GTParameter$$LoopEvaluator.class' \
-	'GTParameter$$LoopFunction.class' \
 	'GTParameter$$Scope.class' \
+	'GTParameter$$TypeInference.class' \
 	'GraphAnalyzer$$IndexedList.class' \
 	'GraphAnalyzer$$IndexedLists.class' \
 	'GraphAnalyzer$$Path.class' \

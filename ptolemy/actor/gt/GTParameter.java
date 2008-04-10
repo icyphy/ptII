@@ -31,31 +31,22 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gt;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.actor.gt.data.MatchResult;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.Function;
-import ptolemy.data.FunctionToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.ASTPtFunctionApplicationNode;
-import ptolemy.data.expr.ASTPtFunctionalIfNode;
-import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtMethodCallNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParseTreeTypeInference;
 import ptolemy.data.expr.ParserScope;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.FunctionType;
+import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -85,138 +76,13 @@ public class GTParameter extends Parameter {
         public Evaluator(Pattern pattern, MatchResult matchResult) {
             _pattern = pattern;
             _matchResult = matchResult;
-            _typeInference = new TypeInference();
+            _typeInference = new TypeInference(pattern, matchResult);
         }
 
         public Token evaluateParseTree(ASTPtRootNode node, ParserScope scope)
                 throws IllegalActionException {
             return super.evaluateParseTree(node, new Scope(_pattern,
                     _matchResult, scope));
-        }
-
-        public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode
-                node) throws IllegalActionException {
-            String functionName = node.getFunctionName();
-            if (functionName != null && functionName.equals("loop")) {
-                if (node.jjtGetNumChildren() != 5) {
-                    throw new IllegalActionException("The loop special " +
-                            "function requires exactly 4 arguments.");
-                }
-
-                String current = null;
-                ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(1);
-                if (child != null && child instanceof ASTPtLeafNode &&
-                        ((ASTPtLeafNode) child).isIdentifier()) {
-                    current = ((ASTPtLeafNode) child).getName();
-                }
-                if (current == null) {
-                    throw new IllegalActionException("The first argument to " +
-                            "the loop special function must be an identifier.");
-                }
-
-                Token startValue = _evaluateChild(node, 2);
-
-                String boundVariable = null;
-                child = (ASTPtRootNode) node.jjtGetChild(3);
-                if (child != null && child instanceof ASTPtLeafNode) {
-                    boundVariable = ((ASTPtLeafNode) child).getName();
-                }
-                if (boundVariable == null) {
-                    throw new IllegalActionException("The third argument to " +
-                            "the loop special function must be an identifier.");
-                }
-
-                Collection<?> collection = null;
-                Token token = _evaluateChild(node, 4);
-                if (token instanceof ObjectToken && ((ObjectToken) token)
-                        .getValue() instanceof Collection) {
-                    collection =
-                        (Collection<?>) ((ObjectToken) token).getValue();
-                }
-                if (collection == null) {
-                    throw new IllegalActionException("The forth argument to " +
-                            "the loop special function must be a value " +
-                            "collection.");
-                }
-
-                Function function = new LoopFunction(_pattern, _matchResult,
-                        current, startValue, boundVariable, collection);
-                FunctionType functionType = new FunctionType(
-                        new Type[] { BaseType.OBJECT }, BaseType.GENERAL);
-                _evaluatedChildToken =
-                    new FunctionToken(function, functionType);
-            } else if (functionName == null) {
-                Token token = null;
-                try {
-                    token = _evaluateChild(node, 0);
-                } catch (IllegalActionException e) {
-                    super.visitFunctionApplicationNode(node);
-                    return;
-                }
-
-                if (token instanceof FunctionToken) {
-                    FunctionToken functionToken = (FunctionToken) token;
-                    int argCount = node.jjtGetNumChildren() - 1;
-                    if (functionToken.getNumberOfArguments() != argCount) {
-                        throw new IllegalActionException("Wrong number of "
-                                + "arguments when applying function "
-                                + token.toString());
-                    }
-
-                    if (functionToken.getFunction() instanceof LoopFunction) {
-                        _evaluatedChildToken = functionToken.apply(new Token[] {
-                                new ObjectToken(node.jjtGetChild(1)) });
-                        return;
-                    }
-                }
-                super.visitFunctionApplicationNode(node);
-            }
-        }
-
-        public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-                throws IllegalActionException {
-            if (node.isConstant() && node.isEvaluated()) {
-                _evaluatedChildToken = node.getToken();
-                return;
-            }
-
-            int numChildren = node.jjtGetNumChildren();
-
-            if (numChildren != 3) {
-                // A functional-if node MUST have three children in the parse
-                // tree.
-                throw new InternalErrorException(
-                        "PtParser error: a functional-if node does not have "
-                                + "three children in the parse tree.");
-            }
-
-            // evaluate the first sub-expression
-            _evaluateChild(node, 0);
-
-            ptolemy.data.Token test = _evaluatedChildToken;
-
-            if (!(test instanceof BooleanToken)) {
-                throw new IllegalActionException(
-                        "Functional-if must branch on a boolean, but instead was "
-                                + test.toString() + " an instance of "
-                                + test.getClass().getName());
-            }
-
-            boolean value = ((BooleanToken) test).booleanValue();
-
-            ASTPtRootNode tokenChild;
-
-            if (value) {
-                tokenChild = (ASTPtRootNode) node.jjtGetChild(1);
-            } else {
-                tokenChild = (ASTPtRootNode) node.jjtGetChild(2);
-            }
-
-            tokenChild.visit(this);
-
-            if (node.isConstant()) {
-                node.setToken(_evaluatedChildToken);
-            }
         }
 
         public void visitMethodCallNode(ASTPtMethodCallNode node)
@@ -237,8 +103,10 @@ public class GTParameter extends Parameter {
                                     true);
                             if (patternChild != null
                                     && _matchResult.containsKey(patternChild)) {
+                                Object hostChild =
+                                    _matchResult.get(patternChild);
                                 _evaluatedChildToken = new ObjectToken(
-                                        _matchResult.get(patternChild));
+                                        hostChild, hostChild.getClass());
                                 return;
                             }
                         }
@@ -249,100 +117,9 @@ public class GTParameter extends Parameter {
             super.visitMethodCallNode(node);
         }
 
-        public class TypeInference extends ParseTreeTypeInference {
-            // TODO: Override the methods of superclass, as Evaluator does.
-        }
-
         private MatchResult _matchResult;
 
         private Pattern _pattern;
-    }
-
-    public static class LoopEvaluator extends Evaluator {
-
-        public LoopEvaluator(Pattern pattern, MatchResult matchResult,
-                String currentName, String boundVariable) {
-            super(pattern, matchResult);
-            _currentName = currentName;
-            _boundVariable = boundVariable;
-            _currentToken = Token.NIL;
-            _elementToken = Token.NIL;
-        }
-
-        public void setCurrentValue(Token current) {
-            _currentToken = current;
-        }
-
-        public void setElementToken(Token elementToken) {
-            _elementToken = elementToken;
-        }
-
-        public void visitLeafNode(ASTPtLeafNode node)
-        throws IllegalActionException {
-            if (node.isIdentifier()) {
-                String name = node.getName();
-                if (name.equals(_currentName)) {
-                    _evaluatedChildToken = _currentToken;
-                    return;
-                } else if (name.equals(_boundVariable)) {
-                    _evaluatedChildToken = _elementToken;
-                    return;
-                }
-            }
-            super.visitLeafNode(node);
-        }
-
-        private String _boundVariable;
-
-        private String _currentName;
-
-        private Token _currentToken;
-
-        private Token _elementToken;
-    }
-
-    public static class LoopFunction implements Function {
-
-        public LoopFunction(Pattern pattern, MatchResult matchResult,
-                String current, Token startValue, String boundVariable,
-                Collection<?> collection) {
-            _startValue = startValue;
-            _collection = collection;
-            _evaluator = new LoopEvaluator(pattern, matchResult, current,
-                    boundVariable);
-        }
-
-        public Token apply(Token[] arguments) throws IllegalActionException {
-            ASTPtRootNode tree =
-                (ASTPtRootNode) ((ObjectToken) arguments[0]).getValue();
-            Token currentValue = _startValue;
-            for (Object element : _collection) {
-                Token elementToken;
-                if (element instanceof Token) {
-                    elementToken = (Token) element;
-                } else {
-                    elementToken = new ObjectToken(element);
-                }
-                _evaluator.setCurrentValue(currentValue);
-                _evaluator.setElementToken(elementToken);
-                currentValue = _evaluator.evaluateParseTree(tree);
-            }
-            return currentValue;
-        }
-
-        public int getNumberOfArguments() {
-            return 1;
-        }
-
-        public boolean isCongruent(Function function) {
-            return false;
-        }
-
-        private Collection<?> _collection;
-
-        private LoopEvaluator _evaluator;
-
-        private Token _startValue;
     }
 
     public static class Scope implements ParserScope {
@@ -360,7 +137,7 @@ public class GTParameter extends Parameter {
             if (patternChild != null &&
                     _matchResult.containsKey(patternChild)) {
                 NamedObj child = (NamedObj) _matchResult.get(patternChild);
-                return new ObjectToken(child);
+                return new ObjectToken(child, child.getClass());
             } else {
                 Token superToken = _superscope.get(name);
                 if (superToken == null) {
@@ -409,8 +186,58 @@ public class GTParameter extends Parameter {
         private ParserScope _superscope;
     }
 
+    public static class TypeInference extends ParseTreeTypeInference {
+
+        public TypeInference(Pattern pattern, MatchResult matchResult) {
+            _pattern = pattern;
+            _matchResult = matchResult;
+        }
+
+        public Type inferTypes(ASTPtRootNode node, ParserScope scope)
+        throws IllegalActionException {
+            return super.inferTypes(node, new Scope(_pattern, _matchResult,
+                    scope));
+        }
+
+        public void visitMethodCallNode(ASTPtMethodCallNode node)
+        throws IllegalActionException {
+            int argCount = node.jjtGetNumChildren();
+            if (argCount == 1) {
+                Type firstChild = super._inferChild(node, 0);
+                if (firstChild instanceof ObjectType) {
+                    ObjectType objectType = (ObjectType) firstChild;
+                    Object object = objectType.getValue();
+                    if (object instanceof NamedObj) {
+                        NamedObj patternObject = (NamedObj) _matchResult.getKey(
+                                object);
+                        if (patternObject != null) {
+                            String methodName = node.getMethodName();
+                            NamedObj patternChild = GTTools.getChild(
+                                    patternObject, methodName, true, true, true,
+                                    true);
+                            if (patternChild != null
+                                    && _matchResult.containsKey(patternChild)) {
+                                Object hostChild =
+                                    _matchResult.get(patternChild);
+                                _setType(node, new ObjectType(hostChild,
+                                        hostChild.getClass()));
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
+            super.visitMethodCallNode(node);
+        }
+
+        private MatchResult _matchResult;
+
+        private Pattern _pattern;
+    }
+
     protected void _evaluate() throws IllegalActionException {
-        //super._evaluate();
+        super._evaluate();
     }
 
     protected void _evaluate(Pattern pattern, MatchResult matchResult)

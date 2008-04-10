@@ -32,6 +32,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ObjectToken
@@ -143,7 +144,13 @@ public class ObjectToken extends Token {
         if (_class == null) {
             return BaseType.OBJECT;
         } else {
-            return new ObjectType(_class);
+            try {
+                return new ObjectType(_value, _class);
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException("This ObjectToken does not " +
+                        "contain a value that conforms to the specified " +
+                        "class.");
+            }
         }
     }
 
@@ -211,14 +218,14 @@ public class ObjectToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                          private variables                ////
 
     /** The class of the object.
      */
-    protected Class _class = null;
+    private Class _class = null;
 
     /** The actual Object.
      *  This is protected to allow access in derived classes only.
      */
-    protected Object _value = null;
+    private Object _value = null;
 }

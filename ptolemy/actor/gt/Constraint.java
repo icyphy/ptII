@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
  */
@@ -32,6 +32,7 @@ package ptolemy.actor.gt;
 
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -139,5 +140,8 @@ public class Constraint extends ParameterAttribute {
             NameDuplicationException {
         parameter = new GTParameter(this, "constraint");
         parameter.setTypeEquals(BaseType.BOOLEAN);
+        Variable variable = new Variable(parameter, "_textHeightHint");
+        variable.setExpression("5");
+        variable.setPersistent(false);
     }
 }
