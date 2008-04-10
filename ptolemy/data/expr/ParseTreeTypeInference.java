@@ -820,26 +820,28 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             }
 
             Class<?> valueClass = ((ObjectType) argTypes[0]).getValueClass();
-            Set<Class<?>> classes = new HashSet<Class<?>>();
-            classes.add(valueClass);
-            while (!classes.isEmpty()) {
-                Iterator<Class<?>> iterator = classes.iterator();
-                valueClass = iterator.next();
-                iterator.remove();
-
-                if (!Modifier.isPublic(valueClass.getModifiers())) {
-                    for (Class<?> interf : valueClass.getInterfaces()) {
-                        classes.add(interf);
-                    }
-                    Class<?> superclass = valueClass.getSuperclass();
-                    if (superclass != null) {
-                        classes.add(superclass);
-                    }
-                } else {
-                    Type result = _getMethodReturnType(valueClass, methodName,
-                            argTypes);
-                    if (result != null) {
-                        return result;
+            if (valueClass != null) {
+                Set<Class<?>> classes = new HashSet<Class<?>>();
+                classes.add(valueClass);
+                while (!classes.isEmpty()) {
+                    Iterator<Class<?>> iterator = classes.iterator();
+                    valueClass = iterator.next();
+                    iterator.remove();
+    
+                    if (!Modifier.isPublic(valueClass.getModifiers())) {
+                        for (Class<?> interf : valueClass.getInterfaces()) {
+                            classes.add(interf);
+                        }
+                        Class<?> superclass = valueClass.getSuperclass();
+                        if (superclass != null) {
+                            classes.add(superclass);
+                        }
+                    } else {
+                        Type result = _getMethodReturnType(valueClass, methodName,
+                                argTypes);
+                        if (result != null) {
+                            return result;
+                        }
                     }
                 }
             }
