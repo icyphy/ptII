@@ -41,7 +41,6 @@ import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.PetiteToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.ShortToken;

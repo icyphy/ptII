@@ -132,7 +132,7 @@ public class ObjectType implements Type {
         if (token instanceof ObjectToken) {
             ObjectToken objectToken = (ObjectToken) token;
             Object value = objectToken.getValue();
-            if (_class == null || _class.isInstance(value)) {
+            if (value == null || _class == null || _class.isInstance(value)) {
                 return new ObjectToken(value, _class);
             }
         }

@@ -1527,6 +1527,10 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 if (compatible) {
                     try {
                         result = method.invoke(object, args);
+                        if (result == null) {
+                            result = new ObjectToken(null,
+                                    method.getReturnType());
+                        }
                         break;
                     } catch (IllegalArgumentException e) {
                     } catch (IllegalAccessException e) {
@@ -1539,11 +1543,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         if (result == null) {
             return null;
         } else {
-            if (result instanceof Variable) {
-                return ((Variable) result).getToken();
-            } else {
-                return ConversionUtilities.convertJavaTypeToToken(result);
-            }
+            return ConversionUtilities.convertJavaTypeToToken(result);
         }
     }
 
