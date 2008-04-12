@@ -645,7 +645,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         FunctionToken result = new FunctionToken(definedFunction, type);
         _evaluatedChildToken = (result);
 
-        String functionCode = new String();
+        String functionCode = "";
 
         /*
         // FIXME: Generate function declaration in _preinitCode.

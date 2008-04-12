@@ -208,8 +208,6 @@ public class IOPort extends CodeGeneratorHelper implements PortCodeGenerator {
 
     private String _updatePNOffset(int rate, ptolemy.actor.IOPort port, int channelNumber, Director directorHelper, boolean isWrite)
     throws IllegalActionException {
-        String code = new String();
-
         // FIXME: this is kind of hacky.
         PNDirector pnDirector = (PNDirector) //directorHelper; 
         _getHelper(((Actor) port.getContainer()).getExecutiveDirector());
@@ -232,12 +230,10 @@ public class IOPort extends CodeGeneratorHelper implements PortCodeGenerator {
         // FIXME: generate the right buffer reference from
         // both input and output ports.
 
-        code +=  incrementFunction + "(" + 
-        incrementArg + "&" +
-        pnDirector.generatePortHeader(port, channelNumber) + ", &" +
-        pnDirector.generateDirectorHeader() + ");" + _eol;
-
-        return code;
+        return incrementFunction + "(" + 
+                incrementArg + "&" +
+                pnDirector.generatePortHeader(port, channelNumber) + ", &" +
+            pnDirector.generateDirectorHeader() + ");" + _eol;
     }
 
     protected String _updateOffset(int rate) throws IllegalActionException {

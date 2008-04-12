@@ -115,18 +115,18 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
                 throw new IllegalActionException("Failed to open \""
                         + codeBlockFile + "\"");
             } else {
-                String code = new String();
+                StringBuffer code = new StringBuffer();
                 // Is there a better way of reading in file into a string???
                 try{
                     String str;
                     while ((str = reader.readLine()) !=null){
-                        code = code.concat(str + "\n");
+                        code.append(str + "\n");
                     }
-                }catch (IOException e){
+                } catch (IOException e){
                     // Does codeBlockFile.getExpression() actually get the name of the name of the file???
                     throw new IllegalActionException ("Could not read file" + codeBlockFile.getExpression());
                 }
-                embeddedCCode.setExpression(code);
+                embeddedCCode.setExpression(code.toString());
             } 
         } finally {
             if (reader != null) {
