@@ -32,15 +32,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.erg.kernel;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TimedDirector;
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -115,21 +118,17 @@ public class ERGDirector extends Director implements TimedDirector {
 
     public Time cancel(Event event) throws IllegalActionException {
         Iterator<TimedEvent> iterator = _eventQueue.iterator();
+        Set<TypedActor> refinementSet = new HashSet<TypedActor>();
+        TypedActor[] refinements = event.getRefinement();
+        if (refinements != null) {
+            for (TypedActor refinement : refinements) {
+                refinementSet.add(refinement);
+            }
+        }
         while (iterator.hasNext()) {
             TimedEvent timedEvent = iterator.next();
-            boolean found = timedEvent.contents == event;
-            if (!found) {
-                Actor[] refinements = event.getRefinement();
-                if (refinements != null) {
-                    for (Actor refinement : refinements) {
-                        if (timedEvent.contents == refinement) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (found) {
+            if (timedEvent.contents == event
+                    || refinementSet.contains(timedEvent.contents)) {
                 iterator.remove();
                 _inputQueue.remove(timedEvent);
                 return timedEvent.timeStamp;

@@ -423,7 +423,7 @@ also registers React, which handles inputs from the input</text></svg></configur
                 </property>
             </entity>
             <entity name="Error" class="ptolemy.domains.erg.kernel.Event">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Event">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Error">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -832,7 +832,7 @@ The inputs are simply ignored.</text></svg></configure>
             <link port="PRed.incomingPort" relation="relation6"/>
             <link port="PGreen.incomingPort" relation="relation5"/>
         </entity>
-        <entity name="Event" class="ptolemy.domains.erg.kernel.ERGController">
+        <entity name="Error" class="ptolemy.domains.erg.kernel.ERGController">
             <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
@@ -1011,13 +1011,13 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
         <link port="Normal.Pgrn" relation="PgrnRelation"/>
         <link port="Normal.OK" relation="OKRelation"/>
         <link port="Normal.Error" relation="ErrorRelation"/>
-        <link port="Event.Cred" relation="CredRelation"/>
-        <link port="Event.Cgrn" relation="CgrnRelation"/>
-        <link port="Event.Cyel" relation="CyelRelation"/>
-        <link port="Event.Pred" relation="PredRelation"/>
-        <link port="Event.Pgrn" relation="PgrnRelation"/>
-        <link port="Event.OK" relation="OKRelation"/>
-        <link port="Event.Error" relation="ErrorRelation"/>
+        <link port="Error.Cred" relation="CredRelation"/>
+        <link port="Error.Cgrn" relation="CgrnRelation"/>
+        <link port="Error.Cyel" relation="CyelRelation"/>
+        <link port="Error.Pred" relation="PredRelation"/>
+        <link port="Error.Pgrn" relation="PgrnRelation"/>
+        <link port="Error.OK" relation="OKRelation"/>
+        <link port="Error.Error" relation="ErrorRelation"/>
     </entity>
     <entity name="SetVariable4" class="ptolemy.actor.lib.SetVariable">
         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Pred">
