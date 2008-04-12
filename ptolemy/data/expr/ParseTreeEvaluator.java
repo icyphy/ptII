@@ -1356,7 +1356,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
 
         if (argValues[0] instanceof ObjectToken) {
-            Object object = ((ObjectToken) argValues[0]).getValue();
+            ObjectToken objectToken = (ObjectToken) argValues[0];
+            Object object = objectToken.getValue();
             if (object != null) {
                 if (object instanceof NamedObj) {
                     Object result = ((NamedObj) object).getAttribute(
@@ -1387,34 +1388,41 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                         }
                     }
                 }
+            }
 
-                Class<?> valueClass = object.getClass();
-                Set<Class<?>> classes = new HashSet<Class<?>>();
-                classes.add(valueClass);
-                while (!classes.isEmpty()) {
-                    Iterator<Class<?>> iterator = classes.iterator();
-                    valueClass = iterator.next();
-                    iterator.remove();
+            Class<?> valueClass = object == null ? objectToken.getValueClass()
+                    : object.getClass();
+            Set<Class<?>> classes = new HashSet<Class<?>>();
+            classes.add(valueClass);
+            while (!classes.isEmpty()) {
+                Iterator<Class<?>> iterator = classes.iterator();
+                valueClass = iterator.next();
+                iterator.remove();
 
-                    if (!Modifier.isPublic(valueClass.getModifiers())) {
-                        for (Class<?> interf : valueClass.getInterfaces()) {
-                            classes.add(interf);
-                        }
-                        Class<?> superclass = valueClass.getSuperclass();
-                        if (superclass != null) {
-                            classes.add(superclass);
-                        }
-                    } else {
-                        ptolemy.data.Token result = _invokeMethod(valueClass,
-                                object, methodName, argTypes, argValues);
-                        if (result != null) {
-                            return result;
-                        }
+                if (!Modifier.isPublic(valueClass.getModifiers())) {
+                    for (Class<?> interf : valueClass.getInterfaces()) {
+                        classes.add(interf);
+                    }
+                    Class<?> superclass = valueClass.getSuperclass();
+                    if (superclass != null) {
+                        classes.add(superclass);
+                    }
+                } else {
+                    ptolemy.data.Token result = _invokeMethod(valueClass,
+                            object, methodName, argTypes, argValues);
+                    if (result != null) {
+                        return result;
                     }
                 }
             }
+            
+            if (object == null) {
+                throw new IllegalActionException("The object on which method " +
+                        "\"" + methodName + "\" is invoked on is null, but " +
+                        "the method is not found or is not static.");
+            }
         }
-
+        
         throw new IllegalActionException("No method found matching "
                 + method.toString());
     }
@@ -1482,7 +1490,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         Object result = null;
 
-        if (argTypes.length == 1) {
+        if (object != null && argTypes.length == 1) {
             Field[] fields = clazz.getFields();
             for (Field field : fields) {
                 if (field.getName().equals(methodName)
@@ -1524,7 +1532,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                         }
                     }
                 }
-                if (compatible) {
+                if (compatible && (object != null
+                        || Modifier.isStatic(method.getModifiers()))) {
                     try {
                         result = method.invoke(object, args);
                         if (result == null) {
