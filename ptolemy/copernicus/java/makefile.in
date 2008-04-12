@@ -456,6 +456,7 @@ davaDecompileDava:
 		classfile="$(MODEL).`basename $$file .class`"; \
 		echo "Decompiling $$classfile"; \
 		CLASSPATH=".$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+			JAVAFLAGS=-Xmx600m \sa
 			$(ROOT)/bin/soot -f d -d . $$classfile; \
 	done;
 
