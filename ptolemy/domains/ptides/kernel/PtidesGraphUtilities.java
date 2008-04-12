@@ -217,7 +217,6 @@ public class PtidesGraphUtilities {
 		Set equivalenceClasses = new HashSet();
 		DirectedAcyclicGraph graph = _computeGraph(container);
 
-		Hashtable ioMapping = new Hashtable();
 		for (Iterator colIt = graph.connectedComponents().iterator(); colIt
 				.hasNext();) {
 			Set ports = new HashSet();
@@ -324,7 +323,6 @@ public class PtidesGraphUtilities {
 		Set equivalenceClasses = new HashSet();
 		DirectedAcyclicGraph graph = _computeGraph(container);
 
-		Hashtable ioMapping = new Hashtable();
 		for (Iterator colIt = graph.connectedComponents().iterator(); colIt
 				.hasNext();) {
 			Set actors = new HashSet();
