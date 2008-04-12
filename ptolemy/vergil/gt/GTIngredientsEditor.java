@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
  */
@@ -113,9 +113,9 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.HTMLViewer;
 import ptolemy.actor.gui.PtolemyDialog;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -139,11 +139,16 @@ public class GTIngredientsEditor extends PtolemyDialog implements
         ActionListener {
 
     public GTIngredientsEditor(DialogTableau tableau, Frame owner,
-            Entity target, Configuration configuration) {
-        super("", tableau, owner, target, configuration);
+            NamedObj target, Configuration configuration)
+    throws IllegalActionException {
+        super("", tableau, owner, null, configuration);
 
+        if (!(target instanceof GTEntity)) {
+            throw new IllegalActionException("Ingredient editor can only be " +
+                    "used with GTEntity objects.");
+        }
         _owner = owner;
-        _target = target;
+        _target = (GTEntity) target;
 
         Attribute attribute = null;
 
@@ -190,9 +195,17 @@ public class GTIngredientsEditor extends PtolemyDialog implements
 
     public void addNewRow() {
         try {
-            Class<? extends GTIngredient> ingredientClass = _ingredientClasses
-                    .get(0);
-            GTIngredient ingredient = _createTemporaryIngredient(ingredientClass);
+            GTIngredient ingredient = null;
+            for (Class<? extends GTIngredient> theClass : _ingredientClasses) {
+                ingredient = _createTemporaryIngredient(theClass);
+                if (ingredient.isApplicable(_target)) {
+                    break;
+                }
+            }
+            if (ingredient == null) {
+                return;
+            }
+
             Row row = new Row(ingredient);
             int rowCount = _tableModel.getRowCount();
             _tableModel.addRow(new Object[] { rowCount + 1, row, row });
@@ -237,8 +250,8 @@ public class GTIngredientsEditor extends PtolemyDialog implements
                 + "\" value=\""
                 + StringUtilities.escapeForXML(ingredientList.toString())
                 + "\"/>";
-        MoMLChangeRequest request = new MoMLChangeRequest(this, _target, moml,
-                null);
+        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                (NamedObj) _target, moml, null);
         request.setUndoable(true);
         _attribute.requestChange(request);
         return true;
@@ -308,7 +321,8 @@ public class GTIngredientsEditor extends PtolemyDialog implements
     @SuppressWarnings("unchecked")
     public static List<Class<? extends GTIngredient>> searchIngredientClasses(
             String[] packages, ClassLoader loader) {
-        List<Class<? extends GTIngredient>> ingredientClasses = new LinkedList<Class<? extends GTIngredient>>();
+        List<Class<? extends GTIngredient>> ingredientClasses =
+            new LinkedList<Class<? extends GTIngredient>>();
         for (String pkg : packages) {
             try {
                 Enumeration<URL> urls = loader.getResources(pkg.replace('.',
@@ -385,11 +399,26 @@ public class GTIngredientsEditor extends PtolemyDialog implements
             Configuration configuration = ((TableauFrame) parent)
                     .getConfiguration();
             Effigy effigy = ((TableauFrame) parent).getEffigy();
-            DialogTableau dialogTableau = DialogTableau.createDialog(parent,
+
+            // The dialog now only works with TransitionMatcher, which is not an
+            // Entity.
+            /*DialogTableau dialogTableau = DialogTableau.createDialog(parent,
                     configuration, effigy, GTIngredientsEditor.class,
                     (Entity) object);
             if (dialogTableau != null) {
                 dialogTableau.show();
+            }*/
+
+            DialogTableau tableau;
+            try {
+                tableau = new DialogTableau(effigy, effigy
+                        .uniqueName("dialog"));
+                tableau.setFrame(new GTIngredientsEditor(tableau, parent,
+                        object, configuration));
+                tableau.show();
+            } catch (Exception e) {
+                throw new InternalErrorException("Unable to create " +
+                        "ingredient editor for " + object.getName());
             }
         }
 
@@ -644,7 +673,7 @@ public class GTIngredientsEditor extends PtolemyDialog implements
 
     private DefaultTableModel _tableModel;
 
-    private Entity _target;
+    private GTEntity _target;
 
     private GTIngredientList _temporaryIngredientList;
 
@@ -920,7 +949,8 @@ public class GTIngredientsEditor extends PtolemyDialog implements
             Class<?> ingredientClass = ingredient.getClass();
             _classSelector.addItemListener(this);
             _classSelector.setEditable(false);
-            for (Class<? extends GTIngredient> listedIngerdient : _ingredientClasses) {
+            for (Class<? extends GTIngredient> listedIngerdient
+                    : _ingredientClasses) {
                 if (listedIngerdient == null && ingredientClass == null
                         || listedIngerdient != null
                         && listedIngerdient.equals(ingredientClass)) {
@@ -929,9 +959,14 @@ public class GTIngredientsEditor extends PtolemyDialog implements
                     _classSelector.setSelectedItem(element);
                 } else {
                     try {
-                        GTIngredient newIngredient = _createTemporaryIngredient(listedIngerdient);
-                        ComboElement element = new ComboElement(newIngredient);
-                        _classSelector.addItem(element);
+                        GTIngredient newIngredient = _createTemporaryIngredient(
+                                listedIngerdient);
+                        if (_target instanceof GTEntity && newIngredient
+                                .isApplicable(_target)) {
+                            ComboElement element =
+                                new ComboElement(newIngredient);
+                            _classSelector.addItem(element);
+                        }
                     } catch (Exception e) {
                         throw new KernelRuntimeException(e,
                                 "Unable to create criterion or operation from "

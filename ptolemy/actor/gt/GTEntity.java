@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -34,6 +34,7 @@ import java.util.Set;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 
 /**
  Common interface of the matchers in model transformations.
@@ -79,7 +80,7 @@ public interface GTEntity extends Nameable {
      *  the pattern of the same {@link TransformationRule}, if this entity is in
      *  the replacement, or <tt>null</tt> otherwise.
      *
-     *  @return The attribute that stires the name of the corresponding entity.
+     *  @return The attribute that stores the name of the corresponding entity.
      *  @see #labelSet()
      */
     public PatternObjectAttribute getPatternObjectAttribute();
@@ -91,6 +92,16 @@ public interface GTEntity extends Nameable {
      *  @see #getIngredientToken(String)
      */
     public Set<String> labelSet();
+
+    /** Test whether this GTEntity can match the given object. The matching
+     *  is shallow in the sense that objects contained by this GTEntity need not
+     *  match the corresponding objects in the given object for the return
+     *  result to be true.
+     *
+     *  @param object The NamedObj.
+     *  @return Whether this GTEntity can match the given object.
+     */
+    public boolean match(NamedObj object);
 
     /** Update appearance of this entity.
      *

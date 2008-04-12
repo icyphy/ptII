@@ -26,12 +26,15 @@
  */
 package ptolemy.actor.gt.ingredients.operations;
 
+import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.data.MatchResult;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeRequest;
@@ -99,6 +102,11 @@ public class PortRemovalOperation extends Operation {
         StringBuffer buffer = new StringBuffer();
         _encodeStringField(buffer, 0, _name);
         return buffer.toString();
+    }
+
+    public boolean isApplicable(GTEntity entity) {
+        return super.isApplicable(entity) && entity instanceof ComponentEntity
+                && !(entity instanceof State);
     }
 
     public boolean isNameEnabled() {

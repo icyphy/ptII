@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
  */
@@ -32,6 +32,7 @@ package ptolemy.vergil.gt;
 import java.awt.Color;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
+import ptolemy.actor.gt.FSMMatcher;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -92,7 +93,9 @@ public class GTTableau extends Tableau {
 
         NamedObj model = container.getModel();
 
-        if (!(model instanceof TransformationRule || model instanceof CompositeActorMatcher)) {
+        if (!(model instanceof TransformationRule
+                || model instanceof CompositeActorMatcher
+                || model instanceof FSMMatcher)) {
             throw new IllegalActionException(this,
                     "Cannot edit a model that is not a SingleRuleTransformer "
                             + "or a CompositeActorMatcher.");
@@ -115,15 +118,16 @@ public class GTTableau extends Tableau {
      */
     public void createFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        if (!(model instanceof TransformationRule ||
-                model instanceof CompositeActorMatcher)) {
+        if (!(model instanceof TransformationRule
+                || model instanceof CompositeActorMatcher
+                || model instanceof FSMMatcher)) {
             throw new InternalErrorException(this, null, "Composite Entity \""
                     + model.getFullName() + "\" is not an instance of "
                     + "SingleRuleTransformer or CompositeActorMatcher.");
         }
 
-        ExtendedGraphFrame frame = new TransformationEditor((CompositeEntity) model, this,
-                defaultLibrary);
+        ExtendedGraphFrame frame = new TransformationEditor(
+                (CompositeEntity) model, this, defaultLibrary);
         try {
             setFrame(frame);
         } catch (IllegalActionException ex) {
@@ -174,7 +178,8 @@ public class GTTableau extends Tableau {
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
             if (model instanceof TransformationRule
-                    || model instanceof CompositeActorMatcher) {
+                    || model instanceof CompositeActorMatcher
+                    || model instanceof FSMMatcher) {
                 // Check to see whether this factory contains a
                 // default library.
                 LibraryAttribute library = (LibraryAttribute) getAttribute(

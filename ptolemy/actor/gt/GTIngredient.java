@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
  */
@@ -64,6 +64,10 @@ public abstract class GTIngredient {
     public abstract Object getValue(int index);
 
     public abstract String getValues();
+
+    public boolean isApplicable(GTEntity entity) {
+        return true;
+    }
 
     public boolean isEnabled(int index) {
         if (!getElements()[index].canDisable()) {

@@ -97,6 +97,7 @@ JSRCS = \
 	TransformationAttribute.java \
 	TransformationException.java \
 	TransformationRule.java \
+	TransitionMatcher.java \
 	ValidationException.java
 
 OTHER_FILES_TO_BE_JARED = \

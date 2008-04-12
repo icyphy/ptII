@@ -23,8 +23,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -425,6 +425,11 @@ public class GraphMatcher extends GraphAnalyzer {
 
     private boolean _matchAtomicEntity(ComponentEntity patternActor,
             ComponentEntity hostActor) {
+        if (patternActor instanceof GTEntity
+                && !((GTEntity) patternActor).match(hostActor)) {
+            return false;
+        }
+
         int matchSize = _match.size();
         boolean success = true;
         ObjectList patternList = new ObjectList();
@@ -432,12 +437,12 @@ public class GraphMatcher extends GraphAnalyzer {
 
         _match.put(patternActor, hostActor);
 
-        if (patternActor instanceof AtomicActorMatcher) {
-            AtomicActorMatcher matcher = (AtomicActorMatcher) patternActor;
+        if (patternActor instanceof GTEntity) {
+            GTEntity matcher = (GTEntity) patternActor;
 
             GTIngredientList ruleList = null;
             try {
-                ruleList = matcher.criteria.getIngredientList();
+                ruleList = matcher.getCriteriaAttribute().getIngredientList();
             } catch (MalformedStringException e) {
                 success = false;
             }
@@ -446,7 +451,8 @@ public class GraphMatcher extends GraphAnalyzer {
                 for (GTIngredient rule : ruleList) {
                     if (rule instanceof AttributeCriterion
                             || rule instanceof SubclassCriterion) {
-                        success = ((Criterion) rule).match(hostActor) == NamedObjMatchResult.MATCH;
+                        success = ((Criterion) rule).match(hostActor) ==
+                            NamedObjMatchResult.MATCH;
                         if (!success) {
                             break;
                         }
@@ -508,6 +514,11 @@ public class GraphMatcher extends GraphAnalyzer {
 
     private boolean _matchCompositeEntity(CompositeEntity patternEntity,
             CompositeEntity hostEntity) {
+        if (patternEntity instanceof GTEntity
+                && !((GTEntity) patternEntity).match(hostEntity)) {
+            return false;
+        }
+
         int matchSize = _match.size();
         boolean success = true;
         ObjectList patternList = new ObjectList();
@@ -688,6 +699,10 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     private boolean _matchPort(Port patternPort, Port hostPort) {
+        if (patternPort instanceof GTEntity
+                && !((GTEntity) patternPort).match(hostPort)) {
+           return false;
+        }
 
         int matchSize = _match.size();
         boolean success = true;
@@ -780,6 +795,10 @@ public class GraphMatcher extends GraphAnalyzer {
 
     private boolean _matchRelation(Relation patternRelation,
             Relation hostRelation) {
+        if (patternRelation instanceof GTEntity
+                && !((GTEntity) patternRelation).match(hostRelation)) {
+           return false;
+        }
 
         int matchSize = _match.size();
         boolean success = true;

@@ -34,6 +34,7 @@ import java.util.regex.PatternSyntaxException;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredient;
 import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.GTIngredientList;
@@ -42,6 +43,8 @@ import ptolemy.actor.gt.util.PtolemyExpressionString;
 import ptolemy.actor.gt.util.RegularExpressionString;
 import ptolemy.data.expr.Constants;
 import ptolemy.data.type.Type;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -124,6 +127,11 @@ public class PortCriterion extends Criterion {
         _encodeBooleanField(buffer, 4, _multiport);
         _encodeStringField(buffer, 5, _matcherName);
         return buffer.toString();
+    }
+
+    public boolean isApplicable(GTEntity entity) {
+        return super.isApplicable(entity) && entity instanceof ComponentEntity
+                && !(entity instanceof State);
     }
 
     public boolean isInput() {

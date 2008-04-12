@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
  */
@@ -39,6 +39,7 @@ import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.vergil.gt.GTIngredientsEditor;
@@ -160,6 +161,19 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
         return null;
     }
 
+    /** Test whether this CompositeActorMatcher can match the given object. The
+     *  matching is shallow in the sense that objects contained by this matcher
+     *  need not match the corresponding objects in the given object for the
+     *  return result to be true. The return result is true if and only if the
+     *  given object is an instance of {@link CompositeEntity}.
+     *
+     *  @param object The NamedObj.
+     *  @return Whether this CompositeActorMatcher can match the given object.
+     */
+    public boolean match(NamedObj object) {
+        return object instanceof CompositeEntity;
+    }
+
     /** Update appearance of this entity.
      *
      *  @param attribute The attribute containing ingredients of this entity.
@@ -169,6 +183,9 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
         GTEntityUtils.updateAppearance(this, attribute);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
+
     /** React to the fact that the specified Settable has changed.
      *
      *  @param settable The object that has changed value.
@@ -177,9 +194,6 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
     public void valueChanged(Settable settable) {
         GTEntityUtils.valueChanged(this, settable);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public fields                     ////
 
     /** The attribute containing all the criteria in a list
      *  ({@link GTIngredientList}).
@@ -195,13 +209,13 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      */
     public GTIngredientsAttribute operations;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
     /** The attribute that specifies the name of the corresponding entity in the
      *  pattern.
      */
     public PatternObjectAttribute patternObject;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
 
     /** The default icon description.
      */

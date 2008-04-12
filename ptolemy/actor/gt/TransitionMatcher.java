@@ -1,53 +1,42 @@
 /*
 
-@Copyright (c) 2008 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-
-                        PT_COPYRIGHT_VERSION_2
-                        COPYRIGHTENDKEY
-
-
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
  */
 
 package ptolemy.actor.gt;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.Director;
-import ptolemy.actor.Initializable;
-import ptolemy.actor.Manager;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedActor;
 import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
-import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -63,7 +52,7 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class StateMatcher extends State implements GTEntity, TypedActor,
+public class TransitionMatcher extends Transition implements GTEntity,
 ValueListener {
 
     /**
@@ -72,11 +61,11 @@ ValueListener {
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    public StateMatcher(CompositeEntity container, String name)
+    public TransitionMatcher(FSMActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        setClassName("ptolemy.actor.gt.StateMatcher");
+        
+        setClassName("ptolemy.actor.gt.TransitionMatcher");
 
         criteria = new GTIngredientsAttribute(this, "criteria");
         criteria.setExpression("");
@@ -93,16 +82,6 @@ ValueListener {
         editorFactory = new GTIngredientsEditor.Factory(this, "editorFactory");
     }
 
-    public void addInitializable(Initializable initializable) {
-    }
-
-    public void fire() throws IllegalActionException {
-    }
-
-    /** Return the attribute that stores all the criteria for this matcher.
-     *
-     *  @return The attribute that stores all the criteria.
-     */
     public GTIngredientsAttribute getCriteriaAttribute() {
         return criteria;
     }
@@ -111,24 +90,6 @@ ValueListener {
         return null;
     }
 
-    public Director getDirector() {
-        return null;
-    }
-
-    public Director getExecutiveDirector() {
-        return null;
-    }
-
-    public FunctionDependency getFunctionDependency() {
-        return null;
-    }
-
-    /** Return a token that contains an ingredient with the given name contained
-     *  by this entity, or <tt>null</tt> if the ingredient cannot be resolved.
-     *
-     *  @param name The name of the ingredient.
-     *  @return The token containing the ingredient object.
-     */
     public Token getIngredientToken(String name) {
         if (name.startsWith("criterion")) {
             String indexString = name.substring(9);
@@ -144,10 +105,6 @@ ValueListener {
             } catch (NumberFormatException e) {
             }
         }
-        return null;
-    }
-
-    public Manager getManager() {
         return null;
     }
 
@@ -168,25 +125,6 @@ ValueListener {
      */
     public PatternObjectAttribute getPatternObjectAttribute() {
         return patternObject;
-    }
-
-    public void initialize() throws IllegalActionException {
-    }
-
-    public List<?> inputPortList() {
-        return _EMPTY_LIST;
-    }
-
-    public boolean isFireFunctional() {
-        return false;
-    }
-
-    public boolean isStrict() {
-        return false;
-    }
-
-    public int iterate(int count) throws IllegalActionException {
-        return 0;
     }
 
     /** Return the set of names of ingredients contained in this entity that can
@@ -216,63 +154,15 @@ ValueListener {
     }
 
     public boolean match(NamedObj object) {
-        return object instanceof State;
+        return object instanceof Transition;
     }
 
-    public Receiver newReceiver() throws IllegalActionException {
-        return null;
-    }
-
-    public List<?> outputPortList() {
-        return _EMPTY_LIST;
-    }
-
-    public boolean postfire() throws IllegalActionException {
-        return false;
-    }
-
-    public boolean prefire() throws IllegalActionException {
-        return false;
-    }
-
-    public void preinitialize() throws IllegalActionException {
-    }
-
-    public void removeInitializable(Initializable initializable) {
-    }
-
-    public void stop() {
-    }
-
-    public void stopFire() {
-    }
-
-    public void terminate() {
-    }
-
-    public List<?> typeConstraintList() throws IllegalActionException {
-        return _EMPTY_LIST;
-    }
-
-    /** Update appearance of this entity.
-     *
-     *  @param attribute The attribute containing ingredients of this entity.
-     *  @see GTEntityUtils#updateAppearance(GTEntity, GTIngredientsAttribute)
-     */
     public void updateAppearance(GTIngredientsAttribute attribute) {
         // GTEntityUtils.updateAppearance(this, attribute);
     }
 
-    /** React to the fact that the specified Settable has changed.
-     *
-     *  @param settable The object that has changed value.
-     *  @see GTEntityUtils#valueChanged(GTEntity, Settable)
-     */
     public void valueChanged(Settable settable) {
         GTEntityUtils.valueChanged(this, settable);
-    }
-
-    public void wrapup() throws IllegalActionException {
     }
 
     /** The attribute containing all the criteria in a list
@@ -293,8 +183,6 @@ ValueListener {
      *  pattern.
      */
     public PatternObjectAttribute patternObject;
-
-    private static final List<?> _EMPTY_LIST = new LinkedList<Object>();
 
     /** Cache of the label set.
      */

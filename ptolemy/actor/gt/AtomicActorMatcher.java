@@ -23,8 +23,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
  */
@@ -40,9 +40,11 @@ import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.actor.gt.ingredients.operations.Operation;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.vergil.gt.GTIngredientsEditor;
@@ -162,7 +164,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      *  the pattern of the same {@link TransformationRule}, if this entity is in
      *  the replacement, or <tt>null</tt> otherwise.
      *
-     *  @return The attribute that stires the name of the corresponding entity.
+     *  @return The attribute that stores the name of the corresponding entity.
      *  @see #labelSet()
      */
     public PatternObjectAttribute getPatternObjectAttribute() {
@@ -195,6 +197,19 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
         return _labelSet;
     }
 
+    /** Test whether this AtomicActorMatcher can match the given object. The
+     *  matching is shallow in the sense that objects contained by this matcher
+     *  need not match the corresponding objects in the given object for the
+     *  return result to be true. The return result is true if and only if the
+     *  given object is an instance of {@link ComponentEntity}.
+     *
+     *  @param object The NamedObj.
+     *  @return Whether this AtomicActorMatcher can match the given object.
+     */
+    public boolean match(NamedObj object) {
+        return object instanceof ComponentEntity;
+    }
+
     /** Update appearance of this entity.
      *
      *  @param attribute The attribute containing ingredients of this entity.
@@ -204,6 +219,9 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
         GTEntityUtils.updateAppearance(this, attribute);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
+
     /** React to the fact that the specified Settable has changed.
      *
      *  @param settable The object that has changed value.
@@ -212,9 +230,6 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
     public void valueChanged(Settable settable) {
         GTEntityUtils.valueChanged(this, settable);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public fields                     ////
 
     /** The attribute containing all the criteria in a list
      *  ({@link GTIngredientList}).
@@ -230,13 +245,13 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      */
     public GTIngredientsAttribute operations;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
     /** The attribute that specifies the name of the corresponding entity in the
      *  pattern.
      */
     public PatternObjectAttribute patternObject;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
 
     /** The default icon description.
      */
