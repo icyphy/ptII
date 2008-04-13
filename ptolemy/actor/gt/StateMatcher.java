@@ -48,12 +48,14 @@ import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.vergil.gt.GTIngredientsEditor;
+import ptolemy.vergil.gt.StateMatcherController;
 
 /**
 
@@ -239,6 +241,23 @@ ValueListener {
     }
 
     public void removeInitializable(Initializable initializable) {
+    }
+
+    public void setContainer(CompositeEntity container)
+    throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+
+        Attribute factory = getAttribute("_controllerFactory");
+        if (container == null
+                || !(container.getContainer() instanceof ModalModelMatcher)) {
+            if (factory != null) {
+                factory.setContainer(null);
+            }
+        } else {
+            if (factory == null) {
+                new StateMatcherController.Factory(this, "_controllerFactory");
+            }
+        }
     }
 
     public void stop() {

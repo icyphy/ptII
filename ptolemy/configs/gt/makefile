@@ -61,6 +61,7 @@ OTHER_FILES_TO_BE_JARED = \
 	gtActorLibrary.xml \
 	gtEffigyFactory.xml \
 	gtLibrary.xml \
+	gtStateLibrary.xml \
 	gtTableauFactory.xml \
 	intro.htm \
 	welcomeWindow.xml

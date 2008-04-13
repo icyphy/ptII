@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
  */
@@ -97,6 +97,7 @@ import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
@@ -173,7 +174,8 @@ public class TransformationEditor extends GTFrame implements
      */
     public TransformationEditor(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
-        super(entity, tableau, _importActorLibrary(tableau, defaultLibrary));
+        super(entity, tableau, entity instanceof FSMActor ? defaultLibrary
+                : _importActorLibrary(tableau, defaultLibrary));
 
         // Override the default help file.
         // FIXME

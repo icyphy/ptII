@@ -67,7 +67,7 @@ public class FSMMatcher extends FSMActor implements GTEntity, ValueListener {
     public FSMMatcher(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         setClassName("ptolemy.actor.gt.FSMMatcher");
 
         criteria = new GTIngredientsAttribute(this, "criteria");
@@ -83,25 +83,6 @@ public class FSMMatcher extends FSMActor implements GTEntity, ValueListener {
         patternObject.addValueListener(this);
 
         editorFactory = new GTIngredientsEditor.Factory(this, "editorFactory");
-    }
-    
-    /** Create a new instance of Transition with the specified name in
-     *  this actor, and return it.
-     *  This method is write-synchronized on the workspace.
-     *  @param name The name of the new transition.
-     *  @return A transition with the given name.
-     *  @exception IllegalActionException If the name argument is null.
-     *  @exception NameDuplicationException If name collides with that
-     *   of a transition already in this actor.
-     */
-    public ComponentRelation newRelation(String name)
-            throws IllegalActionException, NameDuplicationException {
-        try {
-            workspace().getWriteAccess();
-            return new TransitionMatcher(this, name);
-        } finally {
-            workspace().doneWriting();
-        }
     }
 
     /** Return the attribute that stores all the criteria for this matcher.
@@ -187,6 +168,25 @@ public class FSMMatcher extends FSMActor implements GTEntity, ValueListener {
 
     public boolean match(NamedObj object) {
         return object instanceof FSMActor;
+    }
+
+    /** Create a new instance of Transition with the specified name in
+     *  this actor, and return it.
+     *  This method is write-synchronized on the workspace.
+     *  @param name The name of the new transition.
+     *  @return A transition with the given name.
+     *  @exception IllegalActionException If the name argument is null.
+     *  @exception NameDuplicationException If name collides with that
+     *   of a transition already in this actor.
+     */
+    public ComponentRelation newRelation(String name)
+            throws IllegalActionException, NameDuplicationException {
+        try {
+            workspace().getWriteAccess();
+            return new TransitionMatcher(this, name);
+        } finally {
+            workspace().doneWriting();
+        }
     }
 
     /** Update appearance of this entity.

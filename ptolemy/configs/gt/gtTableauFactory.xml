@@ -8,8 +8,15 @@
             class="ptolemy.vergil.gt.GTTableau$Factory">
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
       <configure>
-        <entity name="GTLibrary" class="ptolemy.kernel.CompositeEntity">
+        <entity name="library" class="ptolemy.kernel.CompositeEntity">
           <input source="ptolemy/configs/gt/gtLibrary.xml"/>
+        </entity>
+      </configure>
+    </property>
+    <property name="state" class="ptolemy.moml.LibraryAttribute">
+      <configure>
+        <entity name="stateLibrary" class="ptolemy.kernel.CompositeEntity">
+          <input source="ptolemy/configs/gt/gtStateLibrary.xml"/>
         </entity>
       </configure>
     </property>

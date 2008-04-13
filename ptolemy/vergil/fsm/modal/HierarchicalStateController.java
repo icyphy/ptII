@@ -28,9 +28,12 @@
 package ptolemy.vergil.fsm.modal;
 
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
@@ -96,6 +99,21 @@ public class HierarchicalStateController extends StateController {
                 new RemoveRefinementAction()));
     }
 
+    /** Return a map with the keys as the names of the refinement types, and the
+     *  values as the names of the classes that implement those refinement
+     *  types.
+     *  @return The map of supported refinement types.
+     */
+    protected Map getRefinementClasses() {
+        Map map = new TreeMap();
+        map.put("Default Refinement", "ptolemy.domains.fsm.modal.Refinement");
+        map.put("State Machine Refinement",
+                "ptolemy.domains.fsm.modal.ModalController");
+        map.put("Event Relation Graph Refinement",
+                "ptolemy.domains.erg.kernel.ERGController");
+        return map;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -139,40 +157,31 @@ public class HierarchicalStateController extends StateController {
             String defaultName = container.uniqueName(state.getName());
             query.addLine("Name", "Name", defaultName);
 
+            Map refinementClasses;
             // See whether the configuration offers state refinements.
             Configuration configuration = ((FSMGraphController) getController())
                     .getConfiguration();
             Entity refinements = configuration.getEntity("_stateRefinements");
-
-            // Default choices.
-            String[] choiceClasses = { "ptolemy.domains.fsm.modal.Refinement",
-                    "ptolemy.domains.fsm.modal.ModalController",
-                    "ptolemy.domains.erg.kernel.ERGController" };
-            String[] choiceNames = { "Default Refinement",
-                    "State Machine Refinement",
-                    "Event Relation Graph Refinement" };
-
             // Check the configuration to see whether the default is overridden.
             if (refinements instanceof CompositeEntity) {
                 // There is a specification.
+                refinementClasses = new HashMap();
                 List refinementList = ((CompositeEntity) refinements)
                         .entityList();
-                choiceNames = new String[refinementList.size()];
-                choiceClasses = new String[refinementList.size()];
-
                 Iterator iterator = refinementList.iterator();
-                int count = 0;
-
                 while (iterator.hasNext()) {
                     Entity entity = (Entity) iterator.next();
-                    choiceNames[count] = entity.getName();
-                    choiceClasses[count++] = entity.getClass().getName();
+                    refinementClasses.put(entity.getName(),
+                            entity.getClass().getName());
                 }
+            } else {
+                refinementClasses = getRefinementClasses();
             }
 
-            query
-                    .addChoice("Class", "Class", choiceNames, choiceNames[0],
-                            true);
+            String[] choiceNames = (String[]) refinementClasses.keySet()
+                    .toArray(new String[refinementClasses.size()]);
+            query.addChoice("Class", "Class", choiceNames, choiceNames[0],
+                    true);
 
             // FIXME: Need a frame owner for first arg.
             // Perhaps calling getController(), which returns a GraphController
@@ -192,8 +201,8 @@ public class HierarchicalStateController extends StateController {
                 return;
             }
 
-            int choiceIndex = query.getIntValue("Class");
-            String newClass = choiceClasses[choiceIndex];
+            String choiceName = query.getStringValue("Class");
+            String newClass = (String) refinementClasses.get(choiceName);
 
             String currentRefinements = state.refinementName.getExpression();
 
@@ -208,7 +217,6 @@ public class HierarchicalStateController extends StateController {
             // The MoML we create depends on whether the configuration
             // specified a set of prototype refinements.
             if (refinements instanceof CompositeEntity) {
-                String choiceName = choiceNames[choiceIndex];
                 Entity template = ((CompositeEntity) refinements)
                         .getEntity(choiceName);
                 String templateDescription = template.exportMoML(newName);

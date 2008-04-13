@@ -64,7 +64,7 @@ ValueListener {
     public TransitionMatcher(FSMActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         setClassName("ptolemy.actor.gt.TransitionMatcher");
 
         criteria = new GTIngredientsAttribute(this, "criteria");

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -67,7 +67,18 @@ public class StateMatcherIcon extends StateIcon {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
-    
+
+    public Figure createBackgroundFigure() {
+        _spacingValue = 0.0;
+        Figure figure = super.createBackgroundFigure();
+        if (figure instanceof RoundedRectangle) {
+            ((RoundedRectangle) figure).setFillPaint(Color.LIGHT_GRAY);
+        } else if (figure instanceof BasicRectangle) {
+            ((BasicRectangle) figure).setFillPaint(Color.LIGHT_GRAY);
+        }
+        return figure;
+    }
+
     public Figure createFigure() {
         CompositeFigure figure = (CompositeFigure) super.createFigure();
         Iterator<?> subfigures = figure.figures();
@@ -79,7 +90,7 @@ public class StateMatcherIcon extends StateIcon {
         }
         return figure;
     }
-    
+
     public Icon createIcon() {
         if (_iconCache != null) {
             return _iconCache;
@@ -89,16 +100,5 @@ public class StateMatcherIcon extends StateIcon {
                 2.0f, 5.0, 5.0);
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
-    }
-    
-    public Figure createBackgroundFigure() {
-        _spacingValue = 0.0;
-        Figure figure = super.createBackgroundFigure();
-        if (figure instanceof RoundedRectangle) {
-            ((RoundedRectangle) figure).setFillPaint(Color.LIGHT_GRAY);
-        } else if (figure instanceof BasicRectangle) {
-            ((BasicRectangle) figure).setFillPaint(Color.LIGHT_GRAY);
-        }
-        return figure;
     }
 }

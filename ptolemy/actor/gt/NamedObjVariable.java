@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -65,7 +65,23 @@ public class NamedObjVariable extends Variable {
         setPersistent(false);
     }
 
-    private boolean _setTokenWithContainer = false;
+    public static NamedObjVariable getNamedObjVariable(NamedObj container,
+            boolean autoCreate) throws IllegalActionException {
+        List<?> attributes = container.attributeList(NamedObjVariable.class);
+        if (attributes.isEmpty()) {
+            if (autoCreate) {
+                try {
+                    return new NamedObjVariable(container);
+                } catch (NameDuplicationException e) {
+                    throw new InternalErrorException(e);
+                }
+            } else {
+                return null;
+            }
+        } else {
+            return (NamedObjVariable) attributes.get(0);
+        }
+    }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
@@ -89,23 +105,7 @@ public class NamedObjVariable extends Variable {
         }
     }
 
-    public static NamedObjVariable getNamedObjVariable(NamedObj container,
-            boolean autoCreate) throws IllegalActionException {
-        List<?> attributes = container.attributeList(NamedObjVariable.class);
-        if (attributes.isEmpty()) {
-            if (autoCreate) {
-                try {
-                    return new NamedObjVariable(container);
-                } catch (NameDuplicationException e) {
-                    throw new InternalErrorException(e);
-                }
-            } else {
-                return null;
-            }
-        } else {
-            return (NamedObjVariable) attributes.get(0);
-        }
-    }
-
     public static final String NAME_PREFIX = "namedObjVariable";
+
+    private boolean _setTokenWithContainer = false;
 }

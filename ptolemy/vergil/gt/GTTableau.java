@@ -33,7 +33,9 @@ import java.awt.Color;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.FSMMatcher;
+import ptolemy.actor.gt.ModalModelMatcher;
 import ptolemy.actor.gt.TransformationRule;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
@@ -180,10 +182,14 @@ public class GTTableau extends Tableau {
             if (model instanceof TransformationRule
                     || model instanceof CompositeActorMatcher
                     || model instanceof FSMMatcher) {
-                // Check to see whether this factory contains a
-                // default library.
-                LibraryAttribute library = (LibraryAttribute) getAttribute(
-                        "_library", LibraryAttribute.class);
+                LibraryAttribute library;
+                if (model instanceof FSMMatcher) {
+                    library = (LibraryAttribute) getAttribute("state",
+                            LibraryAttribute.class);
+                } else {
+                    library = (LibraryAttribute) getAttribute("_library",
+                            LibraryAttribute.class);
+                }
 
                 GTTableau tableau = new GTTableau((PtolemyEffigy) effigy,
                         effigy.uniqueName("gtTableau"), library);
@@ -193,6 +199,41 @@ public class GTTableau extends Tableau {
             }
         }
 
+    }
+
+    public static class ModalTableauFactory extends TableauFactory {
+
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this entity.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an entity already in the container.
+         */
+        public ModalTableauFactory(NamedObj container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /** Create a tableau for the specified effigy, which is assumed to
+         *  be an effigy for an instance of ModalModel.  This class
+         *  defers to the configuration containing the specified effigy
+         *  to open a tableau for the embedded controller.
+         *  @param effigy The model effigy.
+         *  @return A tableau for the effigy, or null if one cannot be created.
+         *  @exception Exception If the factory should be able to create a
+         *   Tableau for the effigy, but something goes wrong.
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
+            Configuration configuration = (Configuration) effigy.toplevel();
+            ModalModelMatcher model =
+                (ModalModelMatcher) ((PtolemyEffigy) effigy).getModel();
+            return configuration.openModel(model.getController());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

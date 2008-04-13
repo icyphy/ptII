@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -570,9 +570,9 @@ public class MatchResultViewer extends GTFrame {
     }
 
     private static final Color _HIGHLIGHT_COLOR = new Color(96, 32, 128, 128);
-    
+
     private static final float _HIGHLIGHT_PADDING = 3.0f;
-    
+
     private static final float _HIGHLIGHT_THICKNESS = 6.0f;
 
     private int _currentPosition;
