@@ -1,6 +1,6 @@
 /* Top-level window for Ptolemy models with a menubar and status bar.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 1998-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -47,6 +47,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.KeyStroke;
 
 import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.GraphicalMessageHandler;
@@ -398,6 +399,14 @@ public class TableauFrame extends Top {
                     item.setActionCommand(name);
                     item.setMnemonic(name.charAt(0));
                     item.addActionListener(menuListener);
+                    if (name.equals("Graph Editor")) {
+                        // From Daniel Crawl for Kepler
+                        item.setAccelerator(
+                            KeyStroke.getKeyStroke(
+                                KeyEvent.VK_N, 
+                                Toolkit.getDefaultToolkit()
+                                    .getMenuShortcutKeyMask()));
+                    }
                     ((JMenu) _fileMenuItems[2]).add(item);
                 }
             }
