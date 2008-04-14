@@ -51,7 +51,6 @@ import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.actor.ActorGraphFrame.ActorGraphPane;
-import ptolemy.vergil.basic.BasicGraphFrame;
 
 /**
 
@@ -67,9 +66,9 @@ public class GTTools {
             final CompositeEntity model) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                Workspace workspace = frame.getTableau().workspace();
+                Workspace workspace = model.workspace();
                 try {
-                    workspace.getWriteAccess();
+                    workspace.getReadAccess();
                     Point2D center = frame.getCenter();
                     frame.setModel(model);
 
@@ -86,7 +85,7 @@ public class GTTools {
                     frame.setCenter(center);
                     frame.changeExecuted(null);
                 } finally {
-                    workspace.doneWriting();
+                    workspace.doneReading();
                 }
             }
         });
