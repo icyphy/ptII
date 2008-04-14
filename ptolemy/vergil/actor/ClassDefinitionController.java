@@ -318,7 +318,7 @@ public class ClassDefinitionController extends ActorController {
         public CreateInstanceAction(String commandName) {
             super(commandName);
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_N, Toolkit.getDefaultToolkit()
+                    KeyEvent.VK_I, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
         }
 
