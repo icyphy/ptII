@@ -49,7 +49,7 @@ import ptolemy.moml.EntityLibrary;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class HierarchyFlatteningAttribute extends TransformationAttribute {
+public class HierarchyFlatteningAttribute extends GTAttribute {
 
     /**
      * @param container

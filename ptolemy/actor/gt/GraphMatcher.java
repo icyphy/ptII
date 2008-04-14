@@ -273,7 +273,7 @@ public class GraphMatcher extends GraphAnalyzer {
     };
 
     protected Token _getAttribute(NamedObj container, String name,
-            Class<? extends TransformationAttribute> attributeClass) {
+            Class<? extends GTAttribute> attributeClass) {
 
         while (container != null) {
             if (_match.containsValue(container)) {

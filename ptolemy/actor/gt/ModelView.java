@@ -46,10 +46,12 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -58,6 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLParser;
+import ptolemy.vergil.actor.ActorGraphFrame;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelView
@@ -107,6 +110,10 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
         screenLocation = new Parameter(this, "screenLocation");
         screenLocation.setTypeAtMost(LocationType.LOCATION);
         screenLocation.setToken("NONE");
+
+        reopenWindow = new Parameter(this, "reopenWindow");
+        reopenWindow.setTypeEquals(BaseType.BOOLEAN);
+        reopenWindow.setToken(BooleanToken.FALSE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -141,12 +148,23 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                         // Export the model into moml string and then import it
                         // again. Needed b some models with unnoticeable state.
                         NamedObj newModel = _parser.parse(model.exportMoML());
-                        Tableau tableau = configuration.openModel(newModel,
-                                effigy);
-                        if (_tableaus[i] != null) {
-                            _tableaus[i].close();
+
+                        Tableau tableau = _tableaus[i];
+                        boolean reopen = ((BooleanToken) reopenWindow
+                                .getToken()).booleanValue();
+                        if (tableau == null || reopen
+                                || !(tableau.getFrame() instanceof
+                                        ActorGraphFrame)) {
+                            if (tableau != null) {
+                                tableau.close();
+                            }
+                            tableau = configuration.openModel(newModel, effigy);
+                            _tableaus[i] = tableau;
+                        } else {
+                            GTTools.changeModel(
+                                    (ActorGraphFrame) tableau.getFrame(),
+                                    (CompositeEntity) model);
                         }
-                        _tableaus[i] = tableau;
 
                         JFrame frame = tableau.getFrame();
                         // Compute location of the new frame.
@@ -253,6 +271,8 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
     public TypedIOPort input;
 
     public TypedIOPort output;
+
+    public Parameter reopenWindow;
 
     public Parameter screenLocation;
 

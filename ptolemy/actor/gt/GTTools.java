@@ -31,9 +31,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gt;
 
+import java.awt.geom.Point2D;
 import java.util.Collection;
 
+import javax.swing.SwingUtilities;
+
 import ptolemy.actor.gt.data.CombinedCollection;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -41,7 +45,13 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.actor.ActorGraphFrame.ActorGraphPane;
+import ptolemy.vergil.basic.BasicGraphFrame;
 
 /**
 
@@ -52,6 +62,35 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GTTools {
+
+    public static void changeModel(final ActorGraphFrame frame,
+            final CompositeEntity model) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                Workspace workspace = frame.getTableau().workspace();
+                try {
+                    workspace.getWriteAccess();
+                    Point2D center = frame.getCenter();
+                    frame.setModel(model);
+
+                    PtolemyEffigy effigy = (PtolemyEffigy) frame.getEffigy();
+                    effigy.setModel(model);
+
+                    ActorEditorGraphController controller =
+                        (ActorEditorGraphController) frame.getJGraph()
+                        .getGraphPane().getGraphController();
+                    ActorGraphModel graphModel = new ActorGraphModel(model);
+                    frame.getJGraph().setGraphPane(new ActorGraphPane(
+                            controller, graphModel, model));
+                    frame.getJGraph().repaint();
+                    frame.setCenter(center);
+                    frame.changeExecuted(null);
+                } finally {
+                    workspace.doneWriting();
+                }
+            }
+        });
+    }
 
     public static NamedObj getChild(NamedObj object, String name,
             boolean allowAttribute, boolean allowPort, boolean allowEntity,

@@ -448,7 +448,7 @@ public abstract class GraphAnalyzer {
     }
 
     protected abstract Token _getAttribute(NamedObj container, String name,
-            Class<? extends TransformationAttribute> attributeClass);
+            Class<? extends GTAttribute> attributeClass);
 
     /** Test whether a relation should be ignored in the matching; return true
      *  if the given relation is hidden (i.e., has a parameter "_hide" whose

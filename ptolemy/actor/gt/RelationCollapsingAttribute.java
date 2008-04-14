@@ -49,7 +49,7 @@ import ptolemy.moml.EntityLibrary;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class RelationCollapsingAttribute extends TransformationAttribute {
+public class RelationCollapsingAttribute extends GTAttribute {
 
     public RelationCollapsingAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {

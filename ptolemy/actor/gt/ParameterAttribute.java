@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public abstract class ParameterAttribute extends TransformationAttribute
+public abstract class ParameterAttribute extends GTAttribute
         implements Settable {
 
     public ParameterAttribute(NamedObj container, String name)

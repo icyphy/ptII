@@ -389,7 +389,7 @@ public class GraphTransformer extends ChangeRequest {
     }
 
     private Token _getAttribute(NamedObj container, String name,
-            Class<? extends TransformationAttribute> attributeClass) {
+            Class<? extends GTAttribute> attributeClass) {
 
         while (container != null) {
             if (_replacementToHost.containsValue(container)) {
@@ -626,7 +626,7 @@ public class GraphTransformer extends ChangeRequest {
 
     private boolean _isAttributeCopied(Attribute attribute) {
         if (!attribute.isPersistent()
-                || attribute instanceof TransformationAttribute) {
+                || attribute instanceof GTAttribute) {
             return false;
         }
 

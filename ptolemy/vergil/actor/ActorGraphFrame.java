@@ -292,6 +292,47 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     // /////////////////////////////////////////////////////////////////
     // // public inner classes ////
+    
+    // /////////////////////////////////////////////////////////////////
+    // // ActorGraphPane
+
+    /**
+     * Subclass that updates the background color on each repaint if there is a
+     * preferences attribute.
+     */
+    public static class ActorGraphPane extends GraphPane {
+        public ActorGraphPane(ActorEditorGraphController controller,
+                ActorGraphModel model, NamedObj entity) {
+            super(controller, model);
+            _entity = entity;
+        }
+
+        public void repaint() {
+            _setBackground();
+            super.repaint();
+        }
+
+        public void repaint(DamageRegion damage) {
+            _setBackground();
+            super.repaint(damage);
+        }
+
+        private void _setBackground() {
+            if (_entity != null) {
+                List list = _entity.attributeList(PtolemyPreferences.class);
+                if (list.size() > 0) {
+                    // Use the last preferences.
+                    PtolemyPreferences preferences = (PtolemyPreferences) list
+                            .get(list.size() - 1);
+                    getCanvas().setBackground(
+                            preferences.backgroundColor.asColor());
+                }
+            }
+        }
+
+        private NamedObj _entity;
+    }
+
     // NOTE: The following class is very similar to the inner class
     // in FSMGraphFrame. Is there some way to merge these?
     // There seem to be enough differences that this may be hard.
@@ -414,46 +455,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     // /////////////////////////////////////////////////////////////////
     // // private inner classes ////
-
-    // /////////////////////////////////////////////////////////////////
-    // // ActorGraphPane
-
-    /**
-     * Subclass that updates the background color on each repaint if there is a
-     * preferences attribute.
-     */
-    private static class ActorGraphPane extends GraphPane {
-        public ActorGraphPane(ActorEditorGraphController controller,
-                ActorGraphModel model, NamedObj entity) {
-            super(controller, model);
-            _entity = entity;
-        }
-
-        public void repaint() {
-            _setBackground();
-            super.repaint();
-        }
-
-        public void repaint(DamageRegion damage) {
-            _setBackground();
-            super.repaint(damage);
-        }
-
-        private void _setBackground() {
-            if (_entity != null) {
-                List list = _entity.attributeList(PtolemyPreferences.class);
-                if (list.size() > 0) {
-                    // Use the last preferences.
-                    PtolemyPreferences preferences = (PtolemyPreferences) list
-                            .get(list.size() - 1);
-                    getCanvas().setBackground(
-                            preferences.backgroundColor.asColor());
-                }
-            }
-        }
-
-        private NamedObj _entity;
-    }
 
     // /////////////////////////////////////////////////////////////////
     // // CreateHierarchy

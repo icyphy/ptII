@@ -49,7 +49,7 @@ import ptolemy.moml.EntityLibrary;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class RelationHidingAttribute extends TransformationAttribute {
+public class RelationHidingAttribute extends GTAttribute {
 
     /**
      * @param container
