@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.erg.kernel;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -336,8 +337,9 @@ public class ERGController extends ModalController {
          */
         @SuppressWarnings("unchecked")
         public Set<?> identifierSet() {
-            Set<?> set = super.identifierSet();
-            set.addAll(ModelScope.getAllScopedObjectNames(ERGController.this));
+            Set<Object> set = super.identifierSet();
+            set.addAll((Collection<?>) ModelScope.getAllScopedObjectNames(
+                    ERGController.this));
             return set;
         }
     }
