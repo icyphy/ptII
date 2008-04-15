@@ -85,9 +85,6 @@ public class ObjectToken extends Token {
         _class = valueClass;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Convert the specified token into an instance of ObjectToken.
      *  This method does lossless conversion.
      *  If the argument is already an instance of ObjectToken,
@@ -110,6 +107,9 @@ public class ObjectToken extends Token {
         throw new IllegalActionException(notSupportedConversionMessage(token,
                 "object"));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return true if the argument is an instance of ObjectToken and its
      *  contained object is equal to the object contained in this token,
@@ -181,6 +181,21 @@ public class ObjectToken extends Token {
             return _value.hashCode();
         } else {
             return _value.hashCode() + _class.hashCode();
+        }
+    }
+
+    /** Compare this ObjectToken to the given argument, and return true if the
+     *  values contained in the two are the same Java object.
+     *
+     *  @param rightArgument The argument.
+     *  @return true if the values are the same Java object, or false otherwise.
+     */
+    public BooleanToken isEqualTo(Token rightArgument) {
+        if (rightArgument instanceof ObjectToken
+                && ((ObjectToken) rightArgument)._value == _value) {
+            return BooleanToken.TRUE;
+        } else {
+            return BooleanToken.FALSE;
         }
     }
 
