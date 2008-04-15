@@ -31,14 +31,13 @@ package ptolemy.actor.gt;
 import java.io.IOException;
 import java.io.Writer;
 
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.gt.TransformationAttributeEditorFactory;
+import ptolemy.vergil.gt.TransformationAttributeIcon;
 
 /**
 
@@ -69,61 +68,52 @@ public class TransformationAttribute extends GTAttribute {
         super(workspace);
     }
 
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        super.attributeChanged(attribute);
-        if (attribute == transformer) {
-            String moml = transformer.getExpression();
-            if (moml.equals("")) {
-                _transformer = new ToplevelTransformer(workspace());
-            } else {
-                if (_parser == null) {
-                    _parser = new MoMLParser();
-                } else {
-                    _parser.reset();
-                }
-                try {
-                    _transformer = (ToplevelTransformer) _parser.parse(moml);
-                } catch (Exception e) {
-                    throw new IllegalActionException(this, e,
-                            "Unable to parse transformer.");
-                }
-            }
-        }
-    }
-
-    public ToplevelTransformer getTransformer() {
-        return _transformer;
-    }
-
     /** The editor factory for the transformer in this attribute.
      */
     public TransformationAttributeEditorFactory editorFactory;
 
-    public StringAttribute transformer;
-    
-    protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
-        String moml = _transformer.exportMoML();
-        try {
-            transformer.setExpression(moml);
-        } catch (IllegalActionException e) {
-            throw new IOException("Cannot update the textual description of " +
-                    "the transformer.", e);
-        }
-        super._exportMoMLContents(output, depth);
-    }
+    public TransformerAttribute transformer;
 
     private void _init() throws IllegalActionException,
     NameDuplicationException {
-        transformer = new StringAttribute(this, "transformer");
+        transformer = new TransformerAttribute(this, "transformer");
         transformer.setExpression("");
         transformer.setPersistent(true);
+        
+        new TransformationAttributeIcon(this, "_icon"); 
+        
         editorFactory = new TransformationAttributeEditorFactory(this,
                 "editorFactory");
     }
-
-    private MoMLParser _parser;
-
-    private ToplevelTransformer _transformer;
+    
+    public static class TransformerAttribute extends StringAttribute {
+        
+        public TransformerAttribute(NamedObj container, String name)
+        throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+        }
+        
+        public void exportMoML(Writer output, int depth, String name)
+        throws IOException {
+            if (_transformer != null) {
+                try {
+                    setExpression(_transformer.exportMoML());
+                } catch (IllegalActionException e) {
+                    throw new IOException("Unable to obtain MoML string from " +
+                            "transformer.", e);
+                }
+            }
+            super.exportMoML(output, depth, name);
+        }
+        
+        public synchronized void setTransformer(ToplevelTransformer transformer) {
+            _transformer = transformer;
+        }
+        
+        public synchronized ToplevelTransformer getTransformer() {
+            return _transformer;
+        }
+        
+        private ToplevelTransformer _transformer;
+    }
 }

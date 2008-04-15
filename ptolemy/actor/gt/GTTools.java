@@ -68,7 +68,7 @@ public class GTTools {
             public void run() {
                 Workspace workspace = model.workspace();
                 try {
-                    workspace.getReadAccess();
+                    workspace.getWriteAccess();
                     Point2D center = frame.getCenter();
                     frame.setModel(model);
 
@@ -85,7 +85,7 @@ public class GTTools {
                     frame.setCenter(center);
                     frame.changeExecuted(null);
                 } finally {
-                    workspace.doneReading();
+                    workspace.doneWriting();
                 }
             }
         });

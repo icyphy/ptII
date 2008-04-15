@@ -97,8 +97,7 @@ public class ToplevelTransformer extends TypedCompositeActor {
     }
 
     public boolean postfire() throws IllegalActionException {
-        super.postfire();
-        return _hasToken;
+        return super.postfire() && _outputToken == null;
     }
 
     public void setInputToken(ActorToken inputToken) {
@@ -225,8 +224,10 @@ public class ToplevelTransformer extends TypedCompositeActor {
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         setClassName("ptolemy.actor.gt.ToplevelTransformer");
+
         input = new TransformerPort(this, "input", true, false);
         new Location(input, "_location").setExpression("{20.0, 200.0}");
+
         output = new TransformerPort(this, "output", false, true);
         new Location(output, "_location").setExpression("{580.0, 200.0}");
     }

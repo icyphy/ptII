@@ -67,6 +67,7 @@ JSRCS = \
 	StateMatcherController.java \
 	StateMatcherIcon.java \
 	TransformationAttributeEditorFactory.java \
+	TransformationAttributeIcon.java \
 	TransformationEditor.java
 
 EXTRA_SRCS =	$(JSRCS)
@@ -120,8 +121,8 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$TransformAction.class' \
 	'MatchResultViewer$$TransformAllAction.class' \
 	'StateMatcherController$$Factory.class' \
+	'TransformationAttributeEditorFactory$$ActorFrameListener.class' \
 	'TransformationAttributeEditorFactory$$ExecutionListener.class' \
-	'TransformationAttributeEditorFactory$$FramesCloseListener.class' \
 	'TransformationAttributeEditorFactory$$ModificationListener.class' \
 	'TransformationEditor$$1.class' \
 	'TransformationEditor$$2.class' \

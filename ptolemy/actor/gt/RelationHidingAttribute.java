@@ -63,7 +63,7 @@ public class RelationHidingAttribute extends GTAttribute {
 
         parameter = new Parameter(this, "relationHiding");
         parameter.setTypeEquals(BaseType.BOOLEAN);
-        parameter.setExpression("true");
+        parameter.setExpression("false");
     }
 
     public void attributeChanged(Attribute attribute) {

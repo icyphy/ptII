@@ -6,11 +6,7 @@
   <configure>
     <?moml
       <group>
-        <property name="TransformationAttribute" class="ptolemy.actor.gt.TransformationAttribute">
-          <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
-          </property>
-        </property>
+        <property name="TransformationAttribute" class="ptolemy.actor.gt.TransformationAttribute"/>
         <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator"/>
         <entity name="ModelView" class="ptolemy.actor.gt.ModelView"/>
         <entity name="TransformationRule" class="ptolemy.actor.gt.TransformationRule"/>

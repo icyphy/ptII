@@ -499,67 +499,74 @@ public class GraphTransformer extends ChangeRequest {
     }
 
     private void _hideRelations(CompositeEntity host) {
+        Collection<?> relations = GTTools.getChildren(host, false, false,
+                false, true);
+        for (Object relationObject : relations) {
+            Relation relation = (Relation) relationObject;
+            List<?> linkedObjects = relation.linkedObjectsList();
+            if (linkedObjects.size() == 1) {
+                String moml = "<deleteRelation name=\""
+                        + relation.getName() + "\"/>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        relation.getContainer(), moml);
+                request.execute();
+            }
+        }
+
         Token relationHidingAttribute = _getAttribute(host, "RelationHiding",
                 RelationHidingAttribute.class);
-        boolean relationHiding = relationHidingAttribute == null ? true
+        boolean relationHiding = relationHidingAttribute == null ? false
                 : ((BooleanToken) relationHidingAttribute).booleanValue();
-        if (relationHiding) {
-            // Remove dangling relations.
-            Collection<?> relations = GTTools.getChildren(host, false, false,
-                    false, true);
-            for (Object relationObject : relations) {
-                Relation relation = (Relation) relationObject;
-                List<?> linkedObjects = relation.linkedObjectsList();
-                if (linkedObjects.size() == 1) {
-                    String moml = "<deleteRelation name=\""
-                            + relation.getName() + "\"/>";
+        // Remove dangling relations.
+        // Combine relations if possible.
+        relations = GTTools.getChildren(host, false, false, false, true);
+        for (Object relationObject : relations) {
+            Relation relation = (Relation) relationObject;
+            List<?> vertices = relation.attributeList(Vertex.class);
+            List<?> linkedObjects = relation.linkedObjectsList();
+            if (vertices.isEmpty()) {
+                if (linkedObjects.size() == 2) {
+                    NamedObj head = (NamedObj) linkedObjects.get(0);
+                    NamedObj tail = (NamedObj) linkedObjects.get(1);
+                    if (head instanceof Relation
+                            || tail instanceof Relation) {
+                        String moml = "<deleteRelation name=\""
+                                + relation.getName() + "\"/>";
+                        MoMLChangeRequest request = new MoMLChangeRequest(
+                                this, relation.getContainer(), moml);
+                        request.execute();
+
+                        if (tail instanceof Relation) {
+                            moml = _getLinkMoML(head, (Relation) tail);
+                            request = new MoMLChangeRequest(this, tail
+                                    .getContainer(), moml);
+                            request.execute();
+                        } else {
+                            moml = _getLinkMoML(tail, (Relation) head);
+                            request = new MoMLChangeRequest(this, head
+                                    .getContainer(), moml);
+                            request.execute();
+                        }
+                    }
+                } else if (linkedObjects.size() > 2) {
+                    double[] location = _getBestLocation(relation
+                            .linkedObjectsList());
+                    String moml = "<group name=\"auto\">"
+                            + "<vertex name=\"vertex\" value=\"["
+                            + location[0] + ", " + location[1] + "]\"/>"
+                            + "</group>";
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            relation.getContainer(), moml);
+                            relation, moml);
                     request.execute();
                 }
-            }
-
-            // Combine relations if possible.
-            relations = GTTools.getChildren(host, false, false, false, true);
-            for (Object relationObject : relations) {
-                Relation relation = (Relation) relationObject;
-                List<?> vertices = relation.attributeList(Vertex.class);
-                if (vertices.isEmpty()) {
-                    List<?> linkedObjects = relation.linkedObjectsList();
-                    if (linkedObjects.size() == 2) {
-                        NamedObj head = (NamedObj) linkedObjects.get(0);
-                        NamedObj tail = (NamedObj) linkedObjects.get(1);
-                        if (head instanceof Relation
-                                || tail instanceof Relation) {
-                            String moml = "<deleteRelation name=\""
-                                    + relation.getName() + "\"/>";
-                            MoMLChangeRequest request = new MoMLChangeRequest(
-                                    this, relation.getContainer(), moml);
-                            request.execute();
-
-                            if (tail instanceof Relation) {
-                                moml = _getLinkMoML(head, (Relation) tail);
-                                request = new MoMLChangeRequest(this, tail
-                                        .getContainer(), moml);
-                                request.execute();
-                            } else {
-                                moml = _getLinkMoML(tail, (Relation) head);
-                                request = new MoMLChangeRequest(this, head
-                                        .getContainer(), moml);
-                                request.execute();
-                            }
-                        }
-                    } else if (linkedObjects.size() > 2) {
-                        double[] location = _getBestLocation(relation
-                                .linkedObjectsList());
-                        String moml = "<group name=\"auto\">"
-                                + "<vertex name=\"vertex\" value=\"["
-                                + location[0] + ", " + location[1] + "]\"/>"
-                                + "</group>";
-                        MoMLChangeRequest request = new MoMLChangeRequest(this,
-                                relation, moml);
-                        request.execute();
-                    }
+            } else if (relationHiding && linkedObjects.size() == 2) {
+                for (Object vertexObject : vertices) {
+                    Vertex vertex = (Vertex) vertexObject;
+                    String moml = "<deleteProperty name=\""
+                        + vertex.getName() + "\"/>";
+                    MoMLChangeRequest request = new MoMLChangeRequest(
+                            this, relation, moml);
+                    request.execute();
                 }
             }
         }

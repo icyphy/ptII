@@ -43,14 +43,14 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ActorToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
 
 /**
@@ -81,81 +81,55 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
     @SuppressWarnings("unchecked")
     public void createEditor(NamedObj object, Frame parent) {
         TransformationAttribute attribute = (TransformationAttribute) object;
+        ToplevelTransformer transformer =
+            attribute.transformer.getTransformer();
         ActorGraphFrame actorFrame = (ActorGraphFrame) parent;
         Configuration configuration = actorFrame.getConfiguration();
         try {
-            ToplevelTransformer transformer = attribute.getTransformer();
+            if (transformer == null) {
+                String moml = attribute.transformer.getExpression();
+                transformer = _getTransformer(moml);
+            }
             Tableau tableau = configuration.openModel(transformer);
             ActorGraphFrame frame = (ActorGraphFrame) tableau.getFrame();
 
-            ModificationListener modificationListener =
-                new ModificationListener(tableau, "_modificationListener",
-                        actorFrame);
+            ActorFrameListener listener = new ActorFrameListener(actorFrame,
+                    frame);
+            parent.addWindowListener(listener);
+            frame.addWindowListener(listener);
+
             transformer.getChangeListeners().add(new WeakReference(
-                    modificationListener));
+                    listener._modificationListener));
 
-            Manager manager = new Manager(transformer.workspace(), "_manager");
-            transformer.setManager(manager);
-            ExecutionListener executionListener = new ExecutionListener(tableau,
-                    "_executionListener", actorFrame);
-            manager.addExecutionListener(executionListener);
+            Manager manager = transformer.getManager();
+            if (manager == null) {
+                manager = new Manager(transformer.workspace(), "_manager");
+                transformer.setManager(manager);
+            }
+            manager.addExecutionListener(listener._executionListener);
 
-            FramesCloseListener windowListener = new FramesCloseListener(
-                    actorFrame, frame);
-            parent.addWindowListener(windowListener);
-            frame.addWindowListener(windowListener);
+            attribute.transformer.setTransformer(transformer);
         } catch (Exception e) {
             throw new InternalErrorException(this, e, "Unable to create " +
                     "transformation editor for " + object.getName());
         }
     }
 
-    private static class ExecutionListener extends Attribute
-    implements ptolemy.actor.ExecutionListener {
-
-        public ExecutionListener(Tableau tableau, String name,
-                ActorGraphFrame parent)
-        throws IllegalActionException, NameDuplicationException {
-            super(tableau, name);
-            _parent = parent;
+    private ToplevelTransformer _getTransformer(String moml)
+    throws IllegalActionException {
+        if (moml.equals("")) {
+            moml = new ToplevelTransformer().exportMoML();
         }
-
-        public void executionError(Manager manager, Throwable throwable) {
+        MoMLParser parser = new MoMLParser();
+        try {
+            return (ToplevelTransformer) parser.parse(moml);
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e,
+                    "Unable to parse transformer.");
         }
-
-        public void executionFinished(Manager manager) {
-            Tableau tableau = (Tableau) getContainer();
-            Workspace workspace = tableau.workspace();
-            try {
-                workspace.getReadAccess();
-                ActorGraphFrame frame = (ActorGraphFrame) tableau.getFrame();
-                Entity result = ((ToplevelTransformer) frame.getModel())
-                        .getOutputToken().getEntity();
-                GTTools.changeModel(_parent, (CompositeEntity) result);
-            } finally {
-                workspace.doneReading();
-            }
-        }
-
-        public void managerStateChanged(Manager manager) {
-            if (manager.getState() == Manager.PREINITIALIZING) {
-                Tableau tableau = (Tableau) getContainer();
-                ActorGraphFrame frame = (ActorGraphFrame) tableau.getFrame();
-                try {
-                    ((ToplevelTransformer) frame.getModel()).setInputToken(
-                            new ActorToken((Entity) _parent.getModel()));
-                } catch (IllegalActionException e) {
-                    throw new InternalErrorException("Unable to initialize " +
-                            "actor token.");
-                }
-            }
-        }
-
-        private ActorGraphFrame _parent;
-
     }
 
-    private static class FramesCloseListener implements WindowListener {
+    private static class ActorFrameListener implements WindowListener {
 
         public void windowActivated(WindowEvent e) {
         }
@@ -167,7 +141,7 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
             if (e.getWindow() == _parent) {
                 _parent.removeWindowListener(this);
                 _child.removeWindowListener(this);
-                _child.dispose();
+                _child.close();
             } else if (e.getWindow() == _child) {
                 _parent.removeWindowListener(this);
                 _child.removeWindowListener(this);
@@ -186,26 +160,77 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
         public void windowOpened(WindowEvent e) {
         }
 
-        FramesCloseListener(ActorGraphFrame parent, ActorGraphFrame child) {
+        ActorFrameListener(ActorGraphFrame parent, ActorGraphFrame child)
+        throws IllegalActionException, NameDuplicationException {
             _parent = parent;
             _child = child;
+            _modificationListener = new ModificationListener(parent, child);
+            _executionListener = new ExecutionListener(parent, child);
         }
 
         private ActorGraphFrame _child;
 
+        private ExecutionListener _executionListener;
+
+        private ModificationListener _modificationListener;
+
         private ActorGraphFrame _parent;
     }
 
-    private static class ModificationListener extends Attribute
-    implements ChangeListener {
+    private static class ExecutionListener
+    implements ptolemy.actor.ExecutionListener {
 
-        public ModificationListener(Tableau tableau, String name,
-                ActorGraphFrame parent) throws IllegalActionException,
-                NameDuplicationException {
-            super(tableau, name);
-
+        public ExecutionListener(ActorGraphFrame parent,
+                ActorGraphFrame client) {
             _parent = parent;
-            _child = (ActorGraphFrame) tableau.getFrame();
+            _client = client;
+        }
+
+        public void executionError(Manager manager, Throwable throwable) {
+        }
+
+        public void executionFinished(Manager manager) {
+            ActorToken token = ((ToplevelTransformer) _client.getModel())
+                    .getOutputToken();
+            if (token == null) {
+                MessageHandler.message("No output is generated.");
+                return;
+            }
+
+            CompositeEntity result = (CompositeEntity) token.getEntity();
+            try {
+                result = (CompositeEntity) new MoMLParser().parse(
+                        result.exportMoML());
+            } catch (Exception e) {
+                throw new InternalErrorException(null, e, "Unable to " +
+                        "generate transformation result.");
+            }
+            GTTools.changeModel(_parent, result);
+        }
+
+        public void managerStateChanged(Manager manager) {
+            if (manager.getState() == Manager.PREINITIALIZING) {
+                try {
+                    ((ToplevelTransformer) _client.getModel()).setInputToken(
+                            new ActorToken((Entity) _parent.getModel()));
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException("Unable to initialize " +
+                            "actor token.");
+                }
+            }
+        }
+
+        private ActorGraphFrame _client;
+
+        private ActorGraphFrame _parent;
+    }
+
+    private static class ModificationListener implements ChangeListener {
+
+        public ModificationListener(ActorGraphFrame parent,
+                ActorGraphFrame client) {
+            _parent = parent;
+            _child = client;
         }
 
         public void changeExecuted(ChangeRequest change) {

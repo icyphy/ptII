@@ -138,6 +138,7 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$NameComparator.class' \
 	'GraphMatcher$$ObjectList.class' \
 	'ToplevelTransformer$$TransformerPort.class' \
+	'TransformationAttribute$$TransformerAttribute.class' \
 	'TransformationRule$$1.class' \
 	'TransformationRule$$LastResultsOperation.class' \
 	'TransformationRule$$Mode$$1.class' \
