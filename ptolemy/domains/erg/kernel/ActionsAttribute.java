@@ -78,7 +78,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    public ActionsAttribute(NamedObj container, String name)
+    public ActionsAttribute(Event container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

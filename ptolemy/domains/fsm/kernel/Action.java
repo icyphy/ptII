@@ -26,7 +26,6 @@
  */
 package ptolemy.domains.fsm.kernel;
 
-import ptolemy.domains.erg.kernel.Event;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -121,11 +120,16 @@ public abstract class Action extends StringAttribute {
             NameDuplicationException {
         // An Action is used in a Transition in the FSM domain, or an Event in
         // the ERG domain.
-        if (!(container instanceof Transition) && !(container instanceof Event)
+        
+        // FSM should not depend on ERG, so this check is removed.
+        // In fact, this check is not necessary, because all instantiable
+        // classes in FSM declares container to have type Transition.
+        
+        /*if (!(container instanceof Transition) && !(container instanceof Event)
                 && (container != null)) {
             throw new IllegalActionException(container, this, "Action can only "
                     + "be contained by instances of Transition or Event.");
-        }
+        }*/
 
         super.setContainer(container);
     }
