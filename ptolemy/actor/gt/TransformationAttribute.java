@@ -98,9 +98,11 @@ public class TransformationAttribute extends GTAttribute {
             if (_transformer != null) {
                 try {
                     setExpression(_transformer.exportMoML());
-                } catch (IllegalActionException e) {
-                    throw new IOException("Unable to obtain MoML string from " +
-                            "transformer.", e);
+                } catch (IllegalActionException ex) {
+                    IOException ioException = new IOException("Unable to "
+                            + "obtain MoML string from transformer.");
+                    ioException.initCause(ex);
+                    throw ioException;
                 }
             }
             super.exportMoML(output, depth, name);
