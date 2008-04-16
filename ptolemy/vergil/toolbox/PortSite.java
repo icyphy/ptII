@@ -98,7 +98,8 @@ public class PortSite extends AbstractSite {
             return bounds.getX() + bounds.getWidth();
         } else {
             // Port is on the top or bottom side.
-            double offset = (bounds.getWidth() / 2.0) - ((_count / 2.0) * _snap);
+            int halfCount = _count / 2;
+            double offset = (bounds.getWidth() / 2.0) - (halfCount * _snap);
 
             // If there are an even number of ports, skip the middle
             // position to get symmetry.
@@ -124,7 +125,8 @@ public class PortSite extends AbstractSite {
             return bounds.getY();
         } else {
             // Port is on the left or right.
-            double offset = (bounds.getHeight() / 2.0) - ((_count / 2) * _snap);
+            int halfCount = _count / 2;
+            double offset = (bounds.getHeight() / 2.0) - (halfCount * _snap);
 
             // If there are an even number of ports, skip the middle
             // position to get symmetry.
