@@ -172,9 +172,14 @@ public class GTParameter extends Parameter {
         public Set<?> identifierSet() throws IllegalActionException {
             Set<Object> identifiers = new HashSet<Object>((Set<?>) _superscope
                     .identifierSet());
-            for (Object childObject : GTTools.getChildren(_pattern, true, true,
-                    true, true)) {
-                identifiers.add(((NamedObj) childObject).getName());
+            try {
+                _pattern.workspace().getReadAccess();
+                for (Object childObject : GTTools.getChildren(_pattern, true, true,
+                        true, true)) {
+                    identifiers.add(((NamedObj) childObject).getName());
+                }
+            } finally {
+                _pattern.workspace().doneReading();
             }
             return identifiers;
         }

@@ -67,19 +67,24 @@ public class NamedObjVariable extends Variable {
 
     public static NamedObjVariable getNamedObjVariable(NamedObj container,
             boolean autoCreate) throws IllegalActionException {
-        List<?> attributes = container.attributeList(NamedObjVariable.class);
-        if (attributes.isEmpty()) {
-            if (autoCreate) {
-                try {
-                    return new NamedObjVariable(container);
-                } catch (NameDuplicationException e) {
-                    throw new InternalErrorException(e);
+        try {
+            container.workspace().getReadAccess();
+            List<?> attributes = container.attributeList(NamedObjVariable.class);
+            if (attributes.isEmpty()) {
+                if (autoCreate) {
+                    try {
+                        return new NamedObjVariable(container);
+                    } catch (NameDuplicationException e) {
+                        throw new InternalErrorException(e);
+                    }
+                } else {
+                    return null;
                 }
             } else {
-                return null;
+                return (NamedObjVariable) attributes.get(0);
             }
-        } else {
-            return (NamedObjVariable) attributes.get(0);
+        } finally {
+            container.workspace().doneReading();
         }
     }
 

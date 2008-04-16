@@ -216,40 +216,50 @@ public class MatchResultViewer extends GTFrame {
     protected static void _setTableauFactory(Object originator,
             final CompositeEntity entity) {
         Class<?> tableauFactoryClass = MatchResultTableau.Factory.class;
-        List<?> factoryList = entity.attributeList(tableauFactoryClass);
-        if (factoryList.isEmpty()) {
-            try {
-                new MatchResultTableau.Factory(entity,
-                        entity.uniqueName("_tableauFactory"))
-                .setPersistent(false);
-            } catch (KernelException e) {
-                throw new KernelRuntimeException(e, "Unexpected exception");
+        try {
+            entity.workspace().getReadAccess();
+            List<?> factoryList = entity.attributeList(tableauFactoryClass);
+            if (factoryList.isEmpty()) {
+                try {
+                    new MatchResultTableau.Factory(entity,
+                            entity.uniqueName("_tableauFactory"))
+                    .setPersistent(false);
+                } catch (KernelException e) {
+                    throw new KernelRuntimeException(e, "Unexpected exception");
+                }
             }
-        }
-        for (Object subentity : entity.entityList(CompositeEntity.class)) {
-            _setTableauFactory(originator, (CompositeEntity) subentity);
-        }
-        for (Object subentity : entity.classDefinitionList()) {
-            if (subentity instanceof CompositeEntity) {
+            for (Object subentity : entity.entityList(CompositeEntity.class)) {
                 _setTableauFactory(originator, (CompositeEntity) subentity);
             }
+            for (Object subentity : entity.classDefinitionList()) {
+                if (subentity instanceof CompositeEntity) {
+                    _setTableauFactory(originator, (CompositeEntity) subentity);
+                }
+            }
+        } finally {
+            entity.workspace().doneReading();
         }
     }
 
     protected static void _unsetTableauFactory(Object originator,
             CompositeEntity entity) {
-        List<?> factoryList = entity
-                .attributeList(MatchResultTableau.Factory.class);
-        for (Object attributeObject : factoryList) {
-            MatchResultTableau.Factory factory = (MatchResultTableau.Factory) attributeObject;
-            String momlTxt = "<deleteProperty name=\"" + factory.getName()
-                    + "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(originator,
-                    entity, momlTxt);
-            entity.requestChange(request);
-        }
-        for (Object subentity : entity.entityList(CompositeEntity.class)) {
-            _unsetTableauFactory(originator, (CompositeEntity) subentity);
+        try {
+            entity.workspace().getReadAccess();
+            List<?> factoryList = entity
+                    .attributeList(MatchResultTableau.Factory.class);
+            for (Object attributeObject : factoryList) {
+                MatchResultTableau.Factory factory = (MatchResultTableau.Factory) attributeObject;
+                String momlTxt = "<deleteProperty name=\"" + factory.getName()
+                        + "\"/>";
+                MoMLChangeRequest request = new MoMLChangeRequest(originator,
+                        entity, momlTxt);
+                entity.requestChange(request);
+            }
+            for (Object subentity : entity.entityList(CompositeEntity.class)) {
+                _unsetTableauFactory(originator, (CompositeEntity) subentity);
+            }
+        } finally {
+            entity.workspace().doneReading();
         }
     }
 

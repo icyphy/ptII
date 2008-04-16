@@ -157,25 +157,38 @@ public class GTFrame extends ExtendedGraphFrame {
             NamedObj target = getTarget();
             Frame frame = getFrame();
             if (target instanceof GTEntity) {
-                List<?> attributeList = target
-                        .attributeList(EditorFactory.class);
-                if (attributeList.size() > 0) {
-                    EditorFactory factory = (EditorFactory) attributeList
-                            .get(0);
+                EditorFactory factory = null;
+                try {
+                    target.workspace().getReadAccess();
+                    List<?> attributeList = target
+                            .attributeList(EditorFactory.class);
+                    if (attributeList.size() > 0) {
+                        factory = (EditorFactory) attributeList.get(0);
+                    }
+                } finally {
+                    target.workspace().doneReading();
+                }
+                if (factory != null) {
                     factory.createEditor(target, frame);
                 } else {
                     new EditParametersDialog(frame, target);
                 }
             } else {
-                List<?> ingredientsAttributes = target
-                        .attributeList(GTIngredientsAttribute.class);
                 try {
+                    target.workspace().getReadAccess();
+                    List<?> ingredientsAttributes = target
+                            .attributeList(GTIngredientsAttribute.class);
                     if (ingredientsAttributes.isEmpty()) {
                         Attribute attribute = new GTIngredientsAttribute(
                                 target, target.uniqueName("operations"));
                         attribute.setPersistent(false);
                     }
-
+                } catch (KernelException e) {
+                    throw new InternalErrorException(e);
+                } finally {
+                    target.workspace().doneReading();
+                }
+                try {
                     EditorFactory factory = new GTIngredientsEditor.Factory(
                             target, target
                                     .uniqueName("ingredientsEditorFactory"));

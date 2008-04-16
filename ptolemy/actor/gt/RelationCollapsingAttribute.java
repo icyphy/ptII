@@ -57,7 +57,7 @@ public class RelationCollapsingAttribute extends GTAttribute {
 
         parameter = new Parameter(this, "relationCollapsing");
         parameter.setTypeEquals(BaseType.BOOLEAN);
-        parameter.setExpression("false");
+        parameter.setToken(BooleanToken.getInstance(!DEFAULT));
     }
 
     public void attributeChanged(Attribute attribute) {
@@ -88,6 +88,8 @@ public class RelationCollapsingAttribute extends GTAttribute {
             _checkUniqueness(container);
         }
     }
+
+    public static final boolean DEFAULT = false;
 
     public Parameter parameter;
 

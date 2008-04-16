@@ -63,7 +63,7 @@ public class HierarchyFlatteningAttribute extends GTAttribute {
 
         parameter = new Parameter(this, "hierarchyFlattening");
         parameter.setTypeEquals(BaseType.BOOLEAN);
-        parameter.setExpression("false");
+        parameter.setToken(BooleanToken.getInstance(!DEFAULT));
     }
 
     public void attributeChanged(Attribute attribute) {
@@ -94,6 +94,8 @@ public class HierarchyFlatteningAttribute extends GTAttribute {
             _checkUniqueness(container);
         }
     }
+
+    public static final boolean DEFAULT = false;
 
     public Parameter parameter;
 

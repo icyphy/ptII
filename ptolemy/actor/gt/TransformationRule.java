@@ -111,10 +111,15 @@ public class TransformationRule extends MultiCompositeActor implements
     public void fire() throws IllegalActionException {
         try {
             // Obtain updated value for any PortParameter before each firing.
-            for (Object parameterObject : this.attributeList()) {
-                if (parameterObject instanceof PortParameter) {
-                    ((PortParameter) parameterObject).update();
+            try {
+                _workspace.getReadAccess();
+                for (Object parameterObject : attributeList()) {
+                    if (parameterObject instanceof PortParameter) {
+                        ((PortParameter) parameterObject).update();
+                    }
                 }
+            } finally {
+                _workspace.doneReading();
             }
 
             if (modelInput.hasToken(0)) {

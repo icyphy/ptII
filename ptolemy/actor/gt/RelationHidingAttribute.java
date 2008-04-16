@@ -63,7 +63,7 @@ public class RelationHidingAttribute extends GTAttribute {
 
         parameter = new Parameter(this, "relationHiding");
         parameter.setTypeEquals(BaseType.BOOLEAN);
-        parameter.setExpression("false");
+        parameter.setToken(BooleanToken.getInstance(!DEFAULT));
     }
 
     public void attributeChanged(Attribute attribute) {
@@ -94,6 +94,8 @@ public class RelationHidingAttribute extends GTAttribute {
             _checkUniqueness(container);
         }
     }
+
+    public static final boolean DEFAULT = true;
 
     public Parameter parameter;
 

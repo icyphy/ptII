@@ -259,19 +259,24 @@ public class GTFrameController implements ChangeListener, KeyListener {
         };
 
         _tabbedPane.addChangeListener(this);
-        Iterator<?> cases = ((TransformationRule) entity).entityList(
-                CompositeActorMatcher.class).iterator();
-        boolean first = true;
-        while (cases.hasNext()) {
-            CompositeActorMatcher matcher = (CompositeActorMatcher) cases
-                    .next();
-            JGraph jgraph = _addTabbedPane(matcher, false);
-            // The first JGraph is the one with the focus.
-            if (first) {
-                first = false;
-                _frame.setJGraph(jgraph);
+        try {
+            entity.workspace().getReadAccess();
+            Iterator<?> cases = ((TransformationRule) entity).entityList(
+                    CompositeActorMatcher.class).iterator();
+            boolean first = true;
+            while (cases.hasNext()) {
+                CompositeActorMatcher matcher = (CompositeActorMatcher) cases
+                        .next();
+                JGraph jgraph = _addTabbedPane(matcher, false);
+                // The first JGraph is the one with the focus.
+                if (first) {
+                    first = false;
+                    _frame.setJGraph(jgraph);
+                }
+                _graphs.add(jgraph);
             }
-            _graphs.add(jgraph);
+        } finally {
+            entity.workspace().doneReading();
         }
 
         GraphPane graphPane = _graphPanes.get(0);

@@ -696,17 +696,22 @@ public class TransformationEditor extends GTFrame implements
                 CompositeEntity actorLibrary = (CompositeEntity) configuration
                         .getEntity("actor library");
                 CompositeEntity library = gtLibrary.getLibrary();
-                for (Object entityObject : actorLibrary.entityList()) {
-                    try {
-                        ComponentEntity libraryEntity =
-                            (ComponentEntity) entityObject;
-                        ComponentEntity entity = (ComponentEntity) libraryEntity
-                                .clone(library.workspace());
-                        entity.setContainer(library);
-                    } catch (Exception e) {
-                        // Ignore this entity in the actor library because we
-                        // don't know how to import it.
+                try {
+                    actorLibrary.workspace().getReadAccess();
+                    for (Object entityObject : actorLibrary.entityList()) {
+                        try {
+                            ComponentEntity libraryEntity =
+                                (ComponentEntity) entityObject;
+                            ComponentEntity entity = (ComponentEntity) libraryEntity
+                                    .clone(library.workspace());
+                            entity.setContainer(library);
+                        } catch (Exception e) {
+                            // Ignore this entity in the actor library because we
+                            // don't know how to import it.
+                        }
                     }
+                } finally {
+                    actorLibrary.workspace().doneReading();
                 }
                 gtLibrary.setLibrary(library);
             } catch (Exception e) {
@@ -739,28 +744,33 @@ public class TransformationEditor extends GTFrame implements
     private int _refreshTable(TransformationEditor topLevelFrame,
             CompositeActorMatcher replacement, int index,
             CompositeEntity container) {
-        Collection<?> objectCollection = new CombinedCollection<Object>(
-                new Collection<?>[] { container.entityList(),
-                        container.relationList() });
-        for (Object entityObject : objectCollection) {
-            NamedObj object = (NamedObj) entityObject;
-            PatternObjectAttribute attribute = GTTools
-                    .getPatternObjectAttribute(object);
-            if (attribute != null) {
-                attribute.addValueListener(this);
-                String patternObject = attribute.getExpression();
-                if (patternObject.length() != 0) {
-                    String name = _getNameWithinContainer(object, replacement);
-                    topLevelFrame._tableModel.addRow(new Object[] {
-                            _createCellPanel(Integer.toString(index++)),
-                            _createCellPanel(patternObject),
-                            _createCellPanel(name) });
+        try {
+            container.workspace().getReadAccess();
+            Collection<?> objectCollection = new CombinedCollection<Object>(
+                    new Collection<?>[] { container.entityList(),
+                            container.relationList() });
+            for (Object entityObject : objectCollection) {
+                NamedObj object = (NamedObj) entityObject;
+                PatternObjectAttribute attribute = GTTools
+                        .getPatternObjectAttribute(object);
+                if (attribute != null) {
+                    attribute.addValueListener(this);
+                    String patternObject = attribute.getExpression();
+                    if (patternObject.length() != 0) {
+                        String name = _getNameWithinContainer(object, replacement);
+                        topLevelFrame._tableModel.addRow(new Object[] {
+                                _createCellPanel(Integer.toString(index++)),
+                                _createCellPanel(patternObject),
+                                _createCellPanel(name) });
+                    }
+                }
+                if (object instanceof CompositeEntity) {
+                    index = _refreshTable(topLevelFrame, replacement, index,
+                            (CompositeEntity) object);
                 }
             }
-            if (object instanceof CompositeEntity) {
-                index = _refreshTable(topLevelFrame, replacement, index,
-                        (CompositeEntity) object);
-            }
+        } finally {
+            container.workspace().doneReading();
         }
         return index;
     }
@@ -800,6 +810,7 @@ public class TransformationEditor extends GTFrame implements
         try {
             Collection<?> objectCollection;
             if (filter == null) {
+                container.workspace().getReadAccess();
                 objectCollection = GTTools.getChildren(container, true, true,
                         true, true);
             } else {
@@ -830,6 +841,10 @@ public class TransformationEditor extends GTFrame implements
             }
         } catch (KernelException e) {
             throw new KernelRuntimeException(e, "Cannot set attribute.");
+        } finally {
+            if (filter == null) {
+                container.workspace().doneReading();
+            }
         }
     }
 

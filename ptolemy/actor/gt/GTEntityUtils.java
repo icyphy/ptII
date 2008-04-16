@@ -130,15 +130,21 @@ public class GTEntityUtils {
                         new RestoreAppearanceChangeRequest(entity));
             }
 
-            List<?> portList = new LinkedList<Object>((List<?>)
-                    ((ComponentEntity) entity).portList());
-            for (i = 0; i < portList.size(); i++) {
-                Port port = (Port) portList.get(i);
-                if (port instanceof PortMatcher
-                        && !preservedPortNames.contains(port.getName())) {
-                    ((PortMatcher) port)._setPortCriterion(null);
-                    port.setContainer(null);
+            ComponentEntity component = (ComponentEntity) entity;
+            try {
+                component.workspace().getReadAccess();
+                List<?> portList = new LinkedList<Object>((List<?>)
+                        component.portList());
+                for (i = 0; i < portList.size(); i++) {
+                    Port port = (Port) portList.get(i);
+                    if (port instanceof PortMatcher
+                            && !preservedPortNames.contains(port.getName())) {
+                        ((PortMatcher) port)._setPortCriterion(null);
+                        port.setContainer(null);
+                    }
                 }
+            } finally {
+                component.workspace().doneReading();
             }
 
         } catch (KernelException e) {
@@ -214,10 +220,16 @@ public class GTEntityUtils {
 
     private static void _removeEditorIcons(GTEntity entity)
     throws KernelException {
-        for (Object editorIconObject :
-            ((NamedObj) entity).attributeList(EditorIcon.class)) {
-            EditorIcon editorIcon = (EditorIcon) editorIconObject;
-            editorIcon.setContainer(null);
+        NamedObj object = (NamedObj) entity;
+        try {
+            object.workspace().getReadAccess();
+            for (Object editorIconObject
+                    : object.attributeList(EditorIcon.class)) {
+                EditorIcon editorIcon = (EditorIcon) editorIconObject;
+                editorIcon.setContainer(null);
+            }
+        } finally {
+            object.workspace().doneReading();
         }
     }
 
@@ -243,8 +255,13 @@ public class GTEntityUtils {
         }
 
         protected void _execute() throws Exception {
-            ComponentEntity actor = (ComponentEntity) _container.entityList()
-                    .get(0);
+            ComponentEntity actor;
+            try {
+                _container.workspace().getReadAccess();
+                actor = (ComponentEntity) _container.entityList().get(0);
+            } finally {
+                _container.workspace().doneReading();
+            }
 
             _removeEditorIcons(_entity);
 
@@ -253,20 +270,24 @@ public class GTEntityUtils {
             String iconDescription = actorAttribute.getConfigureText();
             _setIconDescription(_entity, iconDescription);
 
-            List<?> editorIconList = actor.attributeList(EditorIcon.class);
-
-            for (Object editorIconObject : editorIconList) {
-                EditorIcon editorIcon = (EditorIcon) editorIconObject;
-                EditorIcon icon = (EditorIcon) editorIcon.clone(
-                        ((NamedObj) _entity).workspace());
-                icon.setName("_icon");
-                EditorIcon oldIcon =
-                    (EditorIcon) ((NamedObj) _entity).getAttribute("_icon");
-                if (oldIcon != null) {
-                    oldIcon.setContainer(null);
+            try {
+                actor.workspace().getReadAccess();
+                List<?> editorIconList = actor.attributeList(EditorIcon.class);
+                for (Object editorIconObject : editorIconList) {
+                    EditorIcon editorIcon = (EditorIcon) editorIconObject;
+                    EditorIcon icon = (EditorIcon) editorIcon.clone(
+                            ((NamedObj) _entity).workspace());
+                    icon.setName("_icon");
+                    EditorIcon oldIcon =
+                        (EditorIcon) ((NamedObj) _entity).getAttribute("_icon");
+                    if (oldIcon != null) {
+                        oldIcon.setContainer(null);
+                    }
+                    icon.setContainer((NamedObj) _entity);
+                    break;
                 }
-                icon.setContainer((NamedObj) _entity);
-                break;
+            } finally {
+                actor.workspace().doneReading();
             }
         }
 

@@ -86,14 +86,19 @@ public class Replacement extends CompositeActorMatcher {
 
     private static void _updateEntitiesAppearance(CompositeEntity container,
             GTIngredientsAttribute attribute) {
-        for (Object entity : container.entityList()) {
-            if (entity instanceof GTEntity) {
-                GTEntity gtEntity = (GTEntity) entity;
-                gtEntity.updateAppearance(attribute);
+        try {
+            container.workspace().getReadAccess();
+            for (Object entity : container.entityList()) {
+                if (entity instanceof GTEntity) {
+                    GTEntity gtEntity = (GTEntity) entity;
+                    gtEntity.updateAppearance(attribute);
+                }
+                if (entity instanceof CompositeEntity) {
+                    _updateEntitiesAppearance((CompositeEntity) entity, attribute);
+                }
             }
-            if (entity instanceof CompositeEntity) {
-                _updateEntitiesAppearance((CompositeEntity) entity, attribute);
-            }
+        } finally {
+            container.workspace().doneReading();
         }
     }
 

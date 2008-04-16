@@ -156,8 +156,13 @@ public class GTIngredientsEditor extends PtolemyDialog implements
             if (target instanceof GTEntity) {
                 attribute = target.getAttribute("criteria");
             } else {
-                attribute = (Attribute) target.attributeList(
-                        GTIngredientsAttribute.class).get(0);
+                try {
+                    target.workspace().getReadAccess();
+                    attribute = (Attribute) target.attributeList(
+                            GTIngredientsAttribute.class).get(0);
+                } finally {
+                    target.workspace().doneReading();
+                }
             }
             _ingredientClasses = _criterionClasses;
             tableau.setTitle("Criteria editor for " + target.getName());
@@ -165,8 +170,13 @@ public class GTIngredientsEditor extends PtolemyDialog implements
             if (target instanceof GTEntity) {
                 attribute = target.getAttribute("operations");
             } else {
-                attribute = (Attribute) target.attributeList(
-                        GTIngredientsAttribute.class).get(0);
+                try {
+                    target.workspace().getReadAccess();
+                    attribute = (Attribute) target.attributeList(
+                            GTIngredientsAttribute.class).get(0);
+                } finally {
+                    target.workspace().doneReading();
+                }
             }
             _ingredientClasses = _operationClasses;
             tableau.setTitle("Operations editor for " + target.getName());

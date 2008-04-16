@@ -77,18 +77,25 @@ public abstract class GraphAnalyzer {
      */
     public NamedObj findFirstChild(CompositeEntity top,
             IndexedLists indexedLists, Collection<Object> excludedObjects) {
+        List<Object> children;
+        try {
+            top.workspace().getReadAccess();
 
-        List<Object> children = new LinkedList<Object>((Collection<?>) top
-                .entityList(ComponentEntity.class));
+            children = new LinkedList<Object>((Collection<?>) top.entityList(
+                    ComponentEntity.class));
 
-        Token collapsingToken = _getAttribute(top, "RelationCollapsing",
-                RelationCollapsingAttribute.class);
-        boolean collapsing = collapsingToken == null ? false
-                : ((BooleanToken) collapsingToken).booleanValue();
-        if (!collapsing) {
-            for (Object relationObject : top.relationList()) {
-                children.add(relationObject);
+            Token collapsingToken = _getAttribute(top, "RelationCollapsing",
+                    RelationCollapsingAttribute.class);
+            boolean collapsing = collapsingToken == null ?
+                    RelationCollapsingAttribute.DEFAULT
+                    : ((BooleanToken) collapsingToken).booleanValue();
+            if (!collapsing) {
+                for (Object relationObject : top.relationList()) {
+                    children.add(relationObject);
+                }
             }
+        } finally {
+            top.workspace().doneReading();
         }
 
         if (!children.isEmpty()) {
@@ -145,7 +152,8 @@ public abstract class GraphAnalyzer {
     public boolean findFirstPath(Port startPort, Path path,
             Set<? super Relation> visitedRelations,
             Set<? super Port> visitedPorts) {
-        List<?> relationList = startPort.linkedRelationList();
+        List<?> relationList = new LinkedList<Object>(
+                startPort.linkedRelationList());
         if (startPort instanceof ComponentPort) {
             ((Collection<?>) relationList).addAll(((ComponentPort) startPort)
                     .insideRelationList());
@@ -166,7 +174,8 @@ public abstract class GraphAnalyzer {
 
             currentList.setSecond(i);
             visitedRelations.add(relation);
-            List<?> portList = relation.linkedPortList();
+            List<?> portList = new LinkedList<Object>(
+                    relation.linkedPortList());
 
             int j = 0;
             IndexedList currentList2 = new IndexedList(portList, 0);
@@ -320,7 +329,8 @@ public abstract class GraphAnalyzer {
                     }
 
                     visitedRelations.add(relation);
-                    List<?> portList = relation.linkedPortList();
+                    List<?> portList = new LinkedList<Object>(
+                            relation.linkedPortList());
 
                     int i = 0;
                     for (Object portObject : portList) {

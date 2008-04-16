@@ -283,12 +283,17 @@ public class GraphMatcher extends GraphAnalyzer {
             }
             Attribute attribute = container.getAttribute(name);
             if (attribute != null && attributeClass.isInstance(attribute)) {
-                Parameter parameter = (Parameter) attribute.attributeList()
-                        .get(0);
                 try {
-                    return parameter == null ? null : parameter.getToken();
-                } catch (IllegalActionException e) {
-                    return null;
+                    attribute.workspace().getReadAccess();
+                    Parameter parameter = (Parameter) attribute.attributeList()
+                            .get(0);
+                    try {
+                        return parameter == null ? null : parameter.getToken();
+                    } catch (IllegalActionException e) {
+                        return null;
+                    }
+                } finally {
+                    attribute.workspace().doneReading();
                 }
             }
             container = container.getContainer();
@@ -319,8 +324,9 @@ public class GraphMatcher extends GraphAnalyzer {
             NamedObj container = entity.getContainer();
             Token value = _getAttribute(container, "HierarchyFlattening",
                     HierarchyFlatteningAttribute.class);
-            boolean isOpaque = value == null ? true : !((BooleanToken) value)
-                    .booleanValue();
+            boolean isOpaque = value == null ?
+                    HierarchyFlatteningAttribute.DEFAULT
+                    : !((BooleanToken) value).booleanValue();
             return isOpaque;
         }
     }
@@ -392,12 +398,17 @@ public class GraphMatcher extends GraphAnalyzer {
         }
 
         Pattern pattern = (Pattern) patternObject;
-        List<?> constraints = pattern.attributeList(Constraint.class);
-        for (Object constraintObject : constraints) {
-            Constraint constraint = (Constraint) constraintObject;
-            if (!_checkConstraint(pattern, constraint)) {
-                return false;
+        try {
+            pattern.workspace().getReadAccess();
+            List<?> constraints = pattern.attributeList(Constraint.class);
+            for (Object constraintObject : constraints) {
+                Constraint constraint = (Constraint) constraintObject;
+                if (!_checkConstraint(pattern, constraint)) {
+                    return false;
+                }
             }
+        } finally {
+            pattern.workspace().doneReading();
         }
         return true;
     }
@@ -739,7 +750,8 @@ public class GraphMatcher extends GraphAnalyzer {
             Token collapsingToken = _getAttribute(patternContainer
                     .getContainer(), "RelationCollapsing",
                     RelationCollapsingAttribute.class);
-            boolean collapsing = collapsingToken == null ? false
+            boolean collapsing = collapsingToken == null ?
+                    RelationCollapsingAttribute.DEFAULT
                     : ((BooleanToken) collapsingToken).booleanValue();
 
             if (collapsing) {

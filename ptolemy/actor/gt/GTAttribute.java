@@ -90,13 +90,18 @@ public abstract class GTAttribute extends Attribute {
             return;
         }
 
-        List<?> attributeList = container.attributeList(getClass());
-        for (Object attributeObject : attributeList) {
-            if (attributeObject != this) {
-                _deleteThis();
-                throw new IllegalActionException("Only 1 "
-                        + getClass().getSimpleName() + " can be used.");
+        try {
+            container.workspace().getReadAccess();
+            List<?> attributeList = container.attributeList(getClass());
+            for (Object attributeObject : attributeList) {
+                if (attributeObject != this) {
+                    _deleteThis();
+                    throw new IllegalActionException("Only 1 "
+                            + getClass().getSimpleName() + " can be used.");
+                }
             }
+        } finally {
+            container.workspace().doneReading();
         }
     }
 
