@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MatlabCT" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[666, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 442]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[10, 161]">
     </property>
@@ -29,10 +29,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 410.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={36, 277, 881, 468}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 56, 896, 559}, maximized=false}">
     </property>
     <property name="Continuous-Time (CT) Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
@@ -70,12 +70,22 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.5, 221.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the integration of MATLAB with&#10;HyVisual and Ptolemy II. The MatlabExpression actor&#10;on the right invokes a command in MATLAB. In this case,&#10;the function &quot;surf&quot; (which renders a matrix as a surface&#10;plot) is invoked on the matrix input.&#10;&#10;This model also illustrates the use of the Ptolemy II&#10;expression language in the Expression actors.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 10.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that Matlab be installed on&#10;your local machine.&#10;&#10;In addition, if you are running under Windows&#10;from the Cygwin bash prompt, then you must start&#10;Vergil with the -jni argument:&#10;  $PTII/bin/vergil -jni&#10;&#10;For details, see $PTII/jni/package.html">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 250.0]">
         </property>
     </property>
     <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
@@ -91,7 +101,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[577.0, 195.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -106,7 +116,7 @@
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[47.0, 180.0]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -118,7 +128,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[247.0, 225.0]">
         </property>
         <port name="time_t" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -133,18 +143,18 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[262.0, 180.0]">
         </property>
         <port name="time_t" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[472.0, 195.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="125.0, 135.0">
+        <vertex name="vertex1" value="[102.0, 180.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
