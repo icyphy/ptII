@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MatlabExpression" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[666, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[666, 403]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[10, 161]">
     </property>
@@ -33,14 +33,30 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 275.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 350.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {71, 154, 881, 459}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 98, 881, 520}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.0, 201.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires that Matlab be installed on&#10;your local machine.&#10;&#10;In addition, if you are running under Windows&#10;from the Cygwin bash prompt, then you must start&#10;Vergil with the -jni argument:&#10;  $PTII/bin/vergil -jni&#10;&#10;For details, see $PTII/jni/package.html">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 240.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the integration of MATLAB with&#10;Ptolemy II. The MatlabExpression actor&#10;on the right invokes a command in MATLAB. In this case,&#10;the function &quot;surf&quot; (which renders a matrix as a surface&#10;plot) is invoked on the matrix input.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 15.0]">
+        </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -48,7 +64,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="frequency">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 155.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 155.0]">
         </property>
     </entity>
     <entity name="DoubleToMatrix" class="ptolemy.domains.sdf.lib.DoubleToMatrix">
@@ -56,7 +72,7 @@
         </property>
         <property name="columns" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 155.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 155.0]">
         </property>
     </entity>
     <entity name="1:Ramp" class="ptolemy.actor.lib.Ramp">
@@ -65,7 +81,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="frequency*0.5">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 230.0]">
         </property>
     </entity>
     <entity name="2:DoubleToMatrix" class="ptolemy.domains.sdf.lib.DoubleToMatrix">
@@ -73,11 +89,11 @@
         </property>
         <property name="columns" class="ptolemy.data.expr.Parameter" value="size">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 230.0]">
         </property>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 170.0]">
         </property>
     </entity>
     <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
@@ -93,7 +109,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 170.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -127,7 +143,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 155.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 155.0]">
         </property>
     </entity>
     <entity name="TrigFunction2" class="ptolemy.actor.lib.TrigFunction">
@@ -151,7 +167,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 230.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 230.0]">
         </property>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
