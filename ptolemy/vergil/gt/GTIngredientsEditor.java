@@ -143,12 +143,8 @@ public class GTIngredientsEditor extends PtolemyDialog implements
     throws IllegalActionException {
         super("", tableau, owner, null, configuration);
 
-        if (!(target instanceof GTEntity)) {
-            throw new IllegalActionException("Ingredient editor can only be " +
-                    "used with GTEntity objects.");
-        }
         _owner = owner;
-        _target = (GTEntity) target;
+        _target = target;
 
         Attribute attribute = null;
 
@@ -683,7 +679,7 @@ public class GTIngredientsEditor extends PtolemyDialog implements
 
     private DefaultTableModel _tableModel;
 
-    private GTEntity _target;
+    private NamedObj _target;
 
     private GTIngredientList _temporaryIngredientList;
 
@@ -971,8 +967,7 @@ public class GTIngredientsEditor extends PtolemyDialog implements
                     try {
                         GTIngredient newIngredient = _createTemporaryIngredient(
                                 listedIngerdient);
-                        if (_target instanceof GTEntity && newIngredient
-                                .isApplicable(_target)) {
+                        if (newIngredient.isApplicable(_target)) {
                             ComboElement element =
                                 new ComboElement(newIngredient);
                             _classSelector.addItem(element);

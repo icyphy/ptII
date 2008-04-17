@@ -26,7 +26,6 @@
  */
 package ptolemy.actor.gt.ingredients.operations;
 
-import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.Pattern;
@@ -38,6 +37,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
@@ -104,7 +104,7 @@ public class PortRemovalOperation extends Operation {
         return buffer.toString();
     }
 
-    public boolean isApplicable(GTEntity entity) {
+    public boolean isApplicable(NamedObj entity) {
         return super.isApplicable(entity) && entity instanceof ComponentEntity
                 && !(entity instanceof State);
     }

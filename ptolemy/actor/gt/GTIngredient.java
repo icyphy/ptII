@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// Rule
@@ -65,7 +66,7 @@ public abstract class GTIngredient {
 
     public abstract String getValues();
 
-    public boolean isApplicable(GTEntity entity) {
+    public boolean isApplicable(NamedObj entity) {
         return true;
     }
 
