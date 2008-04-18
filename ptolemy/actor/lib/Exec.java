@@ -33,12 +33,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
@@ -58,10 +62,12 @@ import ptolemy.util.StringUtilities;
 //// Execute
 
 /**
- <p>Execute a command as a separately running subprocess. A command
- is a single executable.  To get the effect of executing
- a command provided in a shell interpreter, you can set
- <i>command</i> to "cmd" (Windows) or "sh" (Windows with Cygwin
+ Execute a command as a separately running subprocess.
+
+ <p> To get the effect of executing,
+ a command provided in a shell interpreter,
+ <i>prependPlatformDependentShellCommand<i> parameter to true,
+ or set <i>command</i> to "cmd" (Windows) or "sh" (Windows with Cygwin
  or Linux), and then provide commands at the <i>input</i> port.
  Note that each command must be terminated with a newline.
  For example, to open a model in vergil and run it, you can
@@ -80,17 +86,12 @@ import ptolemy.util.StringUtilities;
  ports.</p>
 
  <p>If the subprocess generates no data on the output or error stream,
- then the data on the corresponding port(s) will consist of the empty string.</p>
+ then the data on the corresponding port(s) will consist of the empty
+ string.</p>
 
  <p>A much more interesting actor could be written using a
  Kahn Process Network.  This actor would generate output asynchronously
  as the process was executing.</p>
-
- <p>Currently, there appears to be no way to get the subprocess to
- exit by passing it input. For example, if the <i>command</i> is set
- to the <code>cat</code> command, and we pass in a Const with the
- value <code>\04</code>, then the cat subprocess does <b>not</b> interpret
- this as the end of file marker and exit.</p>
 
  <p>For information about Runtime.exec(), see:
  <br><a href="http://www.javaworld.com/javaworld/jw-12-2007/jw-1229-traps.html" target="_top">http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a></br>
@@ -98,13 +99,13 @@ import ptolemy.util.StringUtilities;
  <br><a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a></br>
  </p>
 
- @author Christopher Hylands Brooks, Contributor: Edward A. Lee
+ @author Christopher Hylands Brooks, Contributors: Edward A. Lee, Daniel Crawl
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Yellow (cxh) 2/5/04
  @Pt.AcceptedRating Yellow (cxh) 2/24/04
  */
-public class Exec extends TypedAtomicActor {
+public class Exec extends LimitedFiringSource {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -116,7 +117,7 @@ public class Exec extends TypedAtomicActor {
     public Exec(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
+        
         // Uncomment the next line to see debugging statements
         //addDebugListener(new ptolemy.kernel.util.StreamListener());
         command = new PortParameter(this, "command", new StringToken(
@@ -150,13 +151,25 @@ public class Exec extends TypedAtomicActor {
         input.setTypeEquals(BaseType.STRING);
         new Parameter(input, "_showName", BooleanToken.TRUE);
 
-        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
         new Parameter(output, "_showName", BooleanToken.TRUE);
+
+        exitCode = new TypedIOPort(this, "exitCode", false, true);
+        exitCode.setTypeEquals(BaseType.INT);
+        new Parameter(exitCode, "_showName", BooleanToken.TRUE);
+
+
+        prependPlatformDependentShellCommand = new Parameter(this, 
+                "prependPlatformDependentShellCommand", BooleanToken.FALSE);
+        prependPlatformDependentShellCommand.setTypeEquals(BaseType.BOOLEAN);
 
         throwExceptionOnNonZeroReturn = new Parameter(this, 
                 "throwExceptionOnNonZeroReturn", BooleanToken.TRUE);
         throwExceptionOnNonZeroReturn.setTypeEquals(BaseType.BOOLEAN);
+
+        waitForProcess = new Parameter(this, "waitForProcess",
+            BooleanToken.TRUE);
+        waitForProcess.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -227,6 +240,12 @@ public class Exec extends TypedAtomicActor {
      */
     public TypedIOPort error;
 
+    /** The exit code of the subprocess. Usually, a non-zero exit code
+     *  indicate that the subprocess had a problem.  This port is an output
+     *  port of type int.
+     */
+    public TypedIOPort exitCode;
+
     /** Strings to pass to the standard input of the subprocess.
      *  Note that a newline is not appended to the string.  If you
      *  require a newline, add one using the AddSubtract actor.
@@ -242,13 +261,34 @@ public class Exec extends TypedAtomicActor {
      *  the empty string (a string of length zero) is generated.
      *  This port is an output port of type String.
      */
-    public TypedIOPort output;
+    // NOTE: output port is inherited from parent class.
+    //public TypedIOPort output;
+
+    /** If true, then prepend the platform dependent shell command
+     *  to the parsed value of the command parameter.
+     *  By setting this argument to true, it is possible to invoke
+     *  commands in a platform neutral method.
+     *  <p>Under Windows NT or XP, the arguments "cmd.exe" and "/C"
+     *  are prepended.  Under Windows 95, the arguments "command.com"
+     *  and "/C" are prepended.  Under all other platforms, the
+     *  arguments "/bin/sh" and "-c" are prepended.  
+     *  <p>The default value of this parameter is a boolean of value
+     *  false, which allows the user to arbitrarily invoke /bin/sh
+     *  scripts on all platforms.
+     */   
+    public Parameter prependPlatformDependentShellCommand;
 
     /** If true, then throw an exception if the subprocess returns
      *  non-zero.
      *  The default is a boolean of value true.
+     *  This parameter is ignored if <i>waitForProcess</i> is false.
      */   
     public Parameter throwExceptionOnNonZeroReturn;
+
+    /** If true, then actor will wait until subprocess completes. The
+     *  default is a boolean of value true. 
+     */  
+    public Parameter waitForProcess;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -296,46 +336,64 @@ public class Exec extends TypedAtomicActor {
         }
 
         try {
-            // The next line waits for the subprocess to finish.
-            int processReturnCode = _process.waitFor();
+            
+            // Close the stdin of the subprocess.
+            _process.getOutputStream().close();
 
-            if (processReturnCode != 0) {
-                // We could have a parameter that would enable
-                // or disable this.
-                String outputString = "";
-                String errorString = "";
+            boolean waitForProcessValue = 
+                ((BooleanToken) waitForProcess.getToken()).booleanValue(); 
 
-                try {
-                    errorString = _errorGobbler.getAndReset();
-                } catch (Exception ex) {
-                    errorString = ex.toString();
+            if (waitForProcessValue) {
+                // The next line waits for the subprocess to finish.
+                int processReturnCode = _process.waitFor();
+
+                if (processReturnCode != 0) {
+                    // We could have a parameter that would enable
+                    // or disable this.
+                    String outputString = "";
+                    String errorString = "";
+
+                    try {
+                        errorString = _errorGobbler.getAndReset();
+                    } catch (Exception ex) {
+                        errorString = ex.toString();
+                    }
+
+                    try {
+                        outputString = _outputGobbler.getAndReset();
+                    } catch (Exception ex) {
+                        outputString = ex.toString();
+                    }
+
+                    boolean throwExceptionOnNonZeroReturnValue = 
+                        ((BooleanToken) throwExceptionOnNonZeroReturn
+                            .getToken()).booleanValue();
+
+                    if (throwExceptionOnNonZeroReturnValue) {
+                        throw new IllegalActionException(this,
+                                "Executing command \""
+                                + ((StringToken) command.getToken()).stringValue()
+                                + "\" returned a non-zero return value of "
+                                + processReturnCode + ".\nThe last input was: "
+                                + line
+                                + ".\nThe standard output was: " + outputString
+                                + "\nThe error output was: " + errorString);
+                    } else {
+                        error.send(0, new StringToken(errorString));
+                        output.send(0, new StringToken(outputString));
+                    }
                 }
 
-                try {
-                    outputString = _outputGobbler.getAndReset();
-                } catch (Exception ex) {
-                    outputString = ex.toString();
-                }
+                exitCode.send(0, new IntToken(processReturnCode));
 
-                boolean throwExceptionOnNonZeroReturnValue = ((BooleanToken) throwExceptionOnNonZeroReturn.getToken()).booleanValue();
-
-                if (throwExceptionOnNonZeroReturnValue) {
-                    throw new IllegalActionException(this,
-                            "Executing command \""
-                            + ((StringToken) command.getToken()).stringValue()
-                            + "\" returned a non-zero return value of "
-                            + processReturnCode + ".\nThe last input was: "
-                            + line
-                            + ".\nThe standard output was: " + outputString
-                            + "\nThe error output was: " + errorString);
-                } else {
-                    error.send(0, new StringToken(errorString));
-                    output.send(0, new StringToken(outputString));
-                }
             }
         } catch (InterruptedException interrupted) {
             throw new InternalErrorException(this, interrupted,
                     "_process.waitFor() was interrupted");
+        } catch (IOException io) {
+            throw new IllegalActionException(this, io,
+                "Closing stdin of the subprocess threw an IOException.");
+                    
         }
 
         String outputString = _outputGobbler.getAndReset();
@@ -391,6 +449,7 @@ public class Exec extends TypedAtomicActor {
         _terminateProcess();
     }
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     // Execute a command, set _process to point to the subprocess
@@ -412,13 +471,25 @@ public class Exec extends TypedAtomicActor {
 
             command.update();
 
+            
+            List<String> commandList = new LinkedList<String>();
+
+            boolean prependPlatformDependentShellCommandValue =
+                ((BooleanToken) prependPlatformDependentShellCommand
+                        .getToken()).booleanValue();
+            if (prependPlatformDependentShellCommandValue) {
+                commandList = _getCommandList();
+            }
+
             // tokenizeForExec() handles substrings that start and end
             // with a double quote so the substring is considered to
             // be a single token and are returned as a single array
             // element.
+            // FIXME: tokenizeForExec should return a List<String>
             String[] commandArray = StringUtilities
-                    .tokenizeForExec(((StringToken) command.getToken())
-                            .stringValue());
+                .tokenizeForExec(((StringToken) command.getToken())
+                        .stringValue());
+            commandList.addAll(Arrays.asList(commandArray));
 
             directoryAsFile = directory.asFile();
             if (!directoryAsFile.isDirectory()) {
@@ -427,12 +498,14 @@ public class Exec extends TypedAtomicActor {
             }
 
             if (_debugging) {
-                _debug("About to exec \""
-                        + ((StringToken) command.getToken()).stringValue()
-                        + "\"" + "\n in \"" + directoryAsFile
-                        + "\"\n with environment:");
+                StringBuffer commands = new StringBuffer();
+                for (String aCommand : commandList) {
+                    commands.append(aCommand + " "); 
+                }
+                _debug("About to exec \"" + commands + "\"\n in \"" 
+                        + directoryAsFile + "\"\n with environment:");
             }
-
+            
             // Process the environment parameter.
             ArrayToken environmentTokens = (ArrayToken) environment.getToken();
 
@@ -472,6 +545,8 @@ public class Exec extends TypedAtomicActor {
                 }
             }
 
+            commandArray = commandList.toArray(
+                    new String[commandList.size()]);
             _process = runtime.exec(commandArray, environmentArray,
                     directoryAsFile);
 
@@ -496,6 +571,25 @@ public class Exec extends TypedAtomicActor {
                     "Problem executing the command '" + command.getExpression()
                             + "'\n" + "in the directory: " + directoryAsFile);
         }
+    }
+
+    /** Get the command list arguments for exec. */
+    private List<String> _getCommandList() {
+        List<String> retval = new LinkedList<String>();
+
+        String osName = System.getProperty("os.name");
+        if (osName.equals("Windows NT") || osName.equals("Windows XP")
+                || osName.equals("Windows 2000")) {
+            retval.add("cmd.exe");
+            retval.add("/C");
+        } else if (osName.equals("Windows 95")) {
+            retval.add("command.com");
+            retval.add("/C");
+        } else {
+            retval.add("/bin/sh");
+            retval.add("-c");
+        }
+        return retval;
     }
 
     // Terminate the process and close any associated streams.
