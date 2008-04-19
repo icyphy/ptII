@@ -293,6 +293,19 @@ public class GTTools {
 
         protected void _execute() throws Exception {
             _oldModel = (CompositeEntity) _frame.getModel();
+            if (_undoable) {
+                UndoStackAttribute undoInfo =
+                    UndoStackAttribute.getUndoInfo(_oldModel);
+                undoInfo.push(new UndoAction() {
+                    public void execute() throws Exception {
+                        ModelChangeRequest request =
+                            new ModelChangeRequest( ModelChangeRequest.this,
+                                    _frame, _oldModel);
+                        request.setUndoable(true);
+                        request.execute();
+                    }
+                });
+            }
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     Workspace workspace = _model.workspace();
@@ -320,20 +333,6 @@ public class GTTools {
                     }
                 }
             });
-
-            if (_undoable) {
-                UndoStackAttribute undoInfo =
-                    UndoStackAttribute.getUndoInfo(_oldModel);
-                undoInfo.push(new UndoAction() {
-                    public void execute() throws Exception {
-                        ModelChangeRequest request =
-                            new ModelChangeRequest( ModelChangeRequest.this,
-                                    _frame, _oldModel);
-                        request.setUndoable(true);
-                        request.execute();
-                    }
-                });
-            }
         }
 
         private ActorGraphFrame _frame;
