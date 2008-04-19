@@ -325,7 +325,7 @@ public class GraphMatcher extends GraphAnalyzer {
             Token value = _getAttribute(container, "HierarchyFlattening",
                     HierarchyFlatteningAttribute.class);
             boolean isOpaque = value == null ?
-                    HierarchyFlatteningAttribute.DEFAULT
+                    !HierarchyFlatteningAttribute.DEFAULT
                     : !((BooleanToken) value).booleanValue();
             return isOpaque;
         }
