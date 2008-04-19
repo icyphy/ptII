@@ -448,30 +448,44 @@ public class GraphMatcher extends GraphAnalyzer {
 
         _match.put(patternActor, hostActor);
 
-        if (patternActor instanceof GTEntity) {
-            GTEntity matcher = (GTEntity) patternActor;
+        if (!(patternActor instanceof GTEntity)) {
+            success = patternActor.getClass().isInstance(hostActor);
+        }
 
-            GTIngredientList ruleList = null;
-            try {
-                ruleList = matcher.getCriteriaAttribute().getIngredientList();
-            } catch (MalformedStringException e) {
-                success = false;
-            }
-
-            if (success) {
-                for (GTIngredient rule : ruleList) {
-                    if (rule instanceof AttributeCriterion
-                            || rule instanceof SubclassCriterion) {
-                        success = ((Criterion) rule).match(hostActor) ==
-                            NamedObjMatchResult.MATCH;
-                        if (!success) {
-                            break;
-                        }
+        GTIngredientList ruleList = null;
+        if (success) {
+            if (patternActor instanceof GTEntity) {
+                try {
+                    ruleList = ((GTEntity) patternActor).getCriteriaAttribute()
+                            .getIngredientList();
+                } catch (MalformedStringException e) {
+                    success = false;
+                }
+            } else {
+                List<?> attributeList = patternActor.attributeList(
+                        GTIngredientsAttribute.class);
+                if (!attributeList.isEmpty()) {
+                    try {
+                        ruleList = ((GTIngredientsAttribute) attributeList.get(0))
+                                .getIngredientList();
+                    } catch (MalformedStringException e) {
+                        success = false;
                     }
                 }
             }
-        } else {
-            success = patternActor.getClass().isInstance(hostActor);
+        }
+
+        if (success && ruleList != null) {
+            for (GTIngredient rule : ruleList) {
+                if (rule instanceof AttributeCriterion
+                        || rule instanceof SubclassCriterion) {
+                    success = ((Criterion) rule).match(hostActor) ==
+                        NamedObjMatchResult.MATCH;
+                    if (!success) {
+                        break;
+                    }
+                }
+            }
         }
 
         if (success) {

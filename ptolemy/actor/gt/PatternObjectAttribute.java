@@ -1,4 +1,4 @@
-/*
+ /*
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -32,9 +32,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.gt;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -45,13 +49,14 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class PatternObjectAttribute extends StringAttribute {
+public class PatternObjectAttribute extends StringAttribute
+implements ValueListener {
 
     /**
      *
      */
     public PatternObjectAttribute() {
-        setClassName("ptolemy.actor.gt.PatternObjectAttribute");
+        _init();
     }
 
     /**
@@ -63,9 +68,7 @@ public class PatternObjectAttribute extends StringAttribute {
     public PatternObjectAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        setClassName("ptolemy.actor.gt.PatternObjectAttribute");
-
-        setVisibility(EXPERT);
+        _init();
     }
 
     /**
@@ -73,9 +76,59 @@ public class PatternObjectAttribute extends StringAttribute {
      */
     public PatternObjectAttribute(Workspace workspace) {
         super(workspace);
-        setClassName("ptolemy.actor.gt.PatternObjectAttribute");
+        _init();
+    }
 
+    public void valueChanged(Settable settable) {
+        if (settable == this) {
+            NamedObj container = getContainer();
+            if (GTTools.isInReplacement(container)) {
+                // Update the ports with the criteria attribute of the
+                // corresponding actor in the pattern of the transformation
+                // rule.
+                NamedObj correspondingEntity =
+                    GTTools.getCorrespondingPatternObject(container);
+                if (correspondingEntity != null) {
+                    GTIngredientsAttribute criteria;
+                    try {
+                        criteria = (GTIngredientsAttribute)
+                                container.getAttribute("criteria",
+                                        GTIngredientsAttribute.class);
+                    } catch (IllegalActionException e) {
+                        throw new InternalErrorException(e);
+                    }
+                    if (criteria != null) {
+                        if (container instanceof GTEntity) {
+                            criteria.setPersistent(false);
+                            try {
+                                criteria.setExpression("");
+                            } catch (IllegalActionException e) {
+                                // Ignore because criteria is not used for
+                                // patternObject.
+                            }
+                        } else {
+                            try {
+                                criteria.setContainer(null);
+                            } catch (KernelException e) {
+                                throw new InternalErrorException(e);
+                            }
+                        }
+                    }
+                    if (container instanceof GTEntity
+                            && correspondingEntity instanceof GTEntity) {
+                        ((GTEntity) container).updateAppearance(
+                                ((GTEntity) correspondingEntity)
+                                .getCriteriaAttribute());
+                    }
+                }
+            }
+        }
+    }
+
+    private void _init() {
+        setClassName("ptolemy.actor.gt.PatternObjectAttribute");
         setVisibility(EXPERT);
+        addValueListener(this);
     }
 
 }

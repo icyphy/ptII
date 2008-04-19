@@ -42,7 +42,12 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.undo.UndoAction;
+import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -64,31 +69,9 @@ public class GTTools {
 
     public static void changeModel(final ActorGraphFrame frame,
             final CompositeEntity model) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                Workspace workspace = model.workspace();
-                try {
-                    workspace.getWriteAccess();
-                    Point2D center = frame.getCenter();
-                    frame.setModel(model);
-
-                    PtolemyEffigy effigy = (PtolemyEffigy) frame.getEffigy();
-                    effigy.setModel(model);
-
-                    ActorEditorGraphController controller =
-                        (ActorEditorGraphController) frame.getJGraph()
-                        .getGraphPane().getGraphController();
-                    ActorGraphModel graphModel = new ActorGraphModel(model);
-                    frame.getJGraph().setGraphPane(new ActorGraphPane(
-                            controller, graphModel, model));
-                    frame.getJGraph().repaint();
-                    frame.setCenter(center);
-                    frame.changeExecuted(null);
-                } finally {
-                    workspace.doneWriting();
-                }
-            }
-        });
+        ModelChangeRequest request = new ModelChangeRequest(null, frame, model);
+        request.setUndoable(true);
+        model.requestChange(request);
     }
 
     public static NamedObj getChild(NamedObj object, String name,
@@ -145,7 +128,7 @@ public class GTTools {
 
     public static CompositeActorMatcher getContainingPatternOrReplacement(
             NamedObj entity) {
-        Nameable parent = entity.getContainer();
+        Nameable parent = entity;
         while (parent != null && !(parent instanceof Pattern)
                 && !(parent instanceof Replacement)) {
             parent = parent.getContainer();
@@ -155,12 +138,19 @@ public class GTTools {
 
     public static NamedObj getCorrespondingPatternObject(
             NamedObj replacementObject) {
-        PatternObjectAttribute attribute = getPatternObjectAttribute(replacementObject);
+        if (replacementObject instanceof Replacement) {
+            return ((TransformationRule) replacementObject.getContainer())
+                    .getPattern();
+        }
+
+        PatternObjectAttribute attribute = getPatternObjectAttribute(
+                replacementObject);
         if (attribute == null) {
             return null;
         }
 
-        CompositeActorMatcher container = getContainingPatternOrReplacement(replacementObject);
+        CompositeActorMatcher container = getContainingPatternOrReplacement(
+                replacementObject);
         if (container == null) {
             return null;
         }
@@ -243,12 +233,115 @@ public class GTTools {
     }
 
     public static boolean isInPattern(NamedObj entity) {
-        CompositeActorMatcher container = getContainingPatternOrReplacement(entity);
+        CompositeActorMatcher container = getContainingPatternOrReplacement(
+                entity);
         return container != null && container instanceof Pattern;
     }
 
     public static boolean isInReplacement(NamedObj entity) {
-        CompositeActorMatcher container = getContainingPatternOrReplacement(entity);
+        CompositeActorMatcher container = getContainingPatternOrReplacement(
+                entity);
         return container != null && container instanceof Replacement;
+    }
+
+    public static class DelegatedUndoStackAttribute extends UndoStackAttribute {
+
+        public DelegatedUndoStackAttribute(NamedObj container, String name,
+                UndoStackAttribute oldAttribute)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+
+            if (oldAttribute instanceof DelegatedUndoStackAttribute) {
+                _oldAttribute = ((DelegatedUndoStackAttribute) oldAttribute)
+                        ._oldAttribute;
+            } else {
+                _oldAttribute = oldAttribute;
+            }
+        }
+
+        public void mergeTopTwo() {
+            _oldAttribute.mergeTopTwo();
+        }
+
+        public void push(UndoAction action) {
+            _oldAttribute.push(action);
+        }
+
+        public void redo() throws Exception {
+            _oldAttribute.redo();
+        }
+
+        public void undo() throws Exception {
+            _oldAttribute.undo();
+        }
+
+        private UndoStackAttribute _oldAttribute;
+    }
+
+    public static class ModelChangeRequest extends ChangeRequest {
+
+        public ModelChangeRequest(Object originator, ActorGraphFrame frame,
+                CompositeEntity model) {
+            super(originator, "Change the model in the frame.");
+            _frame = frame;
+            _model = model;
+        }
+
+        public void setUndoable(boolean undoable) {
+            _undoable = undoable;
+        }
+
+        protected void _execute() throws Exception {
+            _oldModel = (CompositeEntity) _frame.getModel();
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    Workspace workspace = _model.workspace();
+                    try {
+                        workspace.getWriteAccess();
+                        Point2D center = _frame.getCenter();
+                        _frame.setModel(_model);
+
+                        PtolemyEffigy effigy =
+                            (PtolemyEffigy) _frame.getEffigy();
+                        effigy.setModel(_model);
+
+                        ActorEditorGraphController controller =
+                            (ActorEditorGraphController) _frame.getJGraph()
+                            .getGraphPane().getGraphController();
+                        ActorGraphModel graphModel =
+                            new ActorGraphModel(_model);
+                        _frame.getJGraph().setGraphPane(new ActorGraphPane(
+                                controller, graphModel, _model));
+                        _frame.getJGraph().repaint();
+                        _frame.setCenter(center);
+                        _frame.changeExecuted(null);
+                    } finally {
+                        workspace.doneWriting();
+                    }
+                }
+            });
+
+            if (_undoable) {
+                UndoStackAttribute undoInfo =
+                    UndoStackAttribute.getUndoInfo(_oldModel);
+                undoInfo.push(new UndoAction() {
+                    public void execute() throws Exception {
+                        ModelChangeRequest request =
+                            new ModelChangeRequest( ModelChangeRequest.this,
+                                    _frame, _oldModel);
+                        request.setUndoable(true);
+                        request.execute();
+                    }
+                });
+            }
+        }
+
+        private ActorGraphFrame _frame;
+
+        private CompositeEntity _model;
+
+        private CompositeEntity _oldModel;
+
+        private boolean _undoable = false;
     }
 }

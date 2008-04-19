@@ -88,6 +88,9 @@ public class Replacement extends CompositeActorMatcher {
             GTIngredientsAttribute attribute) {
         try {
             container.workspace().getReadAccess();
+            if (container instanceof GTEntity) {
+                ((GTEntity) container).updateAppearance(attribute);
+            }
             for (Object entity : container.entityList()) {
                 if (entity instanceof GTEntity) {
                     GTEntity gtEntity = (GTEntity) entity;

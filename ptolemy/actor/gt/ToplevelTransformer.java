@@ -33,7 +33,9 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ActorToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -98,6 +100,23 @@ public class ToplevelTransformer extends TypedCompositeActor {
 
     public boolean postfire() throws IllegalActionException {
         return super.postfire() && _outputToken == null;
+    }
+
+    public void preinitialize() throws IllegalActionException {
+        if (_applicability != null) {
+            boolean applicable = ((BooleanToken) _applicability.getToken())
+                    .booleanValue();
+            if (!applicable) {
+                throw new IllegalActionException(this, "This transformation " +
+                        "is not applicable to the model.");
+            }
+        }
+
+        super.preinitialize();
+    }
+
+    public void setApplicabilityParameter(Parameter applicability) {
+        _applicability = applicability;
     }
 
     public void setInputToken(ActorToken inputToken) {
@@ -231,6 +250,8 @@ public class ToplevelTransformer extends TypedCompositeActor {
         output = new TransformerPort(this, "output", false, true);
         new Location(output, "_location").setExpression("{580.0, 200.0}");
     }
+
+    private Parameter _applicability;
 
     private boolean _hasToken;
 

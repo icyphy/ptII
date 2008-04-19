@@ -31,11 +31,16 @@ package ptolemy.actor.gt;
 import java.io.IOException;
 import java.io.Writer;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.gt.TransformationAttributeController;
 import ptolemy.vergil.gt.TransformationAttributeEditorFactory;
 import ptolemy.vergil.gt.TransformationAttributeIcon;
 
@@ -68,31 +73,32 @@ public class TransformationAttribute extends GTAttribute {
         super(workspace);
     }
 
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == applicability) {
+            if (!(applicability.getToken() instanceof BooleanToken)) {
+                throw new IllegalActionException(this, "Applicability of a " +
+                        "TransformationAttribute must be evaluated to a " +
+                        "Boolean token.");
+            }
+        }
+    }
+
+    public Parameter applicability;
+
     /** The editor factory for the transformer in this attribute.
      */
     public TransformationAttributeEditorFactory editorFactory;
 
     public TransformerAttribute transformer;
 
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
-        transformer = new TransformerAttribute(this, "transformer");
-        transformer.setExpression("");
-        transformer.setPersistent(true);
-        
-        new TransformationAttributeIcon(this, "_icon"); 
-        
-        editorFactory = new TransformationAttributeEditorFactory(this,
-                "editorFactory");
-    }
-    
     public static class TransformerAttribute extends StringAttribute {
-        
+
         public TransformerAttribute(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
-        
+
         public void exportMoML(Writer output, int depth, String name)
         throws IOException {
             if (_transformer != null) {
@@ -107,15 +113,33 @@ public class TransformationAttribute extends GTAttribute {
             }
             super.exportMoML(output, depth, name);
         }
-        
-        public synchronized void setTransformer(ToplevelTransformer transformer) {
-            _transformer = transformer;
-        }
-        
+
         public synchronized ToplevelTransformer getTransformer() {
             return _transformer;
         }
-        
+
+        public synchronized void setTransformer(ToplevelTransformer transformer) {
+            _transformer = transformer;
+        }
+
         private ToplevelTransformer _transformer;
+    }
+
+    private void _init() throws IllegalActionException,
+    NameDuplicationException {
+        transformer = new TransformerAttribute(this, "transformer");
+        transformer.setExpression("");
+        transformer.setPersistent(true);
+        transformer.setVisibility(Variable.EXPERT);
+
+        applicability = new Parameter(this, "applicability");
+        applicability.setExpression("true");
+
+        new TransformationAttributeIcon(this, "_icon");
+
+        new TransformationAttributeController.Factory(this, "_controllerFactory");
+
+        editorFactory = new TransformationAttributeEditorFactory(this,
+                "editorFactory");
     }
 }

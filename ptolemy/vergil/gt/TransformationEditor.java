@@ -240,7 +240,7 @@ public class TransformationEditor extends GTFrame implements
     public void copy() {
         if (!getFrameController().isTableActive()) {
             CompositeEntity model = getFrameController().getActiveModel();
-            if (model instanceof Pattern || GTTools.isInPattern(model)) {
+            if (GTTools.isInPattern(model)) {
                 _setOrClearPatternObjectAttributes(model, true,
                         _getSelectionSet());
                 super.copy();
@@ -322,7 +322,7 @@ public class TransformationEditor extends GTFrame implements
             super.paste();
 
             CompositeEntity model = getFrameController().getActiveModel();
-            if (model instanceof Pattern || GTTools.isInPattern(model)) {
+            if (GTTools.isInPattern(model)) {
                 // FIXME: modify only newly created entities and relations.
                 _setOrClearPatternObjectAttributes(model, false, null);
             } else {

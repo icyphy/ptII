@@ -51,16 +51,18 @@ import ptolemy.kernel.util.Workspace;
 public class GTIngredientsAttribute extends StringAttribute {
 
     public GTIngredientsAttribute() {
-        setClassName("ptolemy.actor.gt.ConfigurableItemAttribute");
+        _init();
     }
 
     public GTIngredientsAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _init();
     }
 
     public GTIngredientsAttribute(Workspace workspace) {
         super(workspace);
+        _init();
     }
 
     public GTIngredientList getIngredientList() throws MalformedStringException {
@@ -87,6 +89,11 @@ public class GTIngredientsAttribute extends StringAttribute {
             }
         }
         return null;
+    }
+
+    private void _init() {
+        setClassName("ptolemy.actor.gt.GTIngredientsAttribute");
+        setVisibility(EXPERT);
     }
 
     private void _parse() throws MalformedStringException {

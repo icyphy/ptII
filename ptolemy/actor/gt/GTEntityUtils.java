@@ -45,7 +45,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.ConfigurableAttribute;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
@@ -158,8 +157,6 @@ public class GTEntityUtils {
 
     public static void valueChanged(GTEntity entity, Settable settable) {
         GTIngredientsAttribute criteria = entity.getCriteriaAttribute();
-        PatternObjectAttribute patternObject =
-            entity.getPatternObjectAttribute();
 
         if (settable == criteria) {
             if (GTTools.isInPattern((NamedObj) entity)) {
@@ -178,26 +175,6 @@ public class GTEntityUtils {
                     Replacement replacement = ((TransformationRule) container)
                             .getReplacement();
                     replacement.updateEntitiesAppearance(criteria);
-                }
-            }
-        } else if (settable == patternObject) {
-            if (GTTools.isInReplacement((NamedObj) entity)) {
-                // Update the ports with the criteria attribute of the
-                // corresponding actor in the pattern of the transformation
-                // rule.
-                NamedObj correspondingEntity =
-                    GTTools.getCorrespondingPatternObject((NamedObj) entity);
-                if (correspondingEntity != null
-                        && correspondingEntity instanceof GTEntity) {
-                    criteria.setPersistent(false);
-                    try {
-                        criteria.setExpression("");
-                    } catch (IllegalActionException e) {
-                        // Ignore because criteria is not used for
-                        // patternObject.
-                    }
-                    entity.updateAppearance(((GTEntity) correspondingEntity)
-                            .getCriteriaAttribute());
                 }
             }
         }

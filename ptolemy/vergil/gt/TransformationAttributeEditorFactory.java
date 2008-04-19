@@ -34,14 +34,12 @@ import java.awt.event.WindowListener;
 import java.lang.ref.WeakReference;
 
 import ptolemy.actor.Manager;
-import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.ToplevelTransformer;
 import ptolemy.actor.gt.TransformationAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ActorToken;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
@@ -49,8 +47,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLParser;
-import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
 
 /**
@@ -81,70 +77,72 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
     @SuppressWarnings("unchecked")
     public void createEditor(NamedObj object, Frame parent) {
         TransformationAttribute attribute = (TransformationAttribute) object;
-        ToplevelTransformer transformer =
-            attribute.transformer.getTransformer();
         ActorGraphFrame actorFrame = (ActorGraphFrame) parent;
         Configuration configuration = actorFrame.getConfiguration();
         try {
-            if (transformer == null) {
-                String moml = attribute.transformer.getExpression();
-                transformer = _getTransformer(moml);
-            }
+            ToplevelTransformer transformer = TransformationAttributeController
+                    ._getTransformer(attribute);
             Tableau tableau = configuration.openModel(transformer);
             ActorGraphFrame frame = (ActorGraphFrame) tableau.getFrame();
 
             ActorFrameListener listener = new ActorFrameListener(actorFrame,
                     frame);
-            parent.addWindowListener(listener);
-            frame.addWindowListener(listener);
-
-            transformer.getChangeListeners().add(new WeakReference(
-                    listener._modificationListener));
-
-            Manager manager = transformer.getManager();
-            if (manager == null) {
-                manager = new Manager(transformer.workspace(), "_manager");
-                transformer.setManager(manager);
-            }
-            manager.addExecutionListener(listener._executionListener);
+            listener._addListeners();
 
             attribute.transformer.setTransformer(transformer);
+
+            transformer.setApplicabilityParameter(attribute.applicability);
         } catch (Exception e) {
             throw new InternalErrorException(this, e, "Unable to create " +
                     "transformation editor for " + object.getName());
         }
     }
 
-    private ToplevelTransformer _getTransformer(String moml)
-    throws IllegalActionException {
-        if (moml.equals("")) {
-            moml = new ToplevelTransformer().exportMoML();
-        }
-        MoMLParser parser = new MoMLParser();
-        try {
-            return (ToplevelTransformer) parser.parse(moml);
-        } catch (Exception e) {
-            throw new IllegalActionException(this, e,
-                    "Unable to parse transformer.");
-        }
-    }
+    private static class ActorFrameListener implements WindowListener,
+    ptolemy.actor.ExecutionListener, ChangeListener {
 
-    private static class ActorFrameListener implements WindowListener {
+        public void changeExecuted(ChangeRequest change) {
+            if (_child.isModified()) {
+                _parent.setModified(true);
+                _child.setModified(false);
+            }
+        }
+
+        public void changeFailed(ChangeRequest change, Exception exception) {
+        }
+
+        public void executionError(Manager manager, Throwable throwable) {
+        }
+
+        public void executionFinished(Manager manager) {
+            TransformationAttributeController._applyTransformationResult(
+                    (ToplevelTransformer) _child.getModel(), _parent);
+        }
+
+        public void managerStateChanged(Manager manager) {
+            if (manager.getState() == Manager.PREINITIALIZING) {
+                try {
+                    ((ToplevelTransformer) _child.getModel()).setInputToken(
+                            new ActorToken((Entity) _parent.getModel()));
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException("Unable to initialize " +
+                            "actor token.");
+                }
+            }
+        }
 
         public void windowActivated(WindowEvent e) {
         }
 
         public void windowClosed(WindowEvent e) {
+            if (e.getWindow() == _child) {
+                _removeListeners();
+            }
         }
 
         public void windowClosing(WindowEvent e) {
             if (e.getWindow() == _parent) {
-                _parent.removeWindowListener(this);
-                _child.removeWindowListener(this);
                 _child.close();
-            } else if (e.getWindow() == _child) {
-                _parent.removeWindowListener(this);
-                _child.removeWindowListener(this);
             }
         }
 
@@ -164,83 +162,28 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
         throws IllegalActionException, NameDuplicationException {
             _parent = parent;
             _child = child;
-            _modificationListener = new ModificationListener(parent, child);
-            _executionListener = new ExecutionListener(parent, child);
         }
 
-        private ActorGraphFrame _child;
+        @SuppressWarnings("unchecked")
+        private void _addListeners() {
+            _parent.addWindowListener(this);
+            _child.addWindowListener(this);
 
-        private ExecutionListener _executionListener;
-
-        private ModificationListener _modificationListener;
-
-        private ActorGraphFrame _parent;
-    }
-
-    private static class ExecutionListener
-    implements ptolemy.actor.ExecutionListener {
-
-        public ExecutionListener(ActorGraphFrame parent,
-                ActorGraphFrame client) {
-            _parent = parent;
-            _client = client;
+            ToplevelTransformer transformer =
+                (ToplevelTransformer) _child.getModel();
+            transformer.getChangeListeners().add(
+                    new WeakReference<ActorFrameListener>(this));
+            transformer.getManager().addExecutionListener(this);
         }
 
-        public void executionError(Manager manager, Throwable throwable) {
-        }
+        private void _removeListeners() {
+            _parent.removeWindowListener(this);
+            _child.removeWindowListener(this);
 
-        public void executionFinished(Manager manager) {
-            ActorToken token = ((ToplevelTransformer) _client.getModel())
-                    .getOutputToken();
-            if (token == null) {
-                MessageHandler.message("No output is generated.");
-                return;
-            }
-
-            CompositeEntity result = (CompositeEntity) token.getEntity();
-            try {
-                result = (CompositeEntity) new MoMLParser().parse(
-                        result.exportMoML());
-            } catch (Exception e) {
-                throw new InternalErrorException(null, e, "Unable to " +
-                        "generate transformation result.");
-            }
-            GTTools.changeModel(_parent, result);
-        }
-
-        public void managerStateChanged(Manager manager) {
-            if (manager.getState() == Manager.PREINITIALIZING) {
-                try {
-                    ((ToplevelTransformer) _client.getModel()).setInputToken(
-                            new ActorToken((Entity) _parent.getModel()));
-                } catch (IllegalActionException e) {
-                    throw new InternalErrorException("Unable to initialize " +
-                            "actor token.");
-                }
-            }
-        }
-
-        private ActorGraphFrame _client;
-
-        private ActorGraphFrame _parent;
-    }
-
-    private static class ModificationListener implements ChangeListener {
-
-        public ModificationListener(ActorGraphFrame parent,
-                ActorGraphFrame client) {
-            _parent = parent;
-            _child = client;
-        }
-
-        public void changeExecuted(ChangeRequest change) {
-            if (_child.isModified()) {
-                _parent.setModified(true);
-                _child.setModified(false);
-            }
-        }
-
-        public void changeFailed(ChangeRequest change, Exception exception) {
+            ToplevelTransformer transformer =
+                (ToplevelTransformer) _child.getModel();
+            transformer.removeChangeListener(this);
+            transformer.getManager().removeExecutionListener(this);
         }
 
         private ActorGraphFrame _child;

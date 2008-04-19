@@ -61,6 +61,7 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogAction;
+import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -149,7 +150,20 @@ public class GTFrame extends ExtendedGraphFrame {
         return _graphPanner;
     }
 
-    protected static class ConfigureOperationsAction extends FigureAction {
+    protected static class ConfigureCriteriaAction
+    extends ConfigureIngredientsAction {
+
+        protected String _getAttributeName() {
+            return "criteria";
+        }
+
+        ConfigureCriteriaAction() {
+            super("Criteria");
+        }
+    }
+
+    protected static abstract class ConfigureIngredientsAction
+    extends FigureAction {
 
         public void actionPerformed(ActionEvent event) {
             // Determine which entity was selected for the look inside action.
@@ -180,7 +194,7 @@ public class GTFrame extends ExtendedGraphFrame {
                             .attributeList(GTIngredientsAttribute.class);
                     if (ingredientsAttributes.isEmpty()) {
                         Attribute attribute = new GTIngredientsAttribute(
-                                target, target.uniqueName("operations"));
+                                target, target.uniqueName(_getAttributeName()));
                         attribute.setPersistent(false);
                     }
                 } catch (KernelException e) {
@@ -201,8 +215,22 @@ public class GTFrame extends ExtendedGraphFrame {
             }
         }
 
-        ConfigureOperationsAction(String name) {
+        protected abstract String _getAttributeName();
+
+        ConfigureIngredientsAction(String name) {
             super(name);
+        }
+    }
+
+    protected static class ConfigureOperationsAction
+    extends ConfigureIngredientsAction {
+
+        protected String _getAttributeName() {
+            return "operations";
+        }
+
+        ConfigureOperationsAction() {
+            super("Operations");
         }
     }
 
@@ -227,7 +255,32 @@ public class GTFrame extends ExtendedGraphFrame {
         }
 
         protected void initializeInteraction() {
+            ConfigureAction oldConfigureAction = _configureAction;
+            _configureAction = new ConfigureAction("Configure") {
+                protected void _openDialog(Frame parent, NamedObj target,
+                        ActionEvent event) {
+                    EditorFactory factory = null;
+                    if (target instanceof GTEntity) {
+                        try {
+                            target.workspace().getReadAccess();
+                            List<?> attributeList = target.attributeList(
+                                    EditorFactory.class);
+                            if (!attributeList.isEmpty()) {
+                                factory = (EditorFactory) attributeList.get(0);
+                            }
+                        } finally {
+                            target.workspace().doneReading();
+                        }
+                    }
+                    if (factory != null) {
+                        factory.createEditor(target, parent);
+                    } else {
+                        super._openDialog(parent, target, event);
+                    }
+                }
+            };
             super.initializeInteraction();
+            _configureAction = oldConfigureAction;
 
             MenuActionFactory newFactory = new GTMenuActionFactory(
                     _configureMenuFactory, _configureAction);
@@ -259,8 +312,9 @@ public class GTFrame extends ExtendedGraphFrame {
                 _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
                 _configureMenuFactory = newFactory;
 
-                FigureAction operationsAction = new ConfigureOperationsAction(
-                        "Operations");
+                FigureAction criteriaAction = new ConfigureCriteriaAction();
+                _configureMenuFactory.addAction(criteriaAction, "Customize");
+                FigureAction operationsAction = new ConfigureOperationsAction();
                 _configureMenuFactory.addAction(operationsAction, "Customize");
             }
         }
@@ -296,7 +350,6 @@ public class GTFrame extends ExtendedGraphFrame {
     }
 
     protected static class GTFSMGraphController extends FSMGraphController {
-
     }
 
     protected static class GTMenuActionFactory extends MenuActionFactory {
@@ -328,6 +381,12 @@ public class GTFrame extends ExtendedGraphFrame {
                             // Disable the PortDialogAction from the context
                             // menu.
                             item.setEnabled(false);
+                        } else if (action instanceof ConfigureCriteriaAction
+                                && (!(object instanceof Entity) || !GTTools
+                                        .isInPattern(object))) {
+                            // Hide the ConfigureCriteriaAction from the
+                            // context menu.
+                            item.setVisible(false);
                         } else if (action instanceof ConfigureOperationsAction
                                 && (!(object instanceof Entity) || !GTTools
                                         .isInReplacement(object))) {

@@ -127,7 +127,10 @@ OPTIONAL_FILES = \
 	'GTParameter$$Evaluator.class' \
 	'GTParameter$$Scope.class' \
 	'GTParameter$$TypeInference.class' \
-	'GTTools$$1.class' \
+	'GTTools$$DelegatedUndoStackAttribute.class' \
+	'GTTools$$ModelChangeRequest$$1.class' \
+	'GTTools$$ModelChangeRequest$$2.class' \
+	'GTTools$$ModelChangeRequest.class' \
 	'GraphAnalyzer$$IndexedList.class' \
 	'GraphAnalyzer$$IndexedLists.class' \
 	'GraphAnalyzer$$Path.class' \

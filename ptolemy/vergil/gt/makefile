@@ -66,6 +66,7 @@ JSRCS = \
 	MatchResultViewer.java \
 	StateMatcherController.java \
 	StateMatcherIcon.java \
+	TransformationAttributeController.java \
 	TransformationAttributeEditorFactory.java \
 	TransformationAttributeIcon.java \
 	TransformationEditor.java
@@ -80,7 +81,10 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'GTFrame$$1.class' \
+	'GTFrame$$ConfigureCriteriaAction.class' \
+	'GTFrame$$ConfigureIngredientsAction.class' \
 	'GTFrame$$ConfigureOperationsAction.class' \
+	'GTFrame$$GTActorGraphController$$1.class' \
 	'GTFrame$$GTActorGraphController$$EntityController.class' \
 	'GTFrame$$GTActorGraphController$$NewRelationAction.class' \
 	'GTFrame$$GTActorGraphController$$PortController.class' \
@@ -121,9 +125,10 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$TransformAction.class' \
 	'MatchResultViewer$$TransformAllAction.class' \
 	'StateMatcherController$$Factory.class' \
+	'TransformationAttributeController$$ApplyTransformationAction$$1.class' \
+	'TransformationAttributeController$$ApplyTransformationAction.class' \
+	'TransformationAttributeController$$Factory.class' \
 	'TransformationAttributeEditorFactory$$ActorFrameListener.class' \
-	'TransformationAttributeEditorFactory$$ExecutionListener.class' \
-	'TransformationAttributeEditorFactory$$ModificationListener.class' \
 	'TransformationEditor$$1.class' \
 	'TransformationEditor$$2.class' \
 	'TransformationEditor$$3.class' \
