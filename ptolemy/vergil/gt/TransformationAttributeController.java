@@ -37,10 +37,8 @@ import ptolemy.actor.gt.TransformationAttribute;
 import ptolemy.data.ActorToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
@@ -112,15 +110,7 @@ public class TransformationAttributeController extends AttributeController {
                     "generate transformation result.");
         }
 
-        UndoStackAttribute oldAttribute = UndoStackAttribute.getUndoInfo(
-                frame.getModel());
-        try {
-            new GTTools.DelegatedUndoStackAttribute(result, "_undoInfo",
-                    oldAttribute);
-        } catch (KernelException e) {
-            e.printStackTrace();
-        }
-        GTTools.changeModel(frame, result);
+        GTTools.changeModel(frame, result, true);
     }
 
     protected static ToplevelTransformer _getTransformer(

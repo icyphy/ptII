@@ -47,6 +47,8 @@ import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -67,8 +69,19 @@ import ptolemy.vergil.actor.ActorGraphFrame.ActorGraphPane;
  */
 public class GTTools {
 
-    public static void changeModel(final ActorGraphFrame frame,
-            final CompositeEntity model) {
+    public static void changeModel(ActorGraphFrame frame, CompositeEntity model,
+            boolean delegateUndoStack) {
+        if (delegateUndoStack) {
+            UndoStackAttribute oldAttribute = UndoStackAttribute.getUndoInfo(
+                        frame.getModel());
+            try {
+                new GTTools.DelegatedUndoStackAttribute(model, "_undoInfo",
+                        oldAttribute);
+            } catch (KernelException e) {
+                throw new InternalErrorException(e);
+            }
+        }
+
         ModelChangeRequest request = new ModelChangeRequest(null, frame, model);
         request.setUndoable(true);
         model.requestChange(request);
