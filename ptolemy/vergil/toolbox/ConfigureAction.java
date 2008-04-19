@@ -117,7 +117,7 @@ public class ConfigureAction extends FigureAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                        protected methods                  ////
 
     /** Open an edit parameters dialog.  This is a modal dialog, so
      *  this method returns only after the dialog has been dismissed.
@@ -127,7 +127,8 @@ public class ConfigureAction extends FigureAction {
      *  @param event The action event that triggered this, or null if
      *   none.
      */
-    private void _openDialog(Frame parent, NamedObj target, ActionEvent event) {
+    protected void _openDialog(Frame parent, NamedObj target,
+            ActionEvent event) {
         List attributeList = target.attributeList(EditorFactory.class);
         boolean altKeyPressed = false;
         if (event != null) {
