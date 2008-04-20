@@ -541,6 +541,8 @@ public class GraphTransformer extends ChangeRequest {
     private void _hideRelations(CompositeEntity host) {
         try {
             host.workspace().getReadAccess();
+
+            // Remove dangling relations.
             Collection<?> relations = GTTools.getChildren(host, false, false,
                     false, true);
             for (Object relationObject : relations) {
@@ -560,8 +562,29 @@ public class GraphTransformer extends ChangeRequest {
             boolean relationHiding = relationHidingAttribute == null ?
                     RelationHidingAttribute.DEFAULT
                     : ((BooleanToken) relationHidingAttribute).booleanValue();
-            // Remove dangling relations.
+
             // Combine relations if possible.
+            if (relationHiding) {
+                relations = new LinkedList<Object>(GTTools.getChildren(host,
+                        false, false, false, true));
+                Set<Relation> removed = new HashSet<Relation>();
+                for (Object relationObject : relations) {
+                    Relation relation = (Relation) relationObject;
+                    if (removed.contains(relation)) {
+                        continue;
+                    }
+                    List<?> linkedObjects = relation.linkedObjectsList();
+                    for (Object linkedObject : linkedObjects) {
+                        if (linkedObject instanceof Relation) {
+                            Relation other = (Relation) linkedObject;
+                            if (_relink(relation, other)) {
+                                removed.add(other);
+                            }
+                        }
+                    }
+                }
+            }
+
             relations = GTTools.getChildren(host, false, false, false, true);
             for (Object relationObject : relations) {
                 Relation relation = (Relation) relationObject;
@@ -714,6 +737,44 @@ public class GraphTransformer extends ChangeRequest {
         }
 
         return false;
+    }
+
+    private boolean _relink(Relation preserved, Relation removed) {
+        // FIXME: Because we can't find a nice way to preserve the channel index
+        // of the ports, the "removed" relation won't be removed if it is
+        // connected to a port that is connected to more than one relations.
+        List<?> removedLinkedObjects =
+            new LinkedList<Object>((Collection<?>) removed.linkedObjectsList());
+        for (Object removedLinkedObject : removedLinkedObjects) {
+            if (removedLinkedObject instanceof Port) {
+                if (((Port) removedLinkedObject).linkedRelationList().size()
+                        > 1) {
+                    return false;
+                }
+            }
+        }
+
+        // Remove the relation to be removed.
+        String moml = "<deleteRelation name=\"" + removed.getName() + "\"/>";
+        MoMLChangeRequest request = new MoMLChangeRequest(
+                this, removed.getContainer(), moml);
+        request.execute();
+
+        // Reconnect the objects previously linked to the removed relation to
+        // the preserved relation.
+        for (Object removedLinkedObject : removedLinkedObjects) {
+            if (removedLinkedObject == preserved) {
+                continue;
+            }
+
+            // Reconnect the preserved relation.
+            moml = _getLinkMoML((NamedObj) removedLinkedObject, preserved);
+            request = new MoMLChangeRequest(this, preserved.getContainer(),
+                    moml);
+            request.execute();
+        }
+
+        return true;
     }
 
     private void _removeLinks(CompositeEntity pattern) {
