@@ -1,0 +1,3 @@
+ own 	eff	eff	.ConstraintCheck_ASTLeafNode_DependentParameter (PtLeafNode:true:null:5:null, null)	<=	(ptolemy.data.expr.Parameter {.ConstraintCheck_ASTLeafNode_DependentParameter.Parameter} 5, null)
+ own 	eff	eff	.ConstraintCheck_ASTLeafNode_DependentParameter (PtLeafNode:false:null:null:Parameter, null)	<=	(ptolemy.data.expr.Parameter {.ConstraintCheck_ASTLeafNode_DependentParameter.Parameter2} 5, null)
+ subHelper's 	eff	eff	(ptolemy.data.expr.Parameter {.ConstraintCheck_ASTLeafNode_DependentParameter.Parameter} 5, null)	<=	.ConstraintCheck_ASTLeafNode_DependentParameter (PtLeafNode:false:null:null:Parameter, null)

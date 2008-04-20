@@ -72,4 +72,22 @@ public class Ramp extends PropertyConstraintHelper {
 
         return super.constraintList();
     }
+/*    
+    public List<Object> getPropertyables() {
+        ptolemy.actor.lib.Ramp actor =
+            (ptolemy.actor.lib.Ramp) getComponent();
+        List<Object> list = new ArrayList<Object>();
+        
+        list.add(actor.step);
+        list.add(actor.output);
+        
+        return list;
+    }
+    
+    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
+        List<PropertyHelper> list = new ArrayList<PropertyHelper>();
+
+        return list;
+    }
+*/    
 }

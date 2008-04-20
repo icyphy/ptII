@@ -18,10 +18,10 @@ public class PropertyRemover extends Attribute {
         super(container, name);
         
         _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-20\" width=\"115\" height=\"40\" "
+                + "<rect x=\"-50\" y=\"-20\" width=\"120\" height=\"40\" "
                 + "style=\"fill:white\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
-                + "Double click to\nResolve Property.</text></svg>");
+                + "Double click to\nRemove Properties</text></svg>");
 
         new PropertyDisplayGUIFactory(
                 this, "_portValueSolverGUIFactory");        

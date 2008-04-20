@@ -1,0 +1,6 @@
+ own 	eff	eff	.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant (PtProductNode:true:null:null, null)	<=	(ptolemy.data.expr.Parameter {.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant.Parameter} 0, null)
+ subHelper's 	eff	eff	.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant (PtLeafNode:true:null:1:null, null)	<=	.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant (PtProductNode:true:null:null, null)
+ subHelper's 	eff	eff	.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant (PtLeafNode:true:null:2:null, null)	<=	.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant (PtProductNode:true:null:null, null)
+ subHelper's 	eff	eff	.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant (PtLeafNode:true:null:3:null, null)	<=	.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant (PtProductNode:true:null:null, null)
+ subHelper's 	eff	eff	.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant (PtLeafNode:true:null:4:null, null)	<=	.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant (PtProductNode:true:null:null, null)
+ subHelper's 	eff	eff	.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant (PtLeafNode:true:null:5:null, null)	<=	.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant (PtProductNode:true:null:null, null)

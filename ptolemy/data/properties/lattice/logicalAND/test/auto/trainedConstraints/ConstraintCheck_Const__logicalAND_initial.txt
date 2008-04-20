@@ -1,0 +1,2 @@
+ subHelper's 	eff	eff	(ptolemy.data.expr.Parameter {.ConstraintCheck_Const.Const.value} 1, null)	<=	(ptolemy.actor.TypedIOPort {.ConstraintCheck_Const.Const.output}, null)
+ subHelper's 	eff	eff	.ConstraintCheck_Const.Const (PtLeafNode:true:null:1:null, null)	<=	(ptolemy.data.expr.Parameter {.ConstraintCheck_Const.Const.value} 1, null)

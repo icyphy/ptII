@@ -1,0 +1,2 @@
+ subHelper's 	eff	eff	(ptolemy.kernel.util.StringAttribute {.ConstraintCheck_Expression.Expression.expression}, null)	<=	(ptolemy.actor.TypedIOPort {.ConstraintCheck_Expression.Expression.output}, null)
+ subHelper's 	eff	eff	.ConstraintCheck_Expression.Expression (PtLeafNode:true:null:2:null, null)	<=	(ptolemy.kernel.util.StringAttribute {.ConstraintCheck_Expression.Expression.expression}, null)

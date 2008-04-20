@@ -1,0 +1,3 @@
+ own 	eff	eff	.ConstraintCheck_ASTSumNode_2children_Constant (PtSumNode:true:null:null, null)	<=	(ptolemy.data.expr.Parameter {.ConstraintCheck_ASTSumNode_2children_Constant.Parameter} 9, null)
+ subHelper's 	eff	eff	.ConstraintCheck_ASTSumNode_2children_Constant (PtLeafNode:true:null:5:null, null)	<=	.ConstraintCheck_ASTSumNode_2children_Constant (PtSumNode:true:null:null, null)
+ subHelper's 	eff	eff	.ConstraintCheck_ASTSumNode_2children_Constant (PtLeafNode:true:null:4:null, null)	<=	.ConstraintCheck_ASTSumNode_2children_Constant (PtSumNode:true:null:null, null)

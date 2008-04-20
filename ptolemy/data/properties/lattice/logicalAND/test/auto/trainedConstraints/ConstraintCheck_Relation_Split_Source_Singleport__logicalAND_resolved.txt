@@ -1,0 +1,4 @@
+ subHelper's 	eff	eff	(ptolemy.data.expr.Parameter {.ConstraintCheck_Relation_Split_Source_Singleport.Const.value} 1, True)	<=	(ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_Split_Source_Singleport.Const.output}, True)
+ subHelper's 	eff	eff	.ConstraintCheck_Relation_Split_Source_Singleport.Const (PtLeafNode:true:null:1:null, True)	<=	(ptolemy.data.expr.Parameter {.ConstraintCheck_Relation_Split_Source_Singleport.Const.value} 1, True)
+ subHelper's 	eff	eff	(ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_Split_Source_Singleport.Const.output}, True)	<=	(ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_Split_Source_Singleport.CompositeActor.in}, True)
+ subHelper's 	eff	eff	(ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_Split_Source_Singleport.Const.output}, True)	<=	(ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_Split_Source_Singleport.CompositeActor2.in}, True)
