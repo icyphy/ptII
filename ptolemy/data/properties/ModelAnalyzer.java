@@ -27,6 +27,11 @@
  */
 package ptolemy.data.properties;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
@@ -36,30 +41,15 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.properties.lattice.CalibrationSWConfigEDCCS;
-import ptolemy.data.properties.lattice.DataControlConfigEDCCS;
-import ptolemy.data.properties.lattice.EventContinuousEDCCS;
-import ptolemy.data.properties.lattice.ImpactNoImpactEDCCS;
-import ptolemy.data.properties.lattice.ModeSelectEDCCS;
-import ptolemy.data.properties.lattice.OnlineOfflineEDCCS;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.SWconfig_Backward_EDCCS;
-import ptolemy.data.properties.lattice.SWconfig_Forward_EDCCS;
-import ptolemy.data.properties.lattice.StaticDynamicEDCCS;
-import ptolemy.data.properties.lattice.StrongWeakNoConnectionEDCCS;
-import ptolemy.data.properties.lattice.TypeSystemCCS;
-import ptolemy.data.properties.lattice.TypeSystemEDCCS;
-import ptolemy.data.properties.lattice.TypeSystemEDCCS_AUXtypes;
-import ptolemy.data.properties.token.ExtendedFirstValuePTS;
-import ptolemy.data.properties.token.FirstValuePTS;
-import ptolemy.data.properties.token.OptimizationEDCPCSolver;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.FileUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelGenerator
@@ -117,13 +107,16 @@ public class ModelAnalyzer extends Transformer {
     }
 
     private void _addChoices() throws IllegalActionException, NameDuplicationException {
-        _createSolvers(this);
+        _createSolvers("ptolemy.data.properties.configuredSolvers");
 
-        property.setExpression(solvers[0].getExtendedUseCaseName());
-
-        for (PropertySolver solver : solvers) {
-            property.addChoice(solver.getExtendedUseCaseName());
+        if (solvers.size() > 0) {
+            property.setExpression(solvers.get(0).getSimpleName());
         }
+        
+        for (Class solver : solvers) {
+            property.addChoice(solver.getSimpleName());
+        }
+
         property.addChoice("Clear All");
         
         PropertySolver._addActions(action);
@@ -165,12 +158,18 @@ public class ModelAnalyzer extends Transformer {
             String actionValue = action.getExpression();
             
             try {
-                _findSolvers(entity);
                 PropertySolver chosenSolver = null;
-                for (PropertySolver solver : solvers) {
+                for (Class solver : solvers) {
                     if (propertyValue.equals(
-                            solver.getExtendedUseCaseName())) {
-                        chosenSolver = solver;
+                            solver.getSimpleName())) {
+                        try {
+                            Constructor constructor = 
+                                solver.getConstructor(NamedObj.class, String.class);
+                            
+                            constructor.newInstance(entity, "ModelAnalyzer_" + solver.getSimpleName());
+                        } catch (Exception ex) {
+                            assert false;
+                        }
                         break;
                     }
                 }
@@ -233,66 +232,38 @@ public class ModelAnalyzer extends Transformer {
         chosenSolver._highlighter.highlight.setToken(oldValue);
     }
 
-    private void _createSolvers(Entity entity) throws IllegalActionException {
+    private void _createSolvers(String path) throws IllegalActionException {
+        File file = null;
+        
         try {
-            solvers[0] = new OptimizationEDCPCSolver(entity, "ModelAnalyzer_OptimizationSolver_EDC");
-            solvers[1] = new StaticDynamicEDCCS(entity, "ModelAnalyzer_StaticDynamicSolver_EDC");
-            solvers[2] = new TypeSystemEDCCS(entity, "ModelAnalyzer_TypeSystemSolver_EDC");
-            solvers[3] = new OnlineOfflineEDCCS(entity, "ModelAnalyzer_OnlineOfflineSolver_EDC");
-            solvers[4] = new ImpactNoImpactEDCCS(entity, "ModelAnalyzer_ImpactNoImpactSolver_EDC");
-            solvers[5] = new ExtendedFirstValuePTS(entity, "ModelAnalyzer_ExtendedFirstValuePTS");
-            solvers[6] = new FirstValuePTS(entity, "ModelAnalyzer_FirstValuePTS");
-            solvers[7] = new CalibrationSWConfigEDCCS(entity, "ModelAnalyzer_CalibrationSWConfig");
-            solvers[8] = new DataControlConfigEDCCS(entity, "ModelAnalyzer_DataControlConfig");
-            solvers[9] = new EventContinuousEDCCS(entity, "ModelAnalyzer_EventContinuous");
-            solvers[10] = new ModeSelectEDCCS(entity, "ModelAnalyzer_ModeSelect");
-            solvers[11] = new StrongWeakNoConnectionEDCCS(entity, "ModelAnalyzer_StrongWeakNoConnection");
-            solvers[12] = new TypeSystemEDCCS_AUXtypes(entity, "ModelAnalyzer_TypeSystemAUXtypes");
-            solvers[13] = new TypeSystemCCS(entity, "ModelAnalyzer_TypeSystemCCS");
-            solvers[14] = new SWconfig_Forward_EDCCS(entity, "ModelAnalyzer_SWconfig_Forward_EDCCS");
-            solvers[15] = new SWconfig_Backward_EDCCS(entity, "ModelAnalyzer_SWconfig_Backward_EDCCS");
-        } catch (NameDuplicationException e) {
+            file = new File(FileUtilities.nameToURL(
+                    "$CLASSPATH/ptolemy/data/properties/configuredSolvers", 
+                    null, null).getFile());
+        } catch (IOException ex) {
+            // Should not happen.
             assert false;
+        }
+
+        File[] classFiles = file.listFiles();
+        
+        for (int i = 0; i < classFiles.length; i++) {
+            String className = classFiles[i].getName();
+            
+            path += className;
+            if (classFiles[i].isDirectory() && !className.equals("CVS") && !className.equals(".svn")) {
+                // Search sub-folder. 
+                _createSolvers(path);
+            } else {
+                try {
+                    solvers.add(Class.forName(path));
+                } catch (ClassNotFoundException e) {
+                    assert false;
+                }
+            }
+            
         }
     }
     
-    private void _findSolvers(Entity entity) throws IllegalActionException, NameDuplicationException {
-        for (PropertySolver solver : (List<PropertySolver>) entity.attributeList(PropertySolver.class)) {
-            if (solver instanceof OptimizationEDCPCSolver) {
-                solvers[0] = solver;
-            } else if (solver instanceof StaticDynamicEDCCS){
-                solvers[1] = solver;
-            } else if (solver instanceof TypeSystemEDCCS){
-                solvers[2] = solver;
-            } else if (solver instanceof OnlineOfflineEDCCS){
-                solvers[3] = solver;
-            } else if (solver instanceof ImpactNoImpactEDCCS){
-                solvers[4] = solver;
-            } else if (solver instanceof ExtendedFirstValuePTS){
-                solvers[5] = solver;
-            } else if (solver instanceof FirstValuePTS){
-                solvers[6] = solver;
-            } else if (solver instanceof CalibrationSWConfigEDCCS){
-                solvers[7] = solver;
-            } else if (solver instanceof DataControlConfigEDCCS){
-                solvers[8] = solver;
-            } else if (solver instanceof EventContinuousEDCCS){
-                solvers[9] = solver;
-            } else if (solver instanceof ModeSelectEDCCS){
-                solvers[10] = solver;
-            } else if (solver instanceof StrongWeakNoConnectionEDCCS){
-                solvers[11] = solver;
-            } else if (solver instanceof TypeSystemEDCCS_AUXtypes){
-                solvers[12] = solver;
-            } else if (solver instanceof TypeSystemCCS){
-                solvers[13] = solver;
-            } else if (solver instanceof SWconfig_Forward_EDCCS){
-                solvers[14] = solver;
-            } else if (solver instanceof SWconfig_Backward_EDCCS){
-                solvers[15] = solver;
-            }
-        }
-    }
 
     public Parameter action;
     
@@ -314,6 +285,6 @@ public class ModelAnalyzer extends Transformer {
     
     public TypedIOPort errorMessage;
     
-    private PropertySolver[] solvers = new PropertySolver[16];
+    private List<Class> solvers = new LinkedList<Class>();
     
 }
