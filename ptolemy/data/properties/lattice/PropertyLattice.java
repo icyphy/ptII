@@ -30,7 +30,6 @@ package ptolemy.data.properties.lattice;
 import java.util.HashMap;
 
 import ptolemy.data.properties.Property;
-import ptolemy.data.properties.lattice.staticDynamic.Lattice;
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
 
@@ -67,7 +66,7 @@ public class PropertyLattice {
          *  @return The Property object representing UNKNOWN.
          */
         public Object bottom() {
-            synchronized (Lattice.class) {
+            synchronized (PropertyLattice.class) {
                 return _basicLattice.bottom();
             }
         }
@@ -90,7 +89,7 @@ public class PropertyLattice {
          *   are not instances of Property.
          */
         public int compare(Object t1, Object t2) {
-            synchronized (Lattice.class) {
+            synchronized (PropertyLattice.class) {
                 if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
                     throw new IllegalArgumentException("ThePropertyLattice.compare: "
                             + "Arguments are not instances of Property: " + " property1 = "
@@ -118,7 +117,7 @@ public class PropertyLattice {
          *   specified arguments are not instances of Property.
          */
         public Object greatestLowerBound(Object t1, Object t2) {
-            synchronized (Lattice.class) {
+            synchronized (PropertyLattice.class) {
                 if (t1 == null || t2 == null) {
                     return null;
                 } 
@@ -165,7 +164,7 @@ public class PropertyLattice {
          *  @return A Property or null.
          */
         public Object greatestElement(Object[] subset) {
-            synchronized (Lattice.class) {
+            synchronized (PropertyLattice.class) {
                 // Compare each element with all of the other elements to search
                 // for the greatest one. This is a simple, brute force algorithm,
                 // but may be inefficient. A more efficient one is used in
@@ -204,7 +203,7 @@ public class PropertyLattice {
          *  @return A Property or null.
          */
         public Object leastElement(Object[] subset) {
-            synchronized (Lattice.class) {
+            synchronized (PropertyLattice.class) {
                 // Compare each element with all of the other elements to search
                 // for the least one. This is a simple, brute force algorithm,
                 // but may be inefficient. A more efficient one is used in
@@ -236,7 +235,7 @@ public class PropertyLattice {
          *  @return an instance of Property.
          */
         public Object leastUpperBound(Object t1, Object t2) {
-            synchronized (Lattice.class) {
+            synchronized (PropertyLattice.class) {
                 if (t1 == null) {
                     return t2;
                 } 
@@ -281,7 +280,7 @@ public class PropertyLattice {
          *  @return The Property object representing General.
          */
         public Object top() {
-            synchronized (Lattice.class) {
+            synchronized (PropertyLattice.class) {
                 return _basicLattice.top();
             }
         }
