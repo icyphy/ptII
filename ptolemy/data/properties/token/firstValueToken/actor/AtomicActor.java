@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.AtomicActor.
 
- Copyright (c) 2006-2008 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,9 +27,18 @@
  */
 package ptolemy.data.properties.token.firstValueToken.actor;
 
-import ptolemy.data.properties.token.PortValueHelper;
-import ptolemy.data.properties.token.PortValueSolver;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import ptolemy.actor.IOPort;
+import ptolemy.data.Token;
+import ptolemy.data.properties.PropertyHelper;
+import ptolemy.data.properties.token.PropertyTokenHelper;
+import ptolemy.data.properties.token.PropertyTokenSolver;
+import ptolemy.data.properties.token.PropertyToken;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// AtomicActor
@@ -43,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class AtomicActor extends PortValueHelper {
+public class AtomicActor extends PropertyTokenHelper {
 
     /**
      * Construct a helper for the given AtomicActor. This is the
@@ -52,10 +61,35 @@ public class AtomicActor extends PortValueHelper {
      * are set for this helper. 
      * @param actor The given ActomicActor.
      * @param lattice The staticDynamic lattice.
-     * @exception IllegalActionException 
+     * @throws IllegalActionException 
      */
-    public AtomicActor(PortValueSolver solver, ptolemy.actor.AtomicActor actor)
+    public AtomicActor(PropertyTokenSolver solver, 
+            ptolemy.actor.AtomicActor actor)
             throws IllegalActionException {
         super(solver, actor);
     }
+
+    public void determineProperty() throws IllegalActionException, NameDuplicationException {
+        super.determineProperty();
+        
+        Iterator ports = getPropertyables(IOPort.class).iterator();
+        while (ports.hasNext()) {
+
+            IOPort port = (IOPort) ports.next();
+
+            // get port value from firstValueToken
+            PropertyToken pt = null;
+            pt = (PropertyToken) getSolver().getProperty(port);
+
+            if (pt == null) {
+                setEquals(port, new PropertyToken(Token.NIL));
+            }
+        }
+    }
+    
+    protected List<PropertyHelper> _getASTNodeHelpers() {
+        List<PropertyHelper> astHelpers = new ArrayList<PropertyHelper>();
+        return astHelpers;
+    }
+    
 }

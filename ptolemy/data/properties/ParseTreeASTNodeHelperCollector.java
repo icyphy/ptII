@@ -25,8 +25,8 @@
  */
 package ptolemy.data.properties;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.data.expr.ASTPtArrayConstructNode;
 import ptolemy.data.expr.ASTPtBitwiseNode;
@@ -46,7 +46,6 @@ import ptolemy.data.expr.ASTPtShiftNode;
 import ptolemy.data.expr.ASTPtSumNode;
 import ptolemy.data.expr.ASTPtUnaryNode;
 import ptolemy.data.expr.AbstractParseTreeVisitor;
-import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
@@ -76,10 +75,12 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public Set collectHelpers(ASTPtRootNode node,
-            PropertyConstraintSolver solver) throws IllegalActionException {
+//    public Set<PropertyHelper> collectHelpers(ASTPtRootNode node, PropertySolver solver)
+    public List<PropertyHelper> collectHelpers(ASTPtRootNode node, PropertySolver solver)
+            throws IllegalActionException {
 
-        _helpers = new HashSet();
+//        _helpers = new HashSet<PropertyHelper>();
+        _helpers = new LinkedList<PropertyHelper>();
         _solver = solver;
         node.visit(this);
         _solver = null;
@@ -113,7 +114,13 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
      */
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
-        _visitAllChildren(node);
+        // We do not collect helper for the first child, because
+        // the first child is the function name, which does not contribute
+        // to determining a property.        
+        int numChildren = node.jjtGetNumChildren();
+        for (int i = 1; i < numChildren; i++) {
+            _visitChild(node, i);
+        }        
     }
 
     /** Set the property of the given node to be a function property whose
@@ -275,6 +282,8 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
 
+        _helpers.add(_solver.getHelper(node));
+
         for (int i = 0; i < numChildren; i++) {
             _visitChild(node, i);
         }
@@ -287,13 +296,14 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
 
-        _helpers.add(_solver.getHelper(node));
+        _helpers.add(_solver.getHelper(child));
 
         child.visit(this);
     }
 
-    protected Set _helpers;
+//    protected Set<PropertyHelper> _helpers;
+    protected LinkedList<PropertyHelper> _helpers;
 
-    protected PropertyConstraintSolver _solver;
-
+    protected PropertySolver _solver;
+    
 }

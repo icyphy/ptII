@@ -57,17 +57,13 @@ import ptolemy.graph.DirectedAcyclicGraph;
  @see ptolemy.graph.CPO
  */
 public class PropertyLattice {
-
+    
     protected PropertyLattice() {
     }
-
-    protected static class ThePropertyLattice implements CPO {
-
-        // FindBugs suggests making this class static so as to decrease
-        // the size of instances and avoid dangling references.
-
-        /** Return the bottom element of the property lattice, which
-         *  is UNKNOWN.
+        
+    protected class ThePropertyLattice implements CPO {
+        
+        /** Return the bottom element of the property lattice, which is UNKNOWN.
          *  @return The Property object representing UNKNOWN.
          */
         public Object bottom() {
@@ -75,7 +71,7 @@ public class PropertyLattice {
                 return _basicLattice.bottom();
             }
         }
-
+        
         public CPO basicLattice() {
             return _basicLattice;
         }
@@ -96,13 +92,11 @@ public class PropertyLattice {
         public int compare(Object t1, Object t2) {
             synchronized (Lattice.class) {
                 if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
-                    throw new IllegalArgumentException(
-                            "ThePropertyLattice.compare: "
-                                    + "Arguments are not instances of Property: "
-                                    + " property1 = " + t1 + ", property2 = "
-                                    + t2);
+                    throw new IllegalArgumentException("ThePropertyLattice.compare: "
+                            + "Arguments are not instances of Property: " + " property1 = "
+                            + t1 + ", property2 = " + t2);
                 }
-                return _basicLattice.compare((Property) t1, (Property) t2);
+                return _basicLattice.compare((Property)t1, (Property)t2);
             }
         }
 
@@ -125,10 +119,14 @@ public class PropertyLattice {
          */
         public Object greatestLowerBound(Object t1, Object t2) {
             synchronized (Lattice.class) {
+                if (t1 == null || t2 == null) {
+                    return null;
+                } 
+                
                 if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
                     throw new IllegalArgumentException(
                             "ThePropertyLattice.greatestLowerBound: "
-                                    + "Arguments are not instances of Property.");
+                            + "Arguments are not instances of Property.");
                 }
                 if (!_basicLattice.containsNodeWeight(t1)) {
                     throw new IllegalArgumentException(
@@ -156,21 +154,9 @@ public class PropertyLattice {
          *  @return an instance of Property.
          */
         public Object greatestLowerBound(Object[] subset) {
-            synchronized (Lattice.class) {
-                if (subset.length == 0) {
-                    //return BaseProperty.GENERAL;
-                }
-
-                Object glb = subset[0];
-
-                // start looping from index 0 so that subset[0] is checked for
-                // possible exception, in case the subset has only one element.
-                for (int i = 0; i < subset.length; i++) {
-                    glb = greatestLowerBound(glb, subset[i]);
-                }
-
-                return glb;
-            }
+            throw new UnsupportedOperationException(
+                    "ThePropertyLattice.greatestUpperBound(Object[]) :" +
+                    " operation not supported for the property lattice.");
         }
 
         /** Return the greatest property of a set of properties, or null if the
@@ -190,8 +176,7 @@ public class PropertyLattice {
                     for (int j = 0; j < subset.length; j++) {
                         int result = compare(subset[i], subset[j]);
 
-                        if ((result == CPO.LOWER)
-                                || (result == CPO.INCOMPARABLE)) {
+                        if ((result == CPO.LOWER) || (result == CPO.INCOMPARABLE)) {
                             isGreatest = false;
                             break;
                         }
@@ -230,8 +215,7 @@ public class PropertyLattice {
                     for (int j = 0; j < subset.length; j++) {
                         int result = compare(subset[i], subset[j]);
 
-                        if ((result == CPO.HIGHER)
-                                || (result == CPO.INCOMPARABLE)) {
+                        if ((result == CPO.HIGHER) || (result == CPO.INCOMPARABLE)) {
                             isLeast = false;
                             break;
                         }
@@ -253,26 +237,33 @@ public class PropertyLattice {
          */
         public Object leastUpperBound(Object t1, Object t2) {
             synchronized (Lattice.class) {
+                if (t1 == null) {
+                    return t2;
+                } 
+                if (t2 == null) {
+                    return t1;
+                }
+                
                 if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
                     throw new IllegalArgumentException(
                             "ThePropertyLattice.leastUpperBound: "
-                                    + "Arguments are not instances of Property.");
+                            + "Arguments are not instances of Property.");
                 }
 
-                // Both are neither the same structured property, nor an array
-                // and non-array pair, so their property relation is defined
-                // by the basic lattice.
-                int relation = _basicLattice.compare(t1, t2);
+                    // Both are neither the same structured property, nor an array
+                    // and non-array pair, so their property relation is defined
+                    // by the basic lattice.
+                    int relation = _basicLattice.compare(t1, t2);
 
-                if (relation == SAME) {
-                    return t1;
-                } else if (relation == LOWER) {
-                    return t2;
-                } else if (relation == HIGHER) {
-                    return t1;
-                } else { // INCOMPARABLE
-                    return _basicLattice.leastUpperBound(t1, t2);
-                }
+                    if (relation == SAME) {
+                        return t1;
+                    } else if (relation == LOWER) {
+                        return t2;
+                    } else if (relation == HIGHER) {
+                        return t1;
+                    } else { // INCOMPARABLE
+                        return _basicLattice.leastUpperBound(t1, t2);
+                    }
             }
         }
 
@@ -281,21 +272,9 @@ public class PropertyLattice {
          *  @return an instance of Property.
          */
         public Object leastUpperBound(Object[] subset) {
-            synchronized (Lattice.class) {
-                if (subset.length == 0) {
-                    //return BaseProperty.UNKNOWN;
-                }
-
-                Object lub = subset[0];
-
-                // start looping from index 0 so that subset[0] is checked for
-                // possible exception, in case the subset has only one element.
-                for (int i = 0; i < subset.length; i++) {
-                    lub = leastUpperBound(lub, subset[i]);
-                }
-
-                return lub;
-            }
+            throw new UnsupportedOperationException(
+                    "ThePropertyLattice.leastUpperBound(Object[]) :" +
+                    " operation not supported for the property lattice.");
         }
 
         /** Return the top element of the property lattice, which is General.
@@ -317,7 +296,7 @@ public class PropertyLattice {
                     "ThePropertyLattice.upSet(): operation not supported for "
                             + "the property lattice.");
         }
-
+        
         protected DirectedAcyclicGraph _basicLattice = new DirectedAcyclicGraph();
 
         public void setBasicLattice(DirectedAcyclicGraph graph) {
@@ -327,7 +306,7 @@ public class PropertyLattice {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+   
     /** Return the an instance of CPO representing the basic property
      *  lattice.
      *  @return an instance of CPO.
@@ -351,8 +330,7 @@ public class PropertyLattice {
             throw new IllegalArgumentException(
                     "PropertyLattice.compare(Property, Property): "
                             + "one or both of the argument properties is null: "
-                            + " property1 = " + property1 + ", property2 = "
-                            + property2);
+                            + " property1 = " + property1 + ", property2 = " + property2);
         }
         // System.out.println("compare " + property1 + " and " + property2 + " = " + _lattice.compare(property1, property2));
 
@@ -373,14 +351,14 @@ public class PropertyLattice {
             return _getCachedPropertyComparisonResult(i1, i2);
         }
         */
-
+        
         return _lattice.compare(property1, property2);
     }
 
-    public static void cleanUp() {
+    public static void resetAll() {
         _lattices.clear();
     }
-
+    
     /**
      * Return the property lattice described by the given lattice
      * description file. If the lattice was not created already, 
@@ -392,38 +370,35 @@ public class PropertyLattice {
         if (!_lattices.containsKey(latticeName)) {
 
             try {
-                Class latticeClass = Class
-                        .forName("ptolemy.data.properties.lattice."
-                                + latticeName + ".Lattice");
+                Class latticeClass = Class.forName("ptolemy.data.properties.lattice." + latticeName + ".Lattice");
                 // Create a new instance of PropertyLattice.
                 //PropertyLattice newLattice = new PropertyLattice();
-                PropertyLattice newLattice = (PropertyLattice) latticeClass
-                        .getConstructor(new Class[0])
-                        .newInstance(new Object[0]);
+                PropertyLattice newLattice = (PropertyLattice)
+                    latticeClass.getConstructor(new Class[0]).newInstance(new Object[0]);                
 
                 _lattices.put(latticeName, newLattice);
 
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }            
         }
-
+        
         PropertyLattice lattice = _lattices.get(latticeName);
-
+        
         return lattice;
     }
 
+    
     public Property getInitialProperty() {
         return null;
     }
-
+    
     /** Return the greatest lower bound of the two given properties.
      *  @param property1 The first given property.
      *  @param property2 The second given property.
      *  @return The greatest lower bound of property1 and property2.
      */
-    public synchronized Property greatestLowerBound(Property property1,
-            Property property2) {
+    public synchronized Property greatestLowerBound(Property property1, Property property2) {
         return (Property) _lattice.greatestLowerBound(property1, property2);
     }
 
@@ -440,10 +415,13 @@ public class PropertyLattice {
      *  @param property2 The second given property.
      *  @return The least upper bound of property1 and property2.
      */
-    public synchronized Property leastUpperBound(Property property1,
-            Property property2) {
+    public synchronized Property leastUpperBound(Property property1, Property property2) {
         return (Property) _lattice.leastUpperBound(property1, property2);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -455,13 +433,14 @@ public class PropertyLattice {
      * A HashMap that contains all property lattices with unique
      * lattice files as keys.
      */
-    private static HashMap<String, PropertyLattice> _lattices = new HashMap();
+    private static HashMap <String, PropertyLattice> _lattices = 
+        new HashMap<String, PropertyLattice>();
 
     public String toString() {
         String name = getClass().getPackage().getName();
         return name.substring(name.lastIndexOf('.') + 1);
     }
-
+    
     public String getName() {
         return toString();
     }

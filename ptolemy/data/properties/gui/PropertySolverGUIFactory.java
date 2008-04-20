@@ -81,16 +81,13 @@ public class PropertySolverGUIFactory extends EditorFactory {
         // This is always used to configure the container, so
         // we just use that.
         PropertySolver solver = (PropertySolver) getContainer();
-        CompositeEntity top = (CompositeEntity) solver.getContainer();
-
-        while (top.getContainer() != null) {
-            top = (CompositeEntity) top.getContainer();
-        }
         try {
             solver.workspace().getWriteAccess();
             
-            solver.resolveProperties(top);
+            solver.resolveProperties(true);
+
             solver.checkRegressionTestErrors();
+            
             solver.displayProperties();
 
             solver.workspace().doneWriting();

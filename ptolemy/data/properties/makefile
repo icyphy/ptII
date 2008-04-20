@@ -51,9 +51,6 @@ JSRCS = \
 	ParseTreeNodeCollector.java \
 	Property.java \
 	PropertyAttribute.java \
-	PropertyChangedEvent.java \
-	PropertyChangedListener.java \
-	PropertyDisplay.java \
 	PropertyHelper.java \
 	PropertySolver.java
 

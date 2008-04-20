@@ -1,4 +1,4 @@
-/** A base class representing a property.
+/** A base class representing a lattice property.
 
  Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
@@ -31,48 +31,49 @@ package ptolemy.data.properties.lattice;
 import ptolemy.data.properties.Property;
 import ptolemy.graph.CPO;
 
+
 //////////////////////////////////////////////////////////////////////////
-//// Property
+//// LatticeProperty
 
 /**
- A base class representing a property.
+ A base class representing a lattice property. A lattice property is a
+ element in a property lattice. The user should create new sub-classes
+ to represent different elements in a property lattice 
+ (See PropertyLattice.java).
 
  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.4
- @Pt.ProposedRating Red (neuendor)
- @Pt.AcceptedRating Red (cxh)
+ @since Ptolemy II 6.0
+ @Pt.ProposedRating Red (mankit)
+ @Pt.AcceptedRating Red (mankit)
  */
 public class LatticeProperty extends Property {
-
+        
+    /**
+     * Create a new lattice property associated with the given
+     * lattice.
+     * @param lattice The given lattice.
+     */
     public LatticeProperty(PropertyLattice lattice) {
         _lattice = lattice;
     }
 
     /** Test if the argument property is compatible with this property.
-     *  Compatible is defined as follows: If this property is a constant, the
-     *  argument is compatible if it is the same or less than this property in
-     *  the property lattice; If this property is a variable, the argument is
-     *  compatible if it is a substitution instance of this property.
      *  @param property An instance of Property.
      *  @return True if the argument is compatible with this property.
      */
     public boolean isCompatible(Property property) {
-        //if (this == UNKNOWN) {
-        //   return true;
-        //}
-
         int propertyInfo = _lattice.compare(this, property);
         return ((propertyInfo == CPO.SAME) || (propertyInfo == CPO.HIGHER));
     }
 
-    /** Test if this property is a constant. A property is a constant if it
-     *  does not contain the bottom of the property lattice in any level within it.
-     *  @return True if this property is a constant.
+    /** Test if this property is a constant. Returns true in this base class.
+     *  @return True in this base class.
      */
     public boolean isConstant() {
         return true;
     }
+
 
     /** Determine if this Type corresponds to an instantiable token
      *  class.
@@ -93,23 +94,31 @@ public class LatticeProperty extends Property {
      */
     public boolean isSubstitutionInstance(Property property) {
         return //(this == UNKNOWN) ||
-        (this == _lattice.basicLattice().bottom()) || (this == property);
+        (this == _lattice.basicLattice().bottom()) ||
+        (this == property);
     }
-
+    
     /** Get the property lattice associated with this property.
      *  @return The associated property lattice.
      */
     public PropertyLattice getPropertyLattice() {
         return _lattice;
     }
-
+    
+    /**
+     * Return the string that represents this lattice property. This
+     * base class returns the simple class name of the lattice property. 
+     */
     public String toString() {
         return this.getClass().getSimpleName();
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /**
+     * The property lattice containing this lattice property.
+     */
     private PropertyLattice _lattice;
-
+    
 }

@@ -1,6 +1,6 @@
 /** A base class representing a property constraint helper.
 
- Copyright (c) 1997-2008 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,14 +29,21 @@
 package ptolemy.data.properties.lattice;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.properties.Property;
-import ptolemy.data.properties.PropertySolver;
+import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.properties.PropertyHelper;
+import ptolemy.data.properties.lattice.PropertyConstraintSolver.ConstraintType;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// PropertyConstraintHelper
@@ -50,21 +57,24 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
+public class PropertyConstraintASTNodeHelper 
+    extends PropertyConstraintHelper {
+
 
     /** 
      * Construct the property constraint helper associated
      * with the given component.
      * @param component The associated component.
-     * @exception IllegalActionException Thrown if 
+     * @throws IllegalActionException Thrown if 
      *  PropertyConstraintHelper(NamedObj, PropertyLattice, boolean)
      *  throws it. 
      */
-    public PropertyConstraintASTNodeHelper(PropertySolver solver,
-            ASTPtRootNode node) throws IllegalActionException {
+    public PropertyConstraintASTNodeHelper(
+            PropertyConstraintSolver solver, ASTPtRootNode node) 
+            throws IllegalActionException {
         this(solver, node, true);
     }
-
+    
     /**
      * Construct the property constraint helper for the given
      * component and property lattice.
@@ -72,13 +82,13 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      * @param lattice The given property lattice.
      * @param useDefaultConstraints Indicate whether this helper
      *  uses the default actor constraints. 
-     * @exception IllegalActionException Thrown if the helper cannot
+     * @throws IllegalActionException Thrown if the helper cannot
      *  be initialized.
      */
-    public PropertyConstraintASTNodeHelper(PropertySolver solver,
-            ASTPtRootNode node, boolean useDefaultConstraints)
-            throws IllegalActionException {
-
+    public PropertyConstraintASTNodeHelper(
+            PropertyConstraintSolver solver, ASTPtRootNode node, 
+            boolean useDefaultConstraints) throws IllegalActionException {
+        
         super(solver, node, useDefaultConstraints);
     }
 
@@ -87,52 +97,81 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      *  @return A list of Inequality.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public List constraintList() throws IllegalActionException {
-        List constraints = new ArrayList();
-        return constraints;
-    }
+    public List<Inequality> constraintList() throws IllegalActionException {   
+        boolean constraintParent = 
+            (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||
+            (interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER);
+        
+        if (getComponent() instanceof ASTPtLeafNode) {
+            ASTPtLeafNode node = (ASTPtLeafNode) getComponent();
 
-    /**
-     * Return the property value associated with the given property lattice
-     * and the given port.  
-     * @param astNode The given port.
-     * @param lattice The given lattice.
-     * @return The property value of the given port. 
-     */
-    public Property getProperty(Object astNode) {
-        if (astNode == _component) {
-            return (Property) _resolvedProperties.get(astNode);
-        } else {
-            try {
-                return getSolver().getHelper((ASTPtRootNode) astNode)
-                        .getProperty(astNode);
-            } catch (IllegalActionException e) {
-
-                throw new InternalErrorException("This should happen!");
+            if (node.isConstant() && node.isEvaluated()) {
+                //FIXME: Should be handled by use-case specific helpers.
+            } else {
+                
+                NamedObj namedObj = getNamedObject(
+                        getContainerEntity(node), node.getName());
+            
+                if (namedObj != null) {
+                    // Set up one-direction constraint.
+                    if (constraintParent) {
+                        setAtLeast(node, namedObj);
+                    } else {
+                        setAtLeast(namedObj, node);                        
+                    }
+                } else {
+                    // Cannot resolve the property of a label.
+                    assert false;
+                }
             }
         }
+        
+        if (_useDefaultConstraints) {
+            ASTPtRootNode node = (ASTPtRootNode) getComponent();
+            List<Object> children = new ArrayList<Object>();
+            int numChildren = node.jjtGetNumChildren();
+    
+            boolean isNone = 
+                interconnectConstraintType == ConstraintType.NONE;
+            
+            for (int i = 0; i < numChildren; i++) {
+                //_visitChild(node, i);
+    
+                if (!constraintParent && !isNone){
+                    // Set child >= parent.
+                    setAtLeast(node.jjtGetChild(i), node);
+                } else {
+                    children.add(node.jjtGetChild(i));
+                }
+            }
+
+            if (constraintParent) {
+                _constraintObject(interconnectConstraintType, node, children);
+            } 
+        }
+        
+        return _union(_ownConstraints, _subHelperConstraints);
     }
-
+    
     /**
-     * Return the property term from the given port and lattice.
-     * @param port The given port.
-     * @param lattice The given property lattice.
-     * @return The property term of the given port.
-     * @exception IllegalActionException 
+     * @param node
+     * @return
+     * @throws IllegalActionException 
      */
-    public InequalityTerm getPropertyTerm(Object object)
-            throws IllegalActionException {
-
-        if (object instanceof InequalityTerm) {
-            return (InequalityTerm) object;
+    public InequalityTerm[] getChildrenTerm(ptolemy.data.expr.ASTPtRootNode node) throws IllegalActionException {
+        InequalityTerm children[] = 
+            new InequalityTerm[node.jjtGetNumChildren()];
+        
+        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
+            Object child = node.jjtGetChild(i);
+            
+            PropertyConstraintASTNodeHelper helper;
+            
+            helper = (PropertyConstraintASTNodeHelper) _solver.getHelper(child);
+            children[i] = helper.getPropertyTerm(child);
+                
         }
-
-        if (object == _component) {
-
-            return super.getPropertyTerm(object);
-        } else {
-            return getSolver().getHelper(object).getPropertyTerm(object);
-        }
+        return children;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,9 +183,36 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      * property-able.
      * @return The list of property-able named object.
      */
-    protected List _getPropertyables() {
-        List list = new ArrayList();
-        list.add(_component);
+    public List<Object> getPropertyables() {
+        List<Object> list = new ArrayList<Object>();
+        list.add(getComponent());
         return list;
+    }
+
+
+    /**
+     * 
+     * @return
+     * @throws IllegalActionException
+     */
+    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
+        return new ArrayList<PropertyHelper>();
+    }
+    
+    public static NamedObj getNamedObject(Entity container, String name) {
+        // Check the port names.
+        TypedIOPort port = (TypedIOPort) container.getPort(name);
+
+        if (port != null) {
+            return port;
+        }
+
+        Variable result = 
+            ModelScope.getScopedVariable(null, container, name);
+
+        if (result != null) {
+            return result;
+        }
+        return null;
     }
 }

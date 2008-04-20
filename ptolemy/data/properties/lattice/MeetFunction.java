@@ -1,4 +1,4 @@
-/* An actor that outputs the absolute value of the input.
+/* A class that represents a meet function term.
 
  Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
@@ -30,26 +30,22 @@ package ptolemy.data.properties.lattice;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import ptolemy.data.properties.Property;
-import ptolemy.data.properties.PropertyHelper;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.graph.InequalityTerm;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// MeetFunction
 
 /**
- Produce an output token on each firing with a value that is
- equal to the absolute value of the input. The input can have any
- scalar type. If the input type is not Complex, the output has the
- same type as the input. If the input type is Complex, the output
- type is Double, in which case, the output value is the magnitude
- of the input complex.
+ A class that represents the property term of a meet function. 
+ A meet function is defined to return the least upper bound values 
+ of all its inputs, assuming the inputs are elements from a common
+ lattice.   
 
  @author Man-Kit Leung
  @version $Id$
@@ -58,65 +54,57 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.AcceptedRating Red (mankit)
  */
 
-// This class implements a monotonic function of the input port
-// type. The result of the function is the same as the input type
-// if is not Complex; otherwise, the result is Double.
-public class MeetFunction extends MonotonicFunction {
+public class MeetFunction extends MonotonicFunction implements PropertyTerm {
 
-    // FindBugs suggested making this class a static inner class:
-    //
-    // "This class is an inner class, but does not use its embedded
-    // reference to the object which created it. This reference makes
-    // the instances of the class larger, and may keep the reference
-    // to the creator object alive longer than necessary. If
-    // possible, the class should be made into a static inner class."
+    public MeetFunction(PropertyConstraintSolver solver, List<Object> objects) {
+        this(solver, objects.toArray());
+    }
 
-    // The constructor takes a port argument so that the clone()
-    // method can construct an instance of this class for the
-    // input port on the clone.
-    public MeetFunction(PropertyConstraintSolver solver, Object[] functionTerms) {
+    public MeetFunction(PropertyConstraintSolver solver, Set<Object> objects) {
+        this(solver, objects.toArray());
+    }
+    
+    public MeetFunction(PropertyConstraintSolver solver, Object ... objects) {
         _solver = solver;
-        _functionTerms = functionTerms;
-    }
-
-    public MeetFunction(PropertyConstraintSolver solver, List functionTerms) {
-        this(solver, functionTerms.toArray());
-    }
-
-    public MeetFunction(PropertyConstraintSolver solver, Set functionTerms) {
-        this(solver, functionTerms.toArray());
+        for (Object object : objects) {
+            _terms.add(_solver.getPropertyTerm(object));            
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     * Add variables to the meet function.
+     * @param variables The list of variables to be added.
+     */
+    public void addVariables(List<PropertyTerm> variables) {
+        _terms.addAll(variables);
+    }
+    
+    
     /** Return the function result.
      *  @return A Property.
      */
-    public Object getValue() throws IllegalActionException {
-        Property joinValue = null;
+    public Object getValue() {
+        Property meetValue = null;
         Property termValue = null;
+        
 
-        Iterator iterator = Arrays.asList(_functionTerms).iterator();
-
+        Iterator iterator = _terms.iterator();
+        
         while (iterator.hasNext()) {
 
-            Object object = iterator.next();
-
-            if (object instanceof MonotonicFunction) {
-
-                termValue = (Property) ((MonotonicFunction) object).getValue();
-
-            } else {
-                PropertyHelper helper = _solver.getHelper(object);
-
-                termValue = helper.getProperty(object);
+            PropertyTerm term = (PropertyTerm) iterator.next();
+            
+            if (term.isEffective()) {
+                termValue = (Property) term.getValue();
+                
+                meetValue = (meetValue == null) ? termValue : 
+                    _solver.getLattice().greatestLowerBound(meetValue, termValue);
             }
-
-            joinValue = (joinValue == null) ? termValue : _solver.getLattice()
-                    .greatestLowerBound(joinValue, termValue);
         }
-        return joinValue;
+        return meetValue; 
     }
 
     /** Return the variables in this term. If the property of the input port
@@ -127,46 +115,71 @@ public class MeetFunction extends MonotonicFunction {
      */
     public InequalityTerm[] getVariables() {
         ArrayList<InequalityTerm> result = new ArrayList<InequalityTerm>();
-
-        Iterator iterator = Arrays.asList(_functionTerms).iterator();
+        
+        Iterator iterator = _terms.iterator();
         while (iterator.hasNext()) {
 
-            Object object = iterator.next();
-
-            InequalityTerm term = null;
-
-            if (object instanceof InequalityTerm) {
-
-                term = (InequalityTerm) object;
-
-            } else {
-                try {
-                    PropertyConstraintHelper helper = (PropertyConstraintHelper) _solver
-                            .getHelper(object);
-
-                    term = helper.getPropertyTerm(object);
-
-                } catch (IllegalActionException ex) {
-                    throw new InternalErrorException("Helper not found.");
-                }
-            }
-
+            PropertyTerm term = (PropertyTerm) iterator.next();
+            
             if (term.isSettable()) {
-                result.add(term);
+                result.addAll(Arrays.asList(term.getVariables()));
             }
         }
-
+        
         InequalityTerm[] array = new InequalityTerm[result.size()];
-        System.arraycopy(result.toArray(), 0, array, 0, result.size());
+        System.arraycopy(result.toArray(), 0, array, 0, result.size() );
+        
+        return  array;
+    }
+    
+    public String toString() {
+        String result = "meet(";
+        
+        Iterator<PropertyTerm> terms = _terms.iterator();
+        while (terms.hasNext()) {
+            PropertyTerm term = terms.next();
+            if (term.isEffective()) {
+                result += term;
+                break;
+            }
+        }
+        
+        while (terms.hasNext()) {
+            PropertyTerm term = terms.next();
+            if (term.isEffective()) {
+                result += " /\\ " + term;
+            }
+        }
+        
+        return result + ")";
+    }
 
-        return array;
+    public boolean isEffective() {
+        Iterator iterator = _terms.iterator();
+        
+        while (iterator.hasNext()) {
+
+            PropertyTerm term = (PropertyTerm) iterator.next();
+            
+            if (term.isEffective()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setEffective(boolean isEffective) {
+        throw new AssertionError(
+                "Cannot set the effectiveness of a MeetFunction term.");
     }
 
     ///////////////////////////////////////////////////////////////
     ////                       private inner variable          ////
-
+    
     private PropertyConstraintSolver _solver;
 
-    private Object[] _functionTerms;
+    private List<PropertyTerm> _terms = new LinkedList<PropertyTerm>();
 
 }
+
+ 
