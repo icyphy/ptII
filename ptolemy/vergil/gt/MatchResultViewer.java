@@ -64,7 +64,7 @@ import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.StateController;
-import ptolemy.vergil.gt.GTFrameController.GTActorGraphModel;
+import ptolemy.vergil.gt.GTFrameController.UpdateController;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
@@ -370,7 +370,7 @@ public class MatchResultViewer extends GTFrame {
     }
 
     private void _beginTransform() {
-        ((GTActorGraphModel) _getGraphModel()).stopUpdate();
+        ((UpdateController) _getGraphModel()).stopUpdate();
     }
 
     private void _checkContainingViewer() {
@@ -450,8 +450,7 @@ public class MatchResultViewer extends GTFrame {
             }
         }
         _enableOrDisableActions();
-        ((GTActorGraphModel) _getGraphModel()).startUpdate();
-        _rerender();
+        ((UpdateController) _getGraphModel()).startUpdate();
     }
 
     private void _next() {
@@ -563,6 +562,7 @@ public class MatchResultViewer extends GTFrame {
         _beginTransform();
         try {
             GraphTransformer.transform(_rule, _results.get(_currentPosition));
+            GTFrameTools.changeModel(this, (CompositeEntity) getModel(), true);
         } catch (TransformationException e) {
             MessageHandler.error("Unable to transform model.", e);
         }
@@ -573,6 +573,7 @@ public class MatchResultViewer extends GTFrame {
         _beginTransform();
         try {
             GraphTransformer.transform(_rule, _results);
+            GTFrameTools.changeModel(this, (CompositeEntity) getModel(), true);
         } catch (TransformationException e) {
             MessageHandler.error("Unable to transform model.", e);
         }

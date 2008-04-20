@@ -31,33 +31,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gt;
 
-import java.awt.geom.Point2D;
 import java.util.Collection;
 
-import javax.swing.SwingUtilities;
-
 import ptolemy.actor.gt.data.CombinedCollection;
-import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.undo.UndoAction;
-import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.actor.ActorEditorGraphController;
-import ptolemy.vergil.actor.ActorGraphFrame;
-import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.actor.ActorGraphFrame.ActorGraphPane;
 
 /**
 
@@ -68,24 +52,6 @@ import ptolemy.vergil.actor.ActorGraphFrame.ActorGraphPane;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GTTools {
-
-    public static void changeModel(ActorGraphFrame frame, CompositeEntity model,
-            boolean delegateUndoStack) {
-        if (delegateUndoStack) {
-            UndoStackAttribute oldAttribute = UndoStackAttribute.getUndoInfo(
-                        frame.getModel());
-            try {
-                new GTTools.DelegatedUndoStackAttribute(model, "_undoInfo",
-                        oldAttribute);
-            } catch (KernelException e) {
-                throw new InternalErrorException(e);
-            }
-        }
-
-        ModelChangeRequest request = new ModelChangeRequest(null, frame, model);
-        request.setUndoable(true);
-        model.requestChange(request);
-    }
 
     public static NamedObj getChild(NamedObj object, String name,
             boolean allowAttribute, boolean allowPort, boolean allowEntity,
@@ -255,105 +221,5 @@ public class GTTools {
         CompositeActorMatcher container = getContainingPatternOrReplacement(
                 entity);
         return container != null && container instanceof Replacement;
-    }
-
-    public static class DelegatedUndoStackAttribute extends UndoStackAttribute {
-
-        public DelegatedUndoStackAttribute(NamedObj container, String name,
-                UndoStackAttribute oldAttribute)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-
-            if (oldAttribute instanceof DelegatedUndoStackAttribute) {
-                _oldAttribute = ((DelegatedUndoStackAttribute) oldAttribute)
-                        ._oldAttribute;
-            } else {
-                _oldAttribute = oldAttribute;
-            }
-        }
-
-        public void mergeTopTwo() {
-            _oldAttribute.mergeTopTwo();
-        }
-
-        public void push(UndoAction action) {
-            _oldAttribute.push(action);
-        }
-
-        public void redo() throws Exception {
-            _oldAttribute.redo();
-        }
-
-        public void undo() throws Exception {
-            _oldAttribute.undo();
-        }
-
-        private UndoStackAttribute _oldAttribute;
-    }
-
-    public static class ModelChangeRequest extends ChangeRequest {
-
-        public ModelChangeRequest(Object originator, ActorGraphFrame frame,
-                CompositeEntity model) {
-            super(originator, "Change the model in the frame.");
-            _frame = frame;
-            _model = model;
-        }
-
-        public void setUndoable(boolean undoable) {
-            _undoable = undoable;
-        }
-
-        protected void _execute() throws Exception {
-            _oldModel = (CompositeEntity) _frame.getModel();
-            if (_undoable) {
-                UndoStackAttribute undoInfo =
-                    UndoStackAttribute.getUndoInfo(_oldModel);
-                undoInfo.push(new UndoAction() {
-                    public void execute() throws Exception {
-                        ModelChangeRequest request =
-                            new ModelChangeRequest( ModelChangeRequest.this,
-                                    _frame, _oldModel);
-                        request.setUndoable(true);
-                        request.execute();
-                    }
-                });
-            }
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    Workspace workspace = _model.workspace();
-                    try {
-                        workspace.getWriteAccess();
-                        Point2D center = _frame.getCenter();
-                        _frame.setModel(_model);
-
-                        PtolemyEffigy effigy =
-                            (PtolemyEffigy) _frame.getEffigy();
-                        effigy.setModel(_model);
-
-                        ActorEditorGraphController controller =
-                            (ActorEditorGraphController) _frame.getJGraph()
-                            .getGraphPane().getGraphController();
-                        ActorGraphModel graphModel =
-                            new ActorGraphModel(_model);
-                        _frame.getJGraph().setGraphPane(new ActorGraphPane(
-                                controller, graphModel, _model));
-                        _frame.getJGraph().repaint();
-                        _frame.setCenter(center);
-                        _frame.changeExecuted(null);
-                    } finally {
-                        workspace.doneWriting();
-                    }
-                }
-            });
-        }
-
-        private ActorGraphFrame _frame;
-
-        private CompositeEntity _model;
-
-        private CompositeEntity _oldModel;
-
-        private boolean _undoable = false;
     }
 }

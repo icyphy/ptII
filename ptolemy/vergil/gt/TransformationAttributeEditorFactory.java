@@ -48,6 +48,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.basic.BasicGraphFrame;
 
 /**
 
@@ -77,7 +78,7 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
     @SuppressWarnings("unchecked")
     public void createEditor(NamedObj object, Frame parent) {
         TransformationAttribute attribute = (TransformationAttribute) object;
-        ActorGraphFrame actorFrame = (ActorGraphFrame) parent;
+        BasicGraphFrame actorFrame = (BasicGraphFrame) parent;
         Configuration configuration = actorFrame.getConfiguration();
         try {
             ToplevelTransformer transformer = TransformationAttributeController
@@ -158,7 +159,7 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
         public void windowOpened(WindowEvent e) {
         }
 
-        ActorFrameListener(ActorGraphFrame parent, ActorGraphFrame child)
+        ActorFrameListener(BasicGraphFrame parent, ActorGraphFrame child)
         throws IllegalActionException, NameDuplicationException {
             _parent = parent;
             _child = child;
@@ -188,6 +189,6 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
 
         private ActorGraphFrame _child;
 
-        private ActorGraphFrame _parent;
+        private BasicGraphFrame _parent;
     }
 }

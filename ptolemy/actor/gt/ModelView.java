@@ -60,7 +60,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLParser;
-import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.gt.GTFrameTools;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelView
@@ -154,15 +155,15 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                                 .getToken()).booleanValue();
                         if (tableau == null || reopen
                                 || !(tableau.getFrame() instanceof
-                                        ActorGraphFrame)) {
+                                        BasicGraphFrame)) {
                             if (tableau != null) {
                                 tableau.close();
                             }
                             tableau = configuration.openModel(newModel, effigy);
                             _tableaus[i] = tableau;
                         } else {
-                            GTTools.changeModel(
-                                    (ActorGraphFrame) tableau.getFrame(),
+                            GTFrameTools.changeModel(
+                                    (BasicGraphFrame) tableau.getFrame(),
                                     (CompositeEntity) newModel, true);
                         }
 

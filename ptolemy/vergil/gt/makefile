@@ -60,6 +60,7 @@ JSRCS = \
 	CellPanelEditor.java \
 	GTFrame.java \
 	GTFrameController.java \
+	GTFrameTools.java \
 	GTIngredientsEditor.java \
 	GTTableau.java \
 	MatchResultTableau.java \
@@ -95,6 +96,11 @@ OPTIONAL_FILES = \
 	'GTFrameController$$2.class' \
 	'GTFrameController$$GTActorGraphModel.class' \
 	'GTFrameController$$GTFSMGraphModel.class' \
+	'GTFrameController$$UpdateController.class' \
+	'GTFrameTools$$DelegatedUndoStackAttribute.class' \
+	'GTFrameTools$$ModelChangeRequest$$1.class' \
+	'GTFrameTools$$ModelChangeRequest$$2.class' \
+	'GTFrameTools$$ModelChangeRequest.class' \
 	'GTIngredientsEditor$$1.class' \
 	'GTIngredientsEditor$$2.class' \
 	'GTIngredientsEditor$$3.class' \

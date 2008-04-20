@@ -31,7 +31,6 @@ package ptolemy.vergil.gt;
 import java.awt.event.ActionEvent;
 
 import ptolemy.actor.Manager;
-import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.ToplevelTransformer;
 import ptolemy.actor.gt.TransformationAttribute;
 import ptolemy.data.ActorToken;
@@ -43,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
 import ptolemy.vergil.kernel.AttributeController;
@@ -94,7 +93,7 @@ public class TransformationAttributeController extends AttributeController {
     }
 
     protected static void _applyTransformationResult(
-            ToplevelTransformer transformer, ActorGraphFrame frame) {
+            ToplevelTransformer transformer, BasicGraphFrame frame) {
         ActorToken token = transformer.getOutputToken();
         if (token == null) {
             MessageHandler.message("No output is generated.");
@@ -110,7 +109,7 @@ public class TransformationAttributeController extends AttributeController {
                     "generate transformation result.");
         }
 
-        GTTools.changeModel(frame, result, true);
+        GTFrameTools.changeModel(frame, result, true);
     }
 
     protected static ToplevelTransformer _getTransformer(
@@ -158,8 +157,7 @@ public class TransformationAttributeController extends AttributeController {
                 final Manager manager = transformer.getManager();
                 new Thread() {
                     public void run() {
-                        ActorGraphFrame frame =
-                            (ActorGraphFrame) getFrame();
+                        BasicGraphFrame frame = (BasicGraphFrame) getFrame();
                         try {
                             frame.report("Applying model transformation: " +
                                     attribute.getName());

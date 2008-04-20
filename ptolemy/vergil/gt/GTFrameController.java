@@ -35,11 +35,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
@@ -61,11 +59,9 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.fsm.FSMGraphModel;
 import ptolemy.vergil.gt.GTFrame.GTFSMGraphController;
-import ptolemy.vergil.kernel.Link;
 import diva.canvas.event.LayerAdapter;
 import diva.canvas.event.LayerEvent;
 import diva.graph.GraphPane;
-import diva.graph.GraphUtilities;
 import diva.graph.JGraph;
 import diva.gui.toolbox.JCanvasPanner;
 
@@ -178,6 +174,65 @@ public class GTFrameController implements ChangeListener, KeyListener {
             }
             _showTab(_activeTabIndex);
         }
+    }
+
+    public static class GTActorGraphModel extends ActorGraphModel
+    implements UpdateController {
+
+        public GTActorGraphModel(NamedObj composite) {
+            super(composite);
+        }
+
+        public synchronized void startUpdate() {
+            _updateStopped = false;
+        }
+
+        public synchronized void stopUpdate() {
+            _updateStopped = true;
+        }
+
+        protected synchronized boolean _update() {
+            if (!_updateStopped) {
+                return super._update();
+            } else {
+                return true;
+            }
+        }
+
+        private boolean _updateStopped = false;
+    }
+
+    public static class GTFSMGraphModel extends FSMGraphModel
+    implements UpdateController {
+
+        public GTFSMGraphModel(CompositeEntity composite) {
+            super(composite);
+        }
+
+        public synchronized void startUpdate() {
+            _updateStopped = false;
+        }
+
+        public synchronized void stopUpdate() {
+            _updateStopped = true;
+        }
+
+        protected synchronized boolean _update() {
+            if (!_updateStopped) {
+                return super._update();
+            } else {
+                return true;
+            }
+        }
+
+        private boolean _updateStopped = false;
+    }
+
+    public interface UpdateController {
+
+        public void startUpdate();
+
+        public void stopUpdate();
     }
 
     protected GTFrameController(GTFrame frame) {
@@ -297,55 +352,6 @@ public class GTFrameController implements ChangeListener, KeyListener {
                 }
             }
         }
-    }
-
-    protected static class GTActorGraphModel extends ActorGraphModel {
-
-        public synchronized void startUpdate() {
-            Set<?> linkSet = _getLinkSet();
-            Set<Link> linksToRemove = new HashSet<Link>();
-            for (Object linkObject : linkSet) {
-                Link link = (Link) linkObject;
-                boolean headOK = GraphUtilities.isContainedNode(link.getHead(),
-                        getRoot(), this);
-                boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
-                        getRoot(), this);
-                if (!(headOK && tailOK)) {
-                    linksToRemove.add(link);
-                }
-            }
-            for (Link link : linksToRemove) {
-                _removeLink(link);
-            }
-            _updateStopped = false;
-            _update();
-        }
-
-        public synchronized void stopUpdate() {
-            _updateStopped = true;
-        }
-
-        protected boolean _update() {
-            if (!_updateStopped) {
-                return super._update();
-            } else {
-                return true;
-            }
-        }
-
-        GTActorGraphModel(NamedObj composite) {
-            super(composite);
-        }
-
-        private boolean _updateStopped = false;
-    }
-
-    protected static class GTFSMGraphModel extends FSMGraphModel {
-
-        public GTFSMGraphModel(CompositeEntity composite) {
-            super(composite);
-        }
-
     }
 
     /** Add a tabbed pane for the specified case.
