@@ -324,15 +324,7 @@
             </property>
         </property>
         <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="lattice::typeSystem_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NoImpact">
-            </property>
-            <property name="lattice::staticDynamic_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Static">
-            </property>
-            <property name="lattice::onlineOffline_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Offline">
-            </property>
-            <property name="lattice::impact_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NoImpact">
             </property>
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
@@ -494,15 +486,7 @@
             </property>
         </property>
         <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="lattice::typeSystem_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NoImpact">
-            </property>
-            <property name="lattice::staticDynamic_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Static">
-            </property>
-            <property name="lattice::onlineOffline_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Offline">
-            </property>
-            <property name="lattice::impact_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NoImpact">
             </property>
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="0">
@@ -1018,15 +1002,7 @@
             </property>
         </property>
         <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="lattice::typeSystem_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NoImpact">
-            </property>
-            <property name="lattice::staticDynamic_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Static">
-            </property>
-            <property name="lattice::onlineOffline_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Offline">
-            </property>
-            <property name="lattice::impact_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NoImpact">
             </property>
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="20">
@@ -1047,15 +1023,7 @@
             </property>
         </property>
         <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="lattice::typeSystem_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
-            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="NoImpact">
-            </property>
-            <property name="lattice::staticDynamic_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Static">
-            </property>
-            <property name="lattice::onlineOffline_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Offline">
-            </property>
-            <property name="lattice::impact_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="NoImpact">
             </property>
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="15">
