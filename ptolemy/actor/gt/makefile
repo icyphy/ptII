@@ -82,9 +82,12 @@ JSRCS = \
 	LocationType.java \
 	MalformedStringException.java \
 	MatchCallback.java \
+	ModelCombine.java \
+	ModelExecutor.java \
 	ModalModelMatcher.java \
 	ModelGenerator.java \
 	ModelView.java \
+	MoMLGenerator.java \
 	NamedObjVariable.java \
 	ParameterAttribute.java \
 	Pattern.java \
@@ -104,6 +107,7 @@ JSRCS = \
 	ValidationException.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ModelExecutorIcon.xml \
 	ModelGeneratorIcon.xml \
 	ModelViewIcon.xml \
 	StateMatcherIcon.xml \
