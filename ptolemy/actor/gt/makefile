@@ -107,9 +107,11 @@ JSRCS = \
 	ValidationException.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ModelCombineIcon.xml \
 	ModelExecutorIcon.xml \
 	ModelGeneratorIcon.xml \
 	ModelViewIcon.xml \
+	MoMLGeneratorIcon.xml \
 	StateMatcherIcon.xml \
 	TransformationRuleIcon.xml
 

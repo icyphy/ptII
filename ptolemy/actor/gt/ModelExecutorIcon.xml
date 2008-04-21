@@ -7,7 +7,7 @@
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="52.0">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="31.0">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="32.0">
         </property>
         <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -17,7 +17,7 @@
     <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
         <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/basic/img/run.gif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -12.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, -11.0]">
         </property>
         <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
         </property>

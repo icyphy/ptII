@@ -98,6 +98,8 @@ public class ModelGenerator extends TypedAtomicActor {
             if (modelName.getWidth() > 0 && modelName.hasToken(0)) {
                 String name = ((StringToken) modelName.get(0)).stringValue();
                 entity.setName(name);
+            } else {
+                entity.setName("");
             }
 
             model.send(0, new ActorToken(entity));
@@ -108,9 +110,9 @@ public class ModelGenerator extends TypedAtomicActor {
 
     public boolean prefire() throws IllegalActionException {
         return super.prefire()
-                && (moml.getWidth() > 0 && moml.hasToken(0) || modelName
-                        .getWidth() > 0
-                        && modelName.hasToken(0));
+                && (moml.getWidth() > 0 && moml.hasToken(0) ||
+                    modelName.getWidth() > 0 && modelName.hasToken(0) ||
+                    moml.getWidth() == 0 && modelName.getWidth() == 0);
     }
 
     public TypedIOPort model;

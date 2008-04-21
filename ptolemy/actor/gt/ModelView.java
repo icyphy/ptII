@@ -192,16 +192,31 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                         frame.addWindowListener(this);
 
                         String titleString = null;
+                        String modelName = newModel.getName();
+                        URI modelURI = null;
+                        URI uri = URIAttribute.getModelURI(newModel);
+                        if (uri != null) {
+                            String fileName;
+                            if (modelName.equals("")) {
+                                fileName = "model.xml";
+                            } else {
+                                fileName = modelName + ".xml";
+                            }
+                            modelURI = new URI(uri.getScheme(),
+                                    uri.getUserInfo(), uri.getHost(),
+                                    uri.getPort(), uri.getPath() + fileName,
+                                    null, null);
+                            Effigy newEffigy = (Effigy) tableau.getContainer();
+                            newEffigy.uri.setURI(modelURI);
+                        }
                         if (titleValue.equals("")) {
-                            URI uri = URIAttribute.getModelURI(newModel);
                             if (uri != null) {
-                                URI modelURI = new URI(uri.getScheme(), uri
-                                        .getUserInfo(), uri.getHost(), uri
-                                        .getPort(), uri.getPath()
-                                        + newModel.getName() + ".xml", null,
-                                        null);
-                                titleString = modelURI.toString() + " ("
-                                        + getName() + ")";
+                                if (modelName.equals("")) {
+                                    titleString = "Unnamed";
+                                } else {
+                                    titleString = modelURI.toString() + " ("
+                                            + getName() + ")";
+                                }
                             }
                         } else {
                             titleString = titleValue;
