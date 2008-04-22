@@ -57,6 +57,7 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.pn.kernel.PNDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
@@ -1481,8 +1482,20 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
 
         String packageName = generatorPackage.stringValue();
-
+        
         String className = object.getClass().getName();
+
+        // if target is mpi.
+        if (getAttribute("mpi") != null) {
+            //target.getExpression().equals("mpi")) {
+            
+            if (object instanceof PNDirector) {
+                className = object.getClass().getPackage().toString().substring(8) +
+                ".Mpi" + object.getClass().getSimpleName();
+                 // i.e. PNDirector => MpiPNDirector
+            }
+        }
+
         String helperClassName = className.replaceFirst("ptolemy",
                 packageName);
         if (helperClassName.equals(className)) {
