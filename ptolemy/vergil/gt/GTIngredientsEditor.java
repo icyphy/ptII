@@ -104,6 +104,7 @@ import ptolemy.actor.gt.ingredients.criteria.BooleanCriterionElement;
 import ptolemy.actor.gt.ingredients.criteria.ChoiceCriterionElement;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.actor.gt.ingredients.criteria.StringCriterionElement;
+import ptolemy.actor.gt.ingredients.operations.BooleanOperationElement;
 import ptolemy.actor.gt.ingredients.operations.Operation;
 import ptolemy.actor.gt.ingredients.operations.StringOperationElement;
 import ptolemy.actor.gui.Configuration;
@@ -1085,7 +1086,8 @@ public class GTIngredientsEditor extends PtolemyDialog implements
 
         protected JComponent _getComponent(GTIngredientElement element) {
             JComponent component = null;
-            if (element instanceof BooleanCriterionElement) {
+            if (element instanceof BooleanCriterionElement ||
+                    element instanceof BooleanOperationElement) {
                 JCheckBox checkBox = new JCheckBox();
                 checkBox.setHorizontalAlignment(SwingConstants.CENTER);
                 component = checkBox;
@@ -1194,7 +1196,8 @@ public class GTIngredientsEditor extends PtolemyDialog implements
 
         protected void _setComponentValue(GTIngredientElement element,
                 JComponent component, Object value) {
-            if (element instanceof BooleanCriterionElement) {
+            if (element instanceof BooleanCriterionElement ||
+                    element instanceof BooleanOperationElement) {
                 ((JCheckBox) component).setSelected(((Boolean) value)
                         .booleanValue());
             } else if (element instanceof StringCriterionElement) {

@@ -49,8 +49,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	AttributeOperation.java \
+	BooleanOperationElement.java \
 	Operation.java \
 	OperationElement.java \
+	PortCreationOperation.java \
 	PortRemovalOperation.java \
 	RenameOperation.java \
 	StringOperationElement.java

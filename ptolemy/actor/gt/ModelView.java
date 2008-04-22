@@ -214,10 +214,10 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                                 if (modelName.equals("")) {
                                     titleString = "Unnamed";
                                 } else {
-                                    titleString = modelURI.toString() + " ("
-                                            + getName() + ")";
+                                    titleString = modelURI.toString();
                                 }
                             }
+                            titleString += " (" + getName() + ")";
                         } else {
                             titleString = titleValue;
                         }
