@@ -95,7 +95,8 @@ public class ToplevelTransformer extends TypedCompositeActor {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _hasToken = true;
+        _hasToken = _inputToken != null;
+        _outputToken = null;
     }
 
     public boolean postfire() throws IllegalActionException {
@@ -216,7 +217,9 @@ public class ToplevelTransformer extends TypedCompositeActor {
                 _checkType(token);
                 ToplevelTransformer transformer =
                     (ToplevelTransformer) getContainer();
-                transformer._outputToken = (ActorToken) token;
+                if (transformer._outputToken == null) {
+                    transformer._outputToken = (ActorToken) token;
+                }
             }
         }
 
@@ -227,7 +230,9 @@ public class ToplevelTransformer extends TypedCompositeActor {
                 _checkType(token);
                 ToplevelTransformer transformer =
                     (ToplevelTransformer) getContainer();
-                transformer._outputToken = (ActorToken) token;
+                if (transformer._outputToken == null) {
+                    transformer._outputToken = (ActorToken) token;
+                }
             }
         }
 
