@@ -41,6 +41,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.style.CheckBoxStyle;
+import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -139,6 +140,8 @@ public class Expression extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         expression = new StringParameter(this, "expression");
+        TextStyle expressionTextStyle = new TextStyle(expression,
+                "Matlab expression");
 
         _dataParameters = new Engine.ConversionParameters();
 
