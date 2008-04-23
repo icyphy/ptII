@@ -75,8 +75,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ConditionalReceive
  @see ConditionalSend
  */
-public class MultiwayBranchController extends AbstractBranchController
-        implements Debuggable {
+public class MultiwayBranchController extends AbstractBranchController {
 
     /** Construct a controller in the specified container, which should
      *  be an actor that implements BranchActor.
