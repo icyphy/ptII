@@ -272,6 +272,8 @@ public class Exec extends LimitedFiringSource {
      *  are prepended.  Under Windows 95, the arguments "command.com"
      *  and "/C" are prepended.  Under all other platforms, the
      *  arguments "/bin/sh" and "-c" are prepended.  
+     *  <p>By prepending sh or cmd, then this actor can use the
+     *  file redirection operations.
      *  <p>The default value of this parameter is a boolean of value
      *  false, which allows the user to arbitrarily invoke /bin/sh
      *  scripts on all platforms.
