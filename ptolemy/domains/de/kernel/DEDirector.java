@@ -879,11 +879,11 @@ public class DEDirector extends Director implements TimedDirector {
         if (_noMoreActorsToFire
                 && (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
             _exceedStopTime = true;
-            result = result && false;
+            result = false;
         } else if (_exceedStopTime) {
             // If the current time is bigger than the stop time,
             // stop the model execution.
-            result = result && false;
+            result = false;
         } else if (_isEmbedded() && !_eventQueue.isEmpty()) {
             // If the event queue is not empty and the container is an
             // embedded model, ask the upper level director in the
