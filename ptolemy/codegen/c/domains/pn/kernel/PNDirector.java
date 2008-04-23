@@ -506,17 +506,23 @@ public class PNDirector extends Director {
                 
                 code.append(helper.generatePostfireCode());
 
+                boolean forComposite = actor instanceof CompositeActor;
+
                 // Increment port offset.
                 for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
                     // Determine the amount to increment.
                     int rate = DFUtilities.getRate(port);
 
                     PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
+                    CodeGeneratorHelper portCGHelper = (CodeGeneratorHelper) portHelper;
                     
-                    //int width = port.getWidth();
-                    //for (int i = 0; i < width; i++) {
+                    if (portCGHelper.hasRemoteReceivers(forComposite, port)) {
+                        //pnPostfireCode += portHelper.updateOffset(rate, this);
+                        pnPostfireCode += portHelper.updateConnectedPortsOffset(rate, this);
+                    } 
+                    if (port.isInput()){
                         pnPostfireCode += portHelper.updateOffset(rate, this);
-                    //}
+                    }
                 }
 
                 // Code for incrementing buffer offsets.

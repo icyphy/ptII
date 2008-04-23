@@ -1094,7 +1094,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String getParameterValue(String name, NamedObj container)
     throws IllegalActionException {
-        name = processCode(name);
+        if (name.contains("$")) {
+            name = processCode(name);
+        }
 
         StringTokenizer tokenizer = new StringTokenizer(name, ",");
 
@@ -1409,8 +1411,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             // an output port of a modal controller will receive the tokens sent
             // from the same port.  During commit action, an output port of a modal
             // controller will NOT receive the tokens sent from the same port.
-            if ((port.isOutput() && !forComposite)
-                    || (port.isInput() && forComposite)) {
+            if (hasRemoteReceivers(forComposite, port)) {
                 Receiver[][] remoteReceivers;
 
                 // For the same reason as above, we cannot do: if (port.isInput())...
@@ -1502,8 +1503,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             // codegen/c/actor/lib/string/test/auto/StringCompare3.xml
             // tests this.
 
-            if ((port.isInput() && !forComposite && port.getWidth() > 0)
-                    || (port.isOutput() && forComposite)) {
+            if (hasReceivers(forComposite, port)) {
 
                 result.append(generateName(port));
 
@@ -1557,6 +1557,16 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         throw new IllegalActionException(getComponent(), "Reference not found: "
                 + name);
+    }
+
+    public boolean hasReceivers(boolean forComposite, IOPort port) {
+        return (port.isInput() && !forComposite && port.getWidth() > 0)
+                || (port.isOutput() && forComposite);
+    }
+
+    public boolean hasRemoteReceivers(boolean forComposite, IOPort port) {
+        return (port.isOutput() && !forComposite)
+                || (port.isInput() && forComposite);
     }
 
     /**

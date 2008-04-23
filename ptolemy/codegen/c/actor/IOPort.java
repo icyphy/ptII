@@ -30,8 +30,10 @@ package ptolemy.codegen.c.actor;
 import java.util.List;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 import ptolemy.codegen.c.domains.pn.kernel.PNDirector;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
 import ptolemy.codegen.kernel.PortCodeGenerator;
@@ -39,7 +41,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.domains.pn.kernel.PNQueueReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 
-public class IOPort extends CodeGeneratorHelper implements PortCodeGenerator {
+public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
     /** Construct the code generator helper associated
      *  with the given TypedCompositeActor.
@@ -89,12 +91,15 @@ public class IOPort extends CodeGeneratorHelper implements PortCodeGenerator {
             // However, this may not be true.
             if (receivers.length > 0) {
                 receiver = receivers[channel][0];
+            } else {
+                assert false;
             }
         }
         return receiver;
     }
 
 
+    // Update the write offset of the [multiple] connected ports.
     public String updateConnectedPortsOffset(int rate, Director directorHelper) throws IllegalActionException {
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
                 .getToken()).booleanValue();
@@ -173,6 +178,7 @@ public class IOPort extends CodeGeneratorHelper implements PortCodeGenerator {
         return code.toString();
     }
 
+    // Updating the read offset.
     public String updateOffset(int rate, Director directorHelper) 
     throws IllegalActionException {
 
