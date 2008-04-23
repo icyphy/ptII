@@ -540,9 +540,10 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         Map out = (Map) outValue;
         out.clear();
 
-        for (Iterator i = in.keySet().iterator(); i.hasNext();) {
-            Object object = i.next();
-            out.put(object, in.get(object));
+        for (Iterator i = in.entrySet().iterator(); i.hasNext();) {
+            Map.Entry entry = (Map.Entry) i.next();
+            Object object = entry.getKey();
+            out.put(object, entry.getValue());
         }
     }
 
