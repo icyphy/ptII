@@ -132,8 +132,11 @@ $(PTLIB)_msvc: ptmatlab.cc Engine.class
 		/Tpptmatlab.cc \
 		-Fe$@ \
 		/link /dll \
-		/libpath:"$(MATLAB_DIR)/extern/lib/win32/microsoft/msvc70" \
+		/libpath:\""$(MATLAB_DIR)/extern/lib/win32/microsoft"\" \
 		libeng.lib libmx.lib
+
+
+
 
 # Build using gcc
 # Note that the Matlab interface does not work under Cygwin with gcc-3.3.3.
