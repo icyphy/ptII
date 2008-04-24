@@ -1,6 +1,6 @@
 /* A DE event in the DE domain.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NamedObj;
  This class is final to improve the simulation performance because new
  events get created and discarded through the whole simulation.
 
- @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
+ @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng, Contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (hyzheng)
@@ -97,7 +97,11 @@ public final class DEEvent implements Comparable {
      *  @param depth The topological depth of the destination IO Port.
      */
     public DEEvent(IOPort ioPort, Time timeStamp, int microstep, int depth) {
-        _actor = (Actor) ioPort.getContainer();
+        if (ioPort != null) {
+            _actor = (Actor) ioPort.getContainer();
+        } else {
+            _actor = null;
+        }
         _ioPort = ioPort;
         _timestamp = timeStamp;
         _microstep = microstep;
@@ -141,17 +145,18 @@ public final class DEEvent implements Comparable {
      *  @return -1, 0, or 1, depends on the order of the events.
      */
     public final int compareTo(DEEvent event) {
-        if (timeStamp().compareTo(event.timeStamp()) > 0) {
+        // Directly use the private fields and avoid method call overhead.
+        if (_timestamp.compareTo(event.timeStamp()) > 0) {
             return 1;
-        } else if (timeStamp().compareTo(event.timeStamp()) < 0) {
+        } else if (_timestamp.compareTo(event.timeStamp()) < 0) {
             return -1;
-        } else if (microstep() > event.microstep()) {
+        } else if (_microstep > event.microstep()) {
             return 1;
-        } else if (microstep() < event.microstep()) {
+        } else if (_microstep < event.microstep()) {
             return -1;
-        } else if (depth() > event.depth()) {
+        } else if (_depth > event.depth()) {
             return 1;
-        } else if (depth() < event.depth()) {
+        } else if (_depth < event.depth()) {
             return -1;
         } else {
             return 0;
@@ -167,6 +172,36 @@ public final class DEEvent implements Comparable {
         return _depth;
     }
 
+    /** Indicate whether some other object is equal to this DE Event.
+     *  @param object The object with which to compare.
+     *  @return true if the object is a DEEvent and the fields of
+     *  the object and of this object are equal.
+     *  @see #hashCode()
+     */
+    public boolean equals(Object object) {
+        if ( ! (object instanceof DEEvent)) {
+            return false;
+                     }
+        return (compareTo(object) == 0);
+    }
+
+    /** Return the hash code for the event object.
+     *  @return The hash code for the event object.
+     *  @see #equals(Object)
+     */
+    public int hashCode() {
+        int primitiveFieldHash = _depth >>> _microstep;
+        int objectFieldHash = ((_actor != null) ? _actor.hashCode() : 1) >>>
+            ((_ioPort != null) ? _ioPort.hashCode() : 1);
+        // If the exclusive or of the primitive is 0, then just
+        // return the xor of the hashes of the actor and ioport
+        if (primitiveFieldHash == 0) {
+            return objectFieldHash;
+        }
+        return primitiveFieldHash >>> objectFieldHash;
+
+    }
+
     /** Return true if this event has the same tag with the specified one,
      *  and their depths are the same.
      *  @param event The event to compare against.
@@ -174,7 +209,7 @@ public final class DEEvent implements Comparable {
      *  and their depths are the same.
      */
     public final boolean hasTheSameTagAndDepthAs(DEEvent event) {
-        return hasTheSameTagAs(event) && (depth() == event.depth());
+        return hasTheSameTagAs(event) && (_depth == event.depth());
     }
 
     /** Return true if this event has the same tag as the argument DE event.
@@ -182,8 +217,8 @@ public final class DEEvent implements Comparable {
      *  @return True if this event has the same tag as the specified one.
      */
     public final boolean hasTheSameTagAs(DEEvent event) {
-        return (timeStamp().equals(event.timeStamp()))
-                && (microstep() == event.microstep());
+        return (_timestamp.equals(event.timeStamp()))
+                && (_microstep == event.microstep());
     }
 
     /** Return the destination IO port of this event. Note that
@@ -213,27 +248,34 @@ public final class DEEvent implements Comparable {
      *  @return The token as a string with the time stamp.
      */
     public String toString() {
+        String name = "null";
+        if (_actor != null) {
+            name = ((NamedObj) _actor).getFullName();
+        }
         if (_ioPort != null) {
             return "DEEvent(time = " + _timestamp + ", microstep = "
                     + _microstep + ", depth = " + _depth + ", dest = "
-                    + ((NamedObj) _actor).getFullName() + "."
+                    + name + "."
                     + _ioPort.getName() + ").";
         } else {
             return "DEEvent(time = " + _timestamp + ", microstep = "
                     + _microstep + ", depth = " + _depth + ", dest = "
-                    + ((NamedObj) _actor).getFullName() + ")"
+                    + name + ")"
                     + " -- A PURE EVENT.";
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         package protected methods         ////
 
     /** Update the depth of this event if the new depth is no less than
      *  0. Otherwise, do nothing.
      *  @param newDepth The new depth for this event.
      */
-    protected void _updateDepth(int newDepth) {
+    void _updateDepth(int newDepth) {
+        // This method is package protected because the class is
+        // final and thus making this protected makes little sense.
+        // DEDirector calls _updateDepth in two locations
         if (_depth >= 0) {
             _depth = newDepth;
         }
