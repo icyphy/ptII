@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2007 The Regents of the University of California.
+# @Copyright (c) 1997-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -46,6 +46,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	NoPackageActor.java \
 	MoMLParserLeak.java \
 	RecorderErrorHandler.java \
 	TestIconLoader.java \
@@ -93,6 +94,7 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	ConstClassDefinition.xml \
+	NoPackageActors.xml \
 	UndoDeleteEntityComposite.xml \
 	p1.moml \
 	p2.moml \
