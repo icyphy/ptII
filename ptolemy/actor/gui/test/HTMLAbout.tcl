@@ -167,18 +167,6 @@ tag specially.
     <td><a href="about:links#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
-  <tr>
-    <code>ptolemy/configs/kepler/introScientists.htm</code>
-    <td><a href="about:demos#ptolemy/configs/kepler/introScientists.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/kepler/introScientists.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
-    <td><a href="about:checkModelSizes#ptolemy/configs/kepler/introScientists.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
-  </tr>
-  <tr>
-    <code>ptolemy/configs/kepler/introProgrammers.htm</code>
-    <td><a href="about:demos#ptolemy/configs/kepler/introProgrammers.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/kepler/introProgrammers.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
-    <td><a href="about:checkModelSizes#ptolemy/configs/kepler/introProgrammers.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
-  </tr>
 <tr rowspan=4><center><b>VisualSense</b></center></tr>
   <tr>
     <code>ptolemy/configs/visualsense/intro.htm</code>
