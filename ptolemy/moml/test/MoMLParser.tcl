@@ -876,8 +876,12 @@ set moml "$header $body"
 test MoMLParser-1.14 {test that instantiation of an entity fails} {
     $parser reset
     catch {set toplevel [$parser parse $moml]} msg
-    string range $msg 0 33
-} {ptolemy.moml.MissingClassException}
+    #string range $msg 0 33
+    regsub {in file:[^ ]*} $msg {in file:xxx} msg2
+    list [string range $msg2 0 189]
+} {{com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:xxx at line 7 and column 32
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: master}}
 
 ######################################################################
 ####
@@ -3881,7 +3885,7 @@ set moml "$header $body"
 test MoMLParser-23.1 {ClassNotFound} {
     $parser reset
     catch {set toplevel [$parser parse $moml]} msg
-    regsub {in file:[^ ]*} $msg {in file:xxx} msg2
+    regsub -all {in file:[^ ]*} $msg {in file:xxx} msg2
     list [string range $msg2 0 194]
 } {{com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:xxx at line 6 and column 35
 Caused by:

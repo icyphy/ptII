@@ -349,7 +349,7 @@ test MoMLVariableChecker-2.0 {Try to paste a class that does not exist} {
     </group>
   in .top
 Because:
-Attempt to extend an entity that is not a class: .ConstClassDefinition in [external stream] at line 2 and column 54}}
+Attempt to extend an entity that is not a class: .ConstClassDefinition className: ConstClassDefinition entityName: ConstClassInstance source: null in [external stream] at line 2 and column 54}}
 
 ######################################################################
 ####

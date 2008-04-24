@@ -3677,7 +3677,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 null);
             }
 
-            if (reference == null) {
+            if (reference == null
+                || !reference.isClassDefinition()) {
                 // No previously defined class with this name.
                 // First attempt to instantiate a Java class.
                 // If we throw an error or exception be sure to save the
@@ -3790,7 +3791,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _checkForNull(className, "Cannot create entity without a class name.");
 
         // Next check to see whether the class extends a named entity.
-        if (reference == null) {
+        if (reference == null
+                || (!reference.isClassDefinition() && newClass != null)) {
+
             // Not a named entity. Instantiate a Java class.
             if (_current != null) {
                 // Not a top-level entity.
@@ -3851,7 +3854,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (!reference.isClassDefinition()) {
                 throw new MissingClassException(
                         "Attempt to extend an entity that "
-                                + "is not a class: " + reference.getFullName(),
+                                + "is not a class: " + reference.getFullName()
+                        + " className: " + className + " entityName: " + 
+                        entityName + " source: " + source,
                         reference.getFullName(), _currentExternalEntity(),
                         _getLineNumber(), _getColumnNumber());
             }
