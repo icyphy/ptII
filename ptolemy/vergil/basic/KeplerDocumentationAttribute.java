@@ -54,9 +54,8 @@ import ptolemy.kernel.util.Workspace;
  @author Chad Berkley
  @version $Id$
  @since Ptolemy II 6.1
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (johnr)
-
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class KeplerDocumentationAttribute extends Attribute implements
         Configurable {
@@ -92,45 +91,43 @@ public class KeplerDocumentationAttribute extends Attribute implements
     ////                         public methods                    ////
 
     /**
-     * Populates the members of KeplerDocumentationAttribute from
+     * Populate the members of KeplerDocumentationAttribute from
      * another given KeplerDccumentationAtttribute.
-     * @param da The DocumentationAttribute from which to copy attributes.
+     * @param documentationAttribute The DocumentationAttribute from which to copy attributes.
      */
-    public void createInstanceFromExisting(KeplerDocumentationAttribute da) {
-        //System.out.println("da att list: " + da.attributeList());
-        //need to get: description, author, version, userleveldocumentation, ports, properties
-        Iterator itt = da.attributeList().iterator();
-        while (itt.hasNext()) {
-            ConfigurableAttribute att = (ConfigurableAttribute) itt.next();
-            String attName = att.getName();
-            if (attName.equals("description")) {
-                this.description = att.getConfigureText();
-            } else if (attName.equals("author")) {
-                this.author = att.getConfigureText();
-            } else if (attName.equals("version")) {
-                this.version = att.getConfigureText();
-            } else if (attName.equals("userLevelDocumentation")) {
-                this.userLevelDocumentation = att.getConfigureText();
-            } else if (attName.indexOf("port:") != -1) { //add to the port hash
-                String portName = attName.substring(attName.indexOf(":") + 1,
-                        attName.length());
-                String portDesc = att.getConfigureText();
+    public void createInstanceFromExisting(KeplerDocumentationAttribute documentationAttribute) {
+        Iterator attributes = documentationAttribute.attributeList().iterator();
+        while (attributes.hasNext()) {
+            ConfigurableAttribute attribute = (ConfigurableAttribute) attributes.next();
+            String attributeName = attribute.getName();
+            if (attributeName.equals("description")) {
+                _description = attribute.getConfigureText();
+            } else if (attributeName.equals("author")) {
+                _author = attribute.getConfigureText();
+            } else if (attributeName.equals("version")) {
+                _version = attribute.getConfigureText();
+            } else if (attributeName.equals("userLevelDocumentation")) {
+                _userLevelDocumentation = attribute.getConfigureText();
+            } else if (attributeName.indexOf("port:") != -1) { //add to the port hash
+                String portName = attributeName.substring(attributeName.indexOf(":") + 1,
+                        attributeName.length());
+                String portDescription = attribute.getConfigureText();
                 if (portName != null) {
-                    if (portDesc == null) {
-                        portDesc = "";
+                    if (portDescription == null) {
+                        portDescription = "";
                     }
-                    portHash.put(portName, portDesc);
+                    _portHash.put(portName, portDescription);
                 }
 
-            } else if (attName.indexOf("prop:") != -1) { //add to the prop hash
-                String propName = attName.substring(attName.indexOf(":") + 1,
-                        attName.length());
-                String propDesc = att.getConfigureText();
-                if (propName != null) {
-                    if (propDesc == null) {
-                        propDesc = "";
+            } else if (attributeName.indexOf("prop:") != -1) { //add to the prop hash
+                String propertyName = attributeName.substring(attributeName.indexOf(":") + 1,
+                        attributeName.length());
+                String propertyDescription = attribute.getConfigureText();
+                if (propertyName != null) {
+                    if (propertyDescription == null) {
+                        propertyDescription = "";
                     }
-                    propertyHash.put(propName, propDesc);
+                    _propertyHash.put(propertyName, propertyDescription);
                 }
             }
         }
@@ -143,41 +140,40 @@ public class KeplerDocumentationAttribute extends Attribute implements
      */
     public void createEmptyFields(NamedObj target) {
         try {
-            ConfigurableAttribute authorAtt = new ConfigurableAttribute(this,
+            /*ConfigurableAttribute authorAtt =*/ new ConfigurableAttribute(this,
                     "author");
-            ConfigurableAttribute versionAtt = new ConfigurableAttribute(this,
+            /*ConfigurableAttribute versionAtt =*/ new ConfigurableAttribute(this,
                     "version");
-            ConfigurableAttribute descriptionAtt = new ConfigurableAttribute(
+            /*ConfigurableAttribute descriptionAtt =*/ new ConfigurableAttribute(
                     this, "description");
-            ConfigurableAttribute uldAtt = new ConfigurableAttribute(this,
+            /*ConfigurableAttribute uldAtt =*/ new ConfigurableAttribute(this,
                     "userLevelDocumentation");
 
-            this.author = "";
-            this.version = "";
-            this.description = "";
-            this.userLevelDocumentation = "";
+            _author = "";
+            _version = "";
+            _description = "";
+            _userLevelDocumentation = "";
 
-            Iterator attItt = target.attributeList().iterator();
-            while (attItt.hasNext()) {
-                Attribute a = (Attribute) attItt.next();
-                String aname = a.getName();
-                if (!aname.substring(0, 1).equals("_")
-                        && !aname.equals("KeplerDocumentation")) {
-                    propertyHash.put(a.getName(), "");
+            Iterator attributes = target.attributeList().iterator();
+            while (attributes.hasNext()) {
+                Attribute attribute = (Attribute) attributes.next();
+                String attributeName = attribute.getName();
+                if (!attributeName.substring(0, 1).equals("_")
+                        && !attributeName.equals("KeplerDocumentation")) {
+                    _propertyHash.put(attribute.getName(), "");
                 }
             }
 
             if (target instanceof Entity) {
-                Iterator portItt = ((Entity) target).portList().iterator();
-                while (portItt.hasNext()) {
-                    Port p = (Port) portItt.next();
-                    portHash.put(p.getName(), "");
+                Iterator ports = ((Entity) target).portList().iterator();
+                while (ports.hasNext()) {
+                    Port p = (Port) ports.next();
+                    _portHash.put(p.getName(), "");
                 }
             }
-        } catch (Exception e) {
-            System.out
-                    .println("Could not add KeplerDocumentation internal attributes: "
-                            + e.getMessage());
+        } catch (Exception ex) {
+            throw new InternalErrorException(this, ex, 
+                    "Could not add KeplerDocumentation internal attributes.");
         }
     }
 
@@ -192,56 +188,46 @@ public class KeplerDocumentationAttribute extends Attribute implements
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         createInstanceFromExisting(this);
-        StringBuffer sb = new StringBuffer();
-        sb.append("<property name=\"" + name + "\" class=\"" + getClassName());
-        sb.append("\">\n");
-        //description
-        sb
-                .append("<property name=\"description\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">");
-        sb.append("<configure>" + description + "</configure>");
-        sb.append("</property>\n");
+        StringBuffer results = new StringBuffer(
+                "<property name=\"" + name + "\" class=\"" + getClassName()
+                + "\">\n"
+                + "<property name=\"description\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                + "<configure>" + _description + "</configure>"
+                + "</property>\n"
+                + "<property name=\"author\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                + "<configure>" + _author + "</configure>"
+                + "</property>\n"
+                + "<property name=\"version\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                + "<configure>" + _version + "</configure>"
+                + "</property>\n"
+                + "<property name=\"userLevelDocumentation\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                + "<configure>" + _userLevelDocumentation + "</configure>"
+                + "</property>\n");
 
-        sb
-                .append("<property name=\"author\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">");
-        sb.append("<configure>" + author + "</configure>");
-        sb.append("</property>\n");
-
-        sb
-                .append("<property name=\"version\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">");
-        sb.append("<configure>" + version + "</configure>");
-        sb.append("</property>\n");
-
-        sb
-                .append("<property name=\"userLevelDocumentation\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">");
-        sb.append("<configure>" + userLevelDocumentation + "</configure>");
-        sb.append("</property>\n");
-
-        Enumeration portKeys = portHash.keys();
+        Enumeration portKeys = _portHash.keys();
         while (portKeys.hasMoreElements()) {
             String key = (String) portKeys.nextElement();
-            String val = (String) portHash.get(key);
-            sb
-                    .append("<property name=\"port:"
+            String val = (String) _portHash.get(key);
+            results.append("<property name=\"port:"
                             + key
-                            + "\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">");
-            sb.append("<configure>" + val + "</configure>");
-            sb.append("</property>\n");
+                            + "\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                    + "<configure>" + val + "</configure>"
+                    + "</property>\n");
         }
 
-        Enumeration propKeys = propertyHash.keys();
+        Enumeration propKeys = _propertyHash.keys();
         while (propKeys.hasMoreElements()) {
             String key = (String) propKeys.nextElement();
-            String val = (String) propertyHash.get(key);
-            sb
-                    .append("<property name=\"prop:"
+            String val = (String) _propertyHash.get(key);
+            results.append("<property name=\"prop:"
                             + key
-                            + "\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">");
-            sb.append("<configure>" + val + "</configure>");
-            sb.append("</property>\n");
+                            + "\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
+                    + "<configure>" + val + "</configure>"
+                    + "</property>\n");
         }
 
-        sb.append("</property>");
-        output.write(sb.toString());
+        results.append("</property>");
+        output.write(results.toString());
     }
 
     /**
@@ -250,36 +236,34 @@ public class KeplerDocumentationAttribute extends Attribute implements
      */
     public String toDocML() {
         createInstanceFromExisting(this);
-        StringBuffer sb = new StringBuffer();
-        sb.append("<?xml version=\"1.0\" standalone=\"yes\"?>\n");
-        sb.append("<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\"");
-        sb
-                .append("\"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n");
-        sb
-                .append("<doc name=\"" + docName + "\" class=\"" + docClass
-                        + "\">\n");
-        sb.append("<description>\n" + userLevelDocumentation
-                + "\n</description>\n");
-        sb.append("<author>" + author + "</author>\n");
+        StringBuffer results = new StringBuffer(
+                "<?xml version=\"1.0\" standalone=\"yes\"?>\n"
+                + "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\""
+                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n"
+                + "<doc name=\"" + _docName + "\" class=\"" + _docClass
+                + "\">\n"
+                + "<description>\n" + _userLevelDocumentation
+                + "\n</description>\n"
+                + "<author>" + _author + "</author>\n");
 
-        Enumeration portItt = portHash.keys();
-        while (portItt.hasMoreElements()) {
-            String name = (String) portItt.nextElement();
-            String desc = (String) portHash.get(name);
-            sb.append("<port name=\"" + name + "\">");
-            sb.append(desc).append("</port>\n");
+        Enumeration ports = _portHash.keys();
+        while (ports.hasMoreElements()) {
+            String name = (String) ports.nextElement();
+            String desc = (String) _portHash.get(name);
+            results.append("<port name=\"" + name + "\">"
+                    + desc + "</port>\n");
         }
 
-        Enumeration propItt = propertyHash.keys();
+        Enumeration propItt = _propertyHash.keys();
         while (propItt.hasMoreElements()) {
             String name = (String) propItt.nextElement();
-            String desc = (String) propertyHash.get(name);
-            sb.append("<property name=\"" + name + "\">");
-            sb.append(desc).append("</property>\n");
+            String desc = (String) _propertyHash.get(name);
+            results.append("<property name=\"" + name + "\">"
+                    + desc + "</property>\n");
         }
 
-        sb.append("</doc>\n");
-        return sb.toString();
+        results.append("</doc>\n");
+        return results.toString();
     }
 
     /**
@@ -292,42 +276,40 @@ public class KeplerDocumentationAttribute extends Attribute implements
     public DocAttribute getDocAttribute(NamedObj target) {
         createInstanceFromExisting(this);
         try {
-            DocAttribute da = new DocAttribute(target.workspace());
-            da.setContainer(target);
-            //da.setName("keplerFormattedPTIIDocumentation");
-            da.author = new StringAttribute(da, "author");
-            da.author.setExpression(author);
-            da.version = new StringAttribute(da, "version");
-            da.version.setExpression(version);
-            da.since = new StringAttribute(da, "since");
-            da.since.setExpression("");
-            da.description = new StringParameter(da, "description");
-            da.description.setExpression(userLevelDocumentation);
+            DocAttribute documentationAttribute = new DocAttribute(target.workspace());
+            documentationAttribute.setContainer(target);
+            //documentationAttribute.setName("keplerFormattedPTIIDocumentation");
+            documentationAttribute.author = new StringAttribute(documentationAttribute, "author");
+            documentationAttribute.author.setExpression(_author);
+            documentationAttribute.version = new StringAttribute(documentationAttribute, "version");
+            documentationAttribute.version.setExpression(_version);
+            documentationAttribute.since = new StringAttribute(documentationAttribute, "since");
+            documentationAttribute.since.setExpression("");
+            documentationAttribute.description = new StringParameter(documentationAttribute, "description");
+            documentationAttribute.description.setExpression(_userLevelDocumentation);
 
             //add ports and params
-            Enumeration portItt = portHash.keys();
-            while (portItt.hasMoreElements()) {
-                String name = (String) portItt.nextElement();
-                String desc = (String) portHash.get(name);
-                StringAttribute sa = new StringAttribute(da, name + " (port)");
-                sa.setExpression(desc);
+            Enumeration ports = _portHash.keys();
+            while (ports.hasMoreElements()) {
+                String name = (String) ports.nextElement();
+                String description = (String) _portHash.get(name);
+                StringAttribute attribute = new StringAttribute(documentationAttribute, name + " (port)");
+                attribute.setExpression(description);
             }
 
-            Enumeration propItt = propertyHash.keys();
+            Enumeration propItt = _propertyHash.keys();
             while (propItt.hasMoreElements()) {
                 String name = (String) propItt.nextElement();
-                String desc = (String) propertyHash.get(name);
-                StringParameter sp = new StringParameter(da, name
+                String description = (String) _propertyHash.get(name);
+                StringParameter parameter = new StringParameter(documentationAttribute, name
                         + " (parameter)");
-                sp.setExpression(desc);
+                parameter.setExpression(description);
             }
 
-            return da;
-        } catch (Exception e) {
-            System.out
-                    .println("Error creating docAttribute: " + e.getMessage());
-            e.printStackTrace();
-            return null;
+            return documentationAttribute;
+        } catch (Exception ex) {
+            throw new InternalErrorException(this, ex, 
+                    "Error creating docAttribute.");
         }
 
     }
@@ -347,15 +329,15 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @param name The name of this document.
      */
     public void setDocName(String name) {
-        this.docName = name;
+        _docName = name;
     }
 
     /** return the document name
      * @return the document name
      */
     public String getDocName() {
-        if (!docName.equals("null")) {
-            return this.docName;
+        if (!_docName.equals("null")) {
+            return _docName;
         } else {
             return "";
         }
@@ -365,15 +347,15 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @param className The name of this docClass.
      */
     public void setDocClass(String className) {
-        this.docClass = className;
+        _docClass = className;
     }
 
     /** return the document class
      * @return the document class
      */
     public String getDocClass() {
-        if (!docClass.equals("null")) {
-            return this.docClass;
+        if (!_docClass.equals("null")) {
+            return _docClass;
         } else {
             return "";
         }
@@ -383,19 +365,19 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @param description The description.
      */
     public void setDescription(String description) {
-        this.description = description;
+        _description = description;
     }
 
     /** return the description
      * @return the description
      */
     public String getDescription() {
-        if (description == null) {
+        if (_description == null) {
             return "";
         }
 
-        if (!description.equals("null")) {
-            return this.description;
+        if (!_description.equals("null")) {
+            return _description;
         } else {
             return "";
         }
@@ -405,19 +387,19 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @param author The author.
      */
     public void setAuthor(String author) {
-        this.author = author;
+        _author = author;
     }
 
     /** return the author
      * @return the author
      */
     public String getAuthor() {
-        if (author == null) {
+        if (_author == null) {
             return "";
         }
 
-        if (!author.equals("null")) {
-            return this.author;
+        if (!_author.equals("null")) {
+            return _author;
         } else {
             return "";
         }
@@ -427,19 +409,19 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @param version The version.
      */
     public void setVersion(String version) {
-        this.version = version;
+        _version = version;
     }
 
     /** return the version
      * @return the version
      */
     public String getVersion() {
-        if (version == null) {
+        if (_version == null) {
             return "";
         }
 
-        if (!version.equals("null")) {
-            return this.version;
+        if (!_version.equals("null")) {
+            return _version;
         } else {
             return "";
         }
@@ -449,19 +431,19 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @param userLevelDocumentation The user level documentation.
      */
     public void setUserLevelDocumentation(String userLevelDocumentation) {
-        this.userLevelDocumentation = userLevelDocumentation;
+        _userLevelDocumentation = userLevelDocumentation;
     }
 
     /** return the user level documentation
      * @return the user level documentation
      */
     public String getUserLevelDocumentation() {
-        if (userLevelDocumentation == null) {
+        if (_userLevelDocumentation == null) {
             return "";
         }
 
-        if (!userLevelDocumentation.equals("null")) {
-            return this.userLevelDocumentation;
+        if (!_userLevelDocumentation.equals("null")) {
+            return _userLevelDocumentation;
         } else {
             return "";
         }
@@ -471,14 +453,14 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @param portHash The port hash.
      */
     public void setPortHash(Hashtable portHash) {
-        this.portHash = portHash;
+        _portHash = portHash;
     }
 
     /** return the port hash
      * @return the port has
      */
     public Hashtable getPortHash() {
-        return this.portHash;
+        return _portHash;
     }
 
     /** Add port to the port hashtable.
@@ -487,8 +469,8 @@ public class KeplerDocumentationAttribute extends Attribute implements
      */
     public void addPort(String name, String value)
             throws IllegalActionException, NameDuplicationException {
-        portHash.put(name, value);
-        ConfigurableAttribute port = new ConfigurableAttribute(this, "port:"
+        _portHash.put(name, value);
+        /*ConfigurableAttribute port =*/ new ConfigurableAttribute(this, "port:"
                 + name);
     }
 
@@ -496,21 +478,21 @@ public class KeplerDocumentationAttribute extends Attribute implements
      * @return the port docs
      */
     public String getPort(String name) {
-        return (String) portHash.get(name);
+        return (String) _portHash.get(name);
     }
 
     /** Set the property hashtable.
      *  @param propertyHash The property hashtable.
      */
     public void setPropertyHash(Hashtable propertyHash) {
-        this.propertyHash = propertyHash;
+        _propertyHash = propertyHash;
     }
 
-    /** return the property hash
+    /** Return the property hash
      * @return the property hash
      */
     public Hashtable getPropertyHash() {
-        return this.propertyHash;
+        return _propertyHash;
     }
 
     /** Add a property to the property hashtable.
@@ -519,16 +501,16 @@ public class KeplerDocumentationAttribute extends Attribute implements
      */
     public void addProperty(String name, String value)
             throws NameDuplicationException, IllegalActionException {
-        propertyHash.put(name, value);
-        ConfigurableAttribute ca = new ConfigurableAttribute(this, "prop:"
+        _propertyHash.put(name, value);
+        /* ConfigurableAttribute ca =*/ new ConfigurableAttribute(this, "prop:"
                 + name);
     }
 
-    /** return the property docs
+    /** Return the property docs.
      * @return the property docs
      */
     public String getProperty(String name) {
-        return (String) this.propertyHash.get(name);
+        return (String) _propertyHash.get(name);
     }
 
     /** Configure this documentation attribute.
@@ -564,19 +546,19 @@ public class KeplerDocumentationAttribute extends Attribute implements
     private String text;
 
     //members for DocumenationAttribute
-    private String docName;
+    private String _docName;
 
-    private String docClass;
+    private String _docClass;
 
-    private String description;
+    private String _description;
 
-    private String author;
+    private String _author;
 
-    private String version;
+    private String _version;
 
-    private String userLevelDocumentation;
+    private String _userLevelDocumentation;
 
-    private Hashtable portHash = new Hashtable();
+    private Hashtable _portHash = new Hashtable();
 
-    private Hashtable propertyHash = new Hashtable();
+    private Hashtable _propertyHash = new Hashtable();
 }
