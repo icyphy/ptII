@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RijndaelEncryption" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 502]">
     </property>
@@ -39,7 +39,7 @@ http://home.ecn.ab.ca/~jsavard/crypto/co040801.htm</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 240.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 21, 761, 620}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 21, 761, 619}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -708,7 +708,7 @@ internal models.
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4 * blockSize">
                     </property>
                 </port>
             </entity>
@@ -980,7 +980,7 @@ the 128 bit user key as a seed.</text></svg></configure>
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
-                        <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
+                        <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4 * blockSize">
                         </property>
                     </port>
                 </entity>
@@ -1090,14 +1090,12 @@ the 128 bit user key as a seed.</text></svg></configure>
                 </property>
                 <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
                     <property name="input"/>
-                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="{unsignedByte}">
-                    </property>
                 </port>
                 <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
                     <property name="output"/>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="SubRotWord">
+                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
@@ -1147,6 +1145,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <entity name="DoNothing" class="ptolemy.domains.fsm.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="DoNothing">
                         </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 225.0">
@@ -1154,6 +1154,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </entity>
                     <entity name="SubRotWord" class="ptolemy.domains.fsm.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="SubRotWord">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                         </property>
@@ -1261,7 +1263,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         </property>
                         <port name="output" class="ptolemy.actor.TypedIOPort">
                             <property name="output"/>
-                            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
+                            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4 * blockSize">
                             </property>
                         </port>
                     </entity>
@@ -1502,7 +1504,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="output"/>
             </port>
             <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
+                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
@@ -1566,6 +1568,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <entity name="regular" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="regular">
                     </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 235.0]">
@@ -1574,6 +1578,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <entity name="final" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="final">
                     </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 225.0">
@@ -1581,6 +1587,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </entity>
                 <entity name="init" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="init">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
@@ -2014,9 +2022,11 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
             <link port="init.intermediate cipher" relation="intermediate cipherRelation"/>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Intermediate Round Output">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={234, 511, 334, 241}, maximized=false}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={234, 511, 347, 237}, maximized=false}">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+            </property>
+            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Intermediate Round Output">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 235.0]">
             </property>
@@ -2052,9 +2062,11 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
         <link port="convertToString.port2" relation="relation3"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Encrypted Block">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={576, 509, 334, 241}, maximized=false}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={576, 509, 330, 237}, maximized=false}">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Encrypted Block">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 205.0]">
         </property>
