@@ -138,6 +138,7 @@ public class DocAttribute extends SingletonAttribute {
      *   is none.
      */
     public String getParameterDoc(String name) {
+        // FIXME: why is this a StringParameter and getPortDoc is a StringAttribute
         StringParameter parameterAttribute = (StringParameter) getAttribute(name
                 + " (parameter)");
         if (parameterAttribute != null) {
