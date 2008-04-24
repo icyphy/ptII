@@ -32,7 +32,7 @@
 
 ME =		ptolemy/vergil/basic
 
-DIRS =		img
+DIRS =		img tests
 
 # Root of the Java directory
 ROOT =		../../..
@@ -58,6 +58,7 @@ JSRCS = \
 	AbstractBasicGraphModel.java \
 	BasicGraphController.java \
 	BasicGraphFrame.java \
+	ContextMenuFactoryCreator.java \
 	CustomizeDocumentationAction.java \
 	DocAttribute.java \
 	DocViewerFactory.java \
