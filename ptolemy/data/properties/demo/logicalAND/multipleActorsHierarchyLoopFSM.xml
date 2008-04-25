@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="multipleActorsHierarchyLoopFSM" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel_20080331">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1288, 1032}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1288, 1042}, maximized=false}">
         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
         </property>
     </property>
@@ -12,11 +12,11 @@
         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9387965881368">
         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
         </property>
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{399.3923141891892, 339.945945945946}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{446.0834656830578, 380.4783730916519}">
         <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
         </property>
     </property>
@@ -44,7 +44,7 @@
         </property>
         <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="C:\temp\ConstraintFiles\trainedConstraints">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, -65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, -60.0]">
         </property>
     </property>
     <property name="Par_3" class="ptolemy.data.expr.Parameter" value="(22 + Par_1) * Par_2">
@@ -86,11 +86,11 @@
         </property>
     </property>
     <property name="PropertyRemover" class="ptolemy.data.properties.PropertyRemover">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 0.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
         </property>
@@ -98,13 +98,13 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Ramp: &#10;init == 0 ==&gt; False&#10;else      ==&gt; True&#10;step connected ==&gt; same as step property">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Relation of properties across&#10;inputs and outputs of the Ramp&#10;is given in a helper class to be: &#10;init == 0 ==&gt; False&#10;else      ==&gt; True&#10;step connected ==&gt; same as step property">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, -35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, -75.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
         </property>
@@ -112,13 +112,13 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Scale: &#10;init == 0 ==&gt; False&#10;else      ==&gt; same as Input">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Scale: &#10;factor == 0 ==&gt; False&#10;else      ==&gt; same as Input">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 425.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
         </property>
@@ -128,13 +128,69 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Const: &#10;same as Expression">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-120.0, 285.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 290.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a simple example on how to annotate properties using a constraint solver algorithm.&#10;&#10;Initially the algorithm collects special constraints for Ramp and Scale Actors and default constraints for the rest of the &#10;model according to the definition in the Solver Attribute (blue box). The solver initializes all properties to True and then &#10;finds the least fixed point so that all constraints are fullfilled. The property dependencies are defined as a lattice.&#10;&#10;The constraints and lattice in this example express a logical AND, e.g. if properties of all inputs of an AtomicActor &#10;are True then the properties of all outputs are True. &#10;&#10;Authors: Thomas Mandl, Man-Kit Leung">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a simple example on how to annotate properties using a constraint solver algorithm.&#10;Initially the algorithm collects special constraints for Ramp and Scale Actors and default constraints for the rest of the &#10;model according to the definition in the Solver Attribute (blue box). The solver initializes all properties to True and then &#10;finds the least fixed point so that all constraints are satisfied. The constraints are given as inequalities over a lattice.&#10;The default constraints for an actor on the lattice in this example express a logical AND, i.e. if properties of all inputs&#10;of an actor are True, then the properties of all outputs are True. &#10;&#10;Authors: Thomas Mandl, Man-Kit Leung">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 605.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 590.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, -75.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, -5.0]">
+        </property>
+    </property>
+    <property name="Line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, -55.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="50.0">
+        </property>
+    </property>
+    <property name="Line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, -55.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+    </property>
+    <property name="Line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, -55.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-5.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This property lattice has two elements, and the solver&#10;finds the least fixed point. To see the default&#10;constraints, Alt-Double Click on the blue box above.&#10;To solve for the fixed point, Double Click on it.&#10;Blue indicates &quot;false&quot; and green indicates &quot;true&quot;.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Thomas Mandl, Man-Kit Leung">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 545.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -179,7 +235,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 165.0]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -191,7 +247,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 325.0]">
         </property>
     </entity>
     <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
@@ -342,7 +398,7 @@
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 265.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={331, 296, 815, 585}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 815, 595}, maximized=false}">
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </property>
@@ -510,7 +566,7 @@
     <entity name="Table3" class="ptolemy.actor.lib.LookupTable">
         <property name="table" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4,5}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 165.0]">
         </property>
     </entity>
     <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
@@ -636,6 +692,14 @@
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 517}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0989010989011">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-5.0, 3.0899257381443}">
             </property>
             <port name="in1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -816,10 +880,18 @@
                 </property>
                 <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Scale: &#10;init == 0 ==&gt; False&#10;else      ==&gt; same as Input">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Scale: &#10;factor == 0 ==&gt; False&#10;else      ==&gt; same as Input">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 175.0]">
                 </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 517}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <port name="in1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -854,7 +926,7 @@
                 </property>
             </entity>
             <entity name="Scale2" class="ptolemy.actor.lib.Scale">
-                <property name="factor" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -891,7 +963,7 @@
             <link port="Scale2.output" relation="relation4"/>
         </entity>
         <entity name="state3" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 258, 815, 507}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 258, 815, 517}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -1138,6 +1210,14 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -1145,10 +1225,8 @@
     <relation name="relation24" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-    </relation>
-    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
+        <vertex name="vertex1" value="{765.0, -55.0}">
+        </vertex>
     </relation>
     <link port="Ramp.output" relation="relation3"/>
     <link port="Ramp2.output" relation="relation2"/>
@@ -1156,8 +1234,8 @@
     <link port="MonitorValue.input" relation="relation10"/>
     <link port="Expression.output" relation="relation25"/>
     <link port="Maximum.input" relation="relation"/>
-    <link port="Maximum.input" relation="relation24"/>
     <link port="Maximum.input" relation="relation25"/>
+    <link port="Maximum.input" relation="relation16"/>
     <link port="Maximum.maximumValue" relation="relation7"/>
     <link port="Maximum.channelNumber" relation="relation6"/>
     <link port="BooleanSelect.trueInput" relation="relation3"/>
@@ -1197,8 +1275,8 @@
     <link port="Scale.output" relation="relation18"/>
     <link port="ModalModel.in1" relation="relation5"/>
     <link port="ModalModel.in2" relation="relation22"/>
-    <link port="ModalModel.out1" relation="relation24"/>
-    <link port="ModalModel.out2" relation="relation23"/>
+    <link port="ModalModel.out1" relation="relation23"/>
+    <link port="ModalModel.out2" relation="relation16"/>
     <link port="Const3.output" relation="relation22"/>
     <link port="Const4.output" relation="relation5"/>
     <link relation1="relation18" relation2="relation17"/>
