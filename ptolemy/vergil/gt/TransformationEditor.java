@@ -116,7 +116,6 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -542,22 +541,11 @@ public class TransformationEditor extends GTFrame implements
         GUIUtilities.addMenuItem(_ruleMenu, layoutAction);
 
         GraphController controller = (GraphController) _getGraphController();
-        if (getFrameController().hasTabs()) {
-            if (controller instanceof ActorEditorGraphController) {
-                _ruleMenu.addSeparator();
-                Action newRelationAction =
-                    ((ActorEditorGraphController) controller)
-                            .new NewRelationAction();
-                GUIUtilities.addMenuItem(_ruleMenu, newRelationAction);
-                GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
-            }
-        } else {
-            if (controller instanceof RunnableGraphController) {
-                ((RunnableGraphController) controller).addToMenuAndToolbar(
-                        _ruleMenu, _toolbar);
-            }
-            _removeUnusedToolbarButtons();
+        if (controller instanceof RunnableGraphController) {
+            ((RunnableGraphController) controller).addToMenuAndToolbar(
+                    _ruleMenu, _toolbar);
         }
+        _removeUnusedToolbarButtons();
 
         GUIUtilities.addToolBarButton(_toolbar, singleMatchAction);
         GUIUtilities.addToolBarButton(_toolbar, batchMatchAction);

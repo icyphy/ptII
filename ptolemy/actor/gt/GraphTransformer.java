@@ -366,7 +366,7 @@ public class GraphTransformer extends ChangeRequest {
 
             // Copy entities and relations.
             Collection<?> children = GTTools.getChildren(replacement, false,
-                    false, true, true);
+                    true, true, true);
             for (Object childObject : children) {
                 NamedObj child = (NamedObj) childObject;
                 NamedObj hostChild = _replacementToHost.get(child);
@@ -661,11 +661,15 @@ public class GraphTransformer extends ChangeRequest {
                 try {
                     patternEntity.workspace().getReadAccess();
                     List<?> patternPortList = patternEntity.portList();
-                    List<?> replacementPortList = replacementEntity.portList();
                     for (int i = 0; i < patternPortList.size(); i++) {
                         Port patternPort = (Port) patternPortList.get(i);
-                        Port replacementPort = (Port) replacementPortList.get(i);
-                        _patternToReplacement.put(patternPort, replacementPort);
+                        String portName = patternPort.getName();
+                        Port replacementPort = replacementEntity.getPort(
+                                portName);
+                        if (replacementPort != null) {
+                            _patternToReplacement.put(patternPort,
+                                    replacementPort);
+                        }
                     }
                 } finally {
                     patternEntity.workspace().doneReading();
@@ -1010,7 +1014,7 @@ public class GraphTransformer extends ChangeRequest {
                 new HashMap<NamedObj, Boolean>();
             Set<NamedObj> newChildren = new HashSet<NamedObj>();
             host.workspace().getReadAccess();
-            Collection<?> children = GTTools.getChildren(host, false, false,
+            Collection<?> children = GTTools.getChildren(host, false, true,
                     true, true);
             while (!children.isEmpty()) {
                 childrenToRemove.clear();
