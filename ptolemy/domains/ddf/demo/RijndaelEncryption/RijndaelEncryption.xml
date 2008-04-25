@@ -264,7 +264,7 @@ to all instances.</text></svg></configure>
         <link port="PadToTwoChars.input" relation="relation8"/>
     </class>
     <entity name="rijndael" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 205.0}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 567]">
         </property>
@@ -333,7 +333,7 @@ internal models.
             <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, -100.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 1, 996, 685}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 996, 684}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -870,7 +870,7 @@ the 128 bit user key as a seed.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 420.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {58, 90, 894, 511}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={58, 90, 894, 519}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -1095,8 +1095,6 @@ the 128 bit user key as a seed.</text></svg></configure>
                     <property name="output"/>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
@@ -1125,7 +1123,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="cycle" class="ptolemy.data.expr.Parameter" value="3">
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {136, 154, 751, 459}, maximized = false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 150, 751, 467}, maximized=false}">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
@@ -1154,6 +1152,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </entity>
                     <entity name="SubRotWord" class="ptolemy.domains.fsm.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="SubRotWord">
+                        </property>
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
@@ -1504,8 +1504,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="output"/>
             </port>
             <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
@@ -1532,7 +1530,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="round" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 234, 725, 468}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 150, 725, 467}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -1587,6 +1585,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </entity>
                 <entity name="init" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="init">
+                    </property>
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
