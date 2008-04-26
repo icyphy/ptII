@@ -50,8 +50,6 @@ import ptolemy.data.UnionToken;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
-// FIXME: data.expr should not depend on the domains, it means that
-// fsm is required for all Ptolemy configurations.
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
