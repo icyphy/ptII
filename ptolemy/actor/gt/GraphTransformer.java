@@ -141,27 +141,19 @@ public class GraphTransformer extends ChangeRequest {
 
     protected void _addConnections() throws TransformationException {
         for (NamedObj replacement : _replacementToHost.keySet()) {
-            if (!(replacement instanceof Port
-                    || replacement instanceof Relation)) {
+            if (!(replacement instanceof Port)) {
                 continue;
             }
 
             NamedObj host = _replacementToHost.get(replacement);
             List<?> replacementLinkedList;
             List<?> hostLinkdList;
-            if (replacement instanceof Port && host instanceof Port) {
+            if (host instanceof Port) {
                 replacementLinkedList = new LinkedList<Object>(
                         (Collection<?>) ((Port) replacement)
                         .linkedRelationList());
                 hostLinkdList = new LinkedList<Object>(
                         (Collection<?>) ((Port) host).linkedRelationList());
-            } else if (replacement instanceof Relation
-                    && host instanceof Relation) {
-                replacementLinkedList = new LinkedList<Object>(
-                        (Collection<?>) ((Relation) replacement)
-                        .linkedObjectsList());
-                hostLinkdList = new LinkedList<Object>(
-                        (Collection<?>) ((Relation) host).linkedObjectsList());
             } else {
                 continue;
             }
