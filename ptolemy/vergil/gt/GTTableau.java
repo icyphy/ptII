@@ -97,7 +97,8 @@ public class GTTableau extends Tableau {
 
         if (!(model instanceof TransformationRule
                 || model instanceof CompositeActorMatcher
-                || model instanceof FSMMatcher)) {
+                || model instanceof FSMMatcher
+                || !model.attributeList(Factory.class).isEmpty())) {
             throw new IllegalActionException(this,
                     "Cannot edit a model that is not a SingleRuleTransformer "
                             + "or a CompositeActorMatcher.");
@@ -122,7 +123,8 @@ public class GTTableau extends Tableau {
             LibraryAttribute defaultLibrary) {
         if (!(model instanceof TransformationRule
                 || model instanceof CompositeActorMatcher
-                || model instanceof FSMMatcher)) {
+                || model instanceof FSMMatcher
+                || !model.attributeList(Factory.class).isEmpty())) {
             throw new InternalErrorException(this, null, "Composite Entity \""
                     + model.getFullName() + "\" is not an instance of "
                     + "SingleRuleTransformer or CompositeActorMatcher.");
@@ -181,7 +183,8 @@ public class GTTableau extends Tableau {
 
             if (model instanceof TransformationRule
                     || model instanceof CompositeActorMatcher
-                    || model instanceof FSMMatcher) {
+                    || model instanceof FSMMatcher
+                    || !model.attributeList(Factory.class).isEmpty()) {
                 LibraryAttribute library;
                 if (model instanceof FSMMatcher) {
                     library = (LibraryAttribute) getAttribute("state",

@@ -33,6 +33,14 @@ import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.data.MatchResult;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtLeafNode;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParseTreeWriter;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.PtParserTreeConstants;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -66,5 +74,34 @@ public abstract class Operation extends GTIngredient {
             Replacement replacement, MatchResult matchResult,
             Entity patternEntity, Entity replacementEntity, Entity hostEntity)
             throws IllegalActionException;
+
+    protected ASTPtLeafNode _evaluate(ASTPtRootNode node,
+            ParseTreeEvaluator evaluator, ParserScope scope)
+            throws IllegalActionException {
+        Token token = evaluator.evaluateParseTree(node, scope);
+        ASTPtLeafNode newNode = new ASTPtLeafNode(
+                PtParserTreeConstants.JJTPTLEAFNODE);
+        newNode.setToken(token);
+        newNode.setType(token.getType());
+        newNode.setConstant(true);
+        return newNode;
+    }
+
+    protected ParseTreeWriter _parseTreeWriter = new ParseTreeWriter() {
+
+        public void visitLeafNode(ASTPtLeafNode node)
+        throws IllegalActionException {
+            if (node.isConstant() && node.isEvaluated()) {
+                Token token = node.getToken();
+                if (token instanceof StringToken) {
+                    // For StringToken, call stringValue instead of toString to
+                    // avoid having an extra pair of quotes.
+                    _writer.write(((StringToken) token).stringValue());
+                    return;
+                }
+            }
+            super.visitLeafNode(node);
+        }
+    };
 
 }

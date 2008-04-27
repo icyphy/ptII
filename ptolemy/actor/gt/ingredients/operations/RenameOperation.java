@@ -28,12 +28,22 @@ package ptolemy.actor.gt.ingredients.operations;
 
 import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.GTIngredientList;
+import ptolemy.actor.gt.GTParameter;
+import ptolemy.actor.gt.NamedObjVariable;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.data.MatchResult;
+import ptolemy.actor.gt.util.PtolemyExpressionString;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.ASTPtLeafNode;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ASTPtSumNode;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 
@@ -56,28 +66,59 @@ public class RenameOperation extends Operation {
 
     public RenameOperation(GTIngredientList owner, String values) {
         super(owner, 1);
+
+        NamedObj container = owner.getOwner().getContainer();
+        _name = new PtolemyExpressionString(container, "");
         setValues(values);
     }
 
     public ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
-            Entity patternEntity, Entity replacementEntity, Entity hostEntity) {
-        if (isNameEnabled()) {
-            NamedObj parent = hostEntity.getContainer();
-            String moml = "<entity name=\"" + hostEntity.getName()
-                    + "\"><rename name=\"" + _name + "\"/></entity>";
-            return new MoMLChangeRequest(this, parent, moml, null);
-        } else {
-            return null;
+            Entity patternEntity, Entity replacementEntity, Entity hostEntity)
+    throws IllegalActionException {
+        if (_valueParseTree == null) {
+            _reparse();
         }
+
+        ParserScope scope = NamedObjVariable.getNamedObjVariable(hostEntity,
+                true).getParserScope();
+        GTParameter.Evaluator evaluator = new GTParameter.Evaluator(pattern,
+                matchResult);
+
+        String name;
+        if (_valueParseTree instanceof ASTPtSumNode) {
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < _valueParseTree.jjtGetNumChildren(); i++) {
+                ASTPtRootNode child = (ASTPtRootNode) _valueParseTree
+                        .jjtGetChild(i);
+                if (!(child.isConstant()
+                        && child.getToken() instanceof StringToken)) {
+                    ASTPtLeafNode newNode = _evaluate(child, evaluator, scope);
+                    buffer.append(_parseTreeWriter
+                            .parseTreeToExpression(newNode));
+                } else {
+                    buffer.append(((StringToken) child.getToken())
+                            .stringValue());
+                }
+            }
+            name = buffer.toString();
+        } else if (!(_valueParseTree.isConstant()
+                && _valueParseTree.getToken() instanceof StringToken)) {
+            ASTPtRootNode newRoot = _evaluate(_valueParseTree, evaluator,
+                    scope);
+            name = _parseTreeWriter.parseTreeToExpression(newRoot);
+        } else {
+            name = _name.get();
+        }
+
+        NamedObj parent = hostEntity.getContainer();
+        String moml = "<entity name=\"" + hostEntity.getName()
+                + "\"><rename name=\"" + name + "\"/></entity>";
+        return new MoMLChangeRequest(this, parent, moml, null);
     }
 
     public GTIngredientElement[] getElements() {
         return _ELEMENTS;
-    }
-
-    public String getName() {
-        return _name;
     }
 
     public Object getValue(int index) {
@@ -91,39 +132,50 @@ public class RenameOperation extends Operation {
 
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
-        _encodeStringField(buffer, 0, _name);
+        _encodeStringField(buffer, 0, _name.get());
         return buffer.toString();
     }
 
-    public boolean isNameEnabled() {
-        return isEnabled(0);
+    public void setName(String name) {
+        _name.set(name);
+        _valueParseTree = null;
     }
 
     public void setValue(int index, Object value) {
         switch (index) {
         case 0:
-            _name = (String) value;
+            setName((String) value);
             break;
         }
     }
 
     public void setValues(String values) {
         FieldIterator fieldIterator = new FieldIterator(values);
-        _name = _decodeStringField(0, fieldIterator);
+        setName(_decodeStringField(0, fieldIterator));
     }
 
     public void validate() throws ValidationException {
-        if (_name.equals("")) {
-            throw new ValidationException("Name must not be empty.");
-        }
-        if (_name.contains(".")) {
-            throw new ValidationException("Name must not have period (\".\") "
-                    + "in it.");
+        if (_valueParseTree == null) {
+            try {
+                _reparse();
+            } catch (IllegalActionException e) {
+                throw new ValidationException(
+                        "Unable to parse attribute value.");
+            }
         }
     }
 
-    private static final OperationElement[] _ELEMENTS = { new StringOperationElement(
-            "name", false, true) };
+    protected void _reparse() throws IllegalActionException {
+        _valueParseTree = _parser.generateStringParseTree(_name.get());
+    }
 
-    private String _name;
+    private static final OperationElement[] _ELEMENTS = {
+        new StringOperationElement("name", false, true)
+    };
+
+    private PtolemyExpressionString _name;
+
+    private PtParser _parser = new PtParser();
+
+    private ASTPtRootNode _valueParseTree;
 }

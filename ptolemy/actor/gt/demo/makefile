@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/gt/demo
 
-DIRS =		ConstOptimization DiningPhilosophers HierarchyFlattening ModelGeneration PublisherTest RegressionTest
+DIRS =		ConstOptimization DiningPhilosophers HierarchyFlattening MapReduce ModelGeneration PublisherTest RegressionTest
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -52,6 +52,7 @@ PTCLASSALLJARS = \
 	ConstOptimization/ConstOptimization.jar \
 	DiningPhilosophers/DiningPhilosophers.jar \
 	HierarchyFlattening/HierarchyFlattening.jar \
+	MapReduce/MapReduce.jar \
 	ModelGeneration/ModelGeneration.jar \
 	PublisherTest/PublisherTest.jar \
 	RegressionTest/RegressionTest.jar

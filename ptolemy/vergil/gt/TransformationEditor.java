@@ -80,6 +80,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.DefaultDirectoryAttribute;
 import ptolemy.actor.gt.DefaultModelAttribute;
@@ -112,6 +113,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
@@ -684,23 +686,39 @@ public class TransformationEditor extends GTFrame implements
                 CompositeEntity actorLibrary = (CompositeEntity) configuration
                         .getEntity("actor library");
                 CompositeEntity library = gtLibrary.getLibrary();
+                Workspace workspace = actorLibrary.workspace();
                 try {
-                    actorLibrary.workspace().getReadAccess();
+                    workspace.getReadAccess();
                     for (Object entityObject : actorLibrary.entityList()) {
                         try {
                             ComponentEntity libraryEntity =
                                 (ComponentEntity) entityObject;
-                            ComponentEntity entity = (ComponentEntity) libraryEntity
-                                    .clone(library.workspace());
+                            ComponentEntity entity =
+                                (ComponentEntity) libraryEntity.clone(
+                                        library.workspace());
                             entity.setContainer(library);
                         } catch (Exception e) {
-                            // Ignore this entity in the actor library because we
-                            // don't know how to import it.
+                            // Ignore this entity in the actor library because
+                            // we don't know how to import it.
                         }
                     }
                 } finally {
-                    actorLibrary.workspace().doneReading();
+                    workspace.doneReading();
                 }
+
+                EntityLibrary utilitiesLibrary =
+                    (EntityLibrary) library.getEntity("Utilities");
+                for (Object entityObject : utilitiesLibrary.entityList()) {
+                    if (entityObject instanceof CompositeActor) {
+                        CompositeActor actor = (CompositeActor) entityObject;
+                        if (actor.attributeList(GTTableau.Factory.class)
+                                .isEmpty()) {
+                            new GTTableau.Factory(actor, actor.uniqueName(
+                                    "_tableauFactory"));
+                        }
+                    }
+                }
+
                 gtLibrary.setLibrary(library);
             } catch (Exception e) {
                 // Ignore, just return a library without any actors or

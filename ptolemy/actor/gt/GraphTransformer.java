@@ -835,11 +835,12 @@ public class GraphTransformer extends ChangeRequest {
             }
 
             String name;
-            if (hostObject instanceof Port) {
+            if (hostObject instanceof Port && hostRelation.getContainer()
+                    != ((Port) hostObject).getContainer()) {
                 Port port = (Port) hostObject;
                 name = port.getContainer().getName() + "." + port.getName();
             } else {
-                name = ((Relation) hostObject).getName();
+                name = ((NamedObj) hostObject).getName();
             }
 
             String moml = "<unlink port=\"" + name + "\" relation=\""

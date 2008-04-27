@@ -142,6 +142,9 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$LookbackList.class' \
 	'GraphMatcher$$NameComparator.class' \
 	'GraphMatcher$$ObjectList.class' \
+	'ModelExecutor$$Wrapper$$WrapperDirector.class' \
+	'ModelExecutor$$Wrapper.class' \
+	'ModelExecutor$$WrapperPort.class' \
 	'ToplevelTransformer$$TransformerPort.class' \
 	'TransformationAttribute$$TransformerAttribute.class' \
 	'TransformationRule$$1.class' \

@@ -36,6 +36,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 /**
 
@@ -89,15 +90,23 @@ public class Replacement extends CompositeActorMatcher {
         try {
             container.workspace().getReadAccess();
             if (container instanceof GTEntity) {
-                ((GTEntity) container).updateAppearance(attribute);
+                if (GTTools.getCorrespondingPatternObject(container)
+                        == attribute.getContainer()) {
+                    GTEntity gtEntity = (GTEntity) container;
+                    gtEntity.updateAppearance(attribute);
+                }
             }
             for (Object entity : container.entityList()) {
                 if (entity instanceof GTEntity) {
-                    GTEntity gtEntity = (GTEntity) entity;
-                    gtEntity.updateAppearance(attribute);
+                    if (GTTools.getCorrespondingPatternObject((NamedObj) entity)
+                            == attribute.getContainer()) {
+                        GTEntity gtEntity = (GTEntity) entity;
+                        gtEntity.updateAppearance(attribute);
+                    }
                 }
                 if (entity instanceof CompositeEntity) {
-                    _updateEntitiesAppearance((CompositeEntity) entity, attribute);
+                    _updateEntitiesAppearance((CompositeEntity) entity,
+                            attribute);
                 }
             }
         } finally {

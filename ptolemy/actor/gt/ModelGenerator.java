@@ -29,14 +29,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.gt;
 
-import ptolemy.actor.TypedAtomicActor;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Source;
 import ptolemy.data.ActorToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLParser;
@@ -56,7 +60,7 @@ example, to create animations.
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
 */
-public class ModelGenerator extends TypedAtomicActor {
+public class ModelGenerator extends Source {
 
     public ModelGenerator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -70,8 +74,8 @@ public class ModelGenerator extends TypedAtomicActor {
         modelName = new TypedIOPort(this, "modelName", true, false);
         modelName.setTypeEquals(BaseType.STRING);
 
-        model = new TypedIOPort(this, "model", false, true);
-        model.setTypeEquals(ActorToken.TYPE);
+        output.setName("model");
+        output.setTypeEquals(ActorToken.TYPE);
     }
 
     public Object clone() throws CloneNotSupportedException {
@@ -82,6 +86,8 @@ public class ModelGenerator extends TypedAtomicActor {
     }
 
     public void fire() throws IllegalActionException {
+        super.fire();
+
         try {
             Entity entity;
             if (moml.getWidth() > 0 && moml.hasToken(0)) {
@@ -95,14 +101,23 @@ public class ModelGenerator extends TypedAtomicActor {
                 entity = _emptyModel;
             }
 
+            URI uri;
             if (modelName.getWidth() > 0 && modelName.hasToken(0)) {
                 String name = ((StringToken) modelName.get(0)).stringValue();
                 entity.setName(name);
+                uri = _getModelURI(name);
             } else {
                 entity.setName("");
+                uri = _getModelURI("model");
             }
+            URIAttribute attribute = (URIAttribute) entity.getAttribute("_uri",
+                    URIAttribute.class);
+            if (attribute == null) {
+                attribute = new URIAttribute(entity, "_uri");
+            }
+            attribute.setURI(uri);
 
-            model.send(0, new ActorToken(entity));
+            output.send(0, new ActorToken(entity));
         } catch (Exception e) {
             throw new IllegalActionException(this, "Unable to parse moml.");
         }
@@ -115,11 +130,22 @@ public class ModelGenerator extends TypedAtomicActor {
                     moml.getWidth() == 0 && modelName.getWidth() == 0);
     }
 
-    public TypedIOPort model;
-
     public TypedIOPort modelName;
 
     public TypedIOPort moml;
+
+    private URI _getModelURI(String modelName) throws URISyntaxException {
+        URI uri = URIAttribute.getModelURI(this);
+        String path = uri.getPath();
+        int pos = path.lastIndexOf('/');
+        if (pos >= 0) {
+            path = path.substring(0, pos + 1) + modelName + ".xml";
+        } else {
+            path += "/" + modelName + ".xml";
+        }
+        return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
+                uri.getPort(), path, uri.getQuery(), uri.getFragment());
+    }
 
     private Entity _emptyModel;
 

@@ -36,15 +36,11 @@ import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.util.PtolemyExpressionString;
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ASTPtSumNode;
-import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.data.expr.ParseTreeWriter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
-import ptolemy.data.expr.PtParserTreeConstants;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
@@ -117,18 +113,21 @@ public class AttributeOperation extends Operation {
             for (int i = 0; i < _valueParseTree.jjtGetNumChildren(); i++) {
                 ASTPtRootNode child = (ASTPtRootNode) _valueParseTree
                         .jjtGetChild(i);
-                if (!(child.isConstant() && child.getToken() instanceof StringToken)) {
+                if (!(child.isConstant()
+                        && child.getToken() instanceof StringToken)) {
                     ASTPtLeafNode newNode = _evaluate(child, evaluator, scope);
-                    buffer.append(_parseTreeWriter
-                            .parseTreeToExpression(newNode));
+                    buffer.append(
+                            _parseTreeWriter.parseTreeToExpression(newNode));
                 } else {
                     buffer.append(((StringToken) child.getToken())
                             .stringValue());
                 }
             }
             expression = buffer.toString();
-        } else if (!(_valueParseTree.isConstant() && _valueParseTree.getToken() instanceof StringToken)) {
-            ASTPtRootNode newRoot = _evaluate(_valueParseTree, evaluator, scope);
+        } else if (!(_valueParseTree.isConstant()
+                && _valueParseTree.getToken() instanceof StringToken)) {
+            ASTPtRootNode newRoot = _evaluate(_valueParseTree, evaluator,
+                    scope);
             expression = _parseTreeWriter.parseTreeToExpression(newRoot);
         } else {
             expression = _attributeValue.get();
@@ -247,18 +246,6 @@ public class AttributeOperation extends Operation {
                 .generateStringParseTree(_attributeValue.get());
     }
 
-    private ASTPtLeafNode _evaluate(ASTPtRootNode node,
-            ParseTreeEvaluator evaluator, ParserScope scope)
-            throws IllegalActionException {
-        Token token = evaluator.evaluateParseTree(node, scope);
-        ASTPtLeafNode newNode = new ASTPtLeafNode(
-                PtParserTreeConstants.JJTPTLEAFNODE);
-        newNode.setToken(token);
-        newNode.setType(token.getType());
-        newNode.setConstant(true);
-        return newNode;
-    }
-
     private static final OperationElement[] _ELEMENTS = {
             new StringOperationElement("name", false, false),
             new StringOperationElement("type", true, false),
@@ -269,8 +256,6 @@ public class AttributeOperation extends Operation {
     private String _attributeName;
 
     private PtolemyExpressionString _attributeValue;
-
-    private ParseTreeWriter _parseTreeWriter = new ParseTreeWriter();
 
     private PtParser _parser = new PtParser();
 

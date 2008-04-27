@@ -292,22 +292,12 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
         _printChild(node, 0);
     }
 
+    protected PrintWriter _writer = new PrintWriter(System.out);
+
     private void _printChild(ASTPtRootNode node, int index)
             throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(index);
         child.visit(this);
-    }
-
-    private void _printChildrenSeparated(ASTPtRootNode node, String string)
-            throws IllegalActionException {
-        if (node.jjtGetNumChildren() > 0) {
-            _printChild(node, 0);
-
-            for (int i = 1; i < node.jjtGetNumChildren(); i++) {
-                _writer.print(string);
-                _printChild(node, i);
-            }
-        }
     }
 
     private void _printChildrenSeparated(ASTPtRootNode node, List separatorList)
@@ -325,5 +315,15 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
         }
     }
 
-    private PrintWriter _writer = new PrintWriter(System.out);
+    private void _printChildrenSeparated(ASTPtRootNode node, String string)
+            throws IllegalActionException {
+        if (node.jjtGetNumChildren() > 0) {
+            _printChild(node, 0);
+
+            for (int i = 1; i < node.jjtGetNumChildren(); i++) {
+                _writer.print(string);
+                _printChild(node, i);
+            }
+        }
+    }
 }

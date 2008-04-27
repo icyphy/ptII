@@ -218,7 +218,6 @@ public class TransformationRule extends MultiCompositeActor implements
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-
         _lastModel = null;
         _lastResults.clear();
     }
@@ -384,6 +383,9 @@ public class TransformationRule extends MultiCompositeActor implements
         }
 
         public void initialize() throws IllegalActionException {
+        }
+
+        public void preinitialize() throws IllegalActionException {
         }
 
         public void wrapup() throws IllegalActionException {

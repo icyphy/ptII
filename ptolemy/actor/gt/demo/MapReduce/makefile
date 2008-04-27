@@ -1,10 +1,10 @@
-# Makefile for the ptolemy/actor/gt/ingredients/operations package
+# Makefile for Ptolemy II Javasound Karplus-Strong Demo
 #
-# @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2007 The Regents of the University of California.
+# @Copyright (c) 1998-2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,35 +29,33 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gt/ingredients/operations
+ME =		ptolemy/actor/gt/demo/MapReduce
 
-DIRS = 		
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH = 	$(ROOT)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	operations
+PTPACKAGE =	MapReduce
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	AttributeOperation.java \
-	BooleanOperationElement.java \
-	Operation.java \
-	OperationElement.java \
-	PortCreationOperation.java \
-	PortRemovalOperation.java \
-	RenameOperation.java \
-	StringOperationElement.java
+JSRCS =
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	MapReduce.xml \
+	ReadTest.map
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -66,13 +64,17 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'Operation$$1.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+	@echo "To run the demos, run 'make demo'"
 
+install: jclass jars
+
+demo:
+	$(ROOT)/bin/vergil MapReduce.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
