@@ -124,7 +124,6 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         output = new TypedIOPort(this, "output", false, true);
 
         variableName = new StringAttribute(this, "variableName");
-        variableName.setExpression("parameter");
 
         delayed = new Parameter(this, "delayed");
         delayed.setTypeEquals(BaseType.BOOLEAN);
@@ -133,21 +132,6 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** The input port. */
-    public TypedIOPort input;
-
-    /** The name of the variable in the container to set. */
-    public StringAttribute variableName;
-
-    /** Parameter that determines when reconfiguration occurs. */
-    public Parameter delayed;
-
-    /** The output port. */
-    public TypedIOPort output;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     /** Do nothing.
      *  @param change The change that executed.
@@ -205,31 +189,36 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         String variableNameValue = variableName.getExpression();
         _attribute = null;
 
-        // Look for the variableName anywhere in the hierarchy
-        while ((_attribute == null) && (container != null)) {
-            _attribute = container.getAttribute(variableNameValue);
+        if (!variableNameValue.equals("")) {
+            // Look for the variableName anywhere in the hierarchy
+            while ((_attribute == null) && (container != null)) {
+                _attribute = container.getAttribute(variableNameValue);
+
+                if (_attribute == null) {
+                    container = container.getContainer();
+                }
+            }
 
             if (_attribute == null) {
-                container = container.getContainer();
-            }
-        }
+                try {
+                    workspace().getWriteAccess();
 
-        if (_attribute == null) {
-            try {
-                workspace().getWriteAccess();
-
-                // container might be null, so create the variable
-                // in the container of this actor.
-                _attribute = new Variable(getContainer(), variableNameValue);
-            } catch (NameDuplicationException ex) {
-                throw new InternalErrorException(ex);
-            } finally {
-                workspace().doneWriting();
+                    // container might be null, so create the variable
+                    // in the container of this actor.
+                    _attribute = new Variable(getContainer(), variableNameValue);
+                } catch (NameDuplicationException ex) {
+                    throw new InternalErrorException(ex);
+                } finally {
+                    workspace().doneWriting();
+                }
             }
+            _attributeVersion = _workspace.getVersion();
         }
-        _attributeVersion = _workspace.getVersion();
         return _attribute;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return a list of variables that this entity modifies.  The
      * variables are assumed to have a change context of the given
@@ -307,6 +296,18 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
 
         _setFailed = false;
     }
+
+    /** Parameter that determines when reconfiguration occurs. */
+    public Parameter delayed;
+
+    /** The input port. */
+    public TypedIOPort input;
+
+    /** The output port. */
+    public TypedIOPort output;
+
+    /** The name of the variable in the container to set. */
+    public StringAttribute variableName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
