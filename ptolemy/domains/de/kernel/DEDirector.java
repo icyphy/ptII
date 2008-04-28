@@ -390,7 +390,7 @@ public class DEDirector extends Director implements TimedDirector {
                         _debug("No more events in the event queue.");
                     }
 
-                    // Setting the follow variable to true makes the
+                    // Setting the following variable to true makes the
                     // postfire method return false.
                     // Do not do this if _stopFireRequested is true,
                     // since there may in fact be actors to fire, but
@@ -1836,10 +1836,28 @@ public class DEDirector extends Director implements TimedDirector {
                     synchronized (_eventQueue) {
                         // Need to check _stopFireRequested again inside
                         // the synchronized block, because it may have changed.
-                        if (_eventQueue.isEmpty() && !_stopFireRequested) {
+                        if (_eventQueue.isEmpty() && !_stopRequested
+                                && !_stopFireRequested) {
                             try {
                                 // NOTE: Release the read access held
                                 // by this thread to prevent deadlocks.
+                                // NOTE: If a ChangeRequest has been requested,
+                                // then _eventQueue.notifyAll() is called
+                                // and stopFire() is called, so we will stop
+                                // waiting for events. However,
+                                // CompositeActor used to call stopFire() before
+                                // queuing the change request, which created the risk
+                                // that the below wait() would be terminated by
+                                // a notifyAll() on _eventQueue with _stopFireRequested
+                                // having been set, but before the change request has
+                                // actually been filed.  See CompositeActor.requestChange().
+                                // Does this matter? It means that on the next invocation
+                                // of the fire() method, we could resume waiting on an empty queue
+                                // without having filed the change request. That filing will
+                                // no longer succeed in interrupting this wait, since
+                                // stopFire() has already been called. Only on the next
+                                // instance of change request would the first change
+                                // request get a chance to execute.
                                 workspace().wait(_eventQueue);
                             } catch (InterruptedException e) {
                                 // If the wait is interrupted,
@@ -1855,8 +1873,9 @@ public class DEDirector extends Director implements TimedDirector {
                 // happened.
                 if (_eventQueue.isEmpty()) {
                     // Stop is requested or this method is interrupted.
+                    // This can occur, for example, if a change has been requested.
                     // jump out of the loop: LOOPLABEL::GetNextEvent
-                    break;
+                    return null;
                 } else {
                     // At least one event is found in the event queue.
                     nextEvent = _eventQueue.get();
@@ -1867,10 +1886,12 @@ public class DEDirector extends Director implements TimedDirector {
             // top-level directors on getting the next event.
             // When this point is reached, the nextEvent can not be null.
             // In the rest of this method, this is not checked any more.
+            /* Not needed anymore...
             if (nextEvent == null) {
-                throw new IllegalActionException("The event to be handled"
+                throw new InternalErrorException("The event to be handled"
                         + " can not be null!");
             }
+            */
 
             // If the actorToFire is null, find the destination actor associated
             // with the event just found. Store this event as lastFoundEvent and
@@ -1937,30 +1958,55 @@ public class DEDirector extends Director implements TimedDirector {
                                     // UI interactions and may cause deadlocks.
                                     // SOLUTION: workspace.wait(object, long).
                                     _workspace.wait(_eventQueue, timeToWait);
-                                    // If we get here and either stop() or stopFire()
-                                    // was called, then it is not time to process any event,
-                                    // so we should leave it in the event queue.
-                                    if (_stopRequested || _stopFireRequested) {
-                                        return null;
-                                    }
                                 } catch (InterruptedException ex) {
-                                    // Continue executing.
+                                    // Continue executing?
+                                    // FIXME: This could be a problem if any
+                                    // actor assumes that model time always exceeds
+                                    // real time when synchronizeToRealTime is set.
+                                    throw new IllegalActionException(this, ex,
+                                            "Thread interrupted when waiting for" +
+                                            " real time to match model time.");
                                 }
                             }
                         } // while
+                        // If stopFire() has been called, then the wait for real
+                        // time above was interrupted by a change request. Hence,
+                        // real time will not have reached the time of the first
+                        // event in the event queue. If we allow this method to
+                        // proceed, it will set model time to that event time,
+                        // which is in the future. This violates the principle
+                        // of synchronize to real time.  Hence, we must return
+                        // without processing the event or incrementing time.
+                        
+                        // NOTE: CompositeActor used to call stopFire() before
+                        // queuing the change request, which created the risk
+                        // that the above wait() would be terminated by
+                        // a notifyAll() on _eventQueue with _stopFireRequested
+                        // having been set, but before the change request has
+                        // actually been filed.  See CompositeActor.requestChange().
+                        // Does this matter? It means that on the next invocation
+                        // of the fire() method, we could resume processing the
+                        // same event, waiting for real time to elapse, without
+                        // having filed the change request. That filing will
+                        // no longer succeed in interrupting this wait, since
+                        // stopFire() has already been called. Alternatively,
+                        // before we get to the wait for real time in the next
+                        // firing, the change request could complete and be
+                        // executed.
+                        if (_stopRequested || _stopFireRequested) {
+                            return null;
+                        }
                     } // sync
                 } // if (_synchronizeToRealTime)
 
                 // Consume the earliest event from the queue. The event must be
                 // obtained here, since a new event could have been enqueued
-                // into the queue while the queue was waiting. For example,
-                // an IO interrupt event.
-                // FIXME: The above statement is misleading. How could the
-                // newly inserted event happen earlier than the previously
-                // first event in the queue? It may be possible in the
-                // distributed DE models, but should not happen in DE models.
-                // Will this cause problems, such as setting time backwards?
-                // TESTIT How to??
+                // into the queue while the queue was waiting. Note however
+                // that this would usually be an error. Any other thread that
+                // posts events in the event queue should do so in a change request,
+                // which will not be executed during the above wait.
+                // Nonetheless, we are conservative here, and take the earliest
+                // event in the event queue.
                 synchronized (_eventQueue) {
                     lastFoundEvent = _eventQueue.take();
                     currentTime = lastFoundEvent.timeStamp();
@@ -2001,8 +2047,9 @@ public class DEDirector extends Director implements TimedDirector {
                     _exceedStopTime = true;
                     return null;
                 }
-            } else { // if (actorToFire == null)
-                // We have already found an event and the actor to react to it.
+            } else { // i.e., actorToFire != null
+                // In a previous iteration of this while loop,
+                // we have already found an event and the actor to react to it.
                 // Check whether the newly found event has the same tag
                 // and depth. If so, the destination actor should be the same,
                 // and they are handled at the same time. For example, a pure
