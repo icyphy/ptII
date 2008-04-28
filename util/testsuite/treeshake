@@ -130,6 +130,16 @@ else
     if [ $result -eq 1 ] ; then
         ptolemyFiles="$ptolemyFiles ptolemy/data/EventToken.class"
     fi	
+
+    # Check that ObjectType$BottomClass is present.  If not,
+    # then add it.  See
+    # https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=159
+    grep 'ObjectType\$BottomClass' $fileListingClasses
+    result=$?
+    if [ $result -eq 1 ] ; then
+	echo "Adding ObjectType$BottomClass"
+        ptolemyFiles="$ptolemyFiles ptolemy/data/type/ObjectType\$BottomClass.class"
+    fi	
 fi
 
 
@@ -176,7 +186,7 @@ if [ $retval = 0 ]; then
 	    # Under solaris, the awk command should not have a space
             # between the -F and the separator.
 	    classPathDirectoriesAndJars=`echo $classPathArg | \
-		awk -F"$CLASSPATHSEPARATOR" '{for(i=1;i<=NF;i++) printf("%s ", $i)}' `
+		awk -F"$CLASSPATHSEPARATOR" '{for(i=1;i<=NF;i++) printf("%s ", $i)}'`
             echo "classPathDirectoriesAndJars:	$classPathDirectoriesAndJars"
 	    # Ok, since we might be pulling jar files from multiple
 	    # directories, we split up the value of the classpath argument
