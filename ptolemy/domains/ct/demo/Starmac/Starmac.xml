@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Starmac" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 17, 981, 748}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 17, 981, 758}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[766, 641]">
     </property>
@@ -121,37 +121,37 @@ http://java3d.dev.java.net/</text></svg></configure>
             </property>
             <property name="Scheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{98.0, 68.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 50.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 991, 776}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 0, 991, 775}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[776, 658]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8347068032859">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{182.4341216216216, 396.3116554054054}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{388.0, 329.0}">
         </property>
         <port name="position" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 720.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 520.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="orientation" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-175.0, 440.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 315.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <entity name="Translate3D" class="ptolemy.domains.gr.lib.Translate3D">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 525.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 400.0]">
             </property>
         </entity>
         <entity name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 700.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[141.49999618530273, 502.49998474121094]">
             </property>
         </entity>
         <entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen3D">
@@ -161,11 +161,11 @@ http://java3d.dev.java.net/</text></svg></configure>
             </property>
             <property name="showAxes" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 525.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 400.0]">
             </property>
         </entity>
         <entity name="VectorDisassembler2" class="ptolemy.actor.lib.VectorDisassembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-108.17552185058594, 420.1881523132324]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 295.0]">
             </property>
         </entity>
         <entity name="Rotate3" class="ptolemy.domains.gr.lib.Rotate3D">
@@ -177,7 +177,7 @@ http://java3d.dev.java.net/</text></svg></configure>
             </property>
             <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[166.90933990478516, 262.60231018066406]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 250.0}">
             </property>
         </entity>
         <entity name="Rotate2" class="ptolemy.domains.gr.lib.Rotate3D">
@@ -189,7 +189,7 @@ http://java3d.dev.java.net/</text></svg></configure>
             </property>
             <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[166.90933990478516, 342.60231018066406]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[374.99709701538086, 327.50823974609375]">
             </property>
         </entity>
         <entity name="Rotate4" class="ptolemy.domains.gr.lib.Rotate3D">
@@ -201,11 +201,11 @@ http://java3d.dev.java.net/</text></svg></configure>
             </property>
             <property name="pivotLocation" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[166.90933990478516, 187.60231018066406]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 170.0]">
             </property>
         </entity>
         <entity name="Starmac" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 180.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 160.0]">
             </property>
             <property name="rotorRadius" class="ptolemy.data.expr.Parameter" value="0.15">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -226,7 +226,7 @@ http://java3d.dev.java.net/</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 25.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={207, 75, 815, 671}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={207, 75, 815, 670}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 553]">
             </property>
@@ -670,7 +670,7 @@ http://java3d.dev.java.net/</text></svg></configure>
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 685.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[462.99999618530273, 487.49998474121094]">
             </property>
         </entity>
         <entity name="Scale2" class="ptolemy.actor.lib.Scale">
@@ -680,7 +680,7 @@ http://java3d.dev.java.net/</text></svg></configure>
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 490.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[223.17552185058594, 364.8118476867676]">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -694,13 +694,13 @@ http://java3d.dev.java.net/</text></svg></configure>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[165.0, 595.0]">
+            <vertex name="vertex1" value="[361.49999618530273, 397.49998474121094]">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[215.0, 640.0]">
+            <vertex name="vertex1" value="[365.0, 445.0]">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -718,7 +718,7 @@ http://java3d.dev.java.net/</text></svg></configure>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[260.0, 730.0]">
+            <vertex name="vertex1" value="[360.0, 530.0]">
             </vertex>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -728,19 +728,19 @@ http://java3d.dev.java.net/</text></svg></configure>
         <relation name="relation13" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[-55.0, 385.0]">
+            <vertex name="vertex1" value="[165.0, 260.0]">
             </vertex>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[30.0, 445.0]">
+            <vertex name="vertex1" value="[160.0, 315.0]">
             </vertex>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[-15.0, 490.0]">
+            <vertex name="vertex1" value="[158.17552185058594, 364.8118476867676]">
             </vertex>
         </relation>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
