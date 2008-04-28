@@ -28,6 +28,7 @@ package ptolemy.data.expr;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.data.ObjectToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -101,6 +102,10 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         if ((_scope != null) && (functionName != null)) {
             if (!_excludedNames.contains(functionName)) {
                 value = _scope.get(node.getFunctionName());
+                if (value instanceof ObjectToken) {
+                    // Do not specialize ObjectToken.
+                    value = null;
+                }
             }
         }
 

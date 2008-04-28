@@ -147,10 +147,16 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             }
         }
 
+        Type type = null;
         Type baseType = null;
 
         if ((_scope != null) && (functionName != null)) {
-            baseType = _scope.getType(functionName);
+            type = _scope.getType(functionName);
+            if (!(type instanceof ObjectType)) {
+                // Pretend that we cannot resolve the type if it is an
+                // ObjectType.
+                baseType = type;
+            }
         }
 
         if ((baseType != null) || (functionName == null)) {
@@ -311,24 +317,31 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
 
         if (cachedMethod.isValid()) {
-            Type type = cachedMethod.getReturnType();
-            _setType(node, type);
-        } else {
-            // If we reach this point it means the function was not found on
-            // the search path.
-            StringBuffer buffer = new StringBuffer();
-
-            for (int i = 0; i < childTypes.length; i++) {
-                if (i == 0) {
-                    buffer.append(childTypes[i].toString());
-                } else {
-                    buffer.append(", " + childTypes[i].toString());
-                }
-            }
-
-            throw new IllegalActionException("No matching function "
-                    + node.getFunctionName() + "( " + buffer + " ).");
+            baseType = cachedMethod.getReturnType();
+            _setType(node, baseType);
+            return;
         }
+        
+        if (type instanceof ObjectType) {
+            // If it is ObjectType, set it here.
+            _setType(node, type);
+            return;
+        }
+        
+        // If we reach this point it means the function was not found on the
+        // search path.
+        StringBuffer buffer = new StringBuffer();
+
+        for (int i = 0; i < childTypes.length; i++) {
+            if (i == 0) {
+                buffer.append(childTypes[i].toString());
+            } else {
+                buffer.append(", " + childTypes[i].toString());
+            }
+        }
+
+        throw new IllegalActionException("No matching function "
+                + node.getFunctionName() + "( " + buffer + " ).");
     }
 
     /** Set the type of the given node to be a function type whose

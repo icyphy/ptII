@@ -284,10 +284,16 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         // First check to see if the name references a valid variable.
         ptolemy.data.Token value = null;
+        ptolemy.data.Token scopedValue = null;
         String functionName = node.getFunctionName();
 
         if ((functionName != null) && (_scope != null)) {
-            value = _scope.get(functionName);
+            scopedValue = _scope.get(functionName);
+            if (!(scopedValue instanceof ObjectToken)) {
+                // Pretend that we cannot resolve the name if it is an
+                // ObjectToken.
+                value = scopedValue;
+            }
         }
 
         // The first child contains the function name as an id.  It is
@@ -491,6 +497,12 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         // If not a special function, then reflect the name of the function.
         ptolemy.data.Token result = _functionCall(node.getFunctionName(),
                 argTypes, argValues);
+        
+        if (result == null && scopedValue instanceof ObjectToken) {
+            // If it is ObjectToken, set it here.
+            result = scopedValue;
+        }
+        
         _evaluatedChildToken = (result);
     }
 
