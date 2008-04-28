@@ -5,6 +5,7 @@
 <plot>
 <title>A Plot</title>
 <title>A Colorless Plot</title>
+<caption>A plot showing various marks</caption>
 <xLabel>X Axis</xLabel>
 <yLabel>Y Axis</yLabel>
 <xTicks>
