@@ -197,7 +197,7 @@ public class ModelExecutor extends TypedAtomicActor {
             }
 
             public void fire() throws IllegalActionException {
-                if (!_hasToken()) {
+                if (!_hasToken() && !_eventQueue.isEmpty()) {
                     TimedEvent timedEvent = _eventQueue.poll();
                     setModelTime(timedEvent.timeStamp);
                     Actor actor = (Actor) timedEvent.contents;

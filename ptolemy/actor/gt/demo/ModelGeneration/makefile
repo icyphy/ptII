@@ -53,7 +53,7 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	ModelGeneration.xml \
 	ModelGeneration_DDF.xml \
-	ModelGeneration_DE2.xml
+	ModelGeneration_DE.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -75,9 +75,9 @@ all: jclass
 install: jclass jars
 
 demo:
+	$(ROOT)/bin/vergil ModelGeneration.xml
 	$(ROOT)/bin/vergil ModelGeneration_DDF.xml
 	$(ROOT)/bin/vergil ModelGeneration_DE.xml
-	$(ROOT)/bin/vergil ModelGeneration_DE2.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

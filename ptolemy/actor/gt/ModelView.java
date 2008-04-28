@@ -57,9 +57,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.gt.GTFrameTools;
 
@@ -120,12 +118,6 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    public Object clone() throws CloneNotSupportedException {
-        ModelView actor = (ModelView) super.clone();
-        actor._parser = new MoMLParser();
-        return actor;
-    }
-
     /** Read the input, if there is any, and issue a change
      *  request to apply the MoML in the input to the displayed model.
      *  @exception IllegalActionException If there is an error reading
@@ -145,11 +137,6 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                     Configuration configuration = (Configuration) effigy
                             .toplevel();
                     try {
-                        _parser.reset();
-                        // Export the model into moml string and then import it
-                        // again. Needed b some models with unnoticeable state.
-                        NamedObj newModel = _parser.parse(model.exportMoML());
-
                         Tableau tableau = _tableaus[i];
                         boolean reopen = ((BooleanToken) reopenWindow
                                 .getToken()).booleanValue();
@@ -159,12 +146,12 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                             if (tableau != null) {
                                 tableau.close();
                             }
-                            tableau = configuration.openModel(newModel, effigy);
+                            tableau = configuration.openModel(model, effigy);
                             _tableaus[i] = tableau;
                         } else {
                             GTFrameTools.changeModel(
                                     (BasicGraphFrame) tableau.getFrame(),
-                                    (CompositeEntity) newModel, true);
+                                    (CompositeEntity) model, true);
                         }
 
                         JFrame frame = tableau.getFrame();
@@ -192,30 +179,13 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                         frame.addWindowListener(this);
 
                         String titleString = null;
-                        String modelName = newModel.getName();
-                        URI modelURI = null;
-                        URI uri = URIAttribute.getModelURI(newModel);
-                        if (uri != null) {
-                            String fileName;
-                            if (modelName.equals("")) {
-                                fileName = "model.xml";
-                            } else {
-                                fileName = modelName + ".xml";
-                            }
-                            modelURI = new URI(uri.getScheme(),
-                                    uri.getUserInfo(), uri.getHost(),
-                                    uri.getPort(), uri.getPath() + fileName,
-                                    null, null);
-                            Effigy newEffigy = (Effigy) tableau.getContainer();
-                            newEffigy.uri.setURI(modelURI);
-                        }
+                        String modelName = model.getName();
+                        URI uri = URIAttribute.getModelURI(model);
                         if (titleValue.equals("")) {
-                            if (uri != null) {
-                                if (modelName.equals("")) {
-                                    titleString = "Unnamed";
-                                } else {
-                                    titleString = modelURI.toString();
-                                }
+                            if (uri == null || modelName.equals("")) {
+                                titleString = "Unnamed";
+                            } else {
+                                titleString = uri.toString();
                             }
                             titleString += " (" + getName() + ")";
                         } else {
@@ -293,8 +263,6 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
     public Parameter screenLocation;
 
     public PortParameter title;
-
-    private MoMLParser _parser = new MoMLParser();
 
     private Tableau[] _tableaus;
 }

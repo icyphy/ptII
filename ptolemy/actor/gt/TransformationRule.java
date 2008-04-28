@@ -41,6 +41,7 @@ import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -85,8 +86,7 @@ public class TransformationRule extends MultiCompositeActor implements
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         String modeString = mode.getExpression();
-        boolean singleRunMode = modeString
-                .equals(Mode.REPLACE_FIRST.toString())
+        boolean singleRunMode = modeString.equals(Mode.REPLACE_FIRST.toString())
                 || modeString.equals(Mode.REPLACE_ANY.toString())
                 || modeString.equals(Mode.REPLACE_ALL.toString());
         boolean repeat = ((BooleanToken) repeatUntilFixpoint.getToken())
@@ -140,9 +140,15 @@ public class TransformationRule extends MultiCompositeActor implements
                         || mode == Mode.REPLACE_ALL) {
                     boolean foundMatch = !_lastResults.isEmpty();
                     if (foundMatch) {
-                        boolean repeat = ((BooleanToken) repeatUntilFixpoint
-                                .getToken()).booleanValue();
+                        boolean untilFixpoint = ((BooleanToken)
+                                repeatUntilFixpoint.getToken()).booleanValue();
+                        long count = LongToken.convert(repeatCount.getToken())
+                                .longValue();
                         while (!_lastResults.isEmpty()) {
+                            if (count <= 0) {
+                                break;
+                            }
+
                             switch (mode) {
                             case REPLACE_FIRST:
                                 MatchResult result = _lastResults.peek();
@@ -157,7 +163,7 @@ public class TransformationRule extends MultiCompositeActor implements
                                 GraphTransformer.transform(this, _lastResults);
                                 break;
                             }
-                            if (!repeat) {
+                            if (!untilFixpoint && --count <= 0) {
                                 break;
                             }
                             _lastResults.clear();
@@ -363,6 +369,8 @@ public class TransformationRule extends MultiCompositeActor implements
 
     public TypedIOPort remaining;
 
+    public Parameter repeatCount;
+
     public Parameter repeatUntilFixpoint;
 
     public TypedIOPort trigger;
@@ -440,6 +448,10 @@ public class TransformationRule extends MultiCompositeActor implements
         repeatUntilFixpoint.setTypeEquals(BaseType.BOOLEAN);
         repeatUntilFixpoint.setToken(BooleanToken.FALSE);
 
+        repeatCount = new Parameter(this, "repeatCount");
+        repeatCount.setTypeAtMost(BaseType.LONG);
+        repeatCount.setExpression("1");
+
         new TransformationDirector(this, "GTDirector");
     }
 
@@ -464,7 +476,8 @@ public class TransformationRule extends MultiCompositeActor implements
 
     private CompositeEntity _lastModel;
 
-    private LinkedList<MatchResult> _lastResults = new LinkedList<MatchResult>();
+    private LinkedList<MatchResult> _lastResults =
+        new LinkedList<MatchResult>();
 
     private LastResultsOperation _lastResultsOperation;
 
