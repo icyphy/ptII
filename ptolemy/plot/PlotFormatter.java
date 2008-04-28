@@ -29,6 +29,7 @@ package ptolemy.plot;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Frame;
+import java.util.Enumeration;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -70,6 +71,19 @@ public class PlotFormatter extends JPanel {
         _wideQuery.setTextWidth(20);
         _originalTitle = plot.getTitle();
         _wideQuery.addLine("title", "Title", _originalTitle);
+
+        _originalCaptions = plot.getCaptions(); 
+        StringBuffer captionsString = new StringBuffer(); 
+        for (Enumeration captions = _originalCaptions.elements();
+             captions.hasMoreElements();) {
+            if (captionsString.length() > 0) {
+                captionsString.append('\n');
+            }
+            captionsString.append((String) captions.nextElement());
+        }
+        _wideQuery.addTextArea("caption", "Caption",
+                captionsString.toString());
+
         _originalXLabel = plot.getXLabel();
         _wideQuery.addLine("xlabel", "X Label", _originalXLabel);
         _originalYLabel = plot.getYLabel();
@@ -81,7 +95,8 @@ public class PlotFormatter extends JPanel {
         _wideQuery.addLine("yrange", "Y Range", "" + _originalYRange[0] + ", "
                 + _originalYRange[1]);
 
-        String[] marks = { "none", "points", "dots", "various", "pixels" };
+        String[] marks = { "none", "points", "dots", "various",
+                           "bigdots", "pixels" };
         _originalMarks = "none";
 
         if (plot instanceof Plot) {
@@ -174,6 +189,13 @@ public class PlotFormatter extends JPanel {
             public void changed(String name) {
                 if (name.equals("title")) {
                     _plot.setTitle(_wideQuery.getStringValue("title"));
+                } else if (name.equals("caption")) {
+                    _plot.clearCaptions();
+                    String newCaption = _wideQuery.getStringValue("caption");
+                    String [] captionsArray = newCaption.split("\\n");
+                    for(int i = 0; i < captionsArray.length; i++) {
+                        _plot.read("captions: " + captionsArray[i]);
+                    }
                 } else if (name.equals("xlabel")) {
                     _plot.setXLabel(_wideQuery.getStringValue("xlabel"));
                 } else if (name.equals("ylabel")) {
@@ -322,6 +344,7 @@ public class PlotFormatter extends JPanel {
     public void restore() {
         // Restore _original values.
         _plot.setTitle(_originalTitle);
+        _plot.setCaption(_originalCaptions);
         _plot.setXLabel(_originalXLabel);
         _plot.setYLabel(_originalYLabel);
         _plot.setXRange(_originalXRange[0], _originalXRange[1]);
@@ -439,6 +462,9 @@ public class PlotFormatter extends JPanel {
 
     // Original configuration of the plot.
     private String _originalTitle;
+
+    // Original configuration of the plot.
+    private Vector _originalCaptions;
 
     // Original configuration of the plot.
     private String _originalXLabel;

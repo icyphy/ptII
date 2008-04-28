@@ -66,6 +66,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -234,7 +235,7 @@ import ptolemy.util.StringUtilities;
  This class uses features of JDK 1.2, and hence if used in an applet,
  it can only be viewed by a browser that supports JDK 1.2, or a plugin.
 
- @author Edward A. Lee, Christopher Brooks, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger
+ @author Edward A. Lee, Christopher Brooks, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger, Tom Peachey
 
  @version $Id$
  @since Ptolemy II 0.2
@@ -269,6 +270,17 @@ public class PlotBox extends JPanel implements Printable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add a line to the caption (displayed at below graph) .
+      * @param captionLine The string to be added.
+      * @see #getCaption()
+      */
+    public synchronized void addCaptionLine(String captionLine) {
+        // Caption code contributed by Tom Peachey.
+        // Changing legend means we need to repaint the offscreen buffer.
+        _plotImage = null;
+        _captionStrings.addElement(captionLine);
+    }
 
     /** Add a legend (displayed at the upper right) for the specified
      *  data set with the specified string.  Short strings generally
@@ -376,6 +388,16 @@ public class PlotBox extends JPanel implements Printable {
             _yticks = null;
             _yticklabels = null;
         }
+    }
+
+    /** Clear all the captions. 
+     *  For the change to take effect, call repaint().
+     *  @see #setCaptions(Vector)
+     */
+    public synchronized void clearCaptions() {
+        // Changing caption means we need to repaint the offscreen buffer.
+        _plotImage = null;
+        _captionStrings = new Vector();
     }
 
     /** Clear all legends.  This will show up on the next redraw.
@@ -567,6 +589,15 @@ public class PlotBox extends JPanel implements Printable {
         // requestFocus();
     }
 
+    /** Get the captions.
+     *  @return the captions
+     *  @see #addCaption(String)
+     *  @see #setCaption(Vector) 
+     */  
+    public Vector getCaptions() {
+        return _captionStrings;
+    }
+
     /** Return whether the plot uses color.
      *  @return True if the plot uses color.
      */
@@ -728,6 +759,7 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Get the title of the graph, or an empty string if there is none.
      *  @return The title.
+     *  @see #setTitle(String);
      */
     public synchronized String getTitle() {
         if (_title == null) {
@@ -1346,6 +1378,17 @@ public class PlotBox extends JPanel implements Printable {
         // requestFocus();
     }
 
+    /** Set the strings of the caption.
+     *  @param captionStrings A Vector where each element contains a String
+     *  that is one line of the caption.
+     *  @see #getCaption();
+     *  @see #clearCaptions();
+     */  
+    public void setCaption(Vector captionStrings) {
+        // Changing caption means we need to repaint the offscreen buffer.
+        _plotImage = null;
+        _captionStrings = captionStrings;
+    }
     /** If the argument is false, draw the plot without using color
      *  (in black and white).  Otherwise, draw it in color (the default).
      *  @param useColor False to draw in back and white.
@@ -1458,6 +1501,7 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Set the title of the graph.
      *  @param title The title.
+     *  @see #getTitle();
      */
     public synchronized void setTitle(String title) {
         // Changing legend means we need to repaint the offscreen buffer.
@@ -1680,6 +1724,14 @@ public class PlotBox extends JPanel implements Printable {
         // accordingly.
         if (_title != null) {
             output.println("<title>" + _title + "</title>");
+        }
+
+        if (_captionStrings != null) {
+            for (Enumeration captions = _captionStrings.elements();
+                 captions.hasMoreElements();) {
+                String captionLine = (String) captions.nextElement();
+                output.println("<caption>" + captionLine + "</caption>");
+            }
         }
 
         if (_xlabel != null) {
@@ -1910,6 +1962,11 @@ public class PlotBox extends JPanel implements Printable {
             titley = titlefontheight + _topPadding;
         }
 
+        int captionHeight = (_captionStrings.size()) * (_captionFontMetrics.getHeight());
+        if (captionHeight > 0) {
+            captionHeight += 5; 	//extra padding
+        }
+
         // Number of vertical tick marks depends on the height of the font
         // for labeling ticks and the height of the window.
         Font previousFont = graphics.getFont();
@@ -1921,7 +1978,7 @@ public class PlotBox extends JPanel implements Printable {
 
         // Draw scaling annotation for x axis.
         // NOTE: 5 pixel padding on bottom.
-        int ySPos = drawRect.height - 5;
+        int ySPos = drawRect.height - captionHeight - 5;
         int xSPos = drawRect.width - _rightPadding;
 
         if (_xlog) {
@@ -1946,8 +2003,8 @@ public class PlotBox extends JPanel implements Printable {
         }
 
         // NOTE: 5 pixel padding on the bottom.
-        if ((_xlabel != null) && (_bottomPadding < (labelheight + 5))) {
-            _bottomPadding = labelheight + 5;
+        if ((_xlabel != null) && (_bottomPadding < (captionHeight + labelheight + 5))) {
+            _bottomPadding = captionHeight + labelheight + 5;
         }
 
         // Compute the space needed around the plot, starting with vertical.
@@ -2491,6 +2548,17 @@ public class PlotBox extends JPanel implements Printable {
             }
         }
 
+        graphics.setFont(_captionFont);
+        int fontHt = _captionFontMetrics.getHeight();
+        int yCapPosn = drawRect.height - captionHeight + 14;
+        for (Enumeration captions = _captionStrings.elements();
+             captions.hasMoreElements();) {
+            String captionLine = (String) captions.nextElement();
+            int labelx = _ulx
+                + ((width - _captionFontMetrics.stringWidth(captionLine)) / 2);
+            graphics.drawString(captionLine, labelx, yCapPosn);
+            yCapPosn += fontHt;
+        }
         graphics.setFont(previousFont);
     }
 
@@ -2664,6 +2732,9 @@ public class PlotBox extends JPanel implements Printable {
             }
 
             return true;
+        } else if (lcLine.startsWith("captions:")) {
+            addCaptionLine(line.substring(10));
+            return true;
         }
 
         return false;
@@ -2711,6 +2782,14 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_title != null) {
             output.println("TitleText: " + _title);
+        }
+
+        if (_captionStrings != null) {
+            for (Enumeration captions = _captionStrings.elements();
+                 captions.hasMoreElements();) {
+                String captionLine = (String) captions.nextElement();
+                output.println("Caption: " + captionLine);
+            }
         }
 
         if (_xlabel != null) {
@@ -3348,6 +3427,11 @@ public class PlotBox extends JPanel implements Printable {
      */
     private void _measureFonts() {
         // We only measure the fonts once, and we do it from addNotify().
+        // For maintainability, keep the fonts alphabetized here.
+        if (_captionFont == null) {
+            _captionFont = new Font("Helvetica", Font.PLAIN, 12);
+        }
+
         if (_labelFont == null) {
             _labelFont = new Font("Helvetica", Font.PLAIN, 12);
         }
@@ -3360,6 +3444,7 @@ public class PlotBox extends JPanel implements Printable {
             _titleFont = new Font("Helvetica", Font.BOLD, 14);
         }
 
+        _captionFontMetrics = getFontMetrics(_captionFont);
         _labelFontMetrics = getFontMetrics(_labelFont);
         _superscriptFontMetrics = getFontMetrics(_superscriptFont);
         _titleFontMetrics = getFontMetrics(_titleFont);
@@ -3931,6 +4016,9 @@ public class PlotBox extends JPanel implements Printable {
     /** @serial Scaling used in making tick marks. */
     private double _xtickscale = 0.0;
 
+    /** @serial Caption font information. */
+    private Font _captionFont = null;
+
     /** @serial Font information. */
     private Font _labelFont = null;
 
@@ -3939,6 +4027,9 @@ public class PlotBox extends JPanel implements Printable {
 
     /** @serial Font information. */
     private Font _titleFont = null;
+
+    /** @serial Caption font metric information. */
+    private FontMetrics _captionFontMetrics = null;
 
     /** @serial FontMetric information. */
     private FontMetrics _labelFontMetrics = null;
@@ -3969,6 +4060,9 @@ public class PlotBox extends JPanel implements Printable {
 
     /** @serial The title and label strings. */
     private String _title;
+
+    /** @serial Caption information. */
+    private Vector _captionStrings = new Vector();
 
     /** @serial Legend information. */
     private Vector _legendStrings = new Vector();

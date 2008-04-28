@@ -1,6 +1,6 @@
 /* A signal plotter.
 
- @Copyright (c) 1997-2007 The Regents of the University of California.
+ @Copyright (c) 1997-2008 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -45,6 +45,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -86,6 +87,7 @@ import javax.swing.JComponent;
  <pre>
  Marks: none
  Marks: points
+ Marks: bigdots
  Marks: dots
  Marks: various
  Marks: pixels
@@ -203,7 +205,7 @@ import javax.swing.JComponent;
  the <code>_gridInit()</code> method in the PlotBox class.
  </ul>
 
- @author Edward A. Lee, Christopher Brooks
+ @author Edward A. Lee, Christopher Brooks, Contributor: Tom Peachey
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (cxh)
@@ -442,6 +444,8 @@ public class Plot extends PlotBox {
             return "dots";
         } else if (_marks == 3) {
             return "various";
+        } else if (_marks == 4) {
+            return "bigdots";
         } else {
             return "pixels";
         }
@@ -679,8 +683,10 @@ public class Plot extends PlotBox {
             _marks = 2;
         } else if (style.equalsIgnoreCase("various")) {
             _marks = 3;
-        } else if (style.equalsIgnoreCase("pixels")) {
+        } else if (style.equalsIgnoreCase("bigdots")) {
             _marks = 4;
+        } else if (style.equalsIgnoreCase("pixels")) {
+            _marks = 5;
         }
     }
 
@@ -706,8 +712,10 @@ public class Plot extends PlotBox {
             fmt.marks = 2;
         } else if (style.equalsIgnoreCase("various")) {
             fmt.marks = 3;
-        } else if (style.equalsIgnoreCase("pixels")) {
+        } else if (style.equalsIgnoreCase("bigdots")) {	
             fmt.marks = 4;
+        } else if (style.equalsIgnoreCase("pixels")) {
+            fmt.marks = 5;
         }
 
         fmt.marksUseDefault = false;
@@ -849,6 +857,10 @@ public class Plot extends PlotBox {
                     break;
 
                 case 4:
+                    options.append(" marks=\"bigdots\"");
+                    break;
+					
+                case 5:
                     options.append(" marks=\"pixels\"");
                     break;
                 }
@@ -919,6 +931,10 @@ public class Plot extends PlotBox {
             break;
 
         case 4:
+            defaults.append(" marks=\"bigdots\"");
+            break;
+        
+        case 5:
             defaults.append(" marks=\"pixels\"");
             break;
         }
@@ -1446,6 +1462,24 @@ public class Plot extends PlotBox {
                     break;
 
                 case 4:
+
+                    // bigdots
+                    //graphics.setColor(_marksColor);
+                    if (graphics instanceof Graphics2D) {
+                        Object obj = ((Graphics2D) graphics).getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+                        ((Graphics2D) graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                RenderingHints.VALUE_ANTIALIAS_ON);		
+                        graphics.fillOval(xposi - 4, yposi - 4,
+                                8, 8);
+                        ((Graphics2D) graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                obj);		
+                    } else {
+                        graphics.fillOval(xposi - 4, yposi - 4,
+                                8, 8);
+                    }
+                    break;
+
+                case 5:
 
                     // If the mark style is pixels, draw a filled rectangle.
                     graphics.fillRect(xposi, yposi, 1, 1);

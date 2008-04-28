@@ -137,7 +137,11 @@ public class PlotBoxMLParser extends HandlerBase {
      *  Plot object.
      */
     public void endElement(String elementName) throws Exception {
-        if (elementName.equals("noGrid")) {
+        // NOTE: The elements are alphabetical below...
+        if (elementName.equals("caption")) {
+            _plot.addCaptionLine(_currentCharData.toString());
+            _plot.setGrid(false);
+        } else if (elementName.equals("noGrid")) {
             _plot.setGrid(false);
         } else if (elementName.equals("noColor")) {
             _plot.setColor(false);
@@ -149,7 +153,7 @@ public class PlotBoxMLParser extends HandlerBase {
             _plot.setXLabel(_currentCharData.toString());
         } else if (elementName.equals("xLog")) {
             _plot.setXLog(true);
-
+            _plot.setXLabel(_currentCharData.toString());
             // xRange and yRange are dealt with in startElement().
         } else if (elementName.equals("yLabel")) {
             _plot.setYLabel(_currentCharData.toString());
@@ -267,7 +271,9 @@ public class PlotBoxMLParser extends HandlerBase {
     public void startElement(String elementName) throws XmlException {
         try {
             // NOTE: The elements are alphabetical below...
-            if (elementName.equals("size")) {
+            if (elementName.equals("caption")) {
+                _currentCharData = new StringBuffer();
+            } else if (elementName.equals("size")) {
                 String spec = (String) _attributes.get("height");
                 _checkForNull(spec, "No height argument for element \"size\"");
 
@@ -371,7 +377,7 @@ public class PlotBoxMLParser extends HandlerBase {
     /** The standard PlotML DTD, represented as a string.  This is used
      *  to parse PlotML data when a compatible PUBLIC DTD is specified.
      */
-    public static String PlotML_DTD_1 = "<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | size | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | yRange | yTicks)*><!ELEMENT barGraph EMPTY><!ATTLIST barGraph width CDATA #IMPLIED offset CDATA #IMPLIED><!ELEMENT bin EMPTY><!ATTLIST bin width CDATA #IMPLIED offset CDATA #IMPLIED><!ELEMENT dataset (m | move | p | point)*><!ATTLIST dataset connected (yes | no) #IMPLIED marks (none | dots | points | various) #IMPLIED name CDATA #IMPLIED stems (yes | no) #IMPLIED><!ELEMENT default EMPTY><!ATTLIST default connected (yes | no) \"yes\" marks (none | dots | points | various) \"none\" stems (yes | no) \"no\"><!ELEMENT noColor EMPTY><!ELEMENT noGrid EMPTY><!ELEMENT reuseDatasets EMPTY><!ELEMENT size EMPTY><!ATTLIST size height CDATA #REQUIRED width CDATA #REQUIRED><!ELEMENT title (#PCDATA)><!ELEMENT wrap EMPTY><!ELEMENT xLabel (#PCDATA)><!ELEMENT xLog EMPTY><!ELEMENT xRange EMPTY><!ATTLIST xRange min CDATA #REQUIRED max CDATA #REQUIRED><!ELEMENT xTicks (tick)+><!ELEMENT yLabel (#PCDATA)><!ELEMENT yLog EMPTY><!ELEMENT yRange EMPTY><!ATTLIST yRange min CDATA #REQUIRED max CDATA #REQUIRED><!ELEMENT yTicks (tick)+><!ELEMENT tick EMPTY><!ATTLIST tick label CDATA #REQUIRED position CDATA #REQUIRED><!ELEMENT m EMPTY><!ATTLIST m x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED><!ELEMENT move EMPTY><!ATTLIST move x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED><!ELEMENT p EMPTY><!ATTLIST p x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED><!ELEMENT point EMPTY><!ATTLIST point x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED>";
+    public static String PlotML_DTD_1 = "<!ELEMENT plot (barGraph | bin | caption | dataset | default | noColor | noGrid | size | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | yRange | yTicks)*><!ELEMENT barGraph EMPTY><!ATTLIST barGraph width CDATA #IMPLIED offset CDATA #IMPLIED><!ELEMENT bin EMPTY><!ATTLIST bin width CDATA #IMPLIED offset CDATA #IMPLIED><!ELEMENT caption (#PCDATA)><!ELEMENT dataset (m | move | p | point)*><!ATTLIST dataset connected (yes | no) #IMPLIED marks (none | dots | points | various | pixels | bigdots) #IMPLIED name CDATA #IMPLIED stems (yes | no) #IMPLIED><!ELEMENT default EMPTY><!ATTLIST default connected (yes | no) \"yes\" marks (none | dots | points | various |pixels | bigdots) \"none\" stems (yes | no) \"no\"><!ELEMENT noColor EMPTY><!ELEMENT noGrid EMPTY><!ELEMENT reuseDatasets EMPTY><!ELEMENT size EMPTY><!ATTLIST size height CDATA #REQUIRED width CDATA #REQUIRED><!ELEMENT title (#PCDATA)><!ELEMENT wrap EMPTY><!ELEMENT xLabel (#PCDATA)><!ELEMENT xLog EMPTY><!ELEMENT xRange EMPTY><!ATTLIST xRange min CDATA #REQUIRED max CDATA #REQUIRED><!ELEMENT xTicks (tick)+><!ELEMENT yLabel (#PCDATA)><!ELEMENT yLog EMPTY><!ELEMENT yRange EMPTY><!ATTLIST yRange min CDATA #REQUIRED max CDATA #REQUIRED><!ELEMENT yTicks (tick)+><!ELEMENT tick EMPTY><!ATTLIST tick label CDATA #REQUIRED position CDATA #REQUIRED><!ELEMENT m EMPTY><!ATTLIST m x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED><!ELEMENT move EMPTY><!ATTLIST move x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED><!ELEMENT p EMPTY><!ATTLIST p x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED><!ELEMENT point EMPTY><!ATTLIST point x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED>";
 
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/plot/plotml/plotml.dtd.  If modified, it needs to be also
