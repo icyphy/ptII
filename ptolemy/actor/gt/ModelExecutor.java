@@ -91,7 +91,7 @@ public class ModelExecutor extends TypedAtomicActor {
         Entity actor = ((ActorToken) actorInput.get(0)).getEntity();
         if (actor instanceof ComponentEntity) {
             ComponentEntity entity = (ComponentEntity) actor;
-            Workspace workspace = actor.workspace();
+            Workspace workspace = entity.workspace();
             try {
                 Wrapper wrapper = new Wrapper(workspace);
                 Effigy parentEffigy = Configuration.findEffigy(toplevel());
