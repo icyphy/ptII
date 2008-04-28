@@ -1179,12 +1179,15 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void requestChange(ChangeRequest change) {
         Manager manager = getManager();
-
+        super.requestChange(change);
+        // stopFire() should be called after the change has been requested
+        // to ensure that if it is being requested in a separate thread
+        // from the director thread that it will be present in the change
+        // queue when the director gets around to handling it. The call
+        // to stopFire() below may wake up the director to handle it.
         if (manager != null) {
             stopFire();
         }
-
-        super.requestChange(change);
     }
 
     /** Override the base class to invalidate the schedule and
