@@ -245,7 +245,7 @@
                 <entity name="merge" class="ptolemy.domains.de.lib.Merge">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 200.0]">
                     </property>
-                    <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop.merge">
+                    <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -985,53 +985,33 @@
                         <property name="_tableauFactory" class="ptolemy.vergil.gt.GTTableau$Factory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 295.0]">
-                            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop._location">
-                            </property>
                         </property>
                         <property name="and" class="ptolemy.actor.ptalon.PtalonParameter" value="ptolemy.actor.lib.logic.LogicFunction">
-                            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop.and">
-                            </property>
-                        </property>
-                        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop">
-                            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop.patternObject">
-                            </property>
                         </property>
                         <port name="input" class="ptolemy.actor.TypedIOPort">
                             <property name="input"/>
                             <property name="multiport"/>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 215.0]">
                             </property>
-                            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop.input">
-                            </property>
                         </port>
                         <entity name="merge" class="ptolemy.domains.de.lib.Merge">
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 145.0]">
-                            </property>
-                            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop.merge">
                             </property>
                         </entity>
                         <entity name="sampler" class="ptolemy.domains.de.lib.Sampler">
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 225.0]">
                             </property>
-                            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop.sampler">
-                            </property>
                         </entity>
                         <entity name="and" class="ptolemy.actor.lib.logic.LogicFunction">
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 235.0]">
-                            </property>
-                            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop.and">
                             </property>
                         </entity>
                         <entity name="filter" class="ptolemy.domains.de.lib.EventFilter">
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 235.0]">
                             </property>
-                            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop.filter">
-                            </property>
                         </entity>
                         <entity name="delay" class="ptolemy.domains.de.lib.TimedDelay">
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 235.0]">
-                            </property>
-                            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop.delay">
                             </property>
                         </entity>
                         <entity name="Stop" class="ptolemy.actor.lib.Stop">
@@ -1041,13 +1021,9 @@
                         <relation name="mergeOut" class="ptolemy.actor.TypedIORelation">
                             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                             </property>
-                            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop.mergeOut">
-                            </property>
                         </relation>
                         <relation name="filterOut" class="ptolemy.actor.TypedIORelation">
                             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                            </property>
-                            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="WaitingStop.filterOut">
                             </property>
                         </relation>
                         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -1319,9 +1295,9 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={573, 622, 342, 243}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={572, 360, 342, 244}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 187]">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Word Counts">
         </property>
