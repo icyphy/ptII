@@ -84,7 +84,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Refer to another MapReduce demo created using the Ptalon language, created by Adom Cataldo.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Refer to another MapReduce demo created using the Ptalon language, created by Adam Cataldo.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 370.0]">
         </property>
@@ -1319,7 +1319,7 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={529, 403, 342, 243}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={573, 622, 342, 243}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
