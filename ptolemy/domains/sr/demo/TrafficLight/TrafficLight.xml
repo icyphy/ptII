@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TrafficLight" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 10, 1017, 749}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 2, 1010, 744}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 658]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[795, 627]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 329.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{397.5, 313.5}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -180,7 +180,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates a&#10;typical design pattern&#10;where the top level is a&#10;DE model of the physical&#10;environment for a system &#10;under design. The next&#10;level down is a modal &#10;model fashioned after the&#10;statecharts model at the &#10;right.  Open the &#10;TrafficLight actor to see &#10;how it is implemented.&#10;&#10;The PoissonClock actor&#10;occassionally injects an&#10;Error signal. The Error&#10;condition then lasts 5&#10;seconds, as determined by&#10;the TimedDelay actor.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 265.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -188,7 +188,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Reinhard von Hanxleden, Huining Feng, and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 630.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 620.0]">
         </property>
     </property>
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
@@ -196,7 +196,7 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="40.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 280.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -208,7 +208,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The colors of the lights above&#10;are set when the SetVariable actors&#10;at the left execute. This animates&#10;the execution.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 115.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -218,7 +218,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There is a corresponding WirelessDeployment model&#10;that models the same traffic light control algorithms&#10;with wireless communication between the car light&#10;and the pedestrian light. Changes to the normal&#10;operation logic of either light here will be &#10;reflected automatically in the deployment model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 185.0]">
         </property>
     </property>
     <entity name="TrafficLight" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -226,7 +226,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 130.0}">
         </property>
         <port name="Sec" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -288,7 +288,7 @@ where there are two states, an error state and a
 normal state. Look inside the states to see the
 implementations.</text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -110.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 45.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
@@ -300,7 +300,7 @@ implementations.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 63, 919, 642}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 62, 823, 506}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 526]">
             </property>
@@ -315,52 +315,52 @@ implementations.</text></svg></configure>
                 </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that we are following the design of the Statecharts model shown on the&#10;top level, but there is a flaw in that design that shows up when constructing &#10;a deployment model. The flaw is that the Error and Ok states are at the top&#10;level, and internally contain concurrent operations of the car light and the &#10;pedestrian light. It should be other way around. The car light and pedestrian&#10;light should be concurrent, and should internally each have Error and Ok&#10;states. This way, the car light and pedestrian light can be deployed in &#10;separate hardware.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 95.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 250.0]">
                 </property>
             </property>
             <port name="Sec" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, -10.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 145.0]">
                 </property>
             </port>
             <port name="Pred" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, -95.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 60.0]">
                 </property>
             </port>
             <port name="Pgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, -60.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 95.0]">
                 </property>
             </port>
             <port name="Cred" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, -25.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 130.0]">
                 </property>
             </port>
             <port name="Cyel" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 10.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 165.0]">
                 </property>
             </port>
             <port name="Cgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 45.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 200.0]">
                 </property>
             </port>
             <port name="Ok" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 65.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 220.0]">
                 </property>
             </port>
             <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 185.0]">
                 </property>
             </port>
             <entity name="normal" class="ptolemy.domains.fsm.kernel.State">
@@ -370,7 +370,7 @@ implementations.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 25.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 180.0]">
                 </property>
             </entity>
             <entity name="error" class="ptolemy.domains.fsm.kernel.State">
@@ -380,7 +380,7 @@ implementations.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 185.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -421,13 +421,13 @@ implementations.</text></svg></configure>
             <link port="error.outgoingPort" relation="relation"/>
         </entity>
         <entity name="errorR" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 517}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1773904245044">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{41.80078125, 23.1328125}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -437,7 +437,7 @@ implementations.</text></svg></configure>
 on the car control and turns off the
 pedestrian lights.</text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, 100.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 265.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
@@ -446,60 +446,60 @@ pedestrian lights.</text></svg></configure>
             </property>
             <port name="Sec" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, 90.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 255.0]">
                 </property>
             </port>
             <port name="Pred" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -120.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 45.0]">
                 </property>
             </port>
             <port name="Pgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -80.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 85.0]">
                 </property>
             </port>
             <port name="Cred" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -45.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 120.0]">
                 </property>
             </port>
             <port name="Cyel" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -5.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 160.0]">
                 </property>
             </port>
             <port name="Cgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 35.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 200.0]">
                 </property>
             </port>
             <port name="Ok" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, -5.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 160.0]">
                 </property>
             </port>
             <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, 40.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 205.0]">
                 </property>
             </port>
             <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 0.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 165.0]">
                 </property>
             </entity>
             <entity name="YellowOn" class="ptolemy.domains.fsm.kernel.State">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-20, 5}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 170.0]">
                 </property>
             </entity>
             <entity name="YellowOff" class="ptolemy.domains.fsm.kernel.State">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 70.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 235.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -564,7 +564,7 @@ pedestrian lights.</text></svg></configure>
             <link port="YellowOff.outgoingPort" relation="relation3"/>
         </entity>
         <entity name="normal" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 10, 1015, 747}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={28, 78, 887, 564}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 631]">
             </property>
@@ -573,13 +573,13 @@ pedestrian lights.</text></svg></configure>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-21.7148102815177, 15.044943390453}">
             </property>
             <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-225.0, -175.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 65.0]">
                 </property>
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The NormalC actor generates the control signals&#10;for the car stoplights under normal operating conditions.&#10;The NormalP actor reacts to these controls to generate&#10;the control signals for the pedestrian lights.&#10;Look inside each actor to see its implementation.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-160.0, -205.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 35.0]">
                 </property>
             </property>
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -589,61 +589,61 @@ pedestrian lights.</text></svg></configure>
                 </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The CarLightNormal and PedestrianLightNormal actors&#10;here are instances of actor-oriented classes defined &#10;in other files. If you open the actors, you will open&#10;the other files. If you change the design, then all&#10;other instances of this class will see the change.&#10;In particular, the WirelessDeployment example uses&#10;the same instances.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 60.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 300.0]">
                 </property>
             </property>
             <port name="Sec" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 20.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 260.0]">
                 </property>
             </port>
             <port name="Pred" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -70.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 170.0]">
                 </property>
             </port>
             <port name="Pgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -20.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 220.0]">
                 </property>
             </port>
             <port name="Cred" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 50.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 290.0]">
                 </property>
             </port>
             <port name="Cyel" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 85.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 325.0]">
                 </property>
             </port>
             <port name="Cgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 125.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 365.0]">
                 </property>
             </port>
             <port name="Ok" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 95.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 335.0]">
                 </property>
             </port>
             <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 60.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 300.0]">
                 </property>
             </port>
             <entity name="CarLightNormal" class="ptolemy.domains.sr.demo.TrafficLight.CarLightNormal">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, -45.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 195.0]">
                 </property>
             </entity>
             <entity name="PedestrianLightNormal" class="ptolemy.domains.sr.demo.TrafficLight.PedestrianLightNormal">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-70.0, -60.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 180.0]">
                 </property>
             </entity>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <vertex name="vertex1" value="[-255.0, 20.0]">
+                <vertex name="vertex1" value="[105.0, 260.0]">
                 </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -759,7 +759,7 @@ pedestrian lights.</text></svg></configure>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <doc>Create a set of pulses</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </entity>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
@@ -773,7 +773,7 @@ pedestrian lights.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 80.0]">
         </property>
     </entity>
     <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
@@ -787,7 +787,7 @@ pedestrian lights.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 125.0]">
         </property>
     </entity>
     <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
@@ -801,7 +801,7 @@ pedestrian lights.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 170.0]">
         </property>
     </entity>
     <entity name="SetVariable4" class="ptolemy.actor.lib.SetVariable">
@@ -815,7 +815,7 @@ pedestrian lights.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 205.0]">
         </property>
     </entity>
     <entity name="SetVariable5" class="ptolemy.actor.lib.SetVariable">
@@ -829,7 +829,7 @@ pedestrian lights.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 240.0]">
         </property>
     </entity>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
@@ -839,7 +839,7 @@ pedestrian lights.</text></svg></configure>
         </property>
         <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 230.0]">
         </property>
     </entity>
     <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
@@ -885,7 +885,7 @@ pedestrian lights.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 230.0]">
         </property>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -915,13 +915,13 @@ pedestrian lights.</text></svg></configure>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[105.0, 255.0]">
+        <vertex name="vertex1" value="[105.0, 230.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[95.0, 205.0]">
+        <vertex name="vertex1" value="[95.0, 180.0]">
         </vertex>
     </relation>
     <link port="TrafficLight.Sec" relation="relation7"/>

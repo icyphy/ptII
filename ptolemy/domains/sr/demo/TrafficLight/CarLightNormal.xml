@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="CarLightNormal" extends="ptolemy.domains.fsm.modal.ModalModel">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
     </property>
@@ -67,7 +67,7 @@ three seconds and to stay green for two.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={79, 125, 900, 610}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 78, 900, 611}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[685, 494]">
         </property>
@@ -178,7 +178,7 @@ three seconds and to stay green for two.</text></svg></configure>
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0202158930929, 331.76830291748064]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 330.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">

@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="PedestrianLightNormal" extends="ptolemy.domains.fsm.modal.ModalModel">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
     </property>
@@ -47,7 +47,7 @@
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model turns the pedestrian lights
 green when the car control lights go red.</text></svg></configure>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 105.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[84.77597045898438, 196.56708517670629]">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
             </property>
@@ -59,37 +59,37 @@ green when the car control lights go red.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={298, 48, 706, 467}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[491, 350]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4423076923077">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{140.0, 59.6666666666667}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{245.5, 175.0}">
         </property>
         <port name="Pgo" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -25.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[49.775970458984375, 66.56708517670629]">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
         <port name="Pstop" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 20.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[49.775970458984375, 111.56708517670629]">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
         <port name="Sec" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 60.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[49.775970458984375, 151.56708517670629]">
             </property>
         </port>
         <port name="Pred" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, -15.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[439.7759704589844, 76.56708517670629]">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
@@ -97,7 +97,7 @@ green when the car control lights go red.</text></svg></configure>
         <port name="Pgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 35.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[439.7759704589844, 126.56708517670629]">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
@@ -107,7 +107,7 @@ green when the car control lights go red.</text></svg></configure>
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 30.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[209.77597045898438, 121.56708517670629]">
             </property>
         </entity>
         <entity name="Pgreen" class="ptolemy.domains.fsm.kernel.State">
@@ -115,7 +115,7 @@ green when the car control lights go red.</text></svg></configure>
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 30.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[324.7759704589844, 121.56708517670629]">
             </property>
         </entity>
         <entity name="init" class="ptolemy.domains.fsm.kernel.State">
@@ -125,7 +125,7 @@ green when the car control lights go red.</text></svg></configure>
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, -50.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[189.77597045898438, 41.567085176706286]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
