@@ -7464,13 +7464,13 @@ http://java3d.dev.java.net/</text></svg></configure>
     <entity name="Vehicle Control" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[57.5, 180.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 336, 991, 427}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 123, 991, 515}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[776, 658]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[776, 398]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0167048804455">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-59.503787878788, 157.8813131313131}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{388.0, 199.0}">
         </property>
         <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
             <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
