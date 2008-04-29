@@ -27,6 +27,11 @@
  */
 package ptolemy.vergil.toolbox;
 
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -117,13 +122,26 @@ public class MenuActionFactory implements MenuItemFactory {
         _label = label;
     }
 
+    /** Add a menu item listener to the list of menu item listeners.
+     *
+     *  @param listener The menu item listener.
+     */
+    public void addMenuItemListener(MenuItemListener listener) {
+        if (_menuItemListeners == null) {
+            _menuItemListeners = new LinkedList();
+        }
+        _menuItemListeners.add(new WeakReference(listener));
+    }
+
     /** Add an item to the given context menu that will configure the
      *  parameters on the given target.
      */
     public JMenuItem create(JContextMenu menu, NamedObj object) {
+        JMenuItem menuItem;
         if (_action != null) {
             // Single action as a simple menu entry.
-            return menu.add(_action, (String) _action.getValue(Action.NAME));
+            menuItem =  menu.add(_action, (String) _action.getValue(
+                    Action.NAME));
         } else {
             // Requested a submenu with a group of actions.
             final JMenu submenu = new JMenu(_label);
@@ -131,8 +149,20 @@ public class MenuActionFactory implements MenuItemFactory {
             for (int i = 0; i < _actions.length; i++) {
                 submenu.add(_actions[i]);
             }
-            return submenu;
+            menuItem = submenu;
         }
+        if (_menuItemListeners != null) {
+            Iterator listeners = _menuItemListeners.iterator();
+            while (listeners.hasNext()) {
+                WeakReference reference = (WeakReference) listeners.next();
+                Object contents = reference.get();
+                if (contents instanceof MenuItemListener) {
+                    ((MenuItemListener) contents).menuItemCreated(menu, object,
+                            menuItem);
+                }
+            }
+        }
+        return menuItem;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -146,4 +176,7 @@ public class MenuActionFactory implements MenuItemFactory {
 
     /** The submenu label, if one was given. */
     private String _label;
+
+    /** the list of menu item listeners. */
+    private List _menuItemListeners;
 }

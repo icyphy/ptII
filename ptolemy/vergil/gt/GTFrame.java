@@ -55,17 +55,14 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.actor.ActorEditorGraphController;
-import ptolemy.vergil.actor.ActorInstanceController;
-import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
+import ptolemy.vergil.basic.ParameterizedNodeController;
 import ptolemy.vergil.fsm.FSMGraphController;
-import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.MenuItemFactory;
-import ptolemy.vergil.toolbox.PtolemyMenuFactory;
+import ptolemy.vergil.toolbox.MenuItemListener;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
@@ -174,8 +171,8 @@ public class GTFrame extends ExtendedGraphFrame {
                 EditorFactory factory = null;
                 try {
                     target.workspace().getReadAccess();
-                    List<?> attributeList = target
-                            .attributeList(EditorFactory.class);
+                    List<?> attributeList = target.attributeList(
+                            EditorFactory.class);
                     if (attributeList.size() > 0) {
                         factory = (EditorFactory) attributeList.get(0);
                     }
@@ -204,8 +201,8 @@ public class GTFrame extends ExtendedGraphFrame {
                 }
                 try {
                     EditorFactory factory = new GTIngredientsEditor.Factory(
-                            target, target
-                                    .uniqueName("ingredientsEditorFactory"));
+                            target,
+                            target.uniqueName("ingredientsEditorFactory"));
                     factory.setPersistent(false);
                     factory.createEditor(target, frame);
                     factory.setContainer(null);
@@ -234,136 +231,11 @@ public class GTFrame extends ExtendedGraphFrame {
         }
     }
 
-    protected class GTActorGraphController extends ActorEditorGraphController {
+    protected class GTActorGraphController extends ActorEditorGraphController
+    implements MenuItemListener {
 
-        protected GTActorGraphController() {
-            _newRelationAction = new NewRelationAction(new String[][] {
-                    { "/ptolemy/vergil/actor/img/relation.gif",
-                        GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_o.gif",
-                        GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_ov.gif",
-                        GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_on.gif",
-                        GUIUtilities.SELECTED_ICON } });
-        }
-
-        protected void _createControllers() {
-            super._createControllers();
-            _entityController = new EntityController();
-            _portController = new PortController();
-        }
-
-        protected void initializeInteraction() {
-            ConfigureAction oldConfigureAction = _configureAction;
-            _configureAction = new ConfigureAction("Configure") {
-                protected void _openDialog(Frame parent, NamedObj target,
-                        ActionEvent event) {
-                    EditorFactory factory = null;
-                    if (target instanceof GTEntity) {
-                        try {
-                            target.workspace().getReadAccess();
-                            List<?> attributeList = target.attributeList(
-                                    EditorFactory.class);
-                            if (!attributeList.isEmpty()) {
-                                factory = (EditorFactory) attributeList.get(0);
-                            }
-                        } finally {
-                            target.workspace().doneReading();
-                        }
-                    }
-                    if (factory != null) {
-                        factory.createEditor(target, parent);
-                    } else {
-                        super._openDialog(parent, target, event);
-                    }
-                }
-            };
-            super.initializeInteraction();
-            _configureAction = oldConfigureAction;
-
-            MenuActionFactory newFactory = new GTMenuActionFactory(
-                    _configureMenuFactory, _configureAction);
-            _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
-            _configureMenuFactory = newFactory;
-        }
-
-        private void _replaceFactory(PtolemyMenuFactory menuFactory,
-                MenuItemFactory replacedFactory, MenuItemFactory replacement) {
-            List<?> factories = menuFactory.menuItemFactoryList();
-            int size = factories.size();
-            for (int i = 0; i < size; i++) {
-                MenuItemFactory factory = (MenuItemFactory) factories.get(0);
-                menuFactory.removeMenuItemFactory(factory);
-                if (factory == replacedFactory) {
-                    menuFactory.addMenuItemFactory(replacement);
-                } else {
-                    menuFactory.addMenuItemFactory(factory);
-                }
-            }
-        }
-
-        private class EntityController extends ActorInstanceController {
-            EntityController() {
-                super(GTActorGraphController.this);
-
-                MenuActionFactory newFactory = new GTMenuActionFactory(
-                        _configureMenuFactory, _configureAction);
-                _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
-                _configureMenuFactory = newFactory;
-
-                FigureAction criteriaAction = new ConfigureCriteriaAction();
-                _configureMenuFactory.addAction(criteriaAction, "Customize");
-                FigureAction operationsAction = new ConfigureOperationsAction();
-                _configureMenuFactory.addAction(operationsAction, "Customize");
-            }
-        }
-
-        private class NewRelationAction extends
-                ActorEditorGraphController.NewRelationAction {
-
-            public void actionPerformed(ActionEvent e) {
-                if (getFrameController().isTableActive()) {
-                    return;
-                } else {
-                    super.actionPerformed(e);
-                }
-            }
-
-            private NewRelationAction(String[][] iconRoles) {
-                super(iconRoles);
-            }
-
-        }
-
-        private class PortController extends ExternalIOPortController {
-
-            public PortController() {
-                super(GTActorGraphController.this, AttributeController.FULL);
-
-                MenuActionFactory newFactory = new GTMenuActionFactory(
-                        _configureMenuFactory, _configureAction);
-                _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
-                _configureMenuFactory = newFactory;
-            }
-        }
-    }
-
-    protected static class GTFSMGraphController extends FSMGraphController {
-    }
-
-    protected static class GTMenuActionFactory extends MenuActionFactory {
-
-        public void addAction(Action action, String label) {
-            _oldFactory.addAction(action, label);
-        }
-
-        public void addActions(Action[] actions, String label) {
-            _oldFactory.addActions(actions, label);
-        }
-
-        public JMenuItem create(JContextMenu menu, NamedObj object) {
-            JMenuItem menuItem = _oldFactory.create(menu, object);
+        public void menuItemCreated(JContextMenu menu, NamedObj object,
+                JMenuItem menuItem) {
             if (menuItem instanceof JMenu) {
                 JMenu subMenu = (JMenu) menuItem;
                 if (subMenu.getText().equals("Customize")) {
@@ -397,16 +269,88 @@ public class GTFrame extends ExtendedGraphFrame {
                     }
                 }
             }
-            return menuItem;
         }
 
-        GTMenuActionFactory(MenuActionFactory oldFactory, Action configureAction) {
-            super(configureAction);
-
-            _oldFactory = oldFactory;
+        protected GTActorGraphController() {
+            _newRelationAction = new NewRelationAction(new String[][] {
+                    { "/ptolemy/vergil/actor/img/relation.gif",
+                        GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_o.gif",
+                        GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_ov.gif",
+                        GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_on.gif",
+                        GUIUtilities.SELECTED_ICON } });
         }
 
-        private MenuActionFactory _oldFactory;
+        protected void _createControllers() {
+            super._createControllers();
+
+            MenuActionFactory factory =
+                _entityController.getConfigureMenuFactory();
+            factory.addMenuItemListener(GTActorGraphController.this);
+
+            FigureAction criteriaAction = new ConfigureCriteriaAction();
+            factory.addAction(criteriaAction, "Customize");
+            FigureAction operationsAction = new ConfigureOperationsAction();
+            factory.addAction(operationsAction, "Customize");
+
+            if (_portController instanceof ParameterizedNodeController) {
+                factory = ((ParameterizedNodeController) _portController)
+                        .getConfigureMenuFactory();
+                factory.addMenuItemListener(GTActorGraphController.this);
+            }
+        }
+
+        protected void initializeInteraction() {
+            ConfigureAction oldConfigureAction = _configureAction;
+            _configureAction = new ConfigureAction("Configure") {
+                protected void _openDialog(Frame parent, NamedObj target,
+                        ActionEvent event) {
+                    EditorFactory factory = null;
+                    if (target instanceof GTEntity) {
+                        try {
+                            target.workspace().getReadAccess();
+                            List<?> attributeList = target.attributeList(
+                                    EditorFactory.class);
+                            if (!attributeList.isEmpty()) {
+                                factory = (EditorFactory) attributeList.get(0);
+                            }
+                        } finally {
+                            target.workspace().doneReading();
+                        }
+                    }
+                    if (factory != null) {
+                        factory.createEditor(target, parent);
+                    } else {
+                        super._openDialog(parent, target, event);
+                    }
+                }
+            };
+            super.initializeInteraction();
+            _configureAction = oldConfigureAction;
+
+            getConfigureMenuFactory().addMenuItemListener(this);
+        }
+
+        private class NewRelationAction extends
+                ActorEditorGraphController.NewRelationAction {
+
+            public void actionPerformed(ActionEvent e) {
+                if (getFrameController().isTableActive()) {
+                    return;
+                } else {
+                    super.actionPerformed(e);
+                }
+            }
+
+            private NewRelationAction(String[][] iconRoles) {
+                super(iconRoles);
+            }
+        }
+    }
+
+    protected static class GTFSMGraphController extends FSMGraphController {
     }
 
     private GTFrameController _frameController;

@@ -136,21 +136,29 @@ public class ParameterizedNodeController extends NamedObjController {
         interactor.setSelectionModel(sm);
     }
 
+    /** Return the configuration menu factory.
+     *
+     *  @return The configuration menu factory.
+     */
+    public MenuActionFactory getConfigureMenuFactory() {
+        return _configureMenuFactory;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected members                     ////
-
-    /** The submenu for configure actions. */
-    protected MenuActionFactory _configureMenuFactory;
-
-    /** The factory belonging to the menu creator. */
-    protected PtolemyMenuFactory _menuFactory;
-
-    /** The menu creator. */
-    protected MenuCreator _menuCreator;
 
     /** The configure action, which handles edit parameters requests. */
     protected static ConfigureAction _configureAction = new ConfigureAction(
             "Configure");
+
+    /** The submenu for configure actions. */
+    protected MenuActionFactory _configureMenuFactory;
+
+    /** The menu creator. */
+    protected MenuCreator _menuCreator;
+
+    /** The factory belonging to the menu creator. */
+    protected PtolemyMenuFactory _menuFactory;
 
     /** A configurable object that allows a different MenuFactory
      * to be specified instead of the default ptII one.

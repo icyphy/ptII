@@ -359,7 +359,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
      *  @param newPane True to add the pane prior to the last pane.
      *  @return The pane.
      */
-    private JGraph _addTabbedPane(CompositeActorMatcher matcher, boolean newPane) {
+    private JGraph _addTabbedPane(CompositeActorMatcher matcher,
+            boolean newPane) {
         GraphPane pane = _createGraphPane(matcher);
         pane.getForegroundLayer().setPickHalo(2);
         pane.getForegroundEventLayer().setConsuming(false);
@@ -377,6 +378,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
             }
         });
         JGraph jgraph = new JGraph(pane);
+        jgraph.addKeyListener(this);
         String name = matcher.getName();
         jgraph.setName(name);
         int index = _tabbedPane.getComponentCount();

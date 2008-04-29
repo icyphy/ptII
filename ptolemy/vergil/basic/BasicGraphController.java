@@ -139,6 +139,14 @@ public abstract class BasicGraphController extends AbstractGraphController
     public Configuration getConfiguration() {
         return _configuration;
     }
+    
+    /** Return the configuration menu factory.
+     * 
+     *  @return The configuration menu factory.
+     */
+    public MenuActionFactory getConfigureMenuFactory() {
+        return _configureMenuFactory;
+    }
 
     /** Get the graph frame, or null if there is none.  This is used by
      *  some of the controllers to mark the modified bit of the frame
