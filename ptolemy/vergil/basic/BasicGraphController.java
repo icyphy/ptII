@@ -67,6 +67,7 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.GraphUtilities;
+import diva.graph.JGraph;
 import diva.graph.NodeController;
 import diva.gui.toolbox.MenuCreator;
 
@@ -104,6 +105,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  @param toolbar The toolbar to add to, or null if none.
      */
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
+        _addHotKeys(getFrame().getJGraph());
     }
 
     /** Clear any animation highlight that might currently be active.
@@ -139,9 +141,9 @@ public abstract class BasicGraphController extends AbstractGraphController
     public Configuration getConfiguration() {
         return _configuration;
     }
-    
+
     /** Return the configuration menu factory.
-     * 
+     *
      *  @return The configuration menu factory.
      */
     public MenuActionFactory getConfigureMenuFactory() {
@@ -361,6 +363,13 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Add hot keys to the actions in the given JGraph.
+     *
+     *  @param jgraph The JGraph to which hot keys are to be added.
+     */
+    protected void _addHotKeys(JGraph jgraph) {
+    }
 
     /** Create the controllers for nodes in this graph.
      *  In this base class, nothing is created.

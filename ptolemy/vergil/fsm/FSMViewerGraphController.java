@@ -48,6 +48,7 @@ import diva.canvas.Figure;
 import diva.canvas.interactor.SelectionDragger;
 import diva.graph.EdgeController;
 import diva.graph.GraphPane;
+import diva.graph.JGraph;
 import diva.graph.NodeController;
 import diva.gui.GUIUtilities;
 
@@ -76,20 +77,6 @@ public class FSMViewerGraphController extends RunnableGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Add hot key for look inside.
-     *  @param menu The menu to add to, which is ignored.
-     *  @param toolbar The toolbar to add to, which is also ignored.
-     */
-    public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
-        super.addToMenuAndToolbar(menu, toolbar);
-
-        // NOTE: The transition controller's LookInsideAction is designed
-        // to handle both State and Transition.  We can't associate more
-        // than one with the hot key, so that one handles both.
-        GUIUtilities.addHotKey(getFrame().getJGraph(),
-                _transitionController._lookInsideAction);
-    }
 
     /** React to an event by highlighting the new state.
      *  @param event The debug event.
@@ -184,6 +171,19 @@ public class FSMViewerGraphController extends RunnableGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Add hot keys to the actions in the given JGraph.
+     *
+     *  @param jgraph The JGraph to which hot keys are to be added.
+     */
+    protected void _addHotKeys(JGraph jgraph) {
+        super._addHotKeys(jgraph);
+
+        // NOTE: The transition controller's LookInsideAction is designed
+        // to handle both State and Transition.  We can't associate more
+        // than one with the hot key, so that one handles both.
+        GUIUtilities.addHotKey(jgraph, _transitionController._lookInsideAction);
+    }
 
     /** Create the controllers for nodes in this graph.
      *  In this base class, controllers with PARTIAL access are created.

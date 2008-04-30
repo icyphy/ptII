@@ -58,7 +58,6 @@ import ptolemy.vergil.basic.EditorDropTarget;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.fsm.FSMGraphModel;
-import ptolemy.vergil.gt.GTFrame.GTFSMGraphController;
 import diva.canvas.event.LayerAdapter;
 import diva.canvas.event.LayerEvent;
 import diva.graph.GraphPane;
@@ -102,7 +101,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
         return _graphPanes;
     }
 
-    public List<JGraph> getGraphs() {
+    public List<JGraph> getJGraphs() {
         return _graphs;
     }
 
@@ -249,7 +248,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
             }
         } else {
             if (_isFSM(entity)) {
-                return new GTFSMGraphController();
+                return _frame.new GTFSMGraphController();
             } else {
                 return _frame.new GTActorGraphController();
             }
@@ -402,6 +401,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
         JCanvasPanner panner = _frame._getGraphPanner();
         if (tab instanceof JGraph) {
             _frame.setJGraph((JGraph) tab);
+            tab.requestFocus();
             if (panner != null) {
                 panner.setCanvas((JGraph) tab);
             }

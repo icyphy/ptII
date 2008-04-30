@@ -71,6 +71,7 @@ import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.GrabHandle;
 import diva.canvas.interactor.Interactor;
 import diva.graph.GraphPane;
+import diva.graph.JGraph;
 import diva.graph.NodeRenderer;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FigureIcon;
@@ -135,18 +136,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // Add an item that adds new relations.
         diva.gui.GUIUtilities.addMenuItem(menu, _newRelationAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newRelationAction);
-
-        // Add hot key for create instance action.
-        diva.gui.GUIUtilities
-                .addHotKey(
-                        getFrame().getJGraph(),
-                        ((ClassDefinitionController) _classDefinitionController)._createInstanceAction);
-
-        // Add hot key for create subclass action.
-        diva.gui.GUIUtilities
-                .addHotKey(
-                        getFrame().getJGraph(),
-                        ((ClassDefinitionController) _classDefinitionController)._createSubclassAction);
     }
 
     /** Set the configuration.  The configuration is used when
@@ -306,6 +295,24 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     _PASTE_OFFSET, ptolemy.moml.Vertex.class, foregroundLayer,
                     visibleRectangle);
         }
+    }
+
+    /** Add hot keys to the actions in the given JGraph.
+     *
+     *  @param jgraph The JGraph to which hot keys are to be added.
+     */
+    protected void _addHotKeys(JGraph jgraph) {
+        super._addHotKeys(jgraph);
+
+        // Add hot key for create instance action.
+        diva.gui.GUIUtilities.addHotKey(getFrame().getJGraph(),
+                ((ClassDefinitionController) _classDefinitionController)
+                ._createInstanceAction);
+
+        // Add hot key for create subclass action.
+        diva.gui.GUIUtilities.addHotKey(getFrame().getJGraph(),
+                ((ClassDefinitionController) _classDefinitionController)
+                ._createSubclassAction);
     }
 
     /** Create the controllers for nodes in this graph.

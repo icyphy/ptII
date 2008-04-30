@@ -60,6 +60,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
+import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -94,11 +95,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
      */
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
-        GUIUtilities.addHotKey(getFrame().getJGraph(), _runModelAction);
         GUIUtilities.addToolBarButton(toolbar, _runModelAction);
-        GUIUtilities.addHotKey(getFrame().getJGraph(), _pauseModelAction);
         GUIUtilities.addToolBarButton(toolbar, _pauseModelAction);
-        GUIUtilities.addHotKey(getFrame().getJGraph(), _stopModelAction);
         GUIUtilities.addToolBarButton(toolbar, _stopModelAction);
         ((ButtonFigureAction) _stopModelAction).setSelected(true);
     }
@@ -206,6 +204,17 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Add hot keys to the actions in the given JGraph.
+     *
+     *  @param jgraph The JGraph to which hot keys are to be added.
+     */
+    protected void _addHotKeys(JGraph jgraph) {
+        super._addHotKeys(jgraph);
+        GUIUtilities.addHotKey(jgraph, _runModelAction);
+        GUIUtilities.addHotKey(jgraph, _pauseModelAction);
+        GUIUtilities.addHotKey(jgraph, _stopModelAction);
+    }
 
     /** Get the manager for the top-level of the associated model,
      *  if there is one, or create one if there is not.

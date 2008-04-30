@@ -234,6 +234,17 @@ public class GTFrame extends ExtendedGraphFrame {
     protected class GTActorGraphController extends ActorEditorGraphController
     implements MenuItemListener {
 
+        protected void _addHotKeys(JGraph jgraph) {
+            List<JGraph> jgraphs = _frameController.getJGraphs();
+            if (jgraphs == null) {
+                super._addHotKeys(jgraph);
+            } else {
+                for (JGraph g : jgraphs) {
+                    super._addHotKeys(g);
+                }
+            }
+        }
+
         public void menuItemCreated(JContextMenu menu, NamedObj object,
                 JMenuItem menuItem) {
             if (menuItem instanceof JMenu) {
@@ -350,7 +361,18 @@ public class GTFrame extends ExtendedGraphFrame {
         }
     }
 
-    protected static class GTFSMGraphController extends FSMGraphController {
+    protected class GTFSMGraphController extends FSMGraphController {
+
+        protected void _addHotKeys(JGraph jgraph) {
+            List<JGraph> jgraphs = _frameController.getJGraphs();
+            if (jgraphs == null) {
+                super._addHotKeys(jgraph);
+            } else {
+                for (JGraph g : jgraphs) {
+                    super._addHotKeys(g);
+                }
+            }
+        }
     }
 
     private GTFrameController _frameController;

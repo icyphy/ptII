@@ -51,6 +51,7 @@ import diva.canvas.Figure;
 import diva.canvas.interactor.SelectionDragger;
 import diva.graph.EdgeController;
 import diva.graph.GraphPane;
+import diva.graph.JGraph;
 import diva.graph.NodeController;
 import diva.gui.GUIUtilities;
 
@@ -95,18 +96,6 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Add hot key for look inside.
-     *  @param menu The menu to add to, which is ignored.
-     *  @param toolbar The toolbar to add to, which is also ignored.
-     */
-    public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
-        super.addToMenuAndToolbar(menu, toolbar);
-        GUIUtilities.addHotKey(getFrame().getJGraph(),
-                _entityController._lookInsideAction);
-        GUIUtilities.addHotKey(getFrame().getJGraph(),
-                _classDefinitionController._lookInsideAction);
-    }
 
     /** React to an event by highlighting the actor being iterated.
      *  This effectively animates the execution.
@@ -259,6 +248,17 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Add hot keys to the actions in the given JGraph.
+     *
+     *  @param jgraph The JGraph to which hot keys are to be added.
+     */
+    protected void _addHotKeys(JGraph jgraph) {
+        super._addHotKeys(jgraph);
+        GUIUtilities.addHotKey(jgraph, _entityController._lookInsideAction);
+        GUIUtilities.addHotKey(jgraph,
+                _classDefinitionController._lookInsideAction);
+    }
 
     /** Create the controllers for nodes in this graph.
      *  In this base class, controllers with PARTIAL access are created.

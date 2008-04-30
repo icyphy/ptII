@@ -132,6 +132,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
             Component selected = ((JTabbedPane) source).getSelectedComponent();
             if (selected instanceof JGraph) {
                 setJGraph((JGraph) selected);
+                selected.requestFocus();
             }
             if (_graphPanner != null) {
                 _graphPanner.setCanvas((JGraph) selected);
@@ -199,6 +200,8 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
             if (first) {
                 first = false;
                 setJGraph(jgraph);
+            } else {
+                ((CaseGraphController) _controller)._addHotKeys(jgraph);
             }
         }
         return _tabbedPane;
@@ -355,7 +358,8 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                                 entity.setMirrorDisable(false);
                             }
                         }
-                        _addTabbedPane(entity, true);
+                        JGraph jgraph = _addTabbedPane(entity, true);
+                        ((CaseGraphController) _controller)._addHotKeys(jgraph);
                     }
                 };
 
@@ -379,6 +383,14 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
             }
             // Fallback position.
             return super.getGraphModel();
+        }
+
+        /** Add hot keys to the actions in the given JGraph.
+         *
+         *  @param jgraph The JGraph to which hot keys are to be added.
+         */
+        protected void _addHotKeys(JGraph jgraph) {
+            super._addHotKeys(jgraph);
         }
     }
 
