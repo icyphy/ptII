@@ -51,20 +51,23 @@ public class EmbeddedCFileActor extends CompiledCompositeActor  {
    }
    
    ///////////////////////////////////////////////////////////////////
-   ////                         inner classes                     ////
+   ////                      inner classes                        ////
 
    /** A placeholder or dummy actor used in Embedded C code generation.
+    *  It extends the EmbeddedActor class in the EmbeddedCActor.
     */
    public static class EmbeddedFileActor extends ptolemy.codegen.c.actor.lib.jni.EmbeddedCActor.EmbeddedActor {
 
        /** Create a EmbeddedFileActor.
         *  @param actor The associated actor.
         */
-       public EmbeddedFileActor(
-               ptolemy.actor.lib.jni.EmbeddedCFileActor.EmbeddedFileActor actor) {
+       public EmbeddedFileActor(  
+               ptolemy.actor.lib.jni.EmbeddedCFileActor.EmbeddedFileActor actor){
            super(actor);
        }
-
+       /** Generate the shared code.  First call changeEmbeddedCCode to make sure the 
+        *  
+        */
        public Set getSharedCode() throws IllegalActionException {
           
            ((ptolemy.actor.lib.jni.EmbeddedCFileActor) getComponent().getContainer()).changeEmbeddedCCode();

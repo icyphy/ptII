@@ -1,5 +1,5 @@
 /* An actor that executes compiled embedded C code.  It takes in a file
- parameter that specifies the file of C code. 
+ parameter that specifies the file where the code is located. 
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -29,25 +29,20 @@ package ptolemy.actor.lib.jni;
 
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
-
-////EmbeddedCFileActor
-
 /**
- An actor of this class executes compiled embedded C Code.
+ The embeddedCFileActor executes compiled embedded C Code.
+ 
  This actor extends the EmbeddedCActor and has most of the same functionality.
- The only difference is that a file of C code can be passed in as a parameter
- to the EmbeddedCFileActor.  This avoids multiple instances of the same code
- in copies of the EmbeddedCActor.
+ The only difference is that a file specifying the C code can be passed in as 
+ a parameter to the actor which avoids having multiple instances of the same 
+ code in different copies of the EmbeddedCActor.
 
  @author Christine Avanessians, Edward Lee, and Man-Kit Leung 
  @version $Id$
@@ -57,7 +52,18 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 
 public class EmbeddedCFileActor extends EmbeddedCActor {
-
+    
+    /** Construct an actor with the given container and name.
+     *  Invoke the super class constructor and create the 
+     *  <i>codeBlockFile</i> file parameter and initialize
+     *  it to the empty string.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception NameDuplicationException If the container already
+     *   has an actor with this name.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     */
     public EmbeddedCFileActor(CompositeEntity container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -67,45 +73,12 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
         
     }
     
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
-        if (attribute == codeBlockFile) {
-            if (!(codeBlockFile.getExpression()).equals("")){
-                File tempFile = codeBlockFile.asFile();
-                if (tempFile.exists()){
-                    //System.out.println("changing attribute");
-                    _timeOfModification = tempFile.lastModified();
-                    _codeFile=tempFile;
-                }
-                else {
-                    /* Do nothing if the file does not exist.  Text editor will create a file with
-                     * the saved file name.
-                     */
-                }
-            }
-            else {
-                /* Do nothing if the file name is not specified.  Text editor will create a file with
-                 * the saved file name.
-                 */
-            }
-        }
-        else{
-            super.attributeChanged(attribute);
-        }
-    }
-
-    protected void _generateAndCompileCCode() throws IllegalActionException {
-        if (_codeFile.lastModified() > _timeOfModification){
-            attributeChanged(codeBlockFile);
-        }
-
-        changeEmbeddedCCode();
-        //System.out.println(embeddedCCode.getExpression());
-
-        //System.out.println("generating code");
-
-        super._generateAndCompileCCode();
-    }
-
+    ////////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+    /**
+     * Set the embeddedCCode parameter in the EmbeddedCActor to contain the contents 
+     * of the file specifed by codeBlockFile. 
+     */
     public void changeEmbeddedCCode() throws IllegalActionException{
         BufferedReader reader = null;
 
@@ -123,7 +96,6 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
                         code.append(str + "\n");
                     }
                 } catch (IOException e){
-                    // Does codeBlockFile.getExpression() actually get the name of the name of the file???
                     throw new IllegalActionException ("Could not read file" + codeBlockFile.getExpression());
                 }
                 embeddedCCode.setExpression(code.toString());
@@ -139,23 +111,45 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
             }
         }
     }
+
+    ///////////////////////////////////////////////////////////////////////
+    ////                      protected methods                        ////
     
-    protected void setEmbeddedActor() throws IllegalActionException, NameDuplicationException{
-        //_embeddedActor = new EmbeddedFileActor(this, "EmbeddedFileActor");
+    /**
+     * Before generating and compiling C code, make sure the contents of the
+     * file have been saved into the embeddedCCode parameter by calling 
+     * the function changeEmbeddedCCode.  The embeddedCCode parameter is set 
+     * right before code generation in order for the most recent revision of 
+     * the file to be utilized.
+     */  
+    protected void _generateAndCompileCCode() throws IllegalActionException {
+        changeEmbeddedCCode();
+
+        super._generateAndCompileCCode();
     }
-
-
+    
+    /** 
+     * Create a new instance of EmbeddedFileActor.
+     */
+    protected void setEmbeddedActor() throws IllegalActionException, NameDuplicationException{
+        _embeddedActor = new EmbeddedFileActor(this, "EmbeddedFileActor");
+    }
+    
+   /**
+    * The file parameter that specifies the file that contains the C Code that
+    * this actor should use during execution and/or code generation.
+    */
     public FileParameter codeBlockFile;
-    public File _codeFile;
-    public long _timeOfModification=-1;
-
-    /** An actor inside the EmbeddedCActor that is used as a dummy
-     *  placeholder.  The EmbeddedActor is created in preinitialize() where
-     *  ports from the outer EmbeddedCActor are connected to the EmbeddedActor.
-     *  The EmbeddedActor is destroyed in wrapup().
+    
+     ////////////////////////////////////////////////////////////////////
+    ////                     inner classes                          ////
+    
+    /** An actor inside the EmbeddedCFileActor that is used as a dummy
+     *  placeholder.  It serves the same purpose as the EmbeddedActor
+     *  inside the EmbeddedCActor. 
      */
     public static class EmbeddedFileActor extends ptolemy.actor.lib.jni.EmbeddedCActor.EmbeddedActor {
-        /** Create a new instance of EmbeddedActor.
+        /** Create a new instance of EmbeddedFileActor.
          *  @param container The container.
          *  @param name The name of this actor within the container.
          *  @exception IllegalActionException If this actor cannot be contained
@@ -171,4 +165,5 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
             setPersistent(false);
         }
     }
+    
 }
