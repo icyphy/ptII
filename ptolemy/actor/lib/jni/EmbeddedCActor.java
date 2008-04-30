@@ -153,7 +153,7 @@ public class EmbeddedCActor extends CompiledCompositeActor {
 
     public void preinitialize() throws IllegalActionException {
         try {
-            _embeddedActor = new EmbeddedActor(this, "EmbeddedActor");
+            setEmbeddedActor();
 
             int i = 0;
             Iterator ports = portList().iterator();
@@ -206,6 +206,17 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** 
+     * Create a new instance instance of EmbeddedActor.  It is separated into
+     * its own function so that EmbeddedCFileActor can extend this class without
+     * a large amount of code duplication.  This method needs to be overwritten in 
+     * EmbeddedCFileActor to create a new instance of EmbeddedFileActor rather 
+     * than EmbeddedActor.
+     */
+    protected void setEmbeddedActor() throws IllegalActionException, NameDuplicationException{
+        _embeddedActor = new EmbeddedActor(this, "EmbeddedActor");
+    }
+    
     /** Get the fileDependencies part of the generated code.
      *  @return The string containing the codegen fileDependencies function.
      */
@@ -253,7 +264,7 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private EmbeddedActor _embeddedActor = null;
+    protected EmbeddedActor _embeddedActor = null;
 
     /** An actor inside the EmbeddedCActor that is used as a dummy
      *  placeholder.  The EmbeddedActor is created in preinitialize() where
