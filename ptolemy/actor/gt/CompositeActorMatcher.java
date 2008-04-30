@@ -42,6 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
+import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.gt.GTIngredientsEditor;
 
 //////////////////////////////////////////////////////////////////////////
@@ -180,6 +181,14 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *  @see GTEntityUtils#updateAppearance(GTEntity, GTIngredientsAttribute)
      */
     public void updateAppearance(GTIngredientsAttribute attribute) {
+        NamedObj container = getContainer();
+        if (container instanceof TransformationRule
+                && container.getContainer() instanceof EntityLibrary) {
+            // Do not update appearance if the containing TransformationRule is
+            // in the actor library, so opening the folder of the actor library
+            // would not cause a moml change.
+            return;
+        }
         GTEntityUtils.updateAppearance(this, attribute);
     }
 
