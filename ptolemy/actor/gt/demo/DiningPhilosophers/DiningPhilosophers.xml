@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DiningPhilosophers" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -53,7 +53,7 @@
         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={187, 160, 891, 728}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 13, 883, 721}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[668, 614]">
     </property>
@@ -133,10 +133,18 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
         </property>
     </property>
     <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
+        <property name="ModelGeneratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 267, 823, 515}, maximized=false}">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 95.0]">
         </property>
     </entity>
     <entity name="ModelView" class="ptolemy.actor.gt.ModelView">
+        <property name="ModelViewIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 267, 823, 515}, maximized=false}">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 205.0]">
         </property>
     </entity>
@@ -236,9 +244,13 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
     <entity name="CreateFirst" class="ptolemy.actor.gt.TransformationRule">
         <property name="mode" class="ptolemy.data.expr.StringParameter" value="replace first">
         </property>
+        <property name="TransformationRuleIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={172, 152, 823, 515}, maximized=false}">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 95.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 240, 833, 570}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={155, 59, 825, 560}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 428]">
         </property>
@@ -254,19 +266,23 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
             <entity name="ResourcePool2" class="ptolemy.domains.rendezvous.lib.ResourcePool">
                 <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{&quot;fork&quot;}">
                 </property>
+                <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 225.0]">
                 </property>
             </entity>
             <entity name="Philosopher" class="ptolemy.actor.TypedCompositeActor">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 75.0]">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={336, 330, 772, 464}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={254, 255, 764, 457}, maximized=false}">
                 </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[549, 294]">
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[549, 350]">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.5, 147.0}">
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.5, 175.0}">
                 </property>
                 <property name="ID" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -319,6 +335,10 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
                     </property>
                 </entity>
                 <entity name="Barrier1" class="ptolemy.domains.rendezvous.lib.Barrier">
+                    <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                        </property>
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 195.0]">
                     </property>
                 </entity>
@@ -338,16 +358,28 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
                 <entity name="ResourcePool1" class="ptolemy.domains.rendezvous.lib.ResourcePool">
                     <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{}">
                     </property>
+                    <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                        </property>
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 125.0]">
                     </property>
                 </entity>
                 <entity name="ResourcePool2" class="ptolemy.domains.rendezvous.lib.ResourcePool">
                     <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{}">
                     </property>
+                    <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                        </property>
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 270.0]">
                     </property>
                 </entity>
                 <entity name="Barrier2" class="ptolemy.domains.rendezvous.lib.Barrier">
+                    <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                        </property>
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 195.0]">
                     </property>
                 </entity>
@@ -435,6 +467,10 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
     <entity name="CreateOne" class="ptolemy.actor.gt.TransformationRule">
         <property name="mode" class="ptolemy.data.expr.StringParameter" value="replace first">
         </property>
+        <property name="TransformationRuleIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={172, 152, 823, 515}, maximized=false}">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 205.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 240, 833, 570}, maximized=false}">
@@ -459,6 +495,10 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
             </entity>
             <entity name="NextPool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
                 <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{&quot;fork&quot;}">
+                </property>
+                <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 115.0]">
                 </property>
@@ -549,6 +589,10 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
                     </property>
                 </entity>
                 <entity name="Barrier1" class="ptolemy.domains.rendezvous.lib.Barrier">
+                    <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                        </property>
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 195.0]">
                     </property>
                 </entity>
@@ -568,16 +612,28 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
                 <entity name="ResourcePool1" class="ptolemy.domains.rendezvous.lib.ResourcePool">
                     <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{}">
                     </property>
+                    <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                        </property>
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 125.0]">
                     </property>
                 </entity>
                 <entity name="ResourcePool2" class="ptolemy.domains.rendezvous.lib.ResourcePool">
                     <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{}">
                     </property>
+                    <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                        </property>
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 270.0]">
                     </property>
                 </entity>
                 <entity name="Barrier2" class="ptolemy.domains.rendezvous.lib.Barrier">
+                    <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+                        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                        </property>
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 195.0]">
                     </property>
                 </entity>
@@ -639,11 +695,19 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
             <entity name="ResourcePool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
                 <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{&quot;fork&quot;}">
                 </property>
+                <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 130.0}">
                 </property>
             </entity>
             <entity name="NextPool" class="ptolemy.domains.rendezvous.lib.ResourcePool">
                 <property name="initialPool" class="ptolemy.data.expr.Parameter" value="{&quot;fork&quot;}">
+                </property>
+                <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 220.0]">
                 </property>
@@ -779,8 +843,8 @@ the Replacement tab, right click on the Philosopher actor, and choose Customize-
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="ModelGenerator.modelName" relation="relation"/>
     <link port="ModelGenerator.model" relation="relation13"/>
+    <link port="ModelGenerator.modelName" relation="relation"/>
     <link port="ModelView.input" relation="relation7"/>
     <link port="SampleDelay.input" relation="relation2"/>
     <link port="SampleDelay.output" relation="relation6"/>
