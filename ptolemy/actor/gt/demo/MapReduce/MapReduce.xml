@@ -124,7 +124,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 35.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 30.0]">
             </property>
         </property>
         <property name="reduceCount" class="ptolemy.data.expr.Parameter" value="max(1, numberOfMachines - mapCount)">
@@ -143,10 +143,14 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 55.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 50.0]">
             </property>
         </property>
         <property name="className" class="ptolemy.actor.parameters.PortParameter" value="&quot;ptolemy.actor.ptalon.lib.WordCount&quot;">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
+            </property>
         </property>
         <port name="className" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -161,7 +165,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 125.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 125.0]">
             </property>
             <property name="width" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -275,7 +279,7 @@
             </property>
         </entity>
         <entity name="AddMaps" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 230.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 230.0}">
             </property>
             <port name="modelInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -592,7 +596,7 @@
             </entity>
         </entity>
         <entity name="AddReduces" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 295.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 295.0]">
             </property>
             <port name="modelInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -913,7 +917,7 @@
             <link port="LinkMapAndReduce.modelOutput" relation="relation7"/>
         </entity>
         <entity name="AddWaitingStop" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 295.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 295.0]">
             </property>
             <port name="modelInput" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
