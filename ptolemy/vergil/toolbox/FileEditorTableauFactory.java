@@ -43,6 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
+import javax.swing.JOptionPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// FileEditorTableauFactory
@@ -126,8 +127,11 @@ public class FileEditorTableauFactory extends TableauFactory {
             // If there is no specified name, first prompt the user for one.
             FileParameter parameter = (FileParameter)attribute;
             if (parameter.getExpression().trim().equals("")) {
-                // FIXME: prompt for a file name.
+                // Prompt for a file name.
                 // Then set the parameter to match the file name.
+                String inputValue = JOptionPane.showInputDialog("Please specify a file name");
+                parameter.setExpression(inputValue);
+                url = parameter.asURL();
             }
             File file = parameter.asFile();
             if (!file.exists()) {
