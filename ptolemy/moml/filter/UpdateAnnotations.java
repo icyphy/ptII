@@ -129,12 +129,19 @@ public class UpdateAnnotations implements MoMLFilter {
                 }
             }
         } else if (_currentlyProcessingAnnotation) {
-//             if (attributeName.equals("class")
-//                     && ! attributeValue.equals("ptolemy.kernel.util.Attribute")
-//                     && container.getFullName().equals(_currentAnnotationContainerFullName)) {
-//                 // We have an annotation, but the class is not Attribute, so skip out
-//                 _reset();
-//             }
+            System.out.println("filterAttributeValue: " + container + "\t"
+                           +  attributeName + "\t" + attributeValue 
+                               + container.getFullName() + "\t"
+                    + _currentAnnotationContainerFullName);
+            if (attributeName.equals("class")
+                    && attributeValue.equals("ptolemy.vergil.kernel.attributes.TextAttribute")
+                    && container.getFullName().equals(_currentAnnotationContainerFullName)) {
+                System.out.println("UpdateAnnotation: We have a TextAttribute");
+
+                // We have an annotation, but the class is not Attribute, so skip out
+                _reset();
+                return attributeValue;
+            }
             if (_currentlyProcessingLocation
                     && attributeName.equals("value")) {
                 // Found the location
@@ -202,8 +209,10 @@ public class UpdateAnnotations implements MoMLFilter {
                 NamedObj grandparentContainer = currentAttribute.getContainer().getContainer();
                 //((Attribute)parentContainer).setContainer(null);
 
+                // Use a new name instead of annotation and avoid the HideAnnotationNames filter
                 _textAttribute = new TextAttribute(grandparentContainer,
-                        grandparentContainer.uniqueName(_currentAnnotationName));
+                        grandparentContainer.uniqueName("Annotation"));
+                //                        grandparentContainer.uniqueName(_currentAnnotationName));
             }
 
 
@@ -234,8 +243,10 @@ public class UpdateAnnotations implements MoMLFilter {
                 NamedObj parentContainer = currentAttribute.getContainer();
                 NamedObj grandparentContainer = currentAttribute.getContainer().getContainer();
                 //((Attribute)parentContainer).setContainer(null);
+                // Use a new name instead of annotation and avoid the HideAnnotationNames filter
                 _textAttribute = new TextAttribute(grandparentContainer,
-                        grandparentContainer.uniqueName(_currentAnnotationName));
+                        grandparentContainer.uniqueName("Annotation"));
+                //grandparentContainer.uniqueName(_currentAnnotationName));
             }
             //            TextAttribute textAttribute = (TextAttribute) currentAttribute.getContainer().getAttribute(_currentAnnotationName,
             //                    TextAttribute.class);
@@ -259,7 +270,7 @@ public class UpdateAnnotations implements MoMLFilter {
             String name = currentAttribute.getName(); 
             currentAttribute.setContainer(null);
             // Rename to the original name.
-            _textAttribute.setName(name);
+            //_textAttribute.setName(name);
             //NamedObj parentContainer = currentAttribute.getContainer();
             //((Attribute)parentContainer).setContainer(null);
             _reset();
