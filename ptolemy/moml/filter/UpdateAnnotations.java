@@ -168,12 +168,6 @@ public class UpdateAnnotations implements MoMLFilter {
      */
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData) throws Exception {
-//         System.out.println("filterEndElement: " + container + "\t"
-//                 +  elementName
-//                 + " container.fn: " +  container.getFullName()
-//                 + " _cafn: " + _currentAnnotationFullName
-//                 + " _cacfn: " + _currentAnnotationContainerFullName
-//                 + "\n" + currentCharData);
 
         //if (!elementName.equals("configure")) {
         //    return;
@@ -182,6 +176,13 @@ public class UpdateAnnotations implements MoMLFilter {
         if (!_currentlyProcessingAnnotation) {
             return;
         }
+
+//          System.out.println("filterEndElement: " + container + "\t"
+//                  +  elementName
+//                  + " container.fn: " +  container.getFullName()
+//                  + " _cafn: " + _currentAnnotationFullName
+//                  + " _cacfn: " + _currentAnnotationContainerFullName
+//                  + "\n" + currentCharData);
 
         if (elementName.equals("configure")) {
             Attribute currentAttribute = (Attribute) container;
@@ -278,6 +279,7 @@ public class UpdateAnnotations implements MoMLFilter {
         _currentAnnotationFullName = null;
         _currentAnnotationName = null;
         _currentlyProcessingLocation = false;
+        _textAttribute = null;
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
