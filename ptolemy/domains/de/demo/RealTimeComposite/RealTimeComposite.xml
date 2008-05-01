@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RealTimeComposite" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 40, 965, 574}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 30, 840, 527}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[750, 458]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 410]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{375.0, 229.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.5, 205.0}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -33,7 +33,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, the RealTimeComposite actor&#10;has delay set to UNDEFINED, and we&#10;use the triggering mechanism of the&#10;Clock actor to throttle model time. &#10;Notice however that this mechanism &#10;will fail if there is any other &#10;open-loop part of the model (e.g. &#10;an untriggered Clock actor) because &#10;model time will get very far ahead &#10;very quickly. The time stamps of &#10;the outputs from the RealTimeComposite&#10;become large quickly.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 95.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -41,7 +41,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 430.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 370.0]">
         </property>
     </property>
     <property name="delay" class="ptolemy.data.expr.Parameter" value="0.0">
