@@ -2353,13 +2353,18 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-        if (_attributes != null) {
-            Iterator attributes = _attributes.elementList().iterator();
+        try {
+            _workspace.getReadAccess();
+            if (_attributes != null) {
+                Iterator attributes = _attributes.elementList().iterator();
 
-            while (attributes.hasNext()) {
-                Attribute attribute = (Attribute) attributes.next();
-                attribute.exportMoML(output, depth);
+                while (attributes.hasNext()) {
+                    Attribute attribute = (Attribute) attributes.next();
+                    attribute.exportMoML(output, depth);
+                }
             }
+        } finally {
+            _workspace.doneReading();
         }
     }
 
