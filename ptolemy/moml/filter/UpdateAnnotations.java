@@ -223,9 +223,40 @@ public class UpdateAnnotations implements MoMLFilter {
             if (charData.endsWith("</text>")) {
                 charData = charData.substring(0,charData.length() - 7).trim();
             }
+
+            // Map colors
+            if (charData.contains(" fill:")) {
+                if (charData.contains(" fill:black")) {
+                    _textAttribute.textColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
+                }
+                if (charData.contains(" fill:darkgray")
+                        || charData.contains(" fill:gray")) {
+                    _textAttribute.textColor.setExpression("{0.2, 0.2, 0.2, 1.0}");
+                }
+                if (charData.contains(" fill:green")) {
+                    _textAttribute.textColor.setExpression("{0.0, 1.0, 0.0, 1.0}");
+                }
+                if (charData.contains(" fill:red")) {
+                    _textAttribute.textColor.setExpression("{1.0, 0.0, 0.0, 1.0}");
+                }
+            }
+
+            // Map font sizes
+            if (charData.contains("font-size:")) {
+                if (charData.contains("font-size:12")) {
+                    _textAttribute.textSize.setExpression("12");
+                }
+                if (charData.contains("font-size:16")) {
+                    _textAttribute.textSize.setExpression("16");
+                }
+                if (charData.contains("font-size:18")) {
+                    _textAttribute.textSize.setExpression("18");
+                }
+            }
+
             charData = charData.replaceAll("<text.*[^>]>", "");
             _textAttribute.text.setExpression(charData);
-            _textAttribute.text.validate();
+            //_textAttribute.text.validate();
             //System.out.println("UpdateAnnotation: setting textAttribute: " + charData);
             //System.out.println("UpdateAnnotation: textAttribute is now: " + _textAttribute.text.getExpression());
 
