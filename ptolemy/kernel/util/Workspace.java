@@ -263,39 +263,7 @@ public final class Workspace implements Nameable, Serializable {
      *   a corresponding call to getWriteAccess() by the same thread.
      */
     public final synchronized void doneWriting() {
-        Thread current = Thread.currentThread();
-        AccessRecord record = null;
-
-        if (current == _lastReader) {
-            record = _lastReaderRecord;
-        } else {
-            record = _getAccessRecord(current, false);
-        }
-
-        incrVersion();
-
-        if (current != _writer) {
-            if ((record != null) && (record.failedWriteAttempts > 0)) {
-                record.failedWriteAttempts--;
-            } else {
-                throw new InvalidStateException(this,
-                        "Workspace: doneWriting called without a prior "
-                                + "matching call to getWriteAccess().");
-            }
-        } else {
-            if (_writeDepth > 0) {
-                _writeDepth--;
-
-                if (_writeDepth == 0) {
-                    _writer = null;
-                    notifyAll();
-                }
-            } else {
-                throw new InvalidStateException(this,
-                        "Workspace: doneWriting called without a prior "
-                                + "matching call to getWriteAccess().");
-            }
-        }
+        _doneWriting(true);
     }
 
     /** Get the container.  Always return null since a workspace
@@ -635,6 +603,27 @@ public final class Workspace implements Nameable, Serializable {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                      package protected methods            ////
+
+    /** Indicate that the calling thread is finished writing.
+     *  If this thread is completely done writing (it has no other
+     *  write access to the workspace), then notify all threads
+     *  that are waiting to get read/write access to this workspace
+     *  so that they may contend for access.
+     *  This method <b>does not</b> increments the version number
+     *  of the workspace.  This method is used to temporarily add
+     *  an attribute to the workspace without increment the version number
+     *  @exception InvalidStateException If this method is called before
+     *   a corresponding call to getWriteAccess() by the same thread.
+     *  @see ptolemy.kernel.util.Attribute.Attribute(NamedObj, String, boolean)
+     *  @see #doneWriting()
+     */
+    final synchronized void _doneTemporaryWriting() {
+        _doneWriting(false);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Return a description of the workspace.  The level of detail depends
@@ -705,6 +694,59 @@ public final class Workspace implements Nameable, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Indicate that the calling thread is finished writing.
+     *  If this thread is completely done writing (it has no other
+     *  write access to the workspace), then notify all threads
+     *  that are waiting to get read/write access to this workspace
+     *  so that they may contend for access.
+     *  It also increments the version number of the workspace.
+     *  @param incrementWorkspaceVersion True if we should increment
+     *  the version.  The incrementWorkspaceVersion parameter should
+     *  almost always be true, if it is set to false, then perhaps a
+     *  temporary variable is being added.
+     *  @exception InvalidStateException If this method is called before
+     *   a corresponding call to getWriteAccess() by the same thread.
+     */
+    private final synchronized void _doneWriting(
+            boolean incrementWorkspaceVersion) {
+        Thread current = Thread.currentThread();
+        AccessRecord record = null;
+
+        if (current == _lastReader) {
+            record = _lastReaderRecord;
+        } else {
+            record = _getAccessRecord(current, false);
+        }
+
+        if (incrementWorkspaceVersion) {
+            incrVersion();
+        }
+
+        if (current != _writer) {
+            if ((record != null) && (record.failedWriteAttempts > 0)) {
+                record.failedWriteAttempts--;
+            } else {
+                throw new InvalidStateException(this,
+                        "Workspace: doneWriting called without a prior "
+                                + "matching call to getWriteAccess().");
+            }
+        } else {
+            if (_writeDepth > 0) {
+                _writeDepth--;
+
+                if (_writeDepth == 0) {
+                    _writer = null;
+                    notifyAll();
+                }
+            } else {
+                throw new InvalidStateException(this,
+                        "Workspace: doneWriting called without a prior "
+                                + "matching call to getWriteAccess().");
+            }
+        }
+    }
+
     // Return the AccessRecord object for the current thread.
     // If the flag createNew is true and the current thread does not
     // have an access record, then create a new one and return it.
