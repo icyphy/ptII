@@ -129,14 +129,10 @@ public class UpdateAnnotations implements MoMLFilter {
                 }
             }
         } else if (_currentlyProcessingAnnotation) {
-            System.out.println("filterAttributeValue: " + container + "\t"
-                           +  attributeName + "\t" + attributeValue 
-                               + container.getFullName() + "\t"
-                    + _currentAnnotationContainerFullName);
             if (attributeName.equals("class")
                     && attributeValue.equals("ptolemy.vergil.kernel.attributes.TextAttribute")
                     && container.getFullName().equals(_currentAnnotationContainerFullName)) {
-                System.out.println("UpdateAnnotation: We have a TextAttribute");
+                //System.out.println("UpdateAnnotation: We have a TextAttribute");
 
                 // We have an annotation, but the class is not Attribute, so skip out
                 _reset();
@@ -255,8 +251,16 @@ public class UpdateAnnotations implements MoMLFilter {
             Location location = new Location(_textAttribute, "_location");
             //            System.out.println("UpdateAnnotation: _currentLocation: " + _currentLocation);
             //            location.setExpression(_currentLocation);
-            //System.out.println("UpdateAnnotation: _currentLocation: " + _currentLocation + " " + ((Location)container).getExpression());
-            location.setExpression(((Location)container).getExpression());
+
+            Location oldLocation = (Location)container;
+            oldLocation.validate();
+            double [] xyLocation = oldLocation.getLocation();
+
+            //System.out.println("UpdateAnnotation: _currentLocation: " + _currentLocation + " " + oldLocation.getExpression() + " " + xyLocation[0] + " " + xyLocation[1]);
+
+            // Offset to handle different origins with svg
+            xyLocation[0] += 15.0;
+            location.setLocation(xyLocation);
 
             location.validate();
         }        
