@@ -106,11 +106,13 @@ public interface MoMLFilter {
      *  @param container The object defined by the element that this
      *   is the end of.
      *  @param elementName The element name.
+     *  @param currentCharData The character data, which appears
+     *  only in the doc and configure elements
      *  @exception Exception If there is a problem modifying the
      *  specified container.
      */
-    public void filterEndElement(NamedObj container, String elementName)
-            throws Exception;
+    public void filterEndElement(NamedObj container, String elementName,
+            StringBuffer currentCharData) throws Exception;
 
     /** Return a string that describes what the filter does.
      *  @return A description of the filter (ending with a newline).

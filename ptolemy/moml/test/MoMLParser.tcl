@@ -4111,3 +4111,22 @@ test MoMLParser-29.1 {The contents of the icon should not be in the exported Mom
    list $results 
 } {{}}
 
+
+test MoMLParser-30.1 {If an actor has no package, then we should be able to have two of them in a model} {
+    $parser reset
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+    set toplevel [$parser parseFile "NoPackageActors.xml"]
+    set compositeEntity [java::cast ptolemy.kernel.CompositeEntity $toplevel]
+
+    # Success is reading the file
+    list \
+	[[$compositeEntity getEntity {NoPackageActor}] getFullName] \
+	[[$compositeEntity getEntity {NoPackageActor2}] getFullName]
+} {.NoPackageActors.NoPackageActor .NoPackageActors.NoPackageActor2}

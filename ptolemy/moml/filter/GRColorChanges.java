@@ -92,11 +92,13 @@ public class GRColorChanges implements MoMLFilter {
      *  @param container The object defined by the element that this
      *  is the end of.
      *  @param elementName The element name.
+     *  @param currentCharData The character data, which appears
+     *  only in the doc and configure elements
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
-    public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {
+    public void filterEndElement(NamedObj container, String elementName,
+            StringBuffer currentCharData) throws Exception {
         if (_foundOne) {
             _foundOne = false;
 

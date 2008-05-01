@@ -124,10 +124,13 @@ public class PortClassChanges implements MoMLFilter {
     /** Reset private variables.
      *  @param container The object created by this element.
      *  @param elementName The element name.
-     *  @exception Exception Not thrown in this base class
+     *  @param currentCharData The character data, which appears
+     *  only in the doc and configure elements
+     *  @exception Exception if there is a problem substituting
+     *  in the new value.
      */
-    public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {
+    public void filterEndElement(NamedObj container, String elementName,
+            StringBuffer currentCharData) throws Exception {
         _foundPort = false;
     }
 

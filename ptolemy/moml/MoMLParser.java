@@ -695,7 +695,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             while (filters.hasNext()) {
                 MoMLFilter filter = (MoMLFilter) filters.next();
-                filter.filterEndElement(_current, elementName);
+                filter.filterEndElement(_current, elementName, 
+                        _currentCharData);
             }
         }
 
@@ -6484,7 +6485,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private NamedObj _current;
 
     // The current character data for the current element.
-    private StringBuffer _currentCharData;
+    private  StringBuffer _currentCharData;
 
     // The name of the currently active doc element.
     private String _currentDocName;
