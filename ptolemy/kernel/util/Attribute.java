@@ -108,16 +108,26 @@ public class Attribute extends NamedObj {
         if (incrementWorkspaceVersion) {
             setContainer(container);
         } else {
-            // Avoid methods that increment the workspace version.
-            if (container._attributes == null) {
-                container._attributes = new NamedList();
-            }
-            container._attributes.append(this);
-            _container = container;
-            // Make sure even the debugging messages are unchanged.
-            if (container._debugging) {
-                container._debug("Added attribute", getName(), "to", container
-                        .getFullName());
+            // Get writeAccess to the workspace because we are updating
+            // the _attributes field of the container.  
+            // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3255
+            try {
+                _workspace.getWriteAccess();
+
+                // Avoid methods that increment the workspace version.
+                if (container._attributes == null) {
+                    container._attributes = new NamedList();
+                }
+                container._attributes.append(this);
+
+                _container = container;
+                // Make sure even the debugging messages are unchanged.
+                if (container._debugging) {
+                    container._debug("Added attribute", getName(), "to",
+                            container.getFullName());
+                }
+            } finally {
+                _workspace.doneWriting();
             }
         }
         _elementName = "property";
