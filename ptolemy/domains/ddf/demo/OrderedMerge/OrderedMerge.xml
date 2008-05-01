@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="OrderedMerge" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.1">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[683, 498]">
     </property>
@@ -12,29 +12,6 @@
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
-        </property>
-    </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model, whose structure is due to Kahn and MacQueen, calculates integers
-whose prime factors are only 2, 3, and 5, with no redundancies. It uses the 
-DDFOrderedMerge actor, which takes two monotonically increasing input 
-sequences and merges them into one monotonically increasing output sequence. </text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 0.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -97,28 +74,7 @@ sequences and merges them into one monotonically increasing output sequence. </t
         <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 310.0]">
         </property>
     </property>
-    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The output is an ordered sequence of integers of the form
-2^n * 3^m * 5^k, where n, m and k are non-negative integers.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 370.0]">
-        </property>
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, -1, 898, 616}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 30, 898, 605}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -132,34 +88,36 @@ sequences and merges them into one monotonically increasing output sequence. </t
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 435.0]">
         </property>
     </property>
-    <property name="0:0:annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 95.0]">
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model, whose structure is due to Kahn and MacQueen, calculates integers&#10;whose prime factors are only 2, 3, and 5, with no redundancies. It uses the &#10;DDFOrderedMerge actor, which takes two monotonically increasing input &#10;sequences and merges them into one monotonically increasing output sequence. ">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:black">Compare this with the PN version where extra work (using
-a BooleanSwitch) is needed to starve the model. Here we
-use the iterations Parameter of the DDF Director to control
-the number of output integers.</text></svg></configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 15.0]">
         </property>
     </property>
-    <property name="0:0:annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 425.0]">
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The output is an ordered sequence of integers of the form&#10;2^n * 3^m * 5^k, where n, m and k are non-negative integers.">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:black">The Display actor has a Parameter requiredFiringsPerIteration 
-with value 1 so that each iteration generates one output.</text></svg></configure>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 370.0]">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Compare this with the PN version where extra work (using&#10;a BooleanSwitch) is needed to starve the model. Here we&#10;use the iterations Parameter of the DDF Director to control&#10;the number of output integers.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 105.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Display actor has a Parameter requiredFiringsPerIteration &#10;with value 1 so that each iteration generates one output.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 430.0]">
         </property>
     </property>
     <entity name="DDFOrderedMerge" class="ptolemy.domains.ddf.lib.DDFOrderedMerge">
@@ -215,11 +173,13 @@ with value 1 so that each iteration generates one output.</text></svg></configur
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={683, 491, 330, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={683, 491, 330, 237}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 405.0]">
         </property>
