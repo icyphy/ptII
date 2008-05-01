@@ -168,12 +168,12 @@ public class UpdateAnnotations implements MoMLFilter {
      */
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData) throws Exception {
-        System.out.println("filterEndElement: " + container + "\t"
-                +  elementName
-                + " container.fn: " +  container.getFullName()
-                + " _cafn: " + _currentAnnotationFullName
-                + " _cacfn: " + _currentAnnotationContainerFullName
-                + "\n" + currentCharData);
+//         System.out.println("filterEndElement: " + container + "\t"
+//                 +  elementName
+//                 + " container.fn: " +  container.getFullName()
+//                 + " _cafn: " + _currentAnnotationFullName
+//                 + " _cacfn: " + _currentAnnotationContainerFullName
+//                 + "\n" + currentCharData);
 
         //if (!elementName.equals("configure")) {
         //    return;
@@ -186,13 +186,18 @@ public class UpdateAnnotations implements MoMLFilter {
         if (elementName.equals("configure")) {
             Attribute currentAttribute = (Attribute) container;
             NamedObj parentContainer = currentAttribute.getContainer();
+            //System.out.println("UpdateAnnotations: currentAttribute.getName(): " + currentAttribute.getName());
+            if (currentAttribute.getName().equals("_smallIconDescription")) {
+                // Skip the smallIconDescription it is probably -A-
+                return;
+            }
             if ( ! (parentContainer instanceof Attribute)) {
                 // ptolemy.domains.fsm.modal.ModalController cannot be cast to ptolemy.kernel.util.Attribute
                 return;
             }
             
             if (_textAttribute == null) {
-                System.out.println("UpdateAnnotation: creating textAttribute1");
+                //System.out.println("UpdateAnnotation: creating textAttribute1");
                 NamedObj grandparentContainer = currentAttribute.getContainer().getContainer();
                 //((Attribute)parentContainer).setContainer(null);
 
@@ -215,16 +220,16 @@ public class UpdateAnnotations implements MoMLFilter {
             charData = charData.replaceAll("<text.*[^>]>", "");
             _textAttribute.text.setExpression(charData);
             _textAttribute.text.validate();
-            System.out.println("UpdateAnnotation: setting textAttribute: " + charData);
-            System.out.println("UpdateAnnotation: textAttribute is now: " + _textAttribute.text.getExpression());
+            //System.out.println("UpdateAnnotation: setting textAttribute: " + charData);
+            //System.out.println("UpdateAnnotation: textAttribute is now: " + _textAttribute.text.getExpression());
 
         }
 
         if (container instanceof Location) {
-            System.out.println("UpdateAnnotation: closing "); 
+            //System.out.println("UpdateAnnotation: closing "); 
             Attribute currentAttribute = (Attribute) container;
             if (_textAttribute == null) {
-                System.out.println("UpdateAnnotation: creating textAttribute2");
+                //System.out.println("UpdateAnnotation: creating textAttribute2");
                 NamedObj parentContainer = currentAttribute.getContainer();
                 NamedObj grandparentContainer = currentAttribute.getContainer().getContainer();
                 //((Attribute)parentContainer).setContainer(null);
@@ -246,7 +251,7 @@ public class UpdateAnnotations implements MoMLFilter {
 
         if ((container != null)
                 && container.getFullName().equals(_currentAnnotationFullName)) {
-            System.out.println("UpdateAnnotation: removing " + container.getFullName());
+            //System.out.println("UpdateAnnotation: removing " + container.getFullName());
             // We are at the end of the old annotation, remove it by
             // setting its container to null
             Attribute currentAttribute = (Attribute) container;
