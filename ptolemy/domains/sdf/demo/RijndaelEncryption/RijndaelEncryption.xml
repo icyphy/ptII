@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RijndaelEncryption" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 503]">
     </property>
@@ -14,88 +14,88 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
         </property>
     </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">A model of the rijndael encryption system, operating in ECB mode.
-This model makes heavy use of the class mechanism in Ptolemy II
-to describe components that are instantiated multiple times in the model.
-
-The algorithm is parameterized to run on 128 bits of data at a time.
-Executing the model displays two windows of data in hex format.
-One window shows 128 bits of encrypted data, while the other displays 
-intermediate results in the encryption process after each 'round'.
-
-For more information about the algorithm, see:
-http://www.esat.kuleuven.ac.be/~rijmen/rijndael/index.html
-http://home.ecn.ab.ca/~jsavard/crypto/co040801.htm</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 240.0}">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model of the rijndael encryption system, operating in ECB mode.&#10;This model makes heavy use of the class mechanism in Ptolemy II&#10;to describe components that are instantiated multiple times in the model.&#10;&#10;The algorithm is parameterized to run on 128 bits of data at a time.&#10;Executing the model displays two windows of data in hex format.&#10;One window shows 128 bits of encrypted data, while the other displays &#10;intermediate results in the encryption process after each 'round'.&#10;&#10;For more information about the algorithm, see:&#10;http://www.esat.kuleuven.ac.be/~rijmen/rijndael/index.html&#10;http://home.ecn.ab.ca/~jsavard/crypto/co040801.htm">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 240.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 25, 762, 621}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 25, 761, 620}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{273.0, 251.5}">
     </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The convertToString algorithm (with blue halo)
-is defined here as a single model that is 
-instantiated multiple times.  This class definition 
-is local to the model and stored in the same 
-XML file.  Modifications to this class will propagate
-to all instances.</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 15.0]">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The convertToString algorithm (with blue halo)&#10;is defined here as a single model that is &#10;instantiated multiple times.  This class definition &#10;is local to the model and stored in the same &#10;XML file.  Modifications to this class will propagate&#10;to all instances.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 15.0}">
         </property>
     </property>
-    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Stephen Neuendorffer</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 460.0]">
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Stephen Neuendorffer">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 460.0}">
         </property>
     </property>
     <class name="convertToStringClass" extends="ptolemy.actor.TypedCompositeActor">
@@ -408,36 +408,33 @@ to all instances.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 375.0">
             </property>
         </property>
-        <property name="annotation" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model implements the rijndael block encryption algorithm.
-It consumes a block of 128 bits, encrypts it, and then outputs 128 encrypted bits.
-The 128 bit key to be used is specified by the key parameter (an array of unsigned bytes)
-The roundCount parameter gives the number of cipher rounds that should be performed,
-and should be 10 for 128 bit data and 128 bit key.
-
-Note that this model contains another instance of the convertToString class defined
-at the toplevel, as well as three more class definitions that are used by various
-internal models.
-</text></svg></configure>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, -100.0">
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model implements the rijndael block encryption algorithm.&#10;It consumes a block of 128 bits, encrypts it, and then outputs 128 encrypted bits.&#10;The 128 bit key to be used is specified by the key parameter (an array of unsigned bytes)&#10;The roundCount parameter gives the number of cipher rounds that should be performed,&#10;and should be 10 for 128 bit data and 128 bit key.&#10;&#10;Note that this model contains another instance of the convertToString class defined&#10;at the toplevel, as well as three more class definitions that are used by various&#10;internal models.">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, -100.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 51, 997, 685}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 51, 996, 684}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -1376,26 +1373,30 @@ internal models.
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 175.0}">
                 </property>
             </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This block implements the key expansion and key selection.
-It basically implements a random number generator that uses
-the 128 bit user key as a seed.</text></svg></configure>
+                <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 420.0">
+                <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This block implements the key expansion and key selection.&#10;It basically implements a random number generator that uses&#10;the 128 bit user key as a seed.">
+                    <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                        </property>
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 420.0}">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={58, 90, 895, 520}, maximized=false}">
@@ -1971,26 +1972,35 @@ the 128 bit user key as a seed.</text></svg></configure>
                     <property name="output"/>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
                     </property>
-                    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
-                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states. Each refinement needs a director.
-For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
+                        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 65.0">
+                        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
                         </property>
-                        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                         </property>
-                        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+                        </property>
+                        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create a state machine here (and ports, if needed) and&#10;create refinements for the states. Each refinement needs a director.&#10;For hybrid system models, use the CTEmbeddedDirector.">
+                            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                                </property>
+                                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                                </property>
+                            </property>
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 65.0}">
                         </property>
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[536, 350]">
@@ -2645,26 +2655,35 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="input"/>
             </port>
             <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
                 </property>
-                <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states. Each refinement needs a director.
-For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
+                    <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 15.0">
+                    <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
-                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+                    </property>
+                    <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create a state machine here (and ports, if needed) and&#10;create refinements for the states. Each refinement needs a director.&#10;For hybrid system models, use the CTEmbeddedDirector.">
+                        <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 15.0}">
                     </property>
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[510, 350]">
@@ -2806,24 +2825,30 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 65.0">
                     </property>
                 </property>
-                <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">A normal encryption round.</text></svg></configure>
+                    <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+                    <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
-                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 305.0">
+                    <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A normal encryption round.">
+                        <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 305.0}">
                     </property>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 154, 883, 468}, maximized=false}">
@@ -2922,26 +2947,30 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 55.0">
                     </property>
                 </property>
-                <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The final encryption round, which is similar to a normal encryption round, 
-except that it lacks the MixColumn operation.
-This makes encryption and decryption more symmetric.</text></svg></configure>
+                    <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+                    <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
-                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 320.0">
+                    <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The final encryption round, which is similar to a normal encryption round, &#10;except that it lacks the MixColumn operation.&#10;This makes encryption and decryption more symmetric.">
+                        <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 320.0}">
                     </property>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -4, 909, 496}, maximized = false}">
@@ -3032,24 +3061,30 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 60.0">
                     </property>
                 </property>
-                <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The 'first' encryption round, which just XORs the key</text></svg></configure>
+                    <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+                    <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
                     </property>
-                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
-                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 305.0">
+                    <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The 'first' encryption round, which just XORs the key">
+                        <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                            <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                            </property>
+                            <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                            </property>
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 305.0}">
                     </property>
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 5, 763, 468}, maximized=false}">
@@ -3424,9 +3459,9 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={323, 534, 330, 237}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={279, 54, 351, 241}, maximized=false}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
             </property>
             <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Intermediate Round Output">
             </property>
@@ -3765,9 +3800,9 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
         <link port="SequenceToArray3.output" relation="relation13"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={632, 533, 330, 237}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={632, 53, 334, 241}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Encrypted Block">
         </property>

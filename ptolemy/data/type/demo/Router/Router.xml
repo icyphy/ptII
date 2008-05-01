@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Router" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -42,55 +42,58 @@ Rayleigh distribution.</text>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 29, 819, 597}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 29, 819, 596}, maximized=false}">
     </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model illustrates composite types in Ptolemy II. The
-Record Assembler actor composes a string with an integer into
-a record token, which is then passed through a channel that
-has random delay. The tokens arrive possibly in another
-order. The Record Disassembler actor separates the string
-from the sequence number. The strings are displayed as
-received (possible out of order), and resequenced by the
-Sequencer actor, which puts them back in order. This example
-demonstrates how types propagate through record composition
-and decomposition.</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 0.0">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates composite types in Ptolemy II. The&#10;Record Assembler actor composes a string with an integer into&#10;a record token, which is then passed through a channel that&#10;has random delay. The tokens arrive possibly in another&#10;order. The Record Disassembler actor separates the string&#10;from the sequence number. The strings are displayed as&#10;received (possible out of order), and resequenced by the&#10;Sequencer actor, which puts them back in order. This example&#10;demonstrates how types propagate through record composition&#10;and decomposition.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 0.0}">
         </property>
     </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Authors: Edward A. Lee and Yuhong Xiong</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 450.0">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Edward A. Lee and Yuhong Xiong">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 450.0}">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
@@ -131,11 +134,11 @@ and decomposition.</text></svg></configure>
         </property>
     </entity>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="seed" class="ptolemy.moml.SharedParameter" value="0">
         </property>
-        <property name="mean" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
-        <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="0.3">
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="0.3">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 350.0">
@@ -168,7 +171,7 @@ and decomposition.</text></svg></configure>
         </property>
     </entity>
     <entity name="Master Clock" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.25}">
         </property>
@@ -205,25 +208,29 @@ and decomposition.</text></svg></configure>
         </property>
     </entity>
     <entity name="Display As Received" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={659, 64, 290, 397}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="As Received">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={659, 64, 290, 397}, maximized=false}">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 225.0">
         </property>
     </entity>
     <entity name="Display Resequenced" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={728, 379, 290, 397}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Resequenced">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={728, 379, 290, 397}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 325.0">
         </property>
