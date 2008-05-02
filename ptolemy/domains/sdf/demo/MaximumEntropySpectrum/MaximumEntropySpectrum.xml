@@ -141,26 +141,30 @@
         </property>
         <property name="numberOfInputs" class="ptolemy.data.expr.Parameter" value="2^log2numInputs">
         </property>
-        <property name="Copy1:3:0:annotation1" class="ptolemy.kernel.util.Attribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 91.0">
+        <property name="AnnotationUpdated_1_2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This composite actor estimates the power spectrum of an input using
-the maximum-entropy method.  This method estimates the autocorrelation,
-then constructs a minimum-mean-square-error (MMSE) linear predictor
-for that autocorrelation.  The frequency response of the prediction
-error filter is then found and inverted to yield the power spectral
-estimate. The number of inputs required to produce any output is a
-parameter, and the number of outputs produced will be 2^(log2resolution).
-The order parameter specifies the number of coefficients of linear
-predictor. The output represents frequencies from -pi to pi
-radians per second, centered at zero frequency, in decibels (dB).</text>
-           </svg>
-           </configure>
+            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+            </property>
+            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor estimates the power spectrum of an input using&#10;the maximum-entropy method.  This method estimates the autocorrelation,&#10;then constructs a minimum-mean-square-error (MMSE) linear predictor&#10;for that autocorrelation.  The frequency response of the prediction&#10;error filter is then found and inverted to yield the power spectral&#10;estimate. The number of inputs required to produce any output is a&#10;parameter, and the number of outputs produced will be 2^(log2resolution).&#10;The order parameter specifies the number of coefficients of linear&#10;predictor. The output represents frequencies from -pi to pi&#10;radians per second, centered at zero frequency, in decibels (dB).">
+                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 91.0}">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 225.0]">

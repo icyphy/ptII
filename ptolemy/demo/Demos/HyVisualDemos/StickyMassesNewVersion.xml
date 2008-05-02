@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StickyMassesNewVersion" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -96,7 +96,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 75.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 4, 789, 648}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 4, 789, 647}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[574, 530]">
     </property>
@@ -112,55 +112,56 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 490.0]">
         </property>
     </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Right click to look inside
-the "Masses" actor
-to see the modal behavior.</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 95.0]">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Right click to look inside&#10;the &quot;Masses&quot; actor&#10;to see the modal behavior.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 95.0}">
         </property>
     </property>
-    <property name="13:0:0:annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 195.0]">
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:Arial; fill:blue">This model is a modified version of the Sticky Masses model made by Jie Liu.
-
-One key feature of this model is that each state refinement can only have 
-the same set of port names and these names are the same as the names of the 
-modal model ports.
-
-Another feature is that the state transitions has a "triggering" semantics.
-Once the transition is enabled, it must be taken immediately. This process 
-takes zero time. With this triggering semantics, piecewise continuous-time 
-signals are generated as shown in the plots of velocities and accelerations.
-
-The third feature is that an event detection mechanism is associated with the
-process of checking enabled guard expressions. For example, given
-a guard expression, x >= 0.0, the event detection mechanism will ensure that
-the transition will only be taken at a time point where the x resides in the 
-range [0.0, error tolerance). This feature makes it easier for model designers 
-to develop modal models.</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is a modified version of the Sticky Masses model made by Jie Liu.&#10;&#10;One key feature of this model is that each state refinement can only have &#10;the same set of port names and these names are the same as the names of the &#10;modal model ports.&#10;&#10;Another feature is that the state transitions has a &quot;triggering&quot; semantics.&#10;Once the transition is enabled, it must be taken immediately. This process &#10;takes zero time. With this triggering semantics, piecewise continuous-time &#10;signals are generated as shown in the plots of velocities and accelerations.&#10;&#10;The third feature is that an event detection mechanism is associated with the&#10;process of checking enabled guard expressions. For example, given&#10;a guard expression, x &gt;= 0.0, the event detection mechanism will ensure that&#10;the transition will only be taken at a time point where the x resides in the &#10;range [0.0, error tolerance). This feature makes it easier for model designers &#10;to develop modal models.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 195.0}">
         </property>
     </property>
     <entity name="Masses" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -217,7 +218,7 @@ to develop modal models.</text></svg></configure>
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
@@ -232,27 +233,30 @@ to develop modal models.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.5, 215.0}">
             </property>
-            <property name="13:0:0:annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 230.0]">
+            <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:Arial; fill:blue">Instead of relying on the level crossing detection to generate
-an event telling there is a collision between two masses, we 
-deploy some physics laws directly. 
-
-For example, the guard expression, (p1 == p2) and (v1 - v2) > 0.0,
-indicates that two masses are touched and their relative velocity
-is greater than 0.0, which means they collide.
-
-Similarly, the guard expression, stickiness + force less_than 0 
-indicates that if the stickiness (always positive) can not compensate 
-the forces applied by the springs, the masses depart.</text></svg></configure>
+                <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+                </property>
+                <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Instead of relying on the level crossing detection to generate&#10;an event telling there is a collision between two masses, we &#10;deploy some physics laws directly. &#10;&#10;For example, the guard expression, (p1 == p2) and (v1 - v2) &gt; 0.0,&#10;indicates that two masses are touched and their relative velocity&#10;is greater than 0.0, which means they collide.&#10;&#10;Similarly, the guard expression, stickiness + force less_than 0 &#10;indicates that if the stickiness (always positive) can not compensate &#10;the forces applied by the springs, the masses depart.">
+                    <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                        </property>
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 230.0}">
                 </property>
             </property>
             <port name="p1" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -306,6 +310,8 @@ the forces applied by the springs, the masses depart.</text></svg></configure>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="init">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[36.385162353515625, 44.906717783892475]">
@@ -314,6 +320,8 @@ the forces applied by the springs, the masses depart.</text></svg></configure>
             <entity name="Separate" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Separate">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[151.38516235351562, 154.90671778389247]">
@@ -321,6 +329,8 @@ the forces applied by the springs, the masses depart.</text></svg></configure>
             </entity>
             <entity name="Together" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Together">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>

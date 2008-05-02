@@ -14,24 +14,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
     </property>
-    <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.5, 310.5]">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The expression in the Expression actor is
--2.0*cos(4.0*ramp) + exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4).</text>
-           </svg>
-           </configure>
-        </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
-    </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
-    </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -58,6 +40,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{33.5, 395.5}">
         </property>
     </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+    </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={193, 153, 815, 567}, maximized=false}">
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
@@ -81,7 +67,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model traces an elaborate curve&#10;called the butterfly curve. It was&#10;described by T. Fay, American&#10;Mathematical Monthly, 96(5), May, 1989&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 80.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">

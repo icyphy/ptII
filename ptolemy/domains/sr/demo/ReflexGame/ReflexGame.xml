@@ -2,65 +2,91 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ReflexGame" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 10]">
     </property>
-    <property name="Copy1:Copy1:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 145.0">
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">There may be some time lag between the 
-random event and the display of 'Now!'.
-</text>
-           </svg>
-           </configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-    </property>
-    <property name="Copy1:Copy1:Copy1:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 285.0">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">There may be some time lag between the 
-click of the button and the invocation 
-of the Java button listener.
-</text>
-           </svg>
-           </configure>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There may be some time lag between the &#10;random event and the display of 'Now!'.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 145.0}">
         </property>
     </property>
-    <property name="Copy1:Copy1:Copy1:Copy1:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 375.0">
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">There may be some lag between the time
-the ButtonTime actor requests firing 
-and the time it is fired by the 
-director.  In practice, this delay 
-is usually less than 10 ms.  Since 
-human reaction times are usually on 
-the order of hundreds of milliseconds,
-this lag is not extremely significant.
-</text>
-           </svg>
-           </configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There may be some time lag between the &#10;click of the button and the invocation &#10;of the Java button listener.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 285.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {2, 19, 1032, 753}, maximized = false}">
+    <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There may be some lag between the time&#10;the ButtonTime actor requests firing &#10;and the time it is fired by the &#10;director.  In practice, this delay &#10;is usually less than 10 ms.  Since &#10;human reaction times are usually on &#10;the order of hundreds of milliseconds,&#10;this lag is not extremely significant.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 375.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1032, 752}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -82,6 +108,8 @@ this lag is not extremely significant.
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
@@ -90,11 +118,7 @@ this lag is not extremely significant.
                     </property>
                 </property>
             </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="83.0, 72.0">
-            </property>
-            <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
             </property>
         </property>
         <port name="startTrigger" class="ptolemy.actor.TypedIOPort">
@@ -123,11 +147,7 @@ this lag is not extremely significant.
             </property>
         </port>
         <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
-            <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
-            </property>
-            <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
-                <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-                </property>
+            <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
             </property>
             <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
@@ -149,14 +169,14 @@ this lag is not extremely significant.
                 <property name="output"/>
             </port>
             <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="ready">
+                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                 </property>
-                <property name="savedStartTime" class="ptolemy.data.expr.Parameter" value="6.179">
+                <property name="savedStartTime" class="ptolemy.data.expr.Parameter" value="4.166">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -190,6 +210,7 @@ this lag is not extremely significant.
                     </property>
                 </port>
                 <port name="startOut" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 95.0">
                     </property>
@@ -197,6 +218,7 @@ this lag is not extremely significant.
                     </property>
                 </port>
                 <port name="stopOut" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 155.0">
                     </property>
@@ -204,6 +226,7 @@ this lag is not extremely significant.
                     </property>
                 </port>
                 <port name="responseTime" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 225.0">
                     </property>
@@ -211,14 +234,20 @@ this lag is not extremely significant.
                     </property>
                 </port>
                 <entity name="stopReceived" class="ptolemy.domains.fsm.kernel.State">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="391.0, 296.0">
                     </property>
                 </entity>
                 <entity name="startReceived" class="ptolemy.domains.fsm.kernel.State">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="278.0, 265.0">
                     </property>
                 </entity>
                 <entity name="ready" class="ptolemy.domains.fsm.kernel.State">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="181.0, 191.0">
                     </property>
                 </entity>
@@ -335,6 +364,10 @@ this lag is not extremely significant.
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={345, 263, 334, 241}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 195.0">
             </property>
         </entity>
@@ -438,6 +471,10 @@ this lag is not extremely significant.
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={345, 263, 334, 241}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="539.0, 255.0">
             </property>
         </entity>
@@ -535,11 +572,11 @@ this lag is not extremely significant.
             </property>
         </entity>
         <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
-            <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="seed" class="ptolemy.moml.SharedParameter" value="0">
             </property>
-            <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="3.0">
+            <property name="lowerBound" class="ptolemy.actor.parameters.PortParameter" value="3.0">
             </property>
-            <property name="upperBound" class="ptolemy.data.expr.Parameter" value="7.0">
+            <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="7.0">
             </property>
             <doc>Create a sequence of uniformly distributed random numbers</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 80.0">
