@@ -14,28 +14,17 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
     </property>
-    <property name="9:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 0.0]">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model compares three realizations of an FIR filter.
-The top one has fixed-point inputs and coefficients.
-The middle uses only double precision.  The bottom one
-has quantized coefficients, but performs arithmetic
-using double precision.</text>
-           </svg>
-           </configure>
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-        </property>
-    </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 13, 820, 467}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.5, 175.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model compares three realizations of an FIR filter.&#10;The top one has fixed-point inputs and coefficients.&#10;The middle one uses only double precision.&#10;The bottom one has quantized coefficients, but performs&#10;arithmetic using double precision.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 10.0]">
+        </property>
     </property>
     <entity name="Impulse" class="ptolemy.actor.lib.Pulse">
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0}">
@@ -92,7 +81,7 @@ using double precision.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="fixed point, exact, quantized coefs">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={405, 432, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={405, 0, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -141,7 +130,7 @@ centered at zero frequency.</text>
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 165.0}">
         </property>
     </entity>
     <entity name="Spectrum2" class="ptolemy.domains.sdf.lib.Spectrum">
