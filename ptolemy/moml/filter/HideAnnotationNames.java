@@ -110,11 +110,13 @@ public class HideAnnotationNames implements MoMLFilter {
      *  defined in a MoML element with the specified name.
      *  @param container The object created by this element.
      *  @param elementName The element name.
+     *  @param currentCharData The character data, which appears
+     *  only in the doc and configure elements
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
-    public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {
+    public void filterEndElement(NamedObj container, String elementName,
+            StringBuffer currentCharData) throws Exception {
         if (!elementName.equals("property")) {
             return;
         }
