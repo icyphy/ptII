@@ -845,51 +845,60 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        // If the object is not persistent, or the MoML is
-        // redundant with what would be propagated, then do
-        // not generate any MoML.
-        if (_isMoMLSuppressed(depth)) {
-            return;
+        try {
+            _workspace.getReadAccess();
+
+            // If the object is not persistent, or the MoML is
+            // redundant with what would be propagated, then do
+            // not generate any MoML.
+            if (_isMoMLSuppressed(depth)) {
+                return;
+            }
+
+            String className = getClassName();
+
+            if ((depth == 0) && (getContainer() == null)) {
+                // No container, and this is a top level moml element.
+                // Generate header information.
+                // NOTE: Used to generate this only if the top-level
+                // was an entity, with the following test:
+                // if (_elementName.equals("entity")) {}
+                // However, this meant that when saving icons,
+                // they would not have the header information,
+                // and when opened, would open as a text file
+                // instead of in the icon editor.
+                output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                        + "<!DOCTYPE " + _elementName + " PUBLIC "
+                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "    \"http://ptolemy.eecs.berkeley.edu"
+                        + "/xml/dtd/MoML_1.dtd\">\n");
+            }
+
+            output.write(_getIndentPrefix(depth) + "<" + _elementName
+                    + " name=\"" + name
+                    + "\" class=\"" + className + "\"");
+
+            if (getSource() != null) {
+                output.write(" source=\"" + getSource() + "\">\n");
+            } else {
+                output.write(">\n");
+            }
+            // If the display name has been set, then include a display element.
+            if (_displayName != null) {
+                output.write("<display name=\"");
+                output.write(StringUtilities.escapeForXML(_displayName));
+                output.write("\"/>");
+            }
+
+            // Callers of _exportMoMLContents() should hold a read lock
+            // so as to avoid ConcurrentModificationExceptions
+            _exportMoMLContents(output, depth + 1);
+
+            // Write the close of the element.
+            output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
+        } finally {
+            _workspace.doneReading();
         }
-
-        String className = getClassName();
-
-        if ((depth == 0) && (getContainer() == null)) {
-            // No container, and this is a top level moml element.
-            // Generate header information.
-            // NOTE: Used to generate this only if the top-level
-            // was an entity, with the following test:
-            // if (_elementName.equals("entity")) {}
-            // However, this meant that when saving icons,
-            // they would not have the header information,
-            // and when opened, would open as a text file
-            // instead of in the icon editor.
-            output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                    + "<!DOCTYPE " + _elementName + " PUBLIC "
-                    + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                    + "    \"http://ptolemy.eecs.berkeley.edu"
-                    + "/xml/dtd/MoML_1.dtd\">\n");
-        }
-
-        output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
-                + name + "\" class=\"" + className + "\"");
-
-        if (getSource() != null) {
-            output.write(" source=\"" + getSource() + "\">\n");
-        } else {
-            output.write(">\n");
-        }
-        // If the display name has been set, then include a display element.
-        if (_displayName != null) {
-            output.write("<display name=\"");
-            output.write(StringUtilities.escapeForXML(_displayName));
-            output.write("\"/>");
-        }
-
-        _exportMoMLContents(output, depth + 1);
-
-        // Write the close of the element.
-        output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
 
     /** Get a MoML description of this object without any XML headers.
@@ -2346,6 +2355,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  by _exportMoML().  If there are attributes, then
      *  each attribute description is indented according to the specified
      *  depth and terminated with a newline character.
+     *  Callers of this method should hold read access before
+     *  calling this method.  Note that exportMoML() does this for us.
+     *  
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
@@ -2353,18 +2365,15 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-        try {
-            _workspace.getReadAccess();
-            if (_attributes != null) {
-                Iterator attributes = _attributes.elementList().iterator();
+        // Callers of this method should hold read access 
+        // so as to avoid ConcurrentModificationException.
+        if (_attributes != null) {
+            Iterator attributes = _attributes.elementList().iterator();
 
-                while (attributes.hasNext()) {
-                    Attribute attribute = (Attribute) attributes.next();
-                    attribute.exportMoML(output, depth);
-                }
+            while (attributes.hasNext()) {
+                Attribute attribute = (Attribute) attributes.next();
+                attribute.exportMoML(output, depth);
             }
-        } finally {
-            _workspace.doneReading();
         }
     }
 
