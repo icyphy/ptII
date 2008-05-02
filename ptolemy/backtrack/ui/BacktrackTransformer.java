@@ -208,11 +208,13 @@ public class BacktrackTransformer {
          *
          *  @param container The container of the element.
          *  @param elementName The XML element to be closed.
+         *  @param currentCharData The character data, which appears
+         *  only in the doc and configure elements
          *  @exception IllegalActionException If the MoML of the original
          *   actor's icon cannot be read and inserted into the new model.
          */
-        public void filterEndElement(NamedObj container, String elementName)
-                throws IllegalActionException {
+        public void filterEndElement(NamedObj container, String elementName,
+                StringBuffer currentCharData) throws IllegalActionException {
             if ((elementName.equals("entity") || elementName.equals("property"))
                     && container != null && container.getClassName() != null) {
                 if (_classStack.peek() != null
