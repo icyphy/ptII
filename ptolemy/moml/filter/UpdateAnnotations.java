@@ -82,12 +82,11 @@ For hybrid system models, use the CTEmbeddedDirector.&lt;/text&gt;&lt;/svg&gt;&l
  @Pt.AcceptedRating Red (cxh)
  */
 public class UpdateAnnotations implements MoMLFilter {
-    /** Update annotations by removing old annotations and
-     *  replacing them with new annotation
-     *  If the attributeName is "name" and attributeValue begins with
-     *  with "annotation", and a later attributeName is class and the
-     *  attributeValue is "ptolemy.kernel.util.Attribute" then replace
-     *  the property with a TextAttribute
+
+    /** Update annotations by removing old annotations and replacing
+     *  them with new annotation If the attributeName is "name" and
+     *  attributeValue begins with with "annotation", then replace the
+     *  property with a TextAttribute
      *
      *  @param container  The container for this attribute.
      *  in this method.
@@ -100,6 +99,7 @@ public class UpdateAnnotations implements MoMLFilter {
             String attributeName, String attributeValue) {
         //System.out.println("filterAttributeValue: " + container + "\t"
         //       +  attributeName + "\t" + attributeValue);
+
         if (attributeValue == null) {
             // attributeValue == null is fairly common, so we check for
             // that first
@@ -107,7 +107,10 @@ public class UpdateAnnotations implements MoMLFilter {
         }
 
         if (attributeName.equals("name")) { 
-            if (attributeValue.startsWith("annotation")) {
+            if (attributeValue.startsWith("annotation")
+                    || (attributeValue.contains("annotation")
+                        && attributeValue.contains(":"))) {
+
                 // We found a line like
                 // <property name="annotation1"
                 //           class="ptolemy.kernel.util.Attribute">
@@ -132,9 +135,7 @@ public class UpdateAnnotations implements MoMLFilter {
             if (attributeName.equals("class")
                     && attributeValue.equals("ptolemy.vergil.kernel.attributes.TextAttribute")
                     && container.getFullName().equals(_currentAnnotationContainerFullName)) {
-                //System.out.println("UpdateAnnotation: We have a TextAttribute");
-
-                // We have an annotation, but the class is not Attribute, so skip out
+                // We have an annotation, but it is a TextAttribute, so we are done.
                 _reset();
                 return attributeValue;
             }
@@ -148,8 +149,9 @@ public class UpdateAnnotations implements MoMLFilter {
         if (_currentlyProcessingAnnotation
                 && container != null
                 && !container.getFullName().equals(_currentAnnotationFullName)
-                && ((_currentAnnotationFullName == null) || ((_currentAnnotationFullName != null) && !_currentAnnotationFullName
-                        .startsWith(container.getFullName())))
+                && ((_currentAnnotationFullName == null)
+                        || ((_currentAnnotationFullName != null) && !_currentAnnotationFullName
+                                .startsWith(container.getFullName())))
                 && !container.getFullName().startsWith(
                         _currentAnnotationFullName)) {
             // We found another class in a different container
@@ -172,25 +174,31 @@ public class UpdateAnnotations implements MoMLFilter {
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData) throws Exception {
 
-        //if (!elementName.equals("configure")) {
-        //    return;
-        //}
-
         if (!_currentlyProcessingAnnotation) {
             return;
         }
 
-//          System.out.println("filterEndElement: " + container + "\t"
-//                  +  elementName
-//                  + " container.fn: " +  container.getFullName()
-//                  + " _cafn: " + _currentAnnotationFullName
-//                  + " _cacfn: " + _currentAnnotationContainerFullName
-//                  + "\n" + currentCharData);
+        // Useful for debugging
+//         System.out.println("filterEndElement: " + container + "\t"
+//                 +  elementName
+//                           + " container.fn: " +  container.getFullName()
+//                           + " _cafn: " + _currentAnnotationFullName
+//                           + " _cacfn: " + _currentAnnotationContainerFullName
+//                           + "\n" + currentCharData);
+
+        // We have three cases:
+        // 1) We have a configure, so we create the TextAttribute and
+        //    populate it.
+        // 2) We have a Location, so we possibly create the TextAttribute
+        //    and we add a Location
+        // 3) We are at the end of the annotation, so we delete the
+        //    old annotation
 
         if (elementName.equals("configure")) {
+            // 1) We have a configure, so we create the TextAttribute and
+            //    populate it.
             Attribute currentAttribute = (Attribute) container;
             NamedObj parentContainer = currentAttribute.getContainer();
-            //System.out.println("UpdateAnnotations: currentAttribute.getName(): " + currentAttribute.getName());
             if (currentAttribute.getName().equals("_smallIconDescription")) {
                 // Skip the smallIconDescription it is probably -A-
                 return;
@@ -201,18 +209,18 @@ public class UpdateAnnotations implements MoMLFilter {
             }
             
             if (_textAttribute == null) {
-                //System.out.println("UpdateAnnotation: creating textAttribute1");
+                //System.out.println("UpdateAnnotation: create TextAttribute 1");
                 NamedObj grandparentContainer = currentAttribute.getContainer().getContainer();
                 //((Attribute)parentContainer).setContainer(null);
 
                 // Use a new name instead of annotation and avoid the HideAnnotationNames filter
                 _textAttribute = new TextAttribute(grandparentContainer,
-                        grandparentContainer.uniqueName("Annotation"));
+                        grandparentContainer.uniqueName("AnnotationUpdated"));
                 //                        grandparentContainer.uniqueName(_currentAnnotationName));
             }
 
 
-            // Clean up the character data
+            // Clean up the character data: remove svg and text tags
             String charData = currentCharData.toString().trim();
             if (charData.startsWith("<svg>")) {
                 charData = charData.substring(5).trim();
@@ -255,41 +263,30 @@ public class UpdateAnnotations implements MoMLFilter {
             }
 
             charData = charData.replaceAll("<text.*[^>]>", "");
+            //System.out.println("UpdateAnnotation: Setting TextAttribute");
             _textAttribute.text.setExpression(charData);
-            //_textAttribute.text.validate();
-            //System.out.println("UpdateAnnotation: setting textAttribute: " + charData);
-            //System.out.println("UpdateAnnotation: textAttribute is now: " + _textAttribute.text.getExpression());
-
         }
 
         if (container instanceof Location) {
-            //System.out.println("UpdateAnnotation: closing "); 
+            // 2) We have a Location, so we possibly create the TextAttribute
+            //    and we add a Location.
             Attribute currentAttribute = (Attribute) container;
             if (_textAttribute == null) {
-                //System.out.println("UpdateAnnotation: creating textAttribute2");
+                //System.out.println("UpdateAnnotation: create TextAttribute 2");
                 NamedObj parentContainer = currentAttribute.getContainer();
                 NamedObj grandparentContainer = currentAttribute.getContainer().getContainer();
                 //((Attribute)parentContainer).setContainer(null);
                 // Use a new name instead of annotation and avoid the HideAnnotationNames filter
                 _textAttribute = new TextAttribute(grandparentContainer,
-                        grandparentContainer.uniqueName("Annotation"));
-                //grandparentContainer.uniqueName(_currentAnnotationName));
+                        grandparentContainer.uniqueName("AnnotationUpdated"));
             }
-            //            TextAttribute textAttribute = (TextAttribute) currentAttribute.getContainer().getAttribute(_currentAnnotationName,
-            //                    TextAttribute.class);
-
-            //currentAttribute.setContainer(_textAttribute);
             Location location = new Location(_textAttribute, "_location");
-            //            System.out.println("UpdateAnnotation: _currentLocation: " + _currentLocation);
-            //            location.setExpression(_currentLocation);
 
             Location oldLocation = (Location)container;
             oldLocation.validate();
+            //System.out.println("UpdateAnnotation: setting Location " + oldLocation.getExpression());
             double [] xyLocation = oldLocation.getLocation();
 
-            //System.out.println("UpdateAnnotation: _currentLocation: " + _currentLocation + " " + oldLocation.getExpression() + " " + xyLocation[0] + " " + xyLocation[1]);
-
-            // Offset to handle different origins with svg
             xyLocation[0] += 15.0;
             location.setLocation(xyLocation);
 
@@ -298,17 +295,16 @@ public class UpdateAnnotations implements MoMLFilter {
 
         if ((container != null)
                 && container.getFullName().equals(_currentAnnotationFullName)) {
-            //System.out.println("UpdateAnnotation: removing " + container.getFullName());
-            // We are at the end of the old annotation, remove it by
-            // setting its container to null
+            // 3) We are at the end of the annotation, so we delete the
+            //    old annotation by setting its container to null.
+            //System.out.println("UpdateAnnotation: closing up " + _textAttribute.getContainer().getFullName() + "\n" + _textAttribute.exportMoML());
+            NamedObj top = _textAttribute.toplevel();
             Attribute currentAttribute = (Attribute) container;
             String name = currentAttribute.getName(); 
             currentAttribute.setContainer(null);
-            // Rename to the original name.
-            //_textAttribute.setName(name);
-            //NamedObj parentContainer = currentAttribute.getContainer();
-            //((Attribute)parentContainer).setContainer(null);
+            MoMLParser.setModified(true);
             _reset();
+            //System.out.println("UpdateAnnotation: after reset" + top.exportMoML());
         }
     }
 
@@ -319,6 +315,10 @@ public class UpdateAnnotations implements MoMLFilter {
         return getClass().getName() + ": Update annotation to new style\n";
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Reset the internal state of the filter. */
     private void _reset() {
         _currentlyProcessingAnnotation = false;
         _currentAnnotationContainerFullName = null;
