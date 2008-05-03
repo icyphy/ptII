@@ -140,6 +140,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                         Tableau tableau = _tableaus[i];
                         boolean reopen = ((BooleanToken) reopenWindow
                                 .getToken()).booleanValue();
+                        boolean modelChanged;
                         if (tableau == null || reopen
                                 || !(tableau.getFrame() instanceof
                                         BasicGraphFrame)) {
@@ -148,35 +149,40 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                             }
                             tableau = configuration.openModel(model, effigy);
                             _tableaus[i] = tableau;
+                            modelChanged = false;
                         } else {
                             GTFrameTools.changeModel(
                                     (BasicGraphFrame) tableau.getFrame(),
                                     (CompositeEntity) model, true);
+                            modelChanged = true;
                         }
 
-                        JFrame frame = tableau.getFrame();
-                        // Compute location of the new frame.
-                        RecordToken location =
-                            (RecordToken) screenLocation.getToken();
-                        int x = ((IntToken) location.get("x")).intValue();
-                        int y = ((IntToken) location.get("y")).intValue();
-                        Point newLocation = frame.getLocation();
-                        if (x >= 0) {
-                            newLocation.x = x;
+                        if (!modelChanged) {
+                            JFrame frame = tableau.getFrame();
+                            // Compute location of the new frame.
+                            RecordToken location =
+                                (RecordToken) screenLocation.getToken();
+                            int x = ((IntToken) location.get("x")).intValue();
+                            int y = ((IntToken) location.get("y")).intValue();
+                            Point newLocation = frame.getLocation();
+                            if (x >= 0) {
+                                newLocation.x = x;
+                            }
+                            if (y >= 0) {
+                                newLocation.y = y;
+                            }
+                            // Move the frame to the edge if it exceeds the
+                            // screen.
+                            Dimension size = frame.getSize();
+                            Toolkit toolkit = Toolkit.getDefaultToolkit();
+                            Dimension screenSize = toolkit.getScreenSize();
+                            newLocation.x = Math.min(newLocation.x,
+                                    screenSize.width - size.width);
+                            newLocation.y = Math.min(newLocation.y,
+                                    screenSize.height - size.height);
+                            frame.setLocation(newLocation);
+                            frame.addWindowListener(this);
                         }
-                        if (y >= 0) {
-                            newLocation.y = y;
-                        }
-                        // Move the frame to the edge if it exceeds the screen.
-                        Dimension size = frame.getSize();
-                        Toolkit toolkit = Toolkit.getDefaultToolkit();
-                        Dimension screenSize = toolkit.getScreenSize();
-                        newLocation.x = Math.min(newLocation.x,
-                                screenSize.width - size.width);
-                        newLocation.y = Math.min(newLocation.y,
-                                screenSize.height - size.height);
-                        frame.setLocation(newLocation);
-                        frame.addWindowListener(this);
 
                         String titleString = null;
                         String modelName = model.getName();
