@@ -294,7 +294,8 @@ public class UpdateAnnotations implements MoMLFilter {
         }        
 
         if ((container != null)
-                && container.getFullName().equals(_currentAnnotationFullName)) {
+                && container.getFullName().equals(_currentAnnotationFullName)
+                && _textAttribute != null) {
             // 3) We are at the end of the annotation, so we delete the
             //    old annotation by setting its container to null.
             //System.out.println("UpdateAnnotation: closing up " + _textAttribute.getContainer().getFullName() + "\n" + _textAttribute.exportMoML());
