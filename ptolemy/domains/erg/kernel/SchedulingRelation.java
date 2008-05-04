@@ -86,16 +86,9 @@ public class SchedulingRelation extends Transition {
     public void attributeChanged(Attribute attribute)
     throws IllegalActionException {
         if (attribute == arguments) {
-            try {
-                _argumentsTree = (ASTPtArrayConstructNode)
-                        _parser.generateParseTree(arguments.getExpression());
-            } catch (ClassCastException e) {
-                throw new IllegalActionException(this, "The arguments for a " +
-                        "scheduling edge must be in an array in the form of " +
-                        "{...}.");
-            }
+            _parseArguments();
         } else if (attribute == delay) {
-            _delayTree = _parser.generateParseTree(delay.getExpression());
+            _parseDelay();
         }
 
         if (canceling != null && delay != null && isCanceling()
@@ -110,8 +103,23 @@ public class SchedulingRelation extends Transition {
         }
     }
 
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SchedulingRelation relation =
+            (SchedulingRelation) super.clone(workspace);
+        relation._argumentsTree = null;
+        relation._argumentsTreeVersion = -1;
+        relation._delayTree = null;
+        relation._delayTreeVersion = -1;
+        relation._parseTreeEvaluator = new ParseTreeEvaluator();
+        relation._parser = new PtParser();
+        return relation;
+    }
+
     public ArrayToken getArguments(ParserScope scope)
     throws IllegalActionException {
+        if (_argumentsTreeVersion != _workspace.getVersion()) {
+            _parseArguments();
+        }
         Token token = _parseTreeEvaluator.evaluateParseTree(_argumentsTree,
                 scope);
         if (token == null || !(token instanceof ArrayToken)) {
@@ -122,6 +130,9 @@ public class SchedulingRelation extends Transition {
     }
 
     public double getDelay(ParserScope scope) throws IllegalActionException {
+        if (_delayTreeVersion != _workspace.getVersion()) {
+            _parseDelay();
+        }
         Token token = _parseTreeEvaluator.evaluateParseTree(_delayTree, scope);
         if (token == null || !(token instanceof ScalarToken)) {
             throw new IllegalActionException(this, "Unable to evaluate delay" +
@@ -218,9 +229,30 @@ public class SchedulingRelation extends Transition {
         return false;
     }
 
+    private void _parseArguments() throws IllegalActionException {
+        try {
+            _argumentsTree = (ASTPtArrayConstructNode)
+                    _parser.generateParseTree(arguments.getExpression());
+            _argumentsTreeVersion = _workspace.getVersion();
+        } catch (ClassCastException e) {
+            throw new IllegalActionException(this, "The arguments for a " +
+                    "scheduling edge must be in an array in the form of " +
+                    "{...}.");
+        }
+    }
+
+    private void _parseDelay() throws IllegalActionException {
+        _delayTree = _parser.generateParseTree(delay.getExpression());
+        _delayTreeVersion = _workspace.getVersion();
+    }
+
     private ASTPtArrayConstructNode _argumentsTree;
 
+    private long _argumentsTreeVersion = -1;
+
     private ASTPtRootNode _delayTree;
+
+    private long _delayTreeVersion = -1;
 
     private ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
 

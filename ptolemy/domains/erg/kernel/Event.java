@@ -52,7 +52,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.basic.NodeControllerFactory;
 import ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory;
@@ -83,15 +82,7 @@ public class Event extends State {
     throws IllegalActionException {
         if (attribute == parameters) {
             super.attributeChanged(attribute);
-
-            NamedObj container = getContainer();
-            if (container instanceof ERGController) {
-                ERGController controller = (ERGController) getContainer();
-                ParserScope portScope = controller.getPortScope();
-                actions._updateParserScope(portScope,
-                        parameters.getArgumentNameList(),
-                        parameters.getArgumentTypes());
-            }
+            actions._updateParserScope();
         } else if (attribute != isInitialState) {
             super.attributeChanged(attribute);
         }

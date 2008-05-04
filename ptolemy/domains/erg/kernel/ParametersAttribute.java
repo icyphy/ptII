@@ -34,7 +34,6 @@ package ptolemy.domains.erg.kernel;
 import java.util.List;
 
 import ptolemy.data.expr.ASTPtFunctionDefinitionNode;
-import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -77,37 +76,50 @@ public class ParametersAttribute extends StringAttribute {
         super(workspace);
     }
 
-    public List<?> getArgumentNameList() {
-        return _argumentNameList;
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ParametersAttribute attribute =
+            (ParametersAttribute) super.clone(workspace);
+        attribute._parser = new PtParser();
+        _parseTreeVersion = -1;
+        return attribute;
     }
 
-    public Type[] getArgumentTypes() {
-        return _argumentTypes;
+    public List<?> getArgumentNameList() throws IllegalActionException {
+        if (_parseTreeVersion != _workspace.getVersion()) {
+            _parse();
+        }
+        return _parseTree.getArgumentNameList();
+    }
+
+    public Type[] getArgumentTypes() throws IllegalActionException {
+        if (_parseTreeVersion != _workspace.getVersion()) {
+            _parse();
+        }
+        return _parseTree.getArgumentTypes();
     }
 
     public void setExpression(String expression) throws IllegalActionException {
-        String function = "function" + expression + " 1";
+        super.setExpression(expression);
 
         try {
-            ASTPtFunctionDefinitionNode parseTree =
-                (ASTPtFunctionDefinitionNode) _parser.generateParseTree(
-                        function);
-            _argumentNameList = parseTree.getArgumentNameList();
-            _argumentTypes = parseTree.getArgumentTypes();
+            _parse();
         } catch (Exception e) {
             throw new IllegalActionException("The argument list must be in the "
                     + "form of (v1 : type1, v2 : type2, ...).");
         }
 
-        super.setExpression(expression);
     }
 
-    protected PtParser _parser = new PtParser();
+    private void _parse() throws IllegalActionException {
+        String function = "function" + getExpression() + " 1";
+        _parseTree = (ASTPtFunctionDefinitionNode) _parser.generateParseTree(
+                function);
+        _parseTreeVersion = _workspace.getVersion();
+    }
 
-    /** The scope. */
-    protected ParserScope _scope;
+    private ASTPtFunctionDefinitionNode _parseTree;
 
-    private List<?> _argumentNameList;
+    private long _parseTreeVersion = -1;
 
-    private Type[] _argumentTypes;
+    private PtParser _parser = new PtParser();
 }

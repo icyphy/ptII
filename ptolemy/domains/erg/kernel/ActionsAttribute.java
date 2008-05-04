@@ -57,6 +57,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -88,6 +89,12 @@ public class ActionsAttribute extends AbstractActionsAttribute {
      */
     public ActionsAttribute(Workspace workspace) {
         super(workspace);
+    }
+
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ActionsAttribute attribute = (ActionsAttribute) super.clone(workspace);
+        attribute._scopeVersion = -1;
+        return attribute;
     }
 
     public void execute(ParserScope scope) throws IllegalActionException {
@@ -259,22 +266,37 @@ public class ActionsAttribute extends AbstractActionsAttribute {
     }
 
     protected ParserScope _getParserScope() {
+        if (_scopeVersion != _workspace.getVersion()) {
+            try {
+                _updateParserScope();
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
+        }
         return _scope;
     }
 
-    protected void _updateParserScope(ParserScope superscope, List<?> names,
-            Type[] types) {
-        if (types != null && types.length > 0) {
-            Iterator<?> namesIter = names.iterator();
-            Map<String, Type> paramMap = new HashMap<String, Type>();
-            for (int i = 0; namesIter.hasNext(); i++) {
-                String name = (String) namesIter.next();
-                paramMap.put(name, types[i]);
-            }
-            _scope = new ParametersParserScope(paramMap, superscope);
-        } else {
-            _scope = superscope;
+    protected void _updateParserScope() throws IllegalActionException {
+        Event event = (Event) getContainer();
+        NamedObj eventContainer = event.getContainer();
+        if (eventContainer instanceof ERGController) {
+            ERGController controller = (ERGController) event.getContainer();
+            ParserScope superscope = controller.getPortScope();
+            List<?> names = event.parameters.getArgumentNameList();
+            Type[] types = event.parameters.getArgumentTypes();
+            if (types != null && types.length > 0) {
+                Iterator<?> namesIter = names.iterator();
+                Map<String, Type> paramMap = new HashMap<String, Type>();
+                for (int i = 0; namesIter.hasNext(); i++) {
+                    String name = (String) namesIter.next();
+                    paramMap.put(name, types[i]);
+                }
+                _scope = new ParametersParserScope(paramMap, superscope);
+           } else {
+               _scope = superscope;
+           }
         }
+        _scopeVersion = _workspace.getVersion();
     }
 
     private Attribute _getAttribute(NamedObj container, String name)
@@ -317,4 +339,6 @@ public class ActionsAttribute extends AbstractActionsAttribute {
     }
 
     private ParserScope _scope;
+
+    private long _scopeVersion = -1;
 }

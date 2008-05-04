@@ -95,6 +95,13 @@ public class ERGController extends ModalController {
         _init();
     }
 
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ERGController controller = (ERGController) super.clone(workspace);
+        controller._executiveDirectorVersion = -1;
+        controller._objectScopeVersion = -1;
+        return controller;
+    }
+
     public void fire() throws IllegalActionException {
         director.fire();
     }

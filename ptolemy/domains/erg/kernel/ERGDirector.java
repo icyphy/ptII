@@ -147,6 +147,10 @@ public class ERGDirector extends Director implements TimedDirector {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ERGDirector newObject = (ERGDirector) super.clone(workspace);
+        newObject._eventQueue = new PriorityQueue<TimedEvent>(10,
+                _EVENT_COMPARATOR);
+        newObject._inputQueue = new PriorityQueue<TimedEvent>(5,
+                _EVENT_COMPARATOR);
         newObject._controllerVersion = -1;
         return newObject;
     }
@@ -171,33 +175,25 @@ public class ERGDirector extends Director implements TimedDirector {
             while (!fired && iterator.hasNext()) {
                 TimedEvent timedEvent = iterator.next();
                 if (timedEvent.contents instanceof Event) {
-                    iterator.remove();
-                    _eventQueue.remove(timedEvent);
-                    _fire(timedEvent);
-                    fired = true;
+                    if (_fire(timedEvent)) {
+                        fired = true;
+                    }
                 }
             }
         }
 
         if (hasInput && !fired && !_inputQueue.isEmpty()) {
-            TimedEvent timedEvent = _inputQueue.poll();
-            _eventQueue.remove(timedEvent);
-            _fire(timedEvent);
-            fired = true;
+            TimedEvent timedEvent = _inputQueue.peek();
+            if (_fire(timedEvent)) {
+                fired = true;
+            }
         }
 
         if (!fired && !_eventQueue.isEmpty()) {
             TimedEvent timedEvent = _eventQueue.peek();
             Time nextEventTime = timedEvent.timeStamp;
             if (nextEventTime.compareTo(modelTime) <= 0) {
-                _eventQueue.poll();
-                Object contents = timedEvent.contents;
-                if (contents instanceof Actor) {
-                    _inputQueue.remove(timedEvent);
-                } else if (timedEvent.contents instanceof Event &&
-                        ((Event) contents).fireOnInput()) {
-                    _inputQueue.remove(timedEvent);
-                }
+                _eventQueue.peek();
                 if (synchronize) {
                     if (!_synchronizeToRealtime(nextEventTime)) {
                         return;
@@ -205,8 +201,9 @@ public class ERGDirector extends Director implements TimedDirector {
                     synchronize = false;
                 }
 
-                _fire(timedEvent);
-                fired = true;
+                if (_fire(timedEvent)) {
+                    fired = true;
+                }
             }
         }
     }
@@ -386,17 +383,25 @@ public class ERGDirector extends Director implements TimedDirector {
         return super._isTopLevel() && !_isInController();
     }
 
-    private void _fire(TimedEvent timedEvent) throws IllegalActionException {
+    private boolean _fire(TimedEvent timedEvent) throws IllegalActionException {
         ERGController controller = getController();
         Object contents = timedEvent.contents;
         if (contents instanceof Actor) {
             Actor actor = (Actor) contents;
             boolean prefire = actor.prefire();
             if (prefire) {
+                _eventQueue.remove(timedEvent);
+                _inputQueue.remove(timedEvent);
                 actor.fire();
                 actor.postfire();
+                return true;
+            } else {
+                return false;
             }
         } else if (contents instanceof Event) {
+            _eventQueue.remove(timedEvent);
+            _inputQueue.remove(timedEvent);
+
             Event event = (Event) timedEvent.contents;
             controller._setCurrentEvent(event);
             event.fire(timedEvent._arguments);
@@ -423,6 +428,8 @@ public class ERGDirector extends Director implements TimedDirector {
             if (((BooleanToken) event.isFinalState.getToken()).booleanValue()) {
                 _eventQueue.clear();
             }
+
+            return true;
         } else {
             throw new InternalErrorException(this, null, "The contents of a "
                     + "TimedEvent can only be Actor or Event.");
@@ -522,21 +529,21 @@ public class ERGDirector extends Director implements TimedDirector {
         return true;
     }
 
+    @SuppressWarnings("unchecked")
+    private static final Comparator<TimedEvent> _EVENT_COMPARATOR =
+        new TimedEvent.TimeComparator();
+
     // Cached reference to mode controller.
     private ERGController _controller = null;
 
     // Version of cached reference to mode controller.
     private long _controllerVersion = -1;
 
-    @SuppressWarnings("unchecked")
-    private Comparator<TimedEvent> _eventComparator =
-        new TimedEvent.TimeComparator();
-
     private PriorityQueue<TimedEvent> _eventQueue =
-        new PriorityQueue<TimedEvent>(10, _eventComparator);
+        new PriorityQueue<TimedEvent>(10, _EVENT_COMPARATOR);
 
     private PriorityQueue<TimedEvent> _inputQueue =
-        new PriorityQueue<TimedEvent>(5, _eventComparator);
+        new PriorityQueue<TimedEvent>(5, _EVENT_COMPARATOR);
 
     private long _realStartTime;
 
