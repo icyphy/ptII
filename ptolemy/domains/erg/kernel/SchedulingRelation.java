@@ -96,9 +96,14 @@ public class SchedulingRelation extends Transition {
             if (!_isZeroDelay()) {
                 throw new IllegalActionException("For a canceling edge, the "
                         + "delay must be const 0.0.");
-            } else if (_argumentsTree.jjtGetNumChildren() > 0) {
-                throw new IllegalActionException("For a canceling edge, the "
-                        + "argument list must be empty.");
+            } else {
+                if (_argumentsTreeVersion != _workspace.getVersion()) {
+                    _parseArguments();
+                }
+                if (_argumentsTree.jjtGetNumChildren() > 0) {
+                    throw new IllegalActionException("For a canceling edge, "
+                            + "the argument list must be empty.");
+                }
             }
         }
     }
