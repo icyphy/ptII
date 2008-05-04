@@ -1,6 +1,6 @@
 /*
 
- Copyright (c) 1997-2008 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,6 +37,7 @@ import javax.swing.SwingConstants;
 
 import ptolemy.domains.erg.kernel.Event;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.fsm.StateIcon;
@@ -52,7 +53,7 @@ import diva.util.java2d.Polygon2D;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
@@ -78,10 +79,14 @@ public class EventIcon extends StateIcon {
 
         Event event = (Event) getContainer();
         if (event != null) {
-            if (event.parameters.getArgumentNameList().size() > 0) {
-                parameters = event.parameters.getValueAsString();
+            try { 
+                if (event.parameters.getArgumentNameList().size() > 0) {
+                    parameters = event.parameters.getValueAsString();
+                }
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(event.parameters, ex,
+                        "Failed to get argument name list.");
             }
-
             String exp = event.actions.getExpression();
             if (exp != null && !exp.trim().equals("")) {
                 actions = "{ " + exp + " }";
