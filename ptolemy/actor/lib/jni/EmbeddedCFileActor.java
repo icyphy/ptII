@@ -40,9 +40,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  The embeddedCFileActor executes compiled embedded C Code.
  
  This actor extends the EmbeddedCActor and has most of the same functionality.
- The only difference is that a file specifying the C code can be passed in as 
- a parameter to the actor which avoids having multiple instances of the same 
- code in different copies of the EmbeddedCActor.
+ The only difference is that a file specifying the C code can be passed into 
+ the actor as a parameter to avoid having multiple instances of the same code in 
+ different copies of the EmbeddedCActor.
 
  @author Christine Avanessians, Edward Lee, and Man-Kit Leung 
  @version $Id$
@@ -117,10 +117,10 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
     
     /**
      * Before generating and compiling C code, make sure the contents of the
-     * file have been saved into the embeddedCCode parameter by calling 
-     * the function changeEmbeddedCCode.  The embeddedCCode parameter is set 
-     * right before code generation in order for the most recent revision of 
-     * the file to be utilized.
+     * file have been saved into the embeddedCCode parameter (in EmbeddedCActor)
+     * by calling the function changeEmbeddedCCode.  The embeddedCCode parameter 
+     * is set right before code generation in order for the most recent revision 
+     * of the file to be utilized.
      */  
     protected void _generateAndCompileCCode() throws IllegalActionException {
         changeEmbeddedCCode();
@@ -129,7 +129,8 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
     }
     
     /** 
-     * Create a new instance of EmbeddedFileActor.
+     * Create a new instance of EmbeddedFileActor and set _embeddedActor in the
+     * embeddedCActor.
      */
     protected void setEmbeddedActor() throws IllegalActionException, NameDuplicationException{
         _embeddedActor = new EmbeddedFileActor(this, "EmbeddedFileActor");

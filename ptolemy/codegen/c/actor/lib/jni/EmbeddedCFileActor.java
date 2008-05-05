@@ -42,8 +42,8 @@ Code generator helper for EmbeddedCFileActor.
 @Pt.AcceptedRating Red (cavaness)
 */
 public class EmbeddedCFileActor extends CompiledCompositeActor  {
-   /** Construct the code generator helper associated
-    *  with the given TypedCompositeActor.
+   /** Construct the code generator helper associated with the given
+    *  TypedCompositeActor.
     *  @param actor The associated actor.
     */
    public EmbeddedCFileActor(ptolemy.actor.lib.jni.EmbeddedCFileActor actor) {
@@ -65,8 +65,11 @@ public class EmbeddedCFileActor extends CompiledCompositeActor  {
                ptolemy.actor.lib.jni.EmbeddedCFileActor.EmbeddedFileActor actor){
            super(actor);
        }
-       /** Generate the shared code.  First call changeEmbeddedCCode to make sure the 
-        *  
+       /** Before generating the shared code, call changeEmbeddedCCode (in ptolemy/actor/
+        *  lib/jni/EmbeddedCFileActor)to make sure the contents of the file have been saved
+        *  into the embeddedCCode parameter (in ptolmey/actor/lib/jni/EmbeddedCActor).  The
+        *  embeddedCCode parameter is set right before code generation in order for the most
+        *  recent revision of the file to be utilized.
         */
        public Set getSharedCode() throws IllegalActionException {
           
