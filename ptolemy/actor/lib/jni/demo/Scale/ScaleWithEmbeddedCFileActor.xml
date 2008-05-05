@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 312.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes an actor whose behavior is given in C code.&#10;Double click on the actor to see how it works.&#10;***&#10;This model is identical to Scale.xml except that it utilizes the &#10;embeddedCFileActor rather than the embeddedCActor.&#10;***&#10;The C code is located in the following file:&#10;ptolemy/actor/lib/jni/demo/Scale/codeForScaleWithECFA.c">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes an actor whose behavior is given in C code.&#10;Double click on the actor to see how it works.&#10;***&#10;This model is identical to Scale.xml except that it utilizes the &#10;embeddedCFileActor rather than the embeddedCActor.&#10;***&#10;The C code is located in the following file:&#10;ptolemy/actor/lib/jni/demo/Scale/codeForScaleWithECFADemo.c">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 95.0]">
         </property>
