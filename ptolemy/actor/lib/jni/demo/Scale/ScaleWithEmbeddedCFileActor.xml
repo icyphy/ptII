@@ -1,32 +1,38 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Scale2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+<entity name="ScaleWithEmbeddedCFileActor" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 35}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 116, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1032, 742}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 624]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 312.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes an actor whose behavior is given in C code.&#10;Double click on the actor to see how it works.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model includes an actor whose behavior is given in C code.&#10;Double click on the actor to see how it works.&#10;***&#10;This model is identical to Scale.xml except that it utilizes the &#10;embeddedCFileActor rather than the embeddedCActor.&#10;***&#10;The C code is located in the following file:&#10;ptolemy/actor/lib/jni/demo/Scale/codeForScaleWithECFA.c">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 95.0]">
+        </property>
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+        <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 50.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 305.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -34,19 +40,19 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 305.0]">
         </property>
     </entity>
     <entity name="EmbeddedCFileActor" class="ptolemy.actor.lib.jni.EmbeddedCFileActor">
         <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="codeForScale2.c">
+        <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="codeForScaleWithECFADemo.c">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="codeBlockFile">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 305.0]">
         </property>
         <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.c.kernel.CCodeGenerator">
             <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">

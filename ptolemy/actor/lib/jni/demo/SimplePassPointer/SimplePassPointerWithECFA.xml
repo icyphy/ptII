@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SimplePassPointer2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+<entity name="SimplePassPointerWithECFA" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -26,12 +26,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 40.0]">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is identical to SimplePassPointer.xml except that it utilizes the &#10;embeddedCFileActor rather than the embeddedCActor.&#10;***&#10;The C code is located in the following two files:&#10;ptolemy/actor/lib/jni/demo/SimplePassPointer/mallocCode.c&#10;ptolemy/actor/lib/jni/demo/SimplePassPointer/codeForSimplePassPointerWithECFA.c">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 80.0]">
+        </property>
+    </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 265, 330, 237}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 405.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -42,15 +48,15 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 180.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 255.0]">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={347, 265, 330, 237}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 250.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 325.0]">
         </property>
     </entity>
     <entity name="EmbeddedCFileActor" class="ptolemy.actor.lib.jni.EmbeddedCFileActor">
@@ -60,9 +66,45 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="codeBlockFile">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 255.0]">
         </property>
         <property name="input_file" class="ptolemy.data.expr.FileParameter" value="C:\projects\X-Tri8\Monkey.jpg">
+        </property>
+        <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen/">
+                <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="ptolemy.codegen.c">
+            </property>
+            <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="target" class="ptolemy.data.expr.StringParameter" value="default">
+            </property>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -85,15 +127,51 @@
         </port>
     </entity>
     <entity name="EmbeddedCFileActor2" class="ptolemy.actor.lib.jni.EmbeddedCFileActor">
-        <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="codeForSimplePassPointer2.c">
+        <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="codeForSimplePassPointerWithECFA.c">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="codeBlockFile">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 245.0]">
         </property>
         <property name="input_file" class="ptolemy.data.expr.FileParameter" value="C:\projects\X-Tri8\Monkey.jpg">
+        </property>
+        <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen/">
+                <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="ptolemy.codegen.c">
+            </property>
+            <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="target" class="ptolemy.data.expr.StringParameter" value="default">
+            </property>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -118,7 +196,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="{270.0, 170.0}">
+        <vertex name="vertex1" value="[225.0, 245.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
