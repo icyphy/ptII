@@ -114,6 +114,12 @@ import javax.swing.JComponent;
  <pre>
  Lines: on
  </pre>
+ You can control the line style on a per dataset basis by adding
+ <pre>
+ LineStyle: solid
+ </pre>
+ Other supported line styles are "dotted", "dashed", "dotdashed" and
+ "dotdotdashed".
  You can also specify "impulses", which are lines drawn from a plotted point
  down to the x axis.  Plots with impulses are often called "stem plots."
  These are off by default, but can be turned on with the
