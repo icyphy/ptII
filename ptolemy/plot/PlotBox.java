@@ -273,7 +273,7 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Add a line to the caption (displayed at below graph) .
       * @param captionLine The string to be added.
-      * @see #getCaption()
+      * @see #getCaptions()
       */
     public synchronized void addCaptionLine(String captionLine) {
         // Caption code contributed by Tom Peachey.
@@ -592,7 +592,7 @@ public class PlotBox extends JPanel implements Printable {
     /** Get the captions.
      *  @return the captions
      *  @see #addCaption(String)
-     *  @see #setCaption(Vector) 
+     *  @see #setCaptions(Vector) 
      */  
     public Vector getCaptions() {
         return _captionStrings;
@@ -759,7 +759,7 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Get the title of the graph, or an empty string if there is none.
      *  @return The title.
-     *  @see #setTitle(String);
+     *  @see #setTitle(String)
      */
     public synchronized String getTitle() {
         if (_title == null) {
@@ -1381,8 +1381,8 @@ public class PlotBox extends JPanel implements Printable {
     /** Set the strings of the caption.
      *  @param captionStrings A Vector where each element contains a String
      *  that is one line of the caption.
-     *  @see #getCaption();
-     *  @see #clearCaptions();
+     *  @see #getCaptions()
+     *  @see #clearCaptions()
      */  
     public void setCaption(Vector captionStrings) {
         // Changing caption means we need to repaint the offscreen buffer.
@@ -1501,7 +1501,7 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Set the title of the graph.
      *  @param title The title.
-     *  @see #getTitle();
+     *  @see #getTitle()
      */
     public synchronized void setTitle(String title) {
         // Changing legend means we need to repaint the offscreen buffer.
