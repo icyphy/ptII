@@ -665,6 +665,69 @@ public class Plot extends PlotBox {
         fmt.impulsesUseDefault = false;
     }
 
+    /** Set the style of the lines joining marks
+     *  @param styleString A string specifying the color for points.
+     *  The following styles are permitted: "solid", "dotted",
+     *  "dashed", "dotdashed", "dotdotdashed".
+     *  @param dataset The data set index.
+     */
+    public synchronized void setLineStyle(String styleString, int dataset) {
+        float[] dashvalues;
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
+        _checkDatasetIndex(dataset);
+
+        Format format = (Format) _formats.elementAt(dataset);
+        if (styleString.equalsIgnoreCase("solid")) {
+            format.lineStroke = new BasicStroke(_width,
+                    BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                    0);
+            ///_graphics.setStroke(stroke);
+        } else if(styleString.equalsIgnoreCase("dotted")) {
+            dashvalues = new float[2];
+            dashvalues[0] = (float)2.0;
+            dashvalues[1] = (float)2.0;
+            format.lineStroke = new BasicStroke(_width,
+                    BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                    0, dashvalues, 0);
+        } else if(styleString.equalsIgnoreCase("dashed")) {
+            dashvalues = new float[2];
+            dashvalues[0] = (float)8.0;
+            dashvalues[1] = (float)4.0;
+            format.lineStroke = new BasicStroke(_width,
+                    BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL,
+                    0, dashvalues, 0);
+        } else if(styleString.equalsIgnoreCase("dotdashed")) {
+            dashvalues = new float[4];
+            dashvalues[0] = (float)2.0;
+            dashvalues[1] = (float)2.0;
+            dashvalues[2] = (float)8.0;
+            dashvalues[3] = (float)2.0;
+            format.lineStroke = new BasicStroke(_width,
+                    BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                    0, dashvalues, 0);
+        } else if(styleString.equalsIgnoreCase("dotdotdashed")) {
+            dashvalues = new float[6];
+            dashvalues[0] = (float)2.0;
+            dashvalues[1] = (float)2.0;
+            dashvalues[2] = (float)2.0;
+            dashvalues[3] = (float)2.0;
+            dashvalues[4] = (float)8.0;
+            dashvalues[5] = (float)2.0;
+            format.lineStroke = new BasicStroke(_width,
+                    BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+                    dashvalues, 0);
+        } else {
+            throw new IllegalArgumentException("Line style \""
+                    + styleString + "\" is not found, style must be one of "
+                    + "\"solid\", \"dotted\", \"dashed\", \"dotdashed\", " 
+                    + "\"dotdotdashed\".");
+
+        } 
+        format.lineStyle = styleString;
+        format.lineStyleUseDefault = false;
+    }
+
     /** Set the marks style to "none", "points", "dots", or "various".
      *  In the last case, unique marks are used for the first ten data
      *  sets, then recycled.
@@ -838,32 +901,8 @@ public class Plot extends PlotBox {
                 }
             }
 
-            if (!fmt.marksUseDefault) {
-                switch (fmt.marks) {
-                case 0:
-                    options.append(" marks=\"none\"");
-                    break;
-
-                case 1:
-                    options.append(" marks=\"points\"");
-                    break;
-
-                case 2:
-                    options.append(" marks=\"dots\"");
-                    break;
-
-                case 3:
-                    options.append(" marks=\"various\"");
-                    break;
-
-                case 4:
-                    options.append(" marks=\"bigdots\"");
-                    break;
-					
-                case 5:
-                    options.append(" marks=\"pixels\"");
-                    break;
-                }
+            if (!fmt.lineStyleUseDefault && fmt.lineStyle.length() > 0  ) {
+                options.append(" lineStyle=\"" + fmt.lineStyle + "\"");
             }
 
             String legend = getLegend(dataset);
@@ -1149,6 +1188,12 @@ public class Plot extends PlotBox {
     protected void _drawLine(Graphics graphics, int dataset, long startx,
             long starty, long endx, long endy, boolean clip, float width) {
         _setWidth(graphics, width);
+
+        Format format = (Format) _formats.elementAt(dataset);
+        if (!format.lineStyleUseDefault && graphics instanceof Graphics2D) {
+            // Draw a dashed or dotted line  
+            ((Graphics2D)graphics).setStroke(format.lineStroke);
+        }
 
         if (clip) {
             // Rule out impossible cases.
@@ -1513,7 +1558,11 @@ public class Plot extends PlotBox {
             // names are case insensitive
             String lcLine = line.toLowerCase();
 
-            if (lcLine.startsWith("marks:")) {
+            if (lcLine.startsWith("linestyle:")) {
+                String style = (line.substring(10)).trim();
+                setLineStyle(style,_currentdataset);
+                return true;
+            } else if (lcLine.startsWith("marks:")) {
                 // If we have seen a dataset directive, then apply the
                 // request to the current dataset only.
                 String style = (line.substring(6)).trim();
@@ -1768,6 +1817,8 @@ public class Plot extends PlotBox {
      *  @param width The width.
      */
     protected void _setWidth(Graphics graphics, float width) {
+        _width = width;
+
         // For historical reasons, the API here only assumes Graphics
         // objects, not Graphics2D.
         if (graphics instanceof Graphics2D) {
@@ -1850,6 +1901,10 @@ public class Plot extends PlotBox {
                 } else {
                     output.println("Impulses: off");
                 }
+            }
+
+            if (!fmt.lineStyleUseDefault) {
+                output.println("lineStyle: " + fmt.lineStyle);
             }
 
             if (!fmt.marksUseDefault) {
@@ -2290,7 +2345,7 @@ public class Plot extends PlotBox {
         if ((xpos != prevx) || (ypos != prevy) || (pts.size() == 1)) {
             // MIN_VALUE is a flag that there has been no previous x or y.
             if (pt.connected) {
-                _drawLine(graphics, dataset, xpos, ypos, prevx, prevy, true, 2f);
+                _drawLine(graphics, dataset, xpos, ypos, prevx, prevy, true, _DEFAULT_WIDTH);
             }
 
             // Save the current point as the "previous" point for future
@@ -2615,6 +2670,17 @@ public class Plot extends PlotBox {
     /** @serial Set by _drawPlot(), and reset by clear(). */
     private boolean _showing = false;
 
+    /** The initial default width.
+     */
+    private static final float _DEFAULT_WIDTH = 2f;
+
+    /** The width of the current stroke.  Only effective if the
+     *  Graphics is a Graphics2D.
+     *
+     */
+    private float _width = _DEFAULT_WIDTH;
+        
+
     /** @serial Format information on a per data set basis. */
     private Vector _formats = new Vector();
 
@@ -2646,6 +2712,17 @@ public class Plot extends PlotBox {
 
         // Indicate whether the above variable should be ignored.
         public boolean impulsesUseDefault = true;
+
+        // The stroke used for lines
+        // This is ignored unless strokeUseDefault is true
+        public BasicStroke lineStroke;
+
+        // The name of the stroke, see Plot.setLineStyle()
+        // This is ignored unless strokeUseDefault is true
+        public String lineStyle;
+
+        // Indicate whether lineStroke should be used
+        public boolean lineStyleUseDefault = true;
 
         // Indicate what type of mark to use.
         // This is ignored unless the following variable is set to false.
