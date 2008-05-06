@@ -46,12 +46,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JComponent;
@@ -429,6 +431,16 @@ public class Plot extends PlotBox {
         return _impulses;
     }
 
+    /** Return false if setLineStyles() has not yet been called or if
+     *  setLineStyles(false) has been called, which signifies that
+     *  different line styles are not to be used.  Otherwise, return true.
+     *  @return True if line styles are to be used.
+     *  @see #setLineStyles(boolean)
+     */
+    public boolean getLineStyles() {
+        return _lineStyles;
+    }
+
     /** Get the marks style, which is one of
      *  "none", "points", "dots", or "various".
      *  @return A string specifying the style for points.
@@ -718,14 +730,41 @@ public class Plot extends PlotBox {
                     BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
                     dashvalues, 0);
         } else {
+            StringBuffer results = new StringBuffer();
+            Iterator styles = java.util.Arrays.asList(_lineStylesArray).iterator();
+            while (styles.hasNext()) {
+                if (results.length() > 0) {
+                    results.append(", ");
+                }
+                results.append("\"" + (String)styles.next() + "\"");
+            }
             throw new IllegalArgumentException("Line style \""
                     + styleString + "\" is not found, style must be one of "
-                    + "\"solid\", \"dotted\", \"dashed\", \"dotdashed\", " 
-                    + "\"dotdotdashed\".");
-
+                    + results);
         } 
         format.lineStyle = styleString;
         format.lineStyleUseDefault = false;
+    }
+
+    /** If the argument is true, draw the data sets with different line
+     *  styles.  Otherwise, use one line style.
+     *  @param lineStyles True if the data sets are to be drawn in different
+     *  line styles.
+     *  @see #getlineStyles()
+     */
+    public synchronized void setLineStyles(boolean lineStyles) {
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
+        _lineStyles = lineStyles;
+        if (!_lineStyles) {
+            Enumeration formats = _formats.elements();
+            while (formats.hasMoreElements()) {
+                Format fmt = (Format) formats.nextElement();
+                fmt.lineStyle = null;
+                fmt.lineStroke = null;
+                fmt.lineStyleUseDefault = true;
+            }
+        }
     }
 
     /** Set the marks style to "none", "points", "dots", or "various".
@@ -1190,7 +1229,9 @@ public class Plot extends PlotBox {
         _setWidth(graphics, width);
 
         Format format = (Format) _formats.elementAt(dataset);
+        Stroke previousStroke = null;
         if (!format.lineStyleUseDefault && graphics instanceof Graphics2D) {
+            previousStroke = ((Graphics2D)graphics).getStroke();
             // Draw a dashed or dotted line  
             ((Graphics2D)graphics).setStroke(format.lineStroke);
         }
@@ -1259,6 +1300,9 @@ public class Plot extends PlotBox {
             // draw unconditionally.
             graphics.drawLine((int) startx, (int) starty, (int) endx,
                     (int) endy);
+        }
+        if (previousStroke != null) {
+            ((Graphics2D)graphics).setStroke(previousStroke);
         }
     }
 
@@ -1352,8 +1396,11 @@ public class Plot extends PlotBox {
             // NOTE: It is unfortunate to have to test the class of graphics,
             // but there is no easy way around this that I can think of.
             if (!pointinside && (marks != 3) && _isConnected(dataset)
-                    && (graphics instanceof EPSGraphics)) {
-                graphics.drawLine(xposi - 6, yposi, xposi + 6, yposi);
+                    && ((graphics instanceof EPSGraphics)
+                        || !_usecolor)) {
+                // Use our line styles.
+                _drawLine(graphics, dataset,
+                        xposi - 6, yposi, xposi + 6, yposi, false, _width);
             } else {
                 // Color display.  Use normal legend.
                 switch (marks) {
@@ -2327,6 +2374,11 @@ public class Plot extends PlotBox {
             graphics.setColor(_foreground);
         }
 
+        if (_lineStyles) {
+            int lineStyle = dataset % _lineStylesArray.length;
+            setLineStyle(_lineStylesArray[lineStyle], dataset);
+        }
+
         Vector pts = (Vector) _points.elementAt(dataset);
         PlotPoint pt = (PlotPoint) pts.elementAt(index);
 
@@ -2680,6 +2732,12 @@ public class Plot extends PlotBox {
      */
     private float _width = _DEFAULT_WIDTH;
         
+    /** True if different line styles should be used. */
+    private boolean _lineStyles = false;
+
+    /** True if different line styles should be used. */
+    private static String [] _lineStylesArray = {
+        "solid", "dotted", "dashed", "dotdashed", "dotdotdashed"};
 
     /** @serial Format information on a per data set basis. */
     private Vector _formats = new Vector();

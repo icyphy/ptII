@@ -29,6 +29,7 @@
                   offset CDATA #IMPLIED>
   <!ELEMENT dataset (m | move | p | point)*>
     <!ATTLIST dataset connected (yes | no) #IMPLIED
+                      lineStyle(solid | dotted | dashed | dotdashed | dotdotdashed) #IMPLIED 
                       marks (none | dots | points | various | pixels) #IMPLIED
                       name CDATA #IMPLIED
                       stems (yes | no) #IMPLIED>

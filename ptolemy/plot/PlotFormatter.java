@@ -166,6 +166,10 @@ public class PlotFormatter extends JPanel {
         _originalColor = plot.getColor();
         _narrowQuery.addCheckBox("color", "Use Color", _originalColor);
 
+        _originalLineStyles = ((Plot) plot).getLineStyles();
+        _narrowQuery.addCheckBox("lineStyles", "Use Line Styles",
+                _originalLineStyles);
+
         // FIXME: setXLog() and setYLog() cause problems with
         // dropped data if they are toggled after data is read in.
         // This is because the log axis facility modifies the datasets
@@ -260,6 +264,9 @@ public class PlotFormatter extends JPanel {
                     //    _plot.setYLog(_narrowQuery.getBooleanValue("ylog"));
                 } else if (name.equals("connected")) {
                     _setConnected(_narrowQuery.getBooleanValue("connected"));
+                } else if (name.equals("lineStyles")) {
+                    ((Plot) _plot).setLineStyles(_narrowQuery
+                            .getBooleanValue("lineStyles"));
                 }
 
                 _plot.repaint();
@@ -282,6 +289,7 @@ public class PlotFormatter extends JPanel {
         _plot.read("YRange: " + _wideQuery.getStringValue("yrange"));
         _plot.setGrid(_narrowQuery.getBooleanValue("grid"));
         _plot.setColor(_narrowQuery.getBooleanValue("color"));
+        ((Plot)_plot).setLineStyles(_narrowQuery.getBooleanValue("lineStyles"));
 
         // FIXME: log axis format temporarily disable, see above.
         // _plot.setXLog(_narrowQuery.getBooleanValue("xlog"));
@@ -351,6 +359,7 @@ public class PlotFormatter extends JPanel {
         _plot.setYRange(_originalYRange[0], _originalYRange[1]);
         _plot.setGrid(_originalGrid);
         _plot.setColor(_originalColor);
+        ((Plot)_plot).setLineStyles(_originalLineStyles);
 
         // FIXME: log axis format temporarily disable, see above.
         // _plot.setXLog(_originalXLog);
@@ -490,6 +499,8 @@ public class PlotFormatter extends JPanel {
     private Vector[] _originalYTicks;
 
     private boolean _originalGrid;
+
+    private boolean _originalLineStyles;
 
     private boolean _originalStems;
 
