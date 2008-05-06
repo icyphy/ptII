@@ -72,7 +72,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[209.77597045898438, 121.56708517670629]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[219.45774304159406, 166.5670850865981]">
             </property>
         </entity>
         <entity name="Pgreen" class="ptolemy.domains.fsm.kernel.State">
@@ -80,7 +80,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[324.7759704589844, 121.56708517670629]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[334.45774304159403, 166.5670850865981]">
             </property>
         </entity>
         <entity name="init" class="ptolemy.domains.fsm.kernel.State">
@@ -90,7 +90,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[189.77597045898438, 41.567085176706286]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 35.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -112,7 +112,7 @@
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!Pgo_isPresent">
             </property>
             <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="PedLight=0">
                 <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -124,7 +124,7 @@
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.3775197182673824">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5028870592749504">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -153,12 +153,38 @@
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <link port="Pred.incomingPort" relation="relation2"/>
+        <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Pgo_isPresent">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="PedLight=1">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.9336272141162464">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6904581121892654">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </relation>
         <link port="Pred.incomingPort" relation="relation3"/>
+        <link port="Pred.incomingPort" relation="relation2"/>
         <link port="Pred.outgoingPort" relation="relation"/>
         <link port="Pgreen.incomingPort" relation="relation"/>
+        <link port="Pgreen.incomingPort" relation="relation4"/>
         <link port="Pgreen.outgoingPort" relation="relation3"/>
         <link port="init.outgoingPort" relation="relation2"/>
+        <link port="init.outgoingPort" relation="relation4"/>
     </entity>
     <relation name="PgoRelation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
