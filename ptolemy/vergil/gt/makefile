@@ -87,20 +87,17 @@ OPTIONAL_FILES = \
 	'GTFrame$$ConfigureIngredientsAction.class' \
 	'GTFrame$$ConfigureOperationsAction.class' \
 	'GTFrame$$GTActorGraphController$$1.class' \
-	'GTFrame$$GTActorGraphController$$EntityController.class' \
 	'GTFrame$$GTActorGraphController$$NewRelationAction.class' \
-	'GTFrame$$GTActorGraphController$$PortController.class' \
 	'GTFrame$$GTActorGraphController.class' \
 	'GTFrame$$GTFSMGraphController.class' \
-	'GTFrame$$GTMenuActionFactory.class' \
 	'GTFrameController$$1.class' \
 	'GTFrameController$$2.class' \
 	'GTFrameController$$GTActorGraphModel.class' \
 	'GTFrameController$$GTFSMGraphModel.class' \
 	'GTFrameController$$UpdateController.class' \
+	'GTFrameTools$$1.class' \
 	'GTFrameTools$$DelegatedUndoStackAttribute.class' \
 	'GTFrameTools$$ModelChangeRequest$$1.class' \
-	'GTFrameTools$$ModelChangeRequest$$2.class' \
 	'GTFrameTools$$ModelChangeRequest.class' \
 	'GTIngredientsEditor$$1.class' \
 	'GTIngredientsEditor$$2.class' \
@@ -119,6 +116,7 @@ OPTIONAL_FILES = \
 	'GTTableau$$ModalTableauFactory.class' \
 	'MatchResultTableau$$Factory.class' \
 	'MatchResultViewer$$1.class' \
+	'MatchResultViewer$$2.class' \
 	'MatchResultViewer$$CloseAction.class' \
 	'MatchResultViewer$$FileSelectionStatus.class' \
 	'MatchResultViewer$$MatchResultActorController.class' \
@@ -131,6 +129,8 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$PreviousFileAction.class' \
 	'MatchResultViewer$$TransformAction.class' \
 	'MatchResultViewer$$TransformAllAction.class' \
+	'MatchResultViewer$$TransformedTag.class' \
+	'MatchResultViewer$$UndoChangeModelAction.class' \
 	'StateMatcherController$$Factory.class' \
 	'TransformationAttributeController$$ApplyTransformationAction$$1.class' \
 	'TransformationAttributeController$$ApplyTransformationAction.class' \
