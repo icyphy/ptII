@@ -105,6 +105,16 @@ public class GTFrame extends ExtendedGraphFrame {
         super(entity, tableau, defaultLibrary);
     }
 
+    public void cancelFullScreen() {
+        super.cancelFullScreen();
+        _fullscreen = false;
+    }
+
+    public void fullScreen() {
+        _fullscreen = true;
+        super.fullScreen();
+    }
+
     public GTFrameController getFrameController() {
         return _frameController;
     }
@@ -120,6 +130,10 @@ public class GTFrame extends ExtendedGraphFrame {
             graph = super.getJGraph();
         }
         return graph;
+    }
+
+    public boolean isFullscreen() {
+        return _fullscreen;
     }
 
     protected boolean _close() {
@@ -234,17 +248,6 @@ public class GTFrame extends ExtendedGraphFrame {
     protected class GTActorGraphController extends ActorEditorGraphController
     implements MenuItemListener {
 
-        protected void _addHotKeys(JGraph jgraph) {
-            List<JGraph> jgraphs = _frameController.getJGraphs();
-            if (jgraphs == null) {
-                super._addHotKeys(jgraph);
-            } else {
-                for (JGraph g : jgraphs) {
-                    super._addHotKeys(g);
-                }
-            }
-        }
-
         public void menuItemCreated(JContextMenu menu, NamedObj object,
                 JMenuItem menuItem) {
             if (menuItem instanceof JMenu) {
@@ -292,6 +295,17 @@ public class GTFrame extends ExtendedGraphFrame {
                         GUIUtilities.ROLLOVER_SELECTED_ICON },
                     { "/ptolemy/vergil/actor/img/relation_on.gif",
                         GUIUtilities.SELECTED_ICON } });
+        }
+
+        protected void _addHotKeys(JGraph jgraph) {
+            List<JGraph> jgraphs = _frameController.getJGraphs();
+            if (jgraphs == null) {
+                super._addHotKeys(jgraph);
+            } else {
+                for (JGraph g : jgraphs) {
+                    super._addHotKeys(g);
+                }
+            }
         }
 
         protected void _createControllers() {
@@ -376,4 +390,6 @@ public class GTFrame extends ExtendedGraphFrame {
     }
 
     private GTFrameController _frameController;
+
+    private boolean _fullscreen = false;
 }

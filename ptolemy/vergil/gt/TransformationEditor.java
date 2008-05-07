@@ -1070,7 +1070,7 @@ public class TransformationEditor extends GTFrame implements
                 }
 
                 MatchResultViewer viewer = (MatchResultViewer) window;
-                if (viewer.isVisible()) {
+                if (viewer.isVisible() || viewer.isFullscreen()) {
                     return;
                 }
 

@@ -116,7 +116,6 @@ OPTIONAL_FILES = \
 	'GTTableau$$ModalTableauFactory.class' \
 	'MatchResultTableau$$Factory.class' \
 	'MatchResultViewer$$1.class' \
-	'MatchResultViewer$$2.class' \
 	'MatchResultViewer$$CloseAction.class' \
 	'MatchResultViewer$$FileSelectionStatus.class' \
 	'MatchResultViewer$$MatchResultActorController.class' \
@@ -129,7 +128,6 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$PreviousFileAction.class' \
 	'MatchResultViewer$$TransformAction.class' \
 	'MatchResultViewer$$TransformAllAction.class' \
-	'MatchResultViewer$$TransformedTag.class' \
 	'MatchResultViewer$$UndoChangeModelAction.class' \
 	'StateMatcherController$$Factory.class' \
 	'TransformationAttributeController$$ApplyTransformationAction$$1.class' \
