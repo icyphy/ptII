@@ -45,7 +45,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ActorGraphModel;
@@ -96,57 +95,49 @@ public class GTFrameTools {
             final CompositeEntity model) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                Workspace workspace = model.workspace();
-                try {
-                    workspace.getWriteAccess();
-                    Point2D center = frame.getCenter();
-                    frame.setModel(model);
+                Point2D center = frame.getCenter();
+                frame.setModel(model);
 
-                    PtolemyEffigy effigy = (PtolemyEffigy) frame.getEffigy();
-                    effigy.setModel(model);
+                PtolemyEffigy effigy = (PtolemyEffigy) frame.getEffigy();
+                effigy.setModel(model);
 
-                    if (frame instanceof ActorGraphFrame) {
-                        ActorEditorGraphController controller =
-                            (ActorEditorGraphController) frame.getJGraph()
-                            .getGraphPane().getGraphController();
-                        ActorGraphModel graphModel =
-                            new ActorGraphModel(model);
-                        frame.getJGraph().setGraphPane(new ActorGraphPane(
-                                controller, graphModel, model));
-                    } else if (frame instanceof FSMGraphFrame) {
-                        FSMGraphController controller =
-                            (FSMGraphController) frame.getJGraph()
-                            .getGraphPane().getGraphController();
-                        FSMGraphModel graphModel = new FSMGraphModel(
-                                (CompositeEntity) model);
-                        frame.getJGraph().setGraphPane(new FSMGraphPane(
-                                controller, graphModel, model));
-                    } else if (frame instanceof GTFrame) {
-                        RunnableGraphController controller =
-                            (RunnableGraphController) frame.getJGraph()
-                            .getGraphPane().getGraphController();
-                        GraphModel graphModel = frame.getJGraph()
-                            .getGraphPane().getGraphModel();
-                        if (graphModel instanceof FSMGraphModel) {
-                            graphModel = new GTFrameController
-                                    .GTFSMGraphModel(model);
-                        } else {
-                            graphModel = new GTFrameController
-                                    .GTActorGraphModel(model);
-                        }
-                        frame.getJGraph().setGraphPane(new GraphPane(
-                                controller, graphModel));
+                if (frame instanceof ActorGraphFrame) {
+                    ActorEditorGraphController controller =
+                        (ActorEditorGraphController) frame.getJGraph()
+                        .getGraphPane().getGraphController();
+                    ActorGraphModel graphModel = new ActorGraphModel(model);
+                    frame.getJGraph().setGraphPane(new ActorGraphPane(
+                            controller, graphModel, model));
+                } else if (frame instanceof FSMGraphFrame) {
+                    FSMGraphController controller =
+                        (FSMGraphController) frame.getJGraph()
+                        .getGraphPane().getGraphController();
+                    FSMGraphModel graphModel = new FSMGraphModel(
+                            (CompositeEntity) model);
+                    frame.getJGraph().setGraphPane(new FSMGraphPane(controller,
+                            graphModel, model));
+                } else if (frame instanceof GTFrame) {
+                    RunnableGraphController controller =
+                        (RunnableGraphController) frame.getJGraph()
+                        .getGraphPane().getGraphController();
+                    GraphModel graphModel = frame.getJGraph()
+                        .getGraphPane().getGraphModel();
+                    if (graphModel instanceof FSMGraphModel) {
+                        graphModel = new GTFrameController.GTFSMGraphModel(
+                                model);
                     } else {
-                        throw new InternalErrorException("Unable to " +
-                                "change the model in frame " +
-                                frame.getClass().getName());
+                        graphModel = new GTFrameController.GTActorGraphModel(
+                                model);
                     }
-                    frame.getJGraph().repaint();
-                    frame.setCenter(center);
-                    frame.changeExecuted(null);
-                } finally {
-                    workspace.doneWriting();
+                    frame.getJGraph().setGraphPane(new GraphPane(controller,
+                            graphModel));
+                } else {
+                    throw new InternalErrorException("Unable to change the " +
+                            "model in frame " + frame.getClass().getName());
                 }
+                frame.getJGraph().repaint();
+                frame.setCenter(center);
+                frame.changeExecuted(null);
             }
         });
     }
