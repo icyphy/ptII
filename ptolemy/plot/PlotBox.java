@@ -4271,6 +4271,7 @@ public class PlotBox extends JPanel implements Printable {
                 }
             }
         }
+    }
 
     public class ZoomListener implements MouseListener {
         public void mouseClicked(MouseEvent event) {
