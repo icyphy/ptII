@@ -4204,24 +4204,14 @@ public class PlotBox extends JPanel implements Printable {
             if (event.getSource() == _fillButton) {
                 fillPlot();
             } else if (event.getSource() == _printButton) {
-                // FIXME:  Code duplication with PlotFrame._printCrossPlatform
-                PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-                PrinterJob job = PrinterJob.getPrinterJob();
-
-                // rbeyer@LPL.Arizona.EDU: Get the Page Format and use it.
-                //PageFormat format = job.pageDialog(job.defaultPage());
-                //job.setPrintable(PlotBox.this, format);
-                job.setPrintable(PlotBox.this);
-
-                if (job.printDialog(aset)) {
-                    try {
-                        job.print(aset);
-                    } catch (Exception ex) {
-                        Component ancestor = getTopLevelAncestor();
-                        JOptionPane.showMessageDialog(ancestor,
-                                "Printing failed:\n" + ex.toString(),
-                                "Print Error", JOptionPane.WARNING_MESSAGE);
-                    }
+                // If you are using $PTII/bin/vergil, under bash,
+                // set this property:
+                // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform
+                // and then run $PTII/bin/vergil
+                if (StringUtilities.getProperty("ptolemy.ptII.print.platform").equals("CrossPlatform")) {
+                    _printCrossPlatform();
+                } else {
+                    _printNative();
                 }
             } else if (event.getSource() == _resetButton) {
                 resetAxes();
@@ -4230,7 +4220,57 @@ public class PlotBox extends JPanel implements Printable {
                 fmt.openModal();
             }
         }
-    }
+
+        private void _printCrossPlatform() {
+            // FIXME:  Code duplication with PlotFrame and Top.
+            // See PlotFrame for notes.
+            PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+            PrinterJob job = PrinterJob.getPrinterJob();
+
+            // No need to call pageDialog, printDialog has that same tab
+            // rbeyer@LPL.Arizona.EDU: Get the Page Format and use it.
+            //PageFormat format = job.pageDialog(aset);
+            //job.setPrintable(PlotBox.this, format);
+
+            job.setPrintable(PlotBox.this);
+
+            if (job.printDialog(aset)) {
+                try {
+                    job.print(aset);
+                } catch (Exception ex) {
+                    Component ancestor = getTopLevelAncestor();
+                    JOptionPane.showMessageDialog(ancestor,
+                            "Printing failed:\n" + ex.toString(),
+                            "Print Error", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        }
+
+        private void _printNative() {
+            // FIXME:  Code duplication with PlotFrame and Top.
+            // See PlotFrame for notes.
+
+            // Native printing used not honor the user's 
+            // choice of portrait vs. landscape.
+
+            PrinterJob job = PrinterJob.getPrinterJob();
+            PageFormat pageFormat = job.pageDialog(job.defaultPage());
+            job.setPrintable(PlotBox.this, pageFormat);
+
+            if (job.printDialog()) {
+                try {
+                    // job.print() eventually
+                    // calls PlotBox.print(Graphics, PageFormat)
+                    job.print();
+                } catch (Exception ex) {
+                    Component ancestor = getTopLevelAncestor();
+                    JOptionPane.showMessageDialog(ancestor,
+                            "Printing failed:\n"
+                            + ex.toString(), "Print Error",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        }
 
     public class ZoomListener implements MouseListener {
         public void mouseClicked(MouseEvent event) {

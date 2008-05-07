@@ -34,6 +34,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,6 +46,7 @@ import java.net.URL;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -410,25 +412,42 @@ public class PlotFrame extends JFrame {
         }
     }
 
-    /** Print the plot.
+    /** Print the plot using the native interface.
      */
     protected void _print() {
-        _printCrossPlatform();
-
-        //_printNative();
+        // If you are using $PTII/bin/vergil, under bash, set this property:
+        // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform 
+        // and then run $PTII/bin/vergil
+        if (StringUtilities.getProperty("ptolemy.ptII.print.platform").equals("CrossPlatform")) {
+            _printCrossPlatform();
+        } else {
+            _printNative();
+        }
     }
 
     /** Print using the cross platform dialog.
-     *  FIXME: this dialog is slow and is often hidden
-     *  behind other windows.  However, it does honor
-     *  the user's choice of portrait vs. landscape
+     *  Note that in java 1.6.0_05, the properties button is disabled,
+     *  so using _printNative() is preferred.
      */
     protected void _printCrossPlatform() {
-        // FIXME: Code duplication with PlotBox.
+        // FIXME: Code duplication with PlotBox and Top.
+
+        // Note that this dialog used to be slow, but this was fixed in:
+        // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6539061
+        // Note that this dialog used to appear behind other windows,
+        // but this was fixed in:
+        // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4775862
+
+        // For more notes, see
+        // http://chess.eecs.berkeley.edu/ptolemy/wiki/Ptolemy/PrintingFromJava
 
         // Build a set of attributes
-        PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
         PrinterJob job = PrinterJob.getPrinterJob();
+        PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+        // No need to call pageDialog, printDialog has that same tab
+        //PageFormat pageFormat = job.pageDialog(aset);
+        //PageFormat pageFormat = job.pageDialog(job.defaultPage());
+        //job.setPrintable(plot, pageFormat);
         job.setPrintable(plot);
 
         if (job.printDialog(aset)) {
@@ -443,15 +462,16 @@ public class PlotFrame extends JFrame {
     }
 
     /** Print using the native dialog.
-     *  FIXME: This method does not seem to honor the user's
-     *  choice of portrait vs. landscape.
      */
     protected void _printNative() {
-        PrinterJob job = PrinterJob.getPrinterJob();
+        // FIXME: Code duplication with PlotBox and Top.
 
-        //PageFormat pageFormat = job.defaultPage();
-        //job.setPrintable(plot, pageFormat);
-        job.setPrintable(plot);
+        // Native printing used not honor the user's 
+        // choice of portrait vs. landscape.
+
+        PrinterJob job = PrinterJob.getPrinterJob();
+        PageFormat pageFormat = job.pageDialog(job.defaultPage());
+        job.setPrintable(plot, pageFormat);
 
         if (job.printDialog()) {
             try {

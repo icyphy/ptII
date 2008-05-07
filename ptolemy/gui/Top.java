@@ -36,6 +36,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
 import java.awt.print.Printable;
 import java.awt.print.PrinterJob;
@@ -765,6 +766,24 @@ public abstract class Top extends JFrame {
      *  it.
      */
     protected void _print() {
+        // If you are using $PTII/bin/vergil, under bash, set this property:
+        // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform 
+        // and then run $PTII/bin/vergil
+        if (StringUtilities.getProperty("ptolemy.ptII.print.platform").equals("CrossPlatform")) {
+            _printCrossPlatform();
+        } else {
+            _printNative();
+        }
+    }
+
+    /** Print using the cross platform dialog.
+     *  Note that in java 1.6.0_05, the properties button is disabled,
+     *  so using _printNative() is preferred.
+     */
+    protected void _printCrossPlatform() {
+        // FIXME: Code duplication with PlotBox and PlotFrame.
+        // See PlotFrame for notes.
+
         // Build a set of attributes
         PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
         PrinterJob job = PrinterJob.getPrinterJob();
@@ -784,7 +803,37 @@ public abstract class Top extends JFrame {
             try {
                 job.print(aset);
             } catch (Exception ex) {
-                MessageHandler.error("Printing Failed", ex);
+                MessageHandler.error("Cross Platform Printing Failed",
+                        ex);
+            }
+        }
+    }
+
+    /** Print using the native dialog.
+     */
+    protected void _printNative() {
+        // FIXME: Code duplication with PlotBox and PlotFrame.
+        // See PlotFrame for notes.
+
+        PrinterJob job = PrinterJob.getPrinterJob();
+        PageFormat pageFormat = job.pageDialog(job.defaultPage());
+
+        if (this instanceof Pageable) {
+            // FIXME: what about the page format?
+            job.setPageable((Pageable) this);
+            job.validatePage(pageFormat);
+        } else if (this instanceof Printable) {
+            job.setPrintable((Printable)this, pageFormat);
+        } else {
+            // Can't print it.
+            return;
+        }
+
+        if (job.printDialog()) {
+            try {
+                job.print();
+            } catch (Exception ex) {
+                MessageHandler.error("Native Printing Failed", ex);
             }
         }
     }
