@@ -38,10 +38,12 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)$(PTBACKTRACK_ECLIPSE_JARS)
+ECLIPSEDIRECTORY = 
+CLASSPATH =	$(ROOT)$(PTBACKTRACK_ECLIPSE_DOC_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
+
 include $(CONFIG)
 
 # Used to build jar files
@@ -68,10 +70,16 @@ OPTIONAL_FILES =
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	@echo "To see the main demo, run 'make SWTVergilApplication'"
+
 install: jclass jars
 
 Snippet135:
-	"$(JAVA)" -classpath "$(CLASSPATH)" vendors.eclipse.awt.Snippet135
+	"$(JAVA)" -classpath "$(CLASSPATH)" ptolemy.apps.eclipse.awt.Snippet135
+
+
+SWTVergilApplication: SWTVergilApplication.class
+	"$(JAVA)" -classpath "$(CLASSPATH)" ptolemy.apps.eclipse.awt.SWTVergilApplication
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
