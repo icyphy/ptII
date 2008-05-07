@@ -198,6 +198,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                             titleString = titleValue;
                         }
                         tableau.setTitle(titleString);
+                        model.setDeferringChangeRequests(false);
                         output.send(i, token);
                     } catch (NameDuplicationException e) {
                         throw new IllegalActionException(this, e,

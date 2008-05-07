@@ -46,16 +46,24 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.GraphTransformer;
-import ptolemy.actor.gt.TransformationException;
+import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.undo.UndoAction;
+import ptolemy.kernel.undo.UndoStackAttribute;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
@@ -65,6 +73,7 @@ import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.StateController;
 import ptolemy.vergil.gt.GTFrameController.UpdateController;
+import ptolemy.vergil.gt.GTFrameTools.ModelChangeRequest;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
@@ -137,7 +146,10 @@ public class MatchResultViewer extends GTFrame {
         _nextFileButton.setVisible(batchMode);
     }
 
-    public void setMatchResult(List<MatchResult> results) {
+    public void setMatchResult(TransformationRule rule, String sourceFileName,
+            List<MatchResult> results) {
+        _rule = rule;
+        _sourceFileName = sourceFileName;
         _results = results;
         _currentPosition = 0;
         _enableOrDisableActions();
@@ -155,16 +167,6 @@ public class MatchResultViewer extends GTFrame {
         _enableOrDisableActions();
     }
 
-    public void setSourceFileName(String sourceFileName) {
-        _sourceFileName = sourceFileName;
-        _refreshStatusBars();
-    }
-
-    public void setTransformationRule(TransformationRule rule) {
-        _rule = rule;
-        _enableOrDisableActions();
-    }
-
     public enum FileSelectionStatus {
         NEXT, NONE, PREVIOUS;
     }
@@ -174,8 +176,6 @@ public class MatchResultViewer extends GTFrame {
      */
     protected void _addMenus() {
         super._addMenus();
-
-        setSourceFileName(_sourceFileName);
 
         PreviousAction previousAction = new PreviousAction();
         NextAction nextAction = new NextAction();
@@ -280,8 +280,9 @@ public class MatchResultViewer extends GTFrame {
                 Object object = model.getSemanticObject(node);
                 CompositeFigure cf = _getCompositeFigure(nf);
 
-                if (object instanceof NamedObj && cf != null && !_transformed
+                if (object instanceof NamedObj && cf != null
                         && _results != null
+                        && _currentPosition < _results.size()
                         && _results.get(_currentPosition).containsValue(object)) {
                     Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
                     float padding = _HIGHLIGHT_PADDING;
@@ -343,8 +344,9 @@ public class MatchResultViewer extends GTFrame {
                 Object object = model.getSemanticObject(node);
                 CompositeFigure cf = _getCompositeFigure(figure);
 
-                if (object instanceof NamedObj && cf != null && !_transformed
+                if (object instanceof NamedObj && cf != null
                         && _results != null
+                        && _currentPosition < _results.size()
                         && _results.get(_currentPosition).containsValue(object)) {
                     Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
                     float padding = _HIGHLIGHT_PADDING;
@@ -385,7 +387,6 @@ public class MatchResultViewer extends GTFrame {
                         _isBatchMode = viewer._isBatchMode;
                         _isPreviousFileEnabled = viewer._isPreviousFileEnabled;
                         _isNextFileEnabled = viewer._isNextFileEnabled;
-                        _transformed = viewer._transformed;
                         _rule = viewer._rule;
                         _sourceFileName = viewer._sourceFileName;
                         viewer._subviewers.add(this);
@@ -401,19 +402,26 @@ public class MatchResultViewer extends GTFrame {
     }
 
     private void _enableOrDisableActions() {
+        NamedObj model = getModel();
+        _enableOrDisableActions(_isTransformed(model));
+    }
+
+    private void _enableOrDisableActions(boolean isTransformed) {
         if (_previousItem != null && _results != null) {
-            _previousItem.setEnabled(!_transformed && _currentPosition > 0);
+            _previousItem.setEnabled(!_results.isEmpty()
+                    && _currentPosition > 0 && !isTransformed);
         }
         if (_previousButton != null && _results != null) {
-            _previousButton.setEnabled(!_transformed && _currentPosition > 0);
+            _previousButton.setEnabled(!_results.isEmpty()
+                    && _currentPosition > 0 && !isTransformed);
         }
         if (_nextItem != null && _results != null) {
-            _nextItem.setEnabled(!_transformed
-                    && _currentPosition < _results.size() - 1);
+            _nextItem.setEnabled(_currentPosition < _results.size() - 1
+                    && !isTransformed);
         }
         if (_nextButton != null && _results != null) {
-            _nextButton.setEnabled(!_transformed
-                    && _currentPosition < _results.size() - 1);
+            _nextButton.setEnabled(_currentPosition < _results.size() - 1
+                    && !isTransformed);
         }
         if (_previousFileItem != null && _results != null) {
             _previousFileItem.setEnabled(_isPreviousFileEnabled);
@@ -428,29 +436,58 @@ public class MatchResultViewer extends GTFrame {
             _nextFileButton.setEnabled(_isNextFileEnabled);
         }
         if (_transformItem != null && _results != null) {
-            _transformItem.setEnabled(!_transformed && _rule != null);
+            _transformItem.setEnabled(_currentPosition < _results.size()
+                    && _rule != null && !isTransformed);
         }
         if (_transformButton != null && _results != null) {
-            _transformButton.setEnabled(!_transformed && _rule != null);
+            _transformButton.setEnabled(_currentPosition < _results.size()
+                    && _rule != null && !isTransformed);
         }
         if (_transformAllItem != null && _results != null) {
-            _transformAllItem.setEnabled(!_transformed && _rule != null);
+            _transformAllItem.setEnabled(_currentPosition < _results.size()
+                    && _rule != null && !isTransformed);
         }
         if (_transformAllButton != null && _results != null) {
-            _transformAllButton.setEnabled(!_transformed && _rule != null);
+            _transformAllButton.setEnabled(_currentPosition < _results.size()
+                    && _rule != null && !isTransformed);
         }
     }
 
-    private void _finishTransform() {
-        _setTableauFactory(this, (CompositeEntity) getModel());
-        _transformed = true;
+    private void _finishTransform(CompositeEntity oldModel) {
+        CompositeEntity model = (CompositeEntity) getModel();
+        if (_topFrame == null) {
+            GTFrameTools.changeModel(this, model, true,
+                    new UndoChangeModelAction(oldModel));
+        }
+
+        _setTableauFactory(this, model);
+
+        List<MatchResult> results = null;
+        if (_rule != null) {
+            Pattern pattern = _rule.getPattern();
+            MatchResultRecorder recorder = new MatchResultRecorder();
+            GraphMatcher matcher = new GraphMatcher();
+            matcher.setMatchCallback(recorder);
+            matcher.match(pattern, model);
+            results = recorder.getResults();
+        }
+        setMatchResult(_rule, _sourceFileName, results);
         if (_topFrame == null) {
             for (MatchResultViewer viewer : _subviewers) {
-                viewer._finishTransform();
+                viewer._finishTransform(oldModel);
             }
         }
         _enableOrDisableActions();
-        ((UpdateController) _getGraphModel()).startUpdate();
+
+        model.requestChange(new ChangeRequest(this, "start update") {
+            protected void _execute() throws Exception {
+                ((UpdateController) _getGraphModel()).startUpdate();
+            }
+        });
+    }
+
+    private boolean _isTransformed(NamedObj model) {
+        return !model.attributeList(TransformedTag.class).isEmpty();
     }
 
     private void _next() {
@@ -538,6 +575,11 @@ public class MatchResultViewer extends GTFrame {
         _getGraphController().rerender();
     }
 
+    private void _setTransformed(NamedObj model)
+    throws IllegalActionException, NameDuplicationException {
+        new TransformedTag(model);
+    }
+
     private void _showInDefaultEditor() {
         String moml = getModel().exportMoML();
         boolean modified = isModified();
@@ -560,24 +602,49 @@ public class MatchResultViewer extends GTFrame {
 
     private void _transform() {
         _beginTransform();
+        CompositeEntity oldModel;
         try {
+            // Cannot use getModel().clone() here, because some icons and links
+            // will not be shown then. Why?
+            // oldModel = (CompositeEntity) getModel().clone();
+            // oldModel.setDeferringChangeRequests(false);
+            Workspace workspace = getModel().workspace();
+            oldModel = (CompositeEntity) new MoMLParser(workspace).parse(
+                    getModel().exportMoML());
+            UndoStackAttribute prevStack =
+                UndoStackAttribute.getUndoInfo(getModel());
+            UndoStackAttribute stack = (UndoStackAttribute) prevStack.clone(
+                    workspace);
+            stack.setContainer(oldModel);
+
+            _setTransformed(oldModel);
             GraphTransformer.transform(_rule, _results.get(_currentPosition));
-            GTFrameTools.changeModel(this, (CompositeEntity) getModel(), true);
-        } catch (TransformationException e) {
+        } catch (CloneNotSupportedException e) {
+            MessageHandler.error("Unable to clone model.", e);
+            return;
+        } catch (Exception e) {
             MessageHandler.error("Unable to transform model.", e);
+            return;
         }
-        _finishTransform();
+        _finishTransform(oldModel);
     }
 
     private void _transformAll() {
         _beginTransform();
+        CompositeEntity oldModel;
         try {
+            oldModel = (CompositeEntity) getModel().clone();
+            oldModel.setDeferringChangeRequests(false);
+            _setTransformed(oldModel);
             GraphTransformer.transform(_rule, _results);
-            GTFrameTools.changeModel(this, (CompositeEntity) getModel(), true);
-        } catch (TransformationException e) {
-            MessageHandler.error("Unable to transform model.", e);
+        } catch (CloneNotSupportedException e) {
+            MessageHandler.error("Unable to clone model.", e);
+            return;
+        } catch (KernelException e) {
+            MessageHandler.error("Unable to transform model", e);
+            return;
         }
-        _finishTransform();
+        _finishTransform(oldModel);
     }
 
     private static final Color _HIGHLIGHT_COLOR = new Color(96, 32, 128, 128);
@@ -632,8 +699,6 @@ public class MatchResultViewer extends GTFrame {
     private JButton _transformButton;
 
     private JMenuItem _transformItem;
-
-    private boolean _transformed = false;
 
     private class CloseAction extends FigureAction {
 
@@ -860,5 +925,32 @@ public class MatchResultViewer extends GTFrame {
             }
         }
 
+    }
+
+    private static class TransformedTag extends Variable {
+
+        TransformedTag(NamedObj container) throws IllegalActionException,
+        NameDuplicationException {
+            super(container, container.uniqueName("_transformed"));
+            setPersistent(false);
+        }
+    }
+
+    private class UndoChangeModelAction implements UndoAction {
+
+        public void execute() throws Exception {
+            MatchResultViewer viewer = MatchResultViewer.this;
+            ModelChangeRequest request = new ModelChangeRequest(viewer,
+                    viewer, _model, new UndoChangeModelAction((CompositeEntity) getModel()));
+            request.setUndoable(true);
+            request.execute();
+            _enableOrDisableActions(_isTransformed(_model));
+        }
+
+        UndoChangeModelAction(CompositeEntity model) {
+            _model = model;
+        }
+
+        private CompositeEntity _model;
     }
 }

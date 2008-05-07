@@ -63,6 +63,7 @@ JSRCS = \
 	GTFrameTools.java \
 	GTIngredientsEditor.java \
 	GTTableau.java \
+	MatchResultRecorder.java \
 	MatchResultTableau.java \
 	MatchResultViewer.java \
 	StateMatcherController.java \
@@ -145,7 +146,6 @@ OPTIONAL_FILES = \
 	'TransformationEditor$$FileComparator.class' \
 	'TransformationEditor$$LayoutAction.class' \
 	'TransformationEditor$$MatchAction.class' \
-	'TransformationEditor$$MatchResultRecorder.class' \
 	'TransformationEditor$$SingleMatchAction$$SingleViewController.class' \
 	'TransformationEditor$$SingleMatchAction.class' \
 	'TransformationEditor$$ViewController.class'

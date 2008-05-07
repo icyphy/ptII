@@ -68,12 +68,16 @@ import diva.graph.GraphPane;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GTFrameTools {
-
     public static void changeModel(BasicGraphFrame frame, CompositeEntity model,
             boolean delegateUndoStack) {
+        changeModel(frame, model, delegateUndoStack, null);
+    }
+
+    public static void changeModel(BasicGraphFrame frame, CompositeEntity model,
+            boolean delegateUndoStack, UndoAction undoAction) {
         if (delegateUndoStack) {
             UndoStackAttribute oldAttribute = UndoStackAttribute.getUndoInfo(
-                        frame.getModel());
+                    frame.getModel());
             try {
                 new DelegatedUndoStackAttribute(model, "_undoInfo",
                         oldAttribute);
@@ -82,9 +86,69 @@ public class GTFrameTools {
             }
         }
 
-        ModelChangeRequest request = new ModelChangeRequest(null, frame, model);
+        ModelChangeRequest request = new ModelChangeRequest(null, frame, model,
+                undoAction);
         request.setUndoable(true);
         model.requestChange(request);
+    }
+
+    public static void executeModelChange(final BasicGraphFrame frame,
+            final CompositeEntity model) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                Workspace workspace = model.workspace();
+                try {
+                    workspace.getWriteAccess();
+                    Point2D center = frame.getCenter();
+                    frame.setModel(model);
+
+                    PtolemyEffigy effigy = (PtolemyEffigy) frame.getEffigy();
+                    effigy.setModel(model);
+
+                    if (frame instanceof ActorGraphFrame) {
+                        ActorEditorGraphController controller =
+                            (ActorEditorGraphController) frame.getJGraph()
+                            .getGraphPane().getGraphController();
+                        ActorGraphModel graphModel =
+                            new ActorGraphModel(model);
+                        frame.getJGraph().setGraphPane(new ActorGraphPane(
+                                controller, graphModel, model));
+                    } else if (frame instanceof FSMGraphFrame) {
+                        FSMGraphController controller =
+                            (FSMGraphController) frame.getJGraph()
+                            .getGraphPane().getGraphController();
+                        FSMGraphModel graphModel = new FSMGraphModel(
+                                (CompositeEntity) model);
+                        frame.getJGraph().setGraphPane(new FSMGraphPane(
+                                controller, graphModel, model));
+                    } else if (frame instanceof GTFrame) {
+                        RunnableGraphController controller =
+                            (RunnableGraphController) frame.getJGraph()
+                            .getGraphPane().getGraphController();
+                        GraphModel graphModel = frame.getJGraph()
+                            .getGraphPane().getGraphModel();
+                        if (graphModel instanceof FSMGraphModel) {
+                            graphModel = new GTFrameController
+                                    .GTFSMGraphModel(model);
+                        } else {
+                            graphModel = new GTFrameController
+                                    .GTActorGraphModel(model);
+                        }
+                        frame.getJGraph().setGraphPane(new GraphPane(
+                                controller, graphModel));
+                    } else {
+                        throw new InternalErrorException("Unable to " +
+                                "change the model in frame " +
+                                frame.getClass().getName());
+                    }
+                    frame.getJGraph().repaint();
+                    frame.setCenter(center);
+                    frame.changeExecuted(null);
+                } finally {
+                    workspace.doneWriting();
+                }
+            }
+        });
     }
 
     public static class DelegatedUndoStackAttribute extends UndoStackAttribute {
@@ -125,9 +189,15 @@ public class GTFrameTools {
 
         public ModelChangeRequest(Object originator, BasicGraphFrame frame,
                 CompositeEntity model) {
+            this(originator, frame, model, null);
+        }
+
+        public ModelChangeRequest(Object originator, BasicGraphFrame frame,
+                CompositeEntity model, UndoAction undoAction) {
             super(originator, "Change the model in the frame.");
             _frame = frame;
             _model = model;
+            _undoAction = undoAction;
         }
 
         public void setUndoable(boolean undoable) {
@@ -139,70 +209,21 @@ public class GTFrameTools {
             if (_undoable) {
                 UndoStackAttribute undoInfo =
                     UndoStackAttribute.getUndoInfo(_oldModel);
-                undoInfo.push(new UndoAction() {
-                    public void execute() throws Exception {
-                        ModelChangeRequest request =
-                            new ModelChangeRequest( ModelChangeRequest.this,
-                                    _frame, _oldModel);
-                        request.setUndoable(true);
-                        request.execute();
-                    }
-                });
-            }
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    Workspace workspace = _model.workspace();
-                    try {
-                        workspace.getWriteAccess();
-                        Point2D center = _frame.getCenter();
-                        _frame.setModel(_model);
-
-                        PtolemyEffigy effigy =
-                            (PtolemyEffigy) _frame.getEffigy();
-                        effigy.setModel(_model);
-
-                        if (_frame instanceof ActorGraphFrame) {
-                            ActorEditorGraphController controller =
-                                (ActorEditorGraphController) _frame.getJGraph()
-                                .getGraphPane().getGraphController();
-                            ActorGraphModel graphModel =
-                                new ActorGraphModel(_model);
-                            _frame.getJGraph().setGraphPane(new ActorGraphPane(
-                                    controller, graphModel, _model));
-                        } else if (_frame instanceof FSMGraphFrame) {
-                            FSMGraphController controller =
-                                (FSMGraphController) _frame.getJGraph()
-                                .getGraphPane().getGraphController();
-                            FSMGraphModel graphModel = new FSMGraphModel(
-                                    (CompositeEntity) _model);
-                            _frame.getJGraph().setGraphPane(new FSMGraphPane(
-                                    controller, graphModel, _model));
-                        } else if (_frame instanceof GTFrame) {
-                            RunnableGraphController controller =
-                                (RunnableGraphController) _frame.getJGraph()
-                                .getGraphPane().getGraphController();
-                            GraphModel graphModel = _frame.getJGraph()
-                                .getGraphPane().getGraphModel();
-                            if (graphModel instanceof FSMGraphModel) {
-                                graphModel = new FSMGraphModel(_model);
-                            } else {
-                                graphModel = new ActorGraphModel(_model);
-                            }
-                            _frame.getJGraph().setGraphPane(new GraphPane(
-                                    controller, graphModel));
-                        } else {
-                            throw new InternalErrorException("Unable to " +
-                                    "change the model in frame " +
-                                    _frame.getClass().getName());
+                if (_undoAction == null) {
+                    undoInfo.push(new UndoAction() {
+                        public void execute() throws Exception {
+                            ModelChangeRequest request =
+                                new ModelChangeRequest( ModelChangeRequest.this,
+                                        _frame, _oldModel);
+                            request.setUndoable(true);
+                            request.execute();
                         }
-                        _frame.getJGraph().repaint();
-                        _frame.setCenter(center);
-                        _frame.changeExecuted(null);
-                    } finally {
-                        workspace.doneWriting();
-                    }
+                    });
+                } else {
+                    undoInfo.push(_undoAction);
                 }
-            });
+                executeModelChange(_frame, _model);
+            }
         }
 
         private BasicGraphFrame _frame;
@@ -210,6 +231,8 @@ public class GTFrameTools {
         private CompositeEntity _model;
 
         private CompositeEntity _oldModel;
+
+        private UndoAction _undoAction;
 
         private boolean _undoable = false;
     }

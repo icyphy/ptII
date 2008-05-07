@@ -86,7 +86,6 @@ import ptolemy.actor.gt.DefaultDirectoryAttribute;
 import ptolemy.actor.gt.DefaultModelAttribute;
 import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.GraphMatcher;
-import ptolemy.actor.gt.MatchCallback;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.PatternObjectAttribute;
 import ptolemy.actor.gt.Replacement;
@@ -1264,9 +1263,9 @@ public class TransformationEditor extends GTFrame implements
     private class MatchAction extends FigureAction {
 
         protected List<MatchResult> _getMatchResult(CompositeEntity model) {
-            TransformationRule transformerActor =
+            TransformationRule rule =
                 getFrameController().getTransformationRule();
-            Pattern pattern = transformerActor.getPattern();
+            Pattern pattern = rule.getPattern();
             MatchResultRecorder recorder = new MatchResultRecorder();
             _matcher.setMatchCallback(recorder);
             _matcher.match(pattern, model);
@@ -1301,10 +1300,8 @@ public class TransformationEditor extends GTFrame implements
 
             Tableau tableau = configuration.openModel(model);
             MatchResultViewer viewer = (MatchResultViewer) tableau.getFrame();
-            viewer.setMatchResult(results);
-            viewer.setSourceFileName(sourceFileName);
-            viewer.setTransformationRule(
-                    getFrameController().getTransformationRule());
+            viewer.setMatchResult(getFrameController().getTransformationRule(),
+                    sourceFileName, results);
             return viewer;
         }
 
@@ -1315,20 +1312,6 @@ public class TransformationEditor extends GTFrame implements
         private GraphMatcher _matcher = new GraphMatcher();
 
         private MoMLParser _parser = new MoMLParser();
-    }
-
-    private static class MatchResultRecorder implements MatchCallback {
-
-        public boolean foundMatch(GraphMatcher matcher) {
-            _results.add((MatchResult) matcher.getMatchResult().clone());
-            return false;
-        }
-
-        public List<MatchResult> getResults() {
-            return _results;
-        }
-
-        private List<MatchResult> _results = new LinkedList<MatchResult>();
     }
 
     private class SingleMatchAction extends MatchAction {
