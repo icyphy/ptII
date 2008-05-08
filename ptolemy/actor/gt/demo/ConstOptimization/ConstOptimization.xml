@@ -2,19 +2,19 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ConstOptimization" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={57, 71, 918, 637}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={57, 71, 918, 620}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[695, 523]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[695, 506]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.5, 261.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.5, 253.0}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -33,7 +33,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 485.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 465.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -58,7 +58,7 @@ Maximum actor are replaced by a single Const with the statically computed value.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 340.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -80,7 +80,7 @@ result of static evaluation step by step.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 30.0]">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -100,7 +100,7 @@ result of static evaluation step by step.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 10.0]">
         </property>
     </property>
     <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
@@ -119,11 +119,11 @@ result of static evaluation step by step.</text></svg></configure>
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="BaseModel.xml">
         </property>
         <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 140.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 280.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -136,13 +136,13 @@ result of static evaluation step by step.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 280.0]">
         </property>
     </entity>
     <entity name="OptimizeOnce" class="ptolemy.actor.gt.TransformationRule">
         <property name="mode" class="ptolemy.data.expr.StringParameter" value="replace any">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 230.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 240, 833, 570}, maximized=false}">
         </property>
@@ -308,7 +308,7 @@ result of static evaluation step by step.</text></svg></configure>
     <entity name="OptimizedModel" class="ptolemy.actor.gt.ModelView">
         <property name="screenLocation" class="ptolemy.data.expr.Parameter" value="{x=662, y=0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 230.0]">
         </property>
     </entity>
     <entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect">
@@ -355,7 +355,7 @@ result of static evaluation step by step.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 230.0]">
         </property>
         <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -374,7 +374,7 @@ result of static evaluation step by step.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 220.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -382,12 +382,6 @@ result of static evaluation step by step.</text></svg></configure>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <vertex name="vertex1" value="[185.0, 140.0]">
-        </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -409,22 +403,16 @@ result of static evaluation step by step.</text></svg></configure>
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <vertex name="vertex1" value="[555.0, 325.0]">
-        </vertex>
-    </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[315.0, 280.0]">
+        <vertex name="vertex1" value="[310.0, 280.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[185.0, 325.0]">
+        <vertex name="vertex1" value="[185.0, 320.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -435,8 +423,18 @@ result of static evaluation step by step.</text></svg></configure>
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="ModelGenerator.moml" relation="relation"/>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[185.0, 140.0]">
+        </vertex>
+    </relation>
     <link port="ModelGenerator.model" relation="relation2"/>
+    <link port="ModelGenerator.moml" relation="relation"/>
     <link port="OriginalModel.input" relation="relation2"/>
     <link port="FileReader.output" relation="relation"/>
     <link port="Stop.input" relation="relation3"/>
@@ -446,6 +444,7 @@ result of static evaluation step by step.</text></svg></configure>
     <link port="OptimizeOnce.modelOutput" relation="relation8"/>
     <link port="OptimizeOnce.modified" relation="relation11"/>
     <link port="OptimizedModel.input" relation="relation9"/>
+    <link port="OptimizedModel.output" relation="relation10"/>
     <link port="DDFBooleanSelect.trueInput" relation="relation2"/>
     <link port="DDFBooleanSelect.falseInput" relation="relation10"/>
     <link port="DDFBooleanSelect.control" relation="relation4"/>
@@ -459,5 +458,4 @@ result of static evaluation step by step.</text></svg></configure>
     <link port="BooleanSwitch.falseOutput" relation="relation6"/>
     <link port="Sleep.input" relation="relation12"/>
     <link port="Sleep.output" relation="relation9"/>
-    <link relation1="relation9" relation2="relation10"/>
 </entity>
