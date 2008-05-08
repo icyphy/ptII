@@ -43,9 +43,11 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.GraphTransformer;
 import ptolemy.actor.gt.Pattern;
@@ -57,13 +59,14 @@ import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.undo.UndoAction;
 import ptolemy.kernel.undo.UndoStackAttribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorEditorGraphController;
@@ -192,7 +195,8 @@ public class MatchResultViewer extends GTFrame {
         PreviousFileAction previousFileAction = new PreviousFileAction();
         NextFileAction nextFileAction = new NextFileAction();
         TransformAction transformAction = new TransformAction();
-        TransformAllAction transformAllAction = new TransformAllAction();
+        TransformUntilFixpointAction transformUntilFixpointAction =
+            new TransformUntilFixpointAction();
         CloseAction closeAction = new CloseAction();
 
         _viewMenu.addSeparator();
@@ -201,10 +205,14 @@ public class MatchResultViewer extends GTFrame {
         _previousFileItem = GUIUtilities.addMenuItem(_viewMenu,
                 previousFileAction);
         _nextFileItem = GUIUtilities.addMenuItem(_viewMenu, nextFileAction);
-        _transformItem = GUIUtilities.addMenuItem(_viewMenu, transformAction);
-        _transformAllItem = GUIUtilities.addMenuItem(_viewMenu,
-                transformAllAction);
-        GUIUtilities.addMenuItem(_viewMenu, closeAction);
+
+        _transformMenu = new JMenu("Transform");
+        _transformMenu.setMnemonic(KeyEvent.VK_T);
+        _transformItem = GUIUtilities.addMenuItem(_transformMenu, transformAction);
+        _transformUntilFixpointItem = GUIUtilities.addMenuItem(_transformMenu,
+                transformUntilFixpointAction);
+        GUIUtilities.addMenuItem(_transformMenu, closeAction);
+        _menubar.add(_transformMenu);
 
         _previousFileButton = GUIUtilities.addToolBarButton(_toolbar,
                 previousFileAction);
@@ -215,8 +223,8 @@ public class MatchResultViewer extends GTFrame {
                 nextFileAction);
         _transformButton = GUIUtilities.addToolBarButton(_toolbar,
                 transformAction);
-        _transformAllButton = GUIUtilities.addToolBarButton(_toolbar,
-                transformAllAction);
+        _transformUntilFixpointButton = GUIUtilities.addToolBarButton(_toolbar,
+                transformUntilFixpointAction);
         GUIUtilities.addToolBarButton(_toolbar, closeAction);
 
         setBatchMode(_isBatchMode);
@@ -280,6 +288,8 @@ public class MatchResultViewer extends GTFrame {
             }
         }
     }
+
+    protected JMenu _transformMenu;
 
     protected class MatchResultActorController extends ActorController {
 
@@ -427,6 +437,14 @@ public class MatchResultViewer extends GTFrame {
         }
     }
 
+    private void _delegateUndoStack(NamedObj from, NamedObj to)
+    throws CloneNotSupportedException, IllegalActionException,
+    NameDuplicationException {
+        UndoStackAttribute prevStack = UndoStackAttribute.getUndoInfo(from);
+        UndoStackAttribute stack = (UndoStackAttribute) prevStack.clone();
+        stack.setContainer(to);
+    }
+
     private void _enableOrDisableActions() {
         if (_previousItem != null && _results != null) {
             _previousItem.setEnabled(!_results.isEmpty()
@@ -462,18 +480,26 @@ public class MatchResultViewer extends GTFrame {
             _transformButton.setEnabled(_currentPosition < _results.size()
                     && _rule != null);
         }
-        if (_transformAllItem != null && _results != null) {
-            _transformAllItem.setEnabled(_currentPosition < _results.size()
+        if (_transformUntilFixpointItem != null && _results != null) {
+            _transformUntilFixpointItem.setEnabled(_currentPosition < _results.size()
                     && _rule != null);
         }
-        if (_transformAllButton != null && _results != null) {
-            _transformAllButton.setEnabled(_currentPosition < _results.size()
+        if (_transformUntilFixpointButton != null && _results != null) {
+            _transformUntilFixpointButton.setEnabled(_currentPosition < _results.size()
                     && _rule != null);
         }
     }
 
     private void _finishTransform(CompositeEntity oldModel) {
-        CompositeEntity model = (CompositeEntity) getModel();
+        CompositeEntity currentModel = (CompositeEntity) getModel();
+        CompositeEntity model;
+        try {
+            model = (CompositeEntity) GTTools.cleanupModel(currentModel);
+            currentModel.workspace().remove(currentModel);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(currentModel, e,
+                    "Unable to clean up model.");
+        }
         if (_topFrame == null) {
             GTFrameTools.changeModel(this, model, true,
                     new UndoChangeModelAction(oldModel, _currentPosition));
@@ -491,11 +517,6 @@ public class MatchResultViewer extends GTFrame {
             results = recorder.getResults();
         }
         setMatchResult(_rule, _sourceFileName, results);
-        /*if (_topFrame == null) {
-            for (MatchResultViewer viewer : _subviewers) {
-                viewer._finishTransform(oldModel);
-            }
-        }*/
         _closeSubviewers();
         _enableOrDisableActions();
 
@@ -588,15 +609,17 @@ public class MatchResultViewer extends GTFrame {
     }
 
     private void _showInDefaultEditor() {
-        String moml = getModel().exportMoML();
         boolean modified = isModified();
         setModified(false);
         close();
 
-        MoMLParser parser = new MoMLParser();
         try {
+            CompositeEntity currentModel = (CompositeEntity) getModel();
+            CompositeEntity model =
+                (CompositeEntity) GTTools.cleanupModel(currentModel);
+            currentModel.workspace().remove(currentModel);
             Tableau tableau = getFrameController().getConfiguration().openModel(
-                    parser.parse(moml));
+                    model);
             Frame frame = tableau.getFrame();
             if (modified && (frame instanceof TableauFrame)) {
                 ((TableauFrame) tableau.getFrame()).setModified(true);
@@ -609,20 +632,13 @@ public class MatchResultViewer extends GTFrame {
 
     private void _transform() {
         _beginTransform();
+
+        CompositeEntity currentModel = (CompositeEntity) getModel();
         CompositeEntity oldModel;
         try {
-            // Cannot use getModel().clone() here, because some icons and links
-            // will not be shown then. Why?
-            // oldModel = (CompositeEntity) getModel().clone();
-            // oldModel.setDeferringChangeRequests(false);
-            Workspace workspace = getModel().workspace();
-            oldModel = (CompositeEntity) new MoMLParser(workspace).parse(
-                    getModel().exportMoML());
-            UndoStackAttribute prevStack =
-                UndoStackAttribute.getUndoInfo(getModel());
-            UndoStackAttribute stack = (UndoStackAttribute) prevStack.clone(
-                    workspace);
-            stack.setContainer(oldModel);
+            oldModel = (CompositeEntity) GTTools.cleanupModel(currentModel);
+            currentModel.workspace().remove(currentModel);
+            _delegateUndoStack(getModel(), oldModel);
 
             GraphTransformer.transform(_rule, _results.get(_currentPosition));
         } catch (Exception e) {
@@ -632,24 +648,46 @@ public class MatchResultViewer extends GTFrame {
         _finishTransform(oldModel);
     }
 
-    private void _transformAll() {
+    private void _transformUntilFixpoint() {
         _beginTransform();
+
+        CompositeEntity currentModel = (CompositeEntity) getModel();
         CompositeEntity oldModel;
         try {
-            // Cannot use getModel().clone() here, because some icons and links
-            // will not be shown then. Why?
-            // oldModel = (CompositeEntity) getModel().clone();
-            // oldModel.setDeferringChangeRequests(false);
-            Workspace workspace = getModel().workspace();
-            oldModel = (CompositeEntity) new MoMLParser(workspace).parse(
-                    getModel().exportMoML());
-            UndoStackAttribute prevStack =
-                UndoStackAttribute.getUndoInfo(getModel());
-            UndoStackAttribute stack = (UndoStackAttribute) prevStack.clone(
-                    workspace);
-            stack.setContainer(oldModel);
+            oldModel = (CompositeEntity) GTTools.cleanupModel(currentModel);
+            currentModel.workspace().remove(currentModel);
+            _delegateUndoStack(getModel(), oldModel);
 
-            GraphTransformer.transform(_rule, _results);
+            GraphMatcher matcher = null;
+            int i = 0;
+            while (!_results.isEmpty()) {
+                int pos = (int) (Math.random() * _results.size());
+                GraphTransformer.transform(_rule, _results.get(pos));
+                MatchResultRecorder recorder = new MatchResultRecorder();
+                if (matcher == null) {
+                    matcher = new GraphMatcher();
+                }
+                matcher.setMatchCallback(recorder);
+                matcher.match(_rule.getPattern(), currentModel);
+                _results = recorder.getResults();
+
+                if (i >= 0) {
+                    i++;
+                }
+                if (i >= _PROMPT_TO_CONTINUE_COUNT && !_results.isEmpty()) {
+                   boolean answer = MessageHandler.yesNoQuestion("The " +
+                            "transformation process has not terminated " +
+                            "within " + _PROMPT_TO_CONTINUE_COUNT +
+                            " randomly chosen steps.\nIt is possible that " +
+                            "the transformations never reach a fixpoint.\n" +
+                            "Do you intend to continue? (If so, no more " +
+                            "questions will be asked.)");
+                    if (!answer) {
+                        break;
+                    }
+                    i = -1;
+                }
+            }
         } catch (Exception e) {
             MessageHandler.error("Unable to transform model", e);
             return;
@@ -662,6 +700,8 @@ public class MatchResultViewer extends GTFrame {
     private static final float _HIGHLIGHT_PADDING = 3.0f;
 
     private static final float _HIGHLIGHT_THICKNESS = 6.0f;
+
+    private static final int _PROMPT_TO_CONTINUE_COUNT = 100;
 
     private int _currentPosition;
 
@@ -702,18 +742,18 @@ public class MatchResultViewer extends GTFrame {
      */
     private MatchResultViewer _topFrame;
 
-    private JButton _transformAllButton;
-
-    private JMenuItem _transformAllItem;
-
     private JButton _transformButton;
 
     private JMenuItem _transformItem;
 
+    private JButton _transformUntilFixpointButton;
+
+    private JMenuItem _transformUntilFixpointItem;
+
     private class CloseAction extends FigureAction {
 
         public CloseAction() {
-            super("Close Match Window");
+            super("Close Transformation Window");
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/close.gif",
@@ -727,6 +767,9 @@ public class MatchResultViewer extends GTFrame {
 
             putValue("tooltip", "Close the current view and open the model in "
                     + "model editor");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_K, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent event) {
@@ -903,23 +946,23 @@ public class MatchResultViewer extends GTFrame {
 
     }
 
-    private class TransformAllAction extends FigureAction {
+    private class TransformUntilFixpointAction extends FigureAction {
 
-        public TransformAllAction() {
-            super("Transform All");
+        public TransformUntilFixpointAction() {
+            super("Transform Until Fixpoint");
 
             GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/gt/img/transformall.gif",
+                    { "/ptolemy/vergil/gt/img/transformfixpoint.gif",
                             GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/transformall_o.gif",
+                    { "/ptolemy/vergil/gt/img/transformfixpoint_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/transformall_ov.gif",
+                    { "/ptolemy/vergil/gt/img/transformfixpoint_ov.gif",
                             GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/transformall_on.gif",
+                    { "/ptolemy/vergil/gt/img/transformfixpoint_on.gif",
                             GUIUtilities.SELECTED_ICON } });
 
-            putValue("tooltip", "Transform the current highlighted occurrence "
-                    + "(Ctrl+\\)");
+            putValue("tooltip", "Transform a random occurrence of the pattern "
+                    + "until no more matches can be found (Ctrl+\\)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_BACK_SLASH, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
@@ -929,9 +972,9 @@ public class MatchResultViewer extends GTFrame {
             super.actionPerformed(e);
 
             if (_topFrame != null) {
-                _topFrame._transformAll();
+                _topFrame._transformUntilFixpoint();
             } else {
-                _transformAll();
+                _transformUntilFixpoint();
             }
         }
     }
@@ -940,9 +983,14 @@ public class MatchResultViewer extends GTFrame {
 
         public void execute() throws Exception {
             MatchResultViewer viewer = MatchResultViewer.this;
-            ModelChangeRequest request = new ModelChangeRequest(viewer,
-                    viewer, _model, new UndoChangeModelAction(
-                            (CompositeEntity) getModel(), _currentPosition));
+            CompositeEntity currentModel = (CompositeEntity) getModel();
+            CompositeEntity oldModel = (CompositeEntity) GTTools.cleanupModel(
+                    currentModel);
+            currentModel.workspace().remove(currentModel);
+            _delegateUndoStack(getModel(), oldModel);
+            ModelChangeRequest request = new ModelChangeRequest(viewer, viewer,
+                    _model, new UndoChangeModelAction(oldModel,
+                            _currentPosition));
             request.setUndoable(true);
             request.execute();
 

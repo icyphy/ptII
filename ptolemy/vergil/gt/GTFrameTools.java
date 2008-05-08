@@ -93,13 +93,13 @@ public class GTFrameTools {
 
     public static void executeModelChange(final BasicGraphFrame frame,
             final CompositeEntity model) {
+        frame.setModel(model);
+        PtolemyEffigy effigy = (PtolemyEffigy) frame.getEffigy();
+        effigy.setModel(model);
+
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 Point2D center = frame.getCenter();
-                frame.setModel(model);
-
-                PtolemyEffigy effigy = (PtolemyEffigy) frame.getEffigy();
-                effigy.setModel(model);
 
                 if (frame instanceof ActorGraphFrame) {
                     ActorEditorGraphController controller =

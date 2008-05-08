@@ -39,9 +39,12 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
 
 /**
 
@@ -52,6 +55,22 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GTTools {
+
+    public static NamedObj cleanupModel(NamedObj model)
+    throws IllegalActionException {
+        Workspace workspace = model.workspace();
+        try {
+            workspace.getReadAccess();
+            MoMLParser parser = new MoMLParser(model.workspace());
+            NamedObj newModel = parser.parse(model.exportMoML());
+            return newModel;
+        } catch (Exception e) {
+            throw new IllegalActionException(model, e,
+                    "Unable to clean up model.");
+        } finally {
+            workspace.doneReading();
+        }
+    }
 
     public static NamedObj getChild(NamedObj object, String name,
             boolean allowAttribute, boolean allowPort, boolean allowEntity,

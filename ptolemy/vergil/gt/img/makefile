@@ -80,10 +80,10 @@ OTHER_FILES_TO_BE_JARED = \
 	transform_on.gif \
 	transform_ov.gif \
 	transform.gif \
-	transformall_o.gif \
-	transformall_on.gif \
-	transformall_ov.gif \
-	transformall.gif
+	transformfixpoint_o.gif \
+	transformfixpoint_on.gif \
+	transformfixpoint_ov.gif \
+	transformfixpoint.gif
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)

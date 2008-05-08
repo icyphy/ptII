@@ -127,7 +127,7 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$PreviousAction.class' \
 	'MatchResultViewer$$PreviousFileAction.class' \
 	'MatchResultViewer$$TransformAction.class' \
-	'MatchResultViewer$$TransformAllAction.class' \
+	'MatchResultViewer$$TransformUntilFixpointAction.class' \
 	'MatchResultViewer$$UndoChangeModelAction.class' \
 	'StateMatcherController$$Factory.class' \
 	'TransformationAttributeController$$ApplyTransformationAction$$1.class' \

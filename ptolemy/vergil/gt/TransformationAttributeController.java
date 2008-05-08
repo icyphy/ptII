@@ -31,6 +31,7 @@ package ptolemy.vergil.gt;
 import java.awt.event.ActionEvent;
 
 import ptolemy.actor.Manager;
+import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.ToplevelTransformer;
 import ptolemy.actor.gt.TransformationAttribute;
 import ptolemy.data.ActorToken;
@@ -102,10 +103,9 @@ public class TransformationAttributeController extends AttributeController {
 
         CompositeEntity result = (CompositeEntity) token.getEntity();
         try {
-            result = (CompositeEntity) new MoMLParser().parse(
-                    result.exportMoML());
-        } catch (Exception e) {
-            throw new InternalErrorException(null, e, "Unable to " +
+            result = (CompositeEntity) GTTools.cleanupModel(result);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(result, e, "Unable to " +
                     "generate transformation result.");
         }
 
