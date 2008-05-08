@@ -1,4 +1,5 @@
-/*  This actor opens a window to display the specified model and applies its inputs to the model.
+/*  This actor opens a window to display the specified model and
+applies its inputs to the model.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -35,6 +36,8 @@ import java.net.URISyntaxException;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
@@ -50,9 +53,12 @@ import ptolemy.moml.MoMLParser;
 
 /**
 This actor opens a window to display the specified model.
-If inputs are provided, they are expected to be MoML strings
-that are to be applied to the model. This can be used, for
-example, to create animations.
+If inputs are provided for the moml input port, they are expected to be
+MoML strings that are to be applied to the model. This can be used, for
+example, to create animations. If inputs are not provided for the moml input
+port but for either the trigger port of the modelName port, then empty models
+are generated with the name specified by the most updated value of the modelName
+PortParameter.
 
 @author  Thomas Huining Feng
 @version $Id$
@@ -71,7 +77,7 @@ public class ModelGenerator extends Source {
         moml = new TypedIOPort(this, "moml", true, false);
         moml.setTypeEquals(BaseType.STRING);
 
-        modelName = new TypedIOPort(this, "modelName", true, false);
+        modelName = new PortParameter(this, "modelName");
         modelName.setTypeEquals(BaseType.STRING);
 
         output.setName("model");
@@ -88,12 +94,19 @@ public class ModelGenerator extends Source {
     public void fire() throws IllegalActionException {
         super.fire();
 
+        modelName.update();
+
         try {
             Entity entity;
             if (moml.getWidth() > 0 && moml.hasToken(0)) {
                 String momlString = ((StringToken) moml.get(0)).stringValue();
                 _parser.reset();
-                entity = (Entity) _parser.parse(momlString);
+                try {
+                    entity = (Entity) _parser.parse(momlString);
+                } catch (Exception e) {
+                    throw new IllegalActionException(this,
+                            "Unable to parse moml.");
+                }
             } else {
                 if (_emptyModel == null) {
                     _emptyModel = new TypedCompositeActor(workspace());
@@ -102,13 +115,17 @@ public class ModelGenerator extends Source {
             }
 
             URI uri;
-            if (modelName.getWidth() > 0 && modelName.hasToken(0)) {
-                String name = ((StringToken) modelName.get(0)).stringValue();
-                entity.setName(name);
-                uri = _getModelURI(name);
-            } else {
+            String name = "";
+            StringToken modelNameToken = (StringToken) modelName.getToken();
+            if (modelNameToken != null) {
+                name = modelNameToken.stringValue();
+            }
+            if (name.equals("")) {
                 entity.setName("");
                 uri = _getModelURI("model");
+            } else {
+                entity.setName(name);
+                uri = _getModelURI(name);
             }
             URIAttribute attribute = (URIAttribute) entity.getAttribute("_uri",
                     URIAttribute.class);
@@ -118,19 +135,22 @@ public class ModelGenerator extends Source {
             attribute.setURI(uri);
 
             output.send(0, new ActorToken(entity));
-        } catch (Exception e) {
-            throw new IllegalActionException(this, "Unable to parse moml.");
+        } catch (NameDuplicationException e) {
+            throw new IllegalActionException(this, e, "Name duplicated.");
+        } catch (URISyntaxException e) {
+            throw new IllegalActionException(this, e, "URI syntax error.");
         }
     }
 
     public boolean prefire() throws IllegalActionException {
+        ParameterPort modelNamePort = modelName.getPort();
         return super.prefire()
                 && (moml.getWidth() > 0 && moml.hasToken(0) ||
-                    modelName.getWidth() > 0 && modelName.hasToken(0) ||
-                    moml.getWidth() == 0 && modelName.getWidth() == 0);
+                    modelNamePort.getWidth() > 0 && modelNamePort.hasToken(0) ||
+                    moml.getWidth() == 0 && modelNamePort.getWidth() == 0);
     }
 
-    public TypedIOPort modelName;
+    public PortParameter modelName;
 
     public TypedIOPort moml;
 
