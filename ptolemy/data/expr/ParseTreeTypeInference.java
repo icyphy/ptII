@@ -444,10 +444,13 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
         String name = node.getName();
 
+        Type type = null;
         if (_scope != null) {
-            Type type = _scope.getType(name);
+            type = _scope.getType(name);
 
-            if (type != null) {
+            if (type != null && !(type instanceof ObjectType)) {
+                // Pretend that we cannot resolve the type if it is an
+                // ObjectType.
                 _setType(node, type);
                 return;
             }
@@ -458,6 +461,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             // A named constant that is recognized by the parser.
             _setType(node, Constants.get(name).getType());
             return;
+        }
+        
+        if (type != null) {
+            _setType(node, type);
         }
 
         throw new IllegalActionException("The ID " + name + " is undefined.");
@@ -713,10 +720,13 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If the identifier is undefined.
      */
     protected Type _getTypeForName(String name) throws IllegalActionException {
+        Type type = null;
         if (_scope != null) {
-            Type type = _scope.getType(name);
+            type = _scope.getType(name);
 
-            if (type != null) {
+            if (type != null && !(type instanceof ObjectType)) {
+                // Pretend that we cannot resolve the type if it is an
+                // ObjectType.
                 return type;
             }
         }
@@ -725,6 +735,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         if (Constants.get(name) != null) {
             // A named constant that is recognized by the parser.
             return Constants.get(name).getType();
+        }
+        
+        if (type != null) {
+            return type;
         }
 
         throw new IllegalActionException("The ID " + name + " is undefined.");

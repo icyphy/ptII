@@ -628,9 +628,16 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
 
         // Look up for constants.
-        if (value == null) {
+        // Pretend that we cannot resolve the name if it is an ObjectToken.
+        if (value == null || value instanceof ObjectToken) {
             // A named constant that is recognized by the parser.
-            value = Constants.get(name);
+            ptolemy.data.Token constant = Constants.get(name);
+            if (constant != null) {
+                // Assign value only if no constant can be found, because the
+                // value could be an ObjectToken that has been temporarily
+                // ignored.
+                value = constant;
+            }
         }
 
         // Set the value, if we found one.
