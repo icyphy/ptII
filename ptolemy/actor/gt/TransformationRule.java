@@ -124,7 +124,7 @@ public class TransformationRule extends MultiCompositeActor implements
 
             if (modelInput.hasToken(0)) {
                 ActorToken token = (ActorToken) modelInput.get(0);
-                _lastModel = (CompositeEntity) token.getEntity();
+                _lastModel = (CompositeEntity) token.getEntity(new Workspace());
                 _lastModel.setDeferringChangeRequests(false);
 
                 Mode mode = _getMode();

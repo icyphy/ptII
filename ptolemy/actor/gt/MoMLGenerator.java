@@ -38,6 +38,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /**
 
@@ -64,12 +65,11 @@ public class MoMLGenerator extends Transformer {
 
     public void fire() throws IllegalActionException {
         ActorToken token = (ActorToken) input.get(0);
-        output.send(0, new StringToken(token.getEntity().exportMoML()));
+        output.send(0, new StringToken(token.getEntity(new Workspace())
+                .exportMoML()));
     }
 
     public boolean prefire() throws IllegalActionException {
         return super.prefire() && input.hasToken(0);
     }
-
-
 }

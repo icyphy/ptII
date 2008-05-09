@@ -53,7 +53,10 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.ActorToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -85,10 +88,15 @@ public class ModelExecutor extends TypedAtomicActor {
 
         actorInput = new TypedIOPort(this, "actorInput", true, false);
         actorInput.setTypeEquals(ActorToken.TYPE);
+
+        asynchronous = new Parameter(this, "asynchronous");
+        asynchronous.setTypeEquals(BaseType.BOOLEAN);
+        asynchronous.setToken(BooleanToken.FALSE);
     }
 
     public void fire() throws IllegalActionException {
-        Entity actor = ((ActorToken) actorInput.get(0)).getEntity();
+        Entity actor = ((ActorToken) actorInput.get(0)).getEntity(
+                new Workspace());
         if (actor instanceof ComponentEntity) {
             ComponentEntity entity = (ComponentEntity) actor;
             Workspace workspace = entity.workspace();
@@ -117,6 +125,8 @@ public class ModelExecutor extends TypedAtomicActor {
     }
 
     public TypedIOPort actorInput;
+
+    public Parameter asynchronous;
 
     private class Wrapper extends TypedCompositeActor {
 
@@ -213,10 +223,20 @@ public class ModelExecutor extends TypedAtomicActor {
                     if (entityObject instanceof CompositeActor) {
                         CompositeActor actor = (CompositeActor) entityObject;
                         if (actor.isOpaque()) {
-                            Director director = actor.getDirector();
                             for (Object portObject : actor.outputPortList()) {
                                 IOPort port = (IOPort) portObject;
-                                director.transferOutputs(port);
+                                // Here, do something similar to:
+                                //   Director director = actor.getDirector();
+                                //   director.transferOutputs(port);
+                                // Cannot use transferOutputs because it raises
+                                // exception if the tokens inside have already
+                                // been transfered.
+                                for (int i = 0; i < port.getWidthInside();
+                                        i++) {
+                                    if (port.hasTokenInside(i)) {
+                                        port.send(i, port.getInside(i));
+                                    }
+                                }
                             }
                         }
                     }

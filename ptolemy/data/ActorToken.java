@@ -31,6 +31,7 @@ import java.io.Serializable;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorToken
@@ -80,6 +81,20 @@ public class ActorToken extends Token implements Cloneable {
         }
     }
 
+    /** Return a clone of the entity contained by this token.
+     *
+     *  @param workspace The workspace that the returned entity is in.
+     *  @return The clone of the entity.
+     */
+    public Entity getEntity(Workspace workspace) {
+        try {
+            return (Entity) _entity.clone(workspace);
+        } catch (CloneNotSupportedException ex) {
+            throw new RuntimeException(
+                    "Failed to clone actor, but I already cloned it once!!!");
+        }
+    }
+
     /** Return the type of this token.
      *  @return the type of this token.
      */
@@ -116,6 +131,9 @@ public class ActorToken extends Token implements Cloneable {
     public String toString() {
         return "ActorToken(" + _entity + ")";
     }
+
+    /** Singleton reference to this type. */
+    public static final Type TYPE = new ActorType();
 
     /** The type of the ActorToken. */
     public static class ActorType implements Type, Serializable {
@@ -167,11 +185,28 @@ public class ActorToken extends Token implements Cloneable {
             return this;
         }
 
+        /** Determine if the argument represents the same BaseType as this
+         *  object.
+         *  @param t A Type.
+         *  @return True if the argument represents the same BaseType as
+         *   this object; false otherwise.
+         */
+        public boolean equals(Type t) {
+            return this == t;
+        }
+
         /** Return the class for tokens that this basetype represents.
          *  @return the class for tokens that this basetype represents.
          */
         public Class getTokenClass() {
             return ActorToken.class;
+        }
+
+        /** Return this type's node index in the (constant) type lattice.
+         * @return this type's node index in the (constant) type lattice.
+         */
+        public int getTypeHash() {
+            return Type.HASH_INVALID;
         }
 
         /** Return true if this type does not correspond to a single token
@@ -200,23 +235,6 @@ public class ActorToken extends Token implements Cloneable {
          */
         public boolean isConstant() {
             return true;
-        }
-
-        /** Determine if the argument represents the same BaseType as this
-         *  object.
-         *  @param t A Type.
-         *  @return True if the argument represents the same BaseType as
-         *   this object; false otherwise.
-         */
-        public boolean equals(Type t) {
-            return this == t;
-        }
-
-        /** Return this type's node index in the (constant) type lattice.
-         * @return this type's node index in the (constant) type lattice.
-         */
-        public int getTypeHash() {
-            return Type.HASH_INVALID;
         }
 
         /** Determine if this type corresponds to an instantiable token
@@ -295,9 +313,6 @@ public class ActorToken extends Token implements Cloneable {
             return this;
         }
     }
-
-    /** Singleton reference to this type. */
-    public static final Type TYPE = new ActorType();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

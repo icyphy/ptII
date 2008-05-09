@@ -37,6 +37,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
@@ -67,9 +68,10 @@ public class ModelCombine extends Transformer {
     }
 
     public void fire() throws IllegalActionException {
-        Entity entity = ((ActorToken) input.get(0)).getEntity();
+        Entity entity = ((ActorToken) input.get(0)).getEntity(new Workspace());
         for (int i = 1; i < input.getWidth(); i++) {
-            _merge(entity, ((ActorToken) input.get(i)).getEntity());
+            _merge(entity, ((ActorToken) input.get(i)).getEntity(
+                    new Workspace()));
         }
         output.send(0, new ActorToken(entity));
     }

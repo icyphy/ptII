@@ -101,7 +101,8 @@ public class TransformationAttributeController extends AttributeController {
             return;
         }
 
-        CompositeEntity result = (CompositeEntity) token.getEntity();
+        CompositeEntity result = (CompositeEntity) token.getEntity(
+                transformer.workspace());
         try {
             result = (CompositeEntity) GTTools.cleanupModel(result);
         } catch (IllegalActionException e) {
@@ -121,7 +122,7 @@ public class TransformationAttributeController extends AttributeController {
             if (moml.equals("")) {
                 moml = new ToplevelTransformer().exportMoML();
             }
-            MoMLParser parser = new MoMLParser();
+            MoMLParser parser = new MoMLParser(attribute.workspace());
             try {
                 transformer = (ToplevelTransformer) parser.parse(moml);
             } catch (Exception e) {
