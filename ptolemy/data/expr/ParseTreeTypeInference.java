@@ -465,6 +465,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         
         if (type != null) {
             _setType(node, type);
+            return;
         }
 
         throw new IllegalActionException("The ID " + name + " is undefined.");
