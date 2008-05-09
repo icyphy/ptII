@@ -363,10 +363,10 @@ public class ChacoCodeGenerator extends CodeGenerator {
         
     }
     
-    private StringAttribute _getMpiParameter(TypedIOPort port)
+    private StringAttribute _getMpiAttribute(TypedIOPort port)
             throws IllegalActionException {
         StringAttribute result = (StringAttribute)((NamedObj)port).getAttribute("_isMpiBuffer");
-        
+
         if(result == null) {
             try {
                 result = new StringAttribute ((NamedObj)port, "_isMpiBuffer");
@@ -410,7 +410,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                     TypedIOPort thisInput = (TypedIOPort) inputIt.next();
                     
                     // Clear the _isMpiBuffer parameter if it already exists
-                    StringAttribute clearPortParam = _getMpiParameter(thisInput);
+                    StringAttribute clearPortParam = _getMpiAttribute(thisInput);
                     clearPortParam.setExpression("");
 
                     //Iterator connOut = (Iterator) thisInput.deepConnectedOutPortList().iterator();
@@ -424,7 +424,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                         attrTemp = (Parameter)((NamedObj)tempActor).getAttribute("_partition");
                         assert attrTemp != null;
                         if (!attrActor.getExpression().equals(attrTemp.getExpression())) {
-                           StringAttribute portAttr = _getMpiParameter(thisInput);
+                           StringAttribute portAttr = _getMpiAttribute(thisInput);
                            //portParam.setExpression("receiver"); 
                            String tempString = portAttr.getExpression();
                            if (tempString.isEmpty()) {
@@ -443,7 +443,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                     TypedIOPort thisOutput = (TypedIOPort) outputIt.next();
 
                     // Clear the _isMpiBuffer parameter if it already exists
-                    StringAttribute clearPortParam = _getMpiParameter(thisOutput);
+                    StringAttribute clearPortParam = _getMpiAttribute(thisOutput);
                     clearPortParam.setExpression("");
 
                    // Iterator connIn = (Iterator) thisOutput.deepConnectedInPortList().iterator();
@@ -456,7 +456,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                         attrTemp = (Parameter)((NamedObj)tempActor).getAttribute("_partition");
                         assert attrTemp != null;
                         if (!attrActor.getExpression().equals(attrTemp.getExpression())) {                      
-                           StringAttribute portAttr = _getMpiParameter(thisOutput);
+                           StringAttribute portAttr = _getMpiAttribute(thisOutput);
                            String tempString = portAttr.getExpression();
                            if (tempString.isEmpty()) {
                                tempString = "sender";
