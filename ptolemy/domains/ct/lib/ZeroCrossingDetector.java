@@ -30,6 +30,7 @@ package ptolemy.domains.ct.lib;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// ZeroCrossingDetector
@@ -62,7 +63,11 @@ public class ZeroCrossingDetector extends LevelCrossingDetector {
     public ZeroCrossingDetector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _removeAttribute(level);
+        // _removeAttribute(level) causes the clone() method to assign null to
+        // the level attribute, which can cause a NullPointerException when we
+        // initialize the actor returned by the clone() method.
+        // (tfeng)
+        level.setVisibility(Settable.NONE);
         _level = 0;
     }
 }
