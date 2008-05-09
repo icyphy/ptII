@@ -31,6 +31,7 @@ package ptolemy.actor.process;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -388,9 +389,11 @@ public class ProcessDirector extends Director {
      */
     public void preinitialize() throws IllegalActionException {
         _notDone = true;
-        _activeThreads.clear();
-        _blockedThreads.clear();
-        _pausedThreads.clear();
+        synchronized (this) {
+            _activeThreads.clear();
+            _blockedThreads.clear();
+            _pausedThreads.clear();
+        }
         _newActorThreadList = new LinkedList();
         super.preinitialize();
     }
@@ -475,14 +478,22 @@ public class ProcessDirector extends Director {
 
         _stopFireRequested = true;
 
-        Iterator threads = _activeThreads.iterator();
+        HashSet actors = new HashSet();
+        synchronized (this) {
+            Iterator threads = _activeThreads.iterator();
 
-        while (threads.hasNext()) {
-            Thread thread = (Thread) threads.next();
-
-            if (thread instanceof ProcessThread) {
-                ((ProcessThread) thread).getActor().stopFire();
+            while (threads.hasNext()) {
+                Thread thread = (Thread) threads.next();
+    
+                if (thread instanceof ProcessThread) {
+                    actors.add(((ProcessThread) thread).getActor());
+                }
             }
+        }
+        
+        Iterator actorsIterator = actors.iterator();
+        while (actorsIterator.hasNext()) {
+            ((Actor) actorsIterator.next()).stopFire();
         }
     }
 
