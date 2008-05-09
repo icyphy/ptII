@@ -51,6 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 
 ////CodeGenerator
 
@@ -362,13 +363,13 @@ public class ChacoCodeGenerator extends CodeGenerator {
         
     }
     
-    private Parameter _getMpiParameter(TypedIOPort port)
+    private StringAttribute _getMpiParameter(TypedIOPort port)
             throws IllegalActionException {
-        Parameter result = (Parameter)((NamedObj)port).getAttribute("_isMpiBuffer");
+        StringAttribute result = (StringAttribute)((NamedObj)port).getAttribute("_isMpiBuffer");
         
         if(result == null) {
             try {
-                result = new Parameter ((NamedObj)port, "_isMpiBuffer");
+                result = new StringAttribute ((NamedObj)port, "_isMpiBuffer");
             } catch (NameDuplicationException e) {
                 assert false;
             }
@@ -409,7 +410,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                     TypedIOPort thisInput = (TypedIOPort) inputIt.next();
                     
                     // Clear the _isMpiBuffer parameter if it already exists
-                    Parameter clearPortParam = _getMpiParameter(thisInput);
+                    StringAttribute clearPortParam = _getMpiParameter(thisInput);
                     clearPortParam.setExpression("");
 
                     //Iterator connOut = (Iterator) thisInput.deepConnectedOutPortList().iterator();
@@ -423,14 +424,14 @@ public class ChacoCodeGenerator extends CodeGenerator {
                         attrTemp = (Parameter)((NamedObj)tempActor).getAttribute("_partition");
                         assert attrTemp != null;
                         if (!attrActor.getExpression().equals(attrTemp.getExpression())) {
-                           Parameter portParam = _getMpiParameter(thisInput);
+                           StringAttribute portAttr = _getMpiParameter(thisInput);
                            //portParam.setExpression("receiver"); 
-                           String tempString = portParam.getExpression();
+                           String tempString = portAttr.getExpression();
                            if (tempString.isEmpty()) {
                                tempString = "receiver";
                            }
                            tempString = tempString.concat("_" + Integer.toString(sourceIndex));
-                           portParam.setExpression(tempString);
+                           portAttr.setExpression(tempString);
                         }
                         sourceIndex++;
                     }
@@ -442,7 +443,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                     TypedIOPort thisOutput = (TypedIOPort) outputIt.next();
 
                     // Clear the _isMpiBuffer parameter if it already exists
-                    Parameter clearPortParam = _getMpiParameter(thisOutput);
+                    StringAttribute clearPortParam = _getMpiParameter(thisOutput);
                     clearPortParam.setExpression("");
 
                    // Iterator connIn = (Iterator) thisOutput.deepConnectedInPortList().iterator();
@@ -455,13 +456,13 @@ public class ChacoCodeGenerator extends CodeGenerator {
                         attrTemp = (Parameter)((NamedObj)tempActor).getAttribute("_partition");
                         assert attrTemp != null;
                         if (!attrActor.getExpression().equals(attrTemp.getExpression())) {                      
-                           Parameter portParam = _getMpiParameter(thisOutput);
-                           String tempString = portParam.getExpression();
+                           StringAttribute portAttr = _getMpiParameter(thisOutput);
+                           String tempString = portAttr.getExpression();
                            if (tempString.isEmpty()) {
                                tempString = "sender";
                            }
                            tempString = tempString.concat("_" + Integer.toString(sinkIndex));
-                           portParam.setExpression(tempString);
+                           portAttr.setExpression(tempString);
                            //portParam.setExpression("sender");
                         }
                         sinkIndex++;
