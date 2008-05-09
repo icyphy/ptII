@@ -255,11 +255,13 @@ public class MpiPNDirector extends PNDirector {
         args.add(_buffers.size());
         code.append(_codeStream.getCodeBlock("preinitBlock", args));
         
+        code.append(bufferCode);
+        
         if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
             _generateThreadFunctionCode(code);
         }
         
-        return code.toString() + bufferCode.toString();
+        return code.toString();
     }
 
     public String generatePostfireCode() throws IllegalActionException {
