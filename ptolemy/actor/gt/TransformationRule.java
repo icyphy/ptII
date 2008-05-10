@@ -32,10 +32,12 @@ package ptolemy.actor.gt;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.MatchResult;
+import ptolemy.actor.gt.util.VariableScope;
 import ptolemy.actor.lib.hoc.MultiCompositeActor;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
@@ -43,8 +45,11 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -52,6 +57,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.ValueListener;
@@ -134,7 +140,23 @@ public class TransformationRule extends MultiCompositeActor implements
 
                 _collectAllMatches = mode != Mode.REPLACE_FIRST;
                 _lastResults.clear();
-                matcher.match(getPattern(), _lastModel);
+
+                // Obtain a working copy of this transformation rule, which can
+                // be safely modified in the process of pattern matching.
+                TransformationRule workingCopy = _getWorkingCopy();
+
+                // Transfer the most updated values of the PortParameters to the
+                // working copy.
+                for (Object parameterObject : attributeList()) {
+                    if (parameterObject instanceof PortParameter) {
+                        PortParameter param = (PortParameter) parameterObject;
+                        Token paramToken = param.getToken();
+                        PortParameter paramCopy = (PortParameter) _workingCopy
+                                .getAttribute(param.getName());
+                        paramCopy.setToken(paramToken);
+                    }
+                }
+                matcher.match(workingCopy.getPattern(), _lastModel);
 
                 if (mode == Mode.REPLACE_FIRST || mode == Mode.REPLACE_ANY
                         || mode == Mode.REPLACE_ALL) {
@@ -152,22 +174,23 @@ public class TransformationRule extends MultiCompositeActor implements
                             switch (mode) {
                             case REPLACE_FIRST:
                                 MatchResult result = _lastResults.peek();
-                                GraphTransformer.transform(this, result);
+                                GraphTransformer.transform(workingCopy, result);
                                 break;
                             case REPLACE_ANY:
                                 result = _lastResults.get(_random
                                         .nextInt(_lastResults.size()));
-                                GraphTransformer.transform(this, result);
+                                GraphTransformer.transform(workingCopy, result);
                                 break;
                             case REPLACE_ALL:
-                                GraphTransformer.transform(this, _lastResults);
+                                GraphTransformer.transform(workingCopy,
+                                        _lastResults);
                                 break;
                             }
                             if (!untilFixpoint && --count <= 0) {
                                 break;
                             }
                             _lastResults.clear();
-                            matcher.match(getPattern(), _lastModel);
+                            matcher.match(workingCopy.getPattern(), _lastModel);
                         }
                     }
 
@@ -423,6 +446,21 @@ public class TransformationRule extends MultiCompositeActor implements
         }
     }
 
+    protected TransformationRule _getWorkingCopy()
+    throws IllegalActionException {
+        if (_workingCopyVersion != _workspace.getVersion()) {
+            try {
+                _workingCopy = (TransformationRule) clone(new Workspace());
+                new WorkingCopyScopeExtender(_workingCopy, "_scopeExtender");
+            } catch (Exception e) {
+                throw new IllegalActionException(this, e, "Cannot get a " +
+                        "working copy this transformation rule.");
+            }
+            _workingCopyVersion = _workspace.getVersion();
+        }
+        return _workingCopy;
+    }
+
     protected void _init() throws IllegalActionException,
             NameDuplicationException {
         setClassName("ptolemy.actor.gt.TransformationRule");
@@ -482,6 +520,36 @@ public class TransformationRule extends MultiCompositeActor implements
     private LastResultsOperation _lastResultsOperation;
 
     private Random _random = new Random();
+
+    private TransformationRule _workingCopy;
+
+    private long _workingCopyVersion = -1;
+
+    private class WorkingCopyScopeExtender extends Attribute
+    implements ScopeExtender {
+
+        public List<?> attributeList() {
+            NamedObj container = TransformationRule.this;
+            Set<?> names = VariableScope.getAllScopedVariableNames(null,
+                    container);
+            List<Variable> variables = new LinkedList<Variable>();
+            for (Object name : names) {
+                variables.add(VariableScope.getScopedVariable(null, container,
+                        (String) name));
+            }
+            return variables;
+        }
+
+        public Attribute getAttribute(String name) {
+            NamedObj container = TransformationRule.this;
+            return VariableScope.getScopedVariable(null, container, name);
+        }
+
+        WorkingCopyScopeExtender(NamedObj container, String name)
+        throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+        }
+    }
 
     private enum LastResultsOperation {
         CLEAR, NONE, REMOVE_FIRST
