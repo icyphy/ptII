@@ -53,10 +53,7 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.ActorToken;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -88,17 +85,14 @@ public class ModelExecutor extends TypedAtomicActor {
 
         actorInput = new TypedIOPort(this, "actorInput", true, false);
         actorInput.setTypeEquals(ActorToken.TYPE);
-
-        asynchronous = new Parameter(this, "asynchronous");
-        asynchronous.setTypeEquals(BaseType.BOOLEAN);
-        asynchronous.setToken(BooleanToken.FALSE);
     }
 
     public void fire() throws IllegalActionException {
         Entity actor = ((ActorToken) actorInput.get(0)).getEntity(
                 new Workspace());
         if (actor instanceof ComponentEntity) {
-            ComponentEntity entity = (ComponentEntity) actor;
+            ComponentEntity entity =
+                (ComponentEntity) GTTools.cleanupModel(actor);
             Workspace workspace = entity.workspace();
             try {
                 Wrapper wrapper = new Wrapper(workspace);
@@ -125,8 +119,6 @@ public class ModelExecutor extends TypedAtomicActor {
     }
 
     public TypedIOPort actorInput;
-
-    public Parameter asynchronous;
 
     private class Wrapper extends TypedCompositeActor {
 
@@ -259,13 +251,29 @@ public class ModelExecutor extends TypedAtomicActor {
                 _eventQueue.add(new TimedEvent(time, actor));
             }
 
+            public Time getModelNextIterationTime() {
+                Time aFutureTime = Time.POSITIVE_INFINITY;
+
+                if (_eventQueue.size() > 0) {
+                    aFutureTime = _eventQueue.peek().timeStamp;
+                }
+
+                return aFutureTime;
+            }
+
             public Receiver newReceiver() {
                 return new QueueReceiver();
             }
 
             public boolean postfire() throws IllegalActionException {
-                return super.postfire() && (_hasToken()
-                        || !_eventQueue.isEmpty());
+                boolean result = super.postfire();
+                if (result && ModelExecutor.this._stopRequested) {
+                    result = false;
+                }
+                if (result && !_hasToken() && _eventQueue.isEmpty()) {
+                    result = false;
+                }
+                return result;
             }
 
             public boolean prefire() throws IllegalActionException {
