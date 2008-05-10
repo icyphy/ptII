@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.9999999999999, 202.5}">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 45.0}">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -45,7 +45,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The two models independently send the last updated positions of the balls to the Animation. Because PN&#10;(Process Network) is used as the governing model of computation (MoC), the Animation has to read both&#10;positions at the same time. Once the positions are read, it updates the 3D graph.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The two models independently send the last updated positions of the balls to the Animation. Because PN&#10;(Process Network) is used as the governing model of computation (MoC), the Animation has to read both&#10;positions at the same time. This demo also works with the Rendezvous MoC, exhibiting the same behavior.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 290.0]">
         </property>
