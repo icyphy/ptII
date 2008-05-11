@@ -60,16 +60,45 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
 // //REDUtility
 
 /**
- * This is an utility for ptolemy model conversion. It performs a systematic
+ * This is an utility for Ptolemy model conversion. It performs a systematic
  * traversal of the system and convert the Ptolemy model into communicating
  * timed automata (CTA) with the format acceptable by model checker RED
- * (Regional Encoding Diagram Verification Engine).
+ * (Regional Encoding Diagram Verification Engine). The conversion mechanism 
+ * is based on the technical report UCB/EECS-2008-41. Basically, here the DE
+ * domain can be viewed as a generalization of the SR domain, where each 
+ * "super dense" time tag in DE is now a tick in SR. Contrary to previous 
+ * implementation, now the token would not accumulate in the port of the
+ * FSMActor - therefore buffer overflow property would no longer exist in
+ * this implementation. Buffer overflow would only happens in the TimedDelay
+ * or NondeterministicTimedDelay actor.
+ * 
+ * However, in CTA the time is only "dense", and we are currently not able 
+ * to have an efficient methodology to understand how to represent super 
+ * dense time using dense time.
+ * 
+ * Therefore for a successful conversion, we simply disallow a system to 
+ * have super dense time tag with the format (\tau, i), where i>0. In fact, the 
+ * case in our context only happens when there is a timed delay actor with its
+ * parameter equals to zero. For systems with super dense time tag with the 
+ * format (\tau, i), where i>0, the system can still be converted. However, 
+ * please note that the semantics is not preserved for complicated cases.
+ * Our conversion concept is to use synchronizers "tick" for i=0, "tick+" for
+ * i=1, and so on. 
+ * 
+ * Limitations: Simply following the statement in the technical report, we 
+ * restate limitations of the conversion. The designer must understand the 
+ * boundary of variable domain for the model under conversion.
+ * 
+ * For the tool RED, all time constants should be an integer. This is not a 
+ * problem because the unit is actually not specified by the timed automata. 
+ * Therefore, we expect users to use integer values to specify their delay
+ * or period.
  * 
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (patrickj)
- * @Pt.AcceptedRating Red ()
+ * @Pt.AcceptedRating Red (patrickj)
  */
 public class REDUtility {
 
@@ -88,7 +117,7 @@ public class REDUtility {
             CloneNotSupportedException {
 
         ArrayList<FSMActor> list = new ArrayList<FSMActor>();
-        // try {
+
         if ((((CompositeActor) originalCompositeActor).entityList()).size() > 0) {
 
             Iterator it = (((CompositeActor) originalCompositeActor)
@@ -108,10 +137,6 @@ public class REDUtility {
             }
         }
 
-        // } catch (Exception ex) {
-        // ex.printStackTrace();
-        // }
-
         for (int i = 0; i < list.size(); i++) {
             // Add back those previously generated new FSMActors.
             (((CompositeActor) originalCompositeActor).entityList()).add(list
@@ -124,19 +149,24 @@ public class REDUtility {
     /**
      * This is the main function which tries to generate the system description
      * with the type StringBuffer where its content is acceptable by the tool
-     * RED (Regional Encoding Diagram).
+     * RED (Regional Encoding Diagram). 
      * 
-     * @param PreModel
-     *                The original model in Ptolemy II
-     * @param pattern
-     *                The temporal formula in TCTL
-     * @param choice
-     *                Specify the type of formula: buffer overflow detection or
-     *                general TCTL formula
-     * @param span
-     *                The size of the span used for domain analysis.
-     * @param bufferSizeFSM
-     *                Specify for each of the input port, the size of the buffer
+     * For hierarchical conversion, here we are able to deal with cases where
+     * state refinement exists. For a modalmodel with state refinement, we can 
+     * rewrite it into an equivalent FSMActor.
+     * 
+     * FIXME: (This can not be treated as a bug formally) The conversion of a 
+     *         modalmodel with state refinement using the function 
+     *         generateEquivalentSystemWithoutHierachy() will generate a model
+     *         where there is exclusive existence between two refinement state
+     *         machines. 
+     * 
+     * @param PreModel The original model in Ptolemy II
+     * @param pattern The temporal formula in TCTL
+     * @param choice Specify the type of formula: buffer overflow detection or
+     *               general TCTL formula
+     * @param span The size of the span used for domain analysis.
+     * @param bufferSizeFSM Specify for each of the input port, the size of the buffer
      *                used for buffer overflow detection.
      * @return A Communicating Timed Automata system description of the original
      *         system
@@ -168,7 +198,7 @@ public class REDUtility {
         // one during iteration, thus we need to use different variables
         // to store different contents in each phase, then combine
         // all these information to form a complete format.
-        //
+        // 
 
         StringBuffer constantDefinition = new StringBuffer(""); // (1)
         StringBuffer variableDefinition = new StringBuffer(""); // (3)
@@ -179,7 +209,7 @@ public class REDUtility {
 
         // We need to record the order of Modules and Ports; these will
         // be processed later because the order decides the initial state
-        // of each process.
+        // of each process. 
         ArrayList<REDModuleNameInitialBean> processModuleNameList = new ArrayList<REDModuleNameInitialBean>();
         ArrayList<REDModuleNameInitialBean> processModulePortList = new ArrayList<REDModuleNameInitialBean>();
 
@@ -194,7 +224,6 @@ public class REDUtility {
             while (it.hasNext()) {
                 globalSynchronizerSet.add(it.next());
             }
-
         }
 
         // For different kind of actors, the utility function would try to
@@ -210,6 +239,15 @@ public class REDUtility {
         // If we place these two in the wrong order, it would always treat
         // BoundedBufferNondeterministicDelay as BoundedBufferTimedDelay.
         // 
+        int numOfFSMActors = 0;
+        for (Iterator actors = (((CompositeActor) model).entityList())
+                .iterator(); actors.hasNext();) {
+            Entity innerEntity = (Entity) actors.next();
+            if (innerEntity instanceof FSMActor) {
+                numOfFSMActors++;
+            }
+        }
+
         for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
@@ -284,7 +322,7 @@ public class REDUtility {
 
                 REDSingleEntityBean bean = _translateNondeterministicDelayedActor(
                         (BoundedBufferNondeterministicDelay) innerEntity,
-                        inputSignalName, outputSignalName);
+                        inputSignalName, outputSignalName, numOfFSMActors);
                 variableDefinition.append(bean._declaredVariables);
                 constantDefinition.append(bean._defineConstants);
                 processModuleNameList.add(bean._nameInitialState);
@@ -344,7 +382,7 @@ public class REDUtility {
 
                 REDSingleEntityBean bean = _translateTimedDelayedActor(
                         (BoundedBufferTimedDelay) innerEntity, inputSignalName,
-                        outputSignalName);
+                        outputSignalName, numOfFSMActors);
                 constantDefinition.append(bean._defineConstants);
                 variableDefinition.append(bean._declaredVariables);
                 processModuleNameList.add(bean._nameInitialState);
@@ -384,7 +422,7 @@ public class REDUtility {
                 }
 
                 REDSingleEntityBean bean = _translateClockActor(
-                        (Clock) innerEntity, outputSignalName);
+                        (Clock) innerEntity, outputSignalName, numOfFSMActors);
 
                 variableDefinition.append(bean._declaredVariables);
                 constantDefinition.append(bean._defineConstants);
@@ -453,6 +491,8 @@ public class REDUtility {
                 }
             }
         }
+        returnREDFormat.append("local clock t;\n ");
+        
         // Synchronizer definition
         if (globalSynchronizerSet.size() != 0) {
             returnREDFormat.append("\nglobal synchronizer ");
@@ -462,10 +502,22 @@ public class REDUtility {
                 if (it.hasNext()) {
                     returnREDFormat.append(sync + ", ");
                 } else {
-                    returnREDFormat.append(sync + ";\n ");
+                    returnREDFormat.append(sync + ", ");
                 }
             }
         }
+
+        for (Iterator actors = (((CompositeActor) model).entityList())
+                .iterator(); actors.hasNext();) {
+            Entity innerEntity = (Entity) actors.next();
+            if (innerEntity instanceof FSMActor) {
+                returnREDFormat.append("N_" + innerEntity.getName().trim()
+                        + ", N_" + innerEntity.getName().trim() + "_Plus, ");
+            }
+        }
+
+        returnREDFormat.append("tick, tick_Plus ;\n ");
+
         // Module description
         returnREDFormat
                 .append(moduleDefinition
@@ -476,22 +528,20 @@ public class REDUtility {
         for (int i = 0; i < processModuleNameList.size(); i++) {
             returnREDFormat.append("    "
                     + processModuleNameList.get(i)._initialStateDescription
-                    + "[" + String.valueOf(i + 1) + "]" + " && \n");
+                    + "[" + String.valueOf(i + 1) + "]" + " && " +"t[" + String.valueOf(i + 1) + "] == 0 && \n");
         }
         for (int i = 0; i < processModulePortList.size(); i++) {
             returnREDFormat.append("    "
                     + processModulePortList.get(i)._initialStateDescription
                     + "["
                     + String.valueOf(processModuleNameList.size() + i + 1)
-                    + "]" + " && \n");
+                    + "]" + " && "+"t[" + String.valueOf(processModuleNameList.size() + i + 1) + "] == 0 && \n");
         }
         // Set up all variables with their initial value.
         Iterator<String> ite = variableAndItsInitialCondition.iterator();
         while (ite.hasNext()) {
             String sync = ite.next();
-
             returnREDFormat.append("    " + sync + " && \n ");
-
         }
         // Set up all clocks as zero
         Iterator<String> it = globalClockSet.iterator();
@@ -550,7 +600,7 @@ public class REDUtility {
         HashSet<String> returnVariableSet = new HashSet<String>();
 
         // Note that BoundedBufferNondeterministicDelay extends
-        // BoundedBufferTimedDelay
+        // BoundedBufferTimedDelay. 
         // Thus we only need to use one.
         if (entity instanceof FSMActor) {
 
@@ -1032,6 +1082,55 @@ public class REDUtility {
 
             }
 
+        }
+
+        //FIXME: 2008.04.04 Newly added feature: Retrieve the value from the initial parameter set.
+        Iterator<String> initialValueIterator = _variableInfo.keySet()
+                .iterator();
+        while (initialValueIterator.hasNext()) {
+            String variableName = initialValueIterator.next();
+            if (Pattern.matches(".*_isPresent", variableName)) {
+                continue;
+            }
+            String property = null;
+            boolean initialValueExist = true;
+            String[] propertyList = null;
+            try {
+                propertyList = actor.getAttribute(variableName).description()
+                        .split(" ");
+            } catch (Exception ex) {
+                initialValueExist = false;
+            }
+            if (initialValueExist == true) {
+                // Retrieve the value of the variable. Property contains
+                // a huge trunk of string content, and only the last variable is
+                // useful.
+                property = propertyList[propertyList.length - 1];
+            } else {
+                property = "";
+            }
+
+            VariableInfo variableInfo = (VariableInfo) _variableInfo
+                    .get(variableName);
+
+            if (Pattern.matches("^-?\\d+$", property) == true) {
+                if (variableInfo != null) {
+                    if (variableInfo._minValue != null
+                            && variableInfo._maxValue != null) {
+                        int lowerBound = Integer
+                                .parseInt(variableInfo._minValue);
+                        int upperBound = Integer
+                                .parseInt(variableInfo._maxValue);
+                        // modify the existing one
+                        if (upperBound < Integer.parseInt(property)) {
+                            variableInfo._maxValue = property;
+                        }
+                        if (lowerBound > Integer.parseInt(property)) {
+                            variableInfo._minValue = property;
+                        }
+                    }
+                }
+            }
         }
 
         // Expend based on the domain
@@ -2219,7 +2318,8 @@ public class REDUtility {
      * @throws IllegalActionException
      */
     private static REDSingleEntityBean _translateClockActor(Clock clockActor,
-            String outputSignalName) throws IllegalActionException {
+            String outputSignalName, int numOfFSMActor)
+            throws IllegalActionException {
 
         // REDSingleEntityBean returnBean = new REDSingleEntityBean();
 
@@ -2244,6 +2344,10 @@ public class REDUtility {
         double stopTime = ((DoubleToken) clockActor.stopTime.getToken())
                 .doubleValue();
         String sStopTime = String.valueOf(stopTime);
+        StringBuffer tickSignal = new StringBuffer("");
+        for (int i = 0; i < numOfFSMActor; i++) {
+            tickSignal.append("!tick");
+        }
 
         if ((numberOfCycles.equalsIgnoreCase("-1"))
                 || (numberOfCycles.equalsIgnoreCase("UNBOUNDED"))) {
@@ -2255,7 +2359,7 @@ public class REDUtility {
                 REDSingleEntityBean bean = new REDSingleEntityBean();
                 bean._defineConstants.append("#define "
                         + clockActor.getName().trim() + "_PERIOD "
-                        + String.valueOf(period) + "\n");
+                        + String.valueOf((int)period) + "\n");
                 bean._clockSet.add(clockActor.getName().trim() + "_C1");
 
                 bean._moduleDescription.append("\n/* Process name: "
@@ -2264,9 +2368,9 @@ public class REDUtility {
                         + clockActor.getName().trim() + "_init ("
                         + clockActor.getName().trim() + "_C1 <= "
                         + clockActor.getName().trim() + "_PERIOD) { \n");
-                bean._moduleDescription.append("    when !"
-                        + outputSignalName.trim() + " ("
-                        + clockActor.getName().trim() + "_C1 == "
+                bean._moduleDescription.append("    when "
+                        + tickSignal.toString() + "!" + outputSignalName.trim()
+                        + " (" + clockActor.getName().trim() + "_C1 == "
                         + clockActor.getName().trim() + "_PERIOD) may "
                         + clockActor.getName().trim() + "_C1 = 0 ; \n");
                 bean._moduleDescription.append("}\n");
@@ -2298,9 +2402,9 @@ public class REDUtility {
                         + clockActor.getName().trim() + "_PERIOD"
                         + clockActor.getName().trim() + "_C2 <= "
                         + clockActor.getName().trim() + "_STOPTIME" + ") { \n");
-                bean._moduleDescription.append("    when !"
-                        + outputSignalName.trim() + " ("
-                        + clockActor.getName().trim() + "_C1 == "
+                bean._moduleDescription.append("    when "
+                        + tickSignal.toString() + "!" + outputSignalName.trim()
+                        + " (" + clockActor.getName().trim() + "_C1 == "
                         + clockActor.getName().trim() + "_PERIOD) may "
                         + clockActor.getName().trim() + "_C1 = 0 ;  \n");
                 bean._moduleDescription.append("    when ("
@@ -2347,9 +2451,9 @@ public class REDUtility {
                         + clockActor.getName().trim() + "_init ("
                         + clockActor.getName().trim() + "_C1 <= "
                         + clockActor.getName().trim() + "_PERIOD" + ") { \n");
-                bean._moduleDescription.append("    when !"
-                        + outputSignalName.trim() + " ("
-                        + clockActor.getName().trim() + "_C1 == "
+                bean._moduleDescription.append("    when "
+                        + tickSignal.toString() + "!" + outputSignalName.trim()
+                        + " (" + clockActor.getName().trim() + "_C1 == "
                         + clockActor.getName().trim() + "_PERIOD) may "
                         + clockActor.getName().trim() + "_C1 = 0 ; "
                         + clockActor.getName().trim() + "_Cycle = "
@@ -2399,9 +2503,9 @@ public class REDUtility {
                         + clockActor.getName().trim() + "_init ("
                         + clockActor.getName().trim() + "_C1 <= "
                         + clockActor.getName().trim() + "_PERIOD" + ") { \n");
-                bean._moduleDescription.append("    when !"
-                        + outputSignalName.trim() + " ("
-                        + clockActor.getName().trim() + "_C1 == "
+                bean._moduleDescription.append("    when "
+                        + tickSignal.toString() + "!" + outputSignalName.trim()
+                        + " (" + clockActor.getName().trim() + "_C1 == "
                         + clockActor.getName().trim() + "_PERIOD) may "
                         + clockActor.getName().trim() + "_C1 = 0 ; "
                         + clockActor.getName().trim() + "_Cycle = "
@@ -2441,25 +2545,34 @@ public class REDUtility {
             HashSet<String> globalSynchronizerSet)
             throws IllegalActionException {
 
+        // FIXME: An experimental version dealing with the DE conversion
+        //        based on the analysis technique.
+
         REDSingleEntityBean bean = new REDSingleEntityBean();
-        bean._defineConstants.append("#define " + actor.getName().trim()
-                + "_BUFFER_SIZE " + String.valueOf(bufferSize) + "\n");
+        //bean._defineConstants.append("#define " + actor.getName().trim()
+        //        + "_BUFFER_SIZE " + String.valueOf(bufferSize) + "\n");
 
         bean._moduleDescription.append("\n/* Process name: "
                 + actor.getName().trim() + " */\n");
 
         REDModuleNameInitialBean moduleNameInitialState = new REDModuleNameInitialBean();
         moduleNameInitialState._name = actor.getName();
+        //moduleNameInitialState._initialStateDescription = actor.getName()
+        //        + "_State_" + ((FSMActor) actor).getInitialState().getName();
         moduleNameInitialState._initialStateDescription = actor.getName()
-                + "_State_" + ((FSMActor) actor).getInitialState().getName();
+                + "_State_"
+                + ((FSMActor) actor).getInitialState().getName().trim()
+                + "_Plum";
         bean._nameInitialState = moduleNameInitialState;
 
         // Determine the number of ports required and specify their names.
         // Note that some input signals might be useless; this can be found
         // in the mismatch of
         HashSet<String> guardSignalSet = _decideGuardSignalVariableSet(actor);
+        int guardSignalSetSize = guardSignalSet.size();
         Iterator<String> it = guardSignalSet.iterator();
         while (it.hasNext()) {
+            // FIXME: This is the old version (use the new version)
             // mode CarLightNormal_Port_Sec (true) {
             // when ?Sec (CarLightNormal_NumberOfSignals_Sec <
             // CARLIGHTNORMAL_BUFFER_SIZE) may
@@ -2473,49 +2586,84 @@ public class REDUtility {
             // when ?Sec (CarLightNormal_NumberOfSignals_Sec ==
             // CARLIGHTNORMAL_BUFFER_SIZE) may goto Buffer_Overflow;
             // }
+            //
+            // FIXME: This is the new version (DE as a generalization of SR)
+            // mode CarLightNormal_Port_Sec_Sa (true) {
+            // when ?N_CarLightNormal_Plus (true) may; 
+            // when ?N_CarLightNormal (true) may; 
+            // when ?Sec ?N_CarLightNormal_Plus (true) may; 
+            // when ?Sec !ND_Sec (true) may; 
+            // when ?Sec ?N_CarLightNormal (true) may t = 0; goto CarLightNormal_Port_Sec_Sp;
+            // }
+            // mode CarLightNormal_Port_Sec_Sp (t==0) {
+            // when (t>0) may ; goto CarLightNormal_Port_Sec_Sa;
+            // when ?N_CarLightNormal_Plus (true) may; goto CarLightNormal_Port_Sec_Sa;
+            // when !ND_Sec (true) may; goto CarLightNormal_Port_Sec_Sa;
+            // when ?Sec ?N_CarLightNormal_Plus (true) may; 
+            // when ?N_CarLightNormal (true) may; 
+            // }      
+            //
+            //
+
             String signalName = it.next();
             // Add this signal to the bean.
             REDModuleNameInitialBean nameInitialBean = new REDModuleNameInitialBean();
             nameInitialBean._name = actor.getName().trim() + "_Port_"
                     + signalName.trim();
             nameInitialBean._initialStateDescription = actor.getName().trim()
-                    + "_Port_" + signalName.trim();
+                    + "_Port_" + signalName.trim() + "_Sa";
             bean._portSet.add(nameInitialBean);
 
-            bean._declaredVariables.append("global discrete "
-                    + actor.getName().trim() + "_NumberOfSignals_" + signalName
-                    + ":0.." + bufferSize + "; \n");
-
-            bean._variableInitialDescriptionSet.add(actor.getName().trim()
-                    + "_NumberOfSignals_" + signalName + " == 0 ");
-
+            // mode CarLightNormal_Port_Sec_Sa (true) {
             bean._moduleDescription.append("mode " + actor.getName().trim()
-                    + "_Port_" + signalName.trim() + " ( true ) { \n");
-
+                    + "_Port_" + signalName.trim() + "_Sa" + " ( true ) { \n");
+            //when ?N_CarLightNormal_Plus (true) may; 
+            bean._moduleDescription.append("    when !N_"
+                    + actor.getName().trim() + "_Plus" + " (true) may ; \n");
+            //when ?N_CarLightNormal (true) may; 
+            bean._moduleDescription.append("    when !N_"
+                    + actor.getName().trim() + " (true) may ; \n");
+            //when ?Sec ?N_CarLightNormal_Plus (true) may;
             bean._moduleDescription.append("    when ?" + signalName.trim()
-                    + " (" + actor.getName() + "_NumberOfSignals_"
-                    + signalName.trim() + " < " + actor.getName()
-                    + "_BUFFER_SIZE) may " + actor.getName()
-                    + "_NumberOfSignals_" + signalName.trim() + " = "
-                    + actor.getName() + "_NumberOfSignals_" + signalName.trim()
-                    + " + 1; goto " + actor.getName().trim() + "_Port_"
-                    + signalName.trim() + "; \n");
-
-            bean._moduleDescription.append("    when !ND_" + signalName.trim()
-                    + " (" + actor.getName() + "_NumberOfSignals_"
-                    + signalName.trim() + " > 0) may " + actor.getName()
-                    + "_NumberOfSignals_" + signalName.trim() + " = "
-                    + actor.getName() + "_NumberOfSignals_" + signalName.trim()
-                    + " - 1; goto " + actor.getName() + "_Port_"
-                    + signalName.trim() + "; \n");
-
+                    + " !N_" + actor.getName().trim() + "_Plus"
+                    + " (true) may ; \n");
+            // when ?Sec !ND_Sec (true) may; 
             bean._moduleDescription.append("    when ?" + signalName.trim()
-                    + " (" + actor.getName() + "_NumberOfSignals_" + signalName
-                    + " == " + actor.getName()
-                    + "_BUFFER_SIZE) may goto Buffer_Overflow; \n");
-
+                    + " !ND_" + signalName.trim() + " (true) may ; \n");
+            // when ?Sec ?N_CarLightNormal (true) may t = 0; goto CarLightNormal_Port_Sec_Sp;
+            bean._moduleDescription.append("    when ?" + signalName.trim()
+                    + " !N_" + actor.getName().trim()
+                    + " (true) may t = 0; goto " + actor.getName().trim()
+                    + "_Port_" + signalName.trim() + "_Sp" + ";\n");
+            // }
             bean._moduleDescription.append("} \n");
-            System.out.println("} \n");
+
+            // mode CarLightNormal_Port_Sec_Sp (t==0) {
+            bean._moduleDescription.append("mode " + actor.getName().trim()
+                    + "_Port_" + signalName.trim() + "_Sp" + " ( t==0 ) { \n");
+            // when (t>0) may ; goto CarLightNormal_Port_Sec_Sa;
+            bean._moduleDescription.append("    when (t>0) may ; goto "
+                    + actor.getName().trim() + "_Port_" + signalName.trim()
+                    + "_Sa" + ";\n");
+            // when ?N_CarLightNormal_Plus (true) may; goto CarLightNormal_Port_Sec_Sa;
+            bean._moduleDescription.append("    when ?" + signalName.trim()
+                    + " !N_" + actor.getName().trim() + "_Plus"
+                    + " (true) may ; " + "goto " + actor.getName().trim()
+                    + "_Port_" + signalName.trim() + "_Sa" + ";\n");
+            // when !ND_Sec (true) may; goto CarLightNormal_Port_Sec_Sa;
+            bean._moduleDescription.append("    when !ND_" + signalName.trim()
+                    + " (true) may ; goto " + actor.getName().trim() + "_Port_"
+                    + signalName.trim() + "_Sa" + ";\n");
+            // when ?Sec ?N_CarLightNormal_Plus (true) may; 
+            bean._moduleDescription.append("    when ?" + signalName.trim()
+                    + " !N_" + actor.getName().trim() + "_Plus"
+                    + " (true) may ; \n");
+            // when ?N_CarLightNormal (true) may; 
+            bean._moduleDescription.append("    when !N_"
+                    + actor.getName().trim() + " (true) may ; \n");
+            // }
+            bean._moduleDescription.append("} \n");
+
         }
 
         // Then we generate description regarding states.
@@ -2523,27 +2671,19 @@ public class REDUtility {
         // ND stands for non-delayed signals.
 
         // Enumerate all states in the FmvAutomaton
-        HashSet<State> frontier = null; // = new HashSet<State>();
-        // try {
+        HashSet<State> frontier = null;
         frontier = _enumerateStateSet(actor);
-        // } catch (Exception exception) {
-
-        // }
 
         // Decide variables encoded in the Kripke Structure.
         // Note that here the variable only contains inner variables.
         // 
         HashSet<String> variableSet = null; // = new HashSet<String>();
         HashMap<String, String> initialValueSet = null;
-        // try {
+
         // Enumerate all variables used in the Kripke structure
         int numSpan = Integer.parseInt(span);
         variableSet = _decideVariableSet(actor, numSpan);
         initialValueSet = _retrieveVariableInitialValue(actor, variableSet);
-        // } catch (Exception exception) {
-        // throw new IllegalActionException("REDUtility: _translateFSMActor():"
-        // + exception.getMessage());
-        // }
 
         if (variableSet != null) {
             // Add up variable into the variable.
@@ -2574,13 +2714,215 @@ public class REDUtility {
             }
         }
 
+        // The following tries to generate the stationary move signal pair
+        StringBuffer stationarySignal = new StringBuffer("?tick");
+        StringBuffer stationarySignalPlus = new StringBuffer("?tick_Plus");
+        for (int i = 0; i < guardSignalSetSize; i++) {
+            stationarySignal.append("!N_" + actor.getName().trim());
+            stationarySignalPlus.append("!N_" + actor.getName().trim()
+                    + "_Plus");
+        }
+
         // Print out all these states
         Iterator<State> ite = frontier.iterator();
         while (ite.hasNext()) {
+
             State state = (State) ite.next();
+            // if the state is the initial state, generate a new state
+            // with differences indicated in the EMSOFT paper.
+            if (actor.getInitialState() == state) {
+                // NEW INITIAL STATE in CTA
+                // mode PedestrianLightNormal_State_Pgreen_Plum (true) {
+                bean._moduleDescription.append("mode " + actor.getName().trim()
+                        + "_State_" + state.getName().trim() + "_Plum"
+                        + " ( true ) { \n");
+
+                // generate the transition for the stationary move signal pair
+                bean._moduleDescription.append("    when " + stationarySignal
+                        + " (true) may  ;\n");
+                bean._moduleDescription.append("    when "
+                        + stationarySignalPlus + " (true) may  ;\n");
+
+                ArrayList<REDTransitionBean> transitionListWithinState = _generateTransition(
+                        actor, state, variableSet, globalSynchronizerSet);
+                // Append each of the transition into the module description.
+                for (REDTransitionBean transition : transitionListWithinState) {
+                    if (transition._postCondition.toString().trim()
+                            .equalsIgnoreCase("")) {
+                        if (transition._preCondition.toString().trim()
+                                .equalsIgnoreCase("")) {
+                            bean._moduleDescription.append("    when ?tick "
+                                    + transition._signal.toString()
+                                    + " (true) may "
+                                    + transition._postCondition.toString()
+                                    + " t=0;" + " goto "
+                                    + transition._newState.toString() + " ;\n");
+                            bean._moduleDescription
+                                    .append("    when ?tick_Plus"
+                                            + transition._signal.toString()
+                                            + " (true) may "
+                                            + transition._postCondition
+                                                    .toString() + " goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                            // Original
+                            System.out.println("    when "
+                                    + transition._signal.toString()
+                                    + " (true) may "
+                                    + transition._postCondition.toString()
+                                    + " goto "
+                                    + transition._newState.toString() + " ;\n");
+                        } else {
+                            bean._moduleDescription.append("    when ?tick"
+                                    + transition._signal.toString() + " ("
+                                    + transition._preCondition.toString()
+                                    + "  ) may "
+                                    + transition._postCondition.toString()
+                                    + " t=0;" + " goto "
+                                    + transition._newState.toString() + " ;\n");
+                            bean._moduleDescription
+                                    .append("    when ?tick_Plus"
+                                            + transition._signal.toString()
+                                            + " ("
+                                            + transition._preCondition
+                                                    .toString()
+                                            + ") may "
+                                            + transition._postCondition
+                                                    .toString() + " goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                            //Original
+                            System.out.println("    when "
+                                    + transition._signal.toString() + " ("
+                                    + transition._preCondition.toString()
+                                    + ") may "
+                                    + transition._postCondition.toString()
+                                    + " goto "
+                                    + transition._newState.toString() + " ;\n");
+                        }
+
+                    } else if (transition._postCondition.toString().trim()
+                            .endsWith(";")) {
+                        if (transition._preCondition.toString().trim()
+                                .equalsIgnoreCase("")) {
+                            bean._moduleDescription.append("    when ?tick"
+                                    + transition._signal.toString()
+                                    + " (true) may "
+                                    + transition._postCondition.toString()
+                                    + " t=0;" + " goto "
+                                    + transition._newState.toString() + " ;\n");
+                            bean._moduleDescription
+                                    .append("    when ?tick_Plus"
+                                            + transition._signal.toString()
+                                            + " (true) may "
+                                            + transition._postCondition
+                                                    .toString() + " goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                            // original
+                            System.out.println("    when "
+                                    + transition._signal.toString()
+                                    + " (true) may "
+                                    + transition._postCondition.toString()
+                                    + " goto "
+                                    + transition._newState.toString() + " ;\n");
+                        } else {
+                            bean._moduleDescription.append("    when ?tick"
+                                    + transition._signal.toString() + " ("
+                                    + transition._preCondition.toString()
+                                    + "  ) may "
+                                    + transition._postCondition.toString()
+                                    + " goto "
+                                    + transition._newState.toString() + " ;\n");
+                            bean._moduleDescription
+                                    .append("    when ?tick_Plus"
+                                            + transition._signal.toString()
+                                            + " ("
+                                            + transition._preCondition
+                                                    .toString()
+                                            + ") may "
+                                            + transition._postCondition
+                                                    .toString() + " goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                            // original
+                            System.out.println("    when "
+                                    + transition._signal.toString() + " ("
+                                    + transition._preCondition.toString()
+                                    + ") may "
+                                    + transition._postCondition.toString()
+                                    + " goto "
+                                    + transition._newState.toString() + " ;\n");
+                        }
+
+                    } else {
+                        if (transition._preCondition.toString().trim()
+                                .equalsIgnoreCase("")) {
+                            bean._moduleDescription.append("    when ?tick"
+                                    + transition._signal.toString()
+                                    + " (true) may "
+                                    + transition._postCondition.toString()
+                                    + " ; goto "
+                                    + transition._newState.toString() + " ;\n");
+                            bean._moduleDescription
+                                    .append("    when ?tick_Plus"
+                                            + transition._signal.toString()
+                                            + " (true) may "
+                                            + transition._postCondition
+                                                    .toString() + " ; goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                            // original 
+                            System.out.println("    when "
+                                    + transition._signal.toString()
+                                    + " (true) may "
+                                    + transition._postCondition.toString()
+                                    + " ; goto "
+                                    + transition._newState.toString() + " ;\n");
+                        } else {
+                            bean._moduleDescription.append("    when ?tick"
+                                    + transition._signal.toString() + " ("
+                                    + transition._preCondition.toString()
+                                    + " ) may "
+                                    + transition._postCondition.toString()
+                                    + " ; goto "
+                                    + transition._newState.toString() + " ;\n");
+                            bean._moduleDescription
+                                    .append("    when ?tick_Plus"
+                                            + transition._signal.toString()
+                                            + " ("
+                                            + transition._preCondition
+                                                    .toString()
+                                            + ") may "
+                                            + transition._postCondition
+                                                    .toString() + " ; goto "
+                                            + transition._newState.toString()
+                                            + " ;\n");
+                            // original
+                            System.out.println("    when "
+                                    + transition._signal.toString() + " ("
+                                    + transition._preCondition.toString()
+                                    + ") may "
+                                    + transition._postCondition.toString()
+                                    + " ; goto "
+                                    + transition._newState.toString() + " ;\n");
+                        }
+
+                    }
+
+                }
+                bean._moduleDescription.append("} \n");
+            }
+
             // mode PedestrianLightNormal_State_Pgreen (true) {
             bean._moduleDescription.append("mode " + actor.getName().trim()
                     + "_State_" + state.getName().trim() + " ( true ) { \n");
+
+            // generate the transition for the stationary move signal pair
+            bean._moduleDescription.append("    when " + stationarySignal
+                    + " (true) may  ;\n");
+            bean._moduleDescription.append("    when " + stationarySignalPlus
+                    + " (true) may  ;\n");
 
             ArrayList<REDTransitionBean> transitionListWithinState = _generateTransition(
                     actor, state, variableSet, globalSynchronizerSet);
@@ -2590,12 +2932,18 @@ public class REDUtility {
                         .equalsIgnoreCase("")) {
                     if (transition._preCondition.toString().trim()
                             .equalsIgnoreCase("")) {
-                        bean._moduleDescription.append("    when "
+                        bean._moduleDescription.append("    when ?tick "
+                                + transition._signal.toString() + " (t>0) may "
+                                + transition._postCondition.toString()
+                                + " t=0;" + " goto "
+                                + transition._newState.toString() + " ;\n");
+                        bean._moduleDescription.append("    when ?tick_Plus"
                                 + transition._signal.toString()
                                 + " (true) may "
                                 + transition._postCondition.toString()
                                 + " goto " + transition._newState.toString()
                                 + " ;\n");
+                        // Original
                         System.out.println("    when "
                                 + transition._signal.toString()
                                 + " (true) may "
@@ -2603,13 +2951,21 @@ public class REDUtility {
                                 + " goto " + transition._newState.toString()
                                 + " ;\n");
                     } else {
-                        bean._moduleDescription.append("    when "
+                        bean._moduleDescription.append("    when ?tick"
+                                + transition._signal.toString() + " ("
+                                + transition._preCondition.toString()
+                                + " && t>0 ) may "
+                                + transition._postCondition.toString()
+                                + " t=0;" + " goto "
+                                + transition._newState.toString() + " ;\n");
+                        bean._moduleDescription.append("    when ?tick_Plus"
                                 + transition._signal.toString() + " ("
                                 + transition._preCondition.toString()
                                 + ") may "
                                 + transition._postCondition.toString()
                                 + " goto " + transition._newState.toString()
                                 + " ;\n");
+                        //Original
                         System.out.println("    when "
                                 + transition._signal.toString() + " ("
                                 + transition._preCondition.toString()
@@ -2623,12 +2979,18 @@ public class REDUtility {
                         .endsWith(";")) {
                     if (transition._preCondition.toString().trim()
                             .equalsIgnoreCase("")) {
-                        bean._moduleDescription.append("    when "
+                        bean._moduleDescription.append("    when ?tick"
+                                + transition._signal.toString() + " (t>0) may "
+                                + transition._postCondition.toString()
+                                + " t=0;" + " goto "
+                                + transition._newState.toString() + " ;\n");
+                        bean._moduleDescription.append("    when ?tick_Plus"
                                 + transition._signal.toString()
                                 + " (true) may "
                                 + transition._postCondition.toString()
                                 + " goto " + transition._newState.toString()
                                 + " ;\n");
+                        // original
                         System.out.println("    when "
                                 + transition._signal.toString()
                                 + " (true) may "
@@ -2636,13 +2998,21 @@ public class REDUtility {
                                 + " goto " + transition._newState.toString()
                                 + " ;\n");
                     } else {
-                        bean._moduleDescription.append("    when "
+                        bean._moduleDescription.append("    when ?tick"
+                                + transition._signal.toString() + " ("
+                                + transition._preCondition.toString()
+                                + " && t>0 ) may "
+                                + transition._postCondition.toString()
+                                + " goto " + transition._newState.toString()
+                                + " ;\n");
+                        bean._moduleDescription.append("    when ?tick_Plus"
                                 + transition._signal.toString() + " ("
                                 + transition._preCondition.toString()
                                 + ") may "
                                 + transition._postCondition.toString()
                                 + " goto " + transition._newState.toString()
                                 + " ;\n");
+                        // original
                         System.out.println("    when "
                                 + transition._signal.toString() + " ("
                                 + transition._preCondition.toString()
@@ -2655,12 +3025,18 @@ public class REDUtility {
                 } else {
                     if (transition._preCondition.toString().trim()
                             .equalsIgnoreCase("")) {
-                        bean._moduleDescription.append("    when "
+                        bean._moduleDescription.append("    when ?tick"
+                                + transition._signal.toString() + " (t>0) may "
+                                + transition._postCondition.toString()
+                                + " ; goto " + transition._newState.toString()
+                                + " ;\n");
+                        bean._moduleDescription.append("    when ?tick_Plus"
                                 + transition._signal.toString()
                                 + " (true) may "
                                 + transition._postCondition.toString()
                                 + " ; goto " + transition._newState.toString()
                                 + " ;\n");
+                        // original 
                         System.out.println("    when "
                                 + transition._signal.toString()
                                 + " (true) may "
@@ -2668,13 +3044,21 @@ public class REDUtility {
                                 + " ; goto " + transition._newState.toString()
                                 + " ;\n");
                     } else {
-                        bean._moduleDescription.append("    when "
+                        bean._moduleDescription.append("    when ?tick"
+                                + transition._signal.toString() + " ("
+                                + transition._preCondition.toString()
+                                + "&& t>0 ) may "
+                                + transition._postCondition.toString()
+                                + " ; goto " + transition._newState.toString()
+                                + " ;\n");
+                        bean._moduleDescription.append("    when ?tick_Plus"
                                 + transition._signal.toString() + " ("
                                 + transition._preCondition.toString()
                                 + ") may "
                                 + transition._postCondition.toString()
                                 + " ; goto " + transition._newState.toString()
                                 + " ;\n");
+                        // original
                         System.out.println("    when "
                                 + transition._signal.toString() + " ("
                                 + transition._preCondition.toString()
@@ -2695,7 +3079,7 @@ public class REDUtility {
 
     private static REDSingleEntityBean _translateNondeterministicDelayedActor(
             BoundedBufferNondeterministicDelay delayedActor,
-            String inputSignalName, String outputSignalName)
+            String inputSignalName, String outputSignalName, int numOfFSMActor)
             throws IllegalActionException {
         // If we expect to convert a TimedDelayedActor into a timed automata,
         // we need to have the following information from the
@@ -2714,6 +3098,21 @@ public class REDUtility {
         int bufferSize = ((IntToken) delayedActor.bufferSize.getToken())
                 .intValue();
 
+        StringBuffer tickSignal = new StringBuffer("");
+        StringBuffer tickSignalPlus = new StringBuffer("");
+        if (delay == 0) {
+            for (int i = 0; i < numOfFSMActor; i++) {
+                tickSignal.append("!tick_Plus");
+            }
+        } else {
+            for (int i = 0; i < numOfFSMActor; i++) {
+                tickSignal.append("!tick");
+            }
+        }
+        for (int i = 0; i < numOfFSMActor; i++) {
+            tickSignalPlus.append("!tick_Plus");
+        }
+
         // /* Process name: TimedDelay1 */
         // mode TimedDelay1_S0 (true) {
         // when ?Pgo (true) may x1 = 0; goto TimedDelay1_S0;
@@ -2727,7 +3126,7 @@ public class REDUtility {
         REDSingleEntityBean bean = new REDSingleEntityBean();
 
         bean._defineConstants.append("#define " + delayedActor.getName().trim()
-                + "_DELAY " + String.valueOf(delay) + "\n");
+                + "_DELAY " + String.valueOf((int)delay) + "\n");
 
         REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
         innerBean._name = delayedActor.getName().trim();
@@ -2829,26 +3228,35 @@ public class REDUtility {
                         // goto TimedDelay2_S00;
                         char[] newStateContent = content.toCharArray();
                         newStateContent[i] = '0';
-                        StateTransitionCondition.append("    when !"
+                        StateTransitionCondition.append("    when "
+                                + tickSignal.toString() + "!"
                                 + outputSignalName.trim() + " ("
                                 + delayedActor.getName().trim() + "_C"
                                 + String.valueOf(i) + " <= "
-                                + delayedActor.getName().trim()
-                                + "_DELAY ) may goto "
+                                + delayedActor.getName().trim() + "_DELAY && "
+                                + delayedActor.getName().trim() + "_C"
+                                + String.valueOf(i) + ">0) may goto "
+                                + delayedActor.getName().trim() + "_S"
+                                + String.valueOf(newStateContent) + "; \n");
+                        // FIXME: Based on the technical report, the following
+                        //        should be restricted.
+                        StateTransitionCondition.append("    when "
+                                + tickSignalPlus.toString() + "!"
+                                + outputSignalName.trim() + " ("
+                                + delayedActor.getName().trim() + "_C"
+                                + String.valueOf(i) + " == 0 ) may goto "
                                 + delayedActor.getName().trim() + "_S"
                                 + String.valueOf(newStateContent) + "; \n");
                         if (i == 0) {
                             if (content.contains("0") == false) {
                                 // All true cases. then we need to represent one
-                                // case
-                                // for overflow.
+                                // case for overflow.
                                 StateTransitionCondition
                                         .append("    when ?"
                                                 + outputSignalName.trim()
                                                 + " (true) may goto Buffer_Overflow; \n");
                             }
                         }
-
                     }
                 }
                 if (StateClockConstraint.toString().trim().equalsIgnoreCase("")) {
@@ -2861,9 +3269,7 @@ public class REDUtility {
                 bean._moduleDescription.append(StateTransitionCondition);
                 bean._moduleDescription.append("}\n");
             }
-
         }
-
         return bean;
     }
 
@@ -2886,7 +3292,8 @@ public class REDUtility {
      */
     private static REDSingleEntityBean _translateTimedDelayedActor(
             BoundedBufferTimedDelay delayedActor, String inputSignalName,
-            String outputSignalName) throws IllegalActionException {
+            String outputSignalName, int numOfFSMActor)
+            throws IllegalActionException {
 
         // If we expect to convert a BoundedBufferTimedDelayedActor into a timed
         // automata,
@@ -2906,10 +3313,21 @@ public class REDUtility {
         int bufferSize = ((IntToken) delayedActor.bufferSize.getToken())
                 .intValue();
 
+        StringBuffer tickSignal = new StringBuffer("");
+        if (delay == 0) {
+            for (int i = 0; i < numOfFSMActor; i++) {
+                tickSignal.append("!tick_Plus");
+            }
+        } else {
+            for (int i = 0; i < numOfFSMActor; i++) {
+                tickSignal.append("!tick");
+            }
+        }
+
         REDSingleEntityBean bean = new REDSingleEntityBean();
 
         bean._defineConstants.append("#define " + delayedActor.getName().trim()
-                + "_DELAY " + String.valueOf(delay) + "\n");
+                + "_DELAY " + String.valueOf((int)delay) + "\n");
 
         REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
         innerBean._name = delayedActor.getName().trim();
@@ -3014,7 +3432,8 @@ public class REDUtility {
                         // goto TimedDelay2_S00;
                         char[] newStateContent = content.toCharArray();
                         newStateContent[i] = '0';
-                        StateTransitionCondition.append("    when !"
+                        StateTransitionCondition.append("    when "
+                                + tickSignal.toString() + "!"
                                 + outputSignalName.trim() + " ("
                                 + delayedActor.getName().trim() + "_C"
                                 + String.valueOf(i) + " == "
