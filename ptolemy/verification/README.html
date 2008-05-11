@@ -1,41 +1,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+
 <!-- $Id$ -->
-
-
-
-
-  
-  
-  
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-
-
-
-  
-
-
-  
-  
-  
-  
-  
   <title>Formal Verification</title>
+
+
   <link href="default.css" rel="stylesheet" type="text/css">
+
 </head>
 
 
 <body>
 
-
-
-
 <h1><span lang="EN-US">Correctness Checking using
 Formal Verification</span></h1>
-
-
-
 
 <span style="font-family: Arial;" lang="EN-US">This
 is an
@@ -47,64 +27,36 @@ convert Ptolemy II models into files accepted by model checker <a href="http://n
 by <a href="http://www.kenmcmil.com/smv.html" target="_blank">SMV</a>).</span>
 <ul type="disc">
 
+  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Demo_1">Demo 1: Traffic Light Example</a></span></li>
 
+  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Install">Install NuSMV and
+setup environment variables</a>&nbsp;</span></li>
 
+  <li class="MsoNormal" style=""><a href="#Demo_2"><span style="font-family: Arial;" lang="EN-US">Demo 2: Integrating verification engines using
+the&nbsp;EmbeddedCActor&nbsp;</span></a></li>
 
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="../verification/README.html#Simple_Demo">Simple Demo</a></span></li>
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="../verification/README.html#Install">Install NuSMV and
-setup environment variables</a>
-    <o:p></o:p></span></li>
-
-
-
-
-  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="../verification/README.html#Limitations">Limitations</a>
+  <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Limitations">Limitations</a>
     <o:p></o:p>&nbsp;<o:p></o:p></span></li>
-
-
-
 
 </ul>
 
-
-
-
-<h2><a name="Simple_Demo"><span lang="EN-US">Simple
-Demo</span></a></h2>
-
-
-
+<h2><a name="Demo_1"><span lang="EN-US">Demo1
+:Traffic Light Example</span></a></h2>
 
 <ol start="1" type="1">
 
-
-
-
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Open <big><a href="../verification/demo/TrafficLight/SimpleTrafficLight.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/TrafficLight/SimpleTrafficLight.xml</span></code></a></big>
     <o:p></o:p></span></li>
-
-
-
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Double click
 on the <span class="SpellE">CodeGeneratorIcon</span>
 (Pink color). <o:p></o:p></span></li>
 
-
-
-
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">A dialog box
-will appear, ask you to input temporal formula. Type&nbsp;<b style="">! EF (<span class="SpellE">SimpleTrafficLight.CarLightNormal</span>-state
-= <span class="SpellE">Cgrn</span> &amp; <span class="SpellE">SimpleTrafficLight.PedestrianLightNormal</span>-state
+will appear, ask you to input temporal formula. Type&nbsp;<b style="">! EF (<span class="SpellE">SimpleTrafficLight.CarLightNormal</span>.state
+= <span class="SpellE">Cgrn</span> &amp; <span class="SpellE">SimpleTrafficLight.PedestrianLightNormal</span>.state
 = <span class="SpellE">Pgreen</span>)</b>.
 You may want to copy the above line; it would be a lot faster.<span style="">&nbsp; </span><o:p></o:p></span></li>
-
-
-
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Press OK.
 The code accepted by <span class="SpellE">NuSMV</span>
@@ -113,28 +65,16 @@ extension).&nbsp; Also you can only </span><span style="font-family: Arial;" lan
 generated .smv format by selecting </span><span style="font-family: Arial;" lang="EN-US">"Open
 Generated Format" in step 3. <o:p></o:p></span></li>
 
-
-
-
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Invoke <span class="SpellE">NuSMV</span> or SMV to see if the
 property is hold. If you have installed NuSMV and set up the path
 environment variable (<a href="../verification/README.html#Install">how?</a>),
 you may also check the result of verification by selecting "Invoke
 NuSMV" options in step 3. <o:p></o:p></span></li>
 
-
-
-
 </ol>
-
-
-
 
 <h2><a name="Install"><span lang="EN-US"></span></a>Install
 NuSMV and set up environment variables</h2>
-
-
-
 
 <p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">In
 our current Java implementation, we simply invoke a process to execute
@@ -144,57 +84,48 @@ please follow&nbsp;instructions listed below (instructions are for
 Microsoft Windows OS; for linux users, please apply similar
 approaches).&nbsp;</span></p>
 
-
-
-
 <ol start="1" type="1">
-
-
-
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="../verification/demo/TrafficLight/SimpleTrafficLight.xml"><code><span style="font-size: 10pt;"></span></code></a>Install
 NuSMV by downloading from its <a href="http://nusmv.irst.itc.it/" target="_blank">website</a>.&nbsp;</span></li>
-
-
-
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Assume
 the installed NuSMV directory in your system is C:\Program
 Files\NuSMV\2.4.3,
 then set up the the environment variable "Path" by attaching "</span><span style="font-family: Arial;" lang="EN-US">C:\Program
-Files\NuSMV\2.4.3\bin</span><span style="font-family: Arial;" lang="EN-US">" (Control Panel &gt;&gt; System &gt;&gt; Advanced &gt;&gt;
+Files\NuSMV\2.4.3\bin</span><span style="font-family: Arial;" lang="EN-US">" (Control Panel &gt;&gt; System
+&gt;&gt; Advanced &gt;&gt;
 Environment Variable). &nbsp;Save your changes. <o:p></o:p></span></li>
-
-
-
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">That's all
 you need to do! Now you can invoke NuSMV within Ptolemy II
 software!&nbsp;<o:p></o:p></span></li>
 
-
-
-
 </ol>
 
+<h2 style="font-weight: bold;"><a name="Demo_2"><span lang="EN-US">Demo 2:
+Integrating verification engines using
+the&nbsp;EmbeddedCActor&nbsp;</span></a></h2>
 
-
+<p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">To
+perform full integration of verification process, we also experiment
+how to embed verification engines into the Ptolemy II architecture.
+Currently we are able to integrate NuSMV into Ptolemy II, where code
+modification is minor (&lt;100 lines + 1 file renaming). The core
+technique is to use EmbeddedCActor instead of using Java Native
+Interface directly (it is relatively complicated for&nbsp;C++
+programmers to learn Java and JNI).&nbsp; </span>&nbsp;<span style="font-family: Arial;" lang="EN-US"></span></p>
 
 <h2><a name="Limitations"><span lang="EN-US">Limitations</span></a></h2>
-
-
-
 
 <p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">This is a highly
 preliminary code generator facility, with many limitations. It is best
 viewed
 as a concept demonstration. Currently i</span><span style="font-family: Arial;" lang="EN-US">t
 may analyze a single FSMActor, and a system consisting of multiple
-FSMActors or ModalModels (without state refinement) interacting with each other in SR domain. We will expand
+FSMActors or ModalModels (with state or SR refinement&nbsp;)
+interacting with each other in SR domain. We will expand
 existing functionalities soon.</span></p>
-
-
-
 
 </body>
 </html>
