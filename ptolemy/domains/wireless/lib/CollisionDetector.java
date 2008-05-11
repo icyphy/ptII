@@ -314,6 +314,7 @@ public class CollisionDetector extends TypedAtomicActor {
 
         newObject.received.setTypeSameAs(newObject.message);
         newObject.collided.setTypeSameAs(newObject.message);
+        newObject._receptions = null;
 
         return newObject;
     }

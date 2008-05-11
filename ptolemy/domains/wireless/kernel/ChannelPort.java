@@ -36,6 +36,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ChannelPort
@@ -82,6 +83,22 @@ public class ChannelPort extends WirelessIOPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ChannelPort newObject = (ChannelPort)super.clone(workspace);
+        newObject._sourcePortList = null;
+        newObject._sourcePortListVersion = -1;
+        newObject._sinkPortList = null;
+        newObject._sinkPortListVersion = -1;
+        return newObject;
+    }
 
     /** Return the number of sink ports that can potentially receive data
      *  from the containing channel.

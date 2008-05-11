@@ -42,6 +42,7 @@ import ptolemy.domains.wireless.kernel.WirelessReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ErasureChannel
@@ -134,6 +135,20 @@ public class ErasureChannel extends AtomicWirelessChannel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ErasureChannel newObject = (ErasureChannel)super.clone(workspace);
+        newObject._random = new Random();
+        return newObject;
+    }
 
     /** Initialize the random number generator with the seed, if it
      *  has been given.

@@ -317,6 +317,30 @@ public class DEDirector extends Director implements TimedDirector {
 
         super.addDebugListener(listener);
     }
+    
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an attribute with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DEDirector newObject = (DEDirector)super.clone(workspace);
+        newObject._actorToDepth = null;
+        newObject._disabledActors = null;
+        newObject._eventQueue = null;
+        newObject._exceedStopTime = false;
+        newObject._isInitializing = false;
+        newObject._microstep = 0;
+        newObject._noMoreActorsToFire = false;
+        newObject._portToDepth = null;
+        newObject._realStartTime = 0;
+        newObject._sortValid = -1;
+        newObject._stopFireRequested = false;
+        return newObject;
+    }
 
     /** Update the director parameters when attributes are changed.
      *  Changes to <i>isCQAdaptive</i>, <i>minBinCount</i>, and
