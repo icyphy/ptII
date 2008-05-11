@@ -48,8 +48,10 @@ import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.FSMMatcher;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
@@ -101,10 +103,6 @@ public class GTFrameController implements ChangeListener, KeyListener {
         return _graphPanes;
     }
 
-    public List<JGraph> getJGraphs() {
-        return _graphs;
-    }
-
     /** Return the JGraph instance that this view uses to represent the
      *  ptolemy model.
      *  @return the JGraph.
@@ -122,6 +120,10 @@ public class GTFrameController implements ChangeListener, KeyListener {
         } else {
             return null;
         }
+    }
+
+    public List<JGraph> getJGraphs() {
+        return _graphs;
     }
 
     public JTabbedPane getTabbedPane() {
@@ -386,7 +388,22 @@ public class GTFrameController implements ChangeListener, KeyListener {
             index--;
         }
         _tabbedPane.add(jgraph, index);
+
+        // Background color is parameterizable by preferences.
+        Configuration configuration = getConfiguration();
         jgraph.setBackground(BasicGraphFrame.BACKGROUND_COLOR);
+        if (configuration != null) {
+            try {
+                PtolemyPreferences preferences = PtolemyPreferences
+                        .getPtolemyPreferencesWithinConfiguration(configuration);
+                if (preferences != null) {
+                    jgraph.setBackground(preferences.backgroundColor.asColor());
+                }
+            } catch (IllegalActionException e1) {
+                // Ignore the exception and use the default color.
+            }
+        }
+
         // Create a drop target for the jgraph.
         new EditorDropTarget(jgraph);
         return jgraph;
