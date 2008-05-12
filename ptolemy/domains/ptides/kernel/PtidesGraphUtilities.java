@@ -41,6 +41,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.Clock;
 import ptolemy.actor.lib.Source;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.util.FunctionDependencyOfAtomicActor;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -468,11 +470,24 @@ public class PtidesGraphUtilities {
 
 	private DirectedAcyclicGraph _computeGraph(Actor container) {
 		if (graphs.get(container) == null) {
-			FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (container)
+		        // Change to the case so both CompositeActor and AtomicActor could be taken care of.
+		        // Edited by Jia Zou
+			/*FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (container)
 					.getFunctionDependency();
 			DirectedAcyclicGraph _graph = functionDependency
-					.getDetailedDependencyGraph().toDirectedAcyclicGraph();
-
+					.getDetailedDependencyGraph().toDirectedAcyclicGraph();*/
+		        DirectedAcyclicGraph _graph = new DirectedAcyclicGraph();
+		        if (container instanceof AtomicActor) {
+	                        FunctionDependencyOfAtomicActor functionDependency = 
+	                                (FunctionDependencyOfAtomicActor) (container).getFunctionDependency();
+	                        _graph = functionDependency
+                                        .getDependencyGraph().toDirectedAcyclicGraph();
+		        } else if (container instanceof CompositeActor) {
+		                FunctionDependencyOfCompositeActor functionDependency = 
+    		                        (FunctionDependencyOfCompositeActor) (container).getFunctionDependency();
+    		                _graph = functionDependency
+                                        .getDetailedDependencyGraph().toDirectedAcyclicGraph();
+		        }
 			// add edges between timeddelay inputs and outputs
 			for (Iterator nodeIterator = _graph.nodes().iterator(); nodeIterator
 					.hasNext();) {
