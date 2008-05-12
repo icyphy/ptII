@@ -200,7 +200,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 		super.initialize();
 		_completionTime = Time.POSITIVE_INFINITY;
 
-		_nextFirings = new TreeSet<Time>();
+		//_nextFirings = new TreeSet<Time>();
 		_completionTime = new Time(this, ((DoubleToken) stopTime.getToken())
 				.doubleValue());
 		if (!_completionTime.equals(Time.POSITIVE_INFINITY))
@@ -354,7 +354,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	public void wrapup() throws IllegalActionException {
 		super.wrapup();
 		_waitingPlatforms.clear();
-		_nextFirings.clear();
+		//_nextFirings.clear();
 		setModelTime(new Time(this, 0.0));
 	}
 
@@ -490,7 +490,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	/**
 	 * list of times that platforms want to be refired
 	 */
-	private TreeSet<Time> _nextFirings;
+	private TreeSet<Time> _nextFirings = new TreeSet<Time>();
 
 	/**
 	 * global network delay
