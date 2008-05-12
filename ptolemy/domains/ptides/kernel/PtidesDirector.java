@@ -354,7 +354,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	public void wrapup() throws IllegalActionException {
 		super.wrapup();
 		_waitingPlatforms.clear();
-		//_nextFirings.clear();
+		_nextFirings.clear();
 		setModelTime(new Time(this, 0.0));
 	}
 
