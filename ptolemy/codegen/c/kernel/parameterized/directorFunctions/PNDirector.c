@@ -70,13 +70,13 @@
 // Get the current write offset.
 int getWriteOffset(struct pnBufferHeader* header, struct directorHeader* directorHeader) {
 
-    if ((header->writeCount - header->readCount) >= header->capacity) {
+    if ((signed int)(header->writeCount - header->readCount) >= header->capacity) {
 
         //-------------------------------------------------------------------//
         pthread_mutex_lock(header->waitMutex);
     
         // If it is full, then wait;
-        if ((header->writeCount - header->readCount) >= header->capacity) {
+        if ((signed int)(header->writeCount - header->readCount) >= header->capacity) {
     
             //printf("readBlock=%d, writeBlock=%d\n", directorHeader->readBlockingThreads, directorHeader->writeBlockingThreads + 1);
             //fflush(stdout);
@@ -125,13 +125,13 @@ int getWriteOffset(struct pnBufferHeader* header, struct directorHeader* directo
 // Get the current write offset.
 int getAdvancedWriteOffset(int offset, struct pnBufferHeader* header, struct directorHeader* directorHeader) {
 
-    if ((header->writeCount - header->readCount) >= header->capacity - offset) {
+    if ((signed int)(header->writeCount - header->readCount) >= header->capacity - offset) {
 
         //-------------------------------------------------------------------//
         pthread_mutex_lock(header->waitMutex);
     
         // If it is full, then wait;
-        if ((header->writeCount - header->readCount) >= header->capacity - offset) {
+        if ((signed int)(header->writeCount - header->readCount) >= header->capacity - offset) {
     
             //printf("readBlock=%d, writeBlock=%d\n", directorHeader->readBlockingThreads, directorHeader->writeBlockingThreads + 1);
             //fflush(stdout);
@@ -183,11 +183,11 @@ int getAdvancedWriteOffset(int offset, struct pnBufferHeader* header, struct dir
 // Get the current read offset.
 int getReadOffset(struct pnBufferHeader* header, struct directorHeader* directorHeader) {
 
-    if ((header->writeCount - header->readCount) <= 0) {
+    if ((signed int)(header->writeCount - header->readCount) <= 0) {
         // If buffer is empty, then wait on the condition variable.
         //-------------------------------------------------------------------//
         pthread_mutex_lock(header->waitMutex);
-        if ((header->writeCount - header->readCount) <= 0) {
+        if ((signed int)(header->writeCount - header->readCount) <= 0) {
 
             //printf("readBlock=%d, writeBlock=%d\n", directorHeader->readBlockingThreads + 1, directorHeader->writeBlockingThreads);
             //fflush(stdout);
@@ -238,11 +238,11 @@ int getReadOffset(struct pnBufferHeader* header, struct directorHeader* director
 // Get the current read offset.
 int getAdvancedReadOffset(int offset, struct pnBufferHeader* header, struct directorHeader* directorHeader) {
 
-    if ((header->writeCount - header->readCount) <= offset) {
+    if ((signed int)(header->writeCount - header->readCount) <= offset) {
         // If buffer is empty, then wait on the condition variable.
         //-------------------------------------------------------------------//
         pthread_mutex_lock(header->waitMutex);
-        if ((header->writeCount - header->readCount) <= offset) {
+        if ((signed int)(header->writeCount - header->readCount) <= offset) {
 
             //printf("readBlock=%d, writeBlock=%d\n", directorHeader->readBlockingThreads + 1, directorHeader->writeBlockingThreads);
             //fflush(stdout);
