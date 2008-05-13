@@ -4,24 +4,6 @@
 <entity name="PNTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen">
-        </property>
-        <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 75.0}">
-        </property>
-    </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="99">
         </property>
@@ -31,10 +13,12 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <property name="numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={329, 442, 818, 508}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 173, 815, 517}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -49,10 +33,30 @@
         </property>
         <property name="action" class="ptolemy.data.expr.StringParameter" value="TRANSFORM">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 60.0]">
         </property>
     </property>
     <property name="numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="3">
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+        <property name="compile" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 60.0]">
+        </property>
+        <property name="mpi" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <doc>Create a constant sequence.</doc>
@@ -116,6 +120,8 @@
         </port>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
@@ -173,7 +179,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="{60.0, 190.0}">
+        <vertex name="vertex1" value="[125.0, 190.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
