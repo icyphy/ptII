@@ -61,7 +61,7 @@ public class GTTools {
         Workspace workspace = model.workspace();
         try {
             workspace.getReadAccess();
-            MoMLParser parser = new MoMLParser(model.workspace());
+            MoMLParser parser = new MoMLParser(workspace);
             NamedObj newModel = parser.parse(model.exportMoML());
             return newModel;
         } catch (Exception e) {

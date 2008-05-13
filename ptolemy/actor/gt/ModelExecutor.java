@@ -88,25 +88,20 @@ public class ModelExecutor extends TypedAtomicActor {
     }
 
     public void fire() throws IllegalActionException {
-        Entity actor = ((ActorToken) actorInput.get(0)).getEntity(
-                new Workspace());
+        Workspace workspace = new Workspace();
+        Entity actor = ((ActorToken) actorInput.get(0)).getEntity(workspace);
         if (actor instanceof ComponentEntity) {
             ComponentEntity entity =
                 (ComponentEntity) GTTools.cleanupModel(actor);
-            Workspace workspace = entity.workspace();
             try {
                 Wrapper wrapper = new Wrapper(workspace);
-                Effigy parentEffigy = Configuration.findEffigy(toplevel());
-                PtolemyEffigy effigy = new PtolemyEffigy(parentEffigy,
-                        parentEffigy.uniqueName("wrapperEffigy"));
-                effigy.setModel(wrapper);
                 entity.setContainer(wrapper);
+                _wrapperEffigy.setModel(wrapper);
 
                 Manager manager = new Manager(workspace, "_manager");
                 wrapper.setManager(manager);
                 manager.execute();
 
-                effigy.setContainer(null);
                 workspace.remove(wrapper);
             } catch (KernelException e) {
                 throw new IllegalActionException(this, e, "Execution failed.");
@@ -114,11 +109,37 @@ public class ModelExecutor extends TypedAtomicActor {
         }
     }
 
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+
+        Effigy parentEffigy = Configuration.findEffigy(toplevel());
+        try {
+            _wrapperEffigy = new PtolemyEffigy(parentEffigy,
+                    parentEffigy.uniqueName("_wrapperEffigy"));
+        } catch (NameDuplicationException e) {
+            throw new IllegalActionException(this, e, "Unable to create an " +
+                    "effigy for the model.");
+        }
+    }
+
     public boolean prefire() throws IllegalActionException {
         return super.prefire() && actorInput.hasToken(0);
     }
 
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+
+        try {
+            _wrapperEffigy.setContainer(null);
+        } catch (NameDuplicationException e) {
+            throw new IllegalActionException(this, e, "Unexpected error.");
+        }
+        _wrapperEffigy = null;
+    }
+
     public TypedIOPort actorInput;
+
+    private PtolemyEffigy _wrapperEffigy;
 
     private class Wrapper extends TypedCompositeActor {
 
