@@ -427,7 +427,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                            StringAttribute portAttr = _getMpiAttribute(thisInput);
                            //portParam.setExpression("receiver"); 
                            String tempString = portAttr.getExpression();
-                           if (tempString.isEmpty()) {
+                           if (tempString.equals("")) {
                                tempString = "receiver";
                            }
                            tempString = tempString.concat("_" + Integer.toString(sourceIndex));
@@ -458,7 +458,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                         if (!attrActor.getExpression().equals(attrTemp.getExpression())) {                      
                            StringAttribute portAttr = _getMpiAttribute(thisOutput);
                            String tempString = portAttr.getExpression();
-                           if (tempString.isEmpty()) {
+                           if (tempString.equals("")) {
                                tempString = "sender";
                            }
                            tempString = tempString.concat("_" + Integer.toString(sinkIndex));
