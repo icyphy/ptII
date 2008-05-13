@@ -1,0 +1,190 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PNTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen">
+        </property>
+        <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 75.0}">
+        </property>
+    </property>
+    <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
+        <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="99">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 80.0}">
+        </property>
+        <property name="_localBufferSize" class="ptolemy.data.expr.Parameter" value="50">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <property name="numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={329, 442, 818, 508}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{293.1818181818182, 195.7585227272728}">
+    </property>
+    <property name="ChacoCodeGenerator" class="ptolemy.codegen.chaco.kernel.ChacoCodeGenerator">
+        <property name="compile" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="action" class="ptolemy.data.expr.StringParameter" value="TRANSFORM">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 80.0]">
+        </property>
+    </property>
+    <property name="numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="3">
+    </property>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 190.0]">
+        </property>
+        <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_vertexWeight" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[1]">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 200.0]">
+        </property>
+        <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_vertexWeight" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[0]">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 285.0]">
+        </property>
+        <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_vertexWeight" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[1]">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+        </port>
+    </entity>
+    <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 200.0]">
+        </property>
+        <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_vertexWeight" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[2]">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{60.0, 190.0}">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Const.output" relation="relation3"/>
+    <link port="AddSubtract.plus" relation="relation3"/>
+    <link port="AddSubtract.minus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation"/>
+    <link port="Scale.input" relation="relation3"/>
+    <link port="Scale.output" relation="relation2"/>
+    <link port="MonitorValue.input" relation="relation"/>
+</entity>
