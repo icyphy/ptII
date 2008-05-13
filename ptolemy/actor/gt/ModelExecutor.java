@@ -61,6 +61,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -85,6 +86,8 @@ public class ModelExecutor extends TypedAtomicActor {
 
         actorInput = new TypedIOPort(this, "actorInput", true, false);
         actorInput.setTypeEquals(ActorToken.TYPE);
+        StringAttribute cardinal = new StringAttribute(actorInput, "_cardinal");
+        cardinal.setExpression("SOUTH");
     }
 
     public void fire() throws IllegalActionException {

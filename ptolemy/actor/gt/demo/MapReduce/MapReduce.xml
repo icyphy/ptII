@@ -4,7 +4,7 @@
 <entity name="MapReduce" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={134, 207, 864, 537}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={134, 207, 856, 540}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[641, 423]">
     </property>
@@ -1272,7 +1272,7 @@
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="ReadTest.map">
         </property>
         <doc>Read one line at a time from a text file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 140.0]">
         </property>
     </entity>
     <entity name="Switch" class="ptolemy.actor.lib.BooleanSwitch">
@@ -1311,13 +1311,13 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[150.0, 140.0]">
+        <vertex name="vertex1" value="[155.0, 130.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[195.0, 160.0]">
+        <vertex name="vertex1" value="[195.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
