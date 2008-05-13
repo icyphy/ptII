@@ -40,6 +40,7 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -390,9 +391,24 @@ public class ChacoCodeGenerator extends CodeGenerator {
         }
         return result;
     }
-    
+
+    private Parameter _getNumConnectionsParameter()
+            throws IllegalActionException {
+        Parameter result = (Parameter)((NamedObj)((TypedCompositeActor)this.getContainer())
+                .getDirector().getAttribute("numberOfMpiConnections"));
+
+        if (result == null) {
+            try {
+                result = new Parameter((NamedObj)((TypedCompositeActor)this.getComponent()).getDirector(), "numberOfMpiConnections");
+            } catch (NameDuplicationException e) {
+                assert false;
+            }
+        }
+        return result;
+    }
     private void _annotateMpiPorts() {
         int count = 1;
+        int IDnumber = 0;
         
         try {
             //while (count <= HashNumberKey.size()) {
@@ -430,12 +446,16 @@ public class ChacoCodeGenerator extends CodeGenerator {
                            if (tempString.equals("")) {
                                tempString = "receiver";
                            }
-                           tempString = tempString.concat("_" + Integer.toString(sourceIndex));
+                           tempString = tempString.concat("_ch[" + Integer.toString(sourceIndex) + "]"
+                                   + "id[" + IDnumber + "]");
                            portAttr.setExpression(tempString);
+                           // Keep track of the number of MPI connections
+                           IDnumber++;
                         }
                         sourceIndex++;
                     }
                 }
+                
                 List outputList =  actor.outputPortList();
                 Iterator outputIt = (Iterator) outputList.listIterator();
 
@@ -461,15 +481,19 @@ public class ChacoCodeGenerator extends CodeGenerator {
                            if (tempString.equals("")) {
                                tempString = "sender";
                            }
-                           tempString = tempString.concat("_" + Integer.toString(sinkIndex));
+                           tempString = tempString.concat("_ch[" + Integer.toString(sinkIndex) + "]");
                            portAttr.setExpression(tempString);
                            //portParam.setExpression("sender");
                         }
                         sinkIndex++;
                     }
                 }
+                
                 count++;
             } 
+            Parameter numConnections = new Parameter();
+            numConnections = _getNumConnectionsParameter();
+            numConnections.setExpression(Integer.toString(IDnumber));
         } catch (IllegalActionException e) {
             System.err.println("Error: " + e.getMessage());
         }
