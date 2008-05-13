@@ -15,6 +15,8 @@
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 115.0]">
         </property>
+        <property name="numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="15">
+        </property>
     </property>
     <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -60,22 +62,30 @@
         </property>
         <port name="magnitude" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[0]">
             </property>
         </port>
         <port name="angle" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[1]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[1]">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
         <port name="y" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
     </entity>
@@ -87,7 +97,9 @@
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_1">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[1]id[2]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[1]id[2]">
             </property>
         </port>
         <port name="divide" class="ptolemy.actor.TypedIOPort">
@@ -95,10 +107,14 @@
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
     </entity>
@@ -119,12 +135,16 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[3]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[3]">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
     </entity>
@@ -148,11 +168,15 @@
             <property name="output"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -172,16 +196,22 @@
             <property name="output"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="step" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -195,16 +225,22 @@
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="divide" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
     </entity>
@@ -228,11 +264,15 @@
             <property name="output"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -244,7 +284,9 @@
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_1_2">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[1]id[4]_ch[2]id[5]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[1]id[4]_ch[2]id[5]">
             </property>
         </port>
         <port name="minus" class="ptolemy.actor.TypedIOPort">
@@ -252,10 +294,14 @@
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
     </entity>
@@ -272,12 +318,16 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[6]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[6]">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -295,7 +345,9 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -303,10 +355,14 @@
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="step" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -325,12 +381,16 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[7]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[7]">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
     </entity>
@@ -342,7 +402,9 @@
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[8]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[8]">
             </property>
         </port>
         <port name="divide" class="ptolemy.actor.TypedIOPort">
@@ -350,10 +412,14 @@
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
     </entity>
@@ -377,11 +443,15 @@
             <property name="output"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -399,7 +469,9 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -407,10 +479,14 @@
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="step" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -429,12 +505,16 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[9]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[9]">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -446,7 +526,9 @@
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_1">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[1]id[10]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[1]id[10]">
             </property>
         </port>
         <port name="divide" class="ptolemy.actor.TypedIOPort">
@@ -454,10 +536,14 @@
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
     </entity>
@@ -475,7 +561,9 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -483,10 +571,14 @@
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="step" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -498,7 +590,9 @@
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[11]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[11]">
             </property>
         </port>
         <port name="divide" class="ptolemy.actor.TypedIOPort">
@@ -506,10 +600,14 @@
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
     </entity>
@@ -533,11 +631,15 @@
             <property name="output"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -555,7 +657,9 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -563,10 +667,14 @@
             <property name="multiport"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="step" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -585,12 +693,16 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[12]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[12]">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -611,10 +723,14 @@
             <property name="input"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </port>
     </entity>
@@ -635,10 +751,14 @@
             <property name="input"/>
             <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]">
             </property>
         </port>
     </entity>
@@ -659,7 +779,9 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[13]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[13]">
             </property>
         </port>
     </entity>
@@ -680,7 +802,9 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_0">
+            <property name="_isMpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[14]">
+            </property>
+            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[14]">
             </property>
         </port>
     </entity>
