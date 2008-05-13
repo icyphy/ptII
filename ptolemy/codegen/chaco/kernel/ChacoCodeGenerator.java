@@ -153,17 +153,17 @@ public class ChacoCodeGenerator extends CodeGenerator {
             Actor actor = (Actor) actors.next();
             int thisInt;
             thisInt = (Integer) HashActorKey.get(actor);
-            codeBuffer.append("{" + thisInt + "} ");
+            codeBuffer.append(thisInt + " ");
             
             // Get vertex weights from the model
             Parameter vertexParam = new Parameter();
             vertexParam = (Parameter)((NamedObj)actor).getAttribute("_vertexWeight");
             String vertexWeightString;
             if (vertexParam == null)
-                vertexWeightString = "1.0";
+                vertexWeightString = "1";
             else
                 vertexWeightString = vertexParam.getExpression();
-            codeBuffer.append("[" + vertexWeightString + "] ");
+            codeBuffer.append(vertexWeightString + " ");
 
             List inList =  actor.inputPortList();
             Iterator inputIt = (Iterator) inList.listIterator();
@@ -210,11 +210,12 @@ public class ChacoCodeGenerator extends CodeGenerator {
                                     Parameter edgeParam = new Parameter();
                                     edgeParam = (Parameter)thisRelation.getAttribute("_edgeWeight");
                                     if (edgeParam == null) {
-                                        edgeWeightString = "1.0";
+                                        edgeWeightString = "1";
                                     } else {
                                         edgeWeightString = edgeParam.getExpression();
                                     }
-                                    codeBuffer.append("(" + edgeWeightString + ") ");
+                                    //codeBuffer.append("(" + edgeWeightString + ") ");
+                                    codeBuffer.append(edgeWeightString + " ");
                                     foundFlag = true;
                                 }
                             }
@@ -265,12 +266,12 @@ public class ChacoCodeGenerator extends CodeGenerator {
                                     Parameter edgeParam = new Parameter();
                                     edgeParam = (Parameter)thisRelation.getAttribute("_edgeWeight");
                                     if (edgeParam == null) {
-                                        edgeWeightString = "1.0";
+                                        edgeWeightString = "1";
                                     } else {
                                         edgeWeightString = edgeParam.getExpression();
                                     }
 
-                                    codeBuffer.append("(" + edgeWeightString + ") ");     
+                                    codeBuffer.append(edgeWeightString + " ");     
                                     foundFlag = true;
                                 }
                             }
@@ -282,7 +283,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
             }
             codeBuffer.append(_eol);
         }
-        code.append(numEdges + " {1} [1] (1)" + _eol);
+        code.append(numEdges + " 111" + _eol);
 
         code.append(codeBuffer);
 
