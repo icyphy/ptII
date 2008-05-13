@@ -593,6 +593,9 @@ test_auto:
 test_codegen:
 	$(JTCLSH) $(ROOT)/util/testsuite/CGC.tcl
 
+test_properties:
+	$(JTCLSH) $(ROOT)/util/testsuite/properties.tcl
+
 # Generate html files from itcl files, requires itclsh and tycho
 # We use a GNU make extension here
 HTMLS=$(filter %.html,  $(EXTRA_SRCS))
