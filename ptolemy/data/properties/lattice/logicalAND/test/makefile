@@ -1,10 +1,10 @@
-# Makefile for the Java classes used to test CGC actors
+# Makefile for Java Ptolemy Data Properties
 #
-# @Authors: Christopher Brooks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# $Id$
 #
-# @Copyright (c) 2005-2006 The Regents of the University of California.
+# @Copyright (c) 2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,6 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/data/properties/lattice/logicalAND/test
 
 # Root of the Ptolemy II directory
@@ -44,10 +43,13 @@ include $(CONFIG)
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
 	testDefs.tcl
-
-JSRCS =
+	
+JSRCS = 
 
 # Non-graphical Java tests written in Tcl
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JSIMPLE_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
 	dummy.tcl
 
@@ -58,17 +60,14 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) \
-	#$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) # $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS)
+	
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	alljtests.tcl \
 	auto
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
@@ -82,17 +81,14 @@ test_java: jclass
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
-test_property:
-	$(JTCLSH) property.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_property
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto test_properties
 	$(JTCLSH) alljtests.tcl
-
-	
 
 # 'make clean' removes $(KRUFT)
 KRUFT = 
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
