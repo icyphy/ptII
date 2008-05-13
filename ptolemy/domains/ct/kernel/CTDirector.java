@@ -259,13 +259,9 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         }
 
         if (attribute == startTime) {
-            double startTimeValue = ((DoubleToken) startTime.getToken())
-                    .doubleValue();
-            _startTimeValue = startTimeValue;
+            _startTimeValue = ((DoubleToken) startTime.getToken()).doubleValue();
         } else if (attribute == stopTime) {
-            double stopTimeValue = ((DoubleToken) stopTime.getToken())
-                    .doubleValue();
-            _stopTimeValue = stopTimeValue;
+            _stopTimeValue = ((DoubleToken) stopTime.getToken()).doubleValue();
         } else if (attribute == initStepSize) {
             double value = ((DoubleToken) initStepSize.getToken())
                     .doubleValue();
@@ -342,6 +338,19 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      *  @return True if this director can be a top-level director.
      */
     public abstract boolean canBeTopLevelDirector();
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        CTDirector newObject = (CTDirector) super.clone(workspace);
+        newObject._breakpoints = new TotallyOrderedSet(new GeneralComparator());
+        return newObject;
+    }
 
     /** Override the fire() method of the super class. This method is
      *  abstract in this abstract base class. The derived classes need to
@@ -923,6 +932,8 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         _minStepSize = ((DoubleToken) minStepSize.getToken()).doubleValue();
         _valueResolution = ((DoubleToken) valueResolution.getToken())
                 .doubleValue();
+        _startTimeValue = ((DoubleToken) startTime.getToken()).doubleValue();
+        _stopTimeValue = ((DoubleToken) stopTime.getToken()).doubleValue();
 
         _currentSolver = null;
         _prefiredActors = new HashSet();
@@ -939,10 +950,8 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
             _debug(getFullName(), "create/clear break point table.");
         }
 
-        TotallyOrderedSet breakpoints = getBreakPoints();
-
-        if (breakpoints != null) {
-            breakpoints.clear();
+        if (_breakpoints != null) {
+            _breakpoints.clear();
         } else {
             _breakpoints = new TotallyOrderedSet(new GeneralComparator());
         }

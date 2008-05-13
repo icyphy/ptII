@@ -121,6 +121,24 @@ public class StaticSchedulingDirector extends Director {
         }
     }
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        StaticSchedulingDirector newObject = (StaticSchedulingDirector) super.clone(workspace);
+        Scheduler scheduler = getScheduler();
+        if (scheduler == null) {
+            newObject._setScheduler(null);
+        } else {
+            newObject._setScheduler((Scheduler)newObject.getAttribute(getScheduler().getName()));
+        }
+        return newObject;
+    }
+
     /** Calculate the current schedule, if necessary, and iterate the
      *  contained actors in the order given by the schedule.  No
      *  internal state of the director is updated during fire, so it
@@ -297,8 +315,11 @@ public class StaticSchedulingDirector extends Director {
         if (scheduler != null) {
             scheduler.setContainer(this);
         } else {
-            _setScheduler(null);
+            if (_scheduler != null) {
+                _scheduler.setContainer(null);
+            }
         }
+        _setScheduler(scheduler);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -316,8 +337,7 @@ public class StaticSchedulingDirector extends Director {
      *  @exception NameDuplicationException Not thrown in this base class,
      *   but derived classes may throw it if the scheduler is not compatible.
      */
-    protected void _setScheduler(Scheduler scheduler)
-            throws IllegalActionException, NameDuplicationException {
+    protected void _setScheduler(Scheduler scheduler) {
         // If the scheduler is not changed, do nothing.
         if (_scheduler != scheduler) {
             _scheduler = scheduler;
