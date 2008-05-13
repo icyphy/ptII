@@ -4,16 +4,26 @@
 <entity name="PNButterfly" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={105, 76, 1182, 841}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 991, 776}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[964, 733]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[776, 659]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0861971830986">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9204035874439">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.75, 241.5014204545454}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.9774070945946, 249.4765624999999}">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 115.0]">
+        <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="99">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 35.0]">
+        </property>
+        <property name="_localBufferSize" class="ptolemy.data.expr.Parameter" value="50">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <property name="_numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="15">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <property name="numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="15">
         </property>
@@ -32,25 +42,27 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 110.0]">
         </property>
     </property>
     <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+        <property name="compile" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 205.0]">
-        </property>
-    </property>
-    <property name="ChacoCodeGenerator" class="ptolemy.codegen.chaco.kernel.ChacoCodeGenerator">
-        <property name="compile" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="action" class="ptolemy.data.expr.StringParameter" value="TRANSFORM">
+        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 205.0]">
+        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 160.0]">
+        </property>
+        <property name="mpi" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </property>
     <entity name="PolarToCartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
@@ -90,7 +102,7 @@
         </port>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 455.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -125,7 +137,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 325.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -160,7 +172,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 560.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -188,7 +200,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 445.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -216,7 +228,7 @@
         </port>
     </entity>
     <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 355.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 465.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -256,7 +268,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 540.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -312,7 +324,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 325.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -339,7 +351,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 325.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -373,7 +385,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 445.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -435,7 +447,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 35.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -463,7 +475,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, -70.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -519,7 +531,7 @@
         </port>
     </entity>
     <entity name="MultiplyDivide4" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 75.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -555,7 +567,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 465.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -583,7 +595,7 @@
         </port>
     </entity>
     <entity name="MultiplyDivide5" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 195.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -623,7 +635,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 235.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -651,7 +663,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 125.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -685,7 +697,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 195.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -715,7 +727,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 195.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -743,7 +755,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 165.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -772,7 +784,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 275.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
         </property>
