@@ -129,9 +129,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        //code.append(_codeGenerator.comment(2,
-        //                "Fire Composite "
-        //                + getComponent().getName()));
+        code.append(_codeGenerator.comment(2,
+                        "Fire Composite "
+                        + getComponent().getName()));
+
         code.append(super.generateFireCode());
 
         Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
@@ -301,7 +302,6 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                     }
                 }
             }
-
         } else {
             Director outsideDirector = (Director) _getHelper(actor.getExecutiveDirector());
             Director insideDirector = (Director) _getHelper(actor.getDirector());
@@ -315,11 +315,11 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(insideDirector.getReference(
-                                "@" + name + "," + k, false, this));
+                        //code.append(insideDirector.getReference("@" + name + "," + k, false, this));
+                        code.append(insideDirector.getReference((TypedIOPort) inputPort, new String[]{"" + i, "" + k}, true, false, this));
                         code.append(" = " + _eol);
-                        code.append(outsideDirector.getReference(
-                                name + "," + k, false, this));
+                        //code.append(outsideDirector.getReference(name + "," + k, false, this));
+                        code.append(outsideDirector.getReference((TypedIOPort) inputPort, new String[]{"" + i, "" + k}, false, false, this));
                         code.append(";" + _eol);
                     }
                 }
@@ -388,9 +388,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         String code = resetOutputPortsOffset();
         if (code.length() > 0) {
             initializeCode.append(_eol
-                    + CodeStream.indent(_codeGenerator.comment(1,
+                    + _codeGenerator.comment(
                             getComponent().getName()
-                                    + "'s output offset initialization")));
+                                    + "'s output offset initialization"));
             initializeCode.append(code);
         }
 

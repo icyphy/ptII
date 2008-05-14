@@ -43,7 +43,6 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.Director;
 import ptolemy.codegen.kernel.PortCodeGenerator;
-import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.CompositeEntity;
@@ -256,14 +255,11 @@ public class PNDirector extends Director {
         args.add(_buffers.size());
         code.append(_codeStream.getCodeBlock("preinitBlock", args));
         
-        code.append(bufferCode);
-        
         if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
             _generateThreadFunctionCode(code);
         }
         
-        //return code.toString() + bufferCode.toString();
-        return code.toString();
+        return code.toString() + bufferCode.toString();
     }
 
     public String generatePostfireCode() throws IllegalActionException {
@@ -521,10 +517,10 @@ public class PNDirector extends Director {
                     
                     if (portCGHelper.hasRemoteReceivers(forComposite, port)) {
                         //pnPostfireCode += portHelper.updateOffset(rate, this);
-                        pnPostfireCode += portHelper.updateConnectedPortsOffset(rate, this);
+                        pnPostfireCode += portHelper.updateConnectedPortsOffset(rate, _director);
                     } 
                     if (port.isInput()){
-                        pnPostfireCode += portHelper.updateOffset(rate, this);
+                        pnPostfireCode += portHelper.updateOffset(rate, _director);
                     }
                 }
 
@@ -553,37 +549,6 @@ public class PNDirector extends Director {
                 + "_ThreadFunction";
     }
 
-    
-    // See CodeGeneratorHelper._getReference(String, boolean)
-    public List<Channel> getReferencedChannels(IOPort port, int channelNumber)
-            throws IllegalActionException {
-
-        boolean forComposite = false;
-        
-        // To support modal model, we need to check the following condition
-        // first because an output port of a modal controller should be
-        // mainly treated as an output port. However, during choice action,
-        // an output port of a modal controller will receive the tokens sent
-        // from the same port.  During commit action, an output port of a modal
-        // controller will NOT receive the tokens sent from the same port.
-        if ((port.isOutput() && !forComposite)
-                || (port.isInput() && forComposite)) {
-    
-            List sinkChannels = 
-                CodeGeneratorHelper.getSinkChannels(port, channelNumber);
-    
-            return sinkChannels;
-        }
-    
-        List<Channel> result = new LinkedList<Channel>();
-            
-        if ((port.isInput() && !forComposite && port.getWidth() > 0)
-                || (port.isOutput() && forComposite)) {
-    
-            result.add(new Channel(port, channelNumber));
-        }
-        return result;
-    }
     
     private HashSet<String> _buffers = new HashSet<String>();
 

@@ -3,7 +3,7 @@
  */
 package ptolemy.codegen.kernel;
 
-import ptolemy.codegen.c.domains.pn.kernel.PNDirector;
+import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -20,5 +20,8 @@ public interface PortCodeGenerator {
 
     
     public Object updateConnectedPortsOffset(int rate, Director director) throws IllegalActionException;
+
+
+    public String initializeOffsets() throws IllegalActionException;
 
 }

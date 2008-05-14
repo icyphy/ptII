@@ -30,14 +30,15 @@ package ptolemy.codegen.c.actor;
 import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
+import ptolemy.codegen.c.domains.pn.kernel.MpiPNDirector;
 import ptolemy.codegen.c.domains.pn.kernel.PNDirector;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.Director;
 import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.pn.kernel.PNQueueReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -49,15 +50,20 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
      */
     public IOPort(ptolemy.actor.IOPort component) {
         super(component);
+
+    }
+
+    private boolean isMpi() {
+        return (null != getCodeGenerator().getAttribute("mpi"));
     }
 
     public String generateOffset(String offset, int channel, boolean isWrite, 
-            Director directorHelper) throws IllegalActionException {
+            Director director) throws IllegalActionException {
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
 
         Receiver receiver = _getReceiver(offset, channel, port);
 
-        if (receiver instanceof PNQueueReceiver) {
+        if (!isMpi() && receiver instanceof PNQueueReceiver) {
             String result;
             if (offset.length() == 0 || offset.equals("0")) {
                 result = (isWrite) ? 
@@ -68,8 +74,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                 result += offset + ", ";
             }
 
-            PNDirector pnDirector = (PNDirector) directorHelper; 
-
+            PNDirector pnDirector = (PNDirector) _getHelper(director);
             result += "&" + PNDirector.generatePortHeader(port, channel) + ", ";
             result += "&" + pnDirector.generateDirectorHeader() + ")";
             return "[" + result + "]";
@@ -77,6 +82,24 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
             return _generateOffset(offset, channel, isWrite);
         }
     }
+
+    public String generatePreFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        if (isMpi()) {
+            code.append("MPI_recv();" + _eol);
+        }
+        return code.toString();
+    }
+
+
+    public String generatePostFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        if (isMpi()) {
+            code.append("MPI_send();" + _eol);
+        }
+        return code.toString();
+    }
+
 
     private Receiver _getReceiver(String offset, int channel, ptolemy.actor.IOPort port) {
         Receiver[][] receivers = port.getReceivers();
@@ -100,7 +123,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
 
     // Update the write offset of the [multiple] connected ports.
-    public String updateConnectedPortsOffset(int rate, Director directorHelper) throws IllegalActionException {
+    public String updateConnectedPortsOffset(int rate, Director director) throws IllegalActionException {
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
                 .getToken()).booleanValue();
 
@@ -139,9 +162,13 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                 Receiver receiver = _getReceiver(
                         offsetObject.toString(), sinkChannelNumber, sinkPort);
 
-                // PNReceiver.
-                if (receiver instanceof PNQueueReceiver) {
-                    code.append(_updatePNOffset(rate, sinkPort, sinkChannelNumber, directorHelper, true));
+                if (isMpi() && MpiPNDirector.isMpiSendBuffer(port, j)) {
+                    code.append(_generateMPISendCode(j, rate, sinkPort, sinkChannelNumber, director));
+
+                } else if (!isMpi() && receiver instanceof PNQueueReceiver) {
+
+                    // PNReceiver.                    
+                    code.append(_updatePNOffset(rate, sinkPort, sinkChannelNumber, director, true));
                 } else {
 
                     if (offsetObject instanceof Integer) {
@@ -156,7 +183,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                     } else { // If offset is a variable.
                         String offsetVariable = (String) helper.getWriteOffset(
                                 sinkPort, sinkChannelNumber);
-    
+
                         if (padBuffers) {
                             int modulo = helper.getBufferSize(sinkPort,
                                     sinkChannelNumber) - 1;
@@ -178,6 +205,102 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         return code.toString();
     }
 
+    private String _generateMPISendCode(int channelNumber, 
+            int rate, ptolemy.actor.IOPort sinkPort,
+            int sinkChannelNumber, Director director) throws IllegalActionException {
+        ptolemy.actor.TypedIOPort port = (ptolemy.actor.TypedIOPort) getComponent();
+
+        CodeGeneratorHelper sinkHelper = 
+            (CodeGeneratorHelper) _getHelper(sinkPort.getContainer());
+
+        StringBuffer code = new StringBuffer();
+
+        code.append("// generateMPISendCode()" + _eol);
+
+        for (int i = 0; i < rate; i++) {
+
+            int sinkRank = MpiPNDirector.getRankNumber((Actor) sinkPort.getContainer());
+
+            code.append("// Initialize send tag value." + _eol);
+            code.append("static int " + MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + " = " +
+                    MpiPNDirector.getMpiReceiveBufferId(sinkPort, sinkChannelNumber) + ";" + _eol);
+
+            if (MpiPNDirector._DEBUG) {
+                int sourceRank = MpiPNDirector.getRankNumber((Actor) port.getContainer());
+                code.append("printf(\"" + port.getContainer().getName() + "[" + sourceRank + "] sending msg <" + 
+                        sinkRank + ", %d> for " + MpiPNDirector.getBufferLabel(port, channelNumber) +
+                        		"\\n\", " + MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + ");" + _eol);
+            }
+            
+            code.append("MPI_Isend(&");
+
+            String[] channelAndOffset = new String[2];
+            channelAndOffset[0] = "" + sinkChannelNumber;
+            channelAndOffset[1] = MpiPNDirector.generateFreeSlots(sinkPort, sinkChannelNumber) + "[" +
+            MpiPNDirector.generatePortHeader(sinkPort, sinkChannelNumber) + ".current]";
+
+            String buffer = 
+                sinkHelper.generatePortReference(sinkPort, channelAndOffset , false);
+
+            //    sourcHelper.processCode("&$ref(" + port.getName() + "#" + channelNumber + ", " + i + ")");
+            //sinkHelper.processCode("&$ref(" + sinkPort.getName() + "#" + sinkChannelNumber + ", " + i + ")");
+
+
+            code.append(buffer);
+            //code.append(buffer.substring(0, buffer.indexOf('=')));
+//          generateVariableName(sinkPort) + sinkChannelNumber
+//          + "[" + MpiPNDirector.generateFreeSlots(sinkPort, sinkChannelNumber) + "[" + 
+//          MpiPNDirector.generatePortHeader(sinkPort, sinkChannelNumber) + ".current" + (i == 0 ? "" : i) + 
+//          "]]" + ", 1, ");
+
+            // count.
+            code.append(", 1");
+
+            // FIXME: handle different mpi data types.
+            if (port.getType() == BaseType.DOUBLE) {
+                code.append(", MPI_DOUBLE");
+            } else if (port.getType() == BaseType.INT) {
+                code.append(", MPI_INT");
+            } else {
+                assert false;
+            }
+
+            code.append(", " + sinkRank);
+
+            code.append(", " + MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) +
+                    ", " + "comm, &" +
+                    MpiPNDirector.generateMpiRequest(sinkPort, sinkChannelNumber) + "[" + 
+                    MpiPNDirector.generateFreeSlots(sinkPort, sinkChannelNumber) + "[" + 
+                    MpiPNDirector.generatePortHeader(sinkPort, sinkChannelNumber) + 
+                    ".current" + (i == 0 ? "" : i) + "]]" + ");" + _eol);
+        }
+
+        // Update the Offset.
+        code.append(MpiPNDirector.generatePortHeader(sinkPort, sinkChannelNumber) + 
+                ".current += " + rate + ";" + _eol);
+
+        MpiPNDirector directorHelper = (MpiPNDirector) _getHelper(director);
+        code.append(MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + " += " + 
+                directorHelper.getNumberOfMpiConnections(true) + ";" + _eol);
+
+        code.append(MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + " &= 32767; // 2^15 - 1 which is the max tag value." + _eol);
+
+        return  code + _eol;
+
+    }
+
+    public String generateInitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        ptolemy.actor.TypedIOPort port = (ptolemy.actor.TypedIOPort) getComponent();
+
+        CodeGeneratorHelper helper = 
+            (CodeGeneratorHelper) _getHelper(getComponent().getContainer());
+
+        return helper.processCode(code.toString());
+    }
+
+
+
     // Updating the read offset.
     public String updateOffset(int rate, Director directorHelper) 
     throws IllegalActionException {
@@ -188,7 +311,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
         String code = this.getCodeGenerator().comment("\n....................Begin updateOffset..." + port.getFullName());
 
-        if (receiver instanceof PNQueueReceiver) {
+        if (!isMpi() && receiver instanceof PNQueueReceiver) {
             int width = port.getWidth();
             for (int i = 0; i < width; i++) {
 
@@ -237,9 +360,9 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         // both input and output ports.
 
         return incrementFunction + "(" + 
-                incrementArg + "&" +
-                pnDirector.generatePortHeader(port, channelNumber) + ", &" +
-            pnDirector.generateDirectorHeader() + ");" + _eol;
+        incrementArg + "&" +
+        pnDirector.generatePortHeader(port, channelNumber) + ", &" +
+        pnDirector.generateDirectorHeader() + ");" + _eol;
     }
 
     protected String _updateOffset(int rate) throws IllegalActionException {
@@ -260,7 +383,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         }
 
         for (int j = 0; j < length; j++) {
-            // Update the offset for each channel.
+            // Update the offset for each channel.            
             if (helper.getReadOffset(port, j) instanceof Integer) {
                 int offset = ((Integer) helper.getReadOffset(port, j))
                 .intValue();
@@ -297,12 +420,18 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
      */
     protected String _generateOffset(String offsetString, int channel, boolean isWrite) 
     throws IllegalActionException {
+
         boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
                 .getToken()).booleanValue();
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
                 .getToken()).booleanValue();
 
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
+
+        if (MpiPNDirector.isLocalBuffer(port, channel)) {
+            int i = 1;
+        }
+
 
         // When dynamic references are allowed, any input ports require
         // offsets.
@@ -329,7 +458,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         if (!offsetString.equals("")) {
             // Specified offset.
 
-            String temp;
+            String temp = "";
             if (offsetObject instanceof Integer && _isInteger(offsetString)) {
 
                 int offset = ((Integer) offsetObject).intValue()
@@ -353,6 +482,11 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                 // getBufferSize(port, channelNumber) will always
                 // return a value at least 2.
 
+//              if (MpiPNDirector.isLocalBuffer(port, channel)) {
+//              temp = offsetObject.toString();
+//              temp = MpiPNDirector.generateFreeSlots(port, channel) +
+//              "[" + MpiPNDirector.generatePortHeader(port, channel) + ".current]";
+//              } else 
                 if (padBuffers) {
                     int modulo = getBufferSize(port, channel) - 1;
                     temp = "(" + offsetObject.toString() + " + " + offsetString
@@ -377,6 +511,12 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
                 result = "[" + offset + "]";
             } else {
+
+//              if (MpiPNDirector.isLocalBuffer(port, channel)) {
+//              result = offsetObject.toString();
+//              result = MpiPNDirector.generateFreeSlots(port, channel) +
+//              "[" + MpiPNDirector.generatePortHeader(port, channel) + ".current]";                  
+//              } else 
                 if (padBuffers) {
                     int modulo = getBufferSize(port, channel) - 1;
                     result = "[" + offsetObject + "&" + modulo + "]";
@@ -404,5 +544,35 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         } catch (NumberFormatException ex) {
             return false;
         }
+    }
+
+    public String initializeOffsets() throws IllegalActionException {
+        if (isMpi()) {
+            return "";
+        }
+        
+        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
+        CodeGeneratorHelper actorHelper = 
+            (CodeGeneratorHelper) _getHelper(port.getContainer());
+        
+        StringBuffer code = new StringBuffer();
+        
+        for (int i = 0; i < port.getWidth(); i++) {
+            Object readOffset = actorHelper.getReadOffset(port, i);
+            if (readOffset instanceof Integer) {
+                actorHelper.setReadOffset(port, i, Integer.valueOf(0));
+            } else {
+                code.append(((String) readOffset)
+                        + " = 0;" + _eol);
+            }
+            Object writeOffset = actorHelper.getWriteOffset(port, i);
+            if (writeOffset instanceof Integer) {
+                actorHelper.setWriteOffset(port, i, Integer.valueOf(0));
+            } else {
+                code.append(((String) writeOffset)
+                        + " = 0;" + _eol);
+            }
+        }
+        return code.toString();
     }
 }

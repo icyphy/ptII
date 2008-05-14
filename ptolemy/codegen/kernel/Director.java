@@ -29,18 +29,24 @@ package ptolemy.codegen.kernel;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
+import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////
+
 ////Director
 
 /**
@@ -79,7 +85,7 @@ public class Director implements ActorCodeGenerator {
     public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
+        .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
@@ -103,7 +109,7 @@ public class Director implements ActorCodeGenerator {
         code.append(_codeGenerator.comment("The firing of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
+        .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -124,7 +130,7 @@ public class Director implements ActorCodeGenerator {
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
+        .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
@@ -163,10 +169,10 @@ public class Director implements ActorCodeGenerator {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_codeGenerator.comment(1,
-                "The initialization of the director."));
+        "The initialization of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
+        .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
@@ -179,6 +185,14 @@ public class Director implements ActorCodeGenerator {
                 IOPort port = (IOPort) outputPorts.next();
                 int rate = DFUtilities.getTokenInitProduction(port);
                 _updateConnectedPortsOffset(port, code, rate);
+            }
+
+            for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
+                if (port.getWidth() > 0) {
+                    CodeGeneratorHelper portHelper = 
+                        (CodeGeneratorHelper) _getHelper(port);
+                    code.append(portHelper.generateInitializeCode());
+                }
             }
         }
         return code.toString();
@@ -197,8 +211,8 @@ public class Director implements ActorCodeGenerator {
      * the port buffer size or the offset in the channel and offset map.
      */
     public String generateOffset(String offsetString, IOPort port, 
-        int channel, boolean isWrite, CodeGeneratorHelper helper)
-            throws IllegalActionException {
+            int channel, boolean isWrite, CodeGeneratorHelper helper)
+    throws IllegalActionException {
         assert false;
         return "";
         //return helper._generateOffset(offsetString, port, channel, isWrite);
@@ -217,7 +231,7 @@ public class Director implements ActorCodeGenerator {
         code.append(_codeGenerator.comment(0, "The postfire of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
+        .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -240,7 +254,7 @@ public class Director implements ActorCodeGenerator {
         StringBuffer code = new StringBuffer();
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
+        .deepEntityList().iterator();
 
         boolean addedDirectorComment = false;
         while (actors.hasNext()) {
@@ -250,11 +264,11 @@ public class Director implements ActorCodeGenerator {
             // If a helper generates preinitialization code, then
             // print a comment
             String helperObjectPreinitializationCode = helperObject
-                    .generatePreinitializeCode();
+            .generatePreinitializeCode();
 
             if (!addedDirectorComment
                     && CodeGenerator
-                            .containsCode(helperObjectPreinitializationCode)) {
+                    .containsCode(helperObjectPreinitializationCode)) {
                 addedDirectorComment = true;
                 code.append(_codeGenerator.comment(0,
                         "The preinitialization of the director."));
@@ -275,9 +289,9 @@ public class Director implements ActorCodeGenerator {
      *   while generating mode transition code.
      */
     public void generateModeTransitionCode(StringBuffer code)
-            throws IllegalActionException {
+    throws IllegalActionException {
         Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
+        .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
@@ -292,7 +306,7 @@ public class Director implements ActorCodeGenerator {
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
-            throws IllegalActionException {
+    throws IllegalActionException {
         code.append(CodeStream.indent(_codeGenerator
                 .comment("Transfer tokens to the inside")));
 
@@ -332,7 +346,7 @@ public class Director implements ActorCodeGenerator {
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-            throws IllegalActionException {
+    throws IllegalActionException {
         code.append(_codeGenerator
                 .comment("Transfer tokens to the outside"));
 
@@ -371,7 +385,7 @@ public class Director implements ActorCodeGenerator {
         StringBuffer code = new StringBuffer();
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
+        .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
@@ -387,11 +401,11 @@ public class Director implements ActorCodeGenerator {
      *   director cannot be found.
      */
     public String generateVariableInitialization()
-            throws IllegalActionException {
+    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
+        .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
@@ -415,7 +429,7 @@ public class Director implements ActorCodeGenerator {
         code.append(_codeGenerator.comment(1, "The wrapup of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
+        .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -426,28 +440,50 @@ public class Director implements ActorCodeGenerator {
         return code.toString();
     }
 
-    /**
-     * Return the reference to the specified parameter or port of the
-     * associated actor. For a parameter, the returned string is in
-     * the form "fullName_parameterName". For a port, the returned string
-     * is in the form "fullName_portName[channelNumber][offset]", if
-     * any channel number or offset is given.
-     *
-     * FIXME: need documentation on the input string format.
-     *
-     * @param name The name of the parameter or port
-     * @param isWrite True if the parameter is writable
-     * @param helper The helper of the associated actor
-     * @return The reference to that parameter or port (a variable name,
-     *   for example).
-     *  @exception IllegalActionException If the parameter or port does not
-     *   exist or does not have a value.
-     */
-    public String getReference(String name, boolean isWrite, 
-            CodeGeneratorHelper helper) throws IllegalActionException {
-        
-        return helper._getReference(name, isWrite);
+    public String getReference(TypedIOPort port, String[] channelAndOffset,
+            boolean forComposite, boolean isWrite, CodeGeneratorHelper helper)
+    throws IllegalActionException {
+        return helper._getReference(port, channelAndOffset, forComposite, isWrite);
     }
+
+    public String getReference(Attribute attribute, String[] channelAndOffset,
+            CodeGeneratorHelper helper) throws IllegalActionException {
+        return helper._getReference(attribute, channelAndOffset);
+    }
+
+
+    // See CodeGeneratorHelper._getReference(String, boolean)
+    public static List<Channel> getReferencedChannels(IOPort port, int channelNumber)
+    throws IllegalActionException {
+
+        boolean forComposite = false;
+
+        // To support modal model, we need to check the following condition
+        // first because an output port of a modal controller should be
+        // mainly treated as an output port. However, during choice action,
+        // an output port of a modal controller will receive the tokens sent
+        // from the same port.  During commit action, an output port of a modal
+        // controller will NOT receive the tokens sent from the same port.
+        if ((port.isOutput() && !forComposite)
+                || (port.isInput() && forComposite)) {
+
+            List sinkChannels = 
+                CodeGeneratorHelper.getSinkChannels(port, channelNumber);
+
+            return sinkChannels;
+        }
+
+        List<Channel> result = new LinkedList<Channel>();
+
+        if ((port.isInput() && !forComposite && port.getWidth() > 0)
+                || (port.isOutput() && forComposite)) {
+
+            result.add(new Channel(port, channelNumber));
+        }
+        return result;
+    }
+
+
 
     /** Return the buffer size of a given channel (i.e, a given port
      *  and a given channel number). In this base class, this method
@@ -459,7 +495,7 @@ public class Director implements ActorCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public int getBufferSize(IOPort port, int channelNumber)
-            throws IllegalActionException {
+    throws IllegalActionException {
         return 1;
     }
 
@@ -511,7 +547,7 @@ public class Director implements ActorCodeGenerator {
         }
 
         Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
+        .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -571,7 +607,7 @@ public class Director implements ActorCodeGenerator {
     protected int _ceilToPowerOfTwo(int value) throws IllegalActionException {
         if (value < 1) {
             throw new IllegalActionException(getComponent(),
-                    "The given integer must be a positive integer.");
+            "The given integer must be a positive integer.");
         }
 
         int powerOfTwo = 1;
@@ -590,7 +626,7 @@ public class Director implements ActorCodeGenerator {
      *   it when getting the helper associated with the given component.
      */
     protected ComponentCodeGenerator _getHelper(NamedObj component)
-            throws IllegalActionException {
+    throws IllegalActionException {
         return _codeGenerator._getHelper(component);
     }
 
@@ -613,16 +649,16 @@ public class Director implements ActorCodeGenerator {
      *   offsets, or getting the buffer size, or if the rate is less than 0.
      */
     protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
-            throws IllegalActionException {
+    throws IllegalActionException {
         if (rate == 0) {
             return;
         } else if (rate < 0) {
             throw new IllegalActionException(port, "the rate: " + rate
                     + " is negative.");
         }
-        
+
         PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
-        code.append(portHelper.updateOffset(rate, this));
+        code.append(portHelper.updateOffset(rate, _director));
     }
 
     /** Update the offsets of the buffers associated with the ports connected
@@ -643,10 +679,10 @@ public class Director implements ActorCodeGenerator {
             throw new IllegalActionException(port, "the rate: " + rate
                     + " is negative.");
         }
-        
+
         PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
-        code.append(portHelper.updateConnectedPortsOffset(rate, this));
-        
+        code.append(portHelper.updateConnectedPortsOffset(rate, _director));
+
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -667,7 +703,7 @@ public class Director implements ActorCodeGenerator {
 
     /** The codeStream associated with this director. */
     protected CodeStream _codeStream;
-    
+
     /** The associated director.
      */
     protected ptolemy.actor.Director _director;

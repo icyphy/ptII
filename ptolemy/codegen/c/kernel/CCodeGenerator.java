@@ -798,6 +798,7 @@ public class CCodeGenerator extends CodeGenerator {
 
         String directorFunctionDir = cCodegenPath + "parameterized/directorFunctions/";
         _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c");
+        _overloadedFunctions.parse(directorFunctionDir + "MpiPNDirector.c");
 
         _overloadedFunctionSet = new HashSet<String>();
 

@@ -1,0 +1,113 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Feedback" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    </property>
+    <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
+        <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 35.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.768">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{257.5, 215.5989583333333}">
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+        <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 40.0]">
+        </property>
+    </property>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[134.0, 242.0]">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, 147.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[214.0, 252.0]">
+        </property>
+    </entity>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[314.0, 252.0]">
+        </property>
+    </entity>
+    <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[449.0, 152.0]">
+        </property>
+    </entity>
+    <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[612.75, 152.25]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[399.0, 172.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[99.0, 147.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Const.output" relation="relation3"/>
+    <link port="Const.trigger" relation="relation4"/>
+    <link port="Ramp.output" relation="relation4"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="AddSubtract.plus" relation="relation3"/>
+    <link port="AddSubtract.output" relation="relation"/>
+    <link port="SampleDelay.input" relation="relation"/>
+    <link port="SampleDelay.output" relation="relation2"/>
+    <link port="Equals.input" relation="relation4"/>
+    <link port="Equals.input" relation="relation2"/>
+    <link port="Equals.output" relation="relation5"/>
+    <link port="MonitorValue.input" relation="relation5"/>
+</entity>

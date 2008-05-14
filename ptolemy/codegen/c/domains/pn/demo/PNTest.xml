@@ -7,7 +7,7 @@
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="99">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 80.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 70.0]">
         </property>
         <property name="_localBufferSize" class="ptolemy.data.expr.Parameter" value="50">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -59,6 +59,8 @@
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="99">
+        </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">

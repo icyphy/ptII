@@ -1,57 +1,92 @@
-/*** preinitBlock($name, $numThreads, $numBuffers) ***/
-    static pthread_cond_t $name_condition[$numBuffers];
-    static pthread_mutex_t $name_conditionMutex[$numBuffers];
-    
-    static struct directorHeader $name = {
-        // Only partial initialization.
-        0,                  // writeBlockingThreads
-        0,                  // readBlockingThreads
-        $numThreads,   		// totalNumThreads
-        false,              // terminate
-        $numBuffers,		// numBuffers
-        $name_condition,    // allConditions
-        $name_conditionMutex// allConditionMutexes
-                            // writeBlockMutex (init by pthread_mutex_init());
-                            // readBlockMutex (init by pthread_mutex_init());
-    };
+/*** preinitBlock ***/
+	/* MPI preinitialize variables*/
+	MPI_Comm comm;
+	int n_proc;
+	int rank;
+/**/
+
+
+/*** timerSharedBlock ***/
+	#include <sys/time.h>
+	#include <time.h>
+	struct Timer {
+		struct timeval clock_holder;
+		struct timeval duration;
+	};
+	
+	void initialize_timer (struct Timer * t) {
+		t->clock_holder.tv_sec = 0;
+		t->clock_holder.tv_usec = 0;
+		t->duration.tv_sec = 0;
+		t->duration.tv_usec = 0;
+	}
+	
+	void start_timer(struct Timer * t) {
+		gettimeofday (&t->clock_holder, NULL);
+	}
+	
+	void stop_timer(struct Timer * t) {
+		struct timeval end_tv;
+		gettimeofday (&end_tv, NULL);
+		t->duration.tv_sec += (end_tv.tv_sec - t->clock_holder.tv_sec);
+		t->duration.tv_usec += (end_tv.tv_usec - t->clock_holder.tv_usec);
+	}
+	
+	double timer_duration(const struct Timer t) {
+		return t.duration.tv_sec + 1.0e-6 * (double)t.duration.tv_usec;
+	}
+	
+	struct Timer total_timer;
 /**/
 
 /*** declareBufferHeader($name, $dirHeader, $capacity, $index) ***/
-    static struct pnBufferHeader $name = {
-        // Only partial initialization.
-        0,                              		// writeCount
-        0,                              		// readCount
-        0,                              		// readOffset
-        0,                              		// writeOffset
-        $capacity,                      		// capacity
-        PN_BUFFER_NO_BLOCKING,          		// pendingFlag
-        &($dirHeader_condition[$index]), 		// waitCondition
-        &($dirHeader_conditionMutex[$index])	// waitMutex
-    };
+	// $MPI_declareStruct() is required.	
+	static struct mpiBufferHeader $name = {
+			0,                              		// current
+			$capacity,                         		// available
+	};
 /**/
 
+/*** declareLocalBufferHeader($name, $dirHeader, $capacity, $index) ***/
+// $MPI_declareStruct() is required.	
+struct mpiLocalBufferHeader $name = {
+		0,                              		// readOffset
+		0		                         		// writeOffset
+};
+/**/
 
 /*** initBlock($directorHeader) ***/
-    pthread_mutex_init(&$directorHeader.writeBlockMutex, NULL);
-    pthread_mutex_init(&$directorHeader.readBlockMutex, NULL);
+
 /**/
 
+
+/*** initTimer ***/
+	initialize_timer(&total_timer);
+	start_timer(&total_timer);
+/**/
+
+
+/*** mpiInit ***/    
+MPI_Init(&argc, &argv);
+comm = MPI_COMM_WORLD;
+MPI_Comm_size (comm, &n_proc);
+MPI_Comm_rank (comm, &rank);
+/**/
+
+
 /*** initBuffer($buffer) ***/
-    pthread_mutex_init($buffer.waitMutex, NULL);
-    pthread_cond_init($buffer.waitCondition, NULL);
+
 /**/
 
 
 /*** wrapupBlock($directorHeader) ***/
-    pthread_mutex_destroy(&$directorHeader.writeBlockMutex);
-    pthread_mutex_destroy(&$directorHeader.readBlockMutex);
+
 /**/
 
 /*** destroyBuffer($buffer) ***/
-    pthread_mutex_destroy($buffer.waitMutex);
-    pthread_cond_destroy($buffer.waitCondition);
+
 /**/
 
 /*** updateInputOffset ***/
-    incrementOffset();
+
 /**/
