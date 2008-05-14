@@ -217,9 +217,23 @@ public class ModelExecutor extends TypedAtomicActor {
 
         private class WrapperDirector extends Director {
 
+            @SuppressWarnings("unchecked")
             public WrapperDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
                 super(container, name);
+
+                _eventQueue = new PriorityQueue<TimedEvent>(1,
+                        new TimedEvent.TimeComparator());
+            }
+
+            @SuppressWarnings("unchecked")
+            public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+                WrapperDirector director =
+                    (WrapperDirector) super.clone(workspace);
+                director._eventQueue = new PriorityQueue<TimedEvent>(1,
+                        new TimedEvent.TimeComparator());
+                return director;
             }
 
             public void fire() throws IllegalActionException {
@@ -324,10 +338,7 @@ public class ModelExecutor extends TypedAtomicActor {
                 return hasToken;
             }
 
-            @SuppressWarnings("unchecked")
-            private PriorityQueue<TimedEvent> _eventQueue =
-                new PriorityQueue<TimedEvent>(1,
-                        new TimedEvent.TimeComparator());
+            private PriorityQueue<TimedEvent> _eventQueue;
         }
     }
 
