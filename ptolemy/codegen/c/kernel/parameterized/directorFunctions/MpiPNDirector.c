@@ -23,7 +23,6 @@ boolean isLocalBufferFull(struct mpiLocalBufferHeader* header) {
     struct mpiBufferHeader {
         unsigned int current;    	
         unsigned int available;     
-        int tag;
     }; 
 
     struct mpiLocalBufferHeader {    

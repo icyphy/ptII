@@ -49,6 +49,7 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.properties.util.MultiHashMap;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -67,7 +68,7 @@ import ptolemy.kernel.util.StringAttribute;
 
  FIXME: How to make it possible for executions to be finite?
 
- @author Man-Kit Leung, Isaac Liu
+ @author Man-Kit Leung, Isaac Liu, Jia Zou
  @version $Id$
  @since Ptolemy II 7.0
  @Pt.ProposedRating Red (mankit)
@@ -84,14 +85,35 @@ public class MpiPNDirector extends Director {
      */
     public MpiPNDirector(ptolemy.domains.pn.kernel.PNDirector pnDirector) {
         super(pnDirector);
-
+        this.analyzeModel();
 
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
+    // Traverse through the model to see which actors belong to which rank.
+    public void analyzeModel() {// throws IllegalActionException {
 
+        _rankActors.clear();
+        _numProcessors = 0;
+
+        try {
+            CompositeActor compositeActor = 
+                (CompositeActor) _director.getContainer();       
+            List actorList = compositeActor.deepEntityList();
+            for (Actor actor : (List<Actor>) actorList) {
+                int rank = getRankNumber(actor);
+                _rankActors.put(rank, actor);
+                if (rank > _numProcessors)
+                    _numProcessors = rank;
+            }
+            _numProcessors++;
+        } catch (IllegalActionException e){
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+    
     /** Generate the body code that lies between variable declaration
      *  and wrapup.
      *  @return The generated body code.
@@ -109,13 +131,15 @@ public class MpiPNDirector extends Director {
         if (_doMeasureTime()) {
             code.append(_codeStream.getCodeBlock("initTimer"));
         }
-        
+
         List actorList = compositeActor.deepEntityList();
-        for (Actor actor : (List<Actor>) actorList) {
-            int rankNumber = getRankNumber(actor);
-            code.append("if (rank == " + rankNumber + ") {" + _eol);
-            code.append("initialize_timer(&" + 
-                    _getActorTimer(actor) + ");" + _eol + "}" + _eol);
+        if (_doMeasureTime()) {
+            for (Actor actor : (List<Actor>) actorList) {
+                int rankNumber = getRankNumber(actor);
+                code.append("if (rank == " + rankNumber + ") {" + _eol);
+                code.append("initialize_timer(&" + 
+                        _getActorTimer(actor) + ");" + _eol + "}" + _eol);
+            }
         }
         
         code.append(_codeGenerator.comment("I'm in mpi director."));
@@ -123,16 +147,57 @@ public class MpiPNDirector extends Director {
         //code.append("pthread_attr_init(&pthread_custom_attr);" + _eol + _eol);
 
 
-
         code.append("while (true) {" + _eol);
         for (Actor actor : (List<Actor>) actorList) {
             int rankNumber = getRankNumber(actor);
             code.append("if (rank == " + rankNumber + ") {" + _eol);
+
+            code.append("if (" + _getActorRounds(actor) + " < " + 
+                    _getActorRoundsLimit(actor) + ") ");
+
             code.append(_getActorMpiLabel(actor) + "();" + _eol);
+
+            code.append("else " + _getActorTerminate(actor) + " = true;" + _eol);
+
             code.append("}" + _eol);
         }
+        
+        // Check if we are ready to terminate
+        int rank = 0;
+        while (rank < _numProcessors) {
 
-        code.append("}" + _eol);
+            code.append("if (rank == " + rank + ") {" + _eol);
+            code.append("if (true");
+
+            List actorOfThisRankList = (List)_rankActors.get(rank);
+            for (Actor actor: (List<Actor>) actorOfThisRankList) {
+                code.append(" & " + _getActorTerminate(actor));
+            }
+            code.append(")" + _eol + "break;" + _eol);
+            code.append("}" + _eol);
+            
+            rank++;
+        }
+        
+        code.append("}" + _eol); //end of while(true)
+        
+        // print out the timer values
+        if (_doMeasureTime()) {
+            code.append(" printf(\"rank = %d, total time takes: %g\\n\", rank, timer_duration(total_timer));" +_eol);
+            rank = 0;
+            while (rank < _numProcessors) {
+                code.append("if (rank == " + rank + ") {" + _eol);
+                List actorOfThisRankList = (List)_rankActors.get(rank);
+                for (Actor actor: (List<Actor>) actorOfThisRankList) {
+                    code.append(" printf(\"rank = %d, " + _getActorTimer(actor) 
+                            + " takes: %g\\n\", rank, timer_duration(" + _getActorTimer(actor)
+                            + "));" +_eol);
+                }
+                code.append("}" +_eol);
+                rank++;
+            }
+        }
+        
         return code.toString();
     }
 
@@ -498,11 +563,44 @@ public class MpiPNDirector extends Director {
 
     public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
+        
+        // FIXME: This code ensures the termination of the mpi PN code,
+        // however this scheme may not be of the PN semantics.
+        StringBuffer code = new StringBuffer();
+        
+        CompositeActor compositeActor = (CompositeActor) _director.getContainer();
+        List actorList = compositeActor.deepEntityList();
+
+        // FIXME: this is NOT right! It's a hack, assuming all actors will be fired EXACT
+        // the same amount of times.
+        Parameter Iterations = (Parameter)_director.getContainer().getAttribute("iterations");
+        String numIterations = new String();
+        if (Iterations == null)
+            numIterations = "1000";
+        else 
+            numIterations = Iterations.getExpression();
+        
+        for (Actor actor : (List<Actor>) actorList) {
+            code.append("static int " + _getActorRoundsLimit(actor) + " = " + numIterations 
+                    + ";" + _eol);
+            code.append("static int " + _getActorRounds(actor) + " = 0;" + _eol);
+            code.append("boolean " + _getActorTerminate(actor) + " = 0;" + _eol);
+        }
+        sharedCode.add(code.toString());
+        
         if (_doMeasureTime()) {
             _codeStream.clear();
             _codeStream.appendCodeBlock("timerSharedBlock");
             sharedCode.add(_codeStream.toString());
+            
+            StringBuffer codeBuffer = new StringBuffer();
+            List actorList2 = compositeActor.deepEntityList();
+            for (Actor actor : (List<Actor>) actorList2) {
+                codeBuffer.append("struct Timer " + _getActorTimer(actor) + ";" + _eol);
+            }
+            sharedCode.add(codeBuffer.toString());
         }
+                
         return sharedCode;
     }
 
@@ -912,6 +1010,11 @@ public class MpiPNDirector extends Director {
                     code.append("printf(\"Fire " + 
                             actor.getName() + "\\n\");" + _eol);
                 }
+                
+                // Starts the timer for the fire block
+                if (_doMeasureTime()) {
+                    code.append("start_timer(&" + _getActorTimer(actor) + ");" + _eol);
+                }
                     
                 code.append(helper.generateFireCode());
 
@@ -948,6 +1051,14 @@ public class MpiPNDirector extends Director {
 
                 // Code for incrementing buffer offsets.
                 code.append(pnPostfireCode);
+                
+                // End the timer for the fire block
+                if (_doMeasureTime()) {
+                    code.append("stop_timer(&" + _getActorTimer(actor) + ");" + _eol);
+                }
+                
+                // increment number of firings
+                code.append(_getActorRounds(actor) + "++;" + _eol);
 
                 if (openBracket) {
                     code.append("}" + _eol);
@@ -1035,7 +1146,18 @@ public class MpiPNDirector extends Director {
         return CodeGeneratorHelper.generateName((NamedObj) actor) + "_timer";
     }
 
+    private static String _getActorRoundsLimit(Actor actor) {
+        return CodeGeneratorHelper.generateName((NamedObj) actor).toUpperCase() 
+            + "_ROUNDS_LIMIT";
+    }
 
+    private static String _getActorRounds(Actor actor) {
+        return CodeGeneratorHelper.generateName((NamedObj) actor) + "_Rounds";
+    }
+
+    private static String _getActorTerminate(Actor actor) {
+        return CodeGeneratorHelper.generateName((NamedObj) actor) + "_Terminate";
+    }
     
     private HashSet<String> _buffers = new HashSet<String>();
 
@@ -1048,4 +1170,6 @@ public class MpiPNDirector extends Director {
         return _director.getAttribute("_measureTime") != null;
     }
 
+    MultiHashMap _rankActors = new MultiHashMap();
+    int _numProcessors = 0;
 }
