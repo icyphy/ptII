@@ -121,6 +121,9 @@ public class MpiPNDirector extends Director {
      *  {@link #generateFireCode()} method throws the exceptions.
      */
     public String generateFireCode() throws IllegalActionException {
+        
+        this.analyzeModel();
+        
         StringBuffer code = new StringBuffer();
         CompositeActor compositeActor = 
             (CompositeActor) _director.getContainer();       
