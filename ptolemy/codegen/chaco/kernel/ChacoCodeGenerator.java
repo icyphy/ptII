@@ -431,8 +431,8 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
                         if (!attrActor.getExpression().equals(attrTemp.getExpression())) {
                             StringAttribute portAttr = _getMpiAttribute(thisInput);
+
                             StringAttribute showInfo = _getShowInfoAttribute(thisInput);
-                            
                             String idString = showInfo.getExpression();
                             showInfo.setExpression(idString + (idString.length() > 0 ? ", " : "") + IDnumber);
                             
@@ -509,7 +509,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     private StringAttribute _getShowInfoAttribute(TypedIOPort port) throws IllegalActionException {
-        StringAttribute result = (StringAttribute)((NamedObj)port).getAttribute("_isMpiBuffer");
+        StringAttribute result = (StringAttribute)((NamedObj)port).getAttribute("_showInfo");
 
         if(result == null) {
             try {
