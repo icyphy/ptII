@@ -191,7 +191,7 @@ public class SharedParameter extends Parameter implements Initializable {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SharedParameter newObject = (SharedParameter) super.clone(workspace);
-        SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
+        SharedParameterRegistry registry = _getSharedParameterRegistry(workspace);
         registry.register(newObject);
         return newObject;
     }
