@@ -895,10 +895,15 @@ public class IOPort extends ComponentPort {
      */
     public int getChannelForReceiver(Receiver receiver)
             throws IllegalActionException {
-        IOPort port = receiver.getContainer();
 
         // Get the channel number for the receiver.
-        Receiver[][] receivers = port.getReceivers();
+        Receiver[][] receivers;
+        if (isInput()) {
+            receivers = getReceivers();
+        } else {
+            receivers = getRemoteReceivers();
+        }
+        
 
         for (int channel = 0; channel < receivers.length; channel++) {
             if (receivers[channel] != null) {
