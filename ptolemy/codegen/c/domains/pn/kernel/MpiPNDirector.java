@@ -153,11 +153,17 @@ public class MpiPNDirector extends Director {
             code.append("if (rank == " + rankNumber + ") {" + _eol);
 
             code.append("if (" + _getActorRounds(actor) + " < " + 
-                    _getActorRoundsLimit(actor) + ") ");
+                    _getActorRoundsLimit(actor) + ") {" + _eol);
+//          if (_DEBUG) {
+            code.append("printf(\"" + _getActorRounds(actor) + "[%d], rank[" + rankNumber + "].\\n\", "
+                    + _getActorRounds(actor) + ");" + _eol);
+//        }
 
             code.append(_getActorMpiLabel(actor) + "();" + _eol);
 
-            code.append("else " + _getActorTerminate(actor) + " = true;" + _eol);
+
+            code.append("} else {" + _eol + _getActorTerminate(actor) + 
+                    " = true;" + _eol + "}" + _eol);
 
             code.append("}" + _eol);
         }
@@ -171,7 +177,7 @@ public class MpiPNDirector extends Director {
 
             List actorOfThisRankList = (List)_rankActors.get(rank);
             for (Actor actor: (List<Actor>) actorOfThisRankList) {
-                code.append(" & " + _getActorTerminate(actor));
+                code.append(" && " + _getActorTerminate(actor));
             }
             code.append(")" + _eol + "break;" + _eol);
             code.append("}" + _eol);
@@ -183,7 +189,8 @@ public class MpiPNDirector extends Director {
         
         // print out the timer values
         if (_doMeasureTime()) {
-            code.append(" printf(\"rank = %d, total time takes: %g\\n\", rank, timer_duration(total_timer));" +_eol);
+            code.append("stop_timer(total_timer);" + _eol); 
+            code.append("printf(\"rank = %d, total time takes: %g\\n\", rank, timer_duration(total_timer));" +_eol);
             rank = 0;
             while (rank < _numProcessors) {
                 code.append("if (rank == " + rank + ") {" + _eol);

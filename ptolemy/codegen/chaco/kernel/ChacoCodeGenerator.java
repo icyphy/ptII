@@ -433,13 +433,13 @@ public class ChacoCodeGenerator extends CodeGenerator {
             throws IllegalActionException {
         Parameter result = (Parameter) ((NamedObj) ((TypedCompositeActor) this
                 .getContainer()).getDirector().getAttribute(
-                "numberOfMpiConnections"));
+                "_numberOfMpiConnections"));
 
         if (result == null) {
             try {
                 result = new Parameter((NamedObj) ((TypedCompositeActor) this
                         .getComponent()).getDirector(),
-                        "numberOfMpiConnections");
+                        "_numberOfMpiConnections");
             } catch (NameDuplicationException e) {
                 assert false;
             }
