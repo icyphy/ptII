@@ -766,8 +766,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     } else {
                         // Get the last CodeGenerator in the list, maybe
                         // it was added last?
-                        codeGenerator = (CodeGenerator) codeGenerators
-                                .get(codeGenerators.size() - 1);
+                        for (Object object : (List<CodeGenerator>) codeGenerators) {
+                            if (object instanceof CCodeGenerator) {
+                                codeGenerator = (CCodeGenerator) object;
+                                break;
+                            }
+                        }
                     }
 
                     codeGenerator._updateParameters(toplevel);

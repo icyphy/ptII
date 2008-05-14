@@ -39,19 +39,21 @@
 	struct Timer total_timer;
 /**/
 
-/*** declareBufferHeader($name, $dirHeader, $capacity, $index) ***/
+/*** declareMpiBufferHeader($name, $dirHeader, $capacity, $id) ***/
 	// $MPI_declareStruct() is required.	
 	static struct mpiBufferHeader $name = {
 			0,                              		// current
 			$capacity,                         		// available
+			$id
 	};
 /**/
 
-/*** declareLocalBufferHeader($name, $dirHeader, $capacity, $index) ***/
+/*** declareLocalBufferHeader($name, $dirHeader, $capacity, $id) ***/
 // $MPI_declareStruct() is required.	
 struct mpiLocalBufferHeader $name = {
 		0,                              		// readOffset
-		0		                         		// writeOffset
+		0,		                         		// writeOffset
+		$id
 };
 /**/
 

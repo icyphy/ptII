@@ -80,7 +80,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
      *   exception or an error occurs when setting the file path.
      */
     public ChacoCodeGenerator(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         generatorPackage.setExpression("ptolemy.codegen.chaco");
@@ -109,7 +109,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
             if (_generated == false)
                 throw new IllegalActionException(
-                        "GENERATE first before TRANSFORM");
+                "GENERATE first before TRANSFORM");
 
             return transformGraph();
         }
@@ -130,7 +130,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
         ptolemy.actor.Director director = ((Actor) model).getDirector();
 
         CompositeActor compositeActor = (CompositeActor) director
-                .getContainer();
+        .getContainer();
 
         List actorList = compositeActor.deepEntityList();
 
@@ -164,7 +164,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
             // Get vertex weights from the model
             Parameter vertexParam = new Parameter();
             vertexParam = (Parameter) ((NamedObj) actor)
-                    .getAttribute("_vertexWeight");
+            .getAttribute("_vertexWeight");
             String vertexWeightString;
             if (vertexParam == null)
                 vertexWeightString = "1";
@@ -180,7 +180,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
                 // Iterator connOut = (Iterator) thisInput.deepConnectedOutPortList().iterator();
                 Iterator connOut = (Iterator) thisInput.sourcePortList()
-                        .iterator();
+                .iterator();
                 //Iterator connOut = (Iterator)thisInput.deepInsidePortList().iterator();
                 while (connOut.hasNext()) {
 
@@ -194,7 +194,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                     // the relations and ports connected to these relations
                     List relationList = thisInput.linkedRelationList();
                     Iterator relationIt = (Iterator) relationList
-                            .listIterator();
+                    .listIterator();
                     boolean foundFlag = false;
                     while (relationIt.hasNext()) {
                         Relation thisRelation = (Relation) relationIt.next();
@@ -202,7 +202,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                         Iterator portIt = (Iterator) portList.listIterator();
                         while (foundFlag == false && portIt.hasNext()) {
                             TypedIOPort connOutputPort = (TypedIOPort) portIt
-                                    .next();
+                            .next();
 
                             if (!connOutputPort.isOpaque()) {
                                 // go into where this input port is connected to.
@@ -220,12 +220,12 @@ public class ChacoCodeGenerator extends CodeGenerator {
                                 if (connOutputPort.equals(tempOutput)) {
                                     Parameter edgeParam = new Parameter();
                                     edgeParam = (Parameter) thisRelation
-                                            .getAttribute("_edgeWeight");
+                                    .getAttribute("_edgeWeight");
                                     if (edgeParam == null) {
                                         edgeWeightString = "1";
                                     } else {
                                         edgeWeightString = edgeParam
-                                                .getExpression();
+                                        .getExpression();
                                     }
                                     //codeBuffer.append("(" + edgeWeightString + ") ");
                                     codeBuffer.append(edgeWeightString + " ");
@@ -244,7 +244,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                 TypedIOPort thisOutput = (TypedIOPort) outputIt.next();
                 //Iterator connIn = (Iterator) thisOutput.deepConnectedInPortList().iterator();
                 Iterator connIn = (Iterator) thisOutput.sinkPortList()
-                        .iterator();
+                .iterator();
                 while (connIn.hasNext()) {
 
                     TypedIOPort tempInput = (TypedIOPort) connIn.next();
@@ -257,7 +257,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                     String edgeWeightString;
                     List relationList = thisOutput.linkedRelationList();
                     Iterator relationIt = (Iterator) relationList
-                            .listIterator();
+                    .listIterator();
                     while (relationIt.hasNext()) {
                         Relation thisRelation = (Relation) relationIt.next();
                         List portList = thisRelation.linkedPortList(thisOutput);
@@ -265,7 +265,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                         boolean foundFlag = false;
                         while (foundFlag == false && portIt.hasNext()) {
                             TypedIOPort connInputPort = (TypedIOPort) portIt
-                                    .next();
+                            .next();
                             if (!connInputPort.isOpaque()) {
                                 // go into where this input port is connected to.
                                 if (connInputPort.isInput()) {
@@ -282,12 +282,12 @@ public class ChacoCodeGenerator extends CodeGenerator {
                                 if (connInputPort.equals(tempInput)) {
                                     Parameter edgeParam = new Parameter();
                                     edgeParam = (Parameter) thisRelation
-                                            .getAttribute("_edgeWeight");
+                                    .getAttribute("_edgeWeight");
                                     if (edgeParam == null) {
                                         edgeWeightString = "1";
                                     } else {
                                         edgeWeightString = edgeParam
-                                                .getExpression();
+                                        .getExpression();
                                     }
 
                                     codeBuffer.append(edgeWeightString + " ");
@@ -321,14 +321,14 @@ public class ChacoCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException  If the super class throws it.
      */
     protected String _writeCode(StringBuffer code)
-            throws IllegalActionException {
+    throws IllegalActionException {
         _sanitizedModelName = CodeGeneratorHelper.generateName(_model);
 
         return (String) (_sanitizedModelName + ".graph");
     }
 
     protected void _writeChacoInputFile(String code)
-            throws IllegalActionException {
+    throws IllegalActionException {
         try {
             // Create file 
             FileWriter fstream = new FileWriter(_codeFileName);
@@ -390,9 +390,9 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     private ColorAttribute _getHighlightAttribute(NamedObj actor)
-            throws IllegalActionException {
+    throws IllegalActionException {
         ColorAttribute colorAttribute = (ColorAttribute) actor
-                .getAttribute("_highlightColor");
+        .getAttribute("_highlightColor");
 
         try {
             return (colorAttribute != null) ? colorAttribute
@@ -407,7 +407,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
         String color = (String) _colorMap.get(rankNumber);
         if (color == null) {
             color = "{" + Math.random() + ", " + Math.random() + ", "
-                    + Math.random() + "}";
+            + Math.random() + "}";
 
             _colorMap.put(rankNumber, color);
         }
@@ -415,9 +415,9 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     private Parameter _getPartitionParameter(Actor actor)
-            throws IllegalActionException {
+    throws IllegalActionException {
         Parameter result = (Parameter) ((NamedObj) actor)
-                .getAttribute("_partition");
+        .getAttribute("_partition");
 
         if (result == null) {
             try {
@@ -430,7 +430,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     private Parameter _getNumConnectionsParameter()
-            throws IllegalActionException {
+    throws IllegalActionException {
         Parameter result = (Parameter) ((NamedObj) ((TypedCompositeActor) this
                 .getContainer()).getDirector().getAttribute(
                 "_numberOfMpiConnections"));
@@ -439,7 +439,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
             try {
                 result = new Parameter((NamedObj) ((TypedCompositeActor) this
                         .getComponent()).getDirector(),
-                        "_numberOfMpiConnections");
+                "_numberOfMpiConnections");
             } catch (NameDuplicationException e) {
                 assert false;
             }
@@ -449,7 +449,8 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
     private void _annotateMpiPorts() {
         int count = 1;
-        int IDnumber = 0;
+        int mpiBufferId = 0;
+        int localBufferId = 0;
 
         try {
             //while (count <= HashNumberKey.size()) {
@@ -458,7 +459,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
                 Parameter attrActor = new Parameter();
                 attrActor = (Parameter) ((NamedObj) actor)
-                        .getAttribute("_partition");
+                .getAttribute("_partition");
                 assert attrActor != null;
 
                 List inputList = actor.inputPortList();
@@ -469,42 +470,52 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
                     // Clear the _isMpiBuffer parameter if it already exists
                     _removeAttribute(thisInput, "_isMpiBuffer");
+                    _removeAttribute(thisInput, "_mpiBuffer");
+                    _removeAttribute(thisInput, "_localBuffer");
                     _removeAttribute(thisInput, "_showInfo");
 
                     //Iterator connOut = (Iterator) thisInput.deepConnectedOutPortList().iterator();
                     Iterator connOut = (Iterator) thisInput.sourcePortList()
-                            .iterator();
-                    int sourceIndex = 0;
+                    .iterator();
+                    int channel = 0;
                     while (connOut.hasNext()) {
                         TypedIOPort tempOutput = (TypedIOPort) connOut.next();
                         Actor tempActor = (Actor) tempOutput.getContainer();
 
                         Parameter attrTemp = new Parameter();
                         attrTemp = (Parameter) ((NamedObj) tempActor)
-                                .getAttribute("_partition");
+                        .getAttribute("_partition");
                         assert attrTemp != null;
 
                         if (!attrActor.getExpression().equals(
                                 attrTemp.getExpression())) {
-                            StringAttribute portAttr = _getMpiAttribute(thisInput);
+                            StringAttribute mpiBuffer = _getMpiAttribute(thisInput);
 
                             StringAttribute showInfo = _getShowInfoAttribute(thisInput);
 
                             //portParam.setExpression("receiver"); 
-                            String tempString = portAttr.getExpression();
-                            if (tempString.equals("")) {
-                                tempString = "receiver";
+                            String mpiBufferValue = mpiBuffer.getExpression();
+                            if (mpiBufferValue.equals("")) {
+                                mpiBufferValue = "receiver";
                             }
-                            tempString = tempString.concat("_ch["
-                                    + Integer.toString(sourceIndex) + "]"
-                                    + "id[" + IDnumber + "]");
-                            portAttr.setExpression(tempString);
-                            showInfo.setExpression(tempString);
+                            mpiBufferValue = mpiBufferValue.concat("_ch["
+                                    + channel + "]" + "id[" + mpiBufferId + "]");
+                            
+                            mpiBuffer.setExpression(mpiBufferValue);
+                            showInfo.setExpression(mpiBufferValue);
 
                             // Keep track of the number of MPI connections
-                            IDnumber++;
+                            mpiBufferId++;
+                        } else {
+                            StringAttribute localBuffer = _getLocalAttribute(thisInput);
+                            String localBufferValue = localBuffer.getExpression();
+                            localBufferValue = localBufferValue.concat("_ch["
+                                    + channel + "]" + "id[" + localBufferId + "]");
+                            localBuffer.setExpression(localBufferValue);
+                            
+                            localBufferId++;
                         }
-                        sourceIndex++;
+                        channel++;
                     }
                 }
 
@@ -516,17 +527,18 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
                     // Clear the _isMpiBuffer parameter if it already exists
                     _removeAttribute(thisOutput, "_isMpiBuffer");
+                    _removeAttribute(thisOutput, "_mpiBuffer");
 
                     // Iterator connIn = (Iterator) thisOutput.deepConnectedInPortList().iterator();
                     Iterator connIn = (Iterator) thisOutput.sinkPortList()
-                            .iterator();
+                    .iterator();
                     int sinkIndex = 0;
                     while (connIn.hasNext()) {
                         TypedIOPort tempInput = (TypedIOPort) connIn.next();
                         Actor tempActor = (Actor) tempInput.getContainer();
                         Parameter attrTemp = new Parameter();
                         attrTemp = (Parameter) ((NamedObj) tempActor)
-                                .getAttribute("_partition");
+                        .getAttribute("_partition");
                         assert attrTemp != null;
                         if (!attrActor.getExpression().equals(
                                 attrTemp.getExpression())) {
@@ -548,21 +560,36 @@ public class ChacoCodeGenerator extends CodeGenerator {
             }
             Parameter numConnections = new Parameter();
             numConnections = _getNumConnectionsParameter();
-            numConnections.setExpression(Integer.toString(IDnumber));
+            numConnections.setExpression(Integer.toString(mpiBufferId));
         } catch (IllegalActionException e) {
             System.err.println("Error: " + e.getMessage());
         }
 
     }
 
-    private StringAttribute _getMpiAttribute(TypedIOPort port)
-            throws IllegalActionException {
+    private StringAttribute _getLocalAttribute(TypedIOPort port)
+    throws IllegalActionException {
         StringAttribute result = (StringAttribute) ((NamedObj) port)
-                .getAttribute("_isMpiBuffer");
+        .getAttribute("_localBuffer");
 
         if (result == null) {
             try {
-                result = new StringAttribute((NamedObj) port, "_isMpiBuffer");
+                result = new StringAttribute((NamedObj) port, "_localBuffer");
+            } catch (NameDuplicationException e) {
+                assert false;
+            }
+        }
+        return result;
+    }
+
+    private StringAttribute _getMpiAttribute(TypedIOPort port)
+    throws IllegalActionException {
+        StringAttribute result = (StringAttribute) ((NamedObj) port)
+        .getAttribute("_mpiBuffer");
+
+        if (result == null) {
+            try {
+                result = new StringAttribute((NamedObj) port, "_mpiBuffer");
             } catch (NameDuplicationException e) {
                 assert false;
             }
@@ -571,9 +598,9 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     private StringAttribute _getShowInfoAttribute(TypedIOPort port)
-            throws IllegalActionException {
+    throws IllegalActionException {
         StringAttribute result = (StringAttribute) ((NamedObj) port)
-                .getAttribute("_showInfo");
+        .getAttribute("_showInfo");
 
         if (result == null) {
             try {
