@@ -79,8 +79,8 @@ MPI_Comm_rank (comm, &rank);
 /**/
 
 
-/*** wrapupBlock($directorHeader) ***/
-
+/*** wrapupBlock() ***/
+	while(1);
 /**/
 
 /*** destroyBuffer($buffer) ***/

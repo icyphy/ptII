@@ -154,10 +154,10 @@ public class MpiPNDirector extends Director {
 
             code.append("if (" + _getActorRounds(actor) + " < " + 
                     _getActorRoundsLimit(actor) + ") {" + _eol);
-//          if (_DEBUG) {
+          if (_DEBUG) {
             code.append("printf(\"" + _getActorRounds(actor) + "[%d], rank[" + rankNumber + "].\\n\", "
                     + _getActorRounds(actor) + ");" + _eol);
-//        }
+        }
 
             code.append(_getActorMpiLabel(actor) + "();" + _eol);
 
@@ -189,7 +189,7 @@ public class MpiPNDirector extends Director {
         
         // print out the timer values
         if (_doMeasureTime()) {
-            code.append("stop_timer(total_timer);" + _eol); 
+            code.append("stop_timer(&total_timer);" + _eol); 
             code.append("printf(\"rank = %d, total time takes: %g\\n\", rank, timer_duration(total_timer));" +_eol);
             rank = 0;
             while (rank < _numProcessors) {
@@ -442,10 +442,7 @@ public class MpiPNDirector extends Director {
         // Instead, the actor wrapup code resides in the actor 
         // thread function code.
 
-        List args = new LinkedList();
-        args.add(generateDirectorHeader());
-
-        code.append(_codeStream.getCodeBlock("wrapupBlock", args));
+        code.append(_codeStream.getCodeBlock("wrapupBlock"));
 
         return code.toString();
     }
