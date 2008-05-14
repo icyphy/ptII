@@ -984,11 +984,14 @@ public class MpiPNDirector extends Director {
 
                                 code.append("MPI_Test(&" +
                                         _generateRequest(inputPort, channel) + "[" + _generateTestCounter() + "], &" + _getHasInputFlag(inputPort, channel) + ", MPI_STATUS_IGNORE);" + _eol);
-                                code.append("if (!" + _getHasInputFlag(inputPort, channel) + ") {" + _eol + 
-                                        "printf(\"" + getBufferLabel(inputPort, channel) +
+                                code.append("if (!" + _getHasInputFlag(inputPort, channel) + ") {" + _eol);
+                                 
+                                    if ( _DEBUG) {
+                                 code.append("printf(\"" + getBufferLabel(inputPort, channel) +
                                         ", rank[" + sinkRank + "], waiting for tag[%d]\\n\", " + 
-                                        getReceiveTag(inputPort, channel) + ");" + _eol + 
-                                        "break;" + _eol + "}" + _eol + "}" + _eol); 
+                                        getReceiveTag(inputPort, channel) + ");" + _eol);
+                                    }
+                                  code.append("break;" + _eol + "}" + _eol + "}" + _eol); 
 
 
                                 code.append("}" + _eol);
