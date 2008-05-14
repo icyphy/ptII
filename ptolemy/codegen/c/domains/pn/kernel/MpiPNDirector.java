@@ -208,6 +208,8 @@ public class MpiPNDirector extends Director {
             }
         }
         
+        code.append("fflush(stdout);" + _eol);
+        
         return code.toString();
     }
 
