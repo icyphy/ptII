@@ -236,7 +236,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         newObject._sendingInputPortsVersion = -1L;
         newObject._sendingOutputPorts = null;
         newObject._sendingOutputPortsVersion = -1L;
-        newObject._channelPort = (ChannelPort)getPort("_channelPort");
+        newObject._channelPort = (ChannelPort)newObject.getPort("_channelPort");
         return newObject;
     }
 
