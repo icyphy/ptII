@@ -578,7 +578,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 370.0]">
                 </property>
             </port>
-            <entity name="CarLightNormal" class="ptolemy.actor.gt.demo.SimTraffic.CarLightNormal">
+            <entity name="CarLightNormal" class="CarLightNormal">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 190.0]">
                 </property>
                 <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
@@ -751,11 +751,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[323.140625, 335.625]">
         </property>
     </entity>
-    <entity name="Decoder" class="ptolemy.actor.gt.demo.SimTraffic.Decoder">
+    <entity name="Decoder" class="Decoder">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 235.0]">
         </property>
     </entity>
-    <entity name="ErrorGenerator" class="ptolemy.actor.gt.demo.SimTraffic.ErrorGenerator">
+    <entity name="ErrorGenerator" class="ErrorGenerator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 265.0]">
         </property>
         <port name="ErrorIn" class="ptolemy.domains.fsm.modal.ModalPort">

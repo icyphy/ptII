@@ -405,7 +405,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
                 </property>
             </port>
-            <entity name="PedestrianLightNormal" class="ptolemy.actor.gt.demo.SimTraffic.PedestrianLightNormal">
+            <entity name="PedestrianLightNormal" class="PedestrianLightNormal">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 170.0]">
                 </property>
             </entity>
