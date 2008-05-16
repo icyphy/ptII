@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -46,6 +47,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
@@ -57,6 +59,8 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.FileUtilities;
+import ptolemy.util.MessageHandler;
 
 ////ChacoCodeGenerator
 
@@ -117,7 +121,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     public int generateCode(StringBuffer code) throws KernelException {
-
+        
         if (action.getExpression().equals("CLEAR")) {
             transformGraph();
             return 0;
@@ -291,10 +295,13 @@ public class ChacoCodeGenerator extends CodeGenerator {
     protected String _writeCode(StringBuffer code)
     throws IllegalActionException {
         _sanitizedModelName = CodeGeneratorHelper.generateName(_model);
-
-        return (String) (_sanitizedModelName + ".graph");
+        String tempCodeFileName = super._writeCode(code);
+        if (tempCodeFileName.endsWith(".chaco"))
+            //tempCodeFileName.substring(0, tempCodeFileName.indexOf(".")).concat(".graph");
+            tempCodeFileName = tempCodeFileName.replaceAll(".chaco", ".graph");
+        return tempCodeFileName;
     }
-
+    
     protected void _writeChacoInputFile(String code)
     throws IllegalActionException {
         try {
