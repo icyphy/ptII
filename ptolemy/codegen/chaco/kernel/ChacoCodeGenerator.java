@@ -1,4 +1,4 @@
-/* Code generator for the C language.
+/* Code generator for the Chaco graph partitioner.
 
  Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
@@ -35,13 +35,12 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
@@ -52,21 +51,22 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 
-////CodeGenerator
+////ChacoCodeGenerator
 
 /** Base class for C code generator.
  *
- *  @author Jia Zou, Isaac Liu
+ *  @author Jia Zou, Isaac Liu, Man-Kit Leung
  *  @version $Id$
- *  @since Ptolemy II 6.0
- *  @Pt.ProposedRating red (jiazou)
- *  @Pt.AcceptedRating red ()
+ *  @since Ptolemy II 7.0
+ *  @Pt.ProposedRating Red (jiazou)
+ *  @Pt.AcceptedRating Red (mankit)
  */
 
 public class ChacoCodeGenerator extends CodeGenerator {
@@ -88,6 +88,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
         action = new StringParameter(this, "action");
         action.addChoice("GENERATE");
         action.addChoice("TRANSFORM");
+        action.addChoice("CLEAR");
         action.setExpression("GENERATE");
     }
 
@@ -98,169 +99,116 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    public int transformGraph() throws KernelException {
-        _readChacoOutputFile();
-        return 0;
+    public void transformGraph() throws KernelException {
+
+        if (!_isClearMode()) {
+            _readChacoOutputFile();
+        }
+        
+        // Traverse through the graph and annotate each port whether
+        // it is a _isMpiBuffer (send/receive)
+        _annotateMpiPorts();
+
+        // Repaint the GUI.
+        getContainer().requestChange(new ChangeRequest(this,
+        "Repaint the GUI.") {
+            protected void _execute() throws Exception {}
+        });        
     }
 
     public int generateCode(StringBuffer code) throws KernelException {
 
-        if (action.getExpression().equals("TRANSFORM")) {
-
-            if (_generated == false)
-                throw new IllegalActionException(
-                "GENERATE first before TRANSFORM");
-
-            return transformGraph();
+        if (action.getExpression().equals("CLEAR")) {
+            transformGraph();
+            return 0;
         }
 
-        this.HashActorKey.clear();
-        this.HashNumberKey.clear();
+        if (action.getExpression().equals("TRANSFORM")) {
+            if (_generated == false) {
+                throw new IllegalActionException(this, (Throwable) null,
+                "GENERATE first before TRANSFORM");
+            }
+            transformGraph();
+            return 0;
+        } 
 
-        int returnValue = -1;
+        _reset();
 
         _codeFileName = _writeCode(code);
 
         StringBuffer codeBuffer = new StringBuffer();
 
-        CompositeEntity model = (CompositeEntity) getContainer();
-
-        // NOTE: The cast is safe because setContainer ensures
-        // the container is an Actor.
-        ptolemy.actor.Director director = ((Actor) model).getDirector();
-
-        CompositeActor compositeActor = (CompositeActor) director
-        .getContainer();
-
-        List actorList = compositeActor.deepEntityList();
-
-        Iterator actors = actorList.iterator();
-        actors = actorList.iterator();
-
-        actors = actorList.iterator();
-
-        numVertices = 0;
-        numEdges = 0;
-
         // Traversing through the actor list to see all actors
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
+        CompositeEntity compositeActor = (CompositeEntity) getContainer();
+        for (Actor actor : (List<Actor>) compositeActor.deepEntityList()) {
             if (actor instanceof Actor) {
-                numVertices++;
-                HashActorKey.put(actor, numVertices);
-                HashNumberKey.put(numVertices, actor);
+                _numVertices++;
+                _HashActorKey.put(actor, _numVertices);
+                _HashNumberKey.put(_numVertices, actor);
             }
         }
-        code.append(numVertices + " ");
+        code.append(_numVertices + " ");
 
         // Traverse through the actors again to get all edges
-        actors = actorList.iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            int thisInt;
-            thisInt = (Integer) HashActorKey.get(actor);
-            codeBuffer.append(thisInt + " ");
+        for (Actor actor : (List<Actor>) compositeActor.deepEntityList()) {
+            int actorId = (Integer) _HashActorKey.get(actor);
+            codeBuffer.append(actorId + " ");
 
             // Get vertex weights from the model
-            Parameter vertexParam = new Parameter();
-            vertexParam = (Parameter) ((NamedObj) actor)
-            .getAttribute("_vertexWeight");
-            String vertexWeightString;
-            if (vertexParam == null)
-                vertexWeightString = "1";
-            else
-                vertexWeightString = vertexParam.getExpression();
-            codeBuffer.append(vertexWeightString + " ");
+            codeBuffer.append(_getVertexWeight(actor) + " ");
 
-            List inList = actor.inputPortList();
-            Iterator inputIt = (Iterator) inList.listIterator();
+            for (TypedIOPort inputPort : (List<TypedIOPort>) actor.inputPortList()) {
 
-            while (inputIt.hasNext()) {
-                TypedIOPort thisInput = (TypedIOPort) inputIt.next();
-
-                // Iterator connOut = (Iterator) thisInput.deepConnectedOutPortList().iterator();
-                Iterator connOut = (Iterator) thisInput.sourcePortList()
-                .iterator();
-                //Iterator connOut = (Iterator)thisInput.deepInsidePortList().iterator();
-                while (connOut.hasNext()) {
-
-                    TypedIOPort tempOutput = (TypedIOPort) connOut.next();
-                    Actor tempActor = (Actor) tempOutput.getContainer();
-                    int outInt = (Integer) HashActorKey.get(tempActor);
+                for (TypedIOPort sourcePort : (List<TypedIOPort>) inputPort.sourcePortList()) {
+                    Actor sourceActor = (Actor) sourcePort.getContainer();
+                    int outInt = (Integer) _HashActorKey.get(sourceActor);
                     codeBuffer.append(outInt + " ");
 
-                    String edgeWeightString;
                     // Add the edge weight from the model by traversing through
                     // the relations and ports connected to these relations
-                    List relationList = thisInput.linkedRelationList();
-                    Iterator relationIt = (Iterator) relationList
-                    .listIterator();
-                    boolean foundFlag = false;
-                    while (relationIt.hasNext()) {
-                        Relation thisRelation = (Relation) relationIt.next();
-                        List portList = thisRelation.linkedPortList(thisInput);
+                    for (Relation relation : (List<Relation>) inputPort.linkedRelationList()) {
+                        List portList = relation.linkedPortList(inputPort);
                         Iterator portIt = (Iterator) portList.listIterator();
+
+                        boolean foundFlag = false;
                         while (foundFlag == false && portIt.hasNext()) {
-                            TypedIOPort connOutputPort = (TypedIOPort) portIt
+                            TypedIOPort sinkPort = (TypedIOPort) portIt
                             .next();
 
-                            if (!connOutputPort.isOpaque()) {
+                            if (!sinkPort.isOpaque()) {
                                 // go into where this input port is connected to.
-                                if (connOutputPort.isOutput()) {
-                                    portList.addAll(connOutputPort
+                                if (sinkPort.isOutput()) {
+                                    portList.addAll(sinkPort
                                             .deepInsidePortList());
-                                } else if (connOutputPort.isInput()) {
-                                    portList.addAll(connOutputPort
+                                } else if (sinkPort.isInput()) {
+                                    portList.addAll(sinkPort
                                             .sourcePortList());
                                 }
-                                portList.remove(connOutputPort);
+                                portList.remove(sinkPort);
                                 portIt = (Iterator) portList.listIterator();
-                            } else {
 
-                                if (connOutputPort.equals(tempOutput)) {
-                                    Parameter edgeParam = new Parameter();
-                                    edgeParam = (Parameter) thisRelation
-                                    .getAttribute("_edgeWeight");
-                                    if (edgeParam == null) {
-                                        edgeWeightString = "1";
-                                    } else {
-                                        edgeWeightString = edgeParam
-                                        .getExpression();
-                                    }
-                                    //codeBuffer.append("(" + edgeWeightString + ") ");
-                                    codeBuffer.append(edgeWeightString + " ");
-                                    foundFlag = true;
-                                }
+                            } else if (sinkPort.equals(sourcePort)) {
+                                codeBuffer.append(_getEdgeWeight(relation) + " ");
+                                foundFlag = true;
                             }
                         }
                     }
                 }
             }
 
-            List outList = actor.outputPortList();
-            Iterator outputIt = (Iterator) outList.listIterator();
+            for (TypedIOPort outputPort : (List<TypedIOPort>) actor.outputPortList()) {
 
-            while (outputIt.hasNext()) {
-                TypedIOPort thisOutput = (TypedIOPort) outputIt.next();
-                //Iterator connIn = (Iterator) thisOutput.deepConnectedInPortList().iterator();
-                Iterator connIn = (Iterator) thisOutput.sinkPortList()
-                .iterator();
-                while (connIn.hasNext()) {
+                for (TypedIOPort sinkPort : (List<TypedIOPort>) outputPort.sinkPortList()) {
 
-                    TypedIOPort tempInput = (TypedIOPort) connIn.next();
-                    Actor tempActor = (Actor) tempInput.getContainer();
-                    int inInt = (Integer) HashActorKey.get(tempActor);
+                    Actor tempActor = (Actor) sinkPort.getContainer();
+                    int inInt = (Integer) _HashActorKey.get(tempActor);
                     codeBuffer.append(inInt + " ");
 
                     // Add the edge weight from the model by traversing through
                     // the relations and ports connected to these relations
-                    String edgeWeightString;
-                    List relationList = thisOutput.linkedRelationList();
-                    Iterator relationIt = (Iterator) relationList
-                    .listIterator();
-                    while (relationIt.hasNext()) {
-                        Relation thisRelation = (Relation) relationIt.next();
-                        List portList = thisRelation.linkedPortList(thisOutput);
+                    for (Relation relation : (List<Relation>) outputPort.linkedRelationList()) {
+
+                        List portList = relation.linkedPortList(outputPort);
                         Iterator portIt = (Iterator) portList.listIterator();
                         boolean foundFlag = false;
                         while (foundFlag == false && portIt.hasNext()) {
@@ -279,30 +227,19 @@ public class ChacoCodeGenerator extends CodeGenerator {
                                 portList.remove(connInputPort);
                                 portIt = (Iterator) portList.listIterator();
                             } else {
-                                if (connInputPort.equals(tempInput)) {
-                                    Parameter edgeParam = new Parameter();
-                                    edgeParam = (Parameter) thisRelation
-                                    .getAttribute("_edgeWeight");
-                                    if (edgeParam == null) {
-                                        edgeWeightString = "1";
-                                    } else {
-                                        edgeWeightString = edgeParam
-                                        .getExpression();
-                                    }
-
-                                    codeBuffer.append(edgeWeightString + " ");
+                                if (connInputPort.equals(sinkPort)) {
+                                    codeBuffer.append(_getEdgeWeight(relation) + " ");
                                     foundFlag = true;
                                 }
                             }
                         }
                     }
-
-                    numEdges++;
+                    _numEdges++;
                 }
             }
             codeBuffer.append(_eol);
         }
-        code.append(numEdges + " 111" + _eol);
+        code.append(_numEdges + " 111" + _eol);
 
         code.append(codeBuffer);
 
@@ -310,7 +247,38 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
         _generated = true;
 
-        return returnValue;
+        return 0;
+    }
+
+    private void _reset() {
+        _HashActorKey.clear();
+        _HashNumberKey.clear();
+        _colorMap.clear();
+        _rankNumbers.clear();
+        _numVertices = 0;
+        _numEdges = 0;
+    }
+
+    private String _getVertexWeight(Actor actor) {
+        Parameter vertexParam = (Parameter) 
+        ((NamedObj) actor).getAttribute("_vertexWeight");
+
+        if (vertexParam == null) {
+            return "1";
+        } else {
+            return vertexParam.getExpression();
+        }
+    }
+
+    private static String _getEdgeWeight(Relation relation) {
+        Parameter edgeParam = (Parameter) 
+        relation.getAttribute("_edgeWeight");
+
+        if (edgeParam == null) {
+            return "1";
+        } else {
+            return edgeParam.getExpression();
+        }
     }
 
     /** Write the code with the sanitized model name postfixed with "_tb"
@@ -361,17 +329,14 @@ public class ChacoCodeGenerator extends CodeGenerator {
                 // this statement reads the line from the file and print it to
                 // the console.
                 String rankString = dis.readLine();
-                Actor actor = (Actor) HashNumberKey.get(actorNum);
+                Actor actor = (Actor) _HashNumberKey.get(actorNum);
 
                 Parameter parameter = _getPartitionParameter(actor);
                 parameter.setExpression(rankString);
 
                 actorNum++;
 
-                // Insert highlight color attribute.
-                ColorAttribute colorAttribute = _getHighlightAttribute((NamedObj) actor);
-                colorAttribute.setExpression(_getColor(rankString));
-
+                _rankNumbers.add(rankString);                
             }
 
             // dispose all the resources after using them.
@@ -379,9 +344,6 @@ public class ChacoCodeGenerator extends CodeGenerator {
             bis.close();
             dis.close();
 
-            // Traverse through the graph and annotate each port whether
-            // it is a _isMpiBuffer (send/receive)
-            _annotateMpiPorts();
 
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
@@ -389,13 +351,46 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
     }
 
+    private void _highlightPartitions() throws IllegalActionException {
+        if (!_isClearMode()) {
+            // Generate and map the distinct colors to partitions.
+            Iterator rankNumbers = _rankNumbers.iterator();
+            for (String color : getDistinctColors(_rankNumbers.size() - 1)) {
+                //System.out.println("color: " + color + ", rank: " + rankNumbers.next());
+                _colorMap.put(rankNumbers.next(), color);
+            }
+        }
+        
+        // Insert the highlight color attributes.
+        CompositeEntity compositeActor = (CompositeEntity) getContainer();
+        for (Actor actor : (List<Actor>) compositeActor.deepEntityList()) {
+
+            if (_isClearMode()) {
+                _removeAttribute((NamedObj) actor, "_partition");
+                _removeAttribute((NamedObj) actor, "_highlightColor");
+
+            } else {
+                Parameter actorPartition = _getPartitionParameter(actor);
+                String color = (String) _colorMap.get(actorPartition.getExpression());
+                
+                ColorAttribute colorAttribute = _getHighlightAttribute((NamedObj) actor);
+                colorAttribute.setExpression(color);
+            }
+        }
+    }
+
     private ColorAttribute _getHighlightAttribute(NamedObj actor)
     throws IllegalActionException {
-        ColorAttribute colorAttribute = (ColorAttribute) actor
+        ColorAttribute attribute = (ColorAttribute) actor
         .getAttribute("_highlightColor");
 
         try {
-            return (colorAttribute != null) ? colorAttribute
+            if (_isClearMode() && attribute != null) {
+                attribute.setContainer(null);
+                return null;
+            }
+
+            return (attribute != null) ? attribute
                     : new ColorAttribute(actor, "_highlightColor");
         } catch (NameDuplicationException e) {
             assert false;
@@ -403,183 +398,231 @@ public class ChacoCodeGenerator extends CodeGenerator {
         return null;
     }
 
-    private String _getColor(String rankNumber) {
-        String color = (String) _colorMap.get(rankNumber);
-        if (color == null) {
-            color = "{" + Math.random() + ", " + Math.random() + ", "
-            + Math.random() + "}";
-
-            _colorMap.put(rankNumber, color);
-        }
-        return color;
+    private boolean _isClearMode() {
+        return action.getExpression().equals("CLEAR");
     }
+
+    /**
+     * Find the first integer-valued cube that is greater than or equal to val.
+     */
+    public static final int approxCubeRoot(int val) {
+        int index = 0;
+        int cube  = 0;
+
+        while (val >= cube) {
+            index++;
+            cube = index * index * index;
+        }
+
+        return (index);
+    }
+
+    /**
+     * Generate an array of distinct colors.
+     *
+     * @param  numColors is the number of distinct colors.
+     * @return an array size (numColors + 1) filled with distinct colors.
+     *         The +1 is there in case the clusters range from 0 to numColors
+     *         or 1 to (numColors + 1).
+     */
+    public static final String[] getDistinctColors(int numColors) {
+
+        //// Need to pick numColors distinct colors.
+        String[] colors            = new String[numColors + 1];
+        int       numDiscreteValues = approxCubeRoot(numColors);
+        float[]   colorVals         = new float[numDiscreteValues];
+        int       r_index;
+        int       g_index;
+        int       b_index;
+
+        //// 1. Generate a table of discrete values for rgb.
+        for (int i = 0; i < numDiscreteValues; i++) {
+            colorVals[i] = 1.0f - ((float) i) / ((float) numDiscreteValues - 1);
+
+            //// 1.1. Fix the values just in case.
+            if (colorVals[i] < 0.0f) {
+                colorVals[i] = 0.0f;
+            } else if (colorVals[i] > 1.0f) {
+                colorVals[i] = 1.0f;
+            }
+        }
+
+        //// 2. Now generate the colors.
+        r_index = 0;
+        g_index = 0;
+        b_index = 0;
+
+        for (int i = 0; i < colors.length; i++) {
+            colors[i] = new String("{" + colorVals[r_index] + ", " +
+                    colorVals[g_index] + ", " + 
+                    colorVals[b_index] + ", 1.0}");
+
+
+            //// 2.1. Now go to the next color values.
+            b_index++;
+            if (b_index >= numDiscreteValues) {
+                g_index++;
+                if (g_index >= numDiscreteValues) {
+                    r_index++;
+                    r_index %= numDiscreteValues;
+                }
+                g_index %= numDiscreteValues;
+            }
+            b_index %= numDiscreteValues;
+        }
+
+        return (colors);
+    } 
 
     private Parameter _getPartitionParameter(Actor actor)
     throws IllegalActionException {
-        Parameter result = (Parameter) ((NamedObj) actor)
+        Parameter attribute = (Parameter) ((NamedObj) actor)
         .getAttribute("_partition");
 
-        if (result == null) {
-            try {
-                result = new Parameter((NamedObj) actor, "_partition");
-            } catch (NameDuplicationException e) {
-                assert false;
+        try {
+            if (attribute == null) {
+                attribute = new Parameter((NamedObj) actor, "_partition");
             }
+        } catch (NameDuplicationException e) {
+            assert false;
         }
-        return result;
+        return attribute;
     }
 
     private Parameter _getNumConnectionsParameter()
     throws IllegalActionException {
-        Parameter result = (Parameter) ((NamedObj) ((TypedCompositeActor) this
-                .getContainer()).getDirector().getAttribute(
-                "_numberOfMpiConnections"));
 
-        if (result == null) {
-            try {
-                result = new Parameter((NamedObj) ((TypedCompositeActor) this
-                        .getComponent()).getDirector(),
-                "_numberOfMpiConnections");
-            } catch (NameDuplicationException e) {
-                assert false;
+        Director director = (Director) ((TypedCompositeActor) 
+                getContainer()).getDirector();
+
+        Parameter attribute = (Parameter) 
+        director.getAttribute("_numberOfMpiConnections");
+
+        try {
+            if (attribute == null) {
+                attribute = new Parameter(director, "_numberOfMpiConnections");
             }
+        } catch (NameDuplicationException e) {
+            assert false;
         }
-        return result;
+        return attribute;
     }
 
-    private void _annotateMpiPorts() {
+    private void _annotateMpiPorts() throws IllegalActionException {
         int count = 1;
         int mpiBufferId = 0;
         int localBufferId = 0;
 
-        try {
-            //while (count <= HashNumberKey.size()) {
-            while (count <= numVertices) {
-                Actor actor = (Actor) HashNumberKey.get(count);
+        _highlightPartitions();
 
-                Parameter attrActor = new Parameter();
-                attrActor = (Parameter) ((NamedObj) actor)
-                .getAttribute("_partition");
-                assert attrActor != null;
+        while (count <= _numVertices) {
+            Actor actor = (Actor) _HashNumberKey.get(count);
 
-                List inputList = actor.inputPortList();
-                Iterator inputIt = (Iterator) inputList.listIterator();
+            Parameter partitionAttribute = _getPartitionParameter(actor);
 
-                while (inputIt.hasNext()) {
-                    TypedIOPort thisInput = (TypedIOPort) inputIt.next();
+            for (TypedIOPort inputPort : (List<TypedIOPort>) actor.inputPortList()) {
 
-                    // Clear the _isMpiBuffer parameter if it already exists
-                    _removeAttribute(thisInput, "_isMpiBuffer");
-                    _removeAttribute(thisInput, "_mpiBuffer");
-                    _removeAttribute(thisInput, "_localBuffer");
-                    _removeAttribute(thisInput, "_showInfo");
+                // Clear the _isMpiBuffer parameter if it already exists
+                _removeAttribute(inputPort, "_mpiBuffer");
+                _removeAttribute(inputPort, "_localBuffer");
+                _removeAttribute(inputPort, "_showInfo");
 
-                    //Iterator connOut = (Iterator) thisInput.deepConnectedOutPortList().iterator();
-                    Iterator connOut = (Iterator) thisInput.sourcePortList()
-                    .iterator();
-                    int channel = 0;
-                    while (connOut.hasNext()) {
-                        TypedIOPort tempOutput = (TypedIOPort) connOut.next();
-                        Actor tempActor = (Actor) tempOutput.getContainer();
+                if (_isClearMode()) {
+                    continue;
+                }
 
-                        Parameter attrTemp = new Parameter();
-                        attrTemp = (Parameter) ((NamedObj) tempActor)
-                        .getAttribute("_partition");
-                        assert attrTemp != null;
+                int channel = 0;
+                for (TypedIOPort sourcePort : (List<TypedIOPort>) inputPort.sourcePortList()) {
+                    Actor sourceActor = (Actor) sourcePort.getContainer();
 
-                        if (!attrActor.getExpression().equals(
-                                attrTemp.getExpression())) {
-                            StringAttribute mpiBuffer = _getMpiAttribute(thisInput);
+                    Parameter attrTemp =  _getPartitionParameter(sourceActor);
 
-                            StringAttribute showInfo = _getShowInfoAttribute(thisInput);
+                    if (!partitionAttribute.getExpression()
+                            .equals(attrTemp.getExpression())) {
 
-                            //portParam.setExpression("receiver"); 
-                            String mpiBufferValue = mpiBuffer.getExpression();
-                            if (mpiBufferValue.equals("")) {
-                                mpiBufferValue = "receiver";
-                            }
-                            mpiBufferValue = mpiBufferValue.concat("_ch["
-                                    + channel + "]" + "id[" + mpiBufferId + "]");
-                            
-                            mpiBuffer.setExpression(mpiBufferValue);
-                            showInfo.setExpression(mpiBufferValue);
+                        StringAttribute mpiBuffer = _getMpiAttribute(inputPort);
 
-                            // Keep track of the number of MPI connections
-                            mpiBufferId++;
-                        } else {
-                            StringAttribute localBuffer = _getLocalAttribute(thisInput);
+                        StringAttribute showInfo = _getShowInfoAttribute(inputPort);
+
+                        String mpiBufferValue = mpiBuffer.getExpression();
+                        if (mpiBufferValue.equals("")) {
+                            mpiBufferValue = "receiver";
+                        }
+                        mpiBufferValue = mpiBufferValue.concat("_ch["
+                                + channel + "]" + "id[" + mpiBufferId + "]");
+
+                        mpiBuffer.setExpression(mpiBufferValue);
+                        showInfo.setExpression(mpiBufferValue);
+                        // Keep track of the number of MPI connections
+                        mpiBufferId++;
+                    } else {
+                        // Annotate local buffer.
+                        StringAttribute localBuffer = _getLocalAttribute(inputPort);
+                        if (!_isClearMode()) {
                             String localBufferValue = localBuffer.getExpression();
+
                             localBufferValue = localBufferValue.concat("_ch["
                                     + channel + "]" + "id[" + localBufferId + "]");
                             localBuffer.setExpression(localBufferValue);
-                            
-                            localBufferId++;
                         }
-                        channel++;
+
+                        localBufferId++;
                     }
+                    channel++;
                 }
-
-                List outputList = actor.outputPortList();
-                Iterator outputIt = (Iterator) outputList.listIterator();
-
-                while (outputIt.hasNext()) {
-                    TypedIOPort thisOutput = (TypedIOPort) outputIt.next();
-
-                    // Clear the _isMpiBuffer parameter if it already exists
-                    _removeAttribute(thisOutput, "_isMpiBuffer");
-                    _removeAttribute(thisOutput, "_mpiBuffer");
-
-                    // Iterator connIn = (Iterator) thisOutput.deepConnectedInPortList().iterator();
-                    Iterator connIn = (Iterator) thisOutput.sinkPortList()
-                    .iterator();
-                    int sinkIndex = 0;
-                    while (connIn.hasNext()) {
-                        TypedIOPort tempInput = (TypedIOPort) connIn.next();
-                        Actor tempActor = (Actor) tempInput.getContainer();
-                        Parameter attrTemp = new Parameter();
-                        attrTemp = (Parameter) ((NamedObj) tempActor)
-                        .getAttribute("_partition");
-                        assert attrTemp != null;
-                        if (!attrActor.getExpression().equals(
-                                attrTemp.getExpression())) {
-                            StringAttribute portAttr = _getMpiAttribute(thisOutput);
-                            String tempString = portAttr.getExpression();
-                            if (tempString.equals("")) {
-                                tempString = "sender";
-                            }
-                            tempString = tempString.concat("_ch["
-                                    + Integer.toString(sinkIndex) + "]");
-                            portAttr.setExpression(tempString);
-                            //portParam.setExpression("sender");
-                        }
-                        sinkIndex++;
-                    }
-                }
-
-                count++;
             }
-            Parameter numConnections = new Parameter();
-            numConnections = _getNumConnectionsParameter();
-            numConnections.setExpression(Integer.toString(mpiBufferId));
-        } catch (IllegalActionException e) {
-            System.err.println("Error: " + e.getMessage());
-        }
 
+            for (TypedIOPort outputPort : (List<TypedIOPort>) actor.outputPortList()) {
+
+                // Clear the _isMpiBuffer parameter if it already exists
+                _removeAttribute(outputPort, "_mpiBuffer");
+
+                if (!_isClearMode()) {
+                    continue;
+                }
+                
+                int sinkIndex = 0;
+                for (TypedIOPort sinkPort : (List<TypedIOPort>) outputPort.sinkPortList()) {
+
+                    Actor sinkActor = (Actor) sinkPort.getContainer();
+                    Parameter sinkPartitionAttribute =  _getPartitionParameter(sinkActor);
+
+                    if (!partitionAttribute.getExpression().equals(
+                            sinkPartitionAttribute.getExpression())) {
+
+                        StringAttribute mpiAttribute = _getMpiAttribute(outputPort);
+                        String mpiValue = mpiAttribute.getExpression();
+
+                        if (mpiValue.equals("")) {
+                            mpiValue = "sender";
+                        }
+                        mpiValue = mpiValue.concat("_ch[" + sinkIndex + "]");
+                        mpiAttribute.setExpression(mpiValue);
+                    }
+                }
+                sinkIndex++;
+            }
+
+            count++;
+        }
+        Parameter numConnections = _getNumConnectionsParameter();
+        numConnections.setExpression(Integer.toString(mpiBufferId));
     }
 
     private StringAttribute _getLocalAttribute(TypedIOPort port)
     throws IllegalActionException {
-        StringAttribute result = (StringAttribute) ((NamedObj) port)
-        .getAttribute("_localBuffer");
+        StringAttribute attribute = 
+            (StringAttribute) port.getAttribute("_localBuffer");
 
-        if (result == null) {
-            try {
-                result = new StringAttribute((NamedObj) port, "_localBuffer");
-            } catch (NameDuplicationException e) {
-                assert false;
+
+        try {
+            if (attribute == null) {
+                attribute = new StringAttribute(port, "_localBuffer");
             }
+        } catch (NameDuplicationException e) {
+            assert false;
         }
-        return result;
+        return attribute;
     }
 
     private StringAttribute _getMpiAttribute(TypedIOPort port)
@@ -599,21 +642,22 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
     private StringAttribute _getShowInfoAttribute(TypedIOPort port)
     throws IllegalActionException {
-        StringAttribute result = (StringAttribute) ((NamedObj) port)
-        .getAttribute("_showInfo");
+        StringAttribute attribute = 
+            (StringAttribute) port.getAttribute("_showInfo");
 
-        if (result == null) {
-            try {
-                result = new StringAttribute((NamedObj) port, "_showInfo");
-            } catch (NameDuplicationException e) {
-                assert false;
+
+        try {
+            if (attribute == null) {
+                attribute = new StringAttribute(port, "_showInfo");
             }
+        } catch (NameDuplicationException e) {
+            assert false;
         }
-        return result;
+        return attribute;
     }
 
-    private void _removeAttribute(TypedIOPort port, String attributeName) {
-        Attribute attribute = port.getAttribute(attributeName);
+    private void _removeAttribute(NamedObj namedObj, String attributeName) {
+        Attribute attribute = namedObj.getAttribute(attributeName);
         if (attribute != null) {
             try {
                 attribute.setContainer(null);
@@ -623,17 +667,20 @@ public class ChacoCodeGenerator extends CodeGenerator {
         }
     }
 
+    private HashMap _colorMap = new HashMap();
+
     // These hashtables save the mapping between Actor and an Integer
     // value used for Chaco identification
-    private Hashtable HashActorKey = new Hashtable();
+    private HashMap _HashActorKey = new HashMap();
 
-    private Hashtable HashNumberKey = new Hashtable();
+    private HashMap _HashNumberKey = new HashMap();
 
-    private Integer numVertices = new Integer(0);
+    private HashSet _rankNumbers = new HashSet();
 
-    private Integer numEdges = new Integer(0);
+    private int _numVertices = 0;
+
+    private int _numEdges = 0;
 
     private boolean _generated = false;
 
-    private HashMap _colorMap = new HashMap();
 }
