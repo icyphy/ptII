@@ -60,7 +60,7 @@ import ptolemy.kernel.util.StringAttribute;
 
 ////ChacoCodeGenerator
 
-/** Base class for C code generator.
+/** Base class for Chaco code generator.
  *
  *  @author Jia Zou, Isaac Liu, Man-Kit Leung
  *  @version $Id$
@@ -405,7 +405,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
     /**
      * Find the first integer-valued cube that is greater than or equal to val.
      */
-    public static final int approxCubeRoot(int val) {
+    private static final int _approxCubeRoot(int val) {
         int index = 0;
         int cube  = 0;
 
@@ -429,7 +429,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
         //// Need to pick numColors distinct colors.
         String[] colors            = new String[numColors + 1];
-        int       numDiscreteValues = approxCubeRoot(numColors);
+        int       numDiscreteValues = _approxCubeRoot(numColors);
         float[]   colorVals         = new float[numDiscreteValues];
         int       r_index;
         int       g_index;
