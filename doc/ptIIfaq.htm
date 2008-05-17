@@ -65,6 +65,7 @@ This FAQ can be found at:
 	<li> <a href="#stacktrace"><b>4.2 Ptolemy II is hanging, how do I get a stack trace?</b></a>
 	<li> <a href="#reading data from files?"><b>4.3 How do I read data from a file?</b></a>
 	<li> <a href="#loops"><b>4.4 How do I do loops in Ptolemy II?</b></a>
+	<li> <a href="#multiportComposites"><b>4.5 I have a Composite with a Multiport, but it only sees one channel?</b></a>
 	</menu>
 
 <li> <a href="#ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a>
@@ -787,6 +788,24 @@ property("ptolemy.ptII.dir") + "/ptolemy/actor/lib/test/auto/FileWriter1Output.t
 <dt> <a name="loops"><b>4.4 How do I do loops in Ptolemy II?</b></a>
 <dd> Norbert Podhorszki wrote some 
 <a href="http://wwwcsif.cs.ucdavis.edu/~pnorbert/howto/dev/howto-dev-loop.html#in_browser" target="_top">documentation about how to do loops in PN and DDF</a>.
+<dt> <a name="multiportComposites"><b>4.5 I have a Composite with a Multiport, but it only sees one channel?</b></a>
+
+<dd> The workaround is to right click on the inside relation and set
+the width to 0, which means "Infer the width from the connections".
+
+ <p>For example, if you have two Consts going to a multiport input on
+a composite.  By default, the width of the inner relation inside the
+composite is set to 1 Currently, in the Ptolemy II semantics, when a
+multiport has width 2 on the outside and width 1 on the inside, the
+second channel is dropped.
+
+ <p>Arguably, the default width should always be 0, but we would need
+a proof of soundness. I.e., that the inferred width is always unique.
+We've looked into this in the past, but have not come up with a formal
+proof.
+
+</dl>
+
 </dl>
 
 <h2><a name="ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a></h2>
