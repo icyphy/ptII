@@ -34,10 +34,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Actor;
@@ -47,7 +47,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
@@ -59,8 +58,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.util.FileUtilities;
-import ptolemy.util.MessageHandler;
 
 ////ChacoCodeGenerator
 
@@ -161,44 +158,122 @@ public class ChacoCodeGenerator extends CodeGenerator {
             // Get vertex weights from the model
             codeBuffer.append(_getVertexWeight(actor) + " ");
 
+            // for each input port within the current actor being analyzed
             for (TypedIOPort inputPort : (List<TypedIOPort>) actor.inputPortList()) {
 
+                // for each source port that sends event to this input port
                 for (TypedIOPort sourcePort : (List<TypedIOPort>) inputPort.sourcePortList()) {
                     Actor sourceActor = (Actor) sourcePort.getContainer();
                     int outInt = (Integer) _HashActorKey.get(sourceActor);
                     codeBuffer.append(outInt + " ");
+                    HashMap partialEdgeWeights = new HashMap();
+                    partialEdgeWeights.put(inputPort, "0");
 
+                    LinkedList middlePortList = new LinkedList();
+                    middlePortList.add(inputPort);
+                    Iterator middlePortListIt = middlePortList.iterator();
                     // Add the edge weight from the model by traversing through
                     // the relations and ports connected to these relations
-                    for (Relation relation : (List<Relation>) inputPort.linkedRelationList()) {
-                        List portList = relation.linkedPortList(inputPort);
-                        Iterator portIt = (Iterator) portList.listIterator();
-
-                        boolean foundFlag = false;
-                        while (foundFlag == false && portIt.hasNext()) {
-                            TypedIOPort sinkPort = (TypedIOPort) portIt
-                            .next();
-
-                            if (!sinkPort.isOpaque()) {
-                                // go into where this input port is connected to.
-                                if (sinkPort.isOutput()) {
-                                    portList.addAll(sinkPort
-                                            .deepInsidePortList());
-                                } else if (sinkPort.isInput()) {
-                                    portList.addAll(sinkPort
-                                            .sourcePortList());
+                    boolean foundFlag = false;
+                    while(foundFlag == false && middlePortListIt.hasNext()) {
+                        TypedIOPort middlePort = (TypedIOPort)middlePortListIt.next();
+                        
+                        if (middlePort.equals(sourcePort)) {
+                            int temp = Integer.parseInt( (String)partialEdgeWeights.get(middlePort));
+                            codeBuffer.append(Integer.toString(temp) + " ");
+                            foundFlag = true;
+                        } else {
+                            for (Relation relation : (List<Relation>) middlePort.linkedRelationList()) {
+                                List nextMiddlePortList = relation.linkedPortList(middlePort);
+                                Iterator nextMiddlePortListIt = (Iterator) nextMiddlePortList.listIterator();
+                                while (foundFlag == false && nextMiddlePortListIt.hasNext()) {
+                                    TypedIOPort nextMiddlePort = (TypedIOPort)nextMiddlePortListIt.next();
+                                    if (partialEdgeWeights.get(nextMiddlePort) == null ) {
+                                        // iF this port is part of a composite actor
+                                        if (!nextMiddlePort.isOpaque()) {
+                                            int temp = Integer.parseInt(_getEdgeWeight(relation))
+                                            + Integer.parseInt((String)partialEdgeWeights.get(middlePort)); 
+                                            partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
+                                            // get the ports the port is connected to
+                                            if (nextMiddlePort.isInput()) {
+                                                middlePortList.add(nextMiddlePort);
+                                            }else {
+                                                for(TypedIOPort hierarchicalConnectedPort :
+                                                    (List<TypedIOPort>) nextMiddlePort.deepInsidePortList()) {
+                                                    for (Relation hierarchicalRelation : (List<Relation>) hierarchicalConnectedPort.linkedRelationList()) {
+                                                        for (TypedIOPort relationPort : (List<TypedIOPort>) hierarchicalRelation.linkedPortList(hierarchicalConnectedPort)) {
+                                                            if (relationPort.equals(nextMiddlePort)) {
+                                                                int temp2 = Integer.parseInt(_getEdgeWeight(hierarchicalRelation))
+                                                                + Integer.parseInt((String)partialEdgeWeights.get(nextMiddlePort)); 
+                                                                partialEdgeWeights.put(hierarchicalConnectedPort, Integer.toString(temp2));
+                                                            }
+                                                        }
+                                                    }
+                                                    middlePortList.add(hierarchicalConnectedPort);
+                                                }
+                                            }
+                                                //List hierarchicalConnectedPortList = nextMiddlePort.deepConnectedPortList();
+//                                          List debugList = nextMiddlePort.deepInsidePortList();
+//                                          Iterator debugListIt = debugList.iterator();
+//                                          while(debugListIt.hasNext()) {
+//                                          TypedIOPort debugPort = (TypedIOPort)debugListIt.next();
+//                                          for(Relation debugRelation : (List<Relation>) debugPort.linkedRelationList()) {
+//                                          List debugPort2 = debugRelation.linkedPortList();
+//                                          debugPort2.get(1);
+//                                          }
+//                                          }
+//                                            int temp = Integer.parseInt((String)partialEdgeWeights.get(middlePort)) + 
+//                                            Integer.parseInt(_getEdgeWeight(relation));
+//                                            partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
+//
+//                                            // go into where this input port is connected to.
+//                                            middlePortList.add(nextMiddlePort);
+                                            middlePortList.remove(middlePort);
+                                            middlePortListIt = middlePortList.iterator();
+                                        } else if (nextMiddlePort.equals(sourcePort)) {
+                                            int temp = Integer.parseInt( (String)partialEdgeWeights.get(middlePort)) + 
+                                            Integer.parseInt(_getEdgeWeight(relation));
+                                            codeBuffer.append(Integer.toString(temp) + " ");
+                                            foundFlag = true;
+                                        }
+                                    }
                                 }
-                                portList.remove(sinkPort);
-                                portIt = (Iterator) portList.listIterator();
-
-                            } else if (sinkPort.equals(sourcePort)) {
-                                codeBuffer.append(_getEdgeWeight(relation) + " ");
-                                foundFlag = true;
                             }
                         }
                     }
                 }
             }
+                                      
+//                        
+//                        for (Relation relation : (List<Relation>) middlePort.linkedRelationList()) {
+//                            List nextMiddlePortList = relation.linkedPortList(middlePort);
+//                            Iterator nextMiddlePortListIt = (Iterator) nextMiddlePortList.listIterator();
+//                            while (foundFlag == false && nextMiddlePortListIt.hasNext()) {
+//                                TypedIOPort nextMiddlePort = (TypedIOPort)nextMiddlePortListIt.next();
+//                                if (partialEdgeWeights.get(nextMiddlePort) == null) {
+//                                    if (!nextMiddlePort.isOpaque()) {
+//
+//                                        int temp = Integer.parseInt((String)partialEdgeWeights.get(middlePort)) + 
+//                                        Integer.parseInt(_getEdgeWeight(relation));
+//                                        partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
+//
+//                                        // go into where this input port is connected to.
+//                                        middlePortList.add(nextMiddlePort);
+//                                        middlePortList.remove(middlePort);
+//                                        middlePortListIt = middlePortList.iterator();
+//
+//                                    } else if (nextMiddlePort.equals(sourcePort)) {
+//                                        int temp = Integer.parseInt( (String)partialEdgeWeights.get(middlePort)) + 
+//                                        Integer.parseInt(_getEdgeWeight(relation));
+//                                        codeBuffer.append(Integer.toString(temp) + " ");
+//                                        foundFlag = true;
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
 
             for (TypedIOPort outputPort : (List<TypedIOPort>) actor.outputPortList()) {
 
@@ -207,33 +282,77 @@ public class ChacoCodeGenerator extends CodeGenerator {
                     Actor tempActor = (Actor) sinkPort.getContainer();
                     int inInt = (Integer) _HashActorKey.get(tempActor);
                     codeBuffer.append(inInt + " ");
-
+                    
+                    HashMap partialEdgeWeights = new HashMap();
+                    partialEdgeWeights.put(outputPort, "0");
+                    LinkedList middlePortList = new LinkedList();
+                    middlePortList.add(outputPort);
+                    Iterator middlePortListIt = middlePortList.iterator();
                     // Add the edge weight from the model by traversing through
                     // the relations and ports connected to these relations
-                    for (Relation relation : (List<Relation>) outputPort.linkedRelationList()) {
+                    boolean foundFlag = false;
+                    while(foundFlag == false && middlePortListIt.hasNext()) {
+                        TypedIOPort middlePort = (TypedIOPort)middlePortListIt.next();
+                        if (middlePort.equals(sinkPort)) {
+                            int temp = Integer.parseInt( (String)partialEdgeWeights.get(middlePort));
+                            codeBuffer.append(Integer.toString(temp) + " ");
+                            foundFlag = true;
+                        } else {
+                            for (Relation relation : (List<Relation>) middlePort.linkedRelationList()) {
+                                List nextMiddlePortList = relation.linkedPortList(middlePort);
+                                Iterator nextMiddlePortListIt = (Iterator) nextMiddlePortList.listIterator();
+                                while (foundFlag == false && nextMiddlePortListIt.hasNext()) {
+                                    TypedIOPort nextMiddlePort = (TypedIOPort)nextMiddlePortListIt.next();
+                                    if (partialEdgeWeights.get(nextMiddlePort) == null ) {
+                                        // iF this port is part of a composite actor
+                                        if (!nextMiddlePort.isOpaque()) {
+                                            int temp = Integer.parseInt(_getEdgeWeight(relation))
+                                            + Integer.parseInt((String)partialEdgeWeights.get(middlePort));
+                                            partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
+                                            // get the ports the port is connected to
+                                            if (!nextMiddlePort.isInput()) {
+                                                middlePortList.add(nextMiddlePort);
+                                            }else {
+                                                for(TypedIOPort hierarchicalConnectedPort :
+                                                    (List<TypedIOPort>) nextMiddlePort.deepInsidePortList()) {
+                                                    for (Relation hierarchicalRelation : (List<Relation>) hierarchicalConnectedPort.linkedRelationList()) {
+                                                        for (TypedIOPort relationPort : (List<TypedIOPort>) hierarchicalRelation.linkedPortList(hierarchicalConnectedPort)) {
+                                                            if (relationPort.equals(nextMiddlePort)) {
+                                                                int temp2 = Integer.parseInt(_getEdgeWeight(hierarchicalRelation))
+                                                                + Integer.parseInt((String)partialEdgeWeights.get(nextMiddlePort)); 
+                                                                partialEdgeWeights.put(hierarchicalConnectedPort, Integer.toString(temp2));
+                                                            }
+                                                        }
+                                                    }
+                                                    middlePortList.add(hierarchicalConnectedPort);
+                                                }
+                                            }
+                                                //List hierarchicalConnectedPortList = nextMiddlePort.deepConnectedPortList();
+//                                          List debugList = nextMiddlePort.deepInsidePortList();
+//                                          Iterator debugListIt = debugList.iterator();
+//                                          while(debugListIt.hasNext()) {
+//                                          TypedIOPort debugPort = (TypedIOPort)debugListIt.next();
+//                                          for(Relation debugRelation : (List<Relation>) debugPort.linkedRelationList()) {
+//                                          List debugPort2 = debugRelation.linkedPortList();
+//                                          debugPort2.get(1);
+//                                          }
+//                                          }
+//                                            int temp = Integer.parseInt((String)partialEdgeWeights.get(middlePort)) + 
+//                                            Integer.parseInt(_getEdgeWeight(relation));
+//                                            partialEdgeWeights.put(nextMiddlePort, Integer.toString(temp));
+//
+//                                            // go into where this input port is connected to.
+//                                            middlePortList.add(nextMiddlePort);
+                                            middlePortList.remove(middlePort);
+                                            middlePortListIt = middlePortList.iterator();
 
-                        List portList = relation.linkedPortList(outputPort);
-                        Iterator portIt = (Iterator) portList.listIterator();
-                        boolean foundFlag = false;
-                        while (foundFlag == false && portIt.hasNext()) {
-                            TypedIOPort connInputPort = (TypedIOPort) portIt
-                            .next();
-                            if (!connInputPort.isOpaque()) {
-                                // go into where this input port is connected to.
-                                if (connInputPort.isInput()) {
-                                    //portList.addAll(connInputPort.insideSinkPortList());
-                                    portList.addAll(connInputPort
-                                            .deepInsidePortList());
-                                } else if (connInputPort.isOutput()) {
-                                    portList.addAll(connInputPort
-                                            .sinkPortList());
-                                }
-                                portList.remove(connInputPort);
-                                portIt = (Iterator) portList.listIterator();
-                            } else {
-                                if (connInputPort.equals(sinkPort)) {
-                                    codeBuffer.append(_getEdgeWeight(relation) + " ");
-                                    foundFlag = true;
+                                        } else if (nextMiddlePort.equals(sinkPort)) {
+                                            int temp = Integer.parseInt( (String)partialEdgeWeights.get(middlePort)) + 
+                                            Integer.parseInt(_getEdgeWeight(relation));
+                                            codeBuffer.append(Integer.toString(temp) + " ");
+                                            foundFlag = true;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -317,7 +436,11 @@ public class ChacoCodeGenerator extends CodeGenerator {
     }
 
     protected void _readChacoOutputFile() throws IllegalActionException {
-        File file = new File(_sanitizedModelName + ".out");
+        
+        String codeFileNameWritten = this.getCodeFileName();
+        codeFileNameWritten = codeFileNameWritten.replaceAll(".graph", ".out");
+        
+        File file = new File(codeFileNameWritten);
         FileInputStream fis = null;
         BufferedInputStream bis = null;
         DataInputStream dis = null;
