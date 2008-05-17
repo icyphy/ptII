@@ -47,7 +47,6 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	NoPackageActor.java \
 	MoMLParserLeak.java \
 	RecorderErrorHandler.java \
 	TestIconLoader.java \
@@ -95,6 +94,7 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	ConstClassDefinition.xml \
+	NoPackageActors.java.in \
 	NoPackageActors.xml \
 	UndoDeleteEntityComposite.xml \
 	p1.moml \
