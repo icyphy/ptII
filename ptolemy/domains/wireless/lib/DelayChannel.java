@@ -42,6 +42,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// DelayChannel
@@ -126,6 +127,19 @@ public class DelayChannel extends ErasureChannel {
         }
     }
 
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DelayChannel newObject = (DelayChannel)super.clone(workspace);
+        newObject._receptions = null;
+        return newObject;
+    }
+    
     /** If the current time matches one of the times that we have previously
      *  recorded as the reception time for a transmission, then deliver
      *  the token to the receiver.

@@ -48,6 +48,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
 
@@ -203,6 +204,36 @@ public class TerrainProperty extends TypedAtomicActor implements
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        TerrainProperty newObject = (TerrainProperty) super
+                .clone(workspace);
+        ArrayToken xypointsArray;
+        try {
+            xypointsArray = (ArrayToken) newObject.xyPoints.getToken();
+        } catch (IllegalActionException e) {
+            throw new CloneNotSupportedException(e.toString());
+        }
+        newObject._xPoints = new int[newObject._numberOfPoints];
+        newObject._yPoints = new int[newObject._numberOfPoints];
+        for (int i = 0; i < xypointsArray.length(); i++) {
+            ArrayToken xypointArray = (ArrayToken) xypointsArray.getElement(i);
+            newObject._xPoints[i] = ((IntToken) xypointArray.getElement(0)).intValue();
+            newObject._yPoints[i] = ((IntToken) xypointArray.getElement(1)).intValue();
+        }
+        
+        newObject._icon = (EditorIcon)newObject.getAttribute("_icon");
+        newObject._terrain = (FilledShapeAttribute)newObject.getAttribute("terrain");
+        return newObject;
     }
 
     /** Register PropertyTransformers with the Channel.
