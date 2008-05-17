@@ -94,7 +94,7 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	ConstClassDefinition.xml \
-	NoPackageActors.java.in \
+	NoPackageActor.java.in \
 	NoPackageActors.xml \
 	UndoDeleteEntityComposite.xml \
 	p1.moml \
