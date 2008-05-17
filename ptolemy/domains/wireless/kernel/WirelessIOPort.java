@@ -317,6 +317,24 @@ public class WirelessIOPort extends TypedIOPort {
             super.broadcastClear();
         }
     }
+    
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        WirelessIOPort newObject = (WirelessIOPort)super.clone(workspace);
+        newObject._receivers = null;
+        newObject._insideReceivers = null;
+        newObject._insideChannel = null;
+        newObject._insideChannelVersion = -1L;
+        newObject._outsideChannel = null;
+        newObject._outsideChannelVersion = -1L;
+        return newObject;
+    }
 
     /** Override the base class to create receivers for WirelessIOPort.
      *  If there is an outside channel, create a receiver for outside
