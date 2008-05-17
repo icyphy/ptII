@@ -756,7 +756,7 @@ public class Plot extends PlotBox {
      *  styles.  Otherwise, use one line style.
      *  @param lineStyles True if the data sets are to be drawn in different
      *  line styles.
-     *  @see #getlineStyles()
+     *  @see #getLineStyles()
      */
     public synchronized void setLineStyles(boolean lineStyles) {
         // Ensure replot of offscreen buffer.

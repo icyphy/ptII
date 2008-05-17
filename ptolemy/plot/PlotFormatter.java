@@ -352,7 +352,7 @@ public class PlotFormatter extends JPanel {
     public void restore() {
         // Restore _original values.
         _plot.setTitle(_originalTitle);
-        _plot.setCaption(_originalCaptions);
+        _plot.setCaptions(_originalCaptions);
         _plot.setXLabel(_originalXLabel);
         _plot.setYLabel(_originalYLabel);
         _plot.setXRange(_originalXRange[0], _originalXRange[1]);

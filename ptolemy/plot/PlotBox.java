@@ -591,7 +591,7 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Get the captions.
      *  @return the captions
-     *  @see #addCaption(String)
+     *  @see #addCaptionLine(String)
      *  @see #setCaptions(Vector) 
      */  
     public Vector getCaptions() {
@@ -1384,7 +1384,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @see #getCaptions()
      *  @see #clearCaptions()
      */  
-    public void setCaption(Vector captionStrings) {
+    public void setCaptions(Vector captionStrings) {
         // Changing caption means we need to repaint the offscreen buffer.
         _plotImage = null;
         _captionStrings = captionStrings;
