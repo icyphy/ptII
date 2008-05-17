@@ -35,7 +35,8 @@ ME =		ptolemy/moml/test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+# The NoPackageActor.java test needs . in the CLASSPATH.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR).
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
