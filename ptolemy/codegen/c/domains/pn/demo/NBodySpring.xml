@@ -7,7 +7,7 @@
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="60">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 0.0]">
         </property>
         <property name="_localBufferSize" class="ptolemy.data.expr.Parameter" value="30">
         </property>
@@ -116,32 +116,42 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 105.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={55, 30, 1096, 754}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1020, -4, 1032, 776}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[883, 647]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 659]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{305.4880346433082, 228.2334822837753}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{216.2567567567568, 154.9628378378378}">
     </property>
     <property name="ChacoCodeGenerator" class="ptolemy.codegen.chaco.kernel.ChacoCodeGenerator">
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="run" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="action" class="ptolemy.data.expr.StringParameter" value="TRANSFORM">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 0.0}">
         </property>
     </property>
     <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+        <property name="compile" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, -45.0}">
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, -40.0]">
         </property>
         <property name="mpi" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 210.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 210.0]">
         </property>
         <property name="timestep" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -162,7 +172,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{345.0, 115.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 53, 1131, 739}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-239, 51, 1133, 749}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[918, 632]">
         </property>
@@ -271,7 +281,7 @@
                 <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 220.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 220.0}">
             </property>
             <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -604,7 +614,7 @@
         <link port="Y.output" relation="relation7"/>
     </entity>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 240.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 235.0}">
         </property>
         <property name="timestep" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1507,7 +1517,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-75.0, 175.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 200.0]">
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
         </property>
