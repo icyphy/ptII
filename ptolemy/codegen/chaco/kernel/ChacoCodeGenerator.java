@@ -189,7 +189,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                                 while (foundFlag == false && nextMiddlePortListIt.hasNext()) {
                                     TypedIOPort nextMiddlePort = (TypedIOPort)nextMiddlePortListIt.next();
                                     if (partialEdgeWeights.get(nextMiddlePort) == null ) {
-                                        // iF this port is part of a composite actor
+                                        // if this port is part of a composite actor
                                         if (!nextMiddlePort.isOpaque()) {
                                             int temp = Integer.parseInt(_getEdgeWeight(relation))
                                             + Integer.parseInt((String)partialEdgeWeights.get(middlePort)); 
