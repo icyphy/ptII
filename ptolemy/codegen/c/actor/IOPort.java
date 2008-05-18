@@ -162,7 +162,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                 Receiver receiver = _getReceiver(
                         offsetObject.toString(), sinkChannelNumber, sinkPort);
 
-                if (isMpi() && MpiPNDirector.isMpiSendBuffer(port, j)) {
+                if (isMpi() && MpiPNDirector.isMpiReceiveBuffer(sinkPort, j)) {
                     code.append(_generateMPISendCode(j, rate, sinkPort, sinkChannelNumber, director));
 
                 } else if (!isMpi() && receiver instanceof PNQueueReceiver) {
@@ -220,13 +220,13 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         for (int i = 0; i < rate; i++) {
 
             int sinkRank = MpiPNDirector.getRankNumber((Actor) sinkPort.getContainer());
+            int sourceRank = MpiPNDirector.getRankNumber((Actor) port.getContainer());
 
             code.append("// Initialize send tag value." + _eol);
             code.append("static int " + MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + " = " +
                     MpiPNDirector.getMpiReceiveBufferId(sinkPort, sinkChannelNumber) + ";" + _eol);
 
             if (MpiPNDirector._DEBUG) {
-                int sourceRank = MpiPNDirector.getRankNumber((Actor) port.getContainer());
                 code.append("printf(\"" + port.getContainer().getName() + "[" + sourceRank + "] sending msg <" + 
                         sinkRank + ", %d> for " + MpiPNDirector.getBufferLabel(port, channelNumber) +
                         		"\\n\", " + MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + ");" + _eol);
@@ -242,16 +242,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
             String buffer = 
                 sinkHelper.generatePortReference(sinkPort, channelAndOffset , false);
 
-            //    sourcHelper.processCode("&$ref(" + port.getName() + "#" + channelNumber + ", " + i + ")");
-            //sinkHelper.processCode("&$ref(" + sinkPort.getName() + "#" + sinkChannelNumber + ", " + i + ")");
-
-
             code.append(buffer);
-            //code.append(buffer.substring(0, buffer.indexOf('=')));
-//          generateVariableName(sinkPort) + sinkChannelNumber
-//          + "[" + MpiPNDirector.generateFreeSlots(sinkPort, sinkChannelNumber) + "[" + 
-//          MpiPNDirector.generatePortHeader(sinkPort, sinkChannelNumber) + ".current" + (i == 0 ? "" : i) + 
-//          "]]" + ", 1, ");
 
             // count.
             code.append(", 1");
@@ -273,6 +264,12 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                     MpiPNDirector.generateFreeSlots(sinkPort, sinkChannelNumber) + "[" + 
                     MpiPNDirector.generatePortHeader(sinkPort, sinkChannelNumber) + 
                     ".current" + (i == 0 ? "" : i) + "]]" + ");" + _eol);
+            
+            if (MpiPNDirector._DEBUG) {
+                code.append("printf(\"" + MpiPNDirector.getBufferLabel(port, channelNumber) +
+                        ", rank[" + sourceRank + "], sended tag[%d]\\n\", " + 
+                        MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + ");" + _eol);
+            }            
         }
 
         // Update the Offset.
@@ -309,11 +306,19 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
             (ptolemy.actor.IOPort) getComponent();
         Receiver receiver = _getReceiver(null, 0, port);
 
-        String code = this.getCodeGenerator().comment("\n....................Begin updateOffset..." + port.getFullName());
+        String code = getCodeGenerator().comment("\n....................Begin updateOffset..." + port.getFullName());
 
-        if (!isMpi() && receiver instanceof PNQueueReceiver) {
-            int width = port.getWidth();
-            for (int i = 0; i < width; i++) {
+        int width = 0;
+        if (port.isInput()) {
+            width = port.getWidth();
+        } else {
+            width = port.getWidthInside();
+        }
+
+        for (int i = 0; i < port.getWidth(); i++) {
+            if (MpiPNDirector.isMpiReceiveBuffer(port, i)) {
+                // do nothing.
+            } else if (!isMpi() && receiver instanceof PNQueueReceiver) {
 
                 // FIXME: this is kind of hacky.
                 PNDirector pnDirector = (PNDirector)//directorHelper;         
@@ -325,14 +330,13 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                     code += _updatePNOffset(rate, channel.port, 
                             channel.channelNumber, directorHelper, false);
                 }
+                code += getCodeGenerator().comment("\n....................End updateOffset (PN)..." + port.getFullName());
+            } else {
+                code += _updateOffset(i, rate);
+                code += getCodeGenerator().comment("\n....................End updateOffset..." + port.getFullName());
             }
-            code += getCodeGenerator().comment("\n....................End updateOffset (PN)..." + port.getFullName());
-            return code;
-        } else {
-            code += _updateOffset(rate);
-            code += getCodeGenerator().comment("\n....................End updateOffset..." + port.getFullName());
-            return code;
         }
+        return code;
     }
 
     private String _updatePNOffset(int rate, ptolemy.actor.IOPort port, int channelNumber, Director directorHelper, boolean isWrite)
@@ -365,7 +369,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         pnDirector.generateDirectorHeader() + ");" + _eol;
     }
 
-    protected String _updateOffset(int rate) throws IllegalActionException {
+    protected String _updateOffset(int channel, int rate) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
                 .getToken()).booleanValue();
@@ -375,33 +379,24 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
                 .getContainer());
 
-        int length = 0;
-        if (port.isInput()) {
-            length = port.getWidth();
-        } else {
-            length = port.getWidthInside();
-        }
-
-        for (int j = 0; j < length; j++) {
-            // Update the offset for each channel.            
-            if (helper.getReadOffset(port, j) instanceof Integer) {
-                int offset = ((Integer) helper.getReadOffset(port, j))
-                .intValue();
-                if (helper.getBufferSize(port, j) != 0) {
-                    offset = (offset + rate) % helper.getBufferSize(port, j);
-                }
-                helper.setReadOffset(port, j, Integer.valueOf(offset));
-            } else { // If offset is a variable.
-                String offsetVariable = (String) helper.getReadOffset(port, j);
-                if (padBuffers) {
-                    int modulo = helper.getBufferSize(port, j) - 1;
-                    code.append(offsetVariable + " = (" + offsetVariable + 
-                            " + " + rate + ")&" + modulo + ";" + _eol);
-                } else {
-                    code.append(offsetVariable + " = (" + offsetVariable + 
-                            " + " + rate + ") % " + 
-                            helper.getBufferSize(port, j) + ";" + _eol);
-                }
+        // Update the offset for each channel.            
+        if (helper.getReadOffset(port, channel) instanceof Integer) {
+            int offset = ((Integer) helper.getReadOffset(port, channel))
+            .intValue();
+            if (helper.getBufferSize(port, channel) != 0) {
+                offset = (offset + rate) % helper.getBufferSize(port, channel);
+            }
+            helper.setReadOffset(port, channel, Integer.valueOf(offset));
+        } else { // If offset is a variable.
+            String offsetVariable = (String) helper.getReadOffset(port, channel);
+            if (padBuffers) {
+                int modulo = helper.getBufferSize(port, channel) - 1;
+                code.append(offsetVariable + " = (" + offsetVariable + 
+                        " + " + rate + ")&" + modulo + ";" + _eol);
+            } else {
+                code.append(offsetVariable + " = (" + offsetVariable + 
+                        " + " + rate + ") % " + 
+                        helper.getBufferSize(port, channel) + ";" + _eol);
             }
         }
         return code.toString();

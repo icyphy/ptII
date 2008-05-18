@@ -113,7 +113,7 @@ public class MpiPNDirector extends Director {
             System.err.println("Error: " + e.getMessage());
         }
     }
-    
+
     /** Generate the body code that lies between variable declaration
      *  and wrapup.
      *  @return The generated body code.
@@ -121,9 +121,9 @@ public class MpiPNDirector extends Director {
      *  {@link #generateFireCode()} method throws the exceptions.
      */
     public String generateFireCode() throws IllegalActionException {
-        
+
         this.analyzeModel();
-        
+
         StringBuffer code = new StringBuffer();
         CompositeActor compositeActor = 
             (CompositeActor) _director.getContainer();       
@@ -144,7 +144,7 @@ public class MpiPNDirector extends Director {
                         _getActorTimer(actor) + ");" + _eol + "}" + _eol);
             }
         }
-        
+
         code.append(_codeGenerator.comment("I'm in mpi director."));
         //Removed since we don't use pthreads -iliu
         //code.append("pthread_attr_init(&pthread_custom_attr);" + _eol + _eol);
@@ -157,10 +157,10 @@ public class MpiPNDirector extends Director {
 
             code.append("if (" + _getActorRounds(actor) + " < " + 
                     _getActorRoundsLimit(actor) + ") {" + _eol);
-          if (_DEBUG) {
-            code.append("printf(\"" + _getActorRounds(actor) + "[%d], rank[" + rankNumber + "].\\n\", "
-                    + _getActorRounds(actor) + ");" + _eol);
-        }
+            if (_DEBUG) {
+                code.append("printf(\"" + _getActorRounds(actor) + "[%d], rank[" + rankNumber + "].\\n\", "
+                        + _getActorRounds(actor) + ");" + _eol);
+            }
 
             code.append(_getActorMpiLabel(actor) + "();" + _eol);
 
@@ -170,7 +170,7 @@ public class MpiPNDirector extends Director {
 
             code.append("}" + _eol);
         }
-        
+
         // Check if we are ready to terminate
         int rank = 0;
         while (rank < _numProcessors) {
@@ -184,12 +184,12 @@ public class MpiPNDirector extends Director {
             }
             code.append(")" + _eol + "break;" + _eol);
             code.append("}" + _eol);
-            
+
             rank++;
         }
-        
+
         code.append("}" + _eol); //end of while(true)
-        
+
         // print out the timer values
         if (_doMeasureTime()) {
             code.append("stop_timer(&total_timer);" + _eol); 
@@ -207,9 +207,9 @@ public class MpiPNDirector extends Director {
                 rank++;
             }
         }
-        
+
         code.append("fflush(stdout);" + _eol);
-        
+
         return code.toString();
     }
 
@@ -333,26 +333,26 @@ public class MpiPNDirector extends Director {
                     (CodeGeneratorHelper) _getHelper(actor);
 
                 // Set offset objects.
-                for (int i = 0; i < port.getWidth(); i++) {
-                    for (Channel sinkChannel : getReferencedChannels(port, i)) {
-                        IOPort sink = sinkChannel.port;
+                for (int channel = 0; channel < port.getWidth(); channel++) {
+                    for (Channel sink : getReferencedChannels(port, channel)) {
+                        IOPort sinkPort = sink.port;
                         CodeGeneratorHelper sinkHelper = 
-                            (CodeGeneratorHelper) _getHelper(sink.getContainer());
+                            (CodeGeneratorHelper) _getHelper(sinkPort.getContainer());
 
-                        int channelNumber = sinkChannel.channelNumber;
+                        int sinkChannel = sink.channelNumber;
 
-                        if (isLocalBuffer(port, i)) {
-                            sinkHelper.setBufferSize(sink, channelNumber, getBufferSize(sink, channelNumber));
-                            sinkHelper.setReadOffset(sink, channelNumber, generatePortHeader(sink, channelNumber) + ".readOffset");
-                            sinkHelper.setWriteOffset(sink, channelNumber, generatePortHeader(sink, channelNumber) + ".writeOffset");
+                        if (isLocalBuffer(port, channel)) {
+                            sinkHelper.setBufferSize(sinkPort, sinkChannel, getBufferSize(sinkPort, sinkChannel));
+                            sinkHelper.setReadOffset(sinkPort, sinkChannel, generatePortHeader(sinkPort, sinkChannel) + ".readOffset");
+                            sinkHelper.setWriteOffset(sinkPort, sinkChannel, generatePortHeader(sinkPort, sinkChannel) + ".writeOffset");
 
-                        } else if (isMpiSendBuffer(port, i)) {
+                        } else if (isMpiReceiveBuffer(sinkPort, sinkChannel)) {
                             //"freeSlot[head.current]");
-                            sinkHelper.setBufferSize(sink, channelNumber, getBufferSize(sink, channelNumber));
+                            sinkHelper.setBufferSize(sinkPort, sinkChannel, getBufferSize(sinkPort, sinkChannel));
 //                          helper.setReadOffset(sink, channelNumber, generateFreeSlots(sink, channelNumber) + "[" +
 //                          generatePortHeader(sink, channelNumber) + ".current]");                        
-                            helper.setWriteOffset(sink, channelNumber, generateFreeSlots(sink, channelNumber) + "[" +
-                                    generatePortHeader(sink, channelNumber) + ".current]");                        
+                            helper.setWriteOffset(sinkPort, sinkChannel, generateFreeSlots(sinkPort, sinkChannel) + "[" +
+                                    generatePortHeader(sinkPort, sinkChannel) + ".current]");                        
 
                         }
                     }
@@ -480,7 +480,7 @@ public class MpiPNDirector extends Director {
 
         return !isMpiSendBuffer(port, channel) && !isMpiReceiveBuffer(port, channel);
     }
-    
+
     public static boolean isMpiReceiveBuffer(IOPort inputPort, int channel) {
         return getMpiReceiveBufferId(inputPort, channel) >= 0;
     }
@@ -488,12 +488,12 @@ public class MpiPNDirector extends Director {
     public static int getMpiReceiveBufferId(IOPort inputPort, int channel) {
         StringAttribute bufferAttribute = 
             (StringAttribute) inputPort.getAttribute("_mpiBuffer");
-        
+
         if (bufferAttribute != null) {
             String value = bufferAttribute.getExpression();
             if (value.startsWith("receiver")) {
                 StringTokenizer tokenizer = new StringTokenizer(value, "[]", false);
-                
+
                 while (tokenizer.hasMoreTokens()) {
                     // "ch". 
                     tokenizer.nextToken();
@@ -503,10 +503,10 @@ public class MpiPNDirector extends Director {
 
                     // "id"
                     tokenizer.nextToken();
-                    
+
                     // "[#]"
                     String idString = tokenizer.nextToken();
-                    
+
                     if (channelString.equals("" + channel)) {
                         return Integer.parseInt(idString);
                     }
@@ -525,7 +525,7 @@ public class MpiPNDirector extends Director {
             String value = bufferAttribute.getExpression();
             if (value.startsWith("sender")) {
                 StringTokenizer tokenizer = new StringTokenizer(value, "[]", false);
-                
+
                 while (tokenizer.hasMoreTokens()) {
                     // "ch". 
                     tokenizer.nextToken();
@@ -541,7 +541,7 @@ public class MpiPNDirector extends Director {
         }
         return false;
     }
-    
+
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite, CodeGeneratorHelper helper)
     throws IllegalActionException {
@@ -556,27 +556,23 @@ public class MpiPNDirector extends Director {
         if (channelAndOffset[0] != null && channelAndOffset[0].length() > 0) {
             channelNumber = Integer.parseInt(channelAndOffset[0]); 
         }
-        if (isLocalBuffer(port, channelNumber)) {
-            return super.getReference(port, channelAndOffset, forComposite, isWrite, helper);
-        } else if (isMpiReceiveBuffer(port, channelNumber)){
-            return getBufferLabel(port, channelNumber);
-        } else if (isMpiSendBuffer(port, channelNumber)){
-            return super.getReference(port, channelAndOffset, forComposite, isWrite, helper);
-        }
-
+        
         // get reference for mpi ports.
-        return result; 
-        //return super.getReference(port, channelAndOffset, forComposite, isWrite, helper);
+        if (isMpiReceiveBuffer(port, channelNumber)){
+            return getBufferLabel(port, channelNumber);
+        } 
+
+        return super.getReference(port, channelAndOffset, forComposite, isWrite, helper);
     }
 
 
     public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
-        
+
         // FIXME: This code ensures the termination of the mpi PN code,
         // however this scheme may not be of the PN semantics.
         StringBuffer code = new StringBuffer();
-        
+
         CompositeActor compositeActor = (CompositeActor) _director.getContainer();
         List actorList = compositeActor.deepEntityList();
 
@@ -588,7 +584,7 @@ public class MpiPNDirector extends Director {
             numIterations = "1000";
         else 
             numIterations = Iterations.getExpression();
-        
+
         for (Actor actor : (List<Actor>) actorList) {
             code.append("static int " + _getActorRoundsLimit(actor) + " = " + numIterations 
                     + ";" + _eol);
@@ -596,12 +592,12 @@ public class MpiPNDirector extends Director {
             code.append("boolean " + _getActorTerminate(actor) + " = 0;" + _eol);
         }
         sharedCode.add(code.toString());
-        
+
         if (_doMeasureTime()) {
             _codeStream.clear();
             _codeStream.appendCodeBlock("timerSharedBlock");
             sharedCode.add(_codeStream.toString());
-            
+
             StringBuffer codeBuffer = new StringBuffer();
             List actorList2 = compositeActor.deepEntityList();
             for (Actor actor : (List<Actor>) actorList2) {
@@ -609,7 +605,7 @@ public class MpiPNDirector extends Director {
             }
             sharedCode.add(codeBuffer.toString());
         }
-                
+
         return sharedCode;
     }
 
@@ -637,7 +633,7 @@ public class MpiPNDirector extends Director {
         throws IllegalActionException {
             Parameter result = (Parameter) ((NamedObj) actor).getAttribute("_partition");
             assert result != null;
-            
+
             return ((IntToken) result.getToken()).intValue();
         }
 
@@ -650,7 +646,7 @@ public class MpiPNDirector extends Director {
                     for (TypedIOPort input : (List<TypedIOPort>) actor.inputPortList()) {
 
                         for (int i = 0; i < input.getWidth(); i++) {
-                            
+
                             int sourceIndex = 0;
                             Channel source = CodeGeneratorHelper.getSourceChannel(input, i);
 
@@ -664,7 +660,7 @@ public class MpiPNDirector extends Director {
 
                         //Iterator connOut = (Iterator) thisInput.deepConnectedOutPortList().iterator();
                     }
-                    
+
                     List outputList =  actor.outputPortList();
                     Iterator outputIt = (Iterator) outputList.listIterator();
 
@@ -764,11 +760,11 @@ public class MpiPNDirector extends Director {
     private static int _getLocalBufferId(IOPort port, int channel) {
         StringAttribute bufferAttribute = 
             (StringAttribute) port.getAttribute("_localBuffer");
-        
+
         if (bufferAttribute != null) {
             String value = bufferAttribute.getExpression();
             StringTokenizer tokenizer = new StringTokenizer(value, "[]", false);
-            
+
             while (tokenizer.hasMoreTokens()) {
                 // "ch". 
                 tokenizer.nextToken();
@@ -778,10 +774,10 @@ public class MpiPNDirector extends Director {
 
                 // "id"
                 tokenizer.nextToken();
-                
+
                 // "[#]"
                 String idString = tokenizer.nextToken();
-                
+
                 if (channelString.equals("" + channel)) {
                     return Integer.parseInt(idString);
                 }
@@ -829,9 +825,9 @@ public class MpiPNDirector extends Director {
             CodeGeneratorHelper helper = 
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
-//            if (!inline) {
-//                code.append(helper.generateFireFunctionCode());
-//            } 
+//          if (!inline) {
+//          code.append(helper.generateFireFunctionCode());
+//          } 
 
             code.append("//I'm inside generate thread function" + _eol);
             code.append(_eol + "void* " + 
@@ -846,7 +842,7 @@ public class MpiPNDirector extends Director {
             args.add("");
             args.add("");
 
-            
+
             int variableInitializationPos;
             _codeStream.clear();
             for (TypedIOPort outport : (List<TypedIOPort>) actor.outputPortList()) {
@@ -881,12 +877,12 @@ public class MpiPNDirector extends Director {
                             //bufferCheckCode.append("if (" + generatePortHeader(port, channelNumber) + ".available - " + generatePortHeader(port, channelNumber) + ".current < " + DFUtilities.getRate(port) + ") {" + _eol);
                             int rate = DFUtilities.getRate(port);
                             bufferCheckCode.append("if (" +
-                            		getIsMpiBufferFull(port, channelNumber, rate) + ") {" + _eol);
+                                    getIsMpiBufferFull(port, channelNumber, rate) + ") {" + _eol);
                             bufferCheckCode.append("MPI_Testsome(" + bufferSize + ", " + generateMpiRequest(port, channelNumber) + ", &" + 
                                     generatePortHeader(port, channelNumber) + ".available, " + generateFreeSlots(port, channelNumber) + ", MPI_STATUSES_IGNORE);" + _eol);
                             bufferCheckCode.append(generatePortHeader(port, channelNumber) + ".current = 0;" + _eol + "}" + _eol);
-                            
-                            
+
+
                             prefireCondition.append(" && !" + getIsMpiBufferFull(port, channelNumber, rate));
 
                         }
@@ -920,7 +916,7 @@ public class MpiPNDirector extends Director {
                     if (inputPort.getWidth() > 0) {
                         for (int channel = 0; channel < inputPort.getWidth(); channel++) {
                             boolean isReceive = isMpiReceiveBuffer(inputPort, channel);    
-                            
+
                             int rate = DFUtilities.getRate(inputPort);
 
                             // FIXME: handle channel. 
@@ -928,19 +924,19 @@ public class MpiPNDirector extends Director {
                                 code.append("static int " + _getHasInputFlag(inputPort, channel) + " = false;" + _eol);
                                 code.append("static int " + _getReceiveFlag(inputPort, channel) + " = false;" + _eol);
                                 code.append("static MPI_Request " + _generateRequest(inputPort, channel) +
-                                		"[" + rate + "];" + _eol);
+                                        "[" + rate + "];" + _eol);
                                 code.append("static " + CodeGeneratorHelper.targetType(inputPort.getType())
                                         + " " + getBufferLabel(inputPort, channel) + ";" + _eol);
 
-//                                
-//                                code.append("// Initialize send tag value." + _eol);
-//                                code.append("static int " + MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + " = " +
-//                                        MpiPNDirector.getMpiReceiveBufferId(sinkPort, sinkChannelNumber) + ";" + _eol);
+
+//                              code.append("// Initialize send tag value." + _eol);
+//                              code.append("static int " + MpiPNDirector.getSendTag(sinkPort, sinkChannelNumber) + " = " +
+//                              MpiPNDirector.getMpiReceiveBufferId(sinkPort, sinkChannelNumber) + ";" + _eol);
 
                                 code.append("// Initialize receive tag value." + _eol);
                                 code.append("static int " + getReceiveTag(inputPort, channel) + " = " +
                                         getMpiReceiveBufferId(inputPort, channel) + ";" + _eol);
-//                                
+
                                 code.append("if (!" + _getHasInputFlag(inputPort, channel) + ") { " + _eol +
                                         "if (!" + _getReceiveFlag(inputPort, channel) + ") {" + _eol);
 
@@ -953,9 +949,9 @@ public class MpiPNDirector extends Director {
                                     if (_DEBUG) {
                                         code.append("printf(\"" + actor.getName() + "[" + sinkRank + "] receiving msg <" + 
                                                 sourceRank + ", %d> for " + getBufferLabel(inputPort, channel) + 
-                                                		"\\n\", " + getReceiveTag(inputPort, channel) + ");" + _eol);
+                                                "\\n\", " + getReceiveTag(inputPort, channel) + ");" + _eol);
                                     }
-                                    
+
                                     code.append("MPI_Irecv(&" + 
                                             getBufferLabel(inputPort, channel) + ", 1, ");
 
@@ -985,13 +981,13 @@ public class MpiPNDirector extends Director {
                                 code.append("MPI_Test(&" +
                                         _generateRequest(inputPort, channel) + "[" + _generateTestCounter() + "], &" + _getHasInputFlag(inputPort, channel) + ", MPI_STATUS_IGNORE);" + _eol);
                                 code.append("if (!" + _getHasInputFlag(inputPort, channel) + ") {" + _eol);
-                                 
-                                    if ( _DEBUG) {
-                                 code.append("printf(\"" + getBufferLabel(inputPort, channel) +
-                                        ", rank[" + sinkRank + "], waiting for tag[%d]\\n\", " + 
-                                        getReceiveTag(inputPort, channel) + ");" + _eol);
-                                    }
-                                  code.append("break;" + _eol + "}" + _eol + "}" + _eol); 
+
+                                //if ( _DEBUG) {
+                                    code.append("printf(\"" + getBufferLabel(inputPort, channel) +
+                                            ", rank[" + sinkRank + "], waiting for tag[%d]\\n\", " + 
+                                            getReceiveTag(inputPort, channel) + ");" + _eol);
+                                //}
+                                code.append("break;" + _eol + "}" + _eol + "}" + _eol); 
 
 
                                 code.append("}" + _eol);
@@ -1013,7 +1009,7 @@ public class MpiPNDirector extends Director {
                         for (int i = 0; i < outputPort.getWidth(); i++) {
                             if (isLocalBuffer(outputPort, i)) {
                                 int rate = DFUtilities.getRate(outputPort);
-                                
+
                                 for (Channel sink : CodeGeneratorHelper.getSinkChannels(outputPort, i)) {
                                     prefireCondition.append(" && !" + 
                                             _getIsLocalBufferFull(sink.port, sink.channelNumber, rate));
@@ -1032,6 +1028,7 @@ public class MpiPNDirector extends Director {
                     code.append(resetCondition + _eol);
                 }                
 
+                
                 String pnPostfireCode = "";
                 code.append("//This is where the loops are generated" + _eol);
                 // if firingCountLimit exists, generate for loop.
@@ -1056,12 +1053,12 @@ public class MpiPNDirector extends Director {
                     code.append("printf(\"Fire " + 
                             actor.getName() + "\\n\");" + _eol);
                 }
-                
+
                 // Starts the timer for the fire block
                 if (_doMeasureTime()) {
                     code.append("start_timer(&" + _getActorTimer(actor) + ");" + _eol);
                 }
-                    
+
                 code.append(helper.generateFireCode());
 
                 if (_DEBUG) {
@@ -1097,12 +1094,12 @@ public class MpiPNDirector extends Director {
 
                 // Code for incrementing buffer offsets.
                 code.append(pnPostfireCode);
-                
+
                 // End the timer for the fire block
                 if (_doMeasureTime()) {
                     code.append("stop_timer(&" + _getActorTimer(actor) + ");" + _eol);
                 }
-                
+
                 // increment number of firings
                 code.append(_getActorRounds(actor) + "++;" + _eol);
 
@@ -1121,22 +1118,22 @@ public class MpiPNDirector extends Director {
 
             code.append("return NULL;" + _eol);
             code.append("}" + _eol);
-            
+
             //code.insert(variableInitializationPos, helper.generateVariableInitialization());
         }
     }
 
-    
+
     private String getIsMpiBufferFull(IOPort port, int channelNumber, int rate) {
         return "$isMpiBufferFull(&" + generatePortHeader(port, channelNumber) + ", " + rate + ")";
     }
 
     public int getNumberOfMpiConnections(boolean promoteToPowerOfTwo) throws IllegalActionException {
         int value = ((IntToken) ((Parameter) _director.getAttribute(
-                "_numberOfMpiConnections")).getToken()).intValue();
-        
+        "_numberOfMpiConnections")).getToken()).intValue();
+
         return (promoteToPowerOfTwo) ? _ceilToPowerOfTwo(value) : value;  
-        
+
     }
 
     public static String getSendTag(IOPort port, int channel) {
@@ -1174,7 +1171,7 @@ public class MpiPNDirector extends Director {
     private String _getIsLocalBufferFull(IOPort port, int channel, int rate) {        
         return "$isLocalBufferFull(&" + generatePortHeader(port, channel) + ")";
     }
-    
+
     private String _getHasInputFlag(IOPort port, int channel) {
         return "has_" + CodeGeneratorHelper.generateName(port) + "_" + channel;
     }
@@ -1194,7 +1191,7 @@ public class MpiPNDirector extends Director {
 
     private static String _getActorRoundsLimit(Actor actor) {
         return CodeGeneratorHelper.generateName((NamedObj) actor).toUpperCase() 
-            + "_ROUNDS_LIMIT";
+        + "_ROUNDS_LIMIT";
     }
 
     private static String _getActorRounds(Actor actor) {
@@ -1204,14 +1201,14 @@ public class MpiPNDirector extends Director {
     private static String _getActorTerminate(Actor actor) {
         return CodeGeneratorHelper.generateName((NamedObj) actor) + "_Terminate";
     }
-    
+
     private HashSet<String> _buffers = new HashSet<String>();
 
     public static String generateMpiRequest(IOPort port,
             int channelNumber) {
         return MpiPNDirector.generatePortHeader(port, channelNumber) + "_requests";        
     }
-    
+
     private boolean _doMeasureTime() { 
         return _director.getAttribute("_measureTime") != null;
     }
