@@ -27,6 +27,8 @@
 package ptolemy.actor.gui;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
@@ -159,6 +161,7 @@ public class Configuration extends CompositeEntity implements
                     results.append("Actor " + fullName + " was not cloned!");
                 } else {
 
+                    // First, check type constraints
                     List constraints = actor.typeConstraintList();
                     List cloneConstraints = clone.typeConstraintList();
 
@@ -252,6 +255,40 @@ public class Configuration extends CompositeEntity implements
                             }
                         }
                     }
+
+                    // Check the clone and see that verify that all
+                    // private fields either point to null or to
+                    // distinct objects.
+                    TypedAtomicActor actorClone = (TypedAtomicActor) actor.clone(new Workspace());
+
+                    Class actorClass = actor.getClass();
+                    Field [] actorFields = actorClass.getDeclaredFields();
+                    for(int i = 0; i < actorFields.length; i++) {
+                        Field field = actorFields[i];
+                        // Tell the security manager we want to read privates
+                        field.setAccessible(true);
+                        if (Modifier.isPrivate(field.getModifiers())) {
+                            if ( !field.getType().isPrimitive()
+                                    && !field.getType().isArray()
+                                    && !field.getType().equals(String.class)
+                                    && field.get(actor) != null) {
+                                if ( field.get(actor).equals(field.get(actorClone))) {
+                                    results.append("The " + field.getName()
+                                            + " field the clone of \""
+                                            + actorClass.getName()
+                                            + "\" does not point to an "
+                                            + "object distinct from the "
+                                            + "master.  The clone(Workspace) "
+                                            + "method should have a line "
+                                            + "like:\n newObject."
+                                            + field.getName() + " = ("
+                                            + actorClass.getName() 
+                                            + ")newObject.getPort(\""
+                                            + field.getName() +"\");\n");
+                                }
+                            }
+                        }
+                    } 
                 }
             }
         }
