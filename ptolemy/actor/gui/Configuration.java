@@ -36,6 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.ApplicationConfigurer;
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
@@ -44,6 +45,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -148,11 +151,15 @@ public class Configuration extends CompositeEntity implements
     public String check() throws Exception {
         StringBuffer results = new StringBuffer();
         Configuration cloneConfiguration = (Configuration) clone();
+
+        // FIXME: Check Directors and Attributes
+        // Check atomic actors for clone problems
         List entityList = allAtomicEntityList();
         Iterator entities = entityList.iterator();
         while (entities.hasNext()) {
             Object entity = entities.next();
             if (entity instanceof TypedAtomicActor) {
+                results.append(_checkCloneFields((TypedAtomicActor) entity));
                 TypedAtomicActor actor = (TypedAtomicActor) entity;
                 String fullName = actor.getName(this);
                 TypedAtomicActor clone = (TypedAtomicActor) cloneConfiguration
@@ -255,40 +262,6 @@ public class Configuration extends CompositeEntity implements
                             }
                         }
                     }
-
-                    // Check the clone and see that verify that all
-                    // private fields either point to null or to
-                    // distinct objects.
-                    TypedAtomicActor actorClone = (TypedAtomicActor) actor.clone(new Workspace());
-
-                    Class actorClass = actor.getClass();
-                    Field [] actorFields = actorClass.getDeclaredFields();
-                    for(int i = 0; i < actorFields.length; i++) {
-                        Field field = actorFields[i];
-                        // Tell the security manager we want to read privates
-                        field.setAccessible(true);
-                        if (Modifier.isPrivate(field.getModifiers())) {
-                            if ( !field.getType().isPrimitive()
-                                    && !field.getType().isArray()
-                                    && !field.getType().equals(String.class)
-                                    && field.get(actor) != null) {
-                                if ( field.get(actor).equals(field.get(actorClone))) {
-                                    results.append("The " + field.getName()
-                                            + " field the clone of \""
-                                            + actorClass.getName()
-                                            + "\" does not point to an "
-                                            + "object distinct from the "
-                                            + "master.  The clone(Workspace) "
-                                            + "method should have a line "
-                                            + "like:\n newObject."
-                                            + field.getName() + " = ("
-                                            + actorClass.getName() 
-                                            + ")newObject.getPort(\""
-                                            + field.getName() +"\");\n");
-                                }
-                            }
-                        }
-                    } 
                 }
             }
         }
@@ -808,6 +781,75 @@ public class Configuration extends CompositeEntity implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Check that clone(Workspace) method properly sets the fields.
+     *  @param namedObj The NamedObj, usually a Director, Attribute
+     *  or actor to be checked.
+     *  @return A string containing an error message if there is a problem,
+     *  otherwise return the empty string.
+     *  @exception CloneNotSupportedException If namedObj does not support
+     *  clone(Workspace).
+     *  @exception IllegalAccessException If there is a problem getting
+     *  a field.
+     *  @exception ClassNotFoundException If a class cannot be found.
+     */
+    private String _checkCloneFields(NamedObj namedObj) 
+            throws CloneNotSupportedException, IllegalAccessException, ClassNotFoundException {
+        // Check the clone and see that verify that all
+        // private fields either point to null or to
+        // distinct objects.
+        NamedObj namedObjClone = (NamedObj) namedObj.clone(new Workspace());
+
+        Class namedObjClass = namedObj.getClass();
+        // We check only the fields declared in this class.  
+        // FIXME: should we check all fields?
+        Field [] namedObjFields = namedObjClass.getDeclaredFields();
+        for(int i = 0; i < namedObjFields.length; i++) {
+            Field field = namedObjFields[i];
+            // Tell the security manager we want to read private fields.
+            // This will fail in an applet.
+            field.setAccessible(true);
+            if (Modifier.isPrivate(field.getModifiers())) {
+                Class fieldType = field.getType();
+                if ( !fieldType.isPrimitive()
+                        && !fieldType.isArray()
+                        && !fieldType.equals(String.class)
+                        && field.get(namedObj) != null) {
+                    if ( field.get(namedObj).equals(field.get(namedObjClone))) {
+                        // Determine what code should go in clone(W)
+                        String assignment = field.getName();
+                        // FIXME: extend this to more types
+                        if (Class.forName("ptolemy.kernel.Port").isAssignableFrom(fieldType)) { 
+                            assignment = ".getPort(\"" + assignment + "\")";
+                            //                       } else if (fieldType.isInstance( new Attribute())) {
+                        } else if (Class.forName("ptolemy.kernel.util.Attribute").isAssignableFrom(fieldType)) { 
+
+                            assignment = ".getAttribute(\"" + assignment + "\")";
+                        } else {
+                            assignment = " /* Get the object method "
+                                + "or null?  */ "
+                                + assignment;
+                        }
+
+                        return "The " + field.getName()
+                            + " " + field.getType().getName()
+                            + " field the clone of \""
+                            + namedObjClass.getName()
+                            + "\" does not point to an "
+                            + "object distinct from the "
+                            + "master.  The clone(Workspace) "
+                            + "method should have a line "
+                            + "like:\n newObject."
+                            + field.getName() + " = ("
+                            + namedObjClass.getName() 
+                            + ")newObject" + assignment
+                            + ";\n";
+                    }
+                }
+            }
+        }
+        return "";
+    }    
 
     /** Return an identifier for the specified effigy based on its
      *  container (if any) and its name.
