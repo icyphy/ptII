@@ -7,13 +7,13 @@
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="60">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, -20.0]">
         </property>
         <property name="_localBufferSize" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="_measureTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="_numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="13">
         </property>
     </property>
     <property name="x0" class="ptolemy.data.expr.Parameter" value="1">
@@ -116,22 +116,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 105.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1020, -4, 1032, 776}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 991, 776}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 659]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[776, 659]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{216.2567567567568, 154.9628378378378}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{202.0168918918919, 165.6427364864865}">
     </property>
     <property name="ChacoCodeGenerator" class="ptolemy.codegen.chaco.kernel.ChacoCodeGenerator">
         <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="run" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="action" class="ptolemy.data.expr.StringParameter" value="TRANSFORM">
+        <property name="action" class="ptolemy.data.expr.StringParameter" value="GENERATE">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 0.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 5.0]">
         </property>
     </property>
     <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
@@ -172,7 +172,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{345.0, 115.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-239, 51, 1133, 749}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1133, 749}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[918, 632]">
         </property>
@@ -235,38 +235,38 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 155.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
             </property>
             <port name="xPrev" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[0]">
-                </property>
-                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[0]">
-                </property>
-            </port>
-            <port name="xNext" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[0]">
                 </property>
             </port>
-            <port name="xCurr" class="ptolemy.actor.TypedIOPort">
+            <port name="xNext" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[1]">
                 </property>
             </port>
-            <port name="vX" class="ptolemy.actor.TypedIOPort">
+            <port name="xCurr" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[2]">
+                </property>
+            </port>
+            <port name="vX" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[0]">
+                </property>
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[0]">
                 </property>
             </port>
         </entity>
@@ -283,36 +283,40 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 220.0}">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
             </property>
             <port name="yPrev" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[3]">
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[1]">
+                </property>
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[1]">
                 </property>
             </port>
             <port name="yNext" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[4]">
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[2]">
+                </property>
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[2]">
                 </property>
             </port>
             <port name="yCurr" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[5]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[3]">
                 </property>
             </port>
             <port name="vY" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[6]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[4]">
                 </property>
             </port>
         </entity>
@@ -325,13 +329,15 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 80.0}">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[7]">
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[3]">
+                </property>
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[3]">
                 </property>
             </port>
         </entity>
@@ -344,41 +350,41 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 295.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[8]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[5]">
                 </property>
             </port>
         </entity>
         <entity name="vX" class="ptolemy.actor.lib.Accumulator">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{605.0, 135.0}">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[9]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[6]">
                 </property>
             </port>
         </entity>
         <entity name="vY" class="ptolemy.actor.lib.Accumulator">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 245.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[10]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[7]">
                 </property>
             </port>
         </entity>
@@ -395,13 +401,13 @@
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[11]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[8]">
                 </property>
             </port>
         </entity>
@@ -418,13 +424,13 @@
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[12]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[9]">
                 </property>
             </port>
         </entity>
@@ -437,14 +443,16 @@
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[13]">
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[4]">
+                </property>
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[4]">
                 </property>
             </port>
         </entity>
@@ -457,13 +465,13 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -25.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[14]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[10]">
                 </property>
             </port>
         </entity>
@@ -476,13 +484,13 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 460.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[15]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[11]">
                 </property>
             </port>
         </entity>
@@ -493,14 +501,14 @@
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[16]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[12]">
                 </property>
             </port>
         </entity>
@@ -690,36 +698,38 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 155.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
             </property>
             <port name="xPrev" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[17]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[13]">
                 </property>
             </port>
             <port name="xNext" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[18]">
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[5]">
+                </property>
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[5]">
                 </property>
             </port>
             <port name="xCurr" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[19]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[14]">
                 </property>
             </port>
             <port name="vX" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[20]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[15]">
                 </property>
             </port>
         </entity>
@@ -736,36 +746,38 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 220.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
             </property>
             <port name="yPrev" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[21]">
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[6]">
+                </property>
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[6]">
                 </property>
             </port>
             <port name="yNext" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[22]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[16]">
                 </property>
             </port>
             <port name="yCurr" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[23]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[17]">
                 </property>
             </port>
             <port name="vY" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[24]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[18]">
                 </property>
             </port>
         </entity>
@@ -778,13 +790,13 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 80.0}">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[25]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[19]">
                 </property>
             </port>
         </entity>
@@ -797,41 +809,41 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 295.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[26]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[20]">
                 </property>
             </port>
         </entity>
         <entity name="vX" class="ptolemy.actor.lib.Accumulator">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 135.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[27]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[21]">
                 </property>
             </port>
         </entity>
         <entity name="vY" class="ptolemy.actor.lib.Accumulator">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 245.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[28]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[22]">
                 </property>
             </port>
         </entity>
@@ -846,13 +858,13 @@
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[29]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[23]">
                 </property>
             </port>
         </entity>
@@ -867,13 +879,13 @@
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[30]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[24]">
                 </property>
             </port>
         </entity>
@@ -884,14 +896,14 @@
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[31]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[25]">
                 </property>
             </port>
         </entity>
@@ -904,13 +916,13 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -25.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[32]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[26]">
                 </property>
             </port>
         </entity>
@@ -923,13 +935,13 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 440.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[33]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[27]">
                 </property>
             </port>
         </entity>
@@ -938,14 +950,14 @@
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[34]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[28]">
                 </property>
             </port>
         </entity>
@@ -1135,38 +1147,40 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 150.0}">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
             <port name="xPrev" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[35]">
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[7]">
+                </property>
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[7]">
                 </property>
             </port>
             <port name="xNext" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[1]">
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[8]">
                 </property>
-                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[1]">
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[8]">
                 </property>
             </port>
             <port name="xCurr" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[36]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[29]">
                 </property>
             </port>
             <port name="vX" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[37]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[30]">
                 </property>
             </port>
         </entity>
@@ -1183,36 +1197,40 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 220.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
             </property>
             <port name="yPrev" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[38]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[31]">
                 </property>
             </port>
             <port name="yNext" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[39]">
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[9]">
+                </property>
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[9]">
                 </property>
             </port>
             <port name="yCurr" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[40]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[32]">
                 </property>
             </port>
             <port name="vY" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[41]">
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[10]">
+                </property>
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[10]">
                 </property>
             </port>
         </entity>
@@ -1225,13 +1243,13 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 80.0}">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[42]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[33]">
                 </property>
             </port>
         </entity>
@@ -1244,41 +1262,43 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 295.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[43]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[34]">
                 </property>
             </port>
         </entity>
         <entity name="vX" class="ptolemy.actor.lib.Accumulator">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 135.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[44]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[35]">
                 </property>
             </port>
         </entity>
         <entity name="vY" class="ptolemy.actor.lib.Accumulator">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 245.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[45]">
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[11]">
+                </property>
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[11]">
                 </property>
             </port>
         </entity>
@@ -1293,13 +1313,13 @@
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[46]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[36]">
                 </property>
             </port>
         </entity>
@@ -1314,13 +1334,13 @@
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[47]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[37]">
                 </property>
             </port>
         </entity>
@@ -1331,14 +1351,14 @@
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[48]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[38]">
                 </property>
             </port>
         </entity>
@@ -1351,13 +1371,13 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -25.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5217878912205551, 0.8614765100629876, 0.5260083675320094}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[49]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[39]">
                 </property>
             </port>
         </entity>
@@ -1370,13 +1390,13 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 440.0]">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[50]">
+                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[40]">
                 </property>
             </port>
         </entity>
@@ -1385,14 +1405,16 @@
             </property>
             <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_partition" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_localBuffer" class="ptolemy.kernel.util.StringAttribute" value="_ch[0]id[51]">
+                <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[12]">
+                </property>
+                <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="receiver_ch[0]id[12]">
                 </property>
             </port>
         </entity>
@@ -1521,13 +1543,8 @@
         </property>
         <property name="_partition" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8598310855861869, 0.881492060327762, 0.027822882976676455}">
+        <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_mpiBuffer" class="ptolemy.kernel.util.StringAttribute" value="sender_ch[0]_ch[2]">
-            </property>
-        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
