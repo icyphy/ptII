@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.ptides.kernel;
 
 import java.util.ArrayList;
@@ -77,11 +77,17 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 * Construct a director in the default workspace with an empty string as its
 	 * name. The director is added to the list of objects in the workspace.
 	 * Increment the version number of the workspace.
+	 * 
+	 * @exception IllegalActionException
+	 *                If the name contains a period, or if the director is not
+	 *                compatible with the specified container.
+	 * @exception NameDuplicationException
+	 *                If the container not a CompositeActor and the name
+	 *                collides with an entity in the container.
 	 */
 	public PtidesDirector() throws IllegalActionException,
 			NameDuplicationException {
 		super();
-
 		_initialize();
 	}
 
@@ -92,6 +98,12 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 * 
 	 * @param workspace
 	 *            The workspace of this object.
+	 * @exception IllegalActionException
+	 *                If the name contains a period, or if the director is not
+	 *                compatible with the specified container.
+	 * @exception NameDuplicationException
+	 *                If the container not a CompositeActor and the name
+	 *                collides with an entity in the container.
 	 */
 	public PtidesDirector(Workspace workspace) throws IllegalActionException,
 			NameDuplicationException {
@@ -125,40 +137,43 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	}
 
 	/**
-	 * if this Parameter is set to true, minimum delays according to Ptides on
+	 * If this Parameter is set to true, minimum delays according to Ptides on
 	 * the platform level are calculated. Otherwise, given minimum delays are
 	 * used.
 	 */
 	public Parameter calculateMinDelays;
 
 	/**
-	 * global clock synchronization error
+	 * Global clock synchronization error.
 	 */
 	public Parameter clockSyncError;
 
 	/**
-	 * global network delay - in future developments, network delays could be
-	 * specified per network and not globally
+	 * Global network delay.
+	 * 
+	 * FIXME In future developments, network delays could be specified per
+	 * network and not globally.
 	 */
 	public Parameter networkDelay;
 
 	/**
-	 * defines if ptides execution strategy should be used. this is only
+	 * Defines if the Ptides execution strategy should be used. This is only
 	 * interesting when other distributed event simulations should be tried with
 	 * this framework.
 	 */
 	public Parameter usePtidesExecutionSemantics;
 
 	/**
-	 * time at which the simulation should be stopped
+	 * Time at which the simulation should be stopped.
 	 */
 	public Parameter stopTime;
 
 	/**
 	 * Add a new schedule listener that will receive events in the
-	 * _displaySchedule method
+	 * _displaySchedule method.
 	 * 
 	 * @param plotter
+	 *            The schedule plotter that will be added as a listener.
 	 */
 	public void addScheduleListener(SchedulePlotter plotter) {
 		_scheduleListeners.add(plotter);
@@ -186,21 +201,21 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	}
 
 	/**
-	 * get physical time
+	 * Return the physical time.
 	 */
 	public synchronized Time getModelTime() {
 		return _currentTime;
 	}
 
 	/**
-	 * initialize parameters, calculate minimum delays for ports on platforms
-	 * according to Ptides and initalize scheduleplotters
+	 * Initialize parameters andthe schedule plotters. Calculate minimum delays
+	 * for ports on platforms according to Ptides.
 	 */
 	public void initialize() throws IllegalActionException {
 		super.initialize();
 		_completionTime = Time.POSITIVE_INFINITY;
 
-		//_nextFirings = new TreeSet<Time>();
+		// _nextFirings = new TreeSet<Time>();
 		_completionTime = new Time(this, ((DoubleToken) stopTime.getToken())
 				.doubleValue());
 		if (!_completionTime.equals(Time.POSITIVE_INFINITY))
@@ -210,7 +225,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 			PtidesGraphUtilities utilities = new PtidesGraphUtilities(this
 					.getContainer());
 			utilities.calculateMinDelays();
-			
+
 		}
 
 		Hashtable<Actor, List> table = new Hashtable<Actor, List>();
@@ -222,7 +237,8 @@ public class PtidesDirector extends CompositeProcessDirector implements
 				if (actor.getDirector() instanceof PtidesEmbeddedDirector) {
 					PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor
 							.getDirector();
-					dir.setUsePtidesExecutionSemantics(_usePtidesExecutionSemantics);
+					dir
+							.setUsePtidesExecutionSemantics(_usePtidesExecutionSemantics);
 					dir.setClockSyncError(_clockSyncError);
 					dir.setNetworkDelay(_networkDelay);
 				}
@@ -249,9 +265,11 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	}
 
 	/**
-	 * called by platforms to schedule a future time firing. This director does
-	 * not remember which platform wants to be fired again. Performance can be
-	 * improved here
+	 * Called by platforms to schedule a future time firing. This director does
+	 * not remember which platform wants to be fired again.
+	 * 
+	 * FIXME If the director remembers which platform asked to be refired,
+	 * performance improvements can be made.
 	 */
 	public void fireAt(Actor actor, Time time) throws IllegalActionException {
 		if (time.compareTo(getModelTime()) > 0)
@@ -259,7 +277,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	}
 
 	/**
-	 * return a new PtidesDEEReceiver
+	 * Return a new PtidesEReceiver.
 	 */
 	public Receiver newReceiver() {
 		PtidesReceiver receiver = new PtidesReceiver();
@@ -267,7 +285,6 @@ public class PtidesDirector extends CompositeProcessDirector implements
 
 		try {
 			timeValue = ((DoubleToken) stopTime.getToken()).doubleValue() + 1;
-			receiver._setCompletionTime(new Time(this, timeValue));
 			receiver._lastTime = new Time(this);
 		} catch (IllegalActionException e) {
 			// If the time resolution of the director or the stop
@@ -279,27 +296,27 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	}
 
 	/**
-	 * wake up all waiting threads. The threads decide themselves if they have
+	 * Notify all waiting threads. The threads decide themselves if they have
 	 * anything to do.
 	 */
 	public void notifyWaitingThreads() {
 		try {
-		Set set = (Set) _waitingPlatforms.clone();
-		Iterator it = set.iterator();
-		while (it.hasNext()) {
-			Thread thread = (Thread) it.next();
-			if (_debugging)
-				_debug("unblock: " + thread.getName() + " ");
-			threadUnblocked(thread, null);
-		}
-		_waitingPlatforms.clear();
+			Set set = (Set) _waitingPlatforms.clone();
+			Iterator it = set.iterator();
+			while (it.hasNext()) {
+				Thread thread = (Thread) it.next();
+				if (_debugging)
+					_debug("unblock: " + thread.getName() + " ");
+				threadUnblocked(thread, null);
+			}
+			_waitingPlatforms.clear();
 		} catch (Exception ex) {
 			// concurrent modification exceptions can occur here
 		}
 	}
 
 	/**
-	 * set physical time
+	 * Set physical time for this model.
 	 */
 	public synchronized void setModelTime(Time newTime)
 			throws IllegalActionException {
@@ -313,8 +330,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 * increased to the next physical time any platform is interested in being
 	 * fired again.
 	 * 
-	 * @return new physical time
-	 * @throws IllegalActionException
+	 * @return The new physical time.
 	 */
 	public synchronized Time waitForFuturePhysicalTime()
 			throws IllegalActionException {
@@ -347,9 +363,9 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	}
 
 	/**
-	 * clear list containing times platforms are interested in being fired in
-	 * the future clear list of actors waiting for being refired reset physical
-	 * time
+	 * Clear list containing times platforms are interested in being fired in
+	 * the future clear list of actors waiting for being re-fired reset physical
+	 * time.
 	 */
 	public void wrapup() throws IllegalActionException {
 		super.wrapup();
@@ -368,7 +384,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 *            the actor is null, the event is a platform event, e.g. input
 	 *            ports read or output ports written.
 	 * @param time
-	 *            physical time at which the event occured.
+	 *            physical time at which the event occurred.
 	 * @param scheduleEvent
 	 *            type of event.
 	 */
@@ -385,15 +401,16 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	}
 
 	/**
-	 * creates a new thread for a platform. A platform is a composite at the top
-	 * level of the model.
+	 * Creates a new thread for a platform. A platform is a composite actor at
+	 * the top level of the model.
 	 * 
 	 * @param actor
-	 *            composite actor that represents a platform
+	 *            The Composite actor that represents a platform.
 	 * @param director
+	 *            The process director.
 	 */
 	protected ProcessThread _newProcessThread(Actor actor,
-			ProcessDirector director) throws IllegalActionException {
+			ProcessDirector director) {
 		return new PtidesPlatformThread(actor, director);
 	}
 
@@ -412,8 +429,8 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	}
 
 	/**
-	 * increase physical time to next time that any of the platforms is
-	 * interested in doing something
+	 * Increase physical time to next time that any of the platforms is
+	 * interested in doing something.
 	 * 
 	 * @throws IllegalActionException
 	 */
@@ -424,7 +441,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 		Time time = (Time) _nextFirings.first();
 		_nextFirings.remove(time);
 		if (time.compareTo(_completionTime) > 0) {
-			//stopFire();
+			// stopFire();
 			stop();
 			return;
 		}
@@ -436,11 +453,10 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	}
 
 	/**
-	 * initialize parameters
+	 * Initialize parameters of the director.
 	 * 
-	 * @throws IllegalActionException
 	 * @throws NameDuplicationException
-	 *             could occur if parameter with same name already exists
+	 *             Could occur if parameter with same name already exists.
 	 */
 	private void _initialize() throws IllegalActionException,
 			NameDuplicationException {
@@ -472,12 +488,12 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	}
 
 	/**
-	 * calcuate minimum delays or use specified minimum delays in the model
+	 * If true, minimum delays for the ports in the model are calculated.
 	 */
 	private boolean _calculateMinDelays;
 
 	/**
-	 * global clock sychronization error
+	 * Global clock sychronization error.
 	 */
 	private double _clockSyncError;
 
@@ -488,12 +504,12 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	private Time _completionTime;
 
 	/**
-	 * list of times that platforms want to be refired
+	 * List of times that platforms want to be re-fired.
 	 */
 	private TreeSet<Time> _nextFirings = new TreeSet<Time>();
 
 	/**
-	 * global network delay
+	 * The global network delay.
 	 */
 	private double _networkDelay;
 
@@ -503,13 +519,13 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	private Collection<ScheduleListener> _scheduleListeners = new LinkedList<ScheduleListener>();
 
 	/**
-	 * if true, minimum delays according to ptides should be used
+	 * If true, minimum delays according to Ptides should be used.
 	 */
 	private boolean _usePtidesExecutionSemantics;
 
 	/**
-	 * list of threads (=platforms) that have nothing to do at current time and
-	 * want to be refired in the future.
+	 * List of threads (=platforms) that are idle at current time and want to be
+	 * re-fired in the future.
 	 */
 	private HashSet<Thread> _waitingPlatforms = new HashSet<Thread>();
 

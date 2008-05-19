@@ -54,8 +54,7 @@ public class PtidesPlatformThread extends ProcessThread {
 	 * @param director
 	 *            The director responsible for the execution of this actor.
 	 */
-	public PtidesPlatformThread(Actor actor, ProcessDirector director)
-			throws IllegalActionException {
+	public PtidesPlatformThread(Actor actor, ProcessDirector director) {
 		super(actor, director);
 	}
 

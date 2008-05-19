@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.ptides.kernel;
 
 import java.util.Comparator;
@@ -44,10 +44,10 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-//////////////////////////////////////////////////////////////////////////
-//// PrioritizedTimedQueue
-
 /**
+ * Receivers in the Ptides domain use a this timed queue to sort and events in
+ * the receivers.
+ * 
  * @author Patricia Derler
  */
 public class PrioritizedTimedQueue extends AbstractReceiver {
@@ -55,10 +55,6 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 * Construct an empty queue with no container.
 	 */
 	public PrioritizedTimedQueue() {
-		// because the container is not specified, we can not
-		// call the _initializeTimeVariables() method.
-		// The caller of this constructor is responsible to
-		// initialize the time variables.
 	}
 
 	/**
@@ -112,8 +108,6 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 *                If the queue is empty.
 	 */
 	public Token get() {
-		// Get a token and set all relevant
-		// local time parameters
 		Token token = null;
 		Event event = (Event) _queue.first();
 		_queue.remove(event);
@@ -123,14 +117,12 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	}
 
 	/**
-	 * Similar to get() but if not only token ut also timestamp is required,
+	 * Similar to get() but if not only token but also time stamp is required,
 	 * this method is used.
 	 * 
-	 * @return Event containing token and timestamp.
+	 * @return Event containing token and time stamp.
 	 */
 	public Event getEvent() {
-		// Get a token and set all relevant
-		// local time parameters
 		Event event = (Event) _queue.first();
 		_queue.remove(event);
 		_lastTime = event._timeStamp;
@@ -185,11 +177,11 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	}
 
 	/**
-	 * returns true if there is a token with the specified timestamp
+	 * Returns true if there is a token with the specified time stamp.
 	 * 
-	 * @param time
+	 * @param time Time for which a token is required.
 	 * @return True if the first element in the queue has the specified
-         * timestamp.  
+	 *         time stamp.
 	 */
 	public boolean hasToken(Time time) {
 		if (_queue.size() == 0)
@@ -295,36 +287,26 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 
 	// /////////////////////////////////////////////////////////////////
 	// // package friendly variables ////
-	// This time value is used in conjunction with completionTime to
-	// indicate that a receiver will continue operating indefinitely.
+	/**
+	 * This time value is used in conjunction with completionTime to indicate
+	 * that a receiver will continue operating indefinitely.
+	 */
 	static final double ETERNITY = -5.0;
 
-	// This time value indicates that the receiver contents should
-	// be ignored.
+	/** This time value indicates that the receiver contents should be ignored. */
 	static final double IGNORE = -1.0;
 
-	// This time value indicates that the receiver is no longer
-	// active.
+	/** This time value indicates that the receiver is no longer active. */
 	static final double INACTIVE = -2.0;
 
-	// The time stamp of the newest token to be placed in the queue.
+	/** The time stamp of the newest token to be placed in the queue. */
 	protected Time _lastTime;
 
-	// The priority of this receiver.
+	/** The priority of this receiver. */
 	public int _priority = 0;
 
 	// /////////////////////////////////////////////////////////////////
 	// // package friendly methods ////
-
-	/**
-	 * Return the completion time of this receiver. This method is not
-	 * synchronized so the caller should be.
-	 * 
-	 * @return The completion time.
-	 */
-	Time _getCompletionTime() {
-		return _completionTime;
-	}
 
 	/**
 	 * Return true if this receiver has a NullToken at the front of the queue;
@@ -340,65 +322,35 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	}
 
 	/**
-	 * Set the completion time of this receiver. If the completion time argument
-	 * is negative but is not equal to PrioritizedTimedQueue.ETERNITY, then
-	 * throw an IllegalArgumentException. This method is not synchronized so the
-	 * caller should be.
-	 * 
-	 * @param time
-	 *            The completion time of this receiver.
-	 */
-	public void _setCompletionTime(Time time) {
-		double timeValue = time.getDoubleValue();
-
-		if ((timeValue < 0.0) && (timeValue != PrioritizedTimedQueue.ETERNITY)) {
-			throw new IllegalArgumentException("Attempt to set "
-					+ "completion time to a negative value.");
-		}
-
-		_completionTime = time;
-	}
-
-	/**
 	 * Initialize some time variables.
 	 */
 	private void _initializeTimeVariables() {
 		Actor actor = (Actor) getContainer().getContainer();
 
-		try {
-			_completionTime = new Time(actor.getDirector(), ETERNITY);
-			_lastTime = new Time(actor.getDirector());
-			// _receiverTime = new Time(actor.getDirector());
-		} catch (IllegalActionException e) {
-			// If the time resolution of the director is invalid,
-			// it should have been caught before this.
-			throw new InternalErrorException(e);
-		}
+		_lastTime = new Time(actor.getDirector());
+		// _receiverTime = new Time(actor.getDirector());
 	}
 
 	// /////////////////////////////////////////////////////////////////
 	// // private variables ////
-	// The time after which execution of this receiver will cease.
-	// Initially the value is set so that execution will continue
-	// indefinitely.
-	private Time _completionTime;
 
-	// The queue in which this receiver stores tokens.
+	/** The set in which this receiver stores tokens. */
 	protected TreeSet _queue = new TreeSet(new TimeComparator());
 
 	// The time stamp of the earliest token that is still in the queue.
 	// private Time _receiverTime;
 
-	// /////////////////////////////////////////////////////////////////
-	// // inner class ////
-	// An Event is an aggregation consisting of a Token, a
-	// time stamp and destination Receiver. Both the token
-	// and destination receiver are allowed to have null
-	// values. This is particularly useful in situations
-	// where the specification of the destination receiver
-	// may be considered redundant.
+	/**
+	 * An Event is an aggregation consisting of a Token, a time stamp and
+	 * destination Receiver. Both the token and destination receiver are allowed
+	 * to have null values. This is particularly useful in situations where the
+	 * specification of the destination receiver may be considered redundant.
+	 */
 	public static class Event {
-		// Construct an Event with a token and time stamp.
+		
+		/**
+		 * Construct an Event with a token and time stamp.
+		 */ 
 		public Event(Token token, Time time) {
 			_token = token;
 			_timeStamp = time;
@@ -407,25 +359,31 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 		// /////////////////////////////////////////////////////////
 		// // public inner methods ////
 
-		// Return the time stamp of this event.
+		/**
+		 * Return the time stamp of this event.
+		 */
 		public Time getTime() {
 			return _timeStamp;
 		}
 
-		// Return the token of this event.
+		/** 
+		 * Return the token of this event.
+		 */
 		public Token getToken() {
 			return _token;
 		}
 
 		// /////////////////////////////////////////////////////////
 		// // private inner variables ////
+		/** Time stamp of this event. */
 		Time _timeStamp;
 
+		/** Token of this event. */
 		Token _token = null;
 	}
 
 	/**
-	 * Compare two events according to - timestamp - value did not find a way to
+	 * Compare two events according to - time stamp - value did not find a way to
 	 * compare Tokens, therefore am comparing DoubleTokens and IntTokens here.
 	 * If other kinds of Tokens are used, this Comparer needs to be extended.
 	 * 
@@ -434,6 +392,13 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 */
 	public class TimeComparator implements Comparator {
 
+		/**
+		 * Compare two events according to time stamps and values.
+		 * 
+		 * FIXME Because there is no general compare method for tokens,
+		 * I implemented the comparison for int and double tokens. A
+		 * more general compare is required.
+		 */
 		public int compare(Object arg0, Object arg1) {
 			Event event1 = (Event) arg0;
 			Event event2 = (Event) arg1;
@@ -462,7 +427,6 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 					return 0;
 			}
 			return 0;
-
 		}
 
 	}
