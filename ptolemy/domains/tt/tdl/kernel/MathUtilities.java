@@ -1,18 +1,18 @@
 package ptolemy.domains.tt.tdl.kernel;
 
 /**
- * some calculations required in the TT/TDL domain
+ * some calculations required in the TT/TDL domain.
  * 
  * @author Patricia Derler
  */
 public class MathUtilities {
 
 	/**
-	 * Return the greatest common divisor.
+	 * Return the greatest common divisor of two values.
 	 * 
-	 * @param a
-	 * @param b
-	 * @return The geatest common divisor.
+	 * @param a First value.
+	 * @param b Second value.
+	 * @return The greatest common divisor.
 	 */
 	public static int gcd(int a, int b) {
             if (b == 0) {
@@ -23,10 +23,10 @@ public class MathUtilities {
 	}
 
 	/**
-	 * Return the greatest common divisor.
+	 * Return the greatest common divisor of two values.
 	 * 
-	 * @param a
-	 * @param b
+	 * @param a First value.
+	 * @param b Second value.
 	 * @return The greatest common divisor.
 	 */
 	public static long gcd(long a, long b) {

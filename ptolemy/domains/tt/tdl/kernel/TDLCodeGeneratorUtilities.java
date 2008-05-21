@@ -43,18 +43,18 @@ public class TDLCodeGeneratorUtilities {
 	// // public methods ////
 
 	/**
-	 * Throw an exception if the given string is a valid giotto reserved word,
+	 * Throw an exception if the given string is a valid TDL reserved word,
 	 * which prevents it from being used as an identifier.
 	 * 
 	 * @param string
-	 *            A string to be used in Giotto program.
+	 *            A string to be used in TDL program.
 	 * @exception IllegalActionException
 	 *                If the string can not be used.
 	 */
 	public static void checkTDLID(String string) throws IllegalActionException {
 		if (string.equals("output")) {
 			throw new IllegalActionException("The identifier " + string
-					+ " cannot be used in a Giotto program.  "
+					+ " cannot be used in a TDL program.  "
 					+ "Please change your model and attempt to "
 					+ "generate code again.");
 		}
@@ -108,7 +108,7 @@ public class TDLCodeGeneratorUtilities {
 	}
 
 	/**
-	 * Create an instance of a model and generate TDL code for it The Giotto
+	 * Create an instance of a model and generate TDL code for it The TDL
 	 * code is printed on standard out.
 	 * 
 	 * @param args
@@ -123,9 +123,9 @@ public class TDLCodeGeneratorUtilities {
 			if (args.length != 1) {
 				throw new IllegalArgumentException(
 						"Usage: java -classpath $PTII "
-								+ "ptolemy.domains.giotto.kernel"
-								+ ".GiottoCodeGeneratorUtilities ptolemyModel.xml\n"
-								+ "The model is read in and Giotto code is "
+								+ "ptolemy.domains.TDL.kernel"
+								+ ".TDLCodeGeneratorUtilities ptolemyModel.xml\n"
+								+ "The model is read in and TDL code is "
 								+ "generated on stdout.");
 			}
 
@@ -251,10 +251,10 @@ public class TDLCodeGeneratorUtilities {
 
 	/**
 	 * Initialize the code generation process by checking whether the given
-	 * model is a Giotto model. Return false if it is not.
+	 * model is a TDL model. Return false if it is not.
 	 * 
 	 * @param model
-	 *            A model to generate Giotto code from.
+	 *            A model to generate TDL code from.
 	 * @return True if in the given model is a tdl model.
 	 */
 	protected static boolean _initialize(TypedCompositeActor model) {

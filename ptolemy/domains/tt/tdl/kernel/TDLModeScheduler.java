@@ -42,44 +42,42 @@ import ptolemy.kernel.util.NamedObj;
  *  - update actuators
  *  - calculate mode switch
  *  - fast task
- *  - regular task input port update and execution
+ *  - regular task input port update and execution.
  * 
  *  @author Patricia Derler
  */
 public class TDLModeScheduler extends LetModeScheduler {
 
+	/**
+	 * Create a new TDL mode scheduler.
+	 */
 	public TDLModeScheduler() {
 		super();
 	}
 
 	/**
-	 * add actuator to the list but do not schedule until all
-	 * actuators are added
-	 * @param port
-	 * @throws IllegalActionException 
-	 * @throws TDLModeSchedulerException 
+	 * Add actuator to the list but do not schedule until all
+	 * actuators are added.
+	 * @param port Port to be added.
 	 */
-	public void addActuator(IOPort port) throws IllegalActionException,
-			TDLModeSchedulerException {
-
+	public void addActuator(IOPort port) {
 		_actuatorUpdates.add(port);
 	}
 
 	/** 
-	 * add transition = mode switch to the list but do not
-	 * schedule untill all mode switches are added
+	 * Add transition = mode switch to the list but do not
+	 * schedule until all mode switches are added.
 	 * 
-	 * this mode switch is executed with a frequency, not asap
+	 * @param transition The mode switch to be added.
 	 */
 	public void addModeSwitch(Transition transition) {
 		_transitions.add(transition);
 	}
 
 	/**
-	 * add task to list of tasks in TTModeScheduler
-	 * @param actor
-	 * @throws IllegalActionException 
-	 * @throws TDLModeSchedulerException 
+	 * Add task to list of tasks in TTModeScheduler.
+	 * @param actor The actor describing the task to be added.
+	 * @throws TDLModeSchedulerException Thrown if the slotselection string could not be parsed.
 	 */
 	public void addTask(Actor actor) throws IllegalActionException,
 			TDLModeSchedulerException {
@@ -93,11 +91,11 @@ public class TDLModeScheduler extends LetModeScheduler {
 	}
 
 	/**
-	 * in a fast actuator, input ports, output ports and actuators 
+	 * In a fast actuator, input ports, output ports and actuators 
 	 * are all executed/updated at once in logical zero time, therefore
-	 * add them as a unit in the correct order to the list
-	 * @param actor
-	 * @param actuators
+	 * add them as a unit in the correct order to the list.
+	 * @param actor Fast task.
+	 * @param actuators The actuators connected to this fast task.
 	 */
 	public void addFastTask(Actor actor, Collection actuators) {
 		ArrayList list = new ArrayList();
@@ -110,8 +108,10 @@ public class TDLModeScheduler extends LetModeScheduler {
 	}
 
 	/**
-	 * get schedule for tasks from TTModeScheduler and schedule additionally
-	 * actuators, module output ports, fast tasks and mode switches
+	 * Get schedule for tasks from TTModeScheduler and schedule additionally
+	 * actuators, module output ports, fast tasks and mode switches.
+	 * 
+	 * @return The mode schedule.
 	 */
 	public TDLModeSchedule getModeSchedule() {
 
@@ -136,8 +136,8 @@ public class TDLModeScheduler extends LetModeScheduler {
 	/**
 	 * Return the frequency of task.
 	 * The default value is 1 if there is no frequency attribute defined.
-	 * @param obj
-	 * @return The frequency of the task.
+	 * @param obj The object that has a frequency parameter.
+	 * @return The frequency of the object.
 	 */
 	public static int getFrequency(NamedObj obj) {
 		try {
@@ -157,6 +157,11 @@ public class TDLModeScheduler extends LetModeScheduler {
 		}
 	}
 
+	/**
+	 * Get the slot selection string.
+	 * @param obj The object that has a slot selection string.
+	 * @return The slot selection string.
+	 */
 	public static String getSlots(NamedObj obj) {
 		try {
 			Parameter parameter = (Parameter) obj.getAttribute("slots");
@@ -176,11 +181,11 @@ public class TDLModeScheduler extends LetModeScheduler {
 	}
 
 	/**
-	 * set the mode period 
+	 * Set the mode period.
 	 * to avoid problems when doing calculations with doubles, the long value of 
-	 * the time is used: double value / resolution of director
-	 * @param modePeriod
-	 * @param resolution
+	 * the time is used: double value / resolution of director.
+	 * @param modePeriod The mode period to be set.
+	 * @param resolution The time resolution to be set.
 	 */
 	public void setModePeriod(double modePeriod, double resolution) {
 		_modePeriod = (long) (modePeriod / resolution);
@@ -191,12 +196,12 @@ public class TDLModeScheduler extends LetModeScheduler {
 	// private
 
 	/**
-	 * analyze the slot selection string. for the documentation about the slot selection
-	 * string look at the definition of TDL
-	 * @param actor
-	 * @param slots
-	 * @param frequency
-	 * @throws TDLModeSchedulerException
+	 * Analyze the slot selection string. for the documentation about the slot selection
+	 * string look at the definition of TDL.
+	 * @param actor The actor that has a slot selection parameter.
+	 * @param slots The slot selection string.
+	 * @param frequency The frequency of invocations of the actor.
+	 * @throws TDLModeSchedulerException Thrown if the slot selection string could not be read.
 	 */
 	private void _analyzeSlotSelection(Actor actor, String slots, int frequency)
 			throws TDLModeSchedulerException {
@@ -256,8 +261,8 @@ public class TDLModeScheduler extends LetModeScheduler {
 	}
 
 	/**
-	 * create tdl schedule without considering regular tasks
-	 * @throws IllegalActionException 
+	 * Create tdl schedule without considering regular tasks.
+	 * @throws IllegalActionException thrown if schedule could not be created.
 	 */
 	private void _createTDLSchedule() throws TDLModeSchedulerException,
 			IllegalActionException {
@@ -304,11 +309,11 @@ public class TDLModeScheduler extends LetModeScheduler {
 	}
 
 	/**
-	 * parse the slot selection string
-	 * @param slots
-	 * @param frequency
-	 * @return
-	 * @throws TDLModeSchedulerException
+	 * Parse the slot selection string.
+	 * @param slots The slot selection string.
+	 * @param frequency The frequency for the object invocation.
+	 * @return A list of slots in which the task should be executed.
+	 * @throws TDLModeSchedulerException Thrown if the slot selection string could not be parsed.
 	 */
 	private ArrayList _getInvocations(String slots, int frequency)
 			throws TDLModeSchedulerException {
@@ -418,11 +423,11 @@ public class TDLModeScheduler extends LetModeScheduler {
 	}
 
 	/**
-	 * schedule a single activity
-	 * @param activityName
-	 * @param activity
-	 * @param frequency
-	 * @throws TDLModeSchedulerException
+	 * Schedule a single activity with a given frequency in a mode period.
+	 * @param activityName The name of the activity.
+	 * @param activity The activity to be scheduled.
+	 * @param frequency The frequency in the mode period.
+	 * @throws TDLModeSchedulerException Thrown if the frequency is not valid in the mode period.
 	 */
 	private void _scheduleActivity(String activityName, Object activity,
 			int frequency) throws TDLModeSchedulerException {
@@ -443,11 +448,11 @@ public class TDLModeScheduler extends LetModeScheduler {
 	}
 
 	/**
-	 * schedule a list of activities as an atomic unit
-	 * @param activityName
-	 * @param activities
-	 * @param frequency
-	 * @throws TDLModeSchedulerException
+	 * Schedule a list of activities as an atomic unit with a given frequency in a mode period.
+	 * @param activityName The name of the activity.
+	 * @param activities The activities to be scheduled.
+	 * @param frequency The frequency in the mode period.
+	 * @throws TDLModeSchedulerException Thrown if the frequency is not valid in the mode period.
 	 */
 	private void _scheduleAtomicActivities(String activityName,
 			List activities, int frequency) throws TDLModeSchedulerException {

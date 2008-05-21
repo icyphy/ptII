@@ -3,40 +3,45 @@ package ptolemy.domains.tt.tdl.kernel;
 import java.util.HashMap;
 
 /**
- * hold runtime information for every schedule for a mode
+ * Hold runtime information for every schedule for a mode.
  * 
  * @author Patricia Derler
  * 
  */
 public class TDLModeSchedule {
 
+	/**
+	 * Create a new mode schedule.
+	 * @param modePeriod
+	 * @param modeSchedule
+	 */
 	public TDLModeSchedule(long modePeriod, HashMap modeSchedule) {
 		this.modePeriod = modePeriod;
 		this.modeSchedule = modeSchedule;
 	}
 
-	/** period of the mode */
+	/** period of the mode. */
 	public long modePeriod;
 
 	/**
 	 * schedule containing tasks, actuators and ports, calculated by
-	 * TDLModeScheduler
+	 * TDLModeScheduler.
 	 */
 	public HashMap modeSchedule;
 
-	/** actual time in schedule */
+	/** actual time in schedule. */
 	public long currentScheduleTime = 0;
 
-	/** last time the mode was fired */
+	/** last time the mode was fired. */
 	public long lastFiredAt = -1;
 
-	/** position in current slot in the schedule */
+	/** position in current slot in the schedule. */
 	public int currentPositionInSlot = 0;
 
-	/** true if it is called for the very first time or after a mode switch */
+	/** true if it is called for the very first time or after a mode switch. */
 	public boolean firstSlot = true;
 
-	/** scheduled time for next execution */
+	/** scheduled time for next execution. */
 	public long nextFireTime;
 
 }

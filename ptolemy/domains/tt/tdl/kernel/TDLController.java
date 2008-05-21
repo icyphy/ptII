@@ -11,7 +11,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * Controller for the TDL module
+ * Controller for the TDL module.
  * 
  * @author Patricia Derler
  * 

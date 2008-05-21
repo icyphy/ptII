@@ -46,7 +46,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
 /**
- * generates TDL code
+ * Generates the TDL code for a given TDL module.
+ * 
  * 
  * @author Patricia Derler
  */
@@ -91,11 +92,11 @@ public class TDLCodeGenerator extends Attribute {
 	// // public methods ////
 
 	/**
-	 * Generate Giotto code for the given Giotto model.
+	 * Generate TDL code for the given TDL model.
 	 * 
 	 * @param model
-	 *            The given Giotto model.
-	 * @return The Giotto code.
+	 *            The given TDL model.
+	 * @return The TDL code.
 	 * @exception IllegalActionException
 	 *                If code can not be generated.
 	 */
@@ -144,14 +145,14 @@ public class TDLCodeGenerator extends Attribute {
 	// // inner classes ////
 
 	/**
-	 * An attribute that can create an Giotto code editor for a Giotto model.
+	 * An attribute that can create an TDL code editor for a TDL model.
 	 */
 	protected class TDLEditorFactory extends EditorFactory {
 		/**
-		 * Constructs a Giotto EditorFactory object for a Giotto model.
+		 * Constructs a TDL EditorFactory object for a TDL model.
 		 * 
 		 * @param container
-		 *            The container, which is a Giotto model.
+		 *            The container, which is a TDL model.
 		 * @param name
 		 *            The name for this attribute.
 		 * @exception IllegalActionException

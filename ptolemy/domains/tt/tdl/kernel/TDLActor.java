@@ -8,7 +8,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * TDL Actor used in the TDL domain
+ * TDL Actor used in the TDL domain.
  * 
  * @author Patricia Derler
  * 
@@ -59,7 +59,10 @@ public class TDLActor extends FSMActor {
 		super(container, name);
 	}
 
-	@Override
+	/**
+	 * Create a new Relation. This relation should not be a Transition but a TDL
+	 * transition.
+	 */
 	public ComponentRelation newRelation(String name)
 			throws IllegalActionException, NameDuplicationException {
 		try {
