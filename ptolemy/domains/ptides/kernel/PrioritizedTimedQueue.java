@@ -42,7 +42,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 /**
  * Receivers in the Ptides domain use a this timed queue to sort and events in
@@ -108,7 +107,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 *                If the queue is empty.
 	 */
 	public Token get() {
-		Token token = null;
+		Token token;
 		Event event = (Event) _queue.first();
 		_queue.remove(event);
 		_lastTime = event._timeStamp;
@@ -238,15 +237,12 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 *                If the queue is full.
 	 */
 	public void put(Token token, Time time) throws NoRoomException {
-		double timeValue = time.getDoubleValue();
 
 		Event event = new Event(token, time);
 		_lastTime = time;
 
 		try {
-			if (!_queue.add(event)) {
-				// same event already exists
-			}
+			_queue.add(event); // is only inserted if same event not already exists
 		} catch (NoRoomException e) {
 
 			throw e;
@@ -335,7 +331,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	// // private variables ////
 
 	/** The set in which this receiver stores tokens. */
-	protected TreeSet _queue = new TreeSet(new TimeComparator());
+	protected TreeSet<Event> _queue = new TreeSet<Event>(new TimeComparator());
 
 	// The time stamp of the earliest token that is still in the queue.
 	// private Time _receiverTime;
@@ -350,6 +346,9 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 		
 		/**
 		 * Construct an Event with a token and time stamp.
+		 * 
+		 * @token Token for the event. 
+		 * @time Time stamp of the event.
 		 */ 
 		public Event(Token token, Time time) {
 			_token = token;
@@ -361,6 +360,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 
 		/**
 		 * Return the time stamp of this event.
+		 * 
+		 * @return The time stamp of the event.
 		 */
 		public Time getTime() {
 			return _timeStamp;
@@ -368,6 +369,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 
 		/** 
 		 * Return the token of this event.
+		 * 
+		 * @return The token of the event.
 		 */
 		public Token getToken() {
 			return _token;
@@ -390,7 +393,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 * @author Patricia Derler
 	 * 
 	 */
-	public class TimeComparator implements Comparator {
+	public static class TimeComparator implements Comparator {
 
 		/**
 		 * Compare two events according to time stamps and values.
@@ -398,6 +401,9 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 		 * FIXME Because there is no general compare method for tokens,
 		 * I implemented the comparison for int and double tokens. A
 		 * more general compare is required.
+		 * 
+		 * @arg0 First event.
+		 * @arg1 Second event.
 		 */
 		public int compare(Object arg0, Object arg1) {
 			Event event1 = (Event) arg0;

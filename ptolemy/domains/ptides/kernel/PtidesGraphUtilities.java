@@ -396,8 +396,6 @@ public class PtidesGraphUtilities {
 				.hasNext();) {
 			Actor actor = (Actor) it.next();
 			if (actor instanceof CompositeActor) {
-				PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor
-						.getDirector();
 				Set equivalenceClasses = getPortGroupPorts(actor);
 				for (Iterator classes = equivalenceClasses.iterator(); classes
 						.hasNext();) {
@@ -466,7 +464,6 @@ public class PtidesGraphUtilities {
 	private double _getMinDelay(Actor container, boolean forward, Node node,
 			DirectedAcyclicGraph graph, double minDelay, Set traversedEdges)
 			throws IllegalActionException {
-		IOPort port = (IOPort) (node).getWeight();
 		Collection inputs;
 		if (forward)
 			inputs = graph.outputEdges(node);
@@ -587,8 +584,6 @@ public class PtidesGraphUtilities {
 			if (traversedActors.contains(actor))
 				break;
 			traversedActors.add(actor);
-			PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor
-					.getDirector();
 			for (Iterator inputs = actor.inputPortList().iterator(); inputs
 					.hasNext();) {
 				delay = PtidesGraphUtilities.getMinDelayTime(inputPort);

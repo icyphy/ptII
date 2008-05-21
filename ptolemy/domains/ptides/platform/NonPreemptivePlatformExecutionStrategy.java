@@ -114,9 +114,9 @@ public class NonPreemptivePlatformExecutionStrategy extends
 			for (int i = 0; i < objects.length; i++) {
                             // FIXME: FindBugs says: Call to equals()
                             // comparing different types
-				if (((IOPort) objects[i]).equals(actor1))
+				if (actor1 instanceof IOPort && ((IOPort) objects[i]).equals(actor1))
 					index1 = i;
-				else if (((IOPort) objects[i]).equals(actor2))
+				else if (actor2 instanceof IOPort && ((IOPort) objects[i]).equals(actor2))
 					index2 = i;
 			}
 
@@ -223,7 +223,7 @@ public class NonPreemptivePlatformExecutionStrategy extends
 					_nextRealTimeEvent = event.timeStamp();
 			}
 		}
-		DEEvent event = null;
+		DEEvent event;
 		int index = 0;
 		while (index < eventsToFire.size()) {
 			event = (DEEvent) eventsToFire.get(index);

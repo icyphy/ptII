@@ -53,7 +53,7 @@ public abstract class PlatformExecutionStrategy {
 	 * The basic non-preemptive execution strategy is implemented by
 	 * NonPreemptivePlatformExecutionStrategy.
 	 */
-	public static String BASIC_NON_PREEMPTIVE = "basic non-preemptive";
+	public static final String BASIC_NON_PREEMPTIVE = "basic non-preemptive";
 
 	/**
 	 * Director for this platform.

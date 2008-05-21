@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
 //// DDEReceiver
 
 /**
- * Receiver used on the top level in the ptides domain
+ * Receiver used on the top level in the ptides domain.
  * 
  * @author Patricia Derler
  */
@@ -117,6 +117,10 @@ public class PtidesReceiver extends PrioritizedTimedQueue implements
 		}
 	}
 
+	/**
+	 * Returns the director.
+	 * @return The director.
+	 */
 	public PtidesDirector getDirector() {
 		return _director;
 	}

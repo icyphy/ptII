@@ -40,14 +40,17 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
 /**
- * Receiver used inside platforms of a ptides domain
+ * Receiver used inside platforms of a ptides domain.
  * 
- * This Receiver will not work with non-opaque actors inside a platform
+ * This Receiver will not work with non-opaque actors inside a platform.
  * 
  * @author Patricia Derler
  */
 public class PtidesPlatformReceiver extends PrioritizedTimedQueue {
 
+	/**
+	 * Creates a new Ptides platform receiver.
+	 */
 	public PtidesPlatformReceiver() {
 		super();
 	}
@@ -107,6 +110,8 @@ public class PtidesPlatformReceiver extends PrioritizedTimedQueue {
 	 * 
 	 * @param token
 	 *            The token to be put.
+	 * @param time
+	 * 			  The time stamp for the token.
 	 */
 	public void put(Token token, Time time) {
 		try {
@@ -118,6 +123,14 @@ public class PtidesPlatformReceiver extends PrioritizedTimedQueue {
 		}
 	}
 
+	/**
+	 * Puts a token into all receivers.
+	 * @param token The token to be put.
+	 * @param receivers The receivers that get the token.
+	 * @param time The time stamp for the token.
+	 * @throws NoRoomException Thrown if the receiver is full.
+	 * @throws IllegalActionException Thrown if container cannot convert token.
+	 */
 	public void putToAll(Token token, Receiver[] receivers, Time time)
 			throws NoRoomException, IllegalActionException {
 		for (int j = 0; j < receivers.length; j++) {
@@ -193,11 +206,18 @@ public class PtidesPlatformReceiver extends PrioritizedTimedQueue {
 
 	// /////////////////////////////////////////////////////////////////
 	// // private variables ////
-	// The director where this DEReceiver should register for De events.
+	/** The director where this DEReceiver should register for De events.  */
 	private PtidesEmbeddedDirector _director;
 
+	/**
+	 * version of the directorl.
+	 */
 	private long _directorVersion = -1;
 
+	/**
+	 * Returns time stamp of next event in the receiver queue.
+	 * @return The time stamp.
+	 */
 	public Time getNextTime() {
 		if (_queue.isEmpty())
 			return null;

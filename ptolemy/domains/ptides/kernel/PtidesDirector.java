@@ -202,6 +202,8 @@ public class PtidesDirector extends CompositeProcessDirector implements
 
 	/**
 	 * Return the physical time.
+	 * 
+	 * @see #setModelTime(Time)
 	 */
 	public synchronized Time getModelTime() {
 		return _currentTime;
@@ -210,6 +212,8 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	/**
 	 * Initialize parameters andthe schedule plotters. Calculate minimum delays
 	 * for ports on platforms according to Ptides.
+	 * 
+	 * @see #getModelTime()
 	 */
 	public void initialize() throws IllegalActionException {
 		super.initialize();
@@ -281,17 +285,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 */
 	public Receiver newReceiver() {
 		PtidesReceiver receiver = new PtidesReceiver();
-		double timeValue;
-
-		try {
-			timeValue = ((DoubleToken) stopTime.getToken()).doubleValue() + 1;
-			receiver._lastTime = new Time(this);
-		} catch (IllegalActionException e) {
-			// If the time resolution of the director or the stop
-			// time is invalid, it should have been caught before this.
-			throw new InternalErrorException(e);
-		}
-
+		receiver._lastTime = new Time(this);
 		return receiver;
 	}
 
@@ -311,6 +305,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 			}
 			_waitingPlatforms.clear();
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			// concurrent modification exceptions can occur here
 		}
 	}
@@ -331,6 +326,8 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 * fired again.
 	 * 
 	 * @return The new physical time.
+	 * @throws IllegalActionException
+	 *             Thrown if physical time cannot be increased.
 	 */
 	public synchronized Time waitForFuturePhysicalTime()
 			throws IllegalActionException {
@@ -408,6 +405,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 *            The Composite actor that represents a platform.
 	 * @param director
 	 *            The process director.
+	 * @return Return a new process thread.
 	 */
 	protected ProcessThread _newProcessThread(Actor actor,
 			ProcessDirector director) {

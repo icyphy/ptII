@@ -90,6 +90,13 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * Construct a director in the default workspace with an empty string as its
 	 * name. The director is added to the list of objects in the workspace.
 	 * Increment the version number of the workspace.
+	 * 
+	 * @exception IllegalActionException
+	 *                If the director is not compatible with the specified
+	 *                container.
+	 * @exception NameDuplicationException
+	 *                If the container not a CompositeActor and the name
+	 *                collides with an entity in the container.
 	 */
 	public PtidesEmbeddedDirector() throws IllegalActionException,
 			NameDuplicationException {
@@ -104,6 +111,12 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * 
 	 * @param workspace
 	 *            The workspace of this object.
+	 * @exception IllegalActionException
+	 *                If the director is not compatible with the specified
+	 *                container.
+	 * @exception NameDuplicationException
+	 *                If the container not a CompositeActor and the name
+	 *                collides with an entity in the container.
 	 */
 	public PtidesEmbeddedDirector(Workspace workspace)
 			throws IllegalActionException, NameDuplicationException {
@@ -189,7 +202,9 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * in time when the WCET of the actor is passed.
 	 * 
 	 * @param actor
-	 * @return The finishing time of the actor
+	 *            The actor in execution.
+	 * @return The finishing time of the actor.
+	 * @see #setFinishingTime(Actor, double)
 	 */
 	public double getFinishingTime(NamedObj actor) {
 		if (_finishingTimesOfActorsInExecution.get(actor) != null) {
@@ -254,17 +269,18 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		if (_stopRequested)
 			return;
 		List eventsToFire = null;
-		DEEvent event = null;
+		DEEvent event;
 		while (true) {
 			if (_actorsInExecution.size() > 0) {
 				Actor actorToFire = (Actor) _actorsInExecution
 						.get(_actorsInExecution.size() - 1);
-				double d = getFinishingTime((NamedObj) actorToFire);
-				if (d < _physicalTime.getDoubleValue()) {
-					// should not happen but would mean that a synchronization
-					// point was missed
-				}
-				if (d == _physicalTime.getDoubleValue()) {
+				double doubleTime = getFinishingTime((NamedObj) actorToFire);
+				Time time = new Time(this, doubleTime);
+				// if (time.compareTo(_physicalTime.getDoubleValue()) < 0) {
+				// should not happen but would mean that a synchronization
+				// point was missed
+				// }
+				if (time.equals(_physicalTime.getDoubleValue())) {
 					_actorsInExecution.remove(actorToFire);
 					displaySchedule(actorToFire,
 							_physicalTime.getDoubleValue(),
@@ -344,7 +360,6 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
 		synchronized (_eventQueues) {
 			_enqueueEvent(actor, time);
-			_eventQueues.notifyAll();
 		}
 	}
 
@@ -521,7 +536,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * The top level director (PtidesDirector) sets the clock synchronization
 	 * error.
 	 * 
-	 * @param syncError The clock synchronization error.
+	 * @param syncError
+	 *            The clock synchronization error.
 	 */
 	public void setClockSyncError(double syncError) {
 		_clockSyncError = syncError;
@@ -532,11 +548,12 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * execution of an actor is started.
 	 * 
 	 * @param actor
+	 *            The actor in execution.
 	 * @param finishingTime
-	 * @throws IllegalActionException
+	 *            The time the actor will finish.
+	 * @see #getFinishingTime(NamedObj)
 	 */
-	public void setFinishingTime(Actor actor, double finishingTime)
-			throws IllegalActionException {
+	public void setFinishingTime(Actor actor, double finishingTime) {
 		if (_finishingTimesOfActorsInExecution.get(actor) != null)
 			_finishingTimesOfActorsInExecution.remove(actor);
 		_finishingTimesOfActorsInExecution.put(actor, finishingTime);
@@ -546,6 +563,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * The top-level director (PtidesDirector) sets the network delay.
 	 * 
 	 * @param delay
+	 *            The global network delay.
 	 */
 	public void setNetworkDelay(double delay) {
 		_networkDelay = delay;
@@ -556,6 +574,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * semantics should be used.
 	 * 
 	 * @param ptidesExecutionSemantics
+	 *            The boolean value determining whether to use the ptides
+	 *            execution semantics.
 	 */
 	public void setUsePtidesExecutionSemantics(boolean ptidesExecutionSemantics) {
 		_usePtidesExecutionSemantics = ptidesExecutionSemantics;
@@ -592,10 +612,12 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 */
 	public void wrapup() throws IllegalActionException {
 		super.wrapup();
-		_disabledActors = null;
+		synchronized (this) {
+			_disabledActors = null;
+			_microstep = 0;
+		}
 		_eventQueues.clear();
 		_currentModelTime = new Time(this, 0.0);
-		_microstep = 0;
 	}
 
 	// /////////////////////////////////////////////////////////////////
@@ -700,11 +722,12 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
 	/**
 	 * Put an event into the event queue for the IOPort to fire at the specified
-	 * time stamp. The depth for the queued event is the minimum of the depths of
-	 * all the ports of the destination actor. If there is no event queue or the
-	 * given actor is disabled, then this method does nothing.
+	 * time stamp. The depth for the queued event is the minimum of the depths
+	 * of all the ports of the destination actor. If there is no event queue or
+	 * the given actor is disabled, then this method does nothing.
 	 * 
-	 * @param ioPort Port which gets the new trigger event.
+	 * @param ioPort
+	 *            Port which gets the new trigger event.
 	 * @param time
 	 *            The time stamp of the event.
 	 * @exception IllegalActionException
@@ -765,7 +788,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 							.compareTo(_physicalTime) > 0))) {
 						_addSynchronizationPoint(time.subtract(
 								PtidesGraphUtilities.getMinDelayTime(port))
-								.add(_clockSyncError).add(_networkDelay)); 
+								.add(_clockSyncError).add(_networkDelay));
 						// at this time, the new input should be read
 						receiver.put(t, time);
 						continue; // couldn't transfer newest token
@@ -807,7 +830,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 */
 	protected boolean _transferOutputs(IOPort port)
 			throws IllegalActionException {
-		Token token = null;
+		Token token;
 		boolean result = false;
 
 		if (!port.isOutput() || !port.isOpaque()) {
@@ -876,10 +899,13 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	/**
 	 * Put event back into the queue because it was not processed yet.
 	 * 
-	 * @param event The event that should be enqueued again.
-	 * @throws IllegalActionException Thrown if event cannot be enqueued.
+	 * @param event
+	 *            The event that should be enqueued again.
+	 * @throws IllegalActionException
+	 *             Thrown if event cannot be enqueued.
 	 */
-	private void _enqueueEventAgain(DEEvent event) throws IllegalActionException {
+	private void _enqueueEventAgain(DEEvent event)
+			throws IllegalActionException {
 		if (event.ioPort() == null) { // then it is a pure event
 			Actor actor = event.actor();
 			((DEEventQueue) _eventQueues.get(actor)).put(event);
