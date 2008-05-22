@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy polymorphic actor classes
+# Makefile for Ptolemy GUI components for actors and configurations.
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
