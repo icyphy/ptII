@@ -47,7 +47,6 @@ import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeConstant;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.domains.fsm.kernel.State;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -830,11 +829,15 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                                     methodName);
                         }
                     }
-                    if (result == null && object instanceof State) {
-                        NamedObj objectInRefinement = ((State) object)
-                                .getObjectInRefinement(methodName);
-                        if (objectInRefinement != null) {
-                            result = objectInRefinement;
+                    
+                    if (result == null && object instanceof NamedObj) {
+                        List attributes = ((NamedObj) object).attributeList(
+                                ContainmentExtender.class);
+                        Iterator attrIterator = attributes.iterator();
+                        while (result == null && attrIterator.hasNext()) {
+                            ContainmentExtender extender = (ContainmentExtender)
+                                    attrIterator.next();
+                            result = extender.getContainedObject(methodName);
                         }
                     }
                     if (result != null) {

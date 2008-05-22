@@ -33,9 +33,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -181,21 +178,25 @@ public abstract class ModelScope implements ParserScope {
                     }
                 }
                 if (lookup && result == null) {
-                    NamedObj containerContainer = container.getContainer();
-                    if (container instanceof ModalController) {
+                    List attributes = ((NamedObj) container).attributeList(
+                            ContainmentExtender.class);
+                    Iterator attrIterator = attributes.iterator();
+                    NamedObj extendedContainer = null;
+                    while (extendedContainer == null
+                            && attrIterator.hasNext()) {
+                        ContainmentExtender extender = (ContainmentExtender)
+                                attrIterator.next();
                         try {
-                            State state = (State) ((ModalController) container)
-                                    .getRefinedState();
-                            if (state == null) {
-                                container = containerContainer;
-                            } else {
-                                container = state.getContainer();
-                            }
+                            extendedContainer = extender.getExtendedContainer();
                         } catch (IllegalActionException e) {
-                            container = containerContainer;
+                            // Ignore the exception, and try the next extender.
                         }
+                    }
+                    
+                    if (extendedContainer == null) {
+                        container = container.getContainer();
                     } else {
-                        container = containerContainer;
+                        container = extendedContainer;
                     }
                 } else {
                     break;
@@ -233,21 +234,25 @@ public abstract class ModelScope implements ParserScope {
             if (result != null) {
                 return result;
             } else {
-                NamedObj containerContainer = container.getContainer();
-                if (container instanceof ModalController) {
+                List attributes = ((NamedObj) container).attributeList(
+                        ContainmentExtender.class);
+                Iterator attrIterator = attributes.iterator();
+                NamedObj extendedContainer = null;
+                while (extendedContainer == null
+                        && attrIterator.hasNext()) {
+                    ContainmentExtender extender = (ContainmentExtender)
+                            attrIterator.next();
                     try {
-                        State state = (State) ((ModalController) container)
-                                .getRefinedState();
-                        if (state == null) {
-                            container = containerContainer;
-                        } else {
-                            container = state.getContainer();
-                        }
+                        extendedContainer = extender.getExtendedContainer();
                     } catch (IllegalActionException e) {
-                        container = containerContainer;
+                        // Ignore the exception, and try the next extender.
                     }
+                }
+                
+                if (extendedContainer == null) {
+                    container = container.getContainer();
                 } else {
-                    container = containerContainer;
+                    container = extendedContainer;
                 }
             }
         }

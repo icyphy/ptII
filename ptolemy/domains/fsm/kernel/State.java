@@ -142,6 +142,8 @@ public class State extends ComponentEntity {
         isFinalState = new Parameter(this, "isFinalState");
         isFinalState.setTypeEquals(BaseType.BOOLEAN);
         isFinalState.setExpression("false");
+        
+        new ContainmentExtender(this, "_containmentExtender");
     }
 
     /** React to a change in an attribute. If the changed attribute is

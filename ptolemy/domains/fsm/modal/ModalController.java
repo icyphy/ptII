@@ -29,6 +29,7 @@ package ptolemy.domains.fsm.modal;
 import java.util.List;
 
 import ptolemy.actor.TypedActor;
+import ptolemy.domains.fsm.kernel.ContainmentExtender;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
@@ -37,6 +38,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -62,6 +64,23 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (reviewmoderator)
  */
 public class ModalController extends FSMActor {
+    /** Construct a modal controller with a name and a container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
+    public ModalController(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+
+        new ContainmentExtender(this, "_containmentExtender");
+    }
+
     /** Construct a modal controller in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -70,13 +89,24 @@ public class ModalController extends FSMActor {
      */
     public ModalController(Workspace workspace) {
         super(workspace);
+
+        try {
+            new ContainmentExtender(this, "_containmentExtender");
+        } catch (KernelException e) {
+            // This should never happen.
+            throw new InternalErrorException("Constructor error "
+                    + e.getMessage());
+        }
     }
-    
-    /** Get the state in any ModalController within this ModalModel that has the
-     *  given TypedActor as its refinement, if any. Return null if no such state
-     *  is found.
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Get the state in any ModalController within this ModalModel that has
+     *  this ModalController as its refinement, if any. Return null if no such
+     *  state is found.
      *
-     *  @return The state with the given refinement as its refinement, or null.
+     *  @return The state with this ModalController as its refinement, or null.
      *  @exception IllegalActionException If the specified refinement cannot be
      *   found in a state, or if a comma-separated list is malformed.
      */
@@ -103,24 +133,6 @@ public class ModalController extends FSMActor {
         }
         return null;
     }
-
-    /** Construct a modal controller with a name and a container.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
-     */
-    public ModalController(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     /** Create a new port with the specified name in the container of
      *  this controller, which in turn creates a port in this controller

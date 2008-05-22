@@ -50,7 +50,6 @@ import ptolemy.data.UnionToken;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
-import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -1393,15 +1392,14 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                         }
                     }
 
-                    // FIXME: data.expr should not depend on the
-                    // State, which is in the fsm domain, it means
-                    // that fsm is required for all Ptolemy
-                    // configurations.
-                    if (result == null && object instanceof State) {
-                        NamedObj objectInRefinement = ((State) object)
-                                .getObjectInRefinement(methodName);
-                        if (objectInRefinement != null) {
-                            result = objectInRefinement;
+                    if (result == null && object instanceof NamedObj) {
+                        List attributes = ((NamedObj) object).attributeList(
+                                ContainmentExtender.class);
+                        Iterator attrIterator = attributes.iterator();
+                        while (result == null && attrIterator.hasNext()) {
+                            ContainmentExtender extender = (ContainmentExtender)
+                                    attrIterator.next();
+                            result = extender.getContainedObject(methodName);
                         }
                     }
                     if (result != null) {

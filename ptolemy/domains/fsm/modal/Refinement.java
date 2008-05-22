@@ -26,7 +26,12 @@
  */
 package ptolemy.domains.fsm.modal;
 
+import java.util.List;
+
+import ptolemy.actor.TypedActor;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
+import ptolemy.domains.fsm.kernel.ContainmentExtender;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -34,6 +39,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 // NOTE: This is a combination of ModalController and CTStepSizeControlActor,
 // but because of the inheritance hierarchy, there appears to be no convenient
@@ -74,10 +80,44 @@ public class Refinement extends CTCompositeActor {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.domains.fsm.modal.Refinement");
+        
+        new ContainmentExtender(this, "_containmentExtender");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Get the state in any ModalController within this ModalModel that has
+     *  this refinement as its refinement, if any. Return null if no such state
+     *  is found.
+     *
+     *  @return The state with this refinement as its refinement, or null.
+     *  @exception IllegalActionException If the specified refinement cannot be
+     *   found in a state, or if a comma-separated list is malformed.
+     */
+    public State getRefinedState() throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container instanceof ModalModel) {
+            List<?> controllers = ((ModalModel) container).entityList(
+                    ModalController.class);
+            for (Object controllerObject : controllers) {
+                ModalController controller = (ModalController) controllerObject;
+                List<?> states = controller.entityList(State.class);
+                for (Object stateObject : states) {
+                    State state = (State) stateObject;
+                    TypedActor[] refinements = state.getRefinement();
+                    if (refinements != null) {
+                        for (TypedActor refinement : refinements) {
+                            if (refinement == this) {
+                                return state;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
     /** Create a new port with the specified name in the container of
      *  this refinement, which in turn creates a port in this refinement
