@@ -596,8 +596,7 @@ public class HTMLAbout {
                 + "<p>The quickest way to find this is to restart vergil "
                 + "and expand each branch in the tree by hand.";
         try {
-            ((ptolemy.vergil.basic.BasicGraphFrame) jFrame)
-                    .expandAllLibraryRows();
+            ((PtolemyFrame) jFrame).expandAllLibraryRows();
         } catch (Throwable throwable) {
             throw new IllegalActionException(tableau, throwable,
                     "Failed to expand library.\n" + errorMessage);

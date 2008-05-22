@@ -135,6 +135,17 @@ public abstract class PtolemyFrame extends TableauFrame {
         return _model;
     }
 
+    /** Expand all the rows of the library.
+     *  Expanding all the rows is useful for testing.
+     *  In this baseclass, this method merely returns.
+     *  In a derived class, this method should expand all the library
+     *  rows in the configuration.
+     */
+    public void expandAllLibraryRows() {
+        // This method is here so that HTMLAbout does not depend on  
+        // vergil BasicGraphFrame
+    }
+
     /** Set the associated model.  This also sets an error handler for
      *  the model that results in model errors throwing an exception
      *  and associates an undo stack with the model.
