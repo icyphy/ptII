@@ -1,6 +1,6 @@
-/* Utilities used by Vergil.
+/* Ptolemy GUI Utilities
 
- Copyright (c) 2004-2005 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,26 +25,28 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.vergil.kernel;
+package ptolemy.gui;
 
-import ptolemy.gui.PtGUIUtilities;
+import javax.swing.UIManager;
+
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-//// VergilUtilities
+//// PtGUIUtilities
 
 /**
- Utilities used by Vergil.
+ GUI Utilities
 
- @author Christopher Hylands Brooks
+ @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class VergilUtilities {
+public class PtGUIUtilities {
     /** Instances of this class cannot be created.
      */
-    private VergilUtilities() {
+    private PtGUIUtilities() {
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -64,10 +66,40 @@ public class VergilUtilities {
      *
      *  @return True if the look and feel starts with "Mac OS" or the
      *  ptolemy.ptII.MacOS property is set to true.
-     *  @deprecated Use {@link ptolemy.gui.PtGUIUtilities#macOSLookAndFeel()).
      */
     public static boolean macOSLookAndFeel() {
-        return PtGUIUtilities.macOSLookAndFeel();
+        // Dan Higgins writes:
+        // "Apple suggests in their tech note 2042 (http://developer.apple.com/
+        // documentation/Java/Conceptual/Java131Development/x_platform/
+        // chapter_5_section_5.html) that the statement
+        //
+        // System.getProperty("mrj.version")
+        //
+        // should be used to detect a mac, with any non-null result
+        // indicating that the machine is a mac. This approach is
+        // independent of the string value which may change."
+        // However, calling getProperty will likely fail in applets
+        // or within the sandbox, so we use this method instead.
+        try {
+            if (StringUtilities.getProperty("ptolemy.ptII.MacOS")
+                    .equals("true")) {
+                System.out.println("ptolemy.ptII.MacOS = "
+                        + "true property detected");
+                return true;
+            }
+        } catch (SecurityException ex) {
+            if (!_printedSecurityExceptionMessage) {
+                _printedSecurityExceptionMessage = true;
+                System.out.println("Warning: Failed to get the "
+                        + "ptolemy.ptII.MacOS property "
+                        + "(-sandbox always causes this)");
+            }
+        }
+
+        return UIManager.getLookAndFeel().getName().startsWith("Mac OS");
     }
+
+    // True if we have printed the securityExceptionMessage;
+    private static boolean _printedSecurityExceptionMessage = false;
 
 }

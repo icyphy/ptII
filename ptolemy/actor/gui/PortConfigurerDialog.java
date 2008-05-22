@@ -85,6 +85,7 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.unit.ParseException;
 import ptolemy.data.unit.UnitAttribute;
 import ptolemy.data.unit.UnitLibrary;
+import ptolemy.gui.PtGUIUtilities;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.undo.UndoChangeRequest;
@@ -99,7 +100,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.LocatableNodeController;
-import ptolemy.vergil.kernel.VergilUtilities;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// PortConfigurerDialog
@@ -169,10 +170,10 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
         _portTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent mouseEvent) {
-                if ((VergilUtilities.macOSLookAndFeel() && (mouseEvent
+                if ((PtGUIUtilities.macOSLookAndFeel() && (mouseEvent
                         .isPopupTrigger() || ((mouseEvent.getButton() == MouseEvent.BUTTON1) && ((mouseEvent
                         .getModifiersEx() | java.awt.event.InputEvent.CTRL_MASK) == java.awt.event.InputEvent.CTRL_MASK))))
-                        || (!VergilUtilities.macOSLookAndFeel() && (mouseEvent
+                        || (!PtGUIUtilities.macOSLookAndFeel() && (mouseEvent
                                 .getButton() == MouseEvent.BUTTON3))) {
                     Point point = mouseEvent.getPoint();
                     int row = _portTable.rowAtPoint(point);

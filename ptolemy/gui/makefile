@@ -55,6 +55,7 @@ JSRCS = \
 	GraphicalMessageHandler.java \
 	JTextAreaExec.java \
 	MessageHandler.java \
+	PtGUIUtilities.java \
 	Query.java \
 	QueryListener.java \
 	ShellInterpreter.java \
