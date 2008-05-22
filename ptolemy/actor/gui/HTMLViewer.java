@@ -37,6 +37,7 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -52,7 +53,7 @@ import javax.swing.text.html.StyleSheet;
 
 import ptolemy.gui.Top;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.basic.GetDocumentationAction;
+import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// HTMLViewer
@@ -158,8 +159,35 @@ public class HTMLViewer extends TableauFrame implements Printable,
             if (event.getDescription().startsWith("ptdoc:")) {
                 // Process "ptdoc:" hyperlinks
                 try {
-                    GetDocumentationAction.getDocumentation(getConfiguration(),
-                            event.getDescription().substring(6), getEffigy());
+                    // Read the _getDocumentationActionClassName from
+                    // the configuration and attempt to call it.
+                    // If _getDocumentationActionClassName is not set,
+                    // then default to vergil GetDocumentationAction.
+
+                    // FIXME: Refactor this code, use DocApplicationSpecializer
+
+                    StringAttribute getDocumentationActionClassNameStringAttribute = (StringAttribute) getConfiguration()
+                        .getAttribute("_getDocumentationActionClassName",
+                                StringAttribute.class);
+                    String getDocumentationActionClassName = null;
+                    if (getDocumentationActionClassNameStringAttribute != null) {
+                        getDocumentationActionClassName = getDocumentationActionClassNameStringAttribute.getExpression();
+                    } else {
+                        getDocumentationActionClassName = "ptolemy.vergil.basic.GetDocumentationAction";
+                    }
+                    Class getDocumentationActionClass = Class.forName(getDocumentationActionClassName);
+                    Method getDocumentationMethod = getDocumentationActionClass.getMethod(
+                            "getDocumentation",
+                            new Class[] {Configuration.class,
+                                         String.class,
+                                         Effigy.class});
+                    //GetDocumentationAction.getDocumentation(getConfiguration(),
+                    //        event.getDescription().substring(6), getEffigy());
+                    getDocumentationMethod.invoke(null,
+                            new Object[] {
+                                getConfiguration(),
+                                event.getDescription().substring(6),
+                                getEffigy()});
                 } catch (Throwable throwable) {
                     MessageHandler.error("Problem processing '"
                             + event.getDescription() + "'.", throwable);
