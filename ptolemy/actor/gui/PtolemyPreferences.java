@@ -51,9 +51,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.kernel.attributes.RectangleAttribute;
-import ptolemy.vergil.kernel.attributes.TextAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyPreferences
@@ -112,19 +109,14 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         _showParameters.setDisplayName("Show parameters");
 
         // The icon.
-        EditorIcon _icon = new EditorIcon(this, "_icon");
-        RectangleAttribute rectangle = new RectangleAttribute(_icon,
-                "rectangle");
-        rectangle.width.setExpression("120.0");
-        rectangle.height.setExpression("20.0");
-        rectangle.fillColor.setExpression("{0.2,1.0,1.0,1.0}");
-
-        Location _location = new Location(rectangle, "_location");
-        _location.setExpression("-5.0, -15.0");
-
-        TextAttribute text = new TextAttribute(_icon, "text");
-        text.text.setExpression("LocalPreferences");
-
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-60\" y=\"-10\" "
+                + "width=\"120\" height=\"20\" "
+                + "style=\"fill:#00FFFF\"/>\n"
+                + "<text x=\"-55\" y=\"5\" "
+                + "style=\"font-size:14; font-family:SansSerif; fill:blue\">\n"
+                + "LocalPreferences\n" + "</text>\n"
+                + "</svg>\n");
         // Hide the name.
         SingletonParameter _hideName = new SingletonParameter(this, "_hideName");
         _hideName.setToken(BooleanToken.TRUE);
