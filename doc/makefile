@@ -700,6 +700,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
+			../ptolemy/domains/space/*.java \
 			../ptolemy/domains/sr/kernel/*.java \
 			../ptolemy/domains/sr/lib/*.java \
 			../ptolemy/domains/tm/kernel/*.java \

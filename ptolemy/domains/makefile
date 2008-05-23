@@ -42,12 +42,14 @@ EXPERIMENTAL_DOMAINS = \
 #   $PTII/lib/mapss.jar was found
 # PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
 #   Java 3D was found
+# PTSPACE_DIR is set to space by configure in $PTII/mk/ptII.mk if
+#   ojdbc6.jar was found.
 # PTCONTINUOUS_DIR is set to continuous if we want to compile that domain.
 PTCONTINUOUS_DIR = continuous
 DOMAINS =	ci $(PTCONTINUOUS_DIR) csp ct curriculum \
 	        dde ddf de fsm erg hdf pn sdf dt \
 	        giotto petrinet rendezvous \
-		$(PTPSDF_DIR) ptides ptinyos \
+		$(PTPSDF_DIR) ptides ptinyos $(PTSPACE_DIR) \
 		sr tm $(PTJAVA3D_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
@@ -81,6 +83,7 @@ PTAUXALLJARS = \
 		$(PTGRDOMAIN_JAR) \
 		petrinet/petrinet.jar \
 		ptides/ptides.jar \
+		space/space.jar \
 		tm/tm.jar \
 		wireless/wireless.jar
 

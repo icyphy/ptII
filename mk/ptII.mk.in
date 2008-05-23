@@ -404,9 +404,13 @@ JAVACC_DIR =	@JAVACC_DIR@
 JJTREE =	"@JJTREE@"
 JAVACC =	"@JAVACC@"
 
+# Oracle Java Database jar (ojdbc6.jar)
+ORACLE_OJDBC_JAR = 	@ORACLE_OJDBC_JAR@
+
 # Set to $PTII/lib if $PTII/lib/mapss.jar was found and used
 # in $PTII/bin/ptinvoke.in
 PSDF_DIR =	@PSDF_DIR@
+
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat
@@ -574,6 +578,7 @@ PTPTALON_PACKAGES =  @PTPTALON_PACKAGES@
 # Directory that contains the antlr.jar file, used by ptalon
 ANTLR_DIR =	@ANTLR_DIR@
 
+
 # Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
 # QuickTime for Java was found.
 PTQUICKTIME_DIR =	@PTQUICKTIME_DIR@
@@ -581,6 +586,10 @@ PTQUICKTIME_DIR =	@PTQUICKTIME_DIR@
 # Ptolemy II packages that use the Quicktime facility
 # PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
 PTQUICKTIME_PACKAGES = 	@PTQUICKTIME_PACKAGES@
+
+# PTSPACE_DIR is set to space and used in
+# $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.
+PTSPACE_DIR =		@PTSPACE_DIR@
 
 # Set to tini and used in $PTII/ptolemy/apps/makefile if the Dallas Semi
 # TINI was found

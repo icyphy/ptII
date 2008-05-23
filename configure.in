@@ -3067,6 +3067,49 @@ else
 fi 
 
 #--------------------------------------------------------------------
+#       Space - domains/space uses ojdbc6.jar 
+#--------------------------------------------------------------------
+
+# PTSPACE_DIR is set to space and used in
+# $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.
+PTSPACE_DIR=
+
+# Oracle Java Database jar (ojdbc6.jar)
+ORACLE_OJDBC_JAR='${PTII}/ptolemy/domains/space/ojdbc6.jar'
+
+# We only need to look for on if $PTII/ptolemy/domains/space exists
+SPACE_USER_DIR="$PTII/ptolemy/domains/space"
+if test ! -d "$SPACE_USER_DIR"; then
+    PT_MSG_STATUS([$SPACE_USER_DIR is not present,
+    so we need not find the Oracle ojdbc6.jar.])
+else
+    AC_MSG_CHECKING([for ojdbc6.jar, used by the space domain])
+    AC_ARG_WITH(mapss, [  --with-ojdbc6=/path/to/ojdbc6.jar  path to ojdbc6.jar
+                          defaults to \$PTII/ptolemy/domains/space/ojdbc6.jar],
+	ORACLE_OJDBC_JAR=$withval,
+	ORACLE_OJDBC_JAR=$PTII/ptolemy/domains/space/ojdbc6.jar)
+
+    if test -f "$ORACLE_OJDBC_JAR"; then
+	PT_MSG_RESULT([$ORACLE_OJDBC_JAR])
+	PTSPACE_DIR=space
+    else  
+        AC_MSG_WARN([Failed to find PTII/ptolemy/domains/space/ojdbc6.jar
+    If it is not present, you will not be able to use the 
+    space domain.])
+	# Note that we don't substitute in the ${PTII} here
+	ORACLE_OJDBC_JAR='${PTII}/ptolemy/domains/space/ojdbc6.jar'
+    fi
+fi
+
+if test -z "$ORACLE_OJDBC_JAR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/space/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$ORACLE_OJDBC_JAR\"/> "
+fi 
+
+
+#--------------------------------------------------------------------
 #       The Batik SVG toolkit is used by Kepler so we include Batik
 #	support in Diva.  See
 #	http://xmlgraphics.apache.org/batik/
@@ -3653,6 +3696,9 @@ AC_SUBST(MATLAB_LIBDIR)
 # in $PTII/bin/ptinvoke.in
 AC_SUBST(PSDF_DIR)
 
+# Oracle Java Database jar (ojdbc6.jar), used by domains/space
+AC_SUBST(ORACLE_OJDBC_JAR)
+
 # Set to backtrack if Java 1.5 or later is present
 AC_SUBST(PTBACKTRACK_DIR)
 
@@ -3917,6 +3963,10 @@ AC_SUBST(PTQUICKTIME_DIR)
 # Ptolemy II packages that use the Quicktime facility
 # PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTQUICKTIME_PACKAGES)
+
+# PTSPACE_DIR is set to space and used in
+# $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.
+AC_SUBST(PTSPACE_DIR)
 
 # Set to tini and used in
 # $PTII/ptolemy/apps/makefile if TINI was found

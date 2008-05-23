@@ -309,6 +309,9 @@ JODE_JAR="@JODE_CLASSES@"
 
 JODE_JFLAG=
 
+#### Oracle Java Database jar (ojdbc6.jar), used by space domain
+ORACLE_OJDBC_JAR="@ORACLE_OJDBC_JAR@"
+
 #### Ptalon
 # Ptalon uses antlr.jar, found in ptolemy/actor/ptalon/antlr/antlr.jar
 # PTPTALON_DIR is set to ptalon by configure if antlr.jar was found
@@ -473,7 +476,7 @@ fi
 # a version of java cup
 #
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}$(ORACLE_OJDBC_JAR)${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${JYTHON_JFLAG} -Xmx256M"
 
 #### Sandbox
