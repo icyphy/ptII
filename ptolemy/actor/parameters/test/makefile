@@ -45,14 +45,16 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS =
+JSRCS = \
+	TestSharedParameter.java
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.
 JSIMPLE_TESTS = \
 	ParameterSet.tcl \
-	ParameterSetModel.tcl
+	ParameterSetModel.tcl \
+	SharedParameter.tcl 
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
