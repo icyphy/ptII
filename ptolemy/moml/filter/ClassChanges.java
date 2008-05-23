@@ -253,6 +253,10 @@ public class ClassChanges implements MoMLFilter {
         // 1/08: Moved SingleTokenCommutator so that DDF can extend it
         _classChanges.put("ptolemy.domains.sr.lib.SingleTokenCommutator",
                 "ptolemy.actor.lib.SingleTokenCommutator");
+
+        // DependencyHighlighter is really a vergil class
+        _classChanges.put("ptolemy.actor.gui.DependencyHighlighter",
+                "ptolemy.vergil.basic.DependencyHighlighter");
         
         _classChanges.put("ptolemy.moml.SharedParameter",
                 "ptolemy.actor.parameters.SharedParameter");
