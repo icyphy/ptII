@@ -39,7 +39,7 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.PortConfigurerDialog;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.actor.gui.unit.UnitConstraintsDialog;
+import ptolemy.vergil.unit.UnitConstraintsDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.MenuItemFactory;
