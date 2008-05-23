@@ -146,6 +146,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.x10.X10Interface",
                 "ptolemy/actor/lib/x10/x10-copyright.htm");
 
+        _addIfPresent(copyrightsMap, "ptolemy.domains.space.DatabaseDirector",
+                "ptolemy/domains/space/ojdbc-copyright.htm");
+
         _addIfPresent(copyrightsMap,
                 "ptolemy.ptolemy.actor.ptalon.PtalonActor",
                 "ptolemy/actor/ptalon/ptalon-copyright.html");
