@@ -60,7 +60,9 @@ JSRCS = \
 	ResizablePolygonAttribute.java \
 	TextAttribute.java \
 	ShapeAttribute.java \
-	VisibleAttribute.java
+	VisibleAttribute.java \
+	UpdateAnnotations.java
+
 
 OTHER_FILES_TO_BE_JARED = \
 	decorative.xml \

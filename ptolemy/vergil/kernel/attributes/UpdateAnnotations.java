@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.moml.filter;
+package ptolemy.vergil.kernel.attributes;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
