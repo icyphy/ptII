@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gui.unit;
+package ptolemy.vergil.unit;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

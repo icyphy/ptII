@@ -1,6 +1,6 @@
 /* A top-level dialog window for editing Unit constraints.
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 2003-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gui.unit;
+package ptolemy.vergil.unit;
 
 import java.awt.Dimension;
 import java.awt.Frame;

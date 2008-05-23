@@ -1,6 +1,6 @@
 /* An action that opens a dialog for configuring units.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2006-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.vergil.kernel;
+package ptolemy.vergil.unit;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -33,7 +33,6 @@ import java.awt.event.ActionEvent;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.actor.gui.unit.UnitConstraintsDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;

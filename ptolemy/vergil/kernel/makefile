@@ -58,7 +58,6 @@ JSRCS = \
 	AttributeNodeModel.java \
 	AttributeController.java \
 	CompositePtolemyModel.java \
-	ConfigureUnitsAction.java \
 	DebugRenderer.java \
 	Link.java \
 	PortDialogFactory.java \

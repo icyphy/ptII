@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2006 The Regents of the University of California.
+# @Copyright (c) 2006-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 
 # This directory contains polymorphic actors.
 
-ME =		ptolemy/actor/gui/unit
+ME =		ptolemy/vergil/unit
 
 DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
@@ -53,6 +53,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	BasicEdgeHighlighter.java \
+	ConfigureUnitsAction.java \
 	UnitConstraintsDialog.java \
 	UnitSolverDialog.java
 

@@ -72,7 +72,7 @@ import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.debugger.BreakpointDialogFactory;
 import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.kernel.ConfigureUnitsAction;
+import ptolemy.vergil.unit.ConfigureUnitsAction;
 import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.toolbox.EditIconAction;
 import ptolemy.vergil.toolbox.FigureAction;
