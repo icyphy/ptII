@@ -493,13 +493,20 @@ public class PythonScript extends TypedAtomicActor {
                         // then get the exception and rethrow it.
                         if (ex instanceof PyException) {
                             PyException pyException = (PyException)ex;
-                            Exception innerException = (Exception)pyException.value.__tojava__(Exception.class);
-                            if (innerException instanceof TerminateProcessException) {
-                                // Work around bug reported by
-                                // Norbert Podhorszki
-                                // See python/test/auto/PythonScalePN.xml
-                                throw (TerminateProcessException) innerException;
+                            Object exceptionValue = pyException.value.__tojava__(Exception.class);
+                            if (exceptionValue instanceof Exception) {
+                                Exception innerException = (Exception) exceptionValue;
+                                if (innerException instanceof TerminateProcessException) {
+                                    // Work around bug reported by
+                                    // Norbert Podhorszki
+                                    // See python/test/auto/PythonScalePN.xml
+                                    throw (TerminateProcessException) innerException;
+                                } else {
+                                    throw ex;
+                                }
                             } else {
+                                // Test PythonScript-2.5 illustrates
+                                // why we need this.
                                 throw ex;
                             }
                         } else {
@@ -526,7 +533,6 @@ public class PythonScript extends TypedAtomicActor {
             } catch (Exception ex) {
                 String messagePrefix = "Error in invoking the " + methodName
                         + " method:\n";
-
                 if (ex instanceof PyException) {
                     _reportScriptError((PyException) ex, messagePrefix);
                 } else {
