@@ -40,18 +40,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import javax.swing.Action;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
+
 
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotFormatter;
 import ptolemy.util.StringUtilities;
-import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotTableauFrame
@@ -192,7 +194,17 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
         _menubar.add(_editMenu);
 
         FormatAction formatAction = new FormatAction();
-        GUIUtilities.addMenuItem(_editMenu, formatAction);
+        // Avoid a dependency on diva/gui/GUIUtilities.java here, but
+        // add some code duplication.
+        JMenuItem item = _editMenu.add(formatAction);
+        item.setText((String)formatAction.getValue(Action.NAME));
+        item.setMnemonic((Integer) formatAction.getValue(Action.MNEMONIC_KEY));
+        item.setToolTipText((String) formatAction.getValue("tooltip"));
+
+        KeyStroke key = (KeyStroke) formatAction.getValue(Action.ACCELERATOR_KEY);
+        item.setAccelerator(key);
+        formatAction.putValue("menuItem", item);
+        // End of duplicated code from diva GUIUtilities.
 
         // Special menu
         _specialMenu = new JMenu("Special");
@@ -314,7 +326,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable {
         public FormatAction() {
             super("Format");
             putValue("tooltip", "Open a dialog to format the plot.");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
+            putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
         public void actionPerformed(ActionEvent e) {
