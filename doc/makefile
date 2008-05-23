@@ -395,7 +395,6 @@ ALL1_4PACKAGES = \
 	ptolemy.actor \
 	ptolemy.actor.gui \
 	ptolemy.actor.gui.style \
-	ptolemy.actor.gui.unit \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.hoc \
 	ptolemy.actor.lib.jni \
@@ -440,6 +439,7 @@ ALL1_4PACKAGES = \
 	ptolemy.domains.psdf.kernel \
 	ptolemy.domains.rendezvous.kernel \
 	ptolemy.domains.rendezvous.lib \
+	ptolemy.domains.space \
 	ptolemy.domains.sr.kernel \
 	ptolemy.domains.sr.lib \
 	ptolemy.domains.tm.kernel \
@@ -468,6 +468,7 @@ ALL1_4PACKAGES = \
 	ptolemy.vergil.kernel.attributes \
 	ptolemy.vergil.toolbox \
 	ptolemy.vergil.tree \
+	ptolemy.vergil.unit \
 	util.testsuite
 
 # This variable can be used by the user to add custom packages.
