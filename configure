@@ -717,6 +717,7 @@ MAJOR_OS_NAME
 MATLAB_DIR
 MATLAB_LIBDIR
 PSDF_DIR
+ORACLE_OJDBC_JAR
 PTBACKTRACK_DIR
 PTBACKTRACK_ECLIPSE_DIR
 PTBACKTRACK_ECLIPSE_DOC_JARS
@@ -788,6 +789,7 @@ PTPTALON_PACKAGES
 ANTLR_DIR
 PTQUICKTIME_DIR
 PTQUICKTIME_PACKAGES
+PTSPACE_DIR
 PTTINI_DIR
 PTTINYOS_DIR
 PTGIOTTO_DIR
@@ -1450,6 +1452,8 @@ Optional Packages:
                           defaults to \$PTII/lib
   --with-javasystemjar=DIR       use rt.lib from DIR,
                           defaults to JRE java.home property with lib/rt.jar appended
+  --with-ojdbc6=/path/to/ojdbc6.jar  path to ojdbc6.jar
+                          defaults to \$PTII/ptolemy/domains/space/ojdbc6.jar
   --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
                           defaults to \$KEPLER/lib/jar/batik-all-1.6.jar
   --with-tini=DIR       use TINI from DIR,
@@ -8924,6 +8928,61 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       Space - domains/space uses ojdbc6.jar
+#--------------------------------------------------------------------
+
+# PTSPACE_DIR is set to space and used in
+# $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.
+PTSPACE_DIR=
+
+# Oracle Java Database jar (ojdbc6.jar)
+ORACLE_OJDBC_JAR='${PTII}/ptolemy/domains/space/ojdbc6.jar'
+
+# We only need to look for on if $PTII/ptolemy/domains/space exists
+SPACE_USER_DIR="$PTII/ptolemy/domains/space"
+if test ! -d "$SPACE_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $SPACE_USER_DIR is not present,
+    so we need not find the Oracle ojdbc6.jar." >&5
+echo "${ECHO_T}$SPACE_USER_DIR is not present,
+    so we need not find the Oracle ojdbc6.jar." >&6; }; fi
+else
+    { echo "$as_me:$LINENO: checking for ojdbc6.jar, used by the space domain" >&5
+echo $ECHO_N "checking for ojdbc6.jar, used by the space domain... $ECHO_C" >&6; }
+
+# Check whether --with-mapss was given.
+if test "${with_mapss+set}" = set; then
+  withval=$with_mapss; ORACLE_OJDBC_JAR=$withval
+else
+  ORACLE_OJDBC_JAR=$PTII/ptolemy/domains/space/ojdbc6.jar
+fi
+
+
+    if test -f "$ORACLE_OJDBC_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $ORACLE_OJDBC_JAR" >&5
+echo "${ECHO_T}$ORACLE_OJDBC_JAR" >&6; }; fi
+	PTSPACE_DIR=space
+    else
+        { echo "$as_me:$LINENO: WARNING: Failed to find PTII/ptolemy/domains/space/ojdbc6.jar
+    If it is not present, you will not be able to use the
+    space domain." >&5
+echo "$as_me: WARNING: Failed to find PTII/ptolemy/domains/space/ojdbc6.jar
+    If it is not present, you will not be able to use the
+    space domain." >&2;}
+	# Note that we don't substitute in the ${PTII} here
+	ORACLE_OJDBC_JAR='${PTII}/ptolemy/domains/space/ojdbc6.jar'
+    fi
+fi
+
+if test -z "$ORACLE_OJDBC_JAR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/space/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$ORACLE_OJDBC_JAR\"/> "
+fi
+
+
+#--------------------------------------------------------------------
 #       The Batik SVG toolkit is used by Kepler so we include Batik
 #	support in Diva.  See
 #	http://xmlgraphics.apache.org/batik/
@@ -9657,6 +9716,9 @@ fi
 # in $PTII/bin/ptinvoke.in
 
 
+# Oracle Java Database jar (ojdbc6.jar), used by domains/space
+
+
 # Set to backtrack if Java 1.5 or later is present
 
 
@@ -9920,6 +9982,10 @@ fi
 
 # Ptolemy II packages that use the Quicktime facility
 # PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
+
+
+# PTSPACE_DIR is set to space and used in
+# $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.
 
 
 # Set to tini and used in
@@ -10792,6 +10858,7 @@ MAJOR_OS_NAME!$MAJOR_OS_NAME$ac_delim
 MATLAB_DIR!$MATLAB_DIR$ac_delim
 MATLAB_LIBDIR!$MATLAB_LIBDIR$ac_delim
 PSDF_DIR!$PSDF_DIR$ac_delim
+ORACLE_OJDBC_JAR!$ORACLE_OJDBC_JAR$ac_delim
 PTBACKTRACK_DIR!$PTBACKTRACK_DIR$ac_delim
 PTBACKTRACK_ECLIPSE_DIR!$PTBACKTRACK_ECLIPSE_DIR$ac_delim
 PTBACKTRACK_ECLIPSE_DOC_JARS!$PTBACKTRACK_ECLIPSE_DOC_JARS$ac_delim
@@ -10863,6 +10930,7 @@ PTPTALON_PACKAGES!$PTPTALON_PACKAGES$ac_delim
 ANTLR_DIR!$ANTLR_DIR$ac_delim
 PTQUICKTIME_DIR!$PTQUICKTIME_DIR$ac_delim
 PTQUICKTIME_PACKAGES!$PTQUICKTIME_PACKAGES$ac_delim
+PTSPACE_DIR!$PTSPACE_DIR$ac_delim
 PTTINI_DIR!$PTTINI_DIR$ac_delim
 PTTINYOS_DIR!$PTTINYOS_DIR$ac_delim
 PTGIOTTO_DIR!$PTGIOTTO_DIR$ac_delim
@@ -10881,8 +10949,6 @@ TINI_DIR!$TINI_DIR$ac_delim
 TOOLS_JAR!$TOOLS_JAR$ac_delim
 TOSROOT_NO_CYGDRIVE!$TOSROOT_NO_CYGDRIVE$ac_delim
 TOSDIR_NO_CYGDRIVE!$TOSDIR_NO_CYGDRIVE$ac_delim
-GIOTTO_CLASSES!$GIOTTO_CLASSES$ac_delim
-GIOTTO_DIR!$GIOTTO_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -10924,6 +10990,8 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+GIOTTO_CLASSES!$GIOTTO_CLASSES$ac_delim
+GIOTTO_DIR!$GIOTTO_DIR$ac_delim
 WABA_CLASSES!$WABA_CLASSES$ac_delim
 WABA_DIR!$WABA_DIR$ac_delim
 X10_CLASSES!$X10_CLASSES$ac_delim
@@ -10932,7 +11000,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 6; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 8; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
