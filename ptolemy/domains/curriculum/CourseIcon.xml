@@ -12,6 +12,6 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
     </property>
 </property>
-<property name="_controller" class="ptolemy.domains.curriculum.DependencyHighlighter">
+<property name="_controller" class="ptolemy.vergil.basic.DependencyHighlighter">
 </property>
 </group>

@@ -53,7 +53,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Course.java \
-	DependencyHighlighter.java \
 	HighlightEntities.java \
 	Or.java
 
