@@ -190,8 +190,13 @@ public class StaticSchedulingDirector extends Director {
             if (returnValue == STOP_ITERATING) {
                 _postfireReturns = false;
             } else if (returnValue == NOT_READY) {
+                // See de/test/auto/knownFailedTests/DESDFClockTest.xml
                 throw new IllegalActionException(this, actor, "Actor "
-                        + "is not ready to fire.");
+                        + "is not ready to fire.  Perhaps "
+                        + actor.getName() + ".prefire() returned false? "
+                        + "Try debugging the actor by selecting "
+                        + "\"Listen to Actor\".  Also, for SDF check moml for "
+                        + "tokenConsumptionRate on input.");
             }
 
             if (_debugging) {
