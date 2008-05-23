@@ -256,6 +256,12 @@ public class PortConfigurerDialog extends PtolemyDialog implements
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The background color of an uneditable cell. */
+    public static Color UNEDITABLE_CELL_COLOR = new Color(255, 128, 128);
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
@@ -1114,7 +1120,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             setHorizontalAlignment(SwingConstants.CENTER);
 
             if (!table.isCellEditable(row, col)) {
-                setBackground(LocatableNodeController.CLASS_ELEMENT_HIGHLIGHT_COLOR);
+                setBackground(UNEDITABLE_CELL_COLOR);
             } else {
                 setBackground(Color.white);
             }
@@ -1143,7 +1149,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             setText((String) value);
 
             if (!table.isCellEditable(row, col)) {
-                setBackground(LocatableNodeController.CLASS_ELEMENT_HIGHLIGHT_COLOR);
+                setBackground(UNEDITABLE_CELL_COLOR);
             } else {
                 setBackground(Color.white);
             }
