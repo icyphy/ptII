@@ -42,7 +42,7 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
-import ptolemy.actor.gui.unit.UnitSolverDialog;
+import ptolemy.vergil.unit.UnitSolverDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.DebugEvent;
