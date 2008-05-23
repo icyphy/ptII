@@ -161,24 +161,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 220.0">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 398, 507, 219}, maximized=false}">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 4, 6, 8, 10, 12, 14, 16, 18}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370, 225}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="PythonActor.input" relation="relation"/>
     <link port="PythonActor.output" relation="relation2"/>
     <link port="Ramp.output" relation="relation"/>
-    <link port="Display.input" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
 </entity>
