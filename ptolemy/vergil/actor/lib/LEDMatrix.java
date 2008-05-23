@@ -1,6 +1,6 @@
 /* An actor to display 10x10 LEDs
 
- Copyright (c) 2007 The Regents of the University of California
+ Copyright (c) 2007-2008 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,7 +27,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.actor.lib.gui;
+package ptolemy.vergil.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;

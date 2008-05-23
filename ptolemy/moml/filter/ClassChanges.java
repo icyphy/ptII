@@ -260,6 +260,12 @@ public class ClassChanges implements MoMLFilter {
         
         _classChanges.put("ptolemy.moml.SharedParameter",
                 "ptolemy.actor.parameters.SharedParameter");
+
+        _classChanges.put("ptolemy.actor.lib.gui.LEDMatrix",
+                "ptolemy.vergil.actor.lib.LEDMatrix");
+
+        _classChanges.put("ptolemy.actor.lib.gui.ModelDisplay",
+                "ptolemy.vergil.actor.lib.ModelDisplay");
         
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open

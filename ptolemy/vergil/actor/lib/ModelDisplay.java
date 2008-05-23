@@ -1,6 +1,6 @@
 /*  This actor opens a window to display the specified model and applies its inputs to the model.
 
- @Copyright (c) 2007 The Regents of the University of California.
+ @Copyright (c) 2007-2008 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION 2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.lib.gui;
+package ptolemy.vergil.actor.lib;
 
 import java.awt.Container;
 import java.awt.Dimension;

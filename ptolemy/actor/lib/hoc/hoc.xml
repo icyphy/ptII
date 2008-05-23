@@ -56,7 +56,7 @@
 
       <input source="ptolemy/configs/utilityModalModel.xml"/>
 
-      <entity name="ModelDisplay" class="ptolemy.actor.lib.gui.ModelDisplay"/>
+      <entity name="ModelDisplay" class="ptolemy.vergil.actor.lib.ModelDisplay"/>
 
       <entity name="ModelReference" class="ptolemy.actor.lib.hoc.ModelReference"/>
 

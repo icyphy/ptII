@@ -49,6 +49,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	LEDMatrix.java \
+	ModelDisplay.java \
 	MonitorImage.java \
 	VisualModelReference.java
 
