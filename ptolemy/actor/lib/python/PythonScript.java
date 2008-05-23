@@ -40,7 +40,9 @@ import org.python.core.PyString;
 import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -484,7 +486,27 @@ public class PythonScript extends TypedAtomicActor {
         if (method != null) {
             try {
                 if ((args == null) || (args.length == 0)) {
-                    returnValue = method.__call__();
+                    try {
+                        returnValue = method.__call__();
+                    } catch (Exception ex) {
+                        if (ex instanceof PyException) {
+                            PyException pyException = (PyException)ex;
+                            Exception innerException = (Exception)pyException.value.__tojava__(Exception.class);
+                            if (innerException instanceof TerminateProcessException) {
+                                // Work around bug reported by
+                                // Norbert Podhorszki
+                                // See python/test/auto/PythonScalePN.xml
+                                System.out.println("PythonScript: ignoring "
+                                        + "TerminateProcessException. "
+                                        + "This can happen in PN. "
+                                        + "State was: "
+                                        + ((CompositeActor)getContainer()).getManager().getState().toString());
+                                innerException.printStackTrace();
+                            } else {
+                                throw ex;
+                            }
+                        }
+                    }
                 } else {
                     PyObject[] convertedArgs = new PyObject[args.length];
 
