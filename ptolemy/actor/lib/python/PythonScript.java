@@ -489,6 +489,8 @@ public class PythonScript extends TypedAtomicActor {
                     try {
                         returnValue = method.__call__();
                     } catch (Exception ex) {
+                        // If the inner exception is TerminateProcessException,
+                        // then get the exception and rethrow it.
                         if (ex instanceof PyException) {
                             PyException pyException = (PyException)ex;
                             Exception innerException = (Exception)pyException.value.__tojava__(Exception.class);
@@ -496,15 +498,12 @@ public class PythonScript extends TypedAtomicActor {
                                 // Work around bug reported by
                                 // Norbert Podhorszki
                                 // See python/test/auto/PythonScalePN.xml
-                                System.out.println("PythonScript: ignoring "
-                                        + "TerminateProcessException. "
-                                        + "This can happen in PN. "
-                                        + "State was: "
-                                        + ((CompositeActor)getContainer()).getManager().getState().toString());
-                                innerException.printStackTrace();
+                                throw (TerminateProcessException) innerException;
                             } else {
                                 throw ex;
                             }
+                        } else {
+                            throw ex;
                         }
                     }
                 } else {
