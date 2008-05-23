@@ -99,7 +99,6 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.LocatableNodeController;
 
 
 //////////////////////////////////////////////////////////////////////////
