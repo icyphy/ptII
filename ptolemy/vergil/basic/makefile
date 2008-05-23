@@ -60,6 +60,7 @@ JSRCS = \
 	BasicGraphFrame.java \
 	ContextMenuFactoryCreator.java \
 	CustomizeDocumentationAction.java \
+	DependencyHighlighter.java \
 	DocAttribute.java \
 	DocViewerFactory.java \
 	EditorDropTarget.java \

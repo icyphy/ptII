@@ -26,7 +26,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.actor.gui;
+package ptolemy.vergil.basic;
 
 import java.awt.event.ActionEvent;
 import java.util.HashSet;
@@ -34,6 +34,7 @@ import java.util.Iterator;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.util.IllegalActionException;

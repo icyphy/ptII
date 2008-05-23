@@ -9,7 +9,7 @@
                 <property name="_libraryMarker"
   	                  class="ptolemy.kernel.util.Attribute"/>
                 <property name="DependencyHighlighter"
-                          class="ptolemy.actor.gui.DependencyHighlighter"/>
+                          class="ptolemy.vergil.basic.DependencyHighlighter"/>
             </group>
         ?>
     </configure>

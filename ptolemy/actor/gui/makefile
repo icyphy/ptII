@@ -86,7 +86,6 @@ JSRCS = \
 	ConfigurationEffigy.java \
 	Configurer.java \
 	DebugListenerTableau.java \
-	DependencyHighlighter.java \
 	DialogTableau.java \
 	EditorFactory.java \
 	EditorPaneFactory.java \
@@ -184,8 +183,6 @@ OPTIONAL_FILES = \
 	'Configurer$$3.class' \
 	'DebugListenerTableau$$1.class' \
 	'DebugListenerTableau$$DebugListenerFrame.class' \
-	'DependencyHighlighter$$DependencyController.class' \
-	'DependencyHighlighter$$HighlightDependents.class' \
 	'EditParametersDialog$$1.class' \
 	'EditParametersDialog$$2.class' \
 	'EditParametersDialog$$3.class' \
