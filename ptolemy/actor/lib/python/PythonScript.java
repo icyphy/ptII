@@ -519,6 +519,10 @@ public class PythonScript extends TypedAtomicActor {
 
                     returnValue = _object.__call__(convertedArgs);
                 }
+            } catch (TerminateProcessException terminate) {
+                // Rethrow the terminate exception.
+                // See python/test/auto/PythonScalePN.xml
+                throw terminate;
             } catch (Exception ex) {
                 String messagePrefix = "Error in invoking the " + methodName
                         + " method:\n";
