@@ -27,7 +27,7 @@
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */
-package ptolemy.data.unit;
+package ptolemy.moml.unit;
 
 /**
  * Describes the input token stream.

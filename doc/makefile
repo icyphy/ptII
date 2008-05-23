@@ -455,6 +455,7 @@ ALL1_4PACKAGES = \
 	ptolemy.media \
 	ptolemy.moml \
 	ptolemy.moml.filter \
+	ptolemy.moml.unit \
 	ptolemy.vergil \
 	ptolemy.vergil.actor \
 	ptolemy.vergil.actor.lib \
@@ -717,6 +718,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/media/*.java \
 			../ptolemy/moml/*.java \
 			../ptolemy/moml/filter/*.java \
+			../ptolemy/moml/unit/*.java \
 			../ptolemy/vergil/*.java \
 			../ptolemy/vergil/actor/*.java \
 			../ptolemy/vergil/basic/*.java \
@@ -945,7 +947,7 @@ doccheck/index.html:
 #
 
 # Location of the FindBugs sources
-FINDBUGS=../vendors/findbugs-1.3.3
+FINDBUGS=../vendors/findbugs-1.3.3-rc2
 
 # findbugs.xml is special to findbugs, if we use findbugs.xml, we get:
 # Warning: could not load plugin file:/c:/cxh/ptII/vendors/findbugs-1.3.1/plugin/coreplugin.jar: java.security.PrivilegedActionException: edu.umd.cs.findbugs.PluginException: Couldn't parse "findbugs.xml"

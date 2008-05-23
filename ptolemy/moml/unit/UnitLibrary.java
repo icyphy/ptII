@@ -24,13 +24,16 @@
  PT_COPYRIGHT_VERSION_3
  COPYRIGHTENDKEY
  */
-package ptolemy.data.unit;
+package ptolemy.moml.unit;
 
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Vector;
 
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.unit.BaseUnit;
+import ptolemy.data.unit.UnitSystem;
+import ptolemy.data.unit.UnitUtilities;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;

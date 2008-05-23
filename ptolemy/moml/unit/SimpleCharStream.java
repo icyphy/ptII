@@ -27,7 +27,7 @@
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */
-package ptolemy.data.unit;
+package ptolemy.moml.unit;
 
 /**
  * An implementation of interface CharStream, where the stream is assumed to

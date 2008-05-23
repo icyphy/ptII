@@ -26,7 +26,7 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.data.unit;
+package ptolemy.moml.unit;
 
 public class UParserTokenManager implements UParserConstants {
     public java.io.PrintStream debugStream = System.out;

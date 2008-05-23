@@ -24,9 +24,12 @@
  PT_COPYRIGHT_VERSION_3
  COPYRIGHTENDKEY
  */
-package ptolemy.data.unit;
+package ptolemy.moml.unit;
 
 import java.util.Vector;
+import ptolemy.data.unit.BaseUnit;
+import ptolemy.data.unit.UnitSystem;
+import ptolemy.data.unit.UnitUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Unit

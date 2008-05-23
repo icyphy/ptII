@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_3
  COPYRIGHTENDKEY
  */
-package ptolemy.data.unit;
+package ptolemy.moml.unit;
 
 import java.util.Hashtable;
 import java.util.Iterator;

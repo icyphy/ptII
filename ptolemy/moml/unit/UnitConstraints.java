@@ -26,7 +26,7 @@
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */
-package ptolemy.data.unit;
+package ptolemy.moml.unit;
 
 import java.util.Iterator;
 import java.util.List;
@@ -95,7 +95,7 @@ public class UnitConstraints implements UnitPresentation {
                     .elementAt(i));
             Vector actorConstraints = new Vector();
             List unitsAttrs = componentEntity
-                    .attributeList(ptolemy.data.unit.UnitAttribute.class);
+                    .attributeList(UnitAttribute.class);
 
             for (int j = 0; j < unitsAttrs.size(); j++) {
                 UnitAttribute attr = (UnitAttribute) (unitsAttrs.get(j));

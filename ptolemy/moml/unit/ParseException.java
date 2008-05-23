@@ -27,7 +27,7 @@
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */
-package ptolemy.data.unit;
+package ptolemy.moml.unit;
 
 /**
  * This exception is thrown when parse errors are encountered.

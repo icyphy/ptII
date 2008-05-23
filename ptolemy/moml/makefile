@@ -33,7 +33,7 @@ ME =		ptolemy/moml
 
 # $PTII/configure looks for JXTA and sets PTJXTA_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJXTA_DIR is empty.
-DIRS = 		demo filter $(PTJXTA_DIR) test
+DIRS = 		demo filter $(PTJXTA_DIR) unit test
 
 # Root of the Java directory
 ROOT =		../..
@@ -50,7 +50,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	filter/filter.jar
+	filter/filter.jar \
+	unit/unit.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -70,7 +71,6 @@ JSRCS =	Documentation.java \
 	MoMLUndoEntry.java \
 	MoMLVariableChecker.java \
 	ParserAttribute.java \
-	SharedParameter.java \
 	StreamErrorHandler.java \
 	UndoContext.java \
 	Vertex.java

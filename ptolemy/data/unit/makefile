@@ -49,22 +49,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	BaseUnit.java \
-	Bindings.java \
-	EquationVisitor.java \
-	ExpandPortNames.java \
-	Solution.java \
-	Unit.java \
 	UnitCategory.java \
-	UnitConstraint.java \
-	UnitConstraints.java \
-	UnitEquation.java \
-	UnitExpr.java \
-	UnitInEquality.java \
-	UnitLibrary.java \
-	UnitPresentation.java \
-	UnitAttribute.java \
 	UnitSystem.java \
-	UnitTerm.java \
 	UnitUtilities.java
 
 OTHER_FILES_TO_BE_JARED = \
@@ -75,73 +61,24 @@ OTHER_FILES_TO_BE_JARED = \
 	SI.xml \
 	UnitConversions.xml
 
-EXTRA_SRCS =	UParser.jj $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
 MISC_FILES = test
 
-# OPTIONAL_JSRCS files are created by javacc.
-# javadoc generates html for files in $(OPTIONAL_JSRCS)
-#	ASCII_CharStream.java 
-OPTIONAL_JSRCS = \
-	ParseException.java \
-	SimpleCharStream.java \
-	Token.java \
-	TokenMgrError.java \
-	UParserConstants.java \
-	UParserTokenManager.java
-
-
-# OPTIONAL_JSRCS depends on UParser.java, but we want javadoc
-# to generate docs for UParser, so we modify the javadoc
-# rule to also operate on DERIVED_JSRCS
-DERIVED_JSRCS = UParser.java
-
-
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	$(OPTIONAL_JSRCS) \
-	UParser.java \
-	'Solution$$1.class' \
-	'Solution$$Index.class' \
-	'Solver$$1.class' \
-	'Solver$$Index.class' \
-	'UParser$$1.class' \
-	'UParser$$JJCalls.class' \
-	'UParser$$LookaheadSuccess.class' \
-	'UnitLibrary$$UnitNameExprPair.class'
 
-
-JCLASS =  \
-	$(JSRCS:%.java=%.class) \
-	UParser.class \
-	$(OPTIONAL_JSRCS:%.java=%.class)
-
+JCLASS = $(JSRCS:%.java=%.class)
 
 all: $(OPTIONAL_JSRCS) $(JCLASS)
 install: jclass $(PTCLASSJAR)
 
-UParser.java: UParser.jj
-	@echo "This command runs JavaCC, which can be downloaded from"
-	@echo "http://javacc.dev.java.net/"
-	@echo "See \$$PTII/doc/install.htm for details."
-	@echo "You only need install JavaCC if you modify UParser.jj"
-	@echo "UParser.java is derived from UParser.jj"
-	@echo "If you don't have JavaCC, you can workaround this with"
-	@echo "   touch UParser.jj UParser.java"
-	CLASSPATH="$(CLASSPATH)" 
-	$(JAVACC) UParser.jj
-
-# This rule is useful for cvs committing the derived files
-# For example:
-# cvs commit -m "Updated MatrixParser." `make echo_OPTIONAL_JSRCS`
-echo_OPTIONAL_JSRCS:
-	@echo $(OPTIONAL_JSRCS) UParser.jj UParser.java
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
