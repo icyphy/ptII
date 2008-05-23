@@ -11,7 +11,7 @@
         </property>
     </property>
     <property name="LogicalAND_Forward" class="ptolemy.data.properties.lattice.LogicalAND_Forward_CS">
-        <property name="action" class="ptolemy.moml.SharedParameter" value="TEST">
+        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
         </property>
         <property name="Log constraints to file" class="ptolemy.data.expr.Parameter" value="true">
         </property>

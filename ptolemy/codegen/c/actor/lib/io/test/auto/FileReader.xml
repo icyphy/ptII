@@ -71,7 +71,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;This&#10;is&#10;a&#10;test&#10;text&#10;data&#10;file.&#10;&quot;, &quot;This&#10;is&#10;a&#10;test&#10;text&#10;data&#10;file.&#10;&quot;, &quot;This&#10;is&#10;a&#10;test&#10;text&#10;data&#10;file.&#10;&quot;, &quot;This&#10;is&#10;a&#10;test&#10;text&#10;data&#10;file.&#10;&quot;}}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 250.0}">
         </property>

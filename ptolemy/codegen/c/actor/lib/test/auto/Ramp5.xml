@@ -34,7 +34,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;2.3&quot;, &quot;2.3abc&quot;, &quot;2.3abcabc&quot;, &quot;2.3abcabcabc&quot;, &quot;2.3abcabcabcabc&quot;, &quot;2.3abcabcabcabcabc&quot;, &quot;2.3abcabcabcabcabcabc&quot;, &quot;2.3abcabcabcabcabcabcabc&quot;, &quot;2.3abcabcabcabcabcabcabcabc&quot;, &quot;2.3abcabcabcabcabcabcabcabcabc&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 215.0}">
         </property>

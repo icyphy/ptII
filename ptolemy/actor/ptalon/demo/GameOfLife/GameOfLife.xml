@@ -31,7 +31,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-10">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 95.0]">
         </property>

@@ -28,6 +28,7 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
@@ -36,7 +37,6 @@ import ptolemy.kernel.util.ExceptionHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.SharedParameter;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////

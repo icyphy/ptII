@@ -43,9 +43,9 @@
         </property>
     </entity>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
-        <property name="seed" class="ptolemy.moml.SharedParameter" value="1">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1">
         </property>
-        <property name="resetOnEachRun" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
@@ -232,7 +232,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, -0.5319608594605, -0.3164958846717, 0.704659918633, 2.2442418120965, -1.289560155451, 0.5398906516865, 2.1010231675642, -0.6157000107952, -2.203195511978, -2.7283185098776, -0.1117541381248, 0.4072887789484, 0.2161681062453, 1.1273684805498, 0.848676100577, -0.3140513006116, -1.7043937545649, -1.4335395087853, -0.124466414533}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 240.0]">
         </property>

@@ -333,7 +333,7 @@ to another. Then delete this annotation.</text>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{9999, 30, -2, 210, -8, 150, -6, 490, -16, 270, -10, 770, -24, 390, -14, 1050, -32, 510, -18, 1330}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 155.0]">
         </property>

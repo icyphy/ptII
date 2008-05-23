@@ -15,7 +15,7 @@
     <property name="bob_radius" class="ptolemy.data.expr.Parameter" value="0.10">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-6">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-6">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>

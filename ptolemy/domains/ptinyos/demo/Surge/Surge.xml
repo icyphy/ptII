@@ -1996,7 +1996,7 @@
                 </property>
                 <property name="pflags" class="ptolemy.data.expr.StringParameter" value="-I%T/lib/Route -I%T/lib/Queue -I%T/lib/Broadcast -I%T/../apps/Surge/">
                 </property>
-                <property name="baseStation" class="ptolemy.moml.SharedParameter" value="&quot;MicaBoard0&quot;">
+                <property name="baseStation" class="ptolemy.actor.parameters.SharedParameter" value="&quot;MicaBoard0&quot;">
                 </property>
                 <property name="commandPort" class="ptolemy.domains.ptinyos.kernel.PtinyOSNodeParameter" value="10584">
                 </property>

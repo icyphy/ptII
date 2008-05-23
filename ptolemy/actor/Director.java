@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -51,7 +52,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.ExtendedMath;
-import ptolemy.moml.SharedParameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// Director

@@ -78,7 +78,7 @@
             <entity name="Test" class="ptolemy.actor.lib.Test">
                 <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.05, 0.05, 0.1, 0.1, 0.15, 0.15, 0.2, 0.2, 0.25, 0.25, 0.3, 0.3, 0.35, 0.35, 0.4, 0.4, 0.45, 0.45}">
                 </property>
-                <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+                <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 180.0]">
                 </property>

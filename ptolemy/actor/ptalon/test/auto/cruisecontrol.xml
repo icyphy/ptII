@@ -69,7 +69,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0048333333333, 0.0265618706585, 0.0658935381943, 0.122955283685, 0.1980001263304, 0.2914139827935, 0.4037468389231, 0.5357542394869, 0.6884529306687, 0.8631969418382, 1.061783974123, 1.2866081180223, 1.5408859999145, 1.8290045083291, 2.1570810184373, 2.5339215807374, 2.9727960404439, 3.4951207409588, 4.0066320753261, 4.0066320753261, 4.0066320753261}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{500, 75}">
         </property>

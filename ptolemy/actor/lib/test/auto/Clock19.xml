@@ -19,7 +19,7 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-10">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
@@ -46,7 +46,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 2.0, 3.0, 4.0, 6.0, 8.0, 9.0, 10.0}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 195.0}">
         </property>
@@ -54,7 +54,7 @@
     <entity name="Test2" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 2, 2, 2, 1, 1}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 210.0]">
         </property>
@@ -164,7 +164,7 @@
                 </property>
                 <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
-                <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-10">
+                <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
                 </property>
@@ -213,7 +213,7 @@
                 </property>
                 <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
-                <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-10">
+                <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
                 </property>

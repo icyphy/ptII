@@ -9,7 +9,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -355,7 +355,7 @@
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.995, 0.9800583055556, 0.9553242920833, 0.921045175619, 0.8775635418974, 0.8253139225488, 0.7648184526274, 0.6966816528703, 0.6215843888267, 0.5402770672231, 0.4535721375508, 0.3623359738043, 0.2674802174883, 0.1699526683989, 0.0707278141974, 1.0, 1.0, 1.0, 1.0, 1.0, -0.5048081143107, -0.588453274758, -0.6662180951695, -0.7373256220607, -0.8010654260426, -0.8568006996631, -0.9039746195803, -0.9421159095076, -0.9708435483512, -0.9898705765073}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 120.0]">
         </property>

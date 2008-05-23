@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MicaBoard" class="ptolemy.domains.wireless.kernel.WirelessComposite">
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="0.25E-6">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="0.25E-6">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
         </property>

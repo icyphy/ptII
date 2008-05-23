@@ -68,7 +68,7 @@
         <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="feedbackGain">
         </property>
         <property name="CTMixedSignalDirector" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-            <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
             </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -382,7 +382,7 @@
         <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="feedbackGain">
         </property>
         <property name="CTMixedSignalDirector" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-            <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
             </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -709,7 +709,7 @@
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.115, 0.222, 0.308, 0.326, 0.29, 0.146, 0.052, -0.138, -0.306, -0.346, -0.29, -0.206, -0.072, 0.106, 0.258}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 325.0]">
         </property>
@@ -717,7 +717,7 @@
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.101, 0.262, 0.34, 0.358, 0.316, 0.164, 0.032, -0.118, -0.31, -0.442, -0.408, -0.174, -0.008, 0.172, 0.246}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 520.0]">
         </property>

@@ -479,7 +479,7 @@ Iterations 20</text></svg></configure>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 4, 7, 10, 13, 11, 11, 11, 11, 11, 26, 29, 32, 35, 38, 21, 21, 21}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 155.0]">
         </property>

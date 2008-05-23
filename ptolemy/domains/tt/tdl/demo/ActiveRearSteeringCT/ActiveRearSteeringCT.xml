@@ -25,7 +25,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The model consists of the two TDL modules RearActuatorController and&#10;VehicleDynamics and a subsystem Vehicle that represents the ‘plant’, &#10;that is, the relevant aspects of the vehicle that needs to be controlled. &#10;The TDL module RearActuatorController controls the DC motor of the rear &#10;axis. The TDL module VehicleDynamics computes the desired value of the &#10;rear steering angle, based on the following sensor data: the steering &#10;angle of the front wheels, the car speed (both of which are set by the &#10;human driver), and the yaw angle of the car.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The model consists of the two TDL modules RearActuatorController and&#10;VehicleDynamics and a subsystem Vehicle that represents the ï¿½plantï¿½, &#10;that is, the relevant aspects of the vehicle that needs to be controlled. &#10;The TDL module RearActuatorController controls the DC motor of the rear &#10;axis. The TDL module VehicleDynamics computes the desired value of the &#10;rear steering angle, based on the following sensor data: the steering &#10;angle of the front wheels, the car speed (both of which are set by the &#10;human driver), and the yaw angle of the car.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 505.0]">
         </property>
@@ -967,7 +967,7 @@
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
             </property>
-            <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="0.001">
+            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="0.001">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 95.0}">
             </property>

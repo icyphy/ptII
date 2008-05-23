@@ -253,7 +253,10 @@ public class ClassChanges implements MoMLFilter {
         // 1/08: Moved SingleTokenCommutator so that DDF can extend it
         _classChanges.put("ptolemy.domains.sr.lib.SingleTokenCommutator",
                 "ptolemy.actor.lib.SingleTokenCommutator");
-
+        
+        _classChanges.put("ptolemy.moml.SharedParameter",
+                "ptolemy.actor.parameters.SharedParameter");
+        
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
         // Kepler models in Ptolemy.

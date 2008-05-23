@@ -368,7 +368,7 @@ to another. Then delete this annotation.</text>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 2, 2, 10, 15, 10, 15, 10, 15, 10, 15, 10, 15, 10, 15, 10, 15, 10, 15, 10, 15, 10, 15, 8, 8, 10, 10, 8, 8, 10, 10, 8, 8, 10, 10, 8, 8, 10, 10, 8, 8, 10, 10, 30, 35, 30, 35, 30, 35, 30, 35, 30, 35, 30, 35, 30, 35, 30, 35, 30, 35, 30, 35, 16, 16, 18, 18, 16, 16, 18, 18, 16, 16, 18, 18, 16, 16, 18, 18, 16, 16, 18, 18, 50, 55, 50, 55, 50, 55, 50, 55, 50, 55, 50, 55, 50, 55, 50, 55, 50, 55, 50, 55, 24, 24, 26, 26, 24, 24, 26, 26, 24, 24, 26, 26, 24, 24, 26, 26, 24, 24, 26, 26, 70, 75, 70, 75, 70, 75, 70, 75, 70, 75, 70, 75, 70, 75, 70, 75, 70, 75, 70, 75, 32, 32, 34, 34, 32, 32, 34, 34, 32, 32, 34, 34, 32, 32, 34, 34, 32, 32, 34, 34, 90, 95, 90, 95, 90, 95, 90, 95, 90, 95, 90, 95, 90, 95, 90, 95, 90, 95, 90, 95}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 190.0]">
         </property>

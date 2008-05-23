@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="Continuous-Time (CT) Solver" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>

@@ -165,7 +165,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1257142857143, 0.5992727272727, 1.0646153846154, 1.458, 1.7830340557276, 2.0524401913876, 2.2779428571429, 2.4688198757764, 2.6321548387097, 2.7733333333333}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 220.0]">
         </property>

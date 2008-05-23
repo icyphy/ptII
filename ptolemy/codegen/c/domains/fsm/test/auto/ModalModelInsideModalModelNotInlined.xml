@@ -771,7 +771,7 @@ to another. Then delete this annotation.</text>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{9999, 999, 99, 90, 56, 100, 60, 210, 112, 180, 100, 330, 168, 260, 140, 450, 224, 340, 180, 570}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 155.0]">
         </property>

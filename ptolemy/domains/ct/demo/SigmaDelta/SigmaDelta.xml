@@ -94,7 +94,7 @@
         <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="feedbackGain">
         </property>
         <property name="CTMixedSignalDirector" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-            <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
             </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>

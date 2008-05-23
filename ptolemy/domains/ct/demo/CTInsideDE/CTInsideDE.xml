@@ -319,9 +319,9 @@
     <entity name="ColtExponential" class="ptolemy.actor.lib.colt.ColtExponential">
         <property name="lambda" class="ptolemy.actor.parameters.PortParameter" value="0.5">
         </property>
-        <property name="seed" class="ptolemy.moml.SharedParameter" value="1L">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
         </property>
-        <property name="resetOnEachRun" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <doc>Create a sequence of Exponential random variables</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 225.0]">

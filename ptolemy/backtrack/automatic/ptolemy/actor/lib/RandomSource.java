@@ -32,6 +32,7 @@ package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 import java.util.Random;
 
 import ptolemy.actor.lib.Source;
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
@@ -45,7 +46,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.SharedParameter;
 
 /** 
  * A base class for sources of random numbers.

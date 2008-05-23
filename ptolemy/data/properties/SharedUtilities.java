@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.SharedParameter;
 
 public class SharedUtilities {
 

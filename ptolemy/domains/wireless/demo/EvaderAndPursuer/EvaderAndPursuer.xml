@@ -981,7 +981,7 @@ sensors.</text></svg></configure>
             </property>
         </entity>
         <entity name="Random" class="ptolemy.actor.lib.DiscreteRandomSource">
-            <property name="seed" class="ptolemy.moml.SharedParameter" value="0L">
+            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0L">
             </property>
             <property name="pmf" class="ptolemy.data.expr.Parameter" value="{0.25, 0.25, 0.25, 0.25}">
             </property>

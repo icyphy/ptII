@@ -85,7 +85,7 @@
         </port>
     </entity>
     <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
-        <property name="seed" class="ptolemy.moml.SharedParameter" value="0">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
         </property>
         <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>

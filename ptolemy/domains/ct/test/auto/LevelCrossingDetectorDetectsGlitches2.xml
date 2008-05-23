@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -279,7 +279,7 @@
         <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5, 1.50005, 1.50005, 1.50005, 1.50005}">
             </property>
-            <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 90.0]">
             </property>
@@ -292,7 +292,7 @@
         <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.25005, 1.50005, 1.50005, 1.50005}">
             </property>
-            <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 155.0]">
             </property>
@@ -305,7 +305,7 @@
         <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.50005, 1.50005}">
             </property>
-            <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 220.0]">
             </property>
@@ -313,7 +313,7 @@
         <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.005, 0.02, 0.045, 0.08, 0.125, 0.18, 0.245, 0.32, 0.405, 0.5, 0.605, 0.72, 0.845, 0.98, 1.125, 1.22502500125, 1.32502500125, 1.42502500125, 1.52502500125, 1.62502500125}">
             </property>
-            <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 335.0]">
             </property>
@@ -525,7 +525,7 @@ with their output actions.</text></svg></configure>
         </entity>
         <entity name="const" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
-                <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+                <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                 </property>
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -573,7 +573,7 @@ with their output actions.</text></svg></configure>
         </entity>
         <entity name="init" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
-                <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+                <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                 </property>
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>

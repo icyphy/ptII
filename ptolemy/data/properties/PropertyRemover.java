@@ -2,6 +2,7 @@ package ptolemy.data.properties;
 
 import java.util.Iterator;
 
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.properties.gui.PropertyDisplayGUIFactory;
 import ptolemy.kernel.CompositeEntity;
@@ -10,7 +11,6 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.SharedParameter;
 
 public class PropertyRemover extends Attribute {
 

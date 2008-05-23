@@ -27,13 +27,13 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.1791243503078, 0.580269852914, 10.3895604583637, 0.7796583775584}, {0.948422596017, 0.5912510630139, 10.575162746049, 0.1330590873713}, {0.4808907807789, 0.7652807197498, 10.2289807288581, 1.0361769321563}, {0.0724750004759, 0.3802222970906, 10.8810312247185, 1.0683822039904}, {0.5073245139884, 0.8680091697785, 10.1782763650812, 0.1352890000054}, {0.5863259011658, 0.9689929188332, 10.6278098974122, 1.2182270682875}, {0.2220238549573, 0.3287061186171, 10.6023546427904, 1.733615522479}, {0.6745304038314, 0.7930109723784, 10.6540310813869, 1.5779190116765}, {0.8943879545886, 0.4854360660918, 10.3197600170557, 0.2314456651695}, {0.7652365152696, 0.6576789552097, 10.4980473239143, 1.0210968909501}}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[428.3333282470703, 284.99998474121094]">
         </property>
     </entity>
     <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
-        <property name="seed" class="ptolemy.moml.SharedParameter" value="30">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="30">
         </property>
         <property name="UniformIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -226,9 +226,9 @@
         </property>
     </entity>
     <entity name="Uniform2" class="ptolemy.actor.lib.Uniform">
-        <property name="seed" class="ptolemy.moml.SharedParameter" value="30">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="30">
         </property>
-        <property name="resetOnEachRun" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="lowerBound" class="ptolemy.actor.parameters.PortParameter" value="0.312312321312313">
         </property>
@@ -423,7 +423,7 @@
         </property>
     </entity>
     <entity name="Uniform3" class="ptolemy.actor.lib.Uniform">
-        <property name="seed" class="ptolemy.moml.SharedParameter" value="30">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="30">
         </property>
         <property name="lowerBound" class="ptolemy.actor.parameters.PortParameter" value="10">
         </property>
@@ -620,7 +620,7 @@
         </property>
     </entity>
     <entity name="Uniform4" class="ptolemy.actor.lib.Uniform">
-        <property name="seed" class="ptolemy.moml.SharedParameter" value="30">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="30">
         </property>
         <property name="upperBound" class="ptolemy.actor.parameters.PortParameter" value="2">
         </property>

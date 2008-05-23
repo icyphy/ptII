@@ -34,7 +34,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;0&quot;, &quot;0a&quot;, &quot;0aa&quot;, &quot;0aaa&quot;, &quot;0aaaa&quot;, &quot;0aaaaa&quot;, &quot;0aaaaaa&quot;, &quot;0aaaaaaa&quot;, &quot;0aaaaaaaa&quot;, &quot;0aaaaaaaaa&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 215.0}">
         </property>

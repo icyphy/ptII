@@ -161,7 +161,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;0.0&quot;, &quot;0abc&quot;, &quot;{2}&quot;}, {&quot;0.9&quot;, &quot;0abcabc&quot;, &quot;{3}&quot;}, {&quot;2.7&quot;, &quot;0abcabcabc&quot;, &quot;{4}&quot;}, {&quot;5.4&quot;, &quot;0abcabcabcabc&quot;, &quot;{5}&quot;}, {&quot;9.0&quot;, &quot;0abcabcabcabcabc&quot;, &quot;{6}&quot;}, {&quot;13.5&quot;, &quot;0abcabcabcabcabcabc&quot;, &quot;{7}&quot;}, {&quot;18.9&quot;, &quot;0abcabcabcabcabcabcabc&quot;, &quot;{8}&quot;}, {&quot;25.2&quot;, &quot;0abcabcabcabcabcabcabcabc&quot;, &quot;{9}&quot;}, {&quot;32.4&quot;, &quot;0abcabcabcabcabcabcabcabcabc&quot;, &quot;{10}&quot;}, {&quot;40.5&quot;, &quot;0abcabcabcabcabcabcabcabcabcabc&quot;, &quot;{11}&quot;}}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 290.0]">
         </property>

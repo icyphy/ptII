@@ -309,7 +309,7 @@
         </property>
     </entity>
     <entity name="Rician" class="ptolemy.actor.lib.Rician">
-        <property name="seed" class="ptolemy.moml.SharedParameter" value="0">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
         </property>
         <property name="xMean" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -322,7 +322,7 @@
         </property>
     </entity>
     <entity name="Rician2" class="ptolemy.actor.lib.Rician">
-        <property name="seed" class="ptolemy.moml.SharedParameter" value="0">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
         </property>
         <property name="xMean" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>

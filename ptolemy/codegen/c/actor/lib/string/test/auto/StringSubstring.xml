@@ -47,7 +47,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&quot;, &quot;2&quot;, &quot;2a&quot;, &quot;2af&quot;, &quot;2afd&quot;, &quot;2afds&quot;, &quot;2afdsa&quot;, &quot;2afdsaf&quot;, &quot;2afdsafa&quot;, &quot;2afdsafaf&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 235.0]">
         </property>

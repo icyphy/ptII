@@ -64,7 +64,7 @@
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.05, 0.0526315684075, 0.0555553948668, 0.0588231529586, 0.0624993120873, 0.066665525347, 0.0714267619253, 0.0769202666168, 0.0833289928308, 0.0909023499775, 0.0999893719897}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 150.0]">
         </property>

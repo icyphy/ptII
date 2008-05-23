@@ -337,7 +337,7 @@
             </property>
         </entity>
         <entity name="Copy1:AudioPlayer" class="ptolemy.actor.lib.javasound.AudioPlayer">
-            <property name="sampleRate" class="ptolemy.moml.SharedParameter" value="8000">
+            <property name="sampleRate" class="ptolemy.actor.parameters.SharedParameter" value="8000">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="8000" class="ptolemy.kernel.util.StringAttribute" value="8000">
                     </property>
@@ -351,7 +351,7 @@
                     </property>
                 </property>
             </property>
-            <property name="bitsPerSample" class="ptolemy.moml.SharedParameter" value="16">
+            <property name="bitsPerSample" class="ptolemy.actor.parameters.SharedParameter" value="16">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="8" class="ptolemy.kernel.util.StringAttribute" value="8">
                     </property>
@@ -359,7 +359,7 @@
                     </property>
                 </property>
             </property>
-            <property name="channels" class="ptolemy.moml.SharedParameter" value="1">
+            <property name="channels" class="ptolemy.actor.parameters.SharedParameter" value="1">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="1" class="ptolemy.kernel.util.StringAttribute" value="1">
                     </property>

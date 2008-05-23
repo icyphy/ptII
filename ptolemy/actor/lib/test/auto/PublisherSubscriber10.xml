@@ -23,7 +23,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 2, 4, 8, 16, 32, 64, 128, 256}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 50.0]">
         </property>
@@ -133,7 +133,7 @@
     <entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler">
         <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Subscriber has no matching Publisher.&#10;  in .PublisherSubscriber10.Subscriber">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{405, 135}">
         </property>

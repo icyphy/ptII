@@ -1627,7 +1627,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 240.0]">
         </property>
         <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-            <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
             </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -1935,7 +1935,7 @@
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
                 </property>
                 <property name="Refinement Solver" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
-                    <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+                    <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                     </property>
                     <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
@@ -2214,7 +2214,7 @@
                 <property name="stickiness" class="ptolemy.data.expr.Parameter" value="10.0">
                 </property>
                 <property name="Refinement Solver" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
-                    <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+                    <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                     </property>
                     <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>

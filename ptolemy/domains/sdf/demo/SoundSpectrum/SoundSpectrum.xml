@@ -122,7 +122,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.5, 175.0}">
     </property>
     <entity name="AudioCapture" class="ptolemy.actor.lib.javasound.AudioCapture">
-        <property name="sampleRate" class="ptolemy.moml.SharedParameter" value="8000">
+        <property name="sampleRate" class="ptolemy.actor.parameters.SharedParameter" value="8000">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="8000" class="ptolemy.kernel.util.StringAttribute" value="8000">
                 </property>
@@ -136,7 +136,7 @@
                 </property>
             </property>
         </property>
-        <property name="bitsPerSample" class="ptolemy.moml.SharedParameter" value="16">
+        <property name="bitsPerSample" class="ptolemy.actor.parameters.SharedParameter" value="16">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="8" class="ptolemy.kernel.util.StringAttribute" value="8">
                 </property>
@@ -144,7 +144,7 @@
                 </property>
             </property>
         </property>
-        <property name="channels" class="ptolemy.moml.SharedParameter" value="1">
+        <property name="channels" class="ptolemy.actor.parameters.SharedParameter" value="1">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="1" class="ptolemy.kernel.util.StringAttribute" value="1">
                 </property>
@@ -152,7 +152,7 @@
                 </property>
             </property>
         </property>
-        <property name="transferSize" class="ptolemy.moml.SharedParameter" value="500">
+        <property name="transferSize" class="ptolemy.actor.parameters.SharedParameter" value="500">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 125.0">
         </property>

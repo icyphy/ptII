@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <!-- Parameter. -->
-<property name="SharedParameter" class="ptolemy.moml.SharedParameter">
+<property name="SharedParameter" class="ptolemy.actor.parameters.SharedParameter">
   <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
   <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}"/>

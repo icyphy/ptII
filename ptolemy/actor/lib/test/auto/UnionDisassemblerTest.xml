@@ -72,7 +72,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 1, 0, 1, 0}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 150.0]">
         </property>
@@ -92,7 +92,7 @@
     <entity name="Test4" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{|cloth = 1|}, {|car = 0|}, {|money = &quot;a&quot;|}, {|record = {car = 0, cloth = 1, money = &quot;a&quot;}|}, {|cloth = 0|}, {|car = 1|}, {|money = &quot;ab&quot;|}, {|record = {car = 1, cloth = 0, money = &quot;ab&quot;}|}, {|cloth = 1|}, {|car = 2|}, {|money = &quot;abb&quot;|}, {|record = {car = 2, cloth = 1, money = &quot;abb&quot;}|}, {|cloth = 0|}, {|car = 3|}, {|money = &quot;abbb&quot;|}, {|record = {car = 3, cloth = 0, money = &quot;abbb&quot;}|}, {|cloth = 1|}, {|car = 4|}, {|money = &quot;abbbb&quot;|}, {|record = {car = 4, cloth = 1, money = &quot;abbbb&quot;}|}, {|cloth = 0|}, {|car = 5|}, {|money = &quot;abbbbb&quot;|}, {|record = {car = 5, cloth = 0, money = &quot;abbbbb&quot;}|}}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[532.0461273193359, 59.300743103027344]">
         </property>

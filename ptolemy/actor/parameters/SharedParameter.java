@@ -26,7 +26,7 @@
 
 
  */
-package ptolemy.moml;
+package ptolemy.actor.parameters;
 
 import java.io.Writer;
 import java.lang.ref.WeakReference;

@@ -55,7 +55,7 @@
     <entity name="Test2" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{location = {167.6267288821796, 159.8245453197601}, time = 64.2342917661055}, {location = {141.5092003886427, 250.5554889008055}, time = 64.3035571748275}, {location = {132.6637220138865, 201.084210645337}, time = 64.1750555759495}, {location = {167.6267288821796, 159.8245453197601}, time = 64.2342917661055}, {location = {141.5092003886427, 250.5554889008055}, time = 64.3035571748275}}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 165.0]">
         </property>
@@ -63,7 +63,7 @@
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{88.6565260142743, 162.3389876043475}, {88.6565260142743, 162.3389876043475}, {88.6565260142743, 162.3389876043475}}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 270.0]">
         </property>

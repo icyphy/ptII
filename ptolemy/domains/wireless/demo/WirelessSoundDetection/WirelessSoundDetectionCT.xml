@@ -393,7 +393,7 @@ GraphicalLocator)</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 245.0">
             </property>
             <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-                <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+                <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
                 </property>
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>

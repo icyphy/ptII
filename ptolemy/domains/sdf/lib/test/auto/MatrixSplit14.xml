@@ -65,7 +65,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[1L, 2L, 3L; 5L, 6L, 7L; 9L, 10L, 11L], [4L, 0L; 8L, 0L; 12L, 0L], [13L, 14L, 15L; 0L, 0L, 0L], [16L, 0L; 0L, 0L]}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 215.0]">
         </property>

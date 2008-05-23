@@ -495,7 +495,7 @@ crossing detectors.</text></svg></configure>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0833439383, 0.4166711149, 1.0833439386, 1.4166711149, 2.0833439386, 2.4166711149, 3.0833439386, 3.4166711149, 4.0833439386, 4.4166711149}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 185.0}">
         </property>
@@ -508,7 +508,7 @@ crossing detectors.</text></svg></configure>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1995051492, 1.1995051492, 2.1995051492, 3.1995051492, 4.1995051492}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 260.0]">
         </property>
@@ -521,7 +521,7 @@ crossing detectors.</text></svg></configure>
     <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5655051024, 1.5655051024, 2.5655051024, 3.5655051024, 4.5655051024}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 330.0]">
         </property>
@@ -534,7 +534,7 @@ crossing detectors.</text></svg></configure>
     <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.5000079577, 1.0000043397, 1.5000079577, 2.0000043397, 2.5000079577, 3.0000043397, 3.5000079577, 4.0000043397, 4.5000079577}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 400.0]">
         </property>

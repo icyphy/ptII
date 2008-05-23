@@ -404,7 +404,7 @@ the states to see their refinements.</text></svg></configure>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 0.995, 0.9747798936632, 0.9281624941511, 0.8874593981943, 0.824737826312, 0.7291946318891, 0.6622744844882, 0.5705935114025, 0.4556573231456, 0.3639698819218, 0.2198350495655, 0.0707106104491, 0.0707106104491, 1.0, 1.0, 1.0}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 40.0]">
         </property>

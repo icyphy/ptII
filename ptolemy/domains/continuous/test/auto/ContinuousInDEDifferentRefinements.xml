@@ -391,7 +391,7 @@
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 3.0, 6.0, 8.0, 10.0, 12.0, 15.0}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 95.0]">
         </property>
@@ -404,7 +404,7 @@
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.1, 0.6, 1.6, 2.6, 3.0, 3.0, 3.1, 3.6, 4.6, 5.0, 10.0, 10.0, 10.1, 10.6, 11.6, 12.0, 12.0, 12.1, 12.6, 13.6, 14.6, 15.0}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 185.0]">
         </property>
@@ -417,7 +417,7 @@
     <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.1, 0.6, 1.6, 2.6, 3.0, 3.0, 3.1, 3.6, 4.6, 5.0, 5.0, 5.0, 5.1, 5.6, 6.6, 7.0, 7.0, 7.1, 7.6, 8.6, 9.6, 10.0}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 245.0]">
         </property>

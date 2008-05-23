@@ -33,6 +33,7 @@ import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Parameter;
@@ -41,7 +42,6 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.moml.SharedParameter;
 import soot.Body;
 import soot.FastHierarchy;
 import soot.HasPhaseOptions;

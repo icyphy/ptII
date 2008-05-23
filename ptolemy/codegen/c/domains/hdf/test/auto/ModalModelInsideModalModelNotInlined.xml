@@ -1000,7 +1000,7 @@ to another. Then delete this annotation.</text>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 294, 588, 882, 0, 0, 0, 0, 540, 630, 720, 810, 900, 540, 630, 720, 810, 900, 0, 0, 453600, 491400, 529200, 6600, 7040, 6600, 7040, 7140, 7560, 7980, 8400, 8820, 7140, 7560, 7980, 8400, 8820, 9292800, 9292800, 8520120, 8890560, 9261000, 22880, 23760, 22880, 23760, 21000, 21750, 22500, 23250, 24000, 21000, 21750, 22500, 23250, 24000, 47044800, 47044800, 34272000, 35280000, 36288000, 48840, 50160, 48840, 50160, 42120, 43200, 44280, 45360, 46440, 42120, 43200, 44280, 45360, 46440, 132422400, 132422400, 87771600, 89722080, 91672560, 84480, 86240, 84480, 86240, 70500, 71910, 73320, 74730, 76140, 70500, 71910, 73320, 74730, 76140}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 155.0]">
         </property>

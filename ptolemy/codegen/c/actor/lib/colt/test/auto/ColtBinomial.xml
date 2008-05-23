@@ -35,9 +35,9 @@
         </property>
     </property>
     <entity name="ColtBinomial" class="ptolemy.actor.lib.colt.ColtBinomial">
-        <property name="seed" class="ptolemy.moml.SharedParameter" value="1L">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
         </property>
-        <property name="resetOnEachRun" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <doc>Create a sequence of Binomial random variables</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 165.0]">
@@ -48,7 +48,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10.0^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>

@@ -52,7 +52,7 @@ in full screen mode.</text></svg></configure>
         </property>
     </entity>
     <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
-        <property name="seed" class="ptolemy.moml.SharedParameter" value="0">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
         </property>
         <property name="lowerBound" class="ptolemy.actor.parameters.PortParameter" value="500.0">
         </property>

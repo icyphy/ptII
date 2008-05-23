@@ -60,7 +60,7 @@
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
         </property>
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="0.25E-6">
+            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="0.25E-6">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
@@ -330,7 +330,7 @@
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
         </property>
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="0.25E-6">
+            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="0.25E-6">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>

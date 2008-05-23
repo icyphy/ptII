@@ -54,7 +54,7 @@
         </property>
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
-        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-10">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
         </property>
         <property name="entityId" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:director:2:1">
         </property>
@@ -226,7 +226,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{715, 70}">
         </property>

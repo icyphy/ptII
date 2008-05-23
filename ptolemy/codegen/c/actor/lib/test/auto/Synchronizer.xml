@@ -31,7 +31,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{-1.5, 2.0, 1.5}, {-1.487654322, 2.012345678, 2.5}, {-1.475308644, 2.024691356, 3.5}, {-1.462962966, 2.037037034, 4.5}, {-1.450617288, 2.049382712, 5.5}, {-1.43827161, 2.06172839, 6.5}, {-1.425925932, 2.074074068, 7.5}, {-1.413580254, 2.086419746, 8.5}, {-1.401234576, 2.098765424, 9.5}, {-1.388888898, 2.111111102, 10.5}}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 215.0}">
         </property>

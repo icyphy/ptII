@@ -2028,7 +2028,7 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
         <entity name="Test" class="ptolemy.actor.lib.Test">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;00000000000000000000000000000000&quot;, &quot;b5c9179eb1cc1199b9c51b92b5c8159d&quot;, &quot;2b65f6374c427c5b2fe3a9256896755b&quot;, &quot;d1015fcbb4ef65679688462076b9d6ad&quot;, &quot;8e17064a2a35a183729fe59ff3a591f1&quot;, &quot;d7557dd55999db3259e2183d558dcdd2&quot;, &quot;73a96a5d7799a5f3111d2b63684b1f7f&quot;, &quot;1b6b853069eefc749afefd7b57a04cd1&quot;, &quot;107eeadfb6f77933b5457a6f08f046b2&quot;, &quot;8ec166481a677aa96a14ff6ece88c010&quot;, &quot;9e04a98f7994e79c869f4c1bcfb078da&quot;, &quot;cd459f42601077318700dd2edaf17d12&quot;, &quot;20033eb56f275e3558d98f3da914815f&quot;, &quot;6b6c88b08206c2b938fdabf8e3638e65&quot;, &quot;b05e6fcfbb6608a6c8d93fa858249d90&quot;, &quot;8096d245ce11e5bbd588503de838f3d5&quot;, &quot;567c7e9da9c0766f0849684c06ed0f19&quot;, &quot;3981b6714c84279608b382804dbb495e&quot;, &quot;c3a2f908a49b77bb8eb4af396fe55f1c&quot;, &quot;d0a0f6a26d052baca8d4b407dc6852c8&quot;}">
             </property>
-            <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 230.0}">
             </property>

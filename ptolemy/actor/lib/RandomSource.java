@@ -29,6 +29,7 @@ package ptolemy.actor.lib;
 
 import java.util.Random;
 
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.expr.SingletonParameter;
@@ -38,7 +39,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.SharedParameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// RandomSource
