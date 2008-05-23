@@ -109,7 +109,11 @@ public class SDFTransformer extends TypedAtomicActor implements SequenceActor {
         for (int i = 0; i < input.getWidth(); i++) {
             if (!input.hasToken(i, required)) {
                 if (_debugging) {
-                    _debug("Called prefire(), which returns false");
+                    _debug("Called prefire(), "
+                            + " input tokenConsumptionRate = " 
+                            + required +  ", input.hasToken("
+                            + i + ", " + required 
+                            + ") is false, prefire() returning false");
                 }
 
                 return false;
