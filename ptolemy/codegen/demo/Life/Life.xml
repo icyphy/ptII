@@ -895,7 +895,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="LEDArray" class="ptolemy.actor.lib.gui.LEDMatrix">
+        <entity name="LEDArray" class="ptolemy.vergil.actor.lib.LEDMatrix">
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_led_0_0" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">

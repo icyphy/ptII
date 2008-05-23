@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen using C
+# Makefile for helper classes that match ptolemy.vergil.actor.lib classes
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2008 The Regents of the University of California
+# @Copyright (c) 2008 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c
+ME =		ptolemy/codegen/c/vergil/actor/lib
 
-DIRS =		kernel actor domains targets vergil
+DIRS =		#test
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,40 +45,27 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	c
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	actor/actor.jar \
-	domains/domains.jar \
-	kernel/kernel.jar \
-	targets/targets.jar \
-	vergil/vergil.jar
+PTPACKAGE = 	lib
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	LEDMatrix.java
 
 OTHER_FILES_TO_BE_JARED = \
-	makefile.in \
-	jnimakefile.in
+	$(JSRCS:%.java=%.c)
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel actor domains targets vergil
+MISC_FILES =	test
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	doc \
-	lib
 
 JCLASS = $(JSRCS:%.java=%.class)
 

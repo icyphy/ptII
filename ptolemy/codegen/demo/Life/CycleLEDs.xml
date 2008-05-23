@@ -856,7 +856,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 300.0]">
             </property>
         </entity>
-        <entity name="LEDMatrix" class="ptolemy.actor.lib.gui.LEDMatrix">
+        <entity name="LEDMatrix" class="ptolemy.vergil.actor.lib.LEDMatrix">
             <property name="columns" class="ptolemy.data.expr.Parameter" value="columns">
             </property>
             <property name="rows" class="ptolemy.data.expr.Parameter" value="rows">

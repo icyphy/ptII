@@ -1505,7 +1505,7 @@
         <link port="ClearLEDs.column" relation="columnRelation"/>
         <link port="ClearLEDs.control" relation="controlRelation"/>
     </entity>
-    <entity name="LEDMatrix" class="ptolemy.actor.lib.gui.LEDMatrix">
+    <entity name="LEDMatrix" class="ptolemy.vergil.actor.lib.LEDMatrix">
         <property name="columns" class="ptolemy.data.expr.Parameter" value="columns">
         </property>
         <property name="rows" class="ptolemy.data.expr.Parameter" value="rows">
