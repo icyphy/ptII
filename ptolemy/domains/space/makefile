@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/curriculum
+ME =		ptolemy/domains/space
 
 DIRS = 		demo
 
@@ -44,7 +44,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	curriculum
+PTPACKAGE = 	space
 PTCLASSJAR =
 
 PTCLASSALLJARS = \
