@@ -115,7 +115,8 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
             try {
                 // Use nameToURL so this works in WebStart.
                 URL url = FileUtilities.nameToURL(
-                        "/doc/img/PtolemyIISmall.gif", null, null);
+                        "$CLASSPATH/ptolemy/vergil/icon/PtolemyIISmall.gif",
+                        null, getClass().getClassLoader());
                 Toolkit tk = Toolkit.getDefaultToolkit();
                 setImage(tk.getImage(url));
             } catch (IOException ex) {

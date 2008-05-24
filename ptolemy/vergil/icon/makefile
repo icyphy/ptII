@@ -45,7 +45,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	icon
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
@@ -69,7 +68,10 @@ JSRCS = \
 	ValueIcon.java \
 	XMLIcon.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	PtolemyIISmall.gif
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
