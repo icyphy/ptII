@@ -3082,7 +3082,7 @@ ORACLE_OJDBC_JAR=
 
 # We only need to look for on if $PTII/ptolemy/domains/space exists
 SPACE_USER_DIR="$PTII/ptolemy/domains/space"
-if test ! -d "$SPACE_USER_DIR" -a "$JAVA1_6_OR_LATER" = "yes" ; then
+if test ! -d "$SPACE_USER_DIR" -o "$JAVA1_6_OR_LATER" != "yes" ; then
     PT_MSG_STATUS([$SPACE_USER_DIR is not present, or Java is not 1.6 or later,
     so we need not find the Oracle ojdbc6.jar.])
     ORACLE_OJDBC_JAR=
