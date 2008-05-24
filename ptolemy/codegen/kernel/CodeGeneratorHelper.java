@@ -318,15 +318,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 URL necessaryURL = null;
                 try {
                     necessaryURL = FileUtilities.nameToURL(necessaryFileName,
-                            null, getClass().getClassLoader());
+                            null, null);
                 } catch (IOException ex) {
                     // If the filename has no slashes, try prepending file:./
                     if (necessaryFileName.indexOf("/") == -1
                             || necessaryFileName.indexOf("\\") == -1) {
                         try {
                             necessaryURL = FileUtilities.nameToURL("file:./"
-                                    + necessaryFileName, null,
-                                    getClass().getClassLoader());
+                                    + necessaryFileName, null, null);
                         } catch (IOException ex2) {
                             // Throw the original exception
                             throw ex;
