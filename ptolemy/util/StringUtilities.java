@@ -198,14 +198,20 @@ public class StringUtilities {
         return string;
     }
 
-    /** If the ptolemy.ptII.exitAfterWrapup property is not set, then
-     *  call System.exit().
+    /** If the ptolemy.ptII.exitAfterWrapup or the
+     *  ptolemy.ptII.doNotExit properties are not set, then call
+     *  System.exit().
      *  Ptolemy code should call this method instead of directly calling
      *  System.exit() so that we can test code that would usually exit.
      *  @param returnValue The return value of this process, where
      *  non-zero values indicate an error.
      */
     public static void exit(int returnValue) {
+        if (StringUtilities.getProperty("ptolemy.ptII.doNotExit")
+                .length() > 0) {
+            return;
+        }
+
         if (StringUtilities.getProperty("ptolemy.ptII.exitAfterWrapup")
                 .length() > 0) {
             throw new RuntimeException("Normally, we would "
