@@ -1247,6 +1247,8 @@ public class PlotBox extends JPanel implements Printable {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
+        // Netbeans wants this, otherwise the icons won't appear.
+        ClassLoader classLoader = getClass().getClassLoader();
         if (_printButton == null) {
             // Load the image by using the absolute path to the gif.
             URL img = null;
@@ -1254,7 +1256,8 @@ public class PlotBox extends JPanel implements Printable {
                 // FindBugs: Usage of GetResource may be unsafe if
                 // class is extended
                 img = FileUtilities.nameToURL(
-                        "$CLASSPATH/ptolemy/plot/img/print.gif", null, null);
+                        "$CLASSPATH/ptolemy/plot/img/print.gif", null,
+                        classLoader);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -1286,7 +1289,8 @@ public class PlotBox extends JPanel implements Printable {
                 // FindBugs: Usage of GetResource may be unsafe if
                 // class is extended
                 img = FileUtilities.nameToURL(
-                        "$CLASSPATH/ptolemy/plot/img/reset.gif", null, null);
+                        "$CLASSPATH/ptolemy/plot/img/reset.gif", null,
+                        classLoader);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -1318,7 +1322,8 @@ public class PlotBox extends JPanel implements Printable {
                 // FindBugs: Usage of GetResource may be unsafe if
                 // class is extended
                 img = FileUtilities.nameToURL(
-                        "$CLASSPATH/ptolemy/plot/img/format.gif", null, null);
+                        "$CLASSPATH/ptolemy/plot/img/format.gif", null,
+                        classLoader);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -1349,7 +1354,8 @@ public class PlotBox extends JPanel implements Printable {
                 // FindBugs: Usage of GetResource may be unsafe if
                 // class is extended
                 img = FileUtilities.nameToURL(
-                        "$CLASSPATH/ptolemy/plot/img/fill.gif", null, null);
+                        "$CLASSPATH/ptolemy/plot/img/fill.gif", null,
+                        classLoader);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
