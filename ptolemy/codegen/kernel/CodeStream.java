@@ -738,7 +738,8 @@ public class CodeStream {
                 int lineNumber = 1;
 
                 String filename = FileUtilities
-                        .nameToURL(_filePath, null, null).getPath();
+                        .nameToURL(_filePath, null, 
+                                getClass().getClassLoader()).getPath();
 
                 if (_codeGenerator == null && _helper != null) {
                     _codeGenerator = _helper._codeGenerator;

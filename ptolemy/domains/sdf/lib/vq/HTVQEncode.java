@@ -233,7 +233,8 @@ public class HTVQEncode extends Transformer {
         try {
             if (filename != null) {
                 try {
-                    URL dataurl = FileUtilities.nameToURL(filename, null, null);
+                    URL dataurl = FileUtilities.nameToURL(filename, null, 
+                            getClass().getClassLoader());
                     _debug("HTVQEncode: codebook = " + dataurl);
                     source = dataurl.openStream();
                 } catch (MalformedURLException e) {
