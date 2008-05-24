@@ -761,10 +761,10 @@ public class TableauFrame extends Top {
                     // and so that this class can be extended and we
                     // will still find the gif.
                     url = FileUtilities.nameToURL(
-                            "/ptolemy/actor/gui/PtolemyIISmallIcon.gif", null,
-                            null);
+                            "$CLASSPATH/ptolemy/actor/gui/PtolemyIISmallIcon.gif", null,
+                            getClass().getClassLoader());
                 } catch (Throwable throwable) {
-                    // Ignore.
+                    // Ignore, stick with the default
                 }
             }
             if (url == null) {
