@@ -3082,25 +3082,30 @@ ORACLE_OJDBC_JAR=
 
 # We only need to look for on if $PTII/ptolemy/domains/space exists
 SPACE_USER_DIR="$PTII/ptolemy/domains/space"
-if test ! -d "$SPACE_USER_DIR" -o "$JAVA1_6_OR_LATER" != "yes" ; then
+if test ! -d "$SPACE_USER_DIR"; then
     PT_MSG_STATUS([$SPACE_USER_DIR is not present, or Java is not 1.6 or later,
     so we need not find the Oracle ojdbc6.jar.])
     ORACLE_OJDBC_JAR=
 else
-    AC_MSG_CHECKING([for ojdbc6.jar, used by the space domain])
-    AC_ARG_WITH(mapss, [  --with-ojdbc6=/path/to/ojdbc6.jar  path to ojdbc6.jar
+    if test "$JAVA1_6_OR_LATER" != "yes"; then
+        AC_MSG_WARN([ojdbc6.jar requires Java 1.6 or later.
+    You will not be able to use the space domain.])
+    else 
+        AC_MSG_CHECKING([for ojdbc6.jar, used by the space domain])
+        AC_ARG_WITH(ojdbc6, [  --with-ojdbc6=/path/to/ojdbc6.jar  path to ojdbc6.jar
                           defaults to \$PTII/ptolemy/domains/space/ojdbc6.jar],
-	ORACLE_OJDBC_JAR=$withval,
-	ORACLE_OJDBC_JAR=$PTII/ptolemy/domains/space/ojdbc6.jar)
+	    ORACLE_OJDBC_JAR=$withval,
+	    ORACLE_OJDBC_JAR=$PTII/ptolemy/domains/space/ojdbc6.jar)
 
-    if test -f "$ORACLE_OJDBC_JAR"; then
-	PT_MSG_RESULT([$ORACLE_OJDBC_JAR])
-	PTSPACE_DIR=space
-    else  
-        AC_MSG_WARN([Failed to find PTII/ptolemy/domains/space/ojdbc6.jar
+        if test -f "$ORACLE_OJDBC_JAR"; then
+	    PT_MSG_RESULT([$ORACLE_OJDBC_JAR])
+	    PTSPACE_DIR=space
+        else  
+            AC_MSG_WARN([Failed to find PTII/ptolemy/domains/space/ojdbc6.jar
     If it is not present, you will not be able to use the 
     space domain.])
-	ORACLE_OJDBC_JAR=
+	    ORACLE_OJDBC_JAR=
+        fi
     fi
 fi
 
