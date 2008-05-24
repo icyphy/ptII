@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c/vergil
+ME =		ptolemy/codegen/c/vergil/actor
 
 DIRS =		lib
 
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	vergil
+PTPACKAGE = 	actor
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
