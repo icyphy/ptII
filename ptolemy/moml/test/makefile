@@ -50,8 +50,7 @@ JSRCS = \
 	MoMLParserLeak.java \
 	RecorderErrorHandler.java \
 	TestIconLoader.java \
-	TestLibraryBuilder.java \
-	TestSharedParameter.java
+	TestLibraryBuilder.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -67,7 +66,6 @@ JSIMPLE_TESTS = \
 	MoMLUndoEntry.tcl \
 	MoMLUndoChangeRequest.tcl \
 	MoMLVariableChecker.tcl \
-	SharedParameter.tcl \
 	StreamErrorHandler.tcl \
 	UndoContext.tcl \
 	UndoDeleteEntity.tcl \
