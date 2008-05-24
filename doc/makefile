@@ -633,7 +633,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/*.java \
 			../ptolemy/actor/gui/*.java \
 			../ptolemy/actor/gui/style/*.java \
-			../ptolemy/actor/gui/unit/*.java \
 			../ptolemy/actor/lib/*.java \
 			../ptolemy/actor/lib/comm/*.java \
 			../ptolemy/actor/lib/conversions/*.java \
@@ -730,7 +729,8 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/vergil/fsm/modal/*.java \
 			../ptolemy/vergil/kernel/*.java \
 			../ptolemy/vergil/toolbox/*.java \
-			../ptolemy/vergil/tree/*.java
+			../ptolemy/vergil/tree/*.java \
+			../ptolemy/vergil/unit/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m $(JDOCBREAKITERATOR)"'
