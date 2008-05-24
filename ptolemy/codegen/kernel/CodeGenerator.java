@@ -1969,7 +1969,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // File(URI).
 
             URL generatorPackageURL = FileUtilities.nameToURL("$CLASSPATH/"
-                    + generatorPackageDirectoryName, null, null);
+                    + generatorPackageDirectoryName, null, 
+                    getClass().getClassLoader());
             URI generatorPackageURI = new URI(generatorPackageURL
                     .toExternalForm().replaceAll(" ", "%20"));
             generatorPackageFile = new File(generatorPackageURI);
