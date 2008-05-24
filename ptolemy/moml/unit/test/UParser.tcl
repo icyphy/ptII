@@ -47,9 +47,9 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # 
 test UParser-1.0 {Test the Parser} {
-    set e0 [java::new ptolemy.data.unit.UnitLibrary]
-    set unit [java::new ptolemy.data.unit.Unit]
-    set parser [java::new ptolemy.data.unit.UParser]
+    set e0 [java::new ptolemy.moml.unit.UnitLibrary]
+    set unit [java::new ptolemy.moml.unit.Unit]
+    set parser [java::new ptolemy.moml.unit.UParser]
     set unitExpr [$parser parseUnitExpr "\$a \$b^-1"]
     $unitExpr toString
   } {UnitExpr:[a b^-1]}

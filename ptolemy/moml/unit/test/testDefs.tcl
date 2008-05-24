@@ -1,10 +1,10 @@
-# Tests for Unit
+# Load test bed definitions
 #
-# @author: Christopher Brooks
+# @Author: Christopher Hylands
 #
-# @Version $Id$
+# @Version: $Id$
 #
-# @Copyright (c) 2007 The Regents of the University of California.
+# @Copyright (c) 1997-2005 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -26,35 +26,37 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 # 
-# 						PT_COPYRIGHT_VERSION_3
+# 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #######################################################################
 
 # Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
+if [info exist env(PTOLEMY)] {
+    set PTII $env(PTOLEMY)/tycho/java
+}
+
+if [info exist env(TYCHO)] {
+    set PTII $env(TYCHO)/java
+}
+
+if [info exist env(PTII)] {
+    set PTII $env(PTII)
+}
+
+if {![info exist PTII]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set PTII [file join [pwd] .. .. .. ..]
+}
+
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source testDefs.tcl
+    source [file join $PTII util testsuite testDefs.tcl]
 } {}
 
-# Uncomment this to get a full report, or set in your Tcl shell window.
-#set VERBOSE 1
 
-# 
-#
 
-######################################################################
-####
-# 
-test Unit-1.0 {Construct a Unit} {
-    set unit0 [java::new ptolemy.data.unit.Unit]
-    set unit1 [java::new ptolemy.data.unit.Unit myUnit]
-    list [$unit0 equals $unit1] \
-	[$unit1 equals $unit1] \
-	[$unit0 equals $unit0] \
-	[expr {[$unit0 hashCode] == [$unit0 hashCode]}] \
-	[expr {[$unit1 hashCode] == [$unit1 hashCode]}] \
-	[expr {[$unit0 hashCode] == [$unit1 hashCode]}]
-} {0 1 1 1 1 0}
+
 
 
