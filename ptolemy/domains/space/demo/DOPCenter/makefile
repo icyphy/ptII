@@ -48,7 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	DOPCenter.gif
+	DOPCenter.gif \
 	DOPCenter.xml
 
 EXTRA_SRCS = \
