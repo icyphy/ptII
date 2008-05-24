@@ -8943,37 +8943,44 @@ ORACLE_OJDBC_JAR=
 
 # We only need to look for on if $PTII/ptolemy/domains/space exists
 SPACE_USER_DIR="$PTII/ptolemy/domains/space"
-if test ! -d "$SPACE_USER_DIR" -o "$JAVA1_6_OR_LATER" != "yes" ; then
+if test ! -d "$SPACE_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $SPACE_USER_DIR is not present, or Java is not 1.6 or later,
     so we need not find the Oracle ojdbc6.jar." >&5
 echo "${ECHO_T}$SPACE_USER_DIR is not present, or Java is not 1.6 or later,
     so we need not find the Oracle ojdbc6.jar." >&6; }; fi
     ORACLE_OJDBC_JAR=
 else
-    { echo "$as_me:$LINENO: checking for ojdbc6.jar, used by the space domain" >&5
+    if test "$JAVA1_6_OR_LATER" != "yes"; then
+        { echo "$as_me:$LINENO: WARNING: ojdbc6.jar requires Java 1.6 or later.
+    You will not be able to use the space domain." >&5
+echo "$as_me: WARNING: ojdbc6.jar requires Java 1.6 or later.
+    You will not be able to use the space domain." >&2;}
+    else
+        { echo "$as_me:$LINENO: checking for ojdbc6.jar, used by the space domain" >&5
 echo $ECHO_N "checking for ojdbc6.jar, used by the space domain... $ECHO_C" >&6; }
 
-# Check whether --with-mapss was given.
-if test "${with_mapss+set}" = set; then
-  withval=$with_mapss; ORACLE_OJDBC_JAR=$withval
+# Check whether --with-ojdbc6 was given.
+if test "${with_ojdbc6+set}" = set; then
+  withval=$with_ojdbc6; ORACLE_OJDBC_JAR=$withval
 else
   ORACLE_OJDBC_JAR=$PTII/ptolemy/domains/space/ojdbc6.jar
 fi
 
 
-    if test -f "$ORACLE_OJDBC_JAR"; then
-	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+        if test -f "$ORACLE_OJDBC_JAR"; then
+	    if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $ORACLE_OJDBC_JAR" >&5
 echo "${ECHO_T}$ORACLE_OJDBC_JAR" >&6; }; fi
-	PTSPACE_DIR=space
-    else
-        { echo "$as_me:$LINENO: WARNING: Failed to find PTII/ptolemy/domains/space/ojdbc6.jar
+	    PTSPACE_DIR=space
+        else
+            { echo "$as_me:$LINENO: WARNING: Failed to find PTII/ptolemy/domains/space/ojdbc6.jar
     If it is not present, you will not be able to use the
     space domain." >&5
 echo "$as_me: WARNING: Failed to find PTII/ptolemy/domains/space/ojdbc6.jar
     If it is not present, you will not be able to use the
     space domain." >&2;}
-	ORACLE_OJDBC_JAR=
+	    ORACLE_OJDBC_JAR=
+        fi
     fi
 fi
 
