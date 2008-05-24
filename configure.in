@@ -474,6 +474,8 @@ JDOCSIZE=
 UPGRADE_JVM=no
 # Ptalon uses generics, which are present only in Java 1.5 and later
 HAS_GENERICS=no
+# Oracle OJDBC is Java 1.6 or later
+JAVA1_6_OR_LATER=no
 case "$JVERSION" in
 	1.1.*) UPGRADE_JVM=yes;;
 	1.2.*) UPGRADE_JVM=yes;;
@@ -494,6 +496,7 @@ case "$JVERSION" in
 		JDOCBREAKITERATOR=-breakiterator
                 # Ptalon uses generics, assume 1.6 or greater here
                 HAS_GENERICS=yes
+		JAVA1_6_OR_LATER=yes
 		PT_MSG_RESULT([ok, you are running $JVERSION])
 	;;
 esac
@@ -3075,13 +3078,14 @@ fi
 PTSPACE_DIR=
 
 # Oracle Java Database jar (ojdbc6.jar)
-ORACLE_OJDBC_JAR='${PTII}/ptolemy/domains/space/ojdbc6.jar'
+ORACLE_OJDBC_JAR=
 
 # We only need to look for on if $PTII/ptolemy/domains/space exists
 SPACE_USER_DIR="$PTII/ptolemy/domains/space"
-if test ! -d "$SPACE_USER_DIR"; then
-    PT_MSG_STATUS([$SPACE_USER_DIR is not present,
+if test ! -d "$SPACE_USER_DIR" -a "$JAVA1_6_OR_LATER" = "yes" ; then
+    PT_MSG_STATUS([$SPACE_USER_DIR is not present, or Java is not 1.6 or later,
     so we need not find the Oracle ojdbc6.jar.])
+    ORACLE_OJDBC_JAR=
 else
     AC_MSG_CHECKING([for ojdbc6.jar, used by the space domain])
     AC_ARG_WITH(mapss, [  --with-ojdbc6=/path/to/ojdbc6.jar  path to ojdbc6.jar
@@ -3096,8 +3100,7 @@ else
         AC_MSG_WARN([Failed to find PTII/ptolemy/domains/space/ojdbc6.jar
     If it is not present, you will not be able to use the 
     space domain.])
-	# Note that we don't substitute in the ${PTII} here
-	ORACLE_OJDBC_JAR='${PTII}/ptolemy/domains/space/ojdbc6.jar'
+	ORACLE_OJDBC_JAR=
     fi
 fi
 
