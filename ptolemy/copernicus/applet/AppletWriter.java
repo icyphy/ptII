@@ -578,6 +578,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 "ptolemy/domains/ct/ct.jar");
         classMap.put("diva.graph.GraphController", "lib/diva.jar");
 
+        classMap.put("ptolemy.domains.space.DatabaseDirector",
+                "ptolemy/domains/space/ojdbc6.jar");
+
         // First, we search for the jar file, then we try
         // getting the class as a resource.
         // FIXME: we don't handle the case where there are no
