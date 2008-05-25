@@ -75,6 +75,11 @@ all: jclass
 install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_ptolemy demo_vergil
+
+# Generate applet code (overwrites DOPCenter.htm and DOPCenterVergil.htm)
+copernicus:
+	 "$(PTII)/bin/copernicus" -codeGenerator applet -targetPath ptolemy/domains/space/demo/DOPCenter DOPCenter.xml
+
 demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer DOPCenter.htm
 
