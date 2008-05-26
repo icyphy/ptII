@@ -11,3 +11,5 @@ ptKeystore
 autom4te.cache
 .antlr-eclipse
 confdefs.h
+.externalToolBuilders
+src
