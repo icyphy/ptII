@@ -178,9 +178,10 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	/**
 	 * Returns true if there is a token with the specified time stamp.
 	 * 
-	 * @param time Time for which a token is required.
-	 * @return True if the first element in the queue has the specified
-	 *         time stamp.
+	 * @param time
+	 *            Time for which a token is required.
+	 * @return True if the first element in the queue has the specified time
+	 *         stamp.
 	 */
 	public boolean hasToken(Time time) {
 		if (_queue.size() == 0)
@@ -242,7 +243,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 		_lastTime = time;
 
 		try {
-			_queue.add(event); // is only inserted if same event not already exists
+			_queue.add(event); // is only inserted if same event not already
+								// exists
 		} catch (NoRoomException e) {
 
 			throw e;
@@ -343,13 +345,15 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 * specification of the destination receiver may be considered redundant.
 	 */
 	public static class Event {
-		
+
 		/**
 		 * Construct an Event with a token and time stamp.
 		 * 
-		 * @token Token for the event. 
-		 * @time Time stamp of the event.
-		 */ 
+		 * @param token
+		 *            Token for the event.
+		 * @param time
+		 *            Time stamp of the event.
+		 */
 		public Event(Token token, Time time) {
 			_token = token;
 			_timeStamp = time;
@@ -367,7 +371,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 			return _timeStamp;
 		}
 
-		/** 
+		/**
 		 * Return the token of this event.
 		 * 
 		 * @return The token of the event.
@@ -386,9 +390,10 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	}
 
 	/**
-	 * Compare two events according to - time stamp - value did not find a way to
-	 * compare Tokens, therefore am comparing DoubleTokens and IntTokens here.
-	 * If other kinds of Tokens are used, this Comparer needs to be extended.
+	 * Compare two events according to - time stamp - value did not find a way
+	 * to compare Tokens, therefore am comparing DoubleTokens and IntTokens
+	 * here. If other kinds of Tokens are used, this Comparer needs to be
+	 * extended.
 	 * 
 	 * @author Patricia Derler
 	 * 
@@ -398,12 +403,17 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 		/**
 		 * Compare two events according to time stamps and values.
 		 * 
-		 * FIXME Because there is no general compare method for tokens,
-		 * I implemented the comparison for int and double tokens. A
-		 * more general compare is required.
+		 * FIXME Because there is no general compare method for tokens, I
+		 * implemented the comparison for int and double tokens. A more general
+		 * compare is required.
 		 * 
-		 * @arg0 First event.
-		 * @arg1 Second event.
+		 * @param arg0
+		 *            First event.
+		 * @param arg1
+		 *            Second event.
+		 * @return -1 if event arg0 should be processed before event arg1, 0 if
+		 *         they should be processed at the same time, 1 if arg1 should
+		 *         be processed before arg0.
 		 */
 		public int compare(Object arg0, Object arg1) {
 			Event event1 = (Event) arg0;

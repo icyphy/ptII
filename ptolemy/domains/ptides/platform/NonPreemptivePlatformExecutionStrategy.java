@@ -69,9 +69,9 @@ public class NonPreemptivePlatformExecutionStrategy extends
 	}
 
 	/**
-	 * sort the list of events that are safe to fire
+	 * Sort the list of events that are safe to fire.
 	 * 
-	 * @param list
+	 * @param list List of events that are safe to fire.
 	 */
 	public void sort(List list) {
 		Collections.sort(list, new WCETComparator());
@@ -86,8 +86,18 @@ public class NonPreemptivePlatformExecutionStrategy extends
 	 */
 	private class WCETComparator implements Comparator {
 
+		/**
+		 * This platform execution strategy is non preemptive.
+		 */
 		private boolean _preemptive = false;
 
+		/**
+		 * This compare method is used to sort all events. 
+		 * 
+		 * @param arg0 First event.
+		 * @param arg1 Second event.
+		 * @return -1 if event arg0 should be processed before event arg1 and vice versa.
+		 */
 		public int compare(Object arg0, Object arg1) {
 			DEEvent event1 = (DEEvent) arg0;
 			DEEvent event2 = (DEEvent) arg1;
@@ -206,7 +216,10 @@ public class NonPreemptivePlatformExecutionStrategy extends
 	 * or if no event can be fired now. This is the case if - the list of
 	 * eventsToFire is empty - the next event that should be fired has to be
 	 * fired at real time = model time and real time is not there yet - the next
-	 * event that could be fired has a wcet > next real time event
+	 * event that could be fired has a wcet > next real time event.
+	 * 
+	 * @param actorsFiring Actors currently in execution.
+	 * @param eventsToFire Events that are safe to fire.
 	 */
 	public DEEvent getNextEventToFire(List actorsFiring, List eventsToFire)
 			throws IllegalActionException {

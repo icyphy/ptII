@@ -83,25 +83,25 @@ public abstract class PlatformExecutionStrategy {
 	/**
 	 * set the physical time.
 	 * 
-	 * @param time
+	 * @param time The physical time.
 	 */
 	public void setPhysicalTime(Time time) {
 		_physicalTime = time;
 	}
 
 	/**
-	 * the execution strategy needs to know about the pysical time, it should
+	 * The execution strategy needs to know about the pysical time, it should
 	 * only be set by the PtidesEmbeddedDirector and not changed by the
-	 * Executionstrategy.
+	 * execution strategy.
 	 */
 	public Time _physicalTime;
 
 	/**
-	 * forward an event that should be displayed by a schedulelistener
+	 * Forward an event that should be displayed by a schedule listener.
 	 * 
-	 * @param actor
-	 * @param time
-	 * @param scheduleEvent
+	 * @param actor The actor that has an event to be displayed.
+	 * @param time The physical time for the event.
+	 * @param scheduleEvent The type of the event.
 	 */
 	protected final void _displaySchedule(Actor actor, double time,
 			int scheduleEvent) {
