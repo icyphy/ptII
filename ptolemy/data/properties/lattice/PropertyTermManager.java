@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.properties.Property;
 import ptolemy.kernel.util.IllegalActionException;

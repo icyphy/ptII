@@ -29,7 +29,6 @@
 package ptolemy.data.properties.lattice;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypedIOPort;

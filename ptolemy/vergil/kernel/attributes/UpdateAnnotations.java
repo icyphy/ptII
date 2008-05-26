@@ -27,19 +27,11 @@
  */
 package ptolemy.vergil.kernel.attributes;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.Location;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.vergil.kernel.attributes.TextAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// UpdateAnnotations

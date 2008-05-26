@@ -3,7 +3,6 @@
  */
 package ptolemy.data.properties.lattice;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.data.properties.lattice.PropertyConstraintHelper.Inequality;

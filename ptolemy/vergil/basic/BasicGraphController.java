@@ -42,7 +42,6 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
-import ptolemy.vergil.unit.UnitSolverDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.DebugEvent;
@@ -59,6 +58,7 @@ import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
+import ptolemy.vergil.unit.UnitSolverDialog;
 import diva.canvas.Figure;
 import diva.canvas.connector.Connector;
 import diva.canvas.interactor.SelectionRenderer;

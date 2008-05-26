@@ -46,8 +46,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileFilter;
 
 import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.GraphicalMessageHandler;

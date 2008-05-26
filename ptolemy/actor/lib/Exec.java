@@ -37,7 +37,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;

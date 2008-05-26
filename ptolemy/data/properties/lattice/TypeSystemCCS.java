@@ -2,7 +2,6 @@ package ptolemy.data.properties.lattice;
 
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.properties.ModelAnalyzer;
-import ptolemy.data.properties.token.PropertyTokenSolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;

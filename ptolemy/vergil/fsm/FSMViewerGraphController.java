@@ -27,9 +27,6 @@
  */
 package ptolemy.vergil.fsm;
 
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.StateEvent;

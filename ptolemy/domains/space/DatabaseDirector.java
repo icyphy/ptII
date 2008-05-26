@@ -34,7 +34,6 @@ import java.sql.SQLException;
 import javax.swing.JFrame;
 
 import oracle.jdbc.OracleDriver;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;

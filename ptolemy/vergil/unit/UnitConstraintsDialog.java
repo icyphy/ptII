@@ -45,12 +45,12 @@ import javax.swing.table.TableColumn;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.PtolemyDialog;
-import ptolemy.moml.unit.UnitAttribute;
-import ptolemy.moml.unit.UnitEquation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.unit.UnitAttribute;
+import ptolemy.moml.unit.UnitEquation;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitConstraintsDialog

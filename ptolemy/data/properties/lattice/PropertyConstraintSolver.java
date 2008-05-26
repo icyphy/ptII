@@ -39,7 +39,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
-import ptolemy.util.MessageHandler;
 
 /**
  @author Man-Kit Leung, Edward A. Lee

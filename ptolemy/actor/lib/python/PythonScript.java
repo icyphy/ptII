@@ -40,7 +40,6 @@ import org.python.core.PyString;
 import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.kernel.CompositeEntity;

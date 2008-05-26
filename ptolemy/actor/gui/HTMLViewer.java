@@ -52,8 +52,8 @@ import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 import javax.swing.text.html.StyleSheet;
 
 import ptolemy.gui.Top;
-import ptolemy.util.MessageHandler;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// HTMLViewer

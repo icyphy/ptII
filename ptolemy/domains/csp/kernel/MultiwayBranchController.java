@@ -35,7 +35,6 @@ import java.util.LinkedList;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
-import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////

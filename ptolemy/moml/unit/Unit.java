@@ -27,8 +27,8 @@
 package ptolemy.moml.unit;
 
 import java.util.Vector;
+
 import ptolemy.data.unit.BaseUnit;
-import ptolemy.data.unit.UnitSystem;
 import ptolemy.data.unit.UnitUtilities;
 
 //////////////////////////////////////////////////////////////////////////

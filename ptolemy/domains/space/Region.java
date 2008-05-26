@@ -28,13 +28,11 @@
 package ptolemy.domains.space;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.vergil.kernel.attributes.ImageAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// Region

@@ -40,15 +40,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import javax.swing.Action;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
-
 
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;

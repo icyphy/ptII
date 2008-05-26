@@ -34,9 +34,9 @@ import java.util.List;
 import ptolemy.actor.IOPort;
 import ptolemy.data.Token;
 import ptolemy.data.properties.PropertyHelper;
+import ptolemy.data.properties.token.PropertyToken;
 import ptolemy.data.properties.token.PropertyTokenHelper;
 import ptolemy.data.properties.token.PropertyTokenSolver;
-import ptolemy.data.properties.token.PropertyToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 

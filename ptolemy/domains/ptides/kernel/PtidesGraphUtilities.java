@@ -37,11 +37,11 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.Clock;
 import ptolemy.actor.lib.Source;
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.util.FunctionDependencyOfAtomicActor;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.data.ArrayToken;

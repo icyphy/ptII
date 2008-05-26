@@ -14,7 +14,6 @@ import ptolemy.data.properties.PropertyHelper;
 import ptolemy.data.properties.PropertySolver;
 import ptolemy.data.properties.gui.PropertySolverGUIFactory;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;

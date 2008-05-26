@@ -36,7 +36,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.ApplicationConfigurer;
-import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
@@ -45,8 +44,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;

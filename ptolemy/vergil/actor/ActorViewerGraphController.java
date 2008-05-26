@@ -27,9 +27,6 @@
  */
 package ptolemy.vergil.actor;
 
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.gui.Configuration;

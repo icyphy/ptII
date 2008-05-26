@@ -44,8 +44,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.actor.ActorInstanceController;
-import ptolemy.vergil.basic.NamedObjController;
-import ptolemy.vergil.basic.NodeControllerFactory;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 import ptolemy.vergil.kernel.attributes.TextAttribute;

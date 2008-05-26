@@ -31,7 +31,6 @@ import java.awt.Frame;
 
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.data.properties.PropertySolver;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
