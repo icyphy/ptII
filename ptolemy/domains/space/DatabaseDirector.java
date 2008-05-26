@@ -136,9 +136,16 @@ public class DatabaseDirector extends Director {
         }
         // Open a dialog to get the password.
         // First find a frame to "own" the dialog.
+        // Note that if we run in an applet, there may
+        // not be an effigy.
         Effigy effigy = Configuration.findEffigy(toplevel());
-        Tableau tableau = effigy.showTableaux();
-        JFrame frame = tableau.getFrame();
+        JFrame frame = null;
+        if (effigy != null) {
+            Tableau tableau = effigy.showTableaux();
+            if (tableau != null) {
+                frame = tableau.getFrame();
+            }
+        }
         
         // Next construct a query for user name and password.
         Query query = new Query();
