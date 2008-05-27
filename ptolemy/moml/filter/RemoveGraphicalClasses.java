@@ -241,6 +241,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
+        _graphicalClasses.put("ptolemy.vergil.erg.ERGTableauFactory",
+                "ptolemy.kernel.util.Attribute");
 
         // 4/04 BooleanSwitch uses EditorIcon
         _graphicalClasses.put("ptolemy.vergil.icon.EditorIcon", null);
@@ -327,6 +329,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // Remove various graphical classes from curriculum
         _graphicalClasses.put(
                 "ptolemy.domains.curriculum.DependencyHighlighter", null);
+        _graphicalClasses.put(
+                "ptolemy.vergil.basic.DependencyHighlighter", null);
         _graphicalClasses.put("ptolemy.domains.curriculum.HighlightEntities",
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.icon.NameIcon", null);
