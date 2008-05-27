@@ -71,6 +71,9 @@ PTCLASSJAR =
 # PTGRDOMAIN_JAR is the name of the jar file that includes the GR
 # domain if Java 3D was found.  PTGRDOMAIN_JAR is set by configure.
 
+# PTSPACEDOMAIN_JAR is the name of the jar file that includes the space
+# domain if ojdbc6.jar was found.  PTSPACEDOMAIN_JAR is set by configure.
+
 PTAUXALLJARS = \
 		ci/ci.jar \
 		continuous/continuous.jar \
@@ -83,7 +86,7 @@ PTAUXALLJARS = \
 		$(PTGRDOMAIN_JAR) \
 		petrinet/petrinet.jar \
 		ptides/ptides.jar \
-		space/space.jar \
+		$(PTSPACEDOMAIN_JAR) \
 		tm/tm.jar \
 		wireless/wireless.jar
 
