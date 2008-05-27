@@ -205,6 +205,8 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         </property>
         <property name="isFinalState" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="_containmentExtender" class="ptolemy.domains.fsm.kernel.ContainmentExtender">
+        </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
@@ -218,6 +220,8 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="isFinalState" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_containmentExtender" class="ptolemy.domains.fsm.kernel.ContainmentExtender">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -254,5 +258,4 @@ test InterfaceAutomaton-8.1 {test generating moml} {
     <link port="s1.incomingPort" relation="t0"/>
 </entity>
 }
-
 
