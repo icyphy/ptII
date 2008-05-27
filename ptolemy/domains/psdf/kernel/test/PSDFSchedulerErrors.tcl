@@ -67,7 +67,7 @@ proc setTokenProductionRate {port rate} {
 test PSDFSchedulerErrors-1.0 {} {
     catch {createAndExecute "rateConsistency.xml"} foo
     list $foo
-} {{ptolemy.kernel.util.IllegalActionException: Actor is not ready to fire.
+} {{ptolemy.kernel.util.IllegalActionException: Actor is not ready to fire.  Perhaps actor.prefire() returned false? Try debugging the actor by selecting "Listen to Actor".  Also, for SDF check moml for tokenConsumptionRate on input.
   in .SDFDirector4.PSDFDirector and .SDFDirector4.actor}}
 
 test PSDFSchedulerErrors-1.1 {} {
