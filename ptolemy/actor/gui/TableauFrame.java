@@ -1109,7 +1109,7 @@ public class TableauFrame extends Top {
 
         /** Construct a file filter that filters out all files that do
          *  not have one of the extensions in the given list.
-         *  @param extensionList A list of extensions, each of which is
+         *  @param extensions A list of extensions, each of which is
          *   a String.
          */
         public ExtensionFileFilter(List extensions) {

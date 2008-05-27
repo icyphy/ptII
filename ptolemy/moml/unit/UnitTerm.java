@@ -79,7 +79,7 @@ public class UnitTerm implements UnitPresentation {
 
     /**
      * Create a String that is understandable by a human.
-     * @see ptolemy.data.unit.UnitPresentation#descriptiveForm()
+     * @see ptolemy.moml.unit.UnitPresentation#descriptiveForm()
      */
     public String descriptiveForm() {
         String retv = null;

@@ -49,8 +49,7 @@ import ptolemy.kernel.util.Workspace;
 public class Region extends CompositeActor {
 
     /** Construct an actor in the given workspace.
-     *  @param container The container.
-     *  @param name The name of this actor.
+     *  @param workspace The workspace.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an

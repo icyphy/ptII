@@ -87,7 +87,7 @@ public class UnitExpr implements UnitPresentation {
     }
 
     /** The expression of the UnitExpr that is commonly used by humans.
-     * @see ptolemy.data.unit.UnitPresentation#descriptiveForm()
+     * @see ptolemy.moml.unit.UnitPresentation#descriptiveForm()
      */
     public String descriptiveForm() {
         Iterator iter = _uTerms.iterator();

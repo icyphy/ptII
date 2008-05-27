@@ -106,7 +106,7 @@ public class Unit implements UnitPresentation {
     /** The expression of the Unit that is commonly used by humans.
      * For example, the unit 4.1868E7&lt2, 1, -3, 0, 0&gt will produce the
      * common expression "calorie second^-1".
-     * @see ptolemy.data.unit.UnitPresentation#descriptiveForm()
+     * @see ptolemy.moml.unit.UnitPresentation#descriptiveForm()
      */
     public String descriptiveForm() {
         StringBuffer retv = null;
@@ -298,7 +298,7 @@ public class Unit implements UnitPresentation {
     }
 
     /** Get the labels for a Unit.
-     * @see ptolemy.data.unit.Unit#getPrimaryLabel()
+     * @see ptolemy.moml.unit.Unit#getPrimaryLabel()
      * @return The labels.
      */
     public Vector getLabels() {

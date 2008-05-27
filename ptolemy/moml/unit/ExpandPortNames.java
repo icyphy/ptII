@@ -78,7 +78,7 @@ public class ExpandPortNames extends EquationVisitor {
 
     /** The method that actually does the substitution of a variable with
      *  the model name of the port.
-     * @see ptolemy.data.unit.EquationVisitor#_visitUnitTerm(UnitTerm)
+     * @see ptolemy.moml.unit.EquationVisitor#_visitUnitTerm(UnitTerm)
      */
     protected Object _visitUnitTerm(UnitTerm uTerm)
             throws IllegalActionException {
