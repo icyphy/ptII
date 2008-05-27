@@ -591,6 +591,10 @@ PTQUICKTIME_PACKAGES = 	@PTQUICKTIME_PACKAGES@
 # $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.
 PTSPACE_DIR =		@PTSPACE_DIR@
 
+# PTSPACEDOMAIN_JAR is the name of the jar file that includes the space
+# domain if ojdbc6.jar was found.  PTSPACEDOMAIN_JAR used in domains/makefile
+PTSPACEDOMAIN_JAR =	@PTSPACEDOMAIN_JAR@
+
 # Set to tini and used in $PTII/ptolemy/apps/makefile if the Dallas Semi
 # TINI was found
 PTTINI_DIR =	@PTINI_DIR@
