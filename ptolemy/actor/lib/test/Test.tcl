@@ -198,7 +198,7 @@ test Test-1.5 {Export} {
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-10">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
         </property>
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
@@ -230,7 +230,7 @@ test Test-1.5 {Export} {
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
