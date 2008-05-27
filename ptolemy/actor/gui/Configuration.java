@@ -44,6 +44,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -149,13 +150,26 @@ public class Configuration extends CompositeEntity implements
         StringBuffer results = new StringBuffer();
         Configuration cloneConfiguration = (Configuration) clone();
 
-        // FIXME: Check Directors and Attributes
-        // Check atomic actors for clone problems
+        // Check TypedAtomicActors and Attributes
+        Iterator containedObjects = containedObjectsIterator();
+        while (containedObjects.hasNext()) {
+            NamedObj containedObject = (NamedObj) containedObjects.next();
+            // Check the clone fields on AtomicActors and Attributes.
+            // Note that Director extends Attribute, so we get the
+            // Directors as well
+            if (containedObject instanceof TypedAtomicActor
+                    || containedObject instanceof Attribute) {
+                results.append(_checkCloneFields(containedObject));
+            }
+        }
+
+        // Check atomic actors for clone problems related to types
         List entityList = allAtomicEntityList();
         Iterator entities = entityList.iterator();
         while (entities.hasNext()) {
             Object entity = entities.next();
             if (entity instanceof TypedAtomicActor) {
+                // Check atomic actors for clone problems
                 results.append(_checkCloneFields((TypedAtomicActor) entity));
                 TypedAtomicActor actor = (TypedAtomicActor) entity;
                 String fullName = actor.getName(this);
@@ -780,6 +794,9 @@ public class Configuration extends CompositeEntity implements
     ////                         private methods                   ////
 
     /** Check that clone(Workspace) method properly sets the fields.
+     *  In a cloned Director, Attribute or Actor, all
+     *  private fields should either point to null or to
+     *  distinct objects.
      *  @param namedObj The NamedObj, usually a Director, Attribute
      *  or actor to be checked.
      *  @return A string containing an error message if there is a problem,
@@ -792,9 +809,6 @@ public class Configuration extends CompositeEntity implements
      */
     private String _checkCloneFields(NamedObj namedObj) 
             throws CloneNotSupportedException, IllegalAccessException, ClassNotFoundException {
-        // Check the clone and see that verify that all
-        // private fields either point to null or to
-        // distinct objects.
         NamedObj namedObjClone = (NamedObj) namedObj.clone(new Workspace());
 
         Class namedObjClass = namedObj.getClass();
@@ -806,29 +820,29 @@ public class Configuration extends CompositeEntity implements
             // Tell the security manager we want to read private fields.
             // This will fail in an applet.
             field.setAccessible(true);
-            if (Modifier.isPrivate(field.getModifiers())) {
-                Class fieldType = field.getType();
-                if ( !fieldType.isPrimitive()
-                        && !fieldType.isArray()
-                        && !fieldType.equals(String.class)
-                        && field.get(namedObj) != null) {
-                    if ( field.get(namedObj).equals(field.get(namedObjClone))) {
-                        // Determine what code should go in clone(W)
-                        String assignment = field.getName();
-                        // FIXME: extend this to more types
-                        if (Class.forName("ptolemy.kernel.Port").isAssignableFrom(fieldType)) { 
-                            assignment = ".getPort(\"" + assignment + "\")";
-                            //                       } else if (fieldType.isInstance( new Attribute())) {
-                        } else if (Class.forName("ptolemy.kernel.util.Attribute").isAssignableFrom(fieldType)) { 
-
-                            assignment = ".getAttribute(\"" + assignment + "\")";
-                        } else {
-                            assignment = " /* Get the object method "
-                                + "or null?  */ "
-                                + assignment;
-                        }
-
-                        return "The " + field.getName()
+            //if (Modifier.isPrivate(field.getModifiers())) {
+            Class fieldType = field.getType();
+            if ( !fieldType.isPrimitive()
+                    /*&& !fieldType.isArray()*/
+                    && !fieldType.toString().equals("COM.sun.suntest.javascope.database.CoverageUnit")
+                    && !fieldType.equals(String.class)
+                    && field.get(namedObj) != null) {
+                if ( field.get(namedObj).equals(field.get(namedObjClone))) {
+                    // Determine what code should go in clone(W)
+                    String assignment = field.getName();
+                    // FIXME: extend this to more types
+                    if (Class.forName("ptolemy.kernel.Port").isAssignableFrom(fieldType)) { 
+                        assignment = ".getPort(\"" + assignment + "\")";
+                        //                       } else if (fieldType.isInstance( new Attribute())) {
+                    } else if (Class.forName("ptolemy.kernel.util.Attribute").isAssignableFrom(fieldType)) { 
+                        assignment = ".getAttribute(\"" + assignment + "\")";
+                    } else {
+                        assignment = " /* Get the object method "
+                            + "or null?  */ "
+                            + assignment;
+                    }
+                    
+                    return "The " + field.getName()
                             + " " + field.getType().getName()
                             + " field the clone of \""
                             + namedObjClass.getName()
@@ -841,7 +855,7 @@ public class Configuration extends CompositeEntity implements
                             + namedObjClass.getName() 
                             + ")newObject" + assignment
                             + ";\n";
-                    }
+               //}
                 }
             }
         }
