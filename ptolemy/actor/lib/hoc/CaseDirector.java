@@ -38,6 +38,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -177,7 +178,16 @@ public class CaseDirector extends Director {
                 portParameter.update();
             }
 
-            String controlValue = container.control.getToken().toString();
+            String controlValue;
+            Token controlToken = container.control.getToken();
+            // If it's a string, use stringValue() otherwise there          
+            // are quotes around the string.                                
+            if (controlToken instanceof StringToken) {
+                controlValue = ((StringToken)controlToken).stringValue();
+            } else {
+                controlValue = controlToken.toString();
+            }
+
             ComponentEntity refinement = container.getEntity(controlValue);
             if (!(refinement instanceof Refinement)) {
                 refinement = container._default;
