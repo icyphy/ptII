@@ -11,6 +11,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.fm'  |egrep -v '\.ec3' \
 	| egrep -v '\.eps' |egrep -v '\.exe' \
         | egrep -v '\.gz'  |egrep -v '\.gif' \
+        | egrep -v '\.GIF' \
         | egrep -v '\.ico' |egrep -v '\.isj' \
 	| egrep -v '\.jar' |egrep -v '\.jpg' \
 	| egrep -v '\.m$'  |egrep -v '\.mat$' \
