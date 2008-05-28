@@ -55,6 +55,7 @@ JSRCS = \
 	HasTypeConstraints.java \
 	MatrixType.java \
 	MonotonicFunction.java \
+	ObjectType.java \
 	RecordType.java \
 	StructuredType.java \
 	Type.java \
