@@ -39,8 +39,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.gui.PtGUIUtilities;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.kernel.VergilUtilities;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyTransferable
@@ -167,7 +168,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
         // http://lists.apple.com/archives/java-dev/2003/Apr/16/classcastexceptionindrag.txt
         // FIXME: This change happened just before the release of 3.0.2,
         // so we only make the change under Mac OS.
-        if (VergilUtilities.macOSLookAndFeel()) {
+        if (PtGUIUtilities.macOSLookAndFeel()) {
             namedObjFlavor = new DataFlavor(
                     DataFlavor.javaJVMLocalObjectMimeType
                             + ";class=ptolemy.kernel.util.NamedObj",

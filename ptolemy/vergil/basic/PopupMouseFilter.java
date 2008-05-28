@@ -29,7 +29,7 @@ package ptolemy.vergil.basic;
 
 import java.awt.event.MouseEvent;
 
-import ptolemy.vergil.kernel.VergilUtilities;
+import ptolemy.gui.PtGUIUtilities;
 import diva.canvas.event.ExtendedMouseFilter;
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ public class PopupMouseFilter extends ExtendedMouseFilter {
      * Test whether the given MouseEvent passes the filter.
      */
     public boolean accept(MouseEvent event) {
-        if (VergilUtilities.macOSLookAndFeel()) {
+        if (PtGUIUtilities.macOSLookAndFeel()) {
             return event.isPopupTrigger();
         } else {
             return super.accept(event);
