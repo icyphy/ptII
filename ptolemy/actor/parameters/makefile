@@ -56,7 +56,8 @@ JSRCS = \
 	LocationParameter.java \
 	ParameterPort.java \
 	ParameterSet.java \
-	PortParameter.java
+	PortParameter.java \
+	SharedParameter.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -68,8 +69,9 @@ MISC_FILES = test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo
-
+	demo \
+	'SharedParameter$$1.class' \
+	'SharedParameter$$SharedParameterRegistry.class
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
