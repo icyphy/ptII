@@ -182,3 +182,19 @@ test URIAttribute-4.2 {setURL with a null container} {
     $u1 exportMoML $output2 1
     list [$u1 toString] [$output toString] [$url toString] [$output2 toString]
 } {{ptolemy.kernel.attributes.URIAttribute {.myURIAttribute}} {} file:/C:/ptuser/pt%20II/ptolemy/configs/full/configuration.xml#bar {}}
+
+######################################################################
+####
+#
+test URIAttribute-4.2 {clone a URIAtttribute} {
+    set n0 [java::new ptolemy.kernel.util.NamedObj "myNamedObj"]
+    set u1 [java::new ptolemy.kernel.attributes.URIAttribute $n0 "myURIAttribute"]
+    $u1 setURI [java::new java.net.URI file:///foo]
+    set u2 [java::cast ptolemy.kernel.attributes.URIAttribute \
+	 [$u1 clone [java::new ptolemy.kernel.util.Workspace]]]
+    $u2 setURI [java::new java.net.URI file:///bar]
+    list \
+	[[$u1 getURI] toString] \
+	[[$u2 getURI] toString]
+} {file:///foo file:///bar}
+
