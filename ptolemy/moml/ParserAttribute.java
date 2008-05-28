@@ -35,6 +35,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParserAttribute
@@ -75,6 +76,23 @@ public class ParserAttribute extends SingletonAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the attribute into the specified workspace.  The
+     *  resulting object a null value for the value of the parser.
+
+     *  @param workspace The workspace for the cloned object.
+     *  @return A new attribute.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ParserAttribute newObject = (ParserAttribute) super.clone(workspace);
+        // If we don't set _parser to null, then the master and the
+        // clone share a MoMLParser, which is not good.
+        newObject._parser = null;
+        return newObject;
+    }
 
     /** Get the parser.  If none has been set, then return a new one.
      *  @return A MoML parser.
