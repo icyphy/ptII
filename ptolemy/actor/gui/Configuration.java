@@ -824,10 +824,12 @@ public class Configuration extends CompositeEntity implements
             Class fieldType = field.getType();
             if ( !fieldType.isPrimitive()
                     /*&& !fieldType.isArray()*/
+                    // Skip fields introduced by javascope
                     && !fieldType.toString().equals("COM.sun.suntest.javascope.database.CoverageUnit")
+                    && !field.getName().equals("js$p")
                     && !fieldType.equals(String.class)
                     && field.get(namedObj) != null) {
-                if ( field.get(namedObj).equals(field.get(namedObjClone))) {
+                if ( ((Object)field.get(namedObj)).equals((Object)field.get(namedObjClone))) {
                     // Determine what code should go in clone(W)
                     String assignment = field.getName();
                     // FIXME: extend this to more types
