@@ -199,7 +199,7 @@ public class UnitConstraints implements UnitPresentation {
     }
 
     /**
-     * @see ptolemy.data.unit.UnitPresentation#descriptiveForm()
+     * @see ptolemy.moml.unit.UnitPresentation#descriptiveForm()
      */
     public String descriptiveForm() {
         if (_constraints == null) {
