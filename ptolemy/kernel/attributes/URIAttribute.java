@@ -91,7 +91,7 @@ public class URIAttribute extends SingletonAttribute {
     ////                         public methods                    ////
 
     /** Clone the attribute into the specified workspace.  The
-     *  resulting object a null value for the value of the URI.
+     *  resulting object has a null value for the value of the URI.
 
      *  @param workspace The workspace for the cloned object.
      *  @return A new attribute.
