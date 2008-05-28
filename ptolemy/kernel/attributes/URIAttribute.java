@@ -36,6 +36,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// URIAttribute
@@ -88,6 +89,30 @@ public class URIAttribute extends SingletonAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the attribute into the specified workspace.  The
+     *  resulting object a null value for the value of the URI.
+
+     *  @param workspace The workspace for the cloned object.
+     *  @return A new attribute.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        URIAttribute newObject = (URIAttribute) super.clone(workspace);
+        // This line is not strictly necessary because the way
+        // this class is constructed means that _value will properly
+        // be set in the master and the clone.  However, for correctness,
+        // we set the new value to null.
+        // In theory, we could do something like:
+        // newObject._value = URI.create(newObject.getURI().toString());
+        // but this means that the _value field of the master and the 
+        // clone are equal(), which means that our test in Configuration
+        // indicates a problem.
+        newObject._value = null;
+        return newObject;
+    }
 
     /** Return the URI from which the specified model was read,
      *  or null if there is no such URI.

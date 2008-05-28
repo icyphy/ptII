@@ -192,10 +192,10 @@ test URIAttribute-4.2 {clone a URIAtttribute} {
     $u1 setURI [java::new java.net.URI file:///foo]
     set u2 [java::cast ptolemy.kernel.attributes.URIAttribute \
 	 [$u1 clone [java::new ptolemy.kernel.util.Workspace]]]
-    set	r1 [[$u2 getURI] toString]
+    set	r1 [java::isnull [$u2 getURI]]
     $u2 setURI [java::new java.net.URI file:///bar]
     list $r1 \
 	[[$u1 getURI] toString] \
 	[[$u2 getURI] toString]
-} {file:///foo file:///foo file:///bar}
+} {1 file:///foo file:///bar}
 
