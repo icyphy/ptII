@@ -36,6 +36,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Quantizer
@@ -109,6 +110,23 @@ public class Quantizer extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Quantizer newObject = (Quantizer) super.clone(workspace);
+
+        newObject._thresholds = new double [_thresholds.length];
+        System.arraycopy(_thresholds, 0,
+                newObject._thresholds, 0, _thresholds.length) ;
+
+        return newObject;
+    }
 
     /** If the argument is the levels parameter, check that the array
      *  is increasing and has the right dimension.  Recompute the
