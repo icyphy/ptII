@@ -33,14 +33,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -72,6 +79,13 @@ public class Room extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
+        columns = new Parameter(this, "columns");
+        String[] labels = new String[0];
+        Type[] types = new Type[0];
+        RecordType declaredType = new RecordType(labels, types);
+        columns.setTypeAtMost(declaredType);
+        columns.setExpression("{LNAME=string, DESKNO=string}");
+        
         building = new StringParameter(this, "building");
         building.setExpression("Cory");
         
@@ -82,6 +96,7 @@ public class Room extends TypedAtomicActor {
         databaseManager.setExpression("DatabaseManager");
         
         occupants = new TypedIOPort(this, "occupants", false, true);
+        occupants.setTypeAtLeast(ArrayType.arrayOf(columns));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -90,12 +105,22 @@ public class Room extends TypedAtomicActor {
     /** Name of the building. */
     public StringParameter building;
     
+    /** A record indicating what to query for.
+     *  The names of the fields are the names of the columns to
+     *  retrieve from the database, and the value of the field is
+     *  the type. This is a record that defaults to
+     *  {LNAME=string, DESKNO=int}
+     */
+    public Parameter columns;
+    
     /** Name of the DatabaseManager to use. 
      *  This defaults to "DatabaseManager".
      */
     public StringParameter databaseManager;
     
-    /** Port through which to access the occupants. */
+    /** Output port on which to send the result of a query.
+     *  This has the same type as the columns parameter.
+     */
     public TypedIOPort occupants;
 
     /** Name of the room. */
@@ -119,12 +144,12 @@ public class Room extends TypedAtomicActor {
      *  @throws IllegalActionException If the database query fails.
      */
     public ArrayToken getOccupants() throws IllegalActionException {
-        String databaseName = databaseManager.getValueAsString();
+        String databaseName = databaseManager.stringValue();
         CompositeActor container = (CompositeActor)getContainer();
         NamedObj database = container.getEntity(databaseName);
         if (!(database instanceof DatabaseManager)) {
             throw new IllegalActionException(this,
-                    "Cannot find database manager named " + databaseName);
+                    "Cannot find database manager named " + databaseName + ": got " + container);
         }
         // Prepare query.
         // FIXME: This should have more fields and should be parameterized.
@@ -140,7 +165,19 @@ SPONSORID       NUMBER(6)
 SPONSORLNAME    VARCHAR2(25)
 SPONSORFNAMES   VARCHAR2(25)
          */
-        String sqlQuery = "select personid, lname, fnames from v_spaces where trim(bldg) = ? and room = ?";
+        StringBuffer sqlQuery = new StringBuffer();
+        sqlQuery.append("select ");
+        Iterator columnsEntries = ((RecordToken)columns.getToken()).labelSet().iterator();
+        int i = 0;
+        while (columnsEntries.hasNext()) {
+            if (i++ > 0) {
+                sqlQuery.append(", ");
+            }
+            String label = (String)columnsEntries.next();
+            sqlQuery.append(label);            
+        }
+        // FIXME: The search filter should also be parameterized.
+        sqlQuery.append(" from v_spaces where trim(bldg) = ? and room = ?");
         PreparedStatement statement = null;
         ArrayList<RecordToken> occupants = new ArrayList<RecordToken>();
         /* execute query */
@@ -149,29 +186,23 @@ SPONSORFNAMES   VARCHAR2(25)
             if (connection == null) { 
                 return null;
             }
-            statement = connection.prepareStatement(sqlQuery);
+            statement = connection.prepareStatement(sqlQuery.toString());
             statement.setString(1, building.getExpression());  //1 = 1st parameter in sql string
             statement.setString(2, room.getExpression());  //2 = 2nd parameter in sql string
             ResultSet rset = statement.executeQuery();
             while (rset.next()) {
-                HashMap<String,StringToken> map = new HashMap<String,StringToken>();
-                String lastName = rset.getString("lname");
+                HashMap<String,Token> map = new HashMap<String,Token>();
+                String lastName = rset.getString("LNAME");
                 if (lastName == null) {
                     lastName = ""; // FIXME: What does this mean?
                 }
-                map.put("LastName", new StringToken(lastName));
-                String firstName = rset.getString("fnames");
-                if (firstName == null) {
-                    firstName = ""; // FIXME: What does this mean?
-                }
-                map.put("FirstName", new StringToken(firstName));
-                // FIXME: What is the column for the desk number?
-                // String desk = rset.getString("desk");
-                String desk = null;
+                map.put("LNAME", new StringToken(lastName));
+                
+                String desk = rset.getString("DESKNO");
                 if (desk == null) {
                     desk = "?"; // FIXME: What does this mean?
                 }
-                map.put("Desk", new StringToken(desk));
+                map.put("DESKNO", new StringToken(desk));
                 RecordToken token = new RecordToken(map);
                 occupants.add(token);
             }
@@ -184,9 +215,9 @@ SPONSORFNAMES   VARCHAR2(25)
                     "Failed to update room from database.");
         }
         RecordToken[] array = new RecordToken[occupants.size()];
-        int i = 0;
+        int k = 0;
         for (RecordToken recordToken : occupants) {
-            array[i++] = recordToken;
+            array[k++] = recordToken;
         }
         ArrayToken result = new ArrayToken(array);
         return result;

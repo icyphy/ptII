@@ -12,7 +12,7 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1032, 776}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1032, 766}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 659]">
     </property>
@@ -57,7 +57,7 @@
         </property>
     </entity>
     <entity name="Occupants" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: Yi&#10;?: Moskewicz&#10;?: Catanzaro&#10;?: Lee&#10;?: Mazzi&#10;?: Satish&#10;?: Hedayati&#10;?: Chong&#10;?: Sundaram&#10;?: VACANT">
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Yi&#10;2: Moskewicz&#10;3: Catanzaro&#10;4: Lee&#10;9: Mazzi&#10;8: Satish&#10;6: Hedayati&#10;5: Chong&#10;7: Sundaram&#10;10: VACANT">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 165.0]">
         </property>
@@ -93,7 +93,7 @@
         </property>
     </entity>
     <entity name="Occupants2" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: Zhu&#10;?: Wang&#10;?: Pinto&#10;?: D Angelo">
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Zhu&#10;2: Wang&#10;3: Pinto&#10;4: D Angelo">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 200.0]">
         </property>
@@ -129,7 +129,7 @@
         </property>
     </entity>
     <entity name="Occupants3" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: VACANT&#10;?: VACANT&#10;?: Matic&#10;?: Limaye">
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: VACANT&#10;2: VACANT&#10;3: Matic&#10;4: Limaye">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 100.0]">
         </property>
@@ -165,7 +165,7 @@
         </property>
     </entity>
     <entity name="Occupants4" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: Matsikoudis&#10;?: VACANT&#10;?: Feng&#10;?: Zheng">
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Matsikoudis&#10;2: VACANT&#10;3: Feng&#10;4: Zheng">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 175.0]">
         </property>
@@ -201,7 +201,7 @@
         </property>
     </entity>
     <entity name="Occupants5" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: VACANT&#10;?: Prabhu&#10;?: Wu&#10;?: VACANT">
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: VACANT&#10;2: Prabhu&#10;3: Wu&#10;4: VACANT">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 165.0]">
         </property>
@@ -237,7 +237,7 @@
         </property>
     </entity>
     <entity name="Occupants6" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: Leung&#10;?: Patel&#10;?: VACANT&#10;?: Andrade">
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Leung&#10;2: Patel&#10;3: VACANT&#10;4: Andrade">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 85.0]">
         </property>
@@ -273,7 +273,7 @@
         </property>
     </entity>
     <entity name="Occupants7" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: Elassaad&#10;?: Li&#10;?: VACANT&#10;?: VACANT&#10;?: VACANT">
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="3: Elassaad&#10;2: Li&#10;4: VACANT&#10;5: VACANT&#10;1: VACANT">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 150.0]">
         </property>
@@ -309,7 +309,7 @@
         </property>
     </entity>
     <entity name="Occupants8" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: Sun&#10;?: Mishchenko&#10;?: VACANT&#10;?: Ray">
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Sun&#10;2: Mishchenko&#10;3: VACANT&#10;4: Ray">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 70.0]">
         </property>
@@ -391,7 +391,7 @@
         </property>
     </entity>
     <entity name="Occupants11" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: VACANT&#10;?: Welp&#10;?: Lwin&#10;?: VACANT&#10;?: VACANT&#10;?: VACANT&#10;?: Yang&#10;?: VACANT&#10;?: Kumar&#10;?: McKelvin Jr&#10;?: Kitchen&#10;?: Chai&#10;?: VACANT&#10;?: Cheng&#10;?: VACANT&#10;?: VACANT&#10;?: Gebis&#10;?: Wei">
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: VACANT&#10;2: Welp&#10;3: Lwin&#10;4: VACANT&#10;5: VACANT&#10;6: VACANT&#10;7: Yang&#10;8: VACANT&#10;9: Kumar&#10;10: McKelvin Jr&#10;11: Kitchen&#10;12: Chai&#10;13: VACANT&#10;14: Cheng&#10;16: VACANT&#10;17: VACANT&#10;15: Gebis&#10;13: Wei">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 520.0]">
         </property>
@@ -463,7 +463,7 @@
         </property>
     </entity>
     <entity name="Occupants12" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: Case&#10;?: Zeng&#10;?: VACANT&#10;?: VACANT">
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Case&#10;2: Zeng&#10;4: VACANT&#10;3: VACANT">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 575.0]">
         </property>
@@ -503,7 +503,7 @@
         </property>
     </entity>
     <entity name="Occupants13" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: Roncken&#10;?: Batten&#10;?: VACANT&#10;?: Pan&#10;?: Jha&#10;?: Li&#10;?: VACANT&#10;?: Brady&#10;?: Aoki&#10;?: Liu&#10;?: Honicky">
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Roncken&#10;2: Batten&#10;3: VACANT&#10;4: Pan&#10;5: Jha&#10;6: Li&#10;7: VACANT&#10;8: Brady&#10;3: Aoki&#10;1: Liu&#10;9: Honicky">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 560.0]">
         </property>
@@ -519,7 +519,7 @@
         </property>
     </entity>
     <entity name="Occupants14" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: VACANT&#10;?: Liu&#10;?: Zou&#10;?: VACANT&#10;?: Oh&#10;?: Lickly&#10;?: VACANT&#10;?: Forbes">
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="2: VACANT&#10;3: Liu&#10;4: Zou&#10;6: VACANT&#10;7: Oh&#10;1: Lickly&#10;2: VACANT&#10;5: Forbes">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 590.0]">
         </property>

@@ -69,12 +69,13 @@ public class Occupants extends TypedAtomicActor {
         
         occupants = new TypedIOPort(this, "occupants", true, false);
         // Force the type to contain at least the required fields.
+        /*
         Parameter prototype = new Parameter(this, "prototype");
         prototype.setPersistent(false);
         prototype.setVisibility(Settable.NONE);
         prototype.setExpression("[{LastName=string}]");
         occupants.setTypeAtMost(prototype.getType());
-        
+        */
         contents = new StringParameter(this, "contents");
         // contents.setVisibility(Settable.EXPERT);
         
@@ -114,7 +115,7 @@ public class Occupants extends TypedAtomicActor {
                 if (i > 0) {
                     display.append("\n");
                 }
-                String desk = record.get("Desk").toString().trim();
+                String desk = record.get("DESKNO").toString().trim();
                 if (desk.startsWith("\"") && desk.endsWith("\"")) {
                     desk = desk.substring(1, desk.length() - 1);
                 }
@@ -123,7 +124,7 @@ public class Occupants extends TypedAtomicActor {
                 }
                 display.append(desk);
                 display.append(": ");
-                String name = record.get("LastName").toString().trim();
+                String name = record.get("LNAME").toString().trim();
                 if (name.startsWith("\"") && name.endsWith("\"")) {
                     name = name.substring(1, name.length() - 1);
                 }
