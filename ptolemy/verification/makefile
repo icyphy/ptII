@@ -33,7 +33,7 @@
 
 ME =		ptolemy/verification
 
-DIRS =		kernel gui demo
+DIRS =		kernel lib gui demo
 
 # Root of the Java directory
 ROOT =		../..
@@ -55,7 +55,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Because of size issues, we don't include demo/demo.jar in verification.jar 
 PTCLASSALLJARS = \
 	gui/gui.jar \
-	kernel/kernel.jar
+	kernel/kernel.jar \
+	lib/lib.jar
 
 # Keep this list alphabetized.
 JSRCS =
