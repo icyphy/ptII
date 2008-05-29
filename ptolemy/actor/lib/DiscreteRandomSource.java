@@ -157,6 +157,10 @@ public class DiscreteRandomSource extends RandomSource {
             throw new InternalErrorException(e);
         }
 
+        newObject._pmf = new double [_pmf.length];
+        System.arraycopy(_pmf, 0,
+                newObject._pmf, 0, _pmf.length) ;
+
         return newObject;
     }
 
