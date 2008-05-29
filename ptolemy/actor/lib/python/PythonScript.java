@@ -49,6 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
 
@@ -218,6 +219,21 @@ public class PythonScript extends TypedAtomicActor {
         }
     }
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then properly sets private variables.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        PythonScript newObject = (PythonScript) super.clone(workspace);
+
+        newObject._class = null;
+        return newObject;
+    }
+
     /** Send the message to all registered debug listeners. In the script,
      *  use <code>self.actor.debug()</code> to call this method.
      *  @param message The debug message.
@@ -372,6 +388,9 @@ public class PythonScript extends TypedAtomicActor {
     private PyObject _createObject() throws IllegalActionException {
         // create an instance by using the __call__ method
         // of the Main class object
+        if (_class == null) {
+            _class = (PyClass) _interpreter.get(_CLASS_NAME);
+        }
         PyObject object = _class.__call__();
 
         if (object == null) {
