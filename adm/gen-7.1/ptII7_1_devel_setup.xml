@@ -71,6 +71,7 @@
         <panel classname="HTMLInfoPanel"/>
         <panel classname="HTMLLicencePanel"/>
         <panel classname="TargetPanel"/> 
+        <panel classname="JDKPathPanel"/>
         <panel classname="PacksPanel"/>
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
