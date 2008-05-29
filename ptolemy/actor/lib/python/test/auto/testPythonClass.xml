@@ -13,9 +13,9 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{269.5, 278.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&#10;Norbert writes:&#10;I am seemingly getting used to the jython actor. I have now two of them.&#10;I have tried to make a class from a jython actor and to use instances in the&#10;workflow but it seems not to work: only one of them (the latest instance)&#10;works. Here is a simple pass-it-on actor made to be a class with two&#10;instances. You will see that only the second instance produces output.&#10;&#10;If you change the PN director to SDF, you get exception for the buffer size&#10;at the first instance, so it looks it is not fired by SDF at all.&#10;&#10;Do you have any idea why the &quot;classification&quot; does not work with&#10;PythonScript?&#10;&#10;Currently, I have copies of the actor in the workflow and it works that way.&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test for Actor oriented classes that use the PythonScript actor.&#10;&#10;Norbert Podhorszki writes:&#10;I am seemingly getting used to the jython actor. I have now two of them.&#10;I have tried to make a class from a jython actor and to use instances in the&#10;workflow but it seems not to work: only one of them (the latest instance)&#10;works. Here is a simple pass-it-on actor made to be a class with two&#10;instances. You will see that only the second instance produces output.&#10;&#10;If you change the PN director to SDF, you get exception for the buffer size&#10;at the first instance, so it looks it is not fired by SDF at all.&#10;&#10;Do you have any idea why the &quot;classification&quot; does not work with&#10;PythonScript?&#10;&#10;Currently, I have copies of the actor in the workflow and it works that way.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 205.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 215.0]">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -43,7 +43,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{218.0, 45.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 45.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -94,7 +94,7 @@
             <property name="id" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:class:881:1">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{68.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 170.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -102,33 +102,33 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 180.0]">
         </property>
     </entity>
     <entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 180.0]">
         </property>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 115.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{1, 2, 3, 4, 5}}}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 115.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="{168.0, 165.0}">
+        <vertex name="vertex1" value="[165.0, 170.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">

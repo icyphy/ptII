@@ -231,6 +231,8 @@ public class PythonScript extends TypedAtomicActor {
         PythonScript newObject = (PythonScript) super.clone(workspace);
 
         newObject._class = null;
+        newObject._methodMap = new HashMap();
+        newObject._object = null;
         return newObject;
     }
 
