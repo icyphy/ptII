@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Properties
+# Makefile for Java Ptolemy Data Properties Lattice
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # $Id$
 #
-# @Copyright (c) 2007-2008 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/properties
+ME =		ptolemy/data/properties/lattice
 
-DIRS = 		lattice token util
+DIRS = 		
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,16 +43,29 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	properties
+PTPACKAGE = 	lattice
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	ParseTreeASTNodeHelperCollector.java \
-	ParseTreeNodeCollector.java \
-	Property.java \
-	PropertyAttribute.java \
-	PropertyHelper.java \
-	PropertySolver.java
+	ConstraintAttribute.java \
+	ConstraintManager.java \
+	InequalitySolver.java \
+	LatticeProperty.java \
+	LogicalAND_Forward_CS.java \
+	MeetFunction.java \
+	PropertyConstraintASTNodeHelper.java \
+	PropertyConstraintAttribute.java \
+	PropertyConstraintCompositeHelper.java \
+	PropertyConstraintFSMHelper.java \
+	PropertyConstraintHelper.java \
+	PropertyConstraintSolver.java \
+	PropertyLattice.java \
+	PropertyTerm.java \
+	PropertyTermFactory.java \
+	PropertyTermManager.java \
+	PropertyTermPartialEvaluator.java \
+	TypeProperty.java \
+	TypeSystemCCS.java
 
 EXTRA_SRCS =	$(JSRCS)
 

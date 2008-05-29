@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Properties
+# Makefile for Java Ptolemy Data Properties token
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # $Id$
 #
-# @Copyright (c) 2007-2008 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/properties
+ME =		ptolemy/data/properties/token
 
-DIRS = 		lattice token util
+DIRS = 		
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,16 +43,23 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	properties
+PTPACKAGE = 	token
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	ParseTreeASTNodeHelperCollector.java \
-	ParseTreeNodeCollector.java \
-	Property.java \
-	PropertyAttribute.java \
-	PropertyHelper.java \
-	PropertySolver.java
+	FirstValuePTS.java \
+	PropertyCombineCompositeHelper.java \
+	PropertyCombineFSMHelper.java \
+	PropertyCombineHelper.java \
+	PropertyCombineParseTreeEvaluator.java \
+	PropertyCombineSolver.java \
+	PropertyToken.java \
+	PropertyTokenASTNodeHelper.java \
+	PropertyTokenAttribute.java \
+	PropertyTokenCompositeHelper.java \
+	PropertyTokenFSMHelper.java \
+	PropertyTokenHelper.java \
+	PropertyTokenSolver.java
 
 EXTRA_SRCS =	$(JSRCS)
 
