@@ -27,7 +27,7 @@
  */
 package ptolemy.domains.space;
 
-import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Region extends CompositeActor {
+public class Region extends TypedCompositeActor {
 
     /** Construct an actor in the given workspace.
      *  @param workspace The workspace.

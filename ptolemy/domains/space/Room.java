@@ -34,9 +34,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
@@ -44,6 +44,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// Room
@@ -57,7 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Room extends AtomicActor {
+public class Room extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -77,8 +78,10 @@ public class Room extends AtomicActor {
         room = new StringParameter(this, "room");
         room.setExpression("545Q");
         
-        occupants = new IOPort(this, "occupants", true, false);
-        occupants.setMultiport(true);
+        databaseManager = new StringParameter(this, "databaseManager");
+        databaseManager.setExpression("DatabaseManager");
+        
+        occupants = new TypedIOPort(this, "occupants", false, true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -87,8 +90,13 @@ public class Room extends AtomicActor {
     /** Name of the building. */
     public StringParameter building;
     
+    /** Name of the DatabaseManager to use. 
+     *  This defaults to "DatabaseManager".
+     */
+    public StringParameter databaseManager;
+    
     /** Port through which to access the occupants. */
-    public IOPort occupants;
+    public TypedIOPort occupants;
 
     /** Name of the room. */
     public StringParameter room;
@@ -96,23 +104,48 @@ public class Room extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    /** Read the occupants from the database and produce them on the output
+     *  port.
+     *  @throws IllegalActionException If the database query fails.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+        ArrayToken result = getOccupants();
+        occupants.send(0, result);
+    }
+    
     /** Return an array of RecordToken, one for each occupant of the room.
      *  @return An array of RecordToken, or null if there is no database update.
+     *  @throws IllegalActionException If the database query fails.
      */
-    public ArrayToken occupants() throws IllegalActionException {
-        Director director = getDirector();
-        if (!(director instanceof DatabaseDirector)) {
+    public ArrayToken getOccupants() throws IllegalActionException {
+        String databaseName = databaseManager.getValueAsString();
+        CompositeActor container = (CompositeActor)getContainer();
+        NamedObj database = container.getEntity(databaseName);
+        if (!(database instanceof DatabaseManager)) {
             throw new IllegalActionException(this,
-                    "Must be used with an instance of DatabaseDirector");
+                    "Cannot find database manager named " + databaseName);
         }
         // Prepare query.
         // FIXME: This should have more fields and should be parameterized.
+        /* Relevant column names:
+BLDG            CHAR(10)   
+ROOM            VARCHAR2(10)
+SPACEID         NUMBER(6)  
+DESKNO          NUMBER(3)  
+PERSONID        NUMBER(6)  
+LNAME           VARCHAR2(25)
+FNAMES          VARCHAR2(25)
+SPONSORID       NUMBER(6)  
+SPONSORLNAME    VARCHAR2(25)
+SPONSORFNAMES   VARCHAR2(25)
+         */
         String sqlQuery = "select personid, lname, fnames from v_spaces where trim(bldg) = ? and room = ?";
         PreparedStatement statement = null;
         ArrayList<RecordToken> occupants = new ArrayList<RecordToken>();
         /* execute query */
         try {
-            Connection connection = ((DatabaseDirector)director).getConnection();
+            Connection connection = ((DatabaseManager)database).getConnection();
             if (connection == null) { 
                 return null;
             }

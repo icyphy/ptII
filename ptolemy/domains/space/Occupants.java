@@ -27,17 +27,16 @@
  */
 package ptolemy.domains.space;
 
-import java.util.Iterator;
-
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.RecordToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.BoxedValueIcon;
@@ -46,7 +45,7 @@ import ptolemy.vergil.icon.BoxedValueIcon;
 //// Occupants
 
 /**
- A Occupants.
+ A Occupants display actor.
 
  @author Edward A. Lee
  @version $Id$
@@ -54,7 +53,7 @@ import ptolemy.vergil.icon.BoxedValueIcon;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Occupants extends AtomicActor {
+public class Occupants extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -68,7 +67,13 @@ public class Occupants extends AtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
-        occupants = new IOPort(this, "occupants", false, true);
+        occupants = new TypedIOPort(this, "occupants", true, false);
+        // Force the type to contain at least the required fields.
+        Parameter prototype = new Parameter(this, "prototype");
+        prototype.setPersistent(false);
+        prototype.setVisibility(Settable.NONE);
+        prototype.setExpression("[{LastName=string}]");
+        occupants.setTypeAtMost(prototype.getType());
         
         contents = new StringParameter(this, "contents");
         // contents.setVisibility(Settable.EXPERT);
@@ -82,8 +87,10 @@ public class Occupants extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
-    /** Port through which to access the occupants of a Room. */
-    public IOPort occupants;
+    /** Port that receives the occupants of a Room.
+     *  The type is an array of records.
+     */
+    public TypedIOPort occupants;
     
     /** Parameter to store the occupants. */
     public StringParameter contents;
@@ -98,51 +105,38 @@ public class Occupants extends AtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        // The only port is occupants, so we just use that.
-        Iterator sinks = occupants.sinkPortList().iterator();
-        while (sinks.hasNext()) {
-            IOPort remotePort = (IOPort)sinks.next();
-            NamedObj remoteActor = remotePort.getContainer();
-            if (remoteActor instanceof Room) {
-                // FIXME: We want to parameterize what is shown.
-                // For now, we just pick the last name.
-                ArrayToken array = ((Room)remoteActor).occupants();
-                // Return value is null if database update fails or
-                // is canceled. Have to ensure other actors don't fire.
-                // FIXME: Throwing an exception is not very friendly.
-                if (array == null) {
-                    throw new IllegalActionException(this, "Update canceled.");
+        // FIXME: We want to parameterize what is shown.
+        if (occupants.hasToken(0)) {
+            ArrayToken array = (ArrayToken)occupants.get(0);
+            StringBuffer display = new StringBuffer();
+            for (int i = 0; i < array.length(); i++) {
+                RecordToken record = (RecordToken)array.getElement(i);
+                if (i > 0) {
+                    display.append("\n");
                 }
-                StringBuffer display = new StringBuffer();
-                for (int i = 0; i < array.length(); i++) {
-                    RecordToken record = (RecordToken)array.getElement(i);
-                    if (i > 0) {
-                        display.append("\n");
-                    }
-                    String desk = record.get("Desk").toString().trim();
-                    if (desk.startsWith("\"") && desk.endsWith("\"")) {
-                        desk = desk.substring(1, desk.length() - 1);
-                    }
-                    if (desk.trim().equals("")) {
-                        desk = "?";
-                    }
-                    display.append(desk);
-                    display.append(": ");
-                    String name = record.get("LastName").toString().trim();
-                    if (name.startsWith("\"") && name.endsWith("\"")) {
-                        name = name.substring(1, name.length() - 1);
-                    }
-                    if (name.trim().equals("")) {
-                        name = "VACANT";
-                    }
-                    display.append(name);
+                String desk = record.get("Desk").toString().trim();
+                if (desk.startsWith("\"") && desk.endsWith("\"")) {
+                    desk = desk.substring(1, desk.length() - 1);
                 }
-                String moml = "<property name=\"contents\" value=\""
-                    + StringUtilities.escapeForXML(display.toString())
-                    + "\"/>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
-                requestChange(request);
+                if (desk.trim().equals("")) {
+                    desk = "?";
+                }
+                display.append(desk);
+                display.append(": ");
+                String name = record.get("LastName").toString().trim();
+                if (name.startsWith("\"") && name.endsWith("\"")) {
+                    name = name.substring(1, name.length() - 1);
+                }
+                if (name.trim().equals("")) {
+                    name = "VACANT";
+                }
+                display.append(name);
             }
+            String moml = "<property name=\"contents\" value=\""
+                + StringUtilities.escapeForXML(display.toString())
+                + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
+            requestChange(request);
         }
     }
 }

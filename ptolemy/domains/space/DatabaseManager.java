@@ -34,7 +34,7 @@ import java.sql.SQLException;
 import javax.swing.JFrame;
 
 import oracle.jdbc.OracleDriver;
-import ptolemy.actor.Director;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
@@ -47,12 +47,14 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// DatabaseDirector
+//// DatabaseManager
 
 /**
- A DatabaseDirector. When executed, this director opens a connection
- to the specified database and invokes the fire() method of all actors
- in the order of their creation.
+ A DatabaseManager. When preinitialized, this actor opens a connection
+ to the specified database. When wrapup() is called, it closes the
+ connection. A user of this class can also separately call getConnection()
+ to open a connection, but then that user must also call closeConnection()
+ when finished.
 
  @author Edward A. Lee
  @version $Id$
@@ -60,7 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class DatabaseDirector extends Director {
+public class DatabaseManager extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -70,7 +72,7 @@ public class DatabaseDirector extends Director {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DatabaseDirector(CompositeEntity container, String name)
+    public DatabaseManager(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
@@ -108,17 +110,26 @@ public class DatabaseDirector extends Director {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+        if (attribute == database || attribute == userName) {
+            closeConnection();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+    
+    /** Close the connection to the database, if one is open.
+     *  @throws IllegalActionException If closing the connection fails.
+     */
+    public void closeConnection() throws IllegalActionException {
+        // If updating the database, need to commit or roll back here.
         if (_connection != null) {
-            if (attribute == database || attribute == userName) {
-                try {
-                    // If updating the database, need to commit or roll back here.
-                    _connection.close();
-                    _connection = null;
-                } catch (SQLException e) {
-                    throw new IllegalActionException(this, e,
-                            "Failed to close open database connection.");
-                }
+            try {
+                _connection.close();
+            } catch (SQLException e) {
+                throw new IllegalActionException(this, e,
+                "Failed to close the database connection.");
             }
+            _connection = null;
         }
     }
 
@@ -179,13 +190,18 @@ public class DatabaseDirector extends Director {
         return _connection;
     }
 
-    /** Return false, indicating that no more iterations are needed.
-     *  @return True to continue execution, and false otherwise.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Open a connection to the database, if one is not already open,
+     *  prompting the user for a password. If the user declines to
+     *  provide the password (by clicking Cancel on the dialog box),
+     *  then request that execution be stopped.
+     *  @exception IllegalActionException If opening the database fails.
      */
-    public boolean postfire() throws IllegalActionException {
-        super.postfire();
-        return false;
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        getConnection();
+        if (_connection == null) {
+            getDirector().stop();
+        }
     }
 
     /** Close the connection to the database, if it is open.
@@ -197,14 +213,7 @@ public class DatabaseDirector extends Director {
         try {
             super.wrapup();
         } finally {
-            if (_connection != null) {
-                try {
-                    _connection.close();
-                } catch (SQLException e) {
-                    throw new IllegalActionException(this, e,
-                            "Failed to close database connection");
-                }
-            }
+            closeConnection();
         }
     }
 
