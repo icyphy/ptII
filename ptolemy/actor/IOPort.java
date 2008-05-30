@@ -888,10 +888,14 @@ public class IOPort extends ComponentPort {
         return retArray;
     }
 
-    /** Return the channel number for the specified receiver.
-     *  @param receiver A receiver in this port.
-     *  @return The channel number for the receiver.
-     *  @exception IllegalActionException If the receiver is not in the port.
+    /** Return the corresponding channel in this port for the given receiver.
+     *  The given receiver may be contained by this port or a port that is
+     *  connected to this port. 
+     *  @param receiver A receiver that is contained in this port or 
+     *   connected to another receiver contained in this port.
+     *  @return The corresponding channel for the receiver.
+     *  @exception IllegalActionException If the given receiver does not 
+     *   take part in any connections pertaining to this port.
      */
     public int getChannelForReceiver(Receiver receiver)
             throws IllegalActionException {
@@ -903,7 +907,6 @@ public class IOPort extends ComponentPort {
         } else {
             receivers = getRemoteReceivers();
         }
-        
 
         for (int channel = 0; channel < receivers.length; channel++) {
             if (receivers[channel] != null) {
@@ -916,8 +919,8 @@ public class IOPort extends ComponentPort {
         }
 
         throw new IllegalActionException(this,
-                "Attempt to get a channel number of receiver that"
-                        + " does not belong to this port.");
+                "Attempt to get a channel for a receiver that"
+                        + " is not related to this port.");
     }
 
     /** Call the {@link #getModelTime} method and return a double
