@@ -80,7 +80,8 @@ OTHER_FILES_TO_BE_JARED = \
 	whatsNew5.0.htm \
 	whatsNew5.1.htm \
 	whatsNew6.0.htm \
-	whatsNew7.0.htm
+	whatsNew7.0.htm \
+	whatsNew8.0.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
