@@ -93,6 +93,7 @@ OPTIONAL_FILES = \
 	doc \
 	demo \
 	test \
+	unit \
 	$(PTCLASSJAR) \
 	'Documentation$$1.class' \
 	'MoMLParser$$1.class' \
