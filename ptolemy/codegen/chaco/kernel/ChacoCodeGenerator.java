@@ -62,6 +62,7 @@ import ptolemy.kernel.util.StringAttribute;
 ////ChacoCodeGenerator
 
 /** Base class for Chaco code generator.
+ *  FIXME: What is the Chaco code generator?
  *
  *  @author Jia Zou, Isaac Liu, Man-Kit Leung
  *  @version $Id$
