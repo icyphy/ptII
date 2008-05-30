@@ -137,10 +137,11 @@ OPTIONAL_FILES = \
 	'Top$$8.class' \
 	'Top$$9.class' \
 	'Top$$FileMenuListener.class' \
-	'Top$$HelpMenuListener.class'
+	'Top$$HelpMenuListener.class' \
+	'UndoListener$$RedoAction.class' \
+	'UndoListener$$UndoAction.class
 
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass $(PTCLASSJAR)
