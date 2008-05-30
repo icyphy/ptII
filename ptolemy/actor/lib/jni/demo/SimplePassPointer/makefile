@@ -48,7 +48,10 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	SimplePassPointer.xml
+	SimplePassPointerWithECFA.xml \
+	SimplePassPointer.xml \
+	codeForSimplePassPointerWithECFA.c \
+	mallocCode.c
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
