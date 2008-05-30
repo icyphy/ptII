@@ -29,29 +29,22 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
-import java.io.Reader;
-import java.io.StringReader;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.data.*;
+import ptolemy.math.Complex;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Collections;
 import java.util.StringTokenizer;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.ComplexToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.FloatToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.LongToken;
-import ptolemy.data.PetiteToken;
-import ptolemy.data.ShortToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.UnsignedByteToken;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.math.Complex;
+import java.io.*;
 
 //////////////////////////////////////////////////////////////////////
 //// PTParser.jjt
@@ -378,7 +371,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             registerFunctionClass("ptolemy.data.RecordToken");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
             registerFunctionClass("ptolemy.data.expr.FixPointFunctions");
-            registerFunctionClass("ptolemy.data.ObjectToken");
             registerFunctionClass("ptolemy.math.Complex");
             registerFunctionClass("ptolemy.math.ExtendedMath");
             registerFunctionClass("ptolemy.math.IntegerMatrixMath");
@@ -391,6 +383,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             registerFunctionClass("ptolemy.math.LongArrayMath");
             registerFunctionClass("ptolemy.math.SignalProcessing");
             registerFunctionClass("ptolemy.math.FixPoint");
+            registerFunctionClass("ptolemy.data.ObjectToken");
         }
     }
 
