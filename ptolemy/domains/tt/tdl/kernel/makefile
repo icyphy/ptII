@@ -57,6 +57,7 @@ JSRCS = \
 	TDLModeException.java \
 	TDLModeSchedule.java \
 	TDLModeScheduler.java \
+	TDLModeSchedulerException.java \
 	TDLModule.java \
 	TDLModuleDirector.java \
 	TDLReceiver.java \
@@ -66,7 +67,11 @@ JSRCS = \
 	TDLTaskOutputPort.java \
 	TDLTransition.java 
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	tdlentities.xml \
+	TDLModeIcon.xml 
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -75,7 +80,9 @@ MISC_FILES =	$(DIRS) #test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'TDLCodeGenerator$$TDLEditorFactory.class' \
+	'TDLModule$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
