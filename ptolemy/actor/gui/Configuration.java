@@ -811,6 +811,8 @@ public class Configuration extends CompositeEntity implements
             throws CloneNotSupportedException, IllegalAccessException, ClassNotFoundException {
         NamedObj namedObjClone = (NamedObj) namedObj.clone(new Workspace());
 
+        StringBuffer results = new StringBuffer();
+
         Class namedObjClass = namedObj.getClass();
         // We check only the fields declared in this class.  
         // FIXME: should we check all fields?
@@ -820,7 +822,6 @@ public class Configuration extends CompositeEntity implements
             // Tell the security manager we want to read private fields.
             // This will fail in an applet.
             field.setAccessible(true);
-            //if (Modifier.isPrivate(field.getModifiers())) {
             Class fieldType = field.getType();
             if ( !fieldType.isPrimitive()
                     /*&& !fieldType.isArray()*/
@@ -830,6 +831,7 @@ public class Configuration extends CompositeEntity implements
                     && !fieldType.equals(String.class)
                     && field.get(namedObj) != null) {
                 if ( ((Object)field.get(namedObj)).equals((Object)field.get(namedObjClone))) {
+
                     // Determine what code should go in clone(W)
                     String assignment = field.getName();
                     // FIXME: extend this to more types
@@ -844,7 +846,7 @@ public class Configuration extends CompositeEntity implements
                             + assignment;
                     }
                     
-                    return "The " + field.getName()
+                    results.append("The " + field.getName()
                             + " " + field.getType().getName()
                             + " field the clone of \""
                             + namedObjClass.getName()
@@ -856,12 +858,11 @@ public class Configuration extends CompositeEntity implements
                             + field.getName() + " = ("
                             + namedObjClass.getName() 
                             + ")newObject" + assignment
-                            + ";\n";
-               //}
+                            + ";\n");
                 }
             }
         }
-        return "";
+        return results.toString();
     }    
 
     /** Return an identifier for the specified effigy based on its
