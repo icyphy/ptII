@@ -9,7 +9,7 @@ for ($actorSymbol(j) = 0; $actorSymbol(j) < $length; $actorSymbol(j)++) {
     Array_set($actorSymbol(valueArray),$actorSymbol(j),
             Int_new($actorSymbol(initialOutputsArray)[$actorSymbol(j)]));
 }
-$ref(output, j) = $actorSymbol(valueArray);
+$ref(output, $actorSymbol(j)) = $actorSymbol(valueArray);
 /**/
 
 /***initProductionBlock($offset)***/
