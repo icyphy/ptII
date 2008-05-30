@@ -847,22 +847,30 @@ public class Configuration extends CompositeEntity implements
                     } else if (Class.forName("ptolemy.kernel.util.Attribute").isAssignableFrom(fieldType)) { 
                         assignment = ".getAttribute(\"" + assignment + "\")";
                     } else {
-                        assignment = " /* Get the object method "
+                        assignment = "\n\t/* Get the object method "
                             + "or null?  */ "
                             + assignment;
                     }
                     
+                    String shortClassName = field.getType().getName()
+                        .substring(
+                                field.getType().getName().lastIndexOf(".")
+                                + 1); 
+
                     results.append( "The " + field.getName()
                             + " " + field.getType().getName()
-                            + " field the clone of \""
+                            + " field"
+                            + "\n\tin the clone of \""
                             + namedObjClass.getName()
-                            + "\" does not point to an "
+                            + "\"\n\tdoes not point to an "
                             + "object distinct from the "
-                            + "master.  The clone(Workspace) "
+                            + "master.  \n\tThis may cause problems with "
+                            + "actor oriented classes."
+                            + "\n\tThe clone(Workspace) "
                             + "method should have a line "
                             + "like:\n newObject."
                             + field.getName() + " = ("
-                            + namedObjClass.getName() 
+                            + shortClassName
                             + ")newObject" + assignment
                             + ";\n");
                 }
