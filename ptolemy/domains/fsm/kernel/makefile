@@ -61,6 +61,7 @@ JSRCS = \
 	ChoiceAction.java \
 	CommitAction.java \
 	CommitActionsAttribute.java \
+	ContainmentExtender.java \
 	FSMActor.java \
 	FSMDirector.java \
 	FunctionDependencyOfFSMActor.java \
