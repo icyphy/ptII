@@ -44,7 +44,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	javasound
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
@@ -65,6 +64,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	AudioCaptureIcon.xml \
 	AudioPlayerIcon.xml \
+	gong.wav \
 	javasound.xml \
 	voice.wav
 
