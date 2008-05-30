@@ -206,6 +206,7 @@ EXTRA_SRCS = \
 	HyVisualSplash.gif \
 	PDF.gif \
 	Postscript.gif \
+	PtolemyIICD.ec3 \
 	PtolemyIIIcon.gif \
 	PtolemyIISmallIcon.gif \
         PtolemyIISplash.gif \
