@@ -56,6 +56,7 @@ TCL_SRCS = \
 	jdktools.tcl \
 	lcompare.tcl \
 	models.tcl \
+	properties.tcl \
 	removeGraphicalClasses.tcl \
 	tclshrc.tcl \
 	testDefs.tcl \
