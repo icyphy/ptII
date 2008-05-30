@@ -139,7 +139,7 @@ OPTIONAL_FILES = \
 	'Top$$FileMenuListener.class' \
 	'Top$$HelpMenuListener.class' \
 	'UndoListener$$RedoAction.class' \
-	'UndoListener$$UndoAction.class
+	'UndoListener$$UndoAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
