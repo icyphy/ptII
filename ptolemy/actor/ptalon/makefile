@@ -56,6 +56,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	AbstractPtalonEvaluator.java \
 	NamedTree.java \
 	PtalonActor.java \
 	PtalonAST.java \
@@ -73,6 +74,9 @@ JSRCS = \
 	PtalonScopeException.java \
 	PtalonTokenTypes.java \
 	Tester.java
+
+OTHER_FILES_TO_BE_JARED = \
+	ptalon-copyright.html
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
 	PtalonLexer.smap \
@@ -104,6 +108,8 @@ MISC_FILES =	doc lib test
 
 OPTIONAL_FILES =  \
 	doc \
+	demo \
+	bugs \
 	$(OPTIONAL_JSRCS) \
 	'PtalonEvaluator$$ActorTree.class'
 
