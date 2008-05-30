@@ -85,7 +85,7 @@ test UpdateAnnotation-1.1 {Fix an old style annotation} {
     $parser setMoMLFilters [java::null]
 
     $parser addMoMLFilter \
-	[java::new ptolemy.moml.filter.UpdateAnnotations]
+	[java::new ptolemy.kernel.attributes.UpdateAnnotations]
 
     set toplevel [$parser parse $annotationMoML]
     set newMoML [$toplevel exportMoML]
@@ -164,7 +164,7 @@ test UpdateAnnotation-1.2 {Fix an old style author annotation} {
     $parser setMoMLFilters [java::null]
 
     $parser addMoMLFilter \
-	[java::new ptolemy.moml.filter.UpdateAnnotations]
+	[java::new ptolemy.kernel.attributes.UpdateAnnotations]
 
     set toplevel [$parser parse $authorMoML]
     set newMoML [$toplevel exportMoML]
