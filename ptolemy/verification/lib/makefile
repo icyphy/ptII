@@ -49,7 +49,9 @@ JSRCS = \
 	BoundedBufferNondeterministicDelay.java \
 	BoundedBufferTimedDelay.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	BoundedBufferNondeterministicDelayIcon.xml \
+	BoundedBufferTimedDelayIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
