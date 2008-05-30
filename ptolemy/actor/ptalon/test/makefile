@@ -79,7 +79,22 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 	SeriesOfScales.ptln \
 	ThisTest.ptln \
 	adder \
-	test.xml #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+	AlternateAdd.xml \
+	Combine.xml \
+	Encapsulator.xml \
+	IterativeParallel.xml \
+	IterativeSeries.xml \
+	Link.xml \
+	MultiInputAdder.xml \
+	NamingTest.xml \
+	NestedForTest.xml \
+	Parallel.xml \
+	ScopeTest.xml \
+	Series.xml \
+	SeriesOfScales.xml \
+	ThisTest.xml \
+	test.xml \
+	#$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
