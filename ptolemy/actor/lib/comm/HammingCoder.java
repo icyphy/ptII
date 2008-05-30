@@ -37,6 +37,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// HammingCoder
@@ -166,6 +167,21 @@ public class HammingCoder extends Transformer {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) 
+            throws CloneNotSupportedException {
+        HammingCoder newObject = (HammingCoder) super.clone(workspace);
+
+        newObject._inputRate = (Parameter) newObject.input.getAttribute("tokenConsumptionRate");
+        newObject._outputRate = (Parameter) newObject.output.getAttribute("tokenProductionRate");
+        return newObject;
     }
 
     /** If the attributes has changed, check the validity of
