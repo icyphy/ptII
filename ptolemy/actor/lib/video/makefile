@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001-2008 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/video
 
-DIRS = 		test
+DIRS = 		demo
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -44,7 +44,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	video
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
@@ -53,12 +52,11 @@ JSRCS = \
 	DCT4x4dc.java \
 	IDCT4x4dc.java \
 	DCT8x8.java \
-	IDCT8x8.java 
-
+	IDCT8x8.java \
+	SumofAbsoluteDifferences.java
 
 OTHER_FILES_TO_BE_JARED = \
-	generic.xml \
-	image.xml
+	videoprocessing.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -69,15 +67,12 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR) \
-	
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
