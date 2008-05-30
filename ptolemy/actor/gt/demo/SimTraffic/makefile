@@ -51,7 +51,13 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	SimTraffic.xml
+	CarLight.xml \
+	CarLightNormal.xml \
+	Decoder.xml \
+	ErrorGenerator.xml \
+	Intersections.xml \
+	PedestrianLight.xml \
+	PedestrianLightNormal.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
