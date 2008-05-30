@@ -55,6 +55,7 @@ JSRCS = \
 	ComponentCodeGenerator.java \
 	Director.java \
 	ParseTreeCodeGenerator.java \
+	PortCodeGenerator.java \
 	StaticSchedulingCodeGenerator.java
 
 OTHER_FILES_TO_BE_JARED =
