@@ -824,13 +824,19 @@ public class Configuration extends CompositeEntity implements
             field.setAccessible(true);
             Class fieldType = field.getType();
             if ( !fieldType.isPrimitive()
+                    && field.get(namedObj) != null
+                    && !Modifier.isStatic(field.getModifiers())
                     /*&& !fieldType.isArray()*/
                     // Skip fields introduced by javascope
                     && !fieldType.toString().equals("COM.sun.suntest.javascope.database.CoverageUnit")
                     && !field.getName().equals("js$p")
-                    && !fieldType.equals(String.class)
-                    && field.get(namedObj) != null) {
-                if ( ((Object)field.get(namedObj)).equals((Object)field.get(namedObjClone))) {
+                    && !fieldType.equals(String.class)) {
+
+                // If an object is equal and the default hashCode() from
+                // Object is the same, then we have a problem.
+                if ( ((Object)field.get(namedObj)).equals((Object)field.get(namedObjClone))
+                        && (System.identityHashCode(field.get(namedObj)) 
+                                == System.identityHashCode(field.get(namedObjClone)))) {
 
                     // Determine what code should go in clone(W)
                     String assignment = field.getName();
@@ -846,7 +852,7 @@ public class Configuration extends CompositeEntity implements
                             + assignment;
                     }
                     
-                    results.append("The " + field.getName()
+                    results.append( "The " + field.getName()
                             + " " + field.getType().getName()
                             + " field the clone of \""
                             + namedObjClass.getName()
