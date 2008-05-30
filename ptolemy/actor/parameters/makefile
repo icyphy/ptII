@@ -71,7 +71,8 @@ MISC_FILES = test
 OPTIONAL_FILES = \
 	demo \
 	'SharedParameter$$1.class' \
-	'SharedParameter$$SharedParameterRegistry.class
+	'SharedParameter$$SharedParameterRegistry.class'
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
