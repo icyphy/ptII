@@ -157,9 +157,21 @@ public class DiscreteRandomSource extends RandomSource {
             throw new InternalErrorException(e);
         }
 
-        newObject._pmf = new double [_pmf.length];
-        System.arraycopy(_pmf, 0,
-                newObject._pmf, 0, _pmf.length) ;
+        // Copy the array _pmf
+        newObject._pmf = null;
+        try {
+            ArrayToken pmfValue = (ArrayToken) pmf.getToken();
+            newObject._pmf = new double[pmfValue.length()];
+        } catch (IllegalActionException ex) {
+            CloneNotSupportedException exception = new CloneNotSupportedException();
+            exception.initCause(ex);
+            throw exception;
+        }
+
+        if (_pmf != null ) {
+            System.arraycopy(_pmf, 0,
+                    newObject._pmf, 0, _pmf.length) ;
+        }
 
         return newObject;
     }
