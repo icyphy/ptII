@@ -32,7 +32,7 @@
 ME =		ptolemy/moml
 
 # $PTII/configure looks for JXTA and sets PTJXTA_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTJXTA_DIR is empty.
+# $PTII/mk/ptII.mk if it was found.  Otherowise, PTJXTA_DIR is empty.
 DIRS = 		demo filter $(PTJXTA_DIR) unit test
 
 # Root of the Java directory
