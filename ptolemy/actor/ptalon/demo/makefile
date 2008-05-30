@@ -32,7 +32,8 @@ ME =		ptolemy/actor/ptalon/demo
 
 # Keep these alphabetical please.
 DIRS = 		CruiseControl EightChannelFFT GameOfLife \
-		MapReduce ModelChange MultipleNodes SmallWorld Unicycle
+		MapReduce ModelChange MultipleNodes SmallWorld Unicycle \
+		ptinyos
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
