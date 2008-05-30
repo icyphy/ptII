@@ -1655,3 +1655,59 @@ test IOPort-21.4 {test insideSourcePortList} {
     set d1 [java::new ptolemy.actor.Director $e1 D1]
     list [listToFullNames [$p0 insideSinkPortList]] [listToFullNames [$p0 insideSourcePortList]] [listToFullNames [$p1 insideSinkPortList]] [listToFullNames [$p1 insideSourcePortList]]
 } {{} .E0.E1.P1 {} .E0.E1.E2.P2}
+
+test IOPort-22.1 {test getChannelForReceiver} {
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    $e0 setName E0
+
+    set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
+    set e2 [java::new ptolemy.actor.AtomicActor $e0 E2]
+    set p1 [java::new ptolemy.actor.IOPort $e1 P1]
+    set p2 [java::new ptolemy.actor.IOPort $e1 P2]
+    set p3 [java::new ptolemy.actor.IOPort $e2 P3]
+    $p1 setMultiport true
+    $p2 setMultiport true
+    $p3 setMultiport true
+    $p1 setOutput true
+    $p2 setOutput true
+    $p3 setInput true
+
+    set r1 [java::cast ptolemy.actor.IORelation [$e0 connect $p1 $p3]]
+    $r1 setWidth 3
+    set r2 [java::cast ptolemy.actor.IORelation [$e0 connect $p2 $p3]]
+    $r2 setWidth 4
+
+    $director preinitialize
+    set p1Rcvrs [$p1 getRemoteReceivers]
+
+    list [$p3 getChannelForReceiver [[$p1Rcvrs get 0] get 0]] \
+    [$p3 getChannelForReceiver [[$p1Rcvrs get 1] get 0]] \
+    [$p3 getChannelForReceiver [[$p1Rcvrs get 2] get 0]]
+    
+} {0 1 2}
+
+test IOPort-22.2 {test getChannelForReceiver} {
+    # NOTE: Uses setup in previous test.
+    set p2Rcvrs [$p2 getRemoteReceivers]
+    list [$p3 getChannelForReceiver [[$p2Rcvrs get 0] get 0]] \
+    [$p3 getChannelForReceiver [[$p2Rcvrs get 1] get 0]] \
+    [$p3 getChannelForReceiver [[$p2Rcvrs get 2] get 0]] \
+    [$p3 getChannelForReceiver [[$p2Rcvrs get 3] get 0]]
+    
+} {3 4 5 6}
+
+test IOPort-22.3 {test getChannelForReceiver} {
+    # NOTE: Uses setup in previous test.
+    set p3Rcvrs [$p3 getReceivers]
+    
+    list [$p1 getChannelForReceiver [[$p3Rcvrs get 0] get 0]] \
+    [$p1 getChannelForReceiver [[$p3Rcvrs get 1] get 0]] \
+    [$p1 getChannelForReceiver [[$p3Rcvrs get 2] get 0]] \
+    [$p2 getChannelForReceiver [[$p3Rcvrs get 3] get 0]] \
+    [$p2 getChannelForReceiver [[$p3Rcvrs get 4] get 0]] \
+    [$p2 getChannelForReceiver [[$p3Rcvrs get 5] get 0]] \
+    [$p2 getChannelForReceiver [[$p3Rcvrs get 6] get 0]]
+    
+} {0 1 2 0 1 2 3}
