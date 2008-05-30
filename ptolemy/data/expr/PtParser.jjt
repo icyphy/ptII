@@ -395,6 +395,7 @@ public class PtParser {
             registerFunctionClass("ptolemy.math.LongArrayMath");
             registerFunctionClass("ptolemy.math.SignalProcessing");
             registerFunctionClass("ptolemy.math.FixPoint");
+            registerFunctionClass("ptolemy.data.ObjectToken");
         }
     }
     
