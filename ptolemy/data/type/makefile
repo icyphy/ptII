@@ -141,6 +141,7 @@ OPTIONAL_FILES = \
 	'BaseType$$XmlTokenType.class' \
 	'FunctionType$$1.class' \
 	'FunctionType$$FieldTypeTerm.class' \
+	'ObjectType$$BottomClass.class' \
 	'SizedMatrixType$$BooleanMatrixType.class' \
 	'SizedMatrixType$$ComplexMatrixType.class' \
 	'SizedMatrixType$$DoubleMatrixType.class' \
