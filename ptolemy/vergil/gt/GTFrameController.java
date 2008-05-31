@@ -148,8 +148,7 @@ public class GTFrameController implements ChangeListener, KeyListener {
     }
 
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE
-                || e.getKeyCode() == (KeyEvent.VK_ALT | KeyEvent.VK_S)) {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             e.consume();
             _frame.cancelFullScreen();
         }
