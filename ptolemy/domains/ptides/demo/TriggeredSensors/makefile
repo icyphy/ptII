@@ -48,10 +48,10 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	TriggerdSensors.xml 
+	TriggeredSensors.xml 
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 
 # Sources that may or may not be present, but if they are present, we don't
