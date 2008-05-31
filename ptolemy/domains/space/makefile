@@ -54,12 +54,14 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	DatabaseDirector.java \
+	DatabaseManager.java \
 	Occupants.java \
 	Region.java \
 	Room.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ojdbc-copyright.htm
+	ojdbc-copyright.htm \
+	ojdbc6.jar
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
