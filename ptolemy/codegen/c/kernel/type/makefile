@@ -63,10 +63,11 @@ OTHER_FILES_TO_BE_JARED = \
 	Int.c \
 	Long.c \
 	Matrix.c \
-	String.c
+	Pointer.c \
+	String.c \
+	UnsignedByte.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
