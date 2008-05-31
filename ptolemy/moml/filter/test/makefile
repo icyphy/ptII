@@ -56,8 +56,6 @@ JSIMPLE_TESTS = \
 	MultiportToSinglePort.tcl \
 	RemoveGraphicalClasses.tcl
 
-
-
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
