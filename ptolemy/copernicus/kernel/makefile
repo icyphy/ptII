@@ -31,6 +31,9 @@
 
 ME =		ptolemy/copernicus/kernel
 
+# Keep these alphabetical please.
+DIRS = 	fragment
+
 # Root of the Java directory
 ROOT =		../../..
 
@@ -43,8 +46,6 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	kernel
 PTCLASSJAR = 	$(PTPACKAGE).jar
-
-DIRS =
 
 # Keep this list alphabetized.
 JSRCS = \

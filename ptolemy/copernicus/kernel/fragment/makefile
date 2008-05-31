@@ -59,6 +59,7 @@ MISC_FILES =	$(DIRS)
 
 OPTIONAL_JSRCS = \
 	JavaCharStream.java \
+	JavaFragmentParser.java \
 	JavaFragmentParserConstants.java \
 	JavaFragmentParserTokenManager.java \
 	ParseException.java \
