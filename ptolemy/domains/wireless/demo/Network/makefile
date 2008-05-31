@@ -85,10 +85,10 @@ demo: demo_ptolemy demo_vergil
                 -class ptolemy.domains.sdf.demo.Network.Network
 
 demo_ptolemy:
-    "$(PTII)/bin/ptolemy" Network.xml
+	"$(PTII)/bin/ptolemy" Network.xml
 
 demo_vergil:
-   "$(PTII)/bin/vergil" Network.xml
+	"$(PTII)/bin/vergil" Network.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
