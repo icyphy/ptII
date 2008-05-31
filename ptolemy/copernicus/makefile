@@ -73,7 +73,7 @@ MISC_FILES =	$(DIRS) \
 		README.txt
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = jhdl
 
 JCLASS = $(JSRCS:%.java=%.class)
 
