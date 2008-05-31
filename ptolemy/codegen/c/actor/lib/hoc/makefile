@@ -53,8 +53,10 @@ JSRCS = \
 	Case.java \
 	CaseDirector.java \
 	MultiCompositeActor.java \
+	MultiCompositePort.java \
 	MultiInstanceComposite.java \
-	Refinement.java
+	Refinement.java \
+	RefinementPort.java
 
 OTHER_FILES_TO_BE_JARED = \
 	hoc.xml
