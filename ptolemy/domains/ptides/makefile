@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/ptides
 
-DIRS =		kernel lib demo
+DIRS =		kernel lib demo platform
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -44,20 +44,20 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	ptides
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		kernel/kernel.jar \
-		lib/lib.jar
+		lib/lib.jar \
+		platform/platform.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =  kernel lib
+MISC_FILES =  kernel lib platform
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
