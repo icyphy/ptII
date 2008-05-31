@@ -52,8 +52,11 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	ModalController.java \
 	ModalModel.java \
+	ModalPort.java \
 	Refinement.java \
-	TransitionRefinement.java
+	RefinementPort.java \
+	TransitionRefinement.java \
+	TransitionRefinementPort.java
 
 OTHER_FILES_TO_BE_JARED =
 
