@@ -32,7 +32,8 @@
 ME =		ptolemy/copernicus/kernel
 
 # Keep these alphabetical please.
-DIRS = 	fragment
+# Don't include fragment, it does not compile
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../..
