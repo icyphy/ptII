@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/demo/TriggerdSensors
+ME =		ptolemy/domains/ptides/demo/TriggeredSensors
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	TriggerdSensors
+PTPACKAGE = 	TriggeredSensors
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
@@ -77,10 +77,10 @@ demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer 
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" TriggerdSensors.xml
+	"$(PTII)/bin/ptolemy" TriggeredSensors.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" TriggerdSensors.xml
+	"$(PTII)/bin/vergil" TriggeredSensors.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
