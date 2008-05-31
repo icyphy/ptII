@@ -92,6 +92,8 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	ComplexCompositeCopyAndPasteTest.xml \
+	CompositeCopyAndPasteTest.xml \
 	ConstClassDefinition.xml \
 	NoPackageActor.java.in \
 	NoPackageActors.xml \
