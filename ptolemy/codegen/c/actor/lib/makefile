@@ -99,6 +99,7 @@ JSRCS = \
 	Expression.java \
 	Gaussian.java \
 	GradientAdaptiveLattice.java \
+	Interpolator.java \
 	Lattice.java \
 	Limiter.java \
 	LookupTable.java \
@@ -107,6 +108,7 @@ JSRCS = \
 	MonitorValue.java \
 	MovingAverage.java \
 	MultiplyDivide.java \
+	OrderedMerge.java \
 	Publisher.java \
 	PublisherTest.java \
 	Pulse.java \
@@ -161,6 +163,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Counter.c \
 	CurrentTime.c \
 	Differential.c \
+	Discard.c \
 	DiscreteRandomSource.c \
 	Distributor.c \
 	ElementsToArray.c \
@@ -169,6 +172,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Expression.c \
 	Gaussian.c \
 	GradientAdaptiveLattice.c \
+	Interpolator.c \
 	Lattice.c \
 	Limiter.c \
 	LookupTable.c \
@@ -177,6 +181,7 @@ OTHER_FILES_TO_BE_JARED = \
 	MonitorValue.c \
 	MovingAverage.c \
 	MultiplyDivide.c \
+	OrderedMerge.c \
 	Publisher.c \
 	PublisherTest.c \
 	Pulse.c \
