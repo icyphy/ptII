@@ -31,7 +31,8 @@
 
 ME =		ptolemy/domains/ptides/demo
 
-DIRS =
+DIRS =		ManyPlatforms OnePlatform ThreePlatforms \
+		TriggeredSensors TwoPlatforms
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -44,13 +45,16 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	demo
-PTCLASSJAR =	 $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-# We don't include Corba/Corba.jar because we don't ship Corba.
-PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	ManyPlatforms/ManyPlatforms.jar \
+	OnePlatform/OnePlatform.jar \
+	ThreePlatforms/ThreePlatforms.jar \
+	TriggeredSensors/TriggeredSensors.jar \
+	TwoPlatforms/TwoPlatforms.jar
 
-PTCLASSALLJAR =
+PTCLASSALLJAR= $(PTPACKAGE).jar
 
 EXTRA_SRCS =
 
