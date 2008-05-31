@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Drive_Rot_Bump_with_LEDfeedback" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/apps/iRobot/ptolemy/Sensors">
@@ -33,7 +33,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example: &#10;- drives forward if the play button is pushed&#10;- drives backward if the advance button is pushed&#10;- rotates if both the play and advance buttons are pushed simultaneously&#10;- backs up and rotates approximately 90 degress when the bump sensor is triggered&#10;- lights up the appropriate sensors to notify you what it is doing&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example: &#10;- drives forward if the play button is pushed&#10;- drives backward if the advance button is pushed&#10;- rotates if both the play and advance buttons are pushed simultaneously&#10;- backs up and rotates approximately 90 degress when the bump sensor is triggered&#10;- lights up the appropriate sensors to notify you what it is doing&#10;&#10;Note: This model has not been tested.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 85.0]">
         </property>

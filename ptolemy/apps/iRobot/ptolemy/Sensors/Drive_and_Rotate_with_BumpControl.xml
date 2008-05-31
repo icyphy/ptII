@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Drive_and_Rotate_with_BumpControl" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/apps/iRobot/ptolemy/Sensors">
@@ -31,7 +31,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 312.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example: &#10;- drives forward if the play button is pushed&#10;- drives backward if the advance button is pushed&#10;- rotates if both the play and advance buttons are pushed simultaneously&#10;- backs up and rotates approximately 90 degress when the bump sensor is triggered&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example: &#10;- drives forward if the play button is pushed&#10;- drives backward if the advance button is pushed&#10;- rotates if both the play and advance buttons are pushed simultaneously&#10;- backs up and rotates approximately 90 degress when the bump sensor is triggered&#10;&#10;Note: This model has not been tested.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 80.0}">
         </property>
@@ -182,8 +182,6 @@
             </relation>
             <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(RelativeAngle - angle) &gt;= 90">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
