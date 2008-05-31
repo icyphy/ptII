@@ -49,6 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	MapReduce.xml \
+	MapReduceNew.xml \
 	ReadTest.map \
 	Map.ptln \
 	MapReduce.ptln \
