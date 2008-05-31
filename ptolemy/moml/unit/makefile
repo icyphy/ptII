@@ -31,7 +31,7 @@
 
 ME =		ptolemy/moml/unit
 
-DIRS =
+DIRS =		test
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -77,7 +77,7 @@ EXTRA_SRCS =	UParser.jj $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES =
+MISC_FILES = test
 
 # OPTIONAL_JSRCS files are created by javacc.
 # javadoc generates html for files in $(OPTIONAL_JSRCS)
