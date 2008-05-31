@@ -47,7 +47,7 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # Global Variables 
 set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
-set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
+#set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
 set globalIgnoreTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
 set globalIgnoreTime -1.0
 # set globalIgnoreTime [java::field $globalIgnoreTimeRcvr IGNORE]
@@ -87,7 +87,8 @@ test DDEDirector-4.1 {Composite actor containing a closed feedback cycle} {
     set fBack [java::new ptolemy.domains.dde.kernel.FeedBackDelay $toplevel "fBack"]
 
     # Set the feedback delay parameter
-    $fBack setDelay 4.0
+    set delayParameter [java::cast ptolemy.data.expr.Parameter [$fBack getAttribute delay]]
+    $delayParameter setExpression 4.0
     set realDelay [java::cast ptolemy.data.expr.Parameter [$fBack getAttribute realDelay]]
     $realDelay setToken [java::new ptolemy.data.BooleanToken true]
 
