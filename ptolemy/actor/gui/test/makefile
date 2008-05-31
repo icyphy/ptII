@@ -85,6 +85,7 @@ MISC_FILES =	alljtests.tcl \
 	hideNameTestModel.xml \
 	hideNameTestSinewave.xml \
 	model.xml \
+	model\ with\ spaces.xml \
 	testCheckModelSize.xml \
 	testConfiguration.xml \
 	testDemos.htm \
