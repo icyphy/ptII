@@ -50,9 +50,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	CodegenActor.java \
 	CompiledCompositeActor.java \
-	EmbeddedCActor.java
-
+	EmbeddedCActor.java \
+	EmbeddedCFileActor.java
 
 OTHER_FILES_TO_BE_JARED =
 
