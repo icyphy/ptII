@@ -55,6 +55,12 @@ import ptolemy.moml.MoMLParser;
  @Pt.AcceptedRating Red (cxh)
  */
 public class PortNameChanges implements MoMLFilter {
+    /** Clear the map of actors with port name changes.
+     */
+    public static void clear() {
+        _actorsWithPortNameChanges = new HashMap();
+    }
+
     /**  If the attributeName is "class" and attributeValue names a
      *   class that has had its port names changed between releases,
      *   then substitute in the new port names.
@@ -192,6 +198,31 @@ public class PortNameChanges implements MoMLFilter {
      */
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData) throws Exception {
+    }
+
+    /** Add a class to be filtered and the old and new port names.
+     *  Note that if you add a class with this method, then you must
+     *  remove it with {@link #remove(String)}, calling
+     *  "new PortNameChanges()" will not remove a class that was
+     *  added with this method.
+     *  @param className The name of the class to be filtered
+     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
+     *  @param portNameMap The HashMap that contains the old port names
+     *  as keys and the new port names as a values. If the value of the
+     *  HashMap is null then the rest of the attribute is skipped.
+     *  @see #remove(String)
+     */
+    public void put(String className, HashMap portNameMap) {
+        _actorsWithPortNameChanges.put(className, portNameMap);
+    }
+
+    /** Remove a class to be filtered.
+     *  @param className The name of the class to be filtered
+     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
+     *  @see #put(String, String)
+     */
+    public void remove(String className) {
+        _actorsWithPortNameChanges.remove(className);
     }
 
     /** Return a string that describes what the filter does.

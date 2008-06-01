@@ -84,6 +84,12 @@ import ptolemy.moml.MoMLParser;
  @Pt.AcceptedRating Red (cxh)
  */
 public class PropertyClassChanges implements MoMLFilter {
+    /** Clear the map of actors with property class changes.
+     */
+    public static void clear() {
+        _actorsWithPropertyClassChanges = new HashMap();
+    }
+
     /** Return new class names for properties that have been
      *  registered as having changed classes. This filter
      *  may also return null to remove the element.
@@ -194,33 +200,30 @@ public class PropertyClassChanges implements MoMLFilter {
         _foundChange = false;
     }
 
-    //     /** Remove a class to be filtered.
-    //      *  @param className The name of the class to be filtered
-    //      *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
-    //      *  @see #put(String, String)
-    //      */
-    //     public void remove(String className) {
-    //         // ptolemy.copernicus.kernel.MakefileGenerator
-    //         // so as to filter out the GeneratorAttribute
-    //         _actorsWithPropertyClassChanges.remove(className);
-    //     }
-    //     /** Add a new property class filter.
-    //      *  Note that if you add a class with
-    //      *  this method, then you must remove it with {@link #remove(String)},
-    //      *  calling "new PropertyClassChanges()" will not remove a class
-    //      *  that was added with this method.
-    //      *  @param className The name of the class to be filtered
-    //      *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
-    //      *  @param propertyClassMap The HashMap that has the property
-    //      *  name as a Key and the new class name as a value.
-    //      *  If the value of the HashMap is null then the
-    //      *  rest of the attribute is skipped.
-    //      *  @see #remove(String)
-    //      */
-    //     public void put(String className, HashMap propertyClassMap) {
-    //         // Copernicus uses this to skip SharedParameters.
-    //         _actorsWithPropertyClassChanges.put(className, propertyClassMap);
-    //     }
+    /** Remove a class to be filtered.
+     *  @param className The name of the class to be filtered
+     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
+     *  @see #put(String, String)
+     */
+    public void remove(String className) {
+        _actorsWithPropertyClassChanges.remove(className);
+    }
+    
+    /** Add a class to be filtered and the old and new property class
+     *  types. Note that if you add a class with this method, then you
+     *  must remove it with {@link #remove(String)}, calling 
+     *  "new PropertyClassChanges()" will not remove a class that was
+     *  added with this method.
+     *  @param className The name of the class to be filtered
+     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
+     *  @param propertyClassMap The HashMap that has the property
+     *  name as a key and the new class name as a value. If the value
+     *  of the HashMap is null then the rest of the attribute is skipped.
+     *  @see #remove(String)
+     */
+    public void put(String className, HashMap propertyClassMap) {
+        _actorsWithPropertyClassChanges.put(className, propertyClassMap);
+    }
 
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
