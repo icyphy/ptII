@@ -62,6 +62,7 @@ import ptolemy.domains.ptides.kernel.PrioritizedTimedQueue.Event;
 import ptolemy.domains.ptides.lib.ScheduleListener;
 import ptolemy.domains.ptides.platform.NonPreemptivePlatformExecutionStrategy;
 import ptolemy.domains.ptides.platform.PlatformExecutionStrategy;
+import ptolemy.domains.tt.tdl.kernel.TDLModule;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
@@ -250,7 +251,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 			return _currentModelTime;
 		}
 	}
-
+	
 	/**
 	 * Until _stopRequested, the director tries to fire actors or waits. First,
 	 * a set of events is calculated that can be fired at current time. Out of
@@ -276,46 +277,42 @@ public class PtidesEmbeddedDirector extends DEDirector {
 						.get(_actorsInExecution.size() - 1);
 				double doubleTime = getFinishingTime((NamedObj) actorToFire);
 				Time time = new Time(this, doubleTime);
-				// if (time.compareTo(_physicalTime.getDoubleValue()) < 0) {
-				// should not happen but would mean that a synchronization
-				// point was missed
-				// }
-				if (time.equals(_physicalTime.getDoubleValue())) {
+				if (time.equals(_physicalTime)) {
 					_actorsInExecution.remove(actorToFire);
+					if (!_fireAtTheBeginningOfTheWcet(actorToFire))
+						_fireActorInZeroModelTime(actorToFire);
+					_transferAllOutputs();
+			                _currentModelTime = null;
 					displaySchedule(actorToFire,
 							_physicalTime.getDoubleValue(),
 							ScheduleListener.STOP);
-					if (actorToFire instanceof CompositeActor)
-						actorToFire.getDirector().setModelTime(getModelTime());
-					actorToFire.fire();
-					if (!actorToFire.postfire())
-						_disableActor(actorToFire);
-					_transferAllOutputs();
-					_currentModelTime = null;
 				}
 			}
 			_enqueueRemainingEventsAgain(eventsToFire);
 			eventsToFire = _getNextEventsToFire();
 			for (int i = 0; i < eventsToFire.size(); i++)
-				_addSynchronizationPoint(((DEEvent) eventsToFire.get(i))
+				_refireAt(((DEEvent) eventsToFire.get(i))
 						.timeStamp());
 			event = _executionStrategy.getNextEventToFire(_actorsInExecution,
 					eventsToFire);
 			eventsToFire.remove(event);
 			if (event != null) {
 				Actor actorToFire = event.actor();
-				double wcet = PtidesGraphUtilities.getWCET(actorToFire);
 				if (actorToFire.getDirector() == this && !actorToFire.prefire()) {
-					_enqueueEventAgain(event);
-				} else {
-					_currentModelTime = event.timeStamp();
-					displaySchedule(actorToFire,
-							_physicalTime.getDoubleValue(),
-							ScheduleListener.START);
-					if (_debugging)
-						_debug(this.getContainer().getName() + "-fired "
-								+ actorToFire.getName());
-					_addSynchronizationPoint(_physicalTime.add(wcet));
+                    _enqueueEventAgain(event);
+                } else {
+                    // start firing an actor
+    				_currentModelTime = event.timeStamp();
+    				if (_debugging)
+                        _debug(this.getContainer().getName() + "-fired "
+                                        + actorToFire.getName());
+                    displaySchedule(actorToFire,
+                                    _physicalTime.getDoubleValue(),
+                                    ScheduleListener.START);     
+    				if (_fireAtTheBeginningOfTheWcet(actorToFire))
+    					_fireActorInZeroModelTime(actorToFire);
+    				double wcet = PtidesGraphUtilities.getWCET(actorToFire);
+    				_refireAt(_physicalTime.add(wcet));
 					setFinishingTime(actorToFire, _physicalTime.add(wcet)
 							.getDoubleValue());
 					for (int i = 0; i < _actorsInExecution.size(); i++) {
@@ -398,7 +395,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 */
 	public boolean isSafeToProcessOnNetwork(Time time, NamedObj object) {
 		double minDelayTime = PtidesGraphUtilities.getMinDelayTime(object);
-		return minDelayTime == Double.MAX_VALUE
+		System.out.println(minDelayTime + " " + Double.MAX_VALUE);
+		return minDelayTime == Double.MAX_VALUE 
 				|| time.subtract(minDelayTime).add(_clockSyncError).add(
 						_networkDelay).compareTo(_physicalTime) <= 0;
 	}
@@ -672,7 +670,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
 		DEEvent newEvent = new DEEvent(actor, time, microstep, depth);
 		((DEEventQueue) _eventQueues.get(actor)).put(newEvent);
-		_addSynchronizationPoint(newEvent.timeStamp());
+		_refireAt(newEvent.timeStamp());
 	}
 
 	/**
@@ -716,7 +714,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 			// after
 			// timeddelay=
 			// ((DEEventQueue)_eventQueues.get(actor)).put(newEvent);
-			_addSynchronizationPoint(newEvent.timeStamp());
+			_refireAt(newEvent.timeStamp());
 		}
 	}
 
@@ -752,7 +750,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		// if (((DEEventQueue)_eventQueues.get(actor)) != null) // TODO why is
 		// compositeactor scheduled after timeddelay=
 		// ((DEEventQueue)_eventQueues.get(actor)).put(newEvent);
-		_addSynchronizationPoint(newEvent.timeStamp());
+		_refireAt(newEvent.timeStamp());
 	}
 
 	/**
@@ -772,6 +770,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		for (int i = 0; i < port.getWidth(); i++) {
 			try {
 				while (port.hasToken(i)) {
+				      System.out.println("in");
 					Receiver[][] recv = port.getReceivers();
 					PtidesReceiver receiver = (PtidesReceiver) recv[0][0];
 					Event event = receiver.getEvent();
@@ -786,7 +785,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 										+ _physicalTime);
 					if (!((isSafeToProcessOnNetwork(time, port)) || (time
 							.compareTo(_physicalTime) > 0))) {
-						_addSynchronizationPoint(time.subtract(
+						_refireAt(time.subtract(
 								PtidesGraphUtilities.getMinDelayTime(port))
 								.add(_clockSyncError).add(_networkDelay));
 						// at this time, the new input should be read
@@ -805,6 +804,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
 							displaySchedule((Actor) port.getContainer(),
 									_physicalTime.getDoubleValue(),
 									ScheduleListener.TRANSFERINPUT);
+							System.out.println("transfer input value " + t + " at "
+                                                                                + time);
 							if (_debugging)
 								_debug("transfer input value " + t + " at "
 										+ time);
@@ -840,23 +841,6 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		}
 		for (int i = 0; i < port.getWidthInside(); i++) {
 			try {
-				// Receiver[][] receivers = port.getInsideReceivers();
-				// if (receivers[i] != null) {
-				// for (int j = 0; j < receivers[i].length; j++) {
-				// if (receivers[i][j] != null
-				// && ((PtidesPlatformReceiver) receivers[i][j])
-				// .getNextTime() != null
-				// && ((PtidesPlatformReceiver) receivers[i][j])
-				// .getNextTime().compareTo(_physicalTime) < 0) {
-				// throw new IllegalActionException(
-				// "Network constraints violated, token with timestamp "
-				// + ((PtidesPlatformReceiver) receivers[i][j])
-				// .getNextTime()
-				// + " cannot be transferred to the output at physical time "
-				// + _physicalTime);
-				// }
-				// }
-				// }
 				if (port.hasTokenInside(i)) {
 					token = port.getInside(i);
 					Receiver[][] outReceivers = port.getRemoteReceivers();
@@ -869,6 +853,9 @@ public class PtidesEmbeddedDirector extends DEDirector {
 							displaySchedule((Actor) port.getContainer(),
 									_physicalTime.getDoubleValue(),
 									ScheduleListener.TRANSFEROUTPUT);
+							System.out.println("transfer output value " + token
+                                                                                + " at rt: " + _physicalTime + "/mt: "
+                                                                                + getModelTime());
 							if (_debugging)
 								_debug("transfer output value " + token
 										+ " at rt: " + _physicalTime + "/mt: "
@@ -886,15 +873,6 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
 	// /////////////////////////////////////////////////////////////////
 	// // private methods ////
-
-	/**
-	 * Inform the executive director to be re-fired at the specified time.
-	 */
-	private void _addSynchronizationPoint(Time time)
-			throws IllegalActionException {
-		((Actor) getContainer()).getExecutiveDirector().fireAt(
-				(Actor) this.getContainer(), time);
-	}
 
 	/**
 	 * Put event back into the queue because it was not processed yet.
@@ -989,6 +967,35 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		}
 		return false; // should never come here
 	}
+	
+    /**
+     * The actual firing of an actor takes zero model time, the wcet is simulated by
+     * either firing an actor at the beginning or the end of the wcet.
+     * @param actorToFire Actor that has to be fired.
+     * @throws IllegalActionException Thrown if actor cannot be fired.
+     */
+    private void _fireActorInZeroModelTime(Actor actorToFire) throws IllegalActionException {
+            if (actorToFire instanceof CompositeActor)
+                    actorToFire.getDirector().setModelTime(getModelTime());
+            actorToFire.fire();
+            if (!actorToFire.postfire())
+                    _disableActor(actorToFire);
+    }
+	
+    /**
+     * Determines if the actor has to be fired at the beginning of the WCET. An actor
+     * must be fired at the beginning of the WCET the WCET can only
+     * be determined after firing the actor. An example for this actor is a TDLModule.
+     * An actor can only be fired at the beginning
+     * of the LET if the output values are not updated immediately.
+     * @param actor Actor that has to be fired.
+     * @return True if actor has to be fired at the beginning of the WCET.
+     */
+    private boolean _fireAtTheBeginningOfTheWcet(Actor actor) {
+            if (actor instanceof TDLModule)
+                    return true;
+            return false;
+    }
 
 	/**
 	 * Get the set of events that are safe to fire. Those events contain pure
@@ -1101,6 +1108,18 @@ public class PtidesEmbeddedDirector extends DEDirector {
 					+ e.getMessage());
 		}
 	}
+	
+    /**
+     * Inform the executive director to be re-fired at the specified time.
+     * 
+     * @param time Future physical time when the actor containing this director wants
+     * to be refired.
+     */
+    private void _refireAt(Time time)
+                    throws IllegalActionException {
+            ((Actor) getContainer()).getExecutiveDirector().fireAt(
+                            (Actor) this.getContainer(), time);
+    }
 
 	/**
 	 * Set the new physical time from the executive director.

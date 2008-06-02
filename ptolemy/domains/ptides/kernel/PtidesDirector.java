@@ -312,6 +312,8 @@ public class PtidesDirector extends CompositeProcessDirector implements
 
 	/**
 	 * Set physical time for this model.
+	 * 
+	 * @see #getModelTime
 	 */
 	public synchronized void setModelTime(Time newTime)
 			throws IllegalActionException {

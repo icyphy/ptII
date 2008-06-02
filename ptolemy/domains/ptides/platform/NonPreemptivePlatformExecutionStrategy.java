@@ -220,6 +220,9 @@ public class NonPreemptivePlatformExecutionStrategy extends
 	 * 
 	 * @param actorsFiring Actors currently in execution.
 	 * @param eventsToFire Events that are safe to fire.
+	 * 
+	 * @return The next event that can be fired.
+	 * @throws IllegalActionException Thrown if an execution was missed.
 	 */
 	public DEEvent getNextEventToFire(List actorsFiring, List eventsToFire)
 			throws IllegalActionException {

@@ -49,6 +49,8 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.de.lib.TimedDelay;
+import ptolemy.domains.tt.tdl.kernel.TDLModule;
+import ptolemy.domains.tt.tdl.kernel.TDLModuleDirector;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
@@ -195,6 +197,8 @@ public class PtidesGraphUtilities {
 	 * @return The worst case execution time.
 	 */
 	public static double getWCET(Actor actor) {
+		if (actor instanceof TDLModule)
+			return ((TDLModuleDirector)((TDLModule)actor).getDirector()).getWCET();
 		try {
 			Parameter parameter = (Parameter) ((NamedObj) actor)
 					.getAttribute("WCET");
@@ -327,7 +331,7 @@ public class PtidesGraphUtilities {
 		if (actor instanceof Source && ((Source) actor).trigger == port)
 			// trigger ports don't have to be fired at real time
 			return false;
-		return isSensor(actor) || isActuator(actor);
+		return isSensor(actor) || isActuator(actor) || actor instanceof TDLModule;
 	}
 
 	/**
@@ -493,7 +497,7 @@ public class PtidesGraphUtilities {
 					else
 						nextNode = graph.node(delayActor.input);
 				}
-				if (PtidesGraphUtilities.isSensor(inputActor)) {
+				if (PtidesGraphUtilities.isSensor(inputActor) || inputActor instanceof TDLModule) {
 					return delay;
 				} else if (inputActor instanceof Clock) { // assume periodic
 					// clock
