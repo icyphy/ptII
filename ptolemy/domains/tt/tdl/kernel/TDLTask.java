@@ -18,13 +18,23 @@ import ptolemy.kernel.util.Workspace;
  */
 public class TDLTask extends TypedCompositeActor {
 
+	/**
+	 * Construct a TDL task. You can then change the name with
+	 * setName(). If the workspace argument is null, then use the default
+	 * workspace. You should set a director before attempting to execute it. You
+	 * should set the container before sending data to it. Increment the version
+	 * number of the workspace.
+	 * 
+	 * @throws NameDuplicationException Thrown if parameters cannot be set.
+	 * @throws IllegalActionException Thrown if parameters cannot be set.
+	 */
 	public TDLTask() throws IllegalActionException, NameDuplicationException {
 		super();
 		_init();
 	}
 
 	/**
-	 * Construct a CompositeActor in the specified workspace with no container
+	 * Construct a TDL Task in the specified workspace with no container
 	 * and an empty string as a name. You can then change the name with
 	 * setName(). If the workspace argument is null, then use the default
 	 * workspace. You should set a director before attempting to execute it. You
@@ -43,7 +53,7 @@ public class TDLTask extends TypedCompositeActor {
 	}
 
 	/**
-	 * Create an actor with a name and a container. The container argument must
+	 * Create a TDL task with a name and a container. The container argument must
 	 * not be null, or a NullPointerException will be thrown. This actor will
 	 * use the workspace of the container for synchronization and version
 	 * counts. If the name argument is null, then the name is set to the empty
@@ -68,13 +78,26 @@ public class TDLTask extends TypedCompositeActor {
 		_init();
 	}
 
+	/**
+	 * Frequency of the task invocation in the mode period.
+	 */
 	public Parameter frequency;
 
+	/**
+	 * Describes if task is a fast task.
+	 */
 	public Parameter fast;
 
+	/**
+	 * Slot selection string for the task.
+	 */
 	public Parameter slots;
 
-	@Override
+	/**
+	 * Create a new TDL port.
+	 * 
+	 * @param name Name of the TDL port.
+	 */
 	public Port newPort(String name) throws NameDuplicationException {
 		try {
 			workspace().getWriteAccess();
@@ -90,6 +113,12 @@ public class TDLTask extends TypedCompositeActor {
 		}
 	}
 
+	/**
+	 * Initialize the TDL task.
+	 * 
+	 * @throws NameDuplicationException Thrown if parameters cannot be set.
+	 * @throws IllegalActionException Thrown if parameters cannot be set.
+	 */
 	private void _init() throws IllegalActionException,
 			NameDuplicationException {
 		SDFDirector director = new SDFDirector(this, "SDF director");

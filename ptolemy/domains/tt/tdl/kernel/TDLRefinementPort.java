@@ -12,7 +12,7 @@ import ptolemy.kernel.util.Workspace;
  * The TDL refinement port represents an acutator and has some TDL specific
  * parameters: - frequceny: update frequency - initialValue: at time 0, this
  * initial value is used - fast: if the actuator is connected to a fast task,
- * this parameter is true - slots: string that supports TDL slot selection
+ * this parameter is true - slots: string that supports TDL slot selection.
  * 
  * @author Patricia Derler
  * 
@@ -58,15 +58,31 @@ public class TDLRefinementPort extends RefinementPort {
 		_init();
 	}
 
+	/**
+	 * frequency for the port update.
+	 */
 	public Parameter frequency;
 
+	/**
+	 * Initial value of the port.
+	 */
 	public Parameter initialValue;
 
+	/**
+	 * Describes a fast actuator.
+	 */
 	public Parameter fast;
 
+	/**
+	 * Slot selection string
+	 */
 	public Parameter slots;
 
-	@Override
+	/**
+	 * Make port to an output port, for TDL this means that it is an actuator.
+	 * 
+	 * @param isOutput True if port is an output port.
+	 */
 	public void setOutput(boolean isOutput) throws IllegalActionException {
 		super.setOutput(isOutput);
 		setMirrorDisable(false);
@@ -76,7 +92,11 @@ public class TDLRefinementPort extends RefinementPort {
 		slots.setVisibility(Settable.FULL);
 	}
 
-	@Override
+	/**
+	 * Make port to an input port, for TDL this means that it is a sensor.
+	 * 
+	 * @param isInput True if port is an input port.
+	 */
 	public void setInput(boolean isInput) throws IllegalActionException {
 		super.setInput(isInput);
 		setMirrorDisable(false);
@@ -88,6 +108,11 @@ public class TDLRefinementPort extends RefinementPort {
 		}
 	}
 
+	/**
+	 * Initialize the port.
+	 * @throws IllegalActionException Thrown if parameters cannot be set.
+	 * @throws NameDuplicationException Thrown if parameters cannot be set.
+	 */
 	private void _init() throws IllegalActionException,
 			NameDuplicationException {
 		setMirrorDisable(false);

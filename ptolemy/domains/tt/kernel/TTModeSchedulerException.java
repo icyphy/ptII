@@ -1,7 +1,7 @@
 package ptolemy.domains.tt.kernel;
 
 /**
- * Scheduler Exception that occurs in the Time Triggered Domain
+ * Scheduler Exception that occurs in the Time Triggered Domain.
  * 
  * @author Patricia Derler
  * 
@@ -9,7 +9,7 @@ package ptolemy.domains.tt.kernel;
 public class TTModeSchedulerException extends Exception {
 
 	/**
-	 * create a new mode scheduler exception
+	 * create a new mode scheduler exception.
 	 * 
 	 * @param string
 	 */

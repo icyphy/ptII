@@ -9,7 +9,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * A TDL transition has some specific TDL parameters. - frequency: together with
- * the mode period, this value defines when this transition is tested
+ * the mode period, this value defines when this transition is tested.
  * 
  * @author Patricia Derler
  * 
@@ -45,10 +45,18 @@ public class TDLTransition extends Transition {
 		_init();
 	}
 
+	/**
+	 * The frequency of the transition.
+	 */
 	public Parameter frequency;
 
-	private void _init() throws IllegalActionException,
-			NameDuplicationException {
+	/**
+	 * Initialize the parameters of a transition.
+	 * @throws IllegalActionException Thrown if frequency parameter cannot be created.
+	 * @throws NameDuplicationException Thrown if The frequency parameter cannot be created.
+	 */
+	private void _init() throws
+			NameDuplicationException, IllegalActionException {
 		outputActions.setVisibility(Settable.NONE);
 		setActions.setVisibility(Settable.NONE);
 		reset.setVisibility(Settable.NONE);

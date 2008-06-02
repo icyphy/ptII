@@ -17,8 +17,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  * 
  */
 public class TDLRefinement extends Refinement {
+	
 	/**
-	 * Construct a TDL refinement
+	 * Construct a TDL refinement.
 	 * 
 	 * @param container
 	 *            The container.

@@ -30,6 +30,8 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
+import ptolemy.domains.de.kernel.DECQEventQueue;
+import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.ModalDirector;
 import ptolemy.domains.fsm.kernel.State;
@@ -49,12 +51,19 @@ import ptolemy.kernel.util.NamedObj;
  * Schedule is generated statically in the initialize method after setting
  * output ports and actuators and after each slot in the schedule, the control
  * is handed to the outside director to enable executing other actors outside
- * the TDL module
+ * the TDL module.
  * 
  * @author Patricia Derler
  */
 public class TDLModuleDirector extends ModalDirector {
 
+	/**
+	 * 
+	 * @param container
+	 * @param name
+	 * @throws IllegalActionException
+	 * @throws NameDuplicationException
+	 */
 	public TDLModuleDirector(CompositeEntity container, String name)
 			throws IllegalActionException, NameDuplicationException {
 		super(container, name);
@@ -64,12 +73,13 @@ public class TDLModuleDirector extends ModalDirector {
 	 * pick the next action in the schedule and execute it leave the fire method -
 	 * if mode switch has to be made - before input ports are read and updated -
 	 * every part of the schedule for the current time was executed (= a slot in
-	 * the schedule was executed)
+	 * the schedule was executed).
 	 */
 	public void fire() throws IllegalActionException {
 		if (_debugging) {
 			_debug("Firing " + getFullName(), " at time " + getModelTime());
 		}
+		_currentWCET = 0;
 		if (!_executeNow()) {
 			return;
 		}
@@ -80,8 +90,8 @@ public class TDLModuleDirector extends ModalDirector {
 		// if (_debugging)
 		_printStatus();
 
-		int i = -1; // used to avoid returning control to the executive director
-					// before every input port update
+		int i = -1; // used to avoid returning control to the executive directorâ
+		// before every input port update
 		for (; _currentSchedule.currentPositionInSlot < _schedule.size(); _currentSchedule.currentPositionInSlot++) {
 			i++;
 			// if (_debugging)
@@ -90,10 +100,15 @@ public class TDLModuleDirector extends ModalDirector {
 			if (!_hasGuard((NamedObj) obj) || _guardIsTrue((NamedObj) obj)) {
 				if (obj instanceof Actor) {
 					Actor actor = (Actor) obj;
-					if (actor.prefire()) { // TODO prefiere should never return
-											// false ?
+					if (actor.prefire()) { // TODO prefire should never return
+						// false ?
 						actor.iterate(1);
 						actor.postfire();
+						_currentWCET = getWorstCaseET(actor);
+						if (_currentWCET > 0)
+						    break;
+					} else {
+						System.out.println(actor.getName() + " .prefire() = false");
 					}
 				} else if (obj instanceof TypedIOPort) {
 					IOPort port = (IOPort) obj;
@@ -109,6 +124,7 @@ public class TDLModuleDirector extends ModalDirector {
 										.getContainer()))
 							continue;
 						_updateOutputPort(port);
+						_currentWCET = 0.0;
 					} else if (port.isInput()) {
 						Director executiveDirector = ((Actor) getContainer()
 								.getContainer()).getDirector();
@@ -155,10 +171,10 @@ public class TDLModuleDirector extends ModalDirector {
 	/**
 	 * Get mode period from state parameter "period".
 	 * 
-	 * @param obj The object
-	 * @return The value of the "period" parameter.  If there is
-         * no period parameter or it cannot be converted to a double, then
-         * return 1.0
+	 * @param obj
+	 *            The object
+	 * @return The value of the "period" parameter. If there is no period
+	 *         parameter or it cannot be converted to a double, then return 1.0.
 	 */
 	public double getModePeriod(NamedObj obj) {
 		try {
@@ -179,10 +195,9 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * initialize the director - calculate schedule - schedule first firing
+	 * Initialize the director, calculate schedule and schedule first firing.
 	 */
 	public void initialize() throws IllegalActionException {
-
 		ListIterator receivers = _receivers.listIterator();
 		while (receivers.hasNext()) {
 			TDLReceiver receiver = (TDLReceiver) receivers.next();
@@ -226,11 +241,49 @@ public class TDLModuleDirector extends ModalDirector {
 		fireAt((TDLModule) getContainer(), getModelTime());
 		_currentSchedule.firstSlot = true;
 	}
+	
+	/**
+	 * Return the worst case execution time of the actor or 0 if no worst case
+	 * execution time was specified.
+	 * 
+	 * @param actor
+	 *            The actor for which the worst case execution time is
+	 *            requested.
+	 * @return The worst case execution time.
+	 */
+	public static double getWorstCaseET(Actor actor) {
+		try {
+			Parameter parameter = (Parameter) ((NamedObj) actor)
+					.getAttribute("WCET");
+
+			if (parameter != null) {
+				DoubleToken token = (DoubleToken) parameter.getToken();
+
+				return token.doubleValue();
+			} else {
+				return 0.0;
+			}
+		} catch (ClassCastException ex) {
+			return 0.0;
+		} catch (IllegalActionException ex) {
+			return 0.0;
+		}
+	}
+	
+	/**
+	 * Return the worst case execution time of the actor or 0 if no worst case
+	 * execution time was specified.
+	 * @return The worst case execution time.
+	 */
+	public double getWCET() {
+		return _currentWCET;
+	}
 
 	/**
 	 * Find out if task (=actor) or actuator (=output port) is fast task.
 	 * 
 	 * @param obj
+	 *            The object that could be a fast task or actuator.
 	 * @return True if it is a fast task.
 	 */
 	public static boolean isFast(NamedObj obj) {
@@ -251,7 +304,9 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * return TDLReceiver
+	 * Return a new TDLReceiver.
+	 * 
+	 * @return A new TDL receiver.
 	 */
 	public Receiver newReceiver() {
 		Receiver receiver = new TDLReceiver();
@@ -260,22 +315,32 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * check if at the current time there is something to do
+	 * Check if at the current time there is something to do.
+	 * 
+	 * @return True if there is something to do now.
 	 */
 	public boolean prefire() throws IllegalActionException {
 		return super.prefire() && _executeNow();
 	}
 
 	/**
-	 * outputs are only transferred when scheduled, therefore do nothing if
-	 * transferoutputs is called by another actor
+	 * Outputs are only transferred when scheduled, therefore do nothing if
+	 * transfer outputs is called by another actor.
+	 * 
+	 * @param port
+	 *            output port.
+	 * @return True.
 	 */
 	public boolean transferOutputs(IOPort port) throws IllegalActionException {
 		return true;
 	}
 
 	/**
-	 * get all inputs
+	 * Get all inputs for a port.
+	 * 
+	 * @param port
+	 *            Input port.
+	 * @return True if ports transferred inputs.
 	 */
 	public boolean transferInputs(IOPort port) throws IllegalActionException {
 		if (_debugging) {
@@ -320,13 +385,17 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * iterate through states and tasks and add everything to the scheduler that
-	 * needs to be scheduled
+	 * Iterate through states and tasks and add everything to the scheduler that
+	 * needs to be scheduled.
 	 * 
 	 * @param scheduler
+	 *            Scheduler that calculates the TDL schedule.
 	 * @param state
+	 *            State to calculate the schedule for.
 	 * @throws IllegalActionException
+	 *             If refinements cannot be read.
 	 * @throws TDLModeSchedulerException
+	 *             If errors occur during schedule generation.
 	 */
 	private void _buildSchedule(TDLModeScheduler scheduler, State state)
 			throws IllegalActionException, TDLModeSchedulerException {
@@ -337,14 +406,20 @@ public class TDLModuleDirector extends ModalDirector {
 		Iterator transitionIterator = state.nonpreemptiveTransitionList()
 				.iterator();
 		while (transitionIterator.hasNext()) {
-			Transition transition = (Transition) transitionIterator.next();
+			TDLTransition transition = (TDLTransition) transitionIterator.next();
 			scheduler.addModeSwitch(transition);
+			
+//			int frequency = TDLModeScheduler.getFrequency(transition);
+//			this._eventQueue.put(new TDLEvent(new Time(this, modePeriod / frequency), transition, TDLEvent.TDLAction.modeSwitch));
 		}
 
 		Refinement refinement = (Refinement) state.getRefinement()[0];
 		Iterator taskIterator = refinement.entityList().iterator();
 		while (taskIterator.hasNext()) {
 			Actor actor = (Actor) taskIterator.next();
+//			int offset = TDLModeScheduler.getOffset(actor);
+//			int frequency = TDLModeScheduler.getFrequency((NamedObj) actor);
+//			_eventQueue.put(new TDLEvent(new Time(this, offset), actor, TDLEvent.TDLAction.taskExecution));
 			if (TDLModuleDirector.isFast((NamedObj) actor)) {
 				ArrayList fastActuators = new ArrayList();
 				Iterator it = actor.outputPortList().iterator();
@@ -357,15 +432,17 @@ public class TDLModuleDirector extends ModalDirector {
 							TDLReceiver receiver = (TDLReceiver) receiverArray[j];
 							if (receiver.getContainer() instanceof RefinementPort) {
 								IOPort refinementPort = receiver.getContainer();
-								if (TDLModuleDirector.isFast(refinementPort))
+								if (TDLModuleDirector.isFast(refinementPort)) {
 									fastActuators.add(refinementPort);
+								}
 							}
 						}
 					}
 				}
 				scheduler.addFastTask(actor, fastActuators);
-			} else
+			} else {
 				scheduler.addTask(actor);
+			}
 		}
 
 		Iterator portIterator = refinement.outputPortList().iterator();
@@ -379,11 +456,13 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * check if transition (=mode switch) should be executed
+	 * Check if transition (=mode switch) should be executed.
 	 * 
 	 * @param transition
-	 * @return
+	 *            The mode switch.
+	 * @return True if the mode switch should be done.
 	 * @throws IllegalActionException
+	 *             If an error occurs during the transition.
 	 */
 	private boolean _chooseTransition(Transition transition)
 			throws IllegalActionException {
@@ -413,10 +492,11 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * check if there is something to do now
-	 * 
-	 * @return
+	 * Check if there is something to do now.
+	 *  																														
+	 * @return True if an action is scheduled to be executed now.
 	 * @throws IllegalActionException
+	 *             Thrown if input ports could not be transferred.
 	 */
 	private boolean _executeNow() throws IllegalActionException {
 		FSMActor controller = getController();
@@ -437,8 +517,10 @@ public class TDLModuleDirector extends ModalDirector {
 		if (_currentSchedule.firstSlot) {
 			_currentSchedule.currentScheduleTime = 0;
 		}
-		if (getModelTime().getLongValue() != _currentSchedule.nextFireTime)
+		if (getModelTime().getLongValue() < _currentSchedule.nextFireTime)
 			return false; // already executed
+		else if (getModelTime().getLongValue() > _currentSchedule.nextFireTime)
+			throw new IllegalActionException("missed execution");
 
 		_schedule = (ArrayList) _currentSchedule.modeSchedule
 				.get(_currentSchedule.currentScheduleTime);
@@ -454,10 +536,11 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * get time for next execution of module
+	 * Get time for next execution of module.
 	 * 
-	 * @return
+	 * @return The time for the next execution.
 	 * @throws IllegalActionException
+	 *             Thrown if the mode controller could not be retrieved.
 	 */
 	private long _getNextTimeStamp() throws IllegalActionException {
 		SortedSet keys = new TreeSet(((TDLModeSchedule) _modeSchedules
@@ -479,6 +562,15 @@ public class TDLModuleDirector extends ModalDirector {
 		return -1;
 	}
 
+	/**
+	 * Test a guard expression.
+	 * 
+	 * @param obj
+	 *            The object containing a guard expression.
+	 * @return True if the guard expression evaluates to true.
+	 * @throws IllegalActionException
+	 *             Thrown if guard expression could not be read.
+	 */
 	private boolean _guardIsTrue(NamedObj obj) throws IllegalActionException {
 		_updateInputs();
 
@@ -502,11 +594,26 @@ public class TDLModuleDirector extends ModalDirector {
 		return ((BooleanToken) tok).booleanValue();
 	}
 
+	/**
+	 * Test if an object has a guard expression.
+	 * 
+	 * @param obj
+	 *            Object that might have a guard expression.
+	 * @return True if the object has a guard parameter.
+	 */
 	private boolean _hasGuard(NamedObj obj) {
 		Parameter parameter = (Parameter) obj.getAttribute("guard");
 		return (parameter != null);
 	}
 
+	/**
+	 * Initialize a port with an initial token.
+	 * 
+	 * @param port
+	 *            Port to be initialized.
+	 * @throws IllegalActionException
+	 *             Thrown if the initial value parameter could not be read.
+	 */
 	private void _initializePort(IOPort port) throws IllegalActionException {
 		Parameter initialValueParameter = (Parameter) ((NamedObj) port)
 				.getAttribute("initialValue");
@@ -525,6 +632,11 @@ public class TDLModuleDirector extends ModalDirector {
 		}
 	}
 
+	/**
+	 * Get all tasks for a module.
+	 * 
+	 * @return A list of all tasks.
+	 */
 	private Collection _getAllTasks() {
 		Collection tasks = new ArrayList();
 		Iterator it = ((TDLModule) getContainer()).entityList().iterator();
@@ -543,10 +655,11 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * initialize output ports by reading initialvalue and initializing the
-	 * receivers
+	 * Initialize output ports by reading initial value and initializing the
+	 * receivers.
 	 * 
 	 * @throws IllegalActionException
+	 *             Thrown if the ports could not be initialized.
 	 */
 	private void _initializeOutputPorts() throws IllegalActionException {
 
@@ -585,10 +698,12 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * only RefinementPorts can be actuators
+	 * Returns true if the port is an actuator. Only RefinementPorts can be
+	 * actuators.
 	 * 
 	 * @param port
-	 * @return
+	 *            Port that might be an actuator.
+	 * @return True if the port is an actuator.
 	 */
 	private boolean _isActuator(IOPort port) {
 		if (port instanceof RefinementPort)
@@ -597,10 +712,12 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * update actuator by transfering the outputs
+	 * Update actuator by transferring the outputs.
 	 * 
 	 * @param port
+	 *            Actuator that should be updated.
 	 * @throws IllegalActionException
+	 *             Thrown if outputs could not be transferred.
 	 */
 	private void _updateActuator(IOPort port) throws IllegalActionException {
 		RefinementPort rport = (RefinementPort) port;
@@ -612,12 +729,12 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * update input ports
+	 * Update input port, for TDL that means a sensor value is read.
 	 * 
 	 * @param port
-	 * @throws IllegalActionException
+	 *            Port to be updated.
 	 */
-	private void _updateInputPort(IOPort port) throws IllegalActionException {
+	private void _updateInputPort(IOPort port) {
 		Receiver[][] channelArray = port.getReceivers();
 		for (int i = 0; i < channelArray.length; i++) {
 			Receiver[] receiverArray = channelArray[i];
@@ -629,10 +746,12 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * read input values and update inputMap the updated inputMap is required
-	 * when guards are evaluated
+	 * Read input values and update inputMap the updated inputMap is required
+	 * when guards are evaluated.
 	 * 
 	 * @throws IllegalActionException
+	 *             Thrown if the controller could not be retrieved or inputs could
+	 *             not be read.
 	 */
 	private void _updateInputs() throws IllegalActionException {
 		Iterator it = ((TDLModule) getContainer()).inputPortList().iterator();
@@ -651,10 +770,12 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * update output ports
+	 * Update output port, for TDL this means an actuator is updated.
 	 * 
 	 * @param port
+	 *            The output port.
 	 * @throws IllegalActionException
+	 *             Thrown if output ports from refinement could not be read.
 	 */
 	private void _updateOutputPort(IOPort port) throws IllegalActionException {
 		Receiver[][] channelArray = port.getRemoteReceivers();
@@ -670,9 +791,10 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * only for debugging purposes
+	 * Only for debugging purposes, prints the schedule.
 	 * 
 	 * @param modeSchedule
+	 *            The mode schedule to be printed.
 	 */
 	private void _printSchedule(HashMap modeSchedule) {
 		System.out.println("--- " + getContainer().getName() + " ---");
@@ -703,9 +825,10 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * only for debugging purposes
+	 * Only for debugging purposes, prints the current status of the TDL module.
 	 * 
 	 * @throws IllegalActionException
+	 *             Thrown if controller could not be retrieved.
 	 */
 	private void _printStatus() throws IllegalActionException {
 		double d = getModelTime().getDoubleValue();
@@ -741,10 +864,11 @@ public class TDLModuleDirector extends ModalDirector {
 	}
 
 	/**
-	 * read inputs
+	 * After a mode switch, tasks that exist in the source and the target state
+	 * must have the same port values. This method transfers input ports.
 	 * 
-	 * @param transition
-	 * @throws IllegalActionException
+	 * @param transition Mode switch that has been made.
+	 * @throws IllegalActionException If refinement or Controller could not be retrieved.
 	 */
 	private void _transferTaskInputs(Transition transition)
 			throws IllegalActionException {
@@ -783,12 +907,26 @@ public class TDLModuleDirector extends ModalDirector {
 		}
 	}
 
+	/**
+	 * Contains a mode schedule for each mode in the TDL module.
+	 */
 	private HashMap _modeSchedules;
 
+	/**
+	 * All receivers.
+	 */
 	private LinkedList _receivers = new LinkedList();
 
+	/**
+	 * All tasks that have to be done at current point in time.
+	 */
 	private ArrayList _schedule = null;
 
+	/**
+	 * Currently active mode schedule.
+	 */
 	private TDLModeSchedule _currentSchedule;
+
+	private double _currentWCET = 0.0;
 
 }

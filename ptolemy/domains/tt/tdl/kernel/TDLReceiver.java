@@ -162,22 +162,35 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 	 * put() available to get().
 	 */
 	public void update() {
-		if (_nextToken == null) // TODO PD added two lines but not sure if right
-								// behaviour
+		if (_nextToken == null) 
 			return;
 		IOPort port = getContainer();
 		_token = _nextToken;
 	}
 
+	/**
+	 * Set the initial value of the receiver.
+	 * @param token The initial token.
+	 */
 	public void init(Token token) {
 		_token = token;
 	}
 
-	// TODO remove
+	/**
+	 * access method for the token, for testing purposes.
+	 * 
+	 * TODO remove.
+	 * @return The token.
+	 */
 	public Token getTok() {
 		return _token;
 	}
 
+	/**
+	 * Copy tokens to another receiver. This is used in a mode switch if the same task
+	 * exists in the target mode.
+	 * @param newReceiver
+	 */
 	public void copyTokensTo(TDLReceiver newReceiver) {
 		newReceiver._nextToken = this._nextToken;
 		newReceiver._token = this._token;
@@ -186,10 +199,10 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 
 	// /////////////////////////////////////////////////////////////////
 	// // private variables ////
-	// The next token.
+	/** The next token. */
 	private Token _nextToken = null;
 
-	// The token available for reading.
+	/** The token available for reading. */
 	private Token _token = null;
 
 }

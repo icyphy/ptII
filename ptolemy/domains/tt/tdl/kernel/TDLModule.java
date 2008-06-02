@@ -74,7 +74,9 @@ public class TDLModule extends ModalModel {
 	 * React to a change of the director or other property.
 	 * 
 	 * needs to be overridden because of the director class that should always
-	 * be TDLModuleDirector
+	 * be TDLModuleDirector.
+	 * 
+	 * @param attribute Attribute to be changed.
 	 */
 	public void attributeChanged(Attribute attribute)
 			throws IllegalActionException {
@@ -249,7 +251,9 @@ public class TDLModule extends ModalModel {
 
 	// /////////////////////////////////////////////////////////////////
 	// // private methods ////
-	// Initialize the model.
+	/** 
+	 * Initialize the model.
+	 */
 	private void _init() throws IllegalActionException,
 			NameDuplicationException {
 

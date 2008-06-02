@@ -11,12 +11,16 @@ import ptolemy.actor.Actor;
 public class LetTask {
 
 	/**
-	 * create a new LET task
+	 * Create a new LET task.
 	 * 
 	 * @param actor
+	 *            The LET task.
 	 * @param let
+	 *            The LET of the task.
 	 * @param invocationPeriod
+	 *            The period of invocation of the task.
 	 * @param start
+	 *            The start time of the task.
 	 */
 	public LetTask(Actor actor, long let, long invocationPeriod, long start) {
 		_invocationPeriod = invocationPeriod;
@@ -25,18 +29,38 @@ public class LetTask {
 		_offset = start;
 	}
 
+	/**
+	 * Return the invocation period of the task.
+	 * 
+	 * @return the incovationPeriod.
+	 */
 	public long getInvocationPeriod() {
 		return _invocationPeriod;
 	}
 
+	/**
+	 * Return the LET of the task.
+	 * 
+	 * @return the LET.
+	 */
 	public long getLet() {
 		return _let;
 	}
 
+	/**
+	 * Return the actor representing the task.
+	 * 
+	 * @return the task actor.
+	 */
 	public Actor getActor() {
 		return _actor;
 	}
 
+	/**
+	 * Return the offset of the task.
+	 * 
+	 * @return the offset.
+	 */
 	public long getOffset() {
 		return _offset;
 	}
@@ -55,9 +79,13 @@ public class LetTask {
 	 */
 	private long _let;
 
-	/** performs the task execution */
+	/** performs the task execution, */
 	private Actor _actor;
 
+	/**
+	 * the offset of the task specifies the time the task is first invoked.
+	 * After this first invocation, the task is invoked periodically.
+	 */
 	private long _offset;
 
 }

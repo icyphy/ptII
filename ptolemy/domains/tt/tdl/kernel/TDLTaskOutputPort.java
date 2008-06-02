@@ -38,8 +38,8 @@ public class TDLTaskOutputPort extends TypedIOPort {
 	 * 
 	 * @param workspace
 	 *            The workspace that will list the port.
-	 * @throws NameDuplicationException
-	 * @throws IllegalActionException
+	 * @throws NameDuplicationException Thrown if the initial value parameter cannot be created.
+	 * @throws IllegalActionException Thrown if the initial value parameter cannot be created.
 	 */
 	public TDLTaskOutputPort(Workspace workspace)
 			throws IllegalActionException, NameDuplicationException {
@@ -99,8 +99,16 @@ public class TDLTaskOutputPort extends TypedIOPort {
 		_init();
 	}
 
+	/**
+	 * The initial value of the task.
+	 */
 	public Parameter initialValue;
 
+	/**
+	 * Sets the port of a task to an input port.
+	 * 
+	 * @param isInput true if port is an input port.
+	 */
 	public void setInput(boolean isInput) throws IllegalActionException {
 		super.setInput(isInput);
 		if (!isOutput()) {
@@ -108,11 +116,21 @@ public class TDLTaskOutputPort extends TypedIOPort {
 		}
 	}
 
+	/**
+	 * Sets the port of a task to an output port.
+	 * 
+	 * @param isOutput true if port is an output port.
+	 */
 	public void setOutput(boolean isOutput) throws IllegalActionException {
 		super.setOutput(isOutput);
 		initialValue.setVisibility(Settable.FULL);
 	}
 
+	/**
+	 * Initialize the task, set an initial value parameter.
+	 * @throws IllegalActionException Thrown if the initial value parameter cannot be created.
+	 * @throws NameDuplicationException Thrown if the initial value parameter cannot be created.
+	 */
 	private void _init() throws IllegalActionException,
 			NameDuplicationException {
 		initialValue = new Parameter(this, "initialValue");
