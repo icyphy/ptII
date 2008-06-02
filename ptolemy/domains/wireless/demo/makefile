@@ -71,7 +71,6 @@ PTCLASSALLJARS = \
 	Collisions/Collisions.jar \
 	EvaderAndPursuer/EvaderAndPursuer.jar \
 	MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.jar \
-	Network/Network.jar \
 	LinkVisualizer/LinkVisualizer.jar \
 	PowerVariability/PowerVariability.jar \
 	SmallWorld/SmallWorld.jar \
@@ -80,6 +79,7 @@ PTCLASSALLJARS = \
 	WirelessSoundDetection/WirelessSoundDetection.jar
 
 # Not clear what this demo does
+#	Network/Network.jar
 #	PersonalAreaNetwork/PersonalAreaNetwork.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
