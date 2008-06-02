@@ -200,15 +200,6 @@ public class PropertyClassChanges implements MoMLFilter {
         _foundChange = false;
     }
 
-    /** Remove a class to be filtered.
-     *  @param className The name of the class to be filtered
-     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
-     *  @see #put(String, String)
-     */
-    public void remove(String className) {
-        _actorsWithPropertyClassChanges.remove(className);
-    }
-    
     /** Add a class to be filtered and the old and new property class
      *  types. Note that if you add a class with this method, then you
      *  must remove it with {@link #remove(String)}, calling 
@@ -225,6 +216,15 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges.put(className, propertyClassMap);
     }
 
+    /** Remove a class to be filtered.
+     *  @param className The name of the class to be filtered
+     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
+     *  @see #put(String, String)
+     */
+    public void remove(String className) {
+        _actorsWithPropertyClassChanges.remove(className);
+    }
+    
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
      */
