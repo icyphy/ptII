@@ -176,7 +176,7 @@ if (($type(input) != TYPE_Array
         || ($type(input) == TYPE_Array
                 && !$tokenFunc($typeFunc(TYPE_Array::convert($ref(input#$channel), Array_get(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), 0).type))::isCloseTo(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken))).payload.Boolean)) {
 
-    printf("\nTest $actorSymbol($channel) fails in interation %d.\n Value was: %s. Should have been within %10.30g of: %s.\n",
+    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been within %10.30g of: %s.\n",
             $actorSymbol(numberOfTokensSeen),
             $tokenFunc($ref(input#$channel)::toString()).payload.String,
                                                 $ref(tolerance),
