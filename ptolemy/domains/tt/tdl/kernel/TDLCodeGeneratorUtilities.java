@@ -186,7 +186,7 @@ public class TDLCodeGeneratorUtilities {
 	/**
 	 * Generate code for the actuator. Usually, there is only one actuator.
 	 * 
-	 * @param sb
+	 * @param sb Buffer used store the parts of the generated code.
 	 * @param module The module.
 	 * @exception IllegalActionException If there is a problem
 	 * accessing the ports.
@@ -214,7 +214,7 @@ public class TDLCodeGeneratorUtilities {
 	}
 
 	/**
-	 * default type is double
+	 * Get the datatype of a port. Default type is double.
 	 * 
 	 * @param port
 	 *            An IO port.
@@ -265,7 +265,7 @@ public class TDLCodeGeneratorUtilities {
 	/**
 	 * Generate code for the modes.
 	 * 
-	 * @param sb
+	 * @param sb Buffer used store the parts of the generated code.
 	 * @param state The state
 	 * @param module The module
 	 * @exception IllegalActionException If there is a problem
@@ -365,7 +365,7 @@ public class TDLCodeGeneratorUtilities {
 	/**
 	 * Generate code for the sensors.
 	 * 
-	 * @param sb
+	 * @param sb Buffer used store the parts of the generated code.
 	 * @param module The model from which we generate code.
 	 * @exception IllegalActionException If there is a problem
 	 * iterating over the actors.
@@ -414,7 +414,7 @@ public class TDLCodeGeneratorUtilities {
 	/**
 	 * Generate code for the tasks.
 	 * 
-	 * @param sb
+	 * @param sb Buffer used store the parts of the generated code.
 	 * @param module The model from which we generate code.
 	 * @exception IllegalActionException
 	 *                If there is a problem iterating over the actors.
@@ -454,11 +454,10 @@ public class TDLCodeGeneratorUtilities {
 	 * for whatever reason, the parameter specified at the modalport is not
 	 * stored there but at the refinement port one level inside
 	 * modalport.insideReceivers[0][0].getParameter("getter") returns the
-	 * correct value
+	 * correct value.
 	 * 
-	 * @param port
-	 * @return
-	 * @throws KernelException
+	 * @param port refinement port.
+	 * @return the code generated for the refinementPort.
 	 */
 	private static String _getRefinementPortParameter(IOPort port,
 			String paramName) {
@@ -474,6 +473,14 @@ public class TDLCodeGeneratorUtilities {
 		return null;
 	}
 
+	/**
+	 * Generate code for the ports.
+	 * @param sb Buffer used store the parts of the generated code.
+	 * @param actor Actor containing the ports that code should be generated for.
+	 * @param type Input or output port.
+	 * @return Code generated for the ports.
+	 * @throws IllegalActionException Thrown if port type could not be defined.
+	 */
 	private static StringBuffer _portList(StringBuffer sb, Actor actor,
 			String type) throws IllegalActionException {
 		StringBuffer taskList = new StringBuffer();
@@ -514,6 +521,10 @@ public class TDLCodeGeneratorUtilities {
 		return taskList;
 	}
 
+	/**
+	 * Add all modules to the global list of modules.
+	 * @param model Model containing TDL modules.
+	 */
 	private static void _getModules(TypedCompositeActor model) {
 		Iterator it = model.entityList().iterator();
 		while (it.hasNext()) {
@@ -523,6 +534,12 @@ public class TDLCodeGeneratorUtilities {
 		}
 	}
 
+	/**
+	 * Get all modes of a module.
+	 * @param module TDL module.
+	 * @return list of all modes of a module.
+	 * @throws IllegalActionException if controller of module could not be retrieved.
+	 */
 	private static List _getModes(TDLModule module)
 			throws IllegalActionException {
 		List modes = new ArrayList();
@@ -535,7 +552,14 @@ public class TDLCodeGeneratorUtilities {
 		return modes;
 	}
 
+	/**
+	 * All TDL modules in the model.
+	 */
 	private static List _modules = new ArrayList();
 
+	/**
+	 * Input ports of a module that are connected to another TDL module's output ports.
+	 * This is required to find the difference between actuators and module output ports.
+	 */
 	private static Set _portsConnectedToModuleOutputPorts = new HashSet();
 }

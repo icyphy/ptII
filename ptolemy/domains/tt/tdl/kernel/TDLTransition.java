@@ -16,6 +16,13 @@ import ptolemy.kernel.util.Workspace;
  */
 public class TDLTransition extends Transition {
 
+    /** Construct a transition contained by the specified
+     *  entity. 
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this transition.
+     *  @exception NameDuplicationException If the name coincides with
+     *   any relation already in the container.
+     */
 	public TDLTransition(Workspace workspace) throws IllegalActionException,
 			NameDuplicationException {
 		super(workspace);

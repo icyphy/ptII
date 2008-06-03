@@ -77,9 +77,9 @@ public class TDLModeScheduler extends LetModeScheduler {
 	/**
 	 * Add task to list of tasks in TTModeScheduler.
 	 * @param actor The actor describing the task to be added.
-	 * @throws TDLModeSchedulerException Thrown if the slotselection string could not be parsed.
+	 * @throws TDLModeSchedulerException Thrown if the slot selection string could not be parsed.
 	 */
-	public void addTask(Actor actor) throws IllegalActionException,
+	public void addTask(Actor actor) throws 
 			TDLModeSchedulerException {
 		int frequency = TDLModeScheduler.getFrequency((NamedObj) actor);
 		Parameter parameter = (Parameter) ((NamedObj) actor)

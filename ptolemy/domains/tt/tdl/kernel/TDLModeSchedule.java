@@ -12,8 +12,8 @@ public class TDLModeSchedule {
 
 	/**
 	 * Create a new mode schedule.
-	 * @param modePeriod
-	 * @param modeSchedule
+	 * @param modePeriod The period of the mode.
+	 * @param modeSchedule The list of TDL activities for the mode.
 	 */
 	public TDLModeSchedule(long modePeriod, HashMap modeSchedule) {
 		this.modePeriod = modePeriod;

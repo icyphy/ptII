@@ -57,13 +57,18 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class TDLModuleDirector extends ModalDirector {
 
-	/**
-	 * 
-	 * @param container
-	 * @param name
-	 * @throws IllegalActionException
-	 * @throws NameDuplicationException
-	 */
+    /** Construct a director in the given container with the given name.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  If the name argument is null, then the name is set to the
+     *  empty string. Increment the version number of the workspace.
+     *  @param container Container of this director.
+     *  @param name Name of this director.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container not a
+     *   CompositeActor and the name collides with an entity in the container.
+     */
 	public TDLModuleDirector(CompositeEntity container, String name)
 			throws IllegalActionException, NameDuplicationException {
 		super(container, name);
@@ -318,6 +323,8 @@ public class TDLModuleDirector extends ModalDirector {
 	 * Check if at the current time there is something to do.
 	 * 
 	 * @return True if there is something to do now.
+	 * @throws IllegalActionException Thrown if execution was missed, 
+	 * input ports could not be transferred or by parent class.
 	 */
 	public boolean prefire() throws IllegalActionException {
 		return super.prefire() && _executeNow();
@@ -331,7 +338,7 @@ public class TDLModuleDirector extends ModalDirector {
 	 *            output port.
 	 * @return True.
 	 */
-	public boolean transferOutputs(IOPort port) throws IllegalActionException {
+	public boolean transferOutputs(IOPort port)  {
 		return true;
 	}
 
@@ -341,6 +348,8 @@ public class TDLModuleDirector extends ModalDirector {
 	 * @param port
 	 *            Input port.
 	 * @return True if ports transferred inputs.
+	 * @throws IllegalActionException Thrown if inputs are about to be 
+	 * transferred for a non opaque input port.
 	 */
 	public boolean transferInputs(IOPort port) throws IllegalActionException {
 		if (_debugging) {
@@ -496,7 +505,7 @@ public class TDLModuleDirector extends ModalDirector {
 	 *  																														
 	 * @return True if an action is scheduled to be executed now.
 	 * @throws IllegalActionException
-	 *             Thrown if input ports could not be transferred.
+	 *             Thrown if input ports could not be transferred or an execution was missed.
 	 */
 	private boolean _executeNow() throws IllegalActionException {
 		FSMActor controller = getController();

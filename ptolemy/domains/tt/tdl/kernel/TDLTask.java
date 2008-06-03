@@ -97,6 +97,8 @@ public class TDLTask extends TypedCompositeActor {
 	 * Create a new TDL port.
 	 * 
 	 * @param name Name of the TDL port.
+	 * @return a new TDL Task output port.
+	 * @throws NameDuplicationException If the name for the port already exists.
 	 */
 	public Port newPort(String name) throws NameDuplicationException {
 		try {

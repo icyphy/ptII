@@ -74,7 +74,7 @@ public class TDLRefinementPort extends RefinementPort {
 	public Parameter fast;
 
 	/**
-	 * Slot selection string
+	 * Slot selection string.
 	 */
 	public Parameter slots;
 
@@ -82,6 +82,7 @@ public class TDLRefinementPort extends RefinementPort {
 	 * Make port to an output port, for TDL this means that it is an actuator.
 	 * 
 	 * @param isOutput True if port is an output port.
+	 * @throws IllegalActionException Thrown by parent class.
 	 */
 	public void setOutput(boolean isOutput) throws IllegalActionException {
 		super.setOutput(isOutput);
@@ -96,6 +97,7 @@ public class TDLRefinementPort extends RefinementPort {
 	 * Make port to an input port, for TDL this means that it is a sensor.
 	 * 
 	 * @param isInput True if port is an input port.
+	 * @throws IllegalActionException Thrown by parent class.
 	 */
 	public void setInput(boolean isInput) throws IllegalActionException {
 		super.setInput(isInput);

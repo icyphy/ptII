@@ -189,7 +189,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 	/**
 	 * Copy tokens to another receiver. This is used in a mode switch if the same task
 	 * exists in the target mode.
-	 * @param newReceiver
+	 * @param newReceiver Receiver that gets the copied tokens.
 	 */
 	public void copyTokensTo(TDLReceiver newReceiver) {
 		newReceiver._nextToken = this._nextToken;

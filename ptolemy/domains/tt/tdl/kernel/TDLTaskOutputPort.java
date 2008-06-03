@@ -108,6 +108,7 @@ public class TDLTaskOutputPort extends TypedIOPort {
 	 * Sets the port of a task to an input port.
 	 * 
 	 * @param isInput true if port is an input port.
+	 * @throws IllegalActionException Thrown by parent class.
 	 */
 	public void setInput(boolean isInput) throws IllegalActionException {
 		super.setInput(isInput);
@@ -120,6 +121,7 @@ public class TDLTaskOutputPort extends TypedIOPort {
 	 * Sets the port of a task to an output port.
 	 * 
 	 * @param isOutput true if port is an output port.
+	 * @throws IllegalActionException Thrown by parent class.
 	 */
 	public void setOutput(boolean isOutput) throws IllegalActionException {
 		super.setOutput(isOutput);
