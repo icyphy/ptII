@@ -59,8 +59,6 @@ import ptolemy.kernel.util.NamedObj;
  for each actor that invokes the fire code for the actor in an
  infinite loop.
 
- FIXME: No communication between actors is implemented yet.
-
  FIXME: How to make it possible for executions to be finite?
 
  @author Edward A. Lee (based on SDFDirector helper class)
@@ -271,8 +269,8 @@ public class PNDirector extends Director {
     
     public void generateTransferOutputsCode(IOPort inputPort, StringBuffer code)
         throws IllegalActionException {
-        code.append(CodeStream.indent(_codeGenerator.comment("PNDirector: "
-                + "Transfer tokens to the outside.")));
+        code.append(_codeGenerator.comment("PNDirector: "
+                + "Transfer tokens to the outside."));
     }
     
     /** Generate code for transferring enough tokens to complete an internal
@@ -283,8 +281,8 @@ public class PNDirector extends Director {
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(_codeGenerator.comment("PNDirector: "
-                + "Transfer tokens to the inside.")));
+        code.append(_codeGenerator.comment("PNDirector: "
+                + "Transfer tokens to the inside."));
         
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
@@ -302,12 +300,11 @@ public class PNDirector extends Director {
                 }
 
                 for (int k = 0; k < rate; k++) {
-                    code.append(CodeStream.indent(compositeActorHelper
-                            .getReference("@" + name + "," + k)));
+                    code.append(compositeActorHelper
+                            .getReference("@" + name + "," + k));
                     code.append(" =" + _eol);
-                    code.append(CodeStream.indent(_INDENT2
-                            + compositeActorHelper.getReference(name + ","
-                                    + k)));
+                    code.append(compositeActorHelper.getReference(name + ","
+                                    + k));
                     code.append(";" + _eol);
                 }
             }
@@ -461,8 +458,10 @@ public class PNDirector extends Director {
                     _getActorThreadLabel(actor) + "(void* arg) {" + _eol);
 
             // init
-            code.append(helper.generateInitializeCode());
-            code.append(helper.generateVariableInitialization());
+            String initializeCode = helper.generateInitializeCode(); 
+            String variableInitializeCode = helper.generateVariableInitialization();
+            code.append(variableInitializeCode);
+            code.append(initializeCode);
             
             // mainLoop
             
@@ -477,7 +476,7 @@ public class PNDirector extends Director {
                 
                 code.append(directorHelper.generateMainLoop());            
                 
-                code.append("incrementReadBlockingThreads(&" +
+                code.append("$incrementReadBlockingThreads(&" +
                         generateDirectorHeader() + ");" + _eol);
             } else {
 
@@ -531,7 +530,7 @@ public class PNDirector extends Director {
                 code.append(pnPostfireCode);
                 
                 code.append("}" + _eol);
-                code.append("incrementReadBlockingThreads(&" +
+                code.append("$incrementReadBlockingThreads(&" +
                         generateDirectorHeader() + ");" + _eol);
             }            
 

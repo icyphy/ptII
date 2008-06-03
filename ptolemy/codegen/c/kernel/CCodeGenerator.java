@@ -672,7 +672,7 @@ public class CCodeGenerator extends CodeGenerator {
 
         return _INDENT1 + "wrapup();" + _eol;
     }
-
+    
     /** Split a long function body into multiple functions.
      *  @param linesPerMethod The number of lines that should go into
      *  each method.
@@ -942,11 +942,8 @@ public class CCodeGenerator extends CodeGenerator {
         includingFiles.add("<stdarg.h>");
         includingFiles.add("<stdio.h>");
         includingFiles.add("<string.h>");
-        Iterator files = includingFiles.iterator();
 
-        while (files.hasNext()) {
-            String file = (String) files.next();
-
+        for (String file : (Set<String>) includingFiles) {
             // Not all embedded platforms have all .h files.
             // For example, the AVR does not have time.h
             // FIXME: Surely we can control whether the files are

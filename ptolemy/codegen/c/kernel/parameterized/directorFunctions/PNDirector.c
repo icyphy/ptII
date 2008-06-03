@@ -1,12 +1,5 @@
-/*** declarePNStruct() ***/
+/*** declarePNDirectorStruct() ***/    
     pthread_attr_t pthread_custom_attr;
-    
-    #define PN_BUFFER_NO_BLOCKING 0x0
-    #define PN_BUFFER_PENDING_READ 0x1
-    #define PN_BUFFER_PENDING_WRITE 0x2
-    #define PN_BUFFER_CLEAR_WRITE 0xfffffffd
-    #define PN_BUFFER_CLEAR_READ 0xfffffffe
-    
     
     struct directorHeader {
         //-------------------------------------------------------------------//
@@ -30,8 +23,15 @@
         pthread_mutex_t writeBlockMutex;
         pthread_mutex_t readBlockMutex;        
     };
+/**/
 
-
+/*** declarePNStruct() ***/
+    #define PN_BUFFER_NO_BLOCKING 0x0
+    #define PN_BUFFER_PENDING_READ 0x1
+    #define PN_BUFFER_PENDING_WRITE 0x2
+    #define PN_BUFFER_CLEAR_WRITE 0xfffffffd
+    #define PN_BUFFER_CLEAR_READ 0xfffffffe
+    
     struct pnBufferHeader {
         // FIXME: how to statically assign values in struct?
         // FIXME: how to instantiate struct with different initial values?

@@ -462,6 +462,34 @@ Token Array_clone(Token token, ...) {
 /**/
 
 
+/***arraySum***/
+Token arraySum(Token token) {	
+	Token result;
+	int i;
+	if (token.payload.Array->size <= 0) {
+		return token;
+	} else {
+		result = Array_get(token, 0);
+	}
+	
+    for (i = 1; i < token.payload.Array->size; i++) {
+        result = $add_Token_Token(result, Array_get(token, i));
+    }
+    return result;
+}
+/**/
+
+/***arrayRepeat***/
+Token arrayRepeat(int number, Token value) {	
+	Token result = $new(Array(number, 0));
+	int i;
+
+	for (i = 0; i < number; i++) {
+        Array_set(result, i, value);
+    }
+    return result;
+}
+/**/
 
 
 ------------ static function -----------------------------------------------

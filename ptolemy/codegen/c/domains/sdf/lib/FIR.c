@@ -1,23 +1,23 @@
 /*** preinitBlock ***/
-Token $actorSymbol(_data);
-Token $actorSymbol(_zero);
-int $actorSymbol(_mostRecent);
-int $actorSymbol(_phaseLength);
-Token $actorSymbol(_outToken);
-Token $actorSymbol(_tapItem);
-Token $actorSymbol(_dataItem);
-Token $actorSymbol(_taps);
+	Token $actorSymbol(_data);
+	Token $actorSymbol(_zero);
+	int $actorSymbol(_mostRecent);
+	int $actorSymbol(_phaseLength);
+	Token $actorSymbol(_outToken);
+	Token $actorSymbol(_tapItem);
+	Token $actorSymbol(_dataItem);
+	Token $actorSymbol(_taps);
 /**/
 
 /*** sharedBlock ***/
-        int $actorClass(length);
-        int $actorClass(inC);
-        int $actorClass(phase);
-        int $actorClass(dataIndex);
-        int $actorClass(tapsIndex);
-        int $actorClass(i);
-        int $actorClass(bufferIndex);   // for output offset in a single firing.
-        int $actorClass(inputIndex);        // for input offset.
+    int $actorClass(length);
+    int $actorClass(inC);
+    int $actorClass(phase);
+    int $actorClass(dataIndex);
+    int $actorClass(tapsIndex);
+    int $actorClass(i);
+    int $actorClass(bufferIndex);   // for output offset in a single firing.
+    int $actorClass(inputIndex);        // for input offset.
 /**/
 
 /*** initBlock0 ***/
@@ -25,64 +25,63 @@ Token $actorSymbol(_taps);
 /**/
 
 /*** initBlock ***/
-        $actorSymbol(_zero) = $tokenFunc(Array_get($actorSymbol(_taps), 0)::zero());
+    $actorSymbol(_zero) = $tokenFunc(Array_get($actorSymbol(_taps), 0)::zero());
 
-        $actorSymbol(_phaseLength) = $actorSymbol(_taps).payload.Array->size / $val(interpolation);
+    $actorSymbol(_phaseLength) = $actorSymbol(_taps).payload.Array->size / $val(interpolation);
 
-        if (($actorSymbol(_taps).payload.Array->size % $val(interpolation)) != 0) {
-            $actorSymbol(_phaseLength)++;
-        }
+    if (($actorSymbol(_taps).payload.Array->size % $val(interpolation)) != 0) {
+        $actorSymbol(_phaseLength)++;
+    }
 
-        // Create new data array and initialize index into it.
-        // Avoid losing the data if possible.
-        // NOTE: If the filter length increases, then it is impossible
-        // to correctly initialize the delay line to contain previously
-        // seen data, because that data has not been saved.
-        $actorClass(length) = $actorSymbol(_phaseLength) + $val(decimation);
+    // Create new data array and initialize index into it.
+    // Avoid losing the data if possible.
+    // NOTE: If the filter length increases, then it is impossible
+    // to correctly initialize the delay line to contain previously
+    // seen data, because that data has not been saved.
+    $actorClass(length) = $actorSymbol(_phaseLength) + $val(decimation);
 
-        $actorSymbol(_data) = $new(Array($actorClass(length), 0));
+    $actorSymbol(_data) = $new(Array($actorClass(length), 0));
 
-        for ($actorClass(i) = 0; $actorClass(i) < $actorClass(length); $actorClass(i)++) {
-            Array_set($actorSymbol(_data), $actorClass(i), $actorSymbol(_zero));
-        }
-        $actorSymbol(_mostRecent) = $actorSymbol(_phaseLength);
+    for ($actorClass(i) = 0; $actorClass(i) < $actorClass(length); $actorClass(i)++) {
+        Array_set($actorSymbol(_data), $actorClass(i), $actorSymbol(_zero));
+    }
+    $actorSymbol(_mostRecent) = $actorSymbol(_phaseLength);
 /**/
 
 
 
-/*** reinitBlock ***/
-$actorSymbol(_zero) = $tokenFunc(Array_get($actorSymbol(_taps), 0)::zero());
-
-$actorSymbol(_phaseLength) = $actorSymbol(_taps).payload.Array->size / $val(interpolation);
-
-if (($actorSymbol(_taps).payload.Array->size % $val(interpolation)) != 0) {
-    $actorSymbol(_phaseLength)++;
-}
-
-// Create new data array and initialize index into it.
-// Avoid losing the data if possible.
-// NOTE: If the filter length increases, then it is impossible
-// to correctly initialize the delay line to contain previously
-// seen data, because that data has not been saved.
-$actorClass(length) = $actorSymbol(_phaseLength) + $val(decimation);
-
-if ($actorSymbol(_data).payload.Array->size != $actorClass(length)) {
+/*** prefireBlock ***/
+	$actorSymbol(_zero) = $tokenFunc(Array_get($actorSymbol(_taps), 0)::zero());
+	
+	$actorSymbol(_phaseLength) = $actorSymbol(_taps).payload.Array->size / $val(interpolation);
+	
+	if (($actorSymbol(_taps).payload.Array->size % $val(interpolation)) != 0) {
+	    $actorSymbol(_phaseLength)++;
+	}
+	
+	// Create new data array and initialize index into it.
+	// Avoid losing the data if possible.
+	// NOTE: If the filter length increases, then it is impossible
+	// to correctly initialize the delay line to contain previously
+	// seen data, because that data has not been saved.
+	$actorClass(length) = $actorSymbol(_phaseLength) + $val(decimation);
+	
+	if ($actorSymbol(_data).payload.Array->size != $actorClass(length)) {
         $actorSymbol(_data).payload.Array->elements = (Token*) realloc($actorSymbol(_data).payload.Array->elements, $actorClass(length) * sizeof(Token));
         for ($actorClass(i) = $actorSymbol(_data).payload.Array->size; $actorClass(i) < $actorClass(length); $actorClass(i)++) {
             Array_set($actorSymbol(_data), $actorClass(i), $actorSymbol(_zero));
         }
         $actorSymbol(_data).payload.Array->size = $actorClass(length);
         $actorSymbol(_mostRecent) = $actorSymbol(_phaseLength);
-}
-
+	}
 /**/
 
 
 
 
 /*** fireBlock0 ***/
-$actorClass(bufferIndex) = 0;
-$actorClass(inputIndex) = 0;
+	$actorClass(bufferIndex) = 0;
+	$actorClass(inputIndex) = 0;
 /**/
 
 /*** fireBlock ***/
@@ -117,14 +116,14 @@ for ($actorClass(inC) = 1; $actorClass(inC) <= $val(decimation); $actorClass(inC
             if ($actorClass(tapsIndex) < $actorSymbol(_taps).payload.Array->size) {
                 $actorSymbol(_tapItem) = Array_get($actorSymbol(_taps), $actorClass(tapsIndex));
                 $actorSymbol(_dataItem) = Array_get($actorSymbol(_data), $actorClass(dataIndex));
-                $actorSymbol(_dataItem) = $tokenFunc($actorSymbol(_tapItem)::multiply($actorSymbol(_dataItem)));
-                $actorSymbol(_outToken) = $tokenFunc($actorSymbol(_outToken)::add($actorSymbol(_dataItem)));
+                $actorSymbol(_dataItem) = $multiply_Token_Token($actorSymbol(_tapItem), $actorSymbol(_dataItem));
+                $actorSymbol(_outToken) = $add_Token_Token($actorSymbol(_outToken), $actorSymbol(_dataItem));
             }
 
             // else assume tap is zero, so do nothing.
         }
 
-        $ref(output, ($actorClass(bufferIndex)++)) = $actorSymbol(_outToken).payload.$cgType(output);
+        $ref(output, ($actorClass(bufferIndex)++)) = $actorSymbol(_outToken)$refinePrimitiveType(output);
         $actorClass(phase) += $val(decimation);
     }
 

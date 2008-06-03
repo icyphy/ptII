@@ -39,6 +39,7 @@ Token Double_equals(Token thisToken, ...) {
 /**/
 
 /***Double_isCloseTo***/
+$include(<math.h>)
 Token Double_isCloseTo(Token thisToken, ...) {
     va_list argp;
     Token otherToken;
@@ -65,31 +66,74 @@ Token Double_toString(Token thisToken, ...) {
 /**/
 
 /***Double_add***/
+Token add_Double_Array(double a1, Token a2);
 Token Double_add(Token thisToken, ...) {
     va_list argp;
+    Token result;
     Token otherToken;
+
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
+    
+    switch (otherToken.type) {
+    case TYPE_Double:
+    	result = Double_new(thisToken.payload.Double + otherToken.payload.Double);
+    	break;
+    	
+#ifdef TYPE_Array
+    case TYPE_Array:
+        result = $add_Double_Array(thisToken.payload.Double, otherToken);
+        break;
+#endif
+    
+	// FIXME: not finished
+    default:
+        fprintf(stderr, "Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+        exit(1);
+    }
+
     va_end(argp);
-    return Double_new(thisToken.payload.Double + otherToken.payload.Double);
+    return result;
 }
 /**/
 
 /***Double_subtract***/
+Token subtract_Double_Array(double a1, Token a2);
 Token Double_subtract(Token thisToken, ...) {
     va_list argp;
+    Token result;
     Token otherToken;
 
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
+    
+    switch (otherToken.type) {
+    case TYPE_Double:
+    	result = Double_new(thisToken.payload.Double - otherToken.payload.Double);
+    	break;
+    	
+#ifdef TYPE_Array
+    case TYPE_Array:
+        result = $subtract_Double_Array(thisToken.payload.Double, otherToken);
+        break;
+#endif
+    
+	// FIXME: not finished
+    default:
+        fprintf(stderr, "Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+        exit(1);
+    }
+
     va_end(argp);
-    return Double_new(thisToken.payload.Double - otherToken.payload.Double);
+    return result;
 }
 /**/
 
 /***Double_multiply***/
+Token multiply_Double_Array(double a1, Token a2);
+
 Token Double_multiply(Token thisToken, ...) {
     va_list argp;
     Token result;
@@ -105,6 +149,12 @@ Token Double_multiply(Token thisToken, ...) {
 #ifdef TYPE_Int
     case TYPE_Int:
         result = Double_new(thisToken.payload.Double * otherToken.payload.Int);
+        break;
+#endif
+
+#ifdef TYPE_Array
+    case TYPE_Array:
+        result = $multiply_Double_Array(thisToken.payload.Double, otherToken);
         break;
 #endif
 

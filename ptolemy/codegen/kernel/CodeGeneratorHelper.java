@@ -1250,7 +1250,25 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     Token element = ((ArrayToken) token).getElement(Integer
                             .valueOf(offset).intValue());
 
-                    return _generateTypeConvertMethod(element.toString(),
+                    /////////////////////////////////////////////////////
+                    ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
+                    PtParser parser = new PtParser();
+                    ASTPtRootNode parseTree = null;
+                    try {
+                        parseTree = parser.generateParseTree(element.toString());
+                    } catch (Throwable throwable) {
+                        throw new IllegalActionException(attribute, throwable,
+                                "Failed to generate parse tree for \"" + name
+                                + "\". in \"" + container + "\"");
+                    }
+                    parseTreeCodeGenerator.evaluateParseTree(parseTree,
+                            new VariableScope((Parameter) attribute));
+
+                    String elementCode = processCode(parseTreeCodeGenerator
+                            .generateFireCode());
+                    /////////////////////////////////////////////////////
+                    
+                    return _generateTypeConvertMethod(elementCode,
                             castType, codeGenType(element.getType()));
                 }
 
@@ -1881,11 +1899,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * Determine if the given type is primitive.
      * @param ptType The given ptolemy type.
      * @return true if the given type is primitive, otherwise false.
-     * @exception IllegalActionException Thrown if there is no
-     *  corresponding codegen type.
      */
-    public static boolean isPrimitive(Type ptType)
-    throws IllegalActionException {
+    public static boolean isPrimitive(Type ptType) {
         return CodeGenerator._primitiveTypes.contains(codeGenType(ptType));
     }
 

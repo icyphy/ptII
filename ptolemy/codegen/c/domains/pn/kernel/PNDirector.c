@@ -1,4 +1,8 @@
 /*** preinitBlock($name, $numThreads, $numBuffers) ***/
+	// generate $declarePNDirectorStruct()
+	// The above comment is necessary in this code block
+	// to ensure the "declarePNDirectorStruct" code block is generated
+	// before this code block.
     static pthread_cond_t $name_condition[$numBuffers];
     static pthread_mutex_t $name_conditionMutex[$numBuffers];
     

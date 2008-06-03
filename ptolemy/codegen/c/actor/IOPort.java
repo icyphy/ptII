@@ -162,7 +162,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                 Receiver receiver = _getReceiver(
                         offsetObject.toString(), sinkChannelNumber, sinkPort);
 
-                if (isMpi() && MpiPNDirector.isMpiReceiveBuffer(sinkPort, j)) {
+                if (isMpi() && MpiPNDirector.isMpiReceiveBuffer(sinkPort, sinkChannelNumber)) {
                     code.append(_generateMPISendCode(j, rate, sinkPort, sinkChannelNumber, director));
 
                 } else if (!isMpi() && receiver instanceof PNQueueReceiver) {

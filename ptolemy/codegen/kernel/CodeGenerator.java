@@ -508,10 +508,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // these methods in the order that the code will be
         // executed, except for some exceptions as noted.
         String sharedCode = _generateSharedCode();
-        String includeFiles = _generateIncludeFiles();
         String preinitializeCode = _generatePreinitializeCode();
-
-        CodeStream.setIndentLevel(1);
 
         // FIXME: The rest of these methods should be made protected
         // like the ones called above. The derived classes also need
@@ -524,9 +521,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // call _generateBodyCode().
         //_postfireCode = generatePostfireCode();
 
-        CodeStream.setIndentLevel(2);
         String bodyCode = _generateBodyCode();
-        CodeStream.setIndentLevel(0);
         String mainEntryCode = generateMainEntryCode();
         String mainExitCode = generateMainExitCode();
         String initializeEntryCode = generateInitializeEntryCode();
@@ -541,13 +536,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         String fireFunctionCode = null;
         if (!inlineValue) {
-            CodeStream.setIndentLevel(1);
             fireFunctionCode = generateFireFunctionCode();
-            CodeStream.setIndentLevel(0);
         }
-        CodeStream.setIndentLevel(1);
         String wrapupCode = generateWrapupCode();
-        CodeStream.setIndentLevel(0);
 
         // Generating variable declarations needs to happen after buffer
         // sizes are set(?).
@@ -556,7 +547,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // generate type resolution code has to be after
         // fire(), wrapup(), preinit(), init()...
         String typeResolutionCode = generateTypeConvertCode();
-
+        
+        // Include files depends the generated code, so it 
+        // has to be generated after everything.
+        String includeFiles = _generateIncludeFiles();
+        
         startTime = _printTimeAndMemory(startTime,
                 "CodeGenerator: generating code consumed: ");
 
@@ -1334,8 +1329,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     protected StringBuffer _finalPassOverCode(StringBuffer code)
             throws IllegalActionException {
 
-        StringTokenizer tokenizer = new StringTokenizer(code.toString(), _eol
-                + "\n");
+        StringTokenizer tokenizer = new StringTokenizer(
+                code.toString(), _eol + "\n");
 
         code = new StringBuffer();
 
@@ -1863,6 +1858,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         int end = line.contains(blockEnd) ? -1 : 0;
 
         String result = CodeStream.indent(_indent + end, line);
+
         _indent += begin + end;
 
         return result;

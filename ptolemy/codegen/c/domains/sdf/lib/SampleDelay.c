@@ -1,21 +1,7 @@
-/*** allocNewArray($i, $length) ***/
-int $actorSymbol(j);
-Token $actorSymbol(valueArray);
-// FIXME: int only supported here, need to support other types
-int $actorSymbol(initialOutputsArray)[$length] = $val(initialOutputs, $i);
-
-$actorSymbol(valueArray) = $new(Array($length, 0));
-for ($actorSymbol(j) = 0; $actorSymbol(j) < $length; $actorSymbol(j)++) {
-    Array_set($actorSymbol(valueArray),$actorSymbol(j),
-            $new(Int($actorSymbol(initialOutputsArray)[$actorSymbol(j)])));
-}
-$ref(output, $actorSymbol(j)) = $actorSymbol(valueArray);
-/**/
-
-/***initProductionBlock($offset)***/
-$ref(output, $offset) = $val(initialOutputs, $offset);
+/*** initTokens($offset) ***/
+	$ref(output, $offset) = $val(initialOutputs, $offset);
 /**/
 
 /***fireBlock***/
-$ref(output) = $ref(input);
+	$ref(output) = $ref(input);
 /**/

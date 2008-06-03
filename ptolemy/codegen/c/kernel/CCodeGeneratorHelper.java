@@ -30,6 +30,7 @@ package ptolemy.codegen.c.kernel;
 import java.io.File;
 import java.io.FileFilter;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -75,7 +76,7 @@ import ptolemy.util.StringUtilities;
 
  <p>For further details, see <code>$PTII/ptolemy/codegen/README.html</code>
 
- @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
+ @author Christopher Brooks, Edward Lee, Man-Kit Leung, Gang Zhou, Ye Zhou
  @version $Id$
  @since Ptolemy II 6.0
  o @Pt.ProposedRating Yellow (cxh)
@@ -161,6 +162,19 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return (CCodeGenerator) _codeGenerator;
     }
 
+
+    /** Get the files needed by the code generated from this helper class.
+     *  This base class returns an empty set.
+     *  @return A set of strings that are header files needed by the code
+     *  generated from this helper class.
+     *  @exception IllegalActionException Not Thrown in this base class.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
+        Set files = super.getHeaderFiles();
+        files.addAll(_includeFiles);
+        return files;
+    }    
+    
     /** Get the header files needed to compile with the jvm library.
       *  @return A set of strings that are names of the header files
       *   needed by the code generated for jvm library
@@ -450,9 +464,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                 }
                 code.append(";" + _eol);
             }
-
         }
-
         return code.toString();
     }
 
@@ -464,6 +476,23 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             return result;
         }
 
+        if (macro.equals("include")) {
+            _includeFiles.add(parameter);
+            return "";
+        } else if (macro.equals("refinePrimitiveType")) {
+            TypedIOPort port = getPort(parameter);
+
+            if (port == null) {
+                throw new IllegalActionException(parameter
+                        + " is not a port. $refinePrimitiveType macro takes in a port.");
+            }
+            if (isPrimitive(port.getType())) {
+                return ".payload." + codeGenType(port.getType());
+            } else {
+                return "";
+            }
+        }
+        
         // We will assume that it is a call to a polymorphic
         // functions.
         //String[] call = macro.split("_");
@@ -475,6 +504,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
+
+    /** The set of header files that needed to be included. */
+    private Set _includeFiles = new HashSet();
 
     /** True if we have printed the JVM warning. */
     private boolean _printedJVMWarning;

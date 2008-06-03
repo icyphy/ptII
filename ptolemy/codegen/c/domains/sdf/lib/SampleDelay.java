@@ -73,22 +73,17 @@ public class SampleDelay extends CCodeGeneratorHelper {
 
         int length = ((ArrayToken) actor.initialOutputs.getToken()).length();
 
-        _codeStream.append(_eol
-                + _codeGenerator.comment(1, "initialize "
+        _codeStream.append(_eol + _codeGenerator.comment("initialize "
                         + getComponent().getName()));
+        
+        ArrayList args = new ArrayList();
+        args.add("");
         for (int i = 0; i < length; i++) {
             Token element = ((ArrayToken) actor.initialOutputs.getToken())
                     .getElement(i);
-            if (element instanceof ArrayToken) {
-                ArrayList args = new ArrayList();
-                args.add(Integer.valueOf(i));
-                args.add(Integer.valueOf(((ArrayToken) element).length()));
-                // Indent one level
-                _codeStream.appendCodeBlock("allocNewArray", args, 1);
-            } else {
-                _codeStream.append(_INDENT1 + "$ref(output, " + i + ") = "
-                        + "$val(initialOutputs, " + i + ");" + _eol);
-            }
+            
+            args.set(0, Integer.valueOf(i));
+            _codeStream.appendCodeBlock("initTokens", args);
         }
 
         return processCode(_codeStream.toString());
