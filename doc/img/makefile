@@ -206,7 +206,6 @@ EXTRA_SRCS = \
 	HyVisualSplash.gif \
 	PDF.gif \
 	Postscript.gif \
-	PtolemyIICD.ec3 \
 	PtolemyIIIcon.gif \
 	PtolemyIISmallIcon.gif \
         PtolemyIISplash.gif \
@@ -234,7 +233,7 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
-
+OPTIONAL_FILES = \
+	PtolemyIICD.ec3
 
 include $(ROOT)/mk/ptno-compile.mk
