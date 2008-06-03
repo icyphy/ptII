@@ -219,7 +219,7 @@ public class PortNameChanges implements MoMLFilter {
     /** Remove a class to be filtered.
      *  @param className The name of the class to be filtered
      *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
-     *  @see #put(String, String)
+     *  @see #put(String, HashMap)
      */
     public void remove(String className) {
         _actorsWithPortNameChanges.remove(className);
