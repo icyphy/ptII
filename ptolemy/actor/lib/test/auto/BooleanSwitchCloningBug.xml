@@ -4,7 +4,7 @@
 <entity name="BooleanSwitchCloningBug" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 815, 517}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -18,6 +18,14 @@
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 180.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 517}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
@@ -282,12 +290,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 225.0]">
             </property>
         </entity>
-        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={529, 403, 342, 243}, maximized=false}">
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{true, true}}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 135.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 215.0]">
             </property>
         </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -302,23 +310,23 @@
             <vertex name="vertex1" value="[195.0, 225.0]">
             </vertex>
         </relation>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
         <link port="Const.output" relation="relation3"/>
         <link port="BooleanSwitch.input" relation="relation3"/>
         <link port="BooleanSwitch.control" relation="relation3"/>
-        <link port="BooleanSwitch.trueOutput" relation="relation7"/>
+        <link port="BooleanSwitch.trueOutput" relation="relation"/>
         <link port="BooleanSwitch2.input" relation="relation5"/>
         <link port="BooleanSwitch2.control" relation="relation5"/>
-        <link port="BooleanSwitch2.trueOutput" relation="relation6"/>
-        <link port="Display.input" relation="relation7"/>
-        <link port="Display.input" relation="relation6"/>
+        <link port="BooleanSwitch2.trueOutput" relation="relation2"/>
+        <link port="Test.input" relation="relation"/>
+        <link port="Test.input" relation="relation2"/>
         <link relation1="relation3" relation2="relation5"/>
     </entity>
 </entity>
