@@ -137,6 +137,18 @@ public class GradientAdaptiveLattice extends Lattice {
         GradientAdaptiveLattice newObject = (GradientAdaptiveLattice) super
                 .clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
+
+        newObject._estimatedErrorPower = new double[newObject._order + 1];
+        System.arraycopy(newObject._estimatedErrorPower, 0,
+                _estimatedErrorPower, 0, newObject._order + 1);
+
+        newObject._estimatedErrorPowerCache = new double[newObject._order + 1];
+        System.arraycopy(newObject._estimatedErrorPowerCache, 0,
+                _estimatedErrorPowerCache, 0, newObject._order + 1);
+
+        newObject._reflectionCoefficientsCache = new double[newObject._order];
+        System.arraycopy(newObject._reflectionCoefficientsCache, 0,
+                _reflectionCoefficientsCache, 0, newObject._order);
         return newObject;
     }
 
