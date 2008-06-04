@@ -41,7 +41,9 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// StringMatches
@@ -137,6 +139,29 @@ public class StringMatches extends TypedAtomicActor {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and initializes private variables.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        StringMatches newObject = (StringMatches) super.clone(workspace);
+        String patternValue = null;
+        try {
+            patternValue = ((StringToken) newObject.pattern.getToken())
+                .stringValue();
+            newObject._pattern = Pattern.compile(patternValue);
+        } catch (Exception ex) {
+            throw new InternalErrorException(this, ex,
+                    "Failed to compile regular expression \""
+                    + patternValue + "\"");
+        }
+        return newObject;
     }
 
     /** Pattern match a regular expression against a supplied
