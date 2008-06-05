@@ -98,7 +98,7 @@ public class Room extends DatabaseSelect {
     public void fire() throws IllegalActionException {
         // FIXME: Better way to do this?
         pattern.setExpression("{bldg=\"" + building.stringValue()
-                + "\" room=\"" + room.stringValue());
+                + "\", room=\"" + room.stringValue() +"\"}");
         super.fire();
     }
 }
