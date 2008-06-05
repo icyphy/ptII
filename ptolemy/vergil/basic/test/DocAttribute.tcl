@@ -163,4 +163,5 @@ test DocAttribute-4.3 {refreshParametersAndPorts} {
 		     [$docAttribute4_1 getParameterDoc {myPortParameter1_4_1}] \
 		     [$docAttribute4_1 getPortDoc {myPort1_4_1}]]
     list $result1 $result2
-} {{{} {} {}} {{} {} {}}}
+} {{{docs for myParameter} {docs for myPortParameter} {docs for myPort}} {{} {docs for myPortParameter} {}}}
+
