@@ -161,8 +161,8 @@ public class DatabaseManager extends TypedAtomicActor {
         // Next construct a query for user name and password.
         Query query = new Query();
         query.setTextWidth(60);
-        query.addLine("database", "Database", database.getExpression());
-        query.addLine("userName", "User name", userName.getExpression());
+        query.addLine("database", "Database", database.stringValue());
+        query.addLine("userName", "User name", userName.stringValue());
         query.addPassword("password", "Password", "");
         ComponentDialog dialog = new ComponentDialog(frame, "Open Connection", query);
 

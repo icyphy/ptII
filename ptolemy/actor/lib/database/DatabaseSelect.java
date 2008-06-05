@@ -150,7 +150,9 @@ public class DatabaseSelect extends Source {
         columns.update();
         pattern.update();
         ArrayToken result = getOccupants();
-        output.send(0, result);
+        if (result != null) {
+            output.send(0, result);
+        }
     }
     
     /** Return an array of RecordToken, one for each occupant of the room.
@@ -211,9 +213,7 @@ SPONSORFNAMES   VARCHAR2(25)
             String label = (String)patternEntries.next();
             sqlQuery.append("trim(");
             sqlQuery.append(label);
-            sqlQuery.append(") = \"");
-            sqlQuery.append(patternValue.get(label));
-            sqlQuery.append("\"");
+            sqlQuery.append(") = ?");
         }
 
         PreparedStatement statement = null;
@@ -224,13 +224,17 @@ SPONSORFNAMES   VARCHAR2(25)
             if (connection == null) { 
                 return null;
             }
-            // FIXME: This If the pattern values above are replaced with "?"
-            // then we could prepare the statement once and re-use it for multiple
-            // queries. This would presumably be more efficient. To do that, for
-            // each pattern value, after preparing the statement, we would need
-            // to do something like:
-            // statement.setString(patternIndex, patternValue);
+            // FIXME: We could prepare the statement once and re-use it for multiple
+            // queries. This would presumably be more efficient. This would need to
+            // redone whenever the parameters changed.
             statement = connection.prepareStatement(sqlQuery.toString());
+            
+            patternEntries = patternValue.labelSet().iterator();
+            i = 1;
+            while (patternEntries.hasNext()) {
+                String label = (String)patternEntries.next();
+                statement.setString(i++, patternValue.get(label).toString());
+            }
 
             ResultSet rset = statement.executeQuery();
             while (rset.next()) {
