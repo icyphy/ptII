@@ -1,4 +1,4 @@
-# Makefile for the Space domain
+# Makefile for the database actor library.
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,12 +29,15 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/space
+ME =		ptolemy/actor/lib/database
 
-DIRS = 		demo
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
+
+# ORACLE_OJDBC_JAR is set to the absolute path to ojdbc6.jar by configure
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ORACLE_OJDBC_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -44,17 +47,17 @@ include $(CONFIG)
 PTPACKAGE = 	space
 PTCLASSJAR =
 
-PTCLASSALLJARS = \
-	demo/demo.jar
+PTCLASSALLJARS =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	Occupants.java \
-	Region.java \
-	Room.java
+	DatabaseManager.java \
+	DatabaseSelect.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	ojdbc-copyright.htm \
+	ojdbc6.jar
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -65,9 +68,7 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	demo
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
