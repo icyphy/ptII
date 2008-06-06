@@ -68,7 +68,7 @@ public class RenameConfigurer extends Query implements ChangeListener,
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setTextWidth(25);
         _object = object;
-        addLine("New name", "New name", object.getName());
+        addLine("Name", "Name", object.getName());
         addTextArea("Display name", "Display name", object.getDisplayName());
 
         // By default, names are not shown for ports, and are shown
