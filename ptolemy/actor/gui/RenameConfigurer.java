@@ -68,8 +68,9 @@ public class RenameConfigurer extends Query implements ChangeListener,
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setTextWidth(25);
         _object = object;
-        addLine("Name", "Name", object.getName());
-        addTextArea("Display name", "Display name", object.getDisplayName());
+        addLine(_NAME_LABEL, _NAME_LABEL, object.getName());
+        addTextArea(_DISPLAY_NAME_LABEL, _DISPLAY_NAME_LABEL,
+                object.getDisplayName());
 
         // By default, names are not shown for ports, and are shown
         // for everything else.  Note that ports are a little confusing,
@@ -94,9 +95,9 @@ public class RenameConfigurer extends Query implements ChangeListener,
      */
     public void apply() {
         if (_changed) {
-            String newName = getStringValue("New name");
+            String newName = getStringValue(_NAME_LABEL);
             String displayName = StringUtilities
-                    .escapeForXML(getStringValue("Display name"));
+                    .escapeForXML(getStringValue(_DISPLAY_NAME_LABEL));
 
             NamedObj parent = _object.getContainer();
             String oldName = _object.getName();
@@ -256,4 +257,7 @@ public class RenameConfigurer extends Query implements ChangeListener,
 
     // The object that this configurer configures.
     private NamedObj _object;
+
+    private static String _NAME_LABEL = "Name";
+    private static String _DISPLAY_NAME_LABEL = "Display name";
 }
