@@ -35,6 +35,7 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.actor.util.Time;
@@ -42,195 +43,228 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.ptides.kernel.PtidesGraphUtilities;
+import ptolemy.domains.ptides.lib.ScheduleListener;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- * unfinished!!!
+ * Untested, the only difference to the preemptive execution strategy is that
+ * in any case, an event of the set of safe to fire events is selected, even 
+ * if currently an event is in execution.
  * 
  * @author Patricia Derler
  * 
  */
 public class PreemptivePlatformExecutionStrategy extends
 		PlatformExecutionStrategy {
+    /**
+     * Create new non-preemptive platform execution strategy.
+     * 
+     * @param physicalTime
+     *            required to sort events that are safe to process and determine
+     *            which event can be fired next
+     * @param director
+     *            required to display the schedule
+     */
+    public PreemptivePlatformExecutionStrategy(Time physicalTime,
+            Director director) {
+        _director = director;
+        _physicalTime = physicalTime;
+    }
 
-	public boolean actorCanBeFired(Actor actorToFire, Time nextRealTimeEvent) {
-		return true; // assuming that this event was selected before with the
-						// isSafeToProcess method
-	}
+    /**
+     * Sort the list of events that are safe to fire.
+     * 
+     * @param list List of events that are safe to fire.
+     */
+    public void sort(List list) {
+        Collections.sort(list, new WCETComparator());
+    }
 
-	public boolean actorExecutionFinished(Actor actorToFire, Time fireTime) {
-		return (fireTime.add(PtidesGraphUtilities.getWCET(actorToFire))
-				.equals(_physicalTime));
-	}
+    /**
+     * used to sort the set of events that are safe to fire so that the first
+     * event in the list should be fired next.
+     * 
+     * @author Patricia Derler
+     * 
+     */
+    private class WCETComparator implements Comparator {
 
-	public boolean dealWithNewlyReceivedEvents(Actor actorToFire,
-			Hashtable eventQueues) {
-		// if there exists an event that should be fired before the currently
-		// executing Actor
-		// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		return false;
-	}
+        /**
+         * This platform execution strategy is non preemptive.
+         */
+        private boolean _preemptive = false;
 
-	public boolean missedExecution(Actor actorToFire, Time fireTime) {
-		return fireTime.add(
-				getExecutionTimeWithPreemption((NamedObj) actorToFire))
-				.compareTo(_physicalTime) < 0;
-	}
+        /**
+         * This compare method is used to sort all events. 
+         * 
+         * @param arg0 First event.
+         * @param arg1 Second event.
+         * @return -1 if event arg0 should be processed before event arg1 and vice versa.
+         */
+        public int compare(Object arg0, Object arg1) {
+            DEEvent event1 = (DEEvent) arg0;
+            DEEvent event2 = (DEEvent) arg1;
+            Actor actor1 = event1.actor();
+            Actor actor2 = event2.actor();
+            double wcet1 = PtidesGraphUtilities.getWCET(actor1);
+            double wcet2 = PtidesGraphUtilities.getWCET(actor2);
+            Time time1 = event1.timeStamp();
+            Time time2 = event2.timeStamp();
+            boolean fireAtRT1 = PtidesGraphUtilities
+                    .mustBeFiredAtRealTime(actor1, event1.ioPort());
+            boolean fireAtRT2 = PtidesGraphUtilities
+                    .mustBeFiredAtRealTime(actor2, event2.ioPort());
+            int index1 = -1;
+            int index2 = -1;
 
-	private static double getExecutionTimeWithPreemption(NamedObj actor) {
-		try {
-			Parameter parameter = (Parameter) actor
-					.getAttribute("preemptedExecutionTime");
+            // TODO wrong!!!
+            CompositeActor actor = (CompositeActor) actor1.getContainer();
+            FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (actor)
+                    .getFunctionDependency();
+            DirectedAcyclicGraph graph = functionDependency
+                    .getDetailedDependencyGraph().toDirectedAcyclicGraph();
+            Object[] objects = graph.topologicalSort();
+            for (int i = 0; i < objects.length; i++) {
+                            // FIXME: FindBugs says: Call to equals()
+                            // comparing different types
+                if (actor1 instanceof IOPort && ((IOPort) objects[i]).equals(actor1))
+                    index1 = i;
+                else if (actor2 instanceof IOPort && ((IOPort) objects[i]).equals(actor2))
+                    index2 = i;
+            }
 
-			if (parameter != null) {
-				DoubleToken intToken = (DoubleToken) parameter.getToken();
+            if (wcet1 == 0 && (!fireAtRT1 || time1.equals(_physicalTime))
+                    && wcet2 > 0)
+                return -1;
+            if (wcet1 > 0 && wcet2 == 0
+                    && (!fireAtRT2 || time2.equals(_physicalTime)))
+                return 1;
+            if (wcet1 == 0 && wcet2 == 0) {
+                if (fireAtRT1 && time1.equals(_physicalTime) && !fireAtRT2)
+                    return -1;
+                if (fireAtRT1 && time1.compareTo(_physicalTime) > 0
+                        && !fireAtRT2)
+                    return 1;
+                if (fireAtRT2 && time2.equals(_physicalTime) && !fireAtRT1)
+                    return 1;
+                if (fireAtRT2 && time2.compareTo(_physicalTime) > 0
+                        && !fireAtRT1)
+                    return -1;
+                if (fireAtRT1 && fireAtRT2 && time1.equals(_physicalTime)
+                        && time2.equals(_physicalTime))
+                    return 0;
+                if (time1.compareTo(time2) < 0)
+                    return -1;
+                if (time2.compareTo(time1) < 0)
+                    return 1;
+                else {
+                    if (event1.depth() < event2.depth())
+                        return -1;
+                    else if (event1.depth() > event2.depth())
+                        return 1;
+                }
+            } else { // wcet1 > 0 && wcet2 > 0
+                if (fireAtRT1 && !fireAtRT2) {
+                    // if execution of non real time actor can fit before real
+                    // time actor
+                    if ((!_preemptive && _physicalTime.getDoubleValue() + wcet2 <= time1
+                            .getDoubleValue())
+                            || (_preemptive && _physicalTime.getDoubleValue() <= time1
+                                    .getDoubleValue())) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                } else if (fireAtRT2 && !fireAtRT1) {
+                    // if execution of non real time actor can fit before real
+                    // time actor
+                    if ((!_preemptive && _physicalTime.getDoubleValue() + wcet1 <= time2
+                            .getDoubleValue())
+                            || (_preemptive && _physicalTime.getDoubleValue() <= time2
+                                    .getDoubleValue()))
+                        return -1;
+                    else {
+                        return 1;
+                    }
+                } else if (fireAtRT1 && fireAtRT2) {
+                    if (time1.compareTo(time2) < 0)
+                        return -1;
+                    else if (time1.compareTo(time2) > 0)
+                        return 1;
+                    else {
+                        // two actors with WCET > 0 require to be fired at the
+                        // same physical time
+                    }
+                } else {
+                    if (time1.compareTo(time2) < 0)
+                        return -1;
+                    else if (time1.compareTo(time2) > 0)
+                        return 1;
+                    else {
+                        if (index1 < index2)
+                            return -1;
+                        else if (index1 > index2)
+                            return 1;
+                    }
+                }
+            }
+            return 0;
+        }
+    }
 
-				return intToken.doubleValue();
-			} else {
-				return Double.MAX_VALUE;
-			}
-		} catch (ClassCastException ex) {
-			return Double.MAX_VALUE;
-		} catch (IllegalActionException ex) {
-			return Double.MAX_VALUE;
-		}
-	}
+    /**
+     * Return next event that can be fired out of a list of events that are safe
+     * to fire. This is the case if - the list of
+     * eventsToFire is empty - the next event that should be fired has to be
+     * fired at real time = model time and real time is not there yet - the next
+     * event that could be fired has a wcet > next real time event.
+     * 
+     * @param actorsFiring Actors currently in execution.
+     * @param eventsToFire Events that are safe to fire.
+     * 
+     * @return The next event that can be fired.
+     * @throws IllegalActionException Thrown if an execution was missed.
+     */
+    public DEEvent getNextEventToFire(List actorsFiring, List eventsToFire)
+            throws IllegalActionException {
 
-	public static void setExecutionTimeWithPreemption(IOPort out,
-			double preemptedExecutionTime) throws IllegalActionException {
-		Parameter parameter = (Parameter) ((NamedObj) out)
-				.getAttribute("preemptedExecutionTime");
-		if (parameter == null)
-			try {
-				parameter = new Parameter((NamedObj) out,
-						"preemptedExecutionTime", new DoubleToken(
-								preemptedExecutionTime));
-			} catch (NameDuplicationException ex) {
-				// can never happen
-			}
-		else
-			parameter.setToken(new DoubleToken(preemptedExecutionTime));
-	}
+        Time _nextRealTimeEvent = Time.POSITIVE_INFINITY;
+        Collections.sort(eventsToFire, new WCETComparator());
+        for (int i = 0; i < eventsToFire.size(); i++) {
+            DEEvent event = (DEEvent) eventsToFire.get(i);
+            Actor actor = event.actor();
+            if (PtidesGraphUtilities.mustBeFiredAtRealTime(actor, event.ioPort())) {
+                if (event.timeStamp().compareTo(_nextRealTimeEvent) < 0)
+                    _nextRealTimeEvent = event.timeStamp();
+            }
+        }
+        DEEvent event;
+        int index = 0;
+        while (index < eventsToFire.size()) {
+            event = (DEEvent) eventsToFire.get(index);
+            Actor actorToFire = event.actor();
 
-	public boolean nothingToDoNow(List eventsToFire) {
-		return eventsToFire.isEmpty();
-	}
+            if (PtidesGraphUtilities.mustBeFiredAtRealTime(actorToFire, event.ioPort())) {
+                if (_physicalTime.compareTo(event.timeStamp()) > 0) {
+                    _displaySchedule(actorToFire, event.timeStamp()
+                            .getDoubleValue(), ScheduleListener.MISSEDEXECUTION);
+                    throw new IllegalActionException("missed execution!");
+                } else if (_physicalTime.compareTo(event.timeStamp()) < 0) {
+                    index++;
+                    continue;
+                }
+            } else if (_physicalTime.add(
+                    PtidesGraphUtilities.getWCET(actorToFire)).compareTo(
+                    _nextRealTimeEvent) > 0) {
+                index++;
+                continue;
+            }
+            return event;
 
-	public void sort(List list, Time physicalTime) {
-		Collections.sort(list, new WCETComparator());
-	}
-
-	private class WCETComparator implements Comparator {
-
-		private boolean _preemptive = false;
-
-		public int compare(Object arg0, Object arg1) {
-			DEEvent event1 = (DEEvent) arg0;
-			DEEvent event2 = (DEEvent) arg1;
-			Actor actor1 = event1.actor();
-			Actor actor2 = event2.actor();
-			double wcet1 = PtidesGraphUtilities.getWCET(actor1);
-			double wcet2 = PtidesGraphUtilities.getWCET(actor2);
-			Time time1 = event1.timeStamp();
-			Time time2 = event2.timeStamp();
-			boolean fireAtRT1 = PtidesGraphUtilities
-					.mustBeFiredAtRealTime(actor1, event1.ioPort());
-			boolean fireAtRT2 = PtidesGraphUtilities
-					.mustBeFiredAtRealTime(actor2, event2.ioPort());
-			int index1 = -1;
-			int index2 = -1;
-
-			CompositeActor actor = (CompositeActor) actor1.getContainer();
-			FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (actor)
-					.getFunctionDependency();
-			DirectedAcyclicGraph graph = functionDependency
-					.getDetailedDependencyGraph().toDirectedAcyclicGraph();
-			Object[] objects = graph.topologicalSort();
-			for (int i = 0; i < objects.length; i++) {
-				if (((IOPort) objects[i]).equals(actor1))
-					index1 = i;
-				else if (((IOPort) objects[i]).equals(actor2))
-					index2 = i;
-			}
-
-			if (time1.add(wcet1).compareTo(wcet2) > 0)
-				return -1;
-			if (time2.add(wcet2).compareTo(wcet1) > 0)
-				return 1;
-			if (wcet1 == 0 && wcet2 == 0) {
-				if (fireAtRT1 && !fireAtRT2)
-					return -1;
-				else if (fireAtRT2 && !fireAtRT1)
-					return 1;
-				else {
-					if (time1.compareTo(time2) < 0)
-						return -1;
-					else if (time1.compareTo(time2) > 0)
-						return 1;
-					else {
-						if (index1 < index2)
-							return -1;
-						else if (index1 > index2)
-							return 1;
-					}
-				}
-			} else { // wcet1 > 0 && wcet2 > 0
-				if (fireAtRT1 && !fireAtRT2) {
-					// if execution of non real time actor can fit before real
-					// time actor
-					if ((!_preemptive && _physicalTime.getDoubleValue() + wcet2 <= time1
-							.getDoubleValue())
-							|| (_preemptive && _physicalTime.getDoubleValue() <= time1
-									.getDoubleValue())) {
-						return 1;
-					} else {
-						return -1;
-					}
-				} else if (fireAtRT2 && !fireAtRT1) {
-					// if execution of non real time actor can fit before real
-					// time actor
-					if ((!_preemptive && _physicalTime.getDoubleValue() + wcet1 <= time2
-							.getDoubleValue())
-							|| (_preemptive && _physicalTime.getDoubleValue() <= time2
-									.getDoubleValue()))
-						return -1;
-					else {
-						return 1;
-					}
-				} else if (fireAtRT1 && fireAtRT2) {
-					if (time1.compareTo(time2) < 0)
-						return -1;
-					else if (time1.compareTo(time2) > 0)
-						return 1;
-					else {
-						// two actors with WCET > 0 require to be fired at the
-						// same physical time
-					}
-				} else {
-					if (time1.compareTo(time2) < 0)
-						return -1;
-					else if (time1.compareTo(time2) > 0)
-						return 1;
-					else {
-						if (index1 < index2)
-							return -1;
-						else if (index1 > index2)
-							return 1;
-					}
-				}
-			}
-			return 0;
-		}
-	}
-
-	@Override
-	public DEEvent getNextEventToFire(List actorsFiring, List eventsToFire)
-			throws IllegalActionException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+        }
+        return null;
+    }
 }

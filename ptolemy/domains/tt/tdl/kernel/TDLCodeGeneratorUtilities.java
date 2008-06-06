@@ -240,7 +240,7 @@ public class TDLCodeGeneratorUtilities {
 	 * Generate header code for the file. Usually, there is only
 	 * one header.
 	 * 
-	 * @param sb
+	 * @param sb Buffer used store the parts of the generated code.
 	 * @param model The model
 	 * @exception IllegalActionException If there is a problem
 	 * getting the model name.

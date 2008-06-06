@@ -18,6 +18,8 @@ public class TDLTransition extends Transition {
 
     /** Construct a transition contained by the specified
      *  entity. 
+     *  @param workspace The workspace for synchronization and version
+     *  tracking.
      *  @exception IllegalActionException If the container is incompatible
      *   with this transition.
      *  @exception NameDuplicationException If the name coincides with
