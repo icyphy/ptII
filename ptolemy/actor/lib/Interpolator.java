@@ -37,6 +37,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.math.Interpolation;
 
 //////////////////////////////////////////////////////////////////////////
@@ -201,6 +202,29 @@ public class Interpolator extends SequenceSource {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then initializes private variables.
+     *  public members to the parameters of the new actor.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Interpolator newObject = (Interpolator) super.clone(workspace);
+
+        newObject._indexes = new int[_indexes.length];
+        System.arraycopy(_indexes, 0, newObject._indexes, 0, _indexes.length);
+
+        newObject._interpolation = new Interpolation();
+
+        newObject._values = new double[_values.length];
+        System.arraycopy(_values, 0, newObject._values, 0, _values.length);
+
+        return newObject;
     }
 
     /** Output the value at the current iteration count. The output is

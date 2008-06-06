@@ -208,6 +208,17 @@ public class Pulse extends SequenceSource {
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
+
+        newObject._indexes = new int[_indexes.length];
+        System.arraycopy(_indexes, 0, newObject._indexes, 0, _indexes.length);
+
+        try {
+            ArrayToken valuesArray = (ArrayToken) newObject.values.getToken();
+            Token prototype = valuesArray.getElement(0);
+            newObject._zero = prototype.zero();
+        } catch (Exception ex) {
+            throw new InternalErrorException(ex);
+        } 
         return newObject;
     }
 
