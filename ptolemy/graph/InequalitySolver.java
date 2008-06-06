@@ -24,8 +24,10 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
- */
+ added description() method
+ made many methods throw IllegalActionException
 
+ */
 package ptolemy.graph;
 
 import java.util.ArrayList;
@@ -34,6 +36,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -109,16 +113,16 @@ public class InequalitySolver {
      *  variables have its current value set to the bottom, an empty
      *  <code>Iterator</code> is returned.
      *  @return An Iterator of InequalityTerms
-     *  @exception GraphInvalidStateException If the underlying CPO does not
+     *  @exception InvalidStateException If the underlying CPO does not
      *   have a bottom element.
-     *  @exception GraphActionException If testing any one of the
+     *  @exception IllegalActionException If testing any one of the
      *  variables throws an exception.
      */
-    public Iterator bottomVariables() throws GraphActionException {
+    public Iterator bottomVariables() throws IllegalActionException {
         Object bottom = _cpo.bottom();
 
         if (bottom == null) {
-            throw new GraphInvalidStateException(
+            throw new InvalidStateException(
                     "The underlying CPO does not have a bottom element.");
         }
 
@@ -175,10 +179,10 @@ public class InequalitySolver {
      *  See the paper referred in the class document for details.
      *  @return True if a solution for the inequalities is found,
      *  false otherwise.
-     *  @exception GraphActionException If testing any one of the
+     *  @exception IllegalActionException If testing any one of the
      *  inequalities throws an exception.
      */
-    public boolean solveGreatest() throws GraphActionException {
+    public boolean solveGreatest() throws IllegalActionException {
         return _solve(false);
     }
 
@@ -206,10 +210,10 @@ public class InequalitySolver {
      *  See the paper referred to in the class document for details.
      *  @return True if a solution for the inequalities is found,
      *   <code>false</code> otherwise.
-     *  @exception GraphActionException If testing any one of the
+     *  @exception IllegalActionException If testing any one of the
      *  inequalities throws an exception.
      */
-    public boolean solveLeast() throws GraphActionException {
+    public boolean solveLeast() throws IllegalActionException {
         return _solve(true);
     }
 
@@ -218,16 +222,16 @@ public class InequalitySolver {
      *  variables have the current value set to the top, an empty
      *  <code>Iterator</code> is returned.
      *  @return An Iterator of InequalityTerms
-     *  @exception GraphInvalidStateException If the underlying CPO does not
+     *  @exception InvalidStateException If the underlying CPO does not
      *   have a top element.
-     *  @exception GraphActionException If testing any one of the
+     *  @exception IllegalActionException If testing any one of the
      *  variables throws an exception.
      */
-    public Iterator topVariables() throws GraphActionException {
+    public Iterator topVariables() throws IllegalActionException {
         Object top = _cpo.top();
 
         if (top == null) {
-            throw new GraphInvalidStateException(
+            throw new InvalidStateException(
                     "The underlying CPO does not have a top element.");
         }
 
@@ -239,10 +243,10 @@ public class InequalitySolver {
      *  If all the inequalities are satisfied, an empty
      *  <code>Iterator</code> is returned.
      *  @return An Iterator of Inequalities
-     *  @exception GraphActionException If testing any one of the
+     *  @exception IllegalActionException If testing any one of the
      *  inequalities throws an exception.
      */
-    public Iterator unsatisfiedInequalities() throws GraphActionException {
+    public Iterator unsatisfiedInequalities() throws IllegalActionException {
         LinkedList result = new LinkedList();
 
         for (int i = 0; i < _Ilist.size(); i++) {
@@ -259,7 +263,7 @@ public class InequalitySolver {
     /** Return an <code>Iterator</code> of all the variables in the
      *  inequality constraints.
      *  @return An Iterator of InequalityTerms
-     *  @exception GraphActionException If testing any one of the
+     *  @exception IllegalActionException If testing any one of the
      *  variables throws an exception.
      */
     public Iterator variables() {
@@ -309,23 +313,20 @@ public class InequalitySolver {
                 Object variableValue = null;
                 try {
                     variableValue = variables[i].getValue();
-                } catch (GraphActionException ex) {
+                } catch (IllegalActionException ex) {
                     variableValue = ex.toString();
                 }
                 Object variableObject = null;
                 try {
                     variableObject = variables[i].getAssociatedObject();
                     if (variableObject instanceof NamedObj) {
-                        // We get the name so we have a better error message
-                        // for the failure of actor/lib/test/auto/RecordUpdater2.xml
-                        // This introduces a dependency on ptolemy.kernel.util
                         variableObject = ((NamedObj) variableObject)
                                 .getFullName();
                     }
                 } catch (Exception ex) {
                     variableObject = ex.toString();
                 }
-                throw new GraphInvalidStateException("Port \" " + variableObject
+                throw new InvalidStateException("Port \" " + variableObject
                         + "\" of type \"" + variableValue
                         + "\" in an InequalityTerm is not settable."
                         + " If the port is an input and has a type constraint,"
@@ -351,7 +352,7 @@ public class InequalitySolver {
     // This is necessary for interface consistency since other methods
     // in this package return Iterators.
     private Iterator _filterVariables(Object value)
-            throws GraphActionException {
+            throws IllegalActionException {
         LinkedList result = new LinkedList();
 
         for (Enumeration e = _Clist.keys(); e.hasMoreElements();) {
@@ -368,12 +369,12 @@ public class InequalitySolver {
     // The solver used by solveLeast() and solveGreatest().
     // If the argument is true, solve for the least solution;
     // otherwise, solve for the greatest solution.
-    private boolean _solve(boolean least) throws GraphActionException {
+    private boolean _solve(boolean least) throws IllegalActionException {
         // initialize all variables
         Object init = least ? _cpo.bottom() : _cpo.top();
 
         if (init == null) {
-            throw new GraphInvalidStateException(
+            throw new InvalidStateException(
                     "The underlying CPO is not a lattice because "
                             + "the CPO has no " + (least ? "bottom" : "top")
                             + ". The CPO was a " + _cpo.getClass().getName());
@@ -385,8 +386,8 @@ public class InequalitySolver {
 
             try {
                 variable.initialize(init);
-            } catch (GraphActionException ex) {
-                throw new GraphInvalidStateException(ex,
+            } catch (IllegalActionException ex) {
+                throw new InvalidStateException(null, null, ex,
                         "Cannot initialize variable.");
             }
         }
@@ -445,14 +446,14 @@ public class InequalitySolver {
                 }
 
                 if (value == null) {
-                    throw new GraphInvalidStateException("The CPO over which "
+                    throw new InvalidStateException("The CPO over which "
                             + "the inequalities are defined is not a lattice.");
                 }
 
                 try {
                     updateTerm.setValue(value);
-                } catch (GraphActionException ex) {
-                    throw new GraphInvalidStateException(ex,
+                } catch (IllegalActionException ex) {
+                    throw new InvalidStateException(null, null, ex,
                             "Can't update variable.\n");
                 }
 
