@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="BooleanSwitchCloningBugRelationGroup" class="ptolemy.actor.TypedCompositeActor">
+<entity name="BooleanSwitchCloningBugWithClassRelationGroup" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 815, 517}, maximized=false}">
@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 60}">
         </property>
     </property>
-    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+    <class name="CompositeActor" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 180.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 517}, maximized=false}">
@@ -328,5 +328,9 @@
         <link port="Test.input" relation="relation"/>
         <link port="Test.input" relation="relation2"/>
         <link relation1="relation3" relation2="relation5"/>
+    </class>
+    <entity name="InstanceOfCompositeActor" class="CompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 180.0]">
+        </property>
     </entity>
 </entity>
