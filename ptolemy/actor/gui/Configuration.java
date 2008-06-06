@@ -37,6 +37,7 @@ import java.util.List;
 
 import ptolemy.actor.ApplicationConfigurer;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.data.Token;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
@@ -830,6 +831,8 @@ public class Configuration extends CompositeEntity implements
                     // Skip fields introduced by javascope
                     && !fieldType.toString().equals("COM.sun.suntest.javascope.database.CoverageUnit")
                     && !field.getName().equals("js$p")
+                    // Skip immutables
+                    && !fieldType.equals(Token.class)
                     && !fieldType.equals(String.class)) {
 
                 // If an object is equal and the default hashCode() from
