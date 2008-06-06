@@ -315,8 +315,10 @@ public class InequalitySolver {
                 Object variableObject = null;
                 try {
                     variableObject = variables[i].getAssociatedObject();
-                    if (variableObject instanceof NamedObj
-) {
+                    if (variableObject instanceof NamedObj) {
+                        // We get the name so we have a better error message
+                        // for the failure of actor/lib/test/auto/RecordUpdater2.xml
+                        // This introduces a dependency on ptolemy.kernel.util
                         variableObject = ((NamedObj) variableObject)
                                 .getFullName();
                     }
