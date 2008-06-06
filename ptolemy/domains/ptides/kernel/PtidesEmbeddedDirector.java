@@ -222,7 +222,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * 
 	 * @return The time stamp of the next event in the event queue.
 	 */
-	public Time getModelNextIterationTime() {
+	public Time getNextEventTimeStamp() {
 		try {
 			Time nextIterationTime = Time.POSITIVE_INFINITY;
 			List eventsToFire = _getNextEventsToFire();
