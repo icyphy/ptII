@@ -49,6 +49,7 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeConstant;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.data.type.Typeable;
+import ptolemy.graph.GraphActionException;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
@@ -2310,17 +2311,17 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         /** Reset the variable part of this type to te specified type.
          *  @param e A Type.
-         *  @exception IllegalActionException If the type is not settable,
+         *  @exception GraphActionException If the type is not settable,
          *   or the argument is not a Type.
          */
-        public void initialize(Object e) throws IllegalActionException {
+        public void initialize(Object e) throws GraphActionException {
             if (!isSettable()) {
-                throw new IllegalActionException("TypeTerm.initialize: "
+                throw new GraphActionException("TypeTerm.initialize: "
                         + "The type is not settable.");
             }
 
             if (!(e instanceof Type)) {
-                throw new IllegalActionException("TypeTerm.initialize: "
+                throw new GraphActionException("TypeTerm.initialize: "
                         + "The argument is not a Type.");
             }
 
@@ -2354,17 +2355,17 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         /** Set the type of this variable.
          *  @param e a Type.
-         *  @exception IllegalActionException If this type is not settable,
+         *  @exception GraphActionException If this type is not settable,
          *   or this type cannot be updated to the new type.
          */
-        public void setValue(Object e) throws IllegalActionException {
+        public void setValue(Object e) throws GraphActionException {
             if (!isSettable()) {
-                throw new IllegalActionException("TypeTerm.setValue: The "
+                throw new GraphActionException("TypeTerm.setValue: The "
                         + "type is not settable.");
             }
 
             if (!_declaredType.isSubstitutionInstance((Type) e)) {
-                throw new IllegalActionException("Variable$TypeTerm"
+                throw new GraphActionException("Variable$TypeTerm"
                         + ".setValue: "
                         + "Cannot update the type of this variable to the "
                         + "new type." + " Variable: "
@@ -2376,8 +2377,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             if (_declaredType == BaseType.UNKNOWN) {
                 _varType = (Type) e;
             } else {
-                // _declaredType is a StructuredType
-                ((StructuredType) _varType).updateType((StructuredType) e);
+                try {
+                    // _declaredType is a StructuredType
+                    ((StructuredType) _varType).updateType((StructuredType) e);
+                } catch (IllegalActionException ex) {
+                    throw new GraphActionException(ex, "Failed to update type");
+                }
             }
         }
 
