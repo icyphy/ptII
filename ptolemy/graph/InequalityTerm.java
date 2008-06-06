@@ -28,8 +28,6 @@
  */
 package ptolemy.graph;
 
-import ptolemy.kernel.util.IllegalActionException;
-
 //////////////////////////////////////////////////////////////////////////
 //// InequalityTerm
 
@@ -64,11 +62,11 @@ public interface InequalityTerm {
      *  return the evaluation of that function based on the current
      *  value of variables in the function.
      *  @return An Object representing an element in the underlying CPO.
-     *  @exception IllegalActionException If the value of this
+     *  @exception GraphActionException If the value of this
      *  inequality term is not valid.
      *  @see #setValue(Object)
      */
-    public Object getValue() throws IllegalActionException;
+    public Object getValue() throws GraphActionException;
 
     /** Return an array of variables contained in this term.
      *  If this term is a constant, return an array of size zero;
@@ -88,9 +86,9 @@ public interface InequalityTerm {
      *  of it is a simple variable. In this case, set that variable part to
      *  the specified argument.
      *  @param e An Object representing an element in the underlying CPO.
-     *  @exception IllegalActionException If this term is not a variable.
+     *  @exception GraphActionException If this term is not a variable.
      */
-    public void initialize(Object e) throws IllegalActionException;
+    public void initialize(Object e) throws GraphActionException;
 
     /** Check whether this term can be set to a specific element of the
      *  underlying CPO. Only variable terms are settable, constant
@@ -111,8 +109,8 @@ public interface InequalityTerm {
      *  values set.
      *  @param e An Object representing an element in the
      *   underlying CPO.
-     *  @exception IllegalActionException If this term is not a variable.
+     *  @exception GraphActionException If this term is not a variable.
      *  @see #getValue()
      */
-    public void setValue(Object e) throws IllegalActionException;
+    public void setValue(Object e) throws GraphActionException;
 }

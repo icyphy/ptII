@@ -64,6 +64,7 @@ JSRCS = \
     ElementList.java \
     Graph.java \
     GraphActionException.java \
+    GraphInvalidStateException.java \
     GraphConstructionException.java \
     GraphElementException.java \
     GraphException.java \

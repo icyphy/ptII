@@ -28,7 +28,7 @@
 package ptolemy.graph.test;
 
 import ptolemy.graph.InequalityTerm;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.graph.GraphActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestConstant
@@ -98,11 +98,11 @@ public class TestConstant implements InequalityTerm {
     }
 
     /** Throw an Exception.
-     *  @exception IllegalActionException Always thrown since this term is a
+     *  @exception GraphActionException Always thrown since this term is a
      *   constant.
      */
-    public void initialize(Object e) throws IllegalActionException {
-        throw new IllegalActionException("TestConstant.initialize: This term "
+    public void initialize(Object e) throws GraphActionException {
+        throw new GraphActionException("TestConstant.initialize: This term "
                 + "is a constant.");
     }
 
@@ -129,10 +129,10 @@ public class TestConstant implements InequalityTerm {
 
     /** Throw an Exception.
      *  @param e an Object. Ignored by this method.
-     *  @exception IllegalActionException always thrown.
+     *  @exception GraphActionException always thrown.
      */
-    public void setValue(Object e) throws IllegalActionException {
-        throw new IllegalActionException("TestConstant.setValue: This term "
+    public void setValue(Object e) throws GraphActionException {
+        throw new GraphActionException("TestConstant.setValue: This term "
                 + "is a constant.");
     }
 

@@ -28,7 +28,7 @@
 package ptolemy.graph.test;
 
 import ptolemy.graph.InequalityTerm;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.graph.GraphActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestVariable
@@ -106,13 +106,13 @@ public class TestVariable implements InequalityTerm {
 
     /** Set the value of this variable to the specified String.
      *  @param e a String
-     *  @exception IllegalActionException not thrown
+     *  @exception GraphActionException not thrown
      */
-    public void initialize(Object e) throws IllegalActionException {
+    public void initialize(Object e) throws GraphActionException {
         if (isSettable()) {
             _value = (String) e;
         } else {
-            throw new IllegalActionException("TestVariable.initialize: "
+            throw new GraphActionException("TestVariable.initialize: "
                     + "This term is not settable.");
         }
     }
@@ -147,13 +147,13 @@ public class TestVariable implements InequalityTerm {
 
     /** Set the value of this variable to the specified String.
      *  @param e a String
-     *  @exception IllegalActionException not thrown
+     *  @exception GraphActionException not thrown
      */
-    public void setValue(Object e) throws IllegalActionException {
+    public void setValue(Object e) throws GraphActionException {
         if (isSettable()) {
             _value = (String) e;
         } else {
-            throw new IllegalActionException("TestVariable.isSettable: "
+            throw new GraphActionException("TestVariable.isSettable: "
                     + "value is not settable.");
         }
     }
