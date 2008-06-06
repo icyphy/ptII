@@ -883,12 +883,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             } else {
                 output.write(">\n");
             }
-            // If the display name has been set, then include a display element.
-            if (_displayName != null) {
-                output.write("<display name=\"");
-                output.write(StringUtilities.escapeForXML(_displayName));
-                output.write("\"/>");
-            }
 
             // Callers of _exportMoMLContents() should hold a read lock
             // so as to avoid ConcurrentModificationExceptions
@@ -2365,6 +2359,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
+        // If the display name has been set, then include a display element.
+        // Note that copying parameters that have _displayName set need
+        // to export _displayName.  
+        // See: http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3361
+        if (_displayName != null) {
+            output.write("<display name=\"");
+            output.write(StringUtilities.escapeForXML(_displayName));
+            output.write("\"/>");
+        }
+
         // Callers of this method should hold read access 
         // so as to avoid ConcurrentModificationException.
         if (_attributes != null) {
