@@ -56,4 +56,13 @@ public class GraphActionException extends IllegalActionException {
     public GraphActionException(String message) {
         super(message);
     }
+
+    /** Constructor with an argument of text description.
+     *  @param message Detailed description of the error.
+     *  @param cause The cause of this exception, or null if the cause
+     *  is not known or nonexistent.
+     */
+    public GraphActionException(Throwable cause, String message) {
+        super(null, cause, message);
+    }
 }
