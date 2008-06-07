@@ -311,6 +311,20 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
                     }
                 }
 
+                // FIXME: If not found, instead of throwing an exception, we
+                // look for an attribute with the given name in the containers.
+                // This, however, split the name by periods, so it only looks
+                // for attributes with the exact given name. Look at
+                // ptolemy.domains.erg.kernel.ActionsAttribute for a solution.
+                NamedObj container = getContainer();
+                while (container != null) {
+                    Attribute attribute = container.getAttribute(name);
+                    if (attribute != null) {
+                        return attribute;
+                    }
+                    container = container.getContainer();
+                }
+
                 throw new IllegalActionException(fsm, this,
                         "Cannot find port or variable with the name: " + name);
             } else {
