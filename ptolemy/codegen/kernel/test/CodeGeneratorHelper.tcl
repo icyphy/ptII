@@ -91,8 +91,8 @@ test CodeGeneratorHelper-5.1 {getSourceChannel} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     set outputPort [$ramp getPort output]
     set inputPort [$rec getPort input]
-    catch {$cgHelper getSourceChannel $outputPort 1} errMsg
+    catch {$cgHelper getSourceChannel $inputPort 1} errMsg
     set channel [$cgHelper getSourceChannel $inputPort 0]
     list $errMsg [$channel toString]
-} {{java.lang.IndexOutOfBoundsException: Index: 0, Size: 0} output_0}
+} {{java.lang.ArrayIndexOutOfBoundsException: 1} output_0}
 

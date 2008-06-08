@@ -201,7 +201,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 void top(void) {
 
-    /* Fire Composite Actor: top */
+/* Fire Composite Actor: top */
 }
 /* initialization entry code */
 /* initialization exit code */

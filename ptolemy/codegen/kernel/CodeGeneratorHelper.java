@@ -1796,13 +1796,17 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     throws IllegalActionException {
         Receiver[][] receivers = null;
 
-        
         if (port.isInput()) {
             receivers = port.getReceivers();
         } else if (port.isOutput()) {
-            return new Channel(port, channelNumber);
-        } else if (port.getContainer() instanceof CompositeActor) {
-            receivers = port.getInsideReceivers();
+            if (port.getContainer() instanceof CompositeActor) {
+                receivers = port.getInsideReceivers();
+            } else {
+                // This port is the source port, so we only 
+                // need to make a new Channel. We assume that
+                // the given channelNumber is valid.
+                return new Channel(port, channelNumber);
+            }
         } else {
             assert false;
         }
@@ -1822,7 +1826,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 
             }
         }
-
         return null;
     }
 
