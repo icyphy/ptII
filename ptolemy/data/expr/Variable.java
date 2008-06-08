@@ -881,7 +881,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 _varType = _declaredType;
             }
         } else {
-            _needsEvaluation = true;
+            // Evaluation may be expensive. Do not do it
+            // unless the expression has actually changed.
+            // EAL 060808
+            if (!expr.equals(_currentExpression)) {
+                _needsEvaluation = true;
+            }
         }
 
         _currentExpression = expr;
