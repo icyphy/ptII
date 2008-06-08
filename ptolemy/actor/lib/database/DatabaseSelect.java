@@ -36,7 +36,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
@@ -112,7 +111,7 @@ public class DatabaseSelect extends Source {
      *  The names of the fields are the names of the columns to
      *  retrieve from the database, and the value of the field is
      *  the type. This is a record that defaults to
-     *  {LNAME=string, DESKNO=int}, indicating that two columns,
+     *  {LNAME=string, DESKNO=string}, indicating that two columns,
      *  LNAME (for last name) and DESKNO (for desk number) should
      *  be retrieved from the database.
      */
@@ -149,18 +148,7 @@ public class DatabaseSelect extends Source {
         super.fire();
         columns.update();
         pattern.update();
-        ArrayToken result = getOccupants();
-        if (result != null) {
-            output.send(0, result);
-        }
-    }
-    
-    /** Return an array of RecordToken, one for each occupant of the room.
-     *  @return An array of RecordToken, or null if there is no database update.
-     *  @throws IllegalActionException If the database query fails.
-     */
-    // FIXME: Make private?  Rename?
-    public ArrayToken getOccupants() throws IllegalActionException {
+
         String databaseName = databaseManager.stringValue();
         CompositeActor container = (CompositeActor)getContainer();
         NamedObj database = container.getEntity(databaseName);
@@ -221,8 +209,9 @@ SPONSORFNAMES   VARCHAR2(25)
         /* execute query */
         try {
             Connection connection = ((DatabaseManager)database).getConnection();
-            if (connection == null) { 
-                return null;
+            // If there is no connection, return without producing a token.
+            if (connection == null) {
+                return;
             }
             // FIXME: We could prepare the statement once and re-use it for multiple
             // queries. This would presumably be more efficient. This would need to
@@ -239,19 +228,15 @@ SPONSORFNAMES   VARCHAR2(25)
             ResultSet rset = statement.executeQuery();
             while (rset.next()) {
                 HashMap<String,Token> map = new HashMap<String,Token>();
-                String lastName = rset.getString("LNAME");
-                if (lastName == null) {
-                    lastName = "";
+                patternEntries = patternValue.labelSet().iterator();
+                while (patternEntries.hasNext()) {
+                    String label = (String)patternEntries.next();
+                    String value = rset.getString(label);
+                    if (value == null) {
+                        value = "";
+                    }
+                    map.put(label, new StringToken(value));
                 }
-                map.put("LNAME", new StringToken(lastName));
-                
-                String desk = rset.getString("DESKNO");
-                if (desk == null) {
-                    desk = "?";
-                }
-                map.put("DESKNO", new StringToken(desk));
-                RecordToken token = new RecordToken(map);
-                occupants.add(token);
             }
             /* if updating, you would want to commit here... */
             //conn.commit();
@@ -267,6 +252,9 @@ SPONSORFNAMES   VARCHAR2(25)
             array[k++] = recordToken;
         }
         ArrayToken result = new ArrayToken(array);
-        return result;
+
+        if (result != null) {
+            output.send(0, result);
+        }
     }
 }
