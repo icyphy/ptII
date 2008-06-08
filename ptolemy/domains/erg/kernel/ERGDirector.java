@@ -168,28 +168,33 @@ public class ERGDirector extends Director implements TimedDirector {
         boolean hasInput = controller.hasInput();
         boolean synchronize = controller.synchronizeToRealtime();
         Time modelTime = getModelTime();
-        boolean fired = false;
 
+        // Fire the refinements of all input events.
         if (hasInput && !_inputQueue.isEmpty()) {
-            Iterator<TimedEvent> iterator = _inputQueue.iterator();
-            while (!fired && iterator.hasNext()) {
+            Iterator<TimedEvent> iterator = new PriorityQueue<TimedEvent>(
+                    _inputQueue).iterator();
+            while (iterator.hasNext()) {
                 TimedEvent timedEvent = iterator.next();
-                if (timedEvent.contents instanceof Event) {
-                    if (_fire(timedEvent)) {
-                        fired = true;
-                    }
+                if (!(timedEvent.contents instanceof Event)) {
+                    _fire(timedEvent);
                 }
             }
         }
 
-        if (hasInput && !fired && !_inputQueue.isEmpty()) {
-            TimedEvent timedEvent = _inputQueue.peek();
-            if (_fire(timedEvent)) {
-                fired = true;
+        // Fire scheduled input events.
+        if (hasInput && !_inputQueue.isEmpty()) {
+            Iterator<TimedEvent> iterator = new PriorityQueue<TimedEvent>(
+                    _inputQueue).iterator();
+            while (iterator.hasNext()) {
+                TimedEvent timedEvent = iterator.next();
+                if (timedEvent.contents instanceof Event) {
+                    _fire(timedEvent);
+                }
             }
         }
 
-        if (!fired && !_eventQueue.isEmpty()) {
+        // Fire the next imminent event.
+        if (!_eventQueue.isEmpty()) {
             TimedEvent timedEvent = _eventQueue.peek();
             Time nextEventTime = timedEvent.timeStamp;
             if (nextEventTime.compareTo(modelTime) <= 0) {
@@ -201,9 +206,7 @@ public class ERGDirector extends Director implements TimedDirector {
                     synchronize = false;
                 }
 
-                if (_fire(timedEvent)) {
-                    fired = true;
-                }
+                _fire(timedEvent);
             }
         }
     }
