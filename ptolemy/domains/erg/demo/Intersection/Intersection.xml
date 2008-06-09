@@ -1411,7 +1411,7 @@ and editing it for a different policy.</text></svg></configure>
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <entity name="CarLightN" class="ptolemy.domains.erg.demo.Intersection.CarLight">
+        <entity name="CarLightN" class="CarLight">
             <property name="MeanCarArrival" class="ptolemy.data.expr.Parameter" value="MeanCarArrival">
             </property>
             <property name="RedDuration" class="ptolemy.data.expr.Parameter" value="RedDuration">
@@ -1497,7 +1497,7 @@ and editing it for a different policy.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 180.0]">
             </property>
         </entity>
-        <entity name="CarLightE" class="ptolemy.domains.erg.demo.Intersection.CarLight">
+        <entity name="CarLightE" class="CarLight">
             <property name="MeanCarArrival" class="ptolemy.data.expr.Parameter" value="MeanCarArrival">
             </property>
             <property name="RedDuration" class="ptolemy.data.expr.Parameter" value="RedDuration">
@@ -1561,7 +1561,7 @@ and editing it for a different policy.</text></svg></configure>
             <property name="LightChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedLightChannelE&quot;">
             </property>
         </entity>
-        <entity name="CarLightS" class="ptolemy.domains.erg.demo.Intersection.CarLight">
+        <entity name="CarLightS" class="CarLight">
             <property name="MeanCarArrival" class="ptolemy.data.expr.Parameter" value="MeanCarArrival">
             </property>
             <property name="RedDuration" class="ptolemy.data.expr.Parameter" value="RedDuration">
@@ -1635,7 +1635,7 @@ and editing it for a different policy.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 100.0]">
             </property>
         </entity>
-        <entity name="CarLightW" class="ptolemy.domains.erg.demo.Intersection.CarLight">
+        <entity name="CarLightW" class="CarLight">
             <property name="MeanCarArrival" class="ptolemy.data.expr.Parameter" value="MeanCarArrival">
             </property>
             <property name="RedDuration" class="ptolemy.data.expr.Parameter" value="RedDuration">
