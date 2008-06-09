@@ -17,6 +17,11 @@ Ptolemy II install page</a>.
 <li><a href="#Installing">Install Eclipse</a>
 <li><a href="#Preferences">Eclipse Preferences for Ptolemy II</a><
 <li><a href="#SettingUp">Set up Eclipse for Ptolemy II</a>
+  <ul>
+  <li> <a href="#NoSVN">Eclipse is unaware of the version control aspects of the project.</a>
+  <li> <a href="#NoSubclipse">Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a>
+  <li> <a href="#Subclipse">Eclipse is aware of the Subversion aspects of the project.</a> 
+  </ul>
 <li><a href="#simpleDebug">Simple Debugging Session</a></h2>
 <li><a href="#Optional">Optional Extensions</a>
 <li><a href="#Troubleshooting">Troubleshooting</a>
@@ -195,22 +200,27 @@ checked out on a platform that has a different line ending.
 <p>Eclipse will manage your ptII code tree as a <em>project</em> called
 the ptII project.  There several ways to set up the ptII project,
 <ol>
-<li> Eclipse is unaware of the version control aspects of the project.
+
+<li> <a href="#NoSVN">Eclipse is unaware of the version control aspects of the project.</a>
 <br>If you are downloading the source from major Ptolemy release,
 and don't want to update regularly or ssh and subversion are blocked by
 a firewall, then use this choice.
 <br>(No Eclipse Subversion plugin (Subclipse),
  No Subversion (<code>svn</code>) from the command line)
 
-<li> Eclipse is unaware of the version control aspects of the project,
-use the shell version of Subversion to update the tree.
+<li> <a href="#NoSubclipse">Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a>
+
 <br>(No Eclipse Subversion plugin (Subclipse),
  use Subversion (<code>svn</code>) from the command line)
 
-<li> Eclipse is aware of the Subversion aspects of the project. 
+<li> <a href="#Subclipse">Eclipse is aware of the Subversion aspects of the project.</a> 
 You can use both Eclipse and shell version of Subversion to update the tree.
 <br>(Use both the Eclipse Subversion plugin (Subclipse) and the
 shell <code>svn</code> command)
+
+
+
+
 
 </ol>
 
@@ -219,7 +229,12 @@ usual way, i.e. with Subversion commands being submitted to a bash
 shell.  With Subclipse, Eclipse will do all sorts of things to "help"
 you. Most of these things are good, but there is a learning curve.
 
-<h3><a name="NoSVN">If you <em>don't</em> want to use Subversion with Eclipse</a></h3>
+<p>Please choose <b>one</b> of the methods below to set up Eclipse for Ptolemy II. 
+
+<h3><a name="NoSVN">1. Eclipse is unaware of the version control aspects of the project.</a> (No Subversion)</h3>
+If you are downloading the source from major Ptolemy release,
+and don't want to update regularly or ssh and subversion are blocked by
+a firewall, then use this choice.
 
 <ol>
 
@@ -237,10 +252,50 @@ and browse to the PTII directory. Finish.
 <li>When asked if you want to shift to the Java perspective, click on Yes.
 </ul>
 </ol>
+<h3>OR</h3>
+<h3><a name="NoSubclipse">2. Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a></h3>
 
-<h3>Setting up Eclipse for use with Subversion: <a name="Subclipse">Installing Subclipse</a></h3>
+<ol>
+<li>Install Subversion:
+   <ul>
+   <li> <a href="http://tortoisesvn.tigris.org/" target="_top">Tortoise SVN</a> - Windows GUI Client
+   <br> <i>If you are not installing Subclipse, then choose TortoiseSVN</i>
+   <li> <a href="http://www.cygwin.com" target="_top">Cygwin</a> - Windows command line client
+   <br> If you are more comfortable with a command line, then choose Cygwin.
+<li> To check out the ptII svn repository with <b>read-only</b> access:
+<pre>
+svn co svn://source.eecs.berkeley.edu/chess/ptII/trunk
+mv trunk ptII
+</pre>
+ <br><B>Note:</B> Most users will select <CODE>svn://</CODE> because
+they will be accessing the tree with <B>read-only</B> Subversion access.
+<br>If you have an 
+<a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">ssh account</a> on <code>source.eecs.berkeley.edu</code>, then check out ptII with
+read/write access:
+<pre>
+svn co svn+ssh://source.eecs.berkeley.edu/home/svn/chess/ptII/trunk
+mv trunk ptII
+</pre>
+<li>Configure the .classpath and .project files. See <a href="#.classpath.default"><CODE>.classpath.default</CODE></a>. below.
+<li>Create the ptII project
+<ul>
+ <li> In <code>File</code> | <code>New</code> | <code>Project</code>,
+select 'Java project'.
+In the 'Contents' box, click on 'Create project from existing source'
+and browse to the PTII directory. Finish.
+
+<li>When asked if you want to shift to the Java perspective, click on Yes.
+</ul>
+</ol>
+
+<h3>OR</h3>
+
+<h3>3. Setting up Eclipse for use with Subversion: <a name="Subclipse">Installing Subclipse</a></h3>
 <p>The <a href="http://subclipse.tigris.org" target="_top">Subclipse</a>
-Eclipse plugin adds Subversion to Eclipse.
+Eclipse plugin adds Subversion to Eclipse.  After installation,
+you can use either Eclipse to manage your project, or the <code>svn</code>
+from the command line.
+
 <p>
 Follow the <a href="http://subclipse.tigris.org/install.html" target="_top">Subclipse installation instructions</a>.  Upgrade users should see the 
 <a href="http://subclipse.tigris.org/upgrade.html">Subclipse update instruction<a> otherwise the automatic update might not work.
