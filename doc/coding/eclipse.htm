@@ -14,8 +14,9 @@ Other ways of setting up and building Ptolemy II are described on the
 Ptolemy II install page</a>. Contents of this page:
 <menu>
 <li><a href="#Installing">Install Eclipse</a>
+<li><a href="#Preferences">Eclipse Preferences for Ptolemy II</a><
 <li><a href="#SettingUp">Set up Eclipse for Ptolemy II</a>
-<li><a href="#UsingEclipse">Using Eclipse</a>
+<li><a href="#simpleDebug">Simple Debugging Session</a></h2>
 <li><a href="#Optional">Optional Extensions</a>
 <li><a href="performance.htm#Eclipse">Profiling using TPTP</a>
 <li><a href="#Troubleshooting">Troubleshooting</a>
@@ -26,19 +27,18 @@ Ptolemy II install page</a>. Contents of this page:
 <li>
 Download the latest version of Eclipse from
 <a href="http://www.eclipse.org" target="_top">http://www.eclipse.org</a>.
- <br>In October, 2007, we chose <B>Eclipse Classic</B>, which corresponds with
-<CODE>eclipse-SDK-3.3.1-win32.zip</CODE>.  Eclipse Europa might work,
-we did not try it.
+ <br>In June, 2008, we chose <B>Eclipse IDE for Java Developers</B>, which is
+<CODE>eclipse-java-europa-winter-win32.zip</CODE> (79Mb). 
 
 <li>
-Unzip the download file into an appropriate place (such as <CODE>C:\Program Files</CODE>).
+Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe. (The <code>configure</code> looks for Eclipse in <CODE>C:\Program Files\eclipse</CODE>)
 <li>
 Finish the installation by running <CODE>eclipse/eclipse.exe</CODE>.
 <br>The first time this is run it will complete the installation process.
 <br>After the first run, normal start-up will occur whenever it is started.
 </ol>
 
-<h2><a name="Preferences">Eclipse Preferences for Ptolemy II</a></h1>
+<h2><a name="Preferences">Eclipse Preferences for Ptolemy II</a></h2>
 <p>
 The default configuration of Eclipse has some difficulties with Ptolemy II,
 so a few changes are necessary.
@@ -46,8 +46,11 @@ so a few changes are necessary.
 <li>
 We will need to change the default memory size for Eclipse
 because Ptolemy II is a big project.
-In Windows, create a shortcut to eclipse.exe on your desktop.
-Then right mouse click on the shortcut and select Properties and change
+In Windows,  create a shortcut to eclipse.exe by going to the
+directory where Eclipse is installed, right clicking on eclipse.exe
+and selecting <code>Create Shortcut</code>.
+
+<p>Then right mouse click on the shortcut and select Properties and change
 the target to increase the memory allocated by default. E.g.,
 if you installed Eclipse in <CODE>C:\Program Files\eclipse</CODE>,
 then the Target should read:
@@ -55,7 +58,9 @@ then the Target should read:
    "C:\Program Files\eclipse\eclipse.exe" -vmargs -Xmx256M
 </pre>
 The maximum memory size will now be 256 megabytes when you restart
-Eclipse.
+Eclipse.  
+<p>To add Eclipse to the start menu, right click on the shortcut and 
+select <code>Pin to Start Menu</code>
 <p>
 <li>Eclipse requires some customization to build Ptolemy II
 and to keep the Ptolemy II coding style.  In the steps below, we
@@ -107,9 +112,8 @@ to format comments.  We hope to change this policy in the future.
   
   <li> Click on "OK" to close the "New Profile" window
    
-  <li> A "Profile 'Ptolemy II' window will appear.
+  <li> A "Profile 'Ptolemy II'" window will appear.
        Under the "Indentation" tab, change the Tab policy to "Spaces only". 
-       verify that the Tab policy is "Spaces only".
   <li> Under the "New Lines" tab, select "at end of file"
   <li> Under the "Comments" tab, <b>unselect</b> "Enable block comment formatting"
   <li> Click OK.
@@ -123,12 +127,12 @@ to format comments.  We hope to change this policy in the future.
 <li>
 Ptolemy II uses some features of Java 5.0.
 In particular, <CODE>ptolemy/actor/ptalon</CODE> uses generics,
-which require Java 5.0
-Set Eclipse to use Java 5.0 source code compliance.
+which require Java 5.0 or later.
+<br>Set Eclipse to use Java 5.0 or later source code compliance.
 <ol>
  <li> While still in the preferences window (Window -&gt; Preferences).
  <li> Expand the Java tree, select "Compiler" -&gt; "Building"
- <li> Make sure that Set "Compiler compliance level" is "5.0".
+ <li> Make sure that Set "Compiler compliance level" is "5.0" or later.
  <li> Click Apply. 
 </ol>
 
@@ -145,7 +149,7 @@ if you are tightly managing serialization, we turn it off:
   "Unchecked generic type operation" to "Ignore".
   <li> Under "Generic Types", change
   "Usage of a raw type" to "Ignore".
-  <li> Click Apply.  If you are prompted for a full rebuild, click OK.
+  <li> Click Apply.  If you are prompted for a full rebuild, click Yes.
  </ol>
 
 <li> By default, Eclipse checks in <CODE>makefile</CODE>s,
@@ -176,35 +180,35 @@ checked out on a platform that has a different line ending.
 </ol>
 
 <h2><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h2>
-
+<b>Note that we are switching to Subversion on Wednesday, June 11, 2008</b>
 Eclipse will manage your ptII code tree as a <em>project</em> called
-the ptII project.  There are three ways to set up the ptII project,
+the ptII project.  There several ways to set up the ptII project,
 <ol>
-<li> Eclipse is unaware of the CVS aspects of the project.
-(No Eclipse CVS, use shell CVS)
-<li> Eclipse is aware of the CVS aspects of the project, but
-you can't use the shell version of CVS.  (Eclipse only CVS)
-<li> Eclipse is aware of the CVS aspects of the project
-and you can use the shell version of CVS.
-(Use both Eclipse and shell CVS)
+<li> Eclipse is unaware of the version control aspects of the project.
+<br>If you are downloading the source from major Ptolemy release,
+and don't want to update regularly or ssh and subversion are blocked by
+a firewall, then use this choice.
+<br>(No Eclipse Subversion plugin (Subclipse),
+ No Subversion (<code>svn</code>) from the command line)
+
+<li> Eclipse is unaware of the version control aspects of the project,
+use the shell version of Subversion to update the tree.
+<br>(No Eclipse Subversion plugin (Subclipse),
+ use Subversion (<code>svn</code>) from the command line)
+
+<li> Eclipse is aware of the Subversion aspects of the project. 
+You can use both Eclipse and shell version of Subversion to update the tree.
+<br>(Use both the Eclipse Subversion plugin (Subclipse) and the
+shell <code>svn</code> command)
+
 </ol>
 
-Without CVS, you'll need to manage the CVS aspects in the usual way,
-i.e. with CVS commands being submitted to a bash shell.  With CVS,
-Eclipse will do all sorts of things to "help" you. Most of these
-things are good, but there is a learning curve.  Setting
-up for using both Eclipse and the shell CVS commands
-is a little tricky, but worth it.
+Without Subclipse, you'll need to manage the Subversion aspects in the
+usual way, i.e. with Subversion commands being submitted to a bash
+shell.  With Subclipse, Eclipse will do all sorts of things to "help"
+you. Most of these things are good, but there is a learning curve.
 
-<p>
-Once the ptII project has been set up there seems to be no easy way to
-switch between using CVS and not using CVS.  I.E., the only way to
-switch is to re-create the ptII project.  (Actually, this isn't too
-hard after you've done it a couple of times :-)).  Therefore, you'll
-need to decide if you want Eclipse to be aware of, and manage the CVS
-aspects of the ptII project.
-
-<h3><a name="NoCVS">If you <em>don't</em> want to use CVS with Eclipse</a></h3>
+<h3><a name="NoSVN">If you <em>don't</em> want to use Subversion with Eclipse</a></h3>
 
 <ol>
 
@@ -222,67 +226,98 @@ and browse to the PTII directory. Finish.
 </ul>
 </ol>
 
-<h3>Check Out Ptolemy II from the CVS Repository using pserver</h3>
+<h3>Setting up Eclipse for use with Subversion: <a name="Subclipse">Installing Subclipse</a></h3>
+<p>The <a href="http://subclipse.tigris.org" target="_top">Subclipse</a>
+Eclipse plugin adds Subversion to Eclipse.
+<p>
+Follow the <a href="http://subclipse.tigris.org/install.html" target="_top">Subclipse installation instructions</a>.  Upgrade users should see the 
+<a href="http://subclipse.tigris.org/upgrade.html">Subclipse update instruction<a> otherwise the automatic update might not work.
+<p>For your convenience, an abbreviated version of the Subclipse instructions
+are below:
+<ol>
+<li> To download Subclipse, in Eclipse, follow these menus <code>Help<code>
+ | <code>Software Updates<code> | <code>Find and Install</code> | <code>Search for new features to install</code> | <code>New Remote Site</code>.  
+<li>Then enter
+<pre> 
+Name: Subclipse 1.2.x (Eclipse 3.2+)
+URL:  http://subclipse.tigris.org/update_1.2.x
+<pre>
+<li>In the <code>Update sites to visit</code> window, select <code>Subclipse 1.2.x (Eclipse 3.2+)</code>
+<li>Click Finish
+<li>In the "Search Results" window, expand the <code>Subclipse 1.2.x (Eclipse 3.2+), tree and check the box next to <code>Subclipse Plugin</code>.  If you select all of Subclipse, you may need to install other modules.  The <code>Subclipse Plugin</a> is the only Subclipse feature required for accessing the ptII subversion repository.
+<li>Click Next, accept the license agreement, click Finsh.
+<li>In the "Verification" window, click <code>Install All</code>
+<li>In the "Install/Update" window, click <code>Yes</code>.
+</ol>
+
+<h3>SSH Configuration.</h3>
+If you will be accessing the ptII repository with <b>read/write</b>
+access, then you will need to do a little more configuration concerning
+passwords.
+ <p><B>Note:</B> Most users will <b>not</b> need to do this configuration
+ because they will be accessing the tree
+ with <B>read-only</B> Subversion access.  Read-only users can 
+skip to <a href="#CheckOutPtII">Check Out Ptolemy II from the Subversion repository</a>
+
+<p>To access the ptII repository with read/write access, you will
+need configure Subclipse to use your password.  If don't do this step
+and you leave the default
+settings, and have Cygwin ssh installed, then
+<code>c:/cygwin/bin/ssh.exe</code> window will pop up each time ssh
+is called.
+
+<p>The fix is to set Subclipse to use SVNKit
+<code>Window</code> | <code>Preferences</code> | <code>SVNKit (Pure Java)</code>
+| <code>OK</code>
+
+
+<h3><a name="CheckOutPtII">Check Out Ptolemy II</a> from the Subversion repository</h3>
+
 Below we describe how to set up Eclipse so Eclipse
-manages the CVS interaction.  This is
-easier than <a href="#BothEclipseAndShellCVS">setting up both Eclipse and Shell CVS</a> 
+manages the Subversion interaction.  This is
+easier than <a href="#BothEclipseAndShellSVN">setting up both Eclipse and Shell SVN</a> 
 below.
 
 <p>
 Eclipse will manage your ptII code tree as a <em>project</em> called
 the ptII project.  Assuming Eclipse is running:
 <ol>
-<li> Set up the pserver CVS or read/write CVS connection:
+<li>Install Subclipse by <a href="#Subclipse">following the instructions above</a>.
 
-<ol>
-<li> Expose the CVS repositories view by selecting
-     Window-&gt;Show View-&gt;Other in the menus.
-     Then select CVS->CVS Repositories.
-<li> In the CVS Repositories Panel, right mouse click
-     and select New-&gt;Repository Location:
+<li> In Eclipse, add the ptII SVN Repository:
 
- <br>&nbsp;&nbsp;&nbsp;Host: <CODE>source.eecs.berkeley.edu</CODE>
- <br>&nbsp;&nbsp;&nbsp;Repository path: <CODE>/home/cvs/cvsanon</CODE>
- <br>&nbsp;&nbsp;&nbsp;The user name is: <CODE>anon</CODE> 
- with no password (leave the password field blank)
- <br> Or, if you have an individual read/write
-CVS account on source, you can use your source user name 
-and password. 
-and use
- <br>&nbsp;&nbsp;&nbsp;Repository path: <CODE>/home/cvs</CODE>
+<code>Window</code> | <code>Show View</code> | <code>Other</code> | <code>SVN</code> | <code>SVN Repository</code>
+<li>In the SVN Repository view, right click, select <code>New</code> and set the url.
+<br>To check out the ptII svn repository with <b>read-only</b> access:
+<pre>
+svn://source.eecs.berkeley.edu/chess/ptII
+</pre>
+ <p><B>Note:</B> Most users will select <CODE>svn://</CODE> because
+they will be accessing the tree with <B>read-only</B> Subversion access.
+<br>If you have an 
+<a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">ssh account</a> on <code>source.eecs.berkeley.edu</code>, then check out ptII with
+read/write access:
+<pre>
+svn+ssh://source.eecs.berkeley.edu/home/svn/chess/ptII
+<pre>
+Read/write users will be prompted for their source.eecs.berkeley.edu
+username and password. 
 
-<li> Select <CODE>pserver</CODE>.
- <p><B>Note:</B> Most users will select <CODE>pserver</CODE> because
-they will be accessing the tree with <B>read-only</B> CVS access.
- <p>If you have an individual <B>read/write</B> CVS account on source,
-then select <CODE>extssh</CODE>.  See the
-<a href="http://chess.eecs.berkeley.edu/ptexternal">Ptexternal page</a>
-for details.
+<li>In the SVN Repository view, expand the ptII svn repository, right click on <code>trunk</code> and select <code>checkout</code>
 
-<li> Click Finish.
-</ol>
-
-<p>
-<li> <a name="CVSDSL">If you are connecting via a DSL connection</a>, you may
-want to use compression to transfer files:
-In Window -&gt; Preferences -&gt; Team -&gt; CVS -&gt; Connection tab, change Compression Level
-to 5. 
-<p>
-<li> In the CVS Repositories View window, click + sign to the left of the repository and then on the + sign to the left of HEAD until you see the <CODE>ptII</CODE> Head.
-
-<p>
-<li> Right mouse click on the <CODE>ptII</CODE> Head,
-then Select the "Check Out As..." option.  Follow the wizard,
-creating selections as follows:
+Follow the wizard, creating selections as follows:
 <ul>
-<li> In the "Check Out As" window, check out as a project configured using the New Project Wizard, then hit "Next".
+<li> In the "Check Out As" window, use the default, <code>Check out as a project configured using the New Project Wizard</code>, then hit <code>Finish</code>.
 
-<li> In the "Select Tag" window, hit "Finish".
-
-<li> In the "Select a wizard" window, select "Java Project", then "Next".
+<li> In the "Select a wizard" window, select <code>Java</code> | <code>Java Project</code>, then hit <code>Next</code>.
 <li> In the "Create a Java Project" window set "Project Name"
      to: <CODE>ptII</CODE>
 <li> Click Finish.
+<li> If you see a Confirm Overwrite Window that says, 
+<blockquote>
+ <code>The project you created, ptII, contains resources other than the standard .project file. If any of those resources have the same name and relative location of a resource you are checking out, the local resource will be replaced with the resource from the repository</code>
+</blockquote>,
+then click <code>OK</code>.
 </ul>
 
 <p>
@@ -296,9 +331,10 @@ fix the errors below with the <CODE>.classpath.default</CODE> file.
 <li> You will want to view the project in the Java perspective.
 If you aren't already in the Java perspective, select
 Window-&gt;Open Perspective-&gt;Java in the menu.
-By default, Eclipse offers a "package explorer" as the main navigation
-mechanism for the source files. I much prefer to use the "navigator."
-To get the navigator, select
+By default, Eclipse offers a "Package Explorer" as the main navigation
+mechanism for the source files. Many developers much
+prefer to use the "Navigator."
+To get the Navigator, select
 Window-&gt;Show View-&gt;Navigator in the menu.
 You can now browse the source files.
 
@@ -334,8 +370,6 @@ not disabled and Ptolemy has been built.  See above for more about Build Automat
 You will get many warnings that you can ignore, but hopefully no errors.
 
 </ol>
-
-<h2><a name="UsingEclipse">Using Eclipse</a></h2>
 
 <h3><a name="runningPtolemy">Running Ptolemy II</a></h3>
 
@@ -375,41 +409,6 @@ of ptolemy.domains.ct.kernel.CTBaseIntegrator. Then Run-&gt;Debug, and
 as above. Open the Lorenz CT demo from the Quick Tour and run it.
  </ol>
 
-<h2><a name="BothEclipseAndShellCVS">Setting up both Eclipse and Shell CVS</a> </h2>
-
-The description below is based on information from Kevin Rutland about
-how to set up you tree to use both Eclipse and shell CVS.
-
- <p><I>This method expects that you have a ssh account on source.eecs.</I>
-
- <p>See the Eclipse documentation:
-<a href="http://help.eclipse.org/help31/index.jsp?topic=/org.eclipse.platform.doc.user/tasks/task-team-cmdlineclient.htm">Running the CVS command-line client outside of Eclipse</a>
-<ol>
-<li> Expose the CVS repositories view by selecting
-     Window-&gt;Show View-&gt;Other in the menus.
-     Then select CVS->CVS Repositories.
-<li> In the CVS Repositories Panel, right mouse click
-     and select New-&gt;Repository Location:
-
- <br>&nbsp;&nbsp;&nbsp;Host: <CODE>source.eecs.berkeley.edu</CODE>
- <br>&nbsp;&nbsp;&nbsp;Repository path: <CODE>/home/cvs</CODE>
- <br>&nbsp;&nbsp;&nbsp;The user name is: <i>Your source.eecs account name</i>
- <br>&nbsp;&nbsp;&nbsp;The password is: <i>Your source.eecs account password</i>
-<li> Select <CODE>ext</CODE>.
-
-<li> Click Finish.
-<li> Follow the <a href="#CVSDSL">DSL and CVS Repository selection instructions above</a>.
-</ol>
-
-Note that on the command line you need to do
-<pre>
-export CVS_RSH=ssh
-</pre>
-All the 
-Repository entries are set to ":ext:" in the project so all the normal 
-cvs commands (like -n update and diff) work just as expected.
-
-
 <h2><a name="Optional">Optional Extensions</a></h2>
 <p>
 Ptolemy II includes a number of packages that rely on software that you may
@@ -425,7 +424,7 @@ You can find instructions for installing Cygwin at
 http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</a>.
 <p>
 The procedure below will modify the .classpath file that is
-provided in the CVS repository to customize it for
+provided in the version control repository to customize it for
 the software that you have installed.
 The procedure is as follows:
 <ol>
@@ -433,15 +432,16 @@ The procedure is as follows:
 
 <li> Set the PTII variable and export it
 <pre>
-PTII=c:/ptII
-export PTII
+export PTII=c:/Program\ Files/<i>yourLogin</i>/workspace/ptII 
 </pre>
 
 <li>
 cd to the PTII directory
 <pre>
-cd $PTII
+cd "$PTII"
 </pre>
+(Note that we use double quotes around <code>PTII</code> because
+the value of <code>PTII</code> has spaces in it.
 <li>Run configure:
 <pre>
 ./configure
@@ -467,31 +467,6 @@ the project (or you may have to manually rebuild if you turned
 off automatic rebuild).
 </ol>  
 
-
-<h2><a name="UsingCVS">Using CVS</a></h2>
-Resources:
-<ul>
-<li><a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_3" target="_top">The Eclipse 2.0 CVS FAQ</a> 
-
-<li><a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">GSRC CVS FAQ</a></a>
-</ul>
-
-<h3>Debugging CVS</h3>
-<a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_0"
-<code>http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_0</code> </a>
-has instructions about how to enable debugging for cvs.
-<ol>
-<li>In your eclipse directory, create a <code>.options</code> file:
-<pre>
-org.eclipse.team.cvs.core/debug=true
-org.eclipse.team.cvs.core/cvsprotocol=true
-</pre>
-<li>Start up eclipse
-<pre>
-./eclipse  -vm c:/j2sdk1.4.2_03/jre/bin/java.exe -debug -consolelog
-</pre>
-Note that it is important that you run the jre version of java and not javaw.
-</ol>
 
 <h3>Synchronizing with the repository</h3>
 
@@ -551,32 +526,6 @@ appear if you have already run Eclipse.  <b>Note that removing the
 about any projects that you may have set up</b>
 
 
-<h3><a name="cvsConsole">CVS Console</h3>
-You might find the cvs console to be of use, to use it do
-Window -&gt; Show View -&gt; Other -&gt; CVS -&gt; CVS Console.
-
-
-<h3><a name="cvsCompression">Problems with CVS compression</h3>
-
-If, under Eclipse 2.1, you receive a message "Terminated with fatal
-signal 10", then try using a different compression level, see the
-
-<a href="http://dev.eclipse.org/viewcvs/index.cgi/~checkout~/platform-vcm-home/docs/online/cvs_features2.0/cvs-faq.html#misc_3" target="_top">The Eclipse CVS FAQ</a>
-for details.
-<br><a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=15724" target="_top"><code>https://bugs.eclipse.org/bugs/show_bug.cgi?id=15724</code></a> suggests using
-a compression level of 5.
-
-<p>After the failure, the cvs log (Window -&gt; Show Views -&gt; CVS -&gt; CVS Console says:
-
-<pre>
-  U ptII/ptolemy/domains/fsm/demo/ABP/img/Receiver.vsd
-  U ptII/ptolemy/domains/fsm/demo/ABP/img/Sender.gif
-  Terminated with fatal signal 11
-The server reported an error while performing the "cvs checkout" command. (took 15:16.607)
-Error: : Terminated with fatal signal 11
-***
-</pre>
-
 <h3>Rebuilding Briefly flashes a window</h3> 
 <p>If you have problems where clicking on build briefly flashes up
 a window, look in <code>$PTII/.classpath</code> for and empty
@@ -588,25 +537,15 @@ the directory where eclipse is installed. For more information
 about the <code>.metadata</code> directory, see
 <a href="#metadata">below</a>.
 
-<h3>Ignore files</h3>
-To ignore files from within CVS:
-Windows -&gt; Preferences -&gt; Team -&gt; -&gt; Ignored Resources
- <br>Add the following to Ignore Patterns
-<menu>
-<li> alljsimpletests.tcl
-<li> alljtests.tcl
-</menu>
-
 <h3>Eclipse takes a long time to start up</h3>
 
-If Eclipse takes a long time to start up, then the problem could be that
+If Eclipse takes a long time to start up, then the problem could be 
+a problem in your .metadata file.
 
  <p>Basically, when eclipse starts up, it might try to update
 <a name="metadata"><CODE>H:/workspace/.metadata</CODE></a>
 .  The solution is covered in
 <a href="http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm" target="_top"><CODE>http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm</CODE></a>:
-
-
 
 The way I figured this out was by running Norton Antivirus and
 doing View -&gt; File System Realtime Scan Statistics and then I noticed 
@@ -617,18 +556,6 @@ binary and selecting Pin to Start Menu.  My solution was to remove the
 Eclipse bogus entry in the start menu and then create a shortcut,
 change Start in property and then pin that shortcut to my start menu.
 
-
-<h3>Running Eclipse under JDK1.4 on an IBM T30</h3>
-If you are running on an IBM T30 laptop with JDK1.4, and
-your machine locks up upon exiting an application, then
-you may
-need to invoke java with the <CODE>-Dsun.java2d.d3d=false</CODE> 
-argument.
-
-The way to do this is to do
-<CODE>Run</CODE> 0&gt; <CODE>Debug ...</CODE> -&gt; <CODE>Arguments</CODE>
-and then add <CODE>-Dsun.java2d.d3d=false</CODE>  to the
-<CODE>VM arguments</CODE> text area.
 
 </body>
 </html>
