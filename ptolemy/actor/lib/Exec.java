@@ -65,7 +65,7 @@ import ptolemy.util.StringUtilities;
 
  <p> To get the effect of executing,
  a command provided in a shell interpreter,
- <i>prependPlatformDependentShellCommand<i> parameter to true,
+ <i>prependPlatformDependentShellCommand</i> parameter to true,
  or set <i>command</i> to "cmd" (Windows) or "sh" (Windows with Cygwin
  or Linux), and then provide commands at the <i>input</i> port.
  Note that each command must be terminated with a newline.
