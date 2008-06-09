@@ -11,17 +11,20 @@
 These instructions assume you are using Eclipse 3.3 under Windows.
 Other ways of setting up and building Ptolemy II are described on the
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm">
-Ptolemy II install page</a>. Contents of this page:
+Ptolemy II install page</a>. 
+<p>Contents of this page:
 <menu>
 <li><a href="#Installing">Install Eclipse</a>
 <li><a href="#Preferences">Eclipse Preferences for Ptolemy II</a><
 <li><a href="#SettingUp">Set up Eclipse for Ptolemy II</a>
 <li><a href="#simpleDebug">Simple Debugging Session</a></h2>
 <li><a href="#Optional">Optional Extensions</a>
-<li><a href="performance.htm#Eclipse">Profiling using TPTP</a>
 <li><a href="#Troubleshooting">Troubleshooting</a>
 </menu>
-
+Other local pages:
+<menu>
+<li><a href="performance.htm#Eclipse">Profiling using TPTP</a>
+</menu>
 <h2><a name="Installing">Install Eclipse</a></h2>
 <ol>
 <li>
@@ -29,9 +32,10 @@ Download the latest version of Eclipse from
 <a href="http://www.eclipse.org" target="_top">http://www.eclipse.org</a>.
  <br>In June, 2008, we chose <B>Eclipse IDE for Java Developers</B>, which is
 <CODE>eclipse-java-europa-winter-win32.zip</CODE> (79Mb). 
+<p>The version we installed was Eclipse 3.3.2, BuildId M20080221-1800.
 
 <li>
-Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe. (The <code>configure</code> looks for Eclipse in <CODE>C:\Program Files\eclipse</CODE>)
+Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe</code>.
 <li>
 Finish the installation by running <CODE>eclipse/eclipse.exe</CODE>.
 <br>The first time this is run it will complete the installation process.
@@ -58,16 +62,18 @@ then the Target should read:
    "C:\Program Files\eclipse\eclipse.exe" -vmargs -Xmx256M
 </pre>
 The maximum memory size will now be 256 megabytes when you restart
-Eclipse.  
+Eclipse.  You may allocate more memory if you wish.
 <p>To add Eclipse to the start menu, right click on the shortcut and 
 select <code>Pin to Start Menu</code>
 <p>
 <li>Eclipse requires some customization to build Ptolemy II
-and to keep the Ptolemy II coding style.  In the steps below, we
+and to keep the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/style.htm" target="_top">Ptolemy II coding style</a>.
+In the steps below, we
 outline changes to be made in the Eclipse Preferences window,
-which is invoked via Window -&gt; Preferences.  For each of the
-changes, hit "Apply".  When all the changes are done, hit
-"OK", which will close the Eclipse Preferences Window.
+which is invoked via <code>Window</code> | <code>Preferences</code>.
+For each of the
+changes, hit <code>Apply</code>.  When all the changes are done, hit
+<code>OK</code>, which will close the Eclipse Preferences Window.
 
 <li>
 By default, Eclipse rebuilds a project when any change is made
@@ -76,9 +82,10 @@ is first checked out, and during normal usage, can be annoying because
 of the pauses it creates. We suggest disabling this feature as
 follows:
 <ol>
-<li> While still in the preferences window (Window -&gt; Preferences).
-<li> General -&gt; Workspace
-<li> Deselect "Build automatically."
+<li> While still in the preferences window 
+  (<code>Window</code> | <code>Preferences</code>).
+<li> Select <code>General</code> | <code>Workspace</code>
+<li> Deselect <code>Build automatically</code>.
 <li> Click Apply. 
 </ol>
 <p>
@@ -98,9 +105,9 @@ to format comments.  We hope to change this policy in the future.
 
 <br>We handle these changes together:
  <ol>
-  <li> While still in the preferences window (Window -&gt; Preferences).
+  <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>).
 
-  <li> Expand the Java tree, select "Code Style" -&gt; "Formatter"
+  <li> Expand the Java tree, select <code>Code Style</code> | <code>Formatter</code>
   <li> Under "Active profile", Click on "New..."
   <li> In the "New Profile" window, enter "Ptolemy II" into
        the "Profile Name" entry.
@@ -130,8 +137,8 @@ In particular, <CODE>ptolemy/actor/ptalon</CODE> uses generics,
 which require Java 5.0 or later.
 <br>Set Eclipse to use Java 5.0 or later source code compliance.
 <ol>
- <li> While still in the preferences window (Window -&gt; Preferences).
- <li> Expand the Java tree, select "Compiler" -&gt; "Building"
+ <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>).
+ <li> Expand the Java tree, select <code>Compiler</code> | <code>Building</code>
  <li> Make sure that Set "Compiler compliance level" is "5.0" or later.
  <li> Click Apply. 
 </ol>
@@ -141,8 +148,8 @@ warnings complains if a Serializable class does not have
 serialVersionUID declared.  Since this warning is only useful
 if you are tightly managing serialization, we turn it off:
  <ol>
-  <li> While still in the preferences window (Window -&gt; Preferences).
-  <li> Expand the Java tree, select "Compiler" -&gt; "Errors/Warning"
+  <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>).
+  <li> Expand the Java tree, select <code>Compiler</code. | <code>Errors/Warning</code>
   <li> Under "Potential programming problems", change
   "Serializable class without serialVersionUID" to "Ignore"
   <li> Under "Generic Types", change
@@ -159,8 +166,8 @@ checked out on a platform that has a different line ending.
 
  <br>The solution: set your file associations properly:
  <ol>
-  <li> While still in the preferences window (Window -&gt; Preferences).
-  <li> Expand Team-&gt;File Content
+  <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>).
+  <li> Expand <code>Team</code> | <code>File Content</code>
   <li> Click on "Add Extension" and enter "*.tcl" in the "Enter
   File Extension" window, then click "OK" in the "Enter File Extension"  
   
@@ -181,7 +188,11 @@ checked out on a platform that has a different line ending.
 
 <h2><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h2>
 <b>Note that we are switching to Subversion on Wednesday, June 11, 2008</b>
-Eclipse will manage your ptII code tree as a <em>project</em> called
+<p><b>CVS instructions can be found at
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII7.0/ptII/doc/coding/eclipse.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII7.0/ptII/doc/coding/eclipse.htm</code></a></b>
+
+
+<p>Eclipse will manage your ptII code tree as a <em>project</em> called
 the ptII project.  There several ways to set up the ptII project,
 <ol>
 <li> Eclipse is unaware of the version control aspects of the project.
@@ -218,7 +229,8 @@ you. Most of these things are good, but there is a learning curve.
 <li>Configure the .classpath and .project files. See <a href="#.classpath.default"><CODE>.classpath.default</CODE></a>. below.
 <li>Create the ptII project
 <ul>
- <li> File-&gt;New-&gt;Project. Select 'Java project'.
+ <li> In <code>File</code> | <code>New</code> | <code>Project</code>,
+select 'Java project'.
 In the 'Contents' box, click on 'Create project from existing source'
 and browse to the PTII directory. Finish.
 
@@ -241,11 +253,12 @@ are below:
 <pre> 
 Name: Subclipse 1.2.x (Eclipse 3.2+)
 URL:  http://subclipse.tigris.org/update_1.2.x
-<pre>
+</pre>
 <li>In the <code>Update sites to visit</code> window, select <code>Subclipse 1.2.x (Eclipse 3.2+)</code>
 <li>Click Finish
-<li>In the "Search Results" window, expand the <code>Subclipse 1.2.x (Eclipse 3.2+), tree and check the box next to <code>Subclipse Plugin</code>.  If you select all of Subclipse, you may need to install other modules.  The <code>Subclipse Plugin</a> is the only Subclipse feature required for accessing the ptII subversion repository.
-<li>Click Next, accept the license agreement, click Finsh.
+
+<li>In the "Search Results" window, expand the <code>Subclipse 1.2.x (Eclipse 3.2+)</code> tree and check the box next to <code>Subclipse Plugin</code>.  If you select all of Subclipse, you may need to install other modules.  The <code>Subclipse Plugin</a> is the only Subclipse feature required for accessing the ptII subversion repository.
+<li>Click Next, accept the license agreement, click Finish.
 <li>In the "Verification" window, click <code>Install All</code>
 <li>In the "Install/Update" window, click <code>Yes</code>.
 </ol>
@@ -274,9 +287,7 @@ is called.
 <h3><a name="CheckOutPtII">Check Out Ptolemy II</a> from the Subversion repository</h3>
 
 Below we describe how to set up Eclipse so Eclipse
-manages the Subversion interaction.  This is
-easier than <a href="#BothEclipseAndShellSVN">setting up both Eclipse and Shell SVN</a> 
-below.
+manages the Subversion interaction.
 
 <p>
 Eclipse will manage your ptII code tree as a <em>project</em> called
@@ -299,7 +310,7 @@ they will be accessing the tree with <B>read-only</B> Subversion access.
 read/write access:
 <pre>
 svn+ssh://source.eecs.berkeley.edu/home/svn/chess/ptII
-<pre>
+</pre>
 Read/write users will be prompted for their source.eecs.berkeley.edu
 username and password. 
 
@@ -316,7 +327,7 @@ Follow the wizard, creating selections as follows:
 <li> If you see a Confirm Overwrite Window that says, 
 <blockquote>
  <code>The project you created, ptII, contains resources other than the standard .project file. If any of those resources have the same name and relative location of a resource you are checking out, the local resource will be replaced with the resource from the repository</code>
-</blockquote>,
+</blockquote>
 then click <code>OK</code>.
 </ul>
 
@@ -330,12 +341,14 @@ fix the errors below with the <CODE>.classpath.default</CODE> file.
 <p>
 <li> You will want to view the project in the Java perspective.
 If you aren't already in the Java perspective, select
-Window-&gt;Open Perspective-&gt;Java in the menu.
+<code>Window</code> | <code>Open Perspective</code> | <code>Java</code>
+in the menu.
 By default, Eclipse offers a "Package Explorer" as the main navigation
 mechanism for the source files. Many developers much
 prefer to use the "Navigator."
 To get the Navigator, select
-Window-&gt;Show View-&gt;Navigator in the menu.
+<code>Window</code> | <code>Show View</code> | <code>Navigator</code>
+in the menu.
 You can now browse the source files.
 
 <p>
@@ -349,7 +362,7 @@ open <CODE>.classpath</CODE>, paste the contents and save <CODE>.classpath</CODE
  <br>Or, you can use Windows Explorer or the shell.
 
 <li> In Eclipse, perform a Refresh on the ptII project
-by Window-&gt;Open Perspective-&gt;Java,
+by <code>Window</code> | <code>Open Perspective</code> | <code>Java</code
 <br> &nbsp;&nbsp;&nbsp;Go to the Package Explorer or the Navigator.
 <br> &nbsp;&nbsp;&nbsp;Right mouse click on the ptII icon and select Refresh.
 
@@ -364,7 +377,7 @@ Alternatively, you can <a href="#Optional">install
 the optional packages and run configure</a>.
 
 <p>
-<li> Build Ptolemy II by selecting Project -&gt; Build All.
+<li> Build Ptolemy II by selecting <code>Project</code> | </code>Build All</code>.
 (<I>If Build All is greyed out, then perhaps "Build Automatically" was
 not disabled and Ptolemy has been built.  See above for more about Build Automatically</I>.)
 You will get many warnings that you can ignore, but hopefully no errors.
@@ -397,15 +410,16 @@ tutorial.
 <ol>
  <li> Locate ptolemy/vergil/VergilApplication in the Explorer and
 double click. Place a breakpoint on the first line of main()
-by using Run- &gt; Add/Remove Breakpoint
+by using <code>Run</code> | <code>Add/Remove Breakpoint</code>
 
- <li> Tell Eclipse which class to run with Run -&gt; Run. On the Main
+ <li> Tell Eclipse which class to run with <code>Run</code> | <code>Run</code>.
+On the Main
 tab, select the Ptolemy II package and enter
 ptolemy.vergil.VergilApplication as Main class.
 
  <li> Press the Run button
  <li> To debug, quit Vergil, and place a breakpoint in, say, the fire() method
-of ptolemy.domains.ct.kernel.CTBaseIntegrator. Then Run-&gt;Debug, and
+of ptolemy.domains.ct.kernel.CTBaseIntegrator. Then <code>Run</code> | <code>Debug</code>, and
 as above. Open the Lorenz CT demo from the Quick Tour and run it.
  </ol>
 
@@ -440,8 +454,8 @@ cd to the PTII directory
 <pre>
 cd "$PTII"
 </pre>
-(Note that we use double quotes around <code>PTII</code> because
-the value of <code>PTII</code> has spaces in it.
+<i>Note that we use double quotes around <code>PTII</code> because
+the value of <code>PTII</code> has spaces in it.</i>
 <li>Run configure:
 <pre>
 ./configure
@@ -458,7 +472,7 @@ make
 </pre>
 
 <li> In Eclipse, perform a Refresh on the ptII project
-by Window-&gt;Open Perspective-&gt;Java,
+by <code>Window</code>Open Perspective</code> | <code>Java</code>
 <br> &nbsp;&nbsp;&nbsp;Go to the Package Explorer or the Navigator.
 <br> &nbsp;&nbsp;&nbsp;Right mouse click on the ptII icon and select Refresh.
 <br> This will
@@ -484,7 +498,7 @@ off automatic rebuild).
 <li>Right click that resource and select Replace With->Latest From Head.
 </ol>
 
-<h2>  <a name="#debugTclTests">Debugging Tcl Tests</a></h2>
+<h3><a name="#debugTclTests">Debugging Tcl Tests</a></h3>
 <ol>
 <li> Go to Windows -&gt; Open Perspective -&gt; Java.
 
