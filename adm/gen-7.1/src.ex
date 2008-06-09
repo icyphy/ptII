@@ -19,6 +19,7 @@
 RCS
 SCCS
 CVS
+.svn
 .cvsignore
 */TAGS
 */tags
