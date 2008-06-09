@@ -170,7 +170,7 @@ public class ERGDirector extends Director implements TimedDirector {
         Time modelTime = getModelTime();
 
         // Fire the refinements of all input events.
-        if (hasInput && !_inputQueue.isEmpty()) {
+        if (hasInput && !_inputQueue.isEmpty() && !_stopRequested) {
             Iterator<TimedEvent> iterator = new PriorityQueue<TimedEvent>(
                     _inputQueue).iterator();
             while (iterator.hasNext()) {
@@ -182,7 +182,7 @@ public class ERGDirector extends Director implements TimedDirector {
         }
 
         // Fire scheduled input events.
-        if (hasInput && !_inputQueue.isEmpty()) {
+        if (hasInput && !_inputQueue.isEmpty() && !_stopRequested) {
             Iterator<TimedEvent> iterator = new PriorityQueue<TimedEvent>(
                     _inputQueue).iterator();
             while (iterator.hasNext()) {
@@ -194,7 +194,7 @@ public class ERGDirector extends Director implements TimedDirector {
         }
 
         // Fire the next imminent event.
-        if (!_eventQueue.isEmpty()) {
+        if (!_eventQueue.isEmpty() && !_stopRequested) {
             TimedEvent timedEvent = _eventQueue.peek();
             Time nextEventTime = timedEvent.timeStamp;
             if (nextEventTime.compareTo(modelTime) <= 0) {
