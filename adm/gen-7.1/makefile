@@ -134,8 +134,8 @@ PTII_TOPDIR=	.cshrc \
 		vergilPtinySandbox.jnlp.in \
 		vergilVisualSense.jnlp.in
 
-# Location of the CVS Repository
-CVS_REPOSITORY = :ext:gigasource.eecs.berkeley.edu:/home/cvs
+# Location of the SVN Repository
+SVN_REPOSITORY = file:///home/svn/chess/ptII/trunk
 
 ##############################################################################
 # Files to be produced
@@ -218,6 +218,7 @@ $(PTIIDIST):
 	(cd $(PTIIHOME); \
 		$(TAR) -c --no-anchored \
 			--exclude="CVS" \
+			--exclude=",svn" \
 			--exclude="*codeDoc*" \
 			-X $(GENDIR)/src.ex \
 			-X $(GENDIR)/src1.ex \
@@ -851,7 +852,7 @@ ptII$(WINDOWS_VERSION)_src.zip:
 
 # Make the distribution, run htmlchek
 htmlchek:
-	-(cd $(PTIIHOME); cvs update -d -P)
+	-(cd $(PTIIHOME); svn update)
 	$(MAKE) clean
 	$(MAKE)
 	(cd $(PTIIDIST); PTII=$(PTIIDIST) make htmlchek) > $(PTIIDIST)/htmlchek.out 2>&1
@@ -899,7 +900,7 @@ ptbuild:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	rm -f /users/$(USER)/logs/java`date  '+%m%d'`
-	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.5" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
+	-(cd $(PTIIHOME); svn update; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.5" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
 
 # test in ~ptII
 pttests:
@@ -926,8 +927,8 @@ ChangeLog:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	(cd $(PTIIHOME); \
-	    if [ ! -d adm/dists/CVS ]; then \
-		echo "Removing adm/dists because adm/dists/CVS not found"; \
+	    if [ ! -d adm/dists/.svn ]; then \
+		echo "Removing adm/dists because adm/dists/.svn not found"; \
 	        rm -rf adm/dists; \
 	    fi) 
 	(cd $(PTIIHOME); rm -f ChangeLog; \
@@ -1505,14 +1506,14 @@ remote1ChangeLog:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST); \
-	    if [ ! -d adm/dists/CVS ]; then \
-		echo "Removing adm/dists because adm/dists/CVS not found"; \
+	    if [ ! -d adm/dists/.svn ]; then \
+		echo "Removing adm/dists because adm/dists/.svn not found"; \
 	        rm -rf adm/dists; \
 	    fi) 
 	@echo "Problems generating ChangeLog from ptolemy/backtrack/automatic/ptolemy"
 	ls -l $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
 	#rm -rf $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
-	#(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic; cvs update ptolemy)
+	#(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic; svn update)
 	#ls -l $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
 	(cd $(REMOTE1PTIIDIST);	rm -f ChangeLog; \
 		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k ChangeLog; \
@@ -1663,7 +1664,7 @@ remote2distjdk1.4test: #$(REMOTE2PTJACL_JAR)
 
 
 #####################################################################
-# Build on a remote host by doing a cvs checkout
+# Build on a remote host by doing a svn checkout
 
 # Host to run on
 REMOTE3HOST = andrews
@@ -1672,24 +1673,24 @@ REMOTE3HOST = andrews
 REMOTE3HOME = /vol/$(REMOTE3HOST)/$(REMOTE3HOST)1/ptII
 
 # Actual ptII tree.  Note that there is no version number because
-# we are checking it out from CVS
+# we are checking it out from svn
 REMOTE3PTIIDIST = $(REMOTE3HOME)/ptII
 
 # Log file to save the results in
 REMOTE3LOG = $(GENLOGDIR)/remote3.out
 
-remote3: remote3cvs
-remote3cvs:  $(GENLOGDIR)
+remote3: remote3svn
+remote3svn:  $(GENLOGDIR)
 	@echo "#"
-	@echo "# Now building on $(REMOTE3HOST) by doing a cvs checkout "
+	@echo "# Now building on $(REMOTE3HOST) by doing a svn checkout "
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	ssh -x -n $(REMOTE3HOST) "cd $(GENDIR); make remote3nuke >& $(REMOTE3LOG)"
-	# ssh-ing and then using cvs to ssh results in
-	# (cd /vol/gauss/gauss2/ptII; cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs checkout ptII; cvs update -P -d)
+	# ssh-ing and then using svn to ssh results in
+	# (cd /vol/gauss/gauss2/ptII; svn -d :ext:gigasource.eecs.berkeley.edu:/home/svn checkout ptII; svn update -P -d)
 	# You have no controlling tty and no DISPLAY.  Cannot read passphrase.
-	# so we do the cvs co locally
+	# so we do the svn co locally
 	cd $(GENDIR); make remote3ptiidist >> $(REMOTE3LOG) 2>&1
 	ssh -x -n $(REMOTE3HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote3distclean \
@@ -1705,11 +1706,11 @@ remote3nuke:
 remote3ptiidist: $(REMOTE3PTIIDIST)
 $(REMOTE3PTIIDIST):
 	@echo "#"
-	@echo "# Now doing a cvs checkout on `hostname`"
+	@echo "# Now doing a svn checkout on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE3HOME); cvs -d $(CVS_REPOSITORY) checkout ptII)
+	(cd $(REMOTE3HOME); svn checkout $(SVN_REPOSITORY) )
 
 
 # clean the remote tree
@@ -1744,7 +1745,7 @@ $(REMOTE3PTJACL_JAR):
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	-(cd $(REMOTE3PTIIDIST); cvs -d $(CVS_REPOSITORY) checkout tcl; \
+	-(cd $(REMOTE3PTIIDIST); cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs checkout tcl; \
 		cd tcl; $(MAKE) install)
 	ls -l $@
 	@echo "$@ `date`"
