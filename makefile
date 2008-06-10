@@ -55,7 +55,7 @@ PTPACKAGE = 	ptII
 # If you change the version number, be sure to edit doc/*,
 # ptolemy/configs/*, ptolemy/configs/doc and
 # ptolemy/kernel/attributes/VersionAttribute.java
-PTVERSION =	7.0.beta
+PTVERSION =	7.1.devel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
@@ -209,6 +209,7 @@ update:
 	$(MAKE) -k clean fast
 
 cleanDerivedJavaFiles:
+	(cd $(PTII)/ptolemy/actor/ptalon; rm -f `make -s echo_OPTIONAL_JSRCS`)
 	(cd $(PTII)/ptolemy/data/expr; rm -f `make -s echo_OPTIONAL_JSRCS`)
 	(cd $(PTII)/ptolemy/data/unit; rm -f `make -s echo_OPTIONAL_JSRCS`)
 	-(cd $(PTII)/ptolemy/copernicus/kernel/fragment; rm -f `make -s echo_OPTIONAL_JSRCS`)
