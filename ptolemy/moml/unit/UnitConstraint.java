@@ -61,7 +61,7 @@ public abstract class UnitConstraint {
     ////                         public methods                    ////
 
     /* (non-Javadoc)
-     * @see ptolemy.data.unit.UnitPresentation#commonDesc()
+     * @see ptolemy.moml.unit.UnitPresentation#commonDesc()
      */
     public String descriptiveForm() {
         return _lhs.descriptiveForm() + _operator + _rhs.descriptiveForm();
