@@ -55,10 +55,12 @@ import ptolemy.kernel.util.NamedObj;
 //// Select
 
 /**
- Select columns that match the specified pattern via the specified
- database manager. The output is an array of records, where each record
- contains one field for each column, where the name of the field
- is the name of the column.
+ Select the columns from rows that match the specified pattern via the specified
+ database manager. The output is an array of records, one for each row that
+ matches the pattern. In each record, there is field for each column,
+ where the name of the field is the name of the column and the value
+ is the value from the matching row. If no rows match the specified
+ pattern, then the output is an empty array of the appropriate type.
 
  @author Edward A. Lee
  @version $Id$
@@ -87,13 +89,13 @@ public class DatabaseSelect extends Source {
         RecordType declaredType = new RecordType(labels, types);
         columns.setTypeAtMost(declaredType);
         // Set the default value.
-        columns.setExpression("{LNAME=string, DESKNO=int}");
+        columns.setExpression("{lname=string, deskno=int}");
         
         pattern = new PortParameter(this, "pattern");
         // Require that the pattern be a record token.
         pattern.setTypeAtMost(declaredType);
         // Set the default value.
-        pattern.setExpression("{LNAME=string, DESKNO=string}");
+        pattern.setExpression("{room=\"545Q\", bldg=\"Cory\"}");
 
         databaseManager = new StringParameter(this, "databaseManager");
         databaseManager.setExpression("DatabaseManager");
@@ -140,8 +142,8 @@ public class DatabaseSelect extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Read the occupants from the database and produce them on the output
-     *  port.
+    /** Perform the query on the database and produce the result
+     *  on the output port.
      *  @throws IllegalActionException If the database query fails.
      */
     public void fire() throws IllegalActionException {
@@ -178,13 +180,14 @@ SPONSORFNAMES   VARCHAR2(25)
         // Construct a SQL query from the specified parameters.
         StringBuffer sqlQuery = new StringBuffer();
         sqlQuery.append("select ");
-        Iterator columnsEntries = ((RecordToken)columns.getToken()).labelSet().iterator();
+        RecordToken columnValue = (RecordToken)columns.getToken();
+        Iterator columnEntries = columnValue.labelSet().iterator();
         int i = 0;
-        while (columnsEntries.hasNext()) {
+        while (columnEntries.hasNext()) {
             if (i++ > 0) {
                 sqlQuery.append(", ");
             }
-            String label = (String)columnsEntries.next();
+            String label = (String)columnEntries.next();
             sqlQuery.append(label);            
         }
         sqlQuery.append(" from ");
@@ -205,8 +208,7 @@ SPONSORFNAMES   VARCHAR2(25)
         }
 
         PreparedStatement statement = null;
-        ArrayList<RecordToken> occupants = new ArrayList<RecordToken>();
-        /* execute query */
+        ArrayList<RecordToken> matches = new ArrayList<RecordToken>();
         try {
             Connection connection = ((DatabaseManager)database).getConnection();
             // If there is no connection, return without producing a token.
@@ -216,45 +218,57 @@ SPONSORFNAMES   VARCHAR2(25)
             // FIXME: We could prepare the statement once and re-use it for multiple
             // queries. This would presumably be more efficient. This would need to
             // redone whenever the parameters changed.
-            statement = connection.prepareStatement(sqlQuery.toString());
+            String query = sqlQuery.toString();
+            statement = connection.prepareStatement(query);
             
             patternEntries = patternValue.labelSet().iterator();
             i = 1;
             while (patternEntries.hasNext()) {
                 String label = (String)patternEntries.next();
-                statement.setString(i++, patternValue.get(label).toString());
+                Token value = patternValue.get(label);
+                // A StringToken will have spurious quotation marks around it,
+                // so we need to remove those.
+                if (value instanceof StringToken) {
+                    statement.setString(i++, ((StringToken)value).stringValue());
+                } else {
+                    statement.setString(i++, value.toString());
+                }
             }
-
+            // Perform the query.
             ResultSet rset = statement.executeQuery();
+            
+            // For each matching row, construct a record token.
             while (rset.next()) {
                 HashMap<String,Token> map = new HashMap<String,Token>();
-                patternEntries = patternValue.labelSet().iterator();
-                while (patternEntries.hasNext()) {
-                    String label = (String)patternEntries.next();
+                columnEntries = columnValue.labelSet().iterator();
+                while (columnEntries.hasNext()) {
+                    String label = (String)columnEntries.next();
                     String value = rset.getString(label);
                     if (value == null) {
                         value = "";
                     }
                     map.put(label, new StringToken(value));
                 }
+                matches.add(new RecordToken(map));
             }
-            /* if updating, you would want to commit here... */
-            //conn.commit();
         } catch (SQLException e) {
-            /* if updating, you would want to rollback here... */
-            //conn.rollback();
             throw new IllegalActionException(this, e,
                     "Failed to update room from database.");
         }
-        RecordToken[] array = new RecordToken[occupants.size()];
-        int k = 0;
-        for (RecordToken recordToken : occupants) {
-            array[k++] = recordToken;
+        int numberOfMatches = matches.size();
+        ArrayToken result;
+        if (numberOfMatches == 0) {
+            // There are no matches.
+            // Output an empty record.
+            result = new ArrayToken(columns.getToken().getType());
+        } else {
+            RecordToken[] array = new RecordToken[numberOfMatches];
+            int k = 0;
+            for (RecordToken recordToken : matches) {
+                array[k++] = recordToken;
+            }
+            result = new ArrayToken(array);
         }
-        ArrayToken result = new ArrayToken(array);
-
-        if (result != null) {
-            output.send(0, result);
-        }
+        output.send(0, result);
     }
 }

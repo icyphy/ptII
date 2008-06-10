@@ -71,6 +71,7 @@ public class Room extends DatabaseSelect {
         hide.setExpression("true");
         
         columns.setVisibility(Settable.EXPERT);
+        columns.setExpression("{lname=string, deskno=string}");
         hide = new Parameter(columns.getPort(), "_hide");
         hide.setExpression("true");
 

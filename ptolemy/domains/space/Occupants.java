@@ -31,12 +31,10 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.RecordToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.BoxedValueIcon;
@@ -115,7 +113,7 @@ public class Occupants extends TypedAtomicActor {
                 if (i > 0) {
                     display.append("\n");
                 }
-                String desk = record.get("DESKNO").toString().trim();
+                String desk = record.get("deskno").toString().trim();
                 if (desk.startsWith("\"") && desk.endsWith("\"")) {
                     desk = desk.substring(1, desk.length() - 1);
                 }
@@ -124,7 +122,7 @@ public class Occupants extends TypedAtomicActor {
                 }
                 display.append(desk);
                 display.append(": ");
-                String name = record.get("LNAME").toString().trim();
+                String name = record.get("lname").toString().trim();
                 if (name.startsWith("\"") && name.endsWith("\"")) {
                     name = name.substring(1, name.length() - 1);
                 }
