@@ -169,36 +169,40 @@ public class ERGDirector extends Director implements TimedDirector {
         boolean synchronize = controller.synchronizeToRealtime();
         Time modelTime = getModelTime();
 
-        // Fire the refinements of all input events.
-        if (hasInput && !_inputQueue.isEmpty() && !_stopRequested) {
-            Iterator<TimedEvent> iterator = new PriorityQueue<TimedEvent>(
-                    _inputQueue).iterator();
-            while (iterator.hasNext()) {
+        PriorityQueue<TimedEvent> eventQueue = new PriorityQueue<TimedEvent>(
+                _eventQueue);
+        PriorityQueue<TimedEvent> inputQueue = new PriorityQueue<TimedEvent>(
+                _inputQueue);
+        Set<TimedEvent> firedEvents = new HashSet<TimedEvent>();
+
+        if (hasInput) {
+            // Fire the refinements of all input events.
+            Iterator<TimedEvent> iterator = inputQueue.iterator();
+            while (iterator.hasNext() && !_stopRequested) {
                 TimedEvent timedEvent = iterator.next();
                 if (!(timedEvent.contents instanceof Event)) {
+                    firedEvents.add(timedEvent);
                     _fire(timedEvent);
                 }
             }
-        }
 
-        // Fire scheduled input events.
-        if (hasInput && !_inputQueue.isEmpty() && !_stopRequested) {
-            Iterator<TimedEvent> iterator = new PriorityQueue<TimedEvent>(
-                    _inputQueue).iterator();
-            while (iterator.hasNext()) {
+            // Fire scheduled input events.
+            iterator = inputQueue.iterator();
+            while (iterator.hasNext() && !_stopRequested) {
                 TimedEvent timedEvent = iterator.next();
                 if (timedEvent.contents instanceof Event) {
+                    firedEvents.add(timedEvent);
                     _fire(timedEvent);
                 }
             }
         }
 
         // Fire the next imminent event.
-        if (!_eventQueue.isEmpty() && !_stopRequested) {
-            TimedEvent timedEvent = _eventQueue.peek();
+        if (!eventQueue.isEmpty() && !_stopRequested) {
+            TimedEvent timedEvent = eventQueue.peek();
             Time nextEventTime = timedEvent.timeStamp;
-            if (nextEventTime.compareTo(modelTime) <= 0) {
-                _eventQueue.peek();
+            if (nextEventTime.compareTo(modelTime) <= 0
+                    && !firedEvents.contains(timedEvent)) {
                 if (synchronize) {
                     if (!_synchronizeToRealtime(nextEventTime)) {
                         return;
@@ -268,7 +272,6 @@ public class ERGDirector extends Director implements TimedDirector {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-
         _initializeSchedule();
     }
 
@@ -395,6 +398,7 @@ public class ERGDirector extends Director implements TimedDirector {
             if (prefire) {
                 _eventQueue.remove(timedEvent);
                 _inputQueue.remove(timedEvent);
+
                 actor.fire();
                 actor.postfire();
                 return true;

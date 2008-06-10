@@ -178,8 +178,8 @@ public class ERGController extends ModalController {
     }
 
     public void initialize() throws IllegalActionException {
-        super.initialize();
         director.initialize();
+        super.initialize();
     }
 
     public boolean isFireFunctional() {
@@ -221,6 +221,11 @@ public class ERGController extends ModalController {
 
     public boolean prefire() throws IllegalActionException {
         return director.prefire();
+    }
+
+    public void preinitialize() throws IllegalActionException {
+        director.preinitialize();
+        super.preinitialize();
     }
 
     public void stop() {

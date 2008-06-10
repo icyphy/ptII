@@ -305,26 +305,6 @@ ERG modal model.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
             </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">ports. If an Error input is received, the most imminent schedule of any event in Normal is
-cancelled, and the Error event (also hierarchical) happens. If an OK input is received, the
-Normal event is rescheduled. This means the initial event in it is fired again.</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 330.0]">
-                </property>
-            </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -337,10 +317,13 @@ Normal event is rescheduled. This means the initial event in it is fired again.<
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The Init event is scheduled at 0.0 in global modal
-time. It schedules Normal to happen in the next firing
-(which further schedule more events in it). The Init event
-also registers React, which handles inputs from the input</text></svg></configure>
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The Init event is scheduled at 0.0 in global modal time. It schedules Normal to happen in
+the next firing (which further schedules more events in it). The Init event also registers
+ReactToError, which handles inputs from the Error input port. If an Error input is received,
+the first schedule of any event in Normal is cancelled, and the Error event (hierarchical
+also) happens. It schedules ReactToOK to handle inputs from the OK input port. If such
+an input is received, the Normal event is rescheduled. This means the initial event
+hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
@@ -357,69 +340,69 @@ also registers React, which handles inputs from the input</text></svg></configur
             <port name="Cred" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 55.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 40.0]">
                 </property>
             </port>
             <port name="Cgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 105.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 90.0]">
                 </property>
             </port>
             <port name="Cyel" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 160.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 145.0]">
                 </property>
             </port>
             <port name="Pred" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 210.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 195.0]">
                 </property>
             </port>
             <port name="Pgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 260.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 245.0]">
                 </property>
             </port>
             <port name="OK" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 105.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 80.0]">
                 </property>
             </port>
             <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 210.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 120.0]">
                 </property>
             </port>
             <entity name="Normal" class="ptolemy.domains.erg.kernel.Event">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Normal">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
+<display name="isInitialEvent"/>                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 80.0]">
                 </property>
             </entity>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
+<display name="isInitialEvent"/>                </property>
                 <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 165.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 35.0]">
                 </property>
             </entity>
-            <entity name="React" class="ptolemy.domains.erg.kernel.Event">
+            <entity name="ReactToError" class="ptolemy.domains.erg.kernel.Event">
                 <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 165.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 80.0]">
                 </property>
             </entity>
             <entity name="Error" class="ptolemy.domains.erg.kernel.Event">
@@ -427,7 +410,15 @@ also registers React, which handles inputs from the input</text></svg></configur
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 305.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 200.0]">
+                </property>
+            </entity>
+            <entity name="ReactToOK" class="ptolemy.domains.erg.kernel.Event">
+                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 200.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
@@ -435,7 +426,7 @@ also registers React, which handles inputs from the input</text></svg></configur
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6566028024384688">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.0906330401668143">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5247117365250937">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -446,7 +437,7 @@ also registers React, which handles inputs from the input</text></svg></configur
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -455,9 +446,9 @@ also registers React, which handles inputs from the input</text></svg></configur
             <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5070387272472644">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.35862983099451157">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.03384478194375093">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.028891474027125667">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -468,7 +459,7 @@ also registers React, which handles inputs from the input</text></svg></configur
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="Infinity">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -478,10 +469,10 @@ also registers React, which handles inputs from the input</text></svg></configur
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error_isPresent">
+<display name="condition"/>                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3575807993267377">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4438905263971669">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.277869702428614">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.112750733573717">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -492,7 +483,7 @@ also registers React, which handles inputs from the input</text></svg></configur
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="true">
@@ -501,9 +492,11 @@ also registers React, which handles inputs from the input</text></svg></configur
             <relation name="relation4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3130498952246357">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!Error_isPresent">
+<display name="condition"/>                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.039213522151946">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.0679966672604375">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.9024543141936952">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -514,7 +507,7 @@ also registers React, which handles inputs from the input</text></svg></configur
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="Infinity">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -524,34 +517,10 @@ also registers React, which handles inputs from the input</text></svg></configur
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error_isPresent">
+<display name="condition"/>                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.40598895381207295">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4671564209752124">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.9917933097440079">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-                </property>
-                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-                </property>
-                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-            </relation>
-            <relation name="relation6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="OK_isPresent">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4743652240526337">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.1931339893688198">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.484542320912232">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -562,7 +531,7 @@ also registers React, which handles inputs from the input</text></svg></configur
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -571,11 +540,57 @@ also registers React, which handles inputs from the input</text></svg></configur
             <relation name="relation7" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.32885643704904766">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.1356805211969725">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="Infinity">
+<display name="delay (?)"/>                </property>
+                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+                </property>
+                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!OK_isPresent">
+<display name="condition"/>                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.124801318126011">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.1958741986222416">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="Infinity">
+<display name="delay (?)"/>                </property>
+                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+                </property>
+                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation8" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="OK_isPresent">
+<display name="condition"/>                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4091917939893899">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5112386659700737">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.0860169133475306">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.6290760505305943">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -586,26 +601,54 @@ also registers React, which handles inputs from the input</text></svg></configur
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
+<display name="delay (?)"/>                </property>
+                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
+                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
+            <relation name="relation9" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="OK_isPresent">
+<display name="condition"/>                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.34608585497456745">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.02231358846444902">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
-            <link port="Normal.incomingPort" relation="relation"/>
             <link port="Normal.incomingPort" relation="relation3"/>
-            <link port="Normal.incomingPort" relation="relation6"/>
+            <link port="Normal.incomingPort" relation="relation8"/>
+            <link port="Normal.incomingPort" relation="relation"/>
+            <link port="Normal.outgoingPort" relation="relation2"/>
             <link port="Init.outgoingPort" relation="relation"/>
-            <link port="Init.outgoingPort" relation="relation2"/>
-            <link port="React.incomingPort" relation="relation2"/>
-            <link port="React.incomingPort" relation="relation4"/>
-            <link port="React.outgoingPort" relation="relation3"/>
-            <link port="React.outgoingPort" relation="relation4"/>
-            <link port="React.outgoingPort" relation="relation5"/>
-            <link port="React.outgoingPort" relation="relation6"/>
-            <link port="React.outgoingPort" relation="relation7"/>
+            <link port="ReactToError.incomingPort" relation="relation2"/>
+            <link port="ReactToError.incomingPort" relation="relation4"/>
+            <link port="ReactToError.outgoingPort" relation="relation3"/>
+            <link port="ReactToError.outgoingPort" relation="relation4"/>
+            <link port="ReactToError.outgoingPort" relation="relation5"/>
             <link port="Error.incomingPort" relation="relation5"/>
-            <link port="Error.incomingPort" relation="relation7"/>
+            <link port="Error.incomingPort" relation="relation9"/>
+            <link port="Error.outgoingPort" relation="relation7"/>
+            <link port="ReactToOK.incomingPort" relation="relation7"/>
+            <link port="ReactToOK.incomingPort" relation="relation6"/>
+            <link port="ReactToOK.outgoingPort" relation="relation6"/>
+            <link port="ReactToOK.outgoingPort" relation="relation8"/>
+            <link port="ReactToOK.outgoingPort" relation="relation9"/>
         </entity>
         <entity name="Normal" class="ptolemy.domains.erg.kernel.ERGController">
             <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
@@ -669,7 +712,7 @@ The inputs are simply ignored.</text></svg></configure>
             </port>
             <entity name="CRed" class="ptolemy.domains.erg.kernel.Event">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
+<display name="isInitialEvent"/>                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 1;&#10;  Cyel = 0;&#10;  Cgrn = 0">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -695,7 +738,7 @@ The inputs are simply ignored.</text></svg></configure>
             </entity>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
+<display name="isInitialEvent"/>                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 50.0]">
@@ -733,7 +776,7 @@ The inputs are simply ignored.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="3.0">
-                </property>
+<display name="delay (?)"/>                </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
@@ -751,7 +794,7 @@ The inputs are simply ignored.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="2.0">
-                </property>
+<display name="delay (?)"/>                </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
@@ -769,7 +812,7 @@ The inputs are simply ignored.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="1.0">
-                </property>
+<display name="delay (?)"/>                </property>
             </relation>
             <relation name="relation4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
@@ -893,7 +936,7 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
             </port>
             <entity name="TurnYellowLight" class="ptolemy.domains.erg.kernel.Event">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
+<display name="isInitialEvent"/>                </property>
                 <property name="parameters" class="ptolemy.domains.erg.kernel.ParametersAttribute" value="(param: int)">
                 </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 0; Cyel = param; Cgrn = 0">
@@ -905,7 +948,7 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
             </entity>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
+<display name="isInitialEvent"/>                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Pred = 0; Pgrn = 0">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -929,7 +972,7 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{1}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -951,7 +994,7 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="1.0">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{1-param}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">

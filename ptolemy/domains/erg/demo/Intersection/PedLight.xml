@@ -76,7 +76,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 20.0]">
         </property>
     </property>
-    <property name="MeanPedArrival" class="ptolemy.data.expr.Parameter" value="0.6">
+    <property name="MeanPedArrival" class="ptolemy.data.expr.Parameter" value="1.5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
