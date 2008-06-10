@@ -157,6 +157,7 @@ JSRCS = \
 	Minimum.java \
 	MonitorValue.java \
 	MovingAverage.java \
+	MovingMaximum.java \
 	Multiplexor.java \
 	MultiplyDivide.java \
 	NonStrictTest.java \
