@@ -41,5 +41,8 @@ ME =		util
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Include rules for directories that contain only subdirectories.
-include $(ROOT)/mk/ptdir.mk
+all: suball
+install: subinstall
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk
