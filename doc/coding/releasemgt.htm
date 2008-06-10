@@ -106,6 +106,8 @@ make cleanDerivedJavaFiles
 </pre>
 Or removing the files by hand:
 <pre>
+cd $PTII/ptolemy/actor/ptalon
+rm `make echo_OPTIONAL_JSRCS`
 cd $PTII/ptolemy/data/expr
 rm `make echo_OPTIONAL_JSRCS`
 cd $PTII/ptolemy/data/unit
@@ -287,12 +289,12 @@ For more information about CVS, see the
  <p>To make a branch for 7.0.beta, use the following command:
 <pre>
 cd $PTII
-cvs tag -b rel-7-0-beta
+cvs tag -b rel-7-0-beta-2
 </pre>
 Then check out the release branch  with
 <pre>
 cd ~/src
-cvs co -r rel-7-0-beta ptIIC
+cvs co -r rel-7-0-beta-2 ptIIC
 mv ptII ptII7.0.beta
 
 </pre>
@@ -315,7 +317,7 @@ set up a new tree for the release tree.
 <li> We build a separate src.tar.gz file under Unix so that the line
 endings are correct. 
 <pre>
-cvs -D :ext:source:/home/cvs co -r rel-7-0-beta ptII
+cvs -D :ext:source:/home/cvs co -r rel-7-0-beta-2 ptII
 mv ptII ptII7.0.beta
 cd ptII7.0.beta
 setenv PTII `pwd`
@@ -354,7 +356,7 @@ ln -s ../../../../../../java/ptplot5.7.beta/ptolemy/plot/doc/download .
 
 <li> We build the webstart jar files under Windows
 <pre>
-cvs -d :ext:source:/home/cvs co -r rel-7-0-beta ptII
+cvs -d :ext:source:/home/cvs co -r rel-7-0-beta-2 ptII
 cvs update -P -d
 mv ptII ptII7.0.beta
 cd ptII7.0.beta
