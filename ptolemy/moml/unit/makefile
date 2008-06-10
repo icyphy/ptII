@@ -44,21 +44,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	unit
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	Bindings.java  \
 	EquationVisitor.java  \
 	ExpandPortNames.java  \
-	ParseException.java  \
-	SimpleCharStream.java  \
 	Solution.java  \
-	Token.java  \
-	TokenMgrError.java  \
-	UParser.java  \
-	UParserConstants.java  \
-	UParserTokenManager.java  \
 	Unit.java  \
 	UnitAttribute.java  \
 	UnitConstraint.java  \
@@ -72,7 +64,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED =
 
-EXTRA_SRCS =	UParser.jj $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	UParser.jjt $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -132,7 +124,7 @@ JCLASS =  \
 all: $(OPTIONAL_JSRCS) $(JCLASS)
 install: jclass $(PTCLASSJAR)
 
-UParser.java: UParser.jj
+UParser.java: UParser.jjt
 	@echo "This command runs JavaCC, which can be downloaded from"
 	@echo "http://javacc.dev.java.net/"
 	@echo "See \$$PTII/doc/install.htm for details."
@@ -141,7 +133,7 @@ UParser.java: UParser.jj
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch UParser.jj UParser.java"
 	CLASSPATH="$(CLASSPATH)" 
-	$(JAVACC) UParser.jj
+	$(JAVACC) UParser.jjt
 
 # This rule is useful for cvs committing the derived files
 # For example:
