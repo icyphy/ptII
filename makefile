@@ -3,7 +3,7 @@
 # @Version: $Id$
 #
 # Copyright (c) 1995-2008 The Regents of the University of California.
-# All rights reserved.
+# All rights reserved. 
 #
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
@@ -175,7 +175,7 @@ mk/ptII.mk: configure mk/ptII.mk.in
 configure: configure.in
 	@echo "configure.in is newer than configure, so we run"
 	@echo "autoconf to update the configure file"
-	@echo "This may occur if you do a cvs update, and the mod time"
+	@echo "This may occur if you do a svn update, and the mod time"
 	@echo "of configure.in is newer than that of configure"
 	@echo "even though the configure script in the repository"
 	@echo "was modified after configure.in was modified."
@@ -184,28 +184,28 @@ configure: configure.in
 	@echo "this problem."
 	autoconf
 
-# Arguments for cvs2cl.pl, which is used to generate a ChangeLog
-# from the CVS logs.  
+# Arguments for svn2cl (http://ch.tudelft.nl/~arthur/svn2cl/),
+# which is used to generate a ChangeLog from the SVN logs.  
 # -W 3600 means unify entries that are within 3600 seconds or 1 hr.
 # -b means "Show branch names in revisions when possible"
 # -r means "Show revision numbers in output"
 # -t means "Show tags (symbolic names) in output"
-CVS2CL_ARGS = -W 3600 -b -r -t
+SVN2CL_ARGS = -W 3600 -b -r -t
 
-# Generate a ChangeLog file from the CVS logs
-# This rurequires that the CVS directory be present and takes
+# Generate a ChangeLog file from the SVN logs
+# This rurequires that the SVN directory be present and takes
 # quite awhile to update
 ChangeLog:
-	@if [ -d CVS ]; then \
-		echo "Running ./util/testsuite/cvs2cl.pl"; \
+	@if [ -d .svn ]; then \
+		echo "Running ./util/svn2cl-0.10/svn2cl.sh"; \
 		echo " This could take several minutes"; \
-		./util/testsuite/cvs2cl.pl $(CVS2CL_ARGS); \
+		./util/svn2cl-0.10/svn2cl.sh $(SVNCL_ARGS); \
 	else \
-		echo "CVS directory not present, so we can't update $@"; \
+		echo ".svn directory not present, so we can't update $@"; \
 	fi
 
 update:
-	-cvs update -P -d 
+	-svn update -P -d 
 	$(MAKE) -k clean fast
 
 cleanDerivedJavaFiles:
@@ -272,10 +272,10 @@ CLEAN_SHIPPING_FILES = \
 clean_shipping:
 	rm -rf $(CLEAN_SHIPPING_FILES)
 
-cvs_delete_clean_shipping:
+svn_delete_clean_shipping:
 	for files in $(CLEAN_SHIPPING_FILES); do \
 		if [ -e $$files ]; then \
-			cvs delete -f $$files; \
+			svn delete -f $$files; \
 	        fi \
 	done 
 
