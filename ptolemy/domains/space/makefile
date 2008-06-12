@@ -36,6 +36,9 @@ DIRS = 		demo
 # Root of the Java directory
 ROOT =		../../..
 
+#ORACLE_OJDBC_JAR is set in $PTII/mk/ptII.mk by configure
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(ORACLE_OJDBC_JAR)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
