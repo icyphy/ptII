@@ -44,12 +44,8 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	space
-PTCLASSJAR =
-
-PTCLASSALLJARS =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	database
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	DatabaseManager.java \
