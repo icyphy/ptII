@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/dopcenter/demo/DOPCenter
+ME =		ptolemy/domains/space/demo/DOPCenter
 
 # Root of the Java directory
 ROOT =		../../../../..
