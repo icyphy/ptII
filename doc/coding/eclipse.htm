@@ -15,7 +15,7 @@ Ptolemy II install page</a>.
 <p>Contents of this page:
 <menu>
 <li><a href="#Installing">Install Eclipse</a>
-<li><a href="#Preferences">Eclipse Preferences for Ptolemy II</a><
+<li><a href="#Preferences">Eclipse Preferences for Ptolemy II</a>
 <li><a href="#SettingUp">Set up Eclipse for Ptolemy II</a>
   <ul>
   <li> <a href="#NoSVN">Eclipse is unaware of the version control aspects of the project.</a>
@@ -143,7 +143,7 @@ which require Java 5.0 or later.
 <br>Set Eclipse to use Java 5.0 or later source code compliance.
 <ol>
  <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>).
- <li> Expand the Java tree, select <code>Compiler</code> | <code>Building</code>
+ <li> Expand the Java tree, select <code>Compiler</code>
  <li> Make sure that Set "Compiler compliance level" is "5.0" or later.
  <li> Click Apply. 
 </ol>
@@ -154,7 +154,7 @@ serialVersionUID declared.  Since this warning is only useful
 if you are tightly managing serialization, we turn it off:
  <ol>
   <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>).
-  <li> Expand the Java tree, select <code>Compiler</code. | <code>Errors/Warning</code>
+  <li> Expand the Java tree, select <code>Compiler</code> | <code>Errors/Warning</code>
   <li> Under "Potential programming problems", change
   "Serializable class without serialVersionUID" to "Ignore"
   <li> Under "Generic Types", change
@@ -264,8 +264,7 @@ and browse to the PTII directory. Finish.
    <br> If you are more comfortable with a command line, then choose Cygwin.
 <li> To check out the ptII svn repository with <b>read-only</b> access:
 <pre>
-svn co svn://source.eecs.berkeley.edu/chess/ptII/trunk
-mv trunk ptII
+svn co svn://source.eecs.berkeley.edu/chess/ptII/trunk ptII
 </pre>
  <br><B>Note:</B> Most users will select <CODE>svn://</CODE> because
 they will be accessing the tree with <B>read-only</B> Subversion access.
@@ -273,8 +272,7 @@ they will be accessing the tree with <B>read-only</B> Subversion access.
 <a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">ssh account</a> on <code>source.eecs.berkeley.edu</code>, then check out ptII with
 read/write access:
 <pre>
-svn co svn+ssh://source.eecs.berkeley.edu/home/svn/chess/ptII/trunk
-mv trunk ptII
+svn co svn+ssh://source.eecs.berkeley.edu/home/svn/chess/ptII/trunk ptII
 </pre>
 <li>Configure the .classpath and .project files. See <a href="#.classpath.default"><CODE>.classpath.default</CODE></a>. below.
 <li>Create the ptII project
