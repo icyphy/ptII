@@ -8268,7 +8268,7 @@ ORACLE_OJDBC_JAR=
 
 # PTSPACEDOMAIN_JAR is the name of the jar file that includes the space
 # domain if ojdbc6.jar was found.  PTSPACEDOMAIN_JAR used in domains/makefile
-PTSPACEDOMAIN_JAR
+PTSPACEDOMAIN_JAR=
 
 # We only need to look for on if $PTII/ptolemy/domains/space exists
 SPACE_USER_DIR="$PTII/ptolemy/domains/space"
