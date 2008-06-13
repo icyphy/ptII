@@ -63,8 +63,10 @@ public class Main extends KernelMain {
 
         // Generate the applet files in outDir
         addTransform(pack, "wjtp.appletWriter", AppletWriter.v(_toplevel),
-                "targetPackage:" + _targetPackage + " modelPath:" + _modelPath
-                        + " outDir:" + _outputDirectory);
+                "targetPackage:" + _targetPackage
+                        + " modelPath:" + _modelPath
+                        + " outDir:" + _outputDirectory
+                        + " ptIIJarsPath:" + _ptIIJarsPath);
     }
 
     /** Parse any code generator specific arguments.
@@ -75,6 +77,7 @@ public class Main extends KernelMain {
                 .getParameter("generatorAttributeFileName");
         _modelPath = attribute.getParameter("modelPath");
         _outputDirectory = attribute.getParameter("outputDirectory");
+        _ptIIJarsPath = attribute.getParameter("ptIIJarsPath");
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
         //_watchDogTimeout = attribute.getParameter("watchDogTimeout");
@@ -88,6 +91,8 @@ public class Main extends KernelMain {
     private String _modelPath = "unsetParameter";
 
     private String _outputDirectory = "unsetParameter";
+
+    private String _ptIIJarsPath = "unsetParameter";
 
     private String _targetPackage = "unsetParameter";
 

@@ -147,18 +147,41 @@ runDemo:
 	cd $(ROOT)/$(APPLETTARGETDIRECTORY); appletviewer $(MODEL)Vergil.htm
 
 # Test writing in a separate directory
+TESTDIR=c:/tmp/test
 test1: $(JCLASS)
+	if [ ! -d "$(TESTDIR)" ]; then \
+		mkdir -p $(TESTDIR); \
+	fi 
 	@echo "generate an applet for '$(MODELPATH)' using jar files"
 	$(PTII)/bin/copernicus \
 		-verbose \
 		-codeGenerator   applet \
-		-compile	 true \
-		-java            "`echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
-		-run		 true \
-		-ptIIUserDirectory   '"c:/tmp/test"' \
+		-ptIIUserDirectory   '"$(TESTDIR)"' \
 		-targetPackage   '"$(MODEL)"' \
 		$(MODELPATH)
 
+
+# Test using signed jars
+TESTSIGNED_DIR=c:/tmp/testSigned
+
+SIGNED_DIRECTORY=$(PTII)/signed
+
+testSigned: $(JCLASS) $(ROOT)/signed
+	if [ ! -d "$(TESTSIGNED_DIR)" ]; then \
+		mkdir -p $(TESTSIGNED_DIR); \
+	fi 
+	if [ ! -d $(SIGNED_DIRECTORY) ]; then \
+		@echo "Creating signed jars in $(SIGNED_DIRECTORY)"; \
+		(cd $(ROOT); $(MAKE) jnlp_sign); \
+	fi
+	@echo "generate an applet for '$(MODELPATH)' using jar files"
+	$(PTII)/bin/copernicus \
+		-verbose \
+		-ptIIJarsPath '"$(SIGNED_DIRECTORY)"' \
+		-codeGenerator   applet \
+		-ptIIUserDirectory   '"$(TESTSIGNED_DIR)"' \
+		-targetPackage   '"$(MODEL)"' \
+		$(MODELPATH)
 
 
 # Get the rest of the rules

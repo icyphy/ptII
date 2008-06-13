@@ -75,9 +75,9 @@ import soot.SceneTransformer;
 
  <p>Potential future enhancements
  <menu>
- <li> Optionally copy the necessary jar files to the target directory.
  <li> Pull out the top level annotation and add the text to the web page.
  </menu>
+
  @author Christopher Hylands
  @version $Id$
  @since Ptolemy II 2.0
@@ -110,18 +110,29 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
      *  @return the default options.
      */
     public String getDefaultOptions() {
-        return "templateDirectory:" + TEMPLATE_DIRECTORY_DEFAULT;
+        String ptolemyHome = "";
+        try {
+            // If ptolemyHome has spaces in it, then we have problems.
+            ptolemyHome = StringUtilities.getProperty("ptolemy.ptII.dir").replace(" ", "\\ ");
+        } catch (SecurityException security) {
+            throw new InternalErrorException(null, security, "Could not find "
+                    + "'ptolemy.ptII.dir'" + " property.  Vergil should be "
+                    + "invoked with -Dptolemy.ptII.dir" + "=\"$PTII\"");
+
+        }
+        return " templateDirectory:" + TEMPLATE_DIRECTORY_DEFAULT
+            + " ptIIJarsPath:" + ptolemyHome;
     }
 
     /** Return the declared options.  The declared options for
      *  this transformer is the string
      *  <pre>
-     *  targetPackage modelPath outDir templateDirectory
+     *  targetPackage modelPath ptIIJarsPath outDir templateDirectory
      *  </pre>
      *  @return the declared options.
      */
     public String getDeclaredOptions() {
-        return "targetPackage modelPath outDir templateDirectory";
+        return "targetPackage modelPath outDir ptIIJarsPath templateDirectory";
     }
 
     /** Return the phase name.  The phase name of
@@ -158,13 +169,17 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _outputDirectory = PhaseOptions.getString(options, "outDir");
 
         // Determine where $PTII is so that we can find the right directory.
-        _ptIIDirectory = null;
-
+        _ptIIJarsPath = PhaseOptions.getString(options, "ptIIJarsPath");
         try {
-            // NOTE: getProperty() will probably fail in applets, which
-            // is why this is in a try block.
-            // NOTE: This property is set by the vergil startup script.
-            _ptIIDirectory = System.getProperty("ptolemy.ptII.dir");
+            if (_ptIIJarsPath == null) { 
+                // NOTE: getProperty() will probably fail in applets, which
+                // is why this is in a try block.
+                // NOTE: This property is set by the vergil startup script.
+                _ptIIJarsPath = StringUtilities.getProperty("ptolemy.ptII.dir");
+            } else {
+                System.out.println("AppletWriter: ptIIJarsPath = "
+                        + _ptIIJarsPath);
+            }
         } catch (SecurityException security) {
             throw new InternalErrorException(null, security, "Could not find "
                     + "'ptolemy.ptII.dir'" + " property.  Vergil should be "
@@ -194,7 +209,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
         _codeBase = MakefileWriter.codeBase(_targetPackage, _outputDirectory,
-                _ptIIDirectory);
+                _ptIIJarsPath);
 
         // Create the directory where we will create the files.
         File outDirFile = new File(_outputDirectory);
@@ -303,7 +318,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _substituteMap.put("@modelJarFiles@", _modelJarFiles);
         _substituteMap.put("@outDir@", _outputDirectory);
         _substituteMap.put("@sanitizedModelName@", _sanitizedModelName);
-        _substituteMap.put("@ptIIDirectory@", _ptIIDirectory);
+        _substituteMap.put("@ptIIDirectory@", _ptIIJarsPath);
         _substituteMap.put("@vergilHeight@", Integer.toString(vergilHeight));
         _substituteMap.put("@vergilJarFiles@", _vergilJarFiles);
         _substituteMap.put("@vergilWidth@", Integer.toString(vergilWidth));
@@ -394,7 +409,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         //_templateDirectory =
         //    StringUtilities.substitute(PhaseOptions.getString(options,
         //            "templateDirectory"),
-        //            "$PTII", _ptIIDirectory);
+        //            "$PTII", _ptIIJarsPath);
         _templateDirectory = PhaseOptions.getString(options,
                 "templateDirectory");
 
@@ -506,7 +521,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // If jarFile does not exist, return false.
     private boolean _copyPotentialJarFile(String jarFile, String className,
             HashSet jarFilesThatHaveBeenRequired) throws IOException {
-        File potentialSourceJarFile = new File(_ptIIDirectory, jarFile);
+        File potentialSourceJarFile = new File(_ptIIJarsPath, jarFile);
 
         System.out.println("AppletWriter: className: " + className
                 + "\tpotentialSourceJarFile: " + potentialSourceJarFile);
@@ -519,7 +534,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 // we copy the jar file.
                 // Ptolemy II development trees will have jar files
                 // if 'make install' was run.
-                _copyFile(_ptIIDirectory + File.separator + jarFile,
+                _copyFile(_ptIIJarsPath + File.separator + jarFile,
                         _outputDirectory, jarFile);
             }
 
@@ -583,7 +598,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         .findFile(classResource);
 
                 String canonicalPtIIDirectory = UtilityFunctions
-                        .findFile(_ptIIDirectory);
+                        .findFile(_ptIIJarsPath);
 
                 if (canonicalClassResource.equals(canonicalPtIIDirectory)) {
                     // Failed to find the jar file.
@@ -602,7 +617,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     } else {
                         String warning = "Looking up '" + className
                                 + "'\nreturned the $PTII directory '"
-                                + _ptIIDirectory
+                                + _ptIIJarsPath
                                 + "' instead of a jar file.\n'" + jarFileName
                                 + "' was not present?\n";
 
@@ -808,8 +823,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         while (classNames.hasNext()) {
             Map.Entry entry = (Map.Entry) classNames.next();
             String className = (String) entry.getKey();
-            System.out.println("Checking for class " + className + " "  
-                    + auxiliaryJarMap.containsKey(className));
             if (auxiliaryJarMap.containsKey(className)) {
                 if (jarsToAdd == null) {
                     jarsToAdd = new HashMap();
@@ -841,7 +854,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/actor.jar");
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/lib/lib.jar");
 
-        File potentialDomainJarFile = new File(_ptIIDirectory, _domainJar);
+        File potentialDomainJarFile = new File(_ptIIJarsPath, _domainJar);
 
         if (!potentialDomainJarFile.exists()) {
             // If we are running under the Windows installer, then
@@ -945,8 +958,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // The sanitized modelName
     private String _sanitizedModelName;
 
-    // The value of the ptolemy.ptII.dir property.
-    private String _ptIIDirectory;
+    // The location of the Ptolemy II jars, which defaults to
+    // the value of the ptolemy.ptII.dir property, but could be
+    // $PTII/signed.
+    private String _ptIIJarsPath;
 
     // Map used to map @model@ to MyModel.
     private Map _substituteMap;

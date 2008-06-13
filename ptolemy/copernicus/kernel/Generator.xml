@@ -93,6 +93,14 @@ $Id$
 	       <doc>The top level directory to write the code in. The default is the value of the ptII parameter. The code will appear in 'ptIIUserDirectory/targetPath'.</doc>
      </property>
 
+
+     <property name="ptIIJarsPath" 
+               class="ptolemy.data.expr.StringParameter"
+	       value="$ptII"
+	       >
+	       <doc>The directory that contains the tree of Ptolemy II jars.  The default is the value of the ptII parameter.  To use signed jar files, set this to $PTII/signed</doc>
+     </property>
+
      <property name="targetPackage" 
                class="ptolemy.data.expr.StringParameter"
 	       value="$modelName"
