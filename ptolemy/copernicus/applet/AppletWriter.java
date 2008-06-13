@@ -215,7 +215,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // that if for example we use fsm, then we are sure to
             // include diva.jar
             StringBuffer jarFilesResults = new StringBuffer();
-            Iterator jarFiles = _findJarFiles(director).iterator();
+            Iterator jarFiles = _findModelJarFiles(director).iterator();
 
             while (jarFiles.hasNext()) {
                 String jarFile = (String) jarFiles.next();
@@ -228,6 +228,24 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
 
             _modelJarFiles = jarFilesResults.toString();
+
+
+            // Get the vergil jar files
+            jarFilesResults = new StringBuffer();
+            jarFiles = _findVergilJarFiles(director).iterator();
+
+            while (jarFiles.hasNext()) {
+                String jarFile = (String) jarFiles.next();
+
+                if (jarFilesResults.length() > 0) {
+                    jarFilesResults.append(",");
+                }
+
+                jarFilesResults.append(jarFile);
+            }
+
+            _vergilJarFiles = jarFilesResults.toString();
+
         } catch (IOException ex) {
             // This exception tends to get eaten by soot, so we print as well.
             System.err.println("Problem writing makefile or html files:");
@@ -287,6 +305,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _substituteMap.put("@sanitizedModelName@", _sanitizedModelName);
         _substituteMap.put("@ptIIDirectory@", _ptIIDirectory);
         _substituteMap.put("@vergilHeight@", Integer.toString(vergilHeight));
+        _substituteMap.put("@vergilJarFiles@", _vergilJarFiles);
         _substituteMap.put("@vergilWidth@", Integer.toString(vergilWidth));
 
         // Print out the map for debugging purposes
@@ -510,89 +529,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         return false;
     }
 
-    // find jar necessary jar files and optionally copy jar files into
-    // _outputDirectory.  Note that we need look for jar files to find
-    // diva.jar if we are using the FSM domain.
-    // Return the jar files that have been copied
-    private Set _findJarFiles(Director director) throws IOException {
-        // In the perfect world, we would run tree shaking here, or
-        // look up classes as resources.  However, if we are running
-        // in a devel tree, then the ptII directory will be returned
-        // as the resource when we look up a class, which is not
-        // at all what we want.
-        // appletviewer -J-verbose could be used for tree shaking.
-        // We use a HashMap that maps class names to destination jar
-        // files.
-        Map classMap = _allAtomicEntityJars();
-
-        classMap.put("ptolemy.actor.lib.colt.ColtBeta", "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtBinomial", "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtBinomialSelector",
-                "lib/ptcolt.jar");
-        classMap
-                .put("ptolemy.actor.lib.colt.ColtBreitWigner", "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtChiSquare", "lib/ptcolt.jar");
-        classMap
-                .put("ptolemy.actor.lib.colt.ColtExponential", "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtExponentialPower",
-                "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtGamma", "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtHyperGeometric",
-                "lib/ptcolt.jar");
-        classMap
-                .put("ptolemy.actor.lib.colt.ColtLogarithmic", "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtNegativeBinomial",
-                "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtNormal", "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtPoisson", "lib/ptcolt.jar");
-        classMap
-                .put("ptolemy.actor.lib.colt.ColtPoissonSlow", "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtRandomSource",
-                "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtSeedParameter",
-                "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtStudentT", "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtVonMises", "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtZeta", "lib/ptcolt.jar");
-
-        classMap.put("ptolemy.actor.gui.MoMLApplet", "ptolemy/ptsupport.jar");
-        
-        // Ptalon requires multiple jar files
-        String ptalonJar = "ptolemy/actor/ptalon/ptalon.jar";
-        classMap.put("ptolemy.actor.ptalon.PtalonActor", ptalonJar);
-
-        // classMap.put("ptolemy.actor.lib.python.PythonScript",
-        //                 "lib/jython.jar");
-        // classMap.put("caltrop.ptolemy.actors.CalInterpreter",
-        //                 "lib/ptCal.jar");
-        classMap.put(director.getClass().getName(), _domainJar);
-        classMap.put("ptolemy.vergil.MoMLViewerApplet",
-                "ptolemy/vergil/vergilApplet.jar");
-
-        // FIXME: unfortunately, vergil depends on FSM now.
-        classMap.put("ptolemy.domains.fsm.kernel.FSMActor",
-                "ptolemy/domains/fsm/fsm.jar");
-
-        // FIXME: vergil.fsm.modal.ModalModel depends on CTStepSizeControlActor
-        classMap.put("ptolemy.domains.ct.kernel.CTStepSizeControlActor",
-                "ptolemy/domains/ct/ct.jar");
-        classMap.put("diva.graph.GraphController", "lib/diva.jar");
-
-        classMap.put("ptolemy.domains.space.DatabaseDirector",
-                "ptolemy/domains/space/ojdbc6.jar");
-
-        // First, we search for the jar file, then we try
-        // getting the class as a resource.
-        // FIXME: we don't handle the case where there are no
-        // individual jar files because the user did not run 'make install'.
-        HashSet jarFilesThatHaveBeenRequired = new HashSet();
-
-        // Add jar files that are contained in ptsupport.jar.
-        // FIXME: we could open ptsupport.jar here and get the complete
-        // list of directories.  Instead, we get the primary offenders.
-        jarFilesThatHaveBeenRequired.add("ptolemy/actor/actor.jar");
-        jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/lib.jar");
-
+    /** 
+     * Copy the jar files listed in the map
+     * @param classMap A map consisting of String keys that are dot separated
+     * class name and a value that is a String naming a jar file.
+     * @param jarFilesThatHaveBeenRequired A set of strings that is set
+     * to the names of the jar files that have been found. 
+     * @return true if there was a problem and the jar files need to be
+     * fixed because "make install" was not run. 
+     */
+    private boolean _copyJarFiles(Map classMap, HashSet jarFilesThatHaveBeenRequired) throws IOException {
         // Set to true if we need to fix up jar files because
         // jar files are not present probably because
         // 'make install' was not run.
@@ -711,40 +657,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 //                 }
             }
         }
-
-        jarFilesThatHaveBeenRequired.remove("ptolemy/actor/actor.jar");
-        jarFilesThatHaveBeenRequired.remove("ptolemy/actor/lib/lib.jar");
-
-        File potentialDomainJarFile = new File(_ptIIDirectory, _domainJar);
-
-        if (!potentialDomainJarFile.exists()) {
-            // If we are running under the Windows installer, then
-            // the domain specific jar files might not be present
-            // so we add ptolemy/domains/domains.jar
-            // We don't always require domains.jar because if
-            // the domain specific jar file is present, then the
-            // domain specific jar file will be much smaller.
-            System.out.println("AppletWriter: Warning: could not find '"
-                    + _domainJar + "', '" + potentialDomainJarFile
-                    + "' does not exist, " + "adding domains.jar to jarfiles");
-            jarFilesThatHaveBeenRequired.add("ptolemy/domains/domains.jar");
-        }
-
-        if (jarFilesThatHaveBeenRequired.contains(ptalonJar)) {
-            // Ptalon requires multiple jar files
-            jarFilesThatHaveBeenRequired.add("ptolemy/actor/ptalon/antlr/antlr.jar");
-        }
-
-        if (fixJarFiles) {
-            // If the code generator was run but codeBase != . and
-            // make install was not run, then we will not have figured
-            // out very many jar files.  So, we fix up the list
-            //
-            jarFilesThatHaveBeenRequired.add("ptolemy/ptsupport.jar");
-            jarFilesThatHaveBeenRequired.add(_domainJar);
-        }
-
-        return jarFilesThatHaveBeenRequired;
+        return fixJarFiles;
     }
 
     // Copy sourceFile to the destinationFile in destinationDirectory.
@@ -812,6 +725,188 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
     }
 
+    // find jar necessary jar files and optionally copy jar files into
+    // _outputDirectory.  Note that we need look for jar files to find
+    // diva.jar if we are using the FSM domain.
+    // Return the jar files that have been copied
+    private Set _findModelJarFiles(Director director) throws IOException {
+        // In the perfect world, we would run tree shaking here, or
+        // look up classes as resources.  However, if we are running
+        // in a devel tree, then the ptII directory will be returned
+        // as the resource when we look up a class, which is not
+        // at all what we want.
+        // appletviewer -J-verbose could be used for tree shaking.
+        // We use a HashMap that maps class names to destination jar
+        // files.
+        Map classMap = _allAtomicEntityJars();
+
+
+        // Create a map of classes and their dependencies
+        Map auxiliaryJarMap = new HashMap();
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtBeta", "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtBinomial", "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtBinomialSelector",
+                "lib/ptcolt.jar");
+        auxiliaryJarMap
+                .put("ptolemy.actor.lib.colt.ColtBreitWigner", "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtChiSquare", "lib/ptcolt.jar");
+        auxiliaryJarMap
+                .put("ptolemy.actor.lib.colt.ColtExponential", "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtExponentialPower",
+                "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtGamma", "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtHyperGeometric",
+                "lib/ptcolt.jar");
+        auxiliaryJarMap
+                .put("ptolemy.actor.lib.colt.ColtLogarithmic", "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtNegativeBinomial",
+                "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtNormal", "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtPoisson", "lib/ptcolt.jar");
+        auxiliaryJarMap
+                .put("ptolemy.actor.lib.colt.ColtPoissonSlow", "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtRandomSource",
+                "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtSeedParameter",
+                "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtStudentT", "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtVonMises", "lib/ptcolt.jar");
+        auxiliaryJarMap.put("ptolemy.actor.lib.colt.ColtZeta", "lib/ptcolt.jar");
+
+        classMap.put("ptolemy.actor.gui.MoMLApplet", "ptolemy/ptsupport.jar");
+        
+        // Ptalon requires multiple jar files
+        String ptalonJar = "ptolemy/actor/ptalon/ptalon.jar";
+        auxiliaryJarMap.put("ptolemy.actor.ptalon.PtalonActor", ptalonJar);
+
+        // auxiliaryJarMap.put("ptolemy.actor.lib.python.PythonScript",
+        //                 "lib/jython.jar");
+        // auxiliaryJarMap.put("caltrop.ptolemy.actors.CalInterpreter",
+        //                 "lib/ptCal.jar");
+        classMap.put(director.getClass().getName(), _domainJar);
+
+        // database requires multiple jars
+        String databaseJar = "ptolemy/actor/lib/database/database.jar";
+        auxiliaryJarMap.put("ptolemy.actor.lib.database.DatabaseManager",
+                databaseJar);
+
+        // classes from domains/space
+        // domains/space requires multiple jars
+        String spaceJar = "ptolemy/domains/space/space.jar";
+        auxiliaryJarMap.put("ptolemy.domains.space.Occupants",
+                spaceJar);
+        auxiliaryJarMap.put("ptolemy.domains.space.Region",
+                spaceJar);
+        auxiliaryJarMap.put("ptolemy.domains.space.Room",
+                spaceJar);
+
+        // If classMap has any keys that match keys in auxiliaryJarMap,
+        // then add the corresponding key and value;
+        Map jarsToAdd = null;
+        Iterator classNames = classMap.entrySet().iterator();
+
+        while (classNames.hasNext()) {
+            Map.Entry entry = (Map.Entry) classNames.next();
+            String className = (String) entry.getKey();
+            System.out.println("Checking for class " + className + " "  
+                    + auxiliaryJarMap.containsKey(className));
+            if (auxiliaryJarMap.containsKey(className)) {
+                if (jarsToAdd == null) {
+                    jarsToAdd = new HashMap();
+                } else {
+                    jarsToAdd.put(className, (String)auxiliaryJarMap.get(className));
+                }
+            }
+        }
+        if (jarsToAdd != null) {
+            classMap.putAll(jarsToAdd);
+        }
+
+        // First, we search for the jar file, then we try
+        // getting the class as a resource.
+        // FIXME: we don't handle the case where there are no
+        // individual jar files because the user did not run 'make install'.
+
+        HashSet jarFilesThatHaveBeenRequired = new HashSet();
+
+        // Add jar files that are contained in ptsupport.jar.
+        // FIXME: we could open ptsupport.jar here and get the complete
+        // list of directories.  Instead, we get the primary offenders.
+        jarFilesThatHaveBeenRequired.add("ptolemy/actor/actor.jar");
+        jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/lib.jar");
+
+        boolean fixJarFiles = _copyJarFiles(classMap,
+                jarFilesThatHaveBeenRequired); 
+
+        jarFilesThatHaveBeenRequired.remove("ptolemy/actor/actor.jar");
+        jarFilesThatHaveBeenRequired.remove("ptolemy/actor/lib/lib.jar");
+
+        File potentialDomainJarFile = new File(_ptIIDirectory, _domainJar);
+
+        if (!potentialDomainJarFile.exists()) {
+            // If we are running under the Windows installer, then
+            // the domain specific jar files might not be present
+            // so we add ptolemy/domains/domains.jar
+            // We don't always require domains.jar because if
+            // the domain specific jar file is present, then the
+            // domain specific jar file will be much smaller.
+            System.out.println("AppletWriter: Warning: could not find '"
+                    + _domainJar + "', '" + potentialDomainJarFile
+                    + "' does not exist, " + "adding domains.jar to jarfiles");
+            jarFilesThatHaveBeenRequired.add("ptolemy/domains/domains.jar");
+        }
+
+        if (jarFilesThatHaveBeenRequired.contains(ptalonJar)) {
+            // Ptalon requires multiple jar files
+            jarFilesThatHaveBeenRequired.add("ptolemy/actor/ptalon/antlr/antlr.jar");
+        }
+
+        // actor.lib.database and domains.space require ojdbc6.jar
+        if (jarFilesThatHaveBeenRequired.contains(databaseJar)) {
+
+            jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/database/ojdbc6.jar");
+        } else if (jarFilesThatHaveBeenRequired.contains(spaceJar)) {
+            jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/database/ojdbc6.jar");
+        }
+
+        if (fixJarFiles) {
+            // If the code generator was run but codeBase != . and
+            // make install was not run, then we will not have figured
+            // out very many jar files.  So, we fix up the list
+            //
+            jarFilesThatHaveBeenRequired.add("ptolemy/ptsupport.jar");
+            jarFilesThatHaveBeenRequired.add(_domainJar);
+        }
+
+        return jarFilesThatHaveBeenRequired;
+    }
+
+
+    // find jar necessary jar files and optionally copy jar files into
+    // _outputDirectory.  Note that we need look for jar files to find
+    // diva.jar if we are using the FSM domain.
+    // Return the jar files that have been copied
+    private Set _findVergilJarFiles(Director director) throws IOException {
+        Map classMap = new HashMap();
+
+        classMap.put("ptolemy.vergil.MoMLViewerApplet",
+                "ptolemy/vergil/vergilApplet.jar");
+
+        // FIXME: unfortunately, vergil depends on FSM now.
+        classMap.put("ptolemy.domains.fsm.kernel.FSMActor",
+                "ptolemy/domains/fsm/fsm.jar");
+
+        // FIXME: vergil.fsm.modal.ModalModel depends on CTStepSizeControlActor
+        classMap.put("ptolemy.domains.ct.kernel.CTStepSizeControlActor",
+                "ptolemy/domains/ct/ct.jar");
+        classMap.put("diva.graph.GraphController", "lib/diva.jar");
+
+        HashSet jarFilesThatHaveBeenRequired = new HashSet();
+        _copyJarFiles(classMap, jarFilesThatHaveBeenRequired); 
+
+        return jarFilesThatHaveBeenRequired;
+    }
+
     // Given a domain package, return the corresponding jar file
     private static String _getDomainJar(String domainPackage) {
         String domainPackageDomain = domainPackage.substring(0, domainPackage
@@ -869,4 +964,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
     // Initial default for _templateDirectory;
     private static final String TEMPLATE_DIRECTORY_DEFAULT = "ptolemy/copernicus/applet/";
+
+    // The jar files that are necessary to run vergil if the codebase
+    // is ".".
+    // For example:
+    // "lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar" 
+    private String _vergilJarFiles;
 }

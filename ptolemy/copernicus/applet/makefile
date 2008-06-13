@@ -80,7 +80,7 @@ all: jclass
 install: all $(PTPACKAGE).jar
 	@echo "To run a demo that uses self contained jars: 'make test1'"
 
-demo: compileDemo runDemo
+demo: compileDemo #runDemo
 
 # OrthogonalCom
 MODEL =			OrthogonalCom
@@ -123,9 +123,6 @@ compileDemo: $(JCLASS)
 	$(PTII)/bin/copernicus \
 		-verbose \
 		-codeGenerator   "applet" \
-		-compile	 true \
-		-java            "`echo "$(JAVA)" | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
-		-run		 false \
 		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
 		-targetPackage   "$(TARGETPACKAGE)" \
 		-targetPath      "$(TARGETPATH)" \

@@ -50,7 +50,7 @@ The @sanitizedModelName@ model shown using Vergil, the Ptolemy II schematic edit
                    VALUE = "ptolemy.vergil.MoMLViewerApplet" > \
 	    <PARAM NAME = "codebase"   VALUE = "@codeBase@" > \
 	    <PARAM NAME = "archive" \
-                   VALUE = "@modelJarFiles@" > \
+                   VALUE = "@modelJarFiles@,@vergilJarFiles@" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;version=1.4.2" > \
             <PARAM NAME = "progressbar" VALUE = "true"> \
@@ -70,7 +70,7 @@ The @sanitizedModelName@ model shown using Vergil, the Ptolemy II schematic edit
             type = "application/x-java-applet;version=1.4.2" \
             code = "ptolemy.vergil.MoMLViewerApplet" \
             codebase = "@codeBase@" \
-            archive = "@modelJarFiles@" \
+            archive = "@modelJarFiles@,@vergilJarFiles@" \
             width = "@vergilWidth@" \
             height = "@vergilHeight@" \
             NAME = "@sanitizedModelName@Viewer" background = "#ffffff" modelURL = "@sanitizedModelName@.xml" controls = "buttons" includeRunPanel = "true"  \
@@ -87,7 +87,7 @@ The @sanitizedModelName@ model shown using Vergil, the Ptolemy II schematic edit
         <APPLET \
             code = "ptolemy.vergil.MoMLViewerApplet" \
             codebase = "@codeBase@" \
-            archive = "@modelJarFiles@" \
+            archive = "@modelJarFiles@,@vergilJarFiles@" \
             width = "@vergilWidth@" \
             height = "@vergilHeight@" \
             > \
