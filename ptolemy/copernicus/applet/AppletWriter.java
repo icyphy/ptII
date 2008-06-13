@@ -477,6 +477,15 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // Create a parser.
         MoMLParser parser = new MoMLParser();
 
+        // Since we strip out the graphical information in
+        // Copernicus.readInModel(), we need to copy the original
+        // model so that the vergil applet has the layout info.
+
+        // So, we do reset here.  If we don't, then we get the old
+        // model that was parsed in Copernicus.readInModel()
+        parser.reset();
+        parser.purgeAllModelRecords();
+
         // Get the old filters, save them, add our own
         // filters, use them, remove our filters,
         // and then readd the old filters in the finally clause.
@@ -545,7 +554,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     }
 
     /** 
-     * Copy the jar files listed in the map
+     * Copy the jar files listed in the map.
      * @param classMap A map consisting of String keys that are dot separated
      * class name and a value that is a String naming a jar file.
      * @param jarFilesThatHaveBeenRequired A set of strings that is set
@@ -553,7 +562,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
      * @return true if there was a problem and the jar files need to be
      * fixed because "make install" was not run. 
      */
-    private boolean _copyJarFiles(Map classMap, HashSet jarFilesThatHaveBeenRequired) throws IOException {
+    private boolean _copyJarFiles(Map classMap,
+            HashSet jarFilesThatHaveBeenRequired) throws IOException {
+
         // Set to true if we need to fix up jar files because
         // jar files are not present probably because
         // 'make install' was not run.
@@ -826,9 +837,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             if (auxiliaryJarMap.containsKey(className)) {
                 if (jarsToAdd == null) {
                     jarsToAdd = new HashMap();
-                } else {
-                    jarsToAdd.put(className, (String)auxiliaryJarMap.get(className));
                 }
+                jarsToAdd.put(className, (String)auxiliaryJarMap.get(className));
+
             }
         }
         if (jarsToAdd != null) {
@@ -869,20 +880,29 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             jarFilesThatHaveBeenRequired.add("ptolemy/domains/domains.jar");
         }
 
+
+        // Certain jar files require other jar files, so we add
+        // them to auxliaryClassMap and copy them.
+        Map auxiliaryClassMap = new HashMap();
         if (jarFilesThatHaveBeenRequired.contains(ptalonJar)) {
             // Ptalon requires multiple jar files
-            jarFilesThatHaveBeenRequired.add("ptolemy/actor/ptalon/antlr/antlr.jar");
+            auxiliaryClassMap.put("ptalon jar needs antlr jar",
+                    "ptolemy/actor/ptalon/antlr/antlr.jar");
         }
 
         // actor.lib.database and domains.space require ojdbc6.jar
         if (jarFilesThatHaveBeenRequired.contains(databaseJar)) {
-
-            jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/database/ojdbc6.jar");
+            auxiliaryClassMap.put("database jar needs ojdbc6 jar",
+                    "ptolemy/actor/lib/database/ojdbc6.jar");
         } else if (jarFilesThatHaveBeenRequired.contains(spaceJar)) {
-            jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/database/ojdbc6.jar");
+            auxiliaryClassMap.put("space jar needs ojdbc6 jar",
+                    "ptolemy/actor/lib/database/ojdbc6.jar");
         }
 
-        if (fixJarFiles) {
+        boolean fixAuxiliaryJarFiles = _copyJarFiles(auxiliaryClassMap,
+                jarFilesThatHaveBeenRequired); 
+
+        if (fixJarFiles || fixAuxiliaryJarFiles) {
             // If the code generator was run but codeBase != . and
             // make install was not run, then we will not have figured
             // out very many jar files.  So, we fix up the list
