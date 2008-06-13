@@ -89,12 +89,36 @@ remoteApplet:
 		-targetPath DOPCenter DOPCenter.xml
 
 SIGNED_DIRECTORY=$(PTII)/signed
-VERGILAPPLETJAR=$(SIGNED_DIRECTORY)/ptolemy/vergil/vergilApplet.jar
-$(VERGILAPPLETJAR): $(PTII)/ptolemy/vergil/vergilApplet.jar
-	cp $(PTII)/ptolemy/vergil/vergilApplet.jar $(VERGILAPPLETJAR)
-	(cd $(PTII); $(MAKE) sign_jar JARFILE=$(VERGILAPPLETJAR))
 
-remoteSignedApplet: $(VERGILAPPLETJAR)
+$(PTII)/signed/ptolemy/vergil/vergilApplet.jar: $(PTII)/ptolemy/vergil/vergilApplet.jar
+	cp $(PTII)/ptolemy/vergil/vergilApplet.jar $(PTII)/signed/ptolemy/vergil/vergilApplet.jar
+	(cd $(PTII); $(MAKE) sign_jar JARFILE=$(PTII)/ptolemy/vergil/vergilApplet.jar)
+
+$(PTII)/signed/ptolemy/actor/lib/database/ojdbc6.jar: $(PTII)/ptolemy/actor/lib/database/ojdbc6.jar 
+	mkdir -p $(PTII)/signed/ptolemy/actor/lib/database
+	cp $(PTII)/ptolemy/actor/lib/database/ojdbc6.jar \
+		$(PTII)/signed/ptolemy/actor/lib/database/ojdbc6.jar
+	(cd $(PTII); $(MAKE) sign_jar JARFILE=signed/ptolemy/actor/lib/database/ojdbc6.jar)
+
+$(PTII)/signed/ptolemy/actor/lib/database/database.jar: $(PTII)/ptolemy/actor/lib/database/database.jar 
+	mkdir -p $(PTII)/signed/ptolemy/actor/lib/database
+	cp $(PTII)/ptolemy/actor/lib/database/database.jar \
+		$(PTII)/signed/ptolemy/actor/lib/database/database.jar
+	(cd $(PTII); $(MAKE) sign_jar JARFILE=signed/ptolemy/actor/lib/database/database.jar)
+
+$(PTII)/signed/ptolemy/domains/space/space.jar: $(PTII)/ptolemy/domains/space/space.jar 
+	mkdir -p $(PTII)/signed/ptolemy/actor/lib/database
+	cp $(PTII)/ptolemy/domains/space/space.jar \
+		$(PTII)/signed/ptolemy/domains/space/space.jar
+	(cd $(PTII); $(MAKE) sign_jar JARFILE=signed/ptolemy/domains/space/space.jar)
+
+OTHER_SIGNED_JARS = \
+	$(PTII)/signed/ptolemy/vergil/vergilApplet.jar \
+	$(PTII)/ptolemy/actor/lib/database/ojdbc6.jar \
+	$(PTII)/ptolemy/actor/lib/database/database.jar \
+	$(PTII)/ptolemy/domains/space/space.jar
+
+remoteSignedApplet: $(OTHER_SIGNED_JARS)
 	if [ ! -d $(SIGNED_DIRECTORY) ]; then \
 		@echo "Creating signed jars in $(SIGNED_DIRECTORY)"; \
 		(cd $(ROOT); $(MAKE) jnlp_sign); \
