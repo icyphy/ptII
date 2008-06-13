@@ -744,7 +744,11 @@ public class Copernicus {
             if (!match) {
                 // Unrecognized option.
                 throw new IllegalActionException("Unrecognized option: "
-                        + "No parameter exists with name " + name);
+                        + "No parameter exists with name \"" + name
+                        + "\". Try editing the model and removing the "
+                        + "GeneratorAttribute, perhaps "
+                        + "$PTII/ptolemy/copernicus/kernel/Generator.xml "
+                        + "has changed?");
             }
         }
     }
