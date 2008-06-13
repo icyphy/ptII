@@ -291,7 +291,16 @@ public class EditorIcon extends Attribute {
      */
     public Figure createFigure() {
         Figure background = createBackgroundFigure();
-        Rectangle2D backBounds = background.getBounds();
+        Rectangle2D backBounds;
+        try {
+            // Applets can through a NPE here if there are problems getting
+            // the image.
+            backBounds = background.getBounds();
+        } catch (Exception ex) {
+            throw new InternalErrorException(this, ex,
+                    "Failed to get the bounds of the background figure \""
+                    + (background == null ? "null" : background));
+        }
         CompositeFigure figure = new CompositeFigure(background);
 
         NamedObj container = (NamedObj) getContainerOrContainerToBe();
