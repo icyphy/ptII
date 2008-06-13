@@ -83,7 +83,12 @@ copernicus:
 # Generate applet code in a remote directory.  This command will
 # copy jar files to the remote directory 
 PTII_USER_DIRECTORY=c:/tmp/ptIIapplet
-remoteApplet:
+$(PTII_USER_DIRECTORY):
+	if [ ! -d $(PTII_USER_DIRECTORY) ]; then \
+		mkdir -p $(PTII_USER_DIRECTORY); \
+	fi
+
+remoteApplet: $(PTII_USER_DIRECTORY)
 	 "$(PTII)/bin/copernicus" -codeGenerator applet \
 		-ptIIUserDirectory $(PTII_USER_DIRECTORY) \
 		-targetPath DOPCenter DOPCenter.xml
@@ -91,22 +96,39 @@ remoteApplet:
 SIGNED_DIRECTORY=$(PTII)/signed
 
 $(PTII)/signed/ptolemy/vergil/vergilApplet.jar: $(PTII)/ptolemy/vergil/vergilApplet.jar
+	if [ ! -d $(SIGNED_DIRECTORY) ]; then \
+		echo "Creating signed jars in $(SIGNED_DIRECTORY)"; \
+		(cd $(ROOT); $(MAKE) jnlp_sign); \
+	fi
+	mkdir -p $(PTII)/signed/ptolemy/actor/lib/database
 	cp $(PTII)/ptolemy/vergil/vergilApplet.jar $(PTII)/signed/ptolemy/vergil/vergilApplet.jar
 	(cd $(PTII); $(MAKE) sign_jar JARFILE=$(PTII)/ptolemy/vergil/vergilApplet.jar)
 
 $(PTII)/signed/ptolemy/actor/lib/database/ojdbc6.jar: $(PTII)/ptolemy/actor/lib/database/ojdbc6.jar 
+	if [ ! -d $(SIGNED_DIRECTORY) ]; then \
+		echo "Creating signed jars in $(SIGNED_DIRECTORY)"; \
+		(cd $(ROOT); $(MAKE) jnlp_sign); \
+	fi
 	mkdir -p $(PTII)/signed/ptolemy/actor/lib/database
 	cp $(PTII)/ptolemy/actor/lib/database/ojdbc6.jar \
 		$(PTII)/signed/ptolemy/actor/lib/database/ojdbc6.jar
 	(cd $(PTII); $(MAKE) sign_jar JARFILE=signed/ptolemy/actor/lib/database/ojdbc6.jar)
 
 $(PTII)/signed/ptolemy/actor/lib/database/database.jar: $(PTII)/ptolemy/actor/lib/database/database.jar 
+	if [ ! -d $(SIGNED_DIRECTORY) ]; then \
+		@echo "Creating signed jars in $(SIGNED_DIRECTORY)"; \
+		(cd $(ROOT); $(MAKE) jnlp_sign); \
+	fi
 	mkdir -p $(PTII)/signed/ptolemy/actor/lib/database
 	cp $(PTII)/ptolemy/actor/lib/database/database.jar \
 		$(PTII)/signed/ptolemy/actor/lib/database/database.jar
 	(cd $(PTII); $(MAKE) sign_jar JARFILE=signed/ptolemy/actor/lib/database/database.jar)
 
 $(PTII)/signed/ptolemy/domains/space/space.jar: $(PTII)/ptolemy/domains/space/space.jar 
+	if [ ! -d $(SIGNED_DIRECTORY) ]; then \
+		echo "Creating signed jars in $(SIGNED_DIRECTORY)"; \
+		(cd $(ROOT); $(MAKE) jnlp_sign); \
+	fi
 	mkdir -p $(PTII)/signed/ptolemy/actor/lib/database
 	cp $(PTII)/ptolemy/domains/space/space.jar \
 		$(PTII)/signed/ptolemy/domains/space/space.jar
@@ -118,11 +140,8 @@ OTHER_SIGNED_JARS = \
 	$(PTII)/ptolemy/actor/lib/database/database.jar \
 	$(PTII)/ptolemy/domains/space/space.jar
 
-remoteSignedApplet: $(OTHER_SIGNED_JARS)
-	if [ ! -d $(SIGNED_DIRECTORY) ]; then \
-		@echo "Creating signed jars in $(SIGNED_DIRECTORY)"; \
-		(cd $(ROOT); $(MAKE) jnlp_sign); \
-	fi
+remoteSignedApplet: $(OTHER_SIGNED_JARS) $(PTII_USER_DIRECTORY)
+	cp DOPCenter.gif  "$(PTII_USER_DIRECTORY)/DOPCenter"
 	 "$(PTII)/bin/copernicus" \
 		-verbose \
 		-ptIIJarsPath '"$(SIGNED_DIRECTORY)"' \
