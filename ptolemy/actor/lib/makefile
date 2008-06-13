@@ -36,6 +36,9 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for Colt and sets PTCOLT_DIR in
 # $PTII/mk/ptII.mk if was found.  Otherwise, PTCOLT_DIR is empty.
 
+# $PTII/configure looks for ojdbc6.jar and sets PTDATABASE_DIR in
+# $PTII/mk/ptII.mk if was found.  Otherwise, PTDATABASE_DIR is empty.
+
 # $PTII/configure looks for Java Advanced Imaging and sets PTJAI_DIR in
 # $PTII/mk/ptII.mk if was found.  Otherwise, PTJAI_DIR is empty.
 #
@@ -56,7 +59,7 @@ ME =		ptolemy/actor/lib
 
 DIRS = 		conversions gui logic hoc image javasound jni net io xslt \
 		test comm security string tutorial vhdl video \
-		$(PTCOLT_DIR) $(PTJAI_DIR) \
+		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTJAI_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
 		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTX10_DIR)
 
