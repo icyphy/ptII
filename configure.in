@@ -3073,9 +3073,24 @@ fi
 #       Space - domains/space uses ojdbc6.jar 
 #--------------------------------------------------------------------
 
+
+# PTDATABASE_DIR is set to database and used in
+# $PTII/ptolemy/actor/lib/makefile if ojdbc6.jar was found.
+PTDATABASE_DIR=
+
+# PTDATABASE_JNLP_JARS is set to the database jars that need to be signed
+# and used in mk/jnlp.mk
+PTDATABASE_JNLP_JARS=
+
+# PTDATABASE_PACKAGES is used in ptII/doc/makefile
+PTDATABASE_PACKAGES=
+
 # PTSPACE_DIR is set to space and used in
 # $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.
 PTSPACE_DIR=
+
+# PTSPACEDOMAIN_PACKAGES is used in ptII/doc/makefile
+PTSPACEDOMAIN_PACKAGES=
 
 # Oracle Java Database jar (ojdbc6.jar)
 ORACLE_OJDBC_JAR=
@@ -3086,8 +3101,12 @@ PTSPACEDOMAIN_JAR=
 
 # We only need to look for on if $PTII/ptolemy/domains/space exists
 SPACE_USER_DIR="$PTII/ptolemy/domains/space"
-if test ! -d "$SPACE_USER_DIR"; then
-    PT_MSG_STATUS([$SPACE_USER_DIR is not present, or Java is not 1.6 or later,
+
+DATABASE_USER_DIR="$PTII/ptolemy/actor/lib/database"
+
+if test ! -d "$SPACE_USER_DIR" -a ! -d "$DATABASE_USER_DIR"; then
+    PT_MSG_STATUS([$SPACE_USER_DIR and $DATABASE_USER_DIR
+    are not present, or Java is not 1.6 or later,
     so we need not find the Oracle ojdbc6.jar.])
     ORACLE_OJDBC_JAR=
 else
@@ -3097,16 +3116,21 @@ else
     else 
         AC_MSG_CHECKING([for ojdbc6.jar, used by the space domain])
         AC_ARG_WITH(ojdbc6, [  --with-ojdbc6=/path/to/ojdbc6.jar  path to ojdbc6.jar
-                          defaults to \$PTII/ptolemy/domains/space/ojdbc6.jar],
+                          defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar],
 	    ORACLE_OJDBC_JAR=$withval,
-	    ORACLE_OJDBC_JAR=$PTII/ptolemy/domains/space/ojdbc6.jar)
+	    ORACLE_OJDBC_JAR=$PTII/ptolemy/actor/lib/database/ojdbc6.jar)
 
         if test -f "$ORACLE_OJDBC_JAR"; then
 	    PT_MSG_RESULT([$ORACLE_OJDBC_JAR])
+	    PTDATABASE_DIR=database
+	    PTDATABASE_JNLP_JARS="ptolemy/actor/lib/database/ojdbc6.jar ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar"
+	    PTDATABASE_PACKAGES=ptolemy.actor.lib.database
 	    PTSPACE_DIR=space
 	    PTSPACEDOMAIN_JAR=space/space.jar
+	    PTSPACEDOMAIN_PACKAGES=ptolemy.domains.space
+
         else  
-            AC_MSG_WARN([Failed to find PTII/ptolemy/domains/space/ojdbc6.jar
+            AC_MSG_WARN([Failed to find PTII/actor/lib/database/ojdbc6.jar
     If it is not present, you will not be able to use the 
     space domain.])
 	    ORACLE_OJDBC_JAR=
@@ -3115,7 +3139,7 @@ else
 fi
 
 if test -z "$ORACLE_OJDBC_JAR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/space/"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/database/|ptolemy/domains/space/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$ORACLE_OJDBC_JAR\"/> "
@@ -3781,6 +3805,18 @@ AC_SUBST(PTCOMM_PACKAGES)
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 AC_SUBST(PTCOPERNICUS_DIR)
 
+# PTDATABASE_DIR is set to database and used in
+# $PTII/ptolemy/actor/lib/makefile if ojdbc6.jar was found.
+AC_SUBST(PTDATABASE_DIR)
+
+# PTDATABASE_JNLP_JARS is set to the database jars that need to be signed
+# and used in mk/jnlp.mk
+AC_SUBST(PTDATABASE_JNLP_JARS)
+
+# PTDATABASE_PACKAGES is set if ojdbc6.jar was found and 
+# used in ptII/doc/makefile
+AC_SUBST(PTDATABASE_PACKAGES)
+
 # Set to distributed and used in
 # $PTII/ptolemy/makefile if jini was found
 AC_SUBST(PTDISTRIBUTED_DIR)
@@ -3984,6 +4020,10 @@ AC_SUBST(PTSPACE_DIR)
 # PTSPACEDOMAIN_JAR is the name of the jar file that includes the space
 # domain if ojdbc6.jar was found.  PTSPACEDOMAIN_JAR used in domains/makefile
 AC_SUBST(PTSPACEDOMAIN_JAR)
+
+# PTSPACEDOMAIN_PACKAGES is set if ojdbc6.jar was found and 
+# used in ptII/doc/makefile
+AC_SUBST(PTSPACEDOMAIN_PACKAGES)
 
 # Set to tini and used in
 # $PTII/ptolemy/apps/makefile if TINI was found

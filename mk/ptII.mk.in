@@ -362,6 +362,18 @@ PTCOMM_PACKAGES =	@PTCOMM_PACKAGES@
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
 
+# PTDATABASE_DIR is set to database and used in
+# $PTII/ptolemy/actor/lib/makefile if ojdbc6.jar was found.
+PTDATABASE_DIR =	@PTDATABASE_DIR@
+
+# PTDATABASE_JNLP_JARS is set to the database jars that need to be signed
+# and used in mk/jnlp.mk
+PTDATABASE_JNLP_JARS =	@PTDATABASE_JNLP_JARS@
+
+# PTDATABASE_PACKAGES is set if ojdbc6.jar was found and 
+# used in ptII/doc/makefile
+PTDATABASE_PACKAGES =	@PTDATABASE_PACKAGES@
+
 # Set to distributed and used in
 # $PTII/ptolemy/makefile if jini was found
 PTDISTRIBUTED_DIR = @PTDISTRIBUTED_DIR@
@@ -594,6 +606,10 @@ PTSPACE_DIR =		@PTSPACE_DIR@
 # PTSPACEDOMAIN_JAR is the name of the jar file that includes the space
 # domain if ojdbc6.jar was found.  PTSPACEDOMAIN_JAR used in domains/makefile
 PTSPACEDOMAIN_JAR =	@PTSPACEDOMAIN_JAR@
+
+# PTSPACEDOMAIN_PACKAGES is set if ojdbc6.jar was found and 
+# used in ptII/doc/makefile
+PTSPACEDOMAIN_PACKAGES = @PTSPACEDOMAIN_PACKAGES@
 
 # Set to tini and used in $PTII/ptolemy/apps/makefile if the Dallas Semi
 # TINI was found

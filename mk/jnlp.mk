@@ -380,6 +380,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
+	$(PTDATABASE_JNLP_JARS) \
 	$(RUN_JARS) \
 	$(WIRELESS_JARS)
 
