@@ -54,6 +54,7 @@ JSIMPLE_TESTS = \
 	GRColorChanges.tcl \
 	ActorIndex.tcl \
 	MultiportToSinglePort.tcl \
+	PropertyClassChanges.tcl \
 	RemoveGraphicalClasses.tcl
 
 # Graphical Java tests that use Tcl.

@@ -109,7 +109,7 @@ public class PropertyClassChanges implements MoMLFilter {
         // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
         // which will open up a large xml file and then close after 2 seconds.
         // System.out.println("<---filterAttributeValue: " + container + "\t"
-        //  +  attributeName + "\t" + attributeValue);
+        //           +  attributeName + "\t" + attributeValue);
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
@@ -145,6 +145,21 @@ public class PropertyClassChanges implements MoMLFilter {
         if (attributeName.equals("class")) {
             if (_currentlyProcessingActorWithPropertyClassChanges
                     && _foundChange) {
+                if ((container != null)
+                        && !container.getFullName().equals(_currentActorFullName)
+                    && !container.getFullName().substring(0,
+                            container.getFullName().lastIndexOf(".")).equals(_currentActorFullName)
+
+                    ) {
+                    // This is fix for an unusual bug involving
+                    // space.Occupant.
+                    // See test 1.1 in test/PropertyClassChanges.tcl
+                    _currentlyProcessingActorWithPropertyClassChanges = false;
+                    _newClass = null;
+                    _foundChange = false;
+                    return attributeValue;
+                }
+
                 // This if clause needs to be first so that we handle
                 // the PropertyClassChanges case where we have a
                 // _tableauFactory in a ModalModel that is not
@@ -176,8 +191,10 @@ public class PropertyClassChanges implements MoMLFilter {
             } else if (_currentlyProcessingActorWithPropertyClassChanges
                     && (container != null)
                     && !container.getFullName().equals(_currentActorFullName)
-                    && !container.getFullName().startsWith(
-                            _currentActorFullName)) {
+                    && !container.getFullName().substring(0,
+                            container.getFullName().lastIndexOf(".")).equals(_currentActorFullName)
+                    /*&& !container.getFullName().startsWith(
+                      _currentActorFullName)*/) {
                 // We found another class in a different container
                 // while handling a class with port name changes
                 _currentlyProcessingActorWithPropertyClassChanges = false;
@@ -197,6 +214,9 @@ public class PropertyClassChanges implements MoMLFilter {
      */
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData) throws Exception {
+//           System.out.println("<---filterEndElement: "
+//                   + ((container == null) ? "null" : container.getFullName())
+//                   +  "\t" + elementName + "\t" + currentCharData);
         _foundChange = false;
     }
 
@@ -242,14 +262,16 @@ public class PropertyClassChanges implements MoMLFilter {
 
             HashMap propertyMap = (HashMap) _actorsWithPropertyClassChanges
                     .get(actor);
-            Iterator propertyMapEntries = propertyMap.entrySet().iterator();
+            if (propertyMap != null) {
+                Iterator propertyMapEntries = propertyMap.entrySet().iterator();
 
-            while (propertyMapEntries.hasNext()) {
-                Map.Entry properties = (Map.Entry) propertyMapEntries.next();
-                String oldProperty = (String) properties.getKey();
-                String newProperty = (String) properties.getValue();
-                results.append("\t\t" + oldProperty + "\t -> " + newProperty
+                while (propertyMapEntries.hasNext()) {
+                    Map.Entry properties = (Map.Entry) propertyMapEntries.next();
+                    String oldProperty = (String) properties.getKey();
+                    String newProperty = (String) properties.getValue();
+                    results.append("\t\t" + oldProperty + "\t -> " + newProperty
                         + "\n");
+                }
             }
         }
 
@@ -268,7 +290,7 @@ public class PropertyClassChanges implements MoMLFilter {
     // class changes, set to false when we are done.
     private boolean _currentlyProcessingActorWithPropertyClassChanges = false;
 
-    // Last "name" value seen, for use if we see a "class".
+    // Last "name" value seen, for use if we see a "class" for this actor
     private String _lastNameSeen;
 
     // The new class name for the property we are working on.
