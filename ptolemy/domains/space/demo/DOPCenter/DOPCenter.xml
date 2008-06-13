@@ -28,128 +28,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 40}">
         </property>
     </property>
-    <property name="_generator" class="ptolemy.copernicus.kernel.GeneratorAttribute">
-        <property name="initialParametersURL" class="ptolemy.data.expr.StringParameter" value="ptolemy/copernicus/kernel/Generator.xml">
-        </property>
-        <property name="codeGenerator" class="ptolemy.data.expr.StringParameter" value="applet">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="java" class="ptolemy.kernel.util.StringAttribute" value="java">
-                </property>
-                <property name="applet" class="ptolemy.kernel.util.StringAttribute" value="applet">
-                </property>
-                <property name="c" class="ptolemy.kernel.util.StringAttribute" value="c">
-                </property>
-                <property name="interpreted" class="ptolemy.kernel.util.StringAttribute" value="interpreted">
-                </property>
-                <property name="jhdl" class="ptolemy.kernel.util.StringAttribute" value="jhdl">
-                </property>
-                <property name="shallow" class="ptolemy.kernel.util.StringAttribute" value="shallow">
-                </property>
-            </property>
-            <doc>The code generator to run.</doc>
-        </property>
-        <property name="codeGeneratorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.copernicus.$codeGenerator.Main">
-            <doc>The class that is instantiated to execute a particular code generator.  This class is expected to be a subclass of ptolemy.copernicus.kernel.KernelMain.</doc>
-        </property>
-        <property name="compile" class="ptolemy.data.expr.StringParameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-            <doc>If true, compile the generated code.  The default is true.</doc>
-        </property>
-        <property name="show" class="ptolemy.data.expr.StringParameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-            <doc> If true, then show the generated code.  The default is true.</doc>
-        </property>
-        <property name="run" class="ptolemy.data.expr.StringParameter" value="true">
-            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
-            </property>
-            <doc> If true, then run the generated code.  The default is true.</doc>
-        </property>
-        <property name="ptII" class="ptolemy.data.expr.Parameter" value="property(&quot;ptolemy.ptII.dir&quot;)">
-            <doc>The location of the Ptolemy II classes.  The default is the value of the ptolemy.ptII.dir java system property</doc>
-        </property>
-        <property name="ptIIUserDirectory" class="ptolemy.data.expr.StringParameter" value="$ptII">
-            <doc>The top level directory to write the code in. The default is the value of the ptII parameter. The code will appear in 'ptIIUserDirectory/targetPath'.</doc>
-        </property>
-        <property name="targetPackage" class="ptolemy.data.expr.StringParameter" value="$modelName">
-            <doc>The package to generate code in. Defaults to the model name</doc>
-        </property>
-        <property name="targetPath" class="ptolemy.data.expr.StringParameter" value="ptolemy/domains/space/demo/$modelName">
-            <doc>The path relative to the ptIIUserDirectory to generate code in.</doc>
-        </property>
-        <property name="outputDirectory" class="ptolemy.data.expr.StringParameter" value="$ptIIUserDirectory/$targetPath">
-            <doc>The directory that code will be generated in.</doc>
-        </property>
-        <property name="modelPath" class="ptolemy.data.expr.StringParameter" value="file:/C:/Documents%20and%20Settings/eal/workspace/ptII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml">
-            <doc>The path to the model, including the .xml extension.  modelPath is converted to a URL internally before use.</doc>
-        </property>
-        <property name="modelName" class="ptolemy.data.expr.StringParameter" value="DOPCenter">
-            <doc> The name of the model, read from the .xml file and sanitized.</doc>
-        </property>
-        <property name="iterations" class="ptolemy.data.expr.StringParameter" value="1">
-            <doc>Number of iterations to run the model for. Usually, the model itself contains the number of iterations to run for. Defaults to 1000.</doc>
-        </property>
-        <property name="iterationsParameter" class="ptolemy.data.expr.StringParameter" value=",iterations:$iterations">
-            <doc>Defaults to &quot;iterations:&quot; + iterations.  Set this to the empty string if the model has the number of iterations built in.</doc>
-        </property>
-        <property name="compileOptions" class="ptolemy.data.expr.StringParameter" value="">
-            <doc>User supplied arguments to be passed to the code generator.  Defaults to the empty string.</doc>
-        </property>
-        <property name="javaClassPath" class="ptolemy.data.expr.Parameter" value="property(&quot;java.class.path&quot;)">
-        </property>
-        <property name="classPath" class="ptolemy.data.expr.StringParameter" value="C:/Documents and Settings/eal/workspace/ptII;C:\Documents and Settings\eal\workspace\ptII;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.jdt.ui_3.3.2.r332_20080128.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.core.runtime_3.3.100.v20070530.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.osgi_3.3.2.R33x_v20080105.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.equinox.common_3.3.0.v20070426.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.core.jobs_3.3.1.R33x_v20070709.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.core.runtime.compatibility.registry_3.2.100.v20070316\runtime_registry_compatibility.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.equinox.registry_3.3.1.R33x_v20070802.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.equinox.preferences_3.2.101.R33x_v20080117.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.core.contenttype_3.2.100.v20070319.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.equinox.app_1.0.1.R33x_v20070828.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.jdt.core_3.3.3.v_793_R33x.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.jdt.compiler.apt_1.0.1.R33x_v20071002-2100.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.jdt.compiler.tool_1.0.1.v_793_R33x.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.core.resources_3.3.1.R33x_v20080205.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.ui.editors_3.3.2.r332_20080109-0800.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.core.filebuffers_3.3.1.r331_v20070829.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.ui.ide_3.3.2.M20080207-0800.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.ui.workbench.texteditor_3.3.2.r332_20080109-0800.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.ui.console_3.2.2.v20071031_r332.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.ui.forms_3.3.0.v20070511.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.ui_3.3.1.M20071128-0800.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.swt_3.3.2.v3349d.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.swt.win32.win32.x86_3.3.3.v3349.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.jface_3.3.2.M20080207-0800.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.core.commands_3.3.0.I20070605-0010.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.ui.workbench_3.3.2.M20080207-0800.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.jface.text_3.3.2.r332_20071017-0800.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.text_3.3.0.v20070606-0010.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.jdt.debug.ui_3.2.102.v20071002_r332.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.debug.ui_3.3.2.v20080117_r332.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.debug.core_3.3.2.v20080117_r332.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.help_3.3.2.v20071126_33x.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.core.expressions_3.3.0.v20070606-0010.jar;C:\Program Files\eclipse3.3.1\eclipse\plugins\org.eclipse.ui.views_3.2.101.M20080207-0800.jar;C:\Documents and Settings\eal\workspace\ptII\lib\bsh-2.0b4.jar;C:\Documents and Settings\eal\workspace\ptII\lib\ptCal.jar;C:\Documents and Settings\eal\workspace\ptII\lib\java_cup.jar;C:\Documents and Settings\eal\workspace\ptII\lib\saxon8.jar;C:\Documents and Settings\eal\workspace\ptII\lib\saxon8-dom.jar;C:\Documents and Settings\eal\workspace\ptII\lib\chic.jar;C:\Documents and Settings\eal\workspace\ptII\lib\ptcolt.jar;C:\Documents and Settings\eal\workspace\ptII\vendors\sun\commapi\comm.jar;C:\Program Files\Java\jdk1.6.0_05\lib\tools.jar;C:\Documents and Settings\eal\workspace\ptII\vendors\misc\joystick\Joystick.jar;C:\Documents and Settings\eal\workspace\ptII\vendors\jython\jython.jar;C:\Documents and Settings\eal\workspace\ptII\vendors\sun\jxta\jxta.jar;C:\Documents and Settings\eal\workspace\ptII\vendors\sun\jxta\cryptix-asn1.jar;C:\Documents and Settings\eal\workspace\ptII\vendors\sun\jxta\cryptix32.jar;C:\Documents and Settings\eal\workspace\ptII\vendors\sun\jxta\beepcore.jar;C:\Documents and Settings\eal\workspace\ptII\vendors\sun\jxta\minimalBC.jar;C:\Documents and Settings\eal\workspace\ptII\vendors\sun\jxta\jxtasecurity.jar;C:\Documents and Settings\eal\workspace\ptII\vendors\sun\jxta\log4j.jar;C:\Documents and Settings\eal\workspace\ptII\vendors\sun\jxta\jxtaptls.jar;C:\Documents and Settings\eal\workspace\ptII\lib\ptjacl.jar;C:\Documents and Settings\eal\workspace\ptII\ptolemy\distributed\jini\jar\jini-core.jar;C:\Documents and Settings\eal\workspace\ptII\ptolemy\distributed\jini\jar\jini-ext.jar;C:\Documents and Settings\eal\workspace\ptII\ptolemy\distributed\jini\jar\sun-util.jar;C:\Documents and Settings\eal\workspace\ptII\lib\mapss.jar;C:\Documents and Settings\eal\workspace\ptII\ptolemy\actor\ptalon\antlr\antlr.jar;C:\Documents and Settings\eal\workspace\ptII\lib\sootclasses.jar;C:\Documents and Settings\eal\workspace\ptII\lib\polyglotclasses-1.3.2.jar;C:\Documents and Settings\eal\workspace\ptII\lib\jasminclasses.jar;C:\Documents and Settings\eal\workspace\ptII\ptolemy\domains\space\ojdbc6.jar;C:/Documents and Settings/eal/workspace/ptII/lib/sootclasses.jar;C:/Documents and Settings/eal/workspace/ptII/lib/jasminclasses.jar;C:\Program Files\Java\jdk1.6.0_05\jre/lib/rt.jar;C:/Documents and Settings/eal/workspace/ptII/ptolemy/domains/sdf/sdf.jar">
-            <doc>The class path. Defaults to the value of of the java.class.path property.</doc>
-        </property>
-        <property name="necessaryClasses" class="ptolemy.data.expr.Parameter" value="{&quot;ptolemy.domains.sdf.kernel.SDFScheduler&quot;,&quot;ptolemy.copernicus.java.Main&quot;,&quot;ptolemy.kernel.util.NamedObj&quot;,&quot;jasmin.Main&quot;,&quot;ptolemy.vergil.MoMLViewerApplet&quot;,&quot;diva.graph.GraphController&quot;}">
-            <doc>An array of Strings, where each element names a class that needs to be present in the classpath </doc>
-        </property>
-        <property name="necessaryClassPath" class="ptolemy.data.expr.StringParameter" value="C:/Documents%20and%20Settings/eal/workspace/ptII;C:/Documents%20and%20Settings/eal/workspace/ptII/lib/jasminclasses.jar">
-            <doc>Class path that refers to necessary classes. Derived from necessaryClasses</doc>
-        </property>
-        <property name="classPathSeparator" class="ptolemy.data.expr.Parameter" value="property(&quot;path.separator&quot;)">
-            <doc>The classpath separator. Under Windows, the default is ';'. Under Unix, the default is ':'</doc>
-        </property>
-        <property name="javaHome" class="ptolemy.data.expr.Parameter" value="property(&quot;java.home&quot;)">
-            <doc>Defaults to the value of the java.home property</doc>
-        </property>
-        <property name="java" class="ptolemy.data.expr.StringParameter" value="$javaHome/bin/java">
-            <doc>Defaults to the value of the java.home property + bin/java, for example: c:/jdk1.3.1/bin/java</doc>
-        </property>
-        <property name="javaPtIIProperty" class="ptolemy.data.expr.StringParameter" value="-Dptolemy.ptII.dir=$ptII">
-            <doc>The flag to pass to the java process that defines the value of the ptolemy.ptII.dir property.  Defaults to &quot;-Dptolemy.ptII.dir=&quot; + ptII</doc>
-        </property>
-        <property name="javaSystemJar" class="ptolemy.data.expr.StringParameter" value="$javaHome/lib/rt.jar">
-            <doc>Defaults to the value of the java.home property + &quot;/lib/rt.jar&quot;</doc>
-        </property>
-        <property name="jvmSize" class="ptolemy.data.expr.StringParameter" value="-Xmx256m">
-            <doc>The command line arguments to pass to the java interpreter that control the size.  The default is -Xmx256m</doc>
-        </property>
-        <property name="templateDirectory" class="ptolemy.data.expr.StringParameter" value="ptolemy/copernicus/$codeGenerator">
-            <doc>The directory for finding template files.</doc>
-        </property>
-        <property name="runCommandTemplateFile" class="ptolemy.data.expr.StringParameter" value="ptolemy/copernicus/$codeGenerator/runCommandTemplate.txt">
-            <doc>The template file that contains the command to run the generated code.</doc>
-        </property>
-        <property name="runOptions" class="ptolemy.data.expr.StringParameter" value="">
-            <doc>User supplied arguments to be passed to the command that will run the generated code. Defaults to the empty string.</doc>
-        </property>
-        <property name="sootDir" class="ptolemy.data.expr.StringParameter" value="$ptII/lib">
-            <doc>The directory that contains the soot jar files. Defaults to the value of the ptII parameter  + &quot;/lib&quot;</doc>
-        </property>
-        <property name="sootClasses" class="ptolemy.data.expr.StringParameter" value="$sootDir/sootclasses.jar${classPathSeparator}$sootDir/jasminclasses.jar${classPathSeparator}$javaSystemJar">
-            <doc>The location of sootclasses.jar, jasminclasses.jar and the Java system jar (usually rt.jar).  The necessaryClassPath parameter may end up duplicating some of the elements of this parameter.</doc>
-        </property>
-        <property name="ptIIUserDirectoryAsURL" class="ptolemy.data.expr.StringParameter" value="file:/C:/Documents%20and%20Settings/eal/workspace/ptII">
-            <doc>The top level directory to write the code in as a URL.  Derived from the value of the ptIIUserDirectory parameter.</doc>
-        </property>
-        <property name="watchDogTimeout" class="ptolemy.data.expr.StringParameter" value="720000">
-            <doc>The number of milliseconds that code generation will run for. Defaults to 720000, which is 12 minutes.</doc>
-        </property>
-        <property name="output" class="ptolemy.data.expr.StringParameter" value="">
-            <doc>The filename to redirect the standard output stream of the code generator to.  This is used, for example, in the nightly build to provide easily parseable error messages.  If the value is not set, then the output will not be redirected. </doc>
-        </property>
-    </property>
     <entity name="DatabaseManager" class="ptolemy.actor.lib.database.DatabaseManager">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 45.0]">
         </property>
@@ -157,7 +35,7 @@
     <entity name="Room" class="ptolemy.domains.space.Room">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 295.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -185,7 +63,7 @@
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
     </entity>
     <entity name="Room2" class="ptolemy.domains.space.Room">
@@ -193,7 +71,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 290.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -221,7 +99,7 @@
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
     </entity>
     <entity name="Room3" class="ptolemy.domains.space.Room">
@@ -229,7 +107,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 285.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -257,7 +135,7 @@
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
     </entity>
     <entity name="Room4" class="ptolemy.domains.space.Room">
@@ -265,7 +143,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 275.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -293,7 +171,7 @@
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
     </entity>
     <entity name="Room5" class="ptolemy.domains.space.Room">
@@ -301,7 +179,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 260.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -329,7 +207,7 @@
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
     </entity>
     <entity name="Room6" class="ptolemy.domains.space.Room">
@@ -337,7 +215,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 270.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -365,7 +243,7 @@
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
     </entity>
     <entity name="Room7" class="ptolemy.domains.space.Room">
@@ -373,7 +251,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 245.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -401,7 +279,7 @@
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
     </entity>
     <entity name="Room8" class="ptolemy.domains.space.Room">
@@ -409,7 +287,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 255.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -437,7 +315,7 @@
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
     </entity>
     <entity name="Room9" class="ptolemy.domains.space.Room">
@@ -445,7 +323,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 230.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -473,7 +351,7 @@
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
     </entity>
     <entity name="Room10" class="ptolemy.domains.space.Room">
@@ -481,7 +359,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 240.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -509,7 +387,7 @@
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
     </entity>
     <entity name="Occupants11" class="ptolemy.domains.space.Occupants">
@@ -521,7 +399,7 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -533,7 +411,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 455.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -561,7 +439,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 455.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -591,7 +469,7 @@
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -601,7 +479,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 460.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -633,7 +511,7 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -649,7 +527,7 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -661,7 +539,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 390.0]">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
