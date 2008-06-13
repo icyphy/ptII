@@ -80,6 +80,33 @@ demo: demo_applet demo_ptolemy demo_vergil
 copernicus:
 	 "$(PTII)/bin/copernicus" -codeGenerator applet -targetPath ptolemy/domains/space/demo/DOPCenter DOPCenter.xml
 
+# Generate applet code in a remote directory.  This command will
+# copy jar files to the remote directory 
+PTII_USER_DIRECTORY=c:/tmp/ptIIapplet
+remoteApplet:
+	 "$(PTII)/bin/copernicus" -codeGenerator applet \
+		-ptIIUserDirectory $(PTII_USER_DIRECTORY) \
+		-targetPath DOPCenter DOPCenter.xml
+
+SIGNED_DIRECTORY=$(PTII)/signed
+VERGILAPPLETJAR=$(SIGNED_DIRECTORY)/ptolemy/vergil/vergilApplet.jar
+$(VERGILAPPLETJAR): $(PTII)/ptolemy/vergil/vergilApplet.jar
+	cp $(PTII)/ptolemy/vergil/vergilApplet.jar $(VERGILAPPLETJAR)
+	(cd $(PTII); $(MAKE) sign_jar JARFILE=$(VERGILAPPLETJAR))
+
+remoteSignedApplet: $(VERGILAPPLETJAR)
+	if [ ! -d $(SIGNED_DIRECTORY) ]; then \
+		@echo "Creating signed jars in $(SIGNED_DIRECTORY)"; \
+		(cd $(ROOT); $(MAKE) jnlp_sign); \
+	fi
+	 "$(PTII)/bin/copernicus" \
+		-verbose \
+		-ptIIJarsPath '"$(SIGNED_DIRECTORY)"' \
+		-codeGenerator applet \
+		-ptIIUserDirectory '"$(PTII_USER_DIRECTORY)"' \
+		-targetPath '"DOPCenter"' \
+		DOPCenter.xml
+
 demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer DOPCenter.htm
 
