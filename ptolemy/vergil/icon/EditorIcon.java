@@ -293,7 +293,7 @@ public class EditorIcon extends Attribute {
         Figure background = createBackgroundFigure();
         Rectangle2D backBounds;
         try {
-            // Applets can through a NPE here if there are problems getting
+            // Applets can throw a NPE here if there are problems getting
             // the image.
             backBounds = background.getBounds();
         } catch (Exception ex) {
