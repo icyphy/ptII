@@ -150,10 +150,10 @@ ptinvoke: ptinvoke.in ../config.status
 ../config.status: ../configure
 	-(cd ..; \
 		/bin/bash ./configure \
-			--exec-prefix=${PTII} --prefix=${PTII} \
+			--exec-prefix="${PTII}" --prefix="${PTII}" \
 	        || \
 		/bin/sh ./configure \
-			--exec-prefix=${PTII} --prefix=${PTII})
+			--exec-prefix="${PTII}" --prefix="${PTII}")
 
 install: all
 fast: all
