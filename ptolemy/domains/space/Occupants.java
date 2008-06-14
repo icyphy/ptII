@@ -27,10 +27,14 @@
  */
 package ptolemy.domains.space;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.RecordToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -107,28 +111,27 @@ public class Occupants extends TypedAtomicActor {
         // FIXME: We want to parameterize what is shown.
         if (occupants.hasToken(0)) {
             ArrayToken array = (ArrayToken)occupants.get(0);
+            
+            // Sort the array by desk number.
+            Token[] desks = array.arrayValue();
+            // FIXME: It would be nice to use the type safe version here.
+            // But what is the syntax?
+            Arrays.sort(desks, new DeskComparator());
+            
             StringBuffer display = new StringBuffer();
-            for (int i = 0; i < array.length(); i++) {
-                RecordToken record = (RecordToken)array.getElement(i);
+            for (int i = 0; i < desks.length; i++) {
+                RecordToken record = (RecordToken)desks[i];
                 if (i > 0) {
                     display.append("\n");
                 }
-                String desk = record.get("deskno").toString().trim();
-                if (desk.startsWith("\"") && desk.endsWith("\"")) {
-                    desk = desk.substring(1, desk.length() - 1);
-                }
-                if (desk.trim().equals("")) {
-                    desk = "?";
-                }
+                String desk = sanitize(
+                        record.get("deskno").toString(),
+                        "?");
                 display.append(desk);
                 display.append(": ");
-                String name = record.get("lname").toString().trim();
-                if (name.startsWith("\"") && name.endsWith("\"")) {
-                    name = name.substring(1, name.length() - 1);
-                }
-                if (name.trim().equals("")) {
-                    name = "VACANT";
-                }
+                String name = sanitize(
+                        record.get("lname").toString(),
+                        "VACANT");
                 display.append(name);
             }
             String moml = "<property name=\"contents\" value=\""
@@ -136,6 +139,58 @@ public class Occupants extends TypedAtomicActor {
                 + "\"/>";
             MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
             requestChange(request);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Given a string, remove quotation marks if it has them.
+     *  If the string is then empty, return the specified default.
+     *  Otherwise, return the string without quotation marks.
+     *  This method also trims white space, unless the white
+     *  space is inside quotation marks.
+     *  @param string String to sanitize.
+     *  @param ifEmpty Default to use if result is empty.
+     *  @return A string with no quotation marks that is not empty.
+     */
+    private String sanitize(String string, String ifEmpty) {
+        string = string.trim();
+        if (string.startsWith("\"") && string.endsWith("\"")) {
+            string = string.substring(1, string.length() - 1);
+        }
+        if (string.trim().equals("")) {
+            string = ifEmpty;
+        }
+        return string;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    /** Compare two record token by desk number. */
+    private class DeskComparator implements Comparator {
+        // FIXME: It would be nice to use the typesafe version,
+        // but what is the syntax? This should operate on RecordToken.
+        public int compare(Object desk1, Object desk2) {
+            String desk1no = sanitize(
+                    ((RecordToken)desk1).get("deskno").toString(),
+                    "0");
+            int desk1int = Integer.parseInt(desk1no);
+            String desk2no = sanitize(
+                    ((RecordToken)desk2).get("deskno").toString(),
+                    "0");
+            int desk2int = Integer.parseInt(desk1no);
+            if (desk1int < desk2int) {
+                return -1;
+            } else if (desk1int > desk2int) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+        public boolean equals(Object obj) {
+            return 0 == compare(this, obj);
         }
     }
 }
