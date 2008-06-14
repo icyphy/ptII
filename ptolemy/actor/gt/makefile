@@ -51,7 +51,6 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	data/data.jar \
-	demo/demo.jar \
 	ingredients/ingredients.jar \
 	util/util.jar
 
