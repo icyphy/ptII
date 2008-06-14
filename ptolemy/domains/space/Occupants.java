@@ -180,7 +180,9 @@ public class Occupants extends TypedAtomicActor {
             String desk2no = sanitize(
                     ((RecordToken)desk2).get("deskno").toString(),
                     "0");
-            int desk2int = Integer.parseInt(desk1no);
+            int desk2int = Integer.parseInt(desk2no);
+            // FIXME
+            System.out.println("HELP");
             if (desk1int < desk2int) {
                 return -1;
             } else if (desk1int > desk2int) {
