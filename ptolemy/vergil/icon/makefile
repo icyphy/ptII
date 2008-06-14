@@ -127,6 +127,7 @@ OPTIONAL_FILES = \
 	'TextIcon$$1.class' \
 	'TextIcon$$2.class' \
 	'TextIcon$$3.class' \
+	'TextIcon$$4.class' \
 	'UpdatedValueIcon$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

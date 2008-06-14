@@ -114,8 +114,7 @@ public class TextIcon extends DynamicEditorIcon {
             newFigure = new LabelFigure(_DEFAULT_TEXT, _font);
         }
 
-        // By default, the origin should be the upper left.
-        newFigure.setAnchor(SwingConstants.NORTH_WEST);
+        newFigure.setAnchor(_anchor);
         newFigure.setFillPaint(_textColor);
 
         _addLiveFigure(newFigure);
@@ -142,30 +141,25 @@ public class TextIcon extends DynamicEditorIcon {
         return _iconCache;
     }
 
-    /** Specify the text color to use.  This is deferred and executed
-     *  in the Swing thread.
-     *  @param textColor The fill color to use.
+    /** Specify origin of the text. The anchor should be one of the constants
+     *  defined in {@link SwingConstants}.
+     *  @param text The anchor of the text.
      */
-    public void setTextColor(Color textColor) {
-        _textColor = textColor;
+    public void setAnchor(final int anchor) {
+        _anchor = anchor;
 
-        // Update the shapes of all the figures that this icon has
-        // created (which may be in multiple views). This has to be
-        // done in the Swing thread.  Assuming that createBackgroundFigure()
-        // is also called in the Swing thread, there is no possibility of
-        // conflict here in adding the figure to the list of live figures.
         Runnable doSet = new Runnable() {
             public void run() {
                 Iterator figures = _liveFigureIterator();
 
                 while (figures.hasNext()) {
                     Object figure = figures.next();
-                    ((LabelFigure) figure).setFillPaint(_textColor);
+                    ((LabelFigure) figure).setAnchor(anchor);
                 }
             }
         };
 
-        SwingUtilities.invokeLater(doSet);
+        Top.deferIfNecessary(doSet);
     }
 
     /** Specify the font to use.  This is deferred and executed
@@ -231,10 +225,39 @@ public class TextIcon extends DynamicEditorIcon {
         Top.deferIfNecessary(doSet);
     }
 
+    /** Specify the text color to use.  This is deferred and executed
+     *  in the Swing thread.
+     *  @param textColor The fill color to use.
+     */
+    public void setTextColor(Color textColor) {
+        _textColor = textColor;
+
+        // Update the shapes of all the figures that this icon has
+        // created (which may be in multiple views). This has to be
+        // done in the Swing thread.  Assuming that createBackgroundFigure()
+        // is also called in the Swing thread, there is no possibility of
+        // conflict here in adding the figure to the list of live figures.
+        Runnable doSet = new Runnable() {
+            public void run() {
+                Iterator figures = _liveFigureIterator();
+
+                while (figures.hasNext()) {
+                    Object figure = figures.next();
+                    ((LabelFigure) figure).setFillPaint(_textColor);
+                }
+            }
+        };
+
+        SwingUtilities.invokeLater(doSet);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Default text.
     private String _DEFAULT_TEXT = "Double click to edit text.";
+
+    // The origin of the text. By default, the origin should be the upper left.
+    private int _anchor = SwingConstants.NORTH_WEST;
 
     // The font to use.
     private Font _font = new Font("SansSerif", Font.PLAIN, 12);
@@ -242,9 +265,9 @@ public class TextIcon extends DynamicEditorIcon {
     // Default text.
     private String _iconText = "-A-";
 
-    // The specified text color.
-    private Color _textColor = Color.blue;
-
     // The text that is rendered.
     private String _text;
+
+    // The specified text color.
+    private Color _textColor = Color.blue;
 }

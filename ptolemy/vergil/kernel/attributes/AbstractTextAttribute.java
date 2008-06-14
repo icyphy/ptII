@@ -31,6 +31,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 
+import javax.swing.SwingConstants;
+
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -112,8 +114,12 @@ public class AbstractTextAttribute extends VisibleAttribute {
         italic = new Parameter(this, "italic");
         italic.setExpression("false");
         italic.setTypeEquals(BaseType.BOOLEAN);
+        
+        center = new Parameter(this, "center");
+        center.setToken(BooleanToken.FALSE);
+        center.setTypeEquals(BaseType.BOOLEAN);
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -121,6 +127,11 @@ public class AbstractTextAttribute extends VisibleAttribute {
      *  This defaults to false.
      */
     public Parameter bold;
+
+    /** A boolean parameter that controls whether the origin of the text is
+     *  center (if true) or north-west.
+     */
+    public Parameter center;
 
     /** The font family. This is a string that defaults to "SansSerif".
      */
@@ -152,7 +163,13 @@ public class AbstractTextAttribute extends VisibleAttribute {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (((attribute == fontFamily) || (attribute == textSize)
+    	 if (attribute == center) {
+             if (((BooleanToken) center.getToken()).booleanValue()) {
+                 _icon.setAnchor(SwingConstants.CENTER);
+             } else {
+                 _icon.setAnchor(SwingConstants.NORTH_WEST);
+             }
+         } else if (((attribute == fontFamily) || (attribute == textSize)
                 || (attribute == bold) || (attribute == italic))
                 && !_inAttributeChanged) {
             try {
