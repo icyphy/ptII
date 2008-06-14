@@ -11,6 +11,9 @@
 <!-- entity name="EventButton" class="ptolemy.domains.de.lib.EventButton" -->
 <!-- /entity -->
 
+<entity name="AverageOverTime" class="ptolemy.domains.de.lib.AverageOverTime">
+</entity>
+
 <entity name="EventFilter" class="ptolemy.domains.de.lib.EventFilter">
 </entity>
 

@@ -49,6 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AverageOverTime.java \
 	DETransformer.java \
 	EventButton.java \
 	EventFilter.java \
