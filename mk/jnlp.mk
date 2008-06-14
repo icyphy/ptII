@@ -95,12 +95,12 @@ lib/commWindows.jar:
 lib/joystickWindows.jar: 
 	if [ -d vendors/misc/joystick/lib/ ]; then \
 		(cd vendors/misc/joystick/lib/; \
-	 	"$(JAR)" -cvf $(PTII)/lib/joystickWindows.jar jjstick.dll); \
+	 	"$(JAR)" -cvf "$(PTII)/lib/joystickWindows.jar" jjstick.dll); \
 	else \
 		echo "vendors/misc/joystick not found, creating dummy jar"; \
 		echo "vendors/misc/joystick/lib not found" \
 			> README_joystick.txt; \
-		"$(JAR)" -cvf $(PTII)/lib/joystickWindows.jar \
+		"$(JAR)" -cvf "$(PTII)/lib/joystickWindows.jar" \
 			README_joystick.txt; \
 		rm -f README_joystick.txt; \
 	fi
@@ -537,20 +537,20 @@ $(SIGNED_DIR):
 	fi
 
 $(KEYSTORE): 
-	if [ ! -f $(KEYSTORE) ]; then \
+	if [ ! -f "$(KEYSTORE)" ]; then \
 	   "$(KEYTOOL)" -genkey \
 		-dname $(KEYDNAME) \
-		-keystore $(KEYSTORE) \
-		-alias $(KEYALIAS) \
+		-keystore "$(KEYSTORE)" \
+		-alias "$(KEYALIAS)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD); \
 	   "$(KEYTOOL)" -selfcert \
-		-keystore $(KEYSTORE) \
-		-alias $(KEYALIAS) \
+		-keystore "$(KEYSTORE)" \
+		-alias "$(KEYALIAS)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD); \
 	   "$(KEYTOOL)" -list \
-		-keystore $(KEYSTORE) \
+		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD); \
 	fi
 
@@ -585,10 +585,10 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir -p $(SIGNED_DIR)/`dirname $(DSP_MAIN_JAR)`; \
 	cp -p $(DSP_MAIN_JAR) `dirname $(SIGNED_DIR)/$(DSP_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
-		-keystore $(KEYSTORE) \
+		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(SIGNED_DIR)/$(DSP_MAIN_JAR) $(KEYALIAS)
+		"$(SIGNED_DIR)/$(DSP_MAIN_JAR)" "$(KEYALIAS)"
 
 
 # Web Start: HyVisual version of Vergil - No sources or build env.
@@ -623,10 +623,10 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir -p $(SIGNED_DIR)/`dirname $(HYBRID_SYSTEMS_MAIN_JAR)`; \
 	cp -p $(HYBRID_SYSTEMS_MAIN_JAR) `dirname $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
-		-keystore $(KEYSTORE) \
+		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR) $(KEYALIAS)
+		"$(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)" "$(KEYALIAS)"
 
 # Web Start: Ptiny version of Vergil - No sources or build env.
 vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
@@ -657,10 +657,10 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
 	cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
-		-keystore $(KEYSTORE) \
+		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(SIGNED_DIR)/$(PTINY_MAIN_JAR) $(KEYALIAS)
+		"$(SIGNED_DIR)/$(PTINY_MAIN_JAR)" "$(KEYALIAS)"
 
 
 # Web Start: Ptiny version of Vergil - No sources or build env., in a sandbox
@@ -692,10 +692,10 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_SANDBOX_MAIN_JAR)`; \
 	cp -p $(PTINY_SANDBOX_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
-		-keystore $(KEYSTORE) \
+		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR) $(KEYALIAS)
+		"$(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)" "$(KEYALIAS)"
 
 
 # Web Start: VisualSense version of Vergil - No sources or build env.
@@ -730,10 +730,10 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir -p $(SIGNED_DIR)/`dirname $(VISUAL_SENSE_MAIN_JAR)`; \
 	cp -p $(VISUAL_SENSE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)`; \
 	"$(PTJAVA_DIR)/bin/jarsigner" \
-		-keystore $(KEYSTORE) \
+		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR) $(KEYALIAS)
+		"$(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)" "$(KEYALIAS)"
 
 # Web Start: Full Runtime version of Vergil - No sources or build env.
 vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
@@ -768,10 +768,10 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	cp -p $(FULL_MAIN_JAR) `dirname $(SIGNED_DIR)/$(FULL_MAIN_JAR)`; \
 	ls -l $@
 	"$(PTJAVA_DIR)/bin/jarsigner" \
-		-keystore $(KEYSTORE) \
+		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(SIGNED_DIR)/$(FULL_MAIN_JAR) $(KEYALIAS)
+		"$(SIGNED_DIR)/$(FULL_MAIN_JAR)" "$(KEYALIAS)"
 	ls -l $@
 
 
@@ -792,18 +792,18 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
 		fi; \
 		echo "# Signing $(SIGNED_DIR)/$$x"; \
 		"$(PTJAVA_DIR)/bin/jarsigner" \
-			-keystore $(KEYSTORE) \
+			-keystore "$(KEYSTORE)" \
 			$(STOREPASSWORD) \
 			$(KEYPASSWORD) \
-			$(SIGNED_DIR)/$$x $(KEYALIAS); \
+			"$(SIGNED_DIR)/$$x" "$(KEYALIAS)"; \
 	done;
 
 sign_jar: 
 	"$(PTJAVA_DIR)/bin/jarsigner" \
-		-keystore $(KEYSTORE) \
+		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(JARFILE) $(KEYALIAS)
+		"$(JARFILE)" "$(KEYALIAS)"
 
 # The jnlp_test rule can be used to build, copy, and sign a jar file.
 # For example:
@@ -912,7 +912,7 @@ jnlp_verify:
 # Use this to verify that the key is ok
 key_list:
 	   "$(KEYTOOL)" -list -v \
-		-keystore $(KEYSTORE) \
+		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD)
 
 # Update a location with the files necessary to download
@@ -930,9 +930,9 @@ KEYALIAS2=ptolemy
 jnlp_dist: jnlp_dist_1 jnlp_dist_update
 jnlp_dist_1:
 	rm -rf $(JNLPS) $(SIGNED_DIR)
-	$(MAKE) KEYSTORE=$(KEYSTORE2) \
-		KEYALIAS=$(KEYALIAS2) \
-		PTII_LOCALURL=$(DIST_URL) jnlp_sign
+	$(MAKE) KEYSTORE="$(KEYSTORE2)" \
+		KEYALIAS="$(KEYALIAS2)" \
+		PTII_LOCALURL="$(DIST_URL)" jnlp_sign
 
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
@@ -966,8 +966,8 @@ jnlp_dist_update_remote:
 
 sign_jar_dist: 
 	"$(PTJAVA_DIR)/bin/jarsigner" \
-		-keystore $(KEYSTORE2) \
-		$(JARFILE) $(KEYALIAS2)
+		-keystore "$(KEYSTORE2)" \
+		"$(JARFILE)" "$(KEYALIAS2)"
 
 sign_jar_dist_update_remote: sign_jar_dist
 	scp $(JARFILE) bennett:$(DIST_DIR)/$(JARFILE)
