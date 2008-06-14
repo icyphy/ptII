@@ -59,8 +59,7 @@ PTCLASSALLJARS = \
 	parameters/parameters.jar \
 	process/process.jar \
 	sched/sched.jar \
-	util/util.jar \
-	gt/gt.jar
+	util/util.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
