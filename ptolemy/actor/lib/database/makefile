@@ -52,8 +52,10 @@ JSRCS = \
 	DatabaseSelect.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ojdbc-copyright.htm \
-	ojdbc6.jar
+	ojdbc-copyright.htm
+
+# Don't include the ojdbc6.jar file in database.jar 
+#	ojdbc6.jar
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
