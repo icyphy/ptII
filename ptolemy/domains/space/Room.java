@@ -73,7 +73,7 @@ public class Room extends DatabaseSelect {
         columns.setVisibility(Settable.EXPERT);
         columns.setExpression(
                 "{bldg=string, room=string, lname=string, " +
-                "fnames=string, deskno=string, spaceid=int, " +
+                "fnames=string, deskno=string, spaceid=string, " +
                 "sponsorlname=string}");
         
         hide = new Parameter(columns.getPort(), "_hide");
@@ -105,7 +105,7 @@ public class Room extends DatabaseSelect {
      */
     public void fire() throws IllegalActionException {
         pattern.setExpression("trim(bldg)='" + building.stringValue()
-                + "', trim(room)='" + room.stringValue() +"'");
+                + "' and trim(room)='" + room.stringValue() +"'");
         super.fire();
     }
 }
