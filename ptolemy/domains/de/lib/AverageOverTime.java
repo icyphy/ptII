@@ -1,4 +1,5 @@
-/*
+/* An actor to compute the average of the input values received so far over
+model time.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -37,16 +38,30 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * @author tfeng
- *
+ An actor to compute the average of the input values received so far over model
+ time. This actor can fire whenever there is a token at its input port, or the
+ model time has advanced since last firing. It records the last token that it
+ received. In each firing, the produce of the last token and the amount of model
+ time increment is added to a sum variable. The average value received so far is
+ obtained by dividing the sum by the current model time. This average is sent to
+ the output port in each firing. If a token is available at the input port, this
+ actor reads that token and overwrites the last token with it.
+
+ @author tfeng
+ @version $Id: MovingMaximum.java 49822 2008-06-15 05:54:25Z tfeng $
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Yellow (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
  */
 public class AverageOverTime extends DETransformer {
 
-    /**
-     * @param container
-     * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public AverageOverTime(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -56,6 +71,19 @@ public class AverageOverTime extends DETransformer {
         output.setTypeEquals(BaseType.SCALAR.divide(BaseType.DOUBLE));
     }
 
+    /** Clone this actor into the specified workspace. The new actor is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new actor with the same ports as the original, but
+     *  no connections and no container.  A container must be set before
+     *  much can be done with this actor.
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new AverageOverTime actor.
+     */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AverageOverTime newObject = (AverageOverTime) super.clone(workspace);
         newObject._sum = null;
@@ -64,6 +92,12 @@ public class AverageOverTime extends DETransformer {
         return newObject;
     }
 
+    /** Fire this actor. If there is a least one token at the input port,
+     *  consume the first token. Output the current average value via the output
+     *  port.
+     *  @exception IllegalActionException If thrown when trying to read the
+     *  input token or to write the output token.
+     */
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -88,6 +122,10 @@ public class AverageOverTime extends DETransformer {
         }
     }
 
+    /** Initialize this actor.
+     *
+     *  @exception IllegalActionException If the superclass throws it.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -102,6 +140,12 @@ public class AverageOverTime extends DETransformer {
         return result;
     }
 
+    /** Determine whether this actor can fire in the current iteration. Return
+     *  true if there is at least one token at the input port, or the model time
+     *  has advanced since last firing.
+     *
+     *  @exception IllegalActionException If the superclass throws it.
+     */
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
         if (!result) {
@@ -111,9 +155,12 @@ public class AverageOverTime extends DETransformer {
         return result;
     }
 
+    // The last time at which this actor was fired.
     private Time _lastTime;
 
+    // The last received input token.
     private Token _lastToken;
 
+    // The sum accumulated so far.
     private Token _sum;
 }
