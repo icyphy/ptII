@@ -795,7 +795,7 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
 			-keystore "$(KEYSTORE)" \
 			$(STOREPASSWORD) \
 			$(KEYPASSWORD) \
-			"$(SIGNED_DIR)/$$x" "$(KEYALIAS)"; \
+			$(SIGNED_DIR)/$$x $(KEYALIAS); \
 	done;
 
 sign_jar: 
