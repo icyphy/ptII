@@ -39,9 +39,11 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.lib.Source;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -53,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
-//// Select
+//// DatabaseSelect
 
 /**
  Select the columns from rows that match the specified pattern via the specified
@@ -98,6 +100,10 @@ public class DatabaseSelect extends Source {
         // Set the default value.
         pattern.setExpression("trim(room)='545Q' and trim(bldg)='Cory'");
         
+        distinct = new Parameter(this, "distinct");
+        distinct.setExpression("false");
+        distinct.setTypeEquals(BaseType.BOOLEAN);
+        
         orderBy = new StringParameter(this, "orderBy");
 
         databaseManager = new StringParameter(this, "databaseManager");
@@ -126,6 +132,11 @@ public class DatabaseSelect extends Source {
      *  This defaults to "DatabaseManager".
      */
     public StringParameter databaseManager;
+    
+    /** Indicator of whether to return only distinct records.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter distinct;
     
     /** Optional ordering of the results.
      *  For example, to order first by DESKNO (ascending)
@@ -179,6 +190,9 @@ public class DatabaseSelect extends Source {
         // Construct a SQL query from the specified parameters.
         StringBuffer sqlQuery = new StringBuffer();
         sqlQuery.append("select ");
+        if (((BooleanToken)distinct.getToken()).booleanValue()) {
+            sqlQuery.append("distinct ");
+        }
         RecordToken columnValue = (RecordToken)columns.getToken();
         Iterator<String> columnEntries = columnValue.labelSet().iterator();
         int i = 0;
