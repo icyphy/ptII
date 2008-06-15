@@ -619,31 +619,31 @@
         </property>
     </relation>
     <link port="Room.output" relation="relation10"/>
-    <link port="Occupants.occupants" relation="relation10"/>
+    <link port="Occupants.input" relation="relation10"/>
     <link port="Room2.output" relation="relation9"/>
-    <link port="Occupants2.occupants" relation="relation9"/>
+    <link port="Occupants2.input" relation="relation9"/>
     <link port="Room3.output" relation="relation8"/>
-    <link port="Occupants3.occupants" relation="relation8"/>
+    <link port="Occupants3.input" relation="relation8"/>
     <link port="Room4.output" relation="relation7"/>
-    <link port="Occupants4.occupants" relation="relation7"/>
+    <link port="Occupants4.input" relation="relation7"/>
     <link port="Room5.output" relation="relation5"/>
-    <link port="Occupants5.occupants" relation="relation5"/>
+    <link port="Occupants5.input" relation="relation5"/>
     <link port="Room6.output" relation="relation6"/>
-    <link port="Occupants6.occupants" relation="relation6"/>
+    <link port="Occupants6.input" relation="relation6"/>
     <link port="Room7.output" relation="relation3"/>
-    <link port="Occupants7.occupants" relation="relation3"/>
+    <link port="Occupants7.input" relation="relation3"/>
     <link port="Room8.output" relation="relation4"/>
-    <link port="Occupants8.occupants" relation="relation4"/>
+    <link port="Occupants8.input" relation="relation4"/>
     <link port="Room9.output" relation="relation"/>
-    <link port="Occupants9.occupants" relation="relation"/>
+    <link port="Occupants9.input" relation="relation"/>
     <link port="Room10.output" relation="relation2"/>
-    <link port="Occupants10.occupants" relation="relation2"/>
-    <link port="Occupants11.occupants" relation="relation14"/>
+    <link port="Occupants10.input" relation="relation2"/>
+    <link port="Occupants11.input" relation="relation14"/>
     <link port="Room11.output" relation="relation14"/>
     <link port="Room12.output" relation="relation12"/>
-    <link port="Occupants12.occupants" relation="relation12"/>
+    <link port="Occupants12.input" relation="relation12"/>
     <link port="Room13.output" relation="relation11"/>
-    <link port="Occupants13.occupants" relation="relation11"/>
-    <link port="Occupants14.occupants" relation="relation13"/>
+    <link port="Occupants13.input" relation="relation11"/>
+    <link port="Occupants14.input" relation="relation13"/>
     <link port="Room14.output" relation="relation13"/>
 </entity>

@@ -78,6 +78,9 @@ public class Room extends DatabaseSelect {
         pattern.setVisibility(Settable.EXPERT);
         hide = new Parameter(pattern.getPort(), "_hide");
         hide.setExpression("true");
+        
+        orderBy.setVisibility(Settable.EXPERT);
+        orderBy.setExpression("deskno asc");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -97,9 +100,8 @@ public class Room extends DatabaseSelect {
      *  @throws IllegalActionException If the database query fails.
      */
     public void fire() throws IllegalActionException {
-        // FIXME: Better way to do this?
-        pattern.setExpression("{bldg=\"" + building.stringValue()
-                + "\", room=\"" + room.stringValue() +"\"}");
+        pattern.setExpression("trim(bldg)='" + building.stringValue()
+                + "', trim(room)='" + room.stringValue() +"'");
         super.fire();
     }
 }

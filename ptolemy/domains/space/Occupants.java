@@ -1,4 +1,4 @@
-/* Base class for simple source actors.
+/* Display occupants of a room.
 
  Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
@@ -27,21 +27,29 @@
  */
 package ptolemy.domains.space;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.awt.Frame;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableModel;
+
+import ptolemy.actor.gui.ArrayOfRecordsPane;
+import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.lib.database.ArrayOfRecordsRecorder;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.icon.BoxedValueIcon;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// Occupants
@@ -55,7 +63,7 @@ import ptolemy.vergil.icon.BoxedValueIcon;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Occupants extends TypedAtomicActor {
+public class Occupants extends ArrayOfRecordsRecorder {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -69,130 +77,98 @@ public class Occupants extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
-        occupants = new TypedIOPort(this, "occupants", true, false);
-        // Force the type to contain at least the required fields.
-        /*
-        Parameter prototype = new Parameter(this, "prototype");
-        prototype.setPersistent(false);
-        prototype.setVisibility(Settable.NONE);
-        prototype.setExpression("[{LastName=string}]");
-        occupants.setTypeAtMost(prototype.getType());
-        */
-        contents = new StringParameter(this, "contents");
-        // contents.setVisibility(Settable.EXPERT);
-        
-        BoxedValueIcon icon = new BoxedValueIcon(this, "_icon");
-        icon.displayHeight.setExpression("100");
-        icon.displayWidth.setExpression("20");
-        icon.attributeName.setExpression("contents");
+        // NOTE: The following depends on vergil, so with this
+        // here, the actor can't run headless.
+        OccupantsConfigureFactory factory
+                = new OccupantsConfigureFactory(this, "factory");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
-    /** Port that receives the occupants of a Room.
-     *  The type is an array of records.
-     */
-    public TypedIOPort occupants;
-    
-    /** Parameter to store the occupants. */
-    public StringParameter contents;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         private variables                 ////
     
-    /** If connected to a Room, retrieve its occupants and update
-     *  the display.
-     *  @throws IllegalActionException If we fail to update the
-     *   contents parameter.
-     */
-    public void fire() throws IllegalActionException {
-        super.fire();
-        // FIXME: We want to parameterize what is shown.
-        if (occupants.hasToken(0)) {
-            ArrayToken array = (ArrayToken)occupants.get(0);
-            
-            // Sort the array by desk number.
-            Token[] desks = array.arrayValue();
-            // FIXME: It would be nice to use the type safe version here.
-            // But what is the syntax?
-            Arrays.sort(desks, new DeskComparator());
-            
-            StringBuffer display = new StringBuffer();
-            for (int i = 0; i < desks.length; i++) {
-                RecordToken record = (RecordToken)desks[i];
-                if (i > 0) {
-                    display.append("\n");
-                }
-                String desk = sanitize(
-                        record.get("deskno").toString(),
-                        "?");
-                display.append(desk);
-                display.append(": ");
-                String name = sanitize(
-                        record.get("lname").toString(),
-                        "VACANT");
-                display.append(name);
-            }
-            String moml = "<property name=\"contents\" value=\""
-                + StringUtilities.escapeForXML(display.toString())
-                + "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
-            requestChange(request);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Given a string, remove quotation marks if it has them.
-     *  If the string is then empty, return the specified default.
-     *  Otherwise, return the string without quotation marks.
-     *  This method also trims white space, unless the white
-     *  space is inside quotation marks.
-     *  @param string String to sanitize.
-     *  @param ifEmpty Default to use if result is empty.
-     *  @return A string with no quotation marks that is not empty.
-     */
-    private String sanitize(String string, String ifEmpty) {
-        string = string.trim();
-        if (string.startsWith("\"") && string.endsWith("\"")) {
-            string = string.substring(1, string.length() - 1);
-        }
-        if (string.trim().equals("")) {
-            string = ifEmpty;
-        }
-        return string;
-    }
+    /** The query. */
+    private Query _query;
+    
+    /** The table. */
+    private JTable _table;
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     
-    /** Compare two record token by desk number. */
-    private class DeskComparator implements Comparator {
-        // FIXME: It would be nice to use the typesafe version,
-        // but what is the syntax? This should operate on RecordToken.
-        public int compare(Object desk1, Object desk2) {
-            String desk1no = sanitize(
-                    ((RecordToken)desk1).get("deskno").toString(),
-                    "0");
-            int desk1int = Integer.parseInt(desk1no);
-            String desk2no = sanitize(
-                    ((RecordToken)desk2).get("deskno").toString(),
-                    "0");
-            int desk2int = Integer.parseInt(desk2no);
-            // FIXME
-            System.out.println("HELP");
-            if (desk1int < desk2int) {
-                return -1;
-            } else if (desk1int > desk2int) {
-                return 1;
-            } else {
-                return 0;
+    public class OccupantsConfigureFactory extends EditorFactory {
+        public OccupantsConfigureFactory(NamedObj container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+        }
+
+        /** Create a top-level viewer for the specified object with the
+         *  specified parent window.
+         *  @param object The object to configure, which is required to
+         *   contain a parameter with name matching <i>parameterName</i>
+         *   and value that is an array of records.
+         *  @param parent The parent window, which is required to be an
+         *   instance of TableauFrame.
+         */
+        public void createEditor(NamedObj object, Frame parent) {
+            try {
+                Parameter attributeToEdit = Occupants.this.records;
+                ArrayToken value = (ArrayToken)attributeToEdit.getToken();
+                ArrayOfRecordsPane pane = new ArrayOfRecordsPane();
+                pane.display(value);
+                _table = pane.table;
+                JPanel panel = new JPanel();
+                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+                panel.add(pane);
+                
+                // Add a query to support editing of selected lines.
+                _query = new Query();
+                TableModel model = _table.getModel();
+                // Populate the query first with the first row.
+                for (int c = 0; c < model.getColumnCount(); c++) {
+                    String columnName = model.getColumnName(c);
+                    String currentValue = "";
+                    if (model.getRowCount() > 0) {
+                        currentValue = model.getValueAt(0, c).toString();
+                    }
+                    _query.addLine(columnName, columnName, currentValue);
+                }
+                panel.add(_query);
+                
+                // Set up table selection interaction.
+                // Set the table to allow only one row selected at a time.
+                _table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                _table.getSelectionModel().addListSelectionListener(new RowListener());
+                
+                ComponentDialog dialog = new ComponentDialog(
+                        parent, object.getFullName(), panel);
+            } catch (KernelException ex) {
+                MessageHandler.error(
+                        "Cannot get specified string attribute to edit.", ex);
+                return;
             }
         }
-        public boolean equals(Object obj) {
-            return 0 == compare(this, obj);
+    }
+    
+    private class RowListener implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent event) {
+            if (event.getValueIsAdjusting() || _table == null) {
+                return;
+            }
+            int row = _table.getSelectionModel().getLeadSelectionIndex();
+            TableModel model = _table.getModel();
+            // Populate the query first with the first row.
+            for (int c = 0; c < model.getColumnCount(); c++) {
+                String columnName = model.getColumnName(c);
+                String currentValue = "";
+                if (model.getRowCount() > row) {
+                    currentValue = model.getValueAt(row, c).toString();
+                }
+                _query.set(columnName, currentValue);
+            }
         }
     }
 }
