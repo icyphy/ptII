@@ -35,10 +35,14 @@ Other local pages:
 <li>
 Download the latest version of Eclipse from
 <a href="http://www.eclipse.org" target="_top">http://www.eclipse.org</a>.
- <br>In June, 2008, we chose <B>Eclipse IDE for Java Developers</B>, which is
-<CODE>eclipse-java-europa-winter-win32.zip</CODE> (79Mb). 
-<p>The version we installed was Eclipse 3.3.2, BuildId M20080221-1800.
-
+ <br>In June, 2008, we chose
+ <B>Eclipse for RCP/Plug-in Developers</B>, which is 153Mb.
+The <B>Eclipse for RCP/Plug-in Developers</B> version includes the
+plugin development environment (PDE), which is needed by the backtrack
+facility, which is an optional part of Ptolemy II that allows models to
+restore their old state.  If the version of Eclipse that you install
+does not have the PDE, then there will be build errors, which can be fixed by
+excluding <CODE>ptolemy/backtrack/</CODE> from the build.
 <li>
 Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe</code>.
 <li>
