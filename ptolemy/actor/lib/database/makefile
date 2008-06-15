@@ -48,10 +48,12 @@ PTPACKAGE = 	database
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	ArrayOfRecordsRecorder.java \
 	DatabaseManager.java \
 	DatabaseSelect.java
 
 OTHER_FILES_TO_BE_JARED = \
+	database.xml \
 	ojdbc-copyright.htm
 
 # Don't include the ojdbc6.jar file in database.jar 

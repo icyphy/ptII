@@ -44,6 +44,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
@@ -89,13 +90,15 @@ public class DatabaseSelect extends Source {
         RecordType declaredType = new RecordType(labels, types);
         columns.setTypeAtMost(declaredType);
         // Set the default value.
-        columns.setExpression("{lname=string, deskno=int}");
+        columns.setExpression("{lname=string, deskno=string}");
         
         pattern = new PortParameter(this, "pattern");
-        // Require that the pattern be a record token.
-        pattern.setTypeAtMost(declaredType);
+        pattern.setStringMode(true);
+        pattern.setTypeEquals(BaseType.STRING);
         // Set the default value.
-        pattern.setExpression("{room=\"545Q\", bldg=\"Cory\"}");
+        pattern.setExpression("trim(room)='545Q' and trim(bldg)='Cory'");
+        
+        orderBy = new StringParameter(this, "orderBy");
 
         databaseManager = new StringParameter(this, "databaseManager");
         databaseManager.setExpression("DatabaseManager");
@@ -124,13 +127,22 @@ public class DatabaseSelect extends Source {
      */
     public StringParameter databaseManager;
     
-    /** A record indicating what pattern to match in the database.
-     *  The names of the fields are the names of the columns to
-     *  match in the database, and the value of the field is
-     *  the pattern to match. This is a record that defaults to
-     *  {BLDG="Cory", ROOM="545Q"}, indicating that the retrieved
-     *  records should have "Cory" in the BLDG column and "545Q"
-     *  in the ROOM column.
+    /** Optional ordering of the results.
+     *  For example, to order first by DESKNO (ascending)
+     *  and then by LNAME (descending), you would change
+     *  the value of this parameter to
+     *  "DESKNO asc, LNAME desc".
+     *  This parameter is a string that defaults to empty,
+     *  meaning that the ordering of the results is arbitrary.
+     */
+    public StringParameter orderBy;
+    
+    /** A pattern specifying which rows to select from the database.
+     *  Any pattern understood in the 'where' clause of an SQL
+     *  statement is acceptable. This is a string that defaults to
+     *  "trim(room)='545Q' and trim(bldg)='Cory'", indicating that the retrieved
+     *  records should have "Cory" in the bldg column and "545Q"
+     *  in the room column.
      */
     public PortParameter pattern;
 
@@ -164,47 +176,28 @@ public class DatabaseSelect extends Source {
             database = container.getEntity(databaseName);
         }
         // Prepare query.
-        // FIXME: This should have more fields and should be parameterized.
-        /* Relevant column names:
-BLDG            CHAR(10)   
-ROOM            VARCHAR2(10)
-SPACEID         NUMBER(6)  
-DESKNO          NUMBER(3)  
-PERSONID        NUMBER(6)  
-LNAME           VARCHAR2(25)
-FNAMES          VARCHAR2(25)
-SPONSORID       NUMBER(6)  
-SPONSORLNAME    VARCHAR2(25)
-SPONSORFNAMES   VARCHAR2(25)
-         */
         // Construct a SQL query from the specified parameters.
         StringBuffer sqlQuery = new StringBuffer();
         sqlQuery.append("select ");
         RecordToken columnValue = (RecordToken)columns.getToken();
-        Iterator columnEntries = columnValue.labelSet().iterator();
+        Iterator<String> columnEntries = columnValue.labelSet().iterator();
         int i = 0;
         while (columnEntries.hasNext()) {
             if (i++ > 0) {
                 sqlQuery.append(", ");
             }
-            String label = (String)columnEntries.next();
+            String label = columnEntries.next();
             sqlQuery.append(label);            
         }
         sqlQuery.append(" from ");
         sqlQuery.append(table.stringValue());
         sqlQuery.append(" where ");
-
-        RecordToken patternValue = (RecordToken)pattern.getToken();
-        Iterator patternEntries = patternValue.labelSet().iterator();
-        i = 0;
-        while (patternEntries.hasNext()) {
-            if (i++ > 0) {
-                sqlQuery.append(" and ");
-            }
-            String label = (String)patternEntries.next();
-            sqlQuery.append("trim(");
-            sqlQuery.append(label);
-            sqlQuery.append(") = ?");
+        sqlQuery.append(((StringToken)pattern.getToken()).stringValue());
+        
+        String orderByValue = orderBy.stringValue();
+        if (!orderByValue.trim().equals("")) {
+            sqlQuery.append(" order by ");
+            sqlQuery.append(orderByValue);
         }
 
         PreparedStatement statement = null;
@@ -215,25 +208,12 @@ SPONSORFNAMES   VARCHAR2(25)
             if (connection == null) {
                 return;
             }
-            // FIXME: We could prepare the statement once and re-use it for multiple
-            // queries. This would presumably be more efficient. This would need to
-            // redone whenever the parameters changed.
             String query = sqlQuery.toString();
+            if(_debugging) {
+                _debug("Issuing query:\n" + query);
+            }
             statement = connection.prepareStatement(query);
             
-            patternEntries = patternValue.labelSet().iterator();
-            i = 1;
-            while (patternEntries.hasNext()) {
-                String label = (String)patternEntries.next();
-                Token value = patternValue.get(label);
-                // A StringToken will have spurious quotation marks around it,
-                // so we need to remove those.
-                if (value instanceof StringToken) {
-                    statement.setString(i++, ((StringToken)value).stringValue());
-                } else {
-                    statement.setString(i++, value.toString());
-                }
-            }
             // Perform the query.
             ResultSet rset = statement.executeQuery();
             
@@ -268,6 +248,9 @@ SPONSORFNAMES   VARCHAR2(25)
                 array[k++] = recordToken;
             }
             result = new ArrayToken(array);
+        }
+        if(_debugging) {
+            _debug("Result of query:\n" + result);
         }
         output.send(0, result);
     }

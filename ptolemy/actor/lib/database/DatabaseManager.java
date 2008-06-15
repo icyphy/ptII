@@ -33,7 +33,6 @@ import java.sql.SQLException;
 
 import javax.swing.JFrame;
 
-import oracle.jdbc.OracleDriver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -89,8 +88,23 @@ public class DatabaseManager extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
     
-    // FIXME: Split this into
-    /** Database name. */
+    /** JDBC connection string to access the database.
+     *  This always starts with "jdbc:driver", where the specific
+     *  driver chosen determines how to interpret fields in the
+     *  rest of the string.  For example,
+     *  <pre>
+     *    jdbc:oracle:thin:@buffy.eecs.berkeley.edu:1521:acgeecs
+     *  </pre>
+     *  specifies a thin client for an Oracle database located
+     *  at host buffy.eecs.berkeley.edu, which listens on port
+     *  1521. The "acgeecs" is the database name.
+     *  Another example is
+     *  <pre>
+     *    jdbc:mysql://localhost:3306/space
+     *  </pre>
+     *  which specifies a MySQL database on the local host,
+     *  where "space" is the name of the database.
+     */
     public StringParameter database;
     
     /** User name. */
@@ -176,7 +190,13 @@ public class DatabaseManager extends TypedAtomicActor {
 
             // Get database connection.
             try {
-                DriverManager.registerDriver(new OracleDriver());
+                // The following lines explicitly register drivers.
+                // But maybe these aren't necessary if the driver is
+                // in the classpath?
+                // Oracle driver:
+                // DriverManager.registerDriver(new OracleDriver());
+                // MySQL driver:
+                // DriverManager.registerDriver(new Driver());
                 _connection = DriverManager.getConnection(
                         database.getExpression(),
                         userName.getExpression(),
