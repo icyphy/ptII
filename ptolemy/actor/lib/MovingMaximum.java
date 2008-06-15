@@ -81,7 +81,7 @@ public class MovingMaximum extends Transformer {
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MovingMaximum newObject = (MovingMaximum) super.clone();
+        MovingMaximum newObject = (MovingMaximum) super.clone(workspace);
         newObject.input.setTypeAtMost(BaseType.SCALAR);
         newObject.output.setTypeSameAs(newObject.input);
         return newObject;
