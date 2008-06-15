@@ -74,6 +74,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # because its inner class, HTMLEffigy$Factory, is referenced.
 JSRCS = \
 	AbstractPlaceableActor.java \
+	ArrayOfRecordsPane.java \
 	BrowserEffigy.java \
 	BrowserLauncher.java \
 	BrowserTableau.java \
