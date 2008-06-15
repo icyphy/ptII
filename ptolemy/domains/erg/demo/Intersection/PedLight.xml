@@ -466,6 +466,8 @@
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Light">
         </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
             </property>
