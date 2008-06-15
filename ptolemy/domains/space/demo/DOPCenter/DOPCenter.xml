@@ -12,7 +12,7 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 13, 1032, 766}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1032, 766}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 659]">
     </property>
@@ -57,7 +57,9 @@
         </property>
     </entity>
     <entity name="Occupants" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Yi&#10;2: Moskewicz&#10;3: Catanzaro&#10;4: Lee&#10;9: Mazzi&#10;8: Satish&#10;6: Hedayati&#10;5: Chong&#10;7: Sundaram&#10;10: VACANT">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;1&quot;, lname = &quot;Yi&quot;}, {deskno = &quot;2&quot;, lname = &quot;Moskewicz&quot;}, {deskno = &quot;3&quot;, lname = &quot;Catanzaro&quot;}, {deskno = &quot;4&quot;, lname = &quot;Lee&quot;}, {deskno = &quot;5&quot;, lname = &quot;Chong&quot;}, {deskno = &quot;6&quot;, lname = &quot;Hedayati&quot;}, {deskno = &quot;7&quot;, lname = &quot;Sundaram&quot;}, {deskno = &quot;8&quot;, lname = &quot;Satish&quot;}, {deskno = &quot;9&quot;, lname = &quot;Mazzi&quot;}, {deskno = &quot;10&quot;, lname = &quot;&quot;}}">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Yi&#10;2: Moskewicz&#10;3: Catanzaro&#10;4: Lee&#10;5: Chong&#10;6: Hedayati&#10;7: Sundaram&#10;8: Satish&#10;9: Mazzi&#10;10: VACANT">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 165.0]">
         </property>
@@ -93,7 +95,9 @@
         </property>
     </entity>
     <entity name="Occupants2" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Zhu&#10;2: Wang&#10;3: Pinto&#10;4: D Angelo">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;1&quot;, lname = &quot;Zhu&quot;}, {deskno = &quot;2&quot;, lname = &quot;Wang&quot;}, {deskno = &quot;3&quot;, lname = &quot;Pinto&quot;}, {deskno = &quot;4&quot;, lname = &quot;&quot;}}">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Zhu&#10;2: Wang&#10;3: Pinto&#10;4: VACANT">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 200.0]">
         </property>
@@ -129,7 +133,9 @@
         </property>
     </entity>
     <entity name="Occupants3" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: VACANT&#10;2: VACANT&#10;3: Matic&#10;4: Limaye">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;1&quot;, lname = &quot;Laine&quot;}, {deskno = &quot;2&quot;, lname = &quot;&quot;}, {deskno = &quot;3&quot;, lname = &quot;Matic&quot;}, {deskno = &quot;4&quot;, lname = &quot;Limaye&quot;}}">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Laine&#10;2: VACANT&#10;3: Matic&#10;4: Limaye">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 100.0]">
         </property>
@@ -165,7 +171,9 @@
         </property>
     </entity>
     <entity name="Occupants4" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Matsikoudis&#10;2: VACANT&#10;3: Feng&#10;4: Zheng">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;1&quot;, lname = &quot;&quot;}, {deskno = &quot;2&quot;, lname = &quot;&quot;}, {deskno = &quot;3&quot;, lname = &quot;Feng&quot;}, {deskno = &quot;4&quot;, lname = &quot;Zheng&quot;}}">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: VACANT&#10;2: VACANT&#10;3: Feng&#10;4: Zheng">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 175.0]">
         </property>
@@ -201,6 +209,8 @@
         </property>
     </entity>
     <entity name="Occupants5" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;1&quot;, lname = &quot;&quot;}, {deskno = &quot;2&quot;, lname = &quot;Prabhu&quot;}, {deskno = &quot;3&quot;, lname = &quot;Wu&quot;}, {deskno = &quot;4&quot;, lname = &quot;&quot;}}">
+        </property>
         <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: VACANT&#10;2: Prabhu&#10;3: Wu&#10;4: VACANT">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 165.0]">
@@ -237,7 +247,9 @@
         </property>
     </entity>
     <entity name="Occupants6" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Leung&#10;2: Patel&#10;3: VACANT&#10;4: Andrade">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;1&quot;, lname = &quot;Leung&quot;}, {deskno = &quot;2&quot;, lname = &quot;Patel&quot;}, {deskno = &quot;3&quot;, lname = &quot;&quot;}, {deskno = &quot;4&quot;, lname = &quot;&quot;}}">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Leung&#10;2: Patel&#10;3: VACANT&#10;4: VACANT">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 85.0]">
         </property>
@@ -273,7 +285,9 @@
         </property>
     </entity>
     <entity name="Occupants7" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="3: Elassaad&#10;2: Li&#10;4: VACANT&#10;5: VACANT&#10;1: VACANT">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;1&quot;, lname = &quot;&quot;}, {deskno = &quot;2&quot;, lname = &quot;Li&quot;}, {deskno = &quot;3&quot;, lname = &quot;Elassaad&quot;}, {deskno = &quot;4&quot;, lname = &quot;&quot;}}">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: VACANT&#10;2: Li&#10;3: Elassaad&#10;4: VACANT">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 150.0]">
         </property>
@@ -309,6 +323,8 @@
         </property>
     </entity>
     <entity name="Occupants8" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;1&quot;, lname = &quot;Sun&quot;}, {deskno = &quot;2&quot;, lname = &quot;Mishchenko&quot;}, {deskno = &quot;3&quot;, lname = &quot;&quot;}, {deskno = &quot;4&quot;, lname = &quot;Ray&quot;}}">
+        </property>
         <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Sun&#10;2: Mishchenko&#10;3: VACANT&#10;4: Ray">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 70.0]">
@@ -345,6 +361,8 @@
         </property>
     </entity>
     <entity name="Occupants9" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;&quot;, lname = &quot;Gray&quot;}, {deskno = &quot;&quot;, lname = &quot;&quot;}, {deskno = &quot;&quot;, lname = &quot;&quot;}, {deskno = &quot;&quot;, lname = &quot;&quot;}, {deskno = &quot;&quot;, lname = &quot;Pranawahadi&quot;}}">
+        </property>
         <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: Gray&#10;?: VACANT&#10;?: VACANT&#10;?: VACANT&#10;?: Pranawahadi">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 135.0]">
@@ -381,6 +399,8 @@
         </property>
     </entity>
     <entity name="Occupants10" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;&quot;, lname = &quot;&quot;}, {deskno = &quot;&quot;, lname = &quot;Rabaey&quot;}}">
+        </property>
         <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: VACANT&#10;?: Rabaey">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 55.0]">
@@ -391,7 +411,9 @@
         </property>
     </entity>
     <entity name="Occupants11" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: VACANT&#10;2: Welp&#10;3: Lwin&#10;4: VACANT&#10;5: VACANT&#10;6: VACANT&#10;7: Yang&#10;8: VACANT&#10;9: Kumar&#10;10: McKelvin Jr&#10;11: Kitchen&#10;12: Chai&#10;13: VACANT&#10;14: Cheng&#10;16: VACANT&#10;17: VACANT&#10;15: Gebis&#10;13: Wei">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;1&quot;, lname = &quot;&quot;}, {deskno = &quot;2&quot;, lname = &quot;Welp&quot;}, {deskno = &quot;3&quot;, lname = &quot;Chai&quot;}, {deskno = &quot;4&quot;, lname = &quot;Lwin&quot;}, {deskno = &quot;5&quot;, lname = &quot;&quot;}, {deskno = &quot;6&quot;, lname = &quot;&quot;}, {deskno = &quot;7&quot;, lname = &quot;&quot;}, {deskno = &quot;8&quot;, lname = &quot;&quot;}, {deskno = &quot;9&quot;, lname = &quot;Kumar&quot;}, {deskno = &quot;10&quot;, lname = &quot;McKelvin Jr&quot;}, {deskno = &quot;11&quot;, lname = &quot;He&quot;}, {deskno = &quot;12&quot;, lname = &quot;Yang&quot;}, {deskno = &quot;13&quot;, lname = &quot;Wei&quot;}, {deskno = &quot;14&quot;, lname = &quot;Kitchen&quot;}, {deskno = &quot;15&quot;, lname = &quot;Gebis&quot;}, {deskno = &quot;16&quot;, lname = &quot;&quot;}, {deskno = &quot;17&quot;, lname = &quot;&quot;}}">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: VACANT&#10;2: Welp&#10;3: Chai&#10;4: Lwin&#10;5: VACANT&#10;6: VACANT&#10;7: VACANT&#10;8: VACANT&#10;9: Kumar&#10;10: McKelvin Jr&#10;11: He&#10;12: Yang&#10;13: Wei&#10;14: Kitchen&#10;15: Gebis&#10;16: VACANT&#10;17: VACANT">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 520.0]">
         </property>
@@ -463,7 +485,9 @@
         </property>
     </entity>
     <entity name="Occupants12" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Case&#10;2: Zeng&#10;4: VACANT&#10;3: VACANT">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;1&quot;, lname = &quot;Case&quot;}, {deskno = &quot;2&quot;, lname = &quot;Zeng&quot;}, {deskno = &quot;3&quot;, lname = &quot;&quot;}, {deskno = &quot;4&quot;, lname = &quot;&quot;}}">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Case&#10;2: Zeng&#10;3: VACANT&#10;4: VACANT">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 575.0]">
         </property>
@@ -503,7 +527,9 @@
         </property>
     </entity>
     <entity name="Occupants13" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Roncken&#10;2: Batten&#10;3: VACANT&#10;4: Pan&#10;5: Jha&#10;6: Li&#10;7: VACANT&#10;8: Brady&#10;3: Aoki&#10;1: Liu&#10;9: Honicky">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;1&quot;, lname = &quot;Roncken&quot;}, {deskno = &quot;1&quot;, lname = &quot;Liu&quot;}, {deskno = &quot;2&quot;, lname = &quot;Batten&quot;}, {deskno = &quot;3&quot;, lname = &quot;&quot;}, {deskno = &quot;3&quot;, lname = &quot;Aoki&quot;}, {deskno = &quot;4&quot;, lname = &quot;Pan&quot;}, {deskno = &quot;5&quot;, lname = &quot;Jha&quot;}, {deskno = &quot;6&quot;, lname = &quot;Li&quot;}, {deskno = &quot;7&quot;, lname = &quot;&quot;}, {deskno = &quot;8&quot;, lname = &quot;Brady&quot;}, {deskno = &quot;9&quot;, lname = &quot;Honicky&quot;}}">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Roncken&#10;1: Liu&#10;2: Batten&#10;3: VACANT&#10;3: Aoki&#10;4: Pan&#10;5: Jha&#10;6: Li&#10;7: VACANT&#10;8: Brady&#10;9: Honicky">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 560.0]">
         </property>
@@ -519,7 +545,9 @@
         </property>
     </entity>
     <entity name="Occupants14" class="ptolemy.domains.space.Occupants">
-        <property name="contents" class="ptolemy.data.expr.StringParameter" value="2: VACANT&#10;3: Liu&#10;4: Zou&#10;6: VACANT&#10;7: Oh&#10;1: Lickly&#10;2: VACANT&#10;5: Forbes">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{deskno = &quot;1&quot;, lname = &quot;Lickly&quot;}, {deskno = &quot;2&quot;, lname = &quot;&quot;}, {deskno = &quot;2&quot;, lname = &quot;&quot;}, {deskno = &quot;3&quot;, lname = &quot;Liu&quot;}, {deskno = &quot;4&quot;, lname = &quot;Zou&quot;}, {deskno = &quot;5&quot;, lname = &quot;Forbes&quot;}, {deskno = &quot;6&quot;, lname = &quot;&quot;}, {deskno = &quot;7&quot;, lname = &quot;Oh&quot;}}">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Lickly&#10;2: VACANT&#10;2: VACANT&#10;3: Liu&#10;4: Zou&#10;5: Forbes&#10;6: VACANT&#10;7: Oh">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 590.0]">
         </property>
