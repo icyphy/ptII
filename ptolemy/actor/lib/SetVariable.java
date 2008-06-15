@@ -58,8 +58,8 @@ import ptolemy.util.MessageHandler;
  <p>Set the value of a variable contained by the container.  The result
  may occur at two different times, depending on the value of the
  <it>delayed</it> parameter.
-
- </p><p> If <it>delayed</it> is true, then the change to
+ </p><p>
+ If <i>delayed</i> is true, then the change to
  the value of the variable is implemented in a change request, and
  consequently will not take hold until the end of the current
  toplevel iteration.  This helps ensure that users of value of the
@@ -68,8 +68,8 @@ import ptolemy.util.MessageHandler;
  However, there is a substantial performance penalty associated
  with this when running within Vergil because change requests
  trigger repainting the Vergil window.
-
- </p><p> If <it>delayed</it> is false, then the change to the value of
+ </p><p>
+ If <i>delayed</i> is false, then the change to the value of
  the variable is performed immediately.  This allows more frequent
  reconfiguration, and can mimic the operation of PGM's graph
  variables. However, this can result in nondeterminism if
