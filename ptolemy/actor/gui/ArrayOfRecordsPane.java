@@ -277,7 +277,8 @@ public class ArrayOfRecordsPane extends JPanel {
 
             // FIXME: Don't hardwire the size here ?
             table.setPreferredScrollableViewportSize(new Dimension(500, 300));
-            table.setFillsViewportHeight(true);
+            // This is Java 1.6 specific:
+            //table.setFillsViewportHeight(true);
 
             //Create the scroll pane and add the table to it.
             JScrollPane scrollPane = new JScrollPane(table);
