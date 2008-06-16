@@ -95,7 +95,7 @@ public class TDLModuleDirector extends ModalDirector {
 		// if (_debugging)
 		_printStatus();
 
-		int i = -1; // used to avoid returning control to the executive directorâ
+		int i = -1; // used to avoid returning control to the executive director
 		// before every input port update
 		for (; _currentSchedule.currentPositionInSlot < _schedule.size(); _currentSchedule.currentPositionInSlot++) {
 			i++;
