@@ -931,6 +931,11 @@ ChangeLog:
 		echo "Removing adm/dists because adm/dists/.svn not found"; \
 	        rm -rf adm/dists; \
 	    fi) 
+	(cd $(PTIIHOME); \
+	    if [ -d adm/dists ]; then \
+		echo "Removing adm/dists because adm/dists/.svn not found"; \
+	        rmdir adm/dists; \
+	    fi) 
 	(cd $(PTIIHOME); rm -f ChangeLog; \
 		 $(MAKE) -k ChangeLog; \
 		rm -f ChangeLog.txt; ln -s ChangeLog ChangeLog.txt)
