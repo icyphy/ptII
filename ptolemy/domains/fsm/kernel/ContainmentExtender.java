@@ -52,16 +52,55 @@ import ptolemy.kernel.util.NamedObj;
 public class ContainmentExtender extends Attribute implements
         ptolemy.data.expr.ContainmentExtender {
 
+    /** Construct a ContainmentExtender attribute with the given name contained
+     *  by the specified ModalController. The container argument must not be
+     *  null, or a NullPointerException will be thrown.  This attribute will use
+     *  the workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
     public ContainmentExtender(ModalController container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
+    /** Construct a ContainmentExtender attribute with the given name contained
+     *  by the specified Refinement. The container argument must not be null,
+     *  or a NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
     public ContainmentExtender(Refinement container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
+    /** Construct a ContainmentExtender attribute with the given name contained
+     *  by the specified State. The container argument must not be null,
+     *  or a NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
     public ContainmentExtender(State container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);

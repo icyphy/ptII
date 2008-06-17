@@ -1069,6 +1069,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     public class PortScope extends ModelScope {
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
+         *  @param name The name of the variable to be looked up.
          *  @return The attribute with the specified name in the scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
@@ -1094,6 +1095,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         /** Look up and return the type of the attribute with the
          *  specified name in the scope. Return null if such an
          *  attribute does not exist.
+         *  @param name The name of the variable to be looked up.
          *  @return The attribute with the specified name in the scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
@@ -1132,6 +1134,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         /** Look up and return the type term for the specified name
          *  in the scope. Return null if the name is not defined in this
          *  scope, or is a constant type.
+         *  @param name The name of the variable to be looked up.
          *  @return The InequalityTerm associated with the given name in
          *  the scope.
          *  @exception IllegalActionException If a value in the scope
@@ -1480,9 +1483,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Current state. */
     protected State _currentState = null;
 
-    // A map that associates each identifier with the unique port that
-    // that identifier describes.  This map is used to detect port
-    // names that result in ambiguous identifier bindings.
+    /** A map that associates each identifier with the unique port that that
+     *  identifier describes.  This map is used to detect port names that result
+     *  in ambiguous identifier bindings.
+     */
     protected HashMap _identifierToPort;
 
     /** List of objects whose (pre)initialize() and wrapup() methods
