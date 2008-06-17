@@ -205,7 +205,7 @@ ChangeLog:
 	fi
 
 update:
-	-svn update -P -d 
+	-svn update
 	$(MAKE) -k clean fast
 
 cleanDerivedJavaFiles:
