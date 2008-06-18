@@ -3109,13 +3109,23 @@ DATABASE_USER_DIR="$PTII/ptolemy/actor/lib/database"
 
 if test ! -d "$SPACE_USER_DIR" -a ! -d "$DATABASE_USER_DIR"; then
     PT_MSG_STATUS([$SPACE_USER_DIR and $DATABASE_USER_DIR
-    are not present, or Java is not 1.6 or later,
-    so we need not find the Oracle ojdbc6.jar.])
+    are not present,  so we need not find the Mysql jar and Oracle ojdbc6.jar.])
+    MYSQL_JAR=
     ORACLE_OJDBC_JAR=
 else
+    MYSQL_TARGET_JAR=mysql-connector-java-5.1.6-bin.jar
+    AC_MSG_CHECKING([for mysql jar, used by the database actors])
+    AC_ARG_WITH(ojdbc6, [  --with-mysql=/path/to/mysql.jar  path to mysql.jar
+                          defaults to \$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR],
+	MYSQL_JAR=$withval,
+	MYSQL_JAR=$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR)
+    if test -f "$MYSQL_JAR"; then
+       PT_MSG_RESULT([$MYSQL_JAR])
+    fi    
     if test "$JAVA1_6_OR_LATER" != "yes"; then
         AC_MSG_WARN([ojdbc6.jar requires Java 1.6 or later.
-    You will not be able to use the space domain.])
+    If MySQL is not present, you will not be able to use the database actors.])
+        ORACLE_OJDBC_JAR=
     else 
         AC_MSG_CHECKING([for ojdbc6.jar, used by the database actors])
         AC_ARG_WITH(ojdbc6, [  --with-ojdbc6=/path/to/ojdbc6.jar  path to ojdbc6.jar
@@ -3127,52 +3137,45 @@ else
 	    PT_MSG_RESULT([$ORACLE_OJDBC_JAR])
 
         fi
-	MYSQL_TARGET_JAR=mysql-connector-java-5.1.6-bin.jar
-        AC_MSG_CHECKING([for mysql jar, used by the database actors])
-        AC_ARG_WITH(ojdbc6, [  --with-mysql=/path/to/mysql.jar  path to mysql.jar
-                          defaults to \$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR],
-	    MYSQL_JAR=$withval,
-	    MYSQL_JAR=$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR)
-        if test -f "$MYSQL_JAR"; then
-	    PT_MSG_RESULT([$MYSQL_JAR])
-	fi    
-	if test -f "$ORACLE_OJDBC_JAR" -o -f "$MYSQL_JAR"; then
-	    PTDATABASE_DIR=database
-	    PTDATABASE_PACKAGES=ptolemy.actor.lib.database
-	    PTSPACE_DIR=space
-	    PTSPACEDOMAIN_JAR=space/space.jar
-	    PTSPACEDOMAIN_PACKAGES=ptolemy.domains.space
+    fi
+    if test -f "$MYSQL_JAR" -o -f "$ORACLE_OJDBC_JAR"; then
+	PTDATABASE_DIR=database
+	PTDATABASE_PACKAGES=ptolemy.actor.lib.database
+	PTSPACE_DIR=space
+	PTSPACEDOMAIN_JAR=space/space.jar
+	PTSPACEDOMAIN_PACKAGES=ptolemy.domains.space
 
-	    # Update PTDATABASE_JNLP_JARS, used to sign jar files in mk/jnlp.mk
-	    PTDATABASE_JNLP_JARS="ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar"
-	    if test -f "$ORACLE_OJDBC_JAR"; then
-	       PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$ORACLE_OJDBC_JAR" | sed "s@$PTII@@"`"
-	    fi
-	    if test -f "$MYSQL_JAR"; then
-	       PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$MYSQL_JAR" | sed "s@$PTII@@"`"
-	    fi
-        else  
-            AC_MSG_WARN([Failed to find PTII/actor/lib/database/ojdbc6.jar
-    and PTII/actor/lib/database/$MYSQL_TARGET_JAR.
+	# Update PTDATABASE_JNLP_JARS, used to sign jar files in mk/jnlp.mk
+	PTDATABASE_JNLP_JARS="ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar"
+	if test -f "$ORACLE_OJDBC_JAR"; then
+	    PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$ORACLE_OJDBC_JAR" | sed "s@$PTII@@"`"
+	fi
+	if test -f "$MYSQL_JAR"; then
+	    PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$MYSQL_JAR" | sed "s@$PTII@@"`"
+	fi
+    else  
+        AC_MSG_WARN([Failed to find 
+    PTII/actor/lib/database/$MYSQL_TARGET_JAR and 
+    PTII/actor/lib/database/ojdbc6.jar.
     If neither Java Database Connection jar is present,
     you will not be able to use the space domain or the database actors.])
 	    ORACLE_OJDBC_JAR=
 	    MYSQL_JAR=
-        fi	    
-    fi
+    fi	    
 fi
 
-if test -z "$ORACLE_OJDBC_JAR" -e -z "$MYSQL_JAR"; then
+if test -z "$MYSQL_JAR" -a -z "$ORACLE_OJDBC_JAR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/database/|ptolemy/domains/space/"
 else
-   if test -f "$ORACLE_OJDBC_JAR"; then 
-      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$ORACLE_OJDBC_JAR\"/> "
-   fi 
    if test -f "$MYSQL_JAR"; then 
       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
        <classpathentry kind=\"lib\" path=\"$MYSQL_JAR\"/> "
    fi 
+   if test -f "$ORACLE_OJDBC_JAR"; then 
+      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$ORACLE_OJDBC_JAR\"/> "
+   fi 
+
 fi 
 
 
