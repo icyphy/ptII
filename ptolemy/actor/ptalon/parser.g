@@ -556,16 +556,12 @@ ESC:
 // that after we match the rule, we look in the literals table to see
 // if it's a literal or really an identifer
 ID options { testLiterals=true; } :
-	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
+	('a'..'z'|'A'..'Z'|'_'|'$') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
 ;
 
 // Number literals
 NUMBER_LITERAL:
 	('0'..'9')+ ('.' ('0'..'9')+)?
-;
-
-ATTRIBUTE_MARKER :
-	'$'
 ;
 
 // String literals
