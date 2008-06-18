@@ -1458,10 +1458,10 @@ Optional Packages:
                           defaults to \$PTII/lib
   --with-javasystemjar=DIR       use rt.lib from DIR,
                           defaults to JRE java.home property with lib/rt.jar appended
-  --with-ojdbc6=/path/to/ojdbc6.jar  path to ojdbc6.jar
-                          defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar
   --with-mysql=/path/to/mysql.jar  path to mysql.jar
                           defaults to \$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR
+  --with-ojdbc6=/path/to/ojdbc6.jar  path to ojdbc6.jar
+                          defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar
   --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
                           defaults to \$KEPLER/lib/jar/batik-all-1.6.jar
   --with-tini=DIR       use TINI from DIR,
@@ -8978,18 +8978,34 @@ DATABASE_USER_DIR="$PTII/ptolemy/actor/lib/database"
 
 if test ! -d "$SPACE_USER_DIR" -a ! -d "$DATABASE_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $SPACE_USER_DIR and $DATABASE_USER_DIR
-    are not present, or Java is not 1.6 or later,
-    so we need not find the Oracle ojdbc6.jar." >&5
+    are not present,  so we need not find the Mysql jar and Oracle ojdbc6.jar." >&5
 echo "${ECHO_T}$SPACE_USER_DIR and $DATABASE_USER_DIR
-    are not present, or Java is not 1.6 or later,
-    so we need not find the Oracle ojdbc6.jar." >&6; }; fi
+    are not present,  so we need not find the Mysql jar and Oracle ojdbc6.jar." >&6; }; fi
+    MYSQL_JAR=
     ORACLE_OJDBC_JAR=
 else
+    MYSQL_TARGET_JAR=mysql-connector-java-5.1.6-bin.jar
+    { echo "$as_me:$LINENO: checking for mysql jar, used by the database actors" >&5
+echo $ECHO_N "checking for mysql jar, used by the database actors... $ECHO_C" >&6; }
+
+# Check whether --with-ojdbc6 was given.
+if test "${with_ojdbc6+set}" = set; then
+  withval=$with_ojdbc6; MYSQL_JAR=$withval
+else
+  MYSQL_JAR=$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR
+fi
+
+    if test -f "$MYSQL_JAR"; then
+       if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $MYSQL_JAR" >&5
+echo "${ECHO_T}$MYSQL_JAR" >&6; }; fi
+    fi
     if test "$JAVA1_6_OR_LATER" != "yes"; then
         { echo "$as_me:$LINENO: WARNING: ojdbc6.jar requires Java 1.6 or later.
-    You will not be able to use the space domain." >&5
+    If MySQL is not present, you will not be able to use the database actors." >&5
 echo "$as_me: WARNING: ojdbc6.jar requires Java 1.6 or later.
-    You will not be able to use the space domain." >&2;}
+    If MySQL is not present, you will not be able to use the database actors." >&2;}
+        ORACLE_OJDBC_JAR=
     else
         { echo "$as_me:$LINENO: checking for ojdbc6.jar, used by the database actors" >&5
 echo $ECHO_N "checking for ojdbc6.jar, used by the database actors... $ECHO_C" >&6; }
@@ -9008,63 +9024,50 @@ echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $ORACLE_OJDBC_JA
 echo "${ECHO_T}$ORACLE_OJDBC_JAR" >&6; }; fi
 
         fi
-	MYSQL_TARGET_JAR=mysql-connector-java-5.1.6-bin.jar
-        { echo "$as_me:$LINENO: checking for mysql jar, used by the database actors" >&5
-echo $ECHO_N "checking for mysql jar, used by the database actors... $ECHO_C" >&6; }
+    fi
+    if test -f "$MYSQL_JAR" -o -f "$ORACLE_OJDBC_JAR"; then
+	PTDATABASE_DIR=database
+	PTDATABASE_PACKAGES=ptolemy.actor.lib.database
+	PTSPACE_DIR=space
+	PTSPACEDOMAIN_JAR=space/space.jar
+	PTSPACEDOMAIN_PACKAGES=ptolemy.domains.space
 
-# Check whether --with-ojdbc6 was given.
-if test "${with_ojdbc6+set}" = set; then
-  withval=$with_ojdbc6; MYSQL_JAR=$withval
-else
-  MYSQL_JAR=$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR
-fi
-
-        if test -f "$MYSQL_JAR"; then
-	    if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $MYSQL_JAR" >&5
-echo "${ECHO_T}$MYSQL_JAR" >&6; }; fi
+	# Update PTDATABASE_JNLP_JARS, used to sign jar files in mk/jnlp.mk
+	PTDATABASE_JNLP_JARS="ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar"
+	if test -f "$ORACLE_OJDBC_JAR"; then
+	    PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$ORACLE_OJDBC_JAR" | sed "s@$PTII@@"`"
 	fi
-	if test -f "$ORACLE_OJDBC_JAR" -o -f "$MYSQL_JAR"; then
-	    PTDATABASE_DIR=database
-	    PTDATABASE_PACKAGES=ptolemy.actor.lib.database
-	    PTSPACE_DIR=space
-	    PTSPACEDOMAIN_JAR=space/space.jar
-	    PTSPACEDOMAIN_PACKAGES=ptolemy.domains.space
-
-	    # Update PTDATABASE_JNLP_JARS, used to sign jar files in mk/jnlp.mk
-	    PTDATABASE_JNLP_JARS="ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar"
-	    if test -f "$ORACLE_OJDBC_JAR"; then
-	       PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$ORACLE_OJDBC_JAR" | sed "s@$PTII@@"`"
-	    fi
-	    if test -f "$MYSQL_JAR"; then
-	       PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$MYSQL_JAR" | sed "s@$PTII@@"`"
-	    fi
-        else
-            { echo "$as_me:$LINENO: WARNING: Failed to find PTII/actor/lib/database/ojdbc6.jar
-    and PTII/actor/lib/database/$MYSQL_TARGET_JAR.
+	if test -f "$MYSQL_JAR"; then
+	    PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$MYSQL_JAR" | sed "s@$PTII@@"`"
+	fi
+    else
+        { echo "$as_me:$LINENO: WARNING: Failed to find
+    PTII/actor/lib/database/$MYSQL_TARGET_JAR and
+    PTII/actor/lib/database/ojdbc6.jar.
     If neither Java Database Connection jar is present,
     you will not be able to use the space domain or the database actors." >&5
-echo "$as_me: WARNING: Failed to find PTII/actor/lib/database/ojdbc6.jar
-    and PTII/actor/lib/database/$MYSQL_TARGET_JAR.
+echo "$as_me: WARNING: Failed to find
+    PTII/actor/lib/database/$MYSQL_TARGET_JAR and
+    PTII/actor/lib/database/ojdbc6.jar.
     If neither Java Database Connection jar is present,
     you will not be able to use the space domain or the database actors." >&2;}
 	    ORACLE_OJDBC_JAR=
 	    MYSQL_JAR=
-        fi
     fi
 fi
 
-if test -z "$ORACLE_OJDBC_JAR" -e -z "$MYSQL_JAR"; then
+if test -z "$MYSQL_JAR" -a -z "$ORACLE_OJDBC_JAR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/database/|ptolemy/domains/space/"
 else
-   if test -f "$ORACLE_OJDBC_JAR"; then
-      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$ORACLE_OJDBC_JAR\"/> "
-   fi
    if test -f "$MYSQL_JAR"; then
       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
        <classpathentry kind=\"lib\" path=\"$MYSQL_JAR\"/> "
    fi
+   if test -f "$ORACLE_OJDBC_JAR"; then
+      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$ORACLE_OJDBC_JAR\"/> "
+   fi
+
 fi
 
 
