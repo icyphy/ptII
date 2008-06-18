@@ -37,7 +37,8 @@ DIRS =
 ROOT =		../../../..
 
 # ORACLE_OJDBC_JAR is set to the absolute path to ojdbc6.jar by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ORACLE_OJDBC_JAR)
+# MYSQL_JAR is set to the absolute path of the mysql jar file by configure 
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ORACLE_OJDBC_JAR)$(CLASSPATHSEPARATOR)$(MYSQL_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -54,6 +55,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	database.xml \
+	mysql-copyright.htm \
 	ojdbc-copyright.htm
 
 # Don't include the ojdbc6.jar file in database.jar 
