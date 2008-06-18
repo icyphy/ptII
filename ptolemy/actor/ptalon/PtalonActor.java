@@ -265,7 +265,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         return null;
     }
 
-    /** Get the stored unique name for a symbol in the PtalonActor.  
+    /** Get the stored unique name for a symbol in the PtalonActor.
      *  The unique name comes from a call to uniqueName().
      *  @param ptalonName The symbol.
      *  @return The unique name.
@@ -437,29 +437,39 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     ex2.initCause(ex);
                     throw ex2;
                 }
+
+                // Strip postfix.
+                if (!filename.toLowerCase().endsWith(".ptln")) {
+                    throw new IOException("Ptalon file does not end with " +
+                            "postfix .ptln.");
+                }
+                filename = filename.substring(0, filename.length() - 5);
+
                 if (filename.startsWith("file:/")) {
                     filename = filename.substring(5);
                 }
                 if (filename.startsWith("$CLASSPATH")) {
                     filename = filename.substring(9);
                 }
-                if (filename.startsWith("/")) {
-                    filename = filename.substring(1);
-                }
-                String ptIIDir = StringUtilities
-                        .getProperty("ptolemy.ptII.dir");
+                String ptIIDir = StringUtilities.getProperty(
+                        "ptolemy.ptII.dir");
                 File ptIIDirFile = new File(ptIIDir);
                 String prefix = ptIIDirFile.toURI().toString();
                 if (prefix.startsWith("file:/")) {
                     prefix = prefix.substring(5);
                 }
-                if (prefix.startsWith("/")) {
-                    prefix = prefix.substring(1);
+                String displayName;
+                if (filename.toLowerCase().startsWith(prefix.toLowerCase())) {
+                    int i = 0;
+                    while (filename.startsWith("/")) {
+                        filename = filename.substring(1);
+                        i++;
+                    }
+                    displayName = filename.substring(prefix.length() - i);
+                } else {
+                    displayName = filename;
                 }
-               String ptIIFilename = filename.substring(prefix.length());
-                String unPtlnName = ptIIFilename.substring(0, ptIIFilename
-                        .length() - 5);
-                String displayName = unPtlnName.replace('/', '.');
+                displayName = displayName.replace('/', '.');
 
                 // Write the name of the Ptalon file.
                 output.write(_getIndentPrefix(depth) + "<configure>\n");
@@ -531,7 +541,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 if (inputURL == null) {
                     // We are probably just starting up
                     return;
-                } 
+                }
             } catch (IllegalActionException ex) {
                 // We might be under WebStart, try it as a jar URL
                 inputURL = Thread.currentThread().getContextClassLoader()
@@ -567,7 +577,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     } catch (IOException ex4) {
                         // Ignored, but print anyway
                         ex4.printStackTrace();
-                    } 
+                    }
                 }
             }
             _ast = (PtalonAST) rec.getAST();
