@@ -50,7 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	AnnotationEditorFactory.java \
-	ArrayOfRecordsConfigureFactory \
+	ArrayOfRecordsConfigureFactory.java
 	AttributeBoundsManipulator.java \
 	ConfigureAction.java \
 	EditIconAction.java \
