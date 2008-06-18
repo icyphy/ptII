@@ -416,6 +416,10 @@ JAVACC_DIR =	@JAVACC_DIR@
 JJTREE =	"@JJTREE@"
 JAVACC =	"@JAVACC@"
 
+# Mysql Java Database jar (mysql-connector-java-5.1.6-bin.jar),
+# used by domains/space and actor/lib/database
+MYSQL_JAR =		@MYSQL_JAR@
+
 # Oracle Java Database jar (ojdbc6.jar)
 ORACLE_OJDBC_JAR = 	@ORACLE_OJDBC_JAR@
 

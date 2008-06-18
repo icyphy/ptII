@@ -3092,6 +3092,9 @@ PTSPACE_DIR=
 # PTSPACEDOMAIN_PACKAGES is used in ptII/doc/makefile
 PTSPACEDOMAIN_PACKAGES=
 
+# MySQL Jar mysql-connector-java-5.1.6-bin.jar
+MYSQL_JAR=
+
 # Oracle Java Database jar (ojdbc6.jar)
 ORACLE_OJDBC_JAR=
 
@@ -3114,7 +3117,7 @@ else
         AC_MSG_WARN([ojdbc6.jar requires Java 1.6 or later.
     You will not be able to use the space domain.])
     else 
-        AC_MSG_CHECKING([for ojdbc6.jar, used by the space domain])
+        AC_MSG_CHECKING([for ojdbc6.jar, used by the database actors])
         AC_ARG_WITH(ojdbc6, [  --with-ojdbc6=/path/to/ojdbc6.jar  path to ojdbc6.jar
                           defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar],
 	    ORACLE_OJDBC_JAR=$withval,
@@ -3122,27 +3125,54 @@ else
 
         if test -f "$ORACLE_OJDBC_JAR"; then
 	    PT_MSG_RESULT([$ORACLE_OJDBC_JAR])
+
+        fi
+	MYSQL_TARGET_JAR=mysql-connector-java-5.1.6-bin.jar
+        AC_MSG_CHECKING([for mysql jar, used by the database actors])
+        AC_ARG_WITH(ojdbc6, [  --with-mysql=/path/to/mysql.jar  path to mysql.jar
+                          defaults to \$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR],
+	    MYSQL_JAR=$withval,
+	    MYSQL_JAR=$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR)
+        if test -f "$MYSQL_JAR"; then
+	    PT_MSG_RESULT([$MYSQL_JAR])
+	fi    
+	if test -f "$ORACLE_OJDBC_JAR" -o -f "$MYSQL_JAR"; then
 	    PTDATABASE_DIR=database
-	    PTDATABASE_JNLP_JARS="ptolemy/actor/lib/database/ojdbc6.jar ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar"
 	    PTDATABASE_PACKAGES=ptolemy.actor.lib.database
 	    PTSPACE_DIR=space
 	    PTSPACEDOMAIN_JAR=space/space.jar
 	    PTSPACEDOMAIN_PACKAGES=ptolemy.domains.space
 
+	    # Update PTDATABASE_JNLP_JARS, used to sign jar files in mk/jnlp.mk
+	    PTDATABASE_JNLP_JARS="ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar"
+	    if test -f "$ORACLE_OJDBC_JAR"; then
+	       PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$ORACLE_OJDBC_JAR" | sed "s@$PTII@@"`"
+	    fi
+	    if test -f "$MYSQL_JAR"; then
+	       PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$MYSQL_JAR" | sed "s@$PTII@@"`"
+	    fi
         else  
             AC_MSG_WARN([Failed to find PTII/actor/lib/database/ojdbc6.jar
-    If it is not present, you will not be able to use the 
-    space domain.])
+    and PTII/actor/lib/database/$MYSQL_TARGET_JAR.
+    If neither Java Database Connection jar is present,
+    you will not be able to use the space domain or the database actors.])
 	    ORACLE_OJDBC_JAR=
-        fi
+	    MYSQL_JAR=
+        fi	    
     fi
 fi
 
-if test -z "$ORACLE_OJDBC_JAR"; then
+if test -z "$ORACLE_OJDBC_JAR" -e -z "$MYSQL_JAR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/database/|ptolemy/domains/space/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$ORACLE_OJDBC_JAR\"/> "
+   if test -f "$ORACLE_OJDBC_JAR"; then 
+      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$ORACLE_OJDBC_JAR\"/> "
+   fi 
+   if test -f "$MYSQL_JAR"; then 
+      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$MYSQL_JAR\"/> "
+   fi 
 fi 
 
 
@@ -3729,12 +3759,17 @@ AC_SUBST(MATLAB_DIR)
 # Set the location of Matlab's engine libraries
 AC_SUBST(MATLAB_LIBDIR)
 
+# Mysql Java Database jar (mysql-connector-java-5.1.6-bin.jar),
+# used by domains/space and actor/lib/database
+AC_SUBST(MYSQL_JAR)
+
+# Oracle Java Database jar (ojdbc6.jar), used by domains/space
+# and actor/lib/database
+AC_SUBST(ORACLE_OJDBC_JAR)
+
 # Set to $PTII/lib if $PTII/lib/mapss.jar was found and used
 # in $PTII/bin/ptinvoke.in
 AC_SUBST(PSDF_DIR)
-
-# Oracle Java Database jar (ojdbc6.jar), used by domains/space
-AC_SUBST(ORACLE_OJDBC_JAR)
 
 # Set to backtrack if Java 1.5 or later is present
 AC_SUBST(PTBACKTRACK_DIR)

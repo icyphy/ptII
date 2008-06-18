@@ -309,10 +309,16 @@ JODE_JAR="@JODE_CLASSES@"
 
 JODE_JFLAG=
 
-#### Oracle Java Database jar (ojdbc6.jar), used by space domain
+#### Mysql Java Database jar, used by space domain and actor/lib/database
 # PTSPACE_DIR is set to space and used in
-# $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.
+# $PTII/ptolemy/domains/makefile if mysql jar or ojdbc6.jar was found.
 PTSPACE_DIR=@PTSPACE_DIR@
+MYSQL_JAR=""
+if [ "$PTSPACE_DIR" = "space" ]; then
+    MYSQL_JAR="${CLASSPATHSEPARATOR}@MYSQL_JAR@"
+fi
+
+#### Oracle Java Database jar (ojdbc6.jar), used by space domain
 ORACLE_OJDBC_JAR=""
 if [ "$PTSPACE_DIR" = "space" ]; then
     ORACLE_OJDBC_JAR="${CLASSPATHSEPARATOR}@ORACLE_OJDBC_JAR@"
