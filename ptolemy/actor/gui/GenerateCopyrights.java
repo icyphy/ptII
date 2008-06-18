@@ -146,11 +146,10 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.x10.X10Interface",
                 "ptolemy/actor/lib/x10/x10-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.database.DatabaseManager",
-                "ptolemy/actor/lib/database/ojdbc-copyright.htm");
+        _addIfPresent(copyrightsMap, "com.mysql.jdbc.Driver",
+                "ptolemy/actor/lib/database/mysql-copyright.htm");
 
-
-        _addIfPresent(copyrightsMap, "ptolemy.domains.space.DatabaseDirector",
+        _addIfPresent(copyrightsMap, "oracle.jdbc.OracleDriver",
                 "ptolemy/actor/lib/database/ojdbc-copyright.htm");
 
         _addIfPresent(copyrightsMap,
