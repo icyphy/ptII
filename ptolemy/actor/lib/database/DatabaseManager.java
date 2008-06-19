@@ -192,7 +192,9 @@ public class DatabaseManager extends TypedAtomicActor {
             try {
                 // The following lines explicitly register drivers.
                 // But maybe these aren't necessary if the driver is
-                // in the classpath?
+                // in the classpath?  If the model fails to find the
+                // drivers, then try adding the jar files to the
+                // build path in Eclipse.
                 // Oracle driver:
                 // DriverManager.registerDriver(new OracleDriver());
                 // MySQL driver:

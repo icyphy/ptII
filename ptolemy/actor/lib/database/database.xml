@@ -8,6 +8,8 @@
       <doc>Database Actors</doc>
       <entity name="DatabaseManager" class="ptolemy.actor.lib.database.DatabaseManager">
       </entity>
+      <entity name="DatabaseQuery" class="ptolemy.actor.lib.database.DatabaseQuery">
+      </entity>
       <entity name="DatabaseSelect" class="ptolemy.actor.lib.database.DatabaseSelect">
       </entity>
       <entity name="ArrayOfRecordsRecorder" class="ptolemy.actor.lib.database.ArrayOfRecordsRecorder">

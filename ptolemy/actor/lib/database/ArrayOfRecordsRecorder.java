@@ -29,20 +29,19 @@ package ptolemy.actor.lib.database;
 
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.RecordToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.icon.BoxedValueIcon;
-import ptolemy.vergil.toolbox.ArrayOfRecordsConfigureFactory;
+import ptolemy.vergil.icon.TableIcon;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayOfRecordsRecorder
@@ -84,16 +83,24 @@ public class ArrayOfRecordsRecorder extends Sink {
         // Declare that it must be an array of records.
         records.setTypeAtMost(new ArrayType(type));
         records.setToken(new ArrayToken(type));
-
-        contents = new StringParameter(this, "contents");
-        contents.setVisibility(Settable.EXPERT);
         
+        Variable ALL = new Variable(this, "ALL");
+        ALL.setVisibility(Settable.NONE);
+        Token emptyStringArray = new ArrayToken(BaseType.STRING);
+        ALL.setToken(emptyStringArray);
+        
+        columns = new Parameter(this, "columns");
+        columns.setTypeEquals(new ArrayType(BaseType.STRING));
+        columns.setExpression("ALL");
+        
+        colorKey = new StringParameter(this, "colorKey");
+
         // FIXME: This should be in the library, not in the
         // Java code, since it depends on vergil.
-        BoxedValueIcon icon = new BoxedValueIcon(this, "_icon");
-        icon.displayHeight.setExpression("100");
-        icon.displayWidth.setExpression("20");
-        icon.attributeName.setExpression("contents");
+        TableIcon icon = new TableIcon(this, "_icon");
+        icon.variableName.setExpression("records");
+        icon.fields.setExpression("columns");
+        icon.colorKey.setExpression("$colorKey");
         
         // Customize the interaction by inserting this property.
         // This is done in the library,
@@ -107,8 +114,23 @@ public class ArrayOfRecordsRecorder extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     
-    /** Parameter to store the display string. */
-    public StringParameter contents;
+    /** A column name to use as a color key. If this string is
+     *  non-empty, then it specifies a column name that is used
+     *  to determine a color for each row. The value in that
+     *  row and column determines the color via a hash function,
+     *  so that if two rows are identical in that column, then
+     *  they are also identical in color.  This is a string that
+     *  defaults to empty, indicating that all rows should
+     *  be displayed in black.
+     */
+    public StringParameter colorKey;
+    
+    /** The columns to display in the table.
+     *  This is an array of strings specifying the column
+     *  names to display. It defaults to ALL, which indicates
+     *  that all fields should be displayed.
+     */
+    public Parameter columns;
 
     /** Parameter to store the array of records read at the input.
      *  This is an array of records that is by default empty.
@@ -124,11 +146,11 @@ public class ArrayOfRecordsRecorder extends Sink {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        // FIXME: We want to parameterize what is shown.
         if (input.hasToken(0)) {
             ArrayToken array = (ArrayToken)input.get(0);
             records.setToken(array);
             records.setPersistent(true);
+            /* FIXME
             StringBuffer display = new StringBuffer();
             for (int i = 0; i < array.length(); i++) {
                 RecordToken record = (RecordToken)array.getElement(i);
@@ -152,6 +174,7 @@ public class ArrayOfRecordsRecorder extends Sink {
                 + "\"/>";
             MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
             requestChange(request);
+            */
         }
     }
 
