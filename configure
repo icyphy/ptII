@@ -7158,6 +7158,7 @@ echo $ECHO_N "checking for the proper JNI library architecture... $ECHO_C" >&6
 		         PTJNI_LIB_ARCHITECTURE=unknown
 		     fi
                      ;;
+	    x86_64) PTJNI_LIB_ARCHITECTURE=amd64;;
 	    *) PTJNI_LIB_ARCHITECTURE=unknown;;
         esac
 
