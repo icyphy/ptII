@@ -183,8 +183,9 @@ public class RecordType extends StructuredType implements Cloneable {
 
         RecordToken recordToken = (RecordToken) token;
 
-        // The converted token has the same set of labels as this type.
-        Object[] labelArray = labelSet().toArray();
+        // The converted token has the same set of labels as the argument
+        // token, in order to ensure that conversion is lossless.
+        Object[] labelArray = recordToken.labelSet().toArray();
 
         // Arrays that will be used to create the new token.
         String[] labelStringArray = new String[labelArray.length];
@@ -198,7 +199,12 @@ public class RecordType extends StructuredType implements Cloneable {
             Type newFieldType = get(label);
 
             // If the type of the field is specified, then convert it.
-            values[i] = newFieldType.convert(fieldToken);
+            // Otherwise, leave it alone.
+            if (newFieldType != null) {
+                values[i] = newFieldType.convert(fieldToken);
+            } else {
+                values[i] = fieldToken;
+            }
 
             // Store the label for each field.
             labelStringArray[i] = label;
