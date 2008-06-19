@@ -51,6 +51,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	ArrayOfRecordsRecorder.java \
 	DatabaseManager.java \
+	DatabaseQuery.java \
 	DatabaseSelect.java
 
 OTHER_FILES_TO_BE_JARED = \
