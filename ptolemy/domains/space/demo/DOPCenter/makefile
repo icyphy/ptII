@@ -78,11 +78,12 @@ demo: demo_applet demo_ptolemy demo_vergil
 
 # Generate applet code (overwrites DOPCenter.htm and DOPCenterVergil.htm)
 copernicus:
-	 "$(PTII)/bin/copernicus" -codeGenerator applet -targetPath ptolemy/domains/space/demo/DOPCenter DOPCenter.xml
+	"$(PTII)/bin/copernicus" -codeGenerator applet -targetPath ptolemy/domains/space/demo/DOPCenter DOPCenter.xml
 
 # Generate applet code in a remote directory.  This command will
 # copy jar files to the remote directory 
-PTII_USER_DIRECTORY=c:/tmp/ptIIapplet
+# Don't use c: here, Solaris make fails.
+PTII_USER_DIRECTORY=/cygdrive/c/tmp/ptIIapplet
 $(PTII_USER_DIRECTORY):
 	if [ ! -d "$(PTII_USER_DIRECTORY)" ]; then \
 		mkdir -p "$(PTII_USER_DIRECTORY)/DOPCenter"; \
