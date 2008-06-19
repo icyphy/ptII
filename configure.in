@@ -3146,12 +3146,13 @@ else
 	PTSPACEDOMAIN_PACKAGES=ptolemy.domains.space
 
 	# Update PTDATABASE_JNLP_JARS, used to sign jar files in mk/jnlp.mk
+	# The sed commands remove $PTII/
 	PTDATABASE_JNLP_JARS="ptolemy/actor/lib/database/database.jar ptolemy/domains/space/space.jar"
 	if test -f "$ORACLE_OJDBC_JAR"; then
-	    PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$ORACLE_OJDBC_JAR" | sed "s@$PTII@@"`"
+	    PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$ORACLE_OJDBC_JAR" | sed "s@$PTII/@@"`"
 	fi
 	if test -f "$MYSQL_JAR"; then
-	    PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$MYSQL_JAR" | sed "s@$PTII@@"`"
+	    PTDATABASE_JNLP_JARS="$PTDATABASE_JNLP_JARS `echo "$MYSQL_JAR" | sed "s@$PTII/@@"`"
 	fi
     else  
         AC_MSG_WARN([Failed to find 
