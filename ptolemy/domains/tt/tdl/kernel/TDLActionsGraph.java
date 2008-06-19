@@ -95,10 +95,10 @@ public class TDLActionsGraph {
                     l = new ArrayList(); 
                     transitions.put(i * invocationPeriod, l);
                 } 
-                for (Iterator sensorIt = transition.requiredSensors.iterator(); sensorIt.hasNext(); ) {
-                    l.add(sensorIt.next());
-                }
-                l.add(transition);
+//                for (Iterator sensorIt = transition.requiredSensors.iterator(); sensorIt.hasNext(); ) {
+//                    l.add(sensorIt.next());
+//                }
+//                l.add(transition);
             }
         }
         // now we have a list containing time stamp, sensors to be read and transitions to be read

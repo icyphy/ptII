@@ -400,7 +400,7 @@ public class TDLModuleDirector extends ModalDirector {
                         .hasNext();) {
                     TDLTransition transition = (TDLTransition) transitionIterator
                             .next();
-                    transition.getDependentModuleInputPorts();
+                    //transition.getDependentModuleInputPorts();
                     scheduler.addModeSwitch(transition);
                 }
                 Refinement refinement = (Refinement) state.getRefinement()[0];
