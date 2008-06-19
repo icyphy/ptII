@@ -1026,7 +1026,7 @@ designdocv1_l4j.xml:
 		 doc/design/ptIIdesign1-intro.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/ptIIdesign1-intro.pdf
 designdocv1.exe: designdocv1_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) $<`
+	"$(L4JC)" `$(PTCYGPATH) designdocv1_l4j.xml`
 
 designdocv2_l4j.xml:
 	$(MKL4J) designdocv2 ptolemy.actor.gui.BrowserLauncher \
@@ -1034,7 +1034,7 @@ designdocv2_l4j.xml:
 	        doc/design/ptIIdesign2-software.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/ptIIdesign2-software.pdf
 designdocv2.exe: designdocv2_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) $<`
+	"$(L4JC)" `$(PTCYGPATH) designdocv2_l4j.xml`
 
 designdocv3_l4j.xml:
 	$(MKL4J) designdocv3 ptolemy.actor.gui.BrowserLauncher \
@@ -1042,14 +1042,14 @@ designdocv3_l4j.xml:
 		doc/design/ptIIdesign3-domains.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/ptIIdesign3-domains.pdf
 designdocv3.exe: designdocv3_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) $<`
+	"$(L4JC)" `$(PTCYGPATH) designdocv3_l4j.xml`
 
 histogram_l4j.xml:
 	$(MKL4J) histogram ptolemy.plot.plotml.HistogramMLApplication \
 		doc/img/histogram.ico \
 		"" ptolemy/plot/plotapplication.jar > $@
 histogram.exe: histogram_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) $^`
+	"$(L4JC)" `$(PTCYGPATH) histogram_l4j.xml`
 
 hyvisual_l4j.xml:
 	$(MKL4J) hyvisual ptolemy.vergil.VergilApplication \
@@ -1064,21 +1064,21 @@ hyvisualdoc_l4j.xml:
 		doc/design/hyvisual.pdf $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/hyvisual.pdf
 hyvisualdoc.exe: hyvisualdoc_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) $<`
+	"$(L4JC)" `$(PTCYGPATH) hyvisualdoc_l4j.xml`
 
 ptiny_l4j.xml: $(MKL4J)
 	$(MKL4J) ptiny ptolemy.vergil.VergilApplication \
 		doc/img/ptiny.ico \
 		-ptiny $(PTINY_JNLP_JARS) > $@
 ptiny.exe: ptiny_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) $^`
+	"$(L4JC)" `$(PTCYGPATH) ptiny_l4j.xml`
 
 ptplot_l4j.xml:
 	$(MKL4J) ptplot ptolemy.plot.plotml.EditablePlotMLApplication \
 		doc/img/ptplot.ico \
 		"" ptolemy/plot/plotapplication.jar > $@
 ptplot.exe: ptplot_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) $^`
+	"$(L4JC)" `$(PTCYGPATH) ptplot_l4j.xml`
 
 
 vergil_l4j.xml:
@@ -1086,7 +1086,7 @@ vergil_l4j.xml:
 		doc/img/vergil.ico \
 		"" $(FULL_JNLP_JARS) > $@
 vergil.exe: vergil_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) $^`
+	"$(L4JC)" `$(PTCYGPATH) vergil_l4j.xml`
 
 viptos_l4j.xml:
 	$(MKL4J) viptos ptolemy.vergil.VergilApplication \
@@ -1094,7 +1094,7 @@ viptos_l4j.xml:
 		-viptos $(VIPTOS_JNLP_JARS) > $@
 
 viptos.exe: viptos_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) $^`
+	"$(L4JC)" `$(PTCYGPATH) viptos_l4j.xml`
 
 visualsense_l4j.xml:
 	$(MKL4J) visualsense ptolemy.vergil.VergilApplication \
@@ -1102,14 +1102,14 @@ visualsense_l4j.xml:
 		-visualsense $(VISUAL_SENSE_JNLP_JARS) > $@
 
 visualsense.exe: visualsense_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) $^`
+	"$(L4JC)" `$(PTCYGPATH) visualsense_l4j.xml`
 
 visualsensedoc_l4j.xml:
 	$(MKL4J) visualsensedoc ptolemy.actor.gui.BrowserLauncher \
 		doc/img/pdf.ico $(DOC_JNLP_JARS) > $@
 	chmod a+x doc/design/visualsense.pdf
 visualsensedoc.exe: visualsensedoc_l4j.xml
-	"$(L4JC)" `$(PTCYGPATH) $<`
+	"$(L4JC)" `$(PTCYGPATH) visualsensedoc_l4j.xml`
 
 ################################################################
 ################################################################
