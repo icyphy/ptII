@@ -143,7 +143,7 @@ public class TextIcon extends DynamicEditorIcon {
 
     /** Specify origin of the text. The anchor should be one of the constants
      *  defined in {@link SwingConstants}.
-     *  @param text The anchor of the text.
+     *  @param anchor The anchor of the text.
      */
     public void setAnchor(final int anchor) {
         _anchor = anchor;
