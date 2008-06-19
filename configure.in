@@ -1246,7 +1246,7 @@ changequote([, ])dnl
 	    # jars="jdt.core osgi resources runtime" 
 	    # jdt.core core.runtime_ are needed to build backtrack
 	    # osgi_ and resources_ are needed to run the tests in backtrack
-	    jars="jdt.core_ core.runtime_ osgi_ core.resources_ equinox.common equinox.preferences core.jobs core.contenttype"
+	    jars="eclipse.jdt.core_ core.runtime_ osgi_ core.resources_ equinox.common equinox.preferences core.jobs core.contenttype"
 	    eclipsejarpath=
 	    for jar in $jars
 	    do
