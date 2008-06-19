@@ -87,7 +87,8 @@ test RecordType-1.2 {Create an instance with an UNKNOWN field} {
 
 ######################################################################
 ####
-# 
+# NOTE: I changed the following test so that lossless conversions are
+# performed rather than lossy ones.  EAL 6/19/08.
 test RecordType-2.0 {Test convert} {
     # token is {name = "foo", value = 1, extra = 2.5}
     set l1 [java::new {String[]} {3} {{name} {value} {extra}}]
@@ -101,12 +102,12 @@ test RecordType-2.0 {Test convert} {
 
     list [[$empRT convert $r1] toString] [[$sdRT convert $r1] toString] \
         [[[$r1 getType] convert $r1] toString]
-} {{{}} {{name = "foo", value = 1.0}} {{extra = 2.5, name = "foo", value = 1}}}
-
+} {{{extra = 2.5, name = "foo", value = 1}} {{extra = 2.5, name = "foo", value = 1.0}} {{extra = 2.5, name = "foo", value = 1}}}
 
 ######################################################################
 ####
-# 
+# NOTE: I changed the following test so that lossless conversions are
+# performed rather than lossy ones.  EAL 6/19/08.
 test RecordType-2.0.5 {Test convert: Converting from something with more records to less records fails} {
     # token is {name = "foo", value = 1}
     set l5 [java::new {String[]} {2} {{name} {value}}]
@@ -123,7 +124,7 @@ test RecordType-2.0.5 {Test convert: Converting from something with more records
         [[[$r5 getType] convert $r5] toString] \
         [[[$r5 getType] convert $r1] toString] "\n" \
 	$errMsg
-} {{{}} {{name = "foo", value = 1.0}} {{name = "foo", value = 1}} {{name = "foo", value = 1}} {
+} {{{name = "foo", value = 1}} {{name = "foo", value = 1.0}} {{name = "foo", value = 1}} {{extra = 2.5, name = "foo", value = 1}} {
 } {java.lang.IllegalArgumentException: Conversion is not supported from ptolemy.data.RecordToken '{name = "foo", value = 1}' to the type {extra = double, name = string, value = int}.}}
 
 #######################################################################
