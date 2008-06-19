@@ -215,9 +215,21 @@ public class VisualModelReference extends ModelReference {
         VisualModelReference newActor = (VisualModelReference) super
                 .clone(workspace);
         newActor._tableau = null;
+        newActor._effigy = null;
         return newActor;
     }
-
+    
+    @Override
+    public void initialize() throws IllegalActionException {
+        _effigy = null;
+        super.initialize();
+    }
+    
+    @Override
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+    }    
+    
     /** Run a complete execution of the referenced model.  A complete
      *  execution consists of invocation of super.initialize(), repeated
      *  invocations of super.prefire(), super.fire(), and super.postfire(),
@@ -319,20 +331,26 @@ public class VisualModelReference extends ModelReference {
                                     _exception, "Failed to open.");
                         }
                     } else {
-                        // Need an effigy for the model, or else graphical elements
-                        // of the model will not work properly.  That effigy needs
-                        // to be contained by the effigy responsible for this actor.
-                        PtolemyEffigy newEffigy = new PtolemyEffigy(myEffigy,
-                                myEffigy.uniqueName(_model.getName()));
-                        newEffigy.setModel(_model);
 
-                        // Since there is no tableau, this is probably not
-                        // necessary, but as a safety precaution, we prevent
-                        // writing of the model.
-                        newEffigy.setModifiable(false);
+                        // Need an effigy for the model, or else
+                        // graphical elements of the model will not
+                        // work properly.  That effigy needs to be
+                        // contained by the effigy responsible for
+                        // this actor.
 
-                        if (_debugging) {
-                            _debug("** Created new effigy for referenced model.");
+                        if (_effigy == null) {
+                            _effigy = new PtolemyEffigy(myEffigy,
+                                    myEffigy.uniqueName(_model.getName()));
+                            _effigy.setModel(_model);
+
+                            // Since there is no tableau, this is probably not
+                            // necessary, but as a safety precaution, we prevent
+                            // writing of the model.
+                            _effigy.setModifiable(false);
+
+                            if (_debugging) {
+                                _debug("** Created new effigy for referenced model.");
+                            }
                         }
                     }
                 } catch (NameDuplicationException ex) {
@@ -427,6 +445,9 @@ public class VisualModelReference extends ModelReference {
     // Tableau that has been created (if any).
     private Tableau _tableau;
 
+    // Effigy that has been created (if any).
+    private PtolemyEffigy _effigy;    
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

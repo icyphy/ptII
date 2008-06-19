@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -1107,7 +1109,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
 
         Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
-        _constraints.add(ineq);
+        addConstraint(ineq);
     }
 
     /** Constrain the type of this variable to be equal to or
@@ -1130,9 +1132,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         Inequality ineq = new Inequality(lesser.getTypeTerm(), this
                 .getTypeTerm());
-        _constraints.add(ineq);
+        addConstraint(ineq);
     }
-
+    
     /** Set a type constraint that the type of this object be less than
      *  or equal to the specified class in the type lattice.
      *  This replaces any constraint specified
@@ -1249,9 +1251,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         Inequality ineq = new Inequality(this.getTypeTerm(), equal
                 .getTypeTerm());
-        _constraints.add(ineq);
+        addConstraint(ineq);
         ineq = new Inequality(equal.getTypeTerm(), this.getTypeTerm());
-        _constraints.add(ineq);
+        addConstraint(ineq);
     }
 
     /** Mark the value of this variable to be unknown if the argument is
@@ -1960,6 +1962,36 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
     }
 
+    /** Add an inequality constraint. The constraint is only added if
+     * it does not already exist.
+     * 
+     * @param ineq The Inequality to add.
+     */
+    protected void addConstraint(Inequality ineq) {
+        Iterator it = _constraints.iterator();
+        boolean alreadyConstrained = false;
+        while ( !alreadyConstrained && it.hasNext()) {
+            Inequality i = (Inequality)it.next();
+            try {
+
+                // Note: The correct implementation here would be to
+                // implement Inequality.equals(Inequality i)
+
+                if (ineq.getGreaterTerm().getValue().equals(
+                                i.getGreaterTerm().getValue())
+                        && ineq.getLesserTerm().getValue().equals(
+                                i.getLesserTerm().getValue())) {
+                    alreadyConstrained = true;
+                }
+            } catch (IllegalActionException ex) {
+                // Ignore
+            }
+        }
+        if (!alreadyConstrained){
+            _constraints.add(ineq);
+        }
+    }    
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
