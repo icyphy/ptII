@@ -182,6 +182,16 @@ release_fortytwo_remote4_test:
 release_laptop:
 	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.1.devel COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
 
+release_nightly:
+	$(MAKE) -k REMOTE1HOME=/home/bldmastr \
+		PTII=/home/bldmastr/ptII \
+		PTIIHOME=/home/bldmastr/ptII \
+		JFLAGS="-deprecation -g -source 1.5" \
+		JSDATABASE=/home/bldmastr/jsdatabase \
+		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
+		JSCLASSPATH=/usr/local/JavaScope/JavaScope.jar \
+		test_setup
+
 # Rebuild the distributions
 rebuild: clean all installshield_app build_unixPtII
 
