@@ -142,7 +142,7 @@ test Ramp-2.2 {test with record} {
     $step setExpression "{name = \"b\", value = 2.5}"
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{{name = "a", value = 1.0}} {{name = "ab", value = 3.5}} {{name = "abb", value = 6.0}} {{name = "abbb", value = 8.5}} {{name = "abbbb", value = 11.0}}}
+} {{{extra1 = 2, name = "a", value = 1.0}} {{name = "ab", value = 3.5}} {{name = "abb", value = 6.0}} {{name = "abbb", value = 8.5}} {{name = "abbbb", value = 11.0}}}
 
 test Ramp-2.3 {check types of the above model} {
     set constOut [java::field [java::cast ptolemy.actor.lib.Source $ramp] output]
@@ -194,7 +194,7 @@ test Ramp-2.4 {test with record containing array} {
     $step setExpression "{name = \"b\", value = 2.5, anArray = {10, 20}}"
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{{anArray = {1.5, 2.5}, name = "a", value = 1.0}} {{anArray = {11.5, 22.5}, name = "ab", value = 3.5}} {{anArray = {21.5, 42.5}, name = "abb", value = 6.0}} {{anArray = {31.5, 62.5}, name = "abbb", value = 8.5}} {{anArray = {41.5, 82.5}, name = "abbbb", value = 11.0}}}
+} {{{anArray = {1.5, 2.5}, extra1 = 2, name = "a", value = 1.0}} {{anArray = {11.5, 22.5}, name = "ab", value = 3.5}} {{anArray = {21.5, 42.5}, name = "abb", value = 6.0}} {{anArray = {31.5, 62.5}, name = "abbb", value = 8.5}} {{anArray = {41.5, 82.5}, name = "abbbb", value = 11.0}}}
 
 test Ramp-2.5 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
