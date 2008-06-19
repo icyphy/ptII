@@ -3990,7 +3990,9 @@ test MoMLParser-25.1 {Replicated the problems I was having with adding a Sinewav
         </property>
     </entity>
 		    }]
-    # This fails because _hideName gets converted into a SingletonAttribute
+    # This now works because the filter is smarter.
+
+    # It used to fail because _hideName gets converted into a SingletonAttribute
     # by the filter and cannot be set twice	
 
     catch {$toplevel requestChange $change} errMsg1
@@ -3998,7 +4000,7 @@ test MoMLParser-25.1 {Replicated the problems I was having with adding a Sinewav
     list $errMsg1 \
 	    [$stream toString] \
 	    [$recorderErrorHandler getMessages]
-} {{} {StreamChangeRequest.changeFailed(): 
+} {{} {StreamChangeRequest.changeExecuted(): 
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="DocViewerAttribute" class="ptolemy.kernel.util.SingletonAttribute">
             <property name="viewer" class="ptolemy.kernel.util.Attribute">
@@ -4007,9 +4009,9 @@ test MoMLParser-25.1 {Replicated the problems I was having with adding a Sinewav
             </property>
         </property>
     </entity>
-		     failed: com.microstar.xml.XmlException: Property cannot be assigned a value: .testUserActorLibrary_OK_2_DELETE.CompositeActor.DocViewerAttribute._hideName (instance of class ptolemy.kernel.util.SingletonAttribute)
- in [external stream] at line 6 and column 72
+		     succeeded
 } {}}
+
 
 ######################################################################
 ####
