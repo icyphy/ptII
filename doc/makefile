@@ -774,7 +774,7 @@ codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt \
 ../ptolemy/configs/doc/models.txt: \
 			$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
 			../ptolemy/configs/doc/completeDemos.htm
-	(cd ../ptolemy/configs/doc; make mModels.txt)
+	(cd ../ptolemy/configs/doc; make models.txt)
 
 
 
