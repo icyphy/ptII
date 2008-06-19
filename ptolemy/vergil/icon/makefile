@@ -63,6 +63,7 @@ JSRCS = \
 	ResizableAttributeControllerFactory.java \
 	ShapeIcon.java \
 	SVGIcon.java \
+	TableIcon.java \
 	TextIcon.java \
 	UpdatedValueIcon.java \
 	ValueIcon.java \
