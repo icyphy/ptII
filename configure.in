@@ -2356,6 +2356,7 @@ else
 		         PTJNI_LIB_ARCHITECTURE=unknown
 		     fi    
                      ;;
+	    x86_64) PTJNI_LIB_ARCHITECTURE=amd64;;
 	    *) PTJNI_LIB_ARCHITECTURE=unknown;;
         esac
 
