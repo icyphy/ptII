@@ -81,6 +81,9 @@ public class Occupants extends ArrayOfRecordsRecorder {
         // here, the actor can't run headless.
         OccupantsConfigureFactory factory
                 = new OccupantsConfigureFactory(this, "factory");
+        
+        columns.setExpression("{\"deskno\", \"lname\"}");
+        // colorKey.setExpression("sponsorlname");
     }
 
     ///////////////////////////////////////////////////////////////////
