@@ -158,6 +158,16 @@ public class LabelFigure extends AbstractFigure {
         _anchor = anchor;
     }
 
+    /**
+     * Construct a label figure displaying the
+     * given string in the given font, with the given padding and anchor,
+     * and the given color.
+     */
+    public LabelFigure(String s, Font font, double padding, int anchor, Color color) {
+        this(s, font, padding, anchor);
+        _fillPaint = color;
+    }
+
     /** Choose an anchor point so as not to intersect a given
      * figure. The anchor point is cycled through until one is reached
      * such that the bounding box of the label does not intersect
