@@ -184,22 +184,14 @@ configure: configure.in
 	@echo "this problem."
 	autoconf
 
-# Arguments for svn2cl (http://ch.tudelft.nl/~arthur/svn2cl/),
-# which is used to generate a ChangeLog from the SVN logs.  
-# -W 3600 means unify entries that are within 3600 seconds or 1 hr.
-# -b means "Show branch names in revisions when possible"
-# -r means "Show revision numbers in output"
-# -t means "Show tags (symbolic names) in output"
-SVN2CL_ARGS = -W 3600 -b -r -t
-
 # Generate a ChangeLog file from the SVN logs
 # This rurequires that the SVN directory be present and takes
 # quite awhile to update
 ChangeLog:
 	@if [ -d .svn ]; then \
-		echo "Running ./util/svn2cl-0.10/svn2cl.sh"; \
+		echo "Running ./util/testsuite/gnuify-changelog.pl"; \
 		echo " This could take several minutes"; \
-		./util/svn2cl-0.10/svn2cl.sh $(SVNCL_ARGS); \
+		svn log | ./util/testsuite/gnuify-changelog.pl > ChangeLog; \
 	else \
 		echo ".svn directory not present, so we can't update $@"; \
 	fi
