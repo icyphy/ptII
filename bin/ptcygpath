@@ -2,7 +2,14 @@
 # $Id$
 # Script used by mk/jnlp.mk to handle pathnames
 #
-if [ $1 = "--windows" ]; then
+if [ $# -eq 0 ]; then
+    echo "$0: Script used by mk/jnlp.mk to handle pathnames"
+    echo "  Usage: $0 path" 
+    echo "  Usage: $0 --windows path" 
+    exit 2
+fi
+
+if [ "$1" = "--windows" ]; then
     shift;
     pwd=`pwd`
     echo `cygpath --windows $pwd/$1 | sed 's@\\\@/@g'`
