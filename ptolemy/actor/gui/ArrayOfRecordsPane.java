@@ -83,7 +83,7 @@ public class ArrayOfRecordsPane extends JPanel {
     }
 
     /** Set the array to display in the table.
-     *  @param matrix The array of records to display in the table.
+     *  @param array The array of records to display in the table.
      */
     public void display(ArrayToken array) {
         table.setModel(new ArrayAsTable(array));
