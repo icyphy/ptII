@@ -540,3 +540,42 @@ test Variable-14.1 {Check string with only spaces evaluation} {
     $var invalidate
     [$var getToken] toString
 } {"           "}
+
+
+test Variable-15.1 { setTypeAtLeast(InequalityTerm)} {
+    set e15 [java::new {ptolemy.kernel.Entity String} E15]
+    set p15 [java::new ptolemy.data.expr.Variable $e15 P15]
+    $p15 setToken [java::null]
+
+    set doubleClass [java::field ptolemy.data.type.BaseType DOUBLE]
+    set typeConstant15 [java::new ptolemy.data.type.TypeConstant $doubleClass]
+
+    $p15 {setTypeAtLeast ptolemy.graph.InequalityTerm} $typeConstant15
+    # Try adding the same type constraint twice:
+    $p15 {setTypeAtLeast ptolemy.graph.InequalityTerm} $typeConstant15
+
+    #listToStrings is defined in $PTII/util/testsuite/enums.tcl
+    list \
+	[[$p15 getType] toString] \
+	[[$p15 typeConstraintList] size] \
+	[listToStrings [$p15 typeConstraintList]]
+} {unknown 2 {{(TypeConstant, double) <= (ptolemy.data.expr.Variable {.E15.P15} value undefined, unknown)} {(TypeConstant, double) <= (ptolemy.data.expr.Variable {.E15.P15} value undefined, unknown)}}}
+
+test Variable-16.1 {setTypeAtLeast(Typeable)} {
+    set e16 [java::new {ptolemy.kernel.Entity String} E16]
+    set p16 [java::new ptolemy.data.expr.Variable $e16 P16]
+    $p16 setToken [java::null]
+
+    set tok16 [java::new  {ptolemy.data.DoubleToken double} 16.16]
+    set p16_2 [java::new ptolemy.data.expr.Variable $e16 P16_2 $tok16]
+
+    $p16 {setTypeAtLeast ptolemy.data.type.Typeable} $p16_2
+    # Try adding the same type constraint twice:
+    $p16 {setTypeAtLeast ptolemy.data.type.Typeable} $p16_2
+
+    #listToStrings is defined in $PTII/util/testsuite/enums.tcl
+    list \
+	[[$p16 getType] toString] \
+	[[$p16 typeConstraintList] size] \
+	[listToStrings [$p16 typeConstraintList]]
+} {unknown 2 {{(ptolemy.data.expr.Variable {.E16.P16_2} 16.16, double) <= (ptolemy.data.expr.Variable {.E16.P16} value undefined, unknown)} {(ptolemy.data.expr.Variable {.E16.P16_2} 16.16, double) <= (ptolemy.data.expr.Variable {.E16.P16} value undefined, unknown)}}}
