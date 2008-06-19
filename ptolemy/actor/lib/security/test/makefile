@@ -101,6 +101,9 @@ initialize_key:
 		$(ROOT)/bin/ptinvoke \
 		ptolemy.actor.gui.MoMLSimpleApplication auto/KeyWriter.xml 
 	@echo "Note that the key is of type JCEKS, which is not the default"
+	@echo "If you get 'Provider fully qualified class name:', then check"
+	@echo "which version of keytool you are running.  You should be "
+	@echo "running a Sun version, the GNU gcj version will _not_ work" 
 	keytool -list -keystore auto/foo.keystore \
                 -storepass  this.is.the.storePassword,change.it \
 		-storetype JCEKS
