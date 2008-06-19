@@ -1328,6 +1328,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  @see ptolemy.graph.Inequality
      */
     public List typeConstraintList() {
+        // FIXME: Perhaps this should be a Set, not a List, since each 
+        // element should be unique and ordering should not matter.
+
         // Include all relative types that have been specified.
         List result = new LinkedList();
         result.addAll(_constraints);
@@ -2246,6 +2249,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     private static StringToken _EMPTY_STRING_TOKEN = new StringToken("");
 
     // Type constraints.
+    // FIXME: Perhaps this should be a Set, not a List, since each 
+    // element should be unique and ordering should not matter.
     private List _constraints = new LinkedList();
 
     // The type set by setTypeEquals(). If _declaredType is not
