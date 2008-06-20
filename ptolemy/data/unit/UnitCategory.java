@@ -94,7 +94,9 @@ public class UnitCategory extends Attribute {
                 .getName());
     }
 
-    /** Return the base unit */
+    /** Return the base unit.
+     *  @return The base unit.
+     */
     public BaseUnit getBaseUnit() {
         return (BaseUnit) (getContainer());
     }
