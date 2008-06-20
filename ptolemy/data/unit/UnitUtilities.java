@@ -72,6 +72,9 @@ public class UnitUtilities {
      *  array.  The size of the returned array will be the maximum of
      *  the size of the two input arrays, or null if both input arrays
      *  are unitless.
+     *  @param units1 The first array of units. 
+     *  @param units2 The second array of units. 
+     *  @return The unit sum of the two arrays.
      */
     public static int[] addUnitsArray(int[] units1, int[] units2) {
         boolean isUnitless1 = isUnitless(units1);
@@ -171,6 +174,7 @@ public class UnitUtilities {
 
     /** Return a copy of the given units array. If the given array is
      *  unitless, then return null.
+     *  @param units The given array of units.
      *  @return An int array that is a copy of the unit category
      *  exponents of this token.
      */
@@ -208,6 +212,7 @@ public class UnitUtilities {
     }
 
     /** Return the number of currently registered categories.
+     *  @return the number of currently registered categories.
      */
     public static int getNumCategories() {
         return _categories;
@@ -232,6 +237,7 @@ public class UnitUtilities {
 
     /** Return true if the given unit array is null, or the exponents for
      *  each index are zero.
+     *  @return true if the given unit array is unitless.
      */
     public static boolean isUnitless(int[] exponents) {
         if (exponents != null) {
@@ -251,6 +257,7 @@ public class UnitUtilities {
     /** Return a new units array that has the element at the given
      *  index set to one.
      *  @param index The unit category index.
+     *  @return a new unit array in the specified category
      */
     public static int[] newUnitArrayInCategory(int index) {
         int[] units = new int[index + 1];
@@ -303,8 +310,10 @@ public class UnitUtilities {
         }
     }
 
-    /** Add the exponent array of this token with the argument array,
-     *  and return the result in a new array.
+    /** Subtract the given unit arrays and return the result in a new array.
+     *  @param units1 The first array of units. 
+     *  @param units2 The second array of units. 
+     *  @return The unit difference of the two arrays.
      */
     public static int[] subtractUnitsArray(int[] units1, int[] units2) {
         // negate the exponents of the argument token and add to
@@ -342,6 +351,7 @@ public class UnitUtilities {
      *  If there is no term above "/", the format becomes
      *  "1 / (s_1 * s_2 * ... * s_n)". For example: "1 / meter".
      *  If the unit array is unitless, then return an empty string.
+     *  @param units the given array of units.
      *  @return A string representation of the given units array.
      */
     public static String unitsString(int[] units) {
