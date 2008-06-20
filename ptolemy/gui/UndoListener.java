@@ -115,7 +115,7 @@ public class UndoListener implements UndoableEditListener {
     /** The redo action. */
     protected RedoAction _redoAction = new RedoAction();
 
-    /** The undo manager */
+    /** The undo manager. */
     protected UndoManager _undo = new UndoManager();
     
 
@@ -138,6 +138,9 @@ public class UndoListener implements UndoableEditListener {
             _redoAction._updateRedoState();
         }
 
+        /** Depending on the whether the undo manager can undo, enable
+         *  and disable the undo state.
+         */
         protected void _updateUndoState() {
             if (_undo.canUndo()) {
                 setEnabled(true);
@@ -166,6 +169,9 @@ public class UndoListener implements UndoableEditListener {
             _undoAction._updateUndoState();
         }
 
+        /** Depending on the whether the undo manager can redo, enable
+         *  and disable the undo state.
+         */
         protected void _updateRedoState() {
             if (_undo.canRedo()) {
                 setEnabled(true);
