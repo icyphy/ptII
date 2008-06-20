@@ -107,6 +107,77 @@ test PropertyClassChanges-1.1 {A _hideName that is after an Attribute} {
     </entity>
 </entity>
 }}
+
+
+
+set modalMoml  "$header 
+<entity name=\"PropertClassChangesTest\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"modeCtrl\" class=\"ptolemy.domains.fsm.modal.ModalModel\">
+        <property name=\"directorClass\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"ptolemy.domains.hdf.kernel.HDFFSMDirector\">
+            <property name=\"style\" class=\"ptolemy.actor.gui.style.ChoiceStyle\">
+                <property name=\"style0\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"ptolemy.domains.fsm.kernel.HSDirector\">
+                </property>
+                <property name=\"style1\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"ptolemy.domains.fsm.kernel.FSMDirector\">
+                </property>
+                <property name=\"style2\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"ptolemy.domains.hdf.kernel.HDFFSMDirector\">
+                </property>
+            </property>
+        </property>
+        <property name=\"_Director\" class=\"ptolemy.domains.hdf.kernel.HDFFSMDirector\">
+            <property name=\"controllerName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"_Controller\">
+            </property>
+        </property>
+        <property name=\"_tableauFactory\" class=\"ptolemy.vergil.fsm.modal.ModalTableauFactory\">
+        </property>
+    </entity>
+</entity>"
+
+######################################################################
+####
+#
+test PropertyClassChanges-1.2 {Remove _Director from a modal model, based on domains/hdf/kernel/test/auto/DifferentRefinedRates3.xml} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+
+    #$parser addMoMLFilters \
+    #	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    set filter [java::new ptolemy.moml.filter.PropertyClassChanges]
+
+
+    # ptolemy.copernicus.kernel.KernelMain does this
+    $filter put "ptolemy.copernicus.kernel.GeneratorAttribute" [java::null]
+
+    $parser addMoMLFilter $filter
+    set toplevel [$parser parse $modalMoml]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PropertClassChangesTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <entity name="modeCtrl" class="ptolemy.domains.fsm.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                </property>
+                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                </property>
+                <property name="style2" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        </property>
+    </entity>
+</entity>
+}}
+
 # This should be the last test
 
 # test PropertyClassChanges-999 {clear} {
