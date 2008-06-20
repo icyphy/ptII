@@ -36,7 +36,9 @@ import ptolemy.moml.MoMLParser;
 //////////////////////////////////////////////////////////////////////////
 //// UpdateAnnotations
 
-/** When this class is registered with the MoMLParser.addMoMLFilter()
+/** 
+ Update the annotations. 
+ <p>When this class is registered with the MoMLParser.addMoMLFilter()
  method, it will cause MoMLParser to add a update annotations from
  the older style:
  <pre>
@@ -76,7 +78,7 @@ For hybrid system models, use the CTEmbeddedDirector.&lt;/text&gt;&lt;/svg&gt;&l
 public class UpdateAnnotations implements MoMLFilter {
 
     /** Update annotations by removing old annotations and replacing
-     *  them with new annotation If the attributeName is "name" and
+     *  them with new annotation. If the attributeName is "name" and
      *  attributeValue begins with with "annotation", then replace the
      *  property with a TextAttribute
      *
