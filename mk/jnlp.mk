@@ -332,6 +332,8 @@ FULL_ONLY_JNLP_JARS = \
 	doc/design/design.jar \
 	doc/img/img.jar \
 	$(PTJACL_JARS) \
+	ptolemy/actor/gt/gt.jar \
+	ptolemy/actor/gt/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
 	vendors/sun/commapi/comm.jar \
