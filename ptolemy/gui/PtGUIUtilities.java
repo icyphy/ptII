@@ -35,7 +35,7 @@ import ptolemy.util.StringUtilities;
 //// PtGUIUtilities
 
 /**
- GUI Utilities
+ GUI Utilities.
 
  @author Christopher Brooks
  @version $Id$
