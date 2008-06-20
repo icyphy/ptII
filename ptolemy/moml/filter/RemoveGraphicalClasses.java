@@ -103,6 +103,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
 
     /** In this class, do nothing.
      *  @param container The object created by this element.
+     *  @param elementName The element name.
      *  @param currentCharData The character data, which appears
      *  only in the doc and configure elements
      *  @exception Exception Not thrown in this base class.
