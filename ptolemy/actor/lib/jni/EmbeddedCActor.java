@@ -1,6 +1,6 @@
 /* An actor that executes compiled embedded C code.
 
- Copyright (c) 2007 The Regents of the University of California.
+ Copyright (c) 2007-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,9 +44,10 @@ import ptolemy.kernel.util.StringAttribute;
 
 /**
  An actor of this class executes compiled embedded C Code.
- To use it, double click on the actor and insert C code into
- the code templates, as indicated by the sample template.
- Normally you will also need to add ports to the actor.
+
+ <p>To use this actor within Vergil, double click on the actor and
+ insert C code into the code templates, as indicated by the sample
+ template.  Normally you will also need to add ports to the actor.
  You may need to set the types of these ports as well.
 
  @author Gang Zhou
@@ -126,31 +127,17 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The C code that specifies the function of this actor.
-     *  The default value provides a template for an identity function.
+    /** The C code that specifies the function of this actor.  The
+     *  default value is the code necessary to implement a identity
+     *  function.
      */
     public StringAttribute embeddedCCode;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    //FIXME: Note that the next block is not a javadoc, I changed /** to /*
-    /* If <i>embeddedCCode</i> is changed, compile the changed C Code.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If there is any error in evaluating
-     *   the embedded C code.
+    /** Create the embedded actor and add ports to it.
      */
-    /*
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == embeddedCCode) {
-            _generateandCompileCCode();
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
-    */
-
     public void preinitialize() throws IllegalActionException {
         try {
             setEmbeddedActor();
@@ -176,6 +163,8 @@ public class EmbeddedCActor extends CompiledCompositeActor {
         super.preinitialize();
     }
 
+    /** Remove inside relations.
+     */
     public void wrapup() throws IllegalActionException {
         try {
             Iterator ports = portList().iterator();
@@ -207,13 +196,23 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     ////                         protected methods                 ////
 
     /** 
-     * Create a new instance instance of EmbeddedActor.  It is separated into
-     * its own function so that EmbeddedCFileActor can extend this class without
-     * a large amount of code duplication.  This method needs to be overwritten in 
-     * EmbeddedCFileActor to create a new instance of EmbeddedFileActor rather 
-     * than EmbeddedActor.
+     * Create a new instance instance of EmbeddedActor.  
+     * Derived classes should override this method and create their
+     * own instances as necessary.
+     *  @exception NameDuplicationException If the container already
+     *   has an actor with this name.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
      */
-    protected void setEmbeddedActor() throws IllegalActionException, NameDuplicationException{
+    protected void setEmbeddedActor()
+            throws IllegalActionException, NameDuplicationException{
+
+        // This code was separated into its own function so that
+        // EmbeddedCFileActor can extend this class without a large
+        // amount of code duplication.  This method needs to be
+        // overwritten in EmbeddedCFileActor to create a new instance
+        // of EmbeddedFileActor rather than EmbeddedActor.
+
         _embeddedActor = new EmbeddedActor(this, "EmbeddedActor");
     }
     
@@ -231,7 +230,8 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     protected String _getFireBlock() {
         String code = "/***fireBlock***/\n"
                 + "// Assuming you have added an input port named \"input\"\n"
-                + "// and an output port named \"output\", then the following\n"
+                + "// and an output port named \"output\", "
+                + "then the following\n"
                 + "// line results in the input being copied to the output.\n"
                 + "//$ref(output) = $ref(input);\n" + "/**/\n\n";
         return code;
@@ -262,9 +262,15 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected variables               ////
 
+    /** The embedded actor used to contain the ports to the C
+     * implementation.
+     */
     protected EmbeddedActor _embeddedActor = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** An actor inside the EmbeddedCActor that is used as a dummy
      *  placeholder.  The EmbeddedActor is created in preinitialize() where
