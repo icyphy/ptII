@@ -150,6 +150,10 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/lib/ptcolt.jar"
                   targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../jar_dist/ptolemy/actor/gt/gt.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/gt/gt.jar"/>
+            <file src="../../jar_dist/ptolemy/actor/gt/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/gt/demo/demo.jar"/>
             <file src="../../jar_dist/ptolemy/actor/lib/colt/colt.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/colt"/>
             <file src="../../jar_dist/ptolemy/actor/lib/colt/demo/demo.jar"
