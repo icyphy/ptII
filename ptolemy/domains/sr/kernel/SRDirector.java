@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  A director for the Synchronous Reactive (SR) model of computation.
- </p><p>
+ <p>
  The SR director has a <i>period</i> parameter which specifies the
  amount of model time that elapses per iteration. If the value of
  <i>period</i> is 0.0 (the default), then it has no effect, and
