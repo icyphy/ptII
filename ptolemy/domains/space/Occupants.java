@@ -102,7 +102,17 @@ public class Occupants extends ArrayOfRecordsRecorder {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     
+    /** An interactive editor that configures the occupants. */
     public class OccupantsConfigureFactory extends EditorFactory {
+
+        /** Construct a factory with the specified container and name.
+         *  @param container The container.
+         *  @param name The name of the factory.
+         *  @exception IllegalActionException If the factory is not of an
+         *   acceptable attribute for the container.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
         public OccupantsConfigureFactory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
