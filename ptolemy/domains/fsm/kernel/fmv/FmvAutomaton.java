@@ -109,13 +109,18 @@ public class FmvAutomaton extends FSMActor {
     }
 
     /**
-     * Return an StringBuffer that contains the .smv format of the FmvAutomaton.
+     * Return an StringBuffer that contains the .smv format of the
+     * FmvAutomaton.
      * 
-     * @param formula The temporal formula used to be attached in the .smv file.
+     * @param formula The temporal formula used to be attached in the
+     * .smv file.
+
      * @param choice The type of the formula. It may be either a CTL or LTL
      *               formula.
      * @param span A constant used to expand the size of the rough domain.
      * @return The .smv format of the FmvAutomaton.
+     * @exception IllegalActionException If there is a problem with
+     * the conversion.  
      */
     public StringBuffer convertToSMVFormat(String formula, String choice,
             String span) throws IllegalActionException {
