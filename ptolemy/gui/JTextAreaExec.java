@@ -229,7 +229,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     }
 
     /** Get the value of the environment of the subprocess.
-     *  @param key   
+     *  @param key  The environment variable.
      *  @return The value of the key.  If the key is not set, then 
      *  null is returned.  If appendToPath() has been called, and
      *  the then the environment for the subprocess is checked, which
