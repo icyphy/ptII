@@ -1154,7 +1154,7 @@ public class TableauFrame extends Top {
             return false;
         }
 
-        /**  The description of this filter */
+        /**  The description of this filter. */
         public String getDescription() {
             StringBuffer result = new StringBuffer();
             Iterator extensions = _extensions.iterator();
