@@ -60,8 +60,8 @@ public class ObjectToken extends Token {
     /** Construct a token with a reference to the specified object.
      *  @param value The specified object referred to by this token.
      *  @exception IllegalActionException If the argument is not of
-     *  the appropriate type
-     *  (may be thrown by derived classes, but is not thrown here).
+     *  the appropriate type (may be thrown by derived classes, but is
+     *  not thrown here).
      */
     public ObjectToken(Object value) throws IllegalActionException {
         _value = value;
@@ -73,9 +73,11 @@ public class ObjectToken extends Token {
      *
      *  @param value The value.
      *  @param valueClass The class of the value.
+     *  @exception IllegalActionException If the argument is not of
+     *  the appropriate type.  
      */
     public ObjectToken(Object value, Class<?> valueClass)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (value != null && valueClass != null &&
                 !valueClass.isInstance(value)) {
             throw new IllegalActionException("The value " + value + " is not "
