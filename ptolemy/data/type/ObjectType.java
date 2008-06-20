@@ -33,28 +33,31 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- A type of tokens that contain arbitrary Java objects. An instance of this class
- specifies the Java class that the contents of the ObjectTokens of that type
- must be instances of.
 
- A special type lattice is defined for variants of ObjectType. The top element
- of the elements in the type lattice is an ObjectType that does not specify any
- Java class as the class for the contents of its tokens. In the expression
- language, that element can be referred to with "object" or "object()". Any
- ObjectToken conforms to this type. A subtype of this type specifies a Java
- class. In the expression language, such a subtype can be defined with
- "object(string)", where string is a string (starting and ending with a quote).
- For example, the following expression refers to a variant of ObjectType to
- which only ObjectTokens containing atomic actors as their contents conform:
- <pre>object("ptolemy.actor.AtomicActor")</pre>
- This ObjectType is a subtype of the most general ObjectType, "object".
- Furthermore, it is also a subtype of "object(\"ptolemy.kernel.Entity\")", and
- at the same time a supertype of "object(\"ptolemy.actor.lib.Const\")".
+ A type of tokens that contain arbitrary Java objects. An instance of
+ this class specifies the Java class that the contents of the
+ ObjectTokens of that type must be instances of.
 
- The bottom element of the type lattice is an artificial ObjectType with {@link
- BottomClass} as its specified Java class. In Java, the class hierarchy does not
- form a lattice, so this artificial type is needed to be the greatest lower
- bound for any two classes if one is not a subclass of the other.
+ <p>A special type lattice is defined for variants of ObjectType. The
+ top element of the elements in the type lattice is an ObjectType that
+ does not specify any Java class as the class for the contents of its
+ tokens. In the expression language, that element can be referred to
+ with "object" or "object()". Any ObjectToken conforms to this type. A
+ subtype of this type specifies a Java class. In the expression
+ language, such a subtype can be defined with "object(string)", where
+ string is a string (starting and ending with a quote).  For example,
+ the following expression refers to a variant of ObjectType to which
+ only ObjectTokens containing atomic actors as their contents conform:
+ <pre>object("ptolemy.actor.AtomicActor")</pre> This ObjectType is a
+ subtype of the most general ObjectType, "object".  Furthermore, it is
+ also a subtype of "object(\"ptolemy.kernel.Entity\")", and at the
+ same time a supertype of "object(\"ptolemy.actor.lib.Const\")".
+
+ <p>The bottom element of the type lattice is an artificial ObjectType
+ with {@link BottomClass} as its specified Java class. In Java, the
+ class hierarchy does not form a lattice, so this artificial type is
+ needed to be the greatest lower bound for any two classes if one is
+ not a subclass of the other.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -73,8 +76,8 @@ public class ObjectType implements Type {
         this(null);
     }
 
-    /** Construct an ObjectType with the given Java class as the class specified
-     *  in it.
+    /** Construct an ObjectType with the given Java class as the class
+     *  specified in it.
      *
      *  @param valueClass The Java class.
      */
@@ -82,12 +85,13 @@ public class ObjectType implements Type {
         _class = valueClass;
     }
 
-    /** Construct an ObjectType with the given Java class as the class specified
-     *  in it.
+    /** Construct an ObjectType with the given Java class as the class
+     *  specified in it.
      *
      *  @param value The actual object value, or null if the value is unknown.
      *  @param valueClass The Java class.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If the <i>value</i> is not
+     *  an instance of <i>valueClass</i>.
      */
     public ObjectType(Object value, Class<?> valueClass)
     throws IllegalActionException {
