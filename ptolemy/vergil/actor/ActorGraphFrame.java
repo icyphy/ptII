@@ -290,17 +290,25 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
     // The delay time specified that last time animation was set.
     private long _lastDelayTime = 0;
 
-    // /////////////////////////////////////////////////////////////////
-    // // public inner classes ////
+    ///////////////////////////////////////////////////////////////////
+    //// public inner classes ////
     
-    // /////////////////////////////////////////////////////////////////
-    // // ActorGraphPane
+    ///////////////////////////////////////////////////////////////////
+    //// ActorGraphPane
 
     /**
      * Subclass that updates the background color on each repaint if there is a
      * preferences attribute.
      */
     public static class ActorGraphPane extends GraphPane {
+        /**
+         * Create a pan that updates the background color on each repaint
+         * if there is a preference attribute.
+         *
+         * @param controller an ActorEditorGraphController object
+         * @param model an ActorGraphModel object
+         * @param entity a NamedObj object
+         */
         public ActorGraphPane(ActorEditorGraphController controller,
                 ActorGraphModel model, NamedObj entity) {
             super(controller, model);
