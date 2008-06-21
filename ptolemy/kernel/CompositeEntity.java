@@ -460,6 +460,15 @@ public class CompositeEntity extends ComponentEntity {
      *  To remove the relation, call its setContainer() method with a null
      *  argument. This method is write-synchronized on the workspace
      *  and increments its version number.
+
+     *  <p>Note that if this method is being called many times, then
+     *  it may be more efficient to use 
+     *  {@link #connect(ComponentPort, ComponentPort, String)}
+     *  instead of this method because this method calls
+     *  {@link #uniqueName(String)} each time, which
+     *  searches the object for attributes, ports, entities and relations
+     *  that may match a candidate unique name.
+     *  
      *  @param port1 The first port to connect.
      *  @param port2 The second port to connect.
      *  @return The ComponentRelation that is created to connect port1 and
@@ -1459,6 +1468,11 @@ public class CompositeEntity extends ComponentEntity {
      *  a subclass), then the prefix gets appended with "_<i>n</i>_",
      *  where <i>n</i> is the depth of this deferral. That is, if the object
      *  deferred to also defers, then <i>n</i> is incremented.
+     *  <p>Note that this method should be called judiciously from when
+     *  the CompositeEntity is large.  The reason is that this method 
+     *  searches for matching attributes, ports, classes, entities
+     *  and relations, which can result in slow performance.
+     *
      *  @param prefix A prefix for the name.
      *  @return A unique name.
      */
@@ -1488,6 +1502,17 @@ public class CompositeEntity extends ComponentEntity {
             // Derivation invariant is not satisified.
             throw new InternalErrorException(e);
         }
+
+        // FIXME: because we start with 2 each time, then if
+        // we are calling this method many times we will need
+        // to search the CompositeEntity for matching 
+        // attributes,  ports, entities and releations.
+        // This will have poor behaviour for large CompositeEntities.
+        // However, if we cached the uniqueNameIndex, then
+        // it would tend to increase over time, which would be
+        // unusual if we created a relation (_R2), deleted it
+        // and created another relation, which would get the name
+        // _R3, instead of _R2.
 
         int uniqueNameIndex = 2;
 
