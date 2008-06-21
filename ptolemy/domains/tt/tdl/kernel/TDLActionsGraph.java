@@ -4,23 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.modal.ModalPort;
 import ptolemy.domains.fsm.modal.Refinement;
-import ptolemy.domains.fsm.modal.RefinementPort;
 import ptolemy.domains.tt.kernel.LetTask;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-
+   
 /**
  * Build a graph containing all TDL actions.
  * @author Patricia Derler
@@ -40,12 +37,21 @@ public class TDLActionsGraph {
     
     private FSMActor controller;
     private TDLModule module;
-    private HashMap _modeSwitchStarts = new HashMap();
-    private HashMap _modeSwitchEnds = new HashMap();
-    private HashMap _readSensors = new HashMap();
-    private HashMap _writtenTaskOutputPorts = new HashMap();
-    private HashMap _readTaskInputPorts = new HashMap();
-    private HashMap _connectedTaskPorts = new HashMap();
+    private HashMap _tmpModeSwitchStarts = new HashMap();
+    private HashMap _tmpModeSwitchEnds = new HashMap();
+    private HashMap _tmpReadSensors = new HashMap();
+    private HashMap _tmpWrittenTaskOutputPorts = new HashMap();
+    private HashMap _tmpReadTaskInputPorts = new HashMap();
+    private HashMap _tmpConnectedTaskPorts = new HashMap();
+    
+    /**
+     * store all mode switch entry and exit points for all modes
+     * 
+     * mode1: modeSwitch1 : Edge(entry, exit)
+     *        modeSwtich2 : Edge(entry, exit)
+     * mode2: ...
+     */
+    private HashMap _modeSwitches = new HashMap();
     
     /**
      * Build the graph.
@@ -58,17 +64,55 @@ public class TDLActionsGraph {
             graph = new Graph();
             try {
                 long modePeriod = (long) (TDLModuleDirector.getModePeriod(state) / controller.getDirector().getTimeResolution());
-                
                 _getTransitions(state, refinement, modePeriod);
                 _getTasks(refinement, modePeriod);
                 _getActuators(refinement, modePeriod);
-                
-                int i = 0;
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            // reset all temporary lists, only store mode switches. those are the connection points between modes
+            _resetsTempVars();
         }
-        
+        _connectModes();
+        //_displayGraph();
+    }
+    
+    
+   
+
+
+    private void _resetsTempVars() {
+        _tmpReadSensors.clear();
+        _tmpWrittenTaskOutputPorts.clear();
+        _tmpReadTaskInputPorts.clear();
+        _tmpConnectedTaskPorts.clear();
+        _tmpModeSwitchStarts.clear();
+        _tmpModeSwitchEnds.clear();        
+    }
+
+    private void _connectModes() {
+        // connect mode switches of all modes.
+        for (Iterator modeIt = _modeSwitches.keySet().iterator(); modeIt.hasNext(); ) {
+            State mode = (State) modeIt.next();
+            
+            for (Iterator nodePairsIt = ((List)_modeSwitches.get(mode)).iterator(); nodePairsIt.hasNext(); ) {
+                Object[] nodePair = (Object[]) nodePairsIt.next();
+                
+                Node sourceModeNode = (Node) nodePair[0];
+                TDLTransition transition = (TDLTransition) ((TDLGraphNode)sourceModeNode.getWeight()).object;
+                State targetMode = transition.destinationState();
+                
+                for (Iterator targEdgeIt = ((List)_modeSwitches.get(targetMode)).iterator(); targEdgeIt.hasNext(); ) {
+                    Object[] nodePair2 = (Object[]) targEdgeIt.next();
+                    Node targetModeNode = (Node) nodePair2[1];
+                    if (((TDLGraphNode)targetModeNode.getWeight()).time == 0) {
+                        Edge edge = new Edge(sourceModeNode, targetModeNode, 0);
+                        graph.addEdge(edge);
+                        break;
+                    }
+                }
+            }
+        }
     }
     
 
@@ -83,65 +127,81 @@ public class TDLActionsGraph {
     private void _getTransitions(State state, Refinement refinement, long modePeriod) throws IllegalActionException, TDLModeSchedulerException {
         // sort transitions here
         
-        HashMap transitions = new HashMap();
+        HashMap sensorsAndTransitions = new HashMap();
         
         for (Iterator it = state.nonpreemptiveTransitionList().iterator(); it.hasNext(); ) {
             TDLTransition transition = (TDLTransition) it.next();
             int frequency = TDLModeScheduler.getFrequency((NamedObj) transition);
             long invocationPeriod = modePeriod / frequency;
             for (int i = 0; i < frequency; i++) {
-                List l = (List) transitions.get(i);
+                List l = (List) sensorsAndTransitions.get(i);
                 if (l == null) {
                     l = new ArrayList(); 
-                    transitions.put(i * invocationPeriod, l);
+                    sensorsAndTransitions.put(i * invocationPeriod, l);
                 } 
-//                for (Iterator sensorIt = transition.requiredSensors.iterator(); sensorIt.hasNext(); ) {
-//                    l.add(sensorIt.next());
-//                }
-//                l.add(transition);
+                for (Iterator sensorIt = transition.requiredSensors.iterator(); sensorIt.hasNext(); ) {
+                    l.add(sensorIt.next());
+                }
+                l.add(transition);
             }
         }
         // now we have a list containing time stamp, sensors to be read and transitions to be read
         
         // create graphs 
-        for (Iterator transListIt = transitions.keySet().iterator(); transListIt.hasNext(); ) {
+        for (Iterator transListIt = sensorsAndTransitions.keySet().iterator(); transListIt.hasNext(); ) {
             Node node = null, prev = null;
             long invocationTime = (Long) transListIt.next();
-            List l = (List) transitions.get(invocationTime);
-            for (Iterator it = l.iterator(); it.hasNext(); ) {
-                Object o = it.next();
-                if (! (o instanceof TDLTask))
-                    continue;
-                Actor actor = (Actor) o; 
-                if (actor instanceof IOPort) {
-                    node = new Node(new TDLGraphNode(invocationTime, TDLGraphNode.READSENSOR, actor));
-                    _registerSensorReading(invocationTime, (IOPort) actor);
-                } else // transition
-                    node = new Node(new TDLGraphNode(invocationTime, TDLGraphNode.MODESWITCH, actor));
-                graph.addNode(node);
+            Node endNode = new Node(new TDLGraphNode(invocationTime, TDLGraphNode.MODESWITCHNOTTAKEN, null));
+            graph.addNode(endNode);
+            List l = (List) sensorsAndTransitions.get(invocationTime);
+            for (int i = 0; i < l.size(); i++) {
+                Object sensorOrTransition = l.get(i); 
+                
+                if (sensorOrTransition instanceof ModalPort) {
+                    node = new Node(new TDLGraphNode(invocationTime, TDLGraphNode.READSENSOR, sensorOrTransition));
+                    graph.addNode(node);
+                    _registerSensorReading(invocationTime, (IOPort) sensorOrTransition);
+                } else {// transition
+                    node = new Node(new TDLGraphNode(invocationTime, TDLGraphNode.MODESWITCH, sensorOrTransition));
+                    graph.addNode(node);
+                    _registerModeSwitch(state, node, endNode);
+                }
                 if (prev != null) {
                     Edge edge = new Edge(prev, node, 0);
                     graph.addEdge(edge);
                 } else {
-                    _modeSwitchStarts.put(invocationTime, node);
+                    _tmpModeSwitchStarts.put(invocationTime, node);
                 }
+                prev = node;
             }
-            _modeSwitchEnds.put(invocationTime, node);
+            
+            Edge edge = new Edge(prev, endNode, 0);
+            graph.addEdge(edge);
+            //_modeSwitchEnds.put(invocationTime, node);
         }
         // now we have transitions and sensor readings in the graph; the transitions for the same time are connected
         // graphStarts and graphEnds contain starts end ends of those subgraphs
         
     }
     
+    private void _registerModeSwitch(State state, Node transition, Node transitionNotTaken) {
+        List l = (List) _modeSwitches.get(state);
+        if (l == null) {
+            l = new ArrayList();
+            _tmpReadTaskInputPorts.put(state, l);
+        }
+        l.add(new Object[]{transition, transitionNotTaken});
+    }
+
     /**
      * Save that a sensor value was read at a certain point in time.
      * invocationTime: sensor1, sensor2, ...
      */
     private void _registerSensorReading(long invocationTime, IOPort sensor) {
-        List l = (List) _readSensors.get(invocationTime);
+        List l = (List) _tmpReadSensors.get(invocationTime);
         if (l == null) {
             l = new ArrayList();
-            _readSensors.put(invocationTime, l);
+            _tmpReadSensors.put(invocationTime, l);
         }
         l.add(sensor);
     }
@@ -152,10 +212,10 @@ public class TDLActionsGraph {
      * @param port
      */
     private void _registerTaskOutputPortWriting(long invocationTime, IOPort port)  {
-        List l = (List) _writtenTaskOutputPorts.get(invocationTime);
+        List l = (List) _tmpWrittenTaskOutputPorts.get(invocationTime);
         if (l == null) {
             l = new ArrayList();
-            _writtenTaskOutputPorts.put(invocationTime, l);
+            _tmpWrittenTaskOutputPorts.put(invocationTime, l);
         }
         l.add(port);
     }
@@ -167,10 +227,10 @@ public class TDLActionsGraph {
      * @param port
      */
     private void _registerTaskInputPortReading(long invocationTime, IOPort port)  {
-        List l = (List) _readTaskInputPorts.get(port);
+        List l = (List) _tmpReadTaskInputPorts.get(port);
         if (l == null) {
             l = new ArrayList();
-            _readTaskInputPorts.put(port, l);
+            _tmpReadTaskInputPorts.put(port, l);
         }
         l.add(invocationTime);
     }
@@ -199,13 +259,13 @@ public class TDLActionsGraph {
             
             LetTask task = _analyzeSlotSelection(actor, modePeriod);
                 
-            Node prev = (Node) _modeSwitchEnds.get(0); 
+            Node prev = (Node) _tmpModeSwitchEnds.get(0); 
             for (long i = task.getOffset(); i < modePeriod; i += task.getInvocationPeriod()) {
 
                 for (Iterator it = sensors.iterator(); it.hasNext(); ) {
                     // if not already been read at this time instant
                     IOPort sensor = (IOPort) it.next();
-                    if (!((List)_readSensors.get(i)).contains(sensor))
+                    if (!((List)_tmpReadSensors.get(i)).contains(sensor))
                         prev = _createNode(i, TDLGraphNode.READSENSOR, sensor, prev);
                 }
                 
@@ -225,7 +285,7 @@ public class TDLActionsGraph {
             }
             
             // add an edge to the graphStarts elements
-            Node modeSwitch = (Node) _modeSwitchStarts.get(0);
+            Node modeSwitch = (Node) _tmpModeSwitchStarts.get(new Long(0));
             Edge edge = new Edge(prev, modeSwitch, modePeriod - ((TDLGraphNode)prev.getWeight()).time);
             graph.addEdge(edge);
         }
@@ -291,9 +351,9 @@ public class TDLActionsGraph {
      */
     private Node _getNodeForPortWrittenBetweenTime(IOPort port, long lower,
             long upper) {
-        for (Iterator msIt = _writtenTaskOutputPorts.keySet().iterator(); msIt.hasNext(); ) {
+        for (Iterator msIt = _tmpWrittenTaskOutputPorts.keySet().iterator(); msIt.hasNext(); ) {
             long invocationTime = (Long) msIt.next();
-            List outputPorts = (List) _writtenTaskOutputPorts.get(invocationTime);
+            List outputPorts = (List) _tmpWrittenTaskOutputPorts.get(invocationTime);
             long diff = Long.MAX_VALUE;
             if (outputPorts.contains(port) && lower <= invocationTime && invocationTime <= upper) {
                 if (upper - invocationTime < diff) {
@@ -310,21 +370,21 @@ public class TDLActionsGraph {
      * Add the connections between task output ports and other tasks input ports.
      */
     private void _addConnectionsBetweenTaskPorts() {
-        for (Iterator it = _connectedTaskPorts.keySet().iterator(); it.hasNext(); ) {
+        for (Iterator it = _tmpConnectedTaskPorts.keySet().iterator(); it.hasNext(); ) {
             IOPort inputPort = (IOPort) it.next();
-            List outputPortsReadFrom = (List) _connectedTaskPorts.get(inputPort);
+            List outputPortsReadFrom = (List) _tmpConnectedTaskPorts.get(inputPort);
             for (Iterator outIt = outputPortsReadFrom.iterator(); outIt.hasNext(); ) {
                 IOPort outputPort = (IOPort) outIt.next();
                 
                 // get times when input port is read
-                List l = (List) _readTaskInputPorts.get(inputPort);
+                List l = (List) _tmpReadTaskInputPorts.get(inputPort);
                 
                 // get time when mode switch is done before that
                 for (int i = 0; i < l.size(); i++) {
                     long readTime = (Long) l.get(i);
                     
                     long modeSwitchTimeBeforeRead = 0; 
-                    for (Iterator msIt = _modeSwitchEnds.keySet().iterator(); msIt.hasNext(); ) {
+                    for (Iterator msIt = _tmpModeSwitchEnds.keySet().iterator(); msIt.hasNext(); ) {
                         long invocationTime = (Long) msIt.next();
                         if (invocationTime < readTime && modeSwitchTimeBeforeRead < invocationTime)
                             modeSwitchTimeBeforeRead = invocationTime;
@@ -371,10 +431,10 @@ public class TDLActionsGraph {
                 // if task output port is written and there is no mode switch in between, add an edge
                 // this information is not clear yet, these connections can only be added in the end
                 // store the ports and add the conections later
-                List l = (List) _connectedTaskPorts.get(taskInputPort);
+                List l = (List) _tmpConnectedTaskPorts.get(taskInputPort);
                 if (l == null) {
                     l = new ArrayList();
-                    _readSensors.put(taskInputPort, l);
+                    _tmpReadSensors.put(taskInputPort, l);
                 }
                 l.add(port);
             }
@@ -390,7 +450,7 @@ public class TDLActionsGraph {
     private void _connectToIntermediateModeSwitch(Node prev, long taskInvocationTime, long taskInvocationPeriod) {
         // if there is a mode switch between now and the next invocation, add edge to graphStart and graphEnd
         long nextModeSwitchTime = 0, modeSwitchTimeBeforeNextTaskInvocation = 0;
-        for (Iterator it = _modeSwitchStarts.keySet().iterator(); it.hasNext(); ) {
+        for (Iterator it = _tmpModeSwitchStarts.keySet().iterator(); it.hasNext(); ) {
             long invocationTime = (Long) it.next();
             if (invocationTime > taskInvocationTime && 
                     invocationTime < taskInvocationTime + taskInvocationPeriod) {
@@ -400,11 +460,11 @@ public class TDLActionsGraph {
                 
         }
         
-        Node modeSwitch = (Node) _modeSwitchStarts.get(nextModeSwitchTime);
+        Node modeSwitch = (Node) _tmpModeSwitchStarts.get(nextModeSwitchTime);
         if ( modeSwitch != null) {
             Edge edge = new Edge(prev, modeSwitch, 0);
             graph.addEdge(edge);
-            prev = (Node) _modeSwitchEnds.get(modeSwitchTimeBeforeNextTaskInvocation);
+            prev = (Node) _tmpModeSwitchEnds.get(modeSwitchTimeBeforeNextTaskInvocation);
         }
     }
    
@@ -420,8 +480,8 @@ public class TDLActionsGraph {
         Node node = new Node(new TDLGraphNode(invocationTime, actionType, actor));
         graph.addNode(node);  
         if (previous == null) { // this can only happen if there are no mode switches
-            _modeSwitchStarts.put(invocationTime, node);
-            _modeSwitchEnds.put(invocationTime, node);
+            _tmpModeSwitchStarts.put(invocationTime, node);
+            _tmpModeSwitchEnds.put(invocationTime, node);
         } else {
             Edge edge = new Edge(previous, node, ((TDLGraphNode)node.getWeight()).time - ((TDLGraphNode)previous.getWeight()).time);
             graph.addEdge(edge); 
@@ -466,7 +526,7 @@ public class TDLActionsGraph {
                         newInv = (Integer) invocations.get(i + 2)
                                 - (Integer) invocations.get(i);
                     } else
-                        newInv = (Integer) invocations.get(0) + frequency;
+                        newInv = ((Integer) invocations.get(0) + frequency) % frequency;
                     if (inv == 0)
                         inv = newInv;
                     else if (newInv != inv)
@@ -484,7 +544,7 @@ public class TDLActionsGraph {
             ArrayList list = new ArrayList();
             return new LetTask(actor, let, inv, offset);
         } else { // schedule single task as a set of tasks with different lets and invocation periods
-            throw new TDLModeSchedulerException("Task is not periodic");
+            throw new TDLModeSchedulerException("Task " + actor.getName() + " is not periodic, slot selection string: " + slots);
         }
     }
     
@@ -602,5 +662,9 @@ public class TDLActionsGraph {
      * Graph containing all TDL actions.
      */
     private Graph graph;
-    
 }
+    
+
+
+
+

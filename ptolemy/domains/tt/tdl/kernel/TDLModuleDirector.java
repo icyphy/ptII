@@ -216,9 +216,8 @@ public class TDLModuleDirector extends ModalDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _resetReceivers();
-        // TDLActionsGraph graph = new
-        // TDLActionsGraph(((TDLModule)getContainer()), getController());
-        // graph.buildGraph();
+         TDLActionsGraph graph = new TDLActionsGraph(((TDLModule)getContainer()), getController());
+         graph.buildGraph();
         _buildSchedule();
         _initializeOutputPorts();
         _currentSchedule = (TDLModeSchedule) _modeSchedules.get(getController()
@@ -400,7 +399,6 @@ public class TDLModuleDirector extends ModalDirector {
                         .hasNext();) {
                     TDLTransition transition = (TDLTransition) transitionIterator
                             .next();
-                    //transition.getDependentModuleInputPorts();
                     scheduler.addModeSwitch(transition);
                 }
                 Refinement refinement = (Refinement) state.getRefinement()[0];
