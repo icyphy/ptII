@@ -107,7 +107,8 @@ JSRCS = \
 	TypedIORelation.java \
 	TypeEvent.java \
 	TypeListener.java \
-	TypeOpaqueCompositeActor.java
+	TypeOpaqueCompositeActor.java \
+	ValueIterator.java
 
 EXTRA_SRCS =	$(JSRCS)
 
