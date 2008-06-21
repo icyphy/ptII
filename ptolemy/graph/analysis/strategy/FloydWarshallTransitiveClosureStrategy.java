@@ -25,6 +25,7 @@
  */
 package ptolemy.graph.analysis.strategy;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import ptolemy.graph.DirectedGraph;
@@ -123,9 +124,10 @@ public class FloydWarshallTransitiveClosureStrategy extends
         _transitiveClosure = new boolean[size][size];
 
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                _transitiveClosure[i][j] = false;
-            }
+
+            // For graphs of 300 nodes, Arrays.fill() is about 3%
+            // faster than iterating through the row.
+            Arrays.fill(_transitiveClosure[i], false);
 
             Node node = graph().node(i);
             Iterator outputEdges = ((DirectedGraph) graph()).outputEdges(node)
