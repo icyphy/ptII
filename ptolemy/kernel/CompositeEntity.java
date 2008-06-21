@@ -460,7 +460,6 @@ public class CompositeEntity extends ComponentEntity {
      *  To remove the relation, call its setContainer() method with a null
      *  argument. This method is write-synchronized on the workspace
      *  and increments its version number.
-
      *  <p>Note that if this method is being called many times, then
      *  it may be more efficient to use 
      *  {@link #connect(ComponentPort, ComponentPort, String)}
