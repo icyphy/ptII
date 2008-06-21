@@ -82,8 +82,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
         OccupantsConfigureFactory factory
                 = new OccupantsConfigureFactory(this, "factory");
         
-        //columns.setExpression("{\"deskno\", \"lname\"}");
-        // colorKey.setExpression("sponsorlname");
+        columns.setExpression("{\"deskno\", \"lname\"}");
+        colorKey.setExpression("sponsorlname");
     }
 
     ///////////////////////////////////////////////////////////////////
