@@ -316,18 +316,34 @@ public class CompositeEntity extends ComponentEntity {
 
             // Clone the contained relations.
             Iterator relations = relationList().iterator();
-
             while (relations.hasNext()) {
                 ComponentRelation relation = (ComponentRelation) relations
                         .next();
                 ComponentRelation newRelation = (ComponentRelation) relation
                         .clone(workspace);
-
                 // Assume that since we are dealing with clones,
                 // exceptions won't occur normally.  If they do, throw a
                 // CloneNotSupportedException.
                 try {
                     newRelation.setContainer(newEntity);
+                    // To support relation groups, duplicate any links
+                    // to other relations. The links to ports will be
+                    // done below in a way that preserves the order of the
+                    // links. Links in ports have an order, whereas links
+                    // in relations do not.
+                    Enumeration links = relation._linkList.getContainers();
+                    while (links.hasMoreElements()) {
+                        Object link = links.nextElement();
+                        if (link instanceof Relation) {
+                            // Create the link only if the corresponding
+                            // relation has been created. This ensures
+                            // that the link is created exactly once.
+                            Relation farRelation = newEntity.getRelation(((Nameable)link).getName());
+                            if (farRelation != null) {
+                                newRelation.link(farRelation);
+                            }
+                        }
+                    }
                 } catch (KernelException ex) {
                     throw new CloneNotSupportedException(
                             "Failed to clone a CompositeEntity: "
