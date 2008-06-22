@@ -72,7 +72,6 @@ SCRIPTS = \
 	chkjava \
 	chksize \
 	controlm \
-	cvs2cl.pl \
 	deprecated \
 	gcstats \
 	html2ps \
