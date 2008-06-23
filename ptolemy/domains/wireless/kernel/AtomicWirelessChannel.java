@@ -41,6 +41,7 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.NameParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -120,6 +121,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         this.name = new NameParameter(this, "name");
 
         // Force this to be a record type without specifying the fields.
+        defaultProperties.setTypeEquals(BaseType.RECORD);
         // NOTE: This doesn't actually work because the type remains
         // unknown, which triggers an error message. Instead, we check
         // the type in attributeChanged().
@@ -137,11 +139,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
 
     /** The default properties for transmission. In this base class,
      *  the type and contents are left undefined.  Derived classes
-     *  will define this to be a record.  The fields of the record
-     *  determine what properties are seen by the receiver.  Any
-     *  fields that are not in this parameter value will be discarded
-     *  before properties are delivered to the receiver.
-     *  FIXME: need a mechanism to deal with empty record tokens.
+     *  will define this to be a record.
      */
     public Parameter defaultProperties;
 
@@ -171,27 +169,6 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
             _channelListeners = new HashSet();
         }
         _channelListeners.add(listener);
-    }
-
-    /** If the attribute is defaultProperties, make sure
-     *  its value is a record token.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == defaultProperties) {
-            Token value = defaultProperties.getToken();
-
-            if ((value != null) && !(value instanceof RecordToken)) {
-                throw new IllegalActionException(this,
-                        "Expected a record for defaultProperties but got: "
-                                + value);
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
     }
 
     /** Notify any channel listeners that have been added.

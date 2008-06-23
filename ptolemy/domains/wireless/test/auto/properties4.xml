@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="properties4" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {65, -2, 815, 526}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 30, 815, 525}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 408]">
     </property>
@@ -37,10 +37,8 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Note that the defaultProperties
-parameter of the channel determines
-what fields get through to the receiver.
-In particular, the string field at the
-transmitter is not seen by the receiver.</text></svg></configure>
+parameter of the channel are merged
+with whatever is provided.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -115,7 +113,7 @@ transmitter is not seen by the receiver.</text></svg></configure>
         </property>
         <port name="output" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{dummy = &quot;string&quot;, range = 600}">
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{dummy = &quot;string&quot;, range = 300}">
             </property>
         </port>
     </entity>
@@ -126,7 +124,7 @@ transmitter is not seen by the receiver.</text></svg></configure>
         </property>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{range=250.0}, {range=300.0}, {range=350.0}, {range=400.0}, {range=450.0}, {range=500.0}, {range=550.0}, {range=600.0}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{dummy=&quot;string&quot;, range=250.0}, {dummy=&quot;string&quot;, range=300.0}, {dummy=&quot;string&quot;, range=350.0}, {dummy=&quot;string&quot;, range=400.0}, {dummy=&quot;string&quot;, range=450.0}, {dummy=&quot;string&quot;, range=500.0}, {dummy=&quot;string&quot;, range=550.0}, {dummy=&quot;string&quot;, range=600.0}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 75.0">
         </property>
