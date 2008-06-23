@@ -87,10 +87,7 @@ public class DatabaseSelect extends Source {
         
         columns = new PortParameter(this, "columns");
         // Require that the columns be a record token.
-        String[] labels = new String[0];
-        Type[] types = new Type[0];
-        RecordType declaredType = new RecordType(labels, types);
-        columns.setTypeAtMost(declaredType);
+        columns.setTypeAtMost(BaseType.RECORD);
         // Set the default value.
         columns.setExpression("{lname=string, deskno=string}");
         

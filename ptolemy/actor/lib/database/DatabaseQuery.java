@@ -45,8 +45,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -93,7 +91,7 @@ public class DatabaseQuery extends Source {
         // NOTE: The output is actually a subtype of this.
         // This is OK because lossless conversion occurs at the
         // output, which (as of 6/19/08) leaves the record unchanged.
-        output.setTypeEquals(new ArrayType(EMPTY_RECORD));
+        output.setTypeEquals(new ArrayType(BaseType.RECORD));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -176,7 +174,7 @@ public class DatabaseQuery extends Source {
         if (numberOfMatches == 0) {
             // There are no matches.
             // Output an empty array of empty records.
-            result = new ArrayToken(EMPTY_RECORD);
+            result = new ArrayToken(BaseType.RECORD);
         } else {
             RecordToken[] array = new RecordToken[numberOfMatches];
             int k = 0;
@@ -190,11 +188,4 @@ public class DatabaseQuery extends Source {
         }
         output.send(0, result);
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
-
-    static private String[] EMPTY_LABELS = new String[0];
-    static private Type[] EMPTY_TYPES = new Type[0];
-    static private RecordType EMPTY_RECORD = new RecordType(EMPTY_LABELS, EMPTY_TYPES);
 }

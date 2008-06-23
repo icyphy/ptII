@@ -54,7 +54,22 @@ import ptolemy.kernel.util.NameDuplicationException;
  connection. A user of this class can also separately call getConnection()
  to open a connection, but then that user must also call closeConnection()
  when finished.
-
+ <p>
+ This class polls all available JDBC database drivers until one is willing
+ to open the string given by the <i>database</i> parameter. Depending
+ on the driver, this string may be a URL. Some database drivers are
+ packaged with Ptolemy II and available from a vergil process. You can
+ make others available by setting the jdbc.drivers property. For
+ example, when invoking vergil, do something like this:
+ <pre>
+  export JAVAFLAGS=-Djdbc.drivers=com.mysql.jdbc.Driver:bad.tast.ourDriver
+  $PTII/bin/vergil -verbose
+ </pre>
+ The above lists two drivers, in order of preference, separated by
+ a ":". More information can be found at
+ <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/sql/DriverManager.html">
+ http://java.sun.com/j2se/1.5.0/docs/api/java/sql/DriverManager.html</a>.
+ 
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.3
