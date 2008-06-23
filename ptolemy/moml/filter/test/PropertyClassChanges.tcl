@@ -142,8 +142,8 @@ test PropertyClassChanges-1.2 {Remove _Director from a modal model, based on dom
     # filters were already added.
     $parser setMoMLFilters [java::null]
 
-    #$parser addMoMLFilters \
-    #	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+    $parser addMoMLFilters \
+    	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
     set filter [java::new ptolemy.moml.filter.PropertyClassChanges]
 
@@ -152,6 +152,12 @@ test PropertyClassChanges-1.2 {Remove _Director from a modal model, based on dom
     $filter put "ptolemy.copernicus.kernel.GeneratorAttribute" [java::null]
 
     $parser addMoMLFilter $filter
+
+    # Run RemoveGraphicalClasses in case 
+    # ptolemy.vergil.fsm.modal.ModalTableauFactory is not present.
+    $parser addMoMLFilter \
+        [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
+
     set toplevel [$parser parse $modalMoml]
     set newMoML [$toplevel exportMoML]
     list $newMoML
@@ -172,7 +178,7 @@ test PropertyClassChanges-1.2 {Remove _Director from a modal model, based on dom
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.kernel.util.Attribute">
         </property>
     </entity>
 </entity>
