@@ -173,6 +173,8 @@ public final class DEEvent implements Comparable {
     }
 
     /** Indicate whether some other object is equal to this DE Event.
+     *  DEEvents are equal if they are associated with the same actors
+     *  and compareTo() returns 0;
      *  @param object The object with which to compare.
      *  @return true if the object is a DEEvent and the fields of
      *  the object and of this object are equal.
@@ -181,8 +183,8 @@ public final class DEEvent implements Comparable {
     public boolean equals(Object object) {
         if ( ! (object instanceof DEEvent)) {
             return false;
-                     }
-        return (compareTo(object) == 0);
+        }
+        return (compareTo(object) == 0 && ((DEEvent)object).actor() == _actor);
     }
 
     /** Return the hash code for the event object.

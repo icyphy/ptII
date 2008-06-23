@@ -121,7 +121,7 @@ test DEEvent-2.3 {Test the accessors} {
 test DEEvent-3.1 {compareTo} {
     set e3_1 [java::new ptolemy.actor.CompositeActor]
     set actor3_1 [java::new ptolemy.actor.AtomicActor $e3_1 actor3_1]
-    set port3_1 [java::new ptolemy.actor.IOPort $actor1 port3_1]
+    set port3_1 [java::new ptolemy.actor.IOPort $actor3_1 port3_1]
     set director3_1 [java::new ptolemy.actor.Director]
     $e3_1 setDirector $director3_1
     set time3_1 [java::new \
@@ -198,6 +198,29 @@ test DEEvent-4.1 {equals} {
 	[$event3_1 compareTo $event4_1] \
 	[$event4_1 compareTo $event3_1]
 } {1 1 1 0 0}
+
+test DEEvent-4.2 {equals, with a different actor} {
+    # Uses 3.1 above
+    set actor4_2 [java::new ptolemy.actor.AtomicActor $e3_1 actor4_2]
+    set port4_2 [java::new ptolemy.actor.IOPort $actor4_2 port4_2]
+    # This event is the same as event3_1, except w/ a different actor
+    set event4_2 [java::new \
+		      {ptolemy.domains.de.kernel.DEEvent \
+			   ptolemy.actor.IOPort ptolemy.actor.util.Time \
+			   int int} \
+		      $port4_2 $time3_1 12 13]
+    list \
+	[$event4_2 equals $event3_1] \
+	[$event3_1 equals $event4_2] \
+	[$event4_2 equals $event4_1] \
+	[$event4_1 equals $event4_2] \
+	[$event4_2 equals $event4_2] \
+	[$event4_2 compareTo $event4_1] \
+	[$event4_1 compareTo $event4_2] \
+	[$event4_2 compareTo $event3_1] \
+	[$event3_1 compareTo $event4_1] \
+	[$event4_2 compareTo $event4_2]
+} {0 0 0 0 1 0 0 0 0 0}
 
 test DEEvent-4.5 {hashCode} {
     list \
