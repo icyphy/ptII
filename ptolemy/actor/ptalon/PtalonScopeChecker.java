@@ -1770,14 +1770,14 @@ public PtalonScopeChecker() {
 		{
 		if (_t==null) _t=ASTNULL;
 		switch ( _t.getType()) {
-		case STAR:
+		case PLUS:
 		{
 			PtalonAST tmp61_AST = null;
 			PtalonAST tmp61_AST_in = null;
 			tmp61_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 			tmp61_AST_in = (PtalonAST)_t;
 			astFactory.addASTChild(currentAST, tmp61_AST);
-			match(_t,STAR);
+			match(_t,PLUS);
 			_t = _t.getNextSibling();
 			emptyStart = false;
 			break;
@@ -2098,7 +2098,7 @@ public PtalonScopeChecker() {
 		"LCURLY",
 		"RCURLY",
 		"TRANSFORM",
-		"STAR",
+		"PLUS",
 		"TRUEBRANCH",
 		"FALSEBRANCH",
 		"QUALID",

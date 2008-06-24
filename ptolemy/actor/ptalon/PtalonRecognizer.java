@@ -1878,11 +1878,11 @@ inputState.guessing--;
 		match(TRANSFORM);
 		{
 		switch ( LA(1)) {
-		case STAR:
+		case PLUS:
 		{
 			s = LT(1);
 			s_AST = (PtalonAST)astFactory.create(s);
-			match(STAR);
+			match(PLUS);
 			if ( inputState.guessing==0 ) {
 				transformation_AST = (PtalonAST)currentAST.root;
 				
@@ -2004,7 +2004,7 @@ inputState.guessing--;
 		"LCURLY",
 		"RCURLY",
 		"TRANSFORM",
-		"STAR",
+		"PLUS",
 		"TRUEBRANCH",
 		"FALSEBRANCH",
 		"QUALID",

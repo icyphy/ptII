@@ -511,7 +511,7 @@ transformation throws PtalonRuntimeException
     boolean emptyStart = true;
 }
 :
-    #(TRANSFORMATION (STAR { emptyStart = false; } )?
+    #(TRANSFORMATION (PLUS { emptyStart = false; } )?
     {
         info.enterTransformation(emptyStart);
     }

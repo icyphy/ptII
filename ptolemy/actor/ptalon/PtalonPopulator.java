@@ -2211,14 +2211,14 @@ public PtalonPopulator() {
 		{
 		if (_t==null) _t=ASTNULL;
 		switch ( _t.getType()) {
-		case STAR:
+		case PLUS:
 		{
 			PtalonAST tmp41_AST = null;
 			PtalonAST tmp41_AST_in = null;
 			tmp41_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
 			tmp41_AST_in = (PtalonAST)_t;
 			astFactory.addASTChild(currentAST, tmp41_AST);
-			match(_t,STAR);
+			match(_t,PLUS);
 			_t = _t.getNextSibling();
 			emptyStart = false;
 			break;
@@ -2536,7 +2536,7 @@ public PtalonPopulator() {
 		"LCURLY",
 		"RCURLY",
 		"TRANSFORM",
-		"STAR",
+		"PLUS",
 		"TRUEBRANCH",
 		"FALSEBRANCH",
 		"QUALID",

@@ -161,8 +161,8 @@ public class GraphTransformer extends ChangeRequest {
             for (Object replacementLinkedObjectRaw : replacementLinkedList) {
                 NamedObj replacementLinkedObject =
                     (NamedObj) replacementLinkedObjectRaw;
-                NamedObj hostLinkedObject = (NamedObj) _replacementToHost
-                        .get(replacementLinkedObject);
+                NamedObj hostLinkedObject = (NamedObj) _replacementToHost.get(
+                        replacementLinkedObject);
                 // FIXME: hostRelation shouldn't be null, but it seems if a
                 // Publisher appears in the host model, then an extra relation
                 // created by it remains after it is deleted, so there is a
@@ -219,43 +219,8 @@ public class GraphTransformer extends ChangeRequest {
     }
 
     protected void _addObjects() throws TransformationException {
-    	_addObjectsWithCreationAttributes(_pattern);
+        _addObjectsWithCreationAttributes(_pattern);
         _addObjects(_replacement, _host);
-    }
-    
-    private void _addObjectsWithCreationAttributes(NamedObj pattern)
-    throws TransformationException {
-    	Collection<?> children = GTTools.getChildren(pattern, false, true, true,
-    			true);
-    	for (Object childObject : children) {
-    		NamedObj child = (NamedObj) childObject;
-    		if (_isToBeCreated(child)) {
-    			String moml = child.exportMoMLPlain();
-				NamedObj host = _findChangeContext(pattern);
-                moml = "<group name=\"auto\">\n" + moml + "</group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        host, moml);
-                request.execute();
-                NamedObj hostChild = _getNewlyAddedObject(host,
-                		child.getClass());
-                _matchResult.put(child, hostChild);
-    		} else {
-    			_addObjectsWithCreationAttributes(child);
-    		}
-    	}
-    }
-    
-    private boolean _isToBeCreated(NamedObj object) {
-    	return !object.attributeList(CreationAttribute.class).isEmpty();
-    }
-    
-    private NamedObj _findChangeContext(NamedObj pattern) {
-    	Object host = null;
-    	while (host == null && pattern != null) {
-    		host = _matchResult.get(pattern);
-    		pattern = pattern.getContainer();
-    	}
-    	return (NamedObj) host;
     }
 
     protected void _execute() throws TransformationException {
@@ -423,6 +388,28 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    private void _addObjectsWithCreationAttributes(NamedObj pattern)
+    throws TransformationException {
+        Collection<?> children = GTTools.getChildren(pattern, false, true, true,
+                true);
+        for (Object childObject : children) {
+            NamedObj child = (NamedObj) childObject;
+            if (_isToBeCreated(child)) {
+                String moml = child.exportMoMLPlain();
+                NamedObj host = _findChangeContext(pattern);
+                moml = "<group name=\"auto\">\n" + moml + "</group>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        host, moml);
+                request.execute();
+                NamedObj hostChild = _getNewlyAddedObject(host,
+                        child.getClass());
+                _recordObjectsWithCreationAttributes(child, hostChild);
+            } else {
+                _addObjectsWithCreationAttributes(child);
+            }
+        }
+    }
+
     private void _addReplacementToHostEntries(NamedObj host) {
         ReplacementObjectAttribute attribute = _getReplacementObjectAttribute(
                 host);
@@ -444,6 +431,15 @@ public class GraphTransformer extends ChangeRequest {
         } finally {
             host.workspace().doneReading();
         }
+    }
+
+    private NamedObj _findChangeContext(NamedObj pattern) {
+        Object host = null;
+        while (host == null && pattern != null) {
+            host = _matchResult.get(pattern);
+            pattern = pattern.getContainer();
+        }
+        return (NamedObj) host;
     }
 
     private Token _getAttribute(NamedObj container, String name,
@@ -771,6 +767,34 @@ public class GraphTransformer extends ChangeRequest {
         return false;
     }
 
+    private boolean _isToBeCreated(NamedObj object) {
+        return !object.attributeList(CreationAttribute.class).isEmpty();
+    }
+
+    private void _recordObjectsWithCreationAttributes(NamedObj pattern,
+            NamedObj host) {
+        _matchResult.put(pattern, host);
+        _replacementToHost.put(pattern, host);
+        _patternToReplacement.put(pattern, pattern);
+        for (Object child : GTTools.getChildren(pattern, false, true, true,
+                true)) {
+            if (child instanceof Port) {
+                Port port = (Port) child;
+                _recordObjectsWithCreationAttributes(port,
+                        ((Entity) host).getPort(port.getName()));
+            } else if (child instanceof Entity) {
+                Entity entity = (Entity) child;
+                _recordObjectsWithCreationAttributes(entity,
+                        ((CompositeEntity) host).getEntity(entity.getName()));
+            } else if (child instanceof Relation) {
+                Relation relation = (Relation) child;
+                _recordObjectsWithCreationAttributes(relation,
+                        ((CompositeEntity) host).getRelation(
+                                relation.getName()));
+            }
+        }
+    }
+
     private boolean _relink(Relation preserved, Relation removed) {
         // FIXME: Because we can't find a nice way to preserve the channel index
         // of the ports, the "removed" relation won't be removed if it is
@@ -1055,13 +1079,14 @@ public class GraphTransformer extends ChangeRequest {
                     NamedObj patternChild = (NamedObj) _matchResult.getKey(
                             child);
                     if (replacementChild == null && patternChild != null
-                    		&& !_isToBeCreated(patternChild)) {
+                            && !_isToBeCreated(patternChild)) {
                         Boolean shallowRemoval =
                             patternChild instanceof CompositeEntity ?
                                     Boolean.TRUE : Boolean.FALSE;
                         childrenToRemove.put(child, shallowRemoval);
                     } else if (replacementChild != null
-                            && replacementChild.getContainer() != replacement) {
+                            && replacementChild.getContainer() != replacement
+                            && replacementChild != patternChild) {
                         Boolean shallowRemoval =
                             replacementChild instanceof CompositeEntity ?
                                     Boolean.TRUE : Boolean.FALSE;

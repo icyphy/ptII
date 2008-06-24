@@ -28,6 +28,7 @@
 package ptolemy.actor.ptalon.gt;
 
 import ptolemy.actor.gt.CreationAttribute;
+import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.ptalon.PtalonActor;
 import ptolemy.actor.ptalon.PtalonEvaluator;
 import ptolemy.actor.ptalon.PtalonRuntimeException;
@@ -48,22 +49,26 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class TransformationEvaluator extends PtalonEvaluator {
 
-	/**
-	 *  @param actor
-	 */
-	public TransformationEvaluator(PtalonActor actor) {
-		super(actor);
-	}
+    /**
+     *  @param actor
+     */
+    public TransformationEvaluator(PtalonActor actor) {
+        super(actor);
+    }
 
-	protected void _processAttributes(NamedObj object)
-			throws PtalonRuntimeException {
-		if (_isInTransformation()) {
-			try {
-				new CreationAttribute(object, object.uniqueName("_create"));
-			} catch (KernelException e) {
-				throw new PtalonRuntimeException("Unable to create attribute.",
-						e);
-			}
-		}
-	}
+    protected void _processAttributes(NamedObj object)
+            throws PtalonRuntimeException {
+        if (_isInTransformation()) {
+            try {
+                new CreationAttribute(object, object.uniqueName("_create"));
+                for (Object child : GTTools.getChildren(object, false, true,
+                        true, true)) {
+                    _processAttributes((NamedObj) child);
+                }
+            } catch (KernelException e) {
+                throw new PtalonRuntimeException("Unable to create attribute.",
+                        e);
+            }
+        }
+    }
 }

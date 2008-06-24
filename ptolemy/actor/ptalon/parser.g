@@ -468,7 +468,7 @@ transformation! :
     {
         #transformation = #[TRANSFORMATION];
     }
-    TRANSFORM (s:STAR
+    TRANSFORM (s:PLUS
     {
         #transformation.addChild(#s);
     })? LCURLY! (b:atomic_statement 
@@ -588,7 +588,7 @@ COLON: ':';
 
 TRANSFORM: "=>";
 
-STAR: '*';
+PLUS: '+';
 
 // Escape sequence
 ESC:

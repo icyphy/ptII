@@ -157,9 +157,9 @@ tryAgain:
 					theRetToken=_returnToken;
 					break;
 				}
-				case '*':
+				case '+':
 				{
-					mSTAR(true);
+					mPLUS(true);
 					theRetToken=_returnToken;
 					break;
 				}
@@ -436,12 +436,12 @@ tryAgain:
 		_returnToken = _token;
 	}
 	
-	public final void mSTAR(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
+	public final void mPLUS(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
-		_ttype = STAR;
+		_ttype = PLUS;
 		int _saveIndex;
 		
-		match('*');
+		match('+');
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
 			_token = makeToken(_ttype);
 			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));

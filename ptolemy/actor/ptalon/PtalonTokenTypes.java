@@ -67,7 +67,7 @@ public interface PtalonTokenTypes {
 	int LCURLY = 37;
 	int RCURLY = 38;
 	int TRANSFORM = 39;
-	int STAR = 40;
+	int PLUS = 40;
 	int TRUEBRANCH = 41;
 	int FALSEBRANCH = 42;
 	int QUALID = 43;
