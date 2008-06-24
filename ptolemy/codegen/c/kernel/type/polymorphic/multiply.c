@@ -77,6 +77,13 @@ Token multiply_Int_Array(int a1, Token a2) {
 }
 /**/
 
+/*** multiply_Int_Doube() ***/
+inline double multiply_Double_Int(int a1, double a2) {
+    return a1 * a2;
+}
+/**/
+
+
 /*** multiply_Int_Int() ***/
 inline int multiply_Int_Int(int a1, int a2) {
     return a1 * a2;
