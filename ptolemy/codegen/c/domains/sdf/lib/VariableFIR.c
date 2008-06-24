@@ -10,7 +10,7 @@
 
 /*** fireBlock ***/
         $actorSymbol(_taps) = $ref(newTaps);
-    $super.reinitBlock();
+    $super.prefireBlock();
 
     $super.fireBlock0();
     for ($actorClass(j) = 0; $actorClass(j) < $val(blockSize); $actorClass(j)++) {
