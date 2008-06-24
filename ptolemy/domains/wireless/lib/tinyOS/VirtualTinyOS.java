@@ -30,13 +30,14 @@
  */
 package ptolemy.domains.wireless.lib.tinyOS;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.expr.UtilityFunctions;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -99,8 +100,8 @@ public class VirtualTinyOS extends TypedAtomicActor {
      *  TypedAtomicActor type constraints do not apply in this case, since the
      *  input type may be totally unrelated to the output type and cannot be
      *  inferred; return an empty list. */
-    public List typeConstraintList() {
-        LinkedList result = new LinkedList();
+    public Set<Inequality> typeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
         return result;
     }
 

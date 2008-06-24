@@ -84,6 +84,7 @@ public class LimitedRangeChannel extends DelayChannel {
     public LimitedRangeChannel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        defaultProperties.setExpression("{range = Infinity}");
 
         // Force the type of the defaultProperties to at least include
         // the range field.
@@ -93,7 +94,6 @@ public class LimitedRangeChannel extends DelayChannel {
 
         // Setting an upper bound allows the addition of fields.
         defaultProperties.setTypeAtMost(type);
-        defaultProperties.setExpression("{range = Infinity}");
     }
 
     ///////////////////////////////////////////////////////////////////

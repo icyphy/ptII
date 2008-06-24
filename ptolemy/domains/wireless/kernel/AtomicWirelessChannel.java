@@ -121,12 +121,9 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         this.name = new NameParameter(this, "name");
 
         // Force this to be a record type without specifying the fields.
-        defaultProperties.setTypeEquals(BaseType.RECORD);
-        // NOTE: This doesn't actually work because the type remains
-        // unknown, which triggers an error message. Instead, we check
-        // the type in attributeChanged().
-        // defaultProperties.setTypeAtMost(
-        //      new RecordType(new String[0], new Type[0]));
+        defaultProperties.setTypeAtMost(BaseType.RECORD);
+        defaultProperties.setToken(RecordToken.EMPTY_RECORD);
+
         _channelPort = new ChannelPort(this, "_channelPort");
 
         _attachText("_iconDescription", "<svg>\n"
@@ -138,7 +135,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
     ////                          parameters                       ////
 
     /** The default properties for transmission. In this base class,
-     *  the type and contents are left undefined.  Derived classes
+     *  the type is constrained to be a record and the default value
+     *  is set to an empty record.  Derived classes
      *  will define this to be a record.
      */
     public Parameter defaultProperties;
