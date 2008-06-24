@@ -1151,30 +1151,34 @@ ParseTreeCodeGenerator {
         //ptolemy.data.Token result = tokens[0];
         ptolemy.data.Token childToken = _evaluateChild(node, 0);
         result += _childCode;
+        Type resultType = ((ASTPtRootNode) node.jjtGetChild(0)).getType();
 
         for (int i = 1; i < numChildren; i++) {
             Token operator = (Token) lexicalTokenList.get(i - 1);
 
-
             _evaluateChild(node, i);
 
-            Type type1 = ((ASTPtRootNode) node.jjtGetChild(i - 1)).getType();
-            Type type2 = ((ASTPtRootNode) node.jjtGetChild(i)).getType();
+            Type type = ((ASTPtRootNode) node.jjtGetChild(i)).getType();
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
-                if (type1 != null && type2 != null) {
-                    result = "$multiply_" + CodeGeneratorHelper.codeGenType(type1) 
-                    + "_" + CodeGeneratorHelper.codeGenType(type2) + "(" + result 
+                if (type != null) {
+                    result = "$multiply_" + CodeGeneratorHelper.codeGenType(resultType) 
+                    + "_" + CodeGeneratorHelper.codeGenType(type) + "(" + result 
                     + ", " + _childCode + ")";
+
+                    resultType = resultType.multiply(type);
 
                 } else {
                     result += "*" + _childCode;
                 }
             } else if (operator.kind == PtParserConstants.DIVIDE) {
-                if (type1 != null && type2 != null) {
-                    result = "$divide_" + CodeGeneratorHelper.codeGenType(type1) 
-                    + "_" + CodeGeneratorHelper.codeGenType(type2) + "(" + result 
+                if (type != null) {
+                    result = "$divide_" + CodeGeneratorHelper.codeGenType(resultType)
+                    + "_" + CodeGeneratorHelper.codeGenType(type) + "(" + result 
                     + ", " + _childCode + ")";
+
+                    resultType = resultType.divide(type);
+
                 } else {                  
                     result += "/" + _childCode;
                 }
