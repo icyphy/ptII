@@ -37,8 +37,8 @@ ME =		ptolemy/actor
 # Only go into ptalon if $(PTPTALON_DIR) is set by configure.
 # If $(PTPTALON_DIR) is empty, then configure failed and compilation
 # will fail.
-DIRS = 		util sched process gui lib corba parameters test \
-		$(PTPTALON_DIR) gt
+DIRS = 		util sched process gui lib corba parameters gt test \
+		$(PTPTALON_DIR)
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -107,8 +107,7 @@ JSRCS = \
 	TypedIORelation.java \
 	TypeEvent.java \
 	TypeListener.java \
-	TypeOpaqueCompositeActor.java \
-	ValueIterator.java
+	TypeOpaqueCompositeActor.java
 
 EXTRA_SRCS =	$(JSRCS)
 

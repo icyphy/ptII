@@ -37,9 +37,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -65,6 +67,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
@@ -169,7 +172,21 @@ public class GraphMatcher extends GraphAnalyzer {
         _lookbackList = new LookbackList();
         _temporaryMatch = new MatchResult();
 
+        Hashtable<ValueIterator, Token> records =
+            new Hashtable<ValueIterator, Token>();
+        try {
+            _saveValues(pattern, records);
+        } catch (IllegalActionException e) {
+            throw new KernelRuntimeException(e, "Cannot save values.");
+        }
+
         _success = _matchChildrenCompositeEntity(pattern, hostGraph);
+
+        try {
+            _restoreValues(pattern, records);
+        } catch (IllegalActionException e) {
+            throw new KernelRuntimeException(e, "Cannot restore values.");
+        }
 
         assert _lookbackList.isEmpty();
         assert _temporaryMatch.isEmpty();
@@ -185,7 +202,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     /** Match the rule stored in the file with name <tt>ruleXMLFile</tt> to the
      *  model stored in the file with name <tt>hostXMLFile</tt>, whose top-level
-     *  should be an instanceof {@link CompositeEntity}. The first match result
+     *  should be an instance of {@link CompositeEntity}. The first match result
      *  (which is arbitrarily decided by the recursive algorithm) is recorded in
      *  the returned matcher object. This result can be obtained with {@link
      *  #getMatchResult()}. If the match is unsuccessful, the match result is
@@ -208,7 +225,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     /** Match the rule stored in the file with name <tt>ruleXMLFile</tt> to the
      *  model stored in the file with name <tt>hostXMLFile</tt>, whose top-level
-     *  should be an instanceof {@link CompositeEntity}, and invoke
+     *  should be an instance of {@link CompositeEntity}, and invoke
      *  <tt>callback</tt>'s {@link MatchCallback#foundMatch(GraphMatcher)}
      *  method whenever a match is found. If the callback returns <tt>true</tt>,
      *  the match will terminate and no more matches will be reported;
@@ -302,8 +319,10 @@ public class GraphMatcher extends GraphAnalyzer {
         return null;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    protected boolean _ignoreObject(Object object) {
+        return object instanceof NamedObj && !((NamedObj) object).attributeList(
+                CreationAttribute.class).isEmpty();
+    }
 
     /** Test whether the composite entity is opaque or not. Return <tt>true</tt>
      *  if the composite entity is an instance of {@link CompositeActor} and it
@@ -330,6 +349,9 @@ public class GraphMatcher extends GraphAnalyzer {
             return isOpaque;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Check the items in the lookback list for more matching requirements. If
      *  no more requirements are found (i.e., all the lists in the lookback list
@@ -545,57 +567,76 @@ public class GraphMatcher extends GraphAnalyzer {
         }
 
         int matchSize = _match.size();
-        boolean success = true;
-        ObjectList patternList = new ObjectList();
-        ObjectList hostList = new ObjectList();
 
-        _match.put(patternEntity, hostEntity);
-
-        Director patternDirector = null;
-        Director hostDirector = null;
-        if (patternEntity instanceof CompositeActor
-                && ((CompositeActor) patternEntity).isOpaque()) {
-            patternDirector = ((CompositeActor) patternEntity).getDirector();
-        }
-        if (hostEntity instanceof CompositeActor
-                && ((CompositeActor) hostEntity).isOpaque()) {
-            hostDirector = ((CompositeActor) hostEntity).getDirector();
-        }
-        if (patternDirector != null && hostDirector != null) {
-            success = _shallowMatchDirector(patternDirector, hostDirector);
-        } else if (patternDirector != null) {
-            success = false;
+        ParameterIterator configIterator;
+        try {
+            configIterator = new ParameterIterator(patternEntity);
+        } catch (IllegalActionException e) {
+            return false;
         }
 
-        if (success) {
-            IndexedLists patternMarkedList = new IndexedLists();
-            NamedObj patternNextChild = findFirstChild(patternEntity,
-                    patternMarkedList, _match.keySet());
-            while (patternNextChild != null) {
-                patternList.add(patternNextChild);
-                patternNextChild = findNextChild(patternEntity,
+        boolean success = false;
+
+        while (!success && configIterator.next()) {
+            success = true;
+
+            ObjectList patternList = new ObjectList();
+            ObjectList hostList = new ObjectList();
+
+            _match.put(patternEntity, hostEntity);
+
+            Director patternDirector = null;
+            Director hostDirector = null;
+            if (patternEntity instanceof CompositeActor
+                    && ((CompositeActor) patternEntity).isOpaque()) {
+                patternDirector = ((CompositeActor) patternEntity).getDirector();
+                if (_ignoreObject(patternDirector)) {
+                    patternDirector = null;
+                }
+            }
+            if (hostEntity instanceof CompositeActor
+                    && ((CompositeActor) hostEntity).isOpaque()) {
+                hostDirector = ((CompositeActor) hostEntity).getDirector();
+                if (_ignoreObject(hostDirector)) {
+                    hostDirector = null;
+                }
+            }
+            if (patternDirector != null && hostDirector != null) {
+                success = _shallowMatchDirector(patternDirector, hostDirector);
+            } else if (patternDirector != null) {
+                success = false;
+            }
+
+            if (success) {
+                IndexedLists patternMarkedList = new IndexedLists();
+                NamedObj patternNextChild = findFirstChild(patternEntity,
                         patternMarkedList, _match.keySet());
+                while (patternNextChild != null) {
+                    patternList.add(patternNextChild);
+                    patternNextChild = findNextChild(patternEntity,
+                            patternMarkedList, _match.keySet());
+                }
+
+                IndexedLists hostMarkedList = new IndexedLists();
+                NamedObj hostNextObject = findFirstChild(hostEntity,
+                        hostMarkedList, _match.values());
+                while (hostNextObject != null) {
+                    hostList.add(hostNextObject);
+                    hostNextObject = findNextChild(hostEntity, hostMarkedList,
+                            _match.values());
+                }
             }
 
-            IndexedLists hostMarkedList = new IndexedLists();
-            NamedObj hostNextObject = findFirstChild(hostEntity,
-                    hostMarkedList, _match.values());
-            while (hostNextObject != null) {
-                hostList.add(hostNextObject);
-                hostNextObject = findNextChild(hostEntity, hostMarkedList,
-                        _match.values());
+            if (success) {
+                patternList.addAll((Collection<?>) patternEntity.portList());
+                hostList.addAll((Collection<?>) hostEntity.portList());
             }
-        }
 
-        if (success) {
-            patternList.addAll((Collection<?>) patternEntity.portList());
-            hostList.addAll((Collection<?>) hostEntity.portList());
-        }
+            success = success && _matchObject(patternList, hostList);
 
-        success = success && _matchObject(patternList, hostList);
-
-        if (!success) {
-            _match.retain(matchSize);
+            if (!success) {
+                _match.retain(matchSize);
+            }
         }
 
         return success;
@@ -864,6 +905,58 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
+    /** Restore the values of the parameters that implement the {@link
+     *  ValueIterator} interface within the root entity using the values
+     *  recorded in the given table previously. The values are restored
+     *  bottom-up.
+     *
+     *  @param root The root.
+     *  @param records The table with the previously stored values.
+     *  @throws IllegalActionException If the values of those parameters cannot
+     *  be set.
+     */
+    private void _restoreValues(ComponentEntity root,
+            Hashtable<ValueIterator, Token> records)
+            throws IllegalActionException {
+        if (root instanceof CompositeEntity) {
+            for (Object entity : ((CompositeEntity) root).entityList()) {
+                _restoreValues((ComponentEntity) entity, records);
+            }
+        }
+        List<?> iterators = root.attributeList(ValueIterator.class);
+        ListIterator<?> listIterator = iterators.listIterator(iterators.size());
+        while (listIterator.hasPrevious()) {
+            ValueIterator iterator = (ValueIterator) listIterator.previous();
+            Token value = records.get(iterator);
+            if (value != null) {
+                iterator.setToken(value);
+            }
+        }
+    }
+
+    /** Save the values of parameters that implement the {@link ValueIterator}
+     *  interface in the given records table, starting from the root entity.
+     *
+     *  @param root The root.
+     *  @param records The table to store the values.
+     *  @throws IllegalActionException If the values of those parameters cannot
+     *  be obtained.
+     */
+    private void _saveValues(ComponentEntity root,
+            Hashtable<ValueIterator, Token> records)
+            throws IllegalActionException {
+        List<?> iterators = root.attributeList(ValueIterator.class);
+        for (Object iteratorObject : iterators) {
+            ValueIterator iterator = (ValueIterator) iteratorObject;
+            records.put(iterator, iterator.getToken());
+        }
+        if (root instanceof CompositeEntity) {
+            for (Object entity : ((CompositeEntity) root).entityList()) {
+                _saveValues((ComponentEntity) entity, records);
+            }
+        }
+    }
+
     private boolean _shallowMatchDirector(Director patternDirector,
             Director hostDirector) {
 
@@ -957,10 +1050,10 @@ public class GraphMatcher extends GraphAnalyzer {
 
     private MatchCallback _callback = DEFAULT_CALLBACK;
 
+    private static final NameComparator _comparator = new NameComparator();
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
-    private static final NameComparator _comparator = new NameComparator();
 
     private LookbackList _lookbackList;
 
@@ -975,9 +1068,6 @@ public class GraphMatcher extends GraphAnalyzer {
     private boolean _success = false;
 
     private MatchResult _temporaryMatch;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      private inner classes                ////
 
     private static class LookbackEntry extends
             Pair<Pair<ObjectList, ObjectList>, Boolean> {
@@ -1005,6 +1095,9 @@ public class GraphMatcher extends GraphAnalyzer {
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      private inner classes                ////
+
     private static class LookbackList extends FastLinkedList<LookbackEntry> {
     }
 
@@ -1017,5 +1110,103 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     private static class ObjectList extends FastLinkedList<Object> {
+    }
+
+    private class ParameterIterator extends GraphAnalyzer {
+
+        public boolean next() {
+            if (_firstTime) {
+                _firstTime = false;
+                return true;
+            }
+            _computeNext();
+            return _valueIterators != null;
+        }
+
+        protected Token _getAttribute(NamedObj container, String name,
+                Class<? extends GTAttribute> attributeClass) {
+            return GraphMatcher.this._getAttribute(container, name,
+                    attributeClass);
+        }
+
+        protected boolean _isOpaque(CompositeEntity entity) {
+            return !GraphMatcher.this._isOpaque(entity);
+        }
+
+        ParameterIterator(ComponentEntity entity)
+                throws IllegalActionException {
+            List<?> valueIterators = entity.attributeList(ValueIterator.class);
+            for (Object iteratorObject : valueIterators) {
+                ValueIterator iterator = (ValueIterator) iteratorObject;
+                iterator.initial();
+                _valueIterators.add(iterator);
+            }
+
+            if (entity instanceof CompositeEntity) {
+                CompositeEntity composite = (CompositeEntity) entity;
+                IndexedLists markedList = new IndexedLists();
+                List<Object> excludedObjects = new LinkedList<Object>();
+                NamedObj nextChild = findFirstChild(composite, markedList,
+                        excludedObjects);
+                while (nextChild != null) {
+                    if (nextChild instanceof ComponentEntity) {
+                        valueIterators = nextChild.attributeList(
+                                ValueIterator.class);
+                        for (Object iteratorObject : valueIterators) {
+                            ValueIterator iterator =
+                                (ValueIterator) iteratorObject;
+                            iterator.initial();
+                            _valueIterators.add(iterator);
+                        }
+                    }
+                    nextChild = findNextChild(composite, markedList,
+                            excludedObjects);
+                }
+            }
+        }
+
+        private void _computeNext() {
+            int i = _valueIterators.size();
+            boolean terminate = false;
+            boolean found = false;
+            while (!terminate && !found) {
+                ListIterator<ValueIterator> iterators =
+                    _valueIterators.listIterator(i);
+                terminate = true;
+                while (iterators.hasPrevious()) {
+                    ValueIterator iterator = iterators.previous();
+                    try {
+                        iterator.next();
+                        terminate = false;
+                        break;
+                    } catch (IllegalActionException e) {
+                        iterator.clearValue();
+                    }
+                    i--;
+                }
+                if (!terminate) {
+                    iterators.next();
+                    found = true;
+                    while (iterators.hasNext()) {
+                        ValueIterator iterator = iterators.next();
+                        try {
+                            iterator.initial();
+                        } catch (IllegalActionException e) {
+                            found = false;
+                            break;
+                        }
+                        i++;
+                    }
+                }
+            }
+            if (!found) {
+                _valueIterators = null;
+            }
+        }
+
+        private boolean _firstTime = true;
+
+        private List<ValueIterator> _valueIterators =
+            new LinkedList<ValueIterator>();
     }
 }

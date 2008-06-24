@@ -52,6 +52,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 import antlr.RecognitionException;
@@ -72,7 +73,7 @@ import antlr.RecognitionException;
 public abstract class AbstractPtalonEvaluator {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////    
+    ////                         public methods                    ////
 
     /** Create a new AbstractPtalonEvaluator in the specified
      *  PtalonActor.
@@ -269,6 +270,76 @@ public abstract class AbstractPtalonEvaluator {
             throw new PtalonRuntimeException("IllegalActionException", ex);
         } catch (PtalonScopeException ex) {
             throw new PtalonRuntimeException("Couldn't find symbol " + name, ex);
+        }
+    }
+
+    /** Add an iterative parameter to the PtalonActor with the
+     *  specified name and the given expressions as its initial value, the
+     *  expression that its value must satisfy, and the expression used to
+     *  compute its next value given its current value.
+     *
+     *  @param name The name of the parameter.
+     *  @param expression The expression representing the parameter.
+     *  @exception PtalonRuntimeException If the symbol does not
+     *  exist, or if the symbol already has a parameter associated
+     *  with it, or if an IllegalActionException is thrown trying to
+     *  create the parameter.
+     */
+    public void addIterableParameter(String name, String initial,
+            String constraint, String next) throws PtalonRuntimeException {
+        try {
+            String uniqueName = null;
+            PtalonIterableParameter parameter = null;
+
+            // If the parameter already exists and was assigned a
+            // value, then use it.
+            Attribute attribute = _actor.getAttribute(name);
+            if (attribute != null) {
+                if (attribute instanceof PtalonIterableParameter) {
+                    parameter = (PtalonIterableParameter) attribute;
+                    uniqueName = name;
+                }
+            }
+
+            // If attribute was not found above, create a new one.
+            if (uniqueName == null) {
+                uniqueName = _actor.uniqueName(name);
+                parameter = new PtalonIterableParameter(_actor, uniqueName);
+            }
+
+            parameter.setVisibility(Settable.EXPERT);
+            _currentIfTree.setStatus(name, true);
+            if (_inNewWhileIteration()) {
+                if (_currentIfTree.isForStatement) {
+                    _currentIfTree.setEnteredIteration(name,
+                            _currentIfTree.entered);
+                } else {
+                    IfTree tree = _currentIfTree;
+                    while (!tree.isForStatement) {
+                        tree = tree.getParent();
+                        if (tree == null) {
+                            throw new PtalonRuntimeException(
+                                    "In a new for iteration, but there is no " +
+                                    "containing for block.");
+                        }
+                    }
+                    _currentIfTree.setEnteredIteration(name, tree.entered);
+                }
+            } else {
+                _currentIfTree
+                        .setEnteredIteration(name, _currentIfTree.entered);
+            }
+            _currentIfTree.mapName(name, uniqueName);
+            _unassignedParameters.add(parameter.initial);
+            _unassignedParameterValues.add(initial);
+            _unassignedParameters.add(parameter.constraint);
+            _unassignedParameterValues.add(constraint);
+            _unassignedParameters.add(parameter.next);
+            _unassignedParameterValues.add(next);
+        } catch (NameDuplicationException ex) {
+            throw new PtalonRuntimeException("NameDuplicationException", ex);
+        } catch (IllegalActionException ex) {
+            throw new PtalonRuntimeException("IllegalActionException", ex);
         }
     }
 
@@ -516,6 +587,15 @@ public abstract class AbstractPtalonEvaluator {
             throw new PtalonRuntimeException("Couldn't find symbol " + name, ex);
         }
     }
+    
+    /** 
+     * 
+     *  @param object
+     *  @throws PtalonRuntimeException
+     */
+    protected void _processAttributes(NamedObj object)
+	    	throws PtalonRuntimeException {
+	}
 
     /** Add a TypedIORelation to the PtalonActor with the specified name.
      *
@@ -532,7 +612,9 @@ public abstract class AbstractPtalonEvaluator {
             // don't have to check for a pre-existing relation with
             // this name because we already removed all of the
             // relations in attributeChanged().
-            new TypedIORelation(_actor, uniqueName);
+        	TypedIORelation relation = new TypedIORelation(_actor, uniqueName);
+        	_processAttributes(relation);
+        	
             _currentIfTree.setStatus(name, true);
             if (_inNewWhileIteration()) {
                 if (_currentIfTree.isForStatement) {
@@ -629,7 +711,6 @@ public abstract class AbstractPtalonEvaluator {
     public void assignInternalParameters() throws PtalonRuntimeException {
         try {
             while (!_unassignedParameters.isEmpty()) {
-
                 PtalonParameter parameter = _unassignedParameters.remove(0);
                 String expression = _unassignedParameterValues.remove(0);
                 parameter.setToken(expression);
@@ -671,6 +752,10 @@ public abstract class AbstractPtalonEvaluator {
             throw new PtalonRuntimeException("Subscope " + scope
                     + " does not exist");
         }
+    }
+
+    public void enterTransformation(boolean emptyStart) {
+        _inTransformation = true;
     }
 
     /** Evaluate the given expression and return its boolean
@@ -772,6 +857,10 @@ public abstract class AbstractPtalonEvaluator {
             throw new PtalonRuntimeException("Already at top level");
         }
         _currentIfTree = _currentIfTree.getParent();
+    }
+
+    public void exitTransformation() {
+        _inTransformation = false;
     }
 
     /** Get the unique name for the symbol in the PtalonActor.
@@ -1042,9 +1131,6 @@ public abstract class AbstractPtalonEvaluator {
         _currentIfTree = _root;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////   
-
     /** Return a number of spaces that is proportional to the
      *  argument. If the argument is negative or zero, return an empty
      *  string.
@@ -1064,6 +1150,9 @@ public abstract class AbstractPtalonEvaluator {
     protected int _getTimesEntered() {
         return _currentIfTree.entered;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
 
     /** Return the type associated with the given symbol in the
      *  current scope.
@@ -1110,12 +1199,16 @@ public abstract class AbstractPtalonEvaluator {
         return _currentIfTree.inNewWhileIteration();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected members                    ////
+    protected boolean _isInTransformation() {
+        return _inTransformation;
+    }
 
     /** The actor in which this PtalonCompilerInfo is used.
      */
     protected PtalonActor _actor;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected members                    ////
 
     /** Some descendent of the root tree to which new input symbols
      *  should be added.
@@ -1136,139 +1229,13 @@ public abstract class AbstractPtalonEvaluator {
      */
     protected Map<String, TypedIOPort> _transparentRelations = new Hashtable<String, TypedIOPort>();
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
-
-    /** FIXME
-        @return The next symbol of form "_ifN" where N is 0 if this
-        function has not been called and N is n if this is the nth
-        call to this function.
-     */
-    private String _getNextIfSymbol() {
-        String symbol = "_if" + _counter;
-        _counter++;
-        return symbol;
-    }
-
-    /** FIXME
-     *  @return The parameters in the current scope.
-     *  @exception PtalonScopeException If there is any problem
-     *  getting the type of a symbol.
-     */
-    private Set<String> _getParameters() throws PtalonScopeException {
-        Set<String> output = new HashSet<String>();
-        for (IfTree tree : _currentIfTree.getAncestors()) {
-            for (String symbol : tree.getSymbols()) {
-                if (tree.getType(symbol).equals("parameter")) {
-                    output.add(symbol);
-                }
-            }
-        }
-        return output;
-    }
-
-    /** Get the type associated with the specified parameter.
-     *
-     *  @param param The parameter's name in the Ptalon code.
-     *  @return Its type.
-     *  @exception PtalonRuntimeException If the parameter does not exist.
-     */
-    private Type _getTypeOf(String param) throws PtalonRuntimeException {
-        try {
-            String uniqueName = getMappedName(param);
-            PtalonParameter att = (PtalonParameter) _actor
-                    .getAttribute(uniqueName);
-            return att.getType();
-        } catch (Exception ex) {
-            throw new PtalonRuntimeException("Unable to access int value for "
-                    + param, ex);
-        }
-    }
-
-    /** Get the type term associated with the specified parameter.
-     *
-     *  @param param The parameter's name in the Ptalon code.
-     *  @return Its type.
-     *  @exception PtalonRuntimeException If the parameter does not exist.
-     */
-    private InequalityTerm _getTypeTermOf(String param)
-            throws PtalonRuntimeException {
-        try {
-            String uniqueName = getMappedName(param);
-            PtalonParameter att = (PtalonParameter) _actor
-                    .getAttribute(uniqueName);
-            return att.getTypeTerm();
-        } catch (Exception ex) {
-            throw new PtalonRuntimeException("Unable to access int value for "
-                    + param, ex);
-        }
-    }
-
-    /** Get the value associated with the specified parameter.
-     *
-     *  @param param The parameter's name in the Ptalon code.
-     *  @return Its unique value.
-     *  @exception PtalonRuntimeException If the parameter does not exist.
-     */
-    private Token _getValueOf(String param) throws PtalonRuntimeException {
-        try {
-            String uniqueName = getMappedName(param);
-            PtalonParameter att = (PtalonParameter) _actor
-                    .getAttribute(uniqueName);
-            att.toString();
-            /*This previous line seems to cause some evaluation that
-             * is necessary for the next line to not throw an exception.
-             * I don't exactly know why, but things seemed to only work
-             * when I was in the debugger, and only when I viewed the "att"
-             * value in the debugger.  Since I figured this would require
-             * toString() to be called, I tried adding this line, and the
-             * exception went away.
-             */
-            return att.getToken();
-        } catch (Exception ex) {
-            throw new PtalonRuntimeException("Unable to access int value for "
-                    + param, ex);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        private members                    ////  
-
-    /** A counter used to associate a unique number with each if-block.
-     */
-    private int _counter;
-
-    /** The root of the tree containing the symbol tables for each
-     *  level of the if-statement hierarchy.
-     */
-    private IfTree _root;
-
-    /** _unassignedParameters and _unassignedParameterValues are used
-     *  to store parameters which need to be set by Ptalon;
-     *  i.e. constant parameters. The first list are the parameters,
-     *  and the second list are the expressions to assign to the
-     *  parameters.
-     */
-    private List<PtalonParameter> _unassignedParameters = new LinkedList<PtalonParameter>();
-
-    /** _unassignedParameters and _unassignedParameterValues are used
-     *  to store parameters which need to be set by Ptalon;
-     *  i.e. constant parameters. The first list are the parameters,
-     *  and the second list are the expressions to assign to the
-     *  parameters.
-     */
-    private List<String> _unassignedParameterValues = new LinkedList<String>();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected classes                    ////  
-
     /** This is a representation of an if/else construct in Ptalon.
      *  The true branch and/or the false branch can point to a set of
      *  IfTrees.  This class is used when the keyword "if" apears in
      *  the Ptalon source code.  There are no dangling "if"s in Ptalon,
      *  so this class always knows when to use the true or false branch
      *  in the representation.
-     * 
+     *
      */
     protected class IfTree extends NamedTree<IfTree> {
 
@@ -1454,7 +1421,7 @@ public abstract class AbstractPtalonEvaluator {
          *  been entered) in which this symbol is created.
          *
          *  @param symbol The symbol created.
-         *  @return The interation number.
+         *  @return The iteration number.
          *  @see #setEnteredIteration
          */
         public int getEnteredIteration(String symbol) {
@@ -1484,52 +1451,6 @@ public abstract class AbstractPtalonEvaluator {
                         + " not found.");
             }
             return output;
-        }
-
-        /** Return true if an entity was created in PtalonActor for
-         *  the given symbol. This symbol is assumed to be in the
-         *  current scope.
-         *
-         *  @param symbol The symbol to test.
-         *  @return true If an entity was created for this symbol.
-         *  @exception PtalonRuntimeException If the symbol is not in
-         *  the current scope.
-         */
-        public boolean isCreated(String symbol) throws PtalonRuntimeException {
-            Boolean status;
-            if (_currentBranch || isForStatement) {
-                status = _trueSetStatus.get(symbol);
-            } else {
-                status = _falseSetStatus.get(symbol);
-            }
-            if (status == null) {
-                return false;
-            }
-            return status;
-        }
-
-        /** Return true if the given symbol is in this scope, or
-         *  deeply in this scope through some for loop.
-         *
-         *  @param symbol The symbol to test.
-         *  @return true If symbol is in the right scope.
-         */
-        public boolean inDeepScope(String symbol) {
-            if ((_currentBranch || isForStatement)
-                    && _trueSymbols.containsKey(symbol)) {
-                return true;
-            } else if (!(_currentBranch || isForStatement)
-                    && _falseSymbols.containsKey(symbol)) {
-                return true;
-            }
-            for (IfTree child : _children) {
-                if (child.isForStatement) {
-                    if (child.inDeepScope(symbol)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
 
         /** Return a set of strings representing all symbols in the
@@ -1566,6 +1487,66 @@ public abstract class AbstractPtalonEvaluator {
             return value;
         }
 
+        /** Return true if the given symbol is in this scope, or
+         *  deeply in this scope through some for loop.
+         *
+         *  @param symbol The symbol to test.
+         *  @return true If symbol is in the right scope.
+         */
+        public boolean inDeepScope(String symbol) {
+            if ((_currentBranch || isForStatement)
+                    && _trueSymbols.containsKey(symbol)) {
+                return true;
+            } else if (!(_currentBranch || isForStatement)
+                    && _falseSymbols.containsKey(symbol)) {
+                return true;
+            }
+            for (IfTree child : _children) {
+                if (child.isForStatement) {
+                    if (child.inDeepScope(symbol)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /** Return true if in a new iteration of a while block.
+         *
+         *  @return true If in a new iteration of a while block.
+         */
+        public boolean inNewWhileIteration() {
+            if (isForStatement) {
+                return _inNewWhileIteration;
+            }
+            if (_parent == null) {
+                return false;
+            }
+            return _parent.inNewWhileIteration();
+        }
+
+        /** Return true if an entity was created in PtalonActor for
+         *  the given symbol. This symbol is assumed to be in the
+         *  current scope.
+         *
+         *  @param symbol The symbol to test.
+         *  @return true If an entity was created for this symbol.
+         *  @exception PtalonRuntimeException If the symbol is not in
+         *  the current scope.
+         */
+        public boolean isCreated(String symbol) throws PtalonRuntimeException {
+            Boolean status;
+            if (_currentBranch || isForStatement) {
+                status = _trueSetStatus.get(symbol);
+            } else {
+                status = _falseSetStatus.get(symbol);
+            }
+            if (status == null) {
+                return false;
+            }
+            return status;
+        }
+
         /** Return true if all the symbols in this if block have been
          *  assigned a value. A symbol has been assigned a value if a
          *  corresponding entity for the symbol has been created in
@@ -1580,10 +1561,10 @@ public abstract class AbstractPtalonEvaluator {
         public boolean isFullyAssigned() throws PtalonRuntimeException {
             if (_currentBranch || isForStatement) {
                 for (String symbol : _trueSetStatus.keySet()) {
-                    if (!_trueSetStatus.get(symbol)) {
-                        return false;
-                    }
                     if (_trueSymbols.get(symbol).endsWith("parameter")) {
+                        if (!_trueSetStatus.get(symbol)) {
+                            return false;
+                        }
                         try {
                             PtalonParameter param = (PtalonParameter) _actor
                                     .getAttribute(_trueNameMappings.get(symbol));
@@ -1618,20 +1599,6 @@ public abstract class AbstractPtalonEvaluator {
                 }
                 return true;
             }
-        }
-
-        /** Return true if in a new iteration of a while block.
-         *
-         *  @return true If in a new iteration of a while block.
-         */
-        public boolean inNewWhileIteration() {
-            if (isForStatement) {
-                return _inNewWhileIteration;
-            }
-            if (_parent == null) {
-                return false;
-            }
-            return _parent.inNewWhileIteration();
         }
 
         /** Map a name of a symbol from a Ptalon program to a name in
@@ -1771,15 +1738,15 @@ public abstract class AbstractPtalonEvaluator {
          */
         private Boolean _activeBranch = null;
 
-        /** This is true if we are in the main scope or the true part
-         *  of a true branch.
-         */
-        private boolean _currentBranch = true;
-
         /** The number of iterations (number of times the if/for block
          *  has been entered) for each symbol created.
          */
         private Hashtable<String, Integer> _createdIteration = new Hashtable<String, Integer>();
+
+        /** This is true if we are in the main scope or the true part
+         *  of a true branch.
+         */
+        private boolean _currentBranch = true;
 
         /** Each symbol gets mapped to its unique name in the Ptalon
          *  Actor. This is for the false branch of this if tree.
@@ -1817,6 +1784,9 @@ public abstract class AbstractPtalonEvaluator {
          */
         private Hashtable<String, String> _trueSymbols;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                    ////
 
     /**
      * FIXME comment
@@ -1946,4 +1916,129 @@ public abstract class AbstractPtalonEvaluator {
          */
         private Map<String, Token> _variables = new Hashtable<String, Token>();
     }
+
+    /** FIXME
+        @return The next symbol of form "_ifN" where N is 0 if this
+        function has not been called and N is n if this is the nth
+        call to this function.
+     */
+    private String _getNextIfSymbol() {
+        String symbol = "_if" + _counter;
+        _counter++;
+        return symbol;
+    }
+
+    /** FIXME
+     *  @return The parameters in the current scope.
+     *  @exception PtalonScopeException If there is any problem
+     *  getting the type of a symbol.
+     */
+    private Set<String> _getParameters() throws PtalonScopeException {
+        Set<String> output = new HashSet<String>();
+        for (IfTree tree : _currentIfTree.getAncestors()) {
+            for (String symbol : tree.getSymbols()) {
+                if (tree.getType(symbol).equals("parameter")) {
+                    output.add(symbol);
+                }
+            }
+        }
+        return output;
+    }
+
+    /** Get the type associated with the specified parameter.
+     *
+     *  @param param The parameter's name in the Ptalon code.
+     *  @return Its type.
+     *  @exception PtalonRuntimeException If the parameter does not exist.
+     */
+    private Type _getTypeOf(String param) throws PtalonRuntimeException {
+        try {
+            String uniqueName = getMappedName(param);
+            PtalonParameter att = (PtalonParameter) _actor
+                    .getAttribute(uniqueName);
+            return att.getType();
+        } catch (Exception ex) {
+            throw new PtalonRuntimeException("Unable to access int value for "
+                    + param, ex);
+        }
+    }
+
+    /** Get the type term associated with the specified parameter.
+     *
+     *  @param param The parameter's name in the Ptalon code.
+     *  @return Its type.
+     *  @exception PtalonRuntimeException If the parameter does not exist.
+     */
+    private InequalityTerm _getTypeTermOf(String param)
+            throws PtalonRuntimeException {
+        try {
+            String uniqueName = getMappedName(param);
+            PtalonParameter att = (PtalonParameter) _actor
+                    .getAttribute(uniqueName);
+            return att.getTypeTerm();
+        } catch (Exception ex) {
+            throw new PtalonRuntimeException("Unable to access int value for "
+                    + param, ex);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private members                    ////
+
+    /** Get the value associated with the specified parameter.
+     *
+     *  @param param The parameter's name in the Ptalon code.
+     *  @return Its unique value.
+     *  @exception PtalonRuntimeException If the parameter does not exist.
+     */
+    private Token _getValueOf(String param) throws PtalonRuntimeException {
+        try {
+            String uniqueName = getMappedName(param);
+            PtalonParameter att = (PtalonParameter) _actor
+                    .getAttribute(uniqueName);
+            att.toString();
+            /*This previous line seems to cause some evaluation that
+             * is necessary for the next line to not throw an exception.
+             * I don't exactly know why, but things seemed to only work
+             * when I was in the debugger, and only when I viewed the "att"
+             * value in the debugger.  Since I figured this would require
+             * toString() to be called, I tried adding this line, and the
+             * exception went away.
+             */
+            return att.getToken();
+        } catch (Exception ex) {
+            throw new PtalonRuntimeException("Unable to access int value for "
+                    + param, ex);
+        }
+    }
+
+    /** A counter used to associate a unique number with each if-block.
+     */
+    private int _counter;
+
+    private boolean _inTransformation = false;
+
+    /** The root of the tree containing the symbol tables for each
+     *  level of the if-statement hierarchy.
+     */
+    private IfTree _root;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected classes                    ////
+
+    /** _unassignedParameters and _unassignedParameterValues are used
+     *  to store parameters which need to be set by Ptalon;
+     *  i.e. constant parameters. The first list are the parameters,
+     *  and the second list are the expressions to assign to the
+     *  parameters.
+     */
+    private List<String> _unassignedParameterValues = new LinkedList<String>();
+
+    /** _unassignedParameters and _unassignedParameterValues are used
+     *  to store parameters which need to be set by Ptalon;
+     *  i.e. constant parameters. The first list are the parameters,
+     *  and the second list are the expressions to assign to the
+     *  parameters.
+     */
+    private List<PtalonParameter> _unassignedParameters = new LinkedList<PtalonParameter>();
 }

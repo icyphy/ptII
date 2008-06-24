@@ -32,227 +32,247 @@ package ptolemy.actor.ptalon;
 /** 
   PtalonScopeChecker.java generated from populator.g by ANTLR.
 
-  @author Adam Cataldo, Elaine Cheong
+  @author Adam Cataldo, Elaine Cheong, Thomas Huining Feng
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
 */
 }
 class PtalonScopeChecker extends TreeParser;
 options {
-	importVocab = Ptalon;
-	buildAST = true;
-	defaultErrorHandler  = false;
-	ASTLabelType = "PtalonAST";
+    importVocab = Ptalon;
+    buildAST = true;
+    defaultErrorHandler  = false;
+    ASTLabelType = "PtalonAST";
  // http://www.antlr.org:8080/pipermail/antlr-interest/2006-October/018084.html
  // says:
  // > Just delete that line.  ANTLR 2 treewalkers are effectively k=1.
- //	k = 2;
+ //    k = 2;
 }
 
 {
-	private PtalonEvaluator info;
+    private PtalonEvaluator info;
 
-	public PtalonEvaluator getCodeManager() {
-		return info;
-	}
-	
-	private String scopeName;
+    public PtalonEvaluator getCodeManager() {
+        return info;
+    }
+    
+    private String scopeName;
 }
 
 port_declaration throws PtalonScopeException
 :
-	#(PORT (a:ID
-	{
-		info.addSymbol(a.getText(), "port");
-	}
-	| #(DYNAMIC_NAME ID EXPRESSION))) | #(INPORT (b:ID
-	{
-		info.addSymbol(b.getText(), "inport");
-	}
-	| #(DYNAMIC_NAME ID EXPRESSION))) | #(OUTPORT (c:ID
-	{
-		info.addSymbol(c.getText(), "outport");
-	}
-	| #(DYNAMIC_NAME ID EXPRESSION))) | #(MULTIPORT (d:ID
-	{
-		info.addSymbol(d.getText(), "multiport");
-	}
-	| #(DYNAMIC_NAME ID EXPRESSION))) | #(MULTIINPORT (e:ID
-	{
-		info.addSymbol(e.getText(), "multiinport");
-	}
-	| #(DYNAMIC_NAME ID EXPRESSION))) | #(MULTIOUTPORT (f:ID
-	{
-		info.addSymbol(f.getText(), "multioutport");
-	}
-	| #(DYNAMIC_NAME ID EXPRESSION)))
+    #(PORT (a:ID
+    {
+        info.addSymbol(a.getText(), "port");
+    }
+    | #(DYNAMIC_NAME ID EXPRESSION))) | #(INPORT (b:ID
+    {
+        info.addSymbol(b.getText(), "inport");
+    }
+    | #(DYNAMIC_NAME ID EXPRESSION))) | #(OUTPORT (c:ID
+    {
+        info.addSymbol(c.getText(), "outport");
+    }
+    | #(DYNAMIC_NAME ID EXPRESSION))) | #(MULTIPORT (d:ID
+    {
+        info.addSymbol(d.getText(), "multiport");
+    }
+    | #(DYNAMIC_NAME ID EXPRESSION))) | #(MULTIINPORT (e:ID
+    {
+        info.addSymbol(e.getText(), "multiinport");
+    }
+    | #(DYNAMIC_NAME ID EXPRESSION))) | #(MULTIOUTPORT (f:ID
+    {
+        info.addSymbol(f.getText(), "multioutport");
+    }
+    | #(DYNAMIC_NAME ID EXPRESSION)))
 ;
 
 parameter_declaration throws PtalonScopeException
 :
-	#(PARAMETER (a:ID
-	{
-		info.addSymbol(a.getText(), "parameter");
-	}
-	| #(DYNAMIC_NAME ID EXPRESSION))) | #(ACTOR b:ID
-	{
-		info.addSymbol(b.getText(), "actorparameter");
-	}
-	)
+    #(PARAMETER (a:ID
+    {
+        info.addSymbol(a.getText(), "parameter");
+    } | #(DYNAMIC_NAME ID EXPRESSION)))
+    | #(ACTOR b:ID
+    {
+        info.addSymbol(b.getText(), "actorparameter");
+    }
+    )
+    | #(ITERATE id:ID init:EXPRESSION sat:EXPRESSION next:EXPRESSION)
+    {
+       info.addSymbol(id.getText(), "parameter");
+    }
 ;
 
 assigned_parameter_declaration throws PtalonScopeException
 :
-	#(PARAM_EQUALS #(PARAMETER (a:ID
-	{
-		info.addSymbol(a.getText(), "parameter");
-	}
-	| #(DYNAMIC_NAME ID EXPRESSION))) EXPRESSION) | 
-	#(ACTOR_EQUALS #(ACTOR b:ID
-	{
-		info.addSymbol(b.getText(), "actorparameter");
-	}
-	) QUALID)
+    #(PARAM_EQUALS #(PARAMETER (a:ID
+    {
+        info.addSymbol(a.getText(), "parameter");
+    }
+    | #(DYNAMIC_NAME ID EXPRESSION))) EXPRESSION) | 
+    #(ACTOR_EQUALS #(ACTOR b:ID
+    {
+        info.addSymbol(b.getText(), "actorparameter");
+    }
+    ) QUALID)
 ;
 
 relation_declaration throws PtalonScopeException
 :
-	#(RELATION (a:ID
-	{
-		info.addSymbol(a.getText(), "relation");
-	}
-	| #(DYNAMIC_NAME ID EXPRESSION)))
+    #(RELATION (a:ID
+    {
+        info.addSymbol(a.getText(), "relation");
+    }
+    | #(DYNAMIC_NAME ID EXPRESSION)))
 ;
 
 transparent_relation_declaration throws PtalonScopeException
 :
-	#(TRANSPARENT (a:ID
-	{
-		info.addSymbol(a.getText(), "transparent");
-	}
-	| #(DYNAMIC_NAME ID EXPRESSION)))
+    #(TRANSPARENT (a:ID
+    {
+        info.addSymbol(a.getText(), "transparent");
+    }
+    | #(DYNAMIC_NAME ID EXPRESSION)))
 ;
 
 assignment throws PtalonScopeException
 {
-	boolean leftDynamic = false;
+    boolean leftDynamic = false;
 }
 :
-	#(ASSIGN (a:ID | #(DYNAMIC_NAME left:ID leftExp:EXPRESSION
-	{
-		leftDynamic = true;
-		info.addUnknownLeftSide(left.getText(), leftExp.getText());
-	}
-	)) ((b:ID 
-	{
-		if (!leftDynamic) {
-			info.addPortAssign(a.getText(), b.getText());
-		}
-	}
-	| #(DYNAMIC_NAME c:ID d:EXPRESSION)
-	{
-		if (!leftDynamic) {
-			info.addPortAssign(a.getText(), c.getText(), d.getText());
-		}
-	}
-	)| nested_actor_declaration[a.getText()]
-	| e:EXPRESSION
-	{
-		if (!leftDynamic) {
-			info.addParameterAssign(a.getText(), e.getText());
-		}
-	}
-	))
+    #(ASSIGN (a:ID | #(DYNAMIC_NAME left:ID leftExp:EXPRESSION
+    {
+        leftDynamic = true;
+        info.addUnknownLeftSide(left.getText(), leftExp.getText());
+    }
+    )) ((b:ID 
+    {
+        if (!leftDynamic) {
+            info.addPortAssign(a.getText(), b.getText());
+        }
+    }
+    | #(DYNAMIC_NAME c:ID d:EXPRESSION)
+    {
+        if (!leftDynamic) {
+            info.addPortAssign(a.getText(), c.getText(), d.getText());
+        }
+    }
+    )| nested_actor_declaration[a.getText()]
+    | e:EXPRESSION
+    {
+        if (!leftDynamic) {
+            info.addParameterAssign(a.getText(), e.getText());
+        }
+    }
+    ))
 ;
 
-actor_declaration throws PtalonScopeException	
+actor_declaration throws PtalonScopeException    
 :
-	#(a:ACTOR_DECLARATION 
-	{
-		info.pushActorDeclaration(a.getText());
-	}
-	(b:assignment)*)
-	{
-		String uniqueName = info.popActorDeclaration();
-		#actor_declaration.setText(uniqueName);
-	}	
+    #(a:ACTOR_DECLARATION 
+    {
+        info.pushActorDeclaration(a.getText());
+    }
+    (b:assignment)*)
+    {
+        String uniqueName = info.popActorDeclaration();
+        #actor_declaration.setText(uniqueName);
+    }    
 ;
 
-nested_actor_declaration [String paramValue] throws PtalonScopeException	
+nested_actor_declaration [String paramValue] throws PtalonScopeException    
 :
-	#(a:ACTOR_DECLARATION
-	{
-		info.pushActorDeclaration(a.getText());
-		info.setActorParameter(paramValue);
-	}
-	(b:assignment)*)
-	{
-		String uniqueName = info.popActorDeclaration();
-		#nested_actor_declaration.setText(uniqueName);
-	}	
+    #(a:ACTOR_DECLARATION
+    {
+        info.pushActorDeclaration(a.getText());
+        info.setActorParameter(paramValue);
+    }
+    (b:assignment)*)
+    {
+        String uniqueName = info.popActorDeclaration();
+        #nested_actor_declaration.setText(uniqueName);
+    }    
 ;
 
 atomic_statement throws PtalonScopeException
 :
-	(port_declaration | parameter_declaration |
-		assigned_parameter_declaration |
-		relation_declaration | transparent_relation_declaration | 
-		actor_declaration)
+    (port_declaration | parameter_declaration |
+        assigned_parameter_declaration |
+        relation_declaration | transparent_relation_declaration | 
+        actor_declaration)
 ;
 
 conditional_statement throws PtalonScopeException
 :
-	#(IF 
-	{
-		info.pushIfStatement();
-	}
-	EXPRESSION 
-		#(TRUEBRANCH 
-		{
-			info.setCurrentBranch(true);
-		}
-			(atomic_statement | conditional_statement | iterative_statement)*)
-		#(FALSEBRANCH 
-		{
-			info.setCurrentBranch(false);
-		}
-			(atomic_statement | conditional_statement | iterative_statement)*))
-	{
-		#conditional_statement.setText(info.popIfStatement());
-	}
-;	
+    #(IF 
+    {
+        info.pushIfStatement();
+    }
+    EXPRESSION 
+        #(TRUEBRANCH 
+        {
+            info.setCurrentBranch(true);
+        }
+            (atomic_statement | conditional_statement | iterative_statement)*)
+        #(FALSEBRANCH 
+        {
+            info.setCurrentBranch(false);
+        }
+            (atomic_statement | conditional_statement | iterative_statement)*))
+    {
+        #conditional_statement.setText(info.popIfStatement());
+    }
+;    
 
 iterative_statement throws PtalonScopeException
 :
-	#(FOR #(VARIABLE a:ID) #(INITIALLY b:EXPRESSION) #(SATISFIES c:EXPRESSION)
-	{
-		info.pushForStatement(a.getText(), b.getText(), c.getText());
-	}
-		(atomic_statement | conditional_statement | iterative_statement)*
-		#(NEXT n:EXPRESSION
-		{
-			info.setNextExpression(n.getText());
-		}
-		))
-	{
-		#iterative_statement.setText(info.popForStatement());
-	}
+    #(FOR #(VARIABLE a:ID) #(INITIALLY b:EXPRESSION) #(SATISFIES c:EXPRESSION)
+    {
+        info.pushForStatement(a.getText(), b.getText(), c.getText());
+    }
+        (atomic_statement | conditional_statement | iterative_statement)*
+        #(NEXT n:EXPRESSION
+        {
+            info.setNextExpression(n.getText());
+        }
+        ))
+    {
+        #iterative_statement.setText(info.popForStatement());
+    }
+;
+
+transformation throws PtalonScopeException
+{
+    boolean emptyStart = true;
+}
+:
+    #(TRANSFORMATION (STAR { emptyStart = false; } )?
+    {
+        info.enterTransformation(emptyStart);
+    }
+    (atomic_statement | conditional_statement | iterative_statement)*)
+    {
+        info.exitTransformation();
+    }
 ;
 
 actor_definition [PtalonEvaluator manager] throws PtalonScopeException
 {
-	info = manager;
+    info = manager;
 }
 :
-	#(a:ACTOR_DEFINITION 
-	{
-		info.setActorSymbol(a.getText());
-		info.setDanglingPortsOkay(true);
-	}
-	(DANGLING_PORTS_OKAY)?	(ATTACH_DANGLING_PORTS 
-	{
-		info.setDanglingPortsOkay(false);
-	}
-	)?
-	(atomic_statement | conditional_statement | iterative_statement)*)
+    #(a:ACTOR_DEFINITION 
+    {
+        info.setActorSymbol(a.getText());
+        info.setDanglingPortsOkay(true);
+    }
+    (DANGLING_PORTS_OKAY)? (ATTACH_DANGLING_PORTS 
+    {
+        info.setDanglingPortsOkay(false);
+    }
+    )?
+    (atomic_statement | conditional_statement | iterative_statement)*
+    (transformation)?)
 ;

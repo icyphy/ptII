@@ -74,8 +74,7 @@ import com.microstar.xml.XmlParser;
  */
 public class PtalonActor extends TypedCompositeActor implements Configurable {
 
-    /** FIXME
-     *  Construct a PtalonActor with a name and a container.
+    /** Construct a PtalonActor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
@@ -175,17 +174,11 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                         _assignedPtalonParametersCopyValues.put(p.getName(), p
                                 .getToken());
 
-                        // Delete the inside of this PtalonActor by
-                        // removing all entities and relations.  We do
-                        // not remove ports, but they become unlinked
-                        // when the attached entities and relations
-                        // are removed.
-                        this.removeAllEntities();
-                        this.removeAllRelations();
+                        _removeContents();
 
                         // Reset this PtalonActor and reparse the
                         // Ptalon code in order to regenerate the
-                        // inside of thie actor.
+                        // inside of this actor.
                         _initializePtalonActor();
                         _initializePtalonCodeLocation();
                         return;
@@ -380,15 +373,12 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         return candidate;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                        public members                     ////
-
     /** The location of the Ptalon code.
      */
     public FileParameter ptalonCodeLocation;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    ////                        public members                     ////
 
     /** Add the attribute, and if the attribute is a PtalonParameter,
      *  add it to a list of Ptalon parameters.
@@ -404,6 +394,31 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
+    protected PtalonEvaluator _createPtalonEvaluator(PtalonActor actor) {
+        return new PtalonEvaluator(actor);
+    }
+
+    protected PtalonPopulator _createPtalonPopulator() {
+        return new PtalonPopulator();
+    }
+
+    /** Create Ptalon parser. This function simply constructs a {@link
+     *  PtalonRecognizer} instance with the given lexer. Subclasses may override
+     *  this function to return a customized parser.
+     *
+     *  @param lexer The lexer.
+     *  @return The Ptalon parser.
+     */
+    protected PtalonRecognizer _createPtalonRecognizer(PtalonLexer lexer) {
+        return new PtalonRecognizer(lexer);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+
     /** Write a MoML description of the contents of this object, which
      *  in this class is the configuration information. This method is
      *  called by exportMoML().  Each description is indented
@@ -417,115 +432,95 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-        try {
-            for (Object att : attributeList()) {
-                if (!(att instanceof Parameter)) {
-                    Attribute attribute = (Attribute) att;
-                    attribute.exportMoML(output, depth);
-                }
+        for (Object att : attributeList()) {
+            if (!(att instanceof Parameter)) {
+                Attribute attribute = (Attribute) att;
+                attribute.exportMoML(output, depth);
             }
-            if (_astCreated) {
-                // Get the name of the Ptalon file.
-                String filename;
-                try {
-                    filename = ptalonCodeLocation.asURL().toString();
-                } catch (IllegalActionException ex) {
-                    IOException ex2 = new IOException(
-                            "Unable to get valid file name "
-                            + "from ptalonCodeLocation: \""
-                            + ptalonCodeLocation + "\".");
-                    ex2.initCause(ex);
-                    throw ex2;
-                }
-
-                // Strip postfix.
-                if (!filename.toLowerCase().endsWith(".ptln")) {
-                    throw new IOException("Ptalon file does not end with " +
-                            "postfix .ptln.");
-                }
-                filename = filename.substring(0, filename.length() - 5);
-
-                if (filename.startsWith("file:/")) {
-                    filename = filename.substring(5);
-                }
-                if (filename.startsWith("$CLASSPATH")) {
-                    filename = filename.substring(9);
-                }
-                String ptIIDir = StringUtilities.getProperty(
-                        "ptolemy.ptII.dir");
-                File ptIIDirFile = new File(ptIIDir);
-                String prefix = ptIIDirFile.toURI().toString();
-                if (prefix.startsWith("file:/")) {
-                    prefix = prefix.substring(5);
-                }
-                String displayName;
-                if (filename.toLowerCase().startsWith(prefix.toLowerCase())) {
-                    int i = 0;
-                    while (filename.startsWith("/")) {
-                        filename = filename.substring(1);
-                        i++;
-                    }
-                    displayName = filename.substring(prefix.length() - i);
-                } else {
-                    displayName = filename;
-                }
-                displayName = displayName.replace('/', '.');
-
-                // Write the name of the Ptalon file.
-                output.write(_getIndentPrefix(depth) + "<configure>\n");
-                output.write(_getIndentPrefix(depth + 1) + "<ptalon file=\""
-                        + displayName + "\">\n");
-
-                // Write the name and value of all Ptalon parameters.
-                for (PtalonParameter param : _assignedPtalonParameters) {
-                    if (!_unsettablePtalonParameters.contains(param)) {
-                        if (param instanceof PtalonExpressionParameter) {
-                            String expression = param.getExpression();
-                            expression = expression.replaceAll("\"",
-                                    "\\&quot\\;");
-                            output.write(_getIndentPrefix(depth + 2)
-                                    + "<ptalonExpressionParameter name=\""
-                                    + param.getName() + "\" value=\""
-                                    + expression + "\"/>\n");
-                        } else {
-                            output.write(_getIndentPrefix(depth + 2)
-                                    + "<ptalonParameter name=\""
-                                    + param.getName() + "\" value=\""
-                                    + param.getExpression() + "\"/>\n");
-                        }
-                    }
-                }
-                output.write(_getIndentPrefix(depth + 1) + "</ptalon>\n");
-                output.write(_getIndentPrefix(depth) + "</configure>\n");
-            }
-
-        } catch (IOException ex) {
-            //e.printStackTrace();
-            throw ex;
         }
-    }
+        if (_astCreated) {
+            // Get the name of the Ptalon file.
+            String filename;
+            try {
+                filename = ptalonCodeLocation.asURL().toString();
+            } catch (IllegalActionException ex) {
+                IOException ex2 = new IOException(
+                        "Unable to get valid file name "
+                        + "from ptalonCodeLocation: \""
+                        + ptalonCodeLocation + "\".");
+                ex2.initCause(ex);
+                throw ex2;
+            }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
+            // Strip postfix.
+            if (!filename.toLowerCase().endsWith(".ptln")) {
+                throw new IOException("Ptalon file does not end with " +
+                        "postfix .ptln.");
+            }
+            filename = filename.substring(0, filename.length() - 5);
 
-    /** Initialize this PtalonActor.  This method may be called when
-     *  the PtalonActor is first constructed or if any of its
-     *  parameter values are changed, so we only initialize
-     *  variables that do not need to be saved when reparsing the
-     *  Ptalon file.
-     */
-    private void _initializePtalonActor() {
-        _astCreated = false;
-        _ast = null;
-        _codeManager = null;
-        _nestedDepth = 0;
+            if (filename.startsWith("file:/")) {
+                filename = filename.substring(5);
+            }
+            if (filename.startsWith("$CLASSPATH")) {
+                filename = filename.substring(9);
+            }
+            String ptIIDir = StringUtilities.getProperty(
+                    "ptolemy.ptII.dir");
+            File ptIIDirFile = new File(ptIIDir);
+            String prefix = ptIIDirFile.toURI().toString();
+            if (prefix.startsWith("file:/")) {
+                prefix = prefix.substring(5);
+            }
+            String displayName;
+            if (filename.toLowerCase().startsWith(prefix.toLowerCase())) {
+                int i = 0;
+                while (filename.startsWith("/")) {
+                    filename = filename.substring(1);
+                    i++;
+                }
+                displayName = filename.substring(prefix.length() - i);
+            } else {
+                displayName = filename;
+            }
+            displayName = displayName.replace('/', '.');
+
+            // Write the name of the Ptalon file.
+            output.write(_getIndentPrefix(depth) + "<configure>\n");
+            output.write(_getIndentPrefix(depth + 1) + "<ptalon file=\""
+                    + displayName + "\">\n");
+
+            // Write the name and value of all Ptalon parameters.
+            for (PtalonParameter param : _assignedPtalonParameters) {
+                if (!_unsettablePtalonParameters.contains(param)
+                        && !(param instanceof PtalonIterableParameter)) {
+                    if (param instanceof PtalonExpressionParameter) {
+                        String expression = param.getExpression();
+                        expression = expression.replaceAll("\"",
+                                "\\&quot\\;");
+                        output.write(_getIndentPrefix(depth + 2)
+                                + "<ptalonExpressionParameter name=\""
+                                + param.getName() + "\" value=\""
+                                + expression + "\"/>\n");
+                    } else {
+                        output.write(_getIndentPrefix(depth + 2)
+                                + "<ptalonParameter name=\""
+                                + param.getName() + "\" value=\""
+                                + param.getExpression() + "\"/>\n");
+                    }
+                }
+            }
+            output.write(_getIndentPrefix(depth + 1) + "</ptalon>\n");
+            output.write(_getIndentPrefix(depth) + "</configure>\n");
+        }
     }
 
     /** This helper method is used to begin the Ptalon compiler if the
      *  ptalonCodeLocation attribute has been updated.
      * @exception IllegalActionException If any exception is thrown.
      */
-    private void _initializePtalonCodeLocation() throws IllegalActionException {
+    protected void _initializePtalonCodeLocation()
+            throws IllegalActionException {
         try {
             if (_astCreated) {
                 ptalonCodeLocation.setVisibility(Settable.NONE);
@@ -564,7 +559,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 inputStream = inputURL.openStream();
                 lex = new PtalonLexer(inputStream);
 
-                rec = new PtalonRecognizer(lex);
+                rec = _createPtalonRecognizer(lex);
                 rec.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
                 rec.actor_definition();
             } catch (IOException ex2) {
@@ -583,11 +578,11 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             _ast = (PtalonAST) rec.getAST();
             PtalonScopeChecker checker = new PtalonScopeChecker();
             checker.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
-            _codeManager = new PtalonEvaluator(this);
+            _codeManager = _createPtalonEvaluator(this);
             checker.actor_definition(_ast, _codeManager);
             _ast = (PtalonAST) checker.getAST();
             _codeManager = checker.getCodeManager();
-            PtalonPopulator populator = new PtalonPopulator();
+            PtalonPopulator populator = _createPtalonPopulator();
             populator.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
             populator.actor_definition(_ast, _codeManager);
             _ast = (PtalonAST) populator.getAST();
@@ -599,6 +594,29 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     + "the ptalonCodeLocation \"" + ptalonCodeLocation
                     + "\"");
         }
+    }
+
+    protected void _removeContents() {
+        // Delete the inside of this PtalonActor by
+        // removing all entities and relations.  We do
+        // not remove ports, but they become unlinked
+        // when the attached entities and relations
+        // are removed.
+        removeAllEntities();
+        removeAllRelations();
+    }
+
+    /** Initialize this PtalonActor.  This method may be called when
+     *  the PtalonActor is first constructed or if any of its
+     *  parameter values are changed, so we only initialize
+     *  variables that do not need to be saved when reparsing the
+     *  Ptalon file.
+     */
+    private void _initializePtalonActor() {
+        _astCreated = false;
+        _ast = null;
+        _codeManager = null;
+        _nestedDepth = 0;
     }
 
     /** Return true if the value of the given PtalonParameter has
@@ -616,7 +634,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             throws IllegalActionException {
         if (!p.hasValue()) {
             // The parameter does not have a value.
-            return false;
+            return true;
         } else if (_assignedPtalonParametersCopy.containsKey(p.getName())) {
             // The value of the parameter was previously assigned.
             // Check to see if value has actually changed.

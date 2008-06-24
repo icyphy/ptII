@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/ptalon
 
-DIRS =		doc lib demo test
+DIRS =		doc gt lib demo test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -50,6 +50,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	gt/gt.jar \
 	lib/lib.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -62,6 +63,7 @@ JSRCS = \
 	PtalonAST.java \
 	PtalonEvaluator.java \
 	PtalonExpressionParameter.java \
+	PtalonIterableParameter.java \
 	PtalonLexer.java \
 	PtalonMLHandler.java \
 	PtalonParameter.java \

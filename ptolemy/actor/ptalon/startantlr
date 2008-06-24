@@ -27,4 +27,4 @@
 # ENHANCEMENTS, OR MODIFICATIONS.
 
 cd $PTII/ptolemy/actor/ptalon/ 
-java -jar ./antlr/antlr.jar 
+java -classpath ./antlr/antlr.jar antlr.Tool $@

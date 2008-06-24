@@ -59,8 +59,10 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	AtomicActorMatcher.java \
+	ChangeAttribute.java \
 	CompositeActorMatcher.java \
 	Constraint.java \
+	CreationAttribute.java \
 	DefaultDirectoryAttribute.java \
 	DefaultModelAttribute.java \
 	FSMMatcher.java \
@@ -81,12 +83,12 @@ JSRCS = \
 	LocationType.java \
 	MalformedStringException.java \
 	MatchCallback.java \
+	MoMLGenerator.java \
+	ModalModelMatcher.java \
 	ModelCombine.java \
 	ModelExecutor.java \
-	ModalModelMatcher.java \
 	ModelGenerator.java \
 	ModelView.java \
-	MoMLGenerator.java \
 	NamedObjVariable.java \
 	ParameterAttribute.java \
 	Pattern.java \
@@ -103,7 +105,8 @@ JSRCS = \
 	TransformationException.java \
 	TransformationRule.java \
 	TransitionMatcher.java \
-	ValidationException.java
+	ValidationException.java \
+	ValueIterator.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ModelCombineIcon.xml \
@@ -141,6 +144,7 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$LookbackList.class' \
 	'GraphMatcher$$NameComparator.class' \
 	'GraphMatcher$$ObjectList.class' \
+	'GraphMatcher$$ParameterIterator.class' \
 	'ModelExecutor$$Wrapper$$WrapperDirector.class' \
 	'ModelExecutor$$Wrapper.class' \
 	'ModelExecutor$$WrapperPort.class' \
@@ -154,6 +158,7 @@ OPTIONAL_FILES = \
 	'TransformationRule$$Mode$$4.class' \
 	'TransformationRule$$Mode.class' \
 	'TransformationRule$$TransformationDirector.class' \
+	'TransformationRule$$WorkingCopyScopeExtender.class' \
 	demo
 
 JCLASS = $(JSRCS:%.java=%.class)

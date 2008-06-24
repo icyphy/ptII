@@ -60,7 +60,7 @@ import ptolemy.moml.ParserAttribute;
  * A code manager that manages the extra complexity of dealing with
  * parsing Ptalon actors or values and setting them to parameters of
  * PtalonActors (ones declared in a Ptalon file).
- * 
+ *
  * FIXME: This implementation could be improved by investigating ways
  * to better address partial evaluation.  A lot of memory gets eaten
  * up by IfTrees, and it would be better to keep only the minimum
@@ -94,7 +94,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////    
+    ////                         public methods                    ////
 
     /** Add an actor to the PtalonActor. In the case of an actor
      *  specified by an import statement, the actor will be a
@@ -255,6 +255,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     _currentActorTree.makeConnections(entity);
                     _currentActorTree.assignNonPtalonParameters(entity);
                     _currentActorTree.removeDynamicLeftHandSides();
+
+                    _processAttributes(entity);
                 }
                 _currentActorTree.created = true;
                 if (_inNewWhileIteration()) {
@@ -275,7 +277,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 } else {
                     _currentActorTree.createdIteration = _currentIfTree.entered;
                 }
-            } else { // type of name not "import" or "parameter".
+            } else { // type of name not "import" or "actorparameter".
                 throw new PtalonRuntimeException("Invalid type for " + name);
             }
         } catch (Exception ex) {
@@ -852,58 +854,6 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             _unknownLeftSides.put(prefix, expression);
         }
 
-        /** Assign all Ptalon paramters of the specified actor their
-         *  corresponding value.
-         *
-         *  @param actor The actor that contains these parameters.
-         *  @exception PtalonRuntimeException If thrown trying to
-         *  access the parameter, or if unable to set the token for
-         *  the corresponding parameter.
-         */
-        public void assignPtalonParameters(PtalonActor actor)
-                throws PtalonRuntimeException {
-            for (ActorTree child : _children) {
-                String paramName = child.getActorParameter();
-                PtalonParameter param = actor.getPtalonParameter(paramName);
-                try {
-                    param.setToken(new StringToken(child.getExpression()));
-                } catch (IllegalActionException ex) {
-                    throw new PtalonRuntimeException(
-                            "Unable to set token for name " + paramName, ex);
-                }
-            }
-            try {
-                PtParser parser = new PtParser();
-                ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
-                for (String parameterName : _parameters.keySet()) {
-                    String expression = _parameters.get(parameterName);
-                    if (expression == null) {
-                        throw new PtalonRuntimeException(
-                                "Unable to find expression label for "
-                                        + "parameter " + parameterName);
-                    }
-                    ASTPtRootNode _parseTree = parser
-                            .generateParseTree(expression);
-                    Parameter parameter = (Parameter) actor
-                            .getAttribute(parameterName);
-                    if (parameter == null) {
-                        String uniqueName = actor.uniqueName(parameterName);
-                        parameter = new PtalonExpressionParameter(actor,
-                                uniqueName);
-                    }
-                    Token result = _parseTreeEvaluator.evaluateParseTree(
-                            _parseTree, _scope);
-                    parameter.setToken(result);
-                    // Validate the parameter to ensure that any value
-                    // dependents are notified.
-                    parameter.validate();
-                }
-            } catch (Exception ex) {
-                throw new PtalonRuntimeException("Trouble making connections",
-                        ex);
-            }
-        }
-
         /** Assign all non-Ptalon parameters of the specified
          *  non-Ptalon actor their corresponding value.
          *
@@ -1011,6 +961,58 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             }
         }
 
+        /** Assign all Ptalon paramters of the specified actor their
+         *  corresponding value.
+         *
+         *  @param actor The actor that contains these parameters.
+         *  @exception PtalonRuntimeException If thrown trying to
+         *  access the parameter, or if unable to set the token for
+         *  the corresponding parameter.
+         */
+        public void assignPtalonParameters(PtalonActor actor)
+                throws PtalonRuntimeException {
+            for (ActorTree child : _children) {
+                String paramName = child.getActorParameter();
+                PtalonParameter param = actor.getPtalonParameter(paramName);
+                try {
+                    param.setToken(new StringToken(child.getExpression()));
+                } catch (IllegalActionException ex) {
+                    throw new PtalonRuntimeException(
+                            "Unable to set token for name " + paramName, ex);
+                }
+            }
+            try {
+                PtParser parser = new PtParser();
+                ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
+                for (String parameterName : _parameters.keySet()) {
+                    String expression = _parameters.get(parameterName);
+                    if (expression == null) {
+                        throw new PtalonRuntimeException(
+                                "Unable to find expression label for "
+                                        + "parameter " + parameterName);
+                    }
+                    ASTPtRootNode _parseTree = parser
+                            .generateParseTree(expression);
+                    Parameter parameter = (Parameter) actor
+                            .getAttribute(parameterName);
+                    if (parameter == null) {
+                        String uniqueName = actor.uniqueName(parameterName);
+                        parameter = new PtalonExpressionParameter(actor,
+                                uniqueName);
+                    }
+                    Token result = _parseTreeEvaluator.evaluateParseTree(
+                            _parseTree, _scope);
+                    parameter.setToken(result);
+                    // Validate the parameter to ensure that any value
+                    // dependents are notified.
+                    parameter.validate();
+                }
+            } catch (Exception ex) {
+                throw new PtalonRuntimeException("Trouble making connections",
+                        ex);
+            }
+        }
+
         /** Get the name of the actor parameter, or throw an exception
          *  if there is none.
          *
@@ -1024,6 +1026,25 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         "Not assigned a parameter name");
             }
             return _actorParameter;
+        }
+
+        /** Get the first actor tree descendent of this actor tree
+         *  with the specified name. This should be unique, as each
+         *  subtree should have a unique name.
+         *
+         *  @param uniqueName Unique name of the actor tree to get.
+         *  @return The descendent, or null if there is none.
+         */
+        public ActorTree getActorTree(String uniqueName) {
+            if (_name.equals(uniqueName)) {
+                return this;
+            }
+            for (ActorTree child : _children) {
+                if (child.getActorTree(uniqueName) != null) {
+                    return child.getActorTree(uniqueName);
+                }
+            }
+            return null;
         }
 
         /** Get an expression representing this actor tree, like
@@ -1063,25 +1084,6 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             }
             String output = buffer.toString();
             return output;
-        }
-
-        /** Get the first actor tree descendent of this actor tree
-         *  with the specified name. This should be unique, as each
-         *  subtree should have a unique name.
-         *
-         *  @param uniqueName Unique name of the actor tree to get.
-         *  @return The descendent, or null if there is none.
-         */
-        public ActorTree getActorTree(String uniqueName) {
-            if (_name.equals(uniqueName)) {
-                return this;
-            }
-            for (ActorTree child : _children) {
-                if (child.getActorTree(uniqueName) != null) {
-                    return child.getActorTree(uniqueName);
-                }
-            }
-            return null;
         }
 
         /** Get the AbstractPtalonEvaluator symbol.
@@ -1717,13 +1719,6 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
          *  points, and _unknownExpressions maps the same keys to the
          *  expressions for these unknown connection points.
          */
-        private Map<String, String> _unknownPrefixes = new Hashtable<String, String>();
-
-        /** The _unknownPrefixes maps port names in this actor
-         *  declaration instance to prefixes of unknown connection
-         *  points, and _unknownExpressions maps the same keys to the
-         *  expressions for these unknown connection points.
-         */
         private Map<String, String> _unknownExpressions = new Hashtable<String, String>();
 
         /** Each key is a prefix and value is an expression
@@ -1731,6 +1726,13 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
          *  may change dynamically.
          */
         private Map<String, String> _unknownLeftSides = new Hashtable<String, String>();
+
+        /** The _unknownPrefixes maps port names in this actor
+         *  declaration instance to prefixes of unknown connection
+         *  points, and _unknownExpressions maps the same keys to the
+         *  expressions for these unknown connection points.
+         */
+        private Map<String, String> _unknownPrefixes = new Hashtable<String, String>();
 
     }
 }

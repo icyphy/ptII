@@ -47,6 +47,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Collections;
@@ -520,6 +521,10 @@ public class TransformationEditor extends GTFrame implements
         }
     }
 
+    public static final String[] OPTIONAL_ACTORS = {
+        "ptolemy.actor.ptalon.gt.PtalonMatcher"
+    };
+
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
      */
@@ -685,6 +690,52 @@ public class TransformationEditor extends GTFrame implements
                 CompositeEntity actorLibrary = (CompositeEntity) configuration
                         .getEntity("actor library");
                 CompositeEntity library = gtLibrary.getLibrary();
+
+                for (String optionalActorClass : OPTIONAL_ACTORS) {
+                    try {
+                        Class<?> clazz = Class.forName(optionalActorClass);
+                        boolean ignore = false;
+                        for (Object entity : library.entityList()) {
+                            if (entity.getClass().equals(clazz)) {
+                                ignore = true;
+                                break;
+                            }
+                        }
+                        if (ignore) {
+                            continue;
+                        }
+                        Constructor<?>[] constructors = clazz.getConstructors();
+                        NamedObj object = null;
+                        String name = null;
+                        for (Constructor<?> constructor : constructors) {
+                            Class<?>[] types = constructor.getParameterTypes();
+                            if (types.length == 2 && types[0].isInstance(
+                                    library) && types[1].equals(String.class)) {
+                                name = library.uniqueName(
+                                        clazz.getSimpleName());
+                                object = (NamedObj) constructor.newInstance(
+                                        library, name);
+                                break;
+                            }
+                        }
+                        if (object != null) {
+                            List<?> entities = library.entityList();
+                            int i = 0;
+                            for (Object entity : entities) {
+                                if (entity instanceof EntityLibrary
+                                        || ((NamedObj) entity).getName()
+                                                .compareTo(name) > 0) {
+                                    break;
+                                }
+                                i++;
+                            }
+                            object.moveToIndex(i);
+                        }
+                    } catch (Exception e) {
+                        // Do not add PtalonMatcher to the library.
+                    }
+                }
+
                 Workspace workspace = actorLibrary.workspace();
                 try {
                     workspace.getReadAccess();

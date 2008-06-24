@@ -1,5 +1,4 @@
-/* An interface for parameters whose accepted values can be iterated from the
-initial value with the next method.
+/*
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -26,17 +25,18 @@ initial value with the next method.
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor;
+package ptolemy.actor.gt;
 
-import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// ValueIterator
+//// CreationAttribute
 
 /**
- An interface for parameters whose accepted values can be iterated from the
- initial value with the next method.
+
 
  @author Thomas Huining Feng
  @version $Id$
@@ -44,26 +44,24 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public interface ValueIterator {
+public class CreationAttribute extends ChangeAttribute {
 
-    /** Set the parameter that implements this interface with its initial value,
-     *  and return that value.
-     *
-     *  @return The initial value.
-     *  @exception IllegalActionException If thrown when trying to compute the
-     *  initial value or to set the parameter with that value.
+    /**
+     *  @param container
+     *  @param name
+     *  @throws NameDuplicationException
+     *  @throws IllegalActionException
      */
-    public Token initial() throws IllegalActionException;
+    public CreationAttribute(NamedObj container, String name)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
+    }
 
-    /** Set the parameter that implements this interface with its next value,
-     *  and return that value. If the initial value has not been set with {@link
-     *  #initial()}, or no next value exists, {@link IllegalActionException} is
-     *  thrown.
-     *
-     *  @return The next value, or null.
-     *  @throws IllegalActionException If thrown when trying to compute the next
-     *  value or to set the parameter with that value, or if the initial value
-     *  has not been set, or no next value exists.
+    /**
+     *  @param workspace
      */
-    public Token next() throws IllegalActionException;
+    public CreationAttribute(Workspace workspace) {
+        super(workspace);
+    }
+
 }

@@ -219,7 +219,43 @@ public class GraphTransformer extends ChangeRequest {
     }
 
     protected void _addObjects() throws TransformationException {
+    	_addObjectsWithCreationAttributes(_pattern);
         _addObjects(_replacement, _host);
+    }
+    
+    private void _addObjectsWithCreationAttributes(NamedObj pattern)
+    throws TransformationException {
+    	Collection<?> children = GTTools.getChildren(pattern, false, true, true,
+    			true);
+    	for (Object childObject : children) {
+    		NamedObj child = (NamedObj) childObject;
+    		if (_isToBeCreated(child)) {
+    			String moml = child.exportMoMLPlain();
+				NamedObj host = _findChangeContext(pattern);
+                moml = "<group name=\"auto\">\n" + moml + "</group>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        host, moml);
+                request.execute();
+                NamedObj hostChild = _getNewlyAddedObject(host,
+                		child.getClass());
+                _matchResult.put(child, hostChild);
+    		} else {
+    			_addObjectsWithCreationAttributes(child);
+    		}
+    	}
+    }
+    
+    private boolean _isToBeCreated(NamedObj object) {
+    	return !object.attributeList(CreationAttribute.class).isEmpty();
+    }
+    
+    private NamedObj _findChangeContext(NamedObj pattern) {
+    	Object host = null;
+    	while (host == null && pattern != null) {
+    		host = _matchResult.get(pattern);
+    		pattern = pattern.getContainer();
+    	}
+    	return (NamedObj) host;
     }
 
     protected void _execute() throws TransformationException {
@@ -1018,7 +1054,8 @@ public class GraphTransformer extends ChangeRequest {
 
                     NamedObj patternChild = (NamedObj) _matchResult.getKey(
                             child);
-                    if (replacementChild == null && patternChild != null) {
+                    if (replacementChild == null && patternChild != null
+                    		&& !_isToBeCreated(patternChild)) {
                         Boolean shallowRemoval =
                             patternChild instanceof CompositeEntity ?
                                     Boolean.TRUE : Boolean.FALSE;

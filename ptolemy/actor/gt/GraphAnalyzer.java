@@ -33,6 +33,7 @@ package ptolemy.actor.gt;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -98,6 +99,8 @@ public abstract class GraphAnalyzer {
             top.workspace().doneReading();
         }
 
+        _removeIgnoredObjects(children);
+
         if (!children.isEmpty()) {
             int i = 0;
             IndexedList currentList = new IndexedList(children, 0);
@@ -159,6 +162,8 @@ public abstract class GraphAnalyzer {
                     .insideRelationList());
         }
 
+        _removeIgnoredObjects(relationList);
+
         int i = 0;
         IndexedList currentList = new IndexedList(relationList, 0);
         path.add(currentList);
@@ -176,6 +181,8 @@ public abstract class GraphAnalyzer {
             visitedRelations.add(relation);
             List<?> portList = new LinkedList<Object>(
                     relation.linkedPortList());
+
+            _removeIgnoredObjects(portList);
 
             int j = 0;
             IndexedList currentList2 = new IndexedList(portList, 0);
@@ -332,6 +339,8 @@ public abstract class GraphAnalyzer {
                     List<?> portList = new LinkedList<Object>(
                             relation.linkedPortList());
 
+                    _removeIgnoredObjects(portList);
+
                     int i = 0;
                     for (Object portObject : portList) {
                         Port port = (Port) portObject;
@@ -392,9 +401,6 @@ public abstract class GraphAnalyzer {
 
     public static class IndexedLists extends FastLinkedList<IndexedList> {
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      public inner classes                 ////
 
     public static class Path extends IndexedLists implements Cloneable {
 
@@ -460,6 +466,13 @@ public abstract class GraphAnalyzer {
     protected abstract Token _getAttribute(NamedObj container, String name,
             Class<? extends GTAttribute> attributeClass);
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      public inner classes                 ////
+
+    protected boolean _ignoreObject(Object object) {
+        return false;
+    }
+
     /** Test whether a relation should be ignored in the matching; return true
      *  if the given relation is hidden (i.e., has a parameter "_hide" whose
      *  value is {@link BooleanToken} true).
@@ -483,4 +496,13 @@ public abstract class GraphAnalyzer {
     }
 
     protected abstract boolean _isOpaque(CompositeEntity entity);
+
+    private void _removeIgnoredObjects(Iterable<?> list) {
+        Iterator<?> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            if (_ignoreObject(iterator.next())) {
+                iterator.remove();
+            }
+        }
+    }
 }

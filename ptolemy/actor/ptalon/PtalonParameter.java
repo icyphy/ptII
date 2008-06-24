@@ -1,5 +1,5 @@
 /*  A Parameter created in a Ptalon file.
-  
+
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
 
@@ -37,11 +37,11 @@ import ptolemy.kernel.util.NamedObj;
 /**
  A Parameter created in a Ptalon file.
  @see PtalonActor
-  
+
  @author Adam Cataldo, Elaine Cheong
  @version $Id$
  @Pt.ProposedRating Red (cxh)
- @Pt.AcceptedRating Red (cxh)   
+ @Pt.AcceptedRating Red (cxh)
  */
 public class PtalonParameter extends Parameter {
 
@@ -70,6 +70,15 @@ public class PtalonParameter extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Mark this parameter so that subsequent calls to {@link #hasValue()} will
+     *  return false until a value is explicitly set with {@link
+     *  #setExpression(String)}, {@link #setToken(String)} or {@link
+     *  #setToken(Token)}.
+     */
+    public void clearValue() {
+        _hasValue = false;
+    }
+
     /** Return true if this parameter's value has been set.
      *  @return true If this parameter's value has been set.
      */
@@ -92,17 +101,6 @@ public class PtalonParameter extends Parameter {
 
     /** Set the token and flag that the value has been set for this
      *  parameter.
-     *  @param token The token to set.
-     *  @exception IllegalActionException If the superclass throws one.
-     */
-    public void setToken(Token token) throws IllegalActionException {
-        _hasValue = true;
-
-        super.setToken(token);
-    }
-
-    /** Set the token and flag that the value has been set for this
-     *  parameter.
      *  @param expression The expression for this token
      *  @exception IllegalActionException If the superclass throws one.
      */
@@ -113,6 +111,17 @@ public class PtalonParameter extends Parameter {
         _hasValue = true;
 
         super.setToken(expression);
+    }
+
+    /** Set the token and flag that the value has been set for this
+     *  parameter.
+     *  @param token The token to set.
+     *  @exception IllegalActionException If the superclass throws one.
+     */
+    public void setToken(Token token) throws IllegalActionException {
+        _hasValue = true;
+
+        super.setToken(token);
     }
 
     ///////////////////////////////////////////////////////////////////

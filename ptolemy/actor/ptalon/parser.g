@@ -34,18 +34,26 @@ package ptolemy.actor.ptalon;
 /** 
   PtalonRecognizer.java generated from populator.g by ANTLR.
 
-  @author Adam Cataldo, Elaine Cheong
+  @author Adam Cataldo, Elaine Cheong, Thomas Huining Feng
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
 */
 }
 class PtalonRecognizer extends Parser;
 options {
-	exportVocab = Ptalon;
-	k = 2;
-	buildAST = true;
-	defaultErrorHandler = false;
-	ASTLabelType = "PtalonAST";
+    exportVocab = Ptalon;
+    k = 2;
+    buildAST = true;
+    defaultErrorHandler = false;
+    ASTLabelType = "PtalonAST";
+}
+
+{
+    private boolean _gtExtension = false;
+    
+    public void enableGTExtension(boolean enable) {
+        _gtExtension = enable;
+    }
 }
 
 /**
@@ -56,45 +64,45 @@ options {
  */
 port_declaration!
 {
-	boolean dynamic_name = false;
+    boolean dynamic_name = false;
 }
 :
-	(a:PORT
-	{
-		#port_declaration = #a;
-	}
-	(! LBRACKET RBRACKET
-	{
-		#port_declaration = #[MULTIPORT, "multiport"];
-	}	
-	)? | b:INPORT
-	{
-		#port_declaration = #b;
-	}
-	(! LBRACKET RBRACKET
-	{
-		#port_declaration = #[MULTIINPORT, "multiinport"];
-	}
-	)? | c:OUTPORT
-	{
-		#port_declaration = #c;
-	}
-	(! LBRACKET RBRACKET
-	{
-		#port_declaration = #[MULTIOUTPORT, "multioutport"];
-	}
-	)? ) d:ID (e:expression
-	{
-		dynamic_name = true;
-	}
-	)?
-	{
-		if (dynamic_name) {
-			#port_declaration.addChild(#([DYNAMIC_NAME, "dynamic"], d, e));
-		} else {
-			#port_declaration.addChild(#d);
-		}
-	}
+    (a:PORT
+    {
+        #port_declaration = #a;
+    }
+    (! LBRACKET RBRACKET
+    {
+        #port_declaration = #[MULTIPORT, "multiport"];
+    }    
+    )? | b:INPORT
+    {
+        #port_declaration = #b;
+    }
+    (! LBRACKET RBRACKET
+    {
+        #port_declaration = #[MULTIINPORT, "multiinport"];
+    }
+    )? | c:OUTPORT
+    {
+        #port_declaration = #c;
+    }
+    (! LBRACKET RBRACKET
+    {
+        #port_declaration = #[MULTIOUTPORT, "multioutport"];
+    }
+    )? ) d:ID (e:expression
+    {
+        dynamic_name = true;
+    }
+    )?
+    {
+        if (dynamic_name) {
+            #port_declaration.addChild(#([DYNAMIC_NAME, "dynamic"], d, e));
+        } else {
+            #port_declaration.addChild(#d);
+        }
+    }
 ;
 
 /**
@@ -108,88 +116,94 @@ port_declaration!
  */
 parameter_declaration!
 {
-	boolean addChild = true;
-	boolean dynamic_name = false;
+    boolean addChild = true;
+    boolean dynamic_name = false;
 }
 :
-	(p:PARAMETER c:ID (n:expression
-	{
-		dynamic_name = true;
-	}
-	)? (EQUALS e:expression
-	{
-		if (dynamic_name) {
-			#parameter_declaration = #([PARAM_EQUALS, "="], (p, 
-				([DYNAMIC_NAME, "dynamic"], c, n)), e);
-		} else {
-			#parameter_declaration = #([PARAM_EQUALS, "="], (p, c), e);
-		}
-		addChild = false;
-	}
-	)? 
-	{
-		if (addChild) {
-			if (dynamic_name) {
-				#parameter_declaration = #(p, ([DYNAMIC_NAME, "dynamic"], c, n));
-			} else {
-				#parameter_declaration = #(p, c);
-			}
-		}
-	}
-	| (a:ACTOR | ACTORPARAM
-	{
-		#a = #[ACTOR, "actor"];
-	}
-	) d:ID (EQUALS q:qualified_identifier
-	{
-		#parameter_declaration = #([ACTOR_EQUALS, "="], (a, d), q);
-		addChild = false;
-	}
-	)?
-	{
-		if (addChild) {
-			#parameter_declaration = #(a, d);
-		}
-	}
-	) 
+    (p:PARAMETER c:ID (n:expression
+    {
+        dynamic_name = true;
+    }
+    )? (EQUALS e:expression
+    {
+        if (dynamic_name) {
+            #parameter_declaration = #([PARAM_EQUALS, "="], (p, 
+                ([DYNAMIC_NAME, "dynamic"], c, n)), e);
+        } else {
+            #parameter_declaration = #([PARAM_EQUALS, "="], (p, c), e);
+        }
+        addChild = false;
+    }
+    )? 
+    {
+        if (addChild) {
+            if (dynamic_name) {
+                #parameter_declaration = #(p, ([DYNAMIC_NAME, "dynamic"], c, n));
+            } else {
+                #parameter_declaration = #(p, c);
+            }
+        }
+    }
+    | (a:ACTOR | ACTORPARAM
+    {
+        #a = #[ACTOR, "actor"];
+    }
+    ) d:ID (EQUALS q:qualified_identifier
+    {
+        #parameter_declaration = #([ACTOR_EQUALS, "="], (a, d), q);
+        addChild = false;
+    }
+    )?
+    {
+        if (addChild) {
+            #parameter_declaration = #(a, d);
+        }
+    }
+    )
+    | {_gtExtension}? (iterate:ITERATE id:ID INITIALLY init:expression
+    sat:expression NEXT next:expression
+    {
+       #parameter_declaration = #(iterate, id, init, sat, next);
+    }
+    )
 ;
 
 /**
- * Parse for statement:
+ * Parse relation declaration:
  * <p>relation <i>ID</i>
  * <p>Generate tree #(RELATION ID)
  */
 relation_declaration
 :
-	r:RELATION^ i:ID (! e:expression
-	{
-		#relation_declaration = #(r, ([DYNAMIC_NAME, "dynamic"], i, e));
-	}
-	)?
+    r:RELATION^ i:ID (! e:expression
+    {
+        #relation_declaration = #(r, ([DYNAMIC_NAME, "dynamic"], i, e));
+    }
+    )?
 ;
 
 transparent_relation_declaration!
 {
-	boolean created = false;
+    boolean created = false;
 }
 :
-	(t:TRANSPARENT RELATION | PORT r:REFERENCE
-	) i:ID (! e:expression
-	{
-		#transparent_relation_declaration = 
-			#([TRANSPARENT, "transparent"], ([DYNAMIC_NAME, "dynamic"], i, e));
-		created = true;
-	}
-	)?
-	{
-		if (!created) {
-			#transparent_relation_declaration = #([TRANSPARENT, "transparent"], i);
-		}
-	}
+    (t:TRANSPARENT RELATION | PORT r:REFERENCE
+    ) i:ID (! e:expression
+    {
+        #transparent_relation_declaration = 
+            #([TRANSPARENT, "transparent"], ([DYNAMIC_NAME, "dynamic"], i, e));
+        created = true;
+    }
+    )?
+    {
+        if (!created) {
+            #transparent_relation_declaration = #([TRANSPARENT, "transparent"], i);
+        }
+    }
 ;
 
 /**
- * Parse for statement
+ * Parse qualified identifier:
  * <p><i>ID</i>
  * <p>or
  * <p><i>ID</i>.qualified_identifier
@@ -197,33 +211,33 @@ transparent_relation_declaration!
  */
 qualified_identifier!
 {
-	StringBuffer identifier = new StringBuffer();
+    StringBuffer identifier = new StringBuffer();
 }
 :
-	(p:ID COLON
-	{
-		identifier.append(#p.getText() + ":");
-	}
-	)?
-	a:keyword_or_identifier 
-	{
-		identifier.append(#a.getText());
-	} 
-	(DOT b:keyword_or_identifier
-	{
-		identifier.append("." +  #b.getText());
-	}
-	)*
-	{
-		#qualified_identifier = #[QUALID, identifier.toString()];
-	}
+    (p:ID COLON
+    {
+        identifier.append(#p.getText() + ":");
+    }
+    )?
+    a:keyword_or_identifier 
+    {
+        identifier.append(#a.getText());
+    } 
+    (DOT b:keyword_or_identifier
+    {
+        identifier.append("." +  #b.getText());
+    }
+    )*
+    {
+        #qualified_identifier = #[QUALID, identifier.toString()];
+    }
 ;
 
 keyword_or_identifier:
-	ID | IMPORT | PORT | INPORT | OUTPORT | PARAMETER 
-	| ACTOR | RELATION | TRUE | FALSE | IF | ELSE | IS | FOR |
-	INITIALLY | NEXT | DANGLING_PORTS_OKAY | ATTACH_DANGLING_PORTS |
-	TRANSPARENT | REFERENCE
+    ID | IMPORT | PORT | INPORT | OUTPORT | PARAMETER 
+    | ACTOR | RELATION | TRUE | FALSE | IF | ELSE | IS | FOR |
+    INITIALLY | NEXT | DANGLING_PORTS_OKAY | ATTACH_DANGLING_PORTS |
+    TRANSPARENT | REFERENCE
 ;
 
 /**
@@ -240,43 +254,43 @@ keyword_or_identifier:
  */
 assignment!
 {
-	boolean dynamic_name = false;
-	boolean dynamic_left = false;
+    boolean dynamic_name = false;
+    boolean dynamic_left = false;
 }
 :
-	l:ID (lExp:expression
-	{
-		dynamic_left = true;
-	}
-	)? a:ASSIGN ((ID (expression)? (RPAREN | COMMA)) => r:ID (e:expression
-	{
-		dynamic_name = true;
-	}
-	)? 
-	{
-		PtalonAST left;
-		if (dynamic_left) {
-			left = #([DYNAMIC_NAME, "dynamic"], l, lExp);
-		} else {
-			left = #l;
-		}
-		if (dynamic_name) {
-			#assignment = #(a, left, ([DYNAMIC_NAME, "dynamic"], r, e));
-		} else {
-			#assignment = #(a, left, r);
-		}
-	}
-	|
-		(d:actor_declaration 
-    	{
-    		#assignment = #(a, l, d);
-    	}		
-		| f:expression
-    	{
-    		#assignment = #(a, l, f);
-    	}		
-		)
-	)
+    l:ID (lExp:expression
+    {
+        dynamic_left = true;
+    }
+    )? a:ASSIGN ((ID (expression)? (RPAREN | COMMA)) => r:ID (e:expression
+    {
+        dynamic_name = true;
+    }
+    )? 
+    {
+        PtalonAST left;
+        if (dynamic_left) {
+            left = #([DYNAMIC_NAME, "dynamic"], l, lExp);
+        } else {
+            left = #l;
+        }
+        if (dynamic_name) {
+            #assignment = #(a, left, ([DYNAMIC_NAME, "dynamic"], r, e));
+        } else {
+            #assignment = #(a, left, r);
+        }
+    }
+    |
+        (d:actor_declaration 
+        {
+            #assignment = #(a, l, d);
+        }        
+        | f:expression
+        {
+            #assignment = #(a, l, f);
+        }        
+        )
+    )
 ;
 
 /**
@@ -290,16 +304,16 @@ assignment!
  */
 expression!
 {
-	String out = "";
+    String out = "";
 }
 :
-	b:EXPRESSION
-	{
-		String full = b.getText();
-		int length = full.length();
-		out += full.substring(2, length - 2);
-		#expression = #[EXPRESSION, out];
-	}
+    b:EXPRESSION
+    {
+        String full = b.getText();
+        int length = full.length();
+        out += full.substring(2, length - 2);
+        #expression = #[EXPRESSION, out];
+    }
 ;
 
 /**
@@ -312,149 +326,172 @@ expression!
  */
 actor_declaration!
 :
-	a:ID LPAREN 
-	{
-		#a = #[ACTOR_DECLARATION, a.getText()];
-		#actor_declaration = #(a);
-	} 
-	(b:assignment 
-	{
-		#actor_declaration.addChild(#b);
-	}
-	(COMMA c:assignment
-	{
-		#actor_declaration.addChild(#c);
-	}
-	)*)? RPAREN
+    a:ID LPAREN 
+    {
+        #a = #[ACTOR_DECLARATION, a.getText()];
+        #actor_declaration = #(a);
+    }
+    (b:assignment 
+    {
+        #actor_declaration.addChild(#b);
+    }
+    (COMMA c:assignment
+    {
+        #actor_declaration.addChild(#c);
+    }
+    )*)? RPAREN
 ;
 
 atomic_statement : 
-	((port_declaration | parameter_declaration |
-	relation_declaration | transparent_relation_declaration | 
-	actor_declaration) SEMI! |
-	COMMENT!)
+    ((port_declaration | parameter_declaration |
+    relation_declaration | transparent_relation_declaration | 
+    actor_declaration) SEMI!)
 ;
 
 conditional_statement!
 {
-	AST trueTree = null;
-	AST falseTree = null;
+    AST trueTree = null;
+    AST falseTree = null;
 }
 :
-	i:IF b:expression 
-	{
-		#conditional_statement = #(i, b);
-		trueTree = #[TRUEBRANCH, "true branch"];
-		falseTree = #[FALSEBRANCH, "false branch"];
-	}
-	LCURLY! (a1:atomic_statement 
-	{
-		trueTree.addChild(#a1);
-	}
-	| c1:conditional_statement
-	{
-		trueTree.addChild(#c1);
-	}
-	| i1:iterative_statement
-	{
-		trueTree.addChild(#i1);
-	}
-	)* RCURLY! ELSE! LCURLY! (a2:atomic_statement 
-	{
-		falseTree.addChild(#a2);
-	}
-	| c2:conditional_statement
-	{
-		falseTree.addChild(#c2);
-	}
-	| i2:iterative_statement
-	{
-		falseTree.addChild(#i2);
-	}
-	)* RCURLY!
-	{
-		#conditional_statement.addChild(trueTree);
-		#conditional_statement.addChild(falseTree);
-	}
+    i:IF b:expression 
+    {
+        #conditional_statement = #(i, b);
+        trueTree = #[TRUEBRANCH, "true branch"];
+        falseTree = #[FALSEBRANCH, "false branch"];
+    }
+    LCURLY! (a1:atomic_statement 
+    {
+        trueTree.addChild(#a1);
+    }
+    | c1:conditional_statement
+    {
+        trueTree.addChild(#c1);
+    }
+    | i1:iterative_statement
+    {
+        trueTree.addChild(#i1);
+    }
+    )* RCURLY! ELSE! LCURLY! (a2:atomic_statement 
+    {
+        falseTree.addChild(#a2);
+    }
+    | c2:conditional_statement
+    {
+        falseTree.addChild(#c2);
+    }
+    | i2:iterative_statement
+    {
+        falseTree.addChild(#i2);
+    }
+    )* RCURLY!
+    {
+        #conditional_statement.addChild(trueTree);
+        #conditional_statement.addChild(falseTree);
+    }
 ;
 
 iterative_statement!
 :
-	f:FOR a:ID b:INITIALLY init:expression sat:expression LCURLY
-	{
-		#iterative_statement = #(f, ([VARIABLE, "variable"], a), (b, init), 
-		([SATISFIES, "satisfies"], sat));
-	}
-	(it:iterative_statement 
-	{
-		#iterative_statement.addChild(#it);
-	}
-	| cond:conditional_statement 
-	{
-		#iterative_statement.addChild(#cond);
-	}
-	| at:atomic_statement
-	{
-		#iterative_statement.addChild(#at);
-	}
-	)*
-	RCURLY c:NEXT next:expression
-	{
-		#iterative_statement.addChild(#(c, next));
-	}
+    f:FOR a:ID b:INITIALLY init:expression sat:expression LCURLY
+    {
+        #iterative_statement = #(f, ([VARIABLE, "variable"], a), (b, init), 
+        ([SATISFIES, "satisfies"], sat));
+    }
+    (it:iterative_statement 
+    {
+        #iterative_statement.addChild(#it);
+    }
+    | cond:conditional_statement 
+    {
+        #iterative_statement.addChild(#cond);
+    }
+    | at:atomic_statement
+    {
+        #iterative_statement.addChild(#at);
+    }
+    )*
+    RCURLY c:NEXT next:expression
+    {
+        #iterative_statement.addChild(#(c, next));
+    }
 ;
 
 actor_definition!
 {
-	boolean danglingPortsOkay = false;
-	boolean attachDanglingPorts = false;
+    boolean danglingPortsOkay = false;
+    boolean attachDanglingPorts = false;
 }
 :
-	{
-		#actor_definition = #[ACTOR_DEFINITION];
-	}
-	(COMMENT)*
-	(d:danglingPortsOkay
-	{
-		danglingPortsOkay = true;
-	}
-	)? (at:attachDanglingPorts
-	{
-		attachDanglingPorts = true;
-	}
-	)?
-	a:ID
-	{
-		#actor_definition.setText(a.getText());
-		if (danglingPortsOkay) {
-			#actor_definition.addChild(#d);
-		}
-		if (attachDanglingPorts) {
-			#actor_definition.addChild(#at);
-		}
-	}
-	IS! LCURLY! (b:atomic_statement 
-	{
-		#actor_definition.addChild(#b);
-	}
-	| c:conditional_statement
-	{
-		#actor_definition.addChild(#c);
-	}
-	| i:iterative_statement
-	{
-		#actor_definition.addChild(#i);
-	}
-	)* RCURLY!
-	(COMMENT)*
+    {
+        #actor_definition = #[ACTOR_DEFINITION];
+    }
+    (d:danglingPortsOkay
+    {
+        danglingPortsOkay = true;
+    }
+    )? (at:attachDanglingPorts
+    {
+        attachDanglingPorts = true;
+    }
+    )?
+    a:ID
+    {
+        #actor_definition.setText(a.getText());
+        if (danglingPortsOkay) {
+            #actor_definition.addChild(#d);
+        }
+        if (attachDanglingPorts) {
+            #actor_definition.addChild(#at);
+        }
+    }
+    IS! LCURLY! (b:atomic_statement 
+    {
+        #actor_definition.addChild(#b);
+    }
+    | c:conditional_statement
+    {
+        #actor_definition.addChild(#c);
+    }
+    | i:iterative_statement
+    {
+        #actor_definition.addChild(#i);
+    }
+    )* RCURLY!
+    (| {_gtExtension}? t:transformation
+    {
+       #actor_definition.addChild(#t);
+    })
+;
+
+transformation! :
+    {
+        #transformation = #[TRANSFORMATION];
+    }
+    TRANSFORM (s:STAR
+    {
+        #transformation.addChild(#s);
+    })? LCURLY! (b:atomic_statement 
+    {
+        #transformation.addChild(#b);
+    }
+    | c:conditional_statement
+    {
+        #transformation.addChild(#c);
+    }
+    | i:iterative_statement
+    {
+        #transformation.addChild(#i);
+    }
+    )* RCURLY!
 ;
 
 danglingPortsOkay :
-	DANGLING_PORTS_OKAY SEMI!
+    DANGLING_PORTS_OKAY SEMI!
 ;
 
 attachDanglingPorts :
-	ATTACH_DANGLING_PORTS SEMI!
+    ATTACH_DANGLING_PORTS SEMI!
 ;
 
 ///////////////////////////////////////////////////////////////////
@@ -463,62 +500,64 @@ attachDanglingPorts :
 /** 
   PtalonLexer.java generated from populator.g by ANTLR.
 
-  @author Adam Cataldo, Elaine Cheong
+  @author Adam Cataldo, Elaine Cheong, Thomas Huining Feng
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
 */
 }
 class PtalonLexer extends Lexer;
 options {
-	exportVocab = Ptalon;
-	testLiterals = false;
-	k = 3;
+    exportVocab = Ptalon;
+    testLiterals = false;
+    k = 3;
 }
 
 tokens {
-	IMPORT = "import";
-	PORT = "port";
-	INPORT = "inport";
-	OUTPORT = "outport";
-	PARAMETER = "parameter";
-	ACTOR = "actor";
-	ACTORPARAM = "actorparameter";
-	RELATION = "relation";
-	TRUE = "true";
-	FALSE = "false";
-	IF = "if";
-	ELSE = "else";
-	IS = "is";
-	FOR = "for";
-	INITIALLY = "initially";
-	NEXT = "next";
-	DANGLING_PORTS_OKAY = "danglingPortsOkay";
-	ATTACH_DANGLING_PORTS = "attachDanglingPorts";
-	TRANSPARENT = "transparent";
-	REFERENCE = "reference";
-	TRUEBRANCH;
-	FALSEBRANCH;
-	QUALID;
-	ATTRIBUTE;
-	ACTOR_DECLARATION;
-	ACTOR_DEFINITION;
-	NEGATIVE_SIGN;
-	POSITIVE_SIGN;
-	ARITHMETIC_FACTOR;
-	BOOLEAN_FACTOR;
-	LOGICAL_BUFFER;
-	ARITHMETIC_EXPRESSION;
-	BOOLEAN_EXPRESSION;
-	MULTIPORT;
-	MULTIINPORT;
-	MULTIOUTPORT;
-	PARAM_EQUALS;
-	ACTOR_EQUALS;
-	SATISFIES;
-	VARIABLE;
-	DYNAMIC_NAME;
-	ACTOR_LABEL;
-	QUALIFIED_PORT;
+    IMPORT = "import";
+    PORT = "port";
+    INPORT = "inport";
+    OUTPORT = "outport";
+    PARAMETER = "parameter";
+    ACTOR = "actor";
+    ACTORPARAM = "actorparameter";
+    ITERATE = "iterate";
+    RELATION = "relation";
+    TRUE = "true";
+    FALSE = "false";
+    IF = "if";
+    ELSE = "else";
+    IS = "is";
+    FOR = "for";
+    INITIALLY = "initially";
+    NEXT = "next";
+    DANGLING_PORTS_OKAY = "danglingPortsOkay";
+    ATTACH_DANGLING_PORTS = "attachDanglingPorts";
+    TRANSPARENT = "transparent";
+    REFERENCE = "reference";
+    TRUEBRANCH;
+    FALSEBRANCH;
+    QUALID;
+    ATTRIBUTE;
+    ACTOR_DECLARATION;
+    ACTOR_DEFINITION;
+    TRANSFORMATION;
+    NEGATIVE_SIGN;
+    POSITIVE_SIGN;
+    ARITHMETIC_FACTOR;
+    BOOLEAN_FACTOR;
+    LOGICAL_BUFFER;
+    ARITHMETIC_EXPRESSION;
+    BOOLEAN_EXPRESSION;
+    MULTIPORT;
+    MULTIINPORT;
+    MULTIOUTPORT;
+    PARAM_EQUALS;
+    ACTOR_EQUALS;
+    SATISFIES;
+    VARIABLE;
+    DYNAMIC_NAME;
+    ACTOR_LABEL;
+    QUALIFIED_PORT;
 }
 
 
@@ -547,57 +586,67 @@ EQUALS: '=';
 
 COLON: ':';
 
+TRANSFORM: "=>";
+
+STAR: '*';
+
 // Escape sequence
 ESC:
-	'\\' ('n' | 'r' | 't' | 'b' | 'f' | '"' | '\'')
+    '\\' ('n' | 'r' | 't' | 'b' | 'f' | '"' | '\'')
 ;
 
 // An identifier.  Note that testLiterals is set to true!  This means
 // that after we match the rule, we look in the literals table to see
-// if it's a literal or really an identifer
+// if it's a literal or really an identifier.
 ID options { testLiterals=true; } :
-	('a'..'z'|'A'..'Z'|'_'|'$') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
+    ('a'..'z'|'A'..'Z'|'_'|'$') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
 ;
 
 // Number literals
 NUMBER_LITERAL:
-	('0'..'9')+ ('.' ('0'..'9')+)?
+    ('0'..'9')+ ('.' ('0'..'9')+)?
 ;
 
 // String literals
 STRING_LITERAL :
-	'"' (ESC | ~('"'|'\\'|'\n'|'\r'))* '"'
+    '"' (ESC | ~('"'|'\\'|'\n'|'\r'))* '"'
 ;
-	
+    
 // Whitespace -- ignored
 WHITE_SPACE :
-	(
-		' '
-		| '\t'
-		| '\f'
-		| '\r' '\n' { newline(); }
-		| '\r' { newline(); }
-		| '\n' { newline(); }
-	)
-	{ $setType(Token.SKIP); }
+    (
+        ' '
+        | '\t'
+        | '\f'
+        | ('\r' '\n' | '\r' | '\n') { newline(); }
+    )
+    { $setType(Token.SKIP); }
+;
+
+LINE_COMMENT :
+    "//" (~('\n' | '\r'))* ((('\r' '\n') | '\r' | '\n') { newline(); })?
+    {
+        $setType(Token.SKIP);
+    }
 ;
 
 EXPRESSION :
-	'[' '[' (
-		options {
-			greedy = false;
-		} :
-			.
-		)* 
-	']' ']'
+    '[' '[' (
+        options {
+            greedy = false;
+        } :
+            .
+        )* 
+    ']' ']'
 ;
 
 COMMENT :
-	'/' '*' (
-		options {
-			greedy = false;
-		} :
-			.
-		)*
-	'*' '/'
+    '/' '*' (
+        options {
+            greedy = false;
+        } :
+            .
+        )*
+    '*' '/'
+    { $setType(Token.SKIP); }
 ;
