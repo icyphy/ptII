@@ -28,9 +28,11 @@
  */
 package ptolemy.actor;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.Variable;
@@ -242,7 +244,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             conflicts.addAll(typeConflicts);
 
             // Collect and solve type constraints.
-            List constraintList = topLevel.typeConstraintList();
+            Set<Inequality> constraintList = topLevel.typeConstraints();
 
             // NOTE: To view all type constraints, uncomment these.
 
@@ -326,7 +328,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             }
         } catch (IllegalActionException ex) {
             // This should not happen. The exception means that
-            // _checkDeclaredType or typeConstraintList is called on a
+            // _checkDeclaredType or typeConstraints is called on a
             // transparent actor.
             throw new InternalErrorException(topLevel, ex,
                     "Type resolution failed because of an error "
@@ -335,7 +337,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     }
 
     /** Return the type constraints of this typed composite actor.
-     *  The constraints have the form of a list of inequalities.  The
+     *  The constraints have the form of a set of inequalities.  The
      *  constraints come from three sources, the contained actors, the
      *  contained Typeables, and (for opaque actors) the topology of
      *  connections between actors. To generate the constraints based
@@ -346,22 +348,22 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  at the source end of the connection to be less than or equal
      *  to the type at the destination port.  To collect the type
      *  constraints from the contained actors, This method recursively
-     *  calls the typeConstraintList() method of the contained actors
+     *  calls the typeConstraints() method of the contained actors
      *  and combine all the constraints together.  The type
      *  constraints from contained Typeables (ports and parameters)
-     *  are collected by calling the typeConstraintList() method of
+     *  are collected by calling the typeConstraints() method of
      *  all the contained Typeables.  <p> This method is
      *  read-synchronized on the workspace.
      *  @return a list of instances of Inequality.
-     *  @exception IllegalActionException If the typeConstraintList
+     *  @exception IllegalActionException If the typeConstraints
      *  of one of the deeply contained objects throws it.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() throws IllegalActionException {
+    public Set<Inequality> typeConstraints() throws IllegalActionException {
         try {
             workspace().getReadAccess();
 
-            List result = new LinkedList();
+            Set<Inequality> result = new HashSet<Inequality>();
 
             if (isOpaque()) {
                 Iterator entities = deepEntityList().iterator();
@@ -399,7 +401,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
             while (entities.hasNext()) {
                 TypedActor actor = (TypedActor) entities.next();
-                result.addAll(actor.typeConstraintList());
+                result.addAll(actor.typeConstraints());
             }
 
             // Collect constraints from contained ports.
@@ -407,7 +409,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
             while (ports.hasNext()) {
                 Typeable port = (Typeable) ports.next();
-                result.addAll(port.typeConstraintList());
+                result.addAll(port.typeConstraints());
             }
 
             // Collect constraints from contained attributes.
@@ -415,7 +417,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
             while (typeables.hasNext()) {
                 Typeable typeable = (Typeable) typeables.next();
-                result.addAll(typeable.typeConstraintList());
+                result.addAll(typeable.typeConstraints());
             }
 
             // Collect constraints from instances of ScopeExtender,
@@ -431,7 +433,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                             .next();
                     if (extenderAttribute instanceof Variable) {
                         result.addAll(((Variable) extenderAttribute)
-                                .typeConstraintList());
+                                .typeConstraints());
                     }
                 }
             }
@@ -440,6 +442,21 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         } finally {
             workspace().doneReading();
         }
+    }
+
+    /** Return the type constraints of this variable.
+     *  The constraints include the ones explicitly set to this variable,
+     *  plus the constraint that the type of this variable must be no less
+     *  than its current type, if it has one.
+     *  The constraints are a list of inequalities.
+     *  @return a list of Inequality objects.
+     *  @see ptolemy.graph.Inequality
+     *  @deprecated Use typeConstraints().
+     */
+    public List typeConstraintList() throws IllegalActionException {
+        LinkedList result = new LinkedList();
+        result.addAll(typeConstraints());
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

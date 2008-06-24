@@ -31,9 +31,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URI;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.ApplicationConfigurer;
 import ptolemy.actor.TypedAtomicActor;
@@ -181,8 +183,8 @@ public class Configuration extends CompositeEntity implements
                 } else {
 
                     // First, check type constraints
-                    List constraints = actor.typeConstraintList();
-                    List cloneConstraints = clone.typeConstraintList();
+                    Set<Inequality> constraints = actor.typeConstraints();
+                    Set<Inequality> cloneConstraints = clone.typeConstraints();
 
                     // Make sure the clone has the same number of constraints.
                     if (constraints.size() != cloneConstraints.size()) {
@@ -193,39 +195,32 @@ public class Configuration extends CompositeEntity implements
                     }
 
                     // Make sure the constraints are the same.
-                    StringBuffer constraintsDescription = new StringBuffer();
+                    HashSet<String> constraintsDescription = new HashSet<String>();
                     try {
                         Iterator constraintIterator = constraints.iterator();
                         while (constraintIterator.hasNext()) {
                             Inequality constraint = (Inequality) constraintIterator
                                     .next();
                             constraintsDescription
-                                    .append(constraint.toString());
+                                    .add(constraint.toString());
                         }
                     } catch (Throwable throwable) {
                         throw new IllegalActionException(actor, throwable,
                                 "Failed to iterate through constraints.");
                     }
-                    StringBuffer cloneConstraintsDescription = new StringBuffer();
                     Iterator cloneConstraintIterator = cloneConstraints
                             .iterator();
                     while (cloneConstraintIterator.hasNext()) {
                         Inequality constraint = (Inequality) cloneConstraintIterator
                                 .next();
-                        cloneConstraintsDescription.append(constraint
-                                .toString());
-                    }
-
-                    if (!constraintsDescription.toString().equals(
-                            cloneConstraintsDescription.toString())) {
-                        results
-                                .append(actor.getFullName()
-                                        + " and its clone do "
-                                        + "not have the same constraints:\n"
-                                        + constraintsDescription.toString()
-                                        + "\nClone:\n"
-                                        + cloneConstraintsDescription
-                                                .toString() + "\n");
+                        if (!constraintsDescription.contains(constraint
+                                .toString())) {
+                            results.append("Clone of "
+                                    + actor.getFullName()
+                                    + " is missing constraint:\n"
+                                    + constraint.toString()
+                                    + ".\n");
+                        }
                     }
 
                     // Check that the type constraint is between ports

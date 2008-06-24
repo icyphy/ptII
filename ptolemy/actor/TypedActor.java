@@ -28,8 +28,9 @@
  */
 package ptolemy.actor;
 
-import java.util.List;
+import java.util.Set;
 
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,5 +61,5 @@ public interface TypedActor extends Actor {
      *   during static type checking.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() throws IllegalActionException;
+    public Set<Inequality> typeConstraints() throws IllegalActionException;
 }

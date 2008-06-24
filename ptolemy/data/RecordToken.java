@@ -63,6 +63,18 @@ import ptolemy.kernel.util.InternalErrorException;
  */
 public class RecordToken extends AbstractNotConvertibleToken {
 
+    /** Construct a RecordToken with no fields.
+     */
+    public RecordToken() {
+        String[] labels = new String[0];
+        Token[] values = new Token[0];
+        try {
+            _initialize(labels, values);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+    }
+    
     /** Construct a RecordToken with the specified labels and values.
      *  The labels and values arrays must have the same length, and have one
      *  to one correspondence with each other.  That is, the i'th entry in
@@ -410,6 +422,12 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
         return new RecordToken(labels, values);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+    
+    /** Empty Record. */
+    public static RecordToken EMPTY_RECORD = new RecordToken();
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

@@ -28,12 +28,14 @@
 package ptolemy.actor.lib;
 
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
+import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -106,9 +108,9 @@ public class AbsoluteValue extends Transformer {
      *  is no less than the input; The output type is no greater than Scalar.
      *  @return A list of inequalities.
      */
-    public List typeConstraintList() {
+    public Set<Inequality> typeConstraints() {
         // type constraints are stored in the output port.
-        return output.typeConstraintList();
+        return output.typeConstraints();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -60,6 +60,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -984,7 +985,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Return the type constraints of this actor. The constraints
-     *  have the form of a list of inequalities. This method first
+     *  have the form of a set of inequalities. This method first
      *  creates constraints such that the type of any input port that
      *  does not have its type declared must be less than or equal to
      *  the type of any output port that does not have its type
@@ -997,18 +998,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @return A list of inequalities.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() {
+    public Set<Inequality> typeConstraints() {
         try {
             _workspace.getReadAccess();
 
-            List result = new LinkedList();
+            Set<Inequality> result = new HashSet<Inequality>();
 
             // Collect constraints from contained Typeables.
             Iterator ports = portList().iterator();
 
             while (ports.hasNext()) {
                 Typeable port = (Typeable) ports.next();
-                result.addAll(port.typeConstraintList());
+                result.addAll(port.typeConstraints());
             }
 
             // Collect constraints from contained HasTypeConstraints
@@ -1019,7 +1020,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             while (attributes.hasNext()) {
                 HasTypeConstraints typeableAttribute = (HasTypeConstraints) attributes
                         .next();
-                result.addAll(typeableAttribute.typeConstraintList());
+                result.addAll(typeableAttribute.typeConstraints());
             }
 
             // Collect constraints from all transitions.
@@ -1033,7 +1034,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 while (attributes.hasNext()) {
                     HasTypeConstraints typeableAttribute = (HasTypeConstraints) attributes
                             .next();
-                    result.addAll(typeableAttribute.typeConstraintList());
+                    result.addAll(typeableAttribute.typeConstraints());
                 }
             }
 

@@ -28,6 +28,7 @@
 package ptolemy.domains.sr.lib;
 
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.Token;
@@ -133,8 +134,8 @@ public class Pre extends Transformer {
      *  @return A list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() {
-        List typeConstraints = super.typeConstraintList();
+    public Set<Inequality> typeConstraints() {
+        Set<Inequality> typeConstraints = super.typeConstraints();
 
         try {
             if (initialValue.getToken() != null) {

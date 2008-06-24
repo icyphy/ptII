@@ -28,9 +28,11 @@
  */
 package ptolemy.actor;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
@@ -301,7 +303,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 
         newObject._typeTerm = null;
         newObject._typeListeners = new LinkedList();
-        newObject._constraints = new LinkedList();
+        newObject._constraints = new HashSet<Inequality>();
         return newObject;
     }
 
@@ -656,12 +658,27 @@ public class TypedIOPort extends IOPort implements Typeable {
     }
 
     /** Return the type constraints of this port in the form of a
-     *  list of inequalities.
-     *  @return A list of inequalities.
+     *  set of inequalities.
+     *  @return A set of inequalities.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() {
+    public Set<Inequality> typeConstraints() {
         return _constraints;
+    }
+
+    /** Return the type constraints of this variable.
+     *  The constraints include the ones explicitly set to this variable,
+     *  plus the constraint that the type of this variable must be no less
+     *  than its current type, if it has one.
+     *  The constraints are a list of inequalities.
+     *  @return a list of Inequality objects.
+     *  @see ptolemy.graph.Inequality
+     *  @deprecated Use typeConstraints().
+     */
+    public List typeConstraintList() {
+        LinkedList result = new LinkedList();
+        result.addAll(typeConstraints());
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -841,7 +858,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     private List _typeListeners = new LinkedList();
 
     // type constraints
-    private List _constraints = new LinkedList();
+    private Set<Inequality> _constraints = new HashSet<Inequality>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

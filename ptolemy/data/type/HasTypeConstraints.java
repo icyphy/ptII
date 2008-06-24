@@ -28,7 +28,9 @@
  */
 package ptolemy.data.type;
 
-import java.util.List;
+import java.util.Set;
+
+import ptolemy.graph.Inequality;
 
 //////////////////////////////////////////////////////////////////////////
 //// HasTypeConstraints
@@ -50,5 +52,5 @@ public interface HasTypeConstraints {
      *  @return a list of instances of Inequality.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList();
+    public Set<Inequality> typeConstraints();
 }

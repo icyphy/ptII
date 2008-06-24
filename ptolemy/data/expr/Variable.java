@@ -39,8 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -165,7 +163,7 @@ import ptolemy.kernel.util.Workspace;
  or when the expression is evaluated).
  <p>
  The dynamic type constraints are not enforced in this class, but merely
- reported by the typeConstraintList() method.  They must be enforced at a
+ reported by the typeConstraints() method.  They must be enforced at a
  higher level (by a type system) since they involve a network of variables
  and other typeable objects.  In fact, if the variable does not yet have
  a value, then a type system may use these constraints to infer what the
@@ -351,7 +349,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         newObject._parseTree = null;
         newObject._parseTreeValid = false;
 
-        newObject._constraints = new LinkedList();
+        newObject._constraints = new HashSet<Inequality>();
         newObject._typeTerm = null;
         return newObject;
     }
@@ -604,6 +602,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
             return _varType;
         } catch (IllegalActionException iae) {
+            iae.printStackTrace();
             return _declaredType;
         }
     }
@@ -1093,7 +1092,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     /** Constrain the type of this variable to be equal to or
      *  greater than the type represented by the specified InequalityTerm.
      *  This constraint is not enforced here, but is returned by the
-     *  typeConstraintList() method for use by a type system.
+     *  typeConstraints() method for use by a type system.
      *  @param typeTerm An InequalityTerm object.
      */
     public void setTypeAtLeast(InequalityTerm typeTerm) {
@@ -1109,13 +1108,13 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
 
         Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
-        addConstraint(ineq);
+        _constraints.add(ineq);
     }
 
     /** Constrain the type of this variable to be equal to or
      *  greater than the type of the specified object.
      *  This constraint is not enforced
-     *  here, but is returned by the typeConstraintList() method for use
+     *  here, but is returned by the typeConstraints() method for use
      *  by a type system.
      *  @param lesser A Typeable object.
      */
@@ -1132,7 +1131,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         Inequality ineq = new Inequality(lesser.getTypeTerm(), this
                 .getTypeTerm());
-        addConstraint(ineq);
+        _constraints.add(ineq);
     }
     
     /** Set a type constraint that the type of this object be less than
@@ -1145,7 +1144,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  constraint (not relative to another Typeable object), so it
      *  is checked every time the value of the variable is set by
      *  setToken() or by evaluating an expression.  This type constraint
-     *  is also returned by the typeConstraintList() methods.
+     *  is also returned by the typeConstraints() methods.
      *  To remove the type constraint, call this method with a
      *  BaseType.UNKNOWN argument.
      *  @exception IllegalActionException If the type of this object
@@ -1234,7 +1233,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     /** Constrain the type of this variable to be the same as the
      *  type of the specified object.  This constraint is not enforced
-     *  here, but is returned by the typeConstraintList() method for use
+     *  here, but is returned by the typeConstraints() method for use
      *  by a type system.
      *  @param equal A Typeable object.
      */
@@ -1251,9 +1250,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         Inequality ineq = new Inequality(this.getTypeTerm(), equal
                 .getTypeTerm());
-        addConstraint(ineq);
+        _constraints.add(ineq);
         ineq = new Inequality(equal.getTypeTerm(), this.getTypeTerm());
-        addConstraint(ineq);
+        _constraints.add(ineq);
     }
 
     /** Mark the value of this variable to be unknown if the argument is
@@ -1322,21 +1321,18 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     /** Return the type constraints of this variable.
      *  The constraints include the ones explicitly set to this variable,
      *  plus the constraint that the type of this variable must be no less
-     *  than its current type, if it has one.
+     *  than the type of its current value, if it has one.
      *  The constraints are a list of inequalities.
      *  @return a list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() {
-        // FIXME: Perhaps this should be a Set, not a List, since each 
-        // element should be unique and ordering should not matter.
-
+    public Set<Inequality> typeConstraints() {
         // Include all relative types that have been specified.
-        List result = new LinkedList();
+        Set<Inequality> result = new HashSet<Inequality>();
         result.addAll(_constraints);
 
         // If the variable has a value known at this time, add a constraint.
-        // If the variable is not evaluatable at this time (an exception is
+        // If the variable cannot be evaluated at this time (an exception is
         // thrown in _evaluate(), do nothing.
         // Add the inequality to the result list directly to add the
         // constraint only for this round of type resolution. If using
@@ -1371,6 +1367,21 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             result.add(ineq);
         }
 
+        return result;
+    }
+
+    /** Return the type constraints of this variable.
+     *  The constraints include the ones explicitly set to this variable,
+     *  plus the constraint that the type of this variable must be no less
+     *  than its current type, if it has one.
+     *  The constraints are a list of inequalities.
+     *  @return a list of Inequality objects.
+     *  @see ptolemy.graph.Inequality
+     *  @deprecated Use typeConstraints().
+     */
+    public List typeConstraintList() {
+        LinkedList result = new LinkedList();
+        result.addAll(typeConstraints());
         return result;
     }
 
@@ -1523,7 +1534,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
+    
     /** Return a description of this variable.  This returns the same
      *  information returned by toString(), but with optional indenting
      *  and brackets.
@@ -1965,36 +1976,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
     }
 
-    /** Add an inequality constraint. The constraint is only added if
-     * it does not already exist.
-     * 
-     * @param ineq The Inequality to add.
-     */
-    protected void addConstraint(Inequality ineq) {
-        Iterator it = _constraints.iterator();
-        boolean alreadyConstrained = false;
-        while ( !alreadyConstrained && it.hasNext()) {
-            Inequality i = (Inequality)it.next();
-            try {
-
-                // Note: The correct implementation here would be to
-                // implement Inequality.equals(Inequality i)
-
-                if (ineq.getGreaterTerm().getValue().equals(
-                                i.getGreaterTerm().getValue())
-                        && ineq.getLesserTerm().getValue().equals(
-                                i.getLesserTerm().getValue())) {
-                    alreadyConstrained = true;
-                }
-            } catch (IllegalActionException ex) {
-                // Ignore
-            }
-        }
-        if (!alreadyConstrained){
-            _constraints.add(ineq);
-        }
-    }    
-    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -2249,9 +2230,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     private static StringToken _EMPTY_STRING_TOKEN = new StringToken("");
 
     // Type constraints.
-    // FIXME: Perhaps this should be a Set, not a List, since each 
-    // element should be unique and ordering should not matter.
-    private List _constraints = new LinkedList();
+    private Set<Inequality> _constraints = new HashSet<Inequality>();
 
     // The type set by setTypeEquals(). If _declaredType is not
     // BaseType.UNKNOWN, the type of this Variable is fixed to that type.
@@ -2350,7 +2329,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             return (new InequalityTerm[0]);
         }
 
-        /** Reset the variable part of this type to te specified type.
+        /** Reset the variable part of this type to the specified type.
          *  @param e A Type.
          *  @exception IllegalActionException If the type is not settable,
          *   or the argument is not a Type.

@@ -713,10 +713,6 @@ public abstract class BaseType implements Type, Serializable {
         _classNameToType.put(theClass.getName(), type);
     }
 
-    // These are private and here because they are used next.
-    static private String[] _EMPTY_LABELS = new String[0];
-    static private Type[] _EMPTY_TYPES = new Type[0];
-    
     /** Setting the type of something to RECORD allows it to take
      *  on a value that is any record with any fields. This is because
      *  a lossless conversion any such record to an empty record just
@@ -734,7 +730,7 @@ public abstract class BaseType implements Type, Serializable {
      *  value, but to allow its type to resolve to the specific record
      *  specified.
      */
-    static public RecordType RECORD = new RecordType(_EMPTY_LABELS, _EMPTY_TYPES);
+    static public RecordType RECORD = RecordType.EMPTY_RECORD;
 
     ///////////////////////////////////////////////////////////////////
     ////                      private constructor                  ////

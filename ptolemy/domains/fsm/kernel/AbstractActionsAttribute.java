@@ -27,6 +27,7 @@
 package ptolemy.domains.fsm.kernel;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -307,12 +308,12 @@ public abstract class AbstractActionsAttribute extends Action implements
     }
 
     /** Return the type constraints of this object.
-     *  The constraints are a list of inequalities.
+     *  The constraints are a set of inequalities.
      *  @return a list of instances of Inequality.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() {
-        List list = new LinkedList();
+    public Set<Inequality> typeConstraints() {
+        Set<Inequality> list = new HashSet<Inequality>();
 
         for (Iterator names = getDestinationNameList().iterator(); names
                 .hasNext();) {

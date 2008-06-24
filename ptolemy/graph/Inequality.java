@@ -74,6 +74,19 @@ public class Inequality {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Override to return true if the greater and lesser terms of
+     *  this object are the same as the greater and lesser terms of
+     *  the specified object.
+     *  @param object Object to compare against.
+     */
+    public boolean equals(Object object) {
+        if(object instanceof Inequality) {
+            return (((Inequality)object)._greaterTerm.equals(_greaterTerm)
+                && ((Inequality)object)._lesserTerm.equals(_lesserTerm));
+        }
+        return false;
+    }
 
     /** Return the greater term of this inequality.
      *  @return An <code>InequalityTerm</code>
@@ -87,6 +100,16 @@ public class Inequality {
      */
     public InequalityTerm getLesserTerm() {
         return _lesserTerm;
+    }
+    
+    /** Override to return the exclusive OR of the hashcodes
+     *  of the greater and lesser terms. This ensures that two
+     *  objects that return true to equals() have the same
+     *  hashcode.
+     *  @return The XOR of the greater and lesser terms.
+     */
+    public int hashCode() {
+        return _lesserTerm.hashCode() ^ _greaterTerm.hashCode();
     }
 
     /** Test if this inequality is satisfied with the current value

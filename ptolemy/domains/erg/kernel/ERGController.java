@@ -32,8 +32,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.erg.kernel;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -53,6 +53,7 @@ import ptolemy.domains.erg.lib.SynchronizeToRealtime;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.StateEvent;
 import ptolemy.domains.fsm.modal.ModalController;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -256,9 +257,9 @@ public class ERGController extends ModalController {
         director.terminate();
     }
 
-    public List<?> typeConstraintList() {
-        List<Object> constraintList = new LinkedList<Object>(
-                (List<?>) super.typeConstraintList());
+    public Set<Inequality> typeConstraints() {
+        Set<Inequality> constraintList = new HashSet<Inequality>(
+                super.typeConstraints());
         List<?> events = entityList(Event.class);
         for (Object eventObject : events) {
             Event event = (Event) eventObject;
@@ -266,7 +267,7 @@ public class ERGController extends ModalController {
             for (Object attributeObject : attributes) {
                 HasTypeConstraints attribute =
                     (HasTypeConstraints) attributeObject;
-                constraintList.addAll((List<?>) attribute.typeConstraintList());
+                constraintList.addAll(attribute.typeConstraints());
             }
         }
         return constraintList;

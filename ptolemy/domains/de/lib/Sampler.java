@@ -29,6 +29,7 @@
 package ptolemy.domains.de.lib;
 
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
@@ -124,7 +125,7 @@ public class Sampler extends DETransformer {
 
     /** The value that is output when no input has yet been received.
      *  The type should be the same as the input port.
-     *  @see #typeConstraintList()
+     *  @see #typeConstraints()
      */
     public Parameter initialValue;
 
@@ -242,8 +243,8 @@ public class Sampler extends DETransformer {
      *  @return a list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() {
-        List typeConstraints = super.typeConstraintList();
+    public Set<Inequality> typeConstraints() {
+        Set<Inequality> typeConstraints = super.typeConstraints();
 
         try {
             if (initialValue.getToken() != null) {

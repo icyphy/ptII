@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// TypeConstant
 
 /**
- An InequalityTerm that encapsulate a constant type. The constant type
+ An InequalityTerm that encapsulates a constant type. The constant type
  is specified in the constructor.
  This class represents a constant term in an inequality constraint for
  type resolution.
@@ -58,6 +58,20 @@ public class TypeConstant implements InequalityTerm {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override to return true if the type is the same in this object
+     *  as the specified object.
+     *  @param object The object to compare against.
+     */
+    public boolean equals(Object object) {
+        if (object instanceof TypeConstant) {
+            if (_type == null) {
+                return ((TypeConstant)object)._type == null;
+            }
+            return _type.equals(((TypeConstant)object)._type);
+        }
+        return false;
+    }
+    
     /** Return null.
      *  @return null.
      */
@@ -78,6 +92,17 @@ public class TypeConstant implements InequalityTerm {
      */
     public InequalityTerm[] getVariables() {
         return (new InequalityTerm[0]);
+    }
+    
+    /** Return the hashCode of the type. This ensures that if equals()
+     *  returns true then the two objects return the same hashCode.
+     *  @return The hashCode of this object.
+     */
+    public int hashCode() {
+        if (_type != null) {
+            return _type.hashCode();
+        }
+        return 0;
     }
 
     /** Throw an Exception since type constant cannot be initialized.

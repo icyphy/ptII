@@ -1221,11 +1221,11 @@ public class PtolemyUtilities {
             body.getUnits().remove(unit);
             doneSomething = true;
             //
-        } else if (name.equals("typeConstraintList")) {
+        } else if (name.equals("typeConstraints")) {
             //FIXME This method should be removed.
             // Local exceptionLocal =
             //    SootUtilities.createRuntimeException(body, unit,
-            //      "Illegal Method Call: typeConstraintList()");
+            //      "Illegal Method Call: typeConstraints()");
             //body.getUnits().swapWith(unit,
             //        Jimple.v().newThrowStmt(exceptionLocal));
             // doneSomething = true;

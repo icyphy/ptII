@@ -28,6 +28,7 @@
 package ptolemy.actor.lib;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -203,7 +204,7 @@ public class RecordUpdater extends TypedAtomicActor {
      *  input port, and contains additional fields for each input port.
      *  @return a list of Inequality.
      */
-    public List typeConstraintList() {
+    public Set<Inequality> typeConstraints() {
         String[] labels = new String[0];
         Type[] types = new Type[0];
 
@@ -211,7 +212,7 @@ public class RecordUpdater extends TypedAtomicActor {
         input.setTypeAtMost(declaredType);
 
         // Set the constraints between record fields and output ports
-        List constraints = new LinkedList();
+        Set<Inequality> constraints = new HashSet<Inequality>();
 
         // Since the input port has a clone of the above RecordType, need to
         // get the type from the input port.

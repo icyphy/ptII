@@ -34,6 +34,7 @@ package ptolemy.matlab;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Director;
@@ -51,6 +52,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.expr.Variable;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -187,8 +189,8 @@ public class Expression extends TypedAtomicActor {
      *  TypedAtomicActor type constraints do not apply in this case, since the
      *  input type may be totally unrelated to the output type and cannot be
      *  inferred; return an empty list. */
-    public List typeConstraintList() {
-        LinkedList result = new LinkedList();
+    public Set<Inequality> typeConstraints() {
+        Set<Inequality> result = new HashSet<Inequality>();
         return result;
     }
 

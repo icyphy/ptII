@@ -27,9 +27,10 @@
  */
 package ptolemy.actor;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
@@ -133,8 +134,8 @@ public class TypeOpaqueCompositeActor extends CompositeActor implements
      *  @return An empty list.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() {
-        return new LinkedList();
+    public Set<Inequality> typeConstraints() {
+        return new HashSet<Inequality>();
     }
 
     ///////////////////////////////////////////////////////////////////

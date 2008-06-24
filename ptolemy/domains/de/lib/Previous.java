@@ -27,7 +27,7 @@
  */
 package ptolemy.domains.de.lib;
 
-import java.util.List;
+import java.util.Set;
 
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -135,8 +135,8 @@ public class Previous extends DETransformer {
      *  @return a list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() {
-        List typeConstraints = super.typeConstraintList();
+    public Set<Inequality> typeConstraints() {
+        Set<Inequality> typeConstraints = super.typeConstraints();
 
         try {
             if (initialValue.getToken() != null) {

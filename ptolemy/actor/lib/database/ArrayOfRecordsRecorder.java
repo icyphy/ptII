@@ -36,7 +36,6 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -74,15 +73,12 @@ public class ArrayOfRecordsRecorder extends Sink {
         input.setMultiport(false);
 
         // Force the type to contain at least a record.
-        String[] labels = new String[0];
-        Type[] types = new Type[0];
-        RecordType type = new RecordType(labels, types);
-        input.setTypeAtMost(new ArrayType(type));
+        input.setTypeAtMost(new ArrayType(RecordType.EMPTY_RECORD));
         
         records = new Parameter(this, "records");
         // Declare that it must be an array of records.
-        records.setTypeAtMost(new ArrayType(type));
-        records.setToken(new ArrayToken(type));
+        records.setTypeAtMost(new ArrayType(RecordType.EMPTY_RECORD));
+        records.setToken(new ArrayToken(RecordType.EMPTY_RECORD));
         
         Variable ALL = new Variable(this, "ALL");
         ALL.setVisibility(Settable.NONE);

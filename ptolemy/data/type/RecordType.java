@@ -580,6 +580,13 @@ public class RecordType extends StructuredType implements Cloneable {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
+
+    /** An empty record. */
+    public static RecordType EMPTY_RECORD = new RecordType(new String[0],
+            new Type[0]);
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Compare this type with the specified type. The specified type
@@ -620,7 +627,7 @@ public class RecordType extends StructuredType implements Cloneable {
      *  @return a RecordType.
      */
     protected StructuredType _getRepresentative() {
-        return _representative;
+        return EMPTY_RECORD;
     }
 
     /** Return the greatest lower bound of this type with the specified
@@ -747,10 +754,6 @@ public class RecordType extends StructuredType implements Cloneable {
     ////                         private variables                 ////
     // Mapping from label to field information.
     private Map _fields = new HashMap();
-
-    // the representative in the type lattice is the empty record.
-    private static RecordType _representative = new RecordType(new String[0],
-            new Type[0]);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////

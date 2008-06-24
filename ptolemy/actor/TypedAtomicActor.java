@@ -27,9 +27,11 @@
  */
 package ptolemy.actor;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.data.type.Typeable;
 import ptolemy.graph.Inequality;
@@ -47,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
 /**
  A TypedAtomicActor is an AtomicActor whose ports and parameters have types.
  <p>
- The typeConstraintList() method returns the type constraints among
+ The typeConstraints() method returns the type constraints among
  the contained ports and parameters.  This base class provides a default
  implementation of this method, which should be suitable for most of the
  derived classes.
@@ -183,11 +185,11 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  @return A list of instances of Inequality.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() {
+    public Set<Inequality> typeConstraints() {
         try {
             _workspace.getReadAccess();
 
-            LinkedList result = new LinkedList();
+            Set<Inequality> result = new HashSet<Inequality>();
             Iterator inPorts = inputPortList().iterator();
 
             while (inPorts.hasNext()) {
@@ -207,10 +209,10 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
                             // output also undeclared, not bidirectional port,
                             // check if there is any type constraints stored
                             // in ports.
-                            List inPortConstraints = inPort
-                                    .typeConstraintList();
-                            List outPortConstraints = outPort
-                                    .typeConstraintList();
+                            Set<Inequality> inPortConstraints = inPort
+                                    .typeConstraints();
+                            Set<Inequality> outPortConstraints = outPort
+                                    .typeConstraints();
 
                             if (inPortConstraints.isEmpty()
                                     && outPortConstraints.isEmpty()) {
@@ -230,20 +232,35 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
             while (ports.hasNext()) {
                 Typeable port = (Typeable) ports.next();
-                result.addAll(port.typeConstraintList());
+                result.addAll(port.typeConstraints());
             }
 
             Iterator typeables = attributeList(Typeable.class).iterator();
 
             while (typeables.hasNext()) {
                 Typeable typeable = (Typeable) typeables.next();
-                result.addAll(typeable.typeConstraintList());
+                result.addAll(typeable.typeConstraints());
             }
 
             return result;
         } finally {
             _workspace.doneReading();
         }
+    }
+    
+    /** Return the type constraints of this variable.
+     *  The constraints include the ones explicitly set to this variable,
+     *  plus the constraint that the type of this variable must be no less
+     *  than its current type, if it has one.
+     *  The constraints are a list of inequalities.
+     *  @return a list of Inequality objects.
+     *  @see ptolemy.graph.Inequality
+     *  @deprecated Use typeConstraints().
+     */
+    public List typeConstraintList() {
+        LinkedList result = new LinkedList();
+        result.addAll(typeConstraints());
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

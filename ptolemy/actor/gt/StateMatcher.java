@@ -47,6 +47,7 @@ import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -269,8 +270,8 @@ ValueListener {
     public void terminate() {
     }
 
-    public List<?> typeConstraintList() throws IllegalActionException {
-        return _EMPTY_LIST;
+    public Set<Inequality> typeConstraints() throws IllegalActionException {
+        return _EMPTY_SET;
     }
 
     /** Update appearance of this entity.
@@ -314,6 +315,7 @@ ValueListener {
     public PatternObjectAttribute patternObject;
 
     private static final List<?> _EMPTY_LIST = new LinkedList<Object>();
+    private static final Set<Inequality> _EMPTY_SET = new HashSet<Inequality>();
 
     /** Cache of the label set.
      */

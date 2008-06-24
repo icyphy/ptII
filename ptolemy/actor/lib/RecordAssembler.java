@@ -27,9 +27,9 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
@@ -146,7 +146,7 @@ public class RecordAssembler extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        typeConstraintList();
+        typeConstraints();
     }
 
     /** Return the type constraints of this actor. The type constraint is
@@ -154,9 +154,9 @@ public class RecordAssembler extends TypedAtomicActor {
      *  than the type of the corresponding input ports.
      *  @return a list of Inequality.
      */
-    public List typeConstraintList() {
-        if (workspace().getVersion() == _typeConstraintListVersion) {
-            return _typeConstraintList;
+    public Set<Inequality> typeConstraints() {
+        if (workspace().getVersion() == _typeConstraintsVersion) {
+            return _typeConstraints;
         }
         Object[] portArray = inputPortList().toArray();
         int size = portArray.length;
@@ -174,7 +174,7 @@ public class RecordAssembler extends TypedAtomicActor {
         output.setTypeEquals(declaredType);
 
         // set the constraints between record fields and input ports
-        _typeConstraintList = new LinkedList();
+        _typeConstraints = new HashSet<Inequality>();
 
         // since the output port has a clone of the above RecordType, need to
         // get the type from the output port.
@@ -187,18 +187,18 @@ public class RecordAssembler extends TypedAtomicActor {
             String label = inputPort.getName();
             Inequality inequality = new Inequality(inputPort.getTypeTerm(),
                     outputType.getTypeTerm(label));
-            _typeConstraintList.add(inequality);
+            _typeConstraints.add(inequality);
         }
-        _typeConstraintListVersion = workspace().getVersion();
-        return _typeConstraintList;
+        _typeConstraintsVersion = workspace().getVersion();
+        return _typeConstraints;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Cached list of type constraints. */
-    private List _typeConstraintList;
+    private Set<Inequality> _typeConstraints;
 
     /** Version number when the cache was last updated. */
-    private long _typeConstraintListVersion = -1;
+    private long _typeConstraintsVersion = -1;
 }

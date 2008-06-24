@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.gt;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -51,6 +52,7 @@ import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -280,9 +282,8 @@ public class TransformationRule extends MultiCompositeActor implements
         }
     }
 
-    public List<?> typeConstraintList() {
-        // Defeat the type constraints of all the actors inside.
-        return _EMPTY_LIST;
+    public Set<Inequality> typeConstraints() throws IllegalActionException {
+        return _EMPTY_SET;
     }
 
     public void valueChanged(Settable settable) {
@@ -509,6 +510,7 @@ public class TransformationRule extends MultiCompositeActor implements
     }
 
     private static final List<?> _EMPTY_LIST = new LinkedList<Object>();
+    private static final Set<Inequality> _EMPTY_SET = new HashSet<Inequality>();
 
     private boolean _collectAllMatches;
 

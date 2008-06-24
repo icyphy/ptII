@@ -28,6 +28,7 @@
 package ptolemy.domains.sr.lib;
 
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.Token;
@@ -83,7 +84,7 @@ public class NonStrictDelay extends Transformer {
     ////                     ports and parameters                  ////
 
     /** Initial token value.  Can be of any type.
-     *  @see #typeConstraintList()
+     *  @see #typeConstraints()
      */
     public Parameter initialValue;
 
@@ -158,8 +159,8 @@ public class NonStrictDelay extends Transformer {
      *  @return a list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() {
-        List typeConstraints = super.typeConstraintList();
+    public Set<Inequality> typeConstraints() {
+        Set<Inequality> typeConstraints = super.typeConstraints();
 
         try {
             if (initialValue.getToken() != null) {

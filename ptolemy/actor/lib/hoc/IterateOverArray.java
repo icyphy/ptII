@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -248,11 +249,11 @@ public class IterateOverArray extends MirrorComposite {
     /** Override the base class to ensure that the ports of this
      *  actor all have array types.
      *  @return A list of instances of Inequality.
-     *  @exception IllegalActionException If the typeConstraintList
+     *  @exception IllegalActionException If the typeConstraints
      *  of one of the deeply contained objects throws it.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList() throws IllegalActionException {
+    public Set<Inequality> typeConstraints() throws IllegalActionException {
         Iterator ports = portList().iterator();
 
         while (ports.hasNext()) {
@@ -260,7 +261,7 @@ public class IterateOverArray extends MirrorComposite {
             port.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         }
 
-        return super.typeConstraintList();
+        return super.typeConstraints();
     }
 
     ///////////////////////////////////////////////////////////////////

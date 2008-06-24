@@ -27,9 +27,9 @@
  */
 package ptolemy.domains.de.lib;
 
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
@@ -181,7 +181,7 @@ public class UnionMerge extends DEActor {
      *  that the output type is the union of the types of input ports.
      *  @return a list of Inequality.
      */
-    public List typeConstraintList() {
+    public Set<Inequality> typeConstraints() {
         Object[] portArray = inputPortList().toArray();
         int size = portArray.length;
         String[] labels = new String[size];
@@ -198,7 +198,7 @@ public class UnionMerge extends DEActor {
         output.setTypeEquals(declaredType);
 
         // set the constraints between union fields and input ports
-        List constraints = new LinkedList();
+        Set<Inequality> constraints = new HashSet<Inequality>();
 
         // since the output port has a clone of the above UnionType, need to
         // get the type from the output port.

@@ -28,6 +28,7 @@
 package ptolemy.domains.sdf.lib;
 
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -36,6 +37,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -179,9 +181,9 @@ public class ArrayToSequence extends SDFTransformer {
      *  less than the type of the elements of the input array.
      *  @return A list of inequalities.
      */
-    public List typeConstraintList() {
+    public Set<Inequality> typeConstraints() {
         // Override the base class implementation to not use the default
         // constraints.
-        return output.typeConstraintList();
+        return output.typeConstraints();
     }
 }

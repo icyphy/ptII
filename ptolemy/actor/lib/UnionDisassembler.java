@@ -27,9 +27,9 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -125,7 +125,7 @@ public class UnionDisassembler extends TypedAtomicActor {
      *  corresponding field of the input union token.
      *  @return a list of Inequality.
      */
-    public List typeConstraintList() {
+    public Set<Inequality> typeConstraints() {
         Object[] portArray = outputPortList().toArray();
         int size = portArray.length;
         String[] labels = new String[size];
@@ -143,7 +143,7 @@ public class UnionDisassembler extends TypedAtomicActor {
         input.setTypeAtMost(declaredType);
 
         // set the constraints between union fields and output ports
-        List constraints = new LinkedList();
+        Set<Inequality> constraints = new HashSet<Inequality>();
 
         // since the input port has a clone of the above UnionType, need to
         // get the type from the input port.

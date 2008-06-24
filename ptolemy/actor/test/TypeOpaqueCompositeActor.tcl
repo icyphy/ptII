@@ -109,7 +109,7 @@ Cannot set a name with a period: .
 ######################################################################
 ####
 #
-test TypeOpaqueCompositeActor-3.2 {typeConstraintList} {
-    set typeConstraintList [$e3 typeConstraintList]
-    $typeConstraintList size
+test TypeOpaqueCompositeActor-3.2 {typeConstraints} {
+    set typeConstraints [$e3 typeConstraints]
+    $typeConstraints size
 } {0}

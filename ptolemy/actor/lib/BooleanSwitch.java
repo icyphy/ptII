@@ -1,4 +1,4 @@
-/* A polymorphic switch with boolean select.
+/* Split a stream into two according to a boolean control signal.
 
  Copyright (c) 1997-2008 The Regents of the University of California.
  All rights reserved.
@@ -37,29 +37,35 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanSwitch
 
 /**
- <p>A type polymorphic switch with boolean valued control.  In an
+ Split an input stream onto two output ports depending on a
+ boolean control input.  In an
  iteration, if an input token is available at the <i>control</i> input,
  that token is read, and its value is noted.  Its value specifies the
- input port that should be read next. If the <i>control</i> input is
- true, then if an input token is available on the <i>input</i> port,
- then it is is read and sent to the <i>trueOutput</i>.  Likewise with a
- false input and the <i>falseOutput</i> port.  Because tokens are
+ output port that should be written to in this and subsequent iterations,
+ until another <i>control</i> input is provided. If no <i>control</i>
+ input is provided, then the inputs are routed to the <i>falseOutput</i> port.
+ In each iteration, at most one token on each channel of the <i>input</i> port
+ is read and sent to the corresponding channel of the
+ <i>trueOutput</i> port or the <i>falseOutput</i> port, depending on the
+ most recently received <i>control</i> input.
+ If the input has width greater than an output port, then
+ some input tokens will be discarded (those on input channels for which
+ there is no corresponding output channel).
+ Because tokens are
  immutable, the same Token is sent to the output, rather than a copy.
  The <i>input</i> port may receive Tokens of any type.</p>
 
- <p>If no token has ever been received on the <i>control</i> port, then
- <i>falseOutput</i> is assumed to be the one to receive data.</p>
-
  <p>Note that the this actor may be used in Synchronous Dataflow (SDF)
- models, but only under certain circumstances.  The problem is that
- the number of tokens on the <i>trueOutput</i> or the <i>falseOutput</i>
- can change while the model is running, which makes static scheduling
- of the actor firings difficult.
+ models, but only under certain circumstances. Specifically, downstream
+ actors will be fired whether a token is sent to them or not.
+ This will only work if the downstream actors specifically check to
+ see whether input tokens are available.
 
  @author Steve Neuendorffer
  @version $Id$
@@ -82,12 +88,16 @@ public class BooleanSwitch extends TypedAtomicActor {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        
         control = new TypedIOPort(this, "control", true, false);
         control.setTypeEquals(BaseType.BOOLEAN);
         trueOutput = new TypedIOPort(this, "trueOutput", false, true);
         falseOutput = new TypedIOPort(this, "falseOutput", false, true);
         trueOutput.setTypeAtLeast(input);
         falseOutput.setTypeAtLeast(input);
+        trueOutput.setMultiport(true);
+        falseOutput.setMultiport(true);
 
         // Put the control input on the bottom of the actor.
         StringAttribute controlCardinal = new StringAttribute(control,
@@ -99,11 +109,13 @@ public class BooleanSwitch extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /** Input that selects one of the other input ports.  The type is
-     *  BooleanToken.
+     *  boolean.
      */
     public TypedIOPort control;
 
-    /** The input port.  The type can be anything.
+    /** The input port.  The type can be anything. This is a multiport,
+     *  and input tokens on all channels are routed to corresponding
+     *  channels on the output port, if there are such channels.
      */
     public TypedIOPort input;
 
@@ -133,13 +145,19 @@ public class BooleanSwitch extends TypedAtomicActor {
             _control = ((BooleanToken) control.get(0)).booleanValue();
         }
 
-        if (input.hasToken(0)) {
-            Token token = input.get(0);
+        for(int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(i)) {
+                Token token = input.get(i);
 
-            if (_control) {
-                trueOutput.send(0, token);
-            } else {
-                falseOutput.send(0, token);
+                if (_control) {
+                    if (i < trueOutput.getWidth()) {
+                        trueOutput.send(i, token);
+                    }
+                } else {
+                    if (i < falseOutput.getWidth()) {
+                        falseOutput.send(i, token);
+                    }
+                }
             }
         }
     }

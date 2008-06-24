@@ -27,9 +27,9 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -136,7 +136,7 @@ public class RecordDisassembler extends TypedAtomicActor {
      *  fields of the output RecordToken.
      *  @return a list of Inequality.
      */
-    public List typeConstraintList() {
+    public Set<Inequality> typeConstraints() {
         Object[] portArray = outputPortList().toArray();
         int size = portArray.length;
         String[] labels = new String[size];
@@ -153,7 +153,7 @@ public class RecordDisassembler extends TypedAtomicActor {
         input.setTypeAtMost(declaredType);
 
         // set the constraints between record fields and output ports
-        List constraints = new LinkedList();
+        Set<Inequality> constraints = new HashSet<Inequality>();
 
         // since the input port has a clone of the above RecordType, need to
         // get the type from the input port.
