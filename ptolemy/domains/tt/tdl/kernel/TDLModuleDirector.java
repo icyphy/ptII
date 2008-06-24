@@ -216,8 +216,8 @@ public class TDLModuleDirector extends ModalDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _resetReceivers();
-         TDLActionsGraph graph = new TDLActionsGraph(((TDLModule)getContainer()), getController());
-         graph.buildGraph();
+        _graph = new TDLActionsGraph(((TDLModule)getContainer()), getController());
+        _graph.buildGraph(getController().currentState());
         _buildSchedule();
         _initializeOutputPorts();
         _currentSchedule = (TDLModeSchedule) _modeSchedules.get(getController()
@@ -934,6 +934,11 @@ public class TDLModuleDirector extends ModalDirector {
             }
         }
     }
+    
+    /**
+     * Current node in the TDL actions graph.
+     */
+    private TDLActionsGraph _graph; 
 
     /**
      * Contains a mode schedule for each mode in the TDL module.

@@ -1,7 +1,14 @@
 package ptolemy.domains.tt.tdl.kernel;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -92,6 +99,27 @@ public class TDLTask extends TypedCompositeActor {
 	 * Slot selection string for the task.
 	 */
 	public Parameter slots;
+	
+	
+	
+	public Collection getSensorsReadFrom(Collection refinementInputPorts, Collection moduleInputPorts) {
+	    if (_readsFromSensors == null) {
+	        _readsFromSensors = new ArrayList();
+        	List refinementInputs = null;
+            for (Iterator inputIt = inputPortList().iterator(); inputIt
+                    .hasNext();) {
+                IOPort port = (IOPort) inputIt.next();
+                refinementInputs = new ArrayList();
+                refinementInputs.addAll(port.connectedPortList());
+                refinementInputs.retainAll(refinementInputPorts);
+            }
+            for (Iterator inputIt = refinementInputs.iterator(); inputIt.hasNext();) {
+                _readsFromSensors.add( ((IOPort)inputIt.next()).connectedPortList().retainAll(moduleInputPorts));
+            }
+	    }
+	    return _readsFromSensors;
+	}
+
 
 	/**
 	 * Create a new TDL port.
@@ -132,4 +160,6 @@ public class TDLTask extends TypedCompositeActor {
 		slots = new Parameter(this, "slots");
 		slots.setExpression("'1*'");
 	}
+	
+	private ArrayList _readsFromSensors;
 }

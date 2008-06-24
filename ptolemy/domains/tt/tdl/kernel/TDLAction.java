@@ -4,16 +4,14 @@ import java.util.Comparator;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
+import ptolemy.kernel.util.NamedObj;
 
 /**
- * A node describing a TDL action. 
- * 
- * TODO: better to derive?. At the moment, deriving from ptolemy.graph.Node
- * is not possible because Node is final.
+ * Describes a TDL action. Used in the TDLActionsGraph.
  * @author Patricia Derler
  *
  */
-public class TDLGraphNode {
+public class TDLAction {
 
     /**
      * Create a new TDLGraphNode.
@@ -21,7 +19,7 @@ public class TDLGraphNode {
      * @param actionType Type of TDL action.
      * @param actor Actor on which the TDL action has to be performed on.
      */
-    public TDLGraphNode(long time, int actionType, Object actor) {
+    public TDLAction(long time, int actionType, Object actor) {
         this.time = time;
         this.actionType = actionType;
         this.object = actor;
@@ -47,7 +45,7 @@ public class TDLGraphNode {
      * If a mode switch is not taken, this is the next action. It does not do anything but is
      * required for the TDL ActionsGraph.
      */
-    public static final int MODESWITCHNOTTAKEN = 3;
+    public static final int AFTERMODESWITCH = 3;
     
     /**
      * Read a sensor value which is the input of a TDLModule.
@@ -75,17 +73,20 @@ public class TDLGraphNode {
     public int actionType;
     
     /**
-     * Actor the TDL aciton has to be performed on.
+     * Actor the TDL action has to be performed on.
      */
     public Object object;
     
-    
+    @Override
+    public String toString() {
+        return actionType + "@" + time + "@" + object;
+    }
     
     /**
-     * This class compares two 
+     * This class compares two TDL actions.
      * @author Patricia Derler
      */
-    public static class TDLGraphNodeComparator implements Comparator  {
+    public static class TDLActionComparator implements Comparator  {
 
         /**
          * Compare two TDLEvents. Two TDL Events are the same if all
@@ -97,8 +98,8 @@ public class TDLGraphNode {
          * @return The result of the comparison of the two TDL events.
          */
         public int compare(Object event1, Object event2) {
-            TDLGraphNode tdlEvent1 = (TDLGraphNode) event1;
-            TDLGraphNode tdlEvent2 = (TDLGraphNode) event2;
+            TDLAction tdlEvent1 = (TDLAction) event1;
+            TDLAction tdlEvent2 = (TDLAction) event2;
             long compareTime = tdlEvent1.time - tdlEvent2.time;
             if (compareTime != 0)
                 return (int)compareTime;
