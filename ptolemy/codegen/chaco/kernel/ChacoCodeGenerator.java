@@ -62,8 +62,9 @@ import ptolemy.kernel.util.StringAttribute;
 ////ChacoCodeGenerator
 
 /** Base class for Chaco code generator.
- *  FIXME: What is the Chaco code generator?
- *
+ *  Chaco is a graph partitioning software. The ChacoCodeGenerator takes a 
+ *  Ptolemy model and generates the corresponding input file for Chaco.
+ *  
  *  @author Jia Zou, Isaac Liu, Man-Kit Leung
  *  @version $Id$
  *  @since Ptolemy II 7.0
@@ -101,23 +102,88 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    public void transformGraph() throws KernelException {
-
-        if (!_isClearMode()) {
-            _readChacoOutputFile();
+    
+    /**
+     * Generate an array of distinct colors. The distinctness of two
+     * colors is determined by the absolute difference in their RGB
+     * components, which range from 0.0 to 1.0f. Therefore, the maximum
+     * distance between any two colors is 3. Generating a number of 
+     * distinct colors is to evenly spread the distance across their
+     * RGB values. 
+     * 
+     * It first calculates the numberOfDiscreteValues from approximating
+     * the cube root of the given numberOfColors. Then, it generates
+     * a table of discrete colorValues. For example, if the
+     * numberOfDiscreteValues is 3, then the table would contain
+     * the values {1.0, 0.5, 0.0}. Finally, the RBG values are generated
+     * by picking the permutation out of these values. 
+     * 
+     * The algorithm is learned from the Berkeley SWAMI (Shared Wisdom 
+     * through the Amalgamation of Many Interpretations) project.
+     * 
+     * @see Fisher D, Hildrum K, Hong J, Newman M and Vuduc R, SWAMI: a framework for collaborative filtering algorithm development and evaluation 1999. http://guir.berkeley.edu/projects/swami/. 
+     * @param  numberOfColors The number of distinct colors to generate.
+     * @return An array size numberOfColors filled with distinct colors.
+     */
+    public static final String[] getDistinctColors(int numberOfColors) {
+        
+        String[] colors = new String[numberOfColors];
+        
+        // Approximate the cube root of numberOfColors.
+        int       numberOfDiscreteValues = 0;
+        int cube  = 0;
+        while (numberOfColors > cube) {
+            numberOfDiscreteValues++;
+            cube = numberOfDiscreteValues * numberOfDiscreteValues * numberOfDiscreteValues;
         }
         
-        // Traverse through the graph and annotate each port whether
-        // it is a _isMpiBuffer (send/receive)
-        _annotateMpiPorts();
+        float[]   colorValues         = new float[numberOfDiscreteValues];
+        int       rIndex;
+        int       gIndex;
+        int       bIndex;
 
-        // Repaint the GUI.
-        getContainer().requestChange(new ChangeRequest(this,
-        "Repaint the GUI.") {
-            protected void _execute() throws Exception {}
-        });        
-    }
+        // Generate a table of discrete values for RGB.
+        for (int i = 0; i < numberOfDiscreteValues; i++) {
+            colorValues[i] = 1.0f - ((float) i) / ((float) numberOfDiscreteValues - 1);
 
+            // Fix the values just in case.
+            if (Float.isNaN(colorValues[i]) || Float.isInfinite(colorValues[i])) {
+                colorValues[i] = 1.0f;
+            } else if (colorValues[i] < 0.0f) {
+                colorValues[i] = 0.0f;
+            } else if (colorValues[i] > 1.0f) {
+                colorValues[i] = 1.0f;
+            }
+        }
+
+        // Now generate the colors.
+        rIndex = 0;
+        gIndex = 0;
+        bIndex = 0;
+
+        for (int i = 0; i < colors.length; i++) {
+            colors[i] = new String("{" + colorValues[rIndex] + ", " +
+                    colorValues[gIndex] + ", " + 
+                    colorValues[bIndex] + ", 1.0}");
+
+            // Now go to the next color values.
+            bIndex++;
+            if (bIndex >= numberOfDiscreteValues) {
+                gIndex++;
+                if (gIndex >= numberOfDiscreteValues) {
+                    rIndex++;
+                    rIndex %= numberOfDiscreteValues;
+                }
+                gIndex %= numberOfDiscreteValues;
+            }
+            bIndex %= numberOfDiscreteValues;
+        }
+        return colors;
+    } 
+
+    /**
+     * 
+     */
     public int generateCode(StringBuffer code) throws KernelException {
         
         if (action.getExpression().equals("CLEAR")) {
@@ -374,271 +440,54 @@ public class ChacoCodeGenerator extends CodeGenerator {
         return 0;
     }
 
-    private void _reset() {
-        _HashActorKey.clear();
-        _HashNumberKey.clear();
-        _colorMap.clear();
-        _rankNumbers.clear();
-        _numVertices = 0;
-        _numEdges = 0;
-    }
+    
 
-    private String _getVertexWeight(Actor actor) {
-        Parameter vertexParam = (Parameter) 
-        ((NamedObj) actor).getAttribute("_vertexWeight");
-
-        if (vertexParam == null) {
-            return "1";
-        } else {
-            return vertexParam.getExpression();
-        }
-    }
-
-    private static String _getEdgeWeight(Relation relation) {
-        Parameter edgeParam = (Parameter) 
-        relation.getAttribute("_edgeWeight");
-
-        if (edgeParam == null) {
-            return "1";
-        } else {
-            return edgeParam.getExpression();
-        }
-    }
-
-    /** Write the code with the sanitized model name postfixed with "_tb"
-     *  if the current generate file is the testbench module; Otherwise,
-     *  write code with the sanitized model name (as usual). 
-     *  @param code The StringBuffer containing the code.
-     *  @return The name of the file that was written.
-     *  @exception IllegalActionException  If the super class throws it.
+    /**
+     * Testing main for the ChacoCodeGenerator.
+     * @param args The given command-line arguments.
      */
-    protected String _writeCode(StringBuffer code)
-    throws IllegalActionException {
-        _sanitizedModelName = CodeGeneratorHelper.generateName(_model);
-        String tempCodeFileName = super._writeCode(code);
-        if (tempCodeFileName.endsWith(".chaco"))
-            //tempCodeFileName.substring(0, tempCodeFileName.indexOf(".")).concat(".graph");
-            tempCodeFileName = tempCodeFileName.replaceAll(".chaco", ".graph");
-        return tempCodeFileName;
+    public static void main(String[] args) {
+        System.out.println(_arrayToString(getDistinctColors(26)));
+        System.out.println(_arrayToString(getDistinctColors(27)));
+        System.out.println(_arrayToString(getDistinctColors(28)));
+    }
+        
+    
+    public void transformGraph() throws KernelException {
+
+        if (!_isClearMode()) {
+            _readChacoOutputFile();
+        }
+        
+        // Traverse through the graph and annotate each port whether
+        // it is a _isMpiBuffer (send/receive)
+        _annotateMpiPorts();
+
+        // Repaint the GUI.
+        getContainer().requestChange(new ChangeRequest(this,
+        "Repaint the GUI.") {
+            protected void _execute() throws Exception {}
+        });        
+    }    
+    
+    
+    
+
+    /**
+     * Return the String representation of a Object array.
+     * @param array The given Object array.
+     * @return The String representation of the Object array.
+     */
+    private static String _arrayToString(Object[] array) {
+        StringBuffer result = new StringBuffer();
+        result.append("{");
+        for (Object element : array) {
+            result.append(element + ", ");
+        }
+        return result.toString() + "}";
     }
     
-    protected void _writeChacoInputFile(String code)
-    throws IllegalActionException {
-        try {
-            // Create file 
-            FileWriter fstream = new FileWriter(_codeFileName);
-            BufferedWriter out = new BufferedWriter(fstream);
-            out.write(code);
-            //Close the output stream
-            out.close();
-        } catch (Exception e) {//Catch exception if any
-            System.err.println("Error: " + e.getMessage());
-        }
-    }
-
-    protected void _readChacoOutputFile() throws IllegalActionException {
-        
-        String codeFileNameWritten = this.getCodeFileName();
-        codeFileNameWritten = codeFileNameWritten.replaceAll(".graph", ".out");
-        
-        File file = new File(codeFileNameWritten);
-        FileInputStream fis = null;
-        BufferedInputStream bis = null;
-        DataInputStream dis = null;
-
-        try {
-            fis = new FileInputStream(file);
-
-            // Here BufferedInputStream is added for fast reading.
-            bis = new BufferedInputStream(fis);
-            dis = new DataInputStream(bis);
-
-            int actorNum = 1;
-            // dis.available() returns 0 if the file does not have more lines.
-            while (dis.available() != 0) {
-
-                // this statement reads the line from the file and print it to
-                // the console.
-                String rankString = dis.readLine();
-                Actor actor = (Actor) _HashNumberKey.get(actorNum);
-
-                Parameter parameter = _getPartitionParameter(actor);
-                parameter.setExpression(rankString);
-
-                actorNum++;
-
-                _rankNumbers.add(rankString);                
-            }
-
-            // dispose all the resources after using them.
-            fis.close();
-            bis.close();
-            dis.close();
-
-
-        } catch (IOException e) {
-            System.err.println("Error: " + e.getMessage());
-        }
-
-    }
-
-    private void _highlightPartitions() throws IllegalActionException {
-        if (!_isClearMode()) {
-            // Generate and map the distinct colors to partitions.
-            Iterator rankNumbers = _rankNumbers.iterator();
-            for (String color : getDistinctColors(_rankNumbers.size() - 1)) {
-                //System.out.println("color: " + color + ", rank: " + rankNumbers.next());
-                _colorMap.put(rankNumbers.next(), color);
-            }
-        }
-        
-        // Insert the highlight color attributes.
-        CompositeEntity compositeActor = (CompositeEntity) getContainer();
-        for (Actor actor : (List<Actor>) compositeActor.deepEntityList()) {
-
-            if (_isClearMode()) {
-                _removeAttribute((NamedObj) actor, "_partition");
-                _removeAttribute((NamedObj) actor, "_highlightColor");
-
-            } else {
-                Parameter actorPartition = _getPartitionParameter(actor);
-                String color = (String) _colorMap.get(actorPartition.getExpression());
-                
-                ColorAttribute colorAttribute = _getHighlightAttribute((NamedObj) actor);
-                colorAttribute.setExpression(color);
-            }
-        }
-    }
-
-    private ColorAttribute _getHighlightAttribute(NamedObj actor)
-    throws IllegalActionException {
-        ColorAttribute attribute = (ColorAttribute) actor
-        .getAttribute("_highlightColor");
-
-        try {
-            if (_isClearMode() && attribute != null) {
-                attribute.setContainer(null);
-                return null;
-            }
-
-            return (attribute != null) ? attribute
-                    : new ColorAttribute(actor, "_highlightColor");
-        } catch (NameDuplicationException e) {
-            assert false;
-        }
-        return null;
-    }
-
-    private boolean _isClearMode() {
-        return action.getExpression().equals("CLEAR");
-    }
-
-    /**
-     * Find the first integer-valued cube that is greater than or equal to val.
-     */
-    private static final int _approxCubeRoot(int val) {
-        int index = 0;
-        int cube  = 0;
-
-        while (val >= cube) {
-            index++;
-            cube = index * index * index;
-        }
-
-        return (index);
-    }
-
-    /**
-     * Generate an array of distinct colors.
-     *
-     * @param  numColors is the number of distinct colors.
-     * @return an array size (numColors + 1) filled with distinct colors.
-     *         The +1 is there in case the clusters range from 0 to numColors
-     *         or 1 to (numColors + 1).
-     */
-    public static final String[] getDistinctColors(int numColors) {
-
-        //// Need to pick numColors distinct colors.
-        String[] colors            = new String[numColors + 1];
-        int       numDiscreteValues = _approxCubeRoot(numColors);
-        float[]   colorVals         = new float[numDiscreteValues];
-        int       r_index;
-        int       g_index;
-        int       b_index;
-
-        //// 1. Generate a table of discrete values for rgb.
-        for (int i = 0; i < numDiscreteValues; i++) {
-            colorVals[i] = 1.0f - ((float) i) / ((float) numDiscreteValues - 1);
-
-            //// 1.1. Fix the values just in case.
-            if (colorVals[i] < 0.0f) {
-                colorVals[i] = 0.0f;
-            } else if (colorVals[i] > 1.0f) {
-                colorVals[i] = 1.0f;
-            }
-        }
-
-        //// 2. Now generate the colors.
-        r_index = 0;
-        g_index = 0;
-        b_index = 0;
-
-        for (int i = 0; i < colors.length; i++) {
-            colors[i] = new String("{" + colorVals[r_index] + ", " +
-                    colorVals[g_index] + ", " + 
-                    colorVals[b_index] + ", 1.0}");
-
-
-            //// 2.1. Now go to the next color values.
-            b_index++;
-            if (b_index >= numDiscreteValues) {
-                g_index++;
-                if (g_index >= numDiscreteValues) {
-                    r_index++;
-                    r_index %= numDiscreteValues;
-                }
-                g_index %= numDiscreteValues;
-            }
-            b_index %= numDiscreteValues;
-        }
-
-        return (colors);
-    } 
-
-    private Parameter _getPartitionParameter(Actor actor)
-    throws IllegalActionException {
-        Parameter attribute = (Parameter) ((NamedObj) actor)
-        .getAttribute("_partition");
-
-        try {
-            if (attribute == null) {
-                attribute = new Parameter((NamedObj) actor, "_partition");
-            }
-        } catch (NameDuplicationException e) {
-            assert false;
-        }
-        return attribute;
-    }
-
-    private Parameter _getNumConnectionsParameter()
-    throws IllegalActionException {
-
-        Director director = (Director) ((TypedCompositeActor) 
-                getContainer()).getDirector();
-
-        Parameter attribute = (Parameter) 
-        director.getAttribute("_numberOfMpiConnections");
-
-        try {
-            if (attribute == null) {
-                attribute = new Parameter(director, "_numberOfMpiConnections");
-            }
-        } catch (NameDuplicationException e) {
-            assert false;
-        }
-        return attribute;
-    }
-
+    
     private void _annotateMpiPorts() throws IllegalActionException {
         int count = 1;
         int mpiBufferId = 0;
@@ -738,6 +587,200 @@ public class ChacoCodeGenerator extends CodeGenerator {
         }
         Parameter numConnections = _getNumConnectionsParameter();
         numConnections.setExpression(Integer.toString(mpiBufferId));
+    }
+    
+
+    private String _getVertexWeight(Actor actor) {
+        Parameter vertexParam = (Parameter) 
+        ((NamedObj) actor).getAttribute("_vertexWeight");
+
+        if (vertexParam == null) {
+            return "1";
+        } else {
+            return vertexParam.getExpression();
+        }
+    }
+
+    private static String _getEdgeWeight(Relation relation) {
+        Parameter edgeParam = (Parameter) 
+        relation.getAttribute("_edgeWeight");
+
+        if (edgeParam == null) {
+            return "1";
+        } else {
+            return edgeParam.getExpression();
+        }
+    }
+
+    /** Write the code with the sanitized model name postfixed with "_tb"
+     *  if the current generate file is the testbench module; Otherwise,
+     *  write code with the sanitized model name (as usual). 
+     *  @param code The StringBuffer containing the code.
+     *  @return The name of the file that was written.
+     *  @exception IllegalActionException  If the super class throws it.
+     */
+    protected String _writeCode(StringBuffer code)
+    throws IllegalActionException {
+        _sanitizedModelName = CodeGeneratorHelper.generateName(_model);
+        String tempCodeFileName = super._writeCode(code);
+        if (tempCodeFileName.endsWith(".chaco"))
+            //tempCodeFileName.substring(0, tempCodeFileName.indexOf(".")).concat(".graph");
+            tempCodeFileName = tempCodeFileName.replaceAll(".chaco", ".graph");
+        return tempCodeFileName;
+    }
+    
+    protected void _writeChacoInputFile(String code)
+    throws IllegalActionException {
+        try {
+            // Create file 
+            FileWriter fstream = new FileWriter(_codeFileName);
+            BufferedWriter out = new BufferedWriter(fstream);
+            out.write(code);
+            //Close the output stream
+            out.close();
+        } catch (Exception e) {//Catch exception if any
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    protected void _readChacoOutputFile() throws IllegalActionException {
+        
+        String codeFileNameWritten = this.getCodeFileName();
+        codeFileNameWritten = codeFileNameWritten.replaceAll(".graph", ".out");
+        
+        File file = new File(codeFileNameWritten);
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        DataInputStream dis = null;
+
+        try {
+            fis = new FileInputStream(file);
+
+            // Here BufferedInputStream is added for fast reading.
+            bis = new BufferedInputStream(fis);
+            dis = new DataInputStream(bis);
+
+            int actorNum = 1;
+            // dis.available() returns 0 if the file does not have more lines.
+            while (dis.available() != 0) {
+
+                // this statement reads the line from the file and print it to
+                // the console.
+                String rankString = dis.readLine();
+                Actor actor = (Actor) _HashNumberKey.get(actorNum);
+
+                Parameter parameter = _getPartitionParameter(actor);
+                parameter.setExpression(rankString);
+
+                actorNum++;
+
+                _rankNumbers.add(rankString);                
+            }
+
+            // dispose all the resources after using them.
+            fis.close();
+            bis.close();
+            dis.close();
+
+
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
+    }
+    
+    private void _reset() {
+        _HashActorKey.clear();
+        _HashNumberKey.clear();
+        _colorMap.clear();
+        _rankNumbers.clear();
+        _numVertices = 0;
+        _numEdges = 0;
+    }
+
+    private void _highlightPartitions() throws IllegalActionException {
+        if (!_isClearMode()) {
+            // Generate and map the distinct colors to partitions.
+            Iterator rankNumbers = _rankNumbers.iterator();
+            for (String color : getDistinctColors(_rankNumbers.size() - 1)) {
+                //System.out.println("color: " + color + ", rank: " + rankNumbers.next());
+                _colorMap.put(rankNumbers.next(), color);
+            }
+        }
+        
+        // Insert the highlight color attributes.
+        CompositeEntity compositeActor = (CompositeEntity) getContainer();
+        for (Actor actor : (List<Actor>) compositeActor.deepEntityList()) {
+
+            if (_isClearMode()) {
+                _removeAttribute((NamedObj) actor, "_partition");
+                _removeAttribute((NamedObj) actor, "_highlightColor");
+
+            } else {
+                Parameter actorPartition = _getPartitionParameter(actor);
+                String color = (String) _colorMap.get(actorPartition.getExpression());
+                
+                ColorAttribute colorAttribute = _getHighlightAttribute((NamedObj) actor);
+                colorAttribute.setExpression(color);
+            }
+        }
+    }
+
+    private ColorAttribute _getHighlightAttribute(NamedObj actor)
+    throws IllegalActionException {
+        ColorAttribute attribute = (ColorAttribute) actor
+        .getAttribute("_highlightColor");
+
+        try {
+            if (_isClearMode() && attribute != null) {
+                attribute.setContainer(null);
+                return null;
+            }
+
+            return (attribute != null) ? attribute
+                    : new ColorAttribute(actor, "_highlightColor");
+        } catch (NameDuplicationException e) {
+            assert false;
+        }
+        return null;
+    }
+
+    private boolean _isClearMode() {
+        return action.getExpression().equals("CLEAR");
+    }
+
+    private Parameter _getPartitionParameter(Actor actor)
+    throws IllegalActionException {
+        Parameter attribute = (Parameter) ((NamedObj) actor)
+        .getAttribute("_partition");
+
+        try {
+            if (attribute == null) {
+                attribute = new Parameter((NamedObj) actor, "_partition");
+            }
+        } catch (NameDuplicationException e) {
+            assert false;
+        }
+        return attribute;
+    }
+
+    private Parameter _getNumConnectionsParameter()
+    throws IllegalActionException {
+
+        Director director = (Director) ((TypedCompositeActor) 
+                getContainer()).getDirector();
+
+        Parameter attribute = (Parameter) 
+        director.getAttribute("_numberOfMpiConnections");
+
+        try {
+            if (attribute == null) {
+                attribute = new Parameter(director, "_numberOfMpiConnections");
+            }
+        } catch (NameDuplicationException e) {
+            assert false;
+        }
+        return attribute;
     }
 
     private StringAttribute _getLocalAttribute(TypedIOPort port)
