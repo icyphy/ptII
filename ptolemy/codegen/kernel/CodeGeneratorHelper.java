@@ -437,7 +437,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 : ptType == BaseType.STRING ? "char*"
                         : ptType == BaseType.DOUBLE ? "double"
                                 : ptType == BaseType.BOOLEAN ? "boolean"
-                                        : ptType == BaseType.LONG ? "long"
+                                        : ptType == BaseType.LONG ? "long long"
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
                                                         : ptType == PointerToken.POINTER ? "void*"
                                                                 : "Token";
