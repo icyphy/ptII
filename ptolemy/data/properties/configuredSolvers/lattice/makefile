@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Properties GUI
+# Makefile for Java Ptolemy Data Properties Solvers
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
@@ -34,7 +34,7 @@ ME =		ptolemy/data/properties/configuredSolvers/lattice
 DIRS = 		
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
