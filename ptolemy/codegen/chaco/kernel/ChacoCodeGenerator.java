@@ -109,19 +109,21 @@ public class ChacoCodeGenerator extends CodeGenerator {
      * components, which range from 0.0 to 1.0f. Therefore, the maximum
      * distance between any two colors is 3. Generating a number of 
      * distinct colors is to evenly spread the distance across their
-     * RGB values. 
+     * RGB values. <p> 
      * 
      * It first calculates the numberOfDiscreteValues from approximating
      * the cube root of the given numberOfColors. Then, it generates
      * a table of discrete colorValues. For example, if the
      * numberOfDiscreteValues is 3, then the table would contain
      * the values {1.0, 0.5, 0.0}. Finally, the RBG values are generated
-     * by picking the permutation out of these values. 
+     * by picking the permutation out of these values. <p>
      * 
      * The algorithm is learned from the Berkeley SWAMI (Shared Wisdom 
      * through the Amalgamation of Many Interpretations) project.
      * 
-     * @see Fisher D, Hildrum K, Hong J, Newman M and Vuduc R, SWAMI: a framework for collaborative filtering algorithm development and evaluation 1999. http://guir.berkeley.edu/projects/swami/. 
+     * @see Fisher D, Hildrum K, Hong J, Newman M and Vuduc R, SWAMI: 
+     * a framework for collaborative filtering algorithm development 
+     * and evaluation 1999. <a href=http://guir.berkeley.edu/projects/swami/>http://guir.berkeley.edu/projects/swami/</a>. 
      * @param  numberOfColors The number of distinct colors to generate.
      * @return An array size numberOfColors filled with distinct colors.
      */
