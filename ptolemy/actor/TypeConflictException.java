@@ -27,6 +27,7 @@
  */
 package ptolemy.actor;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -91,19 +92,33 @@ public class TypeConflictException extends KernelException {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Create a string listing all the inequalities in _inequalities.
-    // Each inequality takes one line, and each line starts
-    // with 2 white spaces to make the String more readable.
+    /** Create a string listing all the inequalities in _inequalities.
+     * The inequalities are sorted according to their natural order
+     * so as to preserve uniformity in error messages.
+     * Each inequality takes one line, and each line starts
+     * with 2 white spaces to make the String more readable.
+     */
     private String _listInequalities() {
-        StringBuffer result = new StringBuffer();
+        // Create a List of string descriptions of the inequalities
+        List inequalities = new LinkedList();
         Iterator iterator = inequalityList().iterator();
-
         while (iterator.hasNext()) {
             Object inequality = iterator.next();
-            result.append("  " + inequality.toString() + "\n");
+            inequalities.add("  " + inequality.toString() + "\n");
         }
 
-        return result.toString();
+        // Sort the list of string descriptions
+        Collections.sort(inequalities);
+
+        // Create a string buffer of the sorted string descriptions.
+        StringBuffer results = new StringBuffer();
+        iterator = inequalities.iterator();
+        while (iterator.hasNext()) {
+            Object inequality = iterator.next();
+            results.append(inequality);
+        }
+
+        return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
