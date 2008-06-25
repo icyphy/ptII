@@ -62,22 +62,21 @@ test UnionDisassembler-1.1 {Test getVerboseString} {
     set unionDisassembler [java::cast {ptolemy.actor.lib.UnionDisassembler} \
 	[$model getEntity UnionDisassembler]]
     set typeConstraints0 [$unionDisassembler typeConstraintList]
-    regsub -all {\} \{} [listToStrings $typeConstraints0] '\}\n\{' results0
+    regsub -all {\} \{} [lsort [listToStrings $typeConstraints0]] '\}\n\{' results0
     set manager [java::new ptolemy.actor.Manager $workspace "pubManager"]
     $model setManager $manager 
     $manager execute
 
     set typeConstraints1 [$unionDisassembler typeConstraintList]
-    regsub -all {\} \{} [listToStrings $typeConstraints1] '\}\n\{' results1
-    list $results0 \
+    regsub -all {\} \{} [lsort [listToStrings $typeConstraints1]] '\}\n\{' results1
+    list [list $results0] \
 	"\n" \
-	$results1
-} {{{(ptolemy.actor.lib.UnionDisassembler$PortFunction, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.cloth}, unknown)'}
-{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.car}, unknown)'}
+	[list $results1]
+} {{{{(ptolemy.actor.lib.UnionDisassembler$PortFunction, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.car}, unknown)'}
+{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.cloth}, unknown)'}
 {'(ptolemy.actor.lib.UnionDisassembler$PortFunction, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.money}, unknown)'}
-{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.record}, unknown)}} {
-} {{(ptolemy.actor.lib.UnionDisassembler$PortFunction, int) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.cloth}, int)'}
-{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, int) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.car}, int)'}
+{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, unknown) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.record}, unknown)}}} {
+} {{{(ptolemy.actor.lib.UnionDisassembler$PortFunction, int) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.car}, int)'}
+{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, int) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.cloth}, int)'}
 {'(ptolemy.actor.lib.UnionDisassembler$PortFunction, string) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.money}, string)'}
-{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, {car = int, cloth = int, money = string}) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.record}, {car = int, cloth = int, money = string})}}}
-
+{'(ptolemy.actor.lib.UnionDisassembler$PortFunction, {car = int, cloth = int, money = string}) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.record}, {car = int, cloth = int, money = string})}}}}
