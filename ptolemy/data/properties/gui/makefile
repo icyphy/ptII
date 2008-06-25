@@ -1,6 +1,6 @@
 # Makefile for Java Ptolemy Data Properties GUI
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
 # $Id$
 #
@@ -43,11 +43,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	gui
+PTPACKAGE = 	properties
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	PropertySolverGUIFactory.java
+	PropertySolverGUIFactory.java \
+	PropertyDisplayGUIFactory.java
 
 EXTRA_SRCS =	$(JSRCS)
 

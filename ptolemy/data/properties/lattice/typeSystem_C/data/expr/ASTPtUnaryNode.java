@@ -32,7 +32,6 @@ import java.util.List;
 
 import ptolemy.data.Token;
 import ptolemy.data.properties.PropertySolver;
-import ptolemy.data.properties.lattice.PropertyConstraintASTNodeHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.typeSystem_C.Lattice;
 import ptolemy.data.properties.token.PropertyToken;
@@ -50,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class ASTPtUnaryNode extends PropertyConstraintASTNodeHelper {
+public class ASTPtUnaryNode extends ASTPtRootNode {
 
     public ASTPtUnaryNode(PropertyConstraintSolver solver, 
             ptolemy.data.expr.ASTPtUnaryNode node) throws IllegalActionException {

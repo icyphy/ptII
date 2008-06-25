@@ -27,8 +27,12 @@
  */
 package ptolemy.data.properties.lattice.logicalAND.actor;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,5 +63,18 @@ public class AtomicActor extends PropertyConstraintHelper {
             throws IllegalActionException {
         
         super(solver, actor);
+    }
+
+    public AtomicActor(PropertyConstraintSolver solver, 
+            ptolemy.actor.AtomicActor actor, 
+            boolean useDefaultConstraints)
+    throws IllegalActionException {
+
+        super(solver, actor, useDefaultConstraints);
+    }
+    
+    protected List<Attribute> _getPropertyableAttributes() {
+        // do not set up default constraints for attributes in AtomicActors
+        return new LinkedList<Attribute>();
     }
 }

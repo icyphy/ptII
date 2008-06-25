@@ -27,18 +27,18 @@
  */
 package ptolemy.data.properties.lattice;
 
-import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.properties.PropertyHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver.ConstraintType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
-//// TypedCompositeActor
+
+////TypedCompositeActor
 
 /**
  Code generator helper for composite actor.
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (mankit)
  */
 public class PropertyConstraintCompositeHelper 
-    extends PropertyConstraintHelper {
+extends PropertyConstraintHelper {
 
     /** Construct the property constraint helper associated
      *  with the given TypedCompositeActor.
@@ -61,27 +61,25 @@ public class PropertyConstraintCompositeHelper
      */
     public PropertyConstraintCompositeHelper(
             PropertyConstraintSolver solver, CompositeEntity component) 
-            throws IllegalActionException {
+    throws IllegalActionException {
 
         super(solver, component, false);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-        
+
     /**
      * 
      */
     protected void _addDefaultConstraints(
             ConstraintType actorConstraintType) throws IllegalActionException {
-        Iterator helpers = _getSubHelpers().iterator();
-        
-        while (helpers.hasNext()) {
-            PropertyConstraintHelper helper = 
-                (PropertyConstraintHelper) helpers.next();
-            
-            helper._addDefaultConstraints(actorConstraintType);
-        }        
+
+        for (PropertyHelper helper : _getSubHelpers()) {
+
+            ((PropertyConstraintHelper)helper)
+            ._addDefaultConstraints(actorConstraintType);
+        }
     }    
 
     /**
@@ -91,93 +89,75 @@ public class PropertyConstraintCompositeHelper
      */
     protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
         List<PropertyHelper> helpers = super._getSubHelpers();
-        
+
         CompositeEntity component = 
             (CompositeEntity) getComponent();
-        Iterator iterator = component.entityList().iterator();
-        
-        while (iterator.hasNext()) {
-            NamedObj actor = 
-                (NamedObj) iterator.next();
-            
+
+        for (Object actor : component.entityList()) {
             helpers.add(_solver.getHelper(actor));
         }
-        
         return helpers;
     }
-    
+
     /** Return all constraints of this component.  The constraints is
      *  a list of inequalities. 
      *  @return A list of Inequality.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-     public List<Inequality> constraintList() throws IllegalActionException {
-         return super.constraintList();
-     }
-         /*
-
-        boolean constraintSource = 
-            (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||  
-            (interconnectConstraintType == ConstraintType.SRC_LESS);
-        
-        CompositeEntity actor = (CompositeEntity) _component;
-
-        List portList1 = actor.portList();
-
-        Iterator ports = portList1.iterator();
-        
-        while (ports.hasNext()) {                    
-            TypedIOPort port = (TypedIOPort) ports.next();
-
-            List portList2;
-            
-            // Eliminate duplicates.
-            if (constraintSource ^ port.isOutput()) {
-                portList2 = port.insidePortList();
-            } else {
-                if (constraintSource) {
-                    portList2 = _getSinkPortList(port);
-                } else {
-                    portList2 = _getSourcePortList(port);
-                }
-            }
-            _constraintObject(interconnectConstraintType, port, portList2);
-        }
-
-        _addSubHelperConstraints();
-        _constraintAttributes();
-
-        return _constraints;
-    }
-*/
-    /**
-     * @param constraintSource
-     * @param port
-     * @return
-     */
-    protected List _getConstraintingPorts(boolean constraintSource, TypedIOPort port) {
-        List portList2;
-        if (constraintSource ^ port.isOutput()) {
-            portList2 = port.insidePortList();
-        } else {
-            if (constraintSource) {
-                portList2 = _getSinkPortList(port);
-            } else {
-                portList2 = _getSourcePortList(port);
-            }
-        }
-        return portList2;
-    }
-
-    /**
-     * @param actor
-     * @param constraintSource
-     * @return
-     */
-    protected List _getConstraintedPorts(boolean constraintSource) {
+    public List<Inequality> constraintList() throws IllegalActionException {
         CompositeEntity actor = (CompositeEntity) getComponent();
-        List portList1 = actor.portList();
-        return portList1;
+        
+        // Set up inter-actor constraints.
+        for (Entity entity : (List<Entity>) actor.entityList()) {
+            PropertyConstraintHelper helper = 
+                (PropertyConstraintHelper) _solver.getHelper(entity);
+
+            boolean constraintSource = helper.isConstraintSource();
+
+            for (TypedIOPort port : (List<TypedIOPort>) 
+                    helper._getConstraintedPorts(constraintSource)) {
+                
+                _constraintObject(helper.interconnectConstraintType, port, 
+                        _getConstraintingPorts(constraintSource, port));
+            }
+        }
+
+        // Set up inner composite connection constraints.
+        for (TypedIOPort port : (List<TypedIOPort>) 
+                _getConstraintedInsidePorts(isConstraintSource())) {
+            
+            _constraintObject(interconnectConstraintType, port, 
+                    port.insidePortList());
+        }
+
+        return super.constraintList();
+    }
+    
+    public void setAtLeastByDefault(Object term1, Object term2) {
+        setAtLeast(term1, term2);
+        
+        if (term1 != null && term2 != null) {
+            _solver.incrementStats("# of default constraints", 1);
+            _solver.incrementStats("# of composite default constraints", 1);
+        }
+    }
+    
+    public void setSameAsByDefault(Object term1, Object term2) {
+        setAtLeast(term1, term2);
+        
+        if (term1 != null && term2 != null) {
+            _solver.incrementStats("# of default constraints", 2);
+            _solver.incrementStats("# of composite default constraints", 2);
+        }
     }
 
+    /**
+     * @param constraintSource
+     * @return
+     */
+    protected List _getConstraintedInsidePorts(boolean constraintSource) {
+        Actor actor = (Actor) getComponent();
+        return constraintSource ? actor.inputPortList() :
+            actor.outputPortList();
+    }
 }

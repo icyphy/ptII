@@ -22,8 +22,8 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{421.5, 373.5}">
     </property>
-    <property name="TypeSystem_C" class="ptolemy.data.properties.lattice.TypeSystemCCS">
-        <property name="Log constraints to file" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="TypeSystem_C" class="ptolemy.data.properties.configuredSolvers.lattice.TypeSystemCCS">
+        <property name="logMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="C:\temp\ConstraintFiles\trainedConstraints">
         </property>

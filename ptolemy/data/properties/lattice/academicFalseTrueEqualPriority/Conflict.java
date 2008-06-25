@@ -53,4 +53,8 @@ public class Conflict extends LatticeProperty {
     public Conflict(PropertyLattice lattice) {
         super(lattice);
     }
+
+    public boolean isAcceptableSolution() {
+        return false;
+    }
 }

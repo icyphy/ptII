@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Properties token
+# Makefile for Java Ptolemy Data Properties
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/properties/token
 
-DIRS = 		
+DIRS =      combinedValueToken firstValueToken 
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -43,11 +43,10 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	token
+PTPACKAGE = 	properties
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	FirstValuePTS.java \
 	PropertyCombineCompositeHelper.java \
 	PropertyCombineFSMHelper.java \
 	PropertyCombineHelper.java \

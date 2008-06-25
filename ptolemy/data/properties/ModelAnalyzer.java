@@ -36,6 +36,7 @@ import java.util.List;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ActorToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -85,9 +86,9 @@ public class ModelAnalyzer extends Transformer {
         highlight.setTypeEquals(BaseType.BOOLEAN);
         highlight.setExpression("true");
 
-        logConstraint = new Parameter(this, "logConstraint");
-        logConstraint.setTypeEquals(BaseType.BOOLEAN);
-        logConstraint.setExpression("true");
+        logMode = new Parameter(this, "logMode");
+        logMode.setTypeEquals(BaseType.BOOLEAN);
+        logMode.setExpression("true");
 
         overwriteConstraint = new Parameter(this, "overwriteConstraint");
         overwriteConstraint.setTypeEquals(BaseType.BOOLEAN);
@@ -107,7 +108,7 @@ public class ModelAnalyzer extends Transformer {
 
     private void _addChoices() throws IllegalActionException, NameDuplicationException {
         _createSolvers("ptolemy.data.properties.configuredSolvers");
-
+        
         if (solvers.size() > 0) {
             property.setExpression(solvers.get(0).getSimpleName());
         }
@@ -158,23 +159,30 @@ public class ModelAnalyzer extends Transformer {
             
             try {
                 PropertySolver chosenSolver = null;
-                for (Class solver : solvers) {
-                    if (propertyValue.equals(
-                            solver.getSimpleName())) {
-                        try {
-                            Constructor constructor = 
-                                solver.getConstructor(NamedObj.class, String.class);
-                            
-                            constructor.newInstance(entity, "ModelAnalyzer_" + solver.getSimpleName());
-                        } catch (Exception ex) {
-                            assert false;
-                        }
-                        break;
+                
+                List solversInModel = entity.attributeList(PropertySolver.class);
+                if (solversInModel.size() > 0) {
+                    try {
+                        chosenSolver = ((PropertySolver) solversInModel.get(0)).findSolver(propertyValue);
+                    } catch (PropertyResolutionException ex) {
+
+                    }
+                }
+                
+                if (chosenSolver == null) {
+                    chosenSolver = _instantiateSolver(entity, propertyValue);
+                }
+                
+                for (String solverName : chosenSolver.getDependentSolvers()) {
+                    try {
+                        chosenSolver.findSolver(solverName);
+                    } catch (PropertyResolutionException ex) {
+                        _instantiateSolver(entity, solverName);
                     }
                 }
 
                 if (chosenSolver instanceof PropertyConstraintSolver) {
-                    ((PropertyConstraintSolver) chosenSolver).logConstraints.setToken(logConstraint.getToken());
+                    ((PropertyConstraintSolver) chosenSolver).setLogMode(logMode.getToken() == BooleanToken.TRUE);
                 }
     
                 // Clear the resolved properties for the chosen solver.
@@ -186,7 +194,7 @@ public class ModelAnalyzer extends Transformer {
                     
                 } else {
                     chosenSolver.setAction(actionValue);
-                    chosenSolver.resolveProperties(this);
+                    chosenSolver.resolveProperties(this, true);
                     chosenSolver.updateProperties();
                     chosenSolver.checkRegressionTestErrors();
                     
@@ -209,6 +217,25 @@ public class ModelAnalyzer extends Transformer {
         }
         errorMessage.send(0, new StringToken(errorString));
         output.send(0, new ActorToken(entity));
+    }
+
+    private PropertySolver _instantiateSolver(CompositeEntity entity, String className) {
+        for (Class solver : solvers) {
+            if (className.equals(
+                    solver.getSimpleName())) {
+                try {
+                    Constructor constructor = 
+                        solver.getConstructor(NamedObj.class, String.class);
+                    
+                    return (PropertySolver) constructor.newInstance(entity, "ModelAnalyzer_" + solver.getSimpleName());
+                    
+                } catch (Exception ex) {
+                    assert false;
+                }
+                break;
+            }
+        }
+        return null;
     }
 
     /**
@@ -236,7 +263,7 @@ public class ModelAnalyzer extends Transformer {
         
         try {
             file = new File(FileUtilities.nameToURL(
-                    "$CLASSPATH/ptolemy/data/properties/configuredSolvers", 
+                    "$CLASSPATH/" + path.replace(".", "/"), 
                     null, null).getFile());
         } catch (IOException ex) {
             // Should not happen.
@@ -248,13 +275,17 @@ public class ModelAnalyzer extends Transformer {
         for (int i = 0; i < classFiles.length; i++) {
             String className = classFiles[i].getName();
             
-            path += className;
-            if (classFiles[i].isDirectory() && !className.equals("CVS") && !className.equals(".svn")) {
-                // Search sub-folder. 
-                _createSolvers(path);
+            if (classFiles[i].isDirectory()) {
+                if (!className.equals("CVS") && !className.equals(".svn")) {            
+                    // Search sub-folder. 
+                    _createSolvers(path + "." + className);
+                }
             } else {
                 try {
-                    solvers.add(Class.forName(path));
+                    // only consider class files
+                    if (className.contains(".class")) {
+                      solvers.add(Class.forName(path + "." + className.substring(0, className.length() - 6)));
+                    }
                 } catch (ClassNotFoundException e) {
                     assert false;
                 }
@@ -272,7 +303,7 @@ public class ModelAnalyzer extends Transformer {
 
     public Parameter highlight;
 
-    public Parameter logConstraint;
+    public Parameter logMode;
 
     public Parameter overwriteConstraint;
 

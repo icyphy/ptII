@@ -33,10 +33,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.properties.Property;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,22 +75,22 @@ public class PropertyTermManager implements PropertyTermFactory {
             return (PropertyTerm) object;
         }
         
-        if (object instanceof NamedObj) {
-    
-            // Use the property term for the ParameterPort, if it is connected.
-            if (object instanceof PortParameter) {
-                PortParameter parameter = (PortParameter) object;
-                if (parameter.getPort().numLinks() > 0) {
-                    return getPropertyTerm(parameter.getPort());
-                }
-            }
-            
-            // The property term for an Attribute is its root ASTNode.
-            //if (object instanceof Attribute) {
-            //    ASTPtRootNode node = _solver.getParseTree((Attribute) object);
-            //    return getPropertyTerm(node);
-            //}
-        }
+//        if (object instanceof NamedObj) {
+//    
+//            // Use the property term for the ParameterPort, if it is connected.
+//            if (object instanceof PortParameter) {
+//                PortParameter parameter = (PortParameter) object;
+//                if (parameter.getPort().numLinks() > 0) {
+//                    return getPropertyTerm(parameter.getPort());
+//                }
+//            }
+//            
+//            // The property term for an Attribute is its root ASTNode.
+//            //if (object instanceof Attribute) {
+//            //    ASTPtRootNode node = _solver.getParseTree((Attribute) object);
+//            //    return getPropertyTerm(node);
+//            //}
+//        }
 
         if (!_propertyTerms.containsKey(object)) {
             _propertyTerms.put(object, new InequalityTerm(object));                        
@@ -139,8 +137,10 @@ public class PropertyTermManager implements PropertyTermFactory {
          * @throws IllegalActionException 
          */
         public Object getValue() {
-            return _isEffective ? 
-                    _solver.getResolvedProperty(_object) : null;
+            if (_isEffective) {
+                return _solver.getResolvedProperty(_object);
+            }
+            return null;
         }
 
         /** Return this PropertyTerm in an array if this term represent
@@ -154,6 +154,16 @@ public class PropertyTermManager implements PropertyTermFactory {
                 InequalityTerm[] variable = new InequalityTerm[1];
                 variable[0] = this;
                 return variable;
+            }
+
+            return (new InequalityTerm[0]);
+        }
+
+        public InequalityTerm[] getConstants() {
+            if (!isSettable()) {
+                InequalityTerm[] constant = new InequalityTerm[1];
+                constant[0] = this;
+                return constant;
             }
 
             return (new InequalityTerm[0]);
@@ -208,6 +218,7 @@ public class PropertyTermManager implements PropertyTermFactory {
                 return true;
             }
             if (property.isInstantiable()) {
+                // if (property.isAcceptableSolution)
                 return true;
             }
             
@@ -251,8 +262,9 @@ public class PropertyTermManager implements PropertyTermFactory {
 
             //return "( " + _object.hashCode() + "--" + hashCode() + 
             //" " + _object.toString() + ", " + getValue() + ")";
-            return "(" + _object.toString() + ", " + getValue() + ")";
+            return "(" + _object.toString() + ", " + getValue() + ")";            
         }
+
     }
 
     public List<PropertyTerm> getAffectedTerms(PropertyTerm updateTerm) throws IllegalActionException {

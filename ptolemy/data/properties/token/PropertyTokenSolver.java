@@ -5,9 +5,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
-import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -19,6 +18,8 @@ import ptolemy.data.properties.PropertySolver;
 import ptolemy.data.properties.gui.PropertySolverGUIFactory;
 import ptolemy.data.properties.token.firstValueToken.FirstTokenGotListener;
 import ptolemy.data.properties.token.firstValueToken.FirstTokenSentListener;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -69,11 +70,11 @@ public class PropertyTokenSolver extends PropertySolver {
     public Property getProperty(Object object) {
         Property result;
         
-        if (object instanceof PortParameter) {
-            result = getProperty(((PortParameter)object).getPort());
-        } else {
+//        if (object instanceof PortParameter) {
+//            result = getProperty(((PortParameter)object).getPort());
+//        } else {
             result = super.getProperty(object);
-        }
+//        }
         
         return (result == null) ? new PropertyToken(Token.NIL) : result;
     }
@@ -98,14 +99,46 @@ public class PropertyTokenSolver extends PropertySolver {
             NamedObj topLevel = toplevel();
             
             // run simulation
-            Manager manager = new Manager(topLevel.workspace(), "PortValueManager");
-            ((CompositeActor) topLevel).setManager(manager);
-            manager.preinitializeAndResolveTypes();
-//            ((CompositeActor) topLevel).preinitialize();
-            ((CompositeActor) topLevel).initialize();
-            ((CompositeActor) topLevel).iterate(((IntToken)(numberIterations.getToken())).intValue());
-            ((CompositeActor) topLevel).wrapup();
-           
+            if (topLevel instanceof TypedCompositeActor) {
+
+                Manager manager = new Manager(topLevel.workspace(), "PortValueManager");
+                ((TypedCompositeActor) topLevel).setManager(manager);
+                manager.preinitializeAndResolveTypes();
+                // ((CompositeActor) topLevel).preinitialize();
+                ((TypedCompositeActor) topLevel).initialize();
+                ((TypedCompositeActor) topLevel).iterate(((IntToken)(numberIterations.getToken())).intValue());
+                ((TypedCompositeActor) topLevel).wrapup();
+                ((TypedCompositeActor) topLevel).stop();
+    
+                manager.wrapup();
+                manager.finish();
+                manager.stop();
+                
+            } else if (topLevel instanceof FSMActor) {
+
+                TypedCompositeActor compositeActor = new TypedCompositeActor(this.workspace());
+                FSMDirector fsmDirector = new FSMDirector(this.workspace());
+                
+                compositeActor.setDirector(fsmDirector);
+                ((FSMActor)topLevel).setContainer(compositeActor);
+                Manager manager = new Manager(topLevel.workspace(), "PortValueManager");
+                compositeActor.setManager(manager);
+                manager.preinitializeAndResolveTypes();
+                
+                ((FSMActor)topLevel).initialize();
+                ((FSMActor)topLevel).iterate(((IntToken)(numberIterations.getToken())).intValue());
+                ((FSMActor)topLevel).wrapup();
+                ((FSMActor) topLevel).stop();
+                
+                manager.wrapup();
+                manager.finish();
+                manager.stop();
+
+                ((FSMActor)topLevel).setContainer(null);
+            } else {
+                // FIXME: should trow some sort of "Not supported" exception
+            }
+
             topLevelHelper.removeListener();
 
         }

@@ -30,9 +30,9 @@ package ptolemy.data.properties.lattice.typeSystem_C.actor.lib;
 import java.util.List;
 
 import ptolemy.data.ArrayToken;
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.typeSystem_C.Lattice;
+import ptolemy.data.properties.lattice.typeSystem_C.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Sequence extends PropertyConstraintHelper {
+public class Sequence extends AtomicActor {
 
     /**
      * Construct a Const helper for the staticDynamic lattice.
@@ -62,20 +62,22 @@ public class Sequence extends PropertyConstraintHelper {
             throws IllegalActionException {
 
         super(solver, actor, false);
+        _lattice = (Lattice) getSolver().getLattice();
+        _actor = actor;        
     } 
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Sequence actor =
-            (ptolemy.actor.lib.Sequence) getComponent();
-        
-        Lattice lattice = (Lattice) getSolver().getLattice();        
-       
-        ArrayToken valuesArray = (ArrayToken) actor.values.getToken();
+        ArrayToken valuesArray = (ArrayToken) _actor.values.getToken();
         
         for (int i=0; i < valuesArray.length(); i++) {
-            setEquals(actor.output, lattice.convertJavaToCtype(valuesArray.getElement(i).getType(),valuesArray.getElement(i)));               
+            setEquals(_actor.output, _lattice.convertJavaToCtype(valuesArray.getElement(i).getType(),valuesArray.getElement(i)));               
         }
 
         return super.constraintList();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.actor.lib.Sequence _actor;
+    private Lattice _lattice;
 }

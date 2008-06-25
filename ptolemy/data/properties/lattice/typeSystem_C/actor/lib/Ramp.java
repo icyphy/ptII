@@ -29,9 +29,9 @@ package ptolemy.data.properties.lattice.typeSystem_C.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.typeSystem_C.Lattice;
+import ptolemy.data.properties.lattice.typeSystem_C.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Ramp extends PropertyConstraintHelper {
+public class Ramp extends AtomicActor {
     /**
      * Construct an Ramp helper.
      * @param actor the associated actor
@@ -54,14 +54,13 @@ public class Ramp extends PropertyConstraintHelper {
      */
     public Ramp(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.Ramp actor) throws IllegalActionException {
+
         super(solver, actor);
+        _lattice = (Lattice) getSolver().getLattice();
+        _actor = actor;
    }       
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Ramp actor =
-            (ptolemy.actor.lib.Ramp) getComponent();
-        
-        Lattice lattice = (Lattice) getSolver().getLattice();        
 //        setAtLeast(actor.output, actor.init);         
 //        setAtLeast(actor.output, actor.step);
 //        // FIXME: Is this the right thing to do???
@@ -71,8 +70,13 @@ public class Ramp extends PropertyConstraintHelper {
 //        setAtLeast(actor.output, lattice.getEDCtype(actor.output.getType(), null));         
 
 //FIXME: consider firingCountLimit for output type        
-        setEquals(actor.output, lattice.convertJavaToCtype(actor.output.getType(), null));         
+        setEquals(_actor.output, _lattice.convertJavaToCtype(_actor.output.getType(), null));         
         return super.constraintList();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.actor.lib.Ramp _actor;
+    private Lattice _lattice;
 }
 

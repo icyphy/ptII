@@ -72,20 +72,6 @@ public class PropertyCombineHelper extends PropertyHelper {
         return list;
     }
     
-    protected List _getSourcePortList(IOPort port) {
-        List result = new ArrayList();
-        
-        result = port.sourcePortList();
-        return result;
-    }
-
-    protected List _getSinkPortList(IOPort port) {
-        List result = new ArrayList();
-        
-        result = port.sinkPortList();
-        return result;
-    }
-    
     public void setEquals(Object object, PropertyToken property) {
         super.setEquals(object, property);
         if (property != null) {

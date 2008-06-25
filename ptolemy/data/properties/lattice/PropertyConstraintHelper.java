@@ -48,9 +48,9 @@ import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,7 +76,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
      *  PropertyConstraintHelper(NamedObj, PropertyLattice, boolean)
      *  throws it. 
      */
-    public PropertyConstraintHelper(PropertyConstraintSolver solver, Object component) throws IllegalActionException {
+    public PropertyConstraintHelper(PropertyConstraintSolver solver,
+            Object component) throws IllegalActionException {
         this(solver, component, true);
     }
     
@@ -91,16 +92,13 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @throws IllegalActionException Thrown if the helper cannot
      *  be initialized.
      */
-    public PropertyConstraintHelper(PropertyConstraintSolver solver, Object component, boolean useDefaultConstraints)
+    public PropertyConstraintHelper(PropertyConstraintSolver solver, 
+            Object component, boolean useDefaultConstraints)
             throws IllegalActionException {
         
         setComponent(component);
         _useDefaultConstraints = useDefaultConstraints;
         _solver = solver;
-        
-        //if (!useDefaultConstraints) {
-        //    _reinitialize();
-        //}
     }
 
     /** Return the constraints of this component.  The constraints is
@@ -110,28 +108,31 @@ public class PropertyConstraintHelper extends PropertyHelper {
      */
     public List<Inequality> constraintList() throws IllegalActionException {
         _setEffectiveTerms();
-        
-        boolean constraintSource = 
-            (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||  
-            (interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER);
 
-        List portList1 = _getConstraintedPorts(constraintSource);
-
-        Iterator ports = portList1.iterator();
-        
-        while (ports.hasNext()) {                    
-            TypedIOPort port = (TypedIOPort) ports.next();
-
-            List portList2 = _getConstraintingPorts(constraintSource, port);
-
-            _constraintObject(interconnectConstraintType, port, portList2);
-        }
-        
         _constraintAttributes();
 
         _addSubHelperConstraints();
         
         return _union(_ownConstraints, _subHelperConstraints);
+    }
+
+    /**
+     * Return the helper of the container. If the container is
+     * null (which means this is the toplevel), returns this.
+     * @return The helper of the container. If the container is
+     * null (which means this is the toplevel), returns this.
+     * @exception IllegalActionException Thrown if an error occurs
+     * when getting the helper. 
+     */
+    private PropertyConstraintHelper _getContainerHelper()
+            throws IllegalActionException {
+        PropertyConstraintHelper containerHelper = this;
+
+        NamedObj container = ((Actor) getComponent()).getContainer();
+        if (container != null) {
+            containerHelper = (PropertyConstraintHelper)getSolver().getHelper(container);
+        }
+        return containerHelper;
     }
 
     /*
@@ -160,15 +161,8 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 */
     protected void _setEffectiveTerms() {
-        Entity actor = (Entity) getComponent();
-
-        Iterator ports = actor.portList().iterator();        
-        while (ports.hasNext()) {                    
-            TypedIOPort port = (TypedIOPort) ports.next();
-            if (port.numLinks() <= 0) {
-                (getPropertyTerm(port)).setEffective(false);
-            }
-        }
+        // do nothing in here, overwrite use-case specific!
+        
     }
 
     /**
@@ -176,10 +170,11 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @param port
      * @return
      */
-    protected List _getConstraintingPorts(boolean constraintSource, TypedIOPort port) {
-        List portList2 = (constraintSource) ? 
-                _getSinkPortList(port) : _getSourcePortList(port);
-        return portList2;
+    protected static List _getConstraintingPorts(
+            boolean constraintSource, TypedIOPort port) {
+        
+        return constraintSource ? _getSinkPortList(port) : 
+            _getSourcePortList(port);
     }
 
     /**
@@ -189,37 +184,33 @@ public class PropertyConstraintHelper extends PropertyHelper {
      */
     protected List _getConstraintedPorts(boolean constraintSource) {
         Actor actor = (Actor) getComponent();
-        List portList1 = (constraintSource) ?
-                actor.outputPortList() : actor.inputPortList();
-        return portList1;
+        return constraintSource ? actor.outputPortList() :
+            actor.inputPortList();
     }
 
     protected void _constraintAttributes() {
         
-        Iterator attributes = _getPropertyableAttributes().iterator();
-        
-        while (attributes.hasNext()) {
-
-            Attribute attribute = (Attribute) attributes.next();
+        for (Attribute attribute : _getPropertyableAttributes()) {
 
             try {
-
                 ASTPtRootNode node = getParseTree(attribute);
-                
-                PropertyConstraintHelper astHelper = 
-                    (PropertyConstraintHelper) _solver.getHelper(node);
-                
-                List list = new ArrayList();
-                list.add(node);
 
-                _constraintObject(astHelper.interconnectConstraintType, attribute, list);
-                //setSameAs(attribute, getParseTree(attribute));
-//                setAtLeast(attribute, getParseTree(attribute));
+                // Take care of actors without nodes, e.g. MonitorValue actors without previous execution
+                if (node != null) {
+                    PropertyConstraintASTNodeHelper astHelper = 
+                        (PropertyConstraintASTNodeHelper) ((PropertyConstraintSolver)_solver).getHelper(node);
+                    
+                    List list = new ArrayList();
+                    list.add(node);
+                    
+                    _constraintObject(astHelper.interconnectConstraintType, attribute, list);
+                    //setSameAs(attribute, getParseTree(attribute));
+                    //setAtLeast(attribute, getParseTree(attribute));
+                }
                 
             } catch (IllegalActionException ex) {
-                ex.printStackTrace();
-                System.out.print(ex);
                 // This means the expression is not parse-able.
+                assert false;
             }
         }
     }
@@ -237,53 +228,14 @@ public class PropertyConstraintHelper extends PropertyHelper {
             _subHelperConstraints.addAll(helper.constraintList());
         }
     }
-    
-    protected List<Port> _getSinkPortList(IOPort port) {
-        List<Port> result = new ArrayList<Port>();
-        
-        Iterator iterator = port.connectedPortList().iterator();
-        
-        while (iterator.hasNext()) {
-            IOPort connectedPort = (IOPort) iterator.next();
-            
-            boolean isInput = connectedPort.isInput();
-            boolean isCompositeOutput = 
-                (connectedPort.getContainer() instanceof CompositeEntity)
-                && !isInput &&            
-                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
-            
-            if (isInput || isCompositeOutput) {
-                result.add(connectedPort);
-            }
-        }
-        return result;
-    }
 
     
-    protected List<Port> _getSourcePortList(IOPort port) {
-        List<Port> result = new ArrayList<Port>();
-        
-        Iterator iterator = port.connectedPortList().iterator();
-        
-        while (iterator.hasNext()) {
-            IOPort connectedPort = (IOPort) iterator.next();
-            boolean isInput = connectedPort.isInput();
-            boolean isCompositeInput = 
-                (connectedPort.getContainer() instanceof CompositeEntity)
-                && isInput &&
-                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
-
-            if (!isInput || isCompositeInput) {
-                result.add(connectedPort);
-            }
-        }
-        return result;
-    }
     protected static List<Inequality> _union(
             List<Inequality> list1, List<Inequality> list2) {
         
-        List<Inequality> result = new LinkedList<Inequality>();
-        result.addAll(list1);
+        List<Inequality> result = 
+            new ArrayList<Inequality>(list1);
+        
         result.addAll(list2);
         return result;
     }
@@ -292,12 +244,36 @@ public class PropertyConstraintHelper extends PropertyHelper {
         return (PropertyConstraintSolver) _solver;
     }
     
+    public boolean isConstraintSource() {
+        boolean constraintSource = 
+            (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||  
+            (interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER);
+        return constraintSource;
+    }    
+    
     public void setAtLeast(Object object1, Object object2) {
         _setAtLeast(getPropertyTerm(object1), getPropertyTerm(object2), true);        
     }
 
     public void setAtLeast(Object object1, Object object2, boolean isBase) {
         _setAtLeast(getPropertyTerm(object1), getPropertyTerm(object2), isBase);        
+    }
+
+    public void setAtLeastByDefault(Object term1, Object term2) {
+        setAtLeast(term1, term2);
+        
+        if (term1 != null && term2 != null) {
+            _solver.incrementStats("# of default constraints", 1);
+            _solver.incrementStats("# of atomic actor default constraints", 1);
+        }
+    }
+
+    public void setAtMost(Object object1, Object object2) {
+        _setAtLeast(getPropertyTerm(object2), getPropertyTerm(object1), true);        
+    }
+
+    public void setAtMost(Object object1, Object object2, boolean isBase) {
+        _setAtLeast(getPropertyTerm(object2), getPropertyTerm(object1), isBase);        
     }
 
     /**
@@ -312,6 +288,15 @@ public class PropertyConstraintHelper extends PropertyHelper {
         setAtLeast(object2, object1);
     }
      
+    public void setSameAsByDefault(Object term1, Object term2) {
+        setSameAs(term1, term2);
+        
+        if (term1 != null && term2 != null) {
+            _solver.incrementStats("# of default constraints", 2);
+            _solver.incrementStats("# of atomic actor default constraints", 2);
+        }
+    }
+    
     /**
      * 
      * @param object
@@ -396,6 +381,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
     /** The list of permanent property constraints. */
     protected List<Inequality> _subHelperConstraints = new LinkedList<Inequality>();
+
     protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
     
     /** Indicate whether this helper uses the default actor constraints. */
@@ -463,39 +449,31 @@ public class PropertyConstraintHelper extends PropertyHelper {
             (constraintType == ConstraintType.SRC_EQUALS_MEET) ||  
             (constraintType == ConstraintType.SINK_EQUALS_MEET);
 
-        Iterator constraintings = objectList.iterator();
-
-        InequalityTerm term1 = getPropertyTerm(object);
 
         if (constraintType != ConstraintType.NONE) {
             if (!useMeetFunction) {
     
-                while (constraintings.hasNext()) {
-                    Object object2 = constraintings.next();
-    
-                    InequalityTerm term2 = getPropertyTerm(object2);
-                    
+                for (Object object2 : objectList) {    
+
                     if (isEquals) {
-                        setSameAs(term1, term2);
+                        setSameAsByDefault(object, object2);
                         
                     } else {
-// Begin Change Thomas, 04/10/2008
                         if (object2 instanceof ASTPtRootNode) {
-                            if (constraintType == ConstraintType.SRC_EQUALS_GREATER) {
-                                setAtLeast(term1, term2);                                
+                            if (constraintType == ConstraintType.SINK_EQUALS_GREATER) {
+                                setAtLeastByDefault(object, object2);                                
                             } else {
-                                setAtLeast(term2, term1);
+                                setAtLeastByDefault(object2, object);
                             }
                         } else {
-                            setAtLeast(term1, term2);
+                            setAtLeastByDefault(object, object2);
                         }
-// End Change Thomas, 04/10/2008
                     } 
                 }
             } else {
                 if (objectList.size() > 0) {
                     InequalityTerm term2 = new MeetFunction(getSolver(), objectList);
-                    setSameAs(term1, term2);
+                    setSameAsByDefault(object, term2);
                 }
             }
         }
@@ -534,6 +512,15 @@ public class PropertyConstraintHelper extends PropertyHelper {
     protected void _setAtLeast(PropertyTerm term1, PropertyTerm term2, boolean isBase) {
         if (term1 != null && term2 != null) {
             _ownConstraints.add(new Inequality(term2, term1, isBase));
+        }
+        
+        // FIXME: Why are we setting the value here?
+        if (term2 instanceof LatticeProperty) {
+            try {
+                term1.setValue(term2);
+            } catch (IllegalActionException e) {
+                assert false;
+            }
         }
     }
 

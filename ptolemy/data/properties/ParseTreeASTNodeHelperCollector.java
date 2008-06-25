@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.data.expr.ASTPtArrayConstructNode;
+import ptolemy.data.expr.ASTPtAssignmentNode;
 import ptolemy.data.expr.ASTPtBitwiseNode;
 import ptolemy.data.expr.ASTPtFunctionApplicationNode;
 import ptolemy.data.expr.ASTPtFunctionDefinitionNode;
@@ -75,204 +76,19 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-//    public Set<PropertyHelper> collectHelpers(ASTPtRootNode node, PropertySolver solver)
     public List<PropertyHelper> collectHelpers(ASTPtRootNode node, PropertySolver solver)
             throws IllegalActionException {
 
-//        _helpers = new HashSet<PropertyHelper>();
         _helpers = new LinkedList<PropertyHelper>();
         _solver = solver;
-        node.visit(this);
+        
+        _visitAllChildren(node);
         _solver = null;
         return _helpers;
     }
 
-    /** Set the property of the given node to be an ArrayProperty that is the
-     *  least upper bound of the properties of the node's children.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be the property that is the
-     *  least upper bound of the properties of the node's children.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitBitwiseNode(ASTPtBitwiseNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be the return property of the
-     *  function determined for the given node.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-            throws IllegalActionException {
-        // We do not collect helper for the first child, because
-        // the first child is the function name, which does not contribute
-        // to determining a property.        
-        int numChildren = node.jjtGetNumChildren();
-        for (int i = 1; i < numChildren; i++) {
-            _visitChild(node, i);
-        }        
-    }
-
-    /** Set the property of the given node to be a function property whose
-     *  argument properties are determined by the children of the node.
-     *  The return property of the function property is determined by
-     *  inferring the property of function's expression in a scope that
-     *  adds identifiers for each argument to the current scope.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be the least upper bound of
-     *  the properties of the two branches of the if.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be the property of constant the
-     *  variable refers to, if the node represents a constant, or the
-     *  property of the identifier the node refers to in the current
-     *  scope.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error
-     *  occurs, or an identifier is not bound in the current scope.
-     */
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
-        if (node.jjtGetParent() == null) {
-            _helpers.add(_solver.getHelper(node));
-        }
-    }
-
-    /** Set the property of the given node to be boolean.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitLogicalNode(ASTPtLogicalNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be an MatrixProperty based on the
-     *  least upper bound of the properties of the node's children.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be the return property of the
-     *  method determined for the given node.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitMethodCallNode(ASTPtMethodCallNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be the property of the first
-     *  child of the given node.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitPowerNode(ASTPtPowerNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be the least upper bound
-     *  property of the properties of the node's children.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitProductNode(ASTPtProductNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be a record token that
-     *  contains fields for each name in the record construction,
-     *  where the property of each field in the record is determined by
-     *  the corresponding property of the child nodes.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be boolean.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitRelationalNode(ASTPtRelationalNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be the property of the first
-     *  child of the given node.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitShiftNode(ASTPtShiftNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be the least upper bound
-     *  property of the properties of the node's children.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
-    /** Set the property of the given node to be the property of the
-     *  child of the given node.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an inference error occurs.
-     */
-    public void visitUnaryNode(ASTPtUnaryNode node)
-            throws IllegalActionException {
-        _visitAllChildren(node);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /**
-     * Assert that the given boolean value, which describes the given
-     * parse tree node is true.  If it is false, then throw a new
-     * InternalErrorException that describes the node that includes
-     * the given message.
-     */
-    protected void _assert(boolean flag, ASTPtRootNode node, String message) {
-        if (!flag) {
-            throw new InternalErrorException(message + ": " + node.toString());
-        }
-    }
 
     /** Loop through all of the children of this node,
      *  visiting each one of them, which will cause their token
@@ -295,14 +111,10 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
     protected void _visitChild(ASTPtRootNode node, int i)
             throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
-
-        _helpers.add(_solver.getHelper(child));
-
-        child.visit(this);
+        _visitAllChildren(child);
     }
 
-//    protected Set<PropertyHelper> _helpers;
-    protected LinkedList<PropertyHelper> _helpers;
+    protected List<PropertyHelper> _helpers;
 
     protected PropertySolver _solver;
     

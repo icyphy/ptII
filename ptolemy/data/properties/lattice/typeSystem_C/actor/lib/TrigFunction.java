@@ -29,9 +29,9 @@ package ptolemy.data.properties.lattice.typeSystem_C.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.typeSystem_C.Lattice;
+import ptolemy.data.properties.lattice.typeSystem_C.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class TrigFunction extends PropertyConstraintHelper {
+public class TrigFunction extends AtomicActor {
 
     /**
      * Construct a Const helper for the staticDynamic lattice.
@@ -61,16 +61,18 @@ public class TrigFunction extends PropertyConstraintHelper {
             throws IllegalActionException {
 
         super(solver, actor, false);
+        _lattice = (Lattice) getSolver().getLattice();
+        _actor = actor;
     } 
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.TrigFunction actor =
-            (ptolemy.actor.lib.TrigFunction) getComponent();
-        
-        Lattice lattice = (Lattice) getSolver().getLattice();        
-       
-        setEquals(actor.output, lattice.DOUBLE);               
+        setEquals(_actor.output, _lattice.DOUBLE);               
 
         return super.constraintList();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.actor.lib.TrigFunction _actor;
+    private Lattice _lattice;
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.properties.PropertyHelper;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -44,8 +46,10 @@ public class PropertyTokenASTNodeHelper extends PropertyTokenHelper {
             Attribute attribute = (Attribute)attributeIterator.next();
 //FIXME: take care of all StringParameters and filter them
 //       should not be necessary once proprtyable attributes are filtered (related to kernel exceptions)            
-            if ((attribute instanceof StringAttribute) &&
-                (attribute.getName().equalsIgnoreCase("guardExpression"))) {
+            if (((attribute instanceof StringAttribute) &&
+                 (attribute.getName().equalsIgnoreCase("guardExpression"))) ||
+                 (attribute instanceof Parameter) ||
+                 (attribute instanceof PortParameter)) {
                 
                 setEquals(attribute, getSolver().getProperty(getParseTree(attribute)));
             }

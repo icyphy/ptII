@@ -42,6 +42,7 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
 
             try {
                 String fieldName = expression.toUpperCase();
+                
                 if (!fieldName.equalsIgnoreCase("NIL")) {
                     _property = (Property)
                         lattice.getClass().getField(fieldName).get(lattice);

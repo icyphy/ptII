@@ -29,8 +29,9 @@ package ptolemy.data.properties.lattice.logicalAND.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Expression extends PropertyConstraintHelper {
+public class Expression extends AtomicActor {
 
     /**
      * Construct a Const helper for the staticDynamic lattice.
@@ -71,4 +72,12 @@ public class Expression extends PropertyConstraintHelper {
         return super.constraintList();
     }
 
+    protected List<Attribute> _getPropertyableAttributes() {
+        List<Attribute> result = super._getPropertyableAttributes();
+        ptolemy.actor.lib.Expression actor =
+            (ptolemy.actor.lib.Expression) getComponent();
+
+        result.add(actor.expression);
+        return result;
+    }
 }

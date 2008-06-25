@@ -29,10 +29,9 @@ package ptolemy.data.properties.lattice.logicalAND.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.ScalarToken;
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.logicalAND.Lattice;
+import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Scale extends PropertyConstraintHelper {
+public class Scale extends AtomicActor {
     /**
      * Construct a Ramp helper.
      * @param actor the associated actor
@@ -55,23 +54,25 @@ public class Scale extends PropertyConstraintHelper {
      */
     public Scale(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.Scale actor) throws IllegalActionException {
+
         super(solver, actor, false); 
+        _actor = actor;
+        _lattice = (Lattice) getSolver().getLattice();        
    }
        
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Scale actor =
-            (ptolemy.actor.lib.Scale) getComponent();
-
-        Lattice lattice = (Lattice) getSolver().getLattice();        
-        
-        if (((ScalarToken)actor.factor.getToken()).doubleValue()==0) {
-            setAtLeast(actor.output, lattice.FALSE);            
+        if (_actor.factor.getToken().equals(_actor.factor.getToken().zero())) {
+            setAtLeast(_actor.output, _lattice.TRUE);            
         } else {
-            setAtLeast(actor.output, actor.input);
+            setAtLeast(_actor.output, _actor.input);
         }
 
         return super.constraintList();
     }    
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.actor.lib.Scale _actor;
+    private Lattice _lattice;
 }
 

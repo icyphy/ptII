@@ -29,9 +29,9 @@ package ptolemy.data.properties.lattice.typeSystem_C.actor.lib.logic;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.typeSystem_C.Lattice;
+import ptolemy.data.properties.lattice.typeSystem_C.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,23 +46,27 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Comparator extends PropertyConstraintHelper {
+public class Comparator extends AtomicActor {
     /**
      * Construct an Comparator helper.
      * @param actor the associated actor
      */
     public Comparator(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.logic.Comparator actor) throws IllegalActionException {
+
         super(solver, actor, false);
+        _lattice = (Lattice) getSolver().getLattice();
+        _actor = actor;
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.logic.Comparator actor =
-            (ptolemy.actor.lib.logic.Comparator) getComponent();
-        
-        Lattice lattice = (Lattice) getSolver().getLattice();                
-        setEquals(actor.output, lattice.BOOLEAN);        
+        setEquals(_actor.output, _lattice.BOOLEAN);        
 
         return super.constraintList();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.actor.lib.logic.Comparator _actor;
+    private Lattice _lattice;
 }

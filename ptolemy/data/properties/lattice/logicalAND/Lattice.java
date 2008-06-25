@@ -63,6 +63,8 @@ public class Lattice extends PropertyLattice {
 
     public /*static*/ Property FALSE = new False(this);
     
+    public /*static*/ Property UNKNOWN = new Unknown(this);
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
@@ -79,6 +81,10 @@ public class Lattice extends PropertyLattice {
         basicLattice.addNodeWeight(TRUE);
 
         basicLattice.addNodeWeight(FALSE);
+
+        basicLattice.addNodeWeight(UNKNOWN);
+
+        basicLattice.addEdge(UNKNOWN, TRUE);
 
         basicLattice.addEdge(TRUE, FALSE);
 

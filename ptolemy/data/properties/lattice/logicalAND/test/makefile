@@ -29,6 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+# Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/data/properties/lattice/logicalAND/test
 
 # Root of the Ptolemy II directory
@@ -83,12 +84,13 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto test_properties
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
+	test_properties \
+#	$(JTCLSH) $(ROOT)/util/testsuite/properties.tcl -nondeep
 	$(JTCLSH) alljtests.tcl
 
 # 'make clean' removes $(KRUFT)
 KRUFT = 
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

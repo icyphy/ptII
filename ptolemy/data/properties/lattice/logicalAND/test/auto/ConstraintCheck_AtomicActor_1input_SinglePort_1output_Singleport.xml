@@ -18,29 +18,17 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.5, 310.0}">
     </property>
-    <property name="LogicalAND_Forward" class="ptolemy.data.properties.lattice.LogicalAND_Forward_CS">
-        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
+    <property name="LogicalAND_Forward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS">
+        <property name="action" class="ptolemy.moml.SharedParameter" value="TEST">
         </property>
-        <property name="Log constraints to file" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="logMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="C:\Ptolemy\ptII_SVN_Ptolemy_DEVELOP\ptolemy\data\properties\lattice\logicalAND\test\auto\trainedConstraints">
+        <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH\trainedConstraints">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{535.0, 115.0}">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
-            <property name="lattice::staticDynamic_EDC" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Static">
-            </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Static">
-            </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
-            </property>
-        </property>
-        <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Static">
-            </property>
-        </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
             <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>

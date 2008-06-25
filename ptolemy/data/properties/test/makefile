@@ -82,14 +82,10 @@ test_java: jclass
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
-test_property:
-	$(JTCLSH) property.tcl
-
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_property
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_properties
 	$(JTCLSH) alljtests.tcl
 
-	
 
 # 'make clean' removes $(KRUFT)
 KRUFT = 

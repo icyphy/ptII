@@ -246,6 +246,24 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
         return result;
     }
     
+    public void setAtLeastByDefault(Object term1, Object term2) {
+        setAtLeast(term1, term2);
+        
+        if (term1 != null && term2 != null) {
+            _solver.incrementStats("# of default constraints", 1);
+            _solver.incrementStats("# of composite default constraints", 1);
+        }
+    }
+    
+    public void setSameAsByDefault(Object term1, Object term2) {
+        setSameAs(term1, term2);
+        
+        if (term1 != null && term2 != null) {
+            _solver.incrementStats("# of default constraints", 2);
+            _solver.incrementStats("# of composite default constraints", 2);
+        }
+    }
+    
     /**
      * 
      */

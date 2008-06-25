@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.data.properties.Property;
-import ptolemy.data.type.MonotonicFunction;
 import ptolemy.graph.InequalityTerm;
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,7 +53,8 @@ import ptolemy.graph.InequalityTerm;
  @Pt.AcceptedRating Red (mankit)
  */
 
-public class MeetFunction extends MonotonicFunction implements PropertyTerm {
+public class MeetFunction 
+    extends MonotonicFunction implements PropertyTerm {
 
     public MeetFunction(PropertyConstraintSolver solver, List<Object> objects) {
         this(solver, objects.toArray());
@@ -132,6 +132,10 @@ public class MeetFunction extends MonotonicFunction implements PropertyTerm {
         return  array;
     }
     
+    public InequalityTerm[] getConstants() {
+        return (InequalityTerm[]) new LinkedList().toArray();
+    }
+
     public String toString() {
         String result = "meet(";
         
@@ -179,6 +183,12 @@ public class MeetFunction extends MonotonicFunction implements PropertyTerm {
     private PropertyConstraintSolver _solver;
 
     private List<PropertyTerm> _terms = new LinkedList<PropertyTerm>();
+
+    @Override
+    protected InequalityTerm[] _getDependentTerms() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }
 

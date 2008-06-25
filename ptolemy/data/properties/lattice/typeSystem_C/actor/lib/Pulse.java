@@ -30,9 +30,9 @@ package ptolemy.data.properties.lattice.typeSystem_C.actor.lib;
 import java.util.List;
 
 import ptolemy.data.ArrayToken;
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.typeSystem_C.Lattice;
+import ptolemy.data.properties.lattice.typeSystem_C.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Pulse extends PropertyConstraintHelper {
+public class Pulse extends AtomicActor {
 
     /**
      * Construct a Const helper for the staticDynamic lattice.
@@ -62,23 +62,24 @@ public class Pulse extends PropertyConstraintHelper {
             throws IllegalActionException {
 
         super(solver, actor, false);
+        _lattice = (Lattice) getSolver().getLattice();
+        _actor = actor;
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Pulse actor =
-            (ptolemy.actor.lib.Pulse) getComponent();
-
-        Lattice lattice = (Lattice) getSolver().getLattice();         
+        ArrayToken valuesArray = (ArrayToken) _actor.values.getToken();
         
-        ArrayToken valuesArray = (ArrayToken) actor.values.getToken();
-        
-        setEquals(actor.output, lattice.leastUpperBound(
-                        lattice.convertJavaToCtype(valuesArray.getElement(0).getType(),valuesArray.getElement(0)),
-                        lattice.convertJavaToCtype(valuesArray.getElement(1).getType(),valuesArray.getElement(1))));
+        setEquals(_actor.output, _lattice.leastUpperBound(
+                        _lattice.convertJavaToCtype(valuesArray.getElement(0).getType(),valuesArray.getElement(0)),
+                        _lattice.convertJavaToCtype(valuesArray.getElement(1).getType(),valuesArray.getElement(1))));
 
         return super.constraintList();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.actor.lib.Pulse _actor;
+    private Lattice _lattice;
 /*    
     protected List<Attribute> _getPropertyableAttributes() {
         ptolemy.actor.lib.Expression actor =

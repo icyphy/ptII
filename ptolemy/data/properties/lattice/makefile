@@ -31,7 +31,12 @@
 
 ME =		ptolemy/data/properties/lattice
 
-DIRS = 		
+DIRS = \
+	academicFalseTrueEqualPriority \
+	academicFalseTrueSet \
+	logicalAND \
+	logicalOrBackward \
+	typeSystem_C
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -43,7 +48,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lattice
+PTPACKAGE = 	properties
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
@@ -51,7 +56,6 @@ JSRCS = \
 	ConstraintManager.java \
 	InequalitySolver.java \
 	LatticeProperty.java \
-	LogicalAND_Forward_CS.java \
 	MeetFunction.java \
 	PropertyConstraintASTNodeHelper.java \
 	PropertyConstraintAttribute.java \
@@ -60,12 +64,13 @@ JSRCS = \
 	PropertyConstraintHelper.java \
 	PropertyConstraintSolver.java \
 	PropertyLattice.java \
+	PropertySet.java \
+	PropertySetLattice.java \
 	PropertyTerm.java \
 	PropertyTermFactory.java \
 	PropertyTermManager.java \
 	PropertyTermPartialEvaluator.java \
-	TypeProperty.java \
-	TypeSystemCCS.java
+	TypeProperty.java
 
 EXTRA_SRCS =	$(JSRCS)
 

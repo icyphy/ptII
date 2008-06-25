@@ -30,8 +30,8 @@ package ptolemy.data.properties.lattice.logicalAND.data.expr;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintASTNodeHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class ASTPtLeafNode extends PropertyConstraintASTNodeHelper {
+public class ASTPtLeafNode extends ASTPtRootNode {
 
     /**
      * Construct an property constraint helper for the given ASTPtLeafNode.
@@ -59,12 +59,21 @@ public class ASTPtLeafNode extends PropertyConstraintASTNodeHelper {
         ptolemy.data.expr.ASTPtLeafNode node) 
             throws IllegalActionException {
 
-        super(solver, node, false);
+        super(solver, node, true);
+        _lattice = (Lattice) getSolver().getLattice();
+        _node = node;        
     }
     
     public List<Inequality> constraintList() throws IllegalActionException {
-
+        if (_node.isConstant()) {
+            setEquals(_node, _lattice.TRUE);
+        }
+        
         return super.constraintList();
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.data.expr.ASTPtLeafNode _node;
+    private Lattice _lattice;
 }

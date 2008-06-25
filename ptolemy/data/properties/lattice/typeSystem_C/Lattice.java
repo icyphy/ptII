@@ -88,10 +88,6 @@ public class Lattice extends PropertyLattice {
 
     public Property UNKNOWN = new Unknown(this);
 
-    public Property getInitialProperty() {
-        return UNKNOWN;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 

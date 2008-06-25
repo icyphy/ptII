@@ -29,8 +29,8 @@ package ptolemy.data.properties.lattice.typeSystem_C.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.typeSystem_C.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,23 +45,26 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Scale extends PropertyConstraintHelper {
+public class Scale extends AtomicActor {
     /**
      * Construct an Const helper.
      * @param actor the associated actor
      */
     public Scale(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.Scale actor) throws IllegalActionException {
+
         super(solver, actor, false);
+        _actor = actor;
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Scale actor =
-            (ptolemy.actor.lib.Scale) getComponent();
-        
-        setAtLeast(actor.output, actor.factor);        
-        setAtLeast(actor.output, actor.input);        
+        setAtLeast(_actor.output, _actor.factor);        
+        setAtLeast(_actor.output, _actor.input);        
 
         return super.constraintList();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.actor.lib.Scale _actor;
 }

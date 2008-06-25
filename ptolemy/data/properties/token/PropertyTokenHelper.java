@@ -6,6 +6,7 @@ import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.properties.PropertyHelper;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -90,7 +91,7 @@ public class PropertyTokenHelper extends PropertyHelper {
                     outputPortList.add(port);                
                 }
 //            } else if ((propertyable instanceof Attribute) && (!((propertyable instanceof StringAttribute)))) {
-            } else if (propertyable instanceof Attribute) {
+            } else if ((propertyable instanceof Attribute) || (propertyable instanceof PortParameter)){
                 attributeList.add((Attribute)propertyable);
             } else {
                 //FIXME: throw exception?
@@ -272,30 +273,9 @@ public class PropertyTokenHelper extends PropertyHelper {
         }
         return result;
     }    
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-    
-    protected List<Port> _getSinkPortList(IOPort port) {
-        List<Port> result = new ArrayList<Port>();
-        
-        Iterator iterator = port.connectedPortList().iterator();
-        
-        while (iterator.hasNext()) {
-            IOPort connectedPort = (IOPort) iterator.next();
-            
-            boolean isInput = connectedPort.isInput();
-            boolean isCompositeOutput = 
-                (connectedPort.getContainer() instanceof CompositeEntity)
-                && !isInput &&            
-                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
-            
-            if (isInput || isCompositeOutput) {
-                result.add(connectedPort);
-            }
-        }
-        return result;
-    }
 
+    ///////////////////////////////////////////////////////////////////////////
+    
     protected List<Port> _getDeepSinkPortList(IOPort port) {
         List<Port> result = new ArrayList<Port>();
         
@@ -317,26 +297,6 @@ public class PropertyTokenHelper extends PropertyHelper {
         return result;
     }
     
-    protected List<Port> _getSourcePortList(IOPort port) {
-        List<Port> result = new ArrayList<Port>();
-        
-        Iterator iterator = port.connectedPortList().iterator();
-        
-        while (iterator.hasNext()) {
-            IOPort connectedPort = (IOPort) iterator.next();
-            boolean isInput = connectedPort.isInput();
-            boolean isCompositeInput = 
-                (connectedPort.getContainer() instanceof CompositeEntity)
-                && isInput &&
-                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
-
-            if (!isInput || isCompositeInput) {
-                result.add(connectedPort);
-            }
-        }
-        return result;
-    }
-        
     protected List<Port> _getDeepSourcePortList(IOPort port) {
         List<Port> result = new ArrayList<Port>();
         

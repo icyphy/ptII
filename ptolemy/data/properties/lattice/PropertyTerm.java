@@ -38,4 +38,13 @@ public interface PropertyTerm extends InequalityTerm {
     public boolean isEffective();
 
     public void setEffective (boolean isEffective);
+    
+    /** Return an array of constants contained in this term.
+     *  If this term is a variable, return an array of size zero;
+     *  if this term is a constant, return an array of size one that
+     *  contains this constants; if this term is a function, return an
+     *  array containing all the constants in the function.
+     *  @return An array of InequalityTerms
+     */
+    public InequalityTerm[] getConstants();
 }

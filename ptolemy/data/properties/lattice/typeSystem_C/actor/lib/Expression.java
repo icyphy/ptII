@@ -29,8 +29,8 @@ package ptolemy.data.properties.lattice.typeSystem_C.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.typeSystem_C.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Expression extends PropertyConstraintHelper {
+public class Expression extends AtomicActor {
 
     /**
      * Construct a Const helper for the staticDynamic lattice.
@@ -60,17 +60,18 @@ public class Expression extends PropertyConstraintHelper {
             throws IllegalActionException {
 
         super(solver, actor, false);
+        _actor = actor;
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Expression actor =
-            (ptolemy.actor.lib.Expression) getComponent();
-        
-        setAtLeast(actor.output, actor.expression);
+        setAtLeast(_actor.output, _actor.expression);
 
         return super.constraintList();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.actor.lib.Expression _actor;
 /*    
     protected List<Attribute> _getPropertyableAttributes() {
         ptolemy.actor.lib.Expression actor =

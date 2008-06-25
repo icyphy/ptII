@@ -1,4 +1,4 @@
-/** An algorithm to solve a set of inequality constraints.
+/** A Map that maps multiple items to a key.
 
  Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
@@ -24,9 +24,6 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
- added description() method
- made many methods throw IllegalActionException
-
  */
 package ptolemy.data.properties.util;
 
@@ -35,14 +32,18 @@ import java.util.Collection;
 import java.util.HashMap;
 
 //////////////////////////////////////////////////////////////////////////
-//// InequalitySolver
+//// MultiHashMap
 
 /**
 MultiHashMap is the default implementation of the MultiMap interface. 
+A MultiMap is a Map with slightly different semantics. Putting a value
+into the map will add the value to a Collection at that key. Getting a
+value will return a Collection, holding all the values put to that key.
 
-A MultiMap is a Map with slightly different semantics. Putting a value into the map will add the value to a Collection at that key. Getting a value will return a Collection, holding all the values put to that key. 
-
-This implementation uses an ArrayList as the collection. The internal storage list is made available without cloning via the get(Object) and entrySet() methods. The implementation returns null when there are no values mapped to a key. 
+This implementation uses an ArrayList as the collection. The internal
+storage list is made available without cloning via the get(Object)
+and entrySet() methods. The implementation returns null when there
+are no values mapped to a key.
 
 For example: 
 
@@ -50,7 +51,8 @@ For example:
  mhm.put(key, "A");
  mhm.put(key, "B");
  mhm.put(key, "C");
- List list = (List) mhm.get(key);list will be a list containing "A", "B", "C". 
+ List list = (List) mhm.get(key);list will be a list 
+ containing "A", "B", "C". 
 
  @author Man-Kit Leung
  @version $Id$

@@ -1,0 +1,209 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConstraintCheck_FSM_MultiplePorts_MultipleStates_Transitions_NoActions" class="ptolemy.domains.fsm.kernel.FSMActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel_20080331">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 110, 1141, 804}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[926, 695]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{463.0, 347.5}">
+    </property>
+    <property name="LogicalAND_Forward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS">
+        <property name="action" class="ptolemy.moml.SharedParameter" value="TEST">
+        </property>
+        <property name="logMode" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH\trainedConstraints">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{725.0, 95.0}">
+        </property>
+    </property>
+    <port name="port" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 350.0}">
+        </property>
+    </port>
+    <port name="port2" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 390.0}">
+        </property>
+    </port>
+    <port name="port3" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 430.0}">
+        </property>
+    </port>
+    <port name="port4" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{905.0, 350.0}">
+        </property>
+    </port>
+    <port name="port5" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{905.0, 390.0}">
+        </property>
+    </port>
+    <port name="port6" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{905.0, 430.0}">
+        </property>
+    </port>
+    <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="state2" class="ptolemy.domains.fsm.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 105.0}">
+        </property>
+    </entity>
+    <entity name="state3" class="ptolemy.domains.fsm.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="state4" class="ptolemy.domains.fsm.kernel.State">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 395.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
+            </property>
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.9697214386597434">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7698720796125288">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
+            </property>
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.642295716228139">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6657069842923128">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="false">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
+            </property>
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.93674631781466">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.4029998901382217">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in2 &gt;= in3">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.8456696579935248">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.505339036867085">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in1 &gt; 10">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
+            </property>
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5911964794510365">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.4242803188914874">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </relation>
+    <link port="state.incomingPort" relation="relation5"/>
+    <link port="state.outgoingPort" relation="relation"/>
+    <link port="state2.incomingPort" relation="relation"/>
+    <link port="state2.incomingPort" relation="relation4"/>
+    <link port="state2.outgoingPort" relation="relation2"/>
+    <link port="state2.outgoingPort" relation="relation5"/>
+    <link port="state3.incomingPort" relation="relation2"/>
+    <link port="state3.outgoingPort" relation="relation3"/>
+    <link port="state4.incomingPort" relation="relation3"/>
+    <link port="state4.outgoingPort" relation="relation4"/>
+</entity>

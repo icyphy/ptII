@@ -44,6 +44,14 @@ package ptolemy.data.properties;
  */
 public class Property {
     
+    /**
+     * Return true if this is an acceptable solution.
+     * @return true if this is an acceptable solution; otherwise, false;
+     */
+    public boolean isAcceptableSolution() {
+        return true;
+    }
+    
     /** Test if the argument property is compatible with this property.
      *  Compatible is defined as follows: If this property is a constant, the
      *  argument is compatible if it is the same or less than this property in

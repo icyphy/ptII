@@ -29,8 +29,8 @@ package ptolemy.data.properties.lattice.typeSystem_C.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.typeSystem_C.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,24 +45,27 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class Const extends PropertyConstraintHelper {
+public class Const extends AtomicActor {
     /**
      * Construct an Const helper.
      * @param actor the associated actor
      */
     public Const(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.Const actor) throws IllegalActionException {
+
         super(solver, actor, false);
+        _actor = actor;
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Const actor =
-            (ptolemy.actor.lib.Const) getComponent();
-        
 //        Lattice lattice = (Lattice) getSolver().getLattice();
 //      setEquals(actor.output, lattice.getEDCtype(actor.output.getType(), actor.value.getToken()));
-       setAtLeast(actor.output, actor.value);        
+       setAtLeast(_actor.output, _actor.value);        
 
         return super.constraintList();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.actor.lib.Const _actor;
 }

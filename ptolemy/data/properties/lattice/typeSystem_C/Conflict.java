@@ -62,4 +62,8 @@ public class Conflict extends LatticeProperty implements TypeProperty {
     public boolean hasMinMaxValue() {
        return false;
     }
+
+    public boolean isAcceptableSolution() {
+        return false;
+    }
 }

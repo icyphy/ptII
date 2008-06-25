@@ -99,13 +99,15 @@ public class PropertyConstraintASTNodeHelper
     public List<Inequality> constraintList() throws IllegalActionException {   
         boolean constraintParent = 
             (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||
-            (interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER);
+            (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER);
         
         if (getComponent() instanceof ASTPtLeafNode) {
             ASTPtLeafNode node = (ASTPtLeafNode) getComponent();
 
             if (node.isConstant() && node.isEvaluated()) {
                 //FIXME: Should be handled by use-case specific helpers.
+                // We should make a (abstract) method that forces use-case
+                // to implement this. 
             } else {
                 
                 NamedObj namedObj = getNamedObject(
@@ -114,10 +116,11 @@ public class PropertyConstraintASTNodeHelper
                 if (namedObj != null) {
                     // Set up one-direction constraint.
                     if (constraintParent) {
-                        setAtLeast(node, namedObj);
+                        setAtLeastByDefault(node, namedObj);
                     } else {
-                        setAtLeast(namedObj, node);                        
+                        setAtLeastByDefault(namedObj, node);                        
                     }
+                    
                 } else {
                     // Cannot resolve the property of a label.
                     assert false;
@@ -128,17 +131,16 @@ public class PropertyConstraintASTNodeHelper
         if (_useDefaultConstraints) {
             ASTPtRootNode node = (ASTPtRootNode) getComponent();
             List<Object> children = new ArrayList<Object>();
-            int numChildren = node.jjtGetNumChildren();
     
             boolean isNone = 
                 interconnectConstraintType == ConstraintType.NONE;
             
-            for (int i = 0; i < numChildren; i++) {
-                //_visitChild(node, i);
-    
+            for (int i = 0; i < node.jjtGetNumChildren(); i++) {
+
                 if (!constraintParent && !isNone){
                     // Set child >= parent.
-                    setAtLeast(node.jjtGetChild(i), node);
+                    setAtLeastByDefault(node.jjtGetChild(i), node);
+                    
                 } else {
                     children.add(node.jjtGetChild(i));
                 }
@@ -213,5 +215,23 @@ public class PropertyConstraintASTNodeHelper
             return result;
         }
         return null;
+    }
+    
+    public void setAtLeastByDefault(Object term1, Object term2) {
+        setAtLeast(term1, term2);
+        
+        if (term1 != null && term2 != null) {
+            _solver.incrementStats("# of default constraints", 1);
+            _solver.incrementStats("# of AST default constraints", 1);
+        }
+    }
+    
+    public void setSameAsByDefault(Object term1, Object term2) {
+        setSameAs(term1, term2);
+        
+        if (term1 != null && term2 != null) {
+            _solver.incrementStats("# of default constraints", 2);
+            _solver.incrementStats("# of AST default constraints", 2);
+        }
     }
 }

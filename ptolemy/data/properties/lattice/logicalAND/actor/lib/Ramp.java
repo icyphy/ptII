@@ -29,10 +29,9 @@ package ptolemy.data.properties.lattice.logicalAND.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.ScalarToken;
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.logicalAND.Lattice;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -43,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Thomas Mandl
 */
-public class Ramp extends PropertyConstraintHelper {
+public class Ramp extends Source {
 
     /**
      */
@@ -52,42 +51,38 @@ public class Ramp extends PropertyConstraintHelper {
             throws IllegalActionException {
 
         super(solver, actor, false);
+        _actor = actor;
+        _lattice = (Lattice) getSolver().getLattice();        
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.Ramp actor =
-            (ptolemy.actor.lib.Ramp) getComponent();
-                
-        Lattice lattice = (Lattice) getSolver().getLattice();        
-
-        if (actor.step.getPort().connectedPortList().isEmpty()) {
-            if (((ScalarToken)actor.init.getToken()).doubleValue() == 0) {
-                setAtLeast(actor.output, lattice.FALSE);
+        if (_actor.step.getPort().connectedPortList().isEmpty()) {
+            setAtLeast(_actor.output, _actor.step);
+            if (_actor.step.getToken().equals(_actor.step.getToken().zero())) {
+                setAtLeast(_actor.output, _lattice.TRUE);
             } else {
-                setAtLeast(actor.output, lattice.TRUE);                
+                setAtLeast(_actor.output, _lattice.FALSE);                
             }
         } else {
-            setAtLeast(actor.output, actor.step);
+            // since we do not have partial evaluation we have to set
+            // the property to a conservative solution
+            setAtLeast(_actor.output, _lattice.FALSE);
         }
 
         return super.constraintList();
     }
-/*    
-    public List<Object> getPropertyables() {
-        ptolemy.actor.lib.Ramp actor =
-            (ptolemy.actor.lib.Ramp) getComponent();
-        List<Object> list = new ArrayList<Object>();
-        
-        list.add(actor.step);
-        list.add(actor.output);
-        
-        return list;
-    }
-    
-    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
-        List<PropertyHelper> list = new ArrayList<PropertyHelper>();
 
-        return list;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.actor.lib.Ramp _actor;
+    private Lattice _lattice;
+
+    protected List<Attribute> _getPropertyableAttributes() {
+        List<Attribute> result = super._getPropertyableAttributes();
+        if (_actor.step.getPort().connectedPortList().isEmpty()) {
+            result.add(_actor.step);
+        }
+        
+        return result;
     }
-*/    
 }

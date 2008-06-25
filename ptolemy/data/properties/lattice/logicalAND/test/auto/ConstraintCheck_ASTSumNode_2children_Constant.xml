@@ -18,14 +18,14 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.5, 310.0}">
     </property>
-    <property name="LogicalAND_Forward" class="ptolemy.data.properties.lattice.LogicalAND_Forward_CS">
-        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
+    <property name="LogicalAND_Forward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS">
+        <property name="action" class="ptolemy.moml.SharedParameter" value="TEST">
         </property>
-        <property name="Log constraints to file" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="logMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="C:\Ptolemy\ptII_SVN_Ptolemy_DEVELOP\ptolemy\data\properties\lattice\logicalAND\test\auto\trainedConstraints">
+        <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH\trainedConstraints">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 145.0}">
         </property>
     </property>
     <property name="Parameter" class="ptolemy.data.expr.Parameter" value="5+4">

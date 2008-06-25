@@ -84,6 +84,7 @@ public class PropertySolverGUIFactory extends EditorFactory {
             solver.workspace().getWriteAccess();
             
             solver.resolveProperties(true);
+            solver.updateProperties();
 
             solver.checkRegressionTestErrors();
             

@@ -29,9 +29,9 @@ package ptolemy.data.properties.lattice.typeSystem_C.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.typeSystem_C.Lattice;
+import ptolemy.data.properties.lattice.typeSystem_C.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class BooleanSelect extends PropertyConstraintHelper {
+public class BooleanSelect extends AtomicActor {
     /**
      * Construct an BooleanSelect helper.
      * @param actor the associated actor
@@ -54,21 +54,23 @@ public class BooleanSelect extends PropertyConstraintHelper {
      */
     public BooleanSelect(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.BooleanSelect actor) throws IllegalActionException {
+
         super(solver, actor, false);
+        _lattice = (Lattice) getSolver().getLattice();
+        _actor = actor;
     }   
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.actor.lib.BooleanSelect actor =
-            (ptolemy.actor.lib.BooleanSelect) getComponent();
-        
-        Lattice lattice = (Lattice) getSolver().getLattice();        
-
-        setAtLeast(actor.output, actor.trueInput);        
-        setAtLeast(actor.output, actor.falseInput);        
-        
-        setEquals(actor.control, lattice.BOOLEAN);        
+        setAtLeast(_actor.output, _actor.trueInput);        
+        setAtLeast(_actor.output, _actor.falseInput);                
+        setEquals(_actor.control, _lattice.BOOLEAN);        
 
         return super.constraintList();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ptolemy.actor.lib.BooleanSelect _actor;
+    private Lattice _lattice;
 }
 

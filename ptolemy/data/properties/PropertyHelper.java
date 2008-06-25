@@ -6,31 +6,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypeAttribute;
-import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.actor.gui.LocationAttribute;
-import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Expression;
-import ptolemy.actor.parameters.DoubleRangeParameter;
-import ptolemy.actor.parameters.LocationParameter;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.actor.ptalon.PtalonParameter;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.unit.BaseUnit;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute;
-import ptolemy.vergil.kernel.attributes.AttributeValueAttribute;
 
 public abstract class PropertyHelper {
 
@@ -102,11 +92,40 @@ public abstract class PropertyHelper {
      */
     protected abstract List<PropertyHelper> _getSubHelpers() throws IllegalActionException;
     
-
-    protected abstract List _getSourcePortList(IOPort port);
-
-    protected abstract List _getSinkPortList(IOPort port);
     
+    protected static List<Port> _getSinkPortList(IOPort port) {
+        List<Port> result = new ArrayList<Port>();
+        
+        for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
+            boolean isInput = connectedPort.isInput();
+            boolean isCompositeOutput = 
+                (connectedPort.getContainer() instanceof CompositeEntity)
+                && !isInput &&            
+                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
+            
+            if (isInput || isCompositeOutput) {
+                result.add(connectedPort);
+            }
+        }
+        return result;
+    }
+    
+    protected static List<Port> _getSourcePortList(IOPort port) {
+        List<Port> result = new ArrayList<Port>();
+        
+        for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
+            boolean isInput = connectedPort.isInput();
+            boolean isCompositeInput = 
+                (connectedPort.getContainer() instanceof CompositeEntity)
+                && isInput &&
+                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
+
+            if (!isInput || isCompositeInput) {
+                result.add(connectedPort);
+            }
+        }
+        return result;
+    }    
     
     /**
      * Create a constraint that set the given object to be equal
@@ -202,57 +221,43 @@ public abstract class PropertyHelper {
             ((Entity) getComponent()).attributeList().iterator();
     
         while (attributes.hasNext()) {
-            Object attribute = attributes.next();
+            Attribute attribute = (Attribute)attributes.next();
 
-// FIXME: find right attributes: Variables, stringAttributes + guardExpression, ...? StringParameter?
-// Assume all string attributes are NOT expression by default.
-// Sub classes are responsible for picking out expression string
-// attributes.
-            
-            if (attribute instanceof Variable) {
-                if (((Variable) attribute)
-                        .getVisibility()  == Settable.FULL) {
-
-                	// filter Parameters with certain names
-                	if ((attribute instanceof Parameter) && 
-                		(((Parameter)attribute).getName().equals("firingCountLimit") ||
-                		 ((Parameter)attribute).getName().equals("NONE") ||
-                                 ((Parameter)attribute).getName().equals("_hideName") ||
-                                 ((Parameter)attribute).getName().equals("_showName") ||
-                                 ((Parameter)attribute).getName().equals("displayWidth")
-                		)) {
-                	
-                		// do nothing, ignore the parameter
-                	} else if (attribute instanceof PortParameter) {
-                        PortParameter parameter = (PortParameter) attribute; 
-                        if (parameter.getPort().numLinks() == 0) {
-                            result.add((Attribute) attribute);
-                        }
-                    } else if ((!(attribute instanceof BaseUnit)) ||
-                               (!(attribute instanceof ColorAttribute)) ||
-                               (!(attribute instanceof DoubleRangeParameter)) ||
-                               (!(attribute instanceof ExpertParameter)) ||
-                               (!(attribute instanceof LocationParameter)) ||
-                               (!(attribute instanceof LocationAttribute)) ||
-                               (!(attribute instanceof PtalonParameter)) ||
-                               (!(attribute instanceof SizeAttribute)) ||
-                               (!(attribute instanceof TypeAttribute)) ||
-                               (!(attribute instanceof AttributeValueAttribute)) ||
-                               (!(attribute instanceof AttributeExpressionAttribute)) ||
-                               (!(attribute instanceof WindowPropertiesAttribute)))
-                            {
-                        result.add((Attribute) attribute);
-                    }
-                }
-            } else if (attribute instanceof StringAttribute) {
-// FIXME: narrow guardTransitions (e.g. check container class)
+            // only consider StringAttributes, ignore all subclasses
+            if (attribute.getClass().equals(ptolemy.kernel.util.StringAttribute.class))  {
                 if ((((StringAttribute)attribute).getName().equalsIgnoreCase("guardTransition")) ||
                     ((((StringAttribute)attribute).getContainer() instanceof Expression)) && 
-                     ((StringAttribute)attribute).getName().equalsIgnoreCase("expression")){
-
-                    result.add((Attribute) attribute);
+                     ((StringAttribute)attribute).getName().equalsIgnoreCase("expression")) {
+            
+                     result.add((Attribute) attribute);
                 }             
-            }           
+            } else if (attribute instanceof Variable) {
+                if (((Variable) attribute).getVisibility() == Settable.FULL) {
+
+                    // filter Parameters with certain names; ignore all subclasses
+                    if (attribute instanceof PortParameter) {
+                        result.add((Attribute) attribute);
+                    } else if ((attribute.getClass().equals(ptolemy.data.expr.Parameter.class)) ||
+                               (attribute.getClass().equals(ptolemy.data.expr.StringParameter.class))) {
+
+// FIXME: implement filter interface, so that helper classes can specify which attributes
+//        need to be filtered (either by name or by class)
+//        Currently all filtered attributes need to be specified here                        
+                        if (((Parameter)attribute).getName().equals("firingCountLimit") ||
+            	            ((Parameter)attribute).getName().equals("NONE") ||
+                            ((Parameter)attribute).getName().equals("_hideName") ||
+                            ((Parameter)attribute).getName().equals("_showName") ||
+                            ((Parameter)attribute).getName().equals("conservativeAnalysis") ||
+                            ((Parameter)attribute).getName().equals("directorClass") ||
+                            ((Parameter)attribute).getName().equals("displayWidth")) {
+                        	
+                            // do nothing, ignore the parameter
+                        } else {
+                            result.add((Attribute) attribute);
+                        }
+                    }
+                }
+            }
         }        
         
         return result;
@@ -317,8 +322,10 @@ public abstract class PropertyHelper {
     protected List<ASTPtRootNode> _getAttributeParseTrees() {
         List<ASTPtRootNode> result = new ArrayList<ASTPtRootNode>();
         
-        Iterator attributes = _getPropertyableAttributes().iterator();
+        Iterator attributes = null;
         
+        attributes = _getPropertyableAttributes().iterator();
+    
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute) attributes.next();
     

@@ -62,4 +62,8 @@ public class Unknown extends LatticeProperty implements TypeProperty {
     public boolean hasMinMaxValue() {
        return false;
     }
+
+    public boolean isAcceptableSolution() {
+        return false;
+    }
 }

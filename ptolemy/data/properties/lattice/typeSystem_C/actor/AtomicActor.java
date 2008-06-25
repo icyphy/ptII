@@ -55,6 +55,15 @@ public class AtomicActor extends PropertyConstraintHelper {
         super(solver, actor);
     }
 
+    
+    public AtomicActor(PropertyConstraintSolver solver, 
+            ptolemy.actor.AtomicActor actor, 
+            boolean useDefaultConstraints)
+    throws IllegalActionException {
+
+        super(solver, actor, useDefaultConstraints);
+    }    
+
     public boolean isEffective() {
         return true;
     }

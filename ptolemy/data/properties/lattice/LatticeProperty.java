@@ -28,8 +28,12 @@
  */
 package ptolemy.data.properties.lattice;
 
+import java.util.LinkedList;
+
 import ptolemy.data.properties.Property;
 import ptolemy.graph.CPO;
+import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,7 +51,7 @@ import ptolemy.graph.CPO;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class LatticeProperty extends Property {
+public class LatticeProperty extends Property implements PropertyTerm {
         
     /**
      * Create a new lattice property associated with the given
@@ -119,6 +123,48 @@ public class LatticeProperty extends Property {
     /**
      * The property lattice containing this lattice property.
      */
-    private PropertyLattice _lattice;
+    protected PropertyLattice _lattice;
+
+    
+    
+    public Object getValue() {
+        return this;
+    }
+
+    public boolean isEffective() {
+        return true;
+    }
+
+    public void setEffective(boolean isEffective) {
+        // do nothing
+    }
+
+    public Object getAssociatedObject() {
+        return null;
+    }
+
+    public InequalityTerm[] getVariables() {
+        return new InequalityTerm[0];
+    }
+
+    public InequalityTerm[] getConstants() {
+        return (InequalityTerm[]) new LinkedList().toArray();
+    }
+
+    public void initialize(Object e) throws IllegalActionException {
+        // do nothing
+    }
+
+    public boolean isSettable() {
+        return false;
+    }
+
+    public boolean isValueAcceptable() {
+        return true;
+    }
+
+    public void setValue(Object e) throws IllegalActionException {
+        // do nothing
+    }
     
 }

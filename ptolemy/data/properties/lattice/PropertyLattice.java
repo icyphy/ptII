@@ -331,26 +331,7 @@ public class PropertyLattice {
                             + "one or both of the argument properties is null: "
                             + " property1 = " + property1 + ", property2 = " + property2);
         }
-        // System.out.println("compare " + property1 + " and " + property2 + " = " + _lattice.compare(property1, property2));
 
-        /*
-        int i1 = property1.getPropertyHash();
-        int i2 = property2.getPropertyHash();
-
-        // Uncommment the false below to measure the impact of
-        // _lattice.compare() on ptolemy.data package performance... Run
-        // ptolemy/data/property/test/performance.xml before and after...(zk)
-        if ( //false &&
-        (i1 != Property.HASH_INVALID) && (i2 != Property.HASH_INVALID)) {
-            if (_getCachedPropertyComparisonResult(i1, i2) == Property.HASH_INVALID) {
-                _setCachedPropertyComparisonResult(i1, i2, _lattice.compare(property1,
-                        property2));
-            }
-
-            return _getCachedPropertyComparisonResult(i1, i2);
-        }
-        */
-        
         return _lattice.compare(property1, property2);
     }
 
@@ -387,10 +368,6 @@ public class PropertyLattice {
         return lattice;
     }
 
-    
-    public Property getInitialProperty() {
-        return null;
-    }
     
     /** Return the greatest lower bound of the two given properties.
      *  @param property1 The first given property.

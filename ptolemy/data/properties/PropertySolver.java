@@ -46,7 +46,7 @@ public abstract class PropertySolver extends Attribute {
         super(container, name);
 
         action = new SharedParameter(
-                this, "action", PropertySolver.class, "true");
+                this, "action", PropertySolver.class, TRAINING);
         action.setStringMode(true);
         _addActions(action);
 
@@ -76,12 +76,13 @@ public abstract class PropertySolver extends Attribute {
      * @param actionParameter
      */
     protected static void _addActions(Parameter actionParameter) {
-        actionParameter.setExpression(PropertySolver.ANNOTATE);
-        actionParameter.addChoice(PropertySolver.ANNOTATE);
-        actionParameter.addChoice(PropertySolver.TEST);
-        actionParameter.addChoice(PropertySolver.VIEW);
+        actionParameter.addChoice(ANNOTATE);
+        actionParameter.addChoice(ANNOTATE_ALL);
+        actionParameter.addChoice(CLEAR);
         actionParameter.addChoice(MANUAL_ANNOTATE);
-        actionParameter.addChoice(PropertySolver.CLEAR);
+        actionParameter.addChoice(TEST);
+        actionParameter.addChoice(TRAINING);
+        actionParameter.addChoice(VIEW);
     }
 
     /** React to a change in an attribute. 
@@ -95,27 +96,22 @@ public abstract class PropertySolver extends Attribute {
         super.attributeChanged(attribute);
     }    
 
-// FIXME: Do we need the clone method?
-/*
+//  FIXME: Do we need the clone method?
+    /*
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
     	PropertySolver solver = (PropertySolver) super.clone(workspace);
     	try {
 			solver.sharedUtilitiesWrapper.setToken(new ObjectToken(new SharedUtilities(sharedUtilitiesWrapper)));
 	    	solver._sharedUtilities = (SharedUtilities) ((ObjectToken) 
 	    			solver.sharedUtilitiesWrapper.getToken()).getValue();
-	        
+
 		} catch (IllegalActionException e) {
 			assert false;
 		}
 
     	return solver;
     }
-*/
-    
-    public boolean isTraining() {
-        return ((action.getExpression().equals(PropertySolver.ANNOTATE)) ||
-                (action.getExpression().equals(PropertySolver.MANUAL_ANNOTATE)));
-    }
+     */
 
     /** Parse a command-line argument. This method recognized -help
      *  and -version command-line arguments, and prints usage or
@@ -143,7 +139,7 @@ public abstract class PropertySolver extends Attribute {
             // If we are testing, and ptolemy.ptII.exitAfterWrapup is set
             // then StringUtilities.exit(0) might not actually exit.
             return true;
-        }
+        } 
         // Argument not recognized.
         return false;
     }
@@ -155,6 +151,11 @@ public abstract class PropertySolver extends Attribute {
         _previousProperties = new HashMap<Object, Property>();
         _helperStore = new HashMap<Object, PropertyHelper>();
         _stats.clear();
+
+        if (action.getExpression().equals(TRAINING)) {
+            action.setExpression(TEST);
+            _repaintGUI();
+        }
     }
 
     /**
@@ -168,7 +169,7 @@ public abstract class PropertySolver extends Attribute {
 
         _analyzer = analyzer;
         _isInvoked = isInvoked;        
-        
+
         // Clear the resolved properties for the chosen solver.
         String actionValue = action.getExpression();
         if (actionValue.equals(PropertySolver.CLEAR)) {
@@ -201,16 +202,36 @@ public abstract class PropertySolver extends Attribute {
                 previousSolver.clearDisplay();
 
                 _sharedUtilities._previousInvokedSolver = this;
+
+                // If we are in ANNOTATE_ALL or TRAINING mode, then keep
+                // all the intermediate results.
+                boolean keepIntermediates = 
+                    action.equals(ANNOTATE_ALL) || action.equals(TRAINING);
+                
+                for (String solverName : _dependentSolvers) {
+                    PropertySolver dependentSolver = findSolver(solverName);
+                    
+                    dependentSolver.resolveProperties(
+                            analyzer, keepIntermediates);
+                    
+                    dependentSolver.updateProperties();
+                }
+            } else if (isInvoked && isTesting()) {
+                for (String solverName : _dependentSolvers) {
+                    PropertySolver dependentSolver = findSolver(solverName);
+                    
+                    dependentSolver.resolveProperties(
+                            analyzer, false);
+                }
             }
-            
             _resolveProperties(analyzer);
-            updateProperties();
         }
     }
 
     /**
      * Resolve the property values for the given top-level entity.
-     * Do nothing in this base class.
+     * Do nothing in this base class. Sub-classes should overrides
+     * this method.
      * @param topLevel The given top level entity.
      * @throws IllegalActionException TODO
      */
@@ -228,16 +249,6 @@ public abstract class PropertySolver extends Attribute {
     public abstract PropertyHelper getHelper(Object object) 
     throws IllegalActionException;
 
-    /*
-    public void addPropertyChangedListener(PropertyChangedListener listener) {
-        _listeners.add(listener);
-    }
-
-    public void removePropertyChangedListener(
-            PropertyChangedListener listener) {
-        _listeners.remove(listener);
-    }
-     */    
     public abstract String getExtendedUseCaseName();
 
     public abstract String getUseCaseName();
@@ -260,34 +271,24 @@ public abstract class PropertySolver extends Attribute {
 
                 Property property = getResolvedProperty(namedObj, false);
 
-                    _highlighter.showProperty(namedObj, property);
-                    _highlighter.highlightProperty(namedObj, property);
+                _highlighter.showProperty(namedObj, property);
+                _highlighter.highlightProperty(namedObj, property);
             }
         }
-
-        // Repaint the GUI.
-        requestChange(new ChangeRequest(this,
-        "Repaint the GUI.") {
-            protected void _execute() throws Exception {
-            }
-        });        
+        _repaintGUI();
     }
 
     public void showProperties() throws IllegalActionException {
         _highlighter.showProperties();
-
-        // Repaint the GUI.
-        requestChange(new ChangeRequest(this,
-        "Repaint the GUI.") {
-            protected void _execute() throws Exception {
-            }
-        });
+        _repaintGUI();
     }
 
     public void highlightProperties() throws IllegalActionException {
         _highlighter.highlightProperties();        
+        _repaintGUI();
+    }
 
-        // Repaint the GUI.
+    private void _repaintGUI() {
         requestChange(new ChangeRequest(this,
         "Repaint the GUI.") {
             protected void _execute() throws Exception {
@@ -296,33 +297,30 @@ public abstract class PropertySolver extends Attribute {
     }
 
     /**
-     * Update the property.
+     * Update the property. This method is called from both invoked
+     * and auxiliary solvers.
      * @throws IllegalActionException
      */
     public void updateProperties() throws IllegalActionException {
-        _addStatistics();
+        if (isView() || isClear()) {
+            return;
+        }
 
         boolean hasDecided = false;
         boolean userDecision = true;
 
+        // Only test the invoked solver.
         boolean doTest = isTesting() && _isInvoked;
         boolean doUpdate = isTraining() || isManualAnnotate();
-        
-        if (isView() || isClear()) {
-            return;
-        }
-        //Iterator propertyables = _resolvedProperties.keySet().iterator();
 
-        Iterator helpers = _helperStore.values().iterator();
-        while (helpers.hasNext()) {
-            PropertyHelper helper = (PropertyHelper) helpers.next();
-            Iterator propertyables = helper.getPropertyables().iterator();
+        _addStatistics();
 
-            while (propertyables.hasNext()) {
-                Object propertyableObject = propertyables.next();
+        for (PropertyHelper helper : _helperStore.values()) {
 
-                if (propertyableObject instanceof NamedObj) {
-                    NamedObj namedObj = (NamedObj) propertyableObject;
+            for (Object propertyable : helper.getPropertyables()) {
+
+                if (propertyable instanceof NamedObj) {
+                    NamedObj namedObj = (NamedObj) propertyable;
 
                     // Get the value resolved by the solver.
                     Property property = getProperty(namedObj);
@@ -334,7 +332,7 @@ public abstract class PropertySolver extends Attribute {
                         Property previous = getPreviousProperty(namedObj);
 
                         if (!_isInvoked && !hasDecided) {
-                            
+
                             // Check if the previous and resolved properties are different.
                             if ((previous == null && property != null) ||
                                     previous != null && !previous.equals(property)) {
@@ -366,6 +364,15 @@ public abstract class PropertySolver extends Attribute {
                             // value (regression testing).
                             PropertyAttribute attribute = _getPropertyAttribute(namedObj);                            
                             _updatePropertyAttribute(attribute, userDecision ? property : previous);
+
+                            // Check for unacceptable solution.
+                            if ((property != null) && 
+                                    (!property.isAcceptableSolution())) {
+                                getSharedUtilities().addErrors("Property \"" 
+                                        + property + "\" is not an acceptable solution for "
+                                        + namedObj + "." + _eol);
+                            }
+
                         }
                     } 
                 } else {
@@ -375,6 +382,8 @@ public abstract class PropertySolver extends Attribute {
                 }
             }
         }
+        
+        System.out.println(getStatistics());        
     }
 
     /**
@@ -501,8 +510,9 @@ public abstract class PropertySolver extends Attribute {
                             + " for " + object.getClass());
                 }
 
-                helperClass = Class.forName(componentClass.getName()
-                        .replaceFirst("ptolemy", packageName));
+                helperClass = Class.forName((componentClass.getName()
+                        .replaceFirst("ptolemy", packageName))
+                        .replaceFirst(".configuredSolvers.", "."));
 
             } catch (ClassNotFoundException e) {
                 // If helper class cannot be found, search the helper class
@@ -597,19 +607,18 @@ public abstract class PropertySolver extends Attribute {
      *  is found.
      */
     public PropertySolver findSolver(String identifier) 
-    throws IllegalActionException {
+    throws PropertyResolutionException {
 
-        Iterator iterator = _sharedUtilities.getAllSolvers().iterator();
-        while (iterator.hasNext()) {
-            PropertySolver solver = 
-                (PropertySolver) iterator.next();
-
+        for (PropertySolver solver : _sharedUtilities.getAllSolvers()) {
             if (solver.getUseCaseName().equals(identifier)) {
+                return solver;
+            }
+            if (solver.getClass().getSimpleName().equals(identifier)) {
                 return solver;
             }
         }
 
-        throw new IllegalActionException(
+        throw new PropertyResolutionException(
                 "Cannot find \"" + identifier + "\" solver.");
     }
 
@@ -646,6 +655,8 @@ public abstract class PropertySolver extends Attribute {
      */
     public static int testProperties(String[] args) throws Exception {
 
+        HashMap options = new HashMap();
+
         if (args.length == 0) {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.data.properties.PropertySolver model.xml "
@@ -665,6 +676,10 @@ public abstract class PropertySolver extends Attribute {
                 continue;
             }
 
+            if (args[i].equals(NONDEEP_TEST_OPTION)) {
+                options.put(NONDEEP_TEST_OPTION, true);
+                continue;
+            }
             if (args[i].trim().startsWith("-")) {
                 if (i >= (args.length - 1)) {
                     throw new IllegalActionException("Cannot set "
@@ -711,10 +726,20 @@ public abstract class PropertySolver extends Attribute {
                         solver = (PropertySolver) solvers.get(numberOfSolverTested++);
 
                         try {
-                            solver.setAction(PropertySolver.TEST);
-                            solver.resolveProperties(true);
-                            solver.checkRegressionTestErrors();
-                        } catch (KernelException ex) {
+                            //solver.setAction(PropertySolver.TEST);
+                            if (solver.isTesting()) {
+                                solver._prepareForTesting(options);
+                                solver.resolveProperties(true);
+                                solver.updateProperties();
+                                solver.checkRegressionTestErrors();
+                            } else {
+                                System.err.println("Warning: regression test not performed. " + 
+                                        solver.getDisplayName() + " in " + args[i] + 
+                                        " is set to [" + solver.action.getExpression() + "] mode.");
+                            }
+                        } catch (Exception ex) {
+                            // log ex to error files.
+
                             throw new PropertyResolutionException(solver, ex,
                                     " Failed to resolve properties for \""
                                     + args[i] + "\"");
@@ -740,15 +765,22 @@ public abstract class PropertySolver extends Attribute {
                     memEnd = Runtime.getRuntime().totalMemory();
                     if ((memEnd - memStart) != 0) {
                         // FIXME: throw some sort of memory leak exception?
-                        System.out.println("Memory Usage Before PS: " + memStart);                    
-                        System.out.println("Memory Usage After PS: " + memEnd);
-                        System.out.println("Memory diff = : " + (memEnd - memStart));
+//                      System.out.println("Memory Usage Before PS: " + memStart);                    
+//                      System.out.println("Memory Usage After PS: " + memEnd);
+//                      System.out.println("Memory diff = : " + (memEnd - memStart));
                     }
                 }
             }
 
         }
         return 0;
+    }
+
+    /**
+     * Prepare for automatic testing. In this base class, do nothing.
+     */
+    protected void _prepareForTesting(Map options) {
+        return;
     }
 
     /**
@@ -759,11 +791,8 @@ public abstract class PropertySolver extends Attribute {
     }
 
     public void clearProperties() throws IllegalActionException {
-        // Get the PropertySolver.
-        List propertyables = getAllPropertyables();
-        reset();
 
-        for (Object propertyable : propertyables) {
+        for (Object propertyable : getAllPropertyables()) {
             if (propertyable instanceof NamedObj) {
                 NamedObj namedObj = (NamedObj) propertyable;
 
@@ -779,12 +808,7 @@ public abstract class PropertySolver extends Attribute {
                 }
             }
         }
-
-        // Repaint the GUI.
-        requestChange(new ChangeRequest(this,
-        "Repaint the GUI.") {
-            protected void _execute() throws Exception {}
-        });        
+        _repaintGUI();
     }
 
     /**
@@ -807,6 +831,10 @@ public abstract class PropertySolver extends Attribute {
                     this, errorMessage);
         }
     }
+    
+    public boolean isClear() {
+        return action.getExpression().equals(PropertySolver.CLEAR);
+    }
 
     public boolean isManualAnnotate() {
         return action.getExpression().
@@ -817,12 +845,31 @@ public abstract class PropertySolver extends Attribute {
         return action.getExpression().equals(PropertySolver.TEST);
     }
 
+    public boolean isTraining() {
+        return ((action.getExpression().equals(ANNOTATE)) ||
+                (action.getExpression().equals(ANNOTATE_ALL)) ||
+                (action.getExpression().equals(MANUAL_ANNOTATE)) ||
+                (action.getExpression().equals(TRAINING)));
+    }
+
     public boolean isView() {
         return action.getExpression().equals(PropertySolver.VIEW);
     }
-
-    public boolean isClear() {
-        return action.getExpression().equals(PropertySolver.CLEAR);
+    
+    /**
+     * Increment the given field the solver statistics by a
+     * given number. This is used for incrementing integer
+     * type statistics. If the given field does not exist,
+     * it starts the count of the field at zero.
+     * @param field The given field of the solver statistics.
+     * @param increment The given number to increment by.
+     */
+    public void incrementStats(Object field, int increment) {
+        Integer current = (Integer) _stats.get(field);
+        if (current == null) {
+            current = 0;
+        }
+        _stats.put(field, current + increment);
     }
 
     /**
@@ -883,7 +930,7 @@ public abstract class PropertySolver extends Attribute {
      */
     public void resetAll() {     
         _parser = null;
-        getSharedUtilities().resetAll();
+        getSharedUtilities().resetAll();        
     }
 
     public Property getResolvedProperty(Object object) {
@@ -913,8 +960,8 @@ public abstract class PropertySolver extends Attribute {
         // Try resolve the property.
         try {
             if (resolve && !getSharedUtilities().getRanSolvers().contains(this)) {
-                _resolveProperties(_analyzer);
-                getSharedUtilities().addRanSolvers(this);
+                resolveProperties(_analyzer);
+                //getSharedUtilities().addRanSolvers(this);
             }
         } catch (KernelException ex) {
             throw new InternalErrorException(
@@ -1095,19 +1142,58 @@ public abstract class PropertySolver extends Attribute {
 
     protected ModelAnalyzer _analyzer = null;
 
+    /**
+     * The list that keeps track of the dependencies on other solvers.
+     * Circular dependencies are not allowed but it is up to the user
+     * to enforce this requirement. This means that there should not
+     * be a case where two solvers exist in each other's dependency list. 
+     */
+    private List<String> _dependentSolvers = new LinkedList<String>();
+    
+    private SharedUtilities _sharedUtilities;
+    
+    /** The display label for "annotate" in the action choices */
+    protected static final String ANNOTATE = "ANNOTATE";
 
+    /** The display label for "annotate all" in the action choices */
+    protected static final String ANNOTATE_ALL = "ANNOTATE_ALL";
+    
     /** The display label for "clear" in the action choices */
     protected static final String CLEAR = "CLEAR";
 
     /** The display label for "test" in the action choices */
     protected static final String TEST = "TEST";
 
-    /** The display label for "annotate" in the action choices */
-    protected static final String ANNOTATE = "ANNOTATE";
+    /** The display label for "training" in the action choices */
+    protected static final String TRAINING = "TRAINING";
 
+    /** The display label for "view" in the action choices */
     protected static final String VIEW = "VIEW";
 
+    /** The display label for "manual annotation" in the action choices */
     protected static final String MANUAL_ANNOTATE = "MANUAL ANNOTATE";
 
-    private SharedUtilities _sharedUtilities;
+    public static final String NONDEEP_TEST_OPTION = "-nondeep"; 
+
+    /**
+     * Add the given unique solver identifier to the dependency list. 
+     * A dependent solver is one whose analysis result is required
+     * for this solver's analysis. The dependent solvers are run in
+     * order before invoking this solver.
+     * @param solverName The 
+     */
+    public void addDependentSolver(String solverName) {
+        _dependentSolvers.add(solverName);
+    }
+    
+    /**
+     * Return the list of dependent solvers. The list contains the
+     * unique name of the solvers.
+     * @return The list of dependent solvers.
+     */
+    public List<String> getDependentSolvers() {
+        return _dependentSolvers;
+    }
+
+
 }

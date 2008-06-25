@@ -257,7 +257,7 @@ public class PropertyHighlighter extends NodeControllerFactory {
         // Get the PropertySolver.
         PropertySolver solver = (PropertySolver) getContainer();
         List propertyables = solver.getAllPropertyables();
-        solver.reset();
+        //solver.reset();
         
         for (Object propertyable : propertyables) {
             if (propertyable instanceof NamedObj) {

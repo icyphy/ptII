@@ -1,4 +1,4 @@
-/** An algorithm to solve a set of inequality constraints.
+/** A map that holds a collection of values against each key.
 
  Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
@@ -32,7 +32,7 @@ package ptolemy.data.properties.util;
 import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
-//// InequalitySolver
+//// MultiMap
 
 /**
 Defines a map that holds a collection of values against each key. 
