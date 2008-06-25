@@ -38,6 +38,8 @@ void Array_insert(Token array, Token token) {
     array.payload.Array->elements[oldSize] = token;
 }
 
+#define Array_length(array) ((array).payload.Array->size)
+
 /**/
 
 /***Array_new***/
