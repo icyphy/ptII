@@ -2214,12 +2214,21 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     // This will lead to recursive call until a variable found
                     // is either directly specified by a constant or it is a
                     // modified variable.
-
                     PtParser parser = new PtParser();
-                    ASTPtRootNode parseTree = parser.generateParseTree(
-                            getParameterValue(name, result.getContainer()));
-                    ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
-                    return evaluator.evaluateParseTree(parseTree, this);                    
+                    String parameterValue = getParameterValue(name, result.getContainer());
+                    try {
+                        ASTPtRootNode parseTree = 
+                            parser.generateParseTree(parameterValue);
+                        
+                        ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
+                        
+                        return evaluator.evaluateParseTree(parseTree, this);                    
+                    } catch (IllegalActionException ex) {
+                        // Could not evaluate the expression. This means that
+                        // the parameter value contains a variable expression.
+                        // So, we'll won't try to evaluate it.
+                        return new ObjectToken(parameterValue);
+                    }
                 }
             } else {
                 return null;
