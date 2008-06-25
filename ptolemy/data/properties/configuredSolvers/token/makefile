@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Properties GUI
+# Makefile for Java Ptolemy Data Properties tokens
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
@@ -34,7 +34,7 @@ ME =		ptolemy/data/properties/configuredSolvers/token
 DIRS = 		
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	properties
+PTPACKAGE = 	token
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
