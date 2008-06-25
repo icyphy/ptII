@@ -92,13 +92,14 @@ OPTIONAL_FILES = \
 JCLASS =	$(JSRCS:%.java=%.class)
 
 MOML_SIMPLE_APPLICATION_CLASS = $(ROOT)/ptolemy/actor/gui/MoMLSimpleApplication.class
-$(MOML_SIMPLE_APPLICATION_CLASS): $(ROOT)/ptolemy/actor/gui/MoMLSimpleApplication.java
-	(cd $(ROOT)/ptolemy/actor/gui; $(MAKE))
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
 tests:: $(EXTRA_SRCS) $(MOML_SIMPLE_APPLICATION_CLASS) jclass test_java test_jsimple test_auto
+
+$(MOML_SIMPLE_APPLICATION_CLASS): $(ROOT)/ptolemy/actor/gui/MoMLSimpleApplication.java
+	(cd $(ROOT)/ptolemy/actor/gui; $(MAKE))
 
 test_java: jclass
 
