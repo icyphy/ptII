@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NamedObj;
 
 
  @author Thomas Huining Feng
- @version $Id: AtomicActorMatcher.java 49223 2008-04-12 21:54:36Z tfeng $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
