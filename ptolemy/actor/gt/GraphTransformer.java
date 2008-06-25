@@ -771,6 +771,10 @@ public class GraphTransformer extends ChangeRequest {
         return !object.attributeList(CreationAttribute.class).isEmpty();
     }
 
+    private boolean _isToBePreserved(NamedObj object) {
+        return !object.attributeList(PreservationAttribute.class).isEmpty();
+    }
+
     private void _recordObjectsWithCreationAttributes(NamedObj pattern,
             NamedObj host) {
         _matchResult.put(pattern, host);
@@ -1073,11 +1077,14 @@ public class GraphTransformer extends ChangeRequest {
                 childrenToRemove.clear();
                 for (Object childObject : children) {
                     NamedObj child = (NamedObj) childObject;
-                    NamedObj replacementChild = (NamedObj) _replacementToHost
-                            .getKey(child);
-
                     NamedObj patternChild = (NamedObj) _matchResult.getKey(
                             child);
+                    if (patternChild == null
+                            || _isToBePreserved(patternChild)) {
+                        continue;
+                    }
+                    NamedObj replacementChild = (NamedObj) _replacementToHost
+                            .getKey(child);
                     if (replacementChild == null && patternChild != null
                             && !_isToBeCreated(patternChild)) {
                         Boolean shallowRemoval =

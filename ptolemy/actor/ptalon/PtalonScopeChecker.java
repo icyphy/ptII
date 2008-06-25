@@ -44,6 +44,8 @@ import antlr.collections.impl.ASTArray;
   PtalonScopeChecker.java generated from populator.g by ANTLR.
 
   @author Adam Cataldo, Elaine Cheong, Thomas Huining Feng
+  @version $Id$
+  @since Ptolemy II 7.0
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
 */
@@ -57,7 +59,7 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
     public PtalonEvaluator getCodeManager() {
         return info;
     }
-    
+
     private String scopeName;
 public PtalonScopeChecker() {
 	tokenNames = _tokenNames;
@@ -1753,9 +1755,6 @@ public PtalonScopeChecker() {
 		ASTPair currentAST = new ASTPair();
 		PtalonAST transformation_AST = null;
 		
-		boolean emptyStart = true;
-		
-		
 		AST __t75 = _t;
 		PtalonAST tmp60_AST = null;
 		PtalonAST tmp60_AST_in = null;
@@ -1767,6 +1766,9 @@ public PtalonScopeChecker() {
 		currentAST.child = null;
 		match(_t,TRANSFORMATION);
 		_t = _t.getFirstChild();
+		
+		info._setPreservingTransformation(false);
+		
 		{
 		if (_t==null) _t=ASTNULL;
 		switch ( _t.getType()) {
@@ -1779,7 +1781,9 @@ public PtalonScopeChecker() {
 			astFactory.addASTChild(currentAST, tmp61_AST);
 			match(_t,PLUS);
 			_t = _t.getNextSibling();
-			emptyStart = false;
+			
+			info._setPreservingTransformation(true);
+			
 			break;
 		}
 		case 3:
@@ -1808,9 +1812,6 @@ public PtalonScopeChecker() {
 		}
 		}
 		}
-		
-		info.enterTransformation(emptyStart);
-		
 		{
 		_loop78:
 		do {
@@ -1860,9 +1861,6 @@ public PtalonScopeChecker() {
 		currentAST = __currentAST75;
 		_t = __t75;
 		_t = _t.getNextSibling();
-		
-		info.exitTransformation();
-		
 		transformation_AST = (PtalonAST)currentAST.root;
 		returnAST = transformation_AST;
 		_retTree = _t;

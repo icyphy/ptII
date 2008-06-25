@@ -29,6 +29,7 @@ package ptolemy.actor.ptalon.gt;
 
 import ptolemy.actor.gt.CreationAttribute;
 import ptolemy.actor.gt.GTTools;
+import ptolemy.actor.gt.PreservationAttribute;
 import ptolemy.actor.ptalon.PtalonActor;
 import ptolemy.actor.ptalon.PtalonEvaluator;
 import ptolemy.actor.ptalon.PtalonRuntimeException;
@@ -60,12 +61,19 @@ public class TransformationEvaluator extends PtalonEvaluator {
             throws PtalonRuntimeException {
         if (_isInTransformation()) {
             try {
-                new CreationAttribute(object, object.uniqueName("_create"));
-                for (Object child : GTTools.getChildren(object, false, true,
-                        true, true)) {
-                    _processAttributes((NamedObj) child);
-                }
-            } catch (KernelException e) {
+            	GTTools.deepRemoveAttributes(object,
+            			PreservationAttribute.class);
+            	GTTools.deepAddAttributes(object, CreationAttribute.class);
+            } catch (Exception e) {
+                throw new PtalonRuntimeException("Unable to create attribute.",
+                        e);
+            }
+        } else if (_isPreservingTransformation()) {
+            try {
+            	GTTools.deepRemoveAttributes(object,
+            			CreationAttribute.class);
+            	GTTools.deepAddAttributes(object, PreservationAttribute.class);
+            } catch (Exception e) {
                 throw new PtalonRuntimeException("Unable to create attribute.",
                         e);
             }

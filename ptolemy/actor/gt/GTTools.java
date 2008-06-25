@@ -31,7 +31,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gt;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.gt.data.CombinedCollection;
 import ptolemy.kernel.CompositeEntity;
@@ -40,6 +44,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -69,6 +74,38 @@ public class GTTools {
                     "Unable to clean up model.");
         } finally {
             workspace.doneReading();
+        }
+    }
+
+    public static void deepAddAttributes(NamedObj container,
+            Class<? extends Attribute> attributeClass)
+    		throws IllegalArgumentException, InstantiationException,
+    		IllegalAccessException, InvocationTargetException {
+        Constructor<?>[] constructors = attributeClass.getConstructors();
+        for (Constructor<?> constructor : constructors) {
+            Class<?>[] types = constructor.getParameterTypes();
+            if (types.length == 2 && types[0].isInstance(container)
+                    && types[1].equals(String.class)) {
+                constructor.newInstance(container, container.uniqueName("_" +
+                        attributeClass.getSimpleName()));
+                break;
+            }
+        }
+        for (Object child : getChildren(container, false, true, true, true)) {
+            deepAddAttributes((NamedObj) child, attributeClass);
+        }
+    }
+
+    public static void deepRemoveAttributes(NamedObj container,
+            Class<? extends Attribute> attributeClass)
+    		throws IllegalActionException, NameDuplicationException {
+        List<Object> attributes = new LinkedList<Object>(
+                (Collection<?>) container.attributeList(attributeClass));
+        for (Object attribute : attributes) {
+            ((Attribute) attribute).setContainer(null);
+        }
+        for (Object child : getChildren(container, false, true, true, true)) {
+            deepRemoveAttributes((NamedObj) child, attributeClass);
         }
     }
 

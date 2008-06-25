@@ -94,6 +94,7 @@ JSRCS = \
 	Pattern.java \
 	PatternObjectAttribute.java \
 	PortMatcher.java \
+	PreservationAttribute.java \
 	RelationCollapsingAttribute.java \
 	RelationHidingAttribute.java \
 	Replacement.java \

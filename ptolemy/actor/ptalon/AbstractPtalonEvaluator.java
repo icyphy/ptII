@@ -587,15 +587,6 @@ public abstract class AbstractPtalonEvaluator {
             throw new PtalonRuntimeException("Couldn't find symbol " + name, ex);
         }
     }
-    
-    /** 
-     * 
-     *  @param object
-     *  @throws PtalonRuntimeException
-     */
-    protected void _processAttributes(NamedObj object)
-	    	throws PtalonRuntimeException {
-	}
 
     /** Add a TypedIORelation to the PtalonActor with the specified name.
      *
@@ -612,9 +603,9 @@ public abstract class AbstractPtalonEvaluator {
             // don't have to check for a pre-existing relation with
             // this name because we already removed all of the
             // relations in attributeChanged().
-        	TypedIORelation relation = new TypedIORelation(_actor, uniqueName);
-        	_processAttributes(relation);
-        	
+            TypedIORelation relation = new TypedIORelation(_actor, uniqueName);
+            _processAttributes(relation);
+
             _currentIfTree.setStatus(name, true);
             if (_inNewWhileIteration()) {
                 if (_currentIfTree.isForStatement) {
@@ -1151,9 +1142,6 @@ public abstract class AbstractPtalonEvaluator {
         return _currentIfTree.entered;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
-
     /** Return the type associated with the given symbol in the
      *  current scope.
      *
@@ -1176,6 +1164,9 @@ public abstract class AbstractPtalonEvaluator {
         throw new PtalonScopeException("Symbol " + symbol
                 + " not in current scope.");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
 
     /** Return the type associated with the given symbol in the
      *  current scope.  This is the same as getType, but it is used to
@@ -1203,12 +1194,29 @@ public abstract class AbstractPtalonEvaluator {
         return _inTransformation;
     }
 
-    /** The actor in which this PtalonCompilerInfo is used.
+    protected boolean _isPreservingTransformation() {
+        return _isPreservingTransformation;
+    }
+
+    /**
+     *
+     *  @param object
+     *  @throws PtalonRuntimeException
      */
-    protected PtalonActor _actor;
+    protected void _processAttributes(NamedObj object)
+            throws PtalonRuntimeException {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected members                    ////
+
+    protected void _setPreservingTransformation(boolean b) {
+        _isPreservingTransformation = b;
+    }
+
+    /** The actor in which this PtalonCompilerInfo is used.
+     */
+    protected PtalonActor _actor;
 
     /** Some descendent of the root tree to which new input symbols
      *  should be added.
@@ -1222,6 +1230,9 @@ public abstract class AbstractPtalonEvaluator {
     /** The expression scope for this code manager.
      */
     protected PtalonExpressionScope _scope = new PtalonExpressionScope();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                    ////
 
     /** Maps names of transparent relations to ports, which should be
      *  multiports. A key may map to null if no port has been assigned
@@ -1785,9 +1796,6 @@ public abstract class AbstractPtalonEvaluator {
         private Hashtable<String, String> _trueSymbols;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
-
     /**
      * FIXME comment
      */
@@ -1945,6 +1953,9 @@ public abstract class AbstractPtalonEvaluator {
         return output;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        private members                    ////
+
     /** Get the type associated with the specified parameter.
      *
      *  @param param The parameter's name in the Ptalon code.
@@ -1982,9 +1993,6 @@ public abstract class AbstractPtalonEvaluator {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                        private members                    ////
-
     /** Get the value associated with the specified parameter.
      *
      *  @param param The parameter's name in the Ptalon code.
@@ -2017,6 +2025,8 @@ public abstract class AbstractPtalonEvaluator {
     private int _counter;
 
     private boolean _inTransformation = false;
+
+    private boolean _isPreservingTransformation = false;
 
     /** The root of the tree containing the symbol tables for each
      *  level of the if-statement hierarchy.

@@ -33,6 +33,8 @@ package ptolemy.actor.ptalon;
   PtalonScopeChecker.java generated from populator.g by ANTLR.
 
   @author Adam Cataldo, Elaine Cheong, Thomas Huining Feng
+  @version $Id$
+  @since Ptolemy II 7.0
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
 */
@@ -55,7 +57,7 @@ options {
     public PtalonEvaluator getCodeManager() {
         return info;
     }
-    
+
     private String scopeName;
 }
 
@@ -244,18 +246,16 @@ iterative_statement throws PtalonScopeException
 ;
 
 transformation throws PtalonScopeException
-{
-    boolean emptyStart = true;
-}
 :
-    #(TRANSFORMATION (PLUS { emptyStart = false; } )?
+    #(TRANSFORMATION
     {
-        info.enterTransformation(emptyStart);
+        info._setPreservingTransformation(false);
     }
+    (PLUS
+    {
+        info._setPreservingTransformation(true);
+    })?
     (atomic_statement | conditional_statement | iterative_statement)*)
-    {
-        info.exitTransformation();
-    }
 ;
 
 actor_definition [PtalonEvaluator manager] throws PtalonScopeException
