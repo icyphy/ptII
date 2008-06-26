@@ -273,76 +273,6 @@ public abstract class AbstractPtalonEvaluator {
         }
     }
 
-    /** Add an iterative parameter to the PtalonActor with the
-     *  specified name and the given expressions as its initial value, the
-     *  expression that its value must satisfy, and the expression used to
-     *  compute its next value given its current value.
-     *
-     *  @param name The name of the parameter.
-     *  @param expression The expression representing the parameter.
-     *  @exception PtalonRuntimeException If the symbol does not
-     *  exist, or if the symbol already has a parameter associated
-     *  with it, or if an IllegalActionException is thrown trying to
-     *  create the parameter.
-     */
-    public void addIterableParameter(String name, String initial,
-            String constraint, String next) throws PtalonRuntimeException {
-        try {
-            String uniqueName = null;
-            PtalonIterableParameter parameter = null;
-
-            // If the parameter already exists and was assigned a
-            // value, then use it.
-            Attribute attribute = _actor.getAttribute(name);
-            if (attribute != null) {
-                if (attribute instanceof PtalonIterableParameter) {
-                    parameter = (PtalonIterableParameter) attribute;
-                    uniqueName = name;
-                }
-            }
-
-            // If attribute was not found above, create a new one.
-            if (uniqueName == null) {
-                uniqueName = _actor.uniqueName(name);
-                parameter = new PtalonIterableParameter(_actor, uniqueName);
-            }
-
-            parameter.setVisibility(Settable.EXPERT);
-            _currentIfTree.setStatus(name, true);
-            if (_inNewWhileIteration()) {
-                if (_currentIfTree.isForStatement) {
-                    _currentIfTree.setEnteredIteration(name,
-                            _currentIfTree.entered);
-                } else {
-                    IfTree tree = _currentIfTree;
-                    while (!tree.isForStatement) {
-                        tree = tree.getParent();
-                        if (tree == null) {
-                            throw new PtalonRuntimeException(
-                                    "In a new for iteration, but there is no " +
-                                    "containing for block.");
-                        }
-                    }
-                    _currentIfTree.setEnteredIteration(name, tree.entered);
-                }
-            } else {
-                _currentIfTree
-                        .setEnteredIteration(name, _currentIfTree.entered);
-            }
-            _currentIfTree.mapName(name, uniqueName);
-            _unassignedParameters.add(parameter.initial);
-            _unassignedParameterValues.add(initial);
-            _unassignedParameters.add(parameter.constraint);
-            _unassignedParameterValues.add(constraint);
-            _unassignedParameters.add(parameter.next);
-            _unassignedParameterValues.add(next);
-        } catch (NameDuplicationException ex) {
-            throw new PtalonRuntimeException("NameDuplicationException", ex);
-        } catch (IllegalActionException ex) {
-            throw new PtalonRuntimeException("IllegalActionException", ex);
-        }
-    }
-
     /** Add a TypedIOPort to the PtalonActor with the specified name,
      *  and output flow type.
      *
@@ -704,7 +634,11 @@ public abstract class AbstractPtalonEvaluator {
             while (!_unassignedParameters.isEmpty()) {
                 PtalonParameter parameter = _unassignedParameters.remove(0);
                 String expression = _unassignedParameterValues.remove(0);
-                parameter.setToken(expression);
+                String oldExpression = parameter.getExpression();
+                if (expression != oldExpression
+                		&& !expression.equals(oldExpression)) {
+                	parameter.setToken(expression);
+                }
             }
         } catch (Exception ex) {
             throw new PtalonRuntimeException("Trouble assigning parameter", ex);

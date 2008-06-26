@@ -162,12 +162,6 @@ parameter_declaration!
         }
     }
     )
-    | {_gtExtension}? (iterate:ITERATE id:ID INITIALLY init:expression
-    sat:expression NEXT next:expression
-    {
-       #parameter_declaration = #(iterate, id, init, sat, next);
-    }
-    )
 ;
 
 /**
@@ -524,7 +518,6 @@ tokens {
     PARAMETER = "parameter";
     ACTOR = "actor";
     ACTORPARAM = "actorparameter";
-    ITERATE = "iterate";
     RELATION = "relation";
     TRUE = "true";
     FALSE = "false";

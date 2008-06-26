@@ -101,10 +101,6 @@ parameter_declaration throws PtalonScopeException
         info.addSymbol(b.getText(), "actorparameter");
     }
     )
-    | #(ITERATE id:ID init:EXPRESSION sat:EXPRESSION next:EXPRESSION)
-    {
-       info.addSymbol(id.getText(), "parameter");
-    }
 ;
 
 assigned_parameter_declaration throws PtalonScopeException

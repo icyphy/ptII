@@ -25,13 +25,13 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.ptalon;
+package ptolemy.actor.gt;
 
 import java.util.Collection;
 
-import ptolemy.actor.gt.ValueIterator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -47,8 +47,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class PtalonIterableParameter extends PtalonExpressionParameter
-implements ValueIterator {
+public class IterativeParameter extends Parameter implements ValueIterator {
 
     /**
      *  @param container
@@ -56,30 +55,26 @@ implements ValueIterator {
      *  @throws IllegalActionException
      *  @throws NameDuplicationException
      */
-    public PtalonIterableParameter(NamedObj container, String name)
+    public IterativeParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        initial = new PtalonExpressionParameter(this, "initial");
+        initial = new Parameter(this, "initial");
         initial.addValueListener(this);
-        constraint = new PtalonExpressionParameter(this, "constraint");
+        constraint = new Parameter(this, "constraint");
         constraint.setTypeEquals(BaseType.BOOLEAN);
         constraint.addValueListener(this);
-        next = new PtalonExpressionParameter(this, "next");
+        next = new Parameter(this, "next");
     }
 
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
 
-        if (!hasValue() && initial.hasValue()) {
+        if (attribute == initial) {
             setToken(initial.getToken());
-        }
-
-        if (attribute == constraint) {
-            if (!isConstraintSatisfied()) {
-                throw new ConstraintViolationException();
-            }
+        } else if (attribute == constraint) {
+            _validateConstraint();
         }
     }
 
@@ -92,36 +87,36 @@ implements ValueIterator {
     public Token next() throws IllegalActionException {
         Token nextToken = next.getToken();
         setToken(nextToken);
+        validate();
         return nextToken;
     }
 
     public Collection<?> validate() throws IllegalActionException {
         Collection<?> result = super.validate();
-        if (!isConstraintSatisfied()) {
-            throw new ConstraintViolationException();
-        }
+        _validateConstraint();
         return result;
     }
 
-    public PtalonExpressionParameter constraint;
+    public Parameter constraint;
 
-    public PtalonExpressionParameter initial;
+    public Parameter initial;
 
-    public PtalonExpressionParameter next;
+    public Parameter next;
 
     public class ConstraintViolationException extends IllegalActionException {
 
         ConstraintViolationException() {
-            super("ConstraintViolationException: Constraint " +
-                    constraint.getExpression() + " is not satisfied.");
+            super("Constraint " + constraint.getExpression() +
+                    " is not satisfied.");
         }
     }
 
-    private boolean isConstraintSatisfied() throws IllegalActionException {
-        if (hasValue() && constraint.hasValue()) {
-            return ((BooleanToken) constraint.getToken()).booleanValue();
-        } else {
-            return true;
+    protected void _validateConstraint() throws IllegalActionException {
+        String constraintExpression = constraint.getExpression();
+        if (constraintExpression != null && !constraintExpression.equals("")) {
+            if (!((BooleanToken) constraint.getToken()).booleanValue()) {
+                throw new ConstraintViolationException();
+            }
         }
     }
 }

@@ -30,6 +30,7 @@ package ptolemy.actor.gt;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// ValueIterator
@@ -44,13 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public interface ValueIterator {
-
-    /** Clear the value of the parameter that implements this interface, so that
-     *  if any constraint is defined for it, those constraints always trivially
-     *  return true.
-     */
-    public void clearValue();
+public interface ValueIterator extends Settable {
 
     /** Get the current value of the parameter that implements this interface.
      *

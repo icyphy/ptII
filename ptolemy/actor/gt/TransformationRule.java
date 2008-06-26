@@ -509,7 +509,6 @@ public class TransformationRule extends MultiCompositeActor implements
         }
     }
 
-    private static final List<?> _EMPTY_LIST = new LinkedList<Object>();
     private static final Set<Inequality> _EMPTY_SET = new HashSet<Inequality>();
 
     private boolean _collectAllMatches;

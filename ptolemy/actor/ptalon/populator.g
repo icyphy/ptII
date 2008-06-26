@@ -224,13 +224,6 @@ parameter_declaration throws PtalonRuntimeException
         }
     }
     )
-    | #(ITERATE id:ID init:EXPRESSION sat:EXPRESSION next:EXPRESSION)
-    {
-        if (info.isReady() && !info.isCreated(id.getText())) {
-            info.addIterableParameter(id.getText(), init.getText(),
-                    sat.getText(), next.getText());
-        }
-    }
     exception
     catch [PtalonScopeException excep]
     {

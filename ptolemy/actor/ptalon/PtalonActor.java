@@ -137,7 +137,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             PtalonParameter p = (PtalonParameter) attribute;
             if (_isValueChanged(p)) {
                 try {
-                    if (p.getVisibility().equals(Settable.NONE)) {
+                    /*if (p.getVisibility().equals(Settable.NONE)) {
                         // Store parameters that are not settable by
                         // the user so that they do not get exported
                         // to MoML.
@@ -147,7 +147,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                         } else {
                             return;
                         }
-                    }
+                    }*/
 
                     // Check if the parameter was not previously assigned.
                     if (!_assignedPtalonParametersCopy.containsKey(p.getName())) {
@@ -492,8 +492,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
 
             // Write the name and value of all Ptalon parameters.
             for (PtalonParameter param : _assignedPtalonParameters) {
-                if (!_unsettablePtalonParameters.contains(param)
-                        && !(param instanceof PtalonIterableParameter)) {
+                if (!_unsettablePtalonParameters.contains(param)) {
                     if (param instanceof PtalonExpressionParameter) {
                         String expression = param.getExpression();
                         expression = expression.replaceAll("\"",

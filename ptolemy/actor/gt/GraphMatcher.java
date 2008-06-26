@@ -176,7 +176,7 @@ public class GraphMatcher extends GraphAnalyzer {
         try {
             _saveValues(pattern, records);
         } catch (IllegalActionException e) {
-            throw new KernelRuntimeException(e, "Cannot save values.");
+            throw new KernelRuntimeException(e, "Unable to save values.");
         }
 
         _success = _matchChildrenCompositeEntity(pattern, hostGraph);
@@ -184,7 +184,7 @@ public class GraphMatcher extends GraphAnalyzer {
         try {
             _restoreValues(pattern, records);
         } catch (IllegalActionException e) {
-            throw new KernelRuntimeException(e, "Cannot restore values.");
+            throw new KernelRuntimeException(e, "Unable to restore values.");
         }
 
         assert _lookbackList.isEmpty();
@@ -510,16 +510,16 @@ public class GraphMatcher extends GraphAnalyzer {
         }
 
         if (success) {
-        	for (Object portObject : patternActor.portList()) {
-        		if (!_ignoreObject(portObject)) {
-        			patternList.add(portObject);
-        		}
-        	}
-        	for (Object portObject : hostActor.portList()) {
-        		if (!_ignoreObject(portObject)) {
-        			hostList.add(portObject);
-        		}
-        	}
+            for (Object portObject : patternActor.portList()) {
+                if (!_ignoreObject(portObject)) {
+                    patternList.add(portObject);
+                }
+            }
+            for (Object portObject : hostActor.portList()) {
+                if (!_ignoreObject(portObject)) {
+                    hostList.add(portObject);
+                }
+            }
         }
 
         success = success && _matchObject(patternList, hostList);
@@ -535,11 +535,11 @@ public class GraphMatcher extends GraphAnalyzer {
             CompositeEntity patternEntity, CompositeEntity hostEntity) {
         ObjectList patternList = new ObjectList();
         if (!_ignoreObject(patternEntity)) {
-        	patternList.add(patternEntity);
+            patternList.add(patternEntity);
         }
         ObjectList hostList = new ObjectList();
         if (!_ignoreObject(hostEntity)) {
-        	hostList.add(hostEntity);
+            hostList.add(hostEntity);
         }
         IndexedLists markedList = new IndexedLists();
         boolean added = true;
@@ -579,16 +579,16 @@ public class GraphMatcher extends GraphAnalyzer {
 
         int matchSize = _match.size();
 
-        ParameterIterator configIterator;
+        ParameterIterator paramIterator;
         try {
-            configIterator = new ParameterIterator(patternEntity);
+            paramIterator = new ParameterIterator(patternEntity);
         } catch (IllegalActionException e) {
             return false;
         }
 
         boolean success = false;
 
-        while (!success && configIterator.next()) {
+        while (!success && paramIterator.next()) {
             success = true;
 
             ObjectList patternList = new ObjectList();
@@ -600,7 +600,8 @@ public class GraphMatcher extends GraphAnalyzer {
             Director hostDirector = null;
             if (patternEntity instanceof CompositeActor
                     && ((CompositeActor) patternEntity).isOpaque()) {
-                patternDirector = ((CompositeActor) patternEntity).getDirector();
+                patternDirector =
+                    ((CompositeActor) patternEntity).getDirector();
                 if (_ignoreObject(patternDirector)) {
                     patternDirector = null;
                 }
@@ -639,16 +640,16 @@ public class GraphMatcher extends GraphAnalyzer {
             }
 
             if (success) {
-            	for (Object portObject : patternEntity.portList()) {
-            		if (!_ignoreObject(portObject)) {
-            			patternList.add(portObject);
-            		}
-            	}
-            	for (Object portObject : hostEntity.portList()) {
-            		if (!_ignoreObject(portObject)) {
-            			hostList.add(portObject);
-            		}
-            	}
+                for (Object portObject : patternEntity.portList()) {
+                    if (!_ignoreObject(portObject)) {
+                        patternList.add(portObject);
+                    }
+                }
+                for (Object portObject : hostEntity.portList()) {
+                    if (!_ignoreObject(portObject)) {
+                        hostList.add(portObject);
+                    }
+                }
             }
 
             success = success && _matchObject(patternList, hostList);
@@ -818,11 +819,11 @@ public class GraphMatcher extends GraphAnalyzer {
         if (success) {
             ObjectList patternList = new ObjectList();
             if (!_ignoreObject(patternContainer)) {
-            	patternList.add(patternContainer);
+                patternList.add(patternContainer);
             }
             ObjectList hostList = new ObjectList();
             if (!_ignoreObject(hostContainer)) {
-            	hostList.add(hostContainer);
+                hostList.add(hostContainer);
             }
 
             Token collapsingToken = _getAttribute(patternContainer
@@ -862,14 +863,14 @@ public class GraphMatcher extends GraphAnalyzer {
                 for (Object relationObject : patternPort.linkedRelationList()) {
                     Relation relation = (Relation) relationObject;
                     if (!_ignoreObject(relation)
-                    		&& !_ignoreRelation(relation)) {
+                            && !_ignoreRelation(relation)) {
                         patternList.add(relation);
                     }
                 }
                 for (Object relationObject : hostPort.linkedRelationList()) {
                     Relation relation = (Relation) relationObject;
                     if (!_ignoreObject(relation)
-                    		&& !_ignoreRelation(relation)) {
+                            && !_ignoreRelation(relation)) {
                         hostList.add(relation);
                     }
                 }
@@ -904,16 +905,16 @@ public class GraphMatcher extends GraphAnalyzer {
         if (success) {
             ObjectList patternList = new ObjectList();
             for (Object relationObject : patternRelation.linkedObjectsList()) {
-            	if (!_ignoreObject(relationObject)) {
-            		patternList.add(relationObject);
-            	}
+                if (!_ignoreObject(relationObject)) {
+                    patternList.add(relationObject);
+                }
             }
 
             ObjectList hostList = new ObjectList();
             for (Object relationObject : hostRelation.linkedObjectsList()) {
-            	if (!_ignoreObject(relationObject)) {
-            		hostList.add(relationObject);
-            	}
+                if (!_ignoreObject(relationObject)) {
+                    hostList.add(relationObject);
+                }
             }
 
             success = _matchObject(patternList, hostList);
@@ -962,6 +963,7 @@ public class GraphMatcher extends GraphAnalyzer {
             Token value = records.get(iterator);
             if (value != null) {
                 iterator.setToken(value);
+                iterator.validate();
             }
         }
     }
@@ -1212,7 +1214,6 @@ public class GraphMatcher extends GraphAnalyzer {
                         terminate = false;
                         break;
                     } catch (IllegalActionException e) {
-                        iterator.clearValue();
                     }
                     i--;
                 }

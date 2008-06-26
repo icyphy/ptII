@@ -33,7 +33,6 @@ import ptolemy.actor.gt.PreservationAttribute;
 import ptolemy.actor.ptalon.PtalonActor;
 import ptolemy.actor.ptalon.PtalonEvaluator;
 import ptolemy.actor.ptalon.PtalonRuntimeException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
