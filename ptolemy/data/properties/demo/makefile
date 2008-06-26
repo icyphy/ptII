@@ -45,6 +45,10 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	properties
+PTCLASSJAR =	$(PTPACKAGE).jar
+
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
 	testDefs.tcl

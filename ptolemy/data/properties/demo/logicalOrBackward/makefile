@@ -1,10 +1,9 @@
-# Makefile for Java Ptolemy Data Properties
+# Makefile for Ptolemy Data Properties Demo LogicalOrBackward
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Version: $Id: makefile,v 1.2 2006/10/27 22:10:06 cxh Exp $
+# @Author: Christopher Brooks
 #
-# $Id: makefile,v 1.3 2008/05/13 23:13:24 mankit Exp $
-#
-# @Copyright (c) 2007 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -13,25 +12,30 @@
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
 #
-# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-# ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-# THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA  OR RESEARCH IN MOTION
+# LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL,
+# OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS SOFTWARE AND
+# ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA OR
+# RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-# CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# CALIFORNIA  AND RESEARCH IN MOTION LIMITED
+# HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
 ME =		ptolemy/data/properties/demo/logicalOrBackward
 
-# Root of the Ptolemy II directory
+DIRS =
+
+# Root of the Java directory
 ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
@@ -40,55 +44,37 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
-	
-JSRCS = 
+# Used to build jar files
+PTPACKAGE = 	properties
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Non-graphical Java tests written in Tcl
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JSIMPLE_TESTS) to EXTRA_SRCS
-JSIMPLE_TESTS = \
-	dummy.tcl
+# Keep this list alphabetized.
+JSRCS =
 
-# Graphical Java tests that use Tcl.
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
-JGRAPHICAL_TESTS = \
-	dummy.tcl
+OTHER_FILES_TO_BE_JARED = \
+	multipleActorsHierarchyLoopFSM.xml
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) # $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS)
-	
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl \
-	auto
-
-JCLASS =	$(JSRCS:%.java=%.class)
-
-# Don't include all or install rules here, we want the user
-# to run 'make tests' to run the tests.
-
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
-
-test_java: jclass
-
-# PtolemyII-wide test definitions.
-KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =
 
 
-# These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_properties
-	$(JTCLSH) alljtests.tcl
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-# 'make clean' removes $(KRUFT)
-KRUFT = 
+JCLASS = $(JSRCS:%.java=%.class)
 
+all: jclass
+	@echo "To run the demo, run 'make demo'"
+
+demo:
+	"$(PTII)/bin/vergil" multipleActorsHierarchyLoopFSM.xml
+
+install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

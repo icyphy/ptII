@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Data Properties Demo ConstNonconst
+# Makefile for Ptolemy Data Properties Demo LogicalAND
 #
 # @Version: $Id: makefile,v 1.2 2006/10/27 22:10:06 cxh Exp $
 # @Author: Christopher Brooks
@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/data/properties/demo/constNonconst
+ME =		ptolemy/data/properties/demo/logicalAND
 
 DIRS =
 
@@ -52,7 +52,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	constNonconst.xml
+	multipleActorsHierarchyLoopFSM.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -72,7 +72,7 @@ all: jclass
 	@echo "To run the demo, run 'make demo'"
 
 demo:
-	"$(PTII)/bin/vergil" constNonconst.xml
+	"$(PTII)/bin/vergil" multipleActorsHierarchyLoopFSM.xml
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 
