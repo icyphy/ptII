@@ -309,13 +309,12 @@ public class FIR extends SDFTransformer {
 
         if (input.hasToken(0, _decimationValue)) {
             return super.prefire();
-        } else {
-            if (_debugging) {
-                _debug("Called prefire(), which returns false.");
-            }
-
-            return false;
         }
+        if (_debugging) {
+            _debug("Called prefire(), which returns false.");
+        }
+
+        return false;
     }
 
     /** Perform domain-specific initialization by calling the
@@ -440,7 +439,7 @@ public class FIR extends SDFTransformer {
     /** This class implements a monotonic function of the input port
      *  type.  The result type of this actor is generally the input type,
      *  unless the input type is a FixType, in which case the output
-     *  type will ba a FixType with (in most cases) a different precision.
+     *  type will be a FixType with (in most cases) a different precision.
      */
     private class OutputTypeFunction extends MonotonicFunction {
 
@@ -453,7 +452,9 @@ public class FIR extends SDFTransformer {
         public Object getValue() {
             Type inputType = input.getType();
             Type tapsElementType = BaseType.UNKNOWN;
-            if (taps.getType() != BaseType.UNKNOWN) {
+            Type tapsType = taps.getType();
+            if (!tapsType.equals(BaseType.UNKNOWN)
+                    && ! tapsType.equals(BaseType.ARRAY_BOTTOM)) {
                 tapsElementType = ((ArrayType) taps.getType()).getElementType();
             }
             Type productType = inputType.multiply(tapsElementType);
