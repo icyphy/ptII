@@ -87,7 +87,7 @@ public class ArrayType extends StructuredType
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a type constraint that can be used to contrain
+    /** Return a type constraint that can be used to constrain
      *  another typeable object to have a type related to an
      *  array whose element type is the type of the specified
      *  typeable.  A typical usage of this is as follows:
@@ -247,7 +247,7 @@ public class ArrayType extends StructuredType
                 && _length == argumentType._length;
     }
 
-    /** Return a type constraint that can be used to contrain
+    /** Return a type constraint that can be used to constrain
      *  another typeable object to have a type related to the
      *  element type of the specified typeable.  As a side
      *  effect, the specified typeable is constrained to have an array

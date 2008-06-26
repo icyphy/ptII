@@ -331,7 +331,7 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
-    /** The bottom element of the data type lattice. */
+    /** The bottom element of the array type lattice. */
     public static final ArrayBottomType ARRAY_BOTTOM = new ArrayBottomType();
 
     /** The boolean data type. */
