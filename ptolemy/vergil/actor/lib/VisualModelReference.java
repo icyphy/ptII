@@ -198,6 +198,27 @@ public class VisualModelReference extends ModelReference {
                         "Unrecognized option for closeOnPostfire: "
                                 + closeOnPostfireValue);
             }
+        } if (attribute == modelFileOrURL) {
+            super.attributeChanged(attribute);
+            // If there was previously an effigy or tableau
+            // associated with this model, then delete it.
+            if (_effigy != null) {
+                try {
+                    _effigy.setContainer(null);
+                } catch (NameDuplicationException e) {
+                    throw new InternalErrorException(e);
+                }
+                _effigy = null;
+            }
+            if (_tableau != null) {
+                _tableau.close();
+                try {
+                    _tableau.setContainer(null);
+                } catch (NameDuplicationException e) {
+                    throw new InternalErrorException(e);
+                }
+                _tableau = null;
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -218,17 +239,6 @@ public class VisualModelReference extends ModelReference {
         newActor._effigy = null;
         return newActor;
     }
-    
-    @Override
-    public void initialize() throws IllegalActionException {
-        _effigy = null;
-        super.initialize();
-    }
-    
-    @Override
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-    }    
     
     /** Run a complete execution of the referenced model.  A complete
      *  execution consists of invocation of super.initialize(), repeated
@@ -442,11 +452,11 @@ public class VisualModelReference extends ModelReference {
     /** Store exception thrown in event thread. */
     private Exception _exception = null;
 
-    // Tableau that has been created (if any).
+    /** Tableau that has been created (if any). */
     private Tableau _tableau;
 
-    // Effigy that has been created (if any).
-    private PtolemyEffigy _effigy;    
+    /** Effigy that has been created (if any). */
+    private PtolemyEffigy _effigy;
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
