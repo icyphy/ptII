@@ -602,7 +602,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
             return _varType;
         } catch (IllegalActionException iae) {
-            iae.printStackTrace();
+            // iae.printStackTrace();
             return _declaredType;
         }
     }
