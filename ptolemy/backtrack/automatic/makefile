@@ -141,7 +141,7 @@ ptolemy_makefile:
 	@echo "PTCLASSJAR = \$$(PTPACKAGE).jar" >> ptolemy/makefile
 	@echo "JSRCS = \\" >> ptolemy/makefile
 	@for filename in `cd ptolemy && find . -name "*.java"`; do \
-	  echo "    "$$filename \\ >> ptolemy/makefile; \
+	  echo "    "$$filename \\\ >> ptolemy/makefile; \
 	done
 	@echo >> ptolemy/makefile
 	@echo "OTHER_FILES_TO_BE_JARED = $(shell find . -name \"*.class\")" >> ptolemy/makefile
