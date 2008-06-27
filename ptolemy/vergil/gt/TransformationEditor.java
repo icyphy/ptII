@@ -731,7 +731,7 @@ public class TransformationEditor extends GTFrame implements
                             }
                             object.moveToIndex(i);
                         }
-                    } catch (Exception e) {
+                    } catch (Throwable t) {
                         // Do not add PtalonMatcher to the library.
                     }
                 }
