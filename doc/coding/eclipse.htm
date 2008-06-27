@@ -386,6 +386,41 @@ file is checked on out non-Windows platforms, then the file will have
 enable-auto-props = yes 
 </pre>
 
+Also, uncomment the <CODE>[auto-props]</CODE> and the section below that
+sets the properties for the files.  Also, set props for 
+<CODE>*.tcl</CODE> and <CODE>*.mk</CODE> files.
+
+The bottom of the <CODE>.subversion/config</CODE> file should look like:
+
+<pre>
+### Set enable-auto-props to 'yes' to enable automatic properties
+### for 'svn add' and 'svn import', it defaults to 'no'.
+### Automatic properties are defined in the section 'auto-props'.
+enable-auto-props	 = yes
+
+### Section for configuring automatic properties.
+### The format of the entries is:
+###   file-name-pattern = propname[=value][;propname[=value]...]
+### The file-name-pattern can contain wildcards (such as '*' and
+### '?').  All entries which match will be applied to the file.
+### Note that auto-props functionality must be enabled, which
+### is typically done by setting the 'enable-auto-props' option.
+[auto-props]
+*.c			= svn:eol-style=native
+*.cpp			= svn:eol-style=native
+*.h			= svn:eol-style=native
+*.dsp			= svn:eol-style=CRLF
+*.dsw			= svn:eol-style=CRLF
+*.sh			= svn:eol-style=native;svn:executable
+*.txt			= svn:eol-style=native
+*.png			= svn:mime-type=image/png
+*.jpg			= svn:mime-type=image/jpeg
+Makefile		= svn:eol-style=native
+*.mk			= svn:eol-style=native
+*.tcl			= svn:eol-style=native
+</pre>
+
+
 <p>See <a href="http://svn.haxx.se/users/archive-2003-12/0063.shtml" _target="_top"><code>Subversion Users: Re: Setting svn:eol-style</code>
 
 <p>To set the style on already checked in files, run:
@@ -419,6 +454,11 @@ they will be accessing the tree with <B>read-only</B> Subversion access.
 read/write access:
 <pre>
 svn+ssh://source.eecs.berkeley.edu/home/svn/chess/ptII/trunk
+</pre>
+Or, if your user id on source.eecs is different than your current user id
+on your machine:
+<pre>
+svn co svn+ssh://<I>yourID</I>source.eecs.berkeley.edu/chess/ptII/trunk ptII
 </pre>
 Read/write users will be prompted for their source.eecs.berkeley.edu
 username and password. 
