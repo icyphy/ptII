@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/data/properties/demo/logicalAND
+ME =		ptolemy/data/properties/demo/LogicalAND
 
 DIRS =
 
@@ -45,14 +45,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	properties
+PTPACKAGE = 	LogicalAND
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	multipleActorsHierarchyLoopFSM.xml
+	LogicalAND.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -72,7 +72,7 @@ all: jclass
 	@echo "To run the demo, run 'make demo'"
 
 demo:
-	"$(PTII)/bin/vergil" multipleActorsHierarchyLoopFSM.xml
+	"$(PTII)/bin/vergil" LogicalAND.xml
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 

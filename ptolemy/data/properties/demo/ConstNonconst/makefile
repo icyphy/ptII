@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/data/properties/demo/constNonconst
+ME =		ptolemy/data/properties/demo/ConstNonconst
 
 DIRS =
 
@@ -45,14 +45,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	properties
+PTPACKAGE = 	ConstNonconst
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	constNonconst.xml
+	ConstNonconst.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -72,7 +72,7 @@ all: jclass
 	@echo "To run the demo, run 'make demo'"
 
 demo:
-	"$(PTII)/bin/vergil" constNonconst.xml
+	"$(PTII)/bin/vergil" ConstNonconst.xml
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 
