@@ -1,10 +1,9 @@
-# Makefile for Java Ptolemy Data Properties
+# Makefile for PtolemyII properties demos
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Version: $Id: makefile 47480 2007-12-06 18:25:06Z cxh $
+# @Author: Christopher Brooks (makefile only)
 #
-# $Id: makefile,v 1.3 2008/04/20 05:34:59 mankit Exp $
-#
-# @Copyright (c) 2007 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,71 +30,43 @@
 
 ME =		ptolemy/data/properties/demo
 
-DIRS = \
-	constNonconst \
-	logicalAND \
-	logicalOrBackward
-	
-# Root of the Ptolemy II directory
-ROOT =		../../../..
+# Keep these alphabetical please.
+DIRS = 		constNonconst logicalAND logicalOrBackward
 
-CLASSPATH =	$(ROOT)
+# Root of Ptolemy II directory
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	properties
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
 
-# Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
-	
-JSRCS = 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	constNonconst/constNonconst.jar \
+	logicalAND/logicalAND.jar \
+	logicalOrBackward/logicalOrBackward.jar
 
-# Non-graphical Java tests written in Tcl
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JSIMPLE_TESTS) to EXTRA_SRCS
-JSIMPLE_TESTS = \
-	dummy.tcl
-
-# Graphical Java tests that use Tcl.
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
-JGRAPHICAL_TESTS = \
-	dummy.tcl
-
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) # $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS)
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl \
-	$(DIRS)
+MISC_FILES = 	$(DIRS)
 
-JCLASS =	$(JSRCS:%.java=%.class)
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc
 
-# Don't include all or install rules here, we want the user
-# to run 'make tests' to run the tests.
+all: jclass
+	@echo "To run all the demos, run 'make demo'"
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+install: jclass jars
 
-test_java: jclass
-
-# PtolemyII-wide test definitions.
-KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
-
-
-# These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto test_properties
-	$(JTCLSH) alljtests.tcl
-
-# 'make clean' removes $(KRUFT)
-KRUFT = 
-
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
