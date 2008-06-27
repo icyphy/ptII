@@ -26,11 +26,9 @@
  */
 package ptolemy.actor.gt.ingredients.criteria;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.ValidationException;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,23 +81,19 @@ public class SubclassCriterion extends Criterion {
     }
 
     public NamedObjMatchResult match(NamedObj object) {
-        if (object instanceof ComponentEntity) {
-            if (isSuperclassEnabled()) {
-                try {
-                    Class<?> superclass = Class.forName(getSuperclass());
-                    if (superclass.isInstance(object)) {
-                        return NamedObjMatchResult.MATCH;
-                    } else {
-                        return NamedObjMatchResult.NOT_MATCH;
-                    }
-                } catch (ClassNotFoundException e) {
+        if (isSuperclassEnabled()) {
+            try {
+                Class<?> superclass = Class.forName(getSuperclass());
+                if (superclass.isInstance(object)) {
+                    return NamedObjMatchResult.MATCH;
+                } else {
                     return NamedObjMatchResult.NOT_MATCH;
                 }
-            } else {
-                return NamedObjMatchResult.MATCH;
+            } catch (ClassNotFoundException e) {
+                return NamedObjMatchResult.NOT_MATCH;
             }
         } else {
-            return NamedObjMatchResult.UNAPPLICABLE;
+            return NamedObjMatchResult.MATCH;
         }
     }
 
@@ -125,19 +119,11 @@ public class SubclassCriterion extends Criterion {
             throw new ValidationException("Superclass name must not be "
                     + "empty.");
         }
-        Class<?> superclass;
         try {
-            superclass = Class.forName(_superclass);
+            Class.forName(_superclass);
         } catch (Throwable t) {
             throw new ValidationException("Cannot load class \"" + _superclass
                     + "\".", t);
-        }
-
-        try {
-            superclass.asSubclass(Actor.class);
-        } catch (Throwable t) {
-            throw new ValidationException("Superclass must be a subclass "
-                    + "of \"" + Actor.class.getName() + "\".", t);
         }
     }
 

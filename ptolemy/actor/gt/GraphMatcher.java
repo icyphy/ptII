@@ -1078,7 +1078,29 @@ public class GraphMatcher extends GraphAnalyzer {
 
     private boolean _shallowMatchRelation(Relation patternRelation,
             Relation hostRelation) {
-        // TODO
+        List<?> attributeList = patternRelation.attributeList(
+                GTIngredientsAttribute.class);
+        if (!attributeList.isEmpty()) {
+            try {
+                GTIngredientList ruleList = ((GTIngredientsAttribute)
+                        attributeList.get(0)).getIngredientList();
+                if (ruleList != null) {
+                    for (GTIngredient rule : ruleList) {
+                        if (rule instanceof Criterion) {
+                            Criterion criterion = (Criterion) rule;
+                            if (criterion.isApplicable(patternRelation)) {
+                                if (criterion.match(hostRelation)
+                                        != NamedObjMatchResult.MATCH) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (MalformedStringException e) {
+                return false;
+            }
+        }
         return true;
     }
 
