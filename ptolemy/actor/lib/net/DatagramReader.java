@@ -51,6 +51,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// DatagramReader
@@ -666,6 +667,24 @@ public class DatagramReader extends TypedAtomicActor {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DatagramReader newObject = (DatagramReader) super.clone(workspace);
+
+        // Needed for actor oriented classes 
+        newObject._syncFireAndThread = new Object();
+        newObject._syncDefaultOutputs = new Object();
+        newObject._syncBufferLength = new Object();
+        newObject._syncSocket = new Object();
+
+        return newObject;
     }
 
     /** Broadcast a received datagram, or block awaiting one, or
