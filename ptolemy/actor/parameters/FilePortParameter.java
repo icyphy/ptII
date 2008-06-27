@@ -277,23 +277,23 @@ public class FilePortParameter extends PortParameter implements
 
         try {
             File file = FileUtilities.nameToFile(name, getBaseDirectory());
-
-            if ((file.toString().indexOf("!/") != -1)
-                    || (file.toString().indexOf("!\\") != -1)) {
-                // We have a jar url, try dereferencing it.
-                // ModelReference.xml needed this under Webstart.
-                try {
-                    URL possibleJarURL = ClassUtilities
+            if (file != null) {
+                if ((file.toString().indexOf("!/") != -1)
+                        || (file.toString().indexOf("!\\") != -1)) {
+                    // We have a jar url, try dereferencing it.
+                    // ModelReference.xml needed this under Webstart.
+                    try {
+                        URL possibleJarURL = ClassUtilities
                             .jarURLEntryResource(name);
-
-                    if (possibleJarURL != null) {
-                        file = new File(possibleJarURL.getFile());
+                        
+                        if (possibleJarURL != null) {
+                            file = new File(possibleJarURL.getFile());
+                        }
+                    } catch (Throwable throwable) {
+                        //Ignored, our attempt failed
                     }
-                } catch (Throwable throwable) {
-                    //Ignored, our attempt failed
                 }
-            }
-
+            }   
             return file;
         } catch (IllegalArgumentException ex) {
             // Java 1.4.2 some times reports:

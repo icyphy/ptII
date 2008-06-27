@@ -52,6 +52,7 @@ JSRCS = \
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.
 JSIMPLE_TESTS = \
+	FilePortParameter.tcl \
 	ParameterSet.tcl \
 	ParameterSetModel.tcl \
 	SharedParameter.tcl 
