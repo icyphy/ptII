@@ -37,6 +37,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 /**
 
@@ -60,11 +61,12 @@ public class IterativeParameter extends Parameter implements ValueIterator {
         super(container, name);
 
         initial = new Parameter(this, "initial");
-        initial.addValueListener(this);
         constraint = new Parameter(this, "constraint");
         constraint.setTypeEquals(BaseType.BOOLEAN);
-        constraint.addValueListener(this);
         next = new Parameter(this, "next");
+
+        setTypeAtLeast(initial);
+        setTypeAtLeast(next);
     }
 
     public void attributeChanged(Attribute attribute)
@@ -77,6 +79,14 @@ public class IterativeParameter extends Parameter implements ValueIterator {
         } else if (attribute == constraint) {
             _validateConstraint();
         }
+    }
+
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        IterativeParameter newObject =
+            (IterativeParameter) super.clone(workspace);
+        newObject.setTypeAtLeast(newObject.initial);
+        newObject.setTypeAtLeast(newObject.next);
+        return newObject;
     }
 
     public Token initial() throws IllegalActionException {
