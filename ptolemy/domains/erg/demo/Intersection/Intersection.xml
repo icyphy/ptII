@@ -5,9 +5,9 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="StopTime">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="AnimationDelay">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
@@ -36,7 +36,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 75.0]">
         </property>
     </property>
     <property name="MeanCarArrivalEW" class="ptolemy.data.expr.Parameter" value="0.2">
@@ -55,7 +55,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 75.0]">
         </property>
     </property>
     <property name="MeanPedArrivalNS" class="ptolemy.data.expr.Parameter" value="1.5">
@@ -74,7 +74,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 95.0]">
         </property>
     </property>
     <property name="MeanPedArrivalEW" class="ptolemy.data.expr.Parameter" value="1.5">
@@ -93,7 +93,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 95.0]">
         </property>
     </property>
     <property name="RedDurationNS" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -112,7 +112,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 115.0]">
         </property>
     </property>
     <property name="RedDurationEW" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -131,7 +131,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 115.0]">
         </property>
     </property>
     <property name="GreenDurationNS" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -150,7 +150,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 135.0]">
         </property>
     </property>
     <property name="GreenDurationEW" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -169,7 +169,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 135.0]">
         </property>
     </property>
     <property name="YellowDurationNS" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -188,7 +188,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 155.0]">
         </property>
     </property>
     <property name="YellowDurationEW" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -207,7 +207,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 155.0]">
         </property>
     </property>
     <property name="CarCrossTimeNS" class="ptolemy.data.expr.Parameter" value="0.065">
@@ -226,7 +226,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 175.0]">
         </property>
     </property>
     <property name="CarCrossTimeEW" class="ptolemy.data.expr.Parameter" value="0.065">
@@ -245,7 +245,45 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 175.0]">
+        </property>
+    </property>
+    <property name="StopTime" class="ptolemy.data.expr.Parameter" value="1000.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 195.0]">
+        </property>
+    </property>
+    <property name="AnimationDelay" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 195.0]">
         </property>
     </property>
     <property name="RequestPolicyFile" class="ptolemy.data.expr.FileParameter" value="BerkeleyPolicy.xml">
@@ -264,15 +302,15 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 215.0]">
         </property>
     </property>
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 40.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="332.0">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="183.0">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="203.0">
         </property>
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
         </property>
@@ -282,25 +320,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Parameters">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 50.0]">
-        </property>
-    </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Thomas Huining Feng</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 45.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -318,7 +338,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 10.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 5.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -350,11 +370,11 @@ pedestrian requests.
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(Try setting it to ManhattanPolicy.xml.)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 220.0]">
         </property>
     </property>
     <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 255.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="332.0">
         </property>
@@ -368,10 +388,10 @@ pedestrian requests.
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Output">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 260.0]">
         </property>
     </property>
-    <property name="MaxCarWaitingNS" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="MaxCarWaitingNS" class="ptolemy.data.expr.Parameter" value="1812">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -387,10 +407,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 290.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxcarnum_ns (Sun, Jun 29 2008 15:26:31.070 -0700)">
         </property>
     </property>
-    <property name="MaxCarWaitingEW" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="MaxCarWaitingEW" class="ptolemy.data.expr.Parameter" value="1747">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -406,10 +428,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 290.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxcarnum_ew (Sun, Jun 29 2008 15:26:31.070 -0700)">
         </property>
     </property>
-    <property name="MaxPedWaitingNS" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="MaxPedWaitingNS" class="ptolemy.data.expr.Parameter" value="5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -425,10 +449,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 310.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxpednum_ns (Sun, Jun 29 2008 15:26:31.070 -0700)">
         </property>
     </property>
-    <property name="MaxPedWaitingEW" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="MaxPedWaitingEW" class="ptolemy.data.expr.Parameter" value="5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -444,10 +470,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 310.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxpednum_ew (Sun, Jun 29 2008 15:26:31.070 -0700)">
         </property>
     </property>
-    <property name="AverageCarWaitingNS" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="AverageCarWaitingNS" class="ptolemy.data.expr.Parameter" value="852.7996492566908">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -463,10 +491,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 330.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.avgcarnum_ns (Sun, Jun 29 2008 15:26:31.070 -0700)">
         </property>
     </property>
-    <property name="AverageCarWaitingEW" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="AverageCarWaitingEW" class="ptolemy.data.expr.Parameter" value="922.474301798184">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -482,10 +512,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 350.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.avgcarnum_ew (Sun, Jun 29 2008 15:26:31.070 -0700)">
         </property>
     </property>
-    <property name="AveragePedWaitingNS" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="AveragePedWaitingNS" class="ptolemy.data.expr.Parameter" value="1.4647706135005">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -501,10 +533,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 370.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.avgpednum_ns (Sun, Jun 29 2008 15:26:31.070 -0700)">
         </property>
     </property>
-    <property name="AveragePedWaitingEW" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="AveragePedWaitingEW" class="ptolemy.data.expr.Parameter" value="1.4895015349237">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -520,7 +554,9 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 390.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.avgpednum_ew (Sun, Jun 29 2008 15:26:31.070 -0700)">
         </property>
     </property>
     <entity name="4WayIntersection" class="ptolemy.actor.TypedCompositeActor">
@@ -1764,7 +1800,7 @@ pedestrian requests.
                 </property>
             </property>
         </property>
-        <property name="CarLightN" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="CarLightN" class="ptolemy.data.expr.Parameter" value="4">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1783,7 +1819,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 45.0]">
             </property>
         </property>
-        <property name="CarLightE" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="CarLightE" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1802,7 +1838,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 65.0]">
             </property>
         </property>
-        <property name="CarLightS" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="CarLightS" class="ptolemy.data.expr.Parameter" value="4">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1821,7 +1857,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 85.0]">
             </property>
         </property>
-        <property name="CarLightW" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="CarLightW" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1840,7 +1876,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 105.0]">
             </property>
         </property>
-        <property name="PedLightN" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="PedLightN" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1859,7 +1895,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 125.0]">
             </property>
         </property>
-        <property name="PedLightE" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="PedLightE" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1878,7 +1914,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 145.0]">
             </property>
         </property>
-        <property name="PedLightS" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="PedLightS" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1897,7 +1933,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 165.0]">
             </property>
         </property>
-        <property name="PedLightW" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="PedLightW" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1958,9 +1994,7 @@ pedestrian requests.
             <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-        </property>
-        <property name="CarCountN" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="CarCountN" class="ptolemy.data.expr.Parameter" value="1792">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1979,7 +2013,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 45.0]">
             </property>
         </property>
-        <property name="CarCountE" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="CarCountE" class="ptolemy.data.expr.Parameter" value="1738">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1998,7 +2032,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 65.0]">
             </property>
         </property>
-        <property name="CarCountS" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="CarCountS" class="ptolemy.data.expr.Parameter" value="1812">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2017,7 +2051,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 85.0]">
             </property>
         </property>
-        <property name="CarCountW" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="CarCountW" class="ptolemy.data.expr.Parameter" value="1745">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2036,7 +2070,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 105.0]">
             </property>
         </property>
-        <property name="PedCountN" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="PedCountN" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2055,7 +2089,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 125.0]">
             </property>
         </property>
-        <property name="PedCountE" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="PedCountE" class="ptolemy.data.expr.Parameter" value="5">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2074,7 +2108,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 145.0]">
             </property>
         </property>
-        <property name="PedCountS" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="PedCountS" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2093,7 +2127,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 165.0]">
             </property>
         </property>
-        <property name="PedCountW" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="PedCountW" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2111,6 +2145,8 @@ pedestrian requests.
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 185.0]">
             </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <entity name="CarLightN" class="CarLight">
             <property name="MeanCarArrival" class="ptolemy.data.expr.Parameter" value="MeanCarArrivalNS">
@@ -2153,7 +2189,7 @@ pedestrian requests.
             </property>
             <property name="MeanPedArrival" class="ptolemy.data.expr.Parameter" value="MeanPedArrivalNS">
             </property>
-            <property name="Light" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="Light" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="R" class="ptolemy.data.expr.Parameter" value="R">
             </property>
@@ -2241,7 +2277,7 @@ pedestrian requests.
             </property>
             <property name="MeanPedArrival" class="ptolemy.data.expr.Parameter" value="MeanPedArrivalEW">
             </property>
-            <property name="Light" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="Light" class="ptolemy.data.expr.Parameter" value="2">
             </property>
             <property name="R" class="ptolemy.data.expr.Parameter" value="R">
             </property>
@@ -2303,7 +2339,7 @@ pedestrian requests.
             </property>
             <property name="MeanPedArrival" class="ptolemy.data.expr.Parameter" value="MeanPedArrivalNS">
             </property>
-            <property name="Light" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="Light" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="R" class="ptolemy.data.expr.Parameter" value="R">
             </property>
@@ -2379,7 +2415,7 @@ pedestrian requests.
             </property>
             <property name="MeanPedArrival" class="ptolemy.data.expr.Parameter" value="MeanPedArrivalEW">
             </property>
-            <property name="Light" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="Light" class="ptolemy.data.expr.Parameter" value="2">
             </property>
             <property name="R" class="ptolemy.data.expr.Parameter" value="R">
             </property>
@@ -3104,8 +3140,8 @@ pedestrian requests.
 <title>Car(R)/Ped(B) - W</title>
 <xLabel>Time (sec)</xLabel>
 <yLabel>Count</yLabel>
-<xRange min="0.0" max="30.0"/>
-<yRange min="0.0" max="80.0"/>
+<xRange min="0.0" max="206.7805064042"/>
+<yRange min="0.0" max="355.0"/>
 </plot>?>
                 </configure>
             </entity>

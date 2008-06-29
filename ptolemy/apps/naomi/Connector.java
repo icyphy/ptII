@@ -1,6 +1,6 @@
 /*
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 2007-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -75,8 +75,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.EffigyFactory;
 import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ModelDirectory;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.Tableau;
@@ -126,6 +130,28 @@ public class Connector extends MoMLApplication {
         super(args);
     }
 
+    public synchronized void executionError(Manager manager, Throwable throwable) {
+        super.executionError(manager, throwable);
+
+        System.out.println("Execution error: " + throwable.getMessage());
+    }
+
+    public synchronized void executionFinished(Manager manager) {
+        super.executionFinished(manager);
+
+        if (_command == Command.EXECUTE) {
+            try {
+                _saveAttributes(_inModel, _attributesPath, true);
+                _outputModel(_inModel);
+                _outputInterface();
+                StringUtilities.exit(0);
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(null, e,
+                        "Unable to save attributes.");
+            }
+        }
+    }
+
     public static void main(final String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -153,16 +179,8 @@ public class Connector extends MoMLApplication {
             return;
         }
 
-        if (_inModelName == null || models().isEmpty()) {
+        if (_inModel == null || models().isEmpty()) {
             throw new IllegalActionException("No input model is specified.");
-        }
-
-        NamedObj model;
-        try {
-            model = _parseInModel();
-        } catch (Exception e) {
-            throw new IllegalActionException(null, e,
-                    "Cannot parse input model.");
         }
 
         // We now decide to load the interface information from the model, and
@@ -170,23 +188,33 @@ public class Connector extends MoMLApplication {
         /*File interfaceFile = _getInterfaceFile();
         _loadInterfaceFromSVN(interfaceFile);*/
 
-        _loadInterfaceFromModel(model);
-
-        File attributesPath = new File(_root, "attributes");
+        _loadInterfaceFromModel(_inModel);
 
         if (_command != Command.LIST) {
-            if (!_pathExists(attributesPath)) {
+            if (!_pathExists(_attributesPath)) {
                 throw new IllegalActionException("Attributes directory \""
-                        + attributesPath + "\" does not exist.");
+                        + _attributesPath + "\" does not exist.");
             }
         }
 
         switch (_command) {
+        case EXECUTE:
+            _loadAttributes(_inModel, _attributesPath, true);
+            try {
+                _openModel(_inModel);
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(null, e,
+                        "Unable to open model.");
+            }
+            runModels();
+            System.out.println("Model execution started.");
+            break;
+
         case LIST:
             HashMap<Attribute, String> sync = new HashMap<Attribute, String>();
             HashMap<Attribute, String> load = new HashMap<Attribute, String>();
             HashMap<Attribute, String> save = new HashMap<Attribute, String>();
-            _list(model, sync, load, save);
+            _list(_inModel, sync, load, save);
             for (String attr : sync.values()) {
                 System.out.println("Sync: " + attr);
             }
@@ -196,24 +224,25 @@ public class Connector extends MoMLApplication {
             for (String attr : save.values()) {
                 System.out.println("Save: " + attr);
             }
+            _outputInterface();
             break;
 
         case LOAD:
-            _loadAttributes(model, attributesPath, true);
-            _outputModel(model);
+            _loadAttributes(_inModel, _attributesPath, true);
+            _outputModel(_inModel);
             _outputInterface();
             break;
 
         case SAVE:
-            _saveAttributes(model, attributesPath, true);
-            _outputModel(model);
+            _saveAttributes(_inModel, _attributesPath, true);
+            _outputModel(_inModel);
             _outputInterface();
             break;
 
         case SYNC:
-            _loadAttributes(model, attributesPath, false);
-            _saveAttributes(model, attributesPath, false);
-            _outputModel(model);
+            _loadAttributes(_inModel, _attributesPath, false);
+            _saveAttributes(_inModel, _attributesPath, false);
+            _outputModel(_inModel);
             _outputInterface();
             break;
         }
@@ -221,6 +250,8 @@ public class Connector extends MoMLApplication {
 
     public static final String[][] COMMAND_OPTIONS = new String[][] {
         {"-cmd", "<command>"},
+        {"    ", "execute (load NAOMI attributes, execute the model, and " +
+                 "save NAOMI attributes"},
         {"    ", "list (list NAOMI attributes)"},
         {"    ", "load (load NAOMI attributes (irregard of modification time)"},
         {"    ", "save (save NAOMI attributes (irregard of modification time)"},
@@ -348,6 +379,11 @@ public class Connector extends MoMLApplication {
             HashMap<Attribute, String> load = new HashMap<Attribute, String>();
             HashMap<Attribute, String> save = new HashMap<Attribute, String>();
             _list(model, sync, load, save);
+            try {
+                _outputInterface();
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(ex);
+            }
 
             Query query = new Query();
             for (Map.Entry<Attribute, String> entry : sync.entrySet()) {
@@ -582,7 +618,8 @@ public class Connector extends MoMLApplication {
     }
 
     public enum Command {
-        LIST("list"), LOAD("load"), SAVE("save"), SYNC("sync");
+        EXECUTE("execute"), LIST("list"), LOAD("load"), SAVE("save"),
+        SYNC("sync");
 
         public String toString() {
             return _name;
@@ -856,36 +893,8 @@ public class Connector extends MoMLApplication {
         }
     }
 
-    protected void _parseArgs(final String[] args) throws Exception {
-        if (args.length == 0) {
-            System.out.println(_usage());
-            System.exit(0);
-        }
-
-        List<String> argsToProcess = new LinkedList<String>();
-
-        for (int i = 0; i < args.length; i++) {
-            if (!_parseConnectorArg(args[i])) {
-                argsToProcess.add(args[i]);
-            }
-        }
-
-        if (_isExpectingValue()) {
-            throw new IllegalActionException("Missing configuration");
-        }
-
-        String[] processedArgs = (String[]) argsToProcess
-                .toArray(new String[argsToProcess.size()]);
-
-        super._parseArgs(processedArgs);
-
-        if (_owner == null) {
-            _owner = "ptII";
-        }
-    }
-
-    protected boolean _parseConnectorArg(String arg)
-    throws IllegalActionException {
+    protected boolean _parseArg(String arg)
+    throws Exception {
         if (arg.startsWith("-")) {
             arg = arg.toLowerCase();
             if (_isExpectingValue()) {
@@ -894,7 +903,7 @@ public class Connector extends MoMLApplication {
             } else if (arg.equals("-cmd") && _command == null) {
                 _expectingCommand = true;
                 return true;
-            } else if (arg.equals("-in") && _inModelName == null) {
+            } else if (arg.equals("-in") && _inModel == null) {
                 _expectingInModelName = true;
                 return true;
             } else if (arg.equals("-out") && _outModelName == null) {
@@ -917,7 +926,7 @@ public class Connector extends MoMLApplication {
             }
             throw new IllegalActionException("Unknown command: " + arg);
         } else if (_expectingInModelName) {
-            _inModelName = arg;
+            _parseInModel(arg);
             _expectingInModelName = false;
             return true;
         } else if (_expectingOutModelName) {
@@ -930,10 +939,24 @@ public class Connector extends MoMLApplication {
             return true;
         } else if (_expectingRoot) {
             _root = arg;
+            _attributesPath = new File(arg, "attributes");
             _expectingRoot = false;
             return true;
         }
-        return false;
+        return super._parseArg(arg);
+    }
+
+    protected void _parseArgs(final String[] args) throws Exception {
+        if (args.length == 0) {
+            System.out.println(_usage());
+            System.exit(0);
+        }
+
+        super._parseArgs(args);
+
+        if (_owner == null) {
+            _owner = "ptII";
+        }
     }
 
     protected void _saveAttributes(NamedObj model, File attributesPath,
@@ -1065,11 +1088,17 @@ public class Connector extends MoMLApplication {
     }
 
     private File _getInterfaceFile() throws IllegalActionException {
-        File interfaceFile = new File(new File(new File(_root, "interfaces"),
-                _owner), _owner + "_interface.xml");
-        if (!(interfaceFile.exists() && interfaceFile.isFile())) {
+        File interfacePath = new File(new File(_root, "interfaces"), _owner);
+        if (!interfacePath.exists() || !interfacePath.isDirectory()) {
+            if (!interfacePath.mkdirs()) {
+                throw new IllegalActionException("Unable to create path to " +
+                        "interface file " + interfacePath.getPath() + ".");
+            }
+        }
+        File interfaceFile = new File(interfacePath, _owner + "_interface.xml");
+        if (interfaceFile.exists() && !interfaceFile.isFile()) {
             throw new IllegalActionException("Interface file " +
-                    interfaceFile.getPath() + " does not exist.");
+                    interfaceFile.getPath() + " is not a file.");
         }
         return interfaceFile;
     }
@@ -1088,11 +1117,17 @@ public class Connector extends MoMLApplication {
         return attributes;
     }
 
-    private NamedObj _parseInModel() throws Exception {
-        URL inURL = specToURL(_inModelName);
+    private void _parseInModel(String fileName) throws Exception {
+        URL inURL = specToURL(fileName);
         URL base = inURL;
-        MoMLParser parser = new MoMLParser();
-        return parser.parse(base, inURL);
+        String identifier = inURL.toExternalForm();
+        ModelDirectory directory = _configuration.getDirectory();
+        EffigyFactory factory = (EffigyFactory) _configuration.getEntity(
+                "effigyFactory");
+        PtolemyEffigy effigy = (PtolemyEffigy) factory.createEffigy(directory,
+                base, inURL);
+        effigy.identifier.setExpression(identifier);
+        _inModel = effigy.getModel();
     }
 
     private Document _parseXML(File file) throws IllegalActionException {
@@ -1144,6 +1179,8 @@ public class Connector extends MoMLApplication {
         }
     }
 
+    private File _attributesPath;
+
     private Command _command;
 
     private URL _configurationURL;
@@ -1158,7 +1195,7 @@ public class Connector extends MoMLApplication {
 
     private boolean _expectingRoot;
 
-    private String _inModelName;
+    private NamedObj _inModel;
 
     private Set<String> _inputAttributes = new HashSet<String>();
 
