@@ -73,6 +73,7 @@ public class IterativeParameter extends Parameter implements ValueIterator {
 
         if (attribute == initial) {
             setToken(initial.getToken());
+            validate();
         } else if (attribute == constraint) {
             _validateConstraint();
         }
