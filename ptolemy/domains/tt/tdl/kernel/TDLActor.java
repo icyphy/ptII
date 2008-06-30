@@ -1,5 +1,8 @@
 package ptolemy.domains.tt.tdl.kernel;
 
+import java.util.Iterator;
+
+import ptolemy.actor.IOPort;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -75,5 +78,16 @@ public class TDLActor extends FSMActor {
 			workspace().doneWriting();
 		}
 	}
+	
+    protected void _readInput(IOPort port) throws IllegalActionException { 
+        Iterator inPorts = inputPortList().iterator(); 
+        while (inPorts.hasNext() && !_stopRequested) {
+            IOPort p = (IOPort) inPorts.next();
+            int width = p.getWidth(); 
+            for (int channel = 0; channel < width; ++channel) {
+                _readInputs(p, channel);
+            }
+        }
+    }
 
 }

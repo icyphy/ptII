@@ -146,4 +146,6 @@ public class TDLTransition extends Transition {
      */
     public List requiredPorts;
 
+    public long invocationPeriod;
+
 }

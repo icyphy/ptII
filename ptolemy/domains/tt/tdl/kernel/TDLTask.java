@@ -102,7 +102,7 @@ public class TDLTask extends TypedCompositeActor {
 	
 	
 	
-	public Collection getSensorsReadFrom(Collection refinementInputPorts, Collection moduleInputPorts) {
+	public Collection getSensorsReadFrom(List refinementInputPorts, List moduleInputPorts) {
 	    if (_readsFromSensors == null) {
 	        _readsFromSensors = new ArrayList();
         	List refinementInputs = null;
@@ -114,7 +114,9 @@ public class TDLTask extends TypedCompositeActor {
                 refinementInputs.retainAll(refinementInputPorts);
             }
             for (Iterator inputIt = refinementInputs.iterator(); inputIt.hasNext();) {
-                _readsFromSensors.add( ((IOPort)inputIt.next()).connectedPortList().retainAll(moduleInputPorts));
+                List l = new ArrayList();
+                l.addAll(((IOPort)inputIt.next()).connectedPortList());
+                _readsFromSensors.add( l.retainAll(moduleInputPorts));
             }
 	    }
 	    return _readsFromSensors;
@@ -162,4 +164,10 @@ public class TDLTask extends TypedCompositeActor {
 	}
 	
 	private ArrayList _readsFromSensors;
+
+    public Long offset;
+
+    public Long invocationPeriod;
+
+    public Long let;
 }

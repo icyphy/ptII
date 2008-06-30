@@ -163,7 +163,7 @@ public class TDLActionsGraph {
      * @return
      * @throws TDLModeSchedulerException
      */
-    private LetTask _analyzeSlotSelection(Actor actor, long modePeriod)
+    private LetTask _analyzeSlotSelection(TDLTask actor, long modePeriod)
             throws TDLModeSchedulerException {
         String slots = TDLModeScheduler.getSlots((NamedObj) actor);
         int frequency = TDLModeScheduler.getFrequency((NamedObj) actor);
@@ -210,8 +210,11 @@ public class TDLActionsGraph {
                     * ((Integer) invocations.get(0) - 1);
             let = modePeriod / let;
             inv = modePeriod / inv;
-            ArrayList list = new ArrayList();
-            return new LetTask(actor, let, inv, offset);
+            
+            actor.let = let;
+            actor.invocationPeriod = inv;
+            actor.offset = offset;
+            return new LetTask(actor, let, inv, offset); 
         } else { // schedule single task as a set of tasks with different
                     // lets and invocation periods
             throw new TDLModeSchedulerException("Task " + actor.getName()
@@ -501,7 +504,7 @@ public class TDLActionsGraph {
      * @param actor
      * @return
      */
-    private Node _getNode(long invocationTime, Actor actor) {
+    private Node _getNode(long invocationTime, Object actor) {
         for (Iterator it = _graph.nodes().iterator(); it.hasNext();) {
             Node node = (Node) it.next();
             TDLAction gnode = (TDLAction) node.getWeight();
@@ -567,9 +570,17 @@ public class TDLActionsGraph {
                 for (Iterator it = sensors.iterator(); it.hasNext();) {
                     // if not already been read at this time instant
                     IOPort sensor = (IOPort) it.next();
-                    if (!((List) _tmpReadSensors.get(i)).contains(sensor))
+                    if (!((List) _tmpReadSensors.get(i)).contains(sensor)) { 
                         prev = _createNode(i, TDLAction.READSENSOR, sensor,
                                 prev);
+                    } else {
+                        Node node = _getNode(i, sensor);
+                        if (!_graph.edgeExists(prev, node)) {
+                            Edge edge = new Edge(prev, node);
+                            _graph.addEdge(edge);
+                        }
+                        prev = node;
+                    }
                 }
 
                 for (Iterator it = actor.inputPortList().iterator(); it
@@ -614,7 +625,7 @@ public class TDLActionsGraph {
     private void _getTransitions(State state, Refinement refinement,
             long modePeriod) throws IllegalActionException,
             TDLModeSchedulerException {
-        // sort transitions here
+        // sort transitions here - TODO: sort attribute, priority
 
         HashMap sensorsAndTransitions = new HashMap();
 
@@ -624,6 +635,7 @@ public class TDLActionsGraph {
             int frequency = TDLModeScheduler
                     .getFrequency((NamedObj) transition);
             long invocationPeriod = modePeriod / frequency;
+            transition.invocationPeriod = invocationPeriod;
             for (int i = 0; i < frequency; i++) {
                 List l = (List) sensorsAndTransitions.get(i);
                 if (l == null) {

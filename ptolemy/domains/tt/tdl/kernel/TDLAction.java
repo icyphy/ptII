@@ -86,7 +86,7 @@ public class TDLAction {
      * This class compares two TDL actions.
      * @author Patricia Derler
      */
-    public static class TDLActionComparator implements Comparator  {
+    public class TDLActionComparator implements Comparator  {
 
         /**
          * Compare two TDLEvents. Two TDL Events are the same if all
@@ -103,7 +103,7 @@ public class TDLAction {
             long compareTime = tdlEvent1.time - tdlEvent2.time;
             if (compareTime != 0)
                 return (int)compareTime;
-            else if (tdlEvent1.actionType != tdlEvent2.actionType)
+            else if (tdlEvent1.actionType != tdlEvent2.actionType) 
                 return tdlEvent1.actionType - tdlEvent2.actionType;
             else
                 return tdlEvent1.object.toString().compareTo(tdlEvent2.object.toString());

@@ -2,6 +2,7 @@ package ptolemy.domains.tt.tdl.kernel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,7 +40,7 @@ import ptolemy.domains.fsm.kernel.ModalDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.domains.fsm.modal.Refinement;
-import ptolemy.domains.fsm.modal.RefinementPort;
+import ptolemy.domains.fsm.modal.RefinementPort; 
 import ptolemy.graph.Edge;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
@@ -98,7 +99,7 @@ public class TDLModuleDirector extends ModalDirector {
         if (!_executeNow()) {
             return;
         }
-
+        
         boolean continueSchedule = true;
         getController().readInputs();
 
@@ -183,6 +184,69 @@ public class TDLModuleDirector extends ModalDirector {
                             .currentState())).modePeriod;
         }
     }
+    
+//    public void fire() throws IllegalActionException {
+//        _currentWCET = 0;
+//        Time time = getModelTime();
+//        List actions = (List) _eventQueue.get(time);
+//        for (Iterator it = _sensorEventQueues.keySet().iterator(); it.hasNext(); ) {
+//            HashMap eventQueue = (HashMap) it.next();
+//            actions.add(eventQueue.get(time));
+//        }
+//        if (actions.size() == 0) // nothing to do
+//            return;
+//        else {
+//            // TODO sort must also consider fast tasks
+//            Collections.sort(actions, new TDLAction.TDLActionComparator());
+//            for (Iterator it = actions.iterator(); it.hasNext(); ) {
+//                TDLAction action = (TDLAction) it.next();
+//                if (!_hasGuard((NamedObj) action.object) || _guardIsTrue((NamedObj) action.object)) {
+//                    switch (action.actionType) {
+//                        case TDLAction.WRITEOUTPUT:
+//                            _updateOutputPort((IOPort) action.object);
+//                            _currentWCET = 0.0;
+//                            break;
+//                        case TDLAction.WRITEACTUATOR:
+//                            _updateActuator((IOPort) action.object);
+//                            break;
+//                        case TDLAction.MODESWITCH:
+//                            if (_chooseTransition((Transition) action.object)) {
+//                                _eventQueue.clear();
+//                                _sensorEventQueues.clear();
+//                                _computeInitialEvents(((Transition) action.object).g)
+//                            }
+//                            break;
+//                        case TDLAction.READSENSOR:
+//                            break;
+//                        case TDLAction.READINPUT:
+//                            Director executiveDirector = ((Actor) getContainer()
+//                                    .getContainer()).getDirector();
+//                            if (i > 0) {
+//                                fireAt((TDLModule) getContainer(), getModelTime());
+//                                return;
+//                            }
+//                            i--;
+//                            _updateInputPort((IOPort) action.object);
+//                            break;
+//                        case TDLAction.EXECUTETASK:
+//                            Actor actor = (Actor) action.object;
+//                            if (actor.prefire()) { // TODO prefire should never return
+//                                // false ?
+//                                actor.iterate(1);
+//                                actor.postfire();
+//                                _currentWCET = getWorstCaseET(actor);
+//                                if (_currentWCET > 0)
+//                                    break;
+//                            } else {
+//                                System.out.println(actor.getName()
+//                                        + " .prefire() = false");
+//                            }
+//                            break;
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Get mode period from state parameter "period".
@@ -217,6 +281,7 @@ public class TDLModuleDirector extends ModalDirector {
         super.initialize();
         _resetReceivers();
         _graph = new TDLActionsGraph(((TDLModule)getContainer()), getController());
+        // this does some initializations in TDL task and transition like computing the LET
         _graph.buildGraph(getController().currentState());
         _buildSchedule();
         _initializeOutputPorts();
@@ -376,6 +441,8 @@ public class TDLModuleDirector extends ModalDirector {
 
         return wasTransferred;
     }
+    
+
 
     /**
      * Build the schedule for the TDL module by reading all model elements.
@@ -504,6 +571,29 @@ public class TDLModuleDirector extends ModalDirector {
             return false;
         }
         return true;
+    }
+
+    private void _enqueueEvent(Time timestamp, TDLAction action) {
+        ArrayList l = (ArrayList) _eventQueue.get(timestamp);
+        if (l == null) {
+            l = new ArrayList();
+            _eventQueue.put(timestamp, l);
+        }
+        l.add(action);
+    }
+    
+    private void _enqueueSensorEvent(IOPort sensor, Time timestamp, TDLAction action) {      
+        HashMap map = (HashMap) _sensorEventQueues.get(sensor);
+        if (map == null) {
+            map = new HashMap();
+            _sensorEventQueues.put(timestamp, map);
+        }
+        ArrayList l = (ArrayList) map.get(timestamp);
+        if (l == null) {
+            l = new ArrayList();
+            _eventQueue.put(timestamp, l);
+        }
+        l.add(action);
     }
 
     /**
@@ -934,6 +1024,9 @@ public class TDLModuleDirector extends ModalDirector {
             }
         }
     }
+    
+    private HashMap _eventQueue;
+    private HashMap _sensorEventQueues;
     
     /**
      * Current node in the TDL actions graph.
