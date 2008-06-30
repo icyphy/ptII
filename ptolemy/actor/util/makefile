@@ -61,9 +61,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	ActorTypeUtil.java \
+	BooleanDependency.java \
 	CalendarQueue.java \
+	CausalityInterface.java \
+	CausalityInterfaceForComposites.java \
 	ConstVariableModelAnalysis.java \
 	CQComparator.java \
+	Dependency.java \
 	DFUtilities.java \
 	DependencyDeclaration.java \
 	ExplicitChangeContext.java \
@@ -74,6 +78,7 @@ JSRCS = \
 	FunctionDependencyOfCompositeActor.java \
 	FuzzyDoubleComparator.java \
 	GeneralComparator.java \
+	RealDependency.java \
 	SuperdenseTime.java \
 	Time.java \
 	TimedEvent.java \

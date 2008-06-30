@@ -39,9 +39,13 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.parameters.SharedParameter;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -244,6 +248,46 @@ public class Director extends Attribute implements Executable {
         }
 
         super.attributeChanged(attribute);
+    }
+
+    /** Return a default causality interface for the specified actor.
+     *  Director subclasses should override this if
+     *  need specialized causality interfaces. The argument may
+     *  be the actor that contains this director, in which case
+     *  the director should return a suitable causality interface
+     *  that represents the behavior of an opaque composite actor
+     *  containing this director. Or it may be an actor that gets
+     *  fired by this director, in which case the director should
+     *  return a causality interface suitable for the domain.
+     *  The default behavior is that if the specified actor is
+     *  composite, it returns a BooleanDependencyForComposite.
+     *  Otherwise, it returns a BooleanDependency.
+     *  Note that this method is called by the actor's
+     *  getCausalityInterface() method. Domain-specific actors
+     *  may override that method and directly return the appropriate
+     *  dependency without delegating to their director.
+     *  @param actor The actor which a causality interface is being
+     *   requested.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports.
+     */
+    public CausalityInterface defaultCausalityInterface(Actor actor) {
+        // NOTE: This cast is currently safe. Will it always be?
+        if (((ComponentEntity)actor).isAtomic()) {
+            return new CausalityInterface(actor, BooleanDependency.OTIMES_IDENTITY);
+        }
+        if (getContainer() == actor) {
+            // The actor is the composite under the control of this director.
+            return new CausalityInterfaceForComposites(
+                    actor, BooleanDependency.OTIMES_IDENTITY);
+        }
+        if (((ComponentEntity)actor).isOpaque()) {
+            // Delegate to its director.
+            return actor.getCausalityInterface();
+        }
+        // The actor must be a transparent composite actor.
+        throw new InternalErrorException(
+                "Cannot get causality interface for a transparent composite actor.");
     }
 
     /** Iterate all the deeply contained actors of the

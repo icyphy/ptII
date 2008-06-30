@@ -27,7 +27,12 @@
  */
 package ptolemy.domains.de.lib;
 
+import ptolemy.actor.IOPort;
+import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CalendarQueue;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.Dependency;
+import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
@@ -188,6 +193,27 @@ public class TimedDelay extends DETransformer {
         }
     }
 
+    /** Override the base class to return a causality interface that
+     *  indicates that the output does not depend (immediately) on
+     *  the input.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports.
+     */
+    public CausalityInterface getCausalityInterface() {
+        if (_causalityInterface == null) {
+            _causalityInterface = new CausalityInterface(
+                    this, BooleanDependency.OTIMES_IDENTITY) {
+                public Dependency getDependency(IOPort input, IOPort output) {
+                    if (input == TimedDelay.this.input && output == TimedDelay.this.output) {
+                        return BooleanDependency.valueOf(false);
+                    }
+                    return _defaultDependency;
+                }
+            };
+        }
+        return _causalityInterface;
+    }
+
     /** Initialize the states of this actor.
      *  @exception IllegalActionException If a derived class throws it.
      */
@@ -262,19 +288,18 @@ public class TimedDelay extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Current input.
-     */
+    /** The causality interface, if it has been created. */
+    private CausalityInterface _causalityInterface;
+
+    /** Current input. */
     protected Token _currentInput;
 
-    /** Current output.
-     */
+    /** Current output. */
     protected Token _currentOutput;
 
-    /** The amount of delay.
-     */
+    /** The amount of delay. */
     protected double _delay;
 
-    /** A local event queue to store the delayed output tokens.
-     */
+    /** A local event queue to store the delayed output tokens. */
     protected CalendarQueue _delayedOutputTokens;
 }

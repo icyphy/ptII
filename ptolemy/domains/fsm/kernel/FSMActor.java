@@ -47,6 +47,8 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.ArrayToken;
@@ -389,6 +391,25 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         readInputs();
         List transitionList = _currentState.outgoingPort.linkedRelationList();
         chooseTransition(transitionList);
+    }
+
+    /** Return a causality interface for this actor. In this base class,
+     *  if there is a director, we delegate to the director to return
+     *  a default causality interface. Otherwise, we return an instance
+     *  of CausalityInterface with RealDependency.OTIMES_IDENTITY as
+     *  its default.
+     *  <p>
+     *  Note that this gives a conservative approximation of the
+     *  actual causality information. A better approach would be to
+     *  analyze which outputs actually depend on which inputs.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports.
+     */
+    public CausalityInterface getCausalityInterface() {
+        if (getDirector() != null) {
+            return getDirector().defaultCausalityInterface(this);
+        }
+        return new CausalityInterface(this, BooleanDependency.OTIMES_IDENTITY);
     }
 
     /**

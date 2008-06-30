@@ -29,6 +29,7 @@ package ptolemy.actor;
 
 import java.util.List;
 
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
@@ -62,6 +63,12 @@ public interface Actor extends Executable, Nameable {
      *  @return The executive director.
      */
     public Director getExecutiveDirector();
+
+    /** Return a causality interface for this actor.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports.
+     */
+    public CausalityInterface getCausalityInterface();
 
     /** Return a representation of the function dependencies that output
      *  ports have on input ports.

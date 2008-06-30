@@ -1336,7 +1336,7 @@ public class DEDirector extends Director implements TimedDirector {
      */
     protected void _computeActorDepth() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
-        LinkedList actors = (LinkedList) container.deepEntityList();
+        List actors = container.deepEntityList();
         // Add container.
         actors.add(container);
         int numberOfActors = actors.size();
@@ -1619,21 +1619,19 @@ public class DEDirector extends Director implements TimedDirector {
     // is returned.
     private DirectedAcyclicGraph _constructDirectedGraph()
             throws IllegalActionException {
-        // Clear the graph
-        DirectedAcyclicGraph portsGraph = new DirectedAcyclicGraph();
-
-        Nameable container = getContainer();
-
         // If the container is not composite actor, there are no actors.
+        Nameable container = getContainer();
         if (!(container instanceof CompositeActor)) {
-            return portsGraph;
+            // Return an empty graph.
+            return new DirectedAcyclicGraph();
         }
 
         CompositeActor castContainer = (CompositeActor) container;
 
         // Get the functionDependency attribute of the container of this
         // director. If there is no such attribute, construct one.
-        FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) castContainer
+        FunctionDependencyOfCompositeActor functionDependency
+                = (FunctionDependencyOfCompositeActor) castContainer
                 .getFunctionDependency();
 
         // NOTE: The following may be a very costly test.
@@ -1661,10 +1659,8 @@ public class DEDirector extends Director implements TimedDirector {
                     "Found zero delay loop including: " + names.toString());
         }
 
-        portsGraph = functionDependency.getDetailedDependencyGraph()
+        return functionDependency.getDetailedDependencyGraph()
                 .toDirectedAcyclicGraph();
-
-        return portsGraph;
     }
 
     /** Disable the specified actor.  All events destined to this actor

@@ -39,6 +39,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.kernel.ComponentEntity;
@@ -417,6 +419,35 @@ public class CompositeActor extends CompositeEntity implements Actor,
         if (_debugging) {
             _debug("Called fire()");
         }
+    }
+
+    /** Return a causality interface for this actor. In this base class,
+     *  if there is a director, we delegate to the director to return
+     *  a default causality interface. Otherwise, we return an instance
+     *  of CausalityInterface with BooleanDependency.OTIMES_IDENTITY as
+     *  its default. This declares the dependency between input ports
+     *  and output ports of an actor to be true, the multiplicative identity.
+     *  If this is called multiple times, the same object is returned each
+     *  time unless the director has changed since the last call, in
+     *  which case a new object is returned.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports.
+     */
+    public CausalityInterface getCausalityInterface() {
+        Director director = getDirector();
+        if (_causalityInterface != null
+                && _causalityInterfaceDirector == director) {
+            return _causalityInterface;
+        }
+        if (director != null) {
+            _causalityInterface = director.defaultCausalityInterface(this);
+            _causalityInterfaceDirector = director;
+            return _causalityInterface;
+        }
+        // If we get here, there is no director.
+        _causalityInterface = new CausalityInterface(this, BooleanDependency.OTIMES_IDENTITY);
+        _causalityInterfaceDirector = director;
+        return _causalityInterface;
     }
 
     /** Return the director responsible for execution of the contained
@@ -1684,6 +1715,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
     private transient long _outputPortsVersion = -1;
 
     private transient List _cachedOutputPorts;
+    
+    /** The causality interface, if it has been created. */
+    private CausalityInterface _causalityInterface;
+    
+    /** The director for which the causality interface was created. */
+    private Director _causalityInterfaceDirector;
 
     /** List piggybacked objects. */
     private transient List _piggybacks;
