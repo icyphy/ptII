@@ -31,6 +31,7 @@ package ptolemy.domains.ptides.platform;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Actor;
@@ -40,10 +41,13 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.ptides.kernel.PtidesGraphUtilities;
-import ptolemy.domains.ptides.lib.ScheduleListener;
+import ptolemy.domains.ptides.lib.ScheduleListener; 
+import ptolemy.domains.tt.tdl.kernel.TDLModule;
+import ptolemy.domains.tt.tdl.kernel.TDLModuleDirector;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -119,8 +123,9 @@ public class PreemptivePlatformExecutionStrategy extends
                     .mustBeFiredAtRealTime(actor2, event2.ioPort());
             int index1 = -1;
             int index2 = -1;
+            int priority1 = getPriority(actor1);
+            int priority2 = getPriority(actor2);
 
-            // TODO wrong!!!
             CompositeActor actor = (CompositeActor) actor1.getContainer();
             FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (actor)
                     .getFunctionDependency();
@@ -128,20 +133,21 @@ public class PreemptivePlatformExecutionStrategy extends
                     .getDetailedDependencyGraph().toDirectedAcyclicGraph();
             Object[] objects = graph.topologicalSort();
             for (int i = 0; i < objects.length; i++) {
-                            // FIXME: FindBugs says: Call to equals()
-                            // comparing different types
-                if (actor1 instanceof IOPort && ((IOPort) objects[i]).equals(actor1))
+                if (((IOPort) objects[i]).getContainer() == actor1)
                     index1 = i;
-                else if (actor2 instanceof IOPort && ((IOPort) objects[i]).equals(actor2))
+                else if (((IOPort) objects[i]).getContainer() == actor2)
                     index2 = i;
             }
 
-            if (wcet1 == 0 && (!fireAtRT1 || time1.equals(_physicalTime))
-                    && wcet2 > 0)
+            if (priority1 != priority2)
+                return priority2 - priority1;
+            if (wcet1 == 0 && (!fireAtRT1 || (fireAtRT1 && time1.equals(_physicalTime))))
                 return -1;
-            if (wcet1 > 0 && wcet2 == 0
-                    && (!fireAtRT2 || time2.equals(_physicalTime)))
+            if (wcet2 == 0 && (!fireAtRT2 || (fireAtRT2 && time2.equals(_physicalTime))))
                 return 1;
+            if (wcet1 > 0 && wcet2 == 0) 
+                if (!fireAtRT2 || time2.equals(_physicalTime))
+                    return 1;
             if (wcet1 == 0 && wcet2 == 0) {
                 if (fireAtRT1 && time1.equals(_physicalTime) && !fireAtRT2)
                     return -1;
@@ -167,29 +173,7 @@ public class PreemptivePlatformExecutionStrategy extends
                         return 1;
                 }
             } else { // wcet1 > 0 && wcet2 > 0
-                if (fireAtRT1 && !fireAtRT2) {
-                    // if execution of non real time actor can fit before real
-                    // time actor
-                    if ((!_preemptive && _physicalTime.getDoubleValue() + wcet2 <= time1
-                            .getDoubleValue())
-                            || (_preemptive && _physicalTime.getDoubleValue() <= time1
-                                    .getDoubleValue())) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                } else if (fireAtRT2 && !fireAtRT1) {
-                    // if execution of non real time actor can fit before real
-                    // time actor
-                    if ((!_preemptive && _physicalTime.getDoubleValue() + wcet1 <= time2
-                            .getDoubleValue())
-                            || (_preemptive && _physicalTime.getDoubleValue() <= time2
-                                    .getDoubleValue()))
-                        return -1;
-                    else {
-                        return 1;
-                    }
-                } else if (fireAtRT1 && fireAtRT2) {
+                if (fireAtRT1 && fireAtRT2) {
                     if (time1.compareTo(time2) < 0)
                         return -1;
                     else if (time1.compareTo(time2) > 0)
@@ -215,6 +199,7 @@ public class PreemptivePlatformExecutionStrategy extends
         }
     }
 
+
     /**
      * Return next event that can be fired out of a list of events that are safe
      * to fire. This is the case if - the list of
@@ -228,24 +213,22 @@ public class PreemptivePlatformExecutionStrategy extends
      * @return The next event that can be fired.
      * @throws IllegalActionException Thrown if an execution was missed.
      */
-    public DEEvent getNextEventToFire(List actorsFiring, List eventsToFire)
+    public DEEvent getNextEventToFire(List<DEEvent> actorsFiring, List eventsToFire)
             throws IllegalActionException {
-
-        Time _nextRealTimeEvent = Time.POSITIVE_INFINITY;
+        if (eventsToFire.size() == 0)
+            return null;
         Collections.sort(eventsToFire, new WCETComparator());
-        for (int i = 0; i < eventsToFire.size(); i++) {
-            DEEvent event = (DEEvent) eventsToFire.get(i);
-            Actor actor = event.actor();
-            if (PtidesGraphUtilities.mustBeFiredAtRealTime(actor, event.ioPort())) {
-                if (event.timeStamp().compareTo(_nextRealTimeEvent) < 0)
-                    _nextRealTimeEvent = event.timeStamp();
-            }
-        }
         DEEvent event;
         int index = 0;
         while (index < eventsToFire.size()) {
             event = (DEEvent) eventsToFire.get(index);
+            
             Actor actorToFire = event.actor();
+            if (actorsFiring.size() > 0 && 
+                    !actorPreempts(actorsFiring.get(0).actor(), actorToFire, event.timeStamp())) {
+                index++;
+                continue;
+            }
 
             if (PtidesGraphUtilities.mustBeFiredAtRealTime(actorToFire, event.ioPort())) {
                 if (_physicalTime.compareTo(event.timeStamp()) > 0) {
@@ -256,15 +239,47 @@ public class PreemptivePlatformExecutionStrategy extends
                     index++;
                     continue;
                 }
-            } else if (_physicalTime.add(
-                    PtidesGraphUtilities.getWCET(actorToFire)).compareTo(
-                    _nextRealTimeEvent) > 0) {
-                index++;
-                continue;
-            }
+            }  
             return event;
 
         }
         return null;
+    }
+
+    private boolean actorPreempts(Actor currentlyExecuting, Actor actor2, Time time) {
+        boolean fireAtRT1 = PtidesGraphUtilities
+            .mustBeFiredAtRealTime(currentlyExecuting, null);
+        boolean fireAtRT2 = PtidesGraphUtilities
+            .mustBeFiredAtRealTime(actor2, null);
+        int prio1 = getPriority(currentlyExecuting);
+        int prio2 = getPriority(actor2);
+        if (fireAtRT2 &&  PtidesGraphUtilities.getWCET(actor2) == 0)
+            return true;
+        if ((!fireAtRT1 && fireAtRT2 && time.equals(_physicalTime)) || 
+                fireAtRT1 && fireAtRT2 && prio2 > prio1)
+            return true;
+        if (prio2 > prio1)
+            return true;
+        return false;
+    }
+   
+
+    private int getPriority(Actor actor) { 
+        try {
+            Parameter parameter = (Parameter) ((NamedObj) actor)
+                    .getAttribute("priority");
+
+            if (parameter != null) {
+                IntToken token = (IntToken) parameter.getToken();
+
+                return token.intValue();
+            } else {
+                return 0;
+            }
+        } catch (ClassCastException ex) {
+            return 0;
+        } catch (IllegalActionException ex) {
+            return 0;
+        }
     }
 }

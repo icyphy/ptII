@@ -122,20 +122,18 @@ public class NonPreemptivePlatformExecutionStrategy extends
 					.getDetailedDependencyGraph().toDirectedAcyclicGraph();
 			Object[] objects = graph.topologicalSort();
 			for (int i = 0; i < objects.length; i++) {
-                            // FIXME: FindBugs says: Call to equals()
-                            // comparing different types
-				if (actor1 instanceof IOPort && ((IOPort) objects[i]).equals(actor1))
-					index1 = i;
-				else if (actor2 instanceof IOPort && ((IOPort) objects[i]).equals(actor2))
-					index2 = i;
-			}
+                if (((IOPort) objects[i]).getContainer() == actor1)
+                    index1 = i;
+                else if (((IOPort) objects[i]).getContainer() == actor2)
+                    index2 = i;
+            }
 
 			if (wcet1 == 0 && (!fireAtRT1 || time1.equals(_physicalTime))
 					&& wcet2 > 0)
 				return -1;
-			if (wcet1 > 0 && wcet2 == 0
-					&& (!fireAtRT2 || time2.equals(_physicalTime)))
-				return 1;
+			if (wcet1 > 0 && wcet2 == 0) 
+				if (!fireAtRT2 || time2.equals(_physicalTime))
+				    return 1;
 			if (wcet1 == 0 && wcet2 == 0) {
 				if (fireAtRT1 && time1.equals(_physicalTime) && !fireAtRT2)
 					return -1;
@@ -224,7 +222,7 @@ public class NonPreemptivePlatformExecutionStrategy extends
 	 * @return The next event that can be fired.
 	 * @throws IllegalActionException Thrown if an execution was missed.
 	 */
-	public DEEvent getNextEventToFire(List actorsFiring, List eventsToFire)
+	public DEEvent getNextEventToFire(List<DEEvent> actorsFiring, List eventsToFire)
 			throws IllegalActionException {
 		if (actorsFiring.size() > 0 || eventsToFire.size() == 0)
 			return null;

@@ -54,6 +54,12 @@ public abstract class PlatformExecutionStrategy {
 	 * NonPreemptivePlatformExecutionStrategy.
 	 */
 	public static final String BASIC_NON_PREEMPTIVE = "basic non-preemptive";
+	
+	/**
+	 * The basic preemptive execution strategy is implemented by 
+	 * PreemptivePlatformExecutionStrategy.
+	 */
+	public static final String BASIC_PREEMPTIVE = "basic preemptive";
 
 	/**
 	 * Director for this platform.
@@ -77,7 +83,7 @@ public abstract class PlatformExecutionStrategy {
 	 *         null
 	 * @throws IllegalActionException
 	 */
-	public abstract DEEvent getNextEventToFire(List actorsFiring,
+	public abstract DEEvent getNextEventToFire(List<DEEvent> actorsFiring,
 			List eventsToFire) throws IllegalActionException;
 
 	/**
