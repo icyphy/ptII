@@ -38,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.gt.IterativeParameterIcon;
 
 /**
 
@@ -64,6 +65,8 @@ public class IterativeParameter extends Parameter implements ValueIterator {
         constraint = new Parameter(this, "constraint");
         constraint.setTypeEquals(BaseType.BOOLEAN);
         next = new Parameter(this, "next");
+
+        new IterativeParameterIcon(this, "_icon");
 
         setTypeAtLeast(initial);
         setTypeAtLeast(next);

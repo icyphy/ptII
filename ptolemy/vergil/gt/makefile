@@ -63,6 +63,7 @@ JSRCS = \
 	GTFrameTools.java \
 	GTIngredientsEditor.java \
 	GTTableau.java \
+	IterativeParameterIcon.java \
 	MatchResultRecorder.java \
 	MatchResultTableau.java \
 	MatchResultViewer.java \
