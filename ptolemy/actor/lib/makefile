@@ -145,6 +145,7 @@ JSRCS = \
 	Expression.java \
 	FileWriter.java \
 	Gaussian.java \
+	GetCausalityInterface.java \
 	GradientAdaptiveLattice.java \
 	IIR.java \
 	Interpolator.java \
