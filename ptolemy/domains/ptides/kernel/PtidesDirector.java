@@ -284,8 +284,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 * Return a new PtidesEReceiver.
 	 */
 	public Receiver newReceiver() {
-		PtidesReceiver receiver = new PtidesReceiver();
-		receiver._lastTime = new Time(this);
+		PtidesReceiver receiver = new PtidesReceiver(); 
 		return receiver;
 	}
 

@@ -331,7 +331,7 @@ public class PtidesGraphUtilities {
 		if (actor instanceof Source && ((Source) actor).trigger == port)
 			// trigger ports don't have to be fired at real time
 			return false;
-		return isSensor(actor) || isActuator(actor) || actor instanceof TDLModule;
+		return isSensor(actor) || isActuator(actor);
 	}
 
 	/**

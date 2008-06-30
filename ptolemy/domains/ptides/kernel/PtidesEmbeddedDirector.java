@@ -62,6 +62,7 @@ import ptolemy.domains.ptides.kernel.PrioritizedTimedQueue.Event;
 import ptolemy.domains.ptides.lib.ScheduleListener;
 import ptolemy.domains.ptides.platform.NonPreemptivePlatformExecutionStrategy;
 import ptolemy.domains.ptides.platform.PlatformExecutionStrategy;
+import ptolemy.domains.ptides.platform.PreemptivePlatformExecutionStrategy;
 import ptolemy.domains.tt.tdl.kernel.TDLModule;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
@@ -174,7 +175,10 @@ public class PtidesEmbeddedDirector extends DEDirector {
 			if (strategy.equals(PlatformExecutionStrategy.BASIC_NON_PREEMPTIVE)) {
 				_executionStrategy = new NonPreemptivePlatformExecutionStrategy(
 						_physicalTime, this);
-			}
+			} else if (strategy.equals(PlatformExecutionStrategy.BASIC_PREEMPTIVE)) {
+                _executionStrategy = new PreemptivePlatformExecutionStrategy(
+                        _physicalTime, this);
+            }
 		} else {
 			super.attributeChanged(attribute);
 		}
@@ -272,20 +276,27 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		List eventsToFire = null;
 		DEEvent event;
 		while (true) {
-			if (_actorsInExecution.size() > 0) {
-				Actor actorToFire = (Actor) _actorsInExecution
-						.get(_actorsInExecution.size() - 1);
+		    if (_stopRequested)
+	            return;
+			if (eventsInExecution.size() > 0) {
+				Actor actorToFire = eventsInExecution
+						.get(eventsInExecution.size() - 1).actor();
 				double doubleTime = getFinishingTime((NamedObj) actorToFire);
 				Time time = new Time(this, doubleTime);
 				if (time.equals(_physicalTime)) {
-					_actorsInExecution.remove(actorToFire);
+					eventsInExecution.remove(eventsInExecution
+	                        .get(eventsInExecution.size() - 1));
 					if (!_fireAtTheBeginningOfTheWcet(actorToFire))
 						_fireActorInZeroModelTime(actorToFire);
 					_transferAllOutputs();
-			                _currentModelTime = null;
+			        
 					displaySchedule(actorToFire,
 							_physicalTime.getDoubleValue(),
 							ScheduleListener.STOP);
+					if (eventsInExecution.size() > 0)
+					    _currentModelTime = eventsInExecution.get(eventsInExecution.size() - 1).timeStamp();
+					else 
+					    _currentModelTime = null;
 				}
 			}
 			_enqueueRemainingEventsAgain(eventsToFire);
@@ -293,7 +304,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 			for (int i = 0; i < eventsToFire.size(); i++)
 				_refireAt(((DEEvent) eventsToFire.get(i))
 						.timeStamp());
-			event = _executionStrategy.getNextEventToFire(_actorsInExecution,
+			event = _executionStrategy.getNextEventToFire(eventsInExecution,
 					eventsToFire);
 			eventsToFire.remove(event);
 			if (event != null) {
@@ -315,12 +326,13 @@ public class PtidesEmbeddedDirector extends DEDirector {
     				_refireAt(_physicalTime.add(wcet));
 					setFinishingTime(actorToFire, _physicalTime.add(wcet)
 							.getDoubleValue());
-					for (int i = 0; i < _actorsInExecution.size(); i++) {
-						Actor actor = (Actor) _actorsInExecution.get(i);
+					for (int i = 0; i < eventsInExecution.size(); i++) {
+						Actor actor = eventsInExecution.get(i).actor();
 						setFinishingTime(actor,
 								getFinishingTime((NamedObj) actor) + wcet);
+						_refireAt(new Time(this, getFinishingTime((NamedObj) actor)));
 					}
-					_actorsInExecution.add(actorToFire);
+					eventsInExecution.add(event);
 				}
 			} else {
 				if (_transferAllInputs()) {
@@ -479,7 +491,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
 		_physicalTime = ((Actor) getContainer()).getExecutiveDirector()
 				.getModelTime();
-		_actorsInExecution.clear();
+		eventsInExecution.clear();
 
 		// Call the preinitialize method of the super class.
 		if (_debugging) {
@@ -754,7 +766,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	}
 
 	/**
-	 * Transfer input ports if they are safe to process. If they token is not
+	 * Transfer input ports if they are safe to process. If the token is not
 	 * safe to process, inform the executive director to be refired at the time
 	 * it is safe to process the token.
 	 */
@@ -1021,26 +1033,28 @@ public class PtidesEmbeddedDirector extends DEDirector {
 				}
 			}
 			// take trigger events
-			if (!_actorsInExecution.contains(actor)) {
+			if (!eventsInExecution.contains(actor)) {
 				for (Iterator<IOPort> it = actor.inputPortList().iterator(); it
 						.hasNext();) {
 					IOPort port = it.next();
-					Receiver[][] receivers = port.getReceivers();
-					for (int i = 0; i < receivers.length; i++) {
-						Receiver[] recv = receivers[i];
-						for (int j = 0; j < recv.length; j++) {
-							PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) recv[j];
-							Time time = receiver.getNextTime();
-							if (time != null
-									&& (isSafeToProcessOnPlatform(time, port) || _isSafeToProcess(
-											time, graph.node(port),
-											new TreeSet()))) {
-								_removePureEvent(events, actor, time);
-								events.add(new DEEvent(port, time, 0,
-								// _getDepthOfIOPort(port)));
-										0));
-							}
-						}
+					if (_portIsTriggerPort(port)) {
+    					Receiver[][] receivers = port.getReceivers();
+    					for (int i = 0; i < receivers.length; i++) {
+    						Receiver[] recv = receivers[i];
+    						for (int j = 0; j < recv.length; j++) {
+    							PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) recv[j];
+    							Time time = receiver.getNextTime();
+    							if (time != null
+    									&& (isSafeToProcessOnPlatform(time, port) || _isSafeToProcess(
+    											time, graph.node(port),
+    											new TreeSet()))) {
+    								_removePureEvent(events, actor, time);
+    								events.add(new DEEvent(port, time, 0,
+    								// _getDepthOfIOPort(port)));
+    										0));
+    							}
+    						}
+    					}
 					}
 				}
 			}
@@ -1051,7 +1065,11 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		return events;
 	}
 
-	/**
+	private boolean _portIsTriggerPort(IOPort port) {
+        return !(port instanceof ParameterPort) && !(((Actor)port.getContainer()) instanceof TDLModule);
+    }
+
+    /**
 	 * If there is a pure event and a triggered event for the same actor with
 	 * the same time stamp, then the pure event can be deleted.
 	 * 
@@ -1103,6 +1121,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
 					.addChoice(PlatformExecutionStrategy.BASIC_NON_PREEMPTIVE);
 			executionStrategy
 					.setExpression(PlatformExecutionStrategy.BASIC_NON_PREEMPTIVE);
+			executionStrategy
+                .addChoice(PlatformExecutionStrategy.BASIC_PREEMPTIVE);
 		} catch (KernelException e) {
 			throw new InternalErrorException("Cannot set parameter:\n"
 					+ e.getMessage());
@@ -1181,7 +1201,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * List of actors in execution. In a non-preemptive execution, the list only
 	 * contains one item.
 	 */
-	private List<Actor> _actorsInExecution = new ArrayList<Actor>();
+	private List<DEEvent> eventsInExecution = new ArrayList<DEEvent>();
 
 	/**
 	 * Clock synchronization error specified in the top level director.

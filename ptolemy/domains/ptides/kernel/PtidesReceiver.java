@@ -37,8 +37,7 @@ import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.IllegalActionException; 
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEReceiver
@@ -111,8 +110,7 @@ public class PtidesReceiver extends PrioritizedTimedQueue implements
 			if (_terminate) {
 				throw new TerminateProcessException("");
 			}
-			Token token = super.get();
-			Thread thread = Thread.currentThread();
+			Token token = super.get(); 
 			return token;
 		}
 	}
@@ -275,7 +273,7 @@ public class PtidesReceiver extends PrioritizedTimedQueue implements
 	 */
 	public void put(Token token) {
 		Thread thread = Thread.currentThread();
-		Time time = _lastTime;
+		Time time = null;
 
 		if (thread instanceof PtidesPlatformThread) {
 			time = ((PtidesPlatformThread) thread).getActor().getDirector()
@@ -304,8 +302,7 @@ public class PtidesReceiver extends PrioritizedTimedQueue implements
 	 * @exception TerminateProcessException
 	 *                If activity is scheduled to cease.
 	 */
-	public void put(Token token, Time time) {
-		Workspace workspace = getContainer().workspace();
+	public void put(Token token, Time time) { 
 		if (super.hasRoom() && !_terminate) { // super will always have room
 												// for now
 			super.put(token, time);
@@ -330,10 +327,9 @@ public class PtidesReceiver extends PrioritizedTimedQueue implements
 	/**
 	 * Reset local flags. The local flag of this receiver indicates whether this
 	 * receiver is scheduled for termination. Resetting the termination flag
-	 * will make sure that this receiver is not scheduled for termination.
+	 * will make sure that this receiver is not scheduled for termination. 
 	 */
-	public void reset() {
-		super.reset();
+	public void reset() { 
 		_terminate = false;
 		_boundaryDetector.reset();
 	}
@@ -387,13 +383,9 @@ public class PtidesReceiver extends PrioritizedTimedQueue implements
 
 	/** The director in charge of this receiver. */
 	private PtidesDirector _director;
-
-	/** Reference to a thread that is read blocked on this receiver. */
-	private Thread _readtPending = null;
+  
 
 	/** Flag indicating that termination has been requested. */
 	private boolean _terminate = false;
-
-	/** Reference to a thread that is write blocked on this receiver. */
-	private Thread _writetPending = null;
+ 
 }

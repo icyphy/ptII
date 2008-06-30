@@ -41,6 +41,7 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -67,8 +68,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 */
 	public PrioritizedTimedQueue(IOPort container)
 			throws IllegalActionException {
-		super(container);
-		_initializeTimeVariables();
+		super(container); 
 	}
 
 	/**
@@ -86,12 +86,17 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	public PrioritizedTimedQueue(IOPort container, int priority)
 			throws IllegalActionException {
 		super(container);
-		_priority = priority;
-		_initializeTimeVariables();
+		_priority = priority; 
 	}
 
 	// /////////////////////////////////////////////////////////////////
 	// // public methods ////
+	
+	@Override
+	public void clear() throws IllegalActionException {
+	    super.clear();
+	    _queue.clear();
+	}
 
 	/**
 	 * Take the the oldest token off of the queue and return it. If the queue is
@@ -109,11 +114,23 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	public Token get() {
 		Token token;
 		Event event = (Event) _queue.first();
-		_queue.remove(event);
-		_lastTime = event._timeStamp;
+		_queue.remove(event); 
 		token = event.getToken();
 		return token;
 	}
+	
+	// TODO: remove
+	public Token getNewestButDontRemove() {
+        Token token;
+        Event event = null;
+        while (_queue.size() > 0) {
+            event = (Event) _queue.first(); 
+            _queue.remove(_queue.first());
+        } 
+            _queue.add(event);
+        token = event.getToken();
+        return token;
+    }
 
 	/**
 	 * Similar to get() but if not only token but also time stamp is required,
@@ -123,8 +140,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 */
 	public Event getEvent() {
 		Event event = (Event) _queue.first();
-		_queue.remove(event);
-		_lastTime = event._timeStamp;
+		_queue.remove(event); 
 		return event;
 	}
 
@@ -237,16 +253,12 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 * @exception NoRoomException
 	 *                If the queue is full.
 	 */
-	public void put(Token token, Time time) throws NoRoomException {
-
-		Event event = new Event(token, time);
-		_lastTime = time;
-
+	public void put(Token token, Time time) throws NoRoomException { 
+		Event event = new Event(token, time); 
 		try {
 			_queue.add(event); // is only inserted if same event not already
 								// exists
-		} catch (NoRoomException e) {
-
+		} catch (NoRoomException e) { 
 			throw e;
 		}
 	}
@@ -259,14 +271,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	public void reset() {
 		Director director = ((Actor) getContainer().getContainer()
 				.getContainer()).getDirector();
-		Time time;
-		try {
-			time = new Time(director, 0.0);
-			_lastTime = time;
-		} catch (IllegalActionException e) {
-
-			e.printStackTrace();
-		}
+  
 
 	}
 
@@ -298,7 +303,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	static final double INACTIVE = -2.0;
 
 	/** The time stamp of the newest token to be placed in the queue. */
-	protected Time _lastTime;
+	//protected Time _lastTime;
 
 	/** The priority of this receiver. */
 	public int _priority = 0;
@@ -319,15 +324,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 		return false;
 	}
 
-	/**
-	 * Initialize some time variables.
-	 */
-	private void _initializeTimeVariables() {
-		Actor actor = (Actor) getContainer().getContainer();
-
-		_lastTime = new Time(actor.getDirector());
-		// _receiverTime = new Time(actor.getDirector());
-	}
+  
 
 	// /////////////////////////////////////////////////////////////////
 	// // private variables ////
