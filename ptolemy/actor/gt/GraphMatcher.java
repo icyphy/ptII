@@ -319,8 +319,17 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     protected boolean _ignoreObject(Object object) {
-        return object instanceof NamedObj && !((NamedObj) object).attributeList(
-                CreationAttribute.class).isEmpty();
+    	if (object instanceof NamedObj) {
+    		if (!((NamedObj) object).attributeList(CreationAttribute.class)
+    				.isEmpty()) {
+    			return true;
+    		}
+    		if (!((NamedObj) object).attributeList(IgnoringAttribute.class)
+    				.isEmpty()) {
+    			return true;
+    		}
+    	}
+        return false;
     }
 
     /** Test whether the composite entity is opaque or not. Return <tt>true</tt>

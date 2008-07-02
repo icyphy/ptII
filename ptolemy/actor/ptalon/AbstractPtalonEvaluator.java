@@ -450,8 +450,10 @@ public abstract class AbstractPtalonEvaluator {
                         .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
-            _unassignedParameters.add(parameter);
-            _unassignedParameterValues.add(expression);
+            if (_resetParameters || !parameter.hasValue()) {
+                _unassignedParameters.add(parameter);
+                _unassignedParameterValues.add(expression);
+            }
         } catch (NameDuplicationException ex) {
             throw new PtalonRuntimeException("NameDuplicationException", ex);
         } catch (IllegalActionException ex) {
@@ -636,8 +638,8 @@ public abstract class AbstractPtalonEvaluator {
                 String expression = _unassignedParameterValues.remove(0);
                 String oldExpression = parameter.getExpression();
                 if (expression != oldExpression
-                		&& !expression.equals(oldExpression)) {
-                	parameter.setToken(expression);
+                        && !expression.equals(oldExpression)) {
+                    parameter.setToken(expression);
                 }
             }
         } catch (Exception ex) {
@@ -1099,9 +1101,6 @@ public abstract class AbstractPtalonEvaluator {
                 + " not in current scope.");
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
-
     /** Return the type associated with the given symbol in the
      *  current scope.  This is the same as getType, but it is used to
      *  avoid a name conflict in PtalonEvaluator.PtalonExpressionScope
@@ -1124,6 +1123,9 @@ public abstract class AbstractPtalonEvaluator {
         return _currentIfTree.inNewWhileIteration();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
+
     protected boolean _isInTransformation() {
         return _inTransformation;
     }
@@ -1141,12 +1143,21 @@ public abstract class AbstractPtalonEvaluator {
             throws PtalonRuntimeException {
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected members                    ////
+    /** Set whether to reset parameters when the actor is populated and the
+     *  parameters already exist for the actor.
+     *
+     *  @param reset Whether to reset parameters.
+     */
+    protected void _resetParameters(boolean reset) {
+        _resetParameters = reset;
+    }
 
     protected void _setPreservingTransformation(boolean b) {
         _isPreservingTransformation = b;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected members                    ////
 
     /** The actor in which this PtalonCompilerInfo is used.
      */
@@ -1165,14 +1176,14 @@ public abstract class AbstractPtalonEvaluator {
      */
     protected PtalonExpressionScope _scope = new PtalonExpressionScope();
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
-
     /** Maps names of transparent relations to ports, which should be
      *  multiports. A key may map to null if no port has been assigned
      *  to it.
      */
     protected Map<String, TypedIOPort> _transparentRelations = new Hashtable<String, TypedIOPort>();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                    ////
 
     /** This is a representation of an if/else construct in Ptalon.
      *  The true branch and/or the false branch can point to a set of
@@ -1887,9 +1898,6 @@ public abstract class AbstractPtalonEvaluator {
         return output;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                        private members                    ////
-
     /** Get the type associated with the specified parameter.
      *
      *  @param param The parameter's name in the Ptalon code.
@@ -1907,6 +1915,9 @@ public abstract class AbstractPtalonEvaluator {
                     + param, ex);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private members                    ////
 
     /** Get the type term associated with the specified parameter.
      *
@@ -1961,6 +1972,11 @@ public abstract class AbstractPtalonEvaluator {
     private boolean _inTransformation = false;
 
     private boolean _isPreservingTransformation = false;
+
+    /** Whether to reset parameters when the actor is populated and the
+     *  parameters already exist for the actor.
+     */
+    private boolean _resetParameters = true;
 
     /** The root of the tree containing the symbol tables for each
      *  level of the if-statement hierarchy.

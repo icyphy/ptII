@@ -54,6 +54,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
      */
     public TransformationEvaluator(PtalonActor actor) {
         super(actor);
+        _resetParameters(false);
     }
 
     protected void _processAttributes(NamedObj object)

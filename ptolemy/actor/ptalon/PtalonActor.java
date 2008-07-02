@@ -373,12 +373,15 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         return candidate;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        public members                     ////
+
     /** The location of the Ptalon code.
      */
     public FileParameter ptalonCodeLocation;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public members                     ////
+    ////                        protected methods                  ////
 
     /** Add the attribute, and if the attribute is a PtalonParameter,
      *  add it to a list of Ptalon parameters.
@@ -393,9 +396,6 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             _ptalonParameters.add((PtalonParameter) attribute);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
 
     protected PtalonEvaluator _createPtalonEvaluator(PtalonActor actor) {
         return new PtalonEvaluator(actor);
@@ -415,9 +415,6 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     protected PtalonRecognizer _createPtalonRecognizer(PtalonLexer lexer) {
         return new PtalonRecognizer(lexer);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
 
     /** Write a MoML description of the contents of this object, which
      *  in this class is the configuration information. This method is
@@ -514,6 +511,19 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         }
     }
 
+    /** Initialize this PtalonActor.  This method may be called when
+     *  the PtalonActor is first constructed or if any of its
+     *  parameter values are changed, so we only initialize
+     *  variables that do not need to be saved when reparsing the
+     *  Ptalon file.
+     */
+    protected void _initializePtalonActor() {
+        _astCreated = false;
+        _ast = null;
+        _codeManager = null;
+        _nestedDepth = 0;
+    }
+
     /** This helper method is used to begin the Ptalon compiler if the
      *  ptalonCodeLocation attribute has been updated.
      * @exception IllegalActionException If any exception is thrown.
@@ -605,18 +615,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         removeAllRelations();
     }
 
-    /** Initialize this PtalonActor.  This method may be called when
-     *  the PtalonActor is first constructed or if any of its
-     *  parameter values are changed, so we only initialize
-     *  variables that do not need to be saved when reparsing the
-     *  Ptalon file.
-     */
-    private void _initializePtalonActor() {
-        _astCreated = false;
-        _ast = null;
-        _codeManager = null;
-        _nestedDepth = 0;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
 
     /** Return true if the value of the given PtalonParameter has
      *  changed.  This method checks for newly assigned values (where
