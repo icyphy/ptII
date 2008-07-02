@@ -1007,7 +1007,7 @@ test PtParser-18.6 {Test bad expression.} {
 	        $errmsg "\n" output
     set lines [split $output "\n"]
     list $lines
-} {{{ptolemy.kernel.util.IllegalActionException: Error parsing expression "\0"} Because: {Encountered "\\" at line 1, column 1.} {Was expecting one of:} {    "-" ...} {    "(" ...} \ \ \ \ \"\{\"\ ... {    "[" ...} \ \ \ \ \"\{|\"\ ... {    "!" ...} {    "~" ...} {    <INTEGER> ...} {    <DOUBLE> ...} {    <COMPLEX> ...} {    <BOOLEAN> ...} {    <ID> ...} {    <STRING> ...} {    <SMID> ...} {    <SMIDBRACE> ...} {    <SMIDPAREN> ...} {    "function" ...} {    }}}
+} {{{ptolemy.kernel.util.IllegalActionException: Error parsing expression "\0"} Because: {Encountered "\\" at line 1, column 1.} {Was expecting one of:} {    "function" ...} {    "!" ...} {    "~" ...} {    <COMPLEX> ...} {    <DOUBLE> ...} {    "-" ...} {    <INTEGER> ...} {    <STRING> ...} {    <BOOLEAN> ...} {    "(" ...} {    "[" ...} \ \ \ \ \"\{\"\ ... \ \ \ \ \"\{|\"\ ... {    <ID> ...} {    <SMID> ...} {    <SMIDBRACE> ...} {    <SMIDPAREN> ...} {    }}}
 
 test PtParser-18.7 {Test expression with comment.} {
     set p [java::new ptolemy.data.expr.PtParser]
