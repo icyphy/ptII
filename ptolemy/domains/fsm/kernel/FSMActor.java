@@ -49,6 +49,7 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.ArrayToken;
@@ -409,7 +410,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (getDirector() != null) {
             return getDirector().defaultCausalityInterface(this);
         }
-        return new CausalityInterface(this, BooleanDependency.OTIMES_IDENTITY);
+        return new DefaultCausalityInterface(this, BooleanDependency.OTIMES_IDENTITY);
     }
 
     /**
