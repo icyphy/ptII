@@ -1,4 +1,4 @@
-/* Interface representing a dependency between ports.
+/* Interface representing dependencies between ports of an associated actor.
 
  Copyright (c) 2003-2006 The Regents of the University of California.
  All rights reserved.
@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.util;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
@@ -37,16 +38,20 @@ import ptolemy.actor.IOPort;
 //// CausalityInterface
 
 /**
- This class provides causality interfaces for actor networks as described
+ This interface defines a causality interfaces for actor networks as described
  in the paper "Causality Interfaces for Actor Networks" by Ye Zhou and
  Edward A. Lee, ACM Transactions on Embedded Computing Systems (TECS),
  April 2008, as available as <a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-148.pdf">
  Technical Report No. UCB/EECS-2006-148</a>,
  November 16, 2006.
- <p>
  Causality interfaces represent dependencies between input and output ports
  of an actor and can be used to perform scheduling or static analysis
  on actor models.
+ Implementers of this interface must ensure consistency between the methods
+ {@link #dependentPorts(IOPort)}, {@link #equivalentPorts(IOPort)}, and
+ {@link #getDependency(IOPort, IOPort)}.
+ 
+ @see Dependency
 
  @author Edward A. Lee
  @version $Id: CausalityInterface.java 47513 2007-12-07 06:32:21Z cxh $
@@ -54,71 +59,48 @@ import ptolemy.actor.IOPort;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class CausalityInterface {
-    
-    /** Construct a causality interface for the specified actor.
-     *  @param actor The actor for which this is a causality interface.
-     *  @param defaultDependency The default dependency of an output
-     *   port on an input port.
-     */
-    public CausalityInterface(Actor actor, Dependency defaultDependency) {
-        _actor = actor;
-        _defaultDependency = defaultDependency;
-    }
+public interface CausalityInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a collection of the ports in this actor that depend on
+     *  or are depended on by the specified port. A port X depends
+     *  on a port Y if X is an output and Y is an input and
+     *  getDependency(X,Y) returns something not equal to
+     *  the additive identity of the relevant Dependency.
+     *  The argument port should be contained by the same actor
+     *  returned by getActor().
+     *  @param port The port to find the dependents of.
+     */
+    public Collection<IOPort> dependentPorts(IOPort port);
+
+    /** Return a collection of input ports in the associated actor that are
+     *  in the same equivalence class as the specified input port.
+     *  An equivalence class is defined as follows.
+     *  If ports X and Y each have a dependency not equal to the
+     *  default depenency's oPlusIdentity(), then they
+     *  are in an equivalence class. That is,
+     *  there is a causal dependency. They are also in
+     *  the same equivalence class if there is a port Z
+     *  in an equivalence class with X and in an equivalence
+     *  class with Y. Otherwise, they are not in the same
+     *  equivalence class. If there are no
+     *  output ports, then all the input ports
+     *  are in a single equivalence class.
+     *  @param inputPort The port to find the equivalence class of.
+     */
+    public Collection<IOPort> equivalentPorts(IOPort input);
+    
+    /** Return the associated actor.
+     *  @return The actor for which this is a dependency.
+     */
+    public Actor getActor();
+
     /** Return the dependency between the specified input port
-     *  and the specified output port.  This base class returns
-     *  the default dependency if the first port is an input
-     *  port owned by this actor and the second one is an output
-     *  port owned by this actor. Otherwise, it returns the
-     *  additive identity of the dependency.
-     *  Derived classes should override this method to provide
-     *  actor-specific dependency information.
+     *  and the specified output port.
      *  @return The dependency between the specified input port
      *   and the specified output port.
      */
-    public Dependency getDependency(IOPort input, IOPort output) {
-        if (input.isInput()
-                && input.getContainer() == _actor
-                && output.isOutput()
-                && output.getContainer() == _actor) {
-            return _defaultDependency;
-        }
-        return _defaultDependency.oPlusIdentity();
-    }
-    
-    /** Return a description of the causality interfaces.
-     *  @return A description of the causality interfaces.
-     */
-    public String toString() {
-        StringBuffer result = new StringBuffer();
-        Iterator inputPorts = _actor.inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)inputPorts.next();
-            result.append(inputPort.getName());
-            result.append(" has output depenencies as follows:\n");
-            Iterator outputPorts = _actor.outputPortList().iterator();
-            while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort)outputPorts.next();
-                result.append("   ");
-                result.append(outputPort.getName());
-                result.append(": ");
-                result.append(getDependency(inputPort, outputPort));
-                result.append("\n");
-            }
-        }
-        return result.toString();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-    
-    /** The associated actor. */
-    protected Actor _actor;
-    
-    /** The default dependency of an output port on an input port. */
-    protected Dependency _defaultDependency;
+    public Dependency getDependency(IOPort input, IOPort output);
 }

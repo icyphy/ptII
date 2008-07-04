@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -53,7 +54,7 @@ import ptolemy.kernel.CompositeEntity;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class CausalityInterfaceForComposites extends CausalityInterface {
+public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     
     /** Construct a causality interface for the specified actor.
      *  @param actor The actor for which this is a causality interface.
@@ -76,6 +77,86 @@ public class CausalityInterfaceForComposites extends CausalityInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return a collection of the ports in the associated actor that depend on
+     *  or are depended on by the specified port. A port X depends
+     *  on a port Y if X is an output and Y is an input and
+     *  getDependency(X,Y) returns something not equal to
+     *  the oPlusIdentity() of the default dependency specified
+     *  in the constructor.
+     *  <p>
+     *  This class presumes (but does not check) that the
+     *  argument is a port contained by the associated actor.
+     *  If the actor is an input, then it returns a collection of
+     *  all the outputs. If the actor is output, then it returns
+     *  a collection of all the inputs.
+     *  <p>
+     *  Derived classes may override this, but they may need to
+     *  also override {@link #getDependency(IOPort, IOPort)}
+     *  and {@link #equivalentPorts(IOPort)} to be consistent.
+     *  @param port The port to find the dependents of.
+     */
+    public Collection<IOPort> dependentPorts(IOPort port) {
+        // FIXME: This does not support ports that are both input and output.
+        // Should it?
+        HashSet<IOPort> result = new HashSet<IOPort>();
+        if (port.isOutput()) {
+            List<IOPort> inputs = _actor.inputPortList();
+            if (inputs.size() != 0) {
+                // Make sure _dependency is computed.
+                getDependency(inputs.get(0), port);
+                Map<IOPort,Dependency> map = _reverseDependencies.get(port);
+                if (map != null) {
+                    result.addAll(map.keySet());
+                }
+            }
+        } else {
+            List<IOPort> outputs = _actor.outputPortList();
+            if (outputs.size() != 0) {
+                // Make sure _dependency is computed.
+                getDependency(port, outputs.get(0));
+                Map<IOPort,Dependency> map = _forwardDependencies.get(port);
+                if (map != null) {
+                    result.addAll(map.keySet());
+                }
+            }
+        }
+        return result;
+    }
+
+    /** Return a set of the ports in this actor that are
+     *  in an equivalence class with the specified input.
+     *  The returned result includes the specified input port.
+     *  This method presumes, but does not check, that the
+     *  specified inputPort is contained by the associated actor.
+     *  <p>
+     *  An equivalence class is defined as follows.
+     *  If ports X and Y each have a dependency not equal to the
+     *  default depenency's oPlusIdentity(), then they
+     *  are in an equivalence class. That is,
+     *  there is a causal dependency. They are also in
+     *  the same equivalence class if there is a port Z
+     *  in an equivalence class with X and in an equivalence
+     *  class with Y. Otherwise, they are not in the same
+     *  equivalence class. If there are no
+     *  output ports, then include all the input ports
+     *  are in a single equivalence class.
+     *  @param inputPort The port to find the equivalence class of.
+     */
+    public Collection<IOPort> equivalentPorts(IOPort input) {
+        List<IOPort> inputs = _actor.inputPortList();
+        List<IOPort> outputs = _actor.outputPortList();
+        // Deal with simple cases first.
+        if (inputs.size() == 1 || outputs.size() == 0) {
+            // There is only one input port, or there are
+            // no output ports, so we are done.
+            return inputs;
+        }
+        HashSet<IOPort> result = new HashSet<IOPort>();
+        HashSet<IOPort> dependents = new HashSet<IOPort>();
+        _growDependencies(input, result, dependents);
+        return result;
+    }
 
     /** Return the dependency between the specified input port
      *  and the specified output port.  This is done by traversing
@@ -120,14 +201,14 @@ public class CausalityInterfaceForComposites extends CausalityInterface {
             // is obsolete.
             try {
                 actor.workspace().getReadAccess();
-                _dependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
+                _reverseDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
+                _forwardDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
                 Iterator inputPorts = _actor.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     IOPort inputPort = (IOPort)inputPorts.next();
                     // Construct a map of dependencies from this inputPort
                     // to all reachable ports.
                     Map<IOPort,Dependency> map = new HashMap<IOPort,Dependency>();
-                    _dependencies.put(inputPort, map);
                     Collection portsToProcess = inputPort.insideSinkPortList();
                     // Set the initial dependency of all the portsToProcess.
                     Iterator ports = portsToProcess.iterator();
@@ -147,23 +228,108 @@ public class CausalityInterfaceForComposites extends CausalityInterface {
             }
             _dependencyVersion = workspaceVersion;
         }
-        Map<IOPort,Dependency> inputMap = _dependencies.get(input);
-        if (inputMap == null) {
-            // This should not occur. Throw an exception?
-            return _defaultDependency;
+        Map<IOPort,Dependency> inputMap = _forwardDependencies.get(input);
+        if (inputMap != null) {
+            Dependency result = inputMap.get(output);
+            if (result != null) {
+                return result;
+            }
         }
-        Dependency result = inputMap.get(output);
-        if (result == null) {
-            // If there is no entry for the output, then there
-            // is no path from the input to this output port.
-            return _defaultDependency.oPlusIdentity();
-        }
-        return result;
+        // If there is no recorded dependency, then reply
+        // with the additive identity (which indicates no
+        // dependency).
+        return _defaultDependency.oPlusIdentity();
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /** If the input port is already in the inputs set, do nothing
+     *  and return. Otherwise, add the input port to the inputs set,
+     *  and its output dependents to the outputs set. If any of those
+     *  output dependents were not already in the outputs set,
+     *  add them, and then recursively invoke this same method
+     *  on all input ports that depend on those outputs.
+     */
+    private void _growDependencies(
+            IOPort input, Set<IOPort> inputs, Set<IOPort> outputs) {
+        if (!inputs.contains(input)) {
+            inputs.add(input);
+            for (IOPort output : dependentPorts(input)) {
+                // If the output has already been handled, skip it.
+                if (!outputs.contains(output)) {
+                    outputs.add(output);
+                    for (IOPort anotherInput : dependentPorts(output)) {
+                        _growDependencies(anotherInput, inputs, outputs);
+                    }
+                }
+            }
+        }
+    }
 
+    /** Record a dependency of the specified output port on the specified
+     *  input port in the specified map.
+     *  If there was a prior dependency already
+     *  that was less than this one, then update the dependency
+     *  using its oPlus() method. If the dependency is equal
+     *  to the oPlusIdentity(), then do not record it and return false.
+     *  Return true if the dependency was newly set or modified from
+     *  a previously recorded dependency. Return false if no change
+     *  was made to a previous dependency.
+     *  @param inputPort The source port.
+     *  @param outputPort The destination port.
+     *  @param map The map in which to record the dependency.
+     *  @param dependency The dependency map for ports reachable from the input port.
+     *  @return True if the dependency was changed.
+     */
+    private boolean _recordDependency(
+            IOPort inputPort,
+            IOPort outputPort,
+            Map<IOPort,Dependency> map,
+            Dependency dependency) {
+        if (dependency.equals(_defaultDependency.oPlusIdentity())) {
+            return false;
+        }
+        // If the outputPort belongs to the associated actor,
+        // make a permanent record.
+        Map<IOPort,Dependency> forward = null;
+        Map<IOPort,Dependency> reverse = null;
+        if (outputPort.getContainer() == _actor) {
+            forward = _forwardDependencies.get(inputPort);
+            if (forward == null) {
+                forward = new HashMap<IOPort,Dependency>();
+                _forwardDependencies.put(inputPort, forward);
+            }            
+            forward.put(outputPort, dependency);
+
+            reverse = _reverseDependencies.get(outputPort);
+            if (reverse == null) {
+                reverse = new HashMap<IOPort,Dependency>();
+                _reverseDependencies.put(outputPort, reverse);
+            }
+            reverse.put(inputPort, dependency);
+        }
+        Dependency priorDependency = map.get(outputPort);
+        if (priorDependency == null) {
+            map.put(outputPort, dependency);
+            return true;
+        }
+        // There is a prior dependency.
+        Dependency newDependency = priorDependency.oPlus(dependency);
+        if (!newDependency.equals(priorDependency)) {
+            // Update the dependency.
+            map.put(outputPort, newDependency);
+            if (outputPort.getContainer() == _actor) {
+                // Have to also change the forward and reverse dependencies.
+                reverse.put(inputPort, newDependency);
+                forward.put(outputPort, newDependency);
+            }
+            return true;
+        }
+        // No change made to the dependency.
+        return false;
+    }
+    
     /** Set the dependency from the specified inputPort to all
      *  ports that are reachable via the portsToProcess ports.
      *  The results are stored in the specified map.
@@ -176,11 +342,12 @@ public class CausalityInterfaceForComposites extends CausalityInterface {
     private void _setDependency(
             IOPort inputPort, 
             Map<IOPort,Dependency> map, 
-            Collection portsToProcess) {
+            Collection<IOPort> portsToProcess) {
+        if (inputPort.getName().equals("in2") /*&& outputPort.getName().equals("out2") */) {
+            System.out.println("FIXME");
+        }
         Set<IOPort> portsToProcessNext = new HashSet<IOPort>();
-        Iterator ports = portsToProcess.iterator();
-        while (ports.hasNext()) {
-            IOPort port = (IOPort)ports.next();
+        for (IOPort port : portsToProcess) {
             // The argument map is required to contain this dependency.
             Dependency dependency = map.get(port);
             // Next, check whether we have gotten to an output port of this actor.
@@ -194,11 +361,11 @@ public class CausalityInterfaceForComposites extends CausalityInterface {
                 if (port.isOutput()) {
                     // We have a path from an input to an output.
                     // Record the dependency.
-                    _recordDependency(port, map, dependency);
+                    _recordDependency(inputPort, port, map, dependency);
                 }
             } else {
                 // The port presumably belongs to an actor inside this actor.
-                _recordDependency(port, map, dependency);
+                _recordDependency(inputPort, port, map, dependency);
                 // Next record the dependency that all output ports of
                 // the actor containing the port have on the input port.
                 Actor actor = (Actor)port.getContainer();
@@ -208,7 +375,7 @@ public class CausalityInterfaceForComposites extends CausalityInterface {
                     IOPort outputPort = (IOPort)outputPorts.next();
                     Dependency actorDependency = causality.getDependency(port, outputPort);
                     Dependency newDependency = dependency.oTimes(actorDependency);
-                    if (_recordDependency(outputPort, map, newDependency)) {
+                    if (_recordDependency(inputPort, outputPort, map, newDependency)) {
                         // Dependency of this output port has been set or
                         // changed.  Add ports to the set of ports to be
                         // processed next.
@@ -216,7 +383,7 @@ public class CausalityInterfaceForComposites extends CausalityInterface {
                         Iterator sinkPortsIterator = sinkPorts.iterator();
                         while (sinkPortsIterator.hasNext()) {
                             IOPort sinkPort = (IOPort)sinkPortsIterator.next();
-                            _recordDependency(sinkPort, map, newDependency);
+                            _recordDependency(inputPort, sinkPort, map, newDependency);
                             if (sinkPort.getContainer() != _actor) {
                                 // Port is not owned by this actor.
                                 // Further processing will be needed.
@@ -231,45 +398,16 @@ public class CausalityInterfaceForComposites extends CausalityInterface {
             _setDependency(inputPort, map, portsToProcessNext);
         }
     }
-    
-    /** Record a dependency from the specified inputPort to the
-     *  specified output port. If there was a prior dependency already
-     *  that was less than this one, then update the dependency
-     *  using its oPlus() method.
-     *  Return true if the dependency was newly set or modified from
-     *  a previously recorded dependency. Return false if no change
-     *  was made to a previous dependency.
-     *  @param inputPort The source port.
-     *  @param port The destination port.
-     *  @param dependency The dependency map for ports reachable from the input port.
-     *  @return True if the dependency was changed.
-     */
-    private boolean _recordDependency(
-            IOPort port,
-            Map<IOPort,Dependency> map,
-            Dependency dependency) {
-        Dependency priorDependency = map.get(port);
-        if (priorDependency == null) {
-            map.put(port, dependency);
-            return true;
-        }
-        // There is a prior dependency.
-        Dependency newDependency = priorDependency.oPlus(dependency);
-        if (!newDependency.equals(priorDependency)) {
-            // Update the dependency.
-            map.put(port, newDependency);
-            return true;
-        }
-        // No change made to the dependency.
-        return false;
-    }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    /** Computed dependencies. */
-    private Map<IOPort,Map<IOPort,Dependency>> _dependencies;
-
     /** The workspace version where the dependency was last updated. */
     private long _dependencyVersion;
+    
+    /** Computed dependencies between input ports and output ports of the associated actor. */
+    private Map<IOPort,Map<IOPort,Dependency>> _forwardDependencies;
+    
+    /** Computed reverse dependencies (the key is now an output port). */
+    private Map<IOPort,Map<IOPort,Dependency>> _reverseDependencies;
 }

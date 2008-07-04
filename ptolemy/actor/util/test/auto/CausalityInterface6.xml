@@ -75,11 +75,27 @@
             </property>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;xin1 has output depenencies as follows:\n   xout1: BooleanDependency(true)\n   xout2: BooleanDependency(false)\nxin2 has output depenencies as follows:\n   xout1: BooleanDependency(true)\n   xout2: BooleanDependency(true)\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;xin1 has output dependencies as follows:\n   xout1: BooleanDependency(true)\n   xout2: BooleanDependency(false)\nxin2 has output dependencies as follows:\n   xout1: BooleanDependency(true)\n   xout2: BooleanDependency(true)\n&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{360, 125}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 40.0]">
+            </property>
+        </entity>
+        <entity name="Test2" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;xin1 has output port dependencies:\n  xout1\nxin2 has output port dependencies:\n  xout1\n  xout2\nxout1 has input port dependencies:\n  xin1\n  xin2\nxout2 has input port dependencies:\n  xin2\n&quot;}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 95.0]">
+            </property>
+        </entity>
+        <entity name="Test3" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;xin1 has equivalent input ports:\n  xin1\n  xin2\nxin2 has equivalent input ports:\n  xin1\n  xin2\n&quot;}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 145.0]">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -100,6 +116,14 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
         <link port="xin1" relation="relation3"/>
         <link port="xout1" relation="relation"/>
         <link port="xin2" relation="relation2"/>
@@ -109,7 +133,11 @@
         <link port="AddSubtract.output" relation="relation"/>
         <link port="GetCausalityInterface.output" relation="relation4"/>
         <link port="GetCausalityInterface.trigger" relation="relation2"/>
+        <link port="GetCausalityInterface.dependents" relation="relation7"/>
+        <link port="GetCausalityInterface.equivalences" relation="relation5"/>
         <link port="Test.input" relation="relation4"/>
+        <link port="Test2.input" relation="relation7"/>
+        <link port="Test3.input" relation="relation5"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">

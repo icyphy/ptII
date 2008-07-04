@@ -28,7 +28,14 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
@@ -65,7 +72,22 @@ public class GetCausalityInterface extends Source {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.STRING);
+        
+        dependents = new TypedIOPort(this, "dependents", false, true);
+        dependents.setTypeEquals(BaseType.STRING);
+        
+        equivalences = new TypedIOPort(this, "equivalences", false, true);
+        equivalences.setTypeEquals(BaseType.STRING);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                            ports                          ////
+    
+    /** Output port on which to put the description of the dependent ports. */
+    public TypedIOPort dependents;
+
+    /** Output port on which to put the description of the equivalence classes. */
+    public TypedIOPort equivalences;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -79,5 +101,67 @@ public class GetCausalityInterface extends Source {
         Actor container = (Actor)getContainer();
         CausalityInterface causalityInterface = container.getCausalityInterface();
         output.send(0, new StringToken(causalityInterface.toString()));
-    }
+        
+        StringBuffer dependentsResult = new StringBuffer();
+        List<IOPort> inputs = container.inputPortList();
+        for (IOPort input : inputs) {
+            Collection<IOPort> outputs = causalityInterface.dependentPorts(input);
+            if (outputs.size() > 0) {
+                dependentsResult.append(input.getName());
+                dependentsResult.append(" has output port dependencies:\n");
+                List<String> outputList = new LinkedList<String>();
+                for (IOPort output : outputs) {
+                    outputList.add(output.getName());
+                }
+                // To get deterministic results for testing, sort alphabetically.
+                Collections.sort(outputList);
+                for (String name : outputList) {
+                    dependentsResult.append("  ");
+                    dependentsResult.append(name);
+                    dependentsResult.append("\n");
+                }
+            }
+        }
+        List<IOPort> outputs = container.outputPortList();
+        for (IOPort output : outputs) {
+            Collection<IOPort> ports = causalityInterface.dependentPorts(output);
+            if (ports.size() > 0) {
+                dependentsResult.append(output.getName());
+                dependentsResult.append(" has input port dependencies:\n");
+                List<String> inputList = new LinkedList<String>();
+                for (IOPort input : ports) {
+                    inputList.add(input.getName());
+                }
+                // To get deterministic results for testing, sort alphabetically.
+                Collections.sort(inputList);
+                for (String name : inputList) {
+                    dependentsResult.append("  ");
+                    dependentsResult.append(name);
+                    dependentsResult.append("\n");
+                }
+            }
+        }
+        dependents.send(0, new StringToken(dependentsResult.toString()));
+
+        StringBuffer equivalencesResult = new StringBuffer();
+        for (IOPort input : inputs) {
+            Collection<IOPort> equivalents = causalityInterface.equivalentPorts(input);
+            if (equivalents.size() > 0) {
+                equivalencesResult.append(input.getName());
+                equivalencesResult.append(" has equivalent input ports:\n");
+                List<String> equivalentsList = new LinkedList<String>();
+                for (IOPort port : equivalents) {
+                    equivalentsList.add(port.getName());
+                }
+                // To get deterministic results for testing, sort alphabetically.
+                Collections.sort(equivalentsList);
+                for (String name : equivalentsList) {
+                    equivalencesResult.append("  ");
+                    equivalencesResult.append(name);
+                    equivalencesResult.append("\n");
+                }
+            }
+        }
+        equivalences.send(0, new StringToken(equivalencesResult.toString()));
+}
 }

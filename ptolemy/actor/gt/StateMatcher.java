@@ -45,6 +45,7 @@ import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
@@ -128,7 +129,7 @@ ValueListener {
             return _causalityInterface;
         }
         // If we get here, there is no director.
-        _causalityInterface = new CausalityInterface(this, BooleanDependency.OTIMES_IDENTITY);
+        _causalityInterface = new DefaultCausalityInterface(this, BooleanDependency.OTIMES_IDENTITY);
         _causalityInterfaceDirector = director;
         return _causalityInterface;
     }

@@ -68,6 +68,7 @@ JSRCS = \
 	ConstVariableModelAnalysis.java \
 	CQComparator.java \
 	Dependency.java \
+	DefaultCausalityInterface.java \
 	DFUtilities.java \
 	DependencyDeclaration.java \
 	ExplicitChangeContext.java \
