@@ -27,12 +27,10 @@
  */
 package ptolemy.domains.de.lib;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.CausalityInterface;
-import ptolemy.actor.util.DefaultCausalityInterface;
-import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
@@ -201,15 +199,8 @@ public class TimedDelay extends DETransformer {
      */
     public CausalityInterface getCausalityInterface() {
         if (_causalityInterface == null) {
-            _causalityInterface = new DefaultCausalityInterface(
-                    this, BooleanDependency.OTIMES_IDENTITY) {
-                public Dependency getDependency(IOPort input, IOPort output) {
-                    if (input == TimedDelay.this.input && output == TimedDelay.this.output) {
-                        return BooleanDependency.valueOf(false);
-                    }
-                    return _defaultDependency;
-                }
-            };
+            _causalityInterface = new BreakCausalityInterface(
+                    this, BooleanDependency.OTIMES_IDENTITY);
         }
         return _causalityInterface;
     }
