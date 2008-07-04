@@ -343,9 +343,6 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
             IOPort inputPort, 
             Map<IOPort,Dependency> map, 
             Collection<IOPort> portsToProcess) {
-        if (inputPort.getName().equals("in2") /*&& outputPort.getName().equals("out2") */) {
-            System.out.println("FIXME");
-        }
         Set<IOPort> portsToProcessNext = new HashSet<IOPort>();
         for (IOPort port : portsToProcess) {
             // The argument map is required to contain this dependency.
