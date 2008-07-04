@@ -52,6 +52,7 @@ import ptolemy.actor.gt.GTIngredient.NamedObjMatchResult;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.Pair;
+import ptolemy.actor.gt.data.SequentialTwoWayHashMap;
 import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
@@ -64,7 +65,6 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
@@ -165,7 +165,8 @@ public class GraphMatcher extends GraphAnalyzer {
     public boolean match(Pattern pattern, CompositeEntity hostGraph) {
 
         // Matching result.
-        _match = new MatchResult();
+        _parameterValues = new SequentialTwoWayHashMap<ValueIterator, Token>();
+        _match = new MatchResult(_parameterValues);
 
         // Temporary data structures.
         _lookbackList = new LookbackList();
@@ -174,7 +175,7 @@ public class GraphMatcher extends GraphAnalyzer {
         Hashtable<ValueIterator, Token> records =
             new Hashtable<ValueIterator, Token>();
         try {
-            _saveValues(pattern, records);
+            GTTools.saveValues(pattern, records);
         } catch (IllegalActionException e) {
             throw new KernelRuntimeException(e, "Unable to save values.");
         }
@@ -182,7 +183,7 @@ public class GraphMatcher extends GraphAnalyzer {
         _success = _matchChildrenCompositeEntity(pattern, hostGraph);
 
         try {
-            _restoreValues(pattern, records);
+            GTTools.restoreValues(pattern, records);
         } catch (IllegalActionException e) {
             throw new KernelRuntimeException(e, "Unable to restore values.");
         }
@@ -288,48 +289,14 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     };
 
-    protected Token _getAttribute(NamedObj container, String name,
-            Class<? extends GTAttribute> attributeClass) {
-
-        while (container != null) {
-            if (_match.containsValue(container)) {
-                container = (NamedObj) _match.getKey(container);
-            } else if (_temporaryMatch.containsValue(container)) {
-                container = (NamedObj) _temporaryMatch.getKey(container);
-            }
-            Attribute attribute = container.getAttribute(name);
-            if (attribute != null && attributeClass.isInstance(attribute)) {
-                try {
-                    attribute.workspace().getReadAccess();
-                    Parameter parameter = (Parameter) attribute.attributeList()
-                            .get(0);
-                    try {
-                        return parameter == null ? null : parameter.getToken();
-                    } catch (IllegalActionException e) {
-                        return null;
-                    }
-                } finally {
-                    attribute.workspace().doneReading();
-                }
-            }
-            container = container.getContainer();
-        }
-
-        return null;
-    }
-
     protected boolean _ignoreObject(Object object) {
-    	if (object instanceof NamedObj) {
-    		if (!((NamedObj) object).attributeList(CreationAttribute.class)
-    				.isEmpty()) {
-    			return true;
-    		}
-    		if (!((NamedObj) object).attributeList(IgnoringAttribute.class)
-    				.isEmpty()) {
-    			return true;
-    		}
-    	}
-        return false;
+        if (object instanceof NamedObj) {
+            if (!((NamedObj) object).attributeList(CreationAttribute.class)
+                    .isEmpty()) {
+                return true;
+            }
+        }
+        return super._ignoreObject(object);
     }
 
     /** Test whether the composite entity is opaque or not. Return <tt>true</tt>
@@ -349,17 +316,29 @@ public class GraphMatcher extends GraphAnalyzer {
             return true;
         } else {
             NamedObj container = entity.getContainer();
-            Token value = _getAttribute(container, "HierarchyFlattening",
-                    HierarchyFlatteningAttribute.class);
-            boolean isOpaque = value == null ?
-                    !HierarchyFlatteningAttribute.DEFAULT
-                    : !((BooleanToken) value).booleanValue();
-            return isOpaque;
+            Token hierarchyFlatteningToken = _getAttribute(container,
+                    HierarchyFlatteningAttribute.class, true, false, true);
+            boolean hierarchyFlattening = hierarchyFlatteningToken == null ?
+                    HierarchyFlatteningAttribute.DEFAULT
+                    : ((BooleanToken) hierarchyFlatteningToken).booleanValue();
+            Token containerIgnoringToken = _getAttribute(container,
+                    ContainerIgnoringAttribute.class, false, true, false);
+            boolean containerIgnoring = containerIgnoringToken == null ?
+                    ContainerIgnoringAttribute.DEFAULT
+                    : ((BooleanToken) containerIgnoringToken).booleanValue();
+            return !hierarchyFlattening && !containerIgnoring;
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    protected boolean _relationCollapsing(NamedObj container) {
+        Token collapsingToken = _getAttribute(container,
+                RelationCollapsingAttribute.class, true, false, false);
+        if (collapsingToken == null) {
+            return RelationCollapsingAttribute.DEFAULT;
+        } else {
+            return ((BooleanToken) collapsingToken).booleanValue();
+        }
+    }
 
     /** Check the items in the lookback list for more matching requirements. If
      *  no more requirements are found (i.e., all the lists in the lookback list
@@ -395,6 +374,9 @@ public class GraphMatcher extends GraphAnalyzer {
     private boolean _checkConstraint(Pattern pattern, Constraint constraint) {
         return constraint.check(pattern, _match);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     private boolean _checkConstraints() {
         if (_match.isEmpty()) {
@@ -441,6 +423,48 @@ public class GraphMatcher extends GraphAnalyzer {
             pattern.workspace().doneReading();
         }
         return true;
+    }
+
+    private Token _getAttribute(NamedObj container,
+            Class<? extends ParameterAttribute> attributeClass,
+            boolean searchContainer, boolean patternOnly, boolean hostOnly) {
+
+        boolean isInHost = false;
+
+        while (container != null) {
+            if (_match.containsValue(container)) {
+                container = (NamedObj) _match.getKey(container);
+                isInHost = true;
+            } else if (_temporaryMatch.containsValue(container)) {
+                container = (NamedObj) _temporaryMatch.getKey(container);
+                isInHost = true;
+            }
+
+            if ((!patternOnly || !isInHost) && (!hostOnly || isInHost)) {
+                List<?> attributes = container.attributeList(attributeClass);
+                if (!attributes.isEmpty()) {
+                    ParameterAttribute attribute =
+                        (ParameterAttribute) attributes.get(0);
+                    try {
+                        attribute.workspace().getReadAccess();
+                        Parameter parameter = (Parameter) attribute.parameter;
+                        return parameter == null ? null : parameter.getToken();
+                    } catch (IllegalActionException e) {
+                        return null;
+                    } finally {
+                        attribute.workspace().doneReading();
+                    }
+                }
+            }
+
+            if (!searchContainer) {
+                break;
+            }
+
+            container = container.getContainer();
+        }
+
+        return null;
     }
 
     /** Get a string that represents the object. If the object is an instance of
@@ -587,6 +611,7 @@ public class GraphMatcher extends GraphAnalyzer {
         }
 
         int matchSize = _match.size();
+        int parameterSize = _parameterValues.size();
 
         ParameterIterator paramIterator;
         try {
@@ -666,6 +691,10 @@ public class GraphMatcher extends GraphAnalyzer {
             if (!success) {
                 _match.retain(matchSize);
             }
+        }
+
+        if (!success) {
+            _parameterValues.retain(parameterSize);
         }
 
         return success;
@@ -794,6 +823,10 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     private boolean _matchPort(Port patternPort, Port hostPort) {
+        if (patternPort.getFullName().endsWith("X4.output")) {
+            int x = 0; x++;
+        }
+
         if (patternPort instanceof GTEntity
                 && !((GTEntity) patternPort).match(hostPort)) {
            return false;
@@ -835,12 +868,8 @@ public class GraphMatcher extends GraphAnalyzer {
                 hostList.add(hostContainer);
             }
 
-            Token collapsingToken = _getAttribute(patternContainer
-                    .getContainer(), "RelationCollapsing",
-                    RelationCollapsingAttribute.class);
-            boolean collapsing = collapsingToken == null ?
-                    RelationCollapsingAttribute.DEFAULT
-                    : ((BooleanToken) collapsingToken).booleanValue();
+            boolean collapsing = _relationCollapsing(
+                    patternContainer.getContainer());
 
             if (collapsing) {
                 _temporaryMatch.put(patternContainer, hostContainer);
@@ -943,59 +972,6 @@ public class GraphMatcher extends GraphAnalyzer {
             if (patternObject instanceof NamedObj) {
                 System.out.println(_getNameString(patternObject) + " : "
                         + _getNameString(match.get(patternObject)));
-            }
-        }
-    }
-
-    /** Restore the values of the parameters that implement the {@link
-     *  ValueIterator} interface within the root entity using the values
-     *  recorded in the given table previously. The values are restored
-     *  bottom-up.
-     *
-     *  @param root The root.
-     *  @param records The table with the previously stored values.
-     *  @throws IllegalActionException If the values of those parameters cannot
-     *  be set.
-     */
-    private void _restoreValues(ComponentEntity root,
-            Hashtable<ValueIterator, Token> records)
-            throws IllegalActionException {
-        if (root instanceof CompositeEntity) {
-            for (Object entity : ((CompositeEntity) root).entityList()) {
-                _restoreValues((ComponentEntity) entity, records);
-            }
-        }
-        List<?> iterators = root.attributeList(ValueIterator.class);
-        ListIterator<?> listIterator = iterators.listIterator(iterators.size());
-        while (listIterator.hasPrevious()) {
-            ValueIterator iterator = (ValueIterator) listIterator.previous();
-            Token value = records.get(iterator);
-            if (value != null) {
-                iterator.setToken(value);
-                iterator.validate();
-            }
-        }
-    }
-
-    /** Save the values of parameters that implement the {@link ValueIterator}
-     *  interface in the given records table, starting from the root entity.
-     *
-     *  @param root The root.
-     *  @param records The table to store the values.
-     *  @throws IllegalActionException If the values of those parameters cannot
-     *  be obtained.
-     */
-    private void _saveValues(ComponentEntity root,
-            Hashtable<ValueIterator, Token> records)
-            throws IllegalActionException {
-        List<?> iterators = root.attributeList(ValueIterator.class);
-        for (Object iteratorObject : iterators) {
-            ValueIterator iterator = (ValueIterator) iteratorObject;
-            records.put(iterator, iterator.getToken());
-        }
-        if (root instanceof CompositeEntity) {
-            for (Object entity : ((CompositeEntity) root).entityList()) {
-                _saveValues((ComponentEntity) entity, records);
             }
         }
     }
@@ -1117,15 +1093,17 @@ public class GraphMatcher extends GraphAnalyzer {
 
     private static final NameComparator _comparator = new NameComparator();
 
+    private LookbackList _lookbackList;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
-    private LookbackList _lookbackList;
 
     /** The map that matches objects in the pattern to the objects in the host.
      *  These objects include actors, ports, relations, etc.
      */
     private MatchResult _match;
+
+    private SequentialTwoWayHashMap<ValueIterator, Token> _parameterValues;
 
     /** The variable that indicates whether the last match operation is
      *  successful. (See {@link #match(CompositeActorMatcher, NamedObj)})
@@ -1188,14 +1166,12 @@ public class GraphMatcher extends GraphAnalyzer {
             return _valueIterators != null;
         }
 
-        protected Token _getAttribute(NamedObj container, String name,
-                Class<? extends GTAttribute> attributeClass) {
-            return GraphMatcher.this._getAttribute(container, name,
-                    attributeClass);
-        }
-
         protected boolean _isOpaque(CompositeEntity entity) {
             return !GraphMatcher.this._isOpaque(entity);
+        }
+
+        protected boolean _relationCollapsing(NamedObj container) {
+            return GraphMatcher.this._relationCollapsing(container);
         }
 
         ParameterIterator(ComponentEntity entity)
@@ -1203,7 +1179,8 @@ public class GraphMatcher extends GraphAnalyzer {
             List<?> valueIterators = entity.attributeList(ValueIterator.class);
             for (Object iteratorObject : valueIterators) {
                 ValueIterator iterator = (ValueIterator) iteratorObject;
-                iterator.initial();
+                Token initial = iterator.initial();
+                _parameterValues.put(iterator, initial);
                 _valueIterators.add(iterator);
             }
 
@@ -1220,7 +1197,8 @@ public class GraphMatcher extends GraphAnalyzer {
                         for (Object iteratorObject : valueIterators) {
                             ValueIterator iterator =
                                 (ValueIterator) iteratorObject;
-                            iterator.initial();
+                            Token initial = iterator.initial();
+                            _parameterValues.put(iterator, initial);
                             _valueIterators.add(iterator);
                         }
                     }
@@ -1240,8 +1218,10 @@ public class GraphMatcher extends GraphAnalyzer {
                 terminate = true;
                 while (iterators.hasPrevious()) {
                     ValueIterator iterator = iterators.previous();
+                    _parameterValues.removeLast();
                     try {
-                        iterator.next();
+                        Token next = iterator.next();
+                        _parameterValues.put(iterator, next);
                         terminate = false;
                         break;
                     } catch (IllegalActionException e) {
@@ -1254,7 +1234,8 @@ public class GraphMatcher extends GraphAnalyzer {
                     while (iterators.hasNext()) {
                         ValueIterator iterator = iterators.next();
                         try {
-                            iterator.initial();
+                            Token initial = iterator.initial();
+                            _parameterValues.put(iterator, initial);
                         } catch (IllegalActionException e) {
                             found = false;
                             break;

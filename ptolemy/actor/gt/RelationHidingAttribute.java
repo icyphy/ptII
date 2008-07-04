@@ -49,7 +49,7 @@ import ptolemy.moml.EntityLibrary;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class RelationHidingAttribute extends GTAttribute {
+public class RelationHidingAttribute extends ParameterAttribute {
 
     /**
      * @param container
@@ -60,10 +60,6 @@ public class RelationHidingAttribute extends GTAttribute {
     public RelationHidingAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        parameter = new Parameter(this, "relationHiding");
-        parameter.setTypeEquals(BaseType.BOOLEAN);
-        parameter.setToken(BooleanToken.getInstance(!DEFAULT));
     }
 
     public void attributeChanged(Attribute attribute) {
@@ -97,7 +93,12 @@ public class RelationHidingAttribute extends GTAttribute {
 
     public static final boolean DEFAULT = true;
 
-    public Parameter parameter;
+    protected void _initParameter() throws IllegalActionException,
+            NameDuplicationException {
+        parameter = new Parameter(this, "relationHiding");
+        parameter.setTypeEquals(BaseType.BOOLEAN);
+        parameter.setToken(BooleanToken.getInstance(!DEFAULT));
+    }
 
     private static final String _HIDING_ICON = "<svg>"
             + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""

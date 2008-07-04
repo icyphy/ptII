@@ -46,10 +46,9 @@ test GeneratedModel1.1 {An empty graph with an empty lhs} {
     set lhs [java::new ptolemy.actor.gt.Pattern $e0 lhs]
     set host [java::new ptolemy.actor.TypedCompositeActor $e0 host]
     
-    set hierarchyFlattening [java::new ptolemy.actor.gt.HierarchyFlatteningAttribute $lhs "HierarchyFlattening"]
-    [java::field $hierarchyFlattening parameter] setExpression true
-    set relationCollapsing [java::new ptolemy.actor.gt.RelationCollapsingAttribute $lhs "RelationCollapsing"]
-    [java::field $relationCollapsing parameter] setExpression true
+    java::new ptolemy.actor.gt.ContainerIgnoringAttribute $lhs "ContainerIgnoring"
+    java::new ptolemy.actor.gt.HierarchyFlatteningAttribute $lhs "HierarchyFlattening"
+    java::new ptolemy.actor.gt.RelationCollapsingAttribute $lhs "RelationCollapsing"
     
     $matcher match $lhs $host
     [$matcher getMatchResult] toString

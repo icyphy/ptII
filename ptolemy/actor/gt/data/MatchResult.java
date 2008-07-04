@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -34,48 +34,31 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
+import ptolemy.actor.gt.ValueIterator;
+import ptolemy.data.Token;
 import ptolemy.kernel.util.NamedObj;
 
-public class MatchResult extends TwoWayHashMap<Object, Object> {
+public class MatchResult extends SequentialTwoWayHashMap<Object, Object> {
 
-    public void clear() {
-        super.clear();
-        _keySequence.clear();
+    public MatchResult() {
     }
 
+    public MatchResult(SequentialTwoWayHashMap<ValueIterator, Token>
+            parameterValues) {
+        _parameterValues = parameterValues;
+    }
+
+    @SuppressWarnings("unchecked")
     public Object clone() {
         MatchResult result = (MatchResult) super.clone();
-        result._keySequence = new LinkedList<Object>(_keySequence);
+        result._parameterValues = (SequentialTwoWayHashMap) _parameterValues
+                .clone();
         return result;
     }
 
-    public Object put(Object key, Object value) {
-        if (!super.containsKey(key)) {
-            _keySequence.add(key);
-        }
-        return super.put(key, value);
-    }
-
-    public Object remove(Object key) {
-        Object oldValue = super.remove(key);
-        if (oldValue != null) {
-            _keySequence.remove(key);
-        }
-        return oldValue;
-    }
-
-    public void retain(int count) {
-        int size = _keySequence.size();
-        if (size > count) {
-            ListIterator<Object> iterator = _keySequence.listIterator(size);
-            for (; size > count; size--) {
-                Object key = iterator.previous();
-                iterator.remove();
-                super.remove(key);
-            }
-        }
+    public SequentialTwoWayHashMap<ValueIterator, Token> getParameterValues() {
+        return _parameterValues;
     }
 
     public String toString() {
@@ -109,6 +92,6 @@ public class MatchResult extends TwoWayHashMap<Object, Object> {
         return buffer.toString();
     }
 
-    private List<Object> _keySequence = new LinkedList<Object>();
+    private SequentialTwoWayHashMap<ValueIterator, Token> _parameterValues;
 
 }

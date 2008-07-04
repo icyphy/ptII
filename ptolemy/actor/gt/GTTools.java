@@ -34,10 +34,14 @@ package ptolemy.actor.gt;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 import ptolemy.actor.gt.data.CombinedCollection;
+import ptolemy.data.Token;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -79,8 +83,8 @@ public class GTTools {
 
     public static void deepAddAttributes(NamedObj container,
             Class<? extends Attribute> attributeClass)
-    		throws IllegalArgumentException, InstantiationException,
-    		IllegalAccessException, InvocationTargetException {
+            throws IllegalArgumentException, InstantiationException,
+            IllegalAccessException, InvocationTargetException {
         Constructor<?>[] constructors = attributeClass.getConstructors();
         for (Constructor<?> constructor : constructors) {
             Class<?>[] types = constructor.getParameterTypes();
@@ -98,7 +102,7 @@ public class GTTools {
 
     public static void deepRemoveAttributes(NamedObj container,
             Class<? extends Attribute> attributeClass)
-    		throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         List<Object> attributes = new LinkedList<Object>(
                 (Collection<?>) container.attributeList(attributeClass));
         for (Object attribute : attributes) {
@@ -267,6 +271,16 @@ public class GTTools {
         }
     }
 
+    public static boolean ignoreObject(Object object) {
+        if (object instanceof NamedObj
+                && !((NamedObj) object).attributeList(IgnoringAttribute.class)
+                        .isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static boolean isInPattern(NamedObj entity) {
         CompositeActorMatcher container = getContainingPatternOrReplacement(
                 entity);
@@ -277,5 +291,58 @@ public class GTTools {
         CompositeActorMatcher container = getContainingPatternOrReplacement(
                 entity);
         return container != null && container instanceof Replacement;
+    }
+
+    /** Restore the values of the parameters that implement the {@link
+     *  ValueIterator} interface within the root entity using the values
+     *  recorded in the given table previously. The values are restored
+     *  bottom-up.
+     *
+     *  @param root The root.
+     *  @param records The table with the previously stored values.
+     *  @throws IllegalActionException If the values of those parameters cannot
+     *  be set.
+     */
+    public static void restoreValues(ComponentEntity root,
+            Hashtable<ValueIterator, Token> records)
+            throws IllegalActionException {
+        if (root instanceof CompositeEntity) {
+            for (Object entity : ((CompositeEntity) root).entityList()) {
+                restoreValues((ComponentEntity) entity, records);
+            }
+        }
+        List<?> iterators = root.attributeList(ValueIterator.class);
+        ListIterator<?> listIterator = iterators.listIterator(iterators.size());
+        while (listIterator.hasPrevious()) {
+            ValueIterator iterator = (ValueIterator) listIterator.previous();
+            Token value = records.get(iterator);
+            if (value != null) {
+                iterator.setToken(value);
+                iterator.validate();
+            }
+        }
+    }
+
+    /** Save the values of parameters that implement the {@link ValueIterator}
+     *  interface in the given records table, starting from the root entity.
+     *
+     *  @param root The root.
+     *  @param records The table to store the values.
+     *  @throws IllegalActionException If the values of those parameters cannot
+     *  be obtained.
+     */
+    public static void saveValues(ComponentEntity root,
+            Hashtable<ValueIterator, Token> records)
+            throws IllegalActionException {
+        List<?> iterators = root.attributeList(ValueIterator.class);
+        for (Object iteratorObject : iterators) {
+            ValueIterator iterator = (ValueIterator) iteratorObject;
+            records.put(iterator, iterator.getToken());
+        }
+        if (root instanceof CompositeEntity) {
+            for (Object entity : ((CompositeEntity) root).entityList()) {
+                saveValues((ComponentEntity) entity, records);
+            }
+        }
     }
 }

@@ -67,16 +67,18 @@ public abstract class GTAttribute extends Attribute {
     protected void _checkContainerClass(NamedObj container,
             Class<? extends CompositeEntity> containerClass, boolean deep)
             throws IllegalActionException {
-        if (container instanceof EntityLibrary) {
-            return;
-        }
-
         while (deep && container != null
-                && !containerClass.isInstance(container)) {
+                && !containerClass.isInstance(container)
+                && !(container instanceof EntityLibrary)) {
             container = container.getContainer();
+            if (container instanceof EntityLibrary) {
+                return;
+            }
         }
 
-        if (container == null || !containerClass.isInstance(container)) {
+        if (container == null ||
+                !containerClass.isInstance(container) &&
+                !(container instanceof EntityLibrary)) {
             _deleteThis();
             throw new IllegalActionException(getClass().getSimpleName()
                     + " can only be added to " + containerClass.getSimpleName()

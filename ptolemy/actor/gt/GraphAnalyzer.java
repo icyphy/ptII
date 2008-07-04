@@ -42,7 +42,6 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.Pair;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
@@ -85,11 +84,7 @@ public abstract class GraphAnalyzer {
             children = new LinkedList<Object>((Collection<?>) top.entityList(
                     ComponentEntity.class));
 
-            Token collapsingToken = _getAttribute(top, "RelationCollapsing",
-                    RelationCollapsingAttribute.class);
-            boolean collapsing = collapsingToken == null ?
-                    RelationCollapsingAttribute.DEFAULT
-                    : ((BooleanToken) collapsingToken).booleanValue();
+            boolean collapsing = _relationCollapsing(top);
             if (!collapsing) {
                 for (Object relationObject : top.relationList()) {
                     children.add(relationObject);
@@ -463,15 +458,12 @@ public abstract class GraphAnalyzer {
         private Port _startPort;
     }
 
-    protected abstract Token _getAttribute(NamedObj container, String name,
-            Class<? extends GTAttribute> attributeClass);
+    protected boolean _ignoreObject(Object object) {
+        return GTTools.ignoreObject(object);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                      public inner classes                 ////
-
-    protected boolean _ignoreObject(Object object) {
-        return false;
-    }
 
     /** Test whether a relation should be ignored in the matching; return true
      *  if the given relation is hidden (i.e., has a parameter "_hide" whose
@@ -496,6 +488,8 @@ public abstract class GraphAnalyzer {
     }
 
     protected abstract boolean _isOpaque(CompositeEntity entity);
+
+    protected abstract boolean _relationCollapsing(NamedObj container);
 
     private void _removeIgnoredObjects(Iterable<?> list) {
         Iterator<?> iterator = list.iterator();

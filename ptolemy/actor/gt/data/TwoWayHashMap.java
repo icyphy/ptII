@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -50,6 +50,17 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
      *
      */
     public TwoWayHashMap() {
+        _reverseMap = new HashMap<V, K>();
+    }
+
+    /**
+     * @param map
+     */
+    public TwoWayHashMap(Map<? extends K, ? extends V> map) {
+        _reverseMap = new HashMap<V, K>();
+        for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
+            put(entry.getKey(), entry.getValue());
+        }
     }
 
     /**
@@ -57,6 +68,7 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
      */
     public TwoWayHashMap(int initialCapacity) {
         super(initialCapacity);
+        _reverseMap = new HashMap<V, K>(initialCapacity);
     }
 
     /**
@@ -65,16 +77,7 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
      */
     public TwoWayHashMap(int initialCapacity, float loadFactor) {
         super(initialCapacity, loadFactor);
-    }
-
-    /**
-     * @param map
-     */
-    public TwoWayHashMap(Map<K, V> map) {
-        super();
-        for (Map.Entry<K, V> entry : map.entrySet()) {
-            put(entry.getKey(), entry.getValue());
-        }
+        _reverseMap = new HashMap<V, K>(initialCapacity, loadFactor);
     }
 
     public void clear() {
@@ -84,7 +87,7 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
 
     @SuppressWarnings("unchecked")
     public Object clone() {
-        TwoWayHashMap<K, V> map = (TwoWayHashMap<K, V>) super.clone();
+        TwoWayHashMap map = (TwoWayHashMap) super.clone();
         map._reverseMap = new HashMap<V, K>(_reverseMap);
         return map;
     }
@@ -115,6 +118,6 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
         return Collections.unmodifiableSet(_reverseMap.keySet());
     }
 
-    private HashMap<V, K> _reverseMap = new HashMap<V, K>();
+    private HashMap<V, K> _reverseMap;
 
 }

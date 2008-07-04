@@ -34,6 +34,7 @@ package ptolemy.actor.gt;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ import java.util.Set;
 import ptolemy.actor.Director;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.Pair;
+import ptolemy.actor.gt.data.SequentialTwoWayHashMap;
 import ptolemy.actor.gt.data.TwoWayHashMap;
 import ptolemy.actor.gt.ingredients.operations.Operation;
 import ptolemy.data.BooleanToken;
@@ -58,6 +60,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -132,9 +135,8 @@ public class GraphTransformer extends ChangeRequest {
         NamedObj host = (NamedObj) matchResult.get(transformationRule
                 .getPattern());
         if (host == null) {
-            throw new TransformationException(
-                    "Match result is invalid because "
-                            + "it does not include the pattern.");
+            throw new TransformationException("Match result is invalid because "
+                    + "it does not include the pattern.");
         }
         host.requestChange(transformer);
     }
@@ -232,6 +234,15 @@ public class GraphTransformer extends ChangeRequest {
                         + "because it does not include the pattern.");
             }
 
+            Hashtable<ValueIterator, Token> records =
+                new Hashtable<ValueIterator, Token>();
+            try {
+                GTTools.saveValues(_pattern, records);
+            } catch (IllegalActionException e) {
+                throw new KernelRuntimeException(e, "Unable to save values.");
+            }
+            
+            _restoreParameterValues();
             _init();
             _recordMoML();
             _addObjects();
@@ -240,9 +251,29 @@ public class GraphTransformer extends ChangeRequest {
             _removeObjects();
             _addConnections();
             _wrapup();
+            
+            try {
+                GTTools.restoreValues(_pattern, records);
+            } catch (IllegalActionException e) {
+                throw new KernelRuntimeException(e, "Unable to restore values.");
+            }
         }
 
         _hideRelations();
+    }
+    
+    protected void _restoreParameterValues() throws TransformationException {
+    	SequentialTwoWayHashMap<ValueIterator, Token> parameterValues =
+    		_matchResult.getParameterValues();
+    	for (ValueIterator key : parameterValues.keys()) {
+    		try {
+				key.setToken(parameterValues.get(key));
+				key.validate();
+			} catch (IllegalActionException e) {
+				throw new TransformationException(
+						"Unable to set parameter value.", e);
+			}
+    	}
     }
 
     protected void _hideRelations() throws TransformationException {
@@ -362,6 +393,9 @@ public class GraphTransformer extends ChangeRequest {
                     true, true, true);
             for (Object childObject : children) {
                 NamedObj child = (NamedObj) childObject;
+                if (GTTools.ignoreObject(child)) {
+                    continue;
+                }
                 NamedObj hostChild = _replacementToHost.get(child);
                 String moml = null;
                 if (hostChild == null) {
@@ -394,6 +428,9 @@ public class GraphTransformer extends ChangeRequest {
                 true);
         for (Object childObject : children) {
             NamedObj child = (NamedObj) childObject;
+            if (GTTools.ignoreObject(child)) {
+                continue;
+            }
             if (_isToBeCreated(child)) {
                 String moml = child.exportMoMLPlain();
                 NamedObj host = _findChangeContext(pattern);
@@ -733,14 +770,27 @@ public class GraphTransformer extends ChangeRequest {
 
     private void _initReplacementToHost() throws TransformationException {
         _replacementToHost = new TwoWayHashMap<NamedObj, NamedObj>();
-        for (NamedObj pattern : _patternToReplacement.keySet()) {
-            NamedObj replacement = _patternToReplacement.get(pattern);
+        for (Map.Entry<NamedObj, NamedObj> entry : _patternToReplacement.entrySet()) {
+            NamedObj pattern = entry.getKey();
+            NamedObj replacement = entry.getValue();
             NamedObj host = (NamedObj) _matchResult.get(pattern);
             if (host != null) {
                 _replacementToHost.put(replacement, host);
                 _setReplacementObjectAttribute(host, GTTools.getCodeFromObject(
                         replacement, _replacement));
             }
+        }
+        for (Map.Entry<Object, Object> entry : _matchResult.entrySet()) {
+            Object patternObject = entry.getKey();
+            if (!(patternObject instanceof NamedObj)) {
+                continue;
+            }
+            NamedObj pattern = (NamedObj) patternObject;
+            if (!_isToBePreserved(pattern)) {
+                continue;
+            }
+            NamedObj host = (NamedObj) entry.getValue();
+            _replacementToHost.put(pattern, host);
         }
     }
 

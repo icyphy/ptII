@@ -62,6 +62,7 @@ JSRCS = \
 	ChangeAttribute.java \
 	CompositeActorMatcher.java \
 	Constraint.java \
+	ContainerIgnoringAttribute.java \
 	CreationAttribute.java \
 	DefaultDirectoryAttribute.java \
 	DefaultModelAttribute.java \
@@ -148,6 +149,7 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$NameComparator.class' \
 	'GraphMatcher$$ObjectList.class' \
 	'GraphMatcher$$ParameterIterator.class' \
+	'IterativeParameter$$ConstraintViolationException.class' \
 	'ModelExecutor$$Wrapper$$WrapperDirector.class' \
 	'ModelExecutor$$Wrapper.class' \
 	'ModelExecutor$$WrapperPort.class' \

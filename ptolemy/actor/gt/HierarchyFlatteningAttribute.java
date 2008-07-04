@@ -49,7 +49,7 @@ import ptolemy.moml.EntityLibrary;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class HierarchyFlatteningAttribute extends GTAttribute {
+public class HierarchyFlatteningAttribute extends ParameterAttribute {
 
     /**
      * @param container
@@ -60,10 +60,6 @@ public class HierarchyFlatteningAttribute extends GTAttribute {
     public HierarchyFlatteningAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        parameter = new Parameter(this, "hierarchyFlattening");
-        parameter.setTypeEquals(BaseType.BOOLEAN);
-        parameter.setToken(BooleanToken.getInstance(!DEFAULT));
     }
 
     public void attributeChanged(Attribute attribute) {
@@ -97,7 +93,12 @@ public class HierarchyFlatteningAttribute extends GTAttribute {
 
     public static final boolean DEFAULT = false;
 
-    public Parameter parameter;
+    protected void _initParameter() throws IllegalActionException,
+            NameDuplicationException {
+        parameter = new Parameter(this, "hierarchyFlattening");
+        parameter.setTypeEquals(BaseType.BOOLEAN);
+        parameter.setToken(BooleanToken.getInstance(!DEFAULT));
+    }
 
     private static final String _FLATTENING_ICON = "<svg>"
             + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
@@ -105,11 +106,13 @@ public class HierarchyFlatteningAttribute extends GTAttribute {
             + "<rect x=\"5\" y=\"5\" width=\"30\" height=\"22\""
             + "  style=\"fill:#FF0000\"/>"
             + "<rect x=\"7\" y=\"7\" width=\"26\" height=\"18\""
-            + "  style=\"fill:#C0C0C0\"/>"
-            + "<rect x=\"14\" y=\"11\" width=\"15\" height=\"10\""
+            + "  style=\"fill:#FFFFFF\"/>"
+            + "<text x=\"8\" y=\"17\" style=\"font-size:16; " +
+                    "font-family:SansSerif; fill:#A00000\">..</text>"
+            + "<rect x=\"18\" y=\"11\" width=\"11\" height=\"10\""
             + "  style=\"fill:#FF0000\"/>"
-            + "<rect x=\"16\" y=\"13\" width=\"11\" height=\"6\""
-            + "  style=\"fill:#C0C0C0\"/>"
+            + "<rect x=\"20\" y=\"13\" width=\"7\" height=\"6\""
+            + "  style=\"fill:#FFFFFF\"/>"
             + "<line x1=\"39\" y1=\"14\" x2=\"52\" y2=\"14\""
             + "  style=\"stroke:#303030; stroke-width:2\"/>"
             + "<line x1=\"39\" y1=\"18\" x2=\"52\" y2=\"18\""
@@ -121,7 +124,7 @@ public class HierarchyFlatteningAttribute extends GTAttribute {
             + "<rect x=\"59\" y=\"5\" width=\"30\" height=\"22\""
             + "  style=\"fill:#FF0000\"/>"
             + "<rect x=\"61\" y=\"7\" width=\"26\" height=\"18\""
-            + "  style=\"fill:#C0C0C0\"/>" + "</svg>";
+            + "  style=\"fill:#FFFFFF\"/>" + "</svg>";
 
     private static final String _NOT_FLATTENING_ICON = "<svg>"
             + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
@@ -129,11 +132,13 @@ public class HierarchyFlatteningAttribute extends GTAttribute {
             + "<rect x=\"5\" y=\"5\" width=\"30\" height=\"22\""
             + "  style=\"fill:#FF0000\"/>"
             + "<rect x=\"7\" y=\"7\" width=\"26\" height=\"18\""
-            + "  style=\"fill:#C0C0C0\"/>"
-            + "<rect x=\"14\" y=\"11\" width=\"15\" height=\"10\""
+            + "  style=\"fill:#FFFFFF\"/>"
+            + "<text x=\"8\" y=\"17\" style=\"font-size:16; " +
+                    "font-family:SansSerif; fill:#A00000\">..</text>"
+            + "<rect x=\"18\" y=\"11\" width=\"11\" height=\"10\""
             + "  style=\"fill:#FF0000\"/>"
-            + "<rect x=\"16\" y=\"13\" width=\"11\" height=\"6\""
-            + "  style=\"fill:#C0C0C0\"/>"
+            + "<rect x=\"20\" y=\"13\" width=\"7\" height=\"6\""
+            + "  style=\"fill:#FFFFFF\"/>"
             + "<line x1=\"39\" y1=\"14\" x2=\"52\" y2=\"14\""
             + "  style=\"stroke:#303030; stroke-width:2\"/>"
             + "<line x1=\"39\" y1=\"18\" x2=\"52\" y2=\"18\""
@@ -145,7 +150,7 @@ public class HierarchyFlatteningAttribute extends GTAttribute {
             + "<rect x=\"59\" y=\"5\" width=\"30\" height=\"22\""
             + "  style=\"fill:#FF0000\"/>"
             + "<rect x=\"61\" y=\"7\" width=\"26\" height=\"18\""
-            + "  style=\"fill:#C0C0C0\"/>"
+            + "  style=\"fill:#FFFFFF\"/>"
             + "<line x1=\"41\" y1=\"9\" x2=\"49\" y2=\"23\""
             + "  style=\"stroke:#C00000; stroke-width:3\"/>" + "</svg>";
 

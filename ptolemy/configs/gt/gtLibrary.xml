@@ -20,18 +20,6 @@
         </configure>
       </property>
     </property>
-    <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute">
-      <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
-      </property>
-      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-        <configure>
-          <svg>
-            <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
-          </svg>
-        </configure>
-      </property>
-    </property>
     <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute">
       <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
         <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
@@ -44,12 +32,54 @@
         </configure>
       </property>
     </property>
+    <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute">
+      <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
+      </property>
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
+    <property name="ContainerIgnoring" class="ptolemy.actor.gt.ContainerIgnoringAttribute">
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"/>
+            <text x="5" y="15" style="font-size:16; font-family:SansSerif; fill:blue">CI</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
     <property name="HierarchyFlattening" class="ptolemy.actor.gt.HierarchyFlatteningAttribute">
       <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
         <configure>
           <svg>
             <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"/>
-            <text x="3" y="14" style="font-size:16; font-family:SansSerif; fill:blue">HF</text>
+            <text x="3" y="15" style="font-size:16; font-family:SansSerif; fill:blue">HF</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
+    <property name="RelationCollapsing" class="ptolemy.actor.gt.RelationCollapsingAttribute">
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"/>
+            <text x="2" y="15" style="font-size:16; font-family:SansSerif; fill:blue">RC</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
+    <property name="RelationHiding" class="ptolemy.actor.gt.RelationHidingAttribute">
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"/>
+            <text x="2" y="15" style="font-size:16; font-family:SansSerif; fill:blue">RH</text>
           </svg>
         </configure>
       </property>
@@ -63,26 +93,6 @@
             <rect x="10" y="14" width="4" height="2" style="stroke:green; fill:green"/>
             <line x1="16" y1="16" x2="17" y2="9" style="stroke:blue"/>
             <line x1="16" y1="16" x2="23" y2="16" style="stroke:blue"/>
-          </svg>
-        </configure>
-      </property>
-    </property>
-    <property name="RelationCollapsing" class="ptolemy.actor.gt.RelationCollapsingAttribute">
-      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-        <configure>
-          <svg>
-            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"/>
-            <text x="2" y="14" style="font-size:16; font-family:SansSerif; fill:blue">RC</text>
-          </svg>
-        </configure>
-      </property>
-    </property>
-    <property name="RelationHiding" class="ptolemy.actor.gt.RelationHidingAttribute">
-      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-        <configure>
-          <svg>
-            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"/>
-            <text x="2" y="14" style="font-size:16; font-family:SansSerif; fill:blue">RH</text>
           </svg>
         </configure>
       </property>

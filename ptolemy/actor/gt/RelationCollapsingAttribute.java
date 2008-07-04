@@ -49,15 +49,11 @@ import ptolemy.moml.EntityLibrary;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class RelationCollapsingAttribute extends GTAttribute {
+public class RelationCollapsingAttribute extends ParameterAttribute {
 
     public RelationCollapsingAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
-        parameter = new Parameter(this, "relationCollapsing");
-        parameter.setTypeEquals(BaseType.BOOLEAN);
-        parameter.setToken(BooleanToken.getInstance(!DEFAULT));
     }
 
     public void attributeChanged(Attribute attribute) {
@@ -91,7 +87,12 @@ public class RelationCollapsingAttribute extends GTAttribute {
 
     public static final boolean DEFAULT = false;
 
-    public Parameter parameter;
+    protected void _initParameter() throws IllegalActionException,
+            NameDuplicationException {
+        parameter = new Parameter(this, "relationCollapsing");
+        parameter.setTypeEquals(BaseType.BOOLEAN);
+        parameter.setToken(BooleanToken.getInstance(!DEFAULT));
+    }
 
     private static final String _COLLAPSING_ICON = "<svg>"
             + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""

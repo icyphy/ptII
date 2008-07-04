@@ -53,6 +53,7 @@ JSRCS = \
 	FastLinkedList.java \
 	MatchResult.java \
 	Pair.java \
+	SequentialTwoWayHashMap.java \
 	Tuple.java \
 	TwoWayHashMap.java
 

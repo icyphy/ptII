@@ -34,7 +34,8 @@ import java.util.Set;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIORelation;
-import ptolemy.actor.gt.HierarchyFlatteningAttribute;
+import ptolemy.actor.gt.ContainerIgnoringAttribute;
+import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.IgnoringAttribute;
 import ptolemy.actor.ptalon.PtalonActor;
 import ptolemy.actor.ptalon.PtalonEvaluator;
@@ -78,7 +79,6 @@ public class PtalonMatcher extends TypedCompositeActor {
         super(container, name);
 
         ptalonCodeLocation = new FileParameter(this, "ptalonCodeLocation");
-        new HierarchyFlatteningAttribute(this, "_hierarchyFlattening");
     }
 
     public void attributeChanged(Attribute attribute)
@@ -123,6 +123,22 @@ public class PtalonMatcher extends TypedCompositeActor {
 
     public void clearActors() {
         _actors.clear();
+    }
+
+    public void setContainer(CompositeEntity container)
+    throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+
+        if (GTTools.isInPattern(this)) {
+            if (getAttribute("_containerIgnoring") == null) {
+                new ContainerIgnoringAttribute(this, "_containerIgnoring");
+            }
+        } else {
+            Attribute attribute = getAttribute("_containerIgnoring");
+            if (attribute != null) {
+                attribute.setContainer(null);
+            }
+        }
     }
 
     public FileParameter ptalonCodeLocation;
