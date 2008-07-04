@@ -41,6 +41,7 @@ import java.util.List;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.kernel.ComponentEntity;
@@ -445,7 +446,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             return _causalityInterface;
         }
         // If we get here, there is no director.
-        _causalityInterface = new CausalityInterface(this, BooleanDependency.OTIMES_IDENTITY);
+        _causalityInterface = new DefaultCausalityInterface(this, BooleanDependency.OTIMES_IDENTITY);
         _causalityInterfaceDirector = director;
         return _causalityInterface;
     }

@@ -42,6 +42,7 @@ import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
+import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -274,7 +275,7 @@ public class Director extends Attribute implements Executable {
     public CausalityInterface defaultCausalityInterface(Actor actor) {
         // NOTE: This cast is currently safe. Will it always be?
         if (((ComponentEntity)actor).isAtomic()) {
-            return new CausalityInterface(actor, BooleanDependency.OTIMES_IDENTITY);
+            return new DefaultCausalityInterface(actor, BooleanDependency.OTIMES_IDENTITY);
         }
         if (getContainer() == actor) {
             // The actor is the composite under the control of this director.
