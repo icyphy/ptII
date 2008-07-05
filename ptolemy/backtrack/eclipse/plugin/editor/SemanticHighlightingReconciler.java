@@ -34,13 +34,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.internal.corext.dom.GenericVisitor;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.javaeditor.ASTProvider;
+import org.eclipse.jdt.internal.ui.javaeditor.EditorUtility;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaSourceViewer;
 import org.eclipse.jdt.internal.ui.text.JavaPresentationReconciler;
@@ -738,9 +738,7 @@ public class SemanticHighlightingReconciler implements
     /** Schedule the reconcilation job in the background.
      */
     private void _scheduleJob() {
-        final IJavaElement element = _editor.getInputJavaElement();
-
-        if (element != null) {
+        if (EditorUtility.getEditorInputJavaElement(_editor, false) != null) {
             Job job = new Job("PtolemySemanticHighlighting.job") {
                 protected IStatus run(IProgressMonitor monitor) {
                     synchronized (_jobLock) {
@@ -760,7 +758,9 @@ public class SemanticHighlightingReconciler implements
                     }
 
                     CompilationUnit ast = JavaPlugin.getDefault()
-                            .getASTProvider().getAST(element,
+                            .getASTProvider().getAST(
+                            		EditorUtility.getEditorInputJavaElement(
+                            				_editor, false),
                                     ASTProvider.WAIT_YES, monitor);
                     reconciled(ast, false, monitor);
 
