@@ -53,6 +53,7 @@ JSRCS = \
 	ChoiceCriterionElement.java \
 	Criterion.java \
 	CriterionElement.java \
+	GuardCriterion.java \
 	PortCriterion.java \
 	StringCriterionElement.java \
 	SubclassCriterion.java
