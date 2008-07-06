@@ -32,6 +32,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.gt;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
@@ -48,7 +49,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class PortMatcher extends TypedIOPort {
+public class PortMatcher extends TypedIOPort implements Checkable {
 
     public PortMatcher(PortCriterion criterion, ComponentEntity container,
             String name, boolean isInput, boolean isOutput)
@@ -57,7 +58,7 @@ public class PortMatcher extends TypedIOPort {
         _criterion = criterion;
     }
 
-    public PortCriterion getPortCriterion() {
+    public Criterion getCriterion() {
         return _criterion;
     }
 

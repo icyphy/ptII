@@ -60,6 +60,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AtomicActorMatcher.java \
 	ChangeAttribute.java \
+	Checkable.java \
 	CompositeActorMatcher.java \
 	Constraint.java \
 	ContainerIgnoringAttribute.java \
@@ -135,7 +136,6 @@ OPTIONAL_FILES = \
 	'GTEntityUtils$$LoadActorIconChangeRequest.class' \
 	'GTEntityUtils$$RestoreAppearanceChangeRequest.class' \
 	'GTIngredient$$FieldIterator.class' \
-	'GTIngredient$$NamedObjMatchResult.class' \
 	'GTParameter$$Evaluator.class' \
 	'GTParameter$$Scope.class' \
 	'GTParameter$$TypeInference.class' \

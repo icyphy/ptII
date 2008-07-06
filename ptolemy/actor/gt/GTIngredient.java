@@ -66,7 +66,7 @@ public abstract class GTIngredient {
 
     public abstract String getValues();
 
-    public boolean isApplicable(NamedObj entity) {
+    public boolean isApplicable(NamedObj object) {
         return true;
     }
 
@@ -93,10 +93,6 @@ public abstract class GTIngredient {
     public abstract void validate() throws ValidationException;
 
     public static final String FIELD_SEPARATOR = "/";
-
-    public enum NamedObjMatchResult {
-        MATCH, NOT_MATCH, UNAPPLICABLE
-    }
 
     protected GTIngredient(GTIngredientList owner) {
         _owner = owner;

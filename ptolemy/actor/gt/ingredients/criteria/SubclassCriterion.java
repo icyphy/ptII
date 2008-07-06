@@ -76,29 +76,17 @@ public class SubclassCriterion extends Criterion {
         return buffer.toString();
     }
 
-    public boolean isSuperclassEnabled() {
-        return isEnabled(0);
-    }
-
-    public NamedObjMatchResult match(NamedObj object) {
-        if (isSuperclassEnabled()) {
-            try {
-                Class<?> superclass = Class.forName(getSuperclass());
-                if (superclass.isInstance(object)) {
-                    return NamedObjMatchResult.MATCH;
-                } else {
-                    return NamedObjMatchResult.NOT_MATCH;
-                }
-            } catch (ClassNotFoundException e) {
-                return NamedObjMatchResult.NOT_MATCH;
+    public boolean match(NamedObj object) {
+        try {
+            Class<?> superclass = Class.forName(_superclass);
+            if (superclass.isInstance(object)) {
+                return true;
+            } else {
+                return false;
             }
-        } else {
-            return NamedObjMatchResult.MATCH;
+        } catch (ClassNotFoundException e) {
+            return false;
         }
-    }
-
-    public void setSuperclassEnabled(boolean enabled) {
-        setEnabled(0, enabled);
     }
 
     public void setValue(int index, Object value) {
@@ -127,8 +115,9 @@ public class SubclassCriterion extends Criterion {
         }
     }
 
-    private static final CriterionElement[] _ELEMENTS = { new StringCriterionElement(
-            "superclass", false) };
+    private static final CriterionElement[] _ELEMENTS = {
+        new StringCriterionElement("superclass", false)
+    };
 
     private String _superclass;
 }

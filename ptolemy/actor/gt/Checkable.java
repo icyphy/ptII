@@ -1,6 +1,6 @@
 /*
 
- Copyright (c) 1997-2007 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,43 +24,25 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
- */
+*/
+package ptolemy.actor.gt;
 
-package ptolemy.actor.gt.ingredients.criteria;
+import ptolemy.actor.gt.ingredients.criteria.Criterion;
 
-import ptolemy.actor.gt.GTIngredient;
-import ptolemy.actor.gt.GTIngredientList;
-import ptolemy.kernel.util.NamedObj;
+//////////////////////////////////////////////////////////////////////////
+//// Checkable
 
 /**
 
+
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public abstract class Criterion extends GTIngredient {
+public interface Checkable {
 
-    /**
-     * @param owner
-     */
-    public Criterion(GTIngredientList owner) {
-        super(owner);
-    }
-
-    /**
-     * @param owner
-     * @param elementCount
-     */
-    public Criterion(GTIngredientList owner, int elementCount) {
-        super(owner, elementCount);
-    }
-
-    public boolean canCheck(NamedObj object) {
-        return isApplicable(object);
-    }
-
-    public abstract boolean match(NamedObj object);
+    public Criterion getCriterion();
 
 }

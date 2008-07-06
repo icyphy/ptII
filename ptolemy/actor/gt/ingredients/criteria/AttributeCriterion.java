@@ -117,7 +117,7 @@ public class AttributeCriterion extends Criterion {
         return isEnabled(2);
     }
 
-    public NamedObjMatchResult match(NamedObj object) {
+    public boolean match(NamedObj object) {
         for (Object attributeObject : object.attributeList()) {
             Attribute attribute = (Attribute) attributeObject;
 
@@ -163,21 +163,9 @@ public class AttributeCriterion extends Criterion {
                 }
             }
 
-            return NamedObjMatchResult.MATCH;
+            return true;
         }
-        return NamedObjMatchResult.NOT_MATCH;
-    }
-
-    public void setAttributeNameEnabled(boolean enabled) {
-        setEnabled(0, enabled);
-    }
-
-    public void setAttributeTypeEnabled(boolean enabled) {
-        setEnabled(1, enabled);
-    }
-
-    public void setAttributeValueEnabled(boolean enabled) {
-        setEnabled(2, enabled);
+        return false;
     }
 
     public void setValue(int index, Object value) {

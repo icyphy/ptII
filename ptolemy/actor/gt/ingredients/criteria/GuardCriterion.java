@@ -32,8 +32,6 @@ import ptolemy.actor.gt.ValidationException;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,14 +75,11 @@ public class GuardCriterion extends Criterion {
         return buffer.toString();
     }
 
-    public boolean isApplicable(NamedObj entity) {
-        return super.isApplicable(entity) && entity instanceof Transition;
+    public boolean isApplicable(NamedObj object) {
+        return super.isApplicable(object) && object instanceof Transition;
     }
 
-    public NamedObjMatchResult match(NamedObj object)  {
-    	if (!(object instanceof Transition)) {
-    		return NamedObjMatchResult.UNAPPLICABLE;
-    	}
+    public boolean match(NamedObj object)  {
         Variable guardVariable = null;
         try {
             guardVariable = new Variable(object, object.uniqueName(
@@ -94,16 +89,9 @@ public class GuardCriterion extends Criterion {
             String guardTester = "(" + guard + ") == (" + _guardValue + ")";
             guardVariable.setExpression(guardTester);
             BooleanToken result = (BooleanToken) guardVariable.getToken();
-            if (result.booleanValue() == true) {
-                return NamedObjMatchResult.MATCH;
-            }
-            else {
-            	return NamedObjMatchResult.NOT_MATCH;
-            }
-        } catch (IllegalActionException e) {
-            return NamedObjMatchResult.NOT_MATCH;
-        } catch (NameDuplicationException e) {
-            return NamedObjMatchResult.NOT_MATCH;
+            return result.booleanValue();
+        } catch (Exception e) {
+            return false;
         } finally {
         	if (guardVariable != null) {
         		try {

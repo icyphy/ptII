@@ -73,6 +73,10 @@ public class PortCriterion extends Criterion {
         _matcherName = matcherName;
     }
 
+    public boolean canCheck(NamedObj object) {
+        return super.canCheck(object) && object instanceof Port;
+    }
+
     public GTIngredientElement[] getElements() {
         return _ELEMENTS;
     }
@@ -128,9 +132,9 @@ public class PortCriterion extends Criterion {
         return buffer.toString();
     }
 
-    public boolean isApplicable(NamedObj entity) {
-        return super.isApplicable(entity) && entity instanceof ComponentEntity
-                && !(entity instanceof State);
+    public boolean isApplicable(NamedObj object) {
+        return super.isApplicable(object) && object instanceof ComponentEntity
+                && !(object instanceof State);
     }
 
     public boolean isInput() {
@@ -169,23 +173,23 @@ public class PortCriterion extends Criterion {
         return isEnabled(1);
     }
 
-    public NamedObjMatchResult match(NamedObj object) {
+    public boolean match(NamedObj object) {
         // Check the input/output/multiport type
         if (object instanceof IOPort) {
             IOPort port = (IOPort) object;
             if (isInputEnabled() && _input != port.isInput()) {
-                return NamedObjMatchResult.NOT_MATCH;
+                return false;
             } else if (isOutputEnabled() && _output != port.isOutput()) {
-                return NamedObjMatchResult.NOT_MATCH;
+                return false;
             } else if (isMultiportEnabled() && _multiport != port.isMultiport()) {
-                return NamedObjMatchResult.NOT_MATCH;
+                return false;
             }
         } else if (object instanceof Port) {
             if (isInputEnabled() || isOutputEnabled() || isMultiportEnabled()) {
-                return NamedObjMatchResult.NOT_MATCH;
+                return false;
             }
         } else {
-            return NamedObjMatchResult.UNAPPLICABLE;
+            return false;
         }
 
         // Check port name
@@ -193,7 +197,7 @@ public class PortCriterion extends Criterion {
             Pattern pattern = _portName.getPattern();
             Matcher matcher = pattern.matcher(object.getName());
             if (!matcher.matches()) {
-                return NamedObjMatchResult.NOT_MATCH;
+                return false;
             }
         }
 
@@ -214,15 +218,15 @@ public class PortCriterion extends Criterion {
                                 && lhsType.isCompatible(hostType);
                     }
                     if (!isTypeCompatible) {
-                        return NamedObjMatchResult.NOT_MATCH;
+                        return false;
                     }
                 } catch (IllegalActionException e) {
-                    return NamedObjMatchResult.NOT_MATCH;
+                    return false;
                 }
             }
         }
 
-        return NamedObjMatchResult.MATCH;
+        return true;
     }
 
     public void setInputEnabled(boolean enabled) {
