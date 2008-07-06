@@ -68,7 +68,7 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
 
     /** Return a collection of the ports in this actor that depend on
      *  or are depended on by the specified port. This method
-     *  returns a collection containing only the specified port.
+     *  returns an empty collection.
      *  <p>
      *  Derived classes may override this, but they may need to
      *  also override {@link #getDependency(IOPort, IOPort)}
@@ -76,9 +76,7 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
      *  @param port The port to find the dependents of.
      */
     public Collection<IOPort> dependentPorts(IOPort port) {
-        LinkedList<IOPort> result = new LinkedList<IOPort>();
-        result.add(port);
-        return result;
+        return _EMPTY_COLLECTION;
     }
     
     /** Return a collection of the ports in this actor that are
@@ -112,4 +110,10 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
     public Dependency getDependency(IOPort input, IOPort output) {
         return _defaultDependency.oPlusIdentity();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    /** Empty collection for use by dependentPort(). */
+    private static Collection<IOPort> _EMPTY_COLLECTION = new LinkedList<IOPort>();
 }
