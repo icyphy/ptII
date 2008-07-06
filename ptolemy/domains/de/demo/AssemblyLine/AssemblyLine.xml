@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AssemblyLine" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 745, 758}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 745, 757}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[530, 640]">
     </property>
@@ -33,7 +33,7 @@
         </property>
     </property>
     <entity name="Jobs" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="Infinity">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Infinity">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{5.0, 7.0, 30.0, 32.0}">
         </property>
@@ -44,7 +44,7 @@
         </property>
     </entity>
     <entity name="Times when stations finish jobs" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Station 1,Station 2, Station 3">
         </property>
@@ -52,7 +52,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[450, 176]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 265.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -61,8 +61,8 @@
 <title>Times when stations finish jobs</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="50.0"/>
-<yRange min="0.0" max="3.0"/>
+<xRange min="9.0" max="49.0"/>
+<yRange min="1.0" max="3.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
@@ -84,7 +84,7 @@
         </property>
     </entity>
     <entity name="Times when jobs arrive" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 500, 442, 231}, maximized=false}">
         </property>
@@ -99,8 +99,8 @@
 <title>Times when jobs arrive</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="50.0"/>
-<yRange min="0.0" max="50.0"/>
+<xRange min="5.0" max="32.0"/>
+<yRange min="5.0" max="32.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
