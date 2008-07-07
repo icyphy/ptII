@@ -1098,7 +1098,7 @@ public class GraphMatcher extends GraphAnalyzer {
                         if (rule instanceof Criterion) {
                             Criterion criterion = (Criterion) rule;
                             if (criterion.canCheck(patternRelation)) {
-                                if (criterion.match(hostRelation)) {
+                                if (!criterion.match(hostRelation)) {
                                     return false;
                                 }
                             }
