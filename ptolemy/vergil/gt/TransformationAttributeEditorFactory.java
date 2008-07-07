@@ -75,7 +75,6 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
      *  @param object
      *  @param parent
      */
-    @SuppressWarnings("unchecked")
     public void createEditor(NamedObj object, Frame parent) {
         TransformationAttribute attribute = (TransformationAttribute) object;
         BasicGraphFrame actorFrame = (BasicGraphFrame) parent;

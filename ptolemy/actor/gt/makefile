@@ -69,6 +69,7 @@ JSRCS = \
 	DefaultModelAttribute.java \
 	FSMMatcher.java \
 	GTAttribute.java \
+	GTCompositeActor.java \
 	GTEntity.java \
 	GTEntityUtils.java \
 	GTIngredient.java \

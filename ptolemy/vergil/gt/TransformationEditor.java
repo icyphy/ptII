@@ -43,6 +43,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.InputStream;
@@ -62,6 +63,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -83,18 +85,24 @@ import javax.swing.table.TableColumnModel;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gt.CompositeActorMatcher;
+import ptolemy.actor.gt.CreationAttribute;
 import ptolemy.actor.gt.DefaultDirectoryAttribute;
 import ptolemy.actor.gt.DefaultModelAttribute;
+import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.GraphMatcher;
+import ptolemy.actor.gt.IgnoringAttribute;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.PatternObjectAttribute;
+import ptolemy.actor.gt.PortMatcher;
+import ptolemy.actor.gt.PreservationAttribute;
 import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gt.data.CombinedCollection;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
+import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
@@ -118,12 +126,28 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.ActorController;
+import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.actor.LinkController;
+import ptolemy.vergil.basic.ParameterizedNodeController;
 import ptolemy.vergil.basic.RunnableGraphController;
+import ptolemy.vergil.fsm.FSMGraphController;
+import ptolemy.vergil.kernel.PortDialogAction;
+import ptolemy.vergil.kernel.RelationController;
+import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.MenuItemListener;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.BasicRectangle;
 import diva.graph.GraphController;
+import diva.graph.GraphModel;
 import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
+import diva.gui.toolbox.JContextMenu;
 
 //////////////////////////////////////////////////////////////////////////
 //// GTGraphFrame
@@ -195,9 +219,6 @@ public class TransformationEditor extends GTFrame implements
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
-
     public void addRow() {
         int index = _tableModel.getRowCount() + 1;
         _tableModel.addRow(new Object[] {
@@ -258,6 +279,9 @@ public class TransformationEditor extends GTFrame implements
             super.delete();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
 
     public void fullScreen() {
         if (!getFrameController().hasTabs()) {
@@ -375,7 +399,8 @@ public class TransformationEditor extends GTFrame implements
 
         int row = event.getFirstRow();
         int column = event.getColumn();
-        if (column != TableModelEvent.ALL_COLUMNS && row == event.getLastRow()) {
+        if (column != TableModelEvent.ALL_COLUMNS
+                && row == event.getLastRow()) {
             // Get the value in the transformer's correspondence attribute.
             TransformationRule transformer = (TransformationRule) getModel();
             Pattern pattern = transformer.getPattern();
@@ -405,8 +430,8 @@ public class TransformationEditor extends GTFrame implements
                     }
                 }
 
-                String replacementObjectName = _getCellEditorValue((JPanel) _tableModel
-                        .getValueAt(row, 2));
+                String replacementObjectName = _getCellEditorValue(
+                        (JPanel) _tableModel.getValueAt(row, 2));
                 if (replacementObjectName.length() > 0) {
                     // Updated the pattern object.
                     NamedObj replacementObject = replacement
@@ -419,8 +444,8 @@ public class TransformationEditor extends GTFrame implements
                     if (replacementObject == null) {
                         String message = "Entity or relation with name \""
                                 + replacementObjectName
-                                + "\" cannot be found in the replacement of the "
-                                + "transformation rule.";
+                                + "\" cannot be found in the replacement of "
+                                + "the transformation rule.";
                         _showTableError(message, row, column, previousString);
                         return;
                     }
@@ -474,8 +499,8 @@ public class TransformationEditor extends GTFrame implements
                     }
 
                     _cellEditor.setPreviousString(replacementObjectName);
-                    String patternObjectName = _getCellEditorValue((JPanel) _tableModel
-                            .getValueAt(row, 1));
+                    String patternObjectName = _getCellEditorValue(
+                            (JPanel) _tableModel.getValueAt(row, 1));
 
                     if (previousString.length() > 0) {
                         NamedObj previousObject = replacement
@@ -557,6 +582,14 @@ public class TransformationEditor extends GTFrame implements
         GUIUtilities.addToolBarButton(_toolbar, batchMatchAction);
     }
 
+    protected RunnableGraphController _createActorGraphController() {
+        return new TransformationActorGraphController();
+    }
+
+    protected RunnableGraphController _createFSMGraphController() {
+        return new TransformationFSMGraphController();
+    }
+
     protected JComponent _createRightComponent(NamedObj entity) {
         JComponent component = super._createRightComponent(entity);
         if (component instanceof JTabbedPane) {
@@ -567,6 +600,235 @@ public class TransformationEditor extends GTFrame implements
 
     /** The case menu. */
     protected JMenu _ruleMenu;
+
+    protected class TransformationActorController extends ActorController {
+
+        protected Figure _renderNode(Object node) {
+            if ((node != null) && !_hide(node)) {
+                Figure nf = super._renderNode(node);
+                GraphModel model = getController().getGraphModel();
+                Object object = model.getSemanticObject(node);
+                CompositeFigure cf = _getCompositeFigure(nf);
+                _renderActorOrRelation(cf, object);
+                return nf;
+            }
+
+            return super._renderNode(node);
+        }
+
+        TransformationActorController(GraphController controller) {
+            super(controller);
+        }
+    }
+
+    protected class TransformationActorGraphController
+    extends ActorEditorGraphController implements MenuItemListener {
+
+        public void menuItemCreated(JContextMenu menu, NamedObj object,
+                JMenuItem menuItem) {
+            if (menuItem instanceof JMenu) {
+                JMenu subMenu = (JMenu) menuItem;
+                if (subMenu.getText().equals("Customize")) {
+                    Component[] menuItems = subMenu.getMenuComponents();
+                    for (Component itemComponent : menuItems) {
+                        JMenuItem item = (JMenuItem) itemComponent;
+                        Action action = item.getAction();
+                        if (object instanceof PortMatcher) {
+                            // Disable all the items for a PortMatcher, which
+                            // should be configured by double-clicking the
+                            // containing CompositeActor.
+                            item.setEnabled(false);
+                        } else if (action instanceof PortDialogAction
+                                && object instanceof GTEntity) {
+                            // Disable the PortDialogAction from the context
+                            // menu.
+                            item.setEnabled(false);
+                        } else if (action instanceof ConfigureCriteriaAction
+                                && (!GTTools.isInPattern(object))) {
+                            // Hide the ConfigureCriteriaAction from the
+                            // context menu.
+                            item.setVisible(false);
+                        } else if (action instanceof ConfigureOperationsAction
+                                && (!GTTools.isInReplacement(object))) {
+                            // Hide the ConfigureOperationsAction from the
+                            // context menu.
+                            item.setVisible(false);
+                        }
+                    }
+                }
+            } else if (menuItem instanceof JMenuItem) {
+                Action action = ((JMenuItem) menuItem).getAction();
+                if (action instanceof ConfigureCriteriaAction
+                        && (!GTTools.isInPattern(object))) {
+                    // Hide the ConfigureCriteriaAction from the
+                    // context menu.
+                    menuItem.setVisible(false);
+                } else if (action instanceof ConfigureOperationsAction
+                        && (!GTTools.isInReplacement(object))) {
+                    // Hide the ConfigureOperationsAction from the
+                    // context menu.
+                    menuItem.setVisible(false);
+                }
+            }
+        }
+
+        protected TransformationActorGraphController() {
+            _newRelationAction = new NewRelationAction(new String[][] {
+                    { "/ptolemy/vergil/actor/img/relation.gif",
+                        GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_o.gif",
+                        GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_ov.gif",
+                        GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_on.gif",
+                        GUIUtilities.SELECTED_ICON } });
+        }
+
+        protected void _addHotKeys(JGraph jgraph) {
+            List<JGraph> jgraphs = getFrameController().getJGraphs();
+            if (jgraphs == null) {
+                super._addHotKeys(jgraph);
+            } else {
+                for (JGraph g : jgraphs) {
+                    super._addHotKeys(g);
+                }
+            }
+        }
+
+        protected void _createControllers() {
+            super._createControllers();
+
+            _entityController = new TransformationActorController(this);
+            _relationController = new TransformationRelationController(this);
+            _linkController = new TransformationLinkController(this);
+
+            MenuActionFactory factory =
+                _entityController.getConfigureMenuFactory();
+            factory.addMenuItemListener(TransformationActorGraphController
+                    .this);
+
+            FigureAction criteriaAction = new ConfigureCriteriaAction();
+            factory.addAction(criteriaAction, "Customize");
+            FigureAction operationsAction = new ConfigureOperationsAction();
+            factory.addAction(operationsAction, "Customize");
+
+            if (_portController instanceof ParameterizedNodeController) {
+                factory = ((ParameterizedNodeController) _portController)
+                        .getConfigureMenuFactory();
+                factory.addMenuItemListener(TransformationActorGraphController
+                        .this);
+            }
+        }
+
+        protected void initializeInteraction() {
+            ConfigureAction oldConfigureAction = _configureAction;
+            _configureAction = new ConfigureAction("Configure") {
+                protected void _openDialog(Frame parent, NamedObj target,
+                        ActionEvent event) {
+                    EditorFactory factory = null;
+                    if (target instanceof GTEntity) {
+                        try {
+                            target.workspace().getReadAccess();
+                            List<?> attributeList = target.attributeList(
+                                    EditorFactory.class);
+                            if (!attributeList.isEmpty()) {
+                                factory = (EditorFactory) attributeList.get(0);
+                            }
+                        } finally {
+                            target.workspace().doneReading();
+                        }
+                    }
+                    if (factory != null) {
+                        factory.createEditor(target, parent);
+                    } else {
+                        super._openDialog(parent, target, event);
+                    }
+                }
+            };
+            super.initializeInteraction();
+            _configureAction = oldConfigureAction;
+
+            getConfigureMenuFactory().addMenuItemListener(this);
+        }
+
+        private class NewRelationAction extends
+                ActorEditorGraphController.NewRelationAction {
+
+            public void actionPerformed(ActionEvent e) {
+                if (getFrameController().isTableActive()) {
+                    return;
+                } else {
+                    super.actionPerformed(e);
+                }
+            }
+
+            private NewRelationAction(String[][] iconRoles) {
+                super(iconRoles);
+            }
+        }
+    }
+
+    protected class TransformationFSMGraphController
+    extends FSMGraphController {
+
+        protected void _addHotKeys(JGraph jgraph) {
+            List<JGraph> jgraphs = getFrameController().getJGraphs();
+            if (jgraphs == null) {
+                super._addHotKeys(jgraph);
+            } else {
+                for (JGraph g : jgraphs) {
+                    super._addHotKeys(g);
+                }
+            }
+        }
+    }
+
+    protected class TransformationLinkController extends LinkController {
+
+        TransformationLinkController(
+                TransformationActorGraphController controller) {
+            super(controller);
+
+            MenuActionFactory factory = new MenuActionFactory(
+                    new ConfigureCriteriaAction());
+            _menuFactory.addMenuItemFactory(factory);
+            factory.addMenuItemListener(controller);
+            factory = new MenuActionFactory(new ConfigureOperationsAction());
+            _menuFactory.addMenuItemFactory(factory);
+            factory.addMenuItemListener(controller);
+        }
+    }
+
+    protected class TransformationRelationController
+            extends RelationController {
+
+        protected Figure _renderNode(Object node) {
+            if ((node != null) && !_hide(node)) {
+                Figure nf = super._renderNode(node);
+                GraphModel model = getController().getGraphModel();
+                Object object = model.getSemanticObject(node);
+                CompositeFigure cf = _getCompositeFigure(nf);
+                _renderActorOrRelation(cf, object);
+                return nf;
+            }
+
+            return super._renderNode(node);
+        }
+
+        TransformationRelationController(
+                TransformationActorGraphController controller) {
+            super(controller);
+
+            MenuActionFactory factory = new MenuActionFactory(
+                    new ConfigureCriteriaAction());
+            _menuFactory.addMenuItemFactory(factory);
+            factory.addMenuItemListener(controller);
+            factory = new MenuActionFactory(new ConfigureOperationsAction());
+            _menuFactory.addMenuItemFactory(factory);
+            factory.addMenuItemListener(controller);
+
+        }
+    }
 
     private JPanel _createCellPanel(String value) {
         JPanel panel = new JPanel(new BorderLayout());
@@ -650,6 +912,18 @@ public class TransformationEditor extends GTFrame implements
     private static String _getCellEditorValue(JPanel editorPanel) {
         JTextField textField = (JTextField) editorPanel.getComponent(0);
         return textField.getText();
+    }
+
+    private Color _getHighlightColor(NamedObj object) {
+        if (!object.attributeList(PreservationAttribute.class).isEmpty()) {
+            return _PRESERVATION_COLOR;
+        } else if (!object.attributeList(CreationAttribute.class).isEmpty()) {
+            return _CREATION_COLOR;
+        } else if (!object.attributeList(IgnoringAttribute.class).isEmpty()) {
+            return _IGNORING_COLOR;
+        } else {
+            return null;
+        }
     }
 
     private static String _getNameWithinContainer(NamedObj object,
@@ -850,6 +1124,30 @@ public class TransformationEditor extends GTFrame implements
         }
     }
 
+    private void _renderActorOrRelation(CompositeFigure figure,
+            Object semanticObject) {
+        if (semanticObject instanceof NamedObj && figure != null) {
+            Color highlightColor =
+                _getHighlightColor((NamedObj) semanticObject);
+            if (highlightColor != null) {
+                Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
+                float padding = _HIGHLIGHT_PADDING;
+                BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
+                        bounds.getY() - padding,
+                        bounds.getWidth() + padding * 2.0,
+                        bounds.getHeight() + padding * 2.0,
+                        _HIGHLIGHT_THICKNESS);
+                bf.setStrokePaint(highlightColor);
+
+                int index = figure.getFigureCount();
+                if (index < 0) {
+                    index = 0;
+                }
+                figure.add(index, bf);
+            }
+        }
+    }
+
     private void _setCellEditorValue(JPanel editorPanel, String value) {
         JTextField textField = (JTextField) editorPanel.getComponent(0);
         textField.setText(value);
@@ -953,8 +1251,18 @@ public class TransformationEditor extends GTFrame implements
         }
     }
 
+    private static final Color _CREATION_COLOR = Color.GREEN;
+
     private static final Border _EMPTY_BORDER = BorderFactory
             .createEmptyBorder();
+
+    private static final float _HIGHLIGHT_PADDING = 1.0f;
+
+    private static final float _HIGHLIGHT_THICKNESS = 3.0f;
+
+    private static final Color _IGNORING_COLOR = Color.GRAY;
+
+    private static final Color _PRESERVATION_COLOR = Color.ORANGE;
 
     private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
 

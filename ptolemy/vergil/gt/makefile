@@ -83,14 +83,9 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'GTFrame$$1.class' \
 	'GTFrame$$ConfigureCriteriaAction.class' \
 	'GTFrame$$ConfigureIngredientsAction.class' \
 	'GTFrame$$ConfigureOperationsAction.class' \
-	'GTFrame$$GTActorGraphController$$1.class' \
-	'GTFrame$$GTActorGraphController$$NewRelationAction.class' \
-	'GTFrame$$GTActorGraphController.class' \
-	'GTFrame$$GTFSMGraphController.class' \
 	'GTFrameController$$1.class' \
 	'GTFrameController$$2.class' \
 	'GTFrameController$$GTActorGraphModel.class' \
@@ -122,6 +117,7 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$MatchResultActorController.class' \
 	'MatchResultViewer$$MatchResultActorGraphController.class' \
 	'MatchResultViewer$$MatchResultFSMGraphController.class' \
+	'MatchResultViewer$$MatchResultRelationController.class' \
 	'MatchResultViewer$$MatchResultStateController.class' \
 	'MatchResultViewer$$NextAction.class' \
 	'MatchResultViewer$$NextFileAction.class' \
@@ -147,6 +143,13 @@ OPTIONAL_FILES = \
 	'TransformationEditor$$MatchAction.class' \
 	'TransformationEditor$$SingleMatchAction$$SingleViewController.class' \
 	'TransformationEditor$$SingleMatchAction.class' \
+	'TransformationEditor$$TransformationActorController.class' \
+	'TransformationEditor$$TransformationActorGraphController$$1.class' \
+	'TransformationEditor$$TransformationActorGraphController$$NewRelationAction.class' \
+	'TransformationEditor$$TransformationActorGraphController.class' \
+	'TransformationEditor$$TransformationFSMGraphController.class' \
+	'TransformationEditor$$TransformationLinkController.class' \
+	'TransformationEditor$$TransformationRelationController.class' \
 	'TransformationEditor$$ViewController.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

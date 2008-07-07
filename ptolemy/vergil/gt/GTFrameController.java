@@ -239,23 +239,6 @@ public class GTFrameController implements ChangeListener, KeyListener {
         _frame = frame;
     }
 
-    protected RunnableGraphController _createGraphController(NamedObj entity) {
-        if (_frame instanceof MatchResultViewer) {
-            MatchResultViewer viewer = (MatchResultViewer) _frame;
-            if (_isFSM(entity)) {
-                return viewer.new MatchResultFSMGraphController();
-            } else {
-                return viewer.new MatchResultActorGraphController();
-            }
-        } else {
-            if (_isFSM(entity)) {
-                return _frame.new GTFSMGraphController();
-            } else {
-                return _frame.new GTActorGraphController();
-            }
-        }
-    }
-
     protected AbstractBasicGraphModel _createGraphModel(NamedObj entity) {
         if (_isFSM(entity)) {
             return new GTFSMGraphModel((CompositeEntity) entity);
@@ -278,7 +261,11 @@ public class GTFrameController implements ChangeListener, KeyListener {
     protected JComponent _createRightComponent(NamedObj entity) {
         // entity must be SingleRuleTransformer or CompositeActorMatcher.
 
-        _graphController = _createGraphController(entity);
+        if (_isFSM(entity)) {
+            _graphController = _frame._createFSMGraphController();
+        } else {
+            _graphController = _frame._createActorGraphController();
+        }
         _graphController.setConfiguration(getConfiguration());
         _graphController.setFrame(_frame);
 

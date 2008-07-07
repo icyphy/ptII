@@ -90,6 +90,15 @@ public class ContainerIgnoringAttribute extends ParameterAttribute {
         }
     }
 
+    public void setContainer(NamedObj container) throws IllegalActionException,
+    NameDuplicationException {
+        super.setContainer(container);
+        if (container != null) {
+            _checkContainerClass(container, Pattern.class, true);
+            _checkUniqueness(container);
+        }
+    }
+
     public static final boolean DEFAULT = false;
 
     /**

@@ -31,10 +31,9 @@ package ptolemy.vergil.gt;
 
 import java.awt.Color;
 
-import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.FSMMatcher;
+import ptolemy.actor.gt.GTCompositeActor;
 import ptolemy.actor.gt.ModalModelMatcher;
-import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -95,13 +94,10 @@ public class GTTableau extends Tableau {
 
         NamedObj model = container.getModel();
 
-        if (!(model instanceof TransformationRule
-                || model instanceof CompositeActorMatcher
-                || model instanceof FSMMatcher
+        if (!(model instanceof GTCompositeActor
                 || !model.attributeList(Factory.class).isEmpty())) {
             throw new IllegalActionException(this,
-                    "Cannot edit a model that is not a SingleRuleTransformer "
-                            + "or a CompositeActorMatcher.");
+                    "Cannot edit a model that is not a GTCompositeActor.");
         }
 
         createFrame((CompositeEntity) model, defaultLibrary);
@@ -121,13 +117,11 @@ public class GTTableau extends Tableau {
      */
     public void createFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        if (!(model instanceof TransformationRule
-                || model instanceof CompositeActorMatcher
-                || model instanceof FSMMatcher
-                || !model.attributeList(Factory.class).isEmpty())) {
-            throw new InternalErrorException(this, null, "Composite Entity \""
+        if (!(model instanceof GTCompositeActor)
+                && model.attributeList(Factory.class).isEmpty()) {
+            throw new InternalErrorException(this, null, "Composite entity \""
                     + model.getFullName() + "\" is not an instance of "
-                    + "SingleRuleTransformer or CompositeActorMatcher.");
+                    + "GTCompositeActor.");
         }
 
         ExtendedGraphFrame frame = new TransformationEditor(
@@ -181,9 +175,7 @@ public class GTTableau extends Tableau {
 
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
-            if (model instanceof TransformationRule
-                    || model instanceof CompositeActorMatcher
-                    || model instanceof FSMMatcher
+            if (model instanceof GTCompositeActor
                     || !model.attributeList(Factory.class).isEmpty()) {
                 LibraryAttribute library;
                 if (model instanceof FSMMatcher) {

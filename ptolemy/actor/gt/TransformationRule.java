@@ -77,7 +77,7 @@ import ptolemy.kernel.util.Workspace;
 @Pt.AcceptedRating Red (tfeng)
 */
 public class TransformationRule extends MultiCompositeActor implements
-        MatchCallback, ValueListener {
+        GTCompositeActor, MatchCallback, ValueListener {
 
     public TransformationRule(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

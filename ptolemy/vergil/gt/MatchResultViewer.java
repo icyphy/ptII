@@ -70,10 +70,12 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.StateController;
 import ptolemy.vergil.gt.GTFrameController.UpdateController;
 import ptolemy.vergil.gt.GTFrameTools.ModelChangeRequest;
+import ptolemy.vergil.kernel.RelationController;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
@@ -231,6 +233,14 @@ public class MatchResultViewer extends GTFrame {
         _enableOrDisableActions();
     }
 
+    protected RunnableGraphController _createActorGraphController() {
+        return new MatchResultActorGraphController();
+    }
+
+    protected RunnableGraphController _createFSMGraphController() {
+        return new MatchResultFSMGraphController();
+    }
+
     protected static void _setTableauFactory(Object originator,
             final CompositeEntity entity) {
         Class<?> tableauFactoryClass = MatchResultTableau.Factory.class;
@@ -299,26 +309,7 @@ public class MatchResultViewer extends GTFrame {
                 GraphModel model = getController().getGraphModel();
                 Object object = model.getSemanticObject(node);
                 CompositeFigure cf = _getCompositeFigure(nf);
-
-                if (object instanceof NamedObj && cf != null
-                        && _results != null
-                        && _currentPosition < _results.size()
-                        && _results.get(_currentPosition).containsValue(object)) {
-                    Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
-                    float padding = _HIGHLIGHT_PADDING;
-                    BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
-                            bounds.getY() - padding,
-                            bounds.getWidth() + padding * 2.0,
-                            bounds.getHeight() + padding * 2.0,
-                            _HIGHLIGHT_THICKNESS);
-                    bf.setStrokePaint(_HIGHLIGHT_COLOR);
-
-                    int index = cf.getFigureCount();
-                    if (index < 0) {
-                        index = 0;
-                    }
-                    cf.add(index, bf);
-                }
+                _renderActorOrRelation(cf, object);
                 return nf;
             }
 
@@ -337,6 +328,7 @@ public class MatchResultViewer extends GTFrame {
             super._createControllers();
 
             _entityController = new MatchResultActorController(this);
+            _relationController = new MatchResultRelationController(this);
         }
     }
 
@@ -356,6 +348,26 @@ public class MatchResultViewer extends GTFrame {
         }
     }
 
+    protected class MatchResultRelationController extends RelationController {
+
+        protected Figure _renderNode(Object node) {
+            if ((node != null) && !_hide(node)) {
+                Figure nf = super._renderNode(node);
+                GraphModel model = getController().getGraphModel();
+                Object object = model.getSemanticObject(node);
+                CompositeFigure cf = _getCompositeFigure(nf);
+                _renderActorOrRelation(cf, object);
+                return nf;
+            }
+
+            return super._renderNode(node);
+        }
+
+        MatchResultRelationController(GraphController controller) {
+            super(controller);
+        }
+    }
+
     protected class MatchResultStateController extends StateController {
 
         protected void _highlightNode(Object node, Figure figure) {
@@ -363,26 +375,7 @@ public class MatchResultViewer extends GTFrame {
                 GraphModel model = getController().getGraphModel();
                 Object object = model.getSemanticObject(node);
                 CompositeFigure cf = _getCompositeFigure(figure);
-
-                if (object instanceof NamedObj && cf != null
-                        && _results != null
-                        && _currentPosition < _results.size()
-                        && _results.get(_currentPosition).containsValue(object)) {
-                    Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
-                    float padding = _HIGHLIGHT_PADDING;
-                    RoundedRectangle rf = new RoundedRectangle(
-                            bounds.getX() - padding, bounds.getY() - padding,
-                            bounds.getWidth() + padding * 2.0,
-                            bounds.getHeight() + padding * 2.0,
-                            null, _HIGHLIGHT_THICKNESS, 32.0, 32.0);
-                    rf.setStrokePaint(_HIGHLIGHT_COLOR);
-
-                    int index = cf.getFigureCount();
-                    if (index < 0) {
-                        index = 0;
-                    }
-                    cf.add(index, rf);
-                }
+                _renderState(cf, object);
             }
         }
 
@@ -601,6 +594,51 @@ public class MatchResultViewer extends GTFrame {
                     subviewer._statusBar.progressBar().setMaximum(max);
                 }
             }
+        }
+    }
+
+    private void _renderActorOrRelation(CompositeFigure figure,
+            Object semanticObject) {
+        if (semanticObject instanceof NamedObj && figure != null
+                && _results != null && _currentPosition < _results.size()
+                && _results.get(_currentPosition).containsValue(
+                        semanticObject)) {
+            Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
+            float padding = _HIGHLIGHT_PADDING;
+            BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
+                    bounds.getY() - padding,
+                    bounds.getWidth() + padding * 2.0,
+                    bounds.getHeight() + padding * 2.0,
+                    _HIGHLIGHT_THICKNESS);
+            bf.setStrokePaint(_HIGHLIGHT_COLOR);
+
+            int index = figure.getFigureCount();
+            if (index < 0) {
+                index = 0;
+            }
+            figure.add(index, bf);
+        }
+    }
+
+    private void _renderState(CompositeFigure figure, Object semanticObject) {
+        if (semanticObject instanceof NamedObj && figure != null
+                && _results != null && _currentPosition < _results.size()
+                && _results.get(_currentPosition).containsValue(
+                        semanticObject)) {
+            Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
+            float padding = _HIGHLIGHT_PADDING;
+            RoundedRectangle rf = new RoundedRectangle(
+                    bounds.getX() - padding, bounds.getY() - padding,
+                    bounds.getWidth() + padding * 2.0,
+                    bounds.getHeight() + padding * 2.0,
+                    null, _HIGHLIGHT_THICKNESS, 32.0, 32.0);
+            rf.setStrokePaint(_HIGHLIGHT_COLOR);
+
+            int index = figure.getFigureCount();
+            if (index < 0) {
+                index = 0;
+            }
+            figure.add(index, rf);
         }
     }
 

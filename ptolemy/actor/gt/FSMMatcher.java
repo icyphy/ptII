@@ -56,7 +56,8 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class FSMMatcher extends FSMActor implements GTEntity, ValueListener {
+public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
+        ValueListener {
 
     /**
      * @param container

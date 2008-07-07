@@ -30,25 +30,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.vergil.gt;
 
-import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import javax.swing.Action;
 import javax.swing.JComponent;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 
 import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredientsAttribute;
-import ptolemy.actor.gt.GTTools;
-import ptolemy.actor.gt.PortMatcher;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -56,18 +49,12 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-import ptolemy.vergil.basic.ParameterizedNodeController;
+import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
-import ptolemy.vergil.kernel.PortDialogAction;
-import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.MenuItemListener;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
-import diva.gui.GUIUtilities;
 import diva.gui.toolbox.JCanvasPanner;
-import diva.gui.toolbox.JContextMenu;
 
 public class GTFrame extends ExtendedGraphFrame {
 
@@ -142,6 +129,14 @@ public class GTFrame extends ExtendedGraphFrame {
             _frameController._removeListeners();
         }
         return result;
+    }
+
+    protected RunnableGraphController _createActorGraphController() {
+        return new ActorEditorGraphController();
+    }
+
+    protected RunnableGraphController _createFSMGraphController() {
+        return new FSMGraphController();
     }
 
     protected GraphPane _createGraphPane(NamedObj entity) {
@@ -242,150 +237,6 @@ public class GTFrame extends ExtendedGraphFrame {
 
         ConfigureOperationsAction() {
             super("Operations");
-        }
-    }
-
-    protected class GTActorGraphController extends ActorEditorGraphController
-    implements MenuItemListener {
-
-        public void menuItemCreated(JContextMenu menu, NamedObj object,
-                JMenuItem menuItem) {
-            if (menuItem instanceof JMenu) {
-                JMenu subMenu = (JMenu) menuItem;
-                if (subMenu.getText().equals("Customize")) {
-                    Component[] menuItems = subMenu.getMenuComponents();
-                    for (Component itemComponent : menuItems) {
-                        JMenuItem item = (JMenuItem) itemComponent;
-                        Action action = item.getAction();
-                        if (object instanceof PortMatcher) {
-                            // Disable all the items for a PortMatcher, which
-                            // should be configured by double-clicking the
-                            // containing CompositeActor.
-                            item.setEnabled(false);
-                        } else if (action instanceof PortDialogAction
-                                && object instanceof GTEntity) {
-                            // Disable the PortDialogAction from the context
-                            // menu.
-                            item.setEnabled(false);
-                        } else if (action instanceof ConfigureCriteriaAction
-                                && (!(object instanceof Entity) || !GTTools
-                                        .isInPattern(object))) {
-                            // Hide the ConfigureCriteriaAction from the
-                            // context menu.
-                            item.setVisible(false);
-                        } else if (action instanceof ConfigureOperationsAction
-                                && (!(object instanceof Entity) || !GTTools
-                                        .isInReplacement(object))) {
-                            // Hide the ConfigureOperationsAction from the
-                            // context menu.
-                            item.setVisible(false);
-                        }
-                    }
-                }
-            }
-        }
-
-        protected GTActorGraphController() {
-            _newRelationAction = new NewRelationAction(new String[][] {
-                    { "/ptolemy/vergil/actor/img/relation.gif",
-                        GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_o.gif",
-                        GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_ov.gif",
-                        GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_on.gif",
-                        GUIUtilities.SELECTED_ICON } });
-        }
-
-        protected void _addHotKeys(JGraph jgraph) {
-            List<JGraph> jgraphs = _frameController.getJGraphs();
-            if (jgraphs == null) {
-                super._addHotKeys(jgraph);
-            } else {
-                for (JGraph g : jgraphs) {
-                    super._addHotKeys(g);
-                }
-            }
-        }
-
-        protected void _createControllers() {
-            super._createControllers();
-
-            MenuActionFactory factory =
-                _entityController.getConfigureMenuFactory();
-            factory.addMenuItemListener(GTActorGraphController.this);
-
-            FigureAction criteriaAction = new ConfigureCriteriaAction();
-            factory.addAction(criteriaAction, "Customize");
-            FigureAction operationsAction = new ConfigureOperationsAction();
-            factory.addAction(operationsAction, "Customize");
-
-            if (_portController instanceof ParameterizedNodeController) {
-                factory = ((ParameterizedNodeController) _portController)
-                        .getConfigureMenuFactory();
-                factory.addMenuItemListener(GTActorGraphController.this);
-            }
-        }
-
-        protected void initializeInteraction() {
-            ConfigureAction oldConfigureAction = _configureAction;
-            _configureAction = new ConfigureAction("Configure") {
-                protected void _openDialog(Frame parent, NamedObj target,
-                        ActionEvent event) {
-                    EditorFactory factory = null;
-                    if (target instanceof GTEntity) {
-                        try {
-                            target.workspace().getReadAccess();
-                            List<?> attributeList = target.attributeList(
-                                    EditorFactory.class);
-                            if (!attributeList.isEmpty()) {
-                                factory = (EditorFactory) attributeList.get(0);
-                            }
-                        } finally {
-                            target.workspace().doneReading();
-                        }
-                    }
-                    if (factory != null) {
-                        factory.createEditor(target, parent);
-                    } else {
-                        super._openDialog(parent, target, event);
-                    }
-                }
-            };
-            super.initializeInteraction();
-            _configureAction = oldConfigureAction;
-
-            getConfigureMenuFactory().addMenuItemListener(this);
-        }
-
-        private class NewRelationAction extends
-                ActorEditorGraphController.NewRelationAction {
-
-            public void actionPerformed(ActionEvent e) {
-                if (getFrameController().isTableActive()) {
-                    return;
-                } else {
-                    super.actionPerformed(e);
-                }
-            }
-
-            private NewRelationAction(String[][] iconRoles) {
-                super(iconRoles);
-            }
-        }
-    }
-
-    protected class GTFSMGraphController extends FSMGraphController {
-
-        protected void _addHotKeys(JGraph jgraph) {
-            List<JGraph> jgraphs = _frameController.getJGraphs();
-            if (jgraphs == null) {
-                super._addHotKeys(jgraph);
-            } else {
-                for (JGraph g : jgraphs) {
-                    super._addHotKeys(g);
-                }
-            }
         }
     }
 

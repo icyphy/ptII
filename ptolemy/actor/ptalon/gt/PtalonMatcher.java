@@ -35,6 +35,7 @@ import java.util.Set;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.gt.ContainerIgnoringAttribute;
+import ptolemy.actor.gt.GTCompositeActor;
 import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.IgnoringAttribute;
 import ptolemy.actor.ptalon.PtalonActor;
@@ -51,6 +52,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
@@ -66,7 +68,8 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class PtalonMatcher extends TypedCompositeActor {
+public class PtalonMatcher extends TypedCompositeActor
+        implements GTCompositeActor {
 
     /**
      *  @param container
@@ -112,6 +115,7 @@ public class PtalonMatcher extends TypedCompositeActor {
                 }
                 _mirrorPtalonActor();
                 _createParameters();
+                _rearrangePtalonActors();
             } catch (Exception e) {
                 throw new IllegalActionException(null, e, "Unable to " +
                         "create Ptalon actor inside.");
@@ -131,7 +135,10 @@ public class PtalonMatcher extends TypedCompositeActor {
 
         if (GTTools.isInPattern(this)) {
             if (getAttribute("_containerIgnoring") == null) {
-                new ContainerIgnoringAttribute(this, "_containerIgnoring");
+                Attribute attribute = new ContainerIgnoringAttribute(this,
+                        "_containerIgnoring");
+                Location location = new Location(attribute, "_location");
+                location.setExpression("{15, 25}");
             }
         } else {
             Attribute attribute = getAttribute("_containerIgnoring");
@@ -143,7 +150,8 @@ public class PtalonMatcher extends TypedCompositeActor {
 
     public FileParameter ptalonCodeLocation;
 
-    public class NestedPtalonActor extends PtalonActor {
+    public class NestedPtalonActor extends PtalonActor
+            implements GTCompositeActor {
 
         public NestedPtalonActor(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
@@ -191,7 +199,7 @@ public class PtalonMatcher extends TypedCompositeActor {
                 PtalonExpressionParameter.class)) {
             PtalonExpressionParameter parameter =
                 (PtalonExpressionParameter) parameterObject;
-            parameter.setVisibility(Settable.FULL);
+            parameter.setVisibility(Settable.NOT_EDITABLE);
             Attribute myAttribute = getAttribute(_MIRRORED_PARAMETER_PREFIX
                     + parameter.getName());
             if (myAttribute != null
@@ -210,7 +218,6 @@ public class PtalonMatcher extends TypedCompositeActor {
                 myParameter.setToken(parameter.getExpression());
                 parameter.setToken(parameter.getToken().toString());
             } else {
-                //myParameter.setExpression(parameter.getExpression());
                 Parameter hideParameter =
                     (Parameter) myParameter.getAttribute("_hide");
                 if (hideParameter != null) {
@@ -286,6 +293,32 @@ public class PtalonMatcher extends TypedCompositeActor {
                     uniqueName("relation"));
             port.link(relation);
             mirrorPort.link(relation);
+        }
+    }
+
+    private void _rearrangePtalonActors() throws IllegalActionException,
+    NameDuplicationException {
+        final int width = 640;
+        final int xSpace = 80;
+        final int ySpace = 80;
+        final int xStart = 45;
+        final int yStart = 110;
+        int x = xStart;
+        int y = yStart;
+        for (Object actorObject : entityList(PtalonActor.class)) {
+            PtalonActor actor = (PtalonActor) actorObject;
+            Location location = (Location) actor.getAttribute("_location",
+                    Location.class);
+            if (location == null) {
+                location = new Location(actor, "_location");
+            }
+            location.setExpression("{" + x + ", " + y + "}");
+            location.validate();
+            x += xSpace;
+            if (x + xSpace >= width) {
+                x = xStart;
+                y += ySpace;
+            }
         }
     }
 
