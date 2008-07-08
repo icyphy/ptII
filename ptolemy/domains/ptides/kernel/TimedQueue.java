@@ -32,8 +32,6 @@ import java.util.Comparator;
 import java.util.TreeSet;
 
 import ptolemy.actor.AbstractReceiver;
-import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
@@ -41,7 +39,6 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -50,11 +47,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * 
  * @author Patricia Derler
  */
-public class PrioritizedTimedQueue extends AbstractReceiver {
-	/**
+public class TimedQueue extends AbstractReceiver {
+	
+    /**
 	 * Construct an empty queue with no container.
 	 */
-	public PrioritizedTimedQueue() {
+	public TimedQueue() {
 	}
 
 	/**
@@ -66,35 +64,16 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 *                If this receiver cannot be contained by the proposed
 	 *                container.
 	 */
-	public PrioritizedTimedQueue(IOPort container)
+	public TimedQueue(IOPort container)
 			throws IllegalActionException {
 		super(container); 
-	}
-
-	/**
-	 * Construct an empty queue with the specified IOPort container and
-	 * priority.
-	 * 
-	 * @param container
-	 *            The IOPort that contains this receiver.
-	 * @param priority
-	 *            The priority of this receiver.
-	 * @exception IllegalActionException
-	 *                If this receiver cannot be contained by the proposed
-	 *                container.
-	 */
-	public PrioritizedTimedQueue(IOPort container, int priority)
-			throws IllegalActionException {
-		super(container);
-		_priority = priority; 
 	}
 
 	// /////////////////////////////////////////////////////////////////
 	// // public methods ////
 	
 	@Override
-	public void clear() throws IllegalActionException {
-	    super.clear();
+	public void clear() throws IllegalActionException { 
 	    _queue.clear();
 	}
 
@@ -142,31 +121,22 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	}
 
 	/**
-	 * Return true if the number of tokens stored in the queue is less than the
-	 * capacity of the queue. Return false otherwise.
+	 * This is an unbounded receiver thus always returns true.
 	 * 
-	 * @return True if the queue is not full; return false otherwise.
+	 * @return true because this is an unbounded receiver.
 	 */
 	public boolean hasRoom() {
-		return true;
-		// implement bounds on ressources here
+		return true; 
 	}
 
-	/**
-	 * Return true if the queue capacity minus the queue size is greater than
-	 * the argument.
-	 * 
-	 * @param numberOfTokens
-	 *            The number of tokens to put into the queue.
-	 * @return True if the queue is not full; return false otherwise.
-	 * @exception IllegalArgumentException
-	 *                If the argument is not positive. This is a runtime
-	 *                exception, so it does not need to be declared explicitly.
-	 */
-	public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
-		return true;
-		// implement bounds on ressources here
-	}
+    /**
+     *  This is an unbounded receiver thus always returns true.
+     * @param numberOfTokens Number of tokens to be stored.
+     * @return true because this is an unbounded receiver.
+     */
+    public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
+        return true; 
+    }
 
 	/**
 	 * Return true if there are tokens stored on the queue. Return false if the
@@ -212,7 +182,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	}
 
 	/**
-	 * Throw an exception, since this method is not used in DDE.
+	 * Throw an exception, since this method is not used in Ptides.
 	 * 
 	 * @param token
 	 *            The token to be put to the receiver.
@@ -221,7 +191,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 */
 	public void put(Token token) {
 		throw new NoRoomException("put(Token) is not used in the "
-				+ "DDE domain.");
+				+ "Ptides domain.");
 	}
 
 	/**
@@ -241,77 +211,10 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 	 *                If the queue is full.
 	 */
 	public void put(Token token, Time time) throws NoRoomException { 
-		Event event = new Event(token, time); 
-		try {
-			_queue.add(event); // is only inserted if same event not already
+		Event event = new Event(token, time);  
+		_queue.add(event); // is only inserted if same event not already
 								// exists
-		} catch (NoRoomException e) { 
-			throw e;
-		}
 	}
-
-	/**
-	 * Reset local flags. The local flags of this receiver impact the local
-	 * notion of time of the actor that contains this receiver. This method is
-	 * not synchronized so the caller should be.
-	 */
-	public void reset() {
-		Director director = ((Actor) getContainer().getContainer()
-				.getContainer()).getDirector();
-  
-
-	}
-
-	/**
-	 * Set the queue capacity of this receiver.
-	 * 
-	 * @param capacity
-	 *            The capacity of this receiver's queue.
-	 * @exception IllegalActionException
-	 *                If the superclass throws it.
-	 * @see #getCapacity()
-	 */
-	public void setCapacity(int capacity) throws IllegalActionException {
-		// TODO
-	}
-
-	// /////////////////////////////////////////////////////////////////
-	// // package friendly variables ////
-	/**
-	 * This time value is used in conjunction with completionTime to indicate
-	 * that a receiver will continue operating indefinitely.
-	 */
-	static final double ETERNITY = -5.0;
-
-	/** This time value indicates that the receiver contents should be ignored. */
-	static final double IGNORE = -1.0;
-
-	/** This time value indicates that the receiver is no longer active. */
-	static final double INACTIVE = -2.0;
-
-	/** The time stamp of the newest token to be placed in the queue. */
-	//protected Time _lastTime;
-
-	/** The priority of this receiver. */
-	public int _priority = 0;
-
-	// /////////////////////////////////////////////////////////////////
-	// // package friendly methods ////
-
-	/**
-	 * Return true if this receiver has a NullToken at the front of the queue;
-	 * return false otherwise. This method is not synchronized so the caller
-	 * should be.
-	 * 
-	 * @return True if this receiver contains a NullToken in the oldest queue
-	 *         position; return false otherwise.
-	 */
-	boolean _hasNullToken() {
-
-		return false;
-	}
-
-  
 
 	// /////////////////////////////////////////////////////////////////
 	// // private variables ////

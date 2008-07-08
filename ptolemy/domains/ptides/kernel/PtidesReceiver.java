@@ -34,6 +34,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.process.BoundaryDetector;
 import ptolemy.actor.process.ProcessReceiver;
+import ptolemy.actor.process.ProcessThread;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
@@ -47,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * 
  * @author Patricia Derler
  */
-public class PtidesReceiver extends PrioritizedTimedQueue implements
+public class PtidesReceiver extends TimedQueue implements
 		ProcessReceiver {
 	/**
 	 * Construct an empty receiver with no container.
@@ -71,33 +72,14 @@ public class PtidesReceiver extends PrioritizedTimedQueue implements
 		_boundaryDetector = new BoundaryDetector(this);
 	}
 
-	/**
-	 * Construct an empty receiver with the specified IOPort container and
-	 * priority.
-	 * 
-	 * @param container
-	 *            The IOPort that contains this receiver.
-	 * @param priority
-	 *            The priority of this receiver.
-	 * @exception IllegalActionException
-	 *                If this receiver cannot be contained by the proposed
-	 *                container.
-	 */
-	public PtidesReceiver(IOPort container, int priority)
-			throws IllegalActionException {
-		super(container, priority);
-		_boundaryDetector = new BoundaryDetector(this);
-	}
-
 	// /////////////////////////////////////////////////////////////////
 	// // public methods ////
 
 	/**
 	 * Clear this receiver of any contained tokens.
 	 */
-	public void clear() {
-		// FIXME
-		// queue.clear();
+	public void clear() { 
+		_queue.clear();
 	}
 
 	public Token get() {
@@ -130,9 +112,7 @@ public class PtidesReceiver extends PrioritizedTimedQueue implements
 	 * exception.
 	 */
 	public boolean hasToken(int tokens) {
-		return super.hasToken(tokens);
-
-		// FIXME This is wrong!
+		return super.hasToken(tokens); 
 	}
 
 	/**
@@ -276,7 +256,7 @@ public class PtidesReceiver extends PrioritizedTimedQueue implements
 		Time time = null;
 
 		if (thread instanceof PtidesPlatformThread) {
-			time = ((PtidesPlatformThread) thread).getActor().getDirector()
+			time = ((ProcessThread) thread).getActor().getDirector()
 					.getModelTime();
 		}
 

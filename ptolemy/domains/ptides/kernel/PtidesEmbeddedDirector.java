@@ -58,7 +58,7 @@ import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.domains.de.lib.TimedDelay;
-import ptolemy.domains.ptides.kernel.PrioritizedTimedQueue.Event;
+import ptolemy.domains.ptides.kernel.TimedQueue.Event;
 import ptolemy.domains.ptides.lib.ScheduleListener;
 import ptolemy.domains.ptides.platform.NonPreemptivePlatformExecutionStrategy;
 import ptolemy.domains.ptides.platform.PlatformExecutionStrategy;
@@ -1147,7 +1147,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 */
 	private void _setPhysicalTime(Time time) {
 		_physicalTime = time;
-		_executionStrategy.setPhysicalTime(time);
+		_executionStrategy._physicalTime = time;
 	}
 
 	/**

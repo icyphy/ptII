@@ -433,17 +433,7 @@ public class PtidesGraphUtilities {
      * @return The graph for the container.
      */
     private DirectedAcyclicGraph _computeGraph(Actor container) {
-    	if (graphs.get(container) == null) {
-    		// Change to the case so both CompositeActor and AtomicActor could
-    		// be taken care of.
-    		// Edited by Jia Zou
-    		/*
-    		 * FunctionDependencyOfCompositeActor functionDependency =
-    		 * (FunctionDependencyOfCompositeActor) (container)
-    		 * .getFunctionDependency(); DirectedAcyclicGraph _graph =
-    		 * functionDependency
-    		 * .getDetailedDependencyGraph().toDirectedAcyclicGraph();
-    		 */
+    	if (graphs.get(container) == null) { 
     		DirectedAcyclicGraph _graph = new DirectedAcyclicGraph();
     		if (container instanceof AtomicActor) {
     			FunctionDependencyOfAtomicActor functionDependency = (FunctionDependencyOfAtomicActor) (container)
@@ -456,7 +446,7 @@ public class PtidesGraphUtilities {
     			_graph = functionDependency.getDetailedDependencyGraph()
     					.toDirectedAcyclicGraph();
     		}
-    		// add edges between timeddelay inputs and outputs
+    		// add edges between time delay inputs and outputs
     		for (Iterator nodeIterator = _graph.nodes().iterator(); nodeIterator
     				.hasNext();) {
     			IOPort port = (IOPort) ((Node) nodeIterator.next()).getWeight();

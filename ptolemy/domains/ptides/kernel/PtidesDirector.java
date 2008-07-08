@@ -350,7 +350,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 			throws IllegalActionException {
 		if (_debugging)
 			_debug("wait for "
-					+ ((PtidesPlatformThread) Thread.currentThread())
+					+ ((ProcessThread) Thread.currentThread())
 							.getActor().getName()
 					+ ", number of active threads: " + _getActiveThreadsCount()
 					+ ", number of blocked threads: "
@@ -426,7 +426,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 */
 	protected ProcessThread _newProcessThread(Actor actor,
 			ProcessDirector director) {
-		return new PtidesPlatformThread(actor, director);
+		return new ProcessThread(actor, director);
 	}
 
 	/**
@@ -475,7 +475,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 	 */
 	private void _initialize() throws IllegalActionException,
 			NameDuplicationException {
-		double value = PrioritizedTimedQueue.ETERNITY;
+		double value = Double.MAX_VALUE;
 		stopTime = new Parameter(this, "stopTime", new DoubleToken(value));
 		timeResolution.setVisibility(Settable.FULL);
 

@@ -87,15 +87,6 @@ public abstract class PlatformExecutionStrategy {
 			List eventsToFire) throws IllegalActionException;
 
 	/**
-	 * set the physical time.
-	 * 
-	 * @param time The physical time.
-	 */
-	public void setPhysicalTime(Time time) {
-		_physicalTime = time;
-	}
-
-	/**
 	 * The execution strategy needs to know about the pysical time, it should
 	 * only be set by the PtidesEmbeddedDirector and not changed by the
 	 * execution strategy.

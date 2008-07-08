@@ -46,7 +46,7 @@ import ptolemy.kernel.util.InternalErrorException;
  * 
  * @author Patricia Derler
  */
-public class PtidesPlatformReceiver extends PrioritizedTimedQueue {
+public class PtidesPlatformReceiver extends TimedQueue {
 
 	/**
 	 * Creates a new Ptides platform receiver.
