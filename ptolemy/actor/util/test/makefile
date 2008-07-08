@@ -55,6 +55,7 @@ JSIMPLE_TESTS = \
 	FIFOQueue.tcl \
 	FreeVariableModelAnalysis.tcl \
 	FuzzyDoubleComparator.tcl \
+	Time.tcl \
 	TimedEvent.tcl \
 	TotallyOrderedSet.tcl
 

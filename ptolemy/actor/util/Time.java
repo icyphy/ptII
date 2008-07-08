@@ -393,6 +393,16 @@ public class Time implements Comparable {
      *  @return True if the two time objects have the same time value.
      */
     public boolean equals(Object time) {
+
+        // The Javadoc for java.lang.Comparable says: "Note that null
+        // is not an instance of any class, and e.compareTo(null)
+        // should throw a NullPointerException even though
+        // e.equals(null) returns false."
+
+        if (time == null) {
+            return false;
+        }
+
         return (this.compareTo(time) == 0);
     }
 
