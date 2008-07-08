@@ -31,7 +31,7 @@
 ME =		ptolemy/data/properties/demo
 
 # Keep these alphabetical please.
-DIRS = 		ConstNonconst LogicalAND LogicalOrBackward
+DIRS = 		ConstNonconst LogicalAND
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -47,8 +47,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	ConstNonconst/ConstNonconst.jar \
-	LogicalAND/LogicalAND.jar \
-	LogicalOrBackward/LogicalOrBackward.jar
+	LogicalAND/LogicalAND.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
