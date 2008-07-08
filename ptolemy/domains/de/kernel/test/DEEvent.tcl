@@ -222,6 +222,15 @@ test DEEvent-4.2 {equals, with a different actor} {
 	[$event4_2 compareTo $event4_2]
 } {0 0 0 0 1 0 0 0 0 0}
 
+test DEEvent-4.3 {equals on a null} {
+    # Uses 3.1 above
+    # The Javadoc for java.lang.Comparable says: "Note that null
+    # is not an instance of any class, and e.compareTo(null)
+    # should throw a NullPointerException even though
+    # e.equals(null) returns false."
+    list [$event4_2 equals [java::null]]
+} {0}
+
 test DEEvent-4.5 {hashCode} {
     list \
 	[$event3_1 equals $event4_1] \
