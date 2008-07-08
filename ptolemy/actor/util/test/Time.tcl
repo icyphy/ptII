@@ -145,3 +145,13 @@ test Time-3.1 {equals null} {
      # e.equals(null) returns false."
      list [$t1 equals [java::null]]
 } {0}
+
+####
+#
+test Time-3.2 {equals a non-time} {
+     # The Javadoc for java.lang.Comparable says: "Note that null
+     # is not an instance of any class, and e.compareTo(null)
+     # should throw a NullPointerException even though
+     # e.equals(null) returns false."
+     list [$t1 equals [java::new java.util.Date]]
+} {0}
