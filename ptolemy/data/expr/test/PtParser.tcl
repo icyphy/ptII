@@ -950,7 +950,7 @@ test PtParser-17.2 {Test assignment lists.} {
     listToStrings $names
 } {a.g b.g c.g}
 
-test PtParser-17.2 {Test assignment lists.} {
+test PtParser-17.3 {Test assignment lists.} {
     set p [java::new ptolemy.data.expr.PtParser]
     set ra [ $p generateAssignmentMap "a.g(1)=1;b(2)=2+3;c.g.h(3)=function(x) 4+5" ]
     set names [$ra keySet]
@@ -1113,3 +1113,53 @@ test PtParser-20.0 {Test nil Token} {
     set value1 [$res1 toString]
     list $value1 [$res1 isNil]
 } {nil 1}
+
+######################################################################
+####
+# 
+#  Test corner cases of short tokens
+test PtParser-21.1 {Test the smallest short token 32767s} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "32767s"]
+    set res [ $root evaluateParseTree ]
+    $res toString
+} {32767}
+
+test PtParser-21.2 {Test the smallest short token 32768s} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    catch {$p {generateParseTree String} "32768s"} errmsg
+    regsub -all [java::call System getProperty "line.separator"] \
+	        $errmsg "\n" output
+    set lines [split $output "\n"]
+    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "32768s"} Because: {Unable to convert token 32768s to an integer or long}}
+
+test PtParser-21.3 {Test the smallest short token -32767s} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "-32767s"]
+    set res [ $root evaluateParseTree ]
+    $res toString
+} {-32767}
+
+test PtParser-21.4 {Test the smallest short token -(32767)s} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "-(32767s)"]
+    set res [ $root evaluateParseTree ]
+    $res toString
+} {-32767}
+
+test PtParser-21.5 {Test the smallest short token -32768s} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set root [ $p {generateParseTree String} "-32768s"]
+    set res [ $root evaluateParseTree ]
+    $res toString
+} {-32768}
+
+test PtParser-21.6 {Test the smallest short token -(32768s)} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    catch {$p {generateParseTree String} "-(32768s)"} errmsg
+    regsub -all [java::call System getProperty "line.separator"] \
+	        $errmsg "\n" output
+    set lines [split $output "\n"]
+    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "-(32768s)"} Because: {Unable to convert token 32768s to an integer or long}}
