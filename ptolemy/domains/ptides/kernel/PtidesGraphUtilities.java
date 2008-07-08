@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NamedObj;
 /**
  * These methods are used to calculate Ptides dependencies, equivalence classes
  * and minimum delays. This implementation does not support topological changes.
- * A better implementation would be by generating a different graph that already
+ * A better implementation would be by generating a graph that already
  * contains ptides dependencies and not reusing the existent graph utilities.
  * 
  * @author Patricia Derler
@@ -102,31 +102,6 @@ public class PtidesGraphUtilities {
 		_adjustMinimumDelaysOfPortGroups();
 		_adjustMinDelayAddingUpstreamDelays(graph);
 		_adjustMinimumDelaysOfPortGroups();
-	}
-
-	/**
-	 * Get port groups of actors. A port group is a list of ports that depend on
-	 * each other.
-	 * 
-	 * @param container
-	 *            The actor that port groups are computed for.
-	 */
-	public void getPortGroups(Actor container) {
-		DirectedAcyclicGraph graph = _computeGraph(container);
-		List outputPortList = container.outputPortList();
-		List inputPortList = container.inputPortList();
-		double[][] connections = new double[outputPortList.size()][inputPortList
-				.size()];
-		for (Iterator it = outputPortList.iterator(); it.hasNext();) {
-			IOPort out = (IOPort) it.next();
-			Collection col = graph.backwardReachableNodes(graph.node(out));
-			for (Iterator it2 = inputPortList.iterator(); it2.hasNext();) {
-				IOPort in = (IOPort) it2.next();
-				if (col.contains(graph.node(in)))
-					connections[outputPortList.indexOf(out)][inputPortList
-							.indexOf(in)] = 1;
-			}
-		}
 	}
 
 	/**
@@ -218,6 +193,59 @@ public class PtidesGraphUtilities {
 	}
 
 	/**
+     * Return the port groups and contained ports of a composite actor.
+     * 
+     * @param container
+     *            The composite actor.
+     * @return Port groups and ports.
+     */
+    public Set getPortGroupPorts(Actor container) {
+    
+    	Set equivalenceClasses = new HashSet();
+    	DirectedAcyclicGraph graph = _computeGraph(container);
+    
+    	for (Iterator colIt = graph.connectedComponents().iterator(); colIt
+    			.hasNext();) {
+    		Set ports = new HashSet();
+    		for (Iterator col2It = ((Collection) colIt.next()).iterator(); col2It
+    				.hasNext();) {
+    			Port p = (Port) ((Node) col2It.next()).getWeight();
+    			if (p.getContainer().equals(container)
+    					&& ((IOPort) p).isInput())
+    				ports.add(p);
+    		}
+    		if (!ports.isEmpty())
+    			equivalenceClasses.add(ports);
+    	}
+    	return equivalenceClasses;
+    }
+
+    /**
+     * Get port groups of actors. A port group is a list of ports that depend on
+     * each other.
+     * 
+     * @param container
+     *            The actor that port groups are computed for.
+     */
+    public void getPortGroups(Actor container) {
+    	DirectedAcyclicGraph graph = _computeGraph(container);
+    	List outputPortList = container.outputPortList();
+    	List inputPortList = container.inputPortList();
+    	double[][] connections = new double[outputPortList.size()][inputPortList
+    			.size()];
+    	for (Iterator it = outputPortList.iterator(); it.hasNext();) {
+    		IOPort out = (IOPort) it.next();
+    		Collection col = graph.backwardReachableNodes(graph.node(out));
+    		for (Iterator it2 = inputPortList.iterator(); it2.hasNext();) {
+    			IOPort in = (IOPort) it2.next();
+    			if (col.contains(graph.node(in)))
+    				connections[outputPortList.indexOf(out)][inputPortList
+    						.indexOf(in)] = 1;
+    		}
+    	}
+    }
+
+    /**
 	 * Returns true if the actor is an actuator. A parameter of an actuator
 	 * actor called "isActuator" is true if the actor is an actuator.
 	 * 
@@ -249,6 +277,34 @@ public class PtidesGraphUtilities {
 	}
 
 	/**
+     * Returns true if given actor is a sensor. A parameter "isSensor" is set to true if the actor is a sensor.
+     * @param actor Actor that might be a sensor.
+     * @return True if the actor is a sensor.
+     */
+    public static boolean isSensor(Actor actor) {
+    	try {
+    		if (actor == null) {
+    			return false;
+    		} else {
+    			Parameter parameter = (Parameter) ((NamedObj) actor)
+    					.getAttribute("isSensor");
+    
+    			if (parameter != null) {
+    				BooleanToken intToken = (BooleanToken) parameter.getToken();
+    
+    				return intToken.booleanValue();
+    			} else {
+    				return false;
+    			}
+    		}
+    	} catch (ClassCastException ex) {
+    		return false;
+    	} catch (IllegalActionException ex) {
+    		return false;
+    	}
+    }
+
+    /**
 	 * Returns true if the given input port is connected to the given output
 	 * port.
 	 * 
@@ -267,6 +323,20 @@ public class PtidesGraphUtilities {
 	}
 
 	/**
+     * Returns true if the actor or port of an actor must be fired at real time. Actors that must be
+     * fired at real time are sensors and actuators.
+     * @param actor Actor that might need to be fired at real time.
+     * @param port Port of an actor that might need to be fired at real time.
+     * @return True if actor must be fired at real time.
+     */
+    public static boolean mustBeFiredAtRealTime(Actor actor, Port port) {
+    	if (actor instanceof Source && ((Source) actor).trigger == port)
+    		// trigger ports don't have to be fired at real time
+    		return false;
+    	return isSensor(actor) || isActuator(actor);
+    }
+
+    /**
 	 * Set the minimum delay of a port as a parameter. This delay is used for
 	 * the input port of the connected actor.
 	 * 
@@ -290,76 +360,6 @@ public class PtidesGraphUtilities {
 			}
 		else
 			parameter.setToken(new DoubleToken(minDelay));
-	}
-
-	/**
-	 * Return the port groups and contained ports of a composite actor.
-	 * 
-	 * @param container
-	 *            The composite actor.
-	 * @return Port groups and ports.
-	 */
-	public Set getPortGroupPorts(Actor container) {
-
-		Set equivalenceClasses = new HashSet();
-		DirectedAcyclicGraph graph = _computeGraph(container);
-
-		for (Iterator colIt = graph.connectedComponents().iterator(); colIt
-				.hasNext();) {
-			Set ports = new HashSet();
-			for (Iterator col2It = ((Collection) colIt.next()).iterator(); col2It
-					.hasNext();) {
-				Port p = (Port) ((Node) col2It.next()).getWeight();
-				if (p.getContainer().equals(container)
-						&& ((IOPort) p).isInput())
-					ports.add(p);
-			}
-			if (!ports.isEmpty())
-				equivalenceClasses.add(ports);
-		}
-		return equivalenceClasses;
-	}
-
-	/**
-	 * Returns true if the actor or port of an actor must be fired at real time. Actors that must be
-	 * fired at real time are sensors and actuators.
-	 * @param actor Actor that might need to be fired at real time.
-	 * @param port Port of an actor that might need to be fired at real time.
-	 * @return True if actor must be fired at real time.
-	 */
-	public static boolean mustBeFiredAtRealTime(Actor actor, Port port) {
-		if (actor instanceof Source && ((Source) actor).trigger == port)
-			// trigger ports don't have to be fired at real time
-			return false;
-		return isSensor(actor) || isActuator(actor);
-	}
-
-	/**
-	 * Returns true if given actor is a sensor. A parameter "isSensor" is set to true if the actor is a sensor.
-	 * @param actor Actor that might be a sensor.
-	 * @return True if the actor is a sensor.
-	 */
-	public static boolean isSensor(Actor actor) {
-		try {
-			if (actor == null) {
-				return false;
-			} else {
-				Parameter parameter = (Parameter) ((NamedObj) actor)
-						.getAttribute("isSensor");
-
-				if (parameter != null) {
-					BooleanToken intToken = (BooleanToken) parameter.getToken();
-
-					return intToken.booleanValue();
-				} else {
-					return false;
-				}
-			}
-		} catch (ClassCastException ex) {
-			return false;
-		} catch (IllegalActionException ex) {
-			return false;
-		}
 	}
 
 	/**
@@ -426,6 +426,70 @@ public class PtidesGraphUtilities {
 	}
 
 	/**
+     * Compute a graph containing actors and ports of a container.
+     * This method uses the computation of the FunctionDependencyGraph but adds a dependency 
+     * between output and input ports of Delay actors. This dependency resolve loops in a graph.
+     * @param container The container for which a graph should be computed.
+     * @return The graph for the container.
+     */
+    private DirectedAcyclicGraph _computeGraph(Actor container) {
+    	if (graphs.get(container) == null) {
+    		// Change to the case so both CompositeActor and AtomicActor could
+    		// be taken care of.
+    		// Edited by Jia Zou
+    		/*
+    		 * FunctionDependencyOfCompositeActor functionDependency =
+    		 * (FunctionDependencyOfCompositeActor) (container)
+    		 * .getFunctionDependency(); DirectedAcyclicGraph _graph =
+    		 * functionDependency
+    		 * .getDetailedDependencyGraph().toDirectedAcyclicGraph();
+    		 */
+    		DirectedAcyclicGraph _graph = new DirectedAcyclicGraph();
+    		if (container instanceof AtomicActor) {
+    			FunctionDependencyOfAtomicActor functionDependency = (FunctionDependencyOfAtomicActor) (container)
+    					.getFunctionDependency();
+    			_graph = functionDependency.getDependencyGraph()
+    					.toDirectedAcyclicGraph();
+    		} else if (container instanceof CompositeActor) {
+    			FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (container)
+    					.getFunctionDependency();
+    			_graph = functionDependency.getDetailedDependencyGraph()
+    					.toDirectedAcyclicGraph();
+    		}
+    		// add edges between timeddelay inputs and outputs
+    		for (Iterator nodeIterator = _graph.nodes().iterator(); nodeIterator
+    				.hasNext();) {
+    			IOPort port = (IOPort) ((Node) nodeIterator.next()).getWeight();
+    			Actor a = (Actor) port.getContainer();
+    			if (port.isOutput() && a instanceof TimedDelay)
+    				_graph.addEdge(a.inputPortList().get(0), a.outputPortList()
+    						.get(0));
+    		}
+    		// remove edges between actors and sensors
+    		for (Iterator nodeIterator = _graph.nodes().iterator(); nodeIterator
+    				.hasNext();) {
+    			IOPort sinkPort = (IOPort) ((Node) nodeIterator.next())
+    					.getWeight();
+    			Actor a = (Actor) sinkPort.getContainer();
+    			if (PtidesGraphUtilities.isSensor(a) && sinkPort.isInput()) {
+    				Collection edgesToRemove = new java.util.ArrayList();
+    				for (Iterator it = _graph.inputEdges(_graph.node(sinkPort))
+    						.iterator(); it.hasNext();) {
+    					Edge edge = (Edge) it.next();
+    					edgesToRemove.add(edge);
+    				}
+    				for (Iterator it = edgesToRemove.iterator(); it.hasNext();) {
+    					_graph.removeEdge((Edge) it.next());
+    				}
+    			}
+    		}
+    		graphs.put(container, _graph);
+    		((PtidesEmbeddedDirector) container.getDirector()).graph = _graph;
+    	}
+    	return (DirectedAcyclicGraph) graphs.get(container);
+    }
+
+    /**
 	 * Get graphs of a container that are not connected.
 	 * @param container Container with disconnected graphs.
 	 */
@@ -518,6 +582,40 @@ public class PtidesGraphUtilities {
 	}
 
 	/**
+     * Compute minimum delay upstream.
+     * @param graph Graph containing other actors with minimum delays.
+     * @param inputPort Input port for which the minimum delay should be computed.
+     * @param traversedActors Actors that have already been considered in the computation.
+     * @return The minimum delay.
+     */
+    private double _getMinDelayUpstream(DirectedAcyclicGraph graph,
+    		IOPort inputPort, List traversedActors) {
+    	double mindel = Double.MAX_VALUE;
+    	double delay = PtidesGraphUtilities.getMinDelayTime(inputPort);
+    	for (Iterator it = graph.inputEdges(graph.node(inputPort)).iterator(); it
+    			.hasNext();) {
+    		IOPort port = (IOPort) ((Edge) it.next()).source().getWeight();
+    		Actor actor = (Actor) port.getContainer();
+    		if (traversedActors.contains(actor))
+    			break;
+    		traversedActors.add(actor);
+    		for (Iterator inputs = actor.inputPortList().iterator(); inputs
+    				.hasNext();) {
+    			delay = PtidesGraphUtilities.getMinDelayTime(inputPort);
+    			IOPort input = (IOPort) inputs.next();
+    			if (isInputConnectedToOutput(actor, input, port)) {
+    				delay += _getMinDelayUpstream(graph, input, traversedActors);
+    				if (mindel > delay)
+    					mindel = delay;
+    			}
+    		}
+    	}
+    	if (mindel == Double.MAX_VALUE)
+    		mindel = delay;
+    	return mindel;
+    }
+
+    /**
 	 * Returns true if this input is connected to any output of the container.
 	 * @param container Container of the input port.
 	 * @param graph Graph of actors inside the container.
@@ -568,104 +666,6 @@ public class PtidesGraphUtilities {
 			}
 		}
 
-	}
-
-	/**
-	 * Compute minimum delay upstream.
-	 * @param graph Graph containing other actors with minimum delays.
-	 * @param inputPort Input port for which the minimum delay should be computed.
-	 * @param traversedActors Actors that have already been considered in the computation.
-	 * @return The minimum delay.
-	 */
-	private double _getMinDelayUpstream(DirectedAcyclicGraph graph,
-			IOPort inputPort, List traversedActors) {
-		double mindel = Double.MAX_VALUE;
-		double delay = PtidesGraphUtilities.getMinDelayTime(inputPort);
-		for (Iterator it = graph.inputEdges(graph.node(inputPort)).iterator(); it
-				.hasNext();) {
-			IOPort port = (IOPort) ((Edge) it.next()).source().getWeight();
-			Actor actor = (Actor) port.getContainer();
-			if (traversedActors.contains(actor))
-				break;
-			traversedActors.add(actor);
-			for (Iterator inputs = actor.inputPortList().iterator(); inputs
-					.hasNext();) {
-				delay = PtidesGraphUtilities.getMinDelayTime(inputPort);
-				IOPort input = (IOPort) inputs.next();
-				if (isInputConnectedToOutput(actor, input, port)) {
-					delay += _getMinDelayUpstream(graph, input, traversedActors);
-					if (mindel > delay)
-						mindel = delay;
-				}
-			}
-		}
-		if (mindel == Double.MAX_VALUE)
-			mindel = delay;
-		return mindel;
-	}
-
-	/**
-	 * Compute a graph containing actors and ports of a container.
-	 * This method uses the computation of the FunctionDependencyGraph but adds a dependency 
-	 * between output and input ports of Delay actors. This dependency resolve loops in a graph.
-	 * @param container The container for which a graph should be computed.
-	 * @return The graph for the container.
-	 */
-	private DirectedAcyclicGraph _computeGraph(Actor container) {
-		if (graphs.get(container) == null) {
-			// Change to the case so both CompositeActor and AtomicActor could
-			// be taken care of.
-			// Edited by Jia Zou
-			/*
-			 * FunctionDependencyOfCompositeActor functionDependency =
-			 * (FunctionDependencyOfCompositeActor) (container)
-			 * .getFunctionDependency(); DirectedAcyclicGraph _graph =
-			 * functionDependency
-			 * .getDetailedDependencyGraph().toDirectedAcyclicGraph();
-			 */
-			DirectedAcyclicGraph _graph = new DirectedAcyclicGraph();
-			if (container instanceof AtomicActor) {
-				FunctionDependencyOfAtomicActor functionDependency = (FunctionDependencyOfAtomicActor) (container)
-						.getFunctionDependency();
-				_graph = functionDependency.getDependencyGraph()
-						.toDirectedAcyclicGraph();
-			} else if (container instanceof CompositeActor) {
-				FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (container)
-						.getFunctionDependency();
-				_graph = functionDependency.getDetailedDependencyGraph()
-						.toDirectedAcyclicGraph();
-			}
-			// add edges between timeddelay inputs and outputs
-			for (Iterator nodeIterator = _graph.nodes().iterator(); nodeIterator
-					.hasNext();) {
-				IOPort port = (IOPort) ((Node) nodeIterator.next()).getWeight();
-				Actor a = (Actor) port.getContainer();
-				if (port.isOutput() && a instanceof TimedDelay)
-					_graph.addEdge(a.inputPortList().get(0), a.outputPortList()
-							.get(0));
-			}
-			// remove edges between actors and sensors
-			for (Iterator nodeIterator = _graph.nodes().iterator(); nodeIterator
-					.hasNext();) {
-				IOPort sinkPort = (IOPort) ((Node) nodeIterator.next())
-						.getWeight();
-				Actor a = (Actor) sinkPort.getContainer();
-				if (PtidesGraphUtilities.isSensor(a) && sinkPort.isInput()) {
-					Collection edgesToRemove = new java.util.ArrayList();
-					for (Iterator it = _graph.inputEdges(_graph.node(sinkPort))
-							.iterator(); it.hasNext();) {
-						Edge edge = (Edge) it.next();
-						edgesToRemove.add(edge);
-					}
-					for (Iterator it = edgesToRemove.iterator(); it.hasNext();) {
-						_graph.removeEdge((Edge) it.next());
-					}
-				}
-			}
-			graphs.put(container, _graph);
-			((PtidesEmbeddedDirector) container.getDirector()).graph = _graph;
-		}
-		return (DirectedAcyclicGraph) graphs.get(container);
 	}
 
 	/**

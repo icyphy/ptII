@@ -62,11 +62,28 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * Top-level director for PTIDES models. The model time of this director is used
- * as the physical time of the whole model. Actors inside a PTIDES domain are
- * run in threads and ask for being refired at a certain time in the future.
- * This director saves those times in a list and if all actors are waiting for a
- * future time, the model time is increased.
+ * Top-level director for PTIDES models. The model time is the simulated
+ * global physical time. 
+ * 
+ * <p>
+ * Top-level actors in a PTIDES domain are platforms. A platform is a 
+ * composite actor that contains sensors,
+ * actuators, computation actors with worst case execution times and 
+ * model time delay actors. 
+ * 
+ * <p>
+ * The PTIDES director simulates the parallel execution of actors on
+ * distributed platforms, thus the composite actors representing platforms
+ * run in threads. A platform executes actors in model time and maps some 
+ * actions to real time. For those mappings, platforms call the fireAt
+ * method of this director to schedule refiring at those real times. A
+ * mapping to real time is done for <ul>
+ * <li> sensors. A sensor is fired at model time = real time. </li>
+ * <li> actuators. An actuator is fired at real time = model time. </li>
+ * <li> execution of actors with WCET > 0. After starting the execution of 
+ * an actor with WCET > 0, the platform thread sleeps and continues execution 
+ * after real time was increased by the WCET or the actor is being preempted. </li>
+ * </ul>
  * 
  * @author Patricia Derler
  */
@@ -241,8 +258,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 				if (actor.getDirector() instanceof PtidesEmbeddedDirector) {
 					PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor
 							.getDirector();
-					dir
-							.setUsePtidesExecutionSemantics(_usePtidesExecutionSemantics);
+					dir.setUsePtidesExecutionSemantics(_usePtidesExecutionSemantics);
 					dir.setClockSyncError(_clockSyncError);
 					dir.setNetworkDelay(_networkDelay);
 				}

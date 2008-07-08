@@ -79,10 +79,16 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * This director is used on a platform in the PTIDES domain. The execution is
- * similar to the DEDirector but enables "smarter" processing of events. By
- * adding minimum delays to actors and determining independent subgraphs inside
- * a domain, events can be processed out of the time stamped order.
+ * This director is used in a platform in the PTIDES domain. The director executes
+ * actors according to their model time stamps. The difference to the DE director
+ * is that events can be processed out of time stamped order. The only requirement
+ * for events in the PTIDES domain is to execute events in time stamped order between 
+ * ports that are connected through functional dependencies. To satisfy this requirement,
+ * an event can only be processed if no other event with an earlier time stamp can appear
+ * on the same port. An analysis of all events on the platform determines a set of events
+ * that are safe to process. Those events are executed sequentially according to a platform
+ * execution strategy. This execution strategy takes into account platform characteristics
+ * like preemption and priorities.
  * 
  * @author Patricia Derler
  */
@@ -204,7 +210,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
 	/**
 	 * Get finishing time of actor in execution. The finishing time is the point
-	 * in time when the WCET of the actor is passed.
+	 * in time when the WCET of the actor has passed.
 	 * 
 	 * @param actor
 	 *            The actor in execution.
@@ -219,10 +225,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	}
 
 	/**
-	 * Return the timestamp of the next event in the queue. The next iteration
-	 * time, for example, is used to estimate the run-ahead time, when a
-	 * continuous time composite actor is embedded in a DE model. If there is no
-	 * event in the event queue, a positive infinity object is returned.
+	 * Return the time stamp of the next event in the queue. 
 	 * 
 	 * @return The time stamp of the next event in the event queue.
 	 */
@@ -244,13 +247,15 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	}
 
 	/**
-	 * Return the current model time. This director does not have a valid model
-	 * time except during the time an actor is being fired. Then, the model time
-	 * is the time of the event which caused the firing of that actor.
+	 * Return the current model time. The notion of model time cannot be applied to 
+	 * the whole platform because it is possible to fire events out of time stamped
+	 * order. Model times are associated to actors only. When an actor is in 
+	 * execution, this method returns the model time of the actor currently in 
+	 * execution. Otherwise, this method returns 0. 
 	 */
 	public Time getModelTime() {
 		if (_currentModelTime == null)
-			return _currentTime;
+			return new Time(this, 0);
 		else {
 			return _currentModelTime;
 		}
@@ -374,13 +379,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
 	/**
 	 * Initialize all the contained actors by invoke the initialize() method of
-	 * the super class. If any events are generated during the initialization,
-	 * and the container is not at the top level, request a refiring.
-	 * <p>
-	 * The real start time of the model is recorded when this method is called.
-	 * This method is <i>not</i> synchronized on the workspace, so the caller
-	 * should be.
-	 * </p>
+	 * the super class.
 	 * 
 	 * @exception IllegalActionException
 	 *                If the initialize() method of the super class throws it.
@@ -512,7 +511,6 @@ public class PtidesEmbeddedDirector extends DEDirector {
 			attribute.validate();
 		}
 		// preinitialize protected variables.
-		_currentTime = getModelStartTime();
 		_stopRequested = false;
 		// preinitialize all the contained actors.
 		Nameable container = getContainer();

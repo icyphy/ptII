@@ -118,19 +118,6 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 		token = event.getToken();
 		return token;
 	}
-	
-	// TODO: remove
-	public Token getNewestButDontRemove() {
-        Token token;
-        Event event = null;
-        while (_queue.size() > 0) {
-            event = (Event) _queue.first(); 
-            _queue.remove(_queue.first());
-        } 
-            _queue.add(event);
-        token = event.getToken();
-        return token;
-    }
 
 	/**
 	 * Similar to get() but if not only token but also time stamp is required,
