@@ -87,7 +87,7 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
      *  need to override {@link #getDependency(IOPort,IOPort)}
      *  and {@link #dependentPorts(IOPort)} to be consistent.
      *  The returned result should always include the specified input port.
-     *  @param inputPort The port to find the equivalence class of.
+     *  @param input The port to find the equivalence class of.
      */
     public Collection<IOPort> equivalentPorts(IOPort input) {
         LinkedList<IOPort> result = new LinkedList<IOPort>();
