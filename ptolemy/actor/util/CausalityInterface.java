@@ -88,7 +88,7 @@ public interface CausalityInterface {
      *  equivalence class. If there are no
      *  output ports, then all the input ports
      *  are in a single equivalence class.
-     *  @param inputPort The port to find the equivalence class of.
+     *  @param input The port to find the equivalence class of.
      */
     public Collection<IOPort> equivalentPorts(IOPort input);
     
