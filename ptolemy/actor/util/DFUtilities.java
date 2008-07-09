@@ -185,6 +185,12 @@ public class DFUtilities {
 
         Token token = parameter.getToken();
 
+        if (token == null) {
+            // The tokenConsumptionRate parameter is present, but was
+            // not set.  BooleanSelect had this problem.
+            return defaultValue;
+        }
+
         if (token instanceof IntToken) {
             return ((IntToken) token).intValue();
         } else {
