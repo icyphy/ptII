@@ -30,7 +30,7 @@
 package ptolemy.apps.cacheAwareScheduler.kernel;
 
 ///////////////////////////////////////////////////////////////////////////
-//// MemoryAddress
+////MemoryAddress
 
 /**
 
@@ -79,15 +79,14 @@ public class MemoryAddress {
      *  @return boolean True iff equal else False.
      */
     public boolean equals(Object memoryAddress) {
-        if (((MemoryAddress) memoryAddress).actorID == actorID) {
-            if (((MemoryAddress) memoryAddress).tokenNumber == tokenNumber) {
-                return true;
-            } else {
-                return false;
+        if (memoryAddress instanceof MemoryAdress) {
+            if (((MemoryAddress) memoryAddress).actorID == actorID) {
+                if (((MemoryAddress) memoryAddress).tokenNumber == tokenNumber) {
+                    return true;
+                }
             }
-        } else {
-            return false;
         }
+        return false;
     }
 
     /** Returns a hashcode for this object. This function overrides the

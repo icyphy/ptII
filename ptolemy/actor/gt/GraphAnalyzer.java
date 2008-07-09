@@ -248,7 +248,7 @@ public abstract class GraphAnalyzer {
                 IndexedList indexedList = entry.getValue();
                 List<?> objectList = indexedList.getFirst();
                 for (int index = indexedList.getSecond() + 1; index < objectList
-                        .size(); index++) {
+                .size(); index++) {
                     indexedList.setSecond(index);
                     NamedObj child = (NamedObj) objectList.get(index);
                     indexedLists.removeAllAfter(entry);
@@ -298,7 +298,7 @@ public abstract class GraphAnalyzer {
             IndexedList markedEntityList = entry.getValue();
             List<?> entityList = markedEntityList.getFirst();
             for (int index = markedEntityList.getSecond() + 1; index < entityList
-                    .size(); index++) {
+            .size(); index++) {
                 markedEntityList.setSecond(index);
                 path.removeAllAfter(entry);
 
@@ -413,8 +413,11 @@ public abstract class GraphAnalyzer {
         }
 
         public boolean equals(Object object) {
-            return super.equals(object)
-                    && _startPort == ((Path) object)._startPort;
+            if (object instanceof Path) {
+                return super.equals(object)
+                && _startPort == ((Path) object)._startPort;
+            }
+            return false;
         }
 
         public Port getEndPort() {
@@ -478,7 +481,7 @@ public abstract class GraphAnalyzer {
         if (hideAttribute != null) {
             try {
                 BooleanToken token = (BooleanToken) ((Parameter) hideAttribute)
-                        .getToken();
+                .getToken();
                 boolean hide = token.booleanValue();
                 return hide;
             } catch (IllegalActionException e) {
