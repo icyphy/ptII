@@ -93,7 +93,7 @@ import ptolemy.kernel.util.Workspace;
  * are executed sequentially according to a platform execution
  * strategy. This execution strategy takes into account platform
  * characteristics like preemption and priorities.
- * 
+ *
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -107,7 +107,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * string as its name. The director is added to the list of
      * objects in the workspace.  Increment the version number of the
      * workspace.
-     * 
+     *
      * @exception IllegalActionException If the director is not
      * compatible with the specified container.
      * @exception NameDuplicationException If the container not a
@@ -124,7 +124,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * Construct a director in the workspace with an empty name. The
      * director is added to the list of objects in the
      * workspace. Increment the version number of the workspace.
-     * 
+     *
      * @param workspace The workspace of this object.
      * @exception IllegalActionException If the director is not
      * compatible with the specified container.
@@ -144,7 +144,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * NullPointerException will be thrown. If the name argument is
      * null, then the name is set to the empty string. Increment the
      * version number of the workspace.
-     * 
+     *
      * @param container Container of the director.
      * @param name Name of this director.
      * @exception IllegalActionException If the director is not
@@ -169,7 +169,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * changed. Changes to <i>isCQAdaptive</i>, <i>minBinCount</i>,
      * and <i>binCountFactor</i> parameters will only be effective on
      * the next time when the model is executed.
-     * 
+     *
      * @param attribute The changed parameter.
      * @exception IllegalActionException If the parameter set is not
      * valid. Not thrown in this class.
@@ -195,7 +195,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
      * Display event in Scheduleplotter.
-     * 
+     *
      * @param actor Actor for which the event occurred.
      * @param time physical time at which the event occurred.
      * @param scheduleEvent Type of event.
@@ -212,7 +212,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * Get finishing time of actor in execution. The finishing time is
      * the point in time when the WCET of the actor has passed.
-     * 
+     *
      * @param actor The actor in execution.
      * @return The finishing time of the actor.
      * @see #setFinishingTime(Actor, double)
@@ -226,7 +226,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
      * Return the time stamp of the next event in the queue.
-     * 
+     *
      * @return The time stamp of the next event in the event queue.
      */
     public Time getNextEventTimeStamp() {
@@ -369,7 +369,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * Schedule an actor to be fired at the specified time by posting a pure
      * event to the director.
-     * 
+     *
      * @param actor The scheduled actor to fire.
      * @param time The scheduled time to fire.
      * @exception IllegalActionException If the event queue is not ready.
@@ -392,7 +392,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * Initialize all the contained actors by invoke the initialize()
      * method of the super class.
-     * 
+     *
      * @exception IllegalActionException If the initialize() method of
      * the super class throws it.
      */
@@ -409,7 +409,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * the actors inside if they are safe to process according to
      * PTIDES. Tokens are safe to process if eventTimestamp - minDelay
      * + clockSyncError + networkDelay <= physicalTime
-     * 
+     *
      * @param time
      *                Timestamp of the event.
      * @param object
@@ -428,7 +428,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * Tokens between Platform elements are only safe to process if
      * timestamp - minimumDelay <= physicalTime. The minimum delay
      * must be specified as a parameter at the port.
-     * 
+     *
      * @param time The time.
      * @param object The object to to check the minimum delay time.
      * @return True if it is safe to process a token.
@@ -451,7 +451,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
      * Prefire of the director.
-     * 
+     *
      * @return True if the composite actor is ready to fire.
      * @exception IllegalActionException If there is a missed event,
      * or the prefire method of the super class throws it, or can not
@@ -475,7 +475,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * This method is <i>not</i> synchronized on the workspace, so the caller
      * should be.
      * </p>
-     * 
+     *
      * @exception IllegalActionException If the preinitialize() method
      * of the container or one of the deeply contained actors throws
      * it, or the parameters, minBinCount, binCountFactor, and
@@ -542,7 +542,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * The top level director (PtidesDirector) sets the clock synchronization
      * error.
-     * 
+     *
      * @param syncError The clock synchronization error.
      */
     public void setClockSyncError(double syncError) {
@@ -552,7 +552,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * Set the finishing time of an actor. This method is called after the
      * execution of an actor is started.
-     * 
+     *
      * @param actor The actor in execution.
      * @param finishingTime The time the actor will finish.
      * @see #getFinishingTime(NamedObj)
@@ -566,7 +566,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
      * The top-level director (PtidesDirector) sets the network delay.
-     * 
+     *
      * @param delay The global network delay.
      */
     public void setNetworkDelay(double delay) {
@@ -576,7 +576,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * The top-level director (PtidesDirector) specifies if the ptides
      * execution semantics should be used.
-     * 
+     *
      * @param ptidesExecutionSemantics The boolean value determining
      * whether to use the ptides execution semantics.
      */
@@ -586,7 +586,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
      * Transfer outputs and return true if any tokens were transferred.
-     * 
+     *
      * @exception IllegalActionException
      *                    If the port is not an opaque output port.
      * @param port
@@ -608,7 +608,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * Invoke the wrapup method of the super class. Reset the private state
      * variables.
-     * 
+     *
      * @exception IllegalActionException If the wrapup() method of one
      * of the associated actors throws it.
      */
@@ -631,7 +631,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * is the minimum of the depths of all the ports of the
      * destination actor. If there is no event queue or the given
      * actor is disabled, then this method does nothing.
-     * 
+     *
      * @param actor
      *                The actor to be fired.
      * @param time
@@ -690,7 +690,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * If the event queue is not ready or the actor contains the destination
      * port is disabled, do nothing.
      * </p>
-     * 
+     *
      * @param ioPort
      *                The destination IO port.
      * @exception IllegalActionException
@@ -729,7 +729,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * minimum of the depths of all the ports of the destination
      * actor. If there is no event queue or the given actor is
      * disabled, then this method does nothing.
-     * 
+     *
      * @param ioPort
      *                Port which gets the new trigger event.
      * @param time
@@ -833,7 +833,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
      * Transfer output ports.
-     * 
+     *
      * @exception IllegalActionException
      *                 Attempted to transferOutputs on a port that is not an
      *                 opaque input port.
@@ -886,7 +886,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
      * Put event back into the queue because it was not processed yet.
-     * 
+     *
      * @param event
      *                The event that should be enqueued again.
      * @exception IllegalActionException
@@ -902,7 +902,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
      * Return executive director which is the PtidesDirector.
-     * 
+     *
      * @return The executive director.
      */
     private PtidesDirector _getExecutiveDirector() {
@@ -918,7 +918,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * Determine if there is an event with time stamp - minDelay >
      * time stamp of event at current node upstream. if so, the
      * current event can be processed.
-     * 
+     *
      * @param eventTimestamp
      *                Time stamp of current event.
      * @param node
@@ -988,7 +988,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * The actual firing of an actor takes zero model time, the wcet is
      * simulated by either firing an actor at the beginning or the end of the
      * wcet.
-     * 
+     *
      * @param actorToFire
      *                Actor that has to be fired.
      * @exception IllegalActionException
@@ -1011,7 +1011,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * determined after firing the actor. An example for this actor is a
      * TDLModule. An actor can only be fired at the beginning of the LET if the
      * output values are not updated immediately.
-     * 
+     *
      * @param actor
      *                Actor that has to be fired.
      * @return True if actor has to be fired at the beginning of the WCET.
@@ -1026,7 +1026,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * Get the set of events that are safe to fire. Those events contain pure
      * events and triggered events.
-     * 
+     *
      * @return List of events that can be fired next.
      */
     private List<DEEvent> _getNextEventsToFire()
@@ -1089,7 +1089,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * If there is a pure event and a triggered event for the same actor with
      * the same time stamp, then the pure event can be deleted.
-     * 
+     *
      * @param events
      *                List of events that can be fired next.
      * @param actor
@@ -1113,7 +1113,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
      * Enqueue all remaining events because they were not processed.
-     * 
+     *
      * @param list
      *                Events that were previously selected to be processed but
      *                were not processed.
@@ -1151,7 +1151,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
      * Inform the executive director to be re-fired at the specified time.
-     * 
+     *
      * @param time
      *                Future physical time when the actor containing this
      *                director wants to be refired.
@@ -1163,7 +1163,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
      * Set the new physical time from the executive director.
-     * 
+     *
      * @param The
      *                new physical time.
      */
@@ -1175,7 +1175,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * Transfer all input tokens. If input ports were transferred, the next
      * actor to be fired might have changed.
-     * 
+     *
      * @return True if input ports were transferred.
      * @exception IllegalActionException
      *                 If reading from the associated port throws it or inputs
@@ -1197,7 +1197,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
      * Transfer all output tokens.
-     * 
+     *
      * @return true if output tokens were transferred.
      * @exception IllegalActionException
      *                 Attempted to transferOutputs on a port that is not an
