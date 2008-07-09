@@ -32,8 +32,8 @@ import java.util.Hashtable;
 
 import ptolemy.actor.Actor;
 
-//////////////////////////////////////////////////////////////////////////
-//// ScheduleListener
+// ////////////////////////////////////////////////////////////////////////
+// // ScheduleListener
 
 /**
  * A schedule listener reacts to given events.
@@ -41,55 +41,55 @@ import ptolemy.actor.Actor;
  * @author Patricia Derler
  */
 public interface ScheduleListener {
-	// /////////////////////////////////////////////////////////////////
-	// // public methods ////
+    // /////////////////////////////////////////////////////////////////
+    // // public methods ////
 
-	/**
-	 * React to the given event.
-	 * 
-	 * @param node
-	 *            The node where the event happened.
-	 * @param actor
-	 *            The actor where the event happened. This parameter can be null
-	 *            if the event is TRANSFEROUTPUT or TRANSFERINPUT.
-	 * @param time
-	 *            The physical time when the event happened.
-	 * @param scheduleEvent
-	 *            The type of the event.
-	 */
-	public void event(Actor node, Actor actor, double time, int scheduleEvent);
+    /**
+     * React to the given event.
+     * 
+     * @param node
+     *                The node where the event happened.
+     * @param actor
+     *                The actor where the event happened. This parameter can be
+     *                null if the event is TRANSFEROUTPUT or TRANSFERINPUT.
+     * @param time
+     *                The physical time when the event happened.
+     * @param scheduleEvent
+     *                The type of the event.
+     */
+    public void event(Actor node, Actor actor, double time, int scheduleEvent);
 
-	/**
-	 * Initialize the legend of the plotter.
-	 * 
-	 * @param nodesActors
-	 *            contains platforms and actors running on that platform
-	 */
-	public void initialize(Hashtable nodesActors);
+    /**
+     * Initialize the legend of the plotter.
+     * 
+     * @param nodesActors
+     *                contains platforms and actors running on that platform
+     */
+    public void initialize(Hashtable nodesActors);
 
-	/**
-	 * The start of the execution of an actor. 
-	 */
-	static final int START = 0;
+    /**
+     * The start of the execution of an actor.
+     */
+    static final int START = 0;
 
-	/**
-	 * The end of the execution of an actor.
-	 */
-	static final int STOP = 1;
+    /**
+     * The end of the execution of an actor.
+     */
+    static final int STOP = 1;
 
-	/**
-	 * Events are being sent from a platform.
-	 */
-	static final int TRANSFEROUTPUT = 2;
+    /**
+     * Events are being sent from a platform.
+     */
+    static final int TRANSFEROUTPUT = 2;
 
-	/**
-	 * Events are received by a platform.
-	 */
-	static final int TRANSFERINPUT = 3;
+    /**
+     * Events are received by a platform.
+     */
+    static final int TRANSFERINPUT = 3;
 
-	/**
-	 * An execution was missed.
-	 */
-	static final int MISSEDEXECUTION = 4;
+    /**
+     * An execution was missed.
+     */
+    static final int MISSEDEXECUTION = 4;
 
 }

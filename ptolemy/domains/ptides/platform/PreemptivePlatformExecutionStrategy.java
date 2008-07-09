@@ -30,8 +30,6 @@ package ptolemy.domains.ptides.platform;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Actor;
@@ -40,37 +38,33 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.actor.util.Time;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.ptides.kernel.PtidesGraphUtilities;
-import ptolemy.domains.ptides.lib.ScheduleListener; 
-import ptolemy.domains.tt.tdl.kernel.TDLModule;
-import ptolemy.domains.tt.tdl.kernel.TDLModuleDirector;
+import ptolemy.domains.ptides.lib.ScheduleListener;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- * Untested, the only difference to the preemptive execution strategy is that
- * in any case, an event of the set of safe to fire events is selected, even 
- * if currently an event is in execution.
+ * Untested, the only difference to the preemptive execution strategy is that in
+ * any case, an event of the set of safe to fire events is selected, even if
+ * currently an event is in execution.
  * 
  * @author Patricia Derler
  * 
  */
 public class PreemptivePlatformExecutionStrategy extends
-		PlatformExecutionStrategy {
+        PlatformExecutionStrategy {
     /**
      * Create new non-preemptive platform execution strategy.
      * 
      * @param physicalTime
-     *            required to sort events that are safe to process and determine
-     *            which event can be fired next
+     *                required to sort events that are safe to process and
+     *                determine which event can be fired next
      * @param director
-     *            required to display the schedule
+     *                required to display the schedule
      */
     public PreemptivePlatformExecutionStrategy(Time physicalTime,
             Director director) {
@@ -81,7 +75,8 @@ public class PreemptivePlatformExecutionStrategy extends
     /**
      * Sort the list of events that are safe to fire.
      * 
-     * @param list List of events that are safe to fire.
+     * @param list
+     *                List of events that are safe to fire.
      */
     public void sort(List list) {
         Collections.sort(list, new WCETComparator());
@@ -97,16 +92,14 @@ public class PreemptivePlatformExecutionStrategy extends
     private class WCETComparator implements Comparator {
 
         /**
-         * This platform execution strategy is non preemptive.
-         */
-        private boolean _preemptive = false;
-
-        /**
-         * This compare method is used to sort all events. 
+         * This compare method is used to sort all events.
          * 
-         * @param arg0 First event.
-         * @param arg1 Second event.
-         * @return -1 if event arg0 should be processed before event arg1 and vice versa.
+         * @param arg0
+         *                First event.
+         * @param arg1
+         *                Second event.
+         * @return -1 if event arg0 should be processed before event arg1 and
+         *         vice versa.
          */
         public int compare(Object arg0, Object arg1) {
             DEEvent event1 = (DEEvent) arg0;
@@ -117,10 +110,10 @@ public class PreemptivePlatformExecutionStrategy extends
             double wcet2 = PtidesGraphUtilities.getWCET(actor2);
             Time time1 = event1.timeStamp();
             Time time2 = event2.timeStamp();
-            boolean fireAtRT1 = PtidesGraphUtilities
-                    .mustBeFiredAtRealTime(actor1, event1.ioPort());
-            boolean fireAtRT2 = PtidesGraphUtilities
-                    .mustBeFiredAtRealTime(actor2, event2.ioPort());
+            boolean fireAtRT1 = PtidesGraphUtilities.mustBeFiredAtRealTime(
+                    actor1, event1.ioPort());
+            boolean fireAtRT2 = PtidesGraphUtilities.mustBeFiredAtRealTime(
+                    actor2, event2.ioPort());
             int index1 = -1;
             int index2 = -1;
             int priority1 = getPriority(actor1);
@@ -133,65 +126,81 @@ public class PreemptivePlatformExecutionStrategy extends
                     .getDetailedDependencyGraph().toDirectedAcyclicGraph();
             Object[] objects = graph.topologicalSort();
             for (int i = 0; i < objects.length; i++) {
-                if (((IOPort) objects[i]).getContainer() == actor1)
+                if (((IOPort) objects[i]).getContainer() == actor1) {
                     index1 = i;
-                else if (((IOPort) objects[i]).getContainer() == actor2)
+                } else if (((IOPort) objects[i]).getContainer() == actor2) {
                     index2 = i;
+                }
             }
 
-            if (priority1 != priority2)
+            if (priority1 != priority2) {
                 return priority2 - priority1;
-            if (wcet1 == 0 && (!fireAtRT1 || (fireAtRT1 && time1.equals(_physicalTime))))
+            }
+            if (wcet1 == 0
+                    && (!fireAtRT1 || (fireAtRT1 && time1.equals(_physicalTime)))) {
                 return -1;
-            if (wcet2 == 0 && (!fireAtRT2 || (fireAtRT2 && time2.equals(_physicalTime))))
+            }
+            if (wcet2 == 0
+                    && (!fireAtRT2 || (fireAtRT2 && time2.equals(_physicalTime)))) {
                 return 1;
-            if (wcet1 > 0 && wcet2 == 0) 
-                if (!fireAtRT2 || time2.equals(_physicalTime))
+            }
+            if (wcet1 > 0 && wcet2 == 0) {
+                if (!fireAtRT2 || time2.equals(_physicalTime)) {
                     return 1;
+                }
+            }
             if (wcet1 == 0 && wcet2 == 0) {
-                if (fireAtRT1 && time1.equals(_physicalTime) && !fireAtRT2)
+                if (fireAtRT1 && time1.equals(_physicalTime) && !fireAtRT2) {
                     return -1;
+                }
                 if (fireAtRT1 && time1.compareTo(_physicalTime) > 0
-                        && !fireAtRT2)
+                        && !fireAtRT2) {
                     return 1;
-                if (fireAtRT2 && time2.equals(_physicalTime) && !fireAtRT1)
+                }
+                if (fireAtRT2 && time2.equals(_physicalTime) && !fireAtRT1) {
                     return 1;
+                }
                 if (fireAtRT2 && time2.compareTo(_physicalTime) > 0
-                        && !fireAtRT1)
+                        && !fireAtRT1) {
                     return -1;
+                }
                 if (fireAtRT1 && fireAtRT2 && time1.equals(_physicalTime)
-                        && time2.equals(_physicalTime))
+                        && time2.equals(_physicalTime)) {
                     return 0;
-                if (time1.compareTo(time2) < 0)
+                }
+                if (time1.compareTo(time2) < 0) {
                     return -1;
-                if (time2.compareTo(time1) < 0)
+                }
+                if (time2.compareTo(time1) < 0) {
                     return 1;
-                else {
-                    if (event1.depth() < event2.depth())
+                } else {
+                    if (event1.depth() < event2.depth()) {
                         return -1;
-                    else if (event1.depth() > event2.depth())
+                    } else if (event1.depth() > event2.depth()) {
                         return 1;
+                    }
                 }
             } else { // wcet1 > 0 && wcet2 > 0
                 if (fireAtRT1 && fireAtRT2) {
-                    if (time1.compareTo(time2) < 0)
+                    if (time1.compareTo(time2) < 0) {
                         return -1;
-                    else if (time1.compareTo(time2) > 0)
+                    } else if (time1.compareTo(time2) > 0) {
                         return 1;
-                    else {
+                    } else {
                         // two actors with WCET > 0 require to be fired at the
                         // same physical time
                     }
                 } else {
-                    if (time1.compareTo(time2) < 0)
+                    if (time1.compareTo(time2) < 0) {
                         return -1;
-                    else if (time1.compareTo(time2) > 0)
+                    } else if (time1.compareTo(time2) > 0) {
                         return 1;
-                    else {
-                        if (index1 < index2)
+                    } else {
+                        if (index1 < index2) {
                             return -1;
-                        else if (index1 > index2)
+                        } else if (index1 > index2) {
                             return 1;
+                        }
                     }
                 }
             }
@@ -199,38 +208,43 @@ public class PreemptivePlatformExecutionStrategy extends
         }
     }
 
-
     /**
      * Return next event that can be fired out of a list of events that are safe
-     * to fire. This is the case if - the list of
-     * eventsToFire is empty - the next event that should be fired has to be
-     * fired at real time = model time and real time is not there yet - the next
-     * event that could be fired has a wcet > next real time event.
+     * to fire. This is the case if - the list of eventsToFire is empty - the
+     * next event that should be fired has to be fired at real time = model time
+     * and real time is not there yet - the next event that could be fired has a
+     * wcet > next real time event.
      * 
-     * @param actorsFiring Actors currently in execution.
-     * @param eventsToFire Events that are safe to fire.
+     * @param actorsFiring
+     *                Actors currently in execution.
+     * @param eventsToFire
+     *                Events that are safe to fire.
      * 
      * @return The next event that can be fired.
-     * @throws IllegalActionException Thrown if an execution was missed.
+     * @throws IllegalActionException
+     *                 Thrown if an execution was missed.
      */
-    public DEEvent getNextEventToFire(List<DEEvent> actorsFiring, List eventsToFire)
-            throws IllegalActionException {
-        if (eventsToFire.size() == 0)
+    public DEEvent getNextEventToFire(List<DEEvent> actorsFiring,
+            List eventsToFire) throws IllegalActionException {
+        if (eventsToFire.size() == 0) {
             return null;
+        }
         Collections.sort(eventsToFire, new WCETComparator());
         DEEvent event;
         int index = 0;
         while (index < eventsToFire.size()) {
             event = (DEEvent) eventsToFire.get(index);
-            
+
             Actor actorToFire = event.actor();
-            if (actorsFiring.size() > 0 && 
-                    !actorPreempts(actorsFiring.get(0).actor(), actorToFire, event.timeStamp())) {
+            if (actorsFiring.size() > 0
+                    && !actorPreempts(actorsFiring.get(0).actor(), actorToFire,
+                            event.timeStamp())) {
                 index++;
                 continue;
             }
 
-            if (PtidesGraphUtilities.mustBeFiredAtRealTime(actorToFire, event.ioPort())) {
+            if (PtidesGraphUtilities.mustBeFiredAtRealTime(actorToFire, event
+                    .ioPort())) {
                 if (_physicalTime.compareTo(event.timeStamp()) > 0) {
                     _displaySchedule(actorToFire, event.timeStamp()
                             .getDoubleValue(), ScheduleListener.MISSEDEXECUTION);
@@ -239,32 +253,35 @@ public class PreemptivePlatformExecutionStrategy extends
                     index++;
                     continue;
                 }
-            }  
+            }
             return event;
 
         }
         return null;
     }
 
-    private boolean actorPreempts(Actor currentlyExecuting, Actor actor2, Time time) {
-        boolean fireAtRT1 = PtidesGraphUtilities
-            .mustBeFiredAtRealTime(currentlyExecuting, null);
-        boolean fireAtRT2 = PtidesGraphUtilities
-            .mustBeFiredAtRealTime(actor2, null);
+    private boolean actorPreempts(Actor currentlyExecuting, Actor actor2,
+            Time time) {
+        boolean fireAtRT1 = PtidesGraphUtilities.mustBeFiredAtRealTime(
+                currentlyExecuting, null);
+        boolean fireAtRT2 = PtidesGraphUtilities.mustBeFiredAtRealTime(actor2,
+                null);
         int prio1 = getPriority(currentlyExecuting);
         int prio2 = getPriority(actor2);
-        if (fireAtRT2 &&  PtidesGraphUtilities.getWCET(actor2) == 0)
+        if (fireAtRT2 && PtidesGraphUtilities.getWCET(actor2) == 0) {
             return true;
-        if ((!fireAtRT1 && fireAtRT2 && time.equals(_physicalTime)) || 
-                fireAtRT1 && fireAtRT2 && prio2 > prio1)
+        }
+        if ((!fireAtRT1 && fireAtRT2 && time.equals(_physicalTime))
+                || fireAtRT1 && fireAtRT2 && prio2 > prio1) {
             return true;
-        if (prio2 > prio1)
+        }
+        if (prio2 > prio1) {
             return true;
+        }
         return false;
     }
-   
 
-    private int getPriority(Actor actor) { 
+    private int getPriority(Actor actor) {
         try {
             Parameter parameter = (Parameter) ((NamedObj) actor)
                     .getAttribute("priority");

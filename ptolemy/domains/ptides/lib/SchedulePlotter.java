@@ -31,7 +31,6 @@ package ptolemy.domains.ptides.lib;
 
 import java.awt.Frame;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -54,261 +53,280 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.plot.Plot;
 
-//////////////////////////////////////////////////////////////////////////
-//// SchedulePlotter
+// ////////////////////////////////////////////////////////////////////////
+// // SchedulePlotter
 
 /**
- * This Plotter shows the exeuction of actors in a model. This Plotter is used in 
- * the Ptides domain to show the activity of a platform and of actors inside a 
- * platform. The following events can be displayed:
+ * This Plotter shows the exeuction of actors in a model. This Plotter is used
+ * in the Ptides domain to show the activity of a platform and of actors inside
+ * a platform. The following events can be displayed:
  * 
- *              o---------------o
- *   start execution       end execution
- *   
- *     o
- *    /       transfer input port
- *   o
+ * o---------------o start execution end execution
  * 
- *   o
- *    \       transfer output port
- *     o
- * .
+ * o / transfer input port o
+ * 
+ * o \ transfer output port o .
+ * 
  * @author Patricia Derler
  */
 public class SchedulePlotter extends Attribute implements ScheduleListener {
 
-	/** 
-	 * Construct a factory with the specified container and name.
-	 *  @param container The container.
-	 *  @param name The name of the factory.
-	 *  @exception IllegalActionException If the factory is not of an
-	 *   acceptable attribute for the container.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public SchedulePlotter(NamedObj container, String name)
-			throws IllegalActionException, NameDuplicationException {
-		super(container, name);
+    /**
+     * Construct a factory with the specified container and name.
+     * 
+     * @param container
+     *                The container.
+     * @param name
+     *                The name of the factory.
+     * @exception IllegalActionException
+     *                    If the factory is not of an acceptable attribute for
+     *                    the container.
+     * @exception NameDuplicationException
+     *                    If the name coincides with an attribute already in the
+     *                    container.
+     */
+    public SchedulePlotter(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
 
-		_attachText("_iconDescription", "<svg>\n"
-				+ "<rect x=\"-50\" y=\"-20\" width=\"130\" height=\"40\" "
-				+ "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
-				+ "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-				+ "Double click to\nplot the schedule.</text></svg>");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-50\" y=\"-20\" width=\"130\" height=\"40\" "
+                + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
+                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
+                + "Double click to\nplot the schedule.</text></svg>");
 
-		new SchedulePlotterEditorFactory(this, "_editorFactory");
+        new SchedulePlotterEditorFactory(this, "_editorFactory");
 
-		SingletonParameter hide = new SingletonParameter(this, "_hideName");
-		hide.setToken(BooleanToken.TRUE);
-		hide.setVisibility(Settable.EXPERT);
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
 
-		// FIXME: This seems wrong.
-		if (container instanceof CompositeActor) {
-			// We need to check if the container is a CompositeActor
-			// because the reference to SchedulePlotter in tmentities.xml
-			// is not a CompositeActor
-			Director director = ((CompositeActor) container).getDirector();
+        // FIXME: This seems wrong.
+        if (container instanceof CompositeActor) {
+            // We need to check if the container is a CompositeActor
+            // because the reference to SchedulePlotter in tmentities.xml
+            // is not a CompositeActor
+            Director director = ((CompositeActor) container).getDirector();
 
-			if (!(director instanceof PtidesDirector)) {
-				throw new IllegalActionException(
-						"Director '"
-								+ director
-								+ "' is not a PtidesDirector, so adding a SchedulePlotter "
-								+ "makes no sense");
-			}
+            if (!(director instanceof PtidesDirector)) {
+                throw new IllegalActionException(
+                        "Director '"
+                                + director
+                                + "' is not a PtidesDirector, so adding a SchedulePlotter "
+                                + "makes no sense");
+            }
 
-			((PtidesDirector) director).addScheduleListener(this);
-		}
-	}
+            ((PtidesDirector) director).addScheduleListener(this);
+        }
+    }
 
-	///////////////////////////////////////////////////////////////////
-	////        public variables and parameters                    ////
+    // /////////////////////////////////////////////////////////////////
+    // // public variables and parameters ////
 
-	/** The plotter. */
-	public Plot plot;
+    /** The plotter. */
+    public Plot plot;
 
-	///////////////////////////////////////////////////////////////////
-	////                         public methods                    ////
+    // /////////////////////////////////////////////////////////////////
+    // // public methods ////
 
-	/**
-	 * The event is displayed.
-	 * 
-	 * @param node
-	 *            The node where the event happened.
-	 * @param actor
-	 *            The actor where the event happened. This parameter can be null
-	 *            if the event is TRANSFEROUTPUT or TRANSFERINPUT.
-	 * @param time
-	 *            The physical time when the event happened.
-	 * @param scheduleEvent
-	 *            The type of the event.
-	 */
-	public void event(final Actor node, final Actor actor, double time,
-			int scheduleEvent) {
-		if (plot == null)
-			return;
-		double actorY = getYForActor(node, actor);
-		double nodeY = getYForNode(node);
-		double x = time;
-		int actorDataset = nodeActorStrings.indexOf(node.getName() + ": "
-				+ actor.getName());
-		int nodeDataSet = nodeActorStrings.indexOf(node.getName());
-		if (scheduleEvent == ScheduleListener.START
-				|| scheduleEvent == ScheduleListener.STOP) {
-			plot.addPoint(actorDataset, x, actorY,
-					scheduleEvent == ScheduleListener.STOP);
-			plot.addPoint(nodeDataSet, x, nodeY,
-					scheduleEvent == ScheduleListener.STOP);
-			nodeActive[nodes.indexOf(node)] = scheduleEvent == ScheduleListener.START;
-		} else if (scheduleEvent == ScheduleListener.TRANSFERINPUT) {
-			plot.addPoint(nodeDataSet, x, nodeY, false || nodeActive[nodes
-					.indexOf(node)]);
-			plot.addPoint(nodeDataSet, x - 0.05, nodeY - 0.05, false);
-			plot.addPoint(nodeDataSet, x, nodeY, true);
-		} else if (scheduleEvent == ScheduleListener.TRANSFEROUTPUT) {
-			plot.addPoint(nodeDataSet, x, nodeY, false || nodeActive[nodes
-					.indexOf(node)]);
-			plot.addPoint(nodeDataSet, x + 0.05, nodeY - 0.05, false);
-			plot.addPoint(nodeDataSet, x, nodeY, true);
-		} else if (scheduleEvent == ScheduleListener.MISSEDEXECUTION) {
-			plot.addPoint(actorDataset, x - 0.05, actorY + 0.05, false);
-			plot.addPoint(actorDataset, x + 0.05, actorY - 0.05, true);
-			plot.addPoint(actorDataset, x - 0.05, actorY - 0.05, false);
-			plot.addPoint(actorDataset, x + 0.05, actorY + 0.05, true);
-		}
-		plot.fillPlot();
-		plot.repaint();
-	}
+    /**
+     * The event is displayed.
+     * 
+     * @param node
+     *                The node where the event happened.
+     * @param actor
+     *                The actor where the event happened. This parameter can be
+     *                null if the event is TRANSFEROUTPUT or TRANSFERINPUT.
+     * @param time
+     *                The physical time when the event happened.
+     * @param scheduleEvent
+     *                The type of the event.
+     */
+    public void event(final Actor node, final Actor actor, double time,
+            int scheduleEvent) {
+        if (plot == null) {
+            return;
+        }
+        double actorY = getYForActor(node, actor);
+        double nodeY = getYForNode(node);
+        double x = time;
+        int actorDataset = nodeActorStrings.indexOf(node.getName() + ": "
+                + actor.getName());
+        int nodeDataSet = nodeActorStrings.indexOf(node.getName());
+        if (scheduleEvent == ScheduleListener.START
+                || scheduleEvent == ScheduleListener.STOP) {
+            plot.addPoint(actorDataset, x, actorY,
+                    scheduleEvent == ScheduleListener.STOP);
+            plot.addPoint(nodeDataSet, x, nodeY,
+                    scheduleEvent == ScheduleListener.STOP);
+            nodeActive[nodes.indexOf(node)] = scheduleEvent == ScheduleListener.START;
+        } else if (scheduleEvent == ScheduleListener.TRANSFERINPUT) {
+            plot.addPoint(nodeDataSet, x, nodeY, false || nodeActive[nodes
+                    .indexOf(node)]);
+            plot.addPoint(nodeDataSet, x - 0.05, nodeY - 0.05, false);
+            plot.addPoint(nodeDataSet, x, nodeY, true);
+        } else if (scheduleEvent == ScheduleListener.TRANSFEROUTPUT) {
+            plot.addPoint(nodeDataSet, x, nodeY, false || nodeActive[nodes
+                    .indexOf(node)]);
+            plot.addPoint(nodeDataSet, x + 0.05, nodeY - 0.05, false);
+            plot.addPoint(nodeDataSet, x, nodeY, true);
+        } else if (scheduleEvent == ScheduleListener.MISSEDEXECUTION) {
+            plot.addPoint(actorDataset, x - 0.05, actorY + 0.05, false);
+            plot.addPoint(actorDataset, x + 0.05, actorY - 0.05, true);
+            plot.addPoint(actorDataset, x - 0.05, actorY - 0.05, false);
+            plot.addPoint(actorDataset, x + 0.05, actorY + 0.05, true);
+        }
+        plot.fillPlot();
+        plot.repaint();
+    }
 
-	/**
-	 * Contains the nodes (=platforms).
-	 */
-	private ArrayList nodes = new ArrayList();
+    /**
+     * Contains the nodes (=platforms).
+     */
+    private ArrayList nodes = new ArrayList();
 
-	/**
-	 * Contains all nodes and is true for nodes on which actors are currently executing.
-	 */
-	private boolean[] nodeActive;
+    /**
+     * Contains all nodes and is true for nodes on which actors are currently
+     * executing.
+     */
+    private boolean[] nodeActive;
 
-	/**
-	 * Contains the list of actors for each node.
-	 */
-	private Hashtable nodeActors = new Hashtable();
+    /**
+     * Contains the list of actors for each node.
+     */
+    private Hashtable nodeActors = new Hashtable();
 
-	/**
-	 * Contains the string values describing actors on nodes. These strings have to be identical.
-	 */
-	private ArrayList nodeActorStrings = new ArrayList();
+    /**
+     * Contains the string values describing actors on nodes. These strings have
+     * to be identical.
+     */
+    private ArrayList nodeActorStrings = new ArrayList();
 
-	/**
-	 * Return the Y position for a node.
-	 * @param node The node.
-	 * @return The Y position.
-	 */
-	private double getYForNode(final Actor node) {
-		return nodes.indexOf(node) * 2;
-	}
+    /**
+     * Return the Y position for a node.
+     * 
+     * @param node
+     *                The node.
+     * @return The Y position.
+     */
+    private double getYForNode(final Actor node) {
+        return nodes.indexOf(node) * 2;
+    }
 
-	/**
-	 * Return the Y position for an actor in a node.
-	 * @param node The node.
-	 * @param actor The actor.
-	 * @return The y position.
-	 */
-	private double getYForActor(final Actor node, final Actor actor) {
-		return nodes.indexOf(node) * 2
-				+ ((double) ((ArrayList) nodeActors.get(node)).indexOf(actor))
-				/ ((ArrayList) nodeActors.get(node)).size() + 0.1;
-	}
+    /**
+     * Return the Y position for an actor in a node.
+     * 
+     * @param node
+     *                The node.
+     * @param actor
+     *                The actor.
+     * @return The y position.
+     */
+    private double getYForActor(final Actor node, final Actor actor) {
+        return nodes.indexOf(node) * 2
+                + ((double) ((ArrayList) nodeActors.get(node)).indexOf(actor))
+                / ((ArrayList) nodeActors.get(node)).size() + 0.1;
+    }
 
-	/**
-	 * Initialize the plot and the legend. The legend will be created for all nodes and actors.
-	 * 
-	 * @param nodesActors A list of nodes and contained actors.
-	 */
-	public void initialize(Hashtable nodesActors) {
-		nodes.clear();
-		if (plot != null) {
-			plot.clear(false);
-			plot.clearLegends();
-			nodes.addAll(nodesActors.keySet());
-			nodeActive = new boolean[nodes.size()];
-			this.nodeActors = nodesActors;
-			for (int i = 0; i < nodes.size(); i++) {
-				Actor node = (Actor) nodes.get(i);
-				nodeActorStrings.add(node.getName());
-				if (plot == null)
-					return;
-				plot.addLegend(nodeActorStrings.indexOf(node.getName()), node
-						.getName());
-				List actors = (List) nodeActors.get(node);
-				for (int j = 0; j < actors.size(); j++) {
-					Actor actor = (Actor) actors.get(j);
-					nodeActorStrings.add(node.getName() + ": "
-							+ actor.getName());
-					plot.addLegend(nodeActorStrings.indexOf(node.getName()
-							+ ": " + actor.getName()), node.getName() + ": "
-							+ actor.getName());
-				}
-			}
-			plot.doLayout();
-		}
-	}
+    /**
+     * Initialize the plot and the legend. The legend will be created for all
+     * nodes and actors.
+     * 
+     * @param nodesActors
+     *                A list of nodes and contained actors.
+     */
+    public void initialize(Hashtable nodesActors) {
+        nodes.clear();
+        if (plot != null) {
+            plot.clear(false);
+            plot.clearLegends();
+            nodes.addAll(nodesActors.keySet());
+            nodeActive = new boolean[nodes.size()];
+            this.nodeActors = nodesActors;
+            for (int i = 0; i < nodes.size(); i++) {
+                Actor node = (Actor) nodes.get(i);
+                nodeActorStrings.add(node.getName());
+                if (plot == null) {
+                    return;
+                }
+                plot.addLegend(nodeActorStrings.indexOf(node.getName()), node
+                        .getName());
+                List actors = (List) nodeActors.get(node);
+                for (int j = 0; j < actors.size(); j++) {
+                    Actor actor = (Actor) actors.get(j);
+                    nodeActorStrings.add(node.getName() + ": "
+                            + actor.getName());
+                    plot.addLegend(nodeActorStrings.indexOf(node.getName()
+                            + ": " + actor.getName()), node.getName() + ": "
+                            + actor.getName());
+                }
+            }
+            plot.doLayout();
+        }
+    }
 
-	///////////////////////////////////////////////////////////////////
-	////                         inner classes                     ////
+    // /////////////////////////////////////////////////////////////////
+    // // inner classes ////
 
-	/** Factory that creates the schedule plotter. */
-	public class SchedulePlotterEditorFactory extends EditorFactory {
-		// This class needs to be public for shallow code generation.
-		/**
-		 * Constructs a SchedulePlotter$SchedulePlotterEditorFactory object.
-		 *
-		 *  @param container The container.
-		 *  @param name The name of the factory.
-		 *  @exception IllegalActionException If the factory is not of an
-		 *   acceptable attribute for the container.
-		 *  @exception NameDuplicationException If the name coincides with
-		 *   an attribute already in the container.
-		 */
-		public SchedulePlotterEditorFactory(NamedObj container, String name)
-				throws IllegalActionException, NameDuplicationException {
-			super(container, name);
-		}
+    /** Factory that creates the schedule plotter. */
+    public class SchedulePlotterEditorFactory extends EditorFactory {
+        // This class needs to be public for shallow code generation.
+        /**
+         * Constructs a SchedulePlotter$SchedulePlotterEditorFactory object.
+         * 
+         * @param container
+         *                The container.
+         * @param name
+         *                The name of the factory.
+         * @exception IllegalActionException
+         *                    If the factory is not of an acceptable attribute
+         *                    for the container.
+         * @exception NameDuplicationException
+         *                    If the name coincides with an attribute already in
+         *                    the container.
+         */
+        public SchedulePlotterEditorFactory(NamedObj container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+        }
 
-		/** Create an editor for configuring the specified object with the
-		 *  specified parent window.
-		 *  @param object The object to configure.
-		 *  @param parent The parent window, or null if there is none.
-		 */
-		public void createEditor(NamedObj object, Frame parent) {
-			try {
-				Configuration configuration = ((TableauFrame) parent)
-						.getConfiguration();
+        /**
+         * Create an editor for configuring the specified object with the
+         * specified parent window.
+         * 
+         * @param object
+         *                The object to configure.
+         * @param parent
+         *                The parent window, or null if there is none.
+         */
+        public void createEditor(NamedObj object, Frame parent) {
+            try {
+                Configuration configuration = ((TableauFrame) parent)
+                        .getConfiguration();
 
-				NamedObj container = object.getContainer();
+                NamedObj container = object.getContainer();
 
-				plot = new Plot();
-				plot.setTitle("Ptides Schedule");
-				plot.setButtons(true);
-				plot.setMarksStyle("dots");
+                plot = new Plot();
+                plot.setTitle("Ptides Schedule");
+                plot.setButtons(true);
+                plot.setMarksStyle("dots");
 
-				// We put the plotter as a sub-effigy of the toplevel effigy,
-				// so that it closes when the model is closed.
-				Effigy effigy = Configuration.findEffigy(toplevel());
-				PlotEffigy schedulePlotterEffigy = new PlotEffigy(effigy,
-						container.uniqueName("schedulePlotterEffigy"));
-				schedulePlotterEffigy.setPlot(plot);
-				schedulePlotterEffigy.identifier.setExpression("TM Schedule");
+                // We put the plotter as a sub-effigy of the toplevel effigy,
+                // so that it closes when the model is closed.
+                Effigy effigy = Configuration.findEffigy(toplevel());
+                PlotEffigy schedulePlotterEffigy = new PlotEffigy(effigy,
+                        container.uniqueName("schedulePlotterEffigy"));
+                schedulePlotterEffigy.setPlot(plot);
+                schedulePlotterEffigy.identifier.setExpression("TM Schedule");
 
-				configuration.createPrimaryTableau(schedulePlotterEffigy);
+                configuration.createPrimaryTableau(schedulePlotterEffigy);
 
-				plot.setVisible(true);
-			} catch (Throwable throwable) {
-				throw new InternalErrorException(object, throwable,
-						"Cannot create Schedule Plotter");
-			}
-		}
-	}
+                plot.setVisible(true);
+            } catch (Throwable throwable) {
+                throw new InternalErrorException(object, throwable,
+                        "Cannot create Schedule Plotter");
+            }
+        }
+    }
 
 }
