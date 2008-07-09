@@ -40,9 +40,9 @@ do
 	doit
 	if [ "$printonly" = "no" ]; then
 	    cp /tmp/fix-files.tmp $file
-	    if [ -d CVS ]; then
-		#echo "NOT doing a cvs commit, did a copy"
-		cvs commit -m "$LOGMESSAGE" $file 
+	    if [ -d .svn ]; then
+		#echo "NOT doing a svn commit, did a copy"
+		svn commit -m "$LOGMESSAGE" $file 
 	    fi	
 	else
 	    echo "Would update and commit"
