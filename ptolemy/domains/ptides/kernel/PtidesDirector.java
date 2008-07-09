@@ -65,12 +65,12 @@ import ptolemy.kernel.util.Workspace;
 
  * Top-level director for PTIDES models. The model time is the
  * simulated global physical time.
- * 
+ *
  * <p>
  * Top-level actors in a PTIDES domain are platforms. A platform is a
  * composite actor that contains sensors, actuators, computation
  * actors with worst case execution times and model time delay actors.
- * 
+ *
  * <p>
  * The PTIDES director simulates the parallel execution of actors on
  * distributed platforms, thus the composite actors representing
@@ -87,7 +87,7 @@ import ptolemy.kernel.util.Workspace;
  * continues execution after real time was increased by the WCET or
  * the actor is being preempted. </li>
  * </ul>
- * 
+ *
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -102,7 +102,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
      * string as its name. The director is added to the list of
      * objects in the workspace.  Increment the version number of the
      * workspace.
-     * 
+     *
      * @exception IllegalActionException If the name contains a
      *                    period, or if the director is not compatible
      *                    with the specified container.
@@ -120,7 +120,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
      * Construct a director in the workspace with an empty name. The
      * director is added to the list of objects in the
      * workspace. Increment the version number of the workspace.
-     * 
+     *
      * @param workspace The workspace of this object.
      * @exception IllegalActionException If the name contains a
      * period, or if the director is not compatible with the specified
@@ -142,7 +142,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
      * NullPointerException will be thrown. If the name argument is
      * null, then the name is set to the empty string. Increment the
      * version number of the workspace.
-     * 
+     *
      * @param container The container.
      * @param name Name of this director.
      * @exception IllegalActionException If the name contains a
@@ -173,7 +173,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 
     /**
      * Global network delay.
-     * 
+     *
      * FIXME In future developments, network delays could be specified per
      * network and not globally.
      */
@@ -194,7 +194,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
     /**
      * Add a new schedule listener that will receive events in the
      * _displaySchedule method.
-     * 
+     *
      * @param plotter
      *                The schedule plotter that will be added as a listener.
      */
@@ -226,7 +226,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 
     /**
      * Return the physical time.
-     * 
+     *
      * @see #setModelTime(Time)
      */
     public synchronized Time getModelTime() {
@@ -236,7 +236,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
     /**
      * Initialize parameters and the schedule plotters. Calculate
      * minimum delays for ports on platforms according to Ptides.
-     * 
+     *
      * @see #getModelTime()
      */
     public void initialize() throws IllegalActionException {
@@ -297,7 +297,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
     /**
      * Called by platforms to schedule a future time firing. This director does
      * not remember which platform wants to be fired again.
-     * 
+     *
      * FIXME If the director remembers which platform asked to be refired,
      * performance improvements can be made.
      */
@@ -339,7 +339,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 
     /**
      * Set physical time for this model.
-     * 
+     *
      * @see #getModelTime
      */
     public synchronized void setModelTime(Time newTime)
@@ -353,7 +353,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
      * platform thread is blocked. If all threads are about to be
      * blocked, the physical time is increased to the next physical
      * time any platform is interested in being fired again.
-     * 
+     *
      * @return The new physical time.
      * @exception IllegalActionException
      *                 Thrown if physical time cannot be increased.
@@ -406,7 +406,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 
     /**
      * Forward display events from platforms to the schedule listeners.
-     * 
+     *
      * @param node platform that forwards the event.
      * @param actor actor inside a platform for which the event was
      * created.  If the actor is null, the event is a platform event,
@@ -429,7 +429,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
     /**
      * Creates a new thread for a platform. A platform is a composite
      * actor at the top level of the model.
-     * 
+     *
      * @param actor The Composite actor that represents a platform.
      * @param director The process director.
      * @return Return a new process thread.
@@ -457,7 +457,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
     /**
      * Increase physical time to next time that any of the platforms
      * is interested in doing something.
-     * 
+     *
      * @exception IllegalActionException
      */
     private synchronized void _increasePhysicalTime()
@@ -482,7 +482,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
 
     /**
      * Initialize parameters of the director.
-     * 
+     *
      * @exception NameDuplicationException
      *                 Could occur if parameter with same name already exists.
      */
