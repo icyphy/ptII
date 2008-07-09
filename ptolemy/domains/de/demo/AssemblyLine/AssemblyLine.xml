@@ -121,35 +121,17 @@
     <entity name="Station 1" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="TimerIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 196, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 150.0}">
         </property>
     </entity>
     <entity name="Station 2" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
         <property name="value" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="TimerIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 196, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 225.0}">
         </property>
     </entity>
     <entity name="Station 3" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
         <property name="value" class="ptolemy.data.expr.Parameter" value="3">
-        </property>
-        <property name="TimerIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 196, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 310.0}">
         </property>
