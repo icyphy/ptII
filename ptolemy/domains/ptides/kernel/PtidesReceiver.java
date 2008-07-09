@@ -255,7 +255,7 @@ public class PtidesReceiver extends TimedQueue implements
 		Thread thread = Thread.currentThread();
 		Time time = null;
 
-		if (thread instanceof PtidesPlatformThread) {
+		if (thread instanceof ProcessThread) {
 			time = ((ProcessThread) thread).getActor().getDirector()
 					.getModelTime();
 		}
