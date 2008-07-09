@@ -41,9 +41,9 @@ import ptolemy.kernel.util.InternalErrorException;
 
 /**
  * Receiver used inside platforms of a ptides domain.
- * 
+ *
  * This Receiver will not work with non-opaque actors inside a platform.
- * 
+ *
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -61,7 +61,7 @@ public class PtidesPlatformReceiver extends TimedQueue {
 
     /**
      * Construct an empty DEReceiver with the specified container.
-     * 
+     *
      * @param container
      *                The container.
      * @exception IllegalActionException
@@ -74,7 +74,7 @@ public class PtidesPlatformReceiver extends TimedQueue {
 
     /**
      * Return true if there is at least one token available to the get() method.
-     * 
+     *
      * @return True if there are more tokens.
      */
     public boolean hasToken() {
@@ -90,7 +90,7 @@ public class PtidesPlatformReceiver extends TimedQueue {
 
     /**
      * Put a token into this receiver.
-     * 
+     *
      * @param token
      *                The token to be put.
      */
@@ -113,7 +113,7 @@ public class PtidesPlatformReceiver extends TimedQueue {
      * correct timestamp and microstep and invoke the corresponding actor whose
      * input port contains this receiver. This receiver may contain more than
      * one events.
-     * 
+     *
      * @param token
      *                The token to be put.
      * @param time
@@ -131,7 +131,7 @@ public class PtidesPlatformReceiver extends TimedQueue {
 
     /**
      * Puts a token into all receivers.
-     * 
+     *
      * @param token
      *                The token to be put.
      * @param receivers
@@ -167,7 +167,7 @@ public class PtidesPlatformReceiver extends TimedQueue {
      * Otherwise, it's the executive director of the container of its port.Note
      * that the director returned is guaranteed to be non-null. This method is
      * read synchronized on the workspace.
-     * 
+     *
      * @return An instance of DEDirector.
      * @exception IllegalActionException
      *                    If there is no container port, or if the port has no
@@ -229,7 +229,7 @@ public class PtidesPlatformReceiver extends TimedQueue {
 
     /**
      * Returns time stamp of next event in the receiver queue.
-     * 
+     *
      * @return The time stamp.
      */
     public Time getNextTime() {
