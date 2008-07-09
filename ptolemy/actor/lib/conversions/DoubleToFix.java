@@ -38,6 +38,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.math.FixPoint;
 import ptolemy.math.FixPointQuantization;
 import ptolemy.math.Overflow;
@@ -152,6 +153,22 @@ public class DoubleToFix extends Converter {
         }
     }
 
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DoubleToFix newObject = (DoubleToFix) super.clone(workspace);
+
+        newObject._quantization = new FixPointQuantization(
+                newObject._quantization.getPrecision(),
+                newObject._quantization.getOverflow(),
+                newObject._quantization.getRounding());
+
+        return newObject;
+    }
     /** Read at most one token from the input and output the converted
      *  fixed-point value with the precision given by the
      *  <i>precision</i> parameter, overflow strategy given by the

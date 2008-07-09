@@ -31,6 +31,8 @@ import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionReader
@@ -71,6 +73,19 @@ public class ExpressionReader extends LineReader {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ExpressionReader newObject = (ExpressionReader) super.clone(workspace);
+
+        newObject._expressionEvaluator = (Variable)newObject.getAttribute("_expressionEvaluator");
+        return newObject;
+    }
 
     /** Output the data read in the preinitialize() or postfire() if
      *  there is any.
