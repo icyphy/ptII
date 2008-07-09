@@ -79,33 +79,40 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * This director is used in a platform in the PTIDES domain. The director
- * executes actors according to their model time stamps. The difference to the
- * DE director is that events can be processed out of time stamped order. The
- * only requirement for events in the PTIDES domain is to execute events in time
- * stamped order between ports that are connected through functional
- * dependencies. To satisfy this requirement, an event can only be processed if
- * no other event with an earlier time stamp can appear on the same port. An
- * analysis of all events on the platform determines a set of events that are
- * safe to process. Those events are executed sequentially according to a
- * platform execution strategy. This execution strategy takes into account
- * platform characteristics like preemption and priorities.
+ * The director used in a platform in the PTIDES domain.
+
+ * <p> This director executes actors according to their model time
+ * stamps. The difference to the DE director is that events can be
+ * processed out of time stamped order. The only requirement for
+ * events in the PTIDES domain is to execute events in time stamped
+ * order between ports that are connected through functional
+ * dependencies. To satisfy this requirement, an event can only be
+ * processed if no other event with an earlier time stamp can appear
+ * on the same port. An analysis of all events on the platform
+ * determines a set of events that are safe to process. Those events
+ * are executed sequentially according to a platform execution
+ * strategy. This execution strategy takes into account platform
+ * characteristics like preemption and priorities.
  * 
  * @author Patricia Derler
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class PtidesEmbeddedDirector extends DEDirector {
 
     /**
-     * Construct a director in the default workspace with an empty string as its
-     * name. The director is added to the list of objects in the workspace.
-     * Increment the version number of the workspace.
+     * Construct a director in the default workspace with an empty
+     * string as its name. The director is added to the list of
+     * objects in the workspace.  Increment the version number of the
+     * workspace.
      * 
-     * @exception IllegalActionException
-     *                    If the director is not compatible with the specified
-     *                    container.
-     * @exception NameDuplicationException
-     *                    If the container not a CompositeActor and the name
-     *                    collides with an entity in the container.
+     * @exception IllegalActionException If the director is not
+     * compatible with the specified container.
+     * @exception NameDuplicationException If the container not a
+     * CompositeActor and the name collides with an entity in the
+     * container.
      */
     public PtidesEmbeddedDirector() throws IllegalActionException,
             NameDuplicationException {
@@ -114,18 +121,16 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Construct a director in the workspace with an empty name. The director is
-     * added to the list of objects in the workspace. Increment the version
-     * number of the workspace.
+     * Construct a director in the workspace with an empty name. The
+     * director is added to the list of objects in the
+     * workspace. Increment the version number of the workspace.
      * 
-     * @param workspace
-     *                The workspace of this object.
-     * @exception IllegalActionException
-     *                    If the director is not compatible with the specified
-     *                    container.
-     * @exception NameDuplicationException
-     *                    If the container not a CompositeActor and the name
-     *                    collides with an entity in the container.
+     * @param workspace The workspace of this object.
+     * @exception IllegalActionException If the director is not
+     * compatible with the specified container.
+     * @exception NameDuplicationException If the container not a
+     * CompositeActor and the name collides with an entity in the
+     * container.
      */
     public PtidesEmbeddedDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -134,21 +139,19 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Construct a director in the given container with the given name. The
-     * container argument must not be null, or a NullPointerException will be
-     * thrown. If the name argument is null, then the name is set to the empty
-     * string. Increment the version number of the workspace.
+     * Construct a director in the given container with the given
+     * name. The container argument must not be null, or a
+     * NullPointerException will be thrown. If the name argument is
+     * null, then the name is set to the empty string. Increment the
+     * version number of the workspace.
      * 
-     * @param container
-     *                Container of the director.
-     * @param name
-     *                Name of this director.
-     * @exception IllegalActionException
-     *                    If the director is not compatible with the specified
-     *                    container.
-     * @exception NameDuplicationException
-     *                    If the container not a CompositeActor and the name
-     *                    collides with an entity in the container.
+     * @param container Container of the director.
+     * @param name Name of this director.
+     * @exception IllegalActionException If the director is not
+     * compatible with the specified container.
+     * @exception NameDuplicationException If the container not a
+     * CompositeActor and the name collides with an entity in the
+     * container.
      */
     public PtidesEmbeddedDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -162,16 +165,14 @@ public class PtidesEmbeddedDirector extends DEDirector {
     public StringParameter executionStrategy;
 
     /**
-     * Update the director parameters when attributes are changed. Changes to
-     * <i>isCQAdaptive</i>, <i>minBinCount</i>, and <i>binCountFactor</i>
-     * parameters will only be effective on the next time when the model is
-     * executed.
+     * Update the director parameters when attributes are
+     * changed. Changes to <i>isCQAdaptive</i>, <i>minBinCount</i>,
+     * and <i>binCountFactor</i> parameters will only be effective on
+     * the next time when the model is executed.
      * 
-     * @param attribute
-     *                The changed parameter.
-     * @exception IllegalActionException
-     *                    If the parameter set is not valid. Not thrown in this
-     *                    class.
+     * @param attribute The changed parameter.
+     * @exception IllegalActionException If the parameter set is not
+     * valid. Not thrown in this class.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -195,12 +196,9 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * Display event in Scheduleplotter.
      * 
-     * @param actor
-     *                Actor for which the event occured.
-     * @param time
-     *                physical time at which the event occured.
-     * @param scheduleEvent
-     *                Type of event.
+     * @param actor Actor for which the event occured.
+     * @param time physical time at which the event occured.
+     * @param scheduleEvent Type of event.
      */
     public final void displaySchedule(Actor actor, double time,
             int scheduleEvent) {
@@ -212,11 +210,10 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Get finishing time of actor in execution. The finishing time is the point
-     * in time when the WCET of the actor has passed.
+     * Get finishing time of actor in execution. The finishing time is
+     * the point in time when the WCET of the actor has passed.
      * 
-     * @param actor
-     *                The actor in execution.
+     * @param actor The actor in execution.
      * @return The finishing time of the actor.
      * @see #setFinishingTime(Actor, double)
      */
@@ -252,11 +249,12 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Return the current model time. The notion of model time cannot be applied
-     * to the whole platform because it is possible to fire events out of time
-     * stamped order. Model times are associated to actors only. When an actor
-     * is in execution, this method returns the model time of the actor
-     * currently in execution. Otherwise, this method returns 0.
+     * Return the current model time. The notion of model time cannot
+     * be applied to the whole platform because it is possible to fire
+     * events out of time stamped order. Model times are associated to
+     * actors only. When an actor is in execution, this method returns
+     * the model time of the actor currently in execution. Otherwise,
+     * this method returns 0.
      */
     public Time getModelTime() {
         if (_currentModelTime == null) {
@@ -267,18 +265,20 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Until _stopRequested, the director tries to fire actors or waits. First,
-     * a set of events is calculated that can be fired at current time. Out of
-     * this set of events, one event is chosen that is fired. The actor for this
-     * event is added to the list of actors in execution and its finishing time
-     * is set to event.timestamp() + wcet. After the expiration of the finishing
-     * time, the actor is removed from the list and the fire() of the actor is
-     * executed. If no actor is found that can execute now, this actor waits. It
-     * continues execution when the phyiscal time is increased or when tokens
-     * are received on the input ports. If an actor is preempted, the preempting
-     * actor is added to the list of actors in execution and the finishing times
-     * for all other actors in execution are updated to oldFinishingTime + wcet
-     * of the preempting actor.
+     * Until _stopRequested, the director tries to fire actors or
+     * waits. First, a set of events is calculated that can be fired
+     * at current time. Out of this set of events, one event is chosen
+     * that is fired. The actor for this event is added to the list of
+     * actors in execution and its finishing time is set to
+     * event.timestamp() + wcet. After the expiration of the finishing
+     * time, the actor is removed from the list and the fire() of the
+     * actor is executed. If no actor is found that can execute now,
+     * this actor waits. It continues execution when the phyiscal time
+     * is increased or when tokens are received on the input ports. If
+     * an actor is preempted, the preempting actor is added to the
+     * list of actors in execution and the finishing times for all
+     * other actors in execution are updated to oldFinishingTime +
+     * wcet of the preempting actor.
      */
     public void fire() throws IllegalActionException {
         if (_stopRequested) {
@@ -370,12 +370,9 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * Schedule an actor to be fired at the specified time by posting a pure
      * event to the director.
      * 
-     * @param actor
-     *                The scheduled actor to fire.
-     * @param time
-     *                The scheduled time to fire.
-     * @exception IllegalActionException
-     *                    If event queue is not ready.
+     * @param actor The scheduled actor to fire.
+     * @param time The scheduled time to fire.
+     * @exception IllegalActionException If the event queue is not ready.
      */
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
         if (_eventQueues == null || _eventQueues.get(actor) == null) {
@@ -393,12 +390,11 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Initialize all the contained actors by invoke the initialize() method of
-     * the super class.
+     * Initialize all the contained actors by invoke the initialize()
+     * method of the super class.
      * 
-     * @exception IllegalActionException
-     *                    If the initialize() method of the super class throws
-     *                    it.
+     * @exception IllegalActionException If the initialize() method of
+     * the super class throws it.
      */
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
@@ -409,10 +405,10 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Inputs are only transfered from the outside of the container to the
-     * actors inside if they are safe to process according to PTIDES. Tokens are
-     * safe to process if eventTimestamp - minDelay + clockSyncError +
-     * networkDelay <= physicalTime
+     * Inputs are only transfered from the outside of the container to
+     * the actors inside if they are safe to process according to
+     * PTIDES. Tokens are safe to process if eventTimestamp - minDelay
+     * + clockSyncError + networkDelay <= physicalTime
      * 
      * @param time
      *                Timestamp of the event.
@@ -429,14 +425,12 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Tokens between Platform elements are only safe to process if timestamp -
-     * minimumDelay <= physicalTime. The minimum delay must be specified as a
-     * parameter at the port.
+     * Tokens between Platform elements are only safe to process if
+     * timestamp - minimumDelay <= physicalTime. The minimum delay
+     * must be specified as a parameter at the port.
      * 
-     * @param time
-     *                The time.
-     * @param object
-     *                The object to to check the minimum delay time.
+     * @param time The time.
+     * @param object The object to to check the minimum delay time.
      * @return True if it is safe to process a token.
      */
     public boolean isSafeToProcessOnPlatform(Time time, NamedObj object) {
@@ -459,11 +453,10 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * Prefire of the director.
      * 
      * @return True if the composite actor is ready to fire.
-     * @exception IllegalActionException
-     *                    If there is a missed event, or the prefire method of
-     *                    the super class throws it, or can not query the tokens
-     *                    of the input ports of the container of this director.
-     *                    </p>
+     * @exception IllegalActionException If there is a missed event,
+     * or the prefire method of the super class throws it, or can not
+     * query the tokens of the input ports of the container of this
+     * director.
      */
     public boolean prefire() throws IllegalActionException {
         return !_stopRequested;
@@ -483,11 +476,10 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * should be.
      * </p>
      * 
-     * @exception IllegalActionException
-     *                    If the preinitialize() method of the container or one
-     *                    of the deeply contained actors throws it, or the
-     *                    parameters, minBinCount, binCountFactor, and
-     *                    isCQAdaptive, do not have valid tokens.
+     * @exception IllegalActionException If the preinitialize() method
+     * of the container or one of the deeply contained actors throws
+     * it, or the parameters, minBinCount, binCountFactor, and
+     * isCQAdaptive, do not have valid tokens.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize(); // bad style, but has to be done because
@@ -551,8 +543,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * The top level director (PtidesDirector) sets the clock synchronization
      * error.
      * 
-     * @param syncError
-     *                The clock synchronization error.
+     * @param syncError The clock synchronization error.
      */
     public void setClockSyncError(double syncError) {
         _clockSyncError = syncError;
@@ -562,10 +553,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * Set the finishing time of an actor. This method is called after the
      * execution of an actor is started.
      * 
-     * @param actor
-     *                The actor in execution.
-     * @param finishingTime
-     *                The time the actor will finish.
+     * @param actor The actor in execution.
+     * @param finishingTime The time the actor will finish.
      * @see #getFinishingTime(NamedObj)
      */
     public void setFinishingTime(Actor actor, double finishingTime) {
@@ -578,20 +567,18 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * The top-level director (PtidesDirector) sets the network delay.
      * 
-     * @param delay
-     *                The global network delay.
+     * @param delay The global network delay.
      */
     public void setNetworkDelay(double delay) {
         _networkDelay = delay;
     }
 
     /**
-     * The top-level director (PtidesDirector) specifies if the ptides execution
-     * semantics should be used.
+     * The top-level director (PtidesDirector) specifies if the ptides
+     * execution semantics should be used.
      * 
-     * @param ptidesExecutionSemantics
-     *                The boolean value determining whether to use the ptides
-     *                execution semantics.
+     * @param ptidesExecutionSemantics The boolean value determining
+     * whether to use the ptides execution semantics.
      */
     public void setUsePtidesExecutionSemantics(boolean ptidesExecutionSemantics) {
         _usePtidesExecutionSemantics = ptidesExecutionSemantics;
@@ -622,9 +609,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * Invoke the wrapup method of the super class. Reset the private state
      * variables.
      * 
-     * @exception IllegalActionException
-     *                    If the wrapup() method of one of the associated actors
-     *                    throws it.
+     * @exception IllegalActionException If the wrapup() method of one
+     * of the associated actors throws it.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
@@ -640,10 +626,11 @@ public class PtidesEmbeddedDirector extends DEDirector {
     // // protected methods ////
 
     /**
-     * Put a pure event into the event queue for the given actor to fire at the
-     * specified timestamp. The depth for the queued event is the minimum of the
-     * depths of all the ports of the destination actor. If there is no event
-     * queue or the given actor is disabled, then this method does nothing.
+     * Put a pure event into the event queue for the given actor to
+     * fire at the specified timestamp. The depth for the queued event
+     * is the minimum of the depths of all the ports of the
+     * destination actor. If there is no event queue or the given
+     * actor is disabled, then this method does nothing.
      * 
      * @param actor
      *                The actor to be fired.
@@ -737,19 +724,20 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Put an event into the event queue for the IOPort to fire at the specified
-     * time stamp. The depth for the queued event is the minimum of the depths
-     * of all the ports of the destination actor. If there is no event queue or
-     * the given actor is disabled, then this method does nothing.
+     * Put an event into the event queue for the IOPort to fire at the
+     * specified time stamp. The depth for the queued event is the
+     * minimum of the depths of all the ports of the destination
+     * actor. If there is no event queue or the given actor is
+     * disabled, then this method does nothing.
      * 
      * @param ioPort
      *                Port which gets the new trigger event.
      * @param time
      *                The time stamp of the event.
-     * @exception IllegalActionException
-     *                    If the time argument is less than the current model
-     *                    time, or the depth of the actor has not be calculated,
-     *                    or the new event can not be enqueued.
+     * @exception IllegalActionException If the time argument is less
+     *                    than the current model time, or the depth of
+     *                    the actor has not be calculated, or the new
+     *                    event can not be enqueued.
      */
     protected synchronized void _enqueueTriggerEvent(IOPort ioPort, Time time)
             throws IllegalActionException {
@@ -798,7 +786,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
                         throw new IllegalActionException(
                                 "Network interface constraints violated at "
                                         + this.getContainer().getName()
-                                        + ", tried to transfer event with timestamp "
+                                        + ", tried to transfer event with "
+                                        + "timestamp "
                                         + time + " at physical time "
                                         + _physicalTime);
                     }
@@ -926,9 +915,9 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Determine if there is an event with time stamp - minDelay > time stamp of
-     * event at current node upstream. if so, the current event can be
-     * processed.
+     * Determine if there is an event with time stamp - minDelay >
+     * time stamp of event at current node upstream. if so, the
+     * current event can be processed.
      * 
      * @param eventTimestamp
      *                Time stamp of current event.
@@ -1040,7 +1029,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * 
      * @return List of events that can be fired next.
      */
-    private List<DEEvent> _getNextEventsToFire() throws IllegalActionException {
+    private List<DEEvent> _getNextEventsToFire()
+            throws IllegalActionException {
         List<DEEvent> events = new LinkedList<DEEvent>();
         for (Enumeration<Actor> actors = _eventQueues.keys(); actors
                 .hasMoreElements();) {
@@ -1228,8 +1218,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
     // // private variables ////
 
     /**
-     * List of actors in execution. In a non-preemptive execution, the list only
-     * contains one item.
+     * List of actors in execution. In a non-preemptive execution, the
+     * list only contains one item.
      */
     private List<DEEvent> eventsInExecution = new ArrayList<DEEvent>();
 
@@ -1239,8 +1229,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
     private double _clockSyncError;
 
     /**
-     * The current model time is adjusted when an actor is fired and set to the
-     * event time stamp of the event causing the firing.
+     * The current model time is adjusted when an actor is fired and
+     * set to the event time stamp of the event causing the firing.
      */
     private Time _currentModelTime;
 

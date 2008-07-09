@@ -45,6 +45,10 @@ import ptolemy.kernel.util.InternalErrorException;
  * This Receiver will not work with non-opaque actors inside a platform.
  * 
  * @author Patricia Derler
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class PtidesPlatformReceiver extends TimedQueue {
 
@@ -75,10 +79,11 @@ public class PtidesPlatformReceiver extends TimedQueue {
      */
     public boolean hasToken() {
         return (getContainer().isOutput() && super.hasToken())
-                || (!(((Actor) (getContainer()).getContainer()).getDirector() instanceof PtidesEmbeddedDirector) && super
-                        .hasToken())
-                || (hasToken(getModelTime()) && ((PtidesEmbeddedDirector) ((Actor) (getContainer())
-                        .getContainer()).getDirector())
+                || (!(((Actor) (getContainer()).getContainer()).getDirector() instanceof PtidesEmbeddedDirector)
+                        && super.hasToken())
+                || (hasToken(getModelTime())
+                        && ((PtidesEmbeddedDirector) ((Actor) (getContainer())
+                                        .getContainer()).getDirector())
                         .isSafeToProcessOnPlatform(getModelTime(),
                                 getContainer()));
     }
@@ -198,7 +203,8 @@ public class PtidesPlatformReceiver extends TimedQueue {
                             return _director;
                         } else {
                             throw new IllegalActionException(getContainer(),
-                                    "Does not have a EmbeddedDEDirector4Ptides.");
+                                    "Does not have a "
+                                    + "EmbeddedDEDirector4Ptides.");
                         }
                     }
                 }

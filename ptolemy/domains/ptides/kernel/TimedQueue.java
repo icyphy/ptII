@@ -46,6 +46,10 @@ import ptolemy.kernel.util.IllegalActionException;
  * the receivers.
  * 
  * @author Patricia Derler
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class TimedQueue extends AbstractReceiver {
 
@@ -77,13 +81,14 @@ public class TimedQueue extends AbstractReceiver {
     }
 
     /**
-     * Take the the oldest token off of the queue and return it. If the queue is
-     * empty, throw a NoTokenException. If there are other tokens left on the
-     * queue after this removal, then set the receiver time of this receiver to
-     * equal that of the next oldest token. Update the TimeKeeper that manages
-     * this PrioritizedTimedQueue. If there are any receivers in the TimeKeeper
-     * with receiver times of PrioritizedTimedQueue.IGNORE, remove the first
-     * token from these receivers.
+     * Take the the oldest token off of the queue and return it. If
+     * the queue is empty, throw a NoTokenException. If there are
+     * other tokens left on the queue after this removal, then set the
+     * receiver time of this receiver to equal that of the next oldest
+     * token. Update the TimeKeeper that manages this
+     * PrioritizedTimedQueue. If there are any receivers in the
+     * TimeKeeper with receiver times of PrioritizedTimedQueue.IGNORE,
+     * remove the first token from these receivers.
      * 
      * @return The oldest token off of the queue.
      * @exception NoTokenException
@@ -98,8 +103,8 @@ public class TimedQueue extends AbstractReceiver {
     }
 
     /**
-     * Similar to get() but if not only token but also time stamp is required,
-     * this method is used.
+     * Similar to get() but if not only token but also time stamp is
+     * required, this method is used.
      * 
      * @return Event containing token and time stamp.
      */
@@ -131,11 +136,11 @@ public class TimedQueue extends AbstractReceiver {
     /**
      * This is an unbounded receiver thus always returns true.
      * 
-     * @param numberOfTokens
-     *                Number of tokens to be stored.
+     * @param numberOfTokens Number of tokens to be stored.
      * @return true because this is an unbounded receiver.
      */
-    public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
+    public boolean hasRoom(int numberOfTokens)
+            throws IllegalArgumentException {
         return true;
     }
 
@@ -175,7 +180,8 @@ public class TimedQueue extends AbstractReceiver {
      *                    exception, so it does not need to be declared
      *                    explicitly.
      */
-    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
+    public boolean hasToken(int numberOfTokens)
+            throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
                     "hasToken() requires a positive argument.");
@@ -229,10 +235,11 @@ public class TimedQueue extends AbstractReceiver {
     // private Time _receiverTime;
 
     /**
-     * An Event is an aggregation consisting of a Token, a time stamp and
-     * destination Receiver. Both the token and destination receiver are allowed
-     * to have null values. This is particularly useful in situations where the
-     * specification of the destination receiver may be considered redundant.
+     * An Event is an aggregation consisting of a Token, a time stamp
+     * and destination Receiver. Both the token and destination
+     * receiver are allowed to have null values. This is particularly
+     * useful in situations where the specification of the destination
+     * receiver may be considered redundant.
      */
     public static class Event {
 

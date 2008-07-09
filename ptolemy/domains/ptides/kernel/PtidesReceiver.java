@@ -47,6 +47,10 @@ import ptolemy.kernel.util.IllegalActionException;
  * Receiver used on the top level in the ptides domain.
  * 
  * @author Patricia Derler
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
     /**
@@ -106,10 +110,10 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
     }
 
     /**
-     * Return true if the receiver contains the given number of tokens that can
-     * be obtained by calling the get() method. Returning true in this method
-     * should also guarantee that calling the get() method will not result in an
-     * exception.
+     * Return true if the receiver contains the given number of tokens
+     * that can be obtained by calling the get() method. Returning
+     * true in this method should also guarantee that calling the
+     * get() method will not result in an exception.
      */
     public boolean hasToken(int tokens) {
         return super.hasToken(tokens);
@@ -224,8 +228,8 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
     }
 
     /**
-     * Return a true or false to indicate whether there is a write block on this
-     * receiver or not.
+     * Return a true or false to indicate whether there is a write
+     * block on this receiver or not.
      * 
      * @return A boolean indicating whether a write is blocked on this receiver
      *         or not.
@@ -235,16 +239,17 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
     }
 
     /**
-     * Do a blocking write on the queue. Set the time stamp to be the current
-     * time of the sending actor. If the current time is greater than the
-     * completionTime of this receiver, then set the time stamp to INACTIVE and
-     * the token to null. If the queue is full, then inform the director that
-     * this receiver is blocking on a write and wait until room becomes
-     * available. When room becomes available, put the token and time stamp in
-     * the queue and inform the director that the block no longer exists. If at
-     * any point during this method this receiver is scheduled for termination,
-     * then throw a TerminateProcessException which will cease activity for the
-     * actor that contains this receiver.
+     * Do a blocking write on the queue. Set the time stamp to be the
+     * current time of the sending actor. If the current time is
+     * greater than the completionTime of this receiver, then set the
+     * time stamp to INACTIVE and the token to null. If the queue is
+     * full, then inform the director that this receiver is blocking
+     * on a write and wait until room becomes available. When room
+     * becomes available, put the token and time stamp in the queue
+     * and inform the director that the block no longer exists. If at
+     * any point during this method this receiver is scheduled for
+     * termination, then throw a TerminateProcessException which will
+     * cease activity for the actor that contains this receiver.
      * 
      * @param token
      *                The token to put in the queue.
@@ -264,16 +269,17 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
     }
 
     /**
-     * Do a blocking write on the queue. Set the time stamp to be the time
-     * specified by the time parameter. If the specified time is greater than
-     * the completionTime of this receiver, then set the time stamp to INACTIVE
-     * and the token to null. If the queue is full, then inform the director
-     * that this receiver is blocking on a write and wait until room becomes
-     * available. When room becomes available, put the token and time stamp in
-     * the queue and inform the director that the block no longer exists. If at
-     * any point during this method this receiver is scheduled for termination,
-     * then throw a TerminateProcessException which will cease activity for the
-     * actor that contains this receiver.
+     * Do a blocking write on the queue. Set the time stamp to be the
+     * time specified by the time parameter. If the specified time is
+     * greater than the completionTime of this receiver, then set the
+     * time stamp to INACTIVE and the token to null. If the queue is
+     * full, then inform the director that this receiver is blocking
+     * on a write and wait until room becomes available. When room
+     * becomes available, put the token and time stamp in the queue
+     * and inform the director that the block no longer exists. If at
+     * any point during this method this receiver is scheduled for
+     * termination, then throw a TerminateProcessException which will
+     * cease activity for the actor that contains this receiver.
      * 
      * @param token
      *                The token to put in the queue.
@@ -293,9 +299,9 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
     }
 
     /**
-     * Schedule this receiver to terminate. After this method is called, a
-     * TerminateProcessException will be thrown during the next call to get() or
-     * put() of this class.
+     * Schedule this receiver to terminate. After this method is
+     * called, a TerminateProcessException will be thrown during the
+     * next call to get() or put() of this class.
      */
     public void requestFinish() {
         synchronized (_director) {
@@ -305,9 +311,10 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
     }
 
     /**
-     * Reset local flags. The local flag of this receiver indicates whether this
-     * receiver is scheduled for termination. Resetting the termination flag
-     * will make sure that this receiver is not scheduled for termination.
+     * Reset local flags. The local flag of this receiver indicates
+     * whether this receiver is scheduled for termination. Resetting
+     * the termination flag will make sure that this receiver is not
+     * scheduled for termination.
      */
     public void reset() {
         _terminate = false;

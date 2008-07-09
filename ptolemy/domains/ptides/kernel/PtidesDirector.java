@@ -62,41 +62,50 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * Top-level director for PTIDES models. The model time is the simulated global
- * physical time.
+
+ * Top-level director for PTIDES models. The model time is the
+ * simulated global physical time.
  * 
  * <p>
- * Top-level actors in a PTIDES domain are platforms. A platform is a composite
- * actor that contains sensors, actuators, computation actors with worst case
- * execution times and model time delay actors.
+ * Top-level actors in a PTIDES domain are platforms. A platform is a
+ * composite actor that contains sensors, actuators, computation
+ * actors with worst case execution times and model time delay actors.
  * 
  * <p>
- * The PTIDES director simulates the parallel execution of actors on distributed
- * platforms, thus the composite actors representing platforms run in threads. A
- * platform executes actors in model time and maps some actions to real time.
- * For those mappings, platforms call the fireAt method of this director to
- * schedule refiring at those real times. A mapping to real time is done for
+ * The PTIDES director simulates the parallel execution of actors on
+ * distributed platforms, thus the composite actors representing
+ * platforms run in threads. A platform executes actors in model time
+ * and maps some actions to real time.  For those mappings, platforms
+ * call the fireAt method of this director to schedule refiring at
+ * those real times. A mapping to real time is done for
+ *
  * <ul>
  * <li> sensors. A sensor is fired at model time = real time. </li>
  * <li> actuators. An actuator is fired at real time = model time. </li>
- * <li> execution of actors with WCET > 0. After starting the execution of an
- * actor with WCET > 0, the platform thread sleeps and continues execution after
- * real time was increased by the WCET or the actor is being preempted. </li>
+ * <li> execution of actors with WCET > 0. After starting the
+ * execution of an actor with WCET > 0, the platform thread sleeps and
+ * continues execution after real time was increased by the WCET or
+ * the actor is being preempted. </li>
  * </ul>
  * 
  * @author Patricia Derler
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class PtidesDirector extends CompositeProcessDirector implements
         TimedDirector {
 
     /**
-     * Construct a director in the default workspace with an empty string as its
-     * name. The director is added to the list of objects in the workspace.
-     * Increment the version number of the workspace.
+     * Construct a director in the default workspace with an empty
+     * string as its name. The director is added to the list of
+     * objects in the workspace.  Increment the version number of the
+     * workspace.
      * 
-     * @exception IllegalActionException
-     *                    If the name contains a period, or if the director is
-     *                    not compatible with the specified container.
+     * @exception IllegalActionException If the name contains a
+     *                    period, or if the director is not compatible
+     *                    with the specified container.
      * @exception NameDuplicationException
      *                    If the container not a CompositeActor and the name
      *                    collides with an entity in the container.
@@ -108,18 +117,17 @@ public class PtidesDirector extends CompositeProcessDirector implements
     }
 
     /**
-     * Construct a director in the workspace with an empty name. The director is
-     * added to the list of objects in the workspace. Increment the version
-     * number of the workspace.
+     * Construct a director in the workspace with an empty name. The
+     * director is added to the list of objects in the
+     * workspace. Increment the version number of the workspace.
      * 
-     * @param workspace
-     *                The workspace of this object.
-     * @exception IllegalActionException
-     *                    If the name contains a period, or if the director is
-     *                    not compatible with the specified container.
-     * @exception NameDuplicationException
-     *                    If the container not a CompositeActor and the name
-     *                    collides with an entity in the container.
+     * @param workspace The workspace of this object.
+     * @exception IllegalActionException If the name contains a
+     * period, or if the director is not compatible with the specified
+     * container.
+     * @exception NameDuplicationException If the container not a
+     * CompositeActor and the name collides with an entity in the
+     * container.
      */
     public PtidesDirector(Workspace workspace) throws IllegalActionException,
             NameDuplicationException {
@@ -129,21 +137,20 @@ public class PtidesDirector extends CompositeProcessDirector implements
     }
 
     /**
-     * Construct a director in the given container with the given name. If the
-     * container argument must not be null, or a NullPointerException will be
-     * thrown. If the name argument is null, then the name is set to the empty
-     * string. Increment the version number of the workspace.
+     * Construct a director in the given container with the given
+     * name. If the container argument must not be null, or a
+     * NullPointerException will be thrown. If the name argument is
+     * null, then the name is set to the empty string. Increment the
+     * version number of the workspace.
      * 
-     * @param container
-     *                The container.
-     * @param name
-     *                Name of this director.
-     * @exception IllegalActionException
-     *                    If the name contains a period, or if the director is
-     *                    not compatible with the specified container.
-     * @exception NameDuplicationException
-     *                    If the container not a CompositeActor and the name
-     *                    collides with an entity in the container.
+     * @param container The container.
+     * @param name Name of this director.
+     * @exception IllegalActionException If the name contains a
+     * period, or if the director is not compatible with the specified
+     * container.
+     * @exception NameDuplicationException If the container not a
+     * CompositeActor and the name collides with an entity in the
+     * container.
      */
     public PtidesDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -153,9 +160,9 @@ public class PtidesDirector extends CompositeProcessDirector implements
     }
 
     /**
-     * If this Parameter is set to true, minimum delays according to Ptides on
-     * the platform level are calculated. Otherwise, given minimum delays are
-     * used.
+     * If this Parameter is set to true, minimum delays according to
+     * Ptides on the platform level are calculated. Otherwise, given
+     * minimum delays are used.
      */
     public Parameter calculateMinDelays;
 
@@ -173,9 +180,9 @@ public class PtidesDirector extends CompositeProcessDirector implements
     public Parameter networkDelay;
 
     /**
-     * Defines if the Ptides execution strategy should be used. This is only
-     * interesting when other distributed event simulations should be tried with
-     * this framework.
+     * Defines if the Ptides execution strategy should be used. This
+     * is only interesting when other distributed event simulations
+     * should be tried with this framework.
      */
     public Parameter usePtidesExecutionSemantics;
 
@@ -341,11 +348,11 @@ public class PtidesDirector extends CompositeProcessDirector implements
     }
 
     /**
-     * If a platform has nothing to do at the current physical time, it waits
-     * for the next physical time which means that the platform thread is
-     * blocked. If all threads are about to be blocked, the physical time is
-     * increased to the next physical time any platform is interested in being
-     * fired again.
+     * If a platform has nothing to do at the current physical time,
+     * it waits for the next physical time which means that the
+     * platform thread is blocked. If all threads are about to be
+     * blocked, the physical time is increased to the next physical
+     * time any platform is interested in being fired again.
      * 
      * @return The new physical time.
      * @throws IllegalActionException
@@ -363,8 +370,9 @@ public class PtidesDirector extends CompositeProcessDirector implements
                     + ", number of waiting threads: "
                     + _waitingPlatforms.size());
         }
-        if ((!_waitingPlatforms.contains(Thread.currentThread()) && _getActiveThreadsCount()
-                - _waitingPlatforms.size() == 1)) {
+        if ((!_waitingPlatforms.contains(Thread.currentThread())
+                        && _getActiveThreadsCount()
+                        - _waitingPlatforms.size() == 1)) {
             _increasePhysicalTime();
             return getModelTime();
         }
@@ -385,9 +393,9 @@ public class PtidesDirector extends CompositeProcessDirector implements
     }
 
     /**
-     * Clear list containing times platforms are interested in being fired in
-     * the future clear list of actors waiting for being re-fired reset physical
-     * time.
+     * Clear list containing times platforms are interested in being
+     * fired in the future clear list of actors waiting for being
+     * re-fired reset physical time.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
@@ -399,16 +407,12 @@ public class PtidesDirector extends CompositeProcessDirector implements
     /**
      * Forward display events from platforms to the schedule listeners.
      * 
-     * @param node
-     *                platform that forwards the event.
-     * @param actor
-     *                actor inside a platform for which the event was created.
-     *                If the actor is null, the event is a platform event, e.g.
-     *                input ports read or output ports written.
-     * @param time
-     *                physical time at which the event occurred.
-     * @param scheduleEvent
-     *                type of event.
+     * @param node platform that forwards the event.
+     * @param actor actor inside a platform for which the event was
+     * created.  If the actor is null, the event is a platform event,
+     * e.g.  input ports read or output ports written.
+     * @param time physical time at which the event occurred.
+     * @param scheduleEvent type of event.
      */
     protected final void _displaySchedule(Actor node, Actor actor, double time,
             int scheduleEvent) {
@@ -423,13 +427,11 @@ public class PtidesDirector extends CompositeProcessDirector implements
     }
 
     /**
-     * Creates a new thread for a platform. A platform is a composite actor at
-     * the top level of the model.
+     * Creates a new thread for a platform. A platform is a composite
+     * actor at the top level of the model.
      * 
-     * @param actor
-     *                The Composite actor that represents a platform.
-     * @param director
-     *                The process director.
+     * @param actor The Composite actor that represents a platform.
+     * @param director The process director.
      * @return Return a new process thread.
      */
     protected ProcessThread _newProcessThread(Actor actor,
@@ -438,9 +440,10 @@ public class PtidesDirector extends CompositeProcessDirector implements
     }
 
     /**
-     * Deadlocks can occur due to read or write accesses to the workspace. In
-     * case of a deadlock, wake up all threads. They will decide themselves if
-     * they have anything to do at current physical time.
+     * Deadlocks can occur due to read or write accesses to the
+     * workspace. In case of a deadlock, wake up all threads. They
+     * will decide themselves if they have anything to do at current
+     * physical time.
      */
     protected synchronized boolean _resolveDeadlock()
             throws IllegalActionException {
@@ -452,8 +455,8 @@ public class PtidesDirector extends CompositeProcessDirector implements
     }
 
     /**
-     * Increase physical time to next time that any of the platforms is
-     * interested in doing something.
+     * Increase physical time to next time that any of the platforms
+     * is interested in doing something.
      * 
      * @throws IllegalActionException
      */

@@ -66,7 +66,10 @@ import ptolemy.kernel.util.NamedObj;
  * ptides dependencies and not reusing the existent graph utilities.
  * 
  * @author Patricia Derler
- * 
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class PtidesGraphUtilities {
 
@@ -283,8 +286,8 @@ public class PtidesGraphUtilities {
     }
 
     /**
-     * Returns true if given actor is a sensor. A parameter "isSensor" is set to
-     * true if the actor is a sensor.
+     * Returns true if given actor is a sensor. A parameter "isSensor"
+     * is set to true if the actor is a sensor.
      * 
      * @param actor
      *                Actor that might be a sensor.
@@ -332,8 +335,9 @@ public class PtidesGraphUtilities {
     }
 
     /**
-     * Returns true if the actor or port of an actor must be fired at real time.
-     * Actors that must be fired at real time are sensors and actuators.
+     * Returns true if the actor or port of an actor must be fired at
+     * real time.  Actors that must be fired at real time are sensors
+     * and actuators.
      * 
      * @param actor
      *                Actor that might need to be fired at real time.
@@ -380,9 +384,8 @@ public class PtidesGraphUtilities {
      * After calculating the minimum delays for single composite actors, the
      * minimum delays of upstream actors must be considered.
      * 
-     * @param graph
-     *                Graph containing actors for which minimum delays should be
-     *                calculated for.
+     * @param graph Graph containing actors for which minimum delays
+     *                should be calculated for.
      * @throws IllegalActionException
      *                 Thrown if the minimum delay cannot be set.
      */
@@ -407,9 +410,9 @@ public class PtidesGraphUtilities {
     }
 
     /**
-     * After calculating minimum delays for single ports, the whole port groups
-     * must be considered. The minimum of all minimum delays of ports in a group
-     * is chosen.
+     * After calculating minimum delays for single ports, the whole
+     * port groups must be considered. The minimum of all minimum
+     * delays of ports in a group is chosen.
      * 
      * @throws IllegalActionException
      *                 Thrown if minimum delay cannot be set.
@@ -449,10 +452,11 @@ public class PtidesGraphUtilities {
     }
 
     /**
-     * Compute a graph containing actors and ports of a container. This method
-     * uses the computation of the FunctionDependencyGraph but adds a dependency
-     * between output and input ports of Delay actors. This dependency resolve
-     * loops in a graph.
+     * Compute a graph containing actors and ports of a
+     * container. This method uses the computation of the
+     * FunctionDependencyGraph but adds a dependency between output
+     * and input ports of Delay actors. This dependency resolve loops
+     * in a graph.
      * 
      * @param container
      *                The container for which a graph should be computed.
@@ -590,8 +594,8 @@ public class PtidesGraphUtilities {
      * 
      * @param graph
      *                Graph containing other actors with minimum delays.
-     * @param inputPort
-     *                Input port for which the minimum delay should be computed.
+     * @param inputPort Input port for which the minimum delay should
+     *                be computed.
      * @param traversedActors
      *                Actors that have already been considered in the
      *                computation.
