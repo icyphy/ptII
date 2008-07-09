@@ -827,8 +827,11 @@ public class Configuration extends CompositeEntity implements
                     && !fieldType.toString().equals("COM.sun.suntest.javascope.database.CoverageUnit")
                     && !field.getName().equals("js$p")
                     // Skip immutables
-                    && !fieldType.equals(Token.class)
-                    && !fieldType.equals(String.class)) {
+                    && !fieldType.equals(java.net.InetAddress.class)
+                    && !fieldType.equals(java.util.regex.Pattern.class)
+                    && !fieldType.equals(String.class)
+                    && !fieldType.equals(Token.class)) { 
+
 
                 // If an object is equal and the default hashCode() from
                 // Object is the same, then we have a problem.
