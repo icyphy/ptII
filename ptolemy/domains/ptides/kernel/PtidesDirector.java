@@ -225,6 +225,19 @@ public class PtidesDirector extends CompositeProcessDirector implements
     }
 
     /**
+     * Called by platforms to schedule a future time firing. This director does
+     * not remember which platform wants to be fired again.
+     *
+     * FIXME If the director remembers which platform asked to be refired,
+     * performance improvements can be made.
+     */
+    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+        if (time.compareTo(getModelTime()) > 0) {
+            _nextFirings.add(time);
+        }
+    }
+
+    /**
      * Return the physical time.
      *
      * @see #setModelTime(Time)
@@ -294,18 +307,6 @@ public class PtidesDirector extends CompositeProcessDirector implements
 
     }
 
-    /**
-     * Called by platforms to schedule a future time firing. This director does
-     * not remember which platform wants to be fired again.
-     *
-     * FIXME If the director remembers which platform asked to be refired,
-     * performance improvements can be made.
-     */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
-        if (time.compareTo(getModelTime()) > 0) {
-            _nextFirings.add(time);
-        }
-    }
 
     /**
      * Return a new PtidesEReceiver.

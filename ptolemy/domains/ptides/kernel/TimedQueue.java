@@ -103,6 +103,16 @@ public class TimedQueue extends AbstractReceiver {
     }
 
     /**
+     * Get the queue capacity of this receiver.
+     *
+     * @return The capacity of this receiver's queue.
+     * @see #setCapacity(int)
+     */
+    public int getCapacity() {
+        return _queue.size();
+    }
+
+    /**
      * Similar to get() but if not only token but also time stamp is
      * required, this method is used.
      *
@@ -112,16 +122,6 @@ public class TimedQueue extends AbstractReceiver {
         Event event = _queue.first();
         _queue.remove(event);
         return event;
-    }
-
-    /**
-     * Get the queue capacity of this receiver.
-     *
-     * @return The capacity of this receiver's queue.
-     * @see #setCapacity(int)
-     */
-    public int getCapacity() {
-        return _queue.size();
     }
 
     /**

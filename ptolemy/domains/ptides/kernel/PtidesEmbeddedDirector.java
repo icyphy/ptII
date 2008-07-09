@@ -210,61 +210,6 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Get finishing time of actor in execution. The finishing time is
-     * the point in time when the WCET of the actor has passed.
-     *
-     * @param actor The actor in execution.
-     * @return The finishing time of the actor.
-     * @see #setFinishingTime(Actor, double)
-     */
-    public double getFinishingTime(NamedObj actor) {
-        if (_finishingTimesOfActorsInExecution.get(actor) != null) {
-            return (Double) _finishingTimesOfActorsInExecution.get(actor);
-        }
-        return 0.0;
-    }
-
-    /**
-     * Return the time stamp of the next event in the queue.
-     *
-     * @return The time stamp of the next event in the event queue.
-     */
-    public Time getNextEventTimeStamp() {
-        try {
-            Time nextIterationTime = Time.POSITIVE_INFINITY;
-            List eventsToFire = _getNextEventsToFire();
-            if (eventsToFire == null || eventsToFire.size() == 0) {
-                return _physicalTime;
-            }
-            for (Iterator it = eventsToFire.iterator(); it.hasNext();) {
-                DEEvent event = (DEEvent) it.next();
-                if (event.timeStamp().compareTo(nextIterationTime) < 0) {
-                    nextIterationTime = event.timeStamp();
-                }
-            }
-            return nextIterationTime;
-        } catch (IllegalActionException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Return the current model time. The notion of model time cannot
-     * be applied to the whole platform because it is possible to fire
-     * events out of time stamped order. Model times are associated to
-     * actors only. When an actor is in execution, this method returns
-     * the model time of the actor currently in execution. Otherwise,
-     * this method returns 0.
-     */
-    public Time getModelTime() {
-        if (_currentModelTime == null) {
-            return new Time(this, 0);
-        } else {
-            return _currentModelTime;
-        }
-    }
-
-    /**
      * Until _stopRequested, the director tries to fire actors or
      * waits. First, a set of events is calculated that can be fired
      * at current time. Out of this set of events, one event is chosen
@@ -386,6 +331,61 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
         synchronized (_eventQueues) {
             _enqueueEvent(actor, time);
+        }
+    }
+
+    /**
+     * Get finishing time of actor in execution. The finishing time is
+     * the point in time when the WCET of the actor has passed.
+     *
+     * @param actor The actor in execution.
+     * @return The finishing time of the actor.
+     * @see #setFinishingTime(Actor, double)
+     */
+    public double getFinishingTime(NamedObj actor) {
+        if (_finishingTimesOfActorsInExecution.get(actor) != null) {
+            return (Double) _finishingTimesOfActorsInExecution.get(actor);
+        }
+        return 0.0;
+    }
+
+    /**
+     * Return the current model time. The notion of model time cannot
+     * be applied to the whole platform because it is possible to fire
+     * events out of time stamped order. Model times are associated to
+     * actors only. When an actor is in execution, this method returns
+     * the model time of the actor currently in execution. Otherwise,
+     * this method returns 0.
+     */
+    public Time getModelTime() {
+        if (_currentModelTime == null) {
+            return new Time(this, 0);
+        } else {
+            return _currentModelTime;
+        }
+    }
+
+    /**
+     * Return the time stamp of the next event in the queue.
+     *
+     * @return The time stamp of the next event in the event queue.
+     */
+    public Time getNextEventTimeStamp() {
+        try {
+            Time nextIterationTime = Time.POSITIVE_INFINITY;
+            List eventsToFire = _getNextEventsToFire();
+            if (eventsToFire == null || eventsToFire.size() == 0) {
+                return _physicalTime;
+            }
+            for (Iterator it = eventsToFire.iterator(); it.hasNext();) {
+                DEEvent event = (DEEvent) it.next();
+                if (event.timeStamp().compareTo(nextIterationTime) < 0) {
+                    nextIterationTime = event.timeStamp();
+                }
+            }
+            return nextIterationTime;
+        } catch (IllegalActionException e) {
+            return null;
         }
     }
 
@@ -622,6 +622,15 @@ public class PtidesEmbeddedDirector extends DEDirector {
         _currentModelTime = new Time(this, 0.0);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      public variables                     ////
+
+    /**
+     * Graph for the platform actors.
+     */
+    public DirectedGraph graph;
+
+
     // /////////////////////////////////////////////////////////////////
     // // protected methods ////
 
@@ -717,7 +726,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
             // compositeactor
             // scheduled
             // after
-            // timedDelay=
+            // timedDelay =
             // ((DEEventQueue)_eventQueues.get(actor)).put(newEvent);
             _refireAt(newEvent.timeStamp());
         }
@@ -1273,7 +1282,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
     private double _networkDelay;
 
     /**
-     * Physical time that is managed by the top level director (PtidesDirector).
+     * Physical time that is managed by the top level director
+     * (PtidesDirector).
      */
     private Time _physicalTime;
 
@@ -1281,10 +1291,5 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * If true, events should be checked for being safe to process.
      */
     private boolean _usePtidesExecutionSemantics;
-
-    /**
-     * Graph for the platform actors.
-     */
-    public DirectedGraph graph;
 
 }

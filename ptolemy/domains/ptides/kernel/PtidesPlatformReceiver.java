@@ -72,8 +72,24 @@ public class PtidesPlatformReceiver extends TimedQueue {
         super(container);
     }
 
+
     /**
-     * Return true if there is at least one token available to the get() method.
+     * Returns time stamp of next event in the receiver queue.
+     *
+     * @return The time stamp.
+     */
+    public Time getNextTime() {
+        if (_queue.isEmpty()) {
+            return null;
+        }
+        Time time = (_queue.first())._timeStamp;
+        return time;
+    }
+
+
+    /**
+     * Return true if there is at least one token available to the
+     * get() method.
      *
      * @return True if there are more tokens.
      */
@@ -226,18 +242,4 @@ public class PtidesPlatformReceiver extends TimedQueue {
      * Version of the director.
      */
     private long _directorVersion = -1;
-
-    /**
-     * Returns time stamp of next event in the receiver queue.
-     *
-     * @return The time stamp.
-     */
-    public Time getNextTime() {
-        if (_queue.isEmpty()) {
-            return null;
-        }
-        Time time = (_queue.first())._timeStamp;
-        return time;
-    }
-
 }

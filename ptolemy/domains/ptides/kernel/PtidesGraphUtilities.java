@@ -109,32 +109,6 @@ public class PtidesGraphUtilities {
     }
 
     /**
-     * Sets minimum delays for ports of the contained actor.
-     *
-     * @param container
-     *                Actor that minimum delays should be calculated for.
-     * @exception IllegalActionException
-     *                 Thrown if parameters of actors cannot be read.
-     */
-    public void getMinDelays(Actor container) throws IllegalActionException {
-        DirectedAcyclicGraph graph = _computeGraph(container);
-        for (Iterator it = container.outputPortList().iterator(); it.hasNext();) {
-            IOPort out = (IOPort) it.next();
-            double minDelay = _getMinDelay(container, false, graph.node(out),
-                    graph, Double.MAX_VALUE, new HashSet());
-            PtidesGraphUtilities.setMinDelay(out, minDelay);
-        }
-        for (Iterator it = container.inputPortList().iterator(); it.hasNext();) {
-            IOPort in = (IOPort) it.next();
-            if (!_isInputConnectedToAnyOutput(container, graph, in)) {
-                double minDelay = _getMinDelay(container, true, graph.node(in),
-                        graph, Double.MAX_VALUE, new HashSet());
-                PtidesGraphUtilities.setMinDelay(in, minDelay);
-            }
-        }
-    }
-
-    /**
      * Returns the minimum delay for the an actor which is specified as a
      * parameter of the actor or Double.MAX_VALUE if no delay is specified.
      *
@@ -167,34 +141,28 @@ public class PtidesGraphUtilities {
     }
 
     /**
-     * Return the worst case execution time of the actor or 0 if no worst case
-     * execution time was specified.
+     * Sets minimum delays for ports of the contained actor.
      *
-     * @param actor
-     *                The actor for which the worst case execution time is
-     *                requested.
-     * @return The worst case execution time.
+     * @param container
+     *                Actor that minimum delays should be calculated for.
+     * @exception IllegalActionException
+     *                 Thrown if parameters of actors cannot be read.
      */
-    public static double getWCET(Actor actor) {
-        if (actor instanceof TDLModule) {
-            return ((TDLModuleDirector) ((TDLModule) actor).getDirector())
-                    .getWCET();
+    public void getMinDelays(Actor container) throws IllegalActionException {
+        DirectedAcyclicGraph graph = _computeGraph(container);
+        for (Iterator it = container.outputPortList().iterator(); it.hasNext();) {
+            IOPort out = (IOPort) it.next();
+            double minDelay = _getMinDelay(container, false, graph.node(out),
+                    graph, Double.MAX_VALUE, new HashSet());
+            PtidesGraphUtilities.setMinDelay(out, minDelay);
         }
-        try {
-            Parameter parameter = (Parameter) ((NamedObj) actor)
-                    .getAttribute("WCET");
-
-            if (parameter != null) {
-                DoubleToken token = (DoubleToken) parameter.getToken();
-
-                return token.doubleValue();
-            } else {
-                return 0.0;
+        for (Iterator it = container.inputPortList().iterator(); it.hasNext();) {
+            IOPort in = (IOPort) it.next();
+            if (!_isInputConnectedToAnyOutput(container, graph, in)) {
+                double minDelay = _getMinDelay(container, true, graph.node(in),
+                        graph, Double.MAX_VALUE, new HashSet());
+                PtidesGraphUtilities.setMinDelay(in, minDelay);
             }
-        } catch (ClassCastException ex) {
-            return 0.0;
-        } catch (IllegalActionException ex) {
-            return 0.0;
         }
     }
 
@@ -255,6 +223,39 @@ public class PtidesGraphUtilities {
     }
 
     /**
+     * Return the worst case execution time of the actor or 0 if no worst case
+     * execution time was specified.
+     *
+     * @param actor
+     *                The actor for which the worst case execution time is
+     *                requested.
+     * @return The worst case execution time.
+     */
+    public static double getWCET(Actor actor) {
+        if (actor instanceof TDLModule) {
+            return ((TDLModuleDirector) ((TDLModule) actor).getDirector())
+                    .getWCET();
+        }
+        try {
+            Parameter parameter = (Parameter) ((NamedObj) actor)
+                    .getAttribute("WCET");
+
+            if (parameter != null) {
+                DoubleToken token = (DoubleToken) parameter.getToken();
+
+                return token.doubleValue();
+            } else {
+                return 0.0;
+            }
+        } catch (ClassCastException ex) {
+            return 0.0;
+        } catch (IllegalActionException ex) {
+            return 0.0;
+        }
+    }
+
+
+    /**
      * Returns true if the actor is an actuator. A parameter of an actuator
      * actor called "isActuator" is true if the actor is an actuator.
      *
@@ -283,6 +284,25 @@ public class PtidesGraphUtilities {
         } catch (IllegalActionException ex) {
             return false;
         }
+    }
+
+
+    /**
+     * Returns true if the given input port is connected to the given output
+     * port.
+     *
+     * @param container
+     *                Composite actor that contains the ports.
+     * @param in
+     *                Given input port.
+     * @param out
+     *                Given output port.
+     * @return True if the input port is connected to the output port.
+     */
+    public boolean isInputConnectedToOutput(Actor container, IOPort in,
+            IOPort out) {
+        DirectedAcyclicGraph graph = _computeGraph(container);
+        return graph.reachableNodes(graph.node(in)).contains(graph.node(out));
     }
 
     /**
@@ -314,24 +334,6 @@ public class PtidesGraphUtilities {
         } catch (IllegalActionException ex) {
             return false;
         }
-    }
-
-    /**
-     * Returns true if the given input port is connected to the given output
-     * port.
-     *
-     * @param container
-     *                Composite actor that contains the ports.
-     * @param in
-     *                Given input port.
-     * @param out
-     *                Given output port.
-     * @return True if the input port is connected to the output port.
-     */
-    public boolean isInputConnectedToOutput(Actor container, IOPort in,
-            IOPort out) {
-        DirectedAcyclicGraph graph = _computeGraph(container);
-        return graph.reachableNodes(graph.node(in)).contains(graph.node(out));
     }
 
     /**
