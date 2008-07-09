@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NamedObj;
  * and minimum delays. This implementation does not support topological changes.
  * A better implementation would be by generating a graph that already contains
  * ptides dependencies and not reusing the existent graph utilities.
- * 
+ *
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -75,7 +75,7 @@ public class PtidesGraphUtilities {
 
     /**
      * Create a new GraphUtilities object.
-     * 
+     *
      * @param container
      *                Top level container.
      */
@@ -85,7 +85,7 @@ public class PtidesGraphUtilities {
 
     /**
      * Calculate minimum delays for the ports.
-     * 
+     *
      * @exception IllegalActionException
      *                 Thrown if parameters of actors cannot be read.
      */
@@ -110,7 +110,7 @@ public class PtidesGraphUtilities {
 
     /**
      * Sets minimum delays for ports of the contained actor.
-     * 
+     *
      * @param container
      *                Actor that minimum delays should be calculated for.
      * @exception IllegalActionException
@@ -137,7 +137,7 @@ public class PtidesGraphUtilities {
     /**
      * Returns the minimum delay for the an actor which is specified as a
      * parameter of the actor or Double.MAX_VALUE if no delay is specified.
-     * 
+     *
      * @param actor
      *                The actor for which minimum delays are calculated for.
      * @return The minimum delay.
@@ -169,7 +169,7 @@ public class PtidesGraphUtilities {
     /**
      * Return the worst case execution time of the actor or 0 if no worst case
      * execution time was specified.
-     * 
+     *
      * @param actor
      *                The actor for which the worst case execution time is
      *                requested.
@@ -200,7 +200,7 @@ public class PtidesGraphUtilities {
 
     /**
      * Return the port groups and contained ports of a composite actor.
-     * 
+     *
      * @param container
      *                The composite actor.
      * @return Port groups and ports.
@@ -231,7 +231,7 @@ public class PtidesGraphUtilities {
     /**
      * Get port groups of actors. A port group is a list of ports that depend on
      * each other.
-     * 
+     *
      * @param container
      *                The actor that port groups are computed for.
      */
@@ -257,7 +257,7 @@ public class PtidesGraphUtilities {
     /**
      * Returns true if the actor is an actuator. A parameter of an actuator
      * actor called "isActuator" is true if the actor is an actuator.
-     * 
+     *
      * @param actor
      *                The actor which might be an actuator.
      * @return True if the actor is an actuator.
@@ -288,7 +288,7 @@ public class PtidesGraphUtilities {
     /**
      * Returns true if given actor is a sensor. A parameter "isSensor"
      * is set to true if the actor is a sensor.
-     * 
+     *
      * @param actor
      *                Actor that might be a sensor.
      * @return True if the actor is a sensor.
@@ -319,7 +319,7 @@ public class PtidesGraphUtilities {
     /**
      * Returns true if the given input port is connected to the given output
      * port.
-     * 
+     *
      * @param container
      *                Composite actor that contains the ports.
      * @param in
@@ -338,7 +338,7 @@ public class PtidesGraphUtilities {
      * Returns true if the actor or port of an actor must be fired at
      * real time.  Actors that must be fired at real time are sensors
      * and actuators.
-     * 
+     *
      * @param actor
      *                Actor that might need to be fired at real time.
      * @param port
@@ -356,7 +356,7 @@ public class PtidesGraphUtilities {
     /**
      * Set the minimum delay of a port as a parameter. This delay is used for
      * the input port of the connected actor.
-     * 
+     *
      * @param out
      *                Output port.
      * @param minDelay
@@ -383,7 +383,7 @@ public class PtidesGraphUtilities {
     /**
      * After calculating the minimum delays for single composite actors, the
      * minimum delays of upstream actors must be considered.
-     * 
+     *
      * @param graph Graph containing actors for which minimum delays
      *                should be calculated for.
      * @exception IllegalActionException
@@ -413,7 +413,7 @@ public class PtidesGraphUtilities {
      * After calculating minimum delays for single ports, the whole
      * port groups must be considered. The minimum of all minimum
      * delays of ports in a group is chosen.
-     * 
+     *
      * @exception IllegalActionException
      *                 Thrown if minimum delay cannot be set.
      */
@@ -457,7 +457,7 @@ public class PtidesGraphUtilities {
      * FunctionDependencyGraph but adds a dependency between output
      * and input ports of Delay actors. This dependency resolve loops
      * in a graph.
-     * 
+     *
      * @param container
      *                The container for which a graph should be computed.
      * @return The graph for the container.
@@ -512,7 +512,7 @@ public class PtidesGraphUtilities {
 
     /**
      * Recursively compute the minimum delay of a port.
-     * 
+     *
      * @param container
      *                Container for the actor containing the port.
      * @param forward
@@ -591,7 +591,7 @@ public class PtidesGraphUtilities {
 
     /**
      * Compute minimum delay upstream.
-     * 
+     *
      * @param graph
      *                Graph containing other actors with minimum delays.
      * @param inputPort Input port for which the minimum delay should
@@ -633,7 +633,7 @@ public class PtidesGraphUtilities {
 
     /**
      * Returns true if this input is connected to any output of the container.
-     * 
+     *
      * @param container
      *                Container of the input port.
      * @param graph
@@ -658,7 +658,7 @@ public class PtidesGraphUtilities {
     /**
      * Previously computed minimum delays for output ports are now transferred
      * to the input ports of connected actors.
-     * 
+     *
      * @param graph
      *                Graph containing all actors.
      * @exception IllegalActionException
