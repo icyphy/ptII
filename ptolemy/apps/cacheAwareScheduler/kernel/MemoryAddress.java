@@ -79,7 +79,7 @@ public class MemoryAddress {
      *  @return boolean True iff equal else False.
      */
     public boolean equals(Object memoryAddress) {
-        if (memoryAddress instanceof MemoryAdress) {
+        if (memoryAddress instanceof MemoryAddress) {
             if (((MemoryAddress) memoryAddress).actorID == actorID) {
                 if (((MemoryAddress) memoryAddress).tokenNumber == tokenNumber) {
                     return true;
