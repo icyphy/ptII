@@ -1,6 +1,6 @@
 /* An actor that outputs a sequence with a given step in values.
 
- Copyright (c) 1998-2008 The Regents of the University of California.
+ Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,6 +29,7 @@
 //// Ramp
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.lib.SequenceSource;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.backtrack.Checkpoint;

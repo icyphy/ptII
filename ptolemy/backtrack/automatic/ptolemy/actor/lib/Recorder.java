@@ -1,6 +1,6 @@
 /* Record all input tokens for later querying.
 
- Copyright (c) 1998-2008 The Regents of the University of California.
+ Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,13 +29,13 @@
 //// Recorder
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import ptolemy.actor.lib.Sink;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;

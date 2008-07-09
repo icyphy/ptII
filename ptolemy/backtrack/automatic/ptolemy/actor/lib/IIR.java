@@ -1,6 +1,6 @@
 /* An IIR filter actor that uses a direct form II implementation.
 
- Copyright (c) 1998-2008 The Regents of the University of California and
+ Copyright (c) 1998-2006 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -31,6 +31,7 @@
 //// IIR
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;

@@ -1,6 +1,6 @@
 /* An actor that outputs the difference between successive inputs.
 
- Copyright (c) 1998-2008 The Regents of the University of California.
+ Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,6 +31,7 @@
 ////                         public methods                    ////
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;

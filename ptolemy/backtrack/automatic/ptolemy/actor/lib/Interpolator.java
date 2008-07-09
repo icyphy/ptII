@@ -29,6 +29,7 @@
 //// Interpolator
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.lib.SequenceSource;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -45,6 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** 
  * <p>Produce an interpolation based on the parameters.
@@ -147,6 +149,7 @@ public class Interpolator extends SequenceSource implements Rollbackable {
         $ASSIGN$_interpolation(new Interpolation());
         indexes = new Parameter(this, "indexes");
         indexes.setExpression("{0, 1}");
+        indexes.setTypeEquals(new ArrayType(BaseType.INT));
         attributeChanged(indexes);
         values = new Parameter(this, "values");
         values.setExpression("{1.0, 0.0}");
@@ -202,6 +205,29 @@ public class Interpolator extends SequenceSource implements Rollbackable {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /**     
+     * Clone the actor into the specified workspace. This calls the
+     * base class and then initializes private variables.
+     * public members to the parameters of the new actor.
+     * @param workspace The workspace for the new object.
+     * @return A new actor.
+     * @exception CloneNotSupportedException If a derived class contains
+     * an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        Interpolator newObject = (Interpolator)super.clone(workspace);
+        newObject.$ASSIGN$_indexes(new int[_indexes.length]);
+        System.arraycopy($BACKUP$_indexes(), 0, newObject.$BACKUP$_indexes(), 0, _indexes.length);
+        newObject.$ASSIGN$_interpolation(new Interpolation());
+        if (_values == null) {
+            newObject.$ASSIGN$_values(null);
+        } else {
+            newObject.$ASSIGN$_values(new double[_values.length]);
+            System.arraycopy($BACKUP$_values(), 0, newObject.$BACKUP$_values(), 0, _values.length);
+        }
+        return newObject;
     }
 
     /**     

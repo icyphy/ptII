@@ -1,6 +1,6 @@
 /* An actor that outputs doubles read from a URL.
 
- @Copyright (c) 1998-2008 The Regents of the University of California.
+ @Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -30,8 +30,8 @@
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
 import java.io.IOException;
+import java.lang.Object;
 import java.util.StringTokenizer;
-
 import ptolemy.actor.lib.URLReader;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;

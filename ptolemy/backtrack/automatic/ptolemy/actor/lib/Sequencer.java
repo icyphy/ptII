@@ -1,6 +1,6 @@
 /* An actor to put tokens in order.
 
- Copyright (c) 1997-2008 The Regents of the University of California.
+ Copyright (c) 1997-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,6 +29,7 @@
 //// Sequencer
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
@@ -44,6 +45,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** 
  * This actor takes a sequence of inputs tagged with a sequence number
@@ -116,6 +118,19 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
         sequenceNumber.setTypeEquals(BaseType.INT);
         startingSequenceNumber = new Parameter(this, "startingSequenceNumber");
         startingSequenceNumber.setExpression("0");
+    }
+
+    /**     
+     * Clone the actor into the specified workspace.
+     * @param workspace The workspace for the new object.
+     * @return A new actor.
+     * @exception CloneNotSupportedException If a derived class contains
+     * an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        Sequencer newObject = (Sequencer)super.clone(workspace);
+        newObject.$ASSIGN$_pending(new TreeMap());
+        return newObject;
     }
 
     /**     
@@ -254,6 +269,16 @@ public class Sequencer extends Transformer implements SequenceActor, Rollbackabl
             $RECORD$_nextToken.add(null, _nextToken, $CHECKPOINT.getTimestamp());
         }
         return _nextToken = newValue;
+    }
+
+    private final TreeMap $ASSIGN$_pending(TreeMap newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_pending.add(null, _pending, $CHECKPOINT.getTimestamp());
+        }
+        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+            newValue.$SET$CHECKPOINT($CHECKPOINT);
+        }
+        return _pending = newValue;
     }
 
     private final int $ASSIGN$_sequenceNumberOfInput(int newValue) {

@@ -1,6 +1,6 @@
 /* A base class for random sources.
 
- Copyright (c) 1998-2008 The Regents of the University of California.
+ Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,8 +29,8 @@
 //// RandomSource
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import java.util.Random;
-
 import ptolemy.actor.lib.Source;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.backtrack.Checkpoint;

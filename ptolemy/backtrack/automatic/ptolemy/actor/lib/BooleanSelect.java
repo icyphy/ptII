@@ -1,6 +1,6 @@
-/* A polymorphic multiplexor with boolean select.
+/* Merge streams according to a boolean control signal.
 
- Copyright (c) 1997-2008 The Regents of the University of California.
+ Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,6 +31,7 @@
 //// BooleanSelect
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.backtrack.Checkpoint;
@@ -38,33 +39,50 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 /** 
- * A type polymorphic select with boolean valued control.  In an
- * iteration, if an input token is available at the <i>control</i> input,
- * that token is read, and its value is noted.  Its value specifies the
- * input port that should be read next. If the <i>control</i> input is
- * true, then if an input token is available on the <i>trueInput</i>
- * port, then it is is read and sent to the output.  Likewise with a
- * false input and the <i>falseInput</i> port.  The token sent to the
- * output is determined by the <i>control</i> input, which must be a
- * boolean value.  Because tokens are immutable, the same Token is sent
+ * Conditionally merge the streams at two input ports
+ * depending on the value of the boolean control input.
+ * In the first firing, this actor consumes a token from the
+ * <i>control</i> input port.
+ * The token at the <i>control</i> input specifies the
+ * input port that should be read from in the next firing.
+ * If the <i>control</i>
+ * token is false, then the <i>falseInput</i> port is used,
+ * otherwise the <i>trueInput</i> port is used. In the next
+ * firing, tokens are consumed from the specified
+ * port and sent to the <i>output</i> port.
+ * <p>
+ * The actor is able to fire if either it needs a new control
+ * token and there is a token on the <i>control</i> port, or
+ * it has read a control token and there is a token on every
+ * channel of the specified input port.
+ * <p>
+ * If the input port that is read has width greater than an output port, then
+ * some input tokens will be discarded (those on input channels for which
+ * there is no corresponding output channel).
+ * <p>
+ * Because tokens are immutable, the same Token is sent
  * to the output, rather than a copy.  The <i>trueInput</i> and
  * <i>falseInput</i> port may receive Tokens of any type.
- * <p> The actor indicates a willingness to fire in its prefire() method
- * if there is an input available on the channel specified by the most
- * recently seen token on the <i>control</i> port.  If no token has ever
- * been received on the <i>control</i> port, then <i>falseInput</i> is
- * assumed to be the one to read.
- * <p> This actor is similar to the BooleanMultiplexor actor, except that
- * it never discards input tokens.  Tokens on channels that are not
- * selected are not consumed.
- * @author Steve Neuendorffer, Adam Cataldo
+ * <p>
+ * This actor is designed to be used with the DDF or PN director,
+ * but it can also be used with SR, DE, and possibly other domains.
+ * It should not be used with 
+ * SDF because the number of tokens it consumes is not fixed.
+ * <p>
+ * This actor is similar to the BooleanMultiplexor actor, except that
+ * it does not discard input tokens on the port that it does not read.
+ * @author Steve Neuendorffer, Adam Cataldo, Edward A. Lee, Gang Zhou
  * @version $Id$
  * @since Ptolemy II 2.0
  * @Pt.ProposedRating Green (neuendor)
@@ -75,6 +93,8 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     protected transient Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // Put the control input on the bottom of the actor.
+    // For the benefit of the DDF director, this actor sets
+    // consumption rate values.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     /**     
@@ -99,13 +119,48 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      */
     public TypedIOPort output;
 
+    /**     
+     * This parameter provides token consumption rate for <i>trueInput</i>.
+     * The type is int.
+     */
+    public Parameter trueInput_tokenConsumptionRate;
+
+    /**     
+     * This parameter provides token consumption rate for <i>falseInput</i>.
+     * The type is int.
+     */
+    public Parameter falseInput_tokenConsumptionRate;
+
+    /**     
+     * This parameter provides token consumption rate for <i>control</i>.
+     * The type is int.
+     */
+    public Parameter control_tokenConsumptionRate;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    // Redo this check in case the control has changed since prefire().
+    // If on this iteration the control token was used, set it to null.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The most recently read control token.
-    private boolean _control = false;
+    /**     
+     * The most recently read control token. 
+     */
+    private BooleanToken _control = null;
+
+    /**     
+     * Indicator that the control token was used in the fire method. 
+     */
+    private boolean _controlUsed = false;
+
+    /**     
+     * A final static IntToken with value 0. 
+     */
+    private final static IntToken _zero = new IntToken(0);
+
+    /**     
+     * A final static IntToken with value 1. 
+     */
+    private final static IntToken _one = new IntToken(1);
 
     /**     
      * Construct an actor in the specified container with the specified
@@ -120,15 +175,47 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     public BooleanSelect(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
         super(container, name);
         trueInput = new TypedIOPort(this, "trueInput", true, false);
+        trueInput.setMultiport(true);
         falseInput = new TypedIOPort(this, "falseInput", true, false);
+        falseInput.setMultiport(true);
         control = new TypedIOPort(this, "control", true, false);
         control.setTypeEquals(BaseType.BOOLEAN);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(trueInput);
         output.setTypeAtLeast(falseInput);
+        output.setMultiport(true);
         StringAttribute controlCardinal = new StringAttribute(control, "_cardinal");
         controlCardinal.setExpression("SOUTH");
+        trueInput_tokenConsumptionRate = new Parameter(trueInput, "tokenConsumptionRate");
+        trueInput_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        trueInput_tokenConsumptionRate.setTypeEquals(BaseType.INT);
+        falseInput_tokenConsumptionRate = new Parameter(falseInput, "tokenConsumptionRate");
+        falseInput_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        falseInput_tokenConsumptionRate.setTypeEquals(BaseType.INT);
+        control_tokenConsumptionRate = new Parameter(control, "tokenConsumptionRate");
+        control_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        control_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "+"width=\"40\" height=\"40\" "+"style=\"fill:white\"/>\n"+"<text x=\"-17\" y=\"-3\" "+"style=\"font-size:14\">\n"+"T \n"+"</text>\n"+"<text x=\"-17\" y=\"15\" "+"style=\"font-size:14\">\n"+"F \n"+"</text>\n"+"<text x=\"-5\" y=\"16\" "+"style=\"font-size:14\">\n"+"C \n"+"</text>\n"+"</svg>\n");
+    }
+
+    /**     
+     * Clone this actor into the specified workspace. The new actor is
+     * <i>not</i> added to the directory of that workspace (you must do this
+     * yourself if you want it there).
+     * The result is a new actor with the same ports as the original, but
+     * no connections and no container.  A container must be set before
+     * much can be done with this actor.
+     * @param workspace The workspace for the cloned object.
+     * @exception CloneNotSupportedException If cloned ports cannot have
+     * as their container the cloned entity (this should not occur), or
+     * if one of the attributes cannot be cloned.
+     * @return A new ComponentEntity.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        BooleanSelect newObject = (BooleanSelect)super.clone(workspace);
+        newObject.$ASSIGN$_control(null);
+        newObject.$ASSIGN$_controlUsed(false);
+        return newObject;
     }
 
     /**     
@@ -140,14 +227,24 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      */
     public void fire() throws IllegalActionException  {
         super.fire();
-        if (_control) {
-            if (trueInput.hasToken(0)) {
-                output.send(0, trueInput.get(0));
-            }
+        if (_control == null) {
+            $ASSIGN$_control(((BooleanToken)control.get(0)));
+            $ASSIGN$_controlUsed(false);
         } else {
-            if (falseInput.hasToken(0)) {
-                output.send(0, falseInput.get(0));
+            if (_control.booleanValue()) {
+                for (int i = 0; i < trueInput.getWidth(); i++) {
+                    if (output.getWidth() > i) {
+                        output.send(i, trueInput.get(i));
+                    }
+                }
+            } else {
+                for (int i = 0; i < falseInput.getWidth(); i++) {
+                    if (output.getWidth() > i) {
+                        output.send(i, falseInput.get(i));
+                    }
+                }
             }
+            $ASSIGN$_controlUsed(true);
         }
     }
 
@@ -158,40 +255,81 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
      */
     public void initialize() throws IllegalActionException  {
         super.initialize();
-        $ASSIGN$_control(false);
+        $ASSIGN$_control(null);
+        $ASSIGN$_controlUsed(false);
+        trueInput_tokenConsumptionRate.setToken(_zero);
+        falseInput_tokenConsumptionRate.setToken(_zero);
+        control_tokenConsumptionRate.setToken(_one);
     }
 
     /**     
-     * Return false if the control input channel does not have a token,
-     * or if the control input is true, the true input does not have a
-     * token, or if the control input is false, the false input does not
-     * have a token. Otherwise, return whatever the superclass returns.
+     * Return true, unless stop() has been called, in which case,
+     * return false.
+     * @return True if execution can continue into the next iteration.
+     * @exception IllegalActionException If the base class throws it.
+     */
+    public boolean postfire() throws IllegalActionException  {
+        if (_controlUsed) {
+            $ASSIGN$_control(null);
+            trueInput_tokenConsumptionRate.setToken(_zero);
+            falseInput_tokenConsumptionRate.setToken(_zero);
+            control_tokenConsumptionRate.setToken(_one);
+        } else {
+            if (_control.booleanValue()) {
+                trueInput_tokenConsumptionRate.setToken(_one);
+                falseInput_tokenConsumptionRate.setToken(_zero);
+                control_tokenConsumptionRate.setToken(_zero);
+            } else {
+                trueInput_tokenConsumptionRate.setToken(_zero);
+                falseInput_tokenConsumptionRate.setToken(_one);
+                control_tokenConsumptionRate.setToken(_zero);
+            }
+        }
+        return super.postfire();
+    }
+
+    /**     
+     * If the mode is to read a control token, then return true
+     * if the <i>control</i> input has a token. Otherwise, return
+     * true if every channel of the input port specified by the most
+     * recently read control input has a token.
      * @return False if there are not enough tokens to fire.
      * @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException  {
-        if (control.hasToken(0)) {
-            $ASSIGN$_control(((BooleanToken)control.get(0)).booleanValue());
-            if (_control) {
-                if (!trueInput.hasToken(0)) {
-                    return false;
+        boolean result = super.prefire();
+        if (_control == null) {
+            return result && control.hasToken(0);
+        } else {
+            if (_control.booleanValue()) {
+                for (int i = 0; i < trueInput.getWidth(); i++) {
+                    if (!trueInput.hasToken(i)) {
+                        return false;
+                    }
                 }
             } else {
-                if (!falseInput.hasToken(0)) {
-                    return false;
+                for (int i = 0; i < falseInput.getWidth(); i++) {
+                    if (!falseInput.hasToken(i)) {
+                        return false;
+                    }
                 }
             }
-        } else {
-            return false;
         }
-        return super.prefire();
+        return result;
     }
 
-    private final boolean $ASSIGN$_control(boolean newValue) {
+    private final BooleanToken $ASSIGN$_control(BooleanToken newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
             $RECORD$_control.add(null, _control, $CHECKPOINT.getTimestamp());
         }
         return _control = newValue;
+    }
+
+    private final boolean $ASSIGN$_controlUsed(boolean newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_controlUsed.add(null, _controlUsed, $CHECKPOINT.getTimestamp());
+        }
+        return _controlUsed = newValue;
     }
 
     public void $COMMIT(long timestamp) {
@@ -200,7 +338,8 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _control = $RECORD$_control.restore(_control, timestamp, trim);
+        _control = (BooleanToken)$RECORD$_control.restore(_control, timestamp, trim);
+        _controlUsed = $RECORD$_controlUsed.restore(_controlUsed, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
             $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
@@ -230,8 +369,11 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
 
     private transient FieldRecord $RECORD$_control = new FieldRecord(0);
 
+    private transient FieldRecord $RECORD$_controlUsed = new FieldRecord(0);
+
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_control
+            $RECORD$_control,
+            $RECORD$_controlUsed
         };
 
 }

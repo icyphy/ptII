@@ -1,6 +1,6 @@
 /* Compute a histogram of input data.
 
- @Copyright (c) 2003-2008 The Regents of the University of California.
+ @Copyright (c) 2003-2006 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -30,6 +30,7 @@
 //// ComputeHistogram
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;

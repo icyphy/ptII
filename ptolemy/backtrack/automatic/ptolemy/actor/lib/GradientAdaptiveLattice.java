@@ -1,6 +1,6 @@
 /* An IIR filter actor that uses a direct form II implementation.
 
- Copyright (c) 2003-2008 The Regents of the University of California and
+ Copyright (c) 2003-2006 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -31,6 +31,7 @@
 //// GradientAdaptiveLattice
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Lattice;
 import ptolemy.backtrack.Checkpoint;
@@ -163,6 +164,12 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
     public Object clone(Workspace workspace) throws CloneNotSupportedException  {
         GradientAdaptiveLattice newObject = (GradientAdaptiveLattice)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
+        newObject.$ASSIGN$_estimatedErrorPower(new double[newObject._order + 1]);
+        System.arraycopy(newObject.$BACKUP$_estimatedErrorPower(), 0, $BACKUP$_estimatedErrorPower(), 0, newObject._order + 1);
+        newObject.$ASSIGN$_estimatedErrorPowerCache(new double[newObject._order + 1]);
+        System.arraycopy(newObject.$BACKUP$_estimatedErrorPowerCache(), 0, $BACKUP$_estimatedErrorPowerCache(), 0, newObject._order + 1);
+        newObject.$ASSIGN$_reflectionCoefficientsCache(new double[newObject._order]);
+        System.arraycopy(newObject.$BACKUP$_reflectionCoefficientsCache(), 0, $BACKUP$_reflectionCoefficientsCache(), 0, newObject._order);
         return newObject;
     }
 
@@ -246,6 +253,13 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         return _oneMinusAlpha = newValue;
     }
 
+    private final double[] $ASSIGN$_estimatedErrorPower(double[] newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_estimatedErrorPower.add(null, _estimatedErrorPower, $CHECKPOINT.getTimestamp());
+        }
+        return _estimatedErrorPower = newValue;
+    }
+
     private final double $ASSIGN$_estimatedErrorPower(int index0, double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
             $RECORD$_estimatedErrorPower.add(new int[] {
@@ -255,16 +269,16 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         return _estimatedErrorPower[index0] = newValue;
     }
 
-    private final double[] $ASSIGN$_estimatedErrorPower(double[] newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_estimatedErrorPower.add(null, _estimatedErrorPower, $CHECKPOINT.getTimestamp());
-        }
-        return _estimatedErrorPower = newValue;
-    }
-
     private final double[] $BACKUP$_estimatedErrorPower() {
         $RECORD$_estimatedErrorPower.backup(null, _estimatedErrorPower, $CHECKPOINT.getTimestamp());
         return _estimatedErrorPower;
+    }
+
+    private final double[] $ASSIGN$_estimatedErrorPowerCache(double[] newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_estimatedErrorPowerCache.add(null, _estimatedErrorPowerCache, $CHECKPOINT.getTimestamp());
+        }
+        return _estimatedErrorPowerCache = newValue;
     }
 
     private final double $ASSIGN$_estimatedErrorPowerCache(int index0, double newValue) {
@@ -276,16 +290,16 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
         return _estimatedErrorPowerCache[index0] = newValue;
     }
 
-    private final double[] $ASSIGN$_estimatedErrorPowerCache(double[] newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_estimatedErrorPowerCache.add(null, _estimatedErrorPowerCache, $CHECKPOINT.getTimestamp());
-        }
-        return _estimatedErrorPowerCache = newValue;
-    }
-
     private final double[] $BACKUP$_estimatedErrorPowerCache() {
         $RECORD$_estimatedErrorPowerCache.backup(null, _estimatedErrorPowerCache, $CHECKPOINT.getTimestamp());
         return _estimatedErrorPowerCache;
+    }
+
+    private final double[] $ASSIGN$_reflectionCoefficientsCache(double[] newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_reflectionCoefficientsCache.add(null, _reflectionCoefficientsCache, $CHECKPOINT.getTimestamp());
+        }
+        return _reflectionCoefficientsCache = newValue;
     }
 
     private final double $ASSIGN$_reflectionCoefficientsCache(int index0, double newValue) {
@@ -295,13 +309,6 @@ public class GradientAdaptiveLattice extends Lattice implements Rollbackable {
                 }, _reflectionCoefficientsCache[index0], $CHECKPOINT.getTimestamp());
         }
         return _reflectionCoefficientsCache[index0] = newValue;
-    }
-
-    private final double[] $ASSIGN$_reflectionCoefficientsCache(double[] newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_reflectionCoefficientsCache.add(null, _reflectionCoefficientsCache, $CHECKPOINT.getTimestamp());
-        }
-        return _reflectionCoefficientsCache = newValue;
     }
 
     private final double[] $BACKUP$_reflectionCoefficientsCache() {

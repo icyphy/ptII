@@ -1,6 +1,6 @@
 /* A pulse source.
 
- Copyright (c) 1998-2008 The Regents of the University of California.
+ Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,6 +29,7 @@
 //// Pulse
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.lib.SequenceSource;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
@@ -224,6 +225,15 @@ public class Pulse extends SequenceSource implements Rollbackable {
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
+        newObject.$ASSIGN$_indexes(new int[_indexes.length]);
+        System.arraycopy($BACKUP$_indexes(), 0, newObject.$BACKUP$_indexes(), 0, _indexes.length);
+        try {
+            ArrayToken valuesArray = (ArrayToken)newObject.values.getToken();
+            Token prototype = valuesArray.getElement(0);
+            newObject.$ASSIGN$_zero(prototype.zero());
+        } catch (Exception ex) {
+            throw new InternalErrorException(ex);
+        }
         return newObject;
     }
 
@@ -408,6 +418,11 @@ public class Pulse extends SequenceSource implements Rollbackable {
                 }, _indexes[index0], $CHECKPOINT.getTimestamp());
         }
         return _indexes[index0] = newValue;
+    }
+
+    private final int[] $BACKUP$_indexes() {
+        $RECORD$_indexes.backup(null, _indexes, $CHECKPOINT.getTimestamp());
+        return _indexes;
     }
 
     private final Token $ASSIGN$_zero(Token newValue) {

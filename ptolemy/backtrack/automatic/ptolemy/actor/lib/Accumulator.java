@@ -1,6 +1,6 @@
 /* An actor that outputs the sum of the inputs so far.
 
- Copyright (c) 2002-2008 The Regents of the University of California.
+ Copyright (c) 2002-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,6 +29,7 @@
 //// Accumulator
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
