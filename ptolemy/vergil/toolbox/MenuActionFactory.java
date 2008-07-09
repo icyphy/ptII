@@ -135,19 +135,22 @@ public class MenuActionFactory implements MenuItemFactory {
 
     /** Add an item to the given context menu that will configure the
      *  parameters on the given target.
+     *  @param menu The context menu to add to.
+     *  @param target The object that the menu item command will operate on.
+     *  @return A menu item, or null to decline to provide a menu item.
      */
     public JMenuItem create(JContextMenu menu, NamedObj object) {
         JMenuItem menuItem;
         if (_action != null) {
             // Single action as a simple menu entry.
-            menuItem =  menu.add(_action, (String) _action.getValue(
+            menuItem = _add(menu, _action, (String) _action.getValue(
                     Action.NAME));
         } else {
             // Requested a submenu with a group of actions.
             final JMenu submenu = new JMenu(_label);
             menu.add(submenu, _label);
             for (int i = 0; i < _actions.length; i++) {
-                submenu.add(_actions[i]);
+                _add(submenu, _actions[i]);
             }
             menuItem = submenu;
         }
@@ -163,6 +166,25 @@ public class MenuActionFactory implements MenuItemFactory {
             }
         }
         return menuItem;
+    }
+
+    /** Add an action to the context menu.
+     *  @param menu The context menu.
+     *  @param action The action to be added to the context menu.
+     *  @param tooltip The tooltip for the action.
+     *  @return The added menu item.
+     */
+    protected JMenuItem _add(JContextMenu menu, Action action, String tooltip) {
+        return menu.add(action, tooltip);
+    }
+
+    /** Add an action to the submenu.
+     *  @param submenu The submenu.
+     *  @param action The action to be added to the submenu.
+     *  @return The added menu item.
+     */
+    protected JMenuItem _add(JMenu submenu, Action action) {
+        return submenu.add(action);
     }
 
     ///////////////////////////////////////////////////////////////////

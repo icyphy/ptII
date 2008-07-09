@@ -65,6 +65,7 @@ JSRCS = \
 	PtolemyListCellRenderer.java \
 	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
+	RadioMenuActionFactory.java \
 	RemoveIconAction.java \
 	RotateOrFlipPorts.java \
 	SnapConstraint.java \
