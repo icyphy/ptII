@@ -221,7 +221,7 @@ public class PreemptivePlatformExecutionStrategy extends
      *                Events that are safe to fire.
      * 
      * @return The next event that can be fired.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if an execution was missed.
      */
     public DEEvent getNextEventToFire(List<DEEvent> actorsFiring,

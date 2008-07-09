@@ -82,7 +82,7 @@ public abstract class PlatformExecutionStrategy {
      *                computed by the PtidesEmbeddedDirector.
      * @return event that can be fired. if no event can be fired then it returns
      *         null
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public abstract DEEvent getNextEventToFire(List<DEEvent> actorsFiring,
             List eventsToFire) throws IllegalActionException;
