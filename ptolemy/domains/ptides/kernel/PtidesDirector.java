@@ -355,7 +355,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
      * time any platform is interested in being fired again.
      * 
      * @return The new physical time.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if physical time cannot be increased.
      */
     public synchronized Time waitForFuturePhysicalTime()
@@ -458,7 +458,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
      * Increase physical time to next time that any of the platforms
      * is interested in doing something.
      * 
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private synchronized void _increasePhysicalTime()
             throws IllegalActionException {
@@ -483,7 +483,7 @@ public class PtidesDirector extends CompositeProcessDirector implements
     /**
      * Initialize parameters of the director.
      * 
-     * @throws NameDuplicationException
+     * @exception NameDuplicationException
      *                 Could occur if parameter with same name already exists.
      */
     private void _initialize() throws IllegalActionException,

@@ -138,9 +138,9 @@ public class PtidesPlatformReceiver extends TimedQueue {
      *                The receivers that get the token.
      * @param time
      *                The time stamp for the token.
-     * @throws NoRoomException
+     * @exception NoRoomException
      *                 Thrown if the receiver is full.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if container cannot convert token.
      */
     public void putToAll(Token token, Receiver[] receivers, Time time)

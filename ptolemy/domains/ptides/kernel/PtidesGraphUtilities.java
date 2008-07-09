@@ -86,7 +86,7 @@ public class PtidesGraphUtilities {
     /**
      * Calculate minimum delays for the ports.
      * 
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if parameters of actors cannot be read.
      */
     public void calculateMinDelays() throws IllegalActionException {
@@ -113,7 +113,7 @@ public class PtidesGraphUtilities {
      * 
      * @param container
      *                Actor that minimum delays should be calculated for.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if parameters of actors cannot be read.
      */
     public void getMinDelays(Actor container) throws IllegalActionException {
@@ -361,7 +361,7 @@ public class PtidesGraphUtilities {
      *                Output port.
      * @param minDelay
      *                Minimum delay of that port.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if the parameter cannot be set.
      */
     public static void setMinDelay(IOPort out, double minDelay)
@@ -386,7 +386,7 @@ public class PtidesGraphUtilities {
      * 
      * @param graph Graph containing actors for which minimum delays
      *                should be calculated for.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if the minimum delay cannot be set.
      */
     private void _adjustMinDelayAddingUpstreamDelays(DirectedAcyclicGraph graph)
@@ -414,7 +414,7 @@ public class PtidesGraphUtilities {
      * port groups must be considered. The minimum of all minimum
      * delays of ports in a group is chosen.
      * 
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if minimum delay cannot be set.
      */
     private void _adjustMinimumDelaysOfPortGroups()
@@ -527,7 +527,7 @@ public class PtidesGraphUtilities {
      *                Edges that have already been considered in the
      *                computation.
      * @return The minimum delay.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if parameters of actors could not be read.
      */
     private double _getMinDelay(Actor container, boolean forward, Node node,
@@ -661,7 +661,7 @@ public class PtidesGraphUtilities {
      * 
      * @param graph
      *                Graph containing all actors.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if minimum delay could not be set.
      */
     private void _transferDelaysFromOutputsToInputs(DirectedAcyclicGraph graph)

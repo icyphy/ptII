@@ -834,7 +834,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * Transfer output ports.
      * 
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Attempted to transferOutputs on a port that is not an
      *                 opaque input port.
      */
@@ -889,7 +889,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * 
      * @param event
      *                The event that should be enqueued again.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if event cannot be enqueued.
      */
     private void _enqueueEventAgain(DEEvent event)
@@ -926,7 +926,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * @param traversedEdges
      *                Edges that have been traversed already.
      * @return True if the event is safe to process.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if the delay of a DelayActor could not be
      *                 retrieved.
      */
@@ -991,7 +991,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * 
      * @param actorToFire
      *                Actor that has to be fired.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Thrown if actor cannot be fired.
      */
     private void _fireActorInZeroModelTime(Actor actorToFire)
@@ -1117,7 +1117,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * @param list
      *                Events that were previously selected to be processed but
      *                were not processed.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 If the event cannot be enqueued.
      */
     private void _enqueueRemainingEventsAgain(List<DEEvent> list)
@@ -1177,7 +1177,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * actor to be fired might have changed.
      * 
      * @return True if input ports were transferred.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 If reading from the associated port throws it or inputs
      *                 could not be transferred.
      */
@@ -1199,7 +1199,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * Transfer all output tokens.
      * 
      * @return true if output tokens were transfered.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *                 Attempted to transferOutputs on a port that is not an
      *                 opaque input port.
      */
