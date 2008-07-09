@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * Receivers in the Ptides domain use a this timed queue to sort and events in
  * the receivers.
- * 
+ *
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -61,7 +61,7 @@ public class TimedQueue extends AbstractReceiver {
 
     /**
      * Construct an empty queue with the specified IOPort container.
-     * 
+     *
      * @param container
      *                The IOPort that contains this receiver.
      * @exception IllegalActionException
@@ -89,7 +89,7 @@ public class TimedQueue extends AbstractReceiver {
      * PrioritizedTimedQueue. If there are any receivers in the
      * TimeKeeper with receiver times of PrioritizedTimedQueue.IGNORE,
      * remove the first token from these receivers.
-     * 
+     *
      * @return The oldest token off of the queue.
      * @exception NoTokenException
      *                    If the queue is empty.
@@ -105,7 +105,7 @@ public class TimedQueue extends AbstractReceiver {
     /**
      * Similar to get() but if not only token but also time stamp is
      * required, this method is used.
-     * 
+     *
      * @return Event containing token and time stamp.
      */
     public Event getEvent() {
@@ -116,7 +116,7 @@ public class TimedQueue extends AbstractReceiver {
 
     /**
      * Get the queue capacity of this receiver.
-     * 
+     *
      * @return The capacity of this receiver's queue.
      * @see #setCapacity(int)
      */
@@ -126,7 +126,7 @@ public class TimedQueue extends AbstractReceiver {
 
     /**
      * This is an unbounded receiver thus always returns true.
-     * 
+     *
      * @return true because this is an unbounded receiver.
      */
     public boolean hasRoom() {
@@ -135,7 +135,7 @@ public class TimedQueue extends AbstractReceiver {
 
     /**
      * This is an unbounded receiver thus always returns true.
-     * 
+     *
      * @param numberOfTokens Number of tokens to be stored.
      * @return true because this is an unbounded receiver.
      */
@@ -147,7 +147,7 @@ public class TimedQueue extends AbstractReceiver {
     /**
      * Return true if there are tokens stored on the queue. Return false if the
      * queue is empty.
-     * 
+     *
      * @return True if the queue is not empty; return false otherwise.
      */
     public boolean hasToken() {
@@ -156,7 +156,7 @@ public class TimedQueue extends AbstractReceiver {
 
     /**
      * Returns true if there is a token with the specified time stamp.
-     * 
+     *
      * @param time
      *                Time for which a token is required.
      * @return True if the first element in the queue has the specified time
@@ -171,7 +171,7 @@ public class TimedQueue extends AbstractReceiver {
 
     /**
      * Return true if queue size is at least the argument.
-     * 
+     *
      * @param numberOfTokens
      *                The number of tokens to get from the queue.
      * @return True if the queue has enough tokens.
@@ -192,7 +192,7 @@ public class TimedQueue extends AbstractReceiver {
 
     /**
      * Throw an exception, since this method is not used in Ptides.
-     * 
+     *
      * @param token
      *                The token to be put to the receiver.
      * @exception NoRoomException
@@ -211,7 +211,7 @@ public class TimedQueue extends AbstractReceiver {
      * full, throw a NoRoomException. Time stamps can not be set to negative
      * values that are not equal to IGNORE or INACTIVE; otherwise an
      * IllegalArgumentException will be thrown.
-     * 
+     *
      * @param token
      *                The token to put on the queue.
      * @param time
@@ -245,7 +245,7 @@ public class TimedQueue extends AbstractReceiver {
 
         /**
          * Construct an Event with a token and time stamp.
-         * 
+         *
          * @param token
          *                Token for the event.
          * @param time
@@ -261,7 +261,7 @@ public class TimedQueue extends AbstractReceiver {
 
         /**
          * Return the time stamp of this event.
-         * 
+         *
          * @return The time stamp of the event.
          */
         public Time getTime() {
@@ -270,7 +270,7 @@ public class TimedQueue extends AbstractReceiver {
 
         /**
          * Return the token of this event.
-         * 
+         *
          * @return The token of the event.
          */
         public Token getToken() {
@@ -291,19 +291,19 @@ public class TimedQueue extends AbstractReceiver {
      * to compare Tokens, therefore am comparing DoubleTokens and IntTokens
      * here. If other kinds of Tokens are used, this Comparer needs to be
      * extended.
-     * 
+     *
      * @author Patricia Derler
-     * 
+     *
      */
     public static class TimeComparator implements Comparator {
 
         /**
          * Compare two events according to time stamps and values.
-         * 
+         *
          * FIXME Because there is no general compare method for tokens, I
          * implemented the comparison for int and double tokens. A more general
          * compare is required.
-         * 
+         *
          * @param arg0
          *                First event.
          * @param arg1
