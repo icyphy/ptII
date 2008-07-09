@@ -223,7 +223,7 @@ public class PtidesPlatformReceiver extends TimedQueue {
     private PtidesEmbeddedDirector _director;
 
     /**
-     * version of the directorl.
+     * Version of the director.
      */
     private long _directorVersion = -1;
 

@@ -603,7 +603,7 @@ public class PtidesGraphUtilities {
      */
     private double _getMinDelayUpstream(DirectedAcyclicGraph graph,
             IOPort inputPort, List traversedActors) {
-        double mindel = Double.MAX_VALUE;
+        double minDelay = Double.MAX_VALUE;
         double delay = PtidesGraphUtilities.getMinDelayTime(inputPort);
         for (Iterator it = graph.inputEdges(graph.node(inputPort)).iterator(); it
                 .hasNext();) {
@@ -619,16 +619,16 @@ public class PtidesGraphUtilities {
                 IOPort input = (IOPort) inputs.next();
                 if (isInputConnectedToOutput(actor, input, port)) {
                     delay += _getMinDelayUpstream(graph, input, traversedActors);
-                    if (mindel > delay) {
-                        mindel = delay;
+                    if (minDelay > delay) {
+                        minDelay = delay;
                     }
                 }
             }
         }
-        if (mindel == Double.MAX_VALUE) {
-            mindel = delay;
+        if (minDelay == Double.MAX_VALUE) {
+            minDelay = delay;
         }
-        return mindel;
+        return minDelay;
     }
 
     /**
@@ -668,7 +668,7 @@ public class PtidesGraphUtilities {
             throws IllegalActionException {
 
         // transferring min delays from outputs to inputs; outputs can have
-        // mindelays if
+        // minDelayays if
         // upstream actors are not connected to an input of the same actor
         for (Iterator it = topLevelContainer.entityList().iterator(); it
                 .hasNext();) {

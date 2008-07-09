@@ -234,8 +234,8 @@ public class PtidesDirector extends CompositeProcessDirector implements
     }
 
     /**
-     * Initialize parameters andthe schedule plotters. Calculate minimum delays
-     * for ports on platforms according to Ptides.
+     * Initialize parameters and the schedule plotters. Calculate
+     * minimum delays for ports on platforms according to Ptides.
      * 
      * @see #getModelTime()
      */

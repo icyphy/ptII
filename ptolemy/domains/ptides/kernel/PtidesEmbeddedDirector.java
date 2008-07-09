@@ -196,8 +196,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * Display event in Scheduleplotter.
      * 
-     * @param actor Actor for which the event occured.
-     * @param time physical time at which the event occured.
+     * @param actor Actor for which the event occurred.
+     * @param time physical time at which the event occurred.
      * @param scheduleEvent Type of event.
      */
     public final void displaySchedule(Actor actor, double time,
@@ -273,7 +273,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * event.timestamp() + wcet. After the expiration of the finishing
      * time, the actor is removed from the list and the fire() of the
      * actor is executed. If no actor is found that can execute now,
-     * this actor waits. It continues execution when the phyiscal time
+     * this actor waits. It continues execution when the physical time
      * is increased or when tokens are received on the input ports. If
      * an actor is preempted, the preempting actor is added to the
      * list of actors in execution and the finishing times for all
@@ -405,7 +405,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Inputs are only transfered from the outside of the container to
+     * Inputs are only transferred from the outside of the container to
      * the actors inside if they are safe to process according to
      * PTIDES. Tokens are safe to process if eventTimestamp - minDelay
      * + clockSyncError + networkDelay <= physicalTime
@@ -483,7 +483,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize(); // bad style, but has to be done because
-        // otherwise the eventqueue that is not used is
+        // otherwise the eventQueue that is not used is
         // not initialized and this causes problems in
         // wrapup
 
@@ -585,7 +585,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
     }
 
     /**
-     * Transfer outputs and return true if any tokens were transfered.
+     * Transfer outputs and return true if any tokens were transferred.
      * 
      * @exception IllegalActionException
      *                    If the port is not an opaque output port.
@@ -717,7 +717,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
             // compositeactor
             // scheduled
             // after
-            // timeddelay=
+            // timedDelay=
             // ((DEEventQueue)_eventQueues.get(actor)).put(newEvent);
             _refireAt(newEvent.timeStamp());
         }
@@ -754,7 +754,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
         DEEvent newEvent = new DEEvent(ioPort, time, _microstep, depth);
         // getEventQueue().put(newEvent);
         // if (((DEEventQueue)_eventQueues.get(actor)) != null) // TODO why is
-        // compositeactor scheduled after timeddelay=
+        // compositeactor scheduled after timedDelay=
         // ((DEEventQueue)_eventQueues.get(actor)).put(newEvent);
         _refireAt(newEvent.timeStamp());
     }
@@ -1198,20 +1198,20 @@ public class PtidesEmbeddedDirector extends DEDirector {
     /**
      * Transfer all output tokens.
      * 
-     * @return true if output tokens were transfered.
+     * @return true if output tokens were transferred.
      * @exception IllegalActionException
      *                 Attempted to transferOutputs on a port that is not an
      *                 opaque input port.
      */
     private boolean _transferAllOutputs() throws IllegalActionException {
-        boolean transferedOutputs = false;
+        boolean transferredOutputs = false;
         Iterator outports = ((Actor) getContainer()).outputPortList()
                 .iterator();
         while (outports.hasNext() && !_stopRequested) {
             IOPort p = (IOPort) outports.next();
-            transferedOutputs = transferedOutputs | _transferOutputs(p);
+            transferredOutputs = transferredOutputs | _transferOutputs(p);
         }
-        return transferedOutputs;
+        return transferredOutputs;
     }
 
     // /////////////////////////////////////////////////////////////////
