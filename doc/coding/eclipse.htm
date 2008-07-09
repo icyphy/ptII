@@ -116,7 +116,7 @@ to format comments.  We hope to change this policy in the future.
  <ol>
   <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>).
 
-  <li> Expand the Java tree, select <code>Code Style</code> | <code>Formatter</code>
+  <li> Expand the Java tree, expand <code>Code Style</code> | <code>Formatter</code>
   <li> Under "Active profile", Click on "New..."
   <li> In the "New Profile" window, enter "Ptolemy II" into
        the "Profile Name" entry.
@@ -168,38 +168,12 @@ if you are tightly managing serialization, we turn it off:
   <li> Click Apply.  If you are prompted for a full rebuild, click Yes.
  </ol>
 
-<li> By default, Eclipse checks in <CODE>makefile</CODE>s,
-<CODE>*.c</CODE>, <CODE>*.h</CODE> files and <CODE>*.tcl</CODE> files with
-<CODE>-kb</CODE>.  This causes no end of problems when the tree is
-checked out on a platform that has a different line ending.
-
- <br>The solution: set your file associations properly:
- <ol>
-  <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>).
-  <li> Expand <code>Team</code> | <code>File Content</code>
-  <li> Click on "Add Extension" and enter "*.tcl" in the "Enter
-  File Extension" window, then click "OK" in the "Enter File Extension"  
-  
-  <li> Select "*.tcl" in the "File Content" window and then hit
-	the "Change" button to change the Content to "ASCII Text"
-
-  <li> Do the same steps for the "*.c" and "*.h" files.
-
-  <li> Click on "Add Name" and add "makefile", select
-	"makefile" and click on the "Change" button to
-	change the Content to "ASCII Text"
-  <li> Click Apply
- </ol>
 <li> Click OK to apply all of the above changes.
 </menu>
 
 </ol>
 
 <h2><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h2>
-<b>Note that we are switching to Subversion on Wednesday, June 11, 2008</b>
-<p><b>CVS instructions can be found at
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII7.0/ptII/doc/coding/eclipse.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII7.0/ptII/doc/coding/eclipse.htm</code></a></b>
-
 
 <p>Eclipse will manage your ptII code tree as a <em>project</em> called
 the ptII project.  There several ways to set up the ptII project,
@@ -453,7 +427,7 @@ they will be accessing the tree with <B>read-only</B> Subversion access.
 <a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">ssh account</a> on <code>source.eecs.berkeley.edu</code>, then check out ptII with
 read/write access:
 <pre>
-svn+ssh://source.eecs.berkeley.edu/home/svn/chess/ptII/trunk
+svn+ssh://source.eecs.berkeley.edu/home/svn/chess/ptII
 </pre>
 Or, if your user id on source.eecs is different than your current user id
 on your machine:
@@ -463,7 +437,18 @@ svn co svn+ssh://<I>yourID</I>source.eecs.berkeley.edu/chess/ptII/trunk ptII
 Read/write users will be prompted for their source.eecs.berkeley.edu
 username and password. 
 
-<li>In the SVN Repository view, expand the ptII svn repository, right click on <code>trunk</code> and select <code>checkout</code>
+<li>In the SVN Repository view, right click on <code>trunk</code> and select <code>checkout</code>
+
+<blockquote>
+ <table border="1">
+  <tr>
+   <td>
+     Be sure to check out the <b><code>trunk</code></b> not the
+     entire tree, which include all the branches and the trunk.
+   </td>
+  </tr>
+ </table>
+</blockquote>
 
 Follow the wizard, creating selections as follows:
 <ul>
