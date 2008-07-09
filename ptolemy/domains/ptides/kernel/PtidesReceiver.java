@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * Receiver used on the top level in the ptides domain.
- * 
+ *
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -63,7 +63,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
 
     /**
      * Construct an empty receiver with the specified container.
-     * 
+     *
      * @param container
      *                The IOPort that contains this receiver.
      * @exception IllegalActionException
@@ -102,7 +102,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
 
     /**
      * Returns the director.
-     * 
+     *
      * @return The director.
      */
     public PtidesDirector getDirector() {
@@ -124,7 +124,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is connected to the inside of a boundary port,
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is contained on the inside of a boundary
      *         port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
@@ -138,7 +138,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is connected to the inside of a boundary port,
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is connected to the inside of a boundary
      *         port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
@@ -152,7 +152,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is connected to the outside of a boundary port,
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is connected to the outside of a boundary
      *         port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
@@ -164,7 +164,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
     /**
      * Return true if this receiver is a consumer receiver. A receiver is a
      * consumer receiver if it is connected to a boundary port.
-     * 
+     *
      * @return True if this is a consumer receiver; return false otherwise.
      */
     public boolean isConsumerReceiver() {
@@ -179,7 +179,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is contained on the inside of a boundary port
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is contained on the inside of a boundary
      *         port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
@@ -193,7 +193,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is contained on the outside of a boundary port
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is contained on the outside of a boundary
      *         port; return false otherwise.
      * @see BoundaryDetector
@@ -206,7 +206,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
      * Return true if this receiver is a producer receiver. A receiver is a
      * producer receiver if it is contained on the inside or outside of a
      * boundary port.
-     * 
+     *
      * @return True if this is a producer receiver; return false otherwise.
      */
     public boolean isProducerReceiver() {
@@ -219,7 +219,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
     /**
      * Return a true or false to indicate whether there is a read block on this
      * receiver or not, respectively.
-     * 
+     *
      * @return a boolean indicating whether a read is blocked on this receiver
      *         or not.
      */
@@ -230,7 +230,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
     /**
      * Return a true or false to indicate whether there is a write
      * block on this receiver or not.
-     * 
+     *
      * @return A boolean indicating whether a write is blocked on this receiver
      *         or not.
      */
@@ -250,7 +250,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
      * any point during this method this receiver is scheduled for
      * termination, then throw a TerminateProcessException which will
      * cease activity for the actor that contains this receiver.
-     * 
+     *
      * @param token
      *                The token to put in the queue.
      * @exception TerminateProcessException
@@ -280,7 +280,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
      * any point during this method this receiver is scheduled for
      * termination, then throw a TerminateProcessException which will
      * cease activity for the actor that contains this receiver.
-     * 
+     *
      * @param token
      *                The token to put in the queue.
      * @param time
@@ -323,7 +323,7 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
 
     /**
      * Set the container. This overrides the base class to record the director.
-     * 
+     *
      * @param port
      *                The container.
      * @exception IllegalActionException
