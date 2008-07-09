@@ -50,6 +50,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.DefaultCausalityInterface;
+import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.ArrayToken;
@@ -407,10 +408,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   and output ports.
      */
     public CausalityInterface getCausalityInterface() {
-        if (getDirector() != null) {
-            return getDirector().defaultCausalityInterface(this);
+        Director director = getDirector();
+        if (_causalityInterface != null
+                && _causalityInterfaceDirector == director) {
+            return _causalityInterface;
         }
-        return new DefaultCausalityInterface(this, BooleanDependency.OTIMES_IDENTITY);
+        Dependency defaultDependency = BooleanDependency.OTIMES_IDENTITY;
+        if (director != null) {
+            defaultDependency = director.defaultDependency();
+        }
+        // FIXME: Examine all the transitions to determine which
+        // input ports are referenced and which output ports are written
+        // to. Then create a dependency that reflects this.
+        _causalityInterface = new DefaultCausalityInterface(this, defaultDependency);
+        _causalityInterfaceDirector = director;
+        return _causalityInterface;
     }
 
     /**
@@ -1752,6 +1764,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private transient long _outputPortsVersion = -1;
 
     private transient LinkedList _cachedOutputPorts;
+
+    /** The causality interface, if it has been created. */
+    private CausalityInterface _causalityInterface;
+
+    /** The director for which the causality interface was created. */
+    private Director _causalityInterfaceDirector;
 
     // Stores for each state a map from input ports to boolean flags
     // indicating whether a channel is connected to an output port

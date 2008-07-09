@@ -28,7 +28,6 @@
 package ptolemy.actor.util;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
@@ -103,4 +102,14 @@ public interface CausalityInterface {
      *   and the specified output port.
      */
     public Dependency getDependency(IOPort input, IOPort output);
+    
+    /** Remove the dependency that the specified output port has
+     *  on the specified input port. If there is no
+     *  defined dependency between the two ports, then this
+     *  method will have no effect.
+     *  @param inputPort The input port.
+     *  @param outputPort The output port that does not depend on the
+     *   input port.
+     */
+    public void removeDependency(IOPort inputPort, IOPort outputPort);
 }

@@ -43,11 +43,17 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
+import ptolemy.actor.util.DefaultCausalityInterface;
+import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -200,6 +206,25 @@ public class FSMDirector extends Director implements
         newObject._localReceiverMaps = new HashMap();
         newObject._localReceiverMapsVersion = -1;
         return newObject;
+    }
+    
+    /** Return a default dependency to use between input input
+     *  ports and output ports.
+     *  This overrides the base class so that if there
+     *  is an executive director, then we get the default
+     *  dependency from it.
+     *  @see Dependency
+     *  @see CausalityInterface
+     *  @see Actor#getCausalityInterface()
+     *  @return A default dependency between input ports
+     *   and output ports.
+     */
+    public Dependency defaultDependency() {
+        Director executiveDirector = ((Actor)getContainer()).getExecutiveDirector();
+        if (executiveDirector != null) {
+            return executiveDirector.defaultDependency();
+        }
+        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Fire the model model for one iteration.

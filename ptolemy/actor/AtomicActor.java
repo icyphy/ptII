@@ -35,6 +35,7 @@ import java.util.List;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.DefaultCausalityInterface;
+import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfAtomicActor;
 import ptolemy.kernel.ComponentEntity;
@@ -229,13 +230,11 @@ public class AtomicActor extends ComponentEntity implements Actor,
                 && _causalityInterfaceDirector == director) {
             return _causalityInterface;
         }
+        Dependency defaultDependency = BooleanDependency.OTIMES_IDENTITY;
         if (director != null) {
-            _causalityInterface = director.defaultCausalityInterface(this);
-            _causalityInterfaceDirector = director;
-            return _causalityInterface;
+            defaultDependency = director.defaultDependency();
         }
-        // If we get here, there is no director.
-        _causalityInterface = new DefaultCausalityInterface(this, BooleanDependency.OTIMES_IDENTITY);
+        _causalityInterface = new DefaultCausalityInterface(this, defaultDependency);
         _causalityInterfaceDirector = director;
         return _causalityInterface;
     }
@@ -592,6 +591,8 @@ public class AtomicActor extends ComponentEntity implements Actor,
         }
 
         _stopRequested = false;
+        
+        pruneDependencies();
 
         // First invoke initializable methods.
         if (_initializables != null) {
@@ -671,8 +672,13 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
      */
     public void removeDependency(IOPort input, IOPort output) {
+        // FIXME: FunctionDependency is obsolete. Remove when
+        // CausalityInterface mechanism is fully tested.
         FunctionDependencyOfAtomicActor functionDependency = (FunctionDependencyOfAtomicActor) getFunctionDependency();
         functionDependency.removeDependency(input, output);
+        
+        CausalityInterface causality = getCausalityInterface();
+        causality.removeDependency(input, output);
     }
 
     /** Remove the specified object from the list of objects whose

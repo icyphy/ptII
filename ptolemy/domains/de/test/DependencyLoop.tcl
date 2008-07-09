@@ -44,11 +44,11 @@ if {[string compare test [info procs test]] == 1} then {
 test DependencyLoop-1.0 {} {
     catch {createAndExecute "auto/knownFailedTests/dependencyLoop.xml"} foo
     list $foo
-} {{ptolemy.kernel.util.IllegalActionException: Found zero delay loop including: .dependencyLoop.original, .dependencyLoop.original, .dependencyLoop.opposite, .dependencyLoop.opposite, .dependencyLoop.Merge, .dependencyLoop.Merge
-  in .dependencyLoop}}
+} {{ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .dependencyLoop.original
+  in .dependencyLoop.DE Director and .dependencyLoop.original}}
 
 test DependencyLoop-2.0 {} {
     catch {createAndExecute "auto/knownFailedTests/dependencyLoop2.xml"} foo
     list $foo
-} {{ptolemy.kernel.util.IllegalActionException: Found zero delay loop including: .dependencyLoop2.original, .dependencyLoop2.original, .dependencyLoop2.opposite, .dependencyLoop2.opposite, .dependencyLoop2.Merge, .dependencyLoop2.Merge
-  in .dependencyLoop2}}
+} {{ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .dependencyLoop.original
+  in .dependencyLoop.DE Director and .dependencyLoop.original}}

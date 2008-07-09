@@ -102,6 +102,13 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
      *  @see ptolemy.actor.AtomicActor#pruneDependencies()
      */
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
+        // FIXME: Temporary hack pending removal of this class to
+        // be replaced by CausalityInterface. If the _dependencyGraph
+        // is null, then we are using CausalityInterface, not FunctionDependency,
+        // so we can ignore the call.
+        if (_dependencyGraph == null) {
+            return;
+        }
         // We do not need the validity checking because this method is
         // only called from the _constructDependencyGraph() method, which
         // again can only be accessed from the _validate() method.

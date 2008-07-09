@@ -26,11 +26,12 @@
  */
 package ptolemy.domains.de.kernel;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -40,16 +41,16 @@ import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
-import ptolemy.actor.util.FunctionDependency;
-import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
@@ -247,6 +248,8 @@ public class DEDirector extends Director implements TimedDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initParameters();
+        // FIXME: testing
+        _verbose = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -318,30 +321,6 @@ public class DEDirector extends Director implements TimedDirector {
         super.addDebugListener(listener);
     }
     
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is an attribute with no container.
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DEDirector newObject = (DEDirector)super.clone(workspace);
-        newObject._actorToDepth = null;
-        newObject._disabledActors = null;
-        newObject._eventQueue = null;
-        newObject._exceedStopTime = false;
-        newObject._isInitializing = false;
-        newObject._microstep = 0;
-        newObject._noMoreActorsToFire = false;
-        newObject._portToDepth = null;
-        newObject._realStartTime = 0;
-        newObject._sortValid = -1;
-        newObject._stopFireRequested = false;
-        return newObject;
-    }
-
     /** Update the director parameters when attributes are changed.
      *  Changes to <i>isCQAdaptive</i>, <i>minBinCount</i>, and
      *  <i>binCountFactor</i> parameters will only be effective on
@@ -369,6 +348,56 @@ public class DEDirector extends Director implements TimedDirector {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an attribute with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DEDirector newObject = (DEDirector)super.clone(workspace);
+        newObject._actorToDepth = null;
+        newObject._disabledActors = null;
+        newObject._eventQueue = null;
+        newObject._exceedStopTime = false;
+        newObject._isInitializing = false;
+        newObject._microstep = 0;
+        newObject._noMoreActorsToFire = false;
+        newObject._portToDepth = null;
+        newObject._realStartTime = 0;
+        newObject._actorDepthVersion = -1;
+        newObject._stopFireRequested = false;
+        return newObject;
+    }
+    
+    /** Return a string that describes the depths of actors and their ports.
+     *  These depths are used to prioritize firings, where lower depths
+     *  result in higher priorities.
+     *  @exception IllegalActionException If there is a causality loop.
+     */
+    public String describePriorities() throws IllegalActionException {
+        _computeActorDepth();
+        StringBuffer result = new StringBuffer();
+        List<Actor> actors = ((CompositeEntity)getContainer()).deepEntityList();
+        for (Actor actor : actors) {
+            result.append(actor.getFullName());
+            result.append(": ");
+            result.append(_actorToDepth.get(actor));
+            result.append("\n");
+            List<IOPort> ports = ((Entity)actor).portList();
+            for (IOPort port : ports) {
+                result.append("   ");
+                result.append(port.getName());
+                result.append(": ");
+                result.append(_portToDepth.get(port));
+                result.append("\n");
+            }
+        }
+        return result.toString();
     }
 
     /** <p>Advance the current model tag to that of the earliest event in
@@ -864,7 +893,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  sort to be redone next time when an event is enqueued.
      */
     public void invalidateSchedule() {
-        _sortValid = -1;
+        _actorDepthVersion = -1;
     }
 
     /** Return a new receiver of the type DEReceiver.
@@ -1095,16 +1124,10 @@ public class DEDirector extends Director implements TimedDirector {
         // Call the preinitialize method of the super class.
         super.preinitialize();
 
-        // Do this here because it updates the workspace version.
-        if (_sortValid != workspace().getVersion()) {
-            // Reset the hashtables for actor and port depths.
-            // These two variables have to be reset here because the initialize
-            // method constructs them.
-            _actorToDepth = null;
-            _portToDepth = null;
-            _computePortDepth();
-            _computeActorDepth();
-        }
+        // Do this here so that performance measurements
+        // clearly indicate that the cost is in static analysis
+        // done in preinitialize.
+        _computeActorDepth();
     }
 
     /** Unregister a debug listener.  If the specified listener has not
@@ -1225,6 +1248,24 @@ public class DEDirector extends Director implements TimedDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Disable the specified actor.  All events destined to this actor
+     *  will be ignored. If the argument is null, then do nothing.
+     *  @param actor The actor to disable.
+     */
+    protected void _disableActor(Actor actor) {
+        if (actor != null) {
+            if (_debugging) {
+                _debug("Actor ", ((Nameable) actor).getName(), " is disabled.");
+            }
+
+            if (_disabledActors == null) {
+                _disabledActors = new HashSet();
+            }
+
+            _disabledActors.add(actor);
+        }
+    }
+
     /** Put a pure event into the event queue to schedule the given actor to
      *  fire at the specified timestamp.
      *  <p>
@@ -1325,407 +1366,333 @@ public class DEDirector extends Director implements TimedDirector {
         _eventQueue.put(newEvent);
     }
 
+    /** Return the depth of an actor.
+     *  @param actor An actor whose depth is requested.
+     *  @return An integer indicating the depth of the given actor.
+     *  @exception IllegalActionException If the actor depth has
+     *   not been computed (this should not occur if the ioPort is under the control
+     *   of this director).
+     */
+    protected int _getDepthOfActor(Actor actor) throws IllegalActionException {
+        _computeActorDepth();
+        Integer depth = _actorToDepth.get(actor);
+        if (depth != null) {
+            return depth.intValue();
+        }
+        throw new IllegalActionException("Attempt to get depth of actor "
+                + ((NamedObj) actor).getFullName()
+                + " that was not sorted.");
+    }
+
+    /** Return the depth of an ioPort.
+     *  @param ioPort A port whose depth is requested.
+     *  @return An integer representing the depth of the specified ioPort.
+     *  @exception IllegalActionException If the ioPort does not have
+     *   a depth (this should not occur if the ioPort is under the control
+     *   of this director).
+     */
+    protected int _getDepthOfIOPort(IOPort ioPort) throws IllegalActionException {
+        _computeActorDepth();
+        Integer depth = _portToDepth.get(ioPort);
+
+        if (depth != null) {
+            return depth.intValue();
+        }
+        throw new IllegalActionException("Attempt to get depth of ioPort "
+                + ((NamedObj) ioPort).getFullName()
+                + " that was not sorted.");
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Based on the depths of IO ports, calculate the depths of actors.
-     *  The results are cached in a hashtable _actorToDepth.
-     *  Update the depths of existing events in the event queue.
-     *  @exception IllegalActionException If thrown will getting the depth
-     *  of the IO ports or while updating the depth of the the actors.
+    /** Compute the depth of ports and actors.
+     *  The actor depth is used to prioritize firings in response
+     *  to pure events (fireAt() calls). The port depth is used
+     *  to prioritize firings due to input events. Lower depths
+     *  translate into higher priorities, with the lowest
+     *  value being zero.
+     *  The depth of an actor is the minimum depth of the output ports.
+     *  This causes the actor to fire as early as possible
+     *  to produce an output on those output ports in response
+     *  to a pure event, but no earlier than the firings of
+     *  actors that may source it data that the firing may
+     *  depend on. If there are no output ports, then the depth of
+     *  the actor it is the maximum depth of the input ports.
+     *  This delays the response to fireAt() until all input
+     *  events with the same tag have arrived.
+     *  If there are no input ports or output ports, the depth is zero.
+     *  @throws IllegalActionException If a zero-delay loop is found.
      */
-    protected void _computeActorDepth() throws IllegalActionException {
-        CompositeActor container = (CompositeActor) getContainer();
-        List actors = container.deepEntityList();
-        // Add container.
-        actors.add(container);
-        int numberOfActors = actors.size();
-        _actorToDepth = new Hashtable(numberOfActors);
-
-        Iterator actorsIterator = actors.iterator();
-
-        // The depth of an actor starts with a negative number.
-        int defaultActorDepth = -numberOfActors;
-
-        while (actorsIterator.hasNext()) {
-            Actor actor = (Actor) actorsIterator.next();
-
-            // Calculate the depth of the given actor, which is the
-            // smallest depth of all the input and output ports.
-            // Why?
-            // Here is the example: A model with a feedback loop, which
-            // contains a non-zero TimedDelay actor. When the TimedDelay actor
-            // requests a refiring, the depth of the event should have the
-            // depth of its output.
-            // The reason to include the depths of input ports for calculation
-            // is to reduce unnecessary number of firings. In particular,
-            // if an actor receives a trigger event that has the same tag as
-            // one of its pure events, one firing is sufficient.
-
-            int depth = -1;
-            Iterator inputs = actor.inputPortList().iterator();
-
-            while (inputs.hasNext()) {
-                IOPort inputPort = (IOPort) inputs.next();
-                int inputDepth = _getDepthOfIOPort(inputPort);
-
-                if ((inputDepth < depth) || (depth == -1)) {
-                    depth = inputDepth;
-                }
-            }
-
-            Iterator outputs = actor.outputPortList().iterator();
-
-            while (outputs.hasNext()) {
-                IOPort outputPort = (IOPort) outputs.next();
-                int outputDepth = _getDepthOfIOPort(outputPort);
-
-                if ((outputDepth < depth) || (depth == -1)) {
-                    depth = outputDepth;
-                }
-            }
-
-            // Note that if an actor has no ports, the defaultActorDepth,
-            // which is a negative number, will be used such that each
-            // actor has a unique depth.
-            if (depth == -1) {
-                depth = defaultActorDepth;
-            }
-            _actorToDepth.put(actor, Integer.valueOf(depth));
-            // Increment the default depth value for the next actor.
-            defaultActorDepth++;
+    private void _computeActorDepth() throws IllegalActionException {
+        if (_actorDepthVersion == workspace().getVersion()) {
+            return;
         }
-
-        // If the event queue is not empty, we should update the depths of
-        // the existing events with new depths.
-        // NOTE: After update, we must use the same _eventQueue to keep the
-        // existing references to it. For example, the debug listeners.
-        if (!_eventQueue.isEmpty()) {
-            // Setup a temporary repository for the existing events
-            // in the queue.
-            LinkedList updatedEventList = new LinkedList();
-
-            while (!_eventQueue.isEmpty()) {
-                DEEvent event = _eventQueue.take();
-                IOPort ioPort = event.ioPort();
-                Actor actor = event.actor();
-
-                // Treat pure events and trigger events differently.
-                // Must check ioPort first and then actor, because
-                // if ioPort is not null, its actor can not be null.
-                if (ioPort != null) {
-                    event._updateDepth(_getDepthOfIOPort(ioPort));
-                } else if (actor != null) {
-                    event._updateDepth(_getDepthOfActor(actor));
-                } else {
-                    // do nothing.
-                }
-
-                updatedEventList.add(event);
-            }
-
-            Iterator updatedEvents = updatedEventList.iterator();
-
-            while (updatedEvents.hasNext()) {
-                DEEvent updatedEvent = (DEEvent) updatedEvents.next();
-                _eventQueue.put(updatedEvent);
-            }
-        }
-    }
-
-    /** Perform a topological sort on the directed graph and use the result
-     *  to set the depth for each IO port. A new Hashtable is created each
-     *  time this method is called.
-     */
-    private void _computePortDepth() throws IllegalActionException {
-        DirectedAcyclicGraph portsGraph = _constructDirectedGraph();
-        _verbose = true;
-        if (_debugging && _verbose) {
-            _debug("## ports graph is:" + portsGraph.toString());
-        }
-
-        // NOTE: this topologicalSort can be smarter.
-        // In particular, the dependency between ports belonging
-        // to the same actor may be considered.
-        Object[] sort = portsGraph.topologicalSort();
-        int numberOfPorts = sort.length;
-
-        if (_debugging && _verbose) {
-            _debug("## Result of topological sort (highest depth to lowest):");
-        }
-
-        // Allocate a new hash table with the size equal to the
-        // number of IO ports sorted.
-        _portToDepth = new Hashtable(numberOfPorts);
-
-        LinkedList ports = new LinkedList();
-
-        // Assign depths to ports based on the topological sorting result.
-        for (int i = 0; i <= (numberOfPorts - 1); i++) {
-            IOPort ioPort = (IOPort) sort[i];
-            ports.add(ioPort);
-            int depth = i;
-            Actor portContainer = (Actor) ioPort.getContainer();
-            // The ports of the composite actor that contains
-            // this director are set to the highest depth
-            // (the lowest priority).
-            if (ioPort.isOutput() && portContainer.equals(getContainer())) {
-                depth += numberOfPorts;
-            }
-
-            // Insert the hashtable entry.
-            _portToDepth.put(ioPort, Integer.valueOf(depth));
-            if (_debugging && _verbose) {
-                _debug(((Nameable) ioPort).getFullName(), "depth: " + depth);
-            }
-        }
-
-        if (_debugging && _verbose) {
-            _debug("## adjusting port depths to "
-                    + "make opaque composite actors and "
-                    + "actors with no output ports strict.");
-        }
-
-        HashSet actorsWithPortDepthsAdjusted = new HashSet();
-
-        // Adjusts the depths according to:
-        // - If an output depends on several inputs directly,
-        //   all inputs must have the same depth, the biggest one.
-        for (int i = sort.length - 1; i >= 0; i--) {
-            IOPort ioPort = (IOPort) sort[i];
-
-            // Get the container actor of the current output port.
-            Actor portContainer = (Actor) ioPort.getContainer();
-
-            // Skip the ports of the container. Their depths are handled
-            // by the upper level executive director of this container.
-            if (portContainer.equals(getContainer())) {
+        _portToDepth = new HashMap<IOPort,Integer>();
+        _actorToDepth = new HashMap<Actor,Integer>();
+        
+        // To ensure that the container actor has the lowest priority,
+        // assign it the largest integer.
+        CompositeEntity container = (CompositeEntity)getContainer();
+        _actorToDepth.put((Actor)container, Integer.MAX_VALUE);
+        
+        // First iterate over all actors, ensuring that their
+        // ports all have depths. Note that each time an actor
+        // is visited, the depths of all upstream ports will be
+        // set, so by the time we get to the end of the list
+        // of actors, there will be nothing to do on them.
+        // But we have to visit all of them to support disconnected
+        // graphs. If the actors happen to be ordered in topological
+        // sort order, then this will be quite efficient.
+        // Otherwise, many actors will be visited twice.
+        List<Actor> actors = container.deepEntityList();
+        for (Actor actor : actors) {
+            // If the actor already has a depth, skip it.
+            Integer actorDepth = _actorToDepth.get(actor);
+            if (actorDepth != null) {
                 continue;
             }
-
-            // For opaque composite actors and for actors with
-            // no output ports, adjust the depths of all input ports
-            // to match the maximum depth of the input ports.
-            // If an actor has no output ports, then the default
-            // dependencies of all input ports to all output ports
-            // will not have been created. Hence, there is no mechanism
-            // provided by this default to elevate the depth of all
-            // the input ports to the maximum of those depths.
-            // Thus, we conservatively assume that any actor with
-            // no output ports should be treated as if it had one
-            // output port (say, representing its state), and that
-            // all input ports depend on that output port.
-            // This will not be necessary in a version of DE
-            // that implements a strict fixed-point semantics.
-            if (ioPort.isInput()) {
-                if (portContainer.outputPortList().size() == 0
-                        || (portContainer instanceof CompositeActor && ((CompositeActor) portContainer)
-                                .isOpaque())) {
-                    List inputPorts = portContainer.inputPortList();
-
-                    if (inputPorts.size() <= 1) {
-                        // If the sink actor has only one input port, there is
-                        // no need to adjust its depth.
-                        continue;
-                    }
-
-                    if (actorsWithPortDepthsAdjusted.contains(portContainer)) {
-                        // The depths of the input ports of this acotr
-                        // have been adjusted.
-                        continue;
+            // First compute the depth of the input ports,
+            // recording the maximum value.
+            Integer maximumInputDepth = Integer.valueOf(0);
+            Iterator inputPorts = actor.inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                IOPort inputPort = (IOPort)inputPorts.next();
+                Integer inputPortDepth = _portToDepth.get(inputPort);
+                if (inputPortDepth == null) {
+                    // Keep track of ports that have been visited in
+                    // to detect causality loops.
+                    Set<IOPort> visited = new HashSet<IOPort>();
+                    _computeInputDepth(inputPort, visited);
+                    inputPortDepth = _portToDepth.get(inputPort);
+                }
+                // Record the maximum and continue to the next port.
+                if (inputPortDepth.compareTo(maximumInputDepth) > 0) {
+                    maximumInputDepth = inputPortDepth;
+                }
+            }
+            
+            // Next set the depth of the output ports.
+            Integer minimumOutputDepth = null;
+            Iterator outputPorts = actor.outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                IOPort outputPort = (IOPort)outputPorts.next();
+                Integer outputPortDepth = _portToDepth.get(outputPort);
+                if (outputPortDepth == null) {
+                    // Keep track of ports that have been visited in
+                    // to detect causality loops.
+                    Set<IOPort> visited = new HashSet<IOPort>();
+                    _computeOutputPortDepth(outputPort, visited);
+                    outputPortDepth = _portToDepth.get(outputPort);
+                }
+                // Record the minimum and continue to the next port.
+                if (minimumOutputDepth == null
+                        || outputPortDepth.compareTo(minimumOutputDepth) < 0) {
+                    minimumOutputDepth = outputPortDepth;
+                }
+            }
+            
+            // Finally, set the depth of the actor.
+            if (minimumOutputDepth != null) {
+                // There are output ports.
+                _actorToDepth.put(actor, minimumOutputDepth);
+            } else {
+                _actorToDepth.put(actor, maximumInputDepth);
+            }
+        }
+        // Next need to set the depth of all output ports of the
+        // actor.
+        List<IOPort> outputPorts = ((Actor)container).outputPortList();
+        for (IOPort outputPort : outputPorts) {
+            // The depth of each output port is one plus the maximum
+            // depth of all the output ports (or input ports) that source
+            // it data, or zero if there are no such ports.
+            int depth = 0;
+            List<IOPort> sourcePorts = outputPort.insideSourcePortList();
+            for (IOPort sourcePort : sourcePorts) {
+                Integer sourceDepth = _portToDepth.get(sourcePort);
+                if (sourceDepth == null) {
+                    if (sourcePort.isInput()) {
+                        // This is another external input.
+                        sourceDepth = Integer.valueOf(0);
+                        _portToDepth.put(sourcePort, sourceDepth);
                     } else {
-                        actorsWithPortDepthsAdjusted.add(portContainer);
-                    }
-
-                    Iterator inputsIterator = inputPorts.iterator();
-
-                    // Iterate all input ports of the sink or composite actor
-                    // to find the largest depth.
-                    int maximumPortDepth = -1;
-                    while (inputsIterator.hasNext()) {
-                        IOPort input = (IOPort) inputsIterator.next();
-                        int inputPortDepth = ports.indexOf(input);
-                        if (maximumPortDepth < inputPortDepth) {
-                            maximumPortDepth = inputPortDepth;
+                        // Source port is an output (should this be checked?)
+                        Set<IOPort> visited = new HashSet<IOPort>();
+                        _computeOutputPortDepth(sourcePort, visited);
+                        sourceDepth = _portToDepth.get(sourcePort);
+                        if (sourceDepth == null) {
+                            throw new InternalErrorException(
+                                    "Failed to compute port depth for "
+                                    + sourcePort.getFullName());
                         }
                     }
+                }
+                int newDepth = sourceDepth.intValue() + 1;
+                if (newDepth > depth) {
+                    depth = newDepth;
+                }
+            }
+            _portToDepth.put(outputPort, Integer.valueOf(depth));
+        }
+        _actorDepthVersion = workspace().getVersion();
+        // NOTE: Must call this after setting _actorDepthVersion.
+        if (_debugging && _verbose) {
+            _debug("## Depths assigned to actors and ports:");
+            _debug(describePriorities());
+        }
+    }
 
-                    // Set the depths of the input ports to the maximum one.
-                    inputsIterator = inputPorts.iterator();
-                    while (inputsIterator.hasNext()) {
-                        IOPort input = (IOPort) inputsIterator.next();
-
-                        if (_debugging && _verbose) {
-                            _debug(((Nameable) input).getFullName(),
-                                    "depth is adjusted to: " + maximumPortDepth);
+    /** Compute the depth of the specified input port.
+     *  The depth of an input port is maximum of the
+     *  "source depths" of all the input ports in the
+     *  same equivalence class with the specified port.
+     *  An equivalence class is defined as follows.
+     *  If ports X and Y each have a dependency not equal to the
+     *  default depenency's oPlusIdentity(), then they
+     *  are in an equivalence class. That is,
+     *  there is a causal dependency. They are also in
+     *  the same equivalence class if there is a port Z
+     *  in an equivalence class with X and in an equivalence
+     *  class with Y. Otherwise, they are not in the same
+     *  equivalence class. If there are no
+     *  output ports, then all the input ports
+     *  are in a single equivalence class.
+     *  <p>
+     *  The "source depth" of an input port is one plus the maximum
+     *  depth of all output ports that directly source data
+     *  to it, or zero if there are no such ports.
+     *  This delays the firing of this actor until
+     *  all source actors have fired. As a side
+     *  effect, this method also sets the depth of all the
+     *  input ports in the same equivalence class, as well
+     *  as all upstream ports up to a break with non-causal
+     *  relationship. It also detects and reports dependency
+     *  cycles.  The entry point
+     *  to this method is _computeActorDepth().
+     *  @see #_computeActorDepth()
+     *  @param inputPort The port to compute the depth of.
+     *  @param visited The set of ports that have been visited
+     *   in this round.
+     *  @throws IllegalActionException If a zero-delay loop is found.
+     */
+    private void _computeInputDepth(IOPort inputPort, Set<IOPort> visited)
+             throws IllegalActionException {
+        // NOTE: The definition of equivalence class, which comes
+        // from CausalityInterface, is not quite what we want if
+        // we use RealDependency instead of BooleanDependency
+        // and represent metric delays.  In that case, we want
+        // the equivalence class to include only ports that
+        // have exactly zero delay dependency on some output port.
+        // So if we switch to using RealDependency, this implementation
+        // will have to change.
+        int depth = 0;
+        // Iterate over all the ports in the equivalence class.
+        Actor actor = (Actor)inputPort.getContainer();
+        CausalityInterface causality = actor.getCausalityInterface();
+        Collection<IOPort> equivalentPorts = causality.equivalentPorts(inputPort);
+        for (IOPort equivalentPort: equivalentPorts) {
+            visited.add(equivalentPort);
+            // Iterate over the source ports to compute the source depths.
+            List<IOPort> sourcePorts = equivalentPort.sourcePortList();
+            for (IOPort sourcePort : sourcePorts) {
+                // NOTE: source port may be an input port, in which case
+                // the port is an external input and should have depth 0.
+                // The input port depends directly on this output port.
+                // Find the depth of the output port.
+                Integer sourcePortDepth = _portToDepth.get(sourcePort);
+                if (sourcePortDepth == null) {
+                    // Have to compute the depth of the output port.
+                    if (visited.contains(sourcePort)) {
+                        // Found a causality loop.
+                        throw new IllegalActionException(this,
+                                "Found a zero delay loop containing "
+                                + actor.getFullName());
+                    }
+                    if (sourcePort.isInput()) {
+                        // This had better be an external input.
+                        // Should this be checked?
+                        // Set the depth to zero.
+                        sourcePortDepth = Integer.valueOf(0);
+                        _portToDepth.put(sourcePort, sourcePortDepth);
+                    } else {
+                        // Source port is an output (should this be checked?)
+                        _computeOutputPortDepth(sourcePort, visited);
+                        sourcePortDepth = _portToDepth.get(sourcePort);
+                        if (sourcePortDepth == null) {
+                            throw new InternalErrorException(
+                                    "Failed to compute port depth for "
+                                    + sourcePort.getFullName());
                         }
-
-                        // Insert the hashtable entry.
-                        _portToDepth.put(input, Integer
-                                .valueOf(maximumPortDepth));
                     }
                 }
-            }
-            // For an output port, adjust the depths of all the
-            // input ports on which it depends to match the largest
-            // depth of those input ports.
-            // FIXME: The following is really problematic. Check the
-            // DESchedulingTest3.xml as example (NOTE: I can't
-            // find this example. EAL).
-            if (ioPort.isOutput()) {
-                // Get the function dependency of the container actor
-                FunctionDependency functionDependency = portContainer
-                        .getFunctionDependency();
-
-                List inputPorts = functionDependency
-                        .getInputPortsDependentOn(ioPort);
-                Iterator inputsIterator = inputPorts.iterator();
-
-                // Iterate all input ports the current output depends on to
-                // find their maximum depth.
-                int maximumPortDepth = -1;
-                while (inputsIterator.hasNext()) {
-                    IOPort input = (IOPort) inputsIterator.next();
-                    int inputPortDepth = ports.indexOf(input);
-                    if (maximumPortDepth < inputPortDepth) {
-                        maximumPortDepth = inputPortDepth;
-                    }
-                }
-
-                // Set the depths of the input ports to the maximum one.
-                inputsIterator = inputPorts.iterator();
-                while (inputsIterator.hasNext()) {
-                    IOPort input = (IOPort) inputsIterator.next();
-                    if (_debugging && _verbose) {
-                        _debug(((Nameable) input).getFullName(),
-                                "depth is adjusted to: " + maximumPortDepth);
-                    }
-                    // Insert the hashtable entry.
-                    _portToDepth.put(input, Integer.valueOf(maximumPortDepth));
+                // The depth needs to be one greater than any
+                // output port it depends on.
+                int newDepth = sourcePortDepth.intValue() + 1;
+                if (depth < newDepth) {
+                    depth = newDepth;
                 }
             }
         }
-
-        if (_debugging) {
-            _debug("## End of topological sort of ports.");
+        // We have now found the depth for the equivalence class.
+        // Set it.
+        for (IOPort equivalentPort: equivalentPorts) {
+            _portToDepth.put(equivalentPort, Integer.valueOf(depth));
         }
-
-        // the sort is now valid.
-        _sortValid = workspace().getVersion();
     }
 
-    // Construct a directed graph with nodes representing IO ports and
-    // directed edges representing their dependencies. The directed graph
-    // is returned.
-    private DirectedAcyclicGraph _constructDirectedGraph()
-            throws IllegalActionException {
-        // If the container is not composite actor, there are no actors.
-        Nameable container = getContainer();
-        if (!(container instanceof CompositeActor)) {
-            // Return an empty graph.
-            return new DirectedAcyclicGraph();
-        }
-
-        CompositeActor castContainer = (CompositeActor) container;
-
-        // Get the functionDependency attribute of the container of this
-        // director. If there is no such attribute, construct one.
-        FunctionDependencyOfCompositeActor functionDependency
-                = (FunctionDependencyOfCompositeActor) castContainer
-                .getFunctionDependency();
-
-        // NOTE: The following may be a very costly test.
-        //       -- from the comments of previous implementations.
-        // If the port based data flow graph contains directed
-        // loops, the model is invalid. An IllegalActionException
-        // is thrown with the names of the actors in the loop.
-        Object[] cycleNodes = functionDependency.getCycleNodes();
-
-        if (cycleNodes.length != 0) {
-            StringBuffer names = new StringBuffer();
-
-            for (int i = 0; i < cycleNodes.length; i++) {
-                if (cycleNodes[i] instanceof Nameable) {
-                    if (i > 0) {
-                        names.append(", ");
-                    }
-
-                    names.append(((Nameable) cycleNodes[i]).getContainer()
-                            .getFullName());
-                }
-            }
-
-            throw new IllegalActionException(this.getContainer(),
-                    "Found zero delay loop including: " + names.toString());
-        }
-
-        return functionDependency.getDetailedDependencyGraph()
-                .toDirectedAcyclicGraph();
-    }
-
-    /** Disable the specified actor.  All events destined to this actor
-     *  will be ignored. If the argument is null, then do nothing.
-     *  @param actor The actor to disable.
+    /** Compute the depth of the specified output port.
+     *  The depth of an output port is
+     *  the maximum of the depth of all the input ports
+     *  it directly depends on, or zero if there are no such
+     *  input ports.  The entry point
+     *  to this method is _computeActorDepth().
+     *  @see #_computeActorDepth()
+     *  @param outputPort The actor to compute the depth of.
+     *  @param visited The set of ports that have been visited
+     *   in this round.
+     *  @throws IllegalActionException If a zero-delay loop is found.
      */
-    protected void _disableActor(Actor actor) {
-        if (actor != null) {
-            if (_debugging) {
-                _debug("Actor ", ((Nameable) actor).getName(), " is disabled.");
+    private void _computeOutputPortDepth(IOPort outputPort, Set<IOPort> visited)
+             throws IllegalActionException {
+        visited.add(outputPort);
+        int depth = 0;
+        // Iterate over the input ports of the same actor that
+        // this output directly depends on.
+        Actor actor = (Actor)outputPort.getContainer();
+        CausalityInterface causality = actor.getCausalityInterface();
+        for (IOPort inputPort : causality.dependentPorts(outputPort)) {
+            // The output port depends directly on this input port.
+            // Find the depth of the input port.
+            Integer inputPortDepth = _portToDepth.get(inputPort);
+            if (inputPortDepth == null) {
+                // Have to compute the depth of the input port.
+                if (visited.contains(inputPort)) {
+                    // Found a causality loop.
+                    throw new IllegalActionException(this, actor,
+                            "Found a zero delay loop containing "
+                            + actor.getFullName());
+                }
+                // The following computes only the source depth,
+                // which may not be the final depth. As a consequence,
+                // _computeActorDepth(), the output depth that
+                // we calculate here may need to be modified.
+                _computeInputDepth(inputPort, visited);
+                inputPortDepth = _portToDepth.get(inputPort);
+                if (inputPortDepth == null) {
+                    throw new InternalErrorException(
+                            "Failed to compute port depth for "
+                            + inputPort.getFullName());
+                }
             }
-
-            if (_disabledActors == null) {
-                _disabledActors = new HashSet();
+            int newDepth = inputPortDepth.intValue();
+            if (depth < newDepth) {
+                depth = newDepth;
             }
-
-            _disabledActors.add(actor);
         }
+        _portToDepth.put(outputPort, Integer.valueOf(depth));
     }
-
-    /** Calculate the depth of an actor.
-     *  @param actor An actor whose depth is requested.
-     *  @return An integer indicating the depth of the given actor.
-     *  @exception IllegalActionException If any port of this actor
-     *  is not sorted.
-     */
-    protected int _getDepthOfActor(Actor actor) throws IllegalActionException {
-        if ((_sortValid != workspace().getVersion()) || (_actorToDepth == null)) {
-            _computePortDepth();
-            _computeActorDepth();
-        }
-
-        Integer depth = (Integer) _actorToDepth.get(actor);
-
-        if (depth != null) {
-            return depth.intValue();
-        } else {
-            throw new IllegalActionException("Attempt to get depth of actor "
-                    + ((NamedObj) actor).getFullName()
-                    + " that was not sorted.");
-        }
-    }
-
-    /** Return the depth of an ioPort, which is the index of this ioPort in
-     *  topological sort.
-     *  @param ioPort An IOPort whose depth is requested.
-     *  @return An int representing the depth of the given ioPort.
-     *  @exception IllegalActionException If the ioPort is not sorted.
-     */
-    protected int _getDepthOfIOPort(IOPort ioPort) throws IllegalActionException {
-        if ((_sortValid != workspace().getVersion()) || (_portToDepth == null)) {
-            _computePortDepth();
-            _computeActorDepth();
-        }
-
-        Integer depth = (Integer) _portToDepth.get(ioPort);
-
-        if (depth != null) {
-            return depth.intValue();
-        } else {
-            throw new IllegalActionException("Attempt to get depth of ioPort "
-                    + ((NamedObj) ioPort).getName() + " that was not sorted.");
-        }
-    }
-
+    
     /** Dequeue the events that have the smallest tag from the event queue.
      *  Return their destination actor. Advance the model tag to their tag.
      *  If the timestamp of the smallest tag is greater than the stop time
@@ -1778,51 +1745,50 @@ public class DEDirector extends Director implements TimedDirector {
                     // In all these cases, no actors inside need to be
                     // fired.
                     break;
-                } else {
-                    // For an embedded DE director, the following code prevents
-                    // the director from reacting to future events with bigger
-                    // time values in their tags.
-                    // For a top-level DE director, there is no such constraint
-                    // because the top-level director is responsible to advance
-                    // simulation by increasing the model tag.
-                    nextEvent = _eventQueue.get();
+                }
+                // For an embedded DE director, the following code prevents
+                // the director from reacting to future events with bigger
+                // time values in their tags.
+                // For a top-level DE director, there is no such constraint
+                // because the top-level director is responsible to advance
+                // simulation by increasing the model tag.
+                nextEvent = _eventQueue.get();
 
-                    // An embedded director should process events
-                    // that only happen at the current tag.
-                    // If the event is in the past, that is an error,
-                    // because the event should have been consumed in prefire().
-                    if ((nextEvent.timeStamp().compareTo(getModelTime()) < 0)) {
-                        // missed an event
-                        throw new IllegalActionException(
-                                "Fire: Missed an event: the next event tag "
-                                        + nextEvent.timeStamp()
-                                        + " :: "
-                                        + nextEvent.microstep()
-                                        + " is earlier than the current model tag "
-                                        + getModelTime() + " :: " + _microstep
-                                        + " !");
-                    }
+                // An embedded director should process events
+                // that only happen at the current tag.
+                // If the event is in the past, that is an error,
+                // because the event should have been consumed in prefire().
+                if ((nextEvent.timeStamp().compareTo(getModelTime()) < 0)) {
+                    // missed an event
+                    throw new IllegalActionException(
+                            "Fire: Missed an event: the next event tag "
+                            + nextEvent.timeStamp()
+                            + " :: "
+                            + nextEvent.microstep()
+                            + " is earlier than the current model tag "
+                            + getModelTime() + " :: " + _microstep
+                            + " !");
+                }
 
-                    // If the event is in the future time, it is ignored
-                    // and will be processed later.
-                    // Note that it is fine for the new event to have a bigger
-                    // microstep. This indicates that the embedded director is
-                    // going to advance microstep.
-                    // Note that conceptually, the outside and inside DE models
-                    // share the same microstep and the current design and
-                    // implementation assures that. However, the embedded DE
-                    // director does ask for the microstep of the upper level
-                    // DE director. They keep their own count of their
-                    // microsteps. The reason for this is to avoid the
-                    // difficulties caused by passing information across modal
-                    // model layers.
-                    if ((nextEvent.timeStamp().compareTo(getModelTime()) > 0)) {
-                        // reset the next event
-                        nextEvent = null;
+                // If the event is in the future time, it is ignored
+                // and will be processed later.
+                // Note that it is fine for the new event to have a bigger
+                // microstep. This indicates that the embedded director is
+                // going to advance microstep.
+                // Note that conceptually, the outside and inside DE models
+                // share the same microstep and the current design and
+                // implementation assures that. However, the embedded DE
+                // director does ask for the microstep of the upper level
+                // DE director. They keep their own count of their
+                // microsteps. The reason for this is to avoid the
+                // difficulties caused by passing information across modal
+                // model layers.
+                if ((nextEvent.timeStamp().compareTo(getModelTime()) > 0)) {
+                    // reset the next event
+                    nextEvent = null;
 
-                        // jump out of the loop: LOOPLABEL::GetNextEvent
-                        break;
-                    }
+                    // jump out of the loop: LOOPLABEL::GetNextEvent
+                    break;
                 }
             } else { // if (!topLevel)
                 // If the director is at the top level
@@ -1896,22 +1862,15 @@ public class DEDirector extends Director implements TimedDirector {
                     // This can occur, for example, if a change has been requested.
                     // jump out of the loop: LOOPLABEL::GetNextEvent
                     return null;
-                } else {
-                    // At least one event is found in the event queue.
-                    nextEvent = _eventQueue.get();
                 }
+                // At least one event is found in the event queue.
+                nextEvent = _eventQueue.get();
             }
 
             // This is the end of the different behaviors of embedded and
             // top-level directors on getting the next event.
             // When this point is reached, the nextEvent can not be null.
             // In the rest of this method, this is not checked any more.
-            /* Not needed anymore...
-            if (nextEvent == null) {
-                throw new InternalErrorException("The event to be handled"
-                        + " can not be null!");
-            }
-            */
 
             // If the actorToFire is null, find the destination actor associated
             // with the event just found. Store this event as lastFoundEvent and
@@ -2071,10 +2030,11 @@ public class DEDirector extends Director implements TimedDirector {
                 // In a previous iteration of this while loop,
                 // we have already found an event and the actor to react to it.
                 // Check whether the newly found event has the same tag
-                // and depth. If so, the destination actor should be the same,
-                // and they are handled at the same time. For example, a pure
+                // depth, and destination actor. If so, they are 
+                // handled at the same time. For example, a pure
                 // event and a trigger event that go to the same actor.
-                if (nextEvent.hasTheSameTagAndDepthAs(lastFoundEvent)) {
+                if (nextEvent.hasTheSameTagAndDepthAs(lastFoundEvent)
+                        && nextEvent.actor() == actorToFire) {
                     // Consume the event from the queue and discard it.
                     // FIXME: This isn't right!  The microstep is only incremented
                     // by fireAt() calls. The Repeat actor, for one, produces a sequence
@@ -2087,6 +2047,10 @@ public class DEDirector extends Director implements TimedDirector {
                     // can react to these events.
                     Actor actor = nextEvent.actor();
                     if (actor == actorToFire) {
+                        // FIXME: This can't be right either.
+                        // The event might be destined to a different port
+                        // of the same actor. Shouldn't this be done only
+                        // if it's a pure event?  How to tell?
                         _eventQueue.take();
                     } else {
                         // Next event has a future tag or a different destination.
@@ -2103,7 +2067,8 @@ public class DEDirector extends Director implements TimedDirector {
         return actorToFire;
     }
 
-    // initialize parameters. Set all parameters to their default values.
+    /** initialize parameters. Set all parameters to their default values.
+     */
     private void _initParameters() {
         try {
             startTime = new Parameter(this, "startTime");
@@ -2171,8 +2136,11 @@ public class DEDirector extends Director implements TimedDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** A hashtable that caches the depths of actors. */
-    private Hashtable _actorToDepth = null;
+    /** Workspace version when actor depth was last computed. */
+    private long _actorDepthVersion = -1;
+    
+    /** A table giving the depths of actors. */
+    private Map<Actor,Integer> _actorToDepth = null;
 
     /** Indicator that calls to fireAt() should be delegated
      *  to the executive director.
@@ -2201,21 +2169,14 @@ public class DEDirector extends Director implements TimedDirector {
     /** The current microstep. */
     private int _microstep = 0;
 
-    /**
-     * Set to true when it is time to end the execution.
-     */
+    /** Set to true when it is time to end the execution. */
     private boolean _noMoreActorsToFire = false;
 
-    /** A hashtable that caches the depths of ports. */
-    private Hashtable _portToDepth = null;
+    /** A table giving the depths of ports. */
+    private Map<IOPort,Integer> _portToDepth = null;
 
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0;
-
-    /** Indicator of whether the topological sort giving ports their
-     *  priorities is valid.
-     */
-    private long _sortValid = -1;
 
     /** Start time. */
     private Time _startTime;

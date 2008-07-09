@@ -529,15 +529,6 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		if (_debugging) {
 			_debug(getFullName(), "Finished preinitialize().");
 		}
-
-		// Do this here because it updates the workspace version.
-		if (-1 != workspace().getVersion()) {
-			// Reset the hashtables for actor and port depths.
-			// These two variables have to be reset here because the initialize
-			// method constructs them.
-
-			_computeActorDepth();
-		}
 	}
 
 	/**

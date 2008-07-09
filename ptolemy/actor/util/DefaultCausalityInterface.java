@@ -28,7 +28,13 @@
 package ptolemy.actor.util;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
@@ -91,28 +97,82 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  @param port The port to find the dependents of.
      */
     public Collection<IOPort> dependentPorts(IOPort port) {
-        // FIXME: This does not support ports that are both input and output.
-        // Should it?
-        if (port.isOutput()) {
-            return _actor.inputPortList();
-        } else {
-            return _actor.outputPortList();
+        if (_forwardPrunedDependencies == null) {
+            // removeDependency() has not been called, so this is the simple case.
+            if (port.isOutput()) {
+                if (port.isInput()) {
+                    // Port is both input and output.
+                    HashSet<IOPort> result = new HashSet<IOPort>();
+                    result.addAll(_actor.inputPortList());
+                    result.addAll(_actor.outputPortList());
+                }
+                // Port is output and not input.
+                return _actor.inputPortList();
+            } else if (port.isInput()) {
+                // Port is input and not output.
+                return _actor.outputPortList();
+            } else {
+                // Port is neither input nor output.
+                return _EMPTY_COLLECTION;
+            }
         }
+        // removeDependency() has been called.  Prune results.
+        Collection<IOPort> result;
+        if (port.isOutput()) {
+            if (port.isInput()) {
+                // Port is both input and output.
+                result = new HashSet<IOPort>();
+                result.addAll(_actor.inputPortList());
+                result.addAll(_actor.outputPortList());
+                Set<IOPort> inputPorts = _backwardPrunedDependencies.get(port);
+                if (inputPorts != null) {
+                    result.removeAll(inputPorts);
+                }
+                Set<IOPort> outputPorts = _forwardPrunedDependencies.get(port);
+                if (outputPorts != null) {
+                    result.removeAll(outputPorts);
+                }
+            } else {
+                // Port is output and not input.
+                Set<IOPort> inputPorts = _backwardPrunedDependencies.get(port);
+                if (inputPorts == null) {
+                    // No dependencies have been pruned for this output port.
+                    result = _actor.inputPortList();
+                } else {
+                    result = new HashSet<IOPort>();
+                    result.addAll(_actor.inputPortList());
+                    result.removeAll(inputPorts);
+                }
+            }
+        } else if (port.isInput()) {
+            // Port is input and not output.
+            Set<IOPort> outputPorts = _forwardPrunedDependencies.get(port);
+            if (outputPorts == null) {
+                // No dependencies have been pruned for this input port.
+                result = _actor.outputPortList();
+            } else {
+                result = new HashSet<IOPort>();
+                result.addAll(_actor.outputPortList());
+                result.removeAll(outputPorts);
+            }
+        } else {
+            result = new HashSet<IOPort>();
+        }
+        return result;
     }
     
     /** Return a collection of the ports in this actor that are
      *  in the same equivalence class. This base class
      *  returns a collection of all the input ports of the
-     *  associated actor (although it is not checked, this
-     *  method presumes that the specified actor is an
-     *  input port contained by the associated actor).
+     *  associated actor.
      *  If derived classes override this, they may also
      *  need to override {@link #getDependency(IOPort,IOPort)}
      *  and {@link #dependentPorts(IOPort)} to be consistent.
      *  The returned result should always include the specified input port.
      *  <p>
      *  An equivalence class is defined as follows.
-     *  If ports X and Y each have a dependency not equal to the
+     *  If input ports X and Y each have a dependency on the same
+     *  output port not equal to the
      *  default depenency's oPlusIdentity(), then they
      *  are in an equivalence class. That is,
      *  there is a causal dependency. They are also in
@@ -123,9 +183,37 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  output ports, then all the input ports
      *  are in a single equivalence class.
      *  @param input The port to find the equivalence class of.
+     *  @throws IllegalArgumentException If the argument is not
+     *   contained by the associated actor.
      */
     public Collection<IOPort> equivalentPorts(IOPort input) {
-        return _actor.inputPortList();
+        if (input.getContainer() != _actor) {
+            throw new IllegalArgumentException(
+                    "equivalentPort() called with argument "
+                    + input.getFullName()
+                    + " on a causality interface for "
+                    + _actor.getFullName()
+                    + ", which is not its container.");
+        }
+        if (_forwardPrunedDependencies == null) {
+            // removeDependencies() has not been called, so this is the
+            // simple case.
+            return _actor.inputPortList();
+        }
+        // If removeDependencies() has been called, finding the equivalent
+        // ports is rather complicated.
+        List<IOPort> inputs = _actor.inputPortList();
+        List<IOPort> outputs = _actor.outputPortList();
+        // Deal with simple cases first.
+        if (inputs.size() == 1 || outputs.size() == 0) {
+            // There is only one input port, or there are
+            // no output ports, so we are done.
+            return inputs;
+        }
+        HashSet<IOPort> result = new HashSet<IOPort>();
+        HashSet<IOPort> dependents = new HashSet<IOPort>();
+        _growDependencies(input, result, dependents);
+        return result;
     }
     
     /** Return the actor for which this is a dependency.
@@ -140,7 +228,10 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  the default dependency if the first port is an input
      *  port owned by this actor and the second one is an output
      *  port owned by this actor. Otherwise, it returns the
-     *  additive identity of the dependency.
+     *  additive identity of the dependency. Also, if
+     *  {@link #removeDependency(IOPort, IOPort)} has been
+     *  called with the same two specified ports, then
+     *  this method will return the additive identity.
      *  <p>
      *  Derived classes should override this method to provide
      *  actor-specific dependency information. If they do so,
@@ -154,6 +245,13 @@ public class DefaultCausalityInterface implements CausalityInterface {
                 && input.getContainer() == _actor
                 && output.isOutput()
                 && output.getContainer() == _actor) {
+            if (_forwardPrunedDependencies != null) {
+                Set<IOPort> outputPorts = _forwardPrunedDependencies.get(input);
+                if (outputPorts != null && outputPorts.contains(output)) {
+                    // This dependency has been pruned.
+                    return _defaultDependency.oPlusIdentity();
+                }
+            }
             return _defaultDependency;
         }
         return _defaultDependency.oPlusIdentity();
@@ -182,12 +280,80 @@ public class DefaultCausalityInterface implements CausalityInterface {
         return result.toString();
     }
 
+    /** Remove the dependency that the specified output port has
+     *  on the specified input port. Specifically, calling this
+     *  method ensures that getDependency(inputPort, outputPort)
+     *  will return defaultDependency.oPlusIdentity() instead
+     *  of the default defaultDependency.oTimesIdentity().
+     *  It also adjusts what is returned by
+     *  {@link #equivalentPorts(IOPort)} and
+     *  {@link #dependentPorts(IOPort)}.
+     *  @see #getDependency(IOPort, IOPort)
+     *  @param inputPort The input port.
+     *  @param outputPort The output port that does not depend on the
+     *   input port.
+     */
+    public void removeDependency(IOPort inputPort, IOPort outputPort) {
+        if (_forwardPrunedDependencies == null) {
+            _forwardPrunedDependencies = new HashMap<IOPort,Set<IOPort>>();
+            _backwardPrunedDependencies = new HashMap<IOPort,Set<IOPort>>();
+        }
+        Set<IOPort> outputPorts = _forwardPrunedDependencies.get(inputPort);
+        if (outputPorts == null) {
+            outputPorts = new HashSet<IOPort>();
+            _forwardPrunedDependencies.put(inputPort, outputPorts);
+        }
+        outputPorts.add(outputPort);
+        
+        Set<IOPort> inputPorts = _backwardPrunedDependencies.get(outputPort);
+        if (inputPorts == null) {
+            inputPorts = new HashSet<IOPort>();
+            _backwardPrunedDependencies.put(outputPort, inputPorts);
+        }
+        inputPorts.add(inputPort);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+    
+    /** If the input port is already in the inputs set, do nothing
+     *  and return. Otherwise, add the input port to the inputs set,
+     *  and its output dependents to the outputs set. If any of those
+     *  output dependents were not already in the outputs set,
+     *  add them, and then recursively invoke this same method
+     *  on all input ports that depend on those outputs.
+     */
+    protected void _growDependencies(
+            IOPort input, Set<IOPort> inputs, Set<IOPort> outputs) {
+        if (!inputs.contains(input)) {
+            inputs.add(input);
+            for (IOPort output : dependentPorts(input)) {
+                // If the output has already been handled, skip it.
+                if (!outputs.contains(output)) {
+                    outputs.add(output);
+                    for (IOPort anotherInput : dependentPorts(output)) {
+                        _growDependencies(anotherInput, inputs, outputs);
+                    }
+                }
+            }
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     
     /** The associated actor. */
     protected Actor _actor;
     
+    /** A record of removed dependencies from output to input, if any. */
+    protected Map<IOPort,Set<IOPort>> _backwardPrunedDependencies;
+
+    /** Empty collection for use by dependentPort(). */
+    protected static Collection<IOPort> _EMPTY_COLLECTION = new LinkedList<IOPort>();
+
     /** The default dependency of an output port on an input port. */
     protected Dependency _defaultDependency;
+    
+    /** A record of removed dependencies from input to output, if any. */
+    protected Map<IOPort,Set<IOPort>> _forwardPrunedDependencies;
 }

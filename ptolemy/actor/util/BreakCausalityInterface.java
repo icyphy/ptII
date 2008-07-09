@@ -42,7 +42,9 @@ import ptolemy.actor.IOPort;
  where no output port depends on any input port.
  That is, the dependency of any output port on any
  input port is the oPlusIdentity() of the specified
- default dependency.
+ default dependency. It is more efficient to use this
+ class than to use the base class and call removeDependency()
+ to remove all the dependencies.
 
  @see Dependency
  
@@ -111,9 +113,14 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
         return _defaultDependency.oPlusIdentity();
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-
-    /** Empty collection for use by dependentPort(). */
-    private static Collection<IOPort> _EMPTY_COLLECTION = new LinkedList<IOPort>();
+    /** Remove the dependency that the specified output port has
+     *  on the specified input port. This method does nothing since
+     *  in this class, all dependencies have already been removed.
+     *  @see #getDependency(IOPort, IOPort)
+     *  @param inputPort The input port.
+     *  @param outputPort The output port that does not depend on the
+     *   input port.
+     */
+    public void removeDependency(IOPort inputPort, IOPort outputPort) {
+    }
 }
