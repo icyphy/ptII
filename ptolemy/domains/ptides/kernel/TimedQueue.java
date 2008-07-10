@@ -106,7 +106,6 @@ public class TimedQueue extends AbstractReceiver {
      * Get the queue capacity of this receiver.
      *
      * @return The capacity of this receiver's queue.
-     * @see #setCapacity(int)
      */
     public int getCapacity() {
         return _queue.size();
