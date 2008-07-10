@@ -35,7 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
-//// ViterbiDecoder
+//// TrellisDecoder
 
 /**
  The TrellisDecoder is a generalization of the ViterbiDecoder. It
