@@ -117,8 +117,10 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$MatchResultActorController.class' \
 	'MatchResultViewer$$MatchResultActorGraphController.class' \
 	'MatchResultViewer$$MatchResultFSMGraphController.class' \
+	'MatchResultViewer$$MatchResultLinkController.class' \
 	'MatchResultViewer$$MatchResultRelationController.class' \
 	'MatchResultViewer$$MatchResultStateController.class' \
+	'MatchResultViewer$$MatchResultTransitionController.class' \
 	'MatchResultViewer$$NextAction.class' \
 	'MatchResultViewer$$NextFileAction.class' \
 	'MatchResultViewer$$PreviousAction.class' \
@@ -140,6 +142,7 @@ OPTIONAL_FILES = \
 	'TransformationEditor$$CellEditor.class' \
 	'TransformationEditor$$CreatedPropertyAction.class' \
 	'TransformationEditor$$FileComparator.class' \
+	'TransformationEditor$$GTEntityConfigureAction.class' \
 	'TransformationEditor$$IgnoredPropertyAction.class' \
 	'TransformationEditor$$LayoutAction.class' \
 	'TransformationEditor$$MatchAction.class' \
@@ -149,13 +152,14 @@ OPTIONAL_FILES = \
 	'TransformationEditor$$SingleMatchAction$$SingleViewController.class' \
 	'TransformationEditor$$SingleMatchAction.class' \
 	'TransformationEditor$$TransformationActorController.class' \
-	'TransformationEditor$$TransformationActorGraphController$$1.class' \
 	'TransformationEditor$$TransformationActorGraphController$$NewRelationAction.class' \
 	'TransformationEditor$$TransformationActorGraphController.class' \
 	'TransformationEditor$$TransformationFSMGraphController.class' \
 	'TransformationEditor$$TransformationLinkController.class' \
 	'TransformationEditor$$TransformationRelationController.class' \
+	'TransformationEditor$$TransformationStateController$$Renderer.class' \
 	'TransformationEditor$$TransformationStateController.class' \
+	'TransformationEditor$$TransformationTransitionController.class' \
 	'TransformationEditor$$ViewController.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

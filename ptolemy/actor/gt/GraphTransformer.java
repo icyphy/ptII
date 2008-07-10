@@ -285,6 +285,21 @@ public class GraphTransformer extends ChangeRequest {
         _initPatternToReplacement(_replacement);
         _initReplacementToHost();
         _initReplacementObjectAttributes(_replacement);
+        _initPreservedObjects(_pattern);
+    }
+    
+    private void _initPreservedObjects(NamedObj pattern) {
+    	if (_isToBePreserved(pattern)) {
+    		NamedObj host = (NamedObj) _matchResult.get(pattern);
+    		if (host != null) {
+    			_recordMirroredObjects(pattern, host);
+    		}
+    	} else {
+    		for (Object child : GTTools.getChildren(pattern, false, true, true,
+                    true)) {
+    			_initPreservedObjects((NamedObj) child);
+    		}
+    	}
     }
 
     protected void _performOperations() throws TransformationException {
@@ -440,7 +455,7 @@ public class GraphTransformer extends ChangeRequest {
                 request.execute();
                 NamedObj hostChild = _getNewlyAddedObject(host,
                         child.getClass());
-                _recordObjectsWithCreationAttributes(child, hostChild);
+                _recordMirroredObjects(child, hostChild);
             } else {
                 _addObjectsWithCreationAttributes(child);
             }
@@ -825,8 +840,7 @@ public class GraphTransformer extends ChangeRequest {
         return !object.attributeList(PreservationAttribute.class).isEmpty();
     }
 
-    private void _recordObjectsWithCreationAttributes(NamedObj pattern,
-            NamedObj host) {
+    private void _recordMirroredObjects(NamedObj pattern, NamedObj host) {
         _matchResult.put(pattern, host);
         _replacementToHost.put(pattern, host);
         _patternToReplacement.put(pattern, pattern);
@@ -834,15 +848,15 @@ public class GraphTransformer extends ChangeRequest {
                 true)) {
             if (child instanceof Port) {
                 Port port = (Port) child;
-                _recordObjectsWithCreationAttributes(port,
+                _recordMirroredObjects(port,
                         ((Entity) host).getPort(port.getName()));
             } else if (child instanceof Entity) {
                 Entity entity = (Entity) child;
-                _recordObjectsWithCreationAttributes(entity,
+                _recordMirroredObjects(entity,
                         ((CompositeEntity) host).getEntity(entity.getName()));
             } else if (child instanceof Relation) {
                 Relation relation = (Relation) child;
-                _recordObjectsWithCreationAttributes(relation,
+                _recordMirroredObjects(relation,
                         ((CompositeEntity) host).getRelation(
                                 relation.getName()));
             }

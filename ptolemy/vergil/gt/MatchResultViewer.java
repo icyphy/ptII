@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.vergil.gt;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Toolkit;
@@ -70,15 +71,21 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.actor.LinkController;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.StateController;
+import ptolemy.vergil.fsm.TransitionController;
 import ptolemy.vergil.gt.GTFrameController.UpdateController;
 import ptolemy.vergil.gt.GTFrameTools.ModelChangeRequest;
 import ptolemy.vergil.kernel.RelationController;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.Site;
+import diva.canvas.connector.AbstractConnector;
+import diva.canvas.connector.Connector;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.RoundedRectangle;
@@ -329,6 +336,7 @@ public class MatchResultViewer extends GTFrame {
 
             _entityController = new MatchResultActorController(this);
             _relationController = new MatchResultRelationController(this);
+            _linkController = new MatchResultLinkController(this);
         }
     }
 
@@ -345,6 +353,25 @@ public class MatchResultViewer extends GTFrame {
             super._createControllers();
 
             _stateController = new MatchResultStateController(this);
+            _transitionController = new MatchResultTransitionController(this);
+        }
+    }
+
+    protected class MatchResultLinkController extends LinkController {
+
+        public Connector render(Object edge, FigureLayer layer, Site tailSite,
+                Site headSite) {
+            Connector connector = super.render(edge, layer, tailSite, headSite);
+            if (connector instanceof AbstractConnector) {
+                GraphModel graphModel = getController().getGraphModel();
+                Object semanticObject = graphModel.getSemanticObject(edge);
+                _renderLink(connector, semanticObject);
+            }
+            return connector;
+        }
+
+        MatchResultLinkController(GraphController controller) {
+            super(controller);
         }
     }
 
@@ -381,6 +408,25 @@ public class MatchResultViewer extends GTFrame {
 
         MatchResultStateController(GraphController controller) {
             super(controller);
+        }
+    }
+
+    protected class MatchResultTransitionController
+    extends TransitionController {
+
+        public MatchResultTransitionController(GraphController controller) {
+            super(controller);
+        }
+
+        public Connector render(Object edge, FigureLayer layer, Site tailSite,
+                Site headSite) {
+            Connector connector = super.render(edge, layer, tailSite, headSite);
+            if (connector instanceof AbstractConnector) {
+                GraphModel graphModel = getController().getGraphModel();
+                Object semanticObject = graphModel.getSemanticObject(edge);
+                _renderLink(connector, semanticObject);
+            }
+            return connector;
         }
     }
 
@@ -516,6 +562,15 @@ public class MatchResultViewer extends GTFrame {
         ((UpdateController) _getGraphModel()).startUpdate();
     }
 
+    private Color _getHighlightColor(NamedObj object) {
+        if (_results != null && _currentPosition < _results.size()
+                && _results.get(_currentPosition).containsValue(object)) {
+            return _HIGHLIGHT_COLOR;
+        } else {
+            return null;
+        }
+    }
+
     private void _next() {
         if (_currentPosition < _results.size() - 1) {
             _currentPosition++;
@@ -599,24 +654,35 @@ public class MatchResultViewer extends GTFrame {
 
     private void _renderActorOrRelation(CompositeFigure figure,
             Object semanticObject) {
-        if (semanticObject instanceof NamedObj && figure != null
-                && _results != null && _currentPosition < _results.size()
-                && _results.get(_currentPosition).containsValue(
-                        semanticObject)) {
-            Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
-            float padding = _HIGHLIGHT_PADDING;
-            BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
-                    bounds.getY() - padding,
-                    bounds.getWidth() + padding * 2.0,
-                    bounds.getHeight() + padding * 2.0,
-                    _HIGHLIGHT_THICKNESS);
-            bf.setStrokePaint(_HIGHLIGHT_COLOR);
+        if (semanticObject instanceof NamedObj && figure != null) {
+            Color color = _getHighlightColor((NamedObj) semanticObject);
+            if (color != null) {
+                Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
+                float padding = _HIGHLIGHT_PADDING;
+                BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
+                        bounds.getY() - padding,
+                        bounds.getWidth() + padding * 2.0,
+                        bounds.getHeight() + padding * 2.0,
+                        _HIGHLIGHT_THICKNESS);
+                bf.setStrokePaint(color);
 
-            int index = figure.getFigureCount();
-            if (index < 0) {
-                index = 0;
+                int index = figure.getFigureCount();
+                if (index < 0) {
+                    index = 0;
+                }
+                figure.add(index, bf);
             }
-            figure.add(index, bf);
+        }
+    }
+
+    private void _renderLink(Connector connector, Object semanticObject) {
+        if (semanticObject instanceof NamedObj && connector != null) {
+            Color color = _getHighlightColor((NamedObj) semanticObject);
+            if (color != null) {
+                AbstractConnector c = (AbstractConnector) connector;
+                c.setStrokePaint(color);
+                c.setStroke(new BasicStroke(_HIGHLIGHT_THICKNESS));
+            }
         }
     }
 
@@ -733,11 +799,11 @@ public class MatchResultViewer extends GTFrame {
         _finishTransform(oldModel);
     }
 
-    private static final Color _HIGHLIGHT_COLOR = new Color(96, 32, 128, 128);
+    private static final Color _HIGHLIGHT_COLOR = new Color(160, 112, 255);
 
-    private static final float _HIGHLIGHT_PADDING = 3.0f;
+    private static final float _HIGHLIGHT_PADDING = 1.0f;
 
-    private static final float _HIGHLIGHT_THICKNESS = 6.0f;
+    private static final float _HIGHLIGHT_THICKNESS = 3.0f;
 
     private static final int _PROMPT_TO_CONTINUE_COUNT = 100;
 

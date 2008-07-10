@@ -114,8 +114,8 @@ public class LinkController extends BasicEdgeController {
         // menu factory, which is a protected member of this class.
         // Derived classes can add menu items to it.
         _menuFactory = new PtolemyMenuFactory(controller);
-        _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_configureAction));
+        _configureMenuFactory = new MenuActionFactory(_configureAction);
+        _menuFactory.addMenuItemFactory(_configureMenuFactory);
         _menuCreator.setMenuFactory(_menuFactory);
 
         // Add a double click interactor.
@@ -139,85 +139,7 @@ public class LinkController extends BasicEdgeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected members                     ////
-
-    /** The configuration. */
-    protected Configuration _configuration;
-
-    /** The configure action, which handles edit parameters requests. */
-    protected static ConfigureAction _configureAction = new ConfigureAction(
-            "Configure");
-
-    /** The menu creator. */
-    protected MenuCreator _menuCreator;
-
-    /** The factory belonging to the menu creator. */
-    protected PtolemyMenuFactory _menuFactory;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    /** A connector target that returns sites on a link. */
-    public static class LinkTarget extends PerimeterTarget {
-        // FindBugs suggests making this class static so as to decrease
-        // the size of instances and avoid dangling references.
-
-        /** Accept the head of the connector.
-         *  @param c The connector.
-         *  @param f The figure.
-         *  @return True if the object is a Port, a Vertex or a Locatable
-         *  contained by a Port and the super class accepts the head.
-         *  Otherwise, return false.
-         */
-        public boolean acceptHead(Connector c, Figure f) {
-            Object object = f.getUserObject();
-
-            if (object instanceof Port
-                    || object instanceof Vertex
-                    || (object instanceof Locatable && ((Locatable) object)
-                            .getContainer() instanceof Port)) {
-                return super.acceptHead(c, f);
-            } else {
-                return false;
-            }
-        }
-
-        /** Accept the tail of the connector.
-         *  @param c The connector.
-         *  @param f The figure.
-         *  @return True if the object is a Port, a Vertex or a Locatable
-         *  contained by a Port and the super class accepts the tail
-         *  Otherwise, return false.
-         */
-        public boolean acceptTail(Connector c, Figure f) {
-            Object object = f.getUserObject();
-
-            if (object instanceof Port
-                    || object instanceof Vertex
-                    || (object instanceof Locatable && ((Locatable) object)
-                            .getContainer() instanceof Port)) {
-                return super.acceptTail(c, f);
-            } else {
-                return false;
-            }
-        }
-
-        /** Get the head site.
-         *  @param f The figure.
-         *  @param x The x location.
-         *  @param y The y location.
-         *  @return The head site.
-         */
-        public Site getHeadSite(Figure f, double x, double y) {
-            if (f instanceof Terminal) {
-                Site site = ((Terminal) f).getConnectSite();
-                return site;
-            } else {
-                return super.getHeadSite(f, x, y);
-            }
-        }
-
-        // Tail sites are the same as head sites.
-    }
 
     /** Render a visual representation of a link. */
     public static class LinkRenderer implements EdgeRenderer {
@@ -307,6 +229,88 @@ public class LinkController extends BasicEdgeController {
             return connector;
         }
     }
+
+    /** A connector target that returns sites on a link. */
+    public static class LinkTarget extends PerimeterTarget {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
+        /** Accept the head of the connector.
+         *  @param c The connector.
+         *  @param f The figure.
+         *  @return True if the object is a Port, a Vertex or a Locatable
+         *  contained by a Port and the super class accepts the head.
+         *  Otherwise, return false.
+         */
+        public boolean acceptHead(Connector c, Figure f) {
+            Object object = f.getUserObject();
+
+            if (object instanceof Port
+                    || object instanceof Vertex
+                    || (object instanceof Locatable && ((Locatable) object)
+                            .getContainer() instanceof Port)) {
+                return super.acceptHead(c, f);
+            } else {
+                return false;
+            }
+        }
+
+        /** Accept the tail of the connector.
+         *  @param c The connector.
+         *  @param f The figure.
+         *  @return True if the object is a Port, a Vertex or a Locatable
+         *  contained by a Port and the super class accepts the tail
+         *  Otherwise, return false.
+         */
+        public boolean acceptTail(Connector c, Figure f) {
+            Object object = f.getUserObject();
+
+            if (object instanceof Port
+                    || object instanceof Vertex
+                    || (object instanceof Locatable && ((Locatable) object)
+                            .getContainer() instanceof Port)) {
+                return super.acceptTail(c, f);
+            } else {
+                return false;
+            }
+        }
+
+        /** Get the head site.
+         *  @param f The figure.
+         *  @param x The x location.
+         *  @param y The y location.
+         *  @return The head site.
+         */
+        public Site getHeadSite(Figure f, double x, double y) {
+            if (f instanceof Terminal) {
+                Site site = ((Terminal) f).getConnectSite();
+                return site;
+            } else {
+                return super.getHeadSite(f, x, y);
+            }
+        }
+
+        // Tail sites are the same as head sites.
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected members                     ////
+
+    /** The configuration. */
+    protected Configuration _configuration;
+
+    /** The configure action, which handles edit parameters requests. */
+    protected static ConfigureAction _configureAction = new ConfigureAction(
+            "Configure");
+
+    /** The submenu for configure actions. */
+    protected MenuActionFactory _configureMenuFactory;
+
+    /** The menu creator. */
+    protected MenuCreator _menuCreator;
+
+    /** The factory belonging to the menu creator. */
+    protected PtolemyMenuFactory _menuFactory;
 
     /** An inner class that handles interactive changes to connectivity.
      */

@@ -168,6 +168,32 @@ public class MenuActionFactory implements MenuItemFactory {
         return menuItem;
     }
 
+    /** Substitute the old action with the new action, if the old action is
+     *  added to this factory.
+     *  @param oldAction The old action.
+     *  @param newAction The new action.
+     *  @return true if the old action is found and is substituted; false if the
+     *  old action is not added to this factory.
+     */
+    public boolean substitute(Action oldAction, Action newAction) {
+        if (_action != null) {
+            if (_action == oldAction) {
+                _action = newAction;
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            for (int i = 0; i < _actions.length; i++) {
+                if (_actions[i] == oldAction) {
+                    _actions[i] = newAction;
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
     /** Add an action to the context menu.
      *  @param menu The context menu.
      *  @param action The action to be added to the context menu.

@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.vergil.gt;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -115,6 +116,7 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -138,6 +140,7 @@ import ptolemy.vergil.basic.ParameterizedNodeController;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.StateController;
+import ptolemy.vergil.fsm.TransitionController;
 import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.kernel.RelationController;
 import ptolemy.vergil.toolbox.ConfigureAction;
@@ -147,8 +150,14 @@ import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.MenuItemListener;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.Site;
+import diva.canvas.connector.AbstractConnector;
+import diva.canvas.connector.Connector;
+import diva.canvas.interactor.SelectionModel;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.RoundedRectangle;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.JGraph;
@@ -169,7 +178,7 @@ import diva.gui.toolbox.JContextMenu;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class TransformationEditor extends GTFrame implements ActionListener,
-        TableModelListener, ValueListener {
+        MenuItemListener, TableModelListener, ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                          constructors                     ////
@@ -346,6 +355,35 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         setVisible(false);
         GraphicalMessageHandler.setContext(_previousDefaultContext);
+    }
+
+    public void menuItemCreated(JContextMenu menu, NamedObj object,
+            JMenuItem menuItem) {
+        if (menuItem instanceof JMenu) {
+            JMenu submenu = (JMenu) menuItem;
+            Component[] menuItems = submenu.getMenuComponents();
+            for (Component itemComponent : menuItems) {
+                JMenuItem item = (JMenuItem) itemComponent;
+                Action action = item.getAction();
+                if (object instanceof PortMatcher) {
+                    // Disable all the items for a PortMatcher, which should be
+                    // configured by double-clicking the containing
+                    // CompositeActor.
+                    item.setEnabled(false);
+                } else if (action instanceof PortDialogAction
+                        && object instanceof GTEntity) {
+                    // Disable the PortDialogAction from the context menu.
+                    item.setEnabled(false);
+                }
+            }
+        } else {
+            Action action = menuItem.getAction();
+            if (action instanceof PortDialogAction
+                    && object instanceof GTEntity) {
+                // Disable the PortDialogAction from the context menu.
+                menuItem.setEnabled(false);
+            }
+        }
     }
 
     public void paste() {
@@ -604,6 +642,32 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         return component;
     }
 
+    @SuppressWarnings("unchecked")
+    protected HashSet _getSelectionSet(boolean includeLinks) {
+        HashSet selectionSet = super._getSelectionSet();
+
+        if (includeLinks) {
+            GraphController controller = _getGraphController();
+            GraphModel graphModel = controller.getGraphModel();
+            SelectionModel model = controller.getSelectionModel();
+            Object[] selection = model.getSelectionAsArray();
+            for (int i = 0; i < selection.length; i++) {
+                if (selection[i] instanceof Figure) {
+                    Object userObject = ((Figure) selection[i]).getUserObject();
+
+                    if (graphModel.isEdge(userObject)) {
+                        Object semanticObject = graphModel.getSemanticObject(
+                                userObject);
+                        if (semanticObject instanceof Relation) {
+                            selectionSet.add(semanticObject);
+                        }
+                    }
+                }
+            }
+        }
+        return selectionSet;
+    }
+
     /** The case menu. */
     protected JMenu _ruleMenu;
 
@@ -665,7 +729,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 group.add(noneItem);
 
                 Class<?> attributeClass = null;
-                Collection<?> objects = _getSelectionSet();
+                Collection<?> objects = _getSelectionSet(true);
                 if (objects.isEmpty()) {
                     HashSet<NamedObj> set = new HashSet<NamedObj>();
                     set.add(object);
@@ -725,16 +789,16 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     protected class TransformationActorController extends ActorController {
 
         protected Figure _renderNode(Object node) {
+            Figure nf = super._renderNode(node);
+
             if ((node != null) && !_hide(node)) {
-                Figure nf = super._renderNode(node);
                 GraphModel model = getController().getGraphModel();
                 Object object = model.getSemanticObject(node);
                 CompositeFigure cf = _getCompositeFigure(nf);
                 _renderActorOrRelation(cf, object);
-                return nf;
             }
 
-            return super._renderNode(node);
+            return nf;
         }
 
         TransformationActorController(GraphController controller) {
@@ -742,37 +806,18 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
             _menuFactory.addMenuItemFactory(
                     new MatchingAttributeActionsFactory());
+
+            Action oldConfigureAction = _configureAction;
+            _configureAction = new GTEntityConfigureAction("Configure");
+            _configureMenuFactory.substitute(oldConfigureAction,
+                    _configureAction);
+            _configureMenuFactory.addMenuItemListener(
+                    TransformationEditor.this);
         }
     }
 
     protected class TransformationActorGraphController
-    extends ActorEditorGraphController implements MenuItemListener {
-
-        public void menuItemCreated(JContextMenu menu, NamedObj object,
-                JMenuItem menuItem) {
-            if (menuItem instanceof JMenu) {
-                JMenu submenu = (JMenu) menuItem;
-                String text = submenu.getText();
-                if (text.equals("Customize")) {
-                    Component[] menuItems = submenu.getMenuComponents();
-                    for (Component itemComponent : menuItems) {
-                        JMenuItem item = (JMenuItem) itemComponent;
-                        Action action = item.getAction();
-                        if (object instanceof PortMatcher) {
-                            // Disable all the items for a PortMatcher, which
-                            // should be configured by double-clicking the
-                            // containing CompositeActor.
-                            item.setEnabled(false);
-                        } else if (action instanceof PortDialogAction
-                                && object instanceof GTEntity) {
-                            // Disable the PortDialogAction from the context
-                            // menu.
-                            item.setEnabled(false);
-                        }
-                    }
-                }
-            }
-        }
+    extends ActorEditorGraphController {
 
         protected TransformationActorGraphController() {
             _newRelationAction = new NewRelationAction(new String[][] {
@@ -807,39 +852,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             if (_portController instanceof ParameterizedNodeController) {
                 MenuActionFactory factory = ((ParameterizedNodeController)
                         _portController).getConfigureMenuFactory();
-                factory.addMenuItemListener(this);
+                factory.addMenuItemListener(TransformationEditor.this);
             }
-        }
-
-        protected void initializeInteraction() {
-            ConfigureAction oldConfigureAction = _configureAction;
-            _configureAction = new ConfigureAction("Configure") {
-                protected void _openDialog(Frame parent, NamedObj target,
-                        ActionEvent event) {
-                    EditorFactory factory = null;
-                    if (target instanceof GTEntity) {
-                        try {
-                            target.workspace().getReadAccess();
-                            List<?> attributeList = target.attributeList(
-                                    EditorFactory.class);
-                            if (!attributeList.isEmpty()) {
-                                factory = (EditorFactory) attributeList.get(0);
-                            }
-                        } finally {
-                            target.workspace().doneReading();
-                        }
-                    }
-                    if (factory != null) {
-                        factory.createEditor(target, parent);
-                    } else {
-                        super._openDialog(parent, target, event);
-                    }
-                }
-            };
-            super.initializeInteraction();
-            _configureAction = oldConfigureAction;
-
-            getConfigureMenuFactory().addMenuItemListener(this);
         }
 
         private class NewRelationAction extends
@@ -877,16 +891,34 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super._createControllers();
 
             _stateController = new TransformationStateController(this);
+            _transitionController = new TransformationTransitionController(
+                    this);
         }
     }
 
     protected class TransformationLinkController extends LinkController {
+
+        public Connector render(Object edge, FigureLayer layer, Site tailSite,
+                Site headSite) {
+            Connector connector = super.render(edge, layer, tailSite, headSite);
+            if (connector instanceof AbstractConnector) {
+                GraphModel graphModel = getController().getGraphModel();
+                Object semanticObject = graphModel.getSemanticObject(edge);
+                _renderLink(connector, semanticObject);
+            }
+            return connector;
+        }
 
         TransformationLinkController(GraphController controller) {
             super(controller);
 
             _menuFactory.addMenuItemFactory(
                     new MatchingAttributeActionsFactory());
+
+            Action oldConfigureAction = _configureAction;
+            _configureAction = new GTEntityConfigureAction("Configure");
+            _configureMenuFactory.substitute(oldConfigureAction,
+                    _configureAction);
         }
     }
 
@@ -896,8 +928,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         protected Figure _renderNode(Object node) {
             if ((node != null) && !_hide(node)) {
                 Figure nf = super._renderNode(node);
-                GraphModel model = getController().getGraphModel();
-                Object object = model.getSemanticObject(node);
+                GraphModel graphModel = getController().getGraphModel();
+                Object object = graphModel.getSemanticObject(node);
                 CompositeFigure cf = _getCompositeFigure(nf);
                 _renderActorOrRelation(cf, object);
                 return nf;
@@ -909,15 +941,77 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         TransformationRelationController(GraphController controller) {
             super(controller);
 
-            _menuFactory.addMenuItemFactory(new MatchingAttributeActionsFactory());
+            _menuFactory.addMenuItemFactory(
+                    new MatchingAttributeActionsFactory());
+
+            Action oldConfigureAction = _configureAction;
+            _configureAction = new GTEntityConfigureAction("Configure");
+            _configureMenuFactory.substitute(oldConfigureAction,
+                    _configureAction);
         }
     }
 
     protected class TransformationStateController extends StateController {
 
-        TransformationStateController(
-                TransformationFSMGraphController controller) {
+        TransformationStateController(GraphController controller) {
             super(controller);
+
+            setNodeRenderer(new Renderer(controller.getGraphModel()));
+
+            _menuFactory.addMenuItemFactory(
+                    new MatchingAttributeActionsFactory());
+
+            Action oldConfigureAction = _configureAction;
+            _configureAction = new GTEntityConfigureAction("Configure");
+            _configureMenuFactory.substitute(oldConfigureAction,
+                    _configureAction);
+        }
+
+        private class Renderer extends StateRenderer {
+
+            public Renderer(GraphModel model) {
+                super(model);
+            }
+
+            public Figure render(Object node) {
+                Figure nf = super.render(node);
+
+                if ((node != null) && !_hide(node)) {
+                    GraphModel model = getController().getGraphModel();
+                    Object object = model.getSemanticObject(node);
+                    CompositeFigure cf = _getCompositeFigure(nf);
+                    _renderState(cf, object);
+                }
+
+                return nf;
+            }
+        }
+    }
+
+    protected class TransformationTransitionController
+    extends TransitionController {
+
+        public TransformationTransitionController(GraphController controller) {
+            super(controller);
+
+            _menuFactory.addMenuItemFactory(
+                    new MatchingAttributeActionsFactory());
+
+            Action oldConfigureAction = _configureAction;
+            _configureAction = new GTEntityConfigureAction("Configure");
+            _configureMenuFactory.substitute(oldConfigureAction,
+                    _configureAction);
+        }
+
+        public Connector render(Object edge, FigureLayer layer, Site tailSite,
+                Site headSite) {
+            Connector connector = super.render(edge, layer, tailSite, headSite);
+            if (connector instanceof AbstractConnector) {
+                GraphModel graphModel = getController().getGraphModel();
+                Object semanticObject = graphModel.getSemanticObject(edge);
+                _renderLink(connector, semanticObject);
+            }
+            return connector;
         }
     }
 
@@ -1218,9 +1312,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     private void _renderActorOrRelation(CompositeFigure figure,
             Object semanticObject) {
         if (semanticObject instanceof NamedObj && figure != null) {
-            Color highlightColor =
-                _getHighlightColor((NamedObj) semanticObject);
-            if (highlightColor != null) {
+            Color color = _getHighlightColor((NamedObj) semanticObject);
+            if (color != null) {
                 Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
                 float padding = _HIGHLIGHT_PADDING;
                 BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
@@ -1228,13 +1321,47 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                         bounds.getWidth() + padding * 2.0,
                         bounds.getHeight() + padding * 2.0,
                         _HIGHLIGHT_THICKNESS);
-                bf.setStrokePaint(highlightColor);
+                bf.setStrokePaint(color);
 
                 int index = figure.getFigureCount();
                 if (index < 0) {
                     index = 0;
                 }
                 figure.add(index, bf);
+            }
+        }
+    }
+
+    private void _renderLink(Connector connector, Object semanticObject) {
+        if (semanticObject instanceof NamedObj && connector != null) {
+            Color color = _getHighlightColor((NamedObj) semanticObject);
+            if (color != null) {
+                AbstractConnector c = (AbstractConnector) connector;
+                c.setStrokePaint(color);
+                c.setStroke(new BasicStroke(_HIGHLIGHT_THICKNESS));
+            }
+        }
+    }
+
+    private void _renderState(CompositeFigure figure, Object semanticObject) {
+        if (semanticObject instanceof NamedObj && figure != null) {
+            Color highlightColor =
+                _getHighlightColor((NamedObj) semanticObject);
+            if (highlightColor != null) {
+                Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
+                float padding = _HIGHLIGHT_PADDING;
+                RoundedRectangle rf = new RoundedRectangle(
+                        bounds.getX() - padding, bounds.getY() - padding,
+                        bounds.getWidth() + padding * 2.0,
+                        bounds.getHeight() + padding * 2.0,
+                        null, _HIGHLIGHT_THICKNESS, 32.0, 32.0);
+                rf.setStrokePaint(highlightColor);
+
+                int index = figure.getFigureCount();
+                if (index < 0) {
+                    index = 0;
+                }
+                figure.add(index, rf);
             }
         }
     }
@@ -1256,8 +1383,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             Collection<?> children;
             if (filter == null) {
                 container.workspace().getReadAccess();
-                children = GTTools.getChildren(container, true, true,
-                        true, true);
+                children = GTTools.getChildren(container, true, true,true,
+                        true);
             } else {
                 children = filter;
             }
@@ -1353,7 +1480,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private static final Color _IGNORING_COLOR = Color.GRAY;
 
-    private static final Color _PRESERVATION_COLOR = Color.ORANGE;
+    private static final Color _PRESERVATION_COLOR = new Color(128, 128, 255);
 
     private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
 
@@ -1687,7 +1814,35 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         public int compare(File file1, File file2) {
             return file1.getAbsolutePath().compareTo(file2.getAbsolutePath());
         }
+    }
 
+    private static class GTEntityConfigureAction extends ConfigureAction {
+
+        public GTEntityConfigureAction(String description) {
+            super(description);
+        }
+
+        protected void _openDialog(Frame parent, NamedObj target,
+                ActionEvent event) {
+            EditorFactory factory = null;
+            if (target instanceof GTEntity) {
+                try {
+                    target.workspace().getReadAccess();
+                    List<?> attributeList = target.attributeList(
+                            EditorFactory.class);
+                    if (!attributeList.isEmpty()) {
+                        factory = (EditorFactory) attributeList.get(0);
+                    }
+                } finally {
+                    target.workspace().doneReading();
+                }
+            }
+            if (factory != null) {
+                factory.createEditor(target, parent);
+            } else {
+                super._openDialog(parent, target, event);
+            }
+        }
     }
 
     private class IgnoredPropertyAction extends MatchingAttributeAction {
@@ -1795,7 +1950,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
-            Collection<?> objects = _getSelectionSet();
+            Collection<?> objects = _getSelectionSet(true);
             NamedObj target = getTarget();
             if (objects.isEmpty() && target != null) {
                 HashSet<NamedObj> set = new HashSet<NamedObj>();
@@ -1899,10 +2054,11 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 TransformationRule rule =
                     getFrameController().getTransformationRule();
                 Pattern pattern = rule.getPattern();
-                DefaultModelAttribute attribute = (DefaultModelAttribute) pattern
-                        .getAttribute("DefaultModel");
+                DefaultModelAttribute attribute = (DefaultModelAttribute)
+                        pattern.getAttribute("DefaultModel");
                 if (attribute != null) {
-                    FileParameter parameter = (FileParameter) attribute.parameter;
+                    FileParameter parameter =
+                        (FileParameter) attribute.parameter;
                     if (parameter.getExpression() != null) {
                         modelFile = parameter.asFile();
                     }

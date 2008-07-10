@@ -122,8 +122,8 @@ public class TransitionController extends BasicEdgeController {
         // menu factory, which is a protected member of this class.
         // Derived classes can add menu items to it.
         _menuFactory = new PtolemyMenuFactory(controller);
-        _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_configureAction));
+        _configureMenuFactory = new MenuActionFactory(_configureAction);
+        _menuFactory.addMenuItemFactory(_configureMenuFactory);
         _menuCreator.setMenuFactory(_menuFactory);
 
         // Add a double click interactor.
@@ -157,89 +157,6 @@ public class TransitionController extends BasicEdgeController {
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
                     _lookInsideAction));
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected members                     ////
-
-    /** The configuration. */
-    protected Configuration _configuration;
-
-    /** The configure action, which handles edit parameters requests. */
-    protected static ConfigureAction _configureAction = new ConfigureAction(
-            "Configure");
-
-    /** The action that handles look inside. */
-    protected LookInsideAction _lookInsideAction = new LookInsideAction();
-
-    /** The menu creator. */
-    protected MenuCreator _menuCreator;
-
-    /** The factory belonging to the menu creator. */
-    protected PtolemyMenuFactory _menuFactory;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 10);
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** An inner class that handles interactive changes to connectivity. */
-    protected class LinkDropper extends ConnectorAdapter {
-        /** Called when a connector end is dropped.  Attach or
-         *  detach the edge as appropriate.
-         */
-        public void connectorDropped(ConnectorEvent evt) {
-            Connector c = evt.getConnector();
-            Figure f = evt.getTarget();
-            Object edge = c.getUserObject();
-            Object node = (f == null) ? null : f.getUserObject();
-            FSMGraphModel model = (FSMGraphModel) getController()
-                    .getGraphModel();
-
-            switch (evt.getEnd()) {
-            case ConnectorEvent.HEAD_END:
-                model.getArcModel().setHead(edge, node);
-                break;
-
-            case ConnectorEvent.TAIL_END:
-                model.getArcModel().setTail(edge, node);
-                break;
-
-            case ConnectorEvent.MIDPOINT:
-                break;
-
-            default:
-                throw new IllegalStateException(
-                        "Cannot handle both ends of an edge being dragged.");
-            }
-
-            // Make the arc rerender itself so that geometry is preserved
-            Arc arc = (Arc) edge;
-            Transition transition = (Transition) arc.getRelation();
-
-            if ((transition != null) && c instanceof ArcConnector) {
-                double angle = ((ArcConnector) c).getAngle();
-                double gamma = ((ArcConnector) c).getGamma();
-
-                // Set the new exitAngle and gamma parameter values based
-                // on the current arc.
-                String moml = "<group><property name=\"exitAngle\" value=\""
-                        + angle + "\"/>" + "<property name=\"gamma\" value=\""
-                        + gamma + "\"/></group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        transition, moml);
-                transition.requestChange(request);
-            }
-
-            // rerender the edge.  This is necessary for several reasons.
-            // First, the edge is only associated with a relation after it
-            // is fully connected.  Second, edges that aren't
-            // connected should be erased (which this will rather
-            // conveniently take care of for us).
-            getController().rerenderEdge(edge);
         }
     }
 
@@ -357,6 +274,91 @@ public class TransitionController extends BasicEdgeController {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected members                     ////
+
+    /** The configuration. */
+    protected Configuration _configuration;
+
+    /** The configure action, which handles edit parameters requests. */
+    protected static ConfigureAction _configureAction = new ConfigureAction(
+            "Configure");
+
+    /** The submenu for configure actions. */
+    protected MenuActionFactory _configureMenuFactory;
+
+    /** The action that handles look inside. */
+    protected LookInsideAction _lookInsideAction = new LookInsideAction();
+
+    /** The menu creator. */
+    protected MenuCreator _menuCreator;
+
+    /** The factory belonging to the menu creator. */
+    protected PtolemyMenuFactory _menuFactory;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** An inner class that handles interactive changes to connectivity. */
+    protected class LinkDropper extends ConnectorAdapter {
+        /** Called when a connector end is dropped.  Attach or
+         *  detach the edge as appropriate.
+         */
+        public void connectorDropped(ConnectorEvent evt) {
+            Connector c = evt.getConnector();
+            Figure f = evt.getTarget();
+            Object edge = c.getUserObject();
+            Object node = (f == null) ? null : f.getUserObject();
+            FSMGraphModel model = (FSMGraphModel) getController()
+                    .getGraphModel();
+
+            switch (evt.getEnd()) {
+            case ConnectorEvent.HEAD_END:
+                model.getArcModel().setHead(edge, node);
+                break;
+
+            case ConnectorEvent.TAIL_END:
+                model.getArcModel().setTail(edge, node);
+                break;
+
+            case ConnectorEvent.MIDPOINT:
+                break;
+
+            default:
+                throw new IllegalStateException(
+                        "Cannot handle both ends of an edge being dragged.");
+            }
+
+            // Make the arc rerender itself so that geometry is preserved
+            Arc arc = (Arc) edge;
+            Transition transition = (Transition) arc.getRelation();
+
+            if ((transition != null) && c instanceof ArcConnector) {
+                double angle = ((ArcConnector) c).getAngle();
+                double gamma = ((ArcConnector) c).getGamma();
+
+                // Set the new exitAngle and gamma parameter values based
+                // on the current arc.
+                String moml = "<group><property name=\"exitAngle\" value=\""
+                        + angle + "\"/>" + "<property name=\"gamma\" value=\""
+                        + gamma + "\"/></group>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        transition, moml);
+                transition.requestChange(request);
+            }
+
+            // rerender the edge.  This is necessary for several reasons.
+            // First, the edge is only associated with a relation after it
+            // is fully connected.  Second, edges that aren't
+            // connected should be erased (which this will rather
+            // conveniently take care of for us).
+            getController().rerenderEdge(edge);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
     /** An action to look inside a transition at its refinement, if it has one.
      *  NOTE: This requires that the configuration be non null, or it
      *  will report an error with a fairly cryptic message.
@@ -407,4 +409,9 @@ public class TransitionController extends BasicEdgeController {
             }
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 10);
 }
