@@ -59,7 +59,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	AtomicActorMatcher.java \
-	ChangeAttribute.java \
 	Checkable.java \
 	CompositeActorMatcher.java \
 	Constraint.java \
@@ -88,6 +87,7 @@ JSRCS = \
 	LocationType.java \
 	MalformedStringException.java \
 	MatchCallback.java \
+	MatchingAttribute.java \
 	MoMLGenerator.java \
 	ModalModelMatcher.java \
 	ModelCombine.java \

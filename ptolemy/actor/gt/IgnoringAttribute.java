@@ -44,24 +44,24 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class IgnoringAttribute extends TransformationAttribute {
+public class IgnoringAttribute extends MatchingAttribute {
 
-	/**
-	 *  @param container
-	 *  @param name
-	 *  @throws NameDuplicationException
-	 *  @throws IllegalActionException
-	 */
-	public IgnoringAttribute(NamedObj container, String name)
-			throws NameDuplicationException, IllegalActionException {
-		super(container, name);
-	}
+    /**
+     *  @param container
+     *  @param name
+     *  @throws NameDuplicationException
+     *  @throws IllegalActionException
+     */
+    public IgnoringAttribute(NamedObj container, String name)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
+    }
 
-	/**
-	 *  @param workspace
-	 */
-	public IgnoringAttribute(Workspace workspace) {
-		super(workspace);
-	}
+    /**
+     *  @param workspace
+     */
+    public IgnoringAttribute(Workspace workspace) {
+        super(workspace);
+    }
 
 }

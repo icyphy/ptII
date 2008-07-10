@@ -138,9 +138,14 @@ OPTIONAL_FILES = \
 	'TransformationEditor$$BatchMatchAction$$MultipleViewController.class' \
 	'TransformationEditor$$BatchMatchAction.class' \
 	'TransformationEditor$$CellEditor.class' \
+	'TransformationEditor$$CreatedPropertyAction.class' \
 	'TransformationEditor$$FileComparator.class' \
+	'TransformationEditor$$IgnoredPropertyAction.class' \
 	'TransformationEditor$$LayoutAction.class' \
 	'TransformationEditor$$MatchAction.class' \
+	'TransformationEditor$$MatchingAttributeAction.class' \
+	'TransformationEditor$$MatchingAttributeActionsFactory.class' \
+	'TransformationEditor$$PreservedPropertyAction.class' \
 	'TransformationEditor$$SingleMatchAction$$SingleViewController.class' \
 	'TransformationEditor$$SingleMatchAction.class' \
 	'TransformationEditor$$TransformationActorController.class' \
@@ -150,6 +155,7 @@ OPTIONAL_FILES = \
 	'TransformationEditor$$TransformationFSMGraphController.class' \
 	'TransformationEditor$$TransformationLinkController.class' \
 	'TransformationEditor$$TransformationRelationController.class' \
+	'TransformationEditor$$TransformationStateController.class' \
 	'TransformationEditor$$ViewController.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

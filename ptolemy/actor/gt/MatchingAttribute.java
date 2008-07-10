@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ChangeAttribute extends TransformationAttribute {
+public class MatchingAttribute extends TransformationAttribute {
 
 	/**
 	 *  @param container
@@ -52,7 +52,7 @@ public class ChangeAttribute extends TransformationAttribute {
 	 *  @throws NameDuplicationException
 	 *  @throws IllegalActionException
 	 */
-	public ChangeAttribute(NamedObj container, String name)
+	public MatchingAttribute(NamedObj container, String name)
 			throws NameDuplicationException, IllegalActionException {
 		super(container, name);
 	}
@@ -60,7 +60,7 @@ public class ChangeAttribute extends TransformationAttribute {
 	/**
 	 *  @param workspace
 	 */
-	public ChangeAttribute(Workspace workspace) {
+	public MatchingAttribute(Workspace workspace) {
 		super(workspace);
 	}
 

@@ -53,12 +53,14 @@ import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -66,6 +68,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -92,6 +95,7 @@ import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.IgnoringAttribute;
+import ptolemy.actor.gt.MatchingAttribute;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.PatternObjectAttribute;
 import ptolemy.actor.gt.PortMatcher;
@@ -133,11 +137,13 @@ import ptolemy.vergil.actor.LinkController;
 import ptolemy.vergil.basic.ParameterizedNodeController;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
+import ptolemy.vergil.fsm.StateController;
 import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.kernel.RelationController;
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.MenuItemListener;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
@@ -162,8 +168,8 @@ import diva.gui.toolbox.JContextMenu;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class TransformationEditor extends GTFrame implements
-        ActionListener, TableModelListener, ValueListener {
+public class TransformationEditor extends GTFrame implements ActionListener,
+        TableModelListener, ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                          constructors                     ////
@@ -601,6 +607,121 @@ public class TransformationEditor extends GTFrame implements
     /** The case menu. */
     protected JMenu _ruleMenu;
 
+    protected class MatchingAttributeActionsFactory implements MenuItemFactory {
+
+        /** Add an item to the given context menu that will configure the
+         *  parameters on the given target.
+         *  @param menu The context menu to add to.
+         *  @param target The object that the menu item command will operate on.
+         *  @return A menu item, or null to decline to provide a menu item.
+         */
+        public JMenuItem create(JContextMenu menu, NamedObj object) {
+            int location = 0;
+            for (int i = 0; i < menu.getComponentCount(); i++) {
+                if (!(menu.getComponent(i) instanceof JMenu)) {
+                    location = i;
+                    break;
+                }
+            }
+
+            JMenu submenu = new JMenu("Transformation");
+            menu.add(submenu, location);
+
+            boolean added = false;
+            if (GTTools.isInPattern(object)) {
+                _add(submenu, new ConfigureCriteriaAction(), false);
+                added = true;
+            }
+            if (GTTools.isInReplacement(object)) {
+                _add(submenu, new ConfigureOperationsAction(), false);
+                added = true;
+            }
+
+            if (added && GTTools.isInPattern(object)) {
+                submenu.addSeparator();
+
+                ButtonGroup group = new ButtonGroup();
+                JMenuItem hiddenItem = _add(submenu, new FigureAction("hidden"),
+                        true);
+                hiddenItem.setVisible(false);
+                group.add(hiddenItem);
+
+                MatchingAttributeAction[] radioActions =
+                    new MatchingAttributeAction[] {
+                        new CreatedPropertyAction("Created"),
+                        new IgnoredPropertyAction("Ignored"),
+                        new PreservedPropertyAction("Preserved")
+                };
+                JMenuItem[] radioItems = new JMenuItem[radioActions.length];
+                int i = 0;
+                for (Action radioAction : radioActions) {
+                    radioItems[i] = _add(submenu, radioAction, true);
+                    group.add(radioItems[i]);
+                    i++;
+                }
+
+                JMenuItem noneItem = _add(submenu, new MatchingAttributeAction(
+                        "None"), true);
+                group.add(noneItem);
+
+                Class<?> attributeClass = null;
+                Collection<?> objects = _getSelectionSet();
+                if (objects.isEmpty()) {
+                    HashSet<NamedObj> set = new HashSet<NamedObj>();
+                    set.add(object);
+                    objects = set;
+                }
+                boolean set = false;
+                for (Object childObject : objects) {
+                    NamedObj child = (NamedObj) childObject;
+                    List<?> properties = child.attributeList(
+                            MatchingAttribute.class);
+                    if (properties.size() > 1
+                            || attributeClass != null && (properties.size() < 1
+                            || !attributeClass.equals(properties.get(0)
+                                    .getClass()))) {
+                        hiddenItem.setSelected(true);
+                        attributeClass = null;
+                        set = true;
+                        break;
+                    } else if (properties.size() == 1) {
+                        attributeClass = properties.get(0).getClass();
+                    }
+                }
+                if (!set) {
+                    if (attributeClass == null) {
+                        noneItem.setSelected(true);
+                    } else {
+                        i = 0;
+                        for (MatchingAttributeAction radioAction
+                                : radioActions) {
+                            if (radioAction.getAttributeClass().equals(
+                                    attributeClass)) {
+                                radioItems[i].setSelected(true);
+                                break;
+                            }
+                            i++;
+                        }
+                    }
+                }
+            }
+
+            return submenu;
+        }
+
+        private JMenuItem _add(JMenu menu, Action action, boolean isRadio) {
+            JMenuItem item;
+            if (isRadio) {
+                item = new JRadioButtonMenuItem(action);
+            } else {
+                item = new JMenuItem(action);
+            }
+            menu.add(item);
+            action.putValue("", item);
+            return item;
+        }
+    }
+
     protected class TransformationActorController extends ActorController {
 
         protected Figure _renderNode(Object node) {
@@ -618,6 +739,9 @@ public class TransformationEditor extends GTFrame implements
 
         TransformationActorController(GraphController controller) {
             super(controller);
+
+            _menuFactory.addMenuItemFactory(
+                    new MatchingAttributeActionsFactory());
         }
     }
 
@@ -627,9 +751,10 @@ public class TransformationEditor extends GTFrame implements
         public void menuItemCreated(JContextMenu menu, NamedObj object,
                 JMenuItem menuItem) {
             if (menuItem instanceof JMenu) {
-                JMenu subMenu = (JMenu) menuItem;
-                if (subMenu.getText().equals("Customize")) {
-                    Component[] menuItems = subMenu.getMenuComponents();
+                JMenu submenu = (JMenu) menuItem;
+                String text = submenu.getText();
+                if (text.equals("Customize")) {
+                    Component[] menuItems = submenu.getMenuComponents();
                     for (Component itemComponent : menuItems) {
                         JMenuItem item = (JMenuItem) itemComponent;
                         Action action = item.getAction();
@@ -643,31 +768,8 @@ public class TransformationEditor extends GTFrame implements
                             // Disable the PortDialogAction from the context
                             // menu.
                             item.setEnabled(false);
-                        } else if (action instanceof ConfigureCriteriaAction
-                                && (!GTTools.isInPattern(object))) {
-                            // Hide the ConfigureCriteriaAction from the
-                            // context menu.
-                            item.setVisible(false);
-                        } else if (action instanceof ConfigureOperationsAction
-                                && (!GTTools.isInReplacement(object))) {
-                            // Hide the ConfigureOperationsAction from the
-                            // context menu.
-                            item.setVisible(false);
                         }
                     }
-                }
-            } else if (menuItem instanceof JMenuItem) {
-                Action action = ((JMenuItem) menuItem).getAction();
-                if (action instanceof ConfigureCriteriaAction
-                        && (!GTTools.isInPattern(object))) {
-                    // Hide the ConfigureCriteriaAction from the
-                    // context menu.
-                    menuItem.setVisible(false);
-                } else if (action instanceof ConfigureOperationsAction
-                        && (!GTTools.isInReplacement(object))) {
-                    // Hide the ConfigureOperationsAction from the
-                    // context menu.
-                    menuItem.setVisible(false);
                 }
             }
         }
@@ -702,21 +804,10 @@ public class TransformationEditor extends GTFrame implements
             _relationController = new TransformationRelationController(this);
             _linkController = new TransformationLinkController(this);
 
-            MenuActionFactory factory =
-                _entityController.getConfigureMenuFactory();
-            factory.addMenuItemListener(TransformationActorGraphController
-                    .this);
-
-            FigureAction criteriaAction = new ConfigureCriteriaAction();
-            factory.addAction(criteriaAction, "Customize");
-            FigureAction operationsAction = new ConfigureOperationsAction();
-            factory.addAction(operationsAction, "Customize");
-
             if (_portController instanceof ParameterizedNodeController) {
-                factory = ((ParameterizedNodeController) _portController)
-                        .getConfigureMenuFactory();
-                factory.addMenuItemListener(TransformationActorGraphController
-                        .this);
+                MenuActionFactory factory = ((ParameterizedNodeController)
+                        _portController).getConfigureMenuFactory();
+                factory.addMenuItemListener(this);
             }
         }
 
@@ -781,21 +872,21 @@ public class TransformationEditor extends GTFrame implements
                 }
             }
         }
+
+        protected void _createControllers() {
+            super._createControllers();
+
+            _stateController = new TransformationStateController(this);
+        }
     }
 
     protected class TransformationLinkController extends LinkController {
 
-        TransformationLinkController(
-                TransformationActorGraphController controller) {
+        TransformationLinkController(GraphController controller) {
             super(controller);
 
-            MenuActionFactory factory = new MenuActionFactory(
-                    new ConfigureCriteriaAction());
-            _menuFactory.addMenuItemFactory(factory);
-            factory.addMenuItemListener(controller);
-            factory = new MenuActionFactory(new ConfigureOperationsAction());
-            _menuFactory.addMenuItemFactory(factory);
-            factory.addMenuItemListener(controller);
+            _menuFactory.addMenuItemFactory(
+                    new MatchingAttributeActionsFactory());
         }
     }
 
@@ -815,18 +906,18 @@ public class TransformationEditor extends GTFrame implements
             return super._renderNode(node);
         }
 
-        TransformationRelationController(
-                TransformationActorGraphController controller) {
+        TransformationRelationController(GraphController controller) {
             super(controller);
 
-            MenuActionFactory factory = new MenuActionFactory(
-                    new ConfigureCriteriaAction());
-            _menuFactory.addMenuItemFactory(factory);
-            factory.addMenuItemListener(controller);
-            factory = new MenuActionFactory(new ConfigureOperationsAction());
-            _menuFactory.addMenuItemFactory(factory);
-            factory.addMenuItemListener(controller);
+            _menuFactory.addMenuItemFactory(new MatchingAttributeActionsFactory());
+        }
+    }
 
+    protected class TransformationStateController extends StateController {
+
+        TransformationStateController(
+                TransformationFSMGraphController controller) {
+            super(controller);
         }
     }
 
@@ -1162,24 +1253,24 @@ public class TransformationEditor extends GTFrame implements
     private void _setOrClearPatternObjectAttributes(CompositeEntity container,
             boolean isSet, Collection<?> filter) {
         try {
-            Collection<?> objectCollection;
+            Collection<?> children;
             if (filter == null) {
                 container.workspace().getReadAccess();
-                objectCollection = GTTools.getChildren(container, true, true,
+                children = GTTools.getChildren(container, true, true,
                         true, true);
             } else {
-                objectCollection = filter;
+                children = filter;
             }
-            for (Object objectObject : objectCollection) {
-                NamedObj object = (NamedObj) objectObject;
+            for (Object childObject : children) {
+                NamedObj child = (NamedObj) childObject;
                 PatternObjectAttribute patternObject = GTTools
-                        .getPatternObjectAttribute(object);
+                        .getPatternObjectAttribute(child);
                 if (isSet) {
                     if (patternObject == null) {
-                        patternObject = new PatternObjectAttribute(object,
+                        patternObject = new PatternObjectAttribute(child,
                                 "patternObject");
                     }
-                    String name = _getNameWithinContainer(object,
+                    String name = _getNameWithinContainer(child,
                             getFrameController().getTransformationRule()
                             .getPattern());
                     patternObject.setPersistent(true);
@@ -1188,9 +1279,9 @@ public class TransformationEditor extends GTFrame implements
                     patternObject.setPersistent(false);
                     patternObject.setExpression("");
                 }
-                if (object instanceof CompositeEntity) {
+                if (child instanceof CompositeEntity) {
                     _setOrClearPatternObjectAttributes(
-                            (CompositeEntity) object, isSet, null);
+                            (CompositeEntity) child, isSet, null);
                 }
             }
         } catch (KernelException e) {
@@ -1277,9 +1368,6 @@ public class TransformationEditor extends GTFrame implements
     private int _selectedIndexBeforeFullScreen;
 
     private JTable _table;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      private inner classes                ////
 
     private DefaultTableModel _tableModel;
 
@@ -1579,6 +1667,20 @@ public class TransformationEditor extends GTFrame implements
         private String _previousString;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      private inner classes                ////
+
+    private class CreatedPropertyAction extends MatchingAttributeAction {
+
+        public CreatedPropertyAction(String name) {
+            super(name);
+        }
+
+        public Class<? extends MatchingAttribute> getAttributeClass() {
+            return CreationAttribute.class;
+        }
+    }
+
     private static class FileComparator implements Comparator<File>,
     Serializable {
 
@@ -1586,6 +1688,17 @@ public class TransformationEditor extends GTFrame implements
             return file1.getAbsolutePath().compareTo(file2.getAbsolutePath());
         }
 
+    }
+
+    private class IgnoredPropertyAction extends MatchingAttributeAction {
+
+        public IgnoredPropertyAction(String name) {
+            super(name);
+        }
+
+        public Class<? extends MatchingAttribute> getAttributeClass() {
+            return IgnoringAttribute.class;
+        }
     }
 
     /** Action to automatically layout the graph.
@@ -1671,6 +1784,81 @@ public class TransformationEditor extends GTFrame implements
         private GraphMatcher _matcher = new GraphMatcher();
 
         private MoMLParser _parser = new MoMLParser();
+    }
+
+    private class MatchingAttributeAction extends FigureAction {
+
+        public MatchingAttributeAction(String name) {
+            super(name);
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            Collection<?> objects = _getSelectionSet();
+            NamedObj target = getTarget();
+            if (objects.isEmpty() && target != null) {
+                HashSet<NamedObj> set = new HashSet<NamedObj>();
+                set.add(target);
+                objects = set;
+            }
+            LinkedList<MoMLChangeRequest> changeRequests =
+                new LinkedList<MoMLChangeRequest>();
+            for (Object object : objects) {
+                NamedObj namedObj = (NamedObj) object;
+                for (Object attributeObject : namedObj.attributeList(
+                        MatchingAttribute.class)) {
+                    MatchingAttribute attribute =
+                        (MatchingAttribute) attributeObject;
+                    String moml = "<deleteProperty name=\""
+                        + attribute.getName() + "\"/>";
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            namedObj, moml);
+                    request.setUndoable(true);
+                    request.setMergeWithPreviousUndo(true);
+                    changeRequests.add(request);
+                }
+            }
+            Class<? extends MatchingAttribute> attributeClass =
+                getAttributeClass();
+            if (attributeClass != null) {
+                String attributeName = attributeClass.getSimpleName();
+                for (Object object : objects) {
+                    NamedObj namedObj = (NamedObj) object;
+                    String moml = "<group name=\"auto\">" + "<property name=\""
+                        + attributeName + "\" class=\""
+                        + attributeClass.getName() + "\"/></group>";
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            namedObj, moml);
+                    request.setUndoable(true);
+                    request.setMergeWithPreviousUndo(true);
+                    changeRequests.add(request);
+                }
+            }
+            boolean first = true;
+            for (MoMLChangeRequest request : changeRequests) {
+                if (first) {
+                    request.setMergeWithPreviousUndo(false);
+                    first = false;
+                }
+                request.getContext().requestChange(request);
+            }
+        }
+
+        public Class<? extends MatchingAttribute> getAttributeClass() {
+            return null;
+        }
+    }
+
+    private class PreservedPropertyAction extends MatchingAttributeAction {
+
+        public PreservedPropertyAction(String name) {
+            super(name);
+        }
+
+        public Class<? extends MatchingAttribute> getAttributeClass() {
+            return PreservationAttribute.class;
+        }
     }
 
     private class SingleMatchAction extends MatchAction {

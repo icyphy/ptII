@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class PreservationAttribute extends ChangeAttribute {
+public class PreservationAttribute extends MatchingAttribute {
 
 	/**
 	 *  @param container
