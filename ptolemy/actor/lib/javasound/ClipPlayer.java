@@ -48,6 +48,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.ClassUtilities;
 
 /////////////////////////////////////////////////////////
@@ -124,6 +125,21 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ClipPlayer newObject = (ClipPlayer) super.clone(workspace);
+
+        newObject._outputEvents = new LinkedList<BooleanToken>();
+        newObject._clips = new LinkedList<Clip>();
+
+        return newObject;
+    }
 
     /** Produce outputs indicating that the clip has started or stopped.
      *  @exception IllegalActionException Not thrown in this class.

@@ -43,6 +43,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
@@ -322,6 +323,28 @@ public class ViterbiDecoder extends Transformer {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ViterbiDecoder newObject = (ViterbiDecoder) super.clone(workspace);
+
+        newObject._inputRate = (Parameter)newObject.getAttribute("_inputRate");
+        newObject._mask = new int[newObject._maskNumber];
+        newObject._outputRate = (Parameter)newObject.getAttribute("_outputRate");
+        try {
+            newObject._type = new ptolemy.actor.TypeAttribute(newObject.input,
+                    "inputType");
+        } catch (Exception ex) {
+            throw new CloneNotSupportedException("Clone failed:" +  ex);
+        }
+        return newObject;
     }
 
     /** Read <i>n</i> inputs and produce <i>k</i> outputs, where <i>n</i>

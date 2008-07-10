@@ -39,6 +39,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.media.javasound.SoundWriter;
 
@@ -215,6 +216,21 @@ public class AudioWriter extends Sink {
         if (_safeToInitialize == true) {
             _initializeWriter();
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        AudioWriter newObject = (AudioWriter) super.clone(workspace);
+
+        newObject._audioPutArray = new double[newObject._channels][];
+        newObject._inArray = new Token[newObject._channels][];
+
+        return newObject;
     }
 
     /** Open a new audio file for writing. Any existing file
