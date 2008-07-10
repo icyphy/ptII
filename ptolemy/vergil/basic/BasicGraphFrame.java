@@ -1061,7 +1061,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     /** Open the container, if any, of the entity.
-     *  If this entity has no container, then do nothing. 
+     *  If this entity has no container, then do nothing.
      */
     public void openContainer() {
         GraphModel model = _getGraphModel();
@@ -1345,7 +1345,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /**
      * Called when the mouse is clicked.
      * This base class does nothing when the mouse is clicked.
-     * However, events _are_ handled by the components within this component.  
+     * However, events _are_ handled by the components within this component.
      * @param event The mouse event.
      */
     public void mouseClicked(MouseEvent event) {
@@ -1357,7 +1357,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      * @param event The drag event.
      */
     public void mouseDragged(MouseEvent event) {
-        // Implementation of the MouseMotionListener interface. 
+        // Implementation of the MouseMotionListener interface.
         // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=73
 
         if (event.isAltDown()) {
@@ -1379,7 +1379,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /**
      * Called when the mouse enters this component.
      * This base class does nothing when the enters this component.
-     * However, events _are_ handled by the components within this component.  
+     * However, events _are_ handled by the components within this component.
      * @param event The mouse event.
      */
     public void mouseEntered(MouseEvent event) {
@@ -1389,17 +1389,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /**
       * Called when the mouse leaves this component.
       * This base class does nothing when the exits this component.
-      * However, events _are_ handled by the components within this component.  
+      * However, events _are_ handled by the components within this component.
       * @param event The mouse event.
       */
     public void mouseExited(MouseEvent event) {
         // Implementation of the MouseMotionListener interface.
     }
 
-    /** Called when the mouse is moved. 
-     * This base class does nothing when the mouse is moved.  
+    /** Called when the mouse is moved.
+     * This base class does nothing when the mouse is moved.
      * @param event Contains details of the movement event.
-     * However, events _are_ handled by the components within this component.  
+     * However, events _are_ handled by the components within this component.
      */
     public void mouseMoved(MouseEvent event) {
         // Implementation of the MouseMotionListener interface.
@@ -1419,8 +1419,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /**
       * Called when the mouse is released.
-      * This base class does nothing when the mouse is moved.  
-      * However, events _are_ handled by the components within this component.  
+      * This base class does nothing when the mouse is moved.
+      * However, events _are_ handled by the components within this component.
       * @param event The mouse event.
       */
     public void mouseReleased(MouseEvent event) {
@@ -1663,6 +1663,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return (AbstractBasicGraphModel) controller.getGraphModel();
     }
 
+    /** Return the right component on which graph editing occurs.
+     *  @return The JGraph on which graph editing occurs.
+     */
+    protected JComponent _getRightComponent() {
+        return _rightComponent;
+    }
+
     /** Return a set of instances of NamedObj representing the objects
      *  that are currently selected.  This set has no particular order
      *  to it. If you need the selection objects in proper order, as
@@ -1738,11 +1745,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return namedObjSet;
     }
 
-    /** Return the right component on which graph editing occurs.
-     *  @return The JGraph on which graph editing occurs.
+    /** Get the component whose size is to be recorded in the model when it is
+     *  saved into an output file. In this class, the return of this function is
+     *  the same as that of {@link #_getRightComponent()}. A subclass may
+     *  override this function to return a different component, such as a tab of
+     *  a tabbed pane, whose size is to be recorded instead.
+     *  @return The component whose size is to be recorded.
      */
-    protected JComponent _getRightComponent() {
-        return _rightComponent;
+    protected JComponent _getSizeComponent() {
+        return _getRightComponent();
     }
 
     /** Set the directory that was last accessed by this window.
@@ -1807,7 +1818,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 size = new SizeAttribute(getModel(), "_vergilSize");
             }
 
-            size.recordSize(_getRightComponent());
+            size.recordSize(_getSizeComponent());
 
             // Also record zoom and pan state.
             JCanvas canvas = getJGraph().getGraphPane().getCanvas();
@@ -2621,7 +2632,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// PrintAction 
+    //// PrintAction
 
     /**
      *  Print the current model.
@@ -2691,7 +2702,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// SaveAction 
+    //// SaveAction
 
     /**
      *  Save the current model.

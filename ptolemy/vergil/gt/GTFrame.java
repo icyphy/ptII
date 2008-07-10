@@ -156,6 +156,15 @@ public class GTFrame extends ExtendedGraphFrame {
         return _graphPanner;
     }
 
+    protected JComponent _getSizeComponent() {
+        if (_frameController.hasTabs()) {
+            return (JComponent) _frameController.getTabbedPane()
+            		.getComponent(0);
+        } else {
+            return super._getSizeComponent();
+        }
+    }
+
     protected static class ConfigureCriteriaAction
     extends ConfigureIngredientsAction {
 
