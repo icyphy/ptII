@@ -1,6 +1,6 @@
 /* Interface representing a dependency between ports.
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -141,7 +141,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  equivalence class. If there are no
      *  output ports, then include all the input ports
      *  are in a single equivalence class.
-     *  @param inputPort The port to find the equivalence class of.
+     *  @param input The port to find the equivalence class of.
      *  @throws IllegalArgumentException If the argument is not
      *   contained by the associated actor.
      */
