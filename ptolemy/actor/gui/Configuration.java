@@ -192,7 +192,22 @@ public class Configuration extends CompositeEntity implements
                                 + constraints.size() + " constraints that "
                                 + "differ from " + cloneConstraints.size()
                                 + " constraints its clone has.\n"
-                                + " Constraints: \n");
+                                + " Constraints: \nMaster Constraints:\n");
+                        Iterator constraintIterator = constraints.iterator();
+                        while (constraintIterator.hasNext()) {
+                            Inequality constraint = (Inequality) constraintIterator
+                                    .next();
+                            results.append(constraint.toString() + "\n");
+                        }
+                        results.append("Clone constraints:\n");
+                        Iterator cloneConstraintIterator = cloneConstraints.iterator();
+                        while (cloneConstraintIterator.hasNext()) {
+                            Inequality constraint = (Inequality) cloneConstraintIterator
+                                    .next();
+                            results.append(constraint.toString() + "\n");
+                        }
+                        
+                        
                     }
 
                     // Make sure the constraints are the same.
