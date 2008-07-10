@@ -338,12 +338,7 @@ public class ViterbiDecoder extends Transformer {
         newObject._inputRate = (Parameter)newObject.getAttribute("_inputRate");
         newObject._mask = new int[newObject._maskNumber];
         newObject._outputRate = (Parameter)newObject.getAttribute("_outputRate");
-        try {
-            newObject._type = new ptolemy.actor.TypeAttribute(newObject.input,
-                    "inputType");
-        } catch (Exception ex) {
-            throw new CloneNotSupportedException("Clone failed:" +  ex);
-        }
+        newObject._type = (TypeAttribute)newObject.input.getAttribute("inputType");
         return newObject;
     }
 
