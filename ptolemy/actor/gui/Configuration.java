@@ -191,10 +191,15 @@ public class Configuration extends CompositeEntity implements
                         results.append(actor.getFullName() + " has "
                                 + constraints.size() + " constraints that "
                                 + "differ from " + cloneConstraints.size()
-                                + " constraints its clone has.\n");
+                                + " constraints its clone has.\n"
+                                + " Constraints: \n");
                     }
 
                     // Make sure the constraints are the same.
+                    // First, iterate through the constraints of the master
+                    // and create a HashSet of string descriptions.  
+                    // This is likely to work since the problem is usually
+                    // the the clone is missing constraints.
                     HashSet<String> constraintsDescription = new HashSet<String>();
                     try {
                         Iterator constraintIterator = constraints.iterator();
@@ -208,12 +213,45 @@ public class Configuration extends CompositeEntity implements
                         throw new IllegalActionException(actor, throwable,
                                 "Failed to iterate through constraints.");
                     }
+                    // Make sure that each constraint in the clone is present
+                    // in the master
                     Iterator cloneConstraintIterator = cloneConstraints
                             .iterator();
                     while (cloneConstraintIterator.hasNext()) {
                         Inequality constraint = (Inequality) cloneConstraintIterator
                                 .next();
                         if (!constraintsDescription.contains(constraint
+                                .toString())) {
+                            results.append("Master object of "
+                                    + actor.getFullName()
+                                    + " is missing constraint:\n"
+                                    + constraint.toString()
+                                    + ".\n");
+                        }
+                    }
+
+
+                    // Now do the same for the clone.
+                    HashSet<String> cloneConstraintsDescription = new HashSet<String>();
+                    try {
+                        Iterator constraintIterator = cloneConstraints.iterator();
+                        while (constraintIterator.hasNext()) {
+                            Inequality constraint = (Inequality) constraintIterator
+                                    .next();
+                            cloneConstraintsDescription
+                                    .add(constraint.toString());
+                        }
+                    } catch (Throwable throwable) {
+                        throw new IllegalActionException(actor, throwable,
+                                "Failed to iterate through constraints.");
+                    }
+                    // Make sure that each constraint in the clone is present
+                    // in the master
+                    Iterator constraintIterator = constraints.iterator();
+                    while (constraintIterator.hasNext()) {
+                        Inequality constraint = (Inequality) constraintIterator
+                                .next();
+                        if (!cloneConstraintsDescription.contains(constraint
                                 .toString())) {
                             results.append("Clone of "
                                     + actor.getFullName()
