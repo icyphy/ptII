@@ -51,7 +51,7 @@ java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" ""
 ######################################################################
 #### Test the Test actor in an SDF model
 #
-test Test-1.1 {test with the default output values} {
+test TestExceptionHandler-1.1 {test with the default output values} {
     set e0 [deModel 5]
 
     set const [java::new ptolemy.actor.lib.Ramp $e0 const]
@@ -70,26 +70,26 @@ test Test-1.1 {test with the default output values} {
     list \
 	[[getParameter $testExceptionHandler trainingMode] getExpression] \
 	[[getParameter $testExceptionHandler correctExceptionMessage] getExpression]
-} {false {Found zero delay loop including: .top.const, .top.const
-  in .top}}
+} {false {Found a zero delay loop containing .top.const
+  in .top.DEDirector and .top.const}}
 
 ######################################################################
 #### 
 #
-test Test-1.2 {Run again, but with trainingMode false} {
+test TestExceptionHandler-1.2 {Run again, but with trainingMode false} {
     # Uses 1.1 above
     [$e0 getManager] execute
 
     list \
 	[[getParameter $testExceptionHandler trainingMode] getExpression] \
 	[[getParameter $testExceptionHandler correctExceptionMessage] getExpression]
-} {false {Found zero delay loop including: .top.const, .top.const
-  in .top}}
+} {false {Found a zero delay loop containing .top.const
+  in .top.DEDirector and .top.const}}
 
 ######################################################################
 #### 
 #
-test Test-1.3 {Run again, but with a different Exception} {
+test TestExceptionHandler-1.3 {Run again, but with a different Exception} {
     set correctExceptionMessage [getParameter $testExceptionHandler correctExceptionMessage]
     $correctExceptionMessage setExpression {This is not the exception}
 
@@ -103,9 +103,8 @@ test Test-1.3 {Run again, but with a different Exception} {
 	[[getParameter $testExceptionHandler correctExceptionMessage] getExpression]
 } {{ptolemy.kernel.util.IllegalActionException:   in .top.testExceptionHandler
 Because:
-Found zero delay loop including: .top.const, .top.const
-  in .top} false {This is not the exception}}
-
+Found a zero delay loop containing .top.const
+  in .top.DEDirector and .top.const} false {This is not the exception}}
 
 # Reset the isRunningNightlyBuild property
 java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" \
