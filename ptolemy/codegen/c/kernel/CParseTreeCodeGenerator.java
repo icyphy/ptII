@@ -34,6 +34,7 @@ import java.util.Set;
 
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.FunctionToken;
@@ -318,7 +319,12 @@ ParseTreeCodeGenerator {
         //_fireCode.append("))");
         _childCode = result + "))";
 
-        //_evaluatedChildToken = (new ArrayToken(elementType, tokens));
+        // Tests CParseTreeCodeGenerator-16.2 and
+        // CParseTreeCodeGenerator-17.2 require that
+        // _evaluatedChildToken be set here, otherwise
+        // _evaluatedChildToken will be set to the value
+        // of the last token.
+        _evaluatedChildToken = (new ArrayToken(elementType, tokens));
 
         //if (node.isConstant()) {
         //    node.setToken(_evaluatedChildToken);
