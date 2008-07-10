@@ -51,5 +51,8 @@ set URL [$loader getResource ptolemy/configs/dsp/configuration.xml]
 puts "Checking [$URL toString]"
 set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
 set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
+puts "Expanding the configuration"
+$configuration description
+puts "Done expanding"
 set results [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
 puts $results
