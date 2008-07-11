@@ -55,6 +55,7 @@ JSRCS = \
 	CriterionElement.java \
 	GuardCriterion.java \
 	PortCriterion.java \
+	StateTypeCriterion.java \
 	StringCriterionElement.java \
 	SubclassCriterion.java
 
