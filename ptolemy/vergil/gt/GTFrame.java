@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.vergil.gt;
 
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -40,11 +41,14 @@ import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredientsAttribute;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.actor.ActorEditorGraphController;
@@ -152,17 +156,19 @@ public class GTFrame extends ExtendedGraphFrame {
         return component;
     }
 
-    protected JCanvasPanner _getGraphPanner() {
-        return _graphPanner;
+    protected SizeAttribute _createSizeAttribute()
+    throws IllegalActionException, NameDuplicationException {
+        SizeAttribute size = super._createSizeAttribute();
+        if (_frameController.hasTabs()) {
+            Component component = _frameController.getTabbedPane()
+                    .getComponent(0);
+            size.recordSize(component);
+        }
+        return size;
     }
 
-    protected JComponent _getSizeComponent() {
-        if (_frameController.hasTabs()) {
-            return (JComponent) _frameController.getTabbedPane()
-            		.getComponent(0);
-        } else {
-            return super._getSizeComponent();
-        }
+    protected JCanvasPanner _getGraphPanner() {
+        return _graphPanner;
     }
 
     protected static class ConfigureCriteriaAction

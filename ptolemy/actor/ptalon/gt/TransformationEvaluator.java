@@ -61,18 +61,18 @@ public class TransformationEvaluator extends PtalonEvaluator {
             throws PtalonRuntimeException {
         if (_isInTransformation()) {
             try {
-            	GTTools.deepRemoveAttributes(object,
-            			PreservationAttribute.class);
-            	GTTools.deepAddAttributes(object, CreationAttribute.class);
+                GTTools.deepRemoveAttributes(object,
+                        PreservationAttribute.class);
+                new CreationAttribute(object, object.uniqueName("_created"));
             } catch (Exception e) {
                 throw new PtalonRuntimeException("Unable to create attribute.",
                         e);
             }
         } else if (_isPreservingTransformation()) {
             try {
-            	GTTools.deepRemoveAttributes(object,
-            			CreationAttribute.class);
-            	GTTools.deepAddAttributes(object, PreservationAttribute.class);
+                GTTools.deepRemoveAttributes(object, CreationAttribute.class);
+                new PreservationAttribute(object, object.uniqueName(
+                        "_preserved"));
             } catch (Exception e) {
                 throw new PtalonRuntimeException("Unable to create attribute.",
                         e);

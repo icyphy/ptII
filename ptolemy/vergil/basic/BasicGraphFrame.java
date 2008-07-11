@@ -108,6 +108,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
@@ -1635,6 +1636,32 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return _jgraph;
     }
 
+    /** Create a SizeAttribute for the current model when it is being saved to
+     *  a file. The size recorded in the SizeAttribute is the size of the
+     *  current canvas.
+     *  @return The SizeAttribute.
+     *  @exception IllegalActionException If "_vergilSize" is found but is not
+     *  an instance of SizeAttribute, or if a SizeAttribute is not accepted by
+     *  the current model.
+     *  @throws NameDuplicationException If the name "_vergilSize" is already
+     *  used when trying to create the SizeAttribute.
+     */
+    protected SizeAttribute _createSizeAttribute()
+    		throws IllegalActionException, NameDuplicationException {
+        // Have to also record the size of the JGraph because
+        // setting the size of the frame is ignored if we don't
+        // also set the size of the JGraph. Why? Who knows. Swing.
+    	SizeAttribute size = (SizeAttribute) getModel().getAttribute(
+                "_vergilSize", SizeAttribute.class);
+
+        if (size == null) {
+            size = new SizeAttribute(getModel(), "_vergilSize");
+        }
+
+        size.recordSize(_getRightComponent());
+        return size;
+    }
+
     /** Get the directory that was last accessed by this window.
      *  @see #_setDirectory
      *  @return The directory last accessed.
@@ -1745,17 +1772,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return namedObjSet;
     }
 
-    /** Get the component whose size is to be recorded in the model when it is
-     *  saved into an output file. In this class, the return of this function is
-     *  the same as that of {@link #_getRightComponent()}. A subclass may
-     *  override this function to return a different component, such as a tab of
-     *  a tabbed pane, whose size is to be recorded instead.
-     *  @return The component whose size is to be recorded.
-     */
-    protected JComponent _getSizeComponent() {
-        return _getRightComponent();
-    }
-
     /** Set the directory that was last accessed by this window.
      *  @see #_getDirectory
      *  @param directory The directory last accessed.
@@ -1767,7 +1783,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // static members.
         _directory = directory;
     }
-
+    
     /** Enable or disable drop into.
      *  @param enable False to disable.
      */
@@ -1808,17 +1824,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 properties.recordProperties((Frame) parent);
             }
 
-            // Have to also record the size of the JGraph because
-            // setting the size of the frame is ignored if we don't
-            // also set the size of the JGraph. Why? Who knows. Swing.
-            SizeAttribute size = (SizeAttribute) getModel().getAttribute(
-                    "_vergilSize", SizeAttribute.class);
-
-            if (size == null) {
-                size = new SizeAttribute(getModel(), "_vergilSize");
-            }
-
-            size.recordSize(_getSizeComponent());
+            _createSizeAttribute();
 
             // Also record zoom and pan state.
             JCanvas canvas = getJGraph().getGraphPane().getCanvas();

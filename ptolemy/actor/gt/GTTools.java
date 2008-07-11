@@ -270,15 +270,13 @@ public class GTTools {
             return null;
         }
     }
+    
+    public static boolean isCreated(Object object) {
+        return _isAttributeFound(object, CreationAttribute.class);
+    }
 
-    public static boolean ignoreObject(Object object) {
-        if (object instanceof NamedObj
-                && !((NamedObj) object).attributeList(IgnoringAttribute.class)
-                        .isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
+    public static boolean isIgnored(Object object) {
+        return _isAttributeFound(object, IgnoringAttribute.class);
     }
 
     public static boolean isInPattern(NamedObj entity) {
@@ -291,6 +289,10 @@ public class GTTools {
         CompositeActorMatcher container = getContainingPatternOrReplacement(
                 entity);
         return container != null && container instanceof Replacement;
+    }
+
+    public static boolean isPreserved(Object object) {
+        return _isAttributeFound(object, PreservationAttribute.class);
     }
 
     /** Restore the values of the parameters that implement the {@link
@@ -343,6 +345,21 @@ public class GTTools {
             for (Object entity : ((CompositeEntity) root).entityList()) {
                 saveValues((ComponentEntity) entity, records);
             }
+        }
+    }
+
+    private static boolean _isAttributeFound(Object object,
+            Class<? extends Attribute> attributeClass) {
+        if (object instanceof NamedObj) {
+            NamedObj namedObj = (NamedObj) object;
+            if (!namedObj.attributeList(attributeClass).isEmpty()) {
+                return true;
+            } else {
+                return _isAttributeFound(namedObj.getContainer(),
+                        attributeClass);
+            }
+        } else {
+            return false;
         }
     }
 }

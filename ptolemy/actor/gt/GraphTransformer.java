@@ -241,7 +241,7 @@ public class GraphTransformer extends ChangeRequest {
             } catch (IllegalActionException e) {
                 throw new KernelRuntimeException(e, "Unable to save values.");
             }
-            
+
             _restoreParameterValues();
             _init();
             _recordMoML();
@@ -251,7 +251,7 @@ public class GraphTransformer extends ChangeRequest {
             _removeObjects();
             _addConnections();
             _wrapup();
-            
+
             try {
                 GTTools.restoreValues(_pattern, records);
             } catch (IllegalActionException e) {
@@ -260,20 +260,6 @@ public class GraphTransformer extends ChangeRequest {
         }
 
         _hideRelations();
-    }
-    
-    protected void _restoreParameterValues() throws TransformationException {
-    	SequentialTwoWayHashMap<ValueIterator, Token> parameterValues =
-    		_matchResult.getParameterValues();
-    	for (ValueIterator key : parameterValues.keys()) {
-    		try {
-				key.setToken(parameterValues.get(key));
-				key.validate();
-			} catch (IllegalActionException e) {
-				throw new TransformationException(
-						"Unable to set parameter value.", e);
-			}
-    	}
     }
 
     protected void _hideRelations() throws TransformationException {
@@ -286,20 +272,6 @@ public class GraphTransformer extends ChangeRequest {
         _initReplacementToHost();
         _initReplacementObjectAttributes(_replacement);
         _initPreservedObjects(_pattern);
-    }
-    
-    private void _initPreservedObjects(NamedObj pattern) {
-    	if (_isToBePreserved(pattern)) {
-    		NamedObj host = (NamedObj) _matchResult.get(pattern);
-    		if (host != null) {
-    			_recordMirroredObjects(pattern, host);
-    		}
-    	} else {
-    		for (Object child : GTTools.getChildren(pattern, false, true, true,
-                    true)) {
-    			_initPreservedObjects((NamedObj) child);
-    		}
-    	}
     }
 
     protected void _performOperations() throws TransformationException {
@@ -378,6 +350,20 @@ public class GraphTransformer extends ChangeRequest {
         _removeObjects(_host);
     }
 
+    protected void _restoreParameterValues() throws TransformationException {
+        SequentialTwoWayHashMap<ValueIterator, Token> parameterValues =
+            _matchResult.getParameterValues();
+        for (ValueIterator key : parameterValues.keys()) {
+            try {
+                key.setToken(parameterValues.get(key));
+                key.validate();
+            } catch (IllegalActionException e) {
+                throw new TransformationException(
+                        "Unable to set parameter value.", e);
+            }
+        }
+    }
+
     protected void _wrapup() throws TransformationException {
         _removeReplacementObjectAttributes(_host);
         _removeReplacementObjectAttributes(_replacement);
@@ -408,7 +394,7 @@ public class GraphTransformer extends ChangeRequest {
                     true, true, true);
             for (Object childObject : children) {
                 NamedObj child = (NamedObj) childObject;
-                if (GTTools.ignoreObject(child)) {
+                if (GTTools.isIgnored(child)) {
                     continue;
                 }
                 NamedObj hostChild = _replacementToHost.get(child);
@@ -443,10 +429,10 @@ public class GraphTransformer extends ChangeRequest {
                 true);
         for (Object childObject : children) {
             NamedObj child = (NamedObj) childObject;
-            if (GTTools.ignoreObject(child)) {
+            if (GTTools.isIgnored(child)) {
                 continue;
             }
-            if (_isToBeCreated(child)) {
+            if (GTTools.isCreated(child)) {
                 String moml = child.exportMoMLPlain();
                 NamedObj host = _findChangeContext(pattern);
                 moml = "<group name=\"auto\">\n" + moml + "</group>";
@@ -765,6 +751,20 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    private void _initPreservedObjects(NamedObj pattern) {
+        if (GTTools.isPreserved(pattern)) {
+            NamedObj host = (NamedObj) _matchResult.get(pattern);
+            if (host != null) {
+                _recordMirroredObjects(pattern, host);
+            }
+        } else {
+            for (Object child : GTTools.getChildren(pattern, false, true, true,
+                    true)) {
+                _initPreservedObjects((NamedObj) child);
+            }
+        }
+    }
+
     private void _initReplacementObjectAttributes(NamedObj replacement)
             throws TransformationException {
         _setReplacementObjectAttribute(replacement, GTTools.getCodeFromObject(
@@ -801,7 +801,7 @@ public class GraphTransformer extends ChangeRequest {
                 continue;
             }
             NamedObj pattern = (NamedObj) patternObject;
-            if (!_isToBePreserved(pattern)) {
+            if (!GTTools.isPreserved(pattern)) {
                 continue;
             }
             NamedObj host = (NamedObj) entry.getValue();
@@ -830,14 +830,6 @@ public class GraphTransformer extends ChangeRequest {
         }
 
         return false;
-    }
-
-    private boolean _isToBeCreated(NamedObj object) {
-        return !object.attributeList(CreationAttribute.class).isEmpty();
-    }
-
-    private boolean _isToBePreserved(NamedObj object) {
-        return !object.attributeList(PreservationAttribute.class).isEmpty();
     }
 
     private void _recordMirroredObjects(NamedObj pattern, NamedObj host) {
@@ -1144,13 +1136,13 @@ public class GraphTransformer extends ChangeRequest {
                     NamedObj patternChild = (NamedObj) _matchResult.getKey(
                             child);
                     if (patternChild == null
-                            || _isToBePreserved(patternChild)) {
+                            || GTTools.isPreserved(patternChild)) {
                         continue;
                     }
                     NamedObj replacementChild = (NamedObj) _replacementToHost
                             .getKey(child);
                     if (replacementChild == null && patternChild != null
-                            && !_isToBeCreated(patternChild)) {
+                            && !GTTools.isCreated(patternChild)) {
                         Boolean shallowRemoval =
                             patternChild instanceof CompositeEntity ?
                                     Boolean.TRUE : Boolean.FALSE;

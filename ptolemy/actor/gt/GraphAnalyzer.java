@@ -462,7 +462,7 @@ public abstract class GraphAnalyzer {
     }
 
     protected boolean _ignoreObject(Object object) {
-        return GTTools.ignoreObject(object);
+        return GTTools.isIgnored(object);
     }
 
     ///////////////////////////////////////////////////////////////////
