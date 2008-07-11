@@ -49,7 +49,6 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
-import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.actor.util.FunctionDependency;
@@ -417,10 +416,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (director != null) {
             defaultDependency = director.defaultDependency();
         }
-        // FIXME: Examine all the transitions to determine which
-        // input ports are referenced and which output ports are written
-        // to. Then create a dependency that reflects this.
-        _causalityInterface = new DefaultCausalityInterface(this, defaultDependency);
+        _causalityInterface = new FSMCausalityInterface(this, defaultDependency);
         _causalityInterfaceDirector = director;
         return _causalityInterface;
     }

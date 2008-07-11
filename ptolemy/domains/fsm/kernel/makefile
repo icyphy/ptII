@@ -63,6 +63,7 @@ JSRCS = \
 	CommitActionsAttribute.java \
 	ContainmentExtender.java \
 	FSMActor.java \
+	FSMCausalityInterface.java \
 	FSMDirector.java \
 	FunctionDependencyOfFSMActor.java \
 	ModalDirector.java \
