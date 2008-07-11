@@ -4,7 +4,7 @@
 <entity name="Butterfly2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 21, 908, 642}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 21, 908, 641}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[693, 524]">
     </property>
@@ -54,10 +54,12 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 290.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="iterations">
+        </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="-2.0">
         </property>
         <doc>Create a constant sequence.</doc>
@@ -180,6 +182,8 @@
         </property>
     </entity>
     <entity name="Ramp4" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="iterations">
+        </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
