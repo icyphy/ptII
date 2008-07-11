@@ -79,7 +79,7 @@ public class RadioMenuActionFactory extends MenuActionFactory {
     /** Add an item to the given context menu that will configure the
      *  parameters on the given target.
      *  @param menu The context menu to add to.
-     *  @param target The object that the menu item command will operate on.
+     *  @param object The object that the menu item command will operate on.
      *  @return A menu item, or null to decline to provide a menu item.
      */
     public JMenuItem create(JContextMenu menu, NamedObj object) {
