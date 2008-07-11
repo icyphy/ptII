@@ -31,6 +31,7 @@ import java.util.Collection;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -71,8 +72,11 @@ public interface CausalityInterface {
      *  The argument port should be contained by the same actor
      *  returned by getActor().
      *  @param port The port to find the dependents of.
+     *  @exception IllegalActionException If the dependency
+     *   cannot be determined.
      */
-    public Collection<IOPort> dependentPorts(IOPort port);
+    public Collection<IOPort> dependentPorts(IOPort port)
+            throws IllegalActionException;
 
     /** Return a collection of input ports in the associated actor that are
      *  in the same equivalence class as the specified input port.
@@ -88,8 +92,11 @@ public interface CausalityInterface {
      *  output ports, then all the input ports
      *  are in a single equivalence class.
      *  @param input The port to find the equivalence class of.
+     *  @exception IllegalActionException If the equivalent ports
+     *   cannot be determined.
      */
-    public Collection<IOPort> equivalentPorts(IOPort input);
+    public Collection<IOPort> equivalentPorts(IOPort input)
+            throws IllegalActionException;;
     
     /** Return the associated actor.
      *  @return The actor for which this is a dependency.
@@ -100,8 +107,11 @@ public interface CausalityInterface {
      *  and the specified output port.
      *  @return The dependency between the specified input port
      *   and the specified output port.
+     *  @exception IllegalActionException If the dependency
+     *   cannot be determined.
      */
-    public Dependency getDependency(IOPort input, IOPort output);
+    public Dependency getDependency(IOPort input, IOPort output)
+            throws IllegalActionException;
     
     /** Remove the dependency that the specified output port has
      *  on the specified input port. If there is no

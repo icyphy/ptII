@@ -1,4 +1,4 @@
-/* Interface representing a dependency between ports.
+/* Interface representing a dependency between ports of a composite actor.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -38,6 +38,8 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -95,8 +97,10 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  also override {@link #getDependency(IOPort, IOPort)}
      *  and {@link #equivalentPorts(IOPort)} to be consistent.
      *  @param port The port to find the dependents of.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public Collection<IOPort> dependentPorts(IOPort port) {
+    public Collection<IOPort> dependentPorts(IOPort port)
+            throws IllegalActionException {
         // FIXME: This does not support ports that are both input and output.
         // Should it?
         HashSet<IOPort> result = new HashSet<IOPort>();
@@ -142,12 +146,13 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  output ports, then include all the input ports
      *  are in a single equivalence class.
      *  @param input The port to find the equivalence class of.
-     *  @throws IllegalArgumentException If the argument is not
+     *  @throws IllegalActionException If the argument is not
      *   contained by the associated actor.
      */
-    public Collection<IOPort> equivalentPorts(IOPort input) {
+    public Collection<IOPort> equivalentPorts(IOPort input)
+            throws IllegalActionException {
         if (input.getContainer() != _actor) {
-            throw new IllegalArgumentException(
+            throw new IllegalActionException(input, _actor,
                     "equivalentPort() called with argument "
                     + input.getFullName()
                     + " on a causality interface for "
@@ -199,8 +204,10 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  @param output The output port.
      *  @return The dependency between the specified input port
      *   and the specified output port.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public Dependency getDependency(IOPort input, IOPort output) {
+    public Dependency getDependency(IOPort input, IOPort output)
+            throws IllegalActionException {
         // Cast is safe because this is checked in the constructor
         CompositeEntity actor = (CompositeEntity)_actor;
         
@@ -266,7 +273,11 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      */
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
         // First ensure that all dependencies are calculated.
-        getDependency(inputPort, outputPort);
+        try {
+            getDependency(inputPort, outputPort);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         Map<IOPort,Dependency> outputPorts = _forwardDependencies.get(inputPort);
         if (outputPorts != null) {
             outputPorts.remove(outputPort);
@@ -276,6 +287,18 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
             inputPorts.remove(inputPort);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+    
+    /** The workspace version where the dependency was last updated. */
+    protected long _dependencyVersion;
+    
+    /** Computed dependencies between input ports and output ports of the associated actor. */
+    protected Map<IOPort,Map<IOPort,Dependency>> _forwardDependencies;
+    
+    /** Computed reverse dependencies (the key is now an output port). */
+    protected Map<IOPort,Map<IOPort,Dependency>> _reverseDependencies;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -351,11 +374,13 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *   built by this method. The map is required to contain all ports in portsToProcess
      *   on entry.
      *  @param portsToProcess Ports connected to the input port directly or indirectly.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     private void _setDependency(
             IOPort inputPort, 
             Map<IOPort,Dependency> map, 
-            Collection<IOPort> portsToProcess) {
+            Collection<IOPort> portsToProcess)
+            throws IllegalActionException {
         Set<IOPort> portsToProcessNext = new HashSet<IOPort>();
         for (IOPort port : portsToProcess) {
             // The argument map is required to contain this dependency.
@@ -408,16 +433,4 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
             _setDependency(inputPort, map, portsToProcessNext);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    
-    /** The workspace version where the dependency was last updated. */
-    private long _dependencyVersion;
-    
-    /** Computed dependencies between input ports and output ports of the associated actor. */
-    private Map<IOPort,Map<IOPort,Dependency>> _forwardDependencies;
-    
-    /** Computed reverse dependencies (the key is now an output port). */
-    private Map<IOPort,Map<IOPort,Dependency>> _reverseDependencies;
 }

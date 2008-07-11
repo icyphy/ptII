@@ -38,6 +38,7 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -95,8 +96,9 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  also override {@link #getDependency(IOPort, IOPort)}
      *  and {@link #equivalentPorts(IOPort)} to be consistent.
      *  @param port The port to find the dependents of.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public Collection<IOPort> dependentPorts(IOPort port) {
+    public Collection<IOPort> dependentPorts(IOPort port) throws IllegalActionException {
         if (_forwardPrunedDependencies == null) {
             // removeDependency() has not been called, so this is the simple case.
             if (port.isOutput()) {
@@ -185,8 +187,9 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  @param input The port to find the equivalence class of.
      *  @throws IllegalArgumentException If the argument is not
      *   contained by the associated actor.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public Collection<IOPort> equivalentPorts(IOPort input) {
+    public Collection<IOPort> equivalentPorts(IOPort input) throws IllegalActionException {
         if (input.getContainer() != _actor) {
             throw new IllegalArgumentException(
                     "equivalentPort() called with argument "
@@ -239,8 +242,10 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  and {@link #dependentPorts(IOPort)} to be consistent.
      *  @return The dependency between the specified input port
      *   and the specified output port.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public Dependency getDependency(IOPort input, IOPort output) {
+    public Dependency getDependency(IOPort input, IOPort output)
+            throws IllegalActionException {
         if (input.isInput()
                 && input.getContainer() == _actor
                 && output.isOutput()
@@ -273,7 +278,12 @@ public class DefaultCausalityInterface implements CausalityInterface {
                 result.append("   ");
                 result.append(outputPort.getName());
                 result.append(": ");
-                result.append(getDependency(inputPort, outputPort));
+                try {
+                    result.append(getDependency(inputPort, outputPort));
+                } catch (IllegalActionException e) {
+                    result.append("EXCEPTION: ");
+                    result.append(e);
+                }
                 result.append("\n");
             }
         }
@@ -322,9 +332,11 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  output dependents were not already in the outputs set,
      *  add them, and then recursively invoke this same method
      *  on all input ports that depend on those outputs.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _growDependencies(
-            IOPort input, Set<IOPort> inputs, Set<IOPort> outputs) {
+            IOPort input, Set<IOPort> inputs, Set<IOPort> outputs)
+            throws IllegalActionException {
         if (!inputs.contains(input)) {
             inputs.add(input);
             for (IOPort output : dependentPorts(input)) {
