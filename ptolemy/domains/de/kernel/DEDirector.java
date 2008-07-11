@@ -248,8 +248,7 @@ public class DEDirector extends Director implements TimedDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initParameters();
-        // FIXME: testing
-        _verbose = true;
+        // _verbose = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -483,9 +482,6 @@ public class DEDirector extends Director implements TimedDirector {
             // lowest priority. This guarantees that all the inside actors
             // have fired (reacted to their triggers) before the composite
             // actor fires.
-            // TESTIT.
-            // FIXME: However, there may be more than one output port,
-            // should all the events be removed from the event queue?
             if (actorToFire == getContainer()) {
                 // Since we are now actually stopping the firing, we can set this false.
                 _stopFireRequested = false;
@@ -1939,7 +1935,7 @@ public class DEDirector extends Director implements TimedDirector {
                                     _workspace.wait(_eventQueue, timeToWait);
                                 } catch (InterruptedException ex) {
                                     // Continue executing?
-                                    // FIXME: This could be a problem if any
+                                    // No, because this could be a problem if any
                                     // actor assumes that model time always exceeds
                                     // real time when synchronizeToRealTime is set.
                                     throw new IllegalActionException(this, ex,
@@ -2030,32 +2026,28 @@ public class DEDirector extends Director implements TimedDirector {
                 // In a previous iteration of this while loop,
                 // we have already found an event and the actor to react to it.
                 // Check whether the newly found event has the same tag
-                // depth, and destination actor. If so, they are 
+                // and destination actor. If so, they are 
                 // handled at the same time. For example, a pure
                 // event and a trigger event that go to the same actor.
-                if (nextEvent.hasTheSameTagAndDepthAs(lastFoundEvent)
+                if (nextEvent.hasTheSameTagAs(lastFoundEvent)
                         && nextEvent.actor() == actorToFire) {
                     // Consume the event from the queue and discard it.
-                    // FIXME: This isn't right!  The microstep is only incremented
-                    // by fireAt() calls. The Repeat actor, for one, produces a sequence
+                    // In theory, there should be no event with the same depth
+                    // as well as tag because
+                    // the DEEvent class equals() method returns true in this
+                    // case, and the CalendarQueue class does not enqueue an
+                    // event that is equal to one already on the queue.
+                    // Note that the Repeat actor, for one, produces a sequence
                     // of outputs, each of which will have the same microstep.
+                    // These reduce to a single event in the event queue.
+                    // The DEReceiver in the downstream port, however,
+                    // contains multiple tokens. When the one event on
+                    // event queue is encountered, then the actor will
+                    // be repeatedly fired until it has no more input tokens.
+                    // However, there could be events with the same tag
+                    // and different depths, e.g. a trigger event and a pure
+                    // event going to the same actor.
                     _eventQueue.take();
-                } else if (nextEvent.hasTheSameTagAs(lastFoundEvent)) {
-                    // The actor to be fired is the container, we remove all
-                    // the trigger events with the same tag from the event
-                    // queue such that the executive director of this DE model
-                    // can react to these events.
-                    Actor actor = nextEvent.actor();
-                    if (actor == actorToFire) {
-                        // FIXME: This can't be right either.
-                        // The event might be destined to a different port
-                        // of the same actor. Shouldn't this be done only
-                        // if it's a pure event?  How to tell?
-                        _eventQueue.take();
-                    } else {
-                        // Next event has a future tag or a different destination.
-                        break;
-                    }
                 } else {
                     // Next event has a future tag or a different destination.
                     break;
