@@ -435,8 +435,7 @@ public class Director extends Attribute implements Executable {
      *  This method is useful for domains that perform
      *  speculative execution (such as CT).  Such a domain in a hierarchical
      *  model (i.e. CT inside DE) uses this method to determine how far
-     *  into the future to execute. This is simply an optimization that
-     *  reduces the likelihood of having to roll back.
+     *  into the future to execute.
      *  <p>
      *  Derived classes should override this method to provide an appropriate
      *  value, if possible. For example, the DEDirector class returns the
