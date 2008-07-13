@@ -47,8 +47,8 @@ import ptolemy.kernel.util.Workspace;
 //// CommitActionsAttribute
 
 /**
- An action that sends outputs to one or more ports, or sets the values
- of variables either in the containing FSMActor or in a state refinement.
+ An action that changes the state of the system. Typical commit actions set
+ variables either in the containing FSMActor or in a state refinement.
  This action is contained by a transition,
  and is evaluated whenever that transition is taken.  The evaluation
  is done in the postfire() method of the FSMActor that contains the
@@ -68,7 +68,24 @@ import ptolemy.kernel.util.Workspace;
  <pre>
  <i>destination</i> = <i>expression</i>
  </pre>
- where <i>destination</i> is either
+ where <i>destination</i> is <i>variableName</i>,
+ where <i>variableName</i> is either a variable or parameter of
+ the FSM actor, or a variable or parameter of a refinement state.
+ To give a variable of a refinement state, use a dotted name,
+ as follows:
+ <pre>
+ <i>refinementStateName</i>.<i>variableName</i>
+ </pre>
+ <p>
+ The <i>expression</i> is a string giving an expression in the usual
+ Ptolemy II expression language.  The expression may include references
+ to variables and parameters contained by the FSM actor.
+ <p>
+ The <i>destination</i> can also be a port, however, this is discouraged.
+ Commit actions are not executed until postfire(), and the Ptolemy II
+ abstract semantics requires that outputs be produced in fire().
+ Nonetheless, this is supported. In this case, the <i>destination</i> is
+ either
  <pre>
  <i>portName</i>
  </pre>
@@ -76,26 +93,11 @@ import ptolemy.kernel.util.Workspace;
  <pre>
  <i>portName</i>(<i>channelNumber</i>)
  </pre>
- or
- <pre>
- <i>variableName</i>
- </pre>
  Here, <i>portName</i> is the name of a port of the FSM actor,
  If no <i>channelNumber</i> is given, then the value
  is broadcast to all channels of the port.
- Also, <i>variableName</i> is either a variable or parameter of
- the FSM actor, or a variable or parameter of a refinement state.
- To give a variable of a refinement state, use a dotted name,
- as follows:
- <pre>
- <i>refinementStateName</i>.<i>variableName</i>
- </pre>
  If destination name is given where there is both a port and a variable
  with that name, then the port will be used.
- <p>
- The <i>expression</i> is a string giving an expression in the usual
- Ptolemy II expression language.  The expression may include references
- to variables and parameters contained by the FSM actor.
 
  @author Xiaojun Liu and Edward A. Lee
  @version $Id$
@@ -174,6 +176,12 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
 
                 if (nextDestination instanceof IOPort) {
                     IOPort destination = (IOPort) nextDestination;
+                    
+                    // FIXME: Domain-polymorphic actors should
+                    // not be writing to output ports in commit actions.
+                    // Should we through an exception?  Also:
+                    // If the IOPort is an input as well as an output,
+                    // then we need to set its shadow variables.
 
                     try {
                         if (channel != null) {
