@@ -50,7 +50,6 @@ import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
-import ptolemy.domains.de.lib.TimedDelay;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
@@ -116,7 +115,8 @@ ValueListener {
         StateMatcher newObject = (StateMatcher) super.clone(workspace);
         newObject._causalityInterface = null;
         newObject._causalityInterfaceDirector = null;
-        // FIXME: Probably more needed here!
+        newObject._labelSet = null;
+        newObject._version = -1;
         return newObject;
     }
 
@@ -362,14 +362,15 @@ ValueListener {
      */
     public PatternObjectAttribute patternObject;
 
+    private static final List<?> _EMPTY_LIST = new LinkedList<Object>();
+
+    private static final Set<Inequality> _EMPTY_SET = new HashSet<Inequality>();
+
     /** The causality interface, if it has been created. */
     private CausalityInterface _causalityInterface;
-    
+
     /** The director for which the causality interface was created. */
     private Director _causalityInterfaceDirector;
-
-    private static final List<?> _EMPTY_LIST = new LinkedList<Object>();
-    private static final Set<Inequality> _EMPTY_SET = new HashSet<Inequality>();
 
     /** Cache of the label set.
      */
