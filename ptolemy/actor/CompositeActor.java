@@ -253,6 +253,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
         newObject._functionDependency = null;
+        newObject._causalityInterface = null;
+        newObject._causalityInterfaceDirector = null;
         return newObject;
     }
 

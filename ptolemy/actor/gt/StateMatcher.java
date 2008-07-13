@@ -50,6 +50,7 @@ import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
+import ptolemy.domains.de.lib.TimedDelay;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
@@ -59,6 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.gt.GTIngredientsEditor;
 import ptolemy.vergil.gt.StateMatcherController;
 
@@ -101,6 +103,21 @@ ValueListener {
     }
 
     public void addInitializable(Initializable initializable) {
+    }
+
+    /** Clone the actor into the specified workspace. Set a type
+     *  constraint that the output type is the same as the that of input.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   has an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        StateMatcher newObject = (StateMatcher) super.clone(workspace);
+        newObject._causalityInterface = null;
+        newObject._causalityInterfaceDirector = null;
+        // FIXME: Probably more needed here!
+        return newObject;
     }
 
     public void fire() throws IllegalActionException {
