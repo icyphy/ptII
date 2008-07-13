@@ -111,6 +111,7 @@ public class Timer extends DETransformer {
         Timer newObject = (Timer) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.value);
         newObject.input.setTypeEquals(BaseType.DOUBLE);
+        newObject._causalityInterface = null;
         return newObject;
     }
 
