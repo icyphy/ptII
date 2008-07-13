@@ -270,7 +270,7 @@ public class GTTools {
             return null;
         }
     }
-    
+
     public static boolean isCreated(Object object) {
         return _isAttributeFound(object, CreationAttribute.class);
     }
@@ -289,6 +289,10 @@ public class GTTools {
         CompositeActorMatcher container = getContainingPatternOrReplacement(
                 entity);
         return container != null && container instanceof Replacement;
+    }
+
+    public static boolean isNegated(Object object) {
+        return _isAttributeFound(object, NegationAttribute.class);
     }
 
     public static boolean isPreserved(Object object) {

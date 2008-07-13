@@ -372,6 +372,9 @@ public abstract class GraphAnalyzer {
         return false;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      public inner classes                 ////
+
     public static class IndexedList extends Pair<List<?>, Integer> {
 
         public boolean equals(Object object) {
@@ -461,12 +464,9 @@ public abstract class GraphAnalyzer {
         private Port _startPort;
     }
 
-    protected boolean _ignoreObject(Object object) {
+    protected boolean _isIgnored(Object object) {
         return GTTools.isIgnored(object);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      public inner classes                 ////
 
     /** Test whether a relation should be ignored in the matching; return true
      *  if the given relation is hidden (i.e., has a parameter "_hide" whose
@@ -497,7 +497,7 @@ public abstract class GraphAnalyzer {
     private void _removeIgnoredObjects(Iterable<?> list) {
         Iterator<?> iterator = list.iterator();
         while (iterator.hasNext()) {
-            if (_ignoreObject(iterator.next())) {
+            if (_isIgnored(iterator.next())) {
                 iterator.remove();
             }
         }

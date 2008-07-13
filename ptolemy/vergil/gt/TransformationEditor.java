@@ -97,6 +97,7 @@ import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.IgnoringAttribute;
 import ptolemy.actor.gt.MatchingAttribute;
+import ptolemy.actor.gt.NegationAttribute;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.PatternObjectAttribute;
 import ptolemy.actor.gt.PortMatcher;
@@ -714,6 +715,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     new MatchingAttributeAction[] {
                         new CreatedPropertyAction("Created"),
                         new IgnoredPropertyAction("Ignored"),
+                        new NegatedPropertyAction("Negated"),
                         new PreservedPropertyAction("Preserved")
                 };
                 JMenuItem[] radioItems = new JMenuItem[radioActions.length];
@@ -1100,12 +1102,14 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     }
 
     private Color _getHighlightColor(NamedObj object) {
-        if (!object.attributeList(PreservationAttribute.class).isEmpty()) {
-            return _PRESERVATION_COLOR;
-        } else if (!object.attributeList(CreationAttribute.class).isEmpty()) {
+        if (!object.attributeList(CreationAttribute.class).isEmpty()) {
             return _CREATION_COLOR;
         } else if (!object.attributeList(IgnoringAttribute.class).isEmpty()) {
             return _IGNORING_COLOR;
+        } else if (!object.attributeList(NegationAttribute.class).isEmpty()) {
+            return _NEGATION_COLOR;
+        } else if (!object.attributeList(PreservationAttribute.class).isEmpty()) {
+            return _PRESERVATION_COLOR;
         } else {
             return null;
         }
@@ -1480,7 +1484,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private static final Color _IGNORING_COLOR = Color.GRAY;
 
-    private static final Color _PRESERVATION_COLOR = new Color(128, 128, 255);
+    private static final Color _NEGATION_COLOR = new Color(255, 64, 64);
+
+    private static final Color _PRESERVATION_COLOR = new Color(96, 96, 255);
 
     private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
 
@@ -2002,6 +2008,17 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         public Class<? extends MatchingAttribute> getAttributeClass() {
             return null;
+        }
+    }
+
+    private class NegatedPropertyAction extends MatchingAttributeAction {
+
+        public NegatedPropertyAction(String name) {
+            super(name);
+        }
+
+        public Class<? extends MatchingAttribute> getAttributeClass() {
+            return NegationAttribute.class;
         }
     }
 
