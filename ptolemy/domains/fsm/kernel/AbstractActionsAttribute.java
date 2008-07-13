@@ -130,6 +130,37 @@ public abstract class AbstractActionsAttribute extends Action implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new actor.
+     *  @param workspace The workspace for the new actor.
+     *  @return A new FSMActor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        AbstractActionsAttribute newObject = (AbstractActionsAttribute) super.clone(workspace);
+        newObject._destinations = null;
+        newObject._destinationsListVersion = -1;
+        newObject._numbers = null;
+        newObject._parseTreeEvaluator = null;
+        newObject._parseTrees = null;
+        
+        newObject._scope = null;
+
+        // The _destinationNames is a list of ports or parameter names that are
+        // written to by this action. It is constructed in setExpression().
+        // The clone needs to reconstruct this.
+        newObject._destinationNames = null;
+        try {
+            newObject.setExpression(getExpression());
+        } catch (IllegalActionException e) {
+            throw new CloneNotSupportedException(e.getMessage());
+        }
+        
+        return newObject;
+    }
+
     /** Execute this action.  For each destination identified in the
      *  action, compute the value in the action and perform the
      *  particular assignment.  This method should be extended by

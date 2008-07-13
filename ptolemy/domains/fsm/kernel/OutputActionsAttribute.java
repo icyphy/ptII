@@ -132,10 +132,6 @@ public class OutputActionsAttribute extends AbstractActionsAttribute implements
      *   channels of the port throws a NoRoomException.
      */
     public void execute() throws IllegalActionException {
-        // FIXME: check CommitActionsAttribute also.
-        // The first sentence of CommitActionsAttribute is misleading. The
-        // question is which actions handle outputs and which actions handle
-        // state change.
         super.execute();
 
         if (_destinations != null) {

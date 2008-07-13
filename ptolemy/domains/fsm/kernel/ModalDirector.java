@@ -39,6 +39,7 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModalDirector
@@ -125,6 +126,21 @@ public class ModalDirector extends FSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new actor.
+     *  @param workspace The workspace for the new actor.
+     *  @return A new FSMActor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ModalDirector newObject = (ModalDirector) super.clone(workspace);
+        newObject._actorsFired = new HashSet();
+        newObject._disabledActors = new HashSet();
+        return newObject;
+    }
+    
     /** Fire the modal model.
      *  If there is a preemptive transition enabled, execute its choice
      *  actions (outputActions) and fire its refinement. Otherwise,

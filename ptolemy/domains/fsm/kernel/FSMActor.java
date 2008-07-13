@@ -281,7 +281,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
 
             // Randomly choose one transition from the list of the
-            // enabled trnasitions.
+            // enabled transitions.
 
             // Since the size of the list of enabled transitions usually (almost
             // always) is less than the maximum value of integer. We can safely
@@ -324,16 +324,30 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FSMActor newObject = (FSMActor) super.clone(workspace);
-        newObject._inputPortsVersion = -1;
-        newObject._outputPortsVersion = -1;
-        newObject._connectionMapsVersion = -1;
-        newObject._connectionMaps = null;
-        newObject._inputTokenMap = new HashMap();
+        newObject._currentState = null;
         newObject._identifierToPort = new HashMap();
+        newObject._inputTokenMap = new HashMap();
+        newObject._lastChosenTransition =null;
+
         if (_initialState != null) {
             newObject._initialState = (State) newObject.getEntity(_initialState
                     .getName());
         }
+        newObject._inputPortsVersion = -1;
+        newObject._cachedInputPorts = null;
+        newObject._outputPortsVersion = -1;
+        newObject._cachedOutputPorts = null;
+        newObject._causalityInterface = null;
+        newObject._causalityInterfaceDirector = null;
+        newObject._connectionMaps = null;
+        newObject._connectionMapsVersion = -1;
+        newObject._currentConnectionMap = null;
+        newObject._finalStateNames = null;
+        newObject._functionDependency = null;
+        newObject._receiversVersion = -1;
+        newObject._receiversVersion = -1;
+        newObject._tokenListArrays = null;
+
         return newObject;
     }
 

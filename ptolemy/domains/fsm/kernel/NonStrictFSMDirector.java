@@ -46,6 +46,7 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// NonStrictFSMDirector
@@ -103,6 +104,25 @@ public class NonStrictFSMDirector extends FSMDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new actor.
+     *  @param workspace The workspace for the new actor.
+     *  @return A new FSMActor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        NonStrictFSMDirector newObject = (NonStrictFSMDirector) super.clone(workspace);
+        newObject._nonpreemptiveTransitionsInputs = new HashSet();
+        newObject._outputActionReferredInputPorts = new HashSet();
+        newObject._preemptiveTransitionsInputs = new HashSet();
+        newObject._referredInputPorts = new HashSet();
+        newObject._refinementReferredInputPorts = new HashSet();
+        newObject._setActionReferredInputPorts = new HashSet();
+        return newObject;
+    }
 
     /** Fire the modal model. The preemptive transitions from the current
      *  state are examined. If there is more than one transition enabled,

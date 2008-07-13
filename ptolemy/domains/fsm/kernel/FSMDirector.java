@@ -414,6 +414,25 @@ public class FSMDirector extends Director implements
         return (Entity) getContainer();
     }
 
+    /** Override the base class so that if any outgoing transition
+     *  has a guard that evaluates to true, then return the current
+     *  time. Otherwise, delegate to the enclosing director.
+     */
+    public Time getModelNextIterationTime() {
+        try {
+            FSMActor controller = getController();
+            List transitionList = controller.currentState().outgoingPort.linkedRelationList();
+            List enabledTransitions = controller.enabledTransitions(transitionList);
+            if (enabledTransitions.size() > 0) {
+                return _currentTime;
+            }
+            return super.getModelNextIterationTime();
+        } catch (IllegalActionException e) {
+            // Any exception here should have shown up before now.
+            throw new InternalErrorException(e);
+        }
+    }
+
     /** Return a list of variables that are modified in a modal model.
      *  The variables are assumed to have a change context of the
      *  container of this director.  This class returns all variables

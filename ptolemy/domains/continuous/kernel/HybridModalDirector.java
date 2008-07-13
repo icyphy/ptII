@@ -27,6 +27,7 @@
  */
 package ptolemy.domains.continuous.kernel;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,6 +52,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// HybridModalDirector
@@ -91,6 +93,22 @@ public class HybridModalDirector extends ModalDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new actor.
+     *  @param workspace The workspace for the new actor.
+     *  @return A new FSMActor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HybridModalDirector newObject = (HybridModalDirector) super.clone(workspace);
+        newObject._enclosingContinuousDirector = null;
+        newObject._enclosingContinuousDirectorVersion = -1;
+        newObject._receivers = new LinkedList();
+        return newObject;
+    }
 
     /** Fire the modal model.
      *  If there is a preemptive transition enabled, execute its choice
