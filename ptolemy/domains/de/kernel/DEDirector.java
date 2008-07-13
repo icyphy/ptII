@@ -248,7 +248,6 @@ public class DEDirector extends Director implements TimedDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initParameters();
-        // _verbose = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2062,6 +2061,7 @@ public class DEDirector extends Director implements TimedDirector {
     /** initialize parameters. Set all parameters to their default values.
      */
     private void _initParameters() {
+        _verbose = true;
         try {
             startTime = new Parameter(this, "startTime");
             startTime.setExpression("0.0");
