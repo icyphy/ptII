@@ -112,6 +112,7 @@ public class State extends ComponentEntity {
 
         isInitialState = new Parameter(this, "isInitialState");
         isInitialState.setTypeEquals(BaseType.BOOLEAN);
+        isInitialState.setExpression("false");
         // If this is the only state in the container, then make
         // it the initial state.  For backward compatibility,
         // we do not do this if the container has a non-empty
@@ -126,16 +127,18 @@ public class State extends ComponentEntity {
         if (initialStateName.equals("")) {
             if (container.entityList(State.class).size() == 1) {
                 isInitialState.setExpression("true");
-            } else {
-                isInitialState.setExpression("false");
+                // Have to force this to export to MoML, since
+                // the true value will otherwise be seen as the default.
+                isInitialState.setPersistent(true);
             }
         } else {
             // Backward compatibility scenario. The initial state
             // was given by a name in the container.
             if (initialStateName.equals(name)) {
                 isInitialState.setExpression("true");
-            } else {
-                isInitialState.setExpression("false");
+                // Have to force this to export to MoML, since
+                // the true value will otherwise be seen as the default.
+                isInitialState.setPersistent(true);
             }
         }
 
