@@ -127,9 +127,9 @@ public class Attribute extends NamedObj {
                             container.getFullName());
                 }
             } finally {
-                // Note that _doneTemporaryWriting is package protected
-                // and it does not increment the workspace version.
-                _workspace._doneTemporaryWriting();
+                // Note that _doneTemporaryWriting
+                // does not increment the workspace version.
+                _workspace.doneTemporaryWriting();
             }
         }
         _elementName = "property";

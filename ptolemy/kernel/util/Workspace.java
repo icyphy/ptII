@@ -258,6 +258,25 @@ public final class Workspace implements Nameable, Serializable {
      *  write access to the workspace), then notify all threads
      *  that are waiting to get read/write access to this workspace
      *  so that they may contend for access.
+     *  This method <b>does not</b> increment the version number
+     *  of the workspace.  This method is used to temporarily add
+     *  an attribute to the workspace without increment the version number,
+     *  or otherwise to gain exclusive access to the workspace without
+     *  changing the structure of the model.
+     *  @exception InvalidStateException If this method is called before
+     *   a corresponding call to getWriteAccess() by the same thread.
+     *  @see ptolemy.kernel.util.Attribute.Attribute(NamedObj, String, boolean)
+     *  @see #doneWriting()
+     */
+    public final synchronized void doneTemporaryWriting() {
+        _doneWriting(false);
+    }
+
+    /** Indicate that the calling thread is finished writing.
+     *  If this thread is completely done writing (it has no other
+     *  write access to the workspace), then notify all threads
+     *  that are waiting to get read/write access to this workspace
+     *  so that they may contend for access.
      *  It also increments the version number of the workspace.
      *  @exception InvalidStateException If this method is called before
      *   a corresponding call to getWriteAccess() by the same thread.
@@ -603,27 +622,6 @@ public final class Workspace implements Nameable, Serializable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      package protected methods            ////
-
-    /** Indicate that the calling thread is finished writing.
-     *  If this thread is completely done writing (it has no other
-     *  write access to the workspace), then notify all threads
-     *  that are waiting to get read/write access to this workspace
-     *  so that they may contend for access.
-     *  This method <b>does not</b> increments the version number
-     *  of the workspace.  This method is used to temporarily add
-     *  an attribute to the workspace without increment the version number
-     *  @exception InvalidStateException If this method is called before
-     *   a corresponding call to getWriteAccess() by the same thread.
-     *  @see ptolemy.kernel.util.Attribute.Attribute(NamedObj, String, boolean)
-     *  @see #doneWriting()
-     */
-    final synchronized void _doneTemporaryWriting() {
-        _doneWriting(false);
-    }
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Return a description of the workspace.  The level of detail depends
@@ -700,7 +698,8 @@ public final class Workspace implements Nameable, Serializable {
      *  write access to the workspace), then notify all threads
      *  that are waiting to get read/write access to this workspace
      *  so that they may contend for access.
-     *  It also increments the version number of the workspace.
+     *  It also increments the version number of the workspace
+     *  if the incrementWorkspaceVersion parameter is true.
      *  @param incrementWorkspaceVersion True if we should increment
      *  the version.  The incrementWorkspaceVersion parameter should
      *  almost always be true, if it is set to false, then perhaps a
