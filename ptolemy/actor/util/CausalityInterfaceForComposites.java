@@ -225,11 +225,6 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                 Iterator inputPorts = _actor.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     IOPort inputPort = (IOPort)inputPorts.next();
-                    if (_equivalenceClasses.get(inputPort) == null) {
-                        Set<IOPort> dependsOn = new HashSet<IOPort>();
-                        _equivalenceClasses.put(inputPort, dependsOn);
-                        dependsOn.add(inputPort);
-                    }
                     // Construct a map of dependencies from this inputPort
                     // to all reachable ports.
                     Map<IOPort,Dependency> map = new HashMap<IOPort,Dependency>();
@@ -342,44 +337,60 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
             IOPort port,
             Map<IOPort,Dependency> map,
             Dependency dependency,
-            Map<IOPort,Set<IOPort>> dependsOnInputsMap) {
+            Map<IOPort,Set<IOPort>> dependsOnInputsMap)
+            throws IllegalActionException {
         if (dependency.equals(_defaultDependency.oPlusIdentity())) {
             return false;
         }
         // First, update the equivalence classes.
+        // Construct a set that merges all known input port dependencies
+        // for this port with any known equivalents of the input port.
+        Set<IOPort> merged = _equivalenceClasses.get(inputPort);
+        if (merged == null) {
+            merged = new HashSet<IOPort>();
+            merged.add(inputPort);
+            _equivalenceClasses.put(inputPort, merged);
+        }
+        
         // If the port is not already entered in the dependsOnInputsMap,
-        // then enter it. The following set is all the actor input port that
-        // this port depends on.
+        // then enter it. The entry will eventually be
+        // all the actor input ports that this port depends on.
         Set<IOPort> dependsOn = dependsOnInputsMap.get(port);
-        if (dependsOn == null) {
-            // There are no recorded dependencies (yet).
-            dependsOn = new HashSet<IOPort>();
-            dependsOnInputsMap.put(port, dependsOn);
-            // Indicate that this port depends on the specified input port.
-            dependsOn.add(inputPort);
-            // There is no need to modify any other equivalence classes
-            // because (so far) this port only depends on this input port.
-        } else {
-            // This port already depends on some input port(s) (possibly this same one).
-            // Merge the equivalence classes for all those input ports and add this
-            // input port. The following cannot be null.
-            Set<IOPort> merged = _equivalenceClasses.get(inputPort);
-            for(IOPort dependentInputPort : dependsOn) {
-                // Get the equivalence class for another port depended on.
-                Set<IOPort> equivalenceClass
-                        = _equivalenceClasses.get(dependentInputPort);
-                if (equivalenceClass != null) {
-                    merged.addAll(equivalenceClass);
+        if (dependsOn != null) {
+            // Make sure to include any previously found dependencies.
+            merged.addAll(dependsOn);
+        }
+        // If this port has equivalents, and those have dependencies,
+        // then those dependencies need to be added. It can only have
+        // equivalents if it is an input port.
+        if (port.isInput()) {
+            Collection<IOPort> equivalents
+                    = ((Actor)port.getContainer()).getCausalityInterface().equivalentPorts(port);
+            for (IOPort equivalent : equivalents) {
+                // This is guaranteed to include port.
+                Set<IOPort> otherInputs = dependsOnInputsMap.get(equivalent);
+                if (otherInputs != null) {
+                    merged.addAll(otherInputs);
+                    // For each of the other inputs, it may have
+                    // equivalents. Add those.
+                    for(IOPort dependentInputPort : otherInputs) {
+                        // Get the equivalence class for another port depended on.
+                        Set<IOPort> equivalenceClass
+                                = _equivalenceClasses.get(dependentInputPort);
+                        if (equivalenceClass != null) {
+                            merged.addAll(equivalenceClass);
+                        }
+                    }
                 }
             }
-            // Record the dependency in dependsOn for future use.
-            dependsOn.add(inputPort);
-            // For every input port in the merged set, record the equivalence
-            // to the merged set.
-            for (IOPort mergedInput : merged) {
-                _equivalenceClasses.put(mergedInput, merged);
-            }
         }
+        
+        // For every input port in the merged set, record the equivalence
+        // to the merged set.
+        for (IOPort mergedInput : merged) {
+            _equivalenceClasses.put(mergedInput, merged);
+        }
+        dependsOnInputsMap.put(port, merged);
 
         // Next update the forward and reverse dependencies.
         // If the port belongs to the associated actor,
