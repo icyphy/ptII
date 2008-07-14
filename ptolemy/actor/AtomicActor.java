@@ -860,7 +860,9 @@ public class AtomicActor extends ComponentEntity implements Actor,
                 inputPort.createReceivers();
             }
         } finally {
-            workspace().doneWriting();
+            // Note that this does not increment the workspace version.
+            // We have not changed the structure of the model.
+            workspace().doneTemporaryWriting();
         }
     }
 
