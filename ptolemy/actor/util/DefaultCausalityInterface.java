@@ -163,46 +163,48 @@ public class DefaultCausalityInterface implements CausalityInterface {
         return result;
     }
     
-    /** Return a collection of the ports in this actor that are
-     *  in the same equivalence class. This base class
-     *  returns a collection of all the input ports of the
-     *  associated actor.
+    /** Return a collection of the input ports in this actor that are
+     *  in the same equivalence class with the specified input
+     *  port. This base class returns a collection of all
+     *  the input ports of the associated actor, unless
+     *  removeDependencies() has been called. In the latter
+     *  case, it constructs the equivalence class based on
+     *  the remaining dependencies on output ports.
      *  If derived classes override this, they may also
      *  need to override {@link #getDependency(IOPort,IOPort)}
      *  and {@link #dependentPorts(IOPort)} to be consistent.
      *  The returned result should always include the specified input port.
      *  <p>
      *  An equivalence class is defined as follows.
-     *  If input ports X and Y each have a dependency on the same
-     *  output port not equal to the
-     *  default depenency's oPlusIdentity(), then they
+     *  If input ports X and Y each have a dependency on any
+     *  common port not equal to the
+     *  default depenency's oPlusIdentity(), or they each can
+     *  affect the state of the associated actor, then they
      *  are in an equivalence class. That is,
      *  there is a causal dependency. They are also in
      *  the same equivalence class if there is a port Z
      *  in an equivalence class with X and in an equivalence
      *  class with Y. Otherwise, they are not in the same
-     *  equivalence class. If there are no
-     *  output ports, then all the input ports
-     *  are in a single equivalence class.
+     *  equivalence class.
      *  @param input The port to find the equivalence class of.
      *  @throws IllegalArgumentException If the argument is not
      *   contained by the associated actor.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public Collection<IOPort> equivalentPorts(IOPort input) throws IllegalActionException {
-        if (input.getContainer() != _actor) {
+        if (input.getContainer() != _actor || !input.isInput()) {
             throw new IllegalArgumentException(
                     "equivalentPort() called with argument "
                     + input.getFullName()
-                    + " on a causality interface for "
-                    + _actor.getFullName()
-                    + ", which is not its container.");
+                    + " that is not an input port for "
+                    + _actor.getFullName());
         }
         if (_forwardPrunedDependencies == null) {
             // removeDependencies() has not been called, so this is the
             // simple case.
             return _actor.inputPortList();
         }
+        // FIXME: Should the result be cached?
         // If removeDependencies() has been called, finding the equivalent
         // ports is rather complicated.
         List<IOPort> inputs = _actor.inputPortList();

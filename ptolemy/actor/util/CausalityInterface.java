@@ -81,16 +81,15 @@ public interface CausalityInterface {
     /** Return a collection of input ports in the associated actor that are
      *  in the same equivalence class as the specified input port.
      *  An equivalence class is defined as follows.
-     *  If ports X and Y each have a dependency not equal to the
-     *  default depenency's oPlusIdentity(), then they
+     *  If input ports X and Y each have a dependency not equal to the
+     *  default depenency's oPlusIdentity() on any common port
+     *  or on the state of the associated actor, then they
      *  are in an equivalence class. That is,
      *  there is a causal dependency. They are also in
      *  the same equivalence class if there is a port Z
      *  in an equivalence class with X and in an equivalence
      *  class with Y. Otherwise, they are not in the same
-     *  equivalence class. If there are no
-     *  output ports, then all the input ports
-     *  are in a single equivalence class.
+     *  equivalence class.
      *  @param input The port to find the equivalence class of.
      *  @exception IllegalActionException If the equivalent ports
      *   cannot be determined.
