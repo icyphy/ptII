@@ -28,6 +28,8 @@
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
+import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
@@ -41,6 +43,7 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.ContextMenuFactoryCreator;
 import ptolemy.vergil.basic.PopupMouseFilter;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.toolbox.ConfigureAction;
@@ -65,9 +68,6 @@ import diva.graph.BasicEdgeController;
 import diva.graph.EdgeRenderer;
 import diva.graph.GraphController;
 import diva.gui.toolbox.MenuCreator;
-import java.util.List;
-import java.util.Iterator;
-import ptolemy.vergil.basic.ContextMenuFactoryCreator;
 
 //////////////////////////////////////////////////////////////////////////
 //// LinkController
@@ -157,8 +157,8 @@ public class LinkController extends BasicEdgeController {
           _menuFactory = new PtolemyMenuFactory(controller);
         }
 
-        _menuFactory
-                .addMenuItemFactory(new MenuActionFactory(_configureAction));
+        _configureMenuFactory = new MenuActionFactory(_configureAction);
+        _menuFactory.addMenuItemFactory(_configureMenuFactory);
         _menuCreator.setMenuFactory(_menuFactory);
 
         // Add a double click interactor.
@@ -417,5 +417,5 @@ public class LinkController extends BasicEdgeController {
      */
     private static ContextMenuFactoryCreator cmfCreator;
 
-    
+
 }
