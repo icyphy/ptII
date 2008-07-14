@@ -93,9 +93,12 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
     *  the FSM and caches the result. Subsequent calls just
     *  look up the result.
     *  @param input The input port.
-    *  @param output The output port.
-    *  @return The dependency between the specified input port
-    *   and the specified output port.
+     *  @param output The output port, or null to update the
+     *   dependencies (and record equivalence classes) without
+     *   requiring there to be an output port.
+     *  @return The dependency between the specified input port
+     *   and the specified output port, or null if a null output
+     *   is port specified.
     *  @exception IllegalActionException If a guard expression cannot be parsed.
     */
    public Dependency getDependency(IOPort input, IOPort output)
@@ -112,6 +115,15 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                actor.workspace().getReadAccess();
                _reverseDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
                _forwardDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
+               
+               // Initialize the equivalence classes to contain each input port.
+               _equivalenceClasses = new HashMap<IOPort,Set<IOPort>>();
+               List<IOPort> actorInputs = _actor.inputPortList();
+               for (IOPort actorInput : actorInputs) {
+                   Set<IOPort> equivalences = new HashSet<IOPort>();
+                   equivalences.add(actorInput);
+                   _equivalenceClasses.put(actorInput, equivalences);
+               }
                
                // Iterate over all the transitions.
                Collection<Transition> transitions = actor.relationList();
@@ -130,15 +142,9 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                            if (destination instanceof IOPort
                                    && ((IOPort)destination).isOutput()) {
                                // Found an output that is written to.
-                               // FIXME: Check that port(number) syntax is supported.
                                outputs.add((IOPort)destination);
                            }
                        }
-                   }
-                   // If no output ports were found, then this transition
-                   // cannot introduce input/output dependencies.
-                   if (outputs.isEmpty()) {
-                       continue;
                    }
 
                    // Now handle the guard expression, finding
@@ -167,6 +173,20 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                    if (inputs.isEmpty()) {
                        continue;
                    }
+                   // If any guard references more than one input, then
+                   // those inputs need to be in the same equivalence class.
+                   if (inputs.size() > 1) {
+                       Set<IOPort> merge = new HashSet<IOPort>(inputs);
+                       for (IOPort actorInput : inputs) {
+                           // Add all input ports that are equivalence classes with
+                           // these input ports.
+                           Set<IOPort> equivalences = _equivalenceClasses.get(actorInput);
+                           merge.addAll(equivalences);
+                       }
+                       for (IOPort actorInput : merge) {
+                           _equivalenceClasses.put(actorInput, merge);
+                       }
+                   }
                    // Set dependencies of all the found output
                    // ports on all the found input ports.
                    for (IOPort writtenOutput : outputs) {
@@ -192,6 +212,9 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                actor.workspace().doneReading();
            }
            _dependencyVersion = workspaceVersion;
+       }
+       if (output == null) {
+           return null;
        }
        Map<IOPort,Dependency> inputMap = _forwardDependencies.get(input);
        if (inputMap != null) {
