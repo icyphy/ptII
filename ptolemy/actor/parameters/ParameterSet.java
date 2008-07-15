@@ -436,7 +436,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
         // Invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.preinitialize();
+                initializable.wrapup();
             }
         }
         _reReadIfNeeded();
