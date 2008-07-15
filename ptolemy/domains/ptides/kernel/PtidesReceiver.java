@@ -268,33 +268,32 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
         put(token, time);
     }
 
-    /**
-     * Do a blocking write on the queue. Set the time stamp to be the
-     * time specified by the time parameter. If the specified time is
-     * greater than the completionTime of this receiver, then set the
-     * time stamp to INACTIVE and the token to null. If the queue is
-     * full, then inform the director that this receiver is blocking
-     * on a write and wait until room becomes available. When room
-     * becomes available, put the token and time stamp in the queue
-     * and inform the director that the block no longer exists. If at
-     * any point during this method this receiver is scheduled for
-     * termination, then throw a TerminateProcessException which will
-     * cease activity for the actor that contains this receiver.
-     *
-     * @param token
-     *                The token to put in the queue.
-     * @param time
-     *                The specified time stamp.
-     * @exception TerminateProcessException
-     *                    If activity is scheduled to cease.
-     */
-    public void put(Token token, Time time) {
-        if (super.hasRoom() && !_terminate) { // super will always have room
-            // for now
-            super.put(token, time);
-            this._director.notifyWaitingThreads();
-            return;
-        }
+	/**
+	 * Do a blocking write on the queue. Set the time stamp to be the time
+	 * specified by the time parameter. If the specified time is greater than
+	 * the completionTime of this receiver, then set the time stamp to INACTIVE
+	 * and the token to null. If the queue is full, then inform the director
+	 * that this receiver is blocking on a write and wait until room becomes
+	 * available. When room becomes available, put the token and time stamp in
+	 * the queue and inform the director that the block no longer exists. If at
+	 * any point during this method this receiver is scheduled for termination,
+	 * then throw a TerminateProcessException which will cease activity for the
+	 * actor that contains this receiver.
+	 * 
+	 * @param token
+	 *            The token to put in the queue.
+	 * @param time
+	 *            The specified time stamp.
+	 * @exception TerminateProcessException
+	 *                If activity is scheduled to cease.
+	 */
+	public void put(Token token, Time time) { 
+		if (super.hasRoom() && !_terminate) { // super will always have room
+												// for now
+			super.put(token, time);
+			this._director.unblockWaitingPlatform((Actor) this.getContainer().getContainer());
+			return;
+		}
 
     }
 
