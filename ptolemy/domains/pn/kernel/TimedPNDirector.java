@@ -28,6 +28,9 @@
  */
 package ptolemy.domains.pn.kernel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.CalendarQueue;
@@ -230,6 +233,15 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /**
+     * Reset private variables. 
+     * added 7/15/08 Patricia Derler
+     */
+    public void wrapup() throws IllegalActionException {
+        _delayBlockCount = 0;
+        _eventQueue.clear();
+    }
+
     /** Return true if a deadlock is detected. Return false otherwise.
      *  Return true if all the active processes in the container are either
      *  read-blocked, write-blocked or delay-blocked.
@@ -282,10 +294,17 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
             // Artificial deadlock due to delayed processes.
             // Advance time to next possible time.
             synchronized (this) {
+                // There could be multiple events for the same
+                // actor for the same time (e.g. by sending events
+                // to this actor with same time stamps on different
+                // input ports. Thus, only _informOfDelayUnblock() 
+                // for events with the same time stamp but different
+                // actors. 7/15/08 Patricia Derler
+                List unblockedActors = new ArrayList();
                 if (!_eventQueue.isEmpty()) {
                     //Take the first time-blocked process from the queue.
                     TimedEvent event = (TimedEvent) _eventQueue.take();
-
+                    unblockedActors.add(event.contents);
                     //Advance time to the resumption time of this process.
                     setModelTime(event.timeStamp);
                     _informOfDelayUnblock();
@@ -316,6 +335,10 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
                         //then unblock it. Else put the newly removed
                         //process back on the event queue.
                         if (newTime.equals(getModelTime())) {
+                            if (unblockedActors.contains(actor))
+                                continue;
+                            else 
+                                unblockedActors.add(actor);
                             _informOfDelayUnblock();
                         } else {
                             _eventQueue.put(new TimedEvent(newTime, actor));
@@ -333,10 +356,10 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
 
         return true;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
+    
     /** The priority queue that stores the list of processes waiting for time
      *  to advance. These processes are sorted by the time they want to resume
      *  at.
@@ -344,9 +367,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     protected CalendarQueue _eventQueue = new CalendarQueue(
             new TimedEvent.TimeComparator());
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The number of time-blocked processes. */
-    private int _delayBlockCount = 0;
+    /** The number of time-blocked processes. 
+     * changed from private to protected on 7/13/08 by Patricia Derler */
+    protected int _delayBlockCount = 0;
 }
