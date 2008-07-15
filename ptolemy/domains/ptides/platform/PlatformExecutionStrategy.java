@@ -28,6 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.domains.ptides.platform;
 
+import java.util.Collections;
 import java.util.List;
 
 import ptolemy.actor.Actor;
@@ -35,6 +36,8 @@ import ptolemy.actor.Director;
 import ptolemy.actor.util.Time;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector;
+import ptolemy.domains.ptides.kernel.PtidesGraphUtilities;
+import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType; 
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -85,14 +88,8 @@ public abstract class PlatformExecutionStrategy {
      * @exception IllegalActionException
      */
     public abstract DEEvent getNextEventToFire(List<DEEvent> actorsFiring,
-            List eventsToFire) throws IllegalActionException;
-
-    /**
-     * The execution strategy needs to know about the pysical time, it should
-     * only be set by the PtidesEmbeddedDirector and not changed by the
-     * execution strategy.
-     */
-    public Time _physicalTime;
+            List<DEEvent> eventsToFire, Time nextRealTimeEvent, 
+            Time physicalTime) throws IllegalActionException;
 
     /**
      * Forward an event that should be displayed by a schedule listener.
@@ -105,7 +102,7 @@ public abstract class PlatformExecutionStrategy {
      *                The type of the event.
      */
     protected final void _displaySchedule(Actor actor, double time,
-            int scheduleEvent) {
+            ScheduleEventType scheduleEvent) {
         ((PtidesEmbeddedDirector) _director).displaySchedule(actor, time,
                 scheduleEvent);
     }

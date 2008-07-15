@@ -39,8 +39,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.domains.de.kernel.DEEvent;
-import ptolemy.domains.ptides.kernel.PtidesGraphUtilities;
-import ptolemy.domains.ptides.lib.ScheduleListener;
+import ptolemy.domains.ptides.kernel.PtidesGraphUtilities; 
+import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType; 
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -62,20 +62,8 @@ public class NonPreemptivePlatformExecutionStrategy extends
      * @param director
      *                required to display the schedule
      */
-    public NonPreemptivePlatformExecutionStrategy(Time physicalTime,
-            Director director) {
-        _director = director;
-        _physicalTime = physicalTime;
-    }
-
-    /**
-     * Sort the list of events that are safe to fire.
-     * 
-     * @param list
-     *                List of events that are safe to fire.
-     */
-    public void sort(List list) {
-        Collections.sort(list, new WCETComparator());
+    public NonPreemptivePlatformExecutionStrategy(Director director) {
+        _director = director; 
     }
 
     /**
@@ -87,11 +75,12 @@ public class NonPreemptivePlatformExecutionStrategy extends
      */
     private class WCETComparator implements Comparator {
 
-        /**
-         * This platform execution strategy is non preemptive.
-         */
-        private boolean _preemptive = false;
+        protected WCETComparator(Time physicalTime) {
+            _physicalTime = physicalTime;
+        }
 
+        private Time _physicalTime;
+        
         /**
          * This compare method is used to sort all events.
          * 
@@ -177,10 +166,8 @@ public class NonPreemptivePlatformExecutionStrategy extends
                 if (fireAtRT1 && !fireAtRT2) {
                     // if execution of non real time actor can fit before real
                     // time actor
-                    if ((!_preemptive && _physicalTime.getDoubleValue() + wcet2 <= time1
-                            .getDoubleValue())
-                            || (_preemptive && _physicalTime.getDoubleValue() <= time1
-                                    .getDoubleValue())) {
+                    if ((_physicalTime.getDoubleValue() + wcet2 <= time1
+                            .getDoubleValue())) {
                         return 1;
                     } else {
                         return -1;
@@ -188,10 +175,8 @@ public class NonPreemptivePlatformExecutionStrategy extends
                 } else if (fireAtRT2 && !fireAtRT1) {
                     // if execution of non real time actor can fit before real
                     // time actor
-                    if ((!_preemptive && _physicalTime.getDoubleValue() + wcet1 <= time2
-                            .getDoubleValue())
-                            || (_preemptive && _physicalTime.getDoubleValue() <= time2
-                                    .getDoubleValue())) {
+                    if ((_physicalTime.getDoubleValue() + wcet1 <= time2
+                            .getDoubleValue())) {
                         return -1;
                     } else {
                         return 1;
@@ -242,42 +227,33 @@ public class NonPreemptivePlatformExecutionStrategy extends
      *                 Thrown if an execution was missed.
      */
     public DEEvent getNextEventToFire(List<DEEvent> actorsFiring,
-            List eventsToFire) throws IllegalActionException {
+            List<DEEvent> eventsToFire, Time nextRealTimeEvent, Time physicalTime) throws IllegalActionException {
+        
         if (actorsFiring.size() > 0 || eventsToFire.size() == 0) {
             return null;
         }
-
-        Time _nextRealTimeEvent = Time.POSITIVE_INFINITY;
-        Collections.sort(eventsToFire, new WCETComparator());
-        for (int i = 0; i < eventsToFire.size(); i++) {
-            DEEvent event = (DEEvent) eventsToFire.get(i);
-            Actor actor = event.actor();
-            if (PtidesGraphUtilities.mustBeFiredAtRealTime(actor, event
-                    .ioPort())) {
-                if (event.timeStamp().compareTo(_nextRealTimeEvent) < 0) {
-                    _nextRealTimeEvent = event.timeStamp();
-                }
-            }
-        }
+        
+        Collections.sort(eventsToFire, new WCETComparator(physicalTime));
         DEEvent event;
         int index = 0;
+        
         while (index < eventsToFire.size()) {
             event = (DEEvent) eventsToFire.get(index);
             Actor actorToFire = event.actor();
 
             if (PtidesGraphUtilities.mustBeFiredAtRealTime(actorToFire, event
                     .ioPort())) {
-                if (_physicalTime.compareTo(event.timeStamp()) > 0) {
+                if (physicalTime.compareTo(event.timeStamp()) > 0) {
                     _displaySchedule(actorToFire, event.timeStamp()
-                            .getDoubleValue(), ScheduleListener.MISSEDEXECUTION);
+                            .getDoubleValue(), ScheduleEventType.missedexecution);
                     throw new IllegalActionException("missed execution!");
-                } else if (_physicalTime.compareTo(event.timeStamp()) < 0) {
+                } else if (physicalTime.compareTo(event.timeStamp()) < 0) {
                     index++;
                     continue;
                 }
-            } else if (_physicalTime.add(
+            } else if (physicalTime.add(
                     PtidesGraphUtilities.getWCET(actorToFire)).compareTo(
-                    _nextRealTimeEvent) > 0) {
+                    nextRealTimeEvent) > 0) {
                 index++;
                 continue;
             }
@@ -286,4 +262,5 @@ public class NonPreemptivePlatformExecutionStrategy extends
         }
         return null;
     }
+
 }

@@ -43,6 +43,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.domains.ptides.kernel.PtidesGraphUtilities;
 import ptolemy.domains.ptides.lib.ScheduleListener;
+import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -66,20 +67,8 @@ public class PreemptivePlatformExecutionStrategy extends
      * @param director
      *                required to display the schedule
      */
-    public PreemptivePlatformExecutionStrategy(Time physicalTime,
-            Director director) {
-        _director = director;
-        _physicalTime = physicalTime;
-    }
-
-    /**
-     * Sort the list of events that are safe to fire.
-     * 
-     * @param list
-     *                List of events that are safe to fire.
-     */
-    public void sort(List list) {
-        Collections.sort(list, new WCETComparator());
+    public PreemptivePlatformExecutionStrategy(Director director) {
+        _director = director; 
     }
 
     /**
@@ -90,6 +79,13 @@ public class PreemptivePlatformExecutionStrategy extends
      * 
      */
     private class WCETComparator implements Comparator {
+        
+        protected WCETComparator(Time physicalTime) {
+            _physicalTime = physicalTime;
+        }
+
+        private Time _physicalTime;
+        
 
         /**
          * This compare method is used to sort all events.
@@ -225,11 +221,12 @@ public class PreemptivePlatformExecutionStrategy extends
      *                 Thrown if an execution was missed.
      */
     public DEEvent getNextEventToFire(List<DEEvent> actorsFiring,
-            List eventsToFire) throws IllegalActionException {
+            List<DEEvent> eventsToFire, Time nextRealTimeEvent, 
+            Time physicalTime) throws IllegalActionException {
         if (eventsToFire.size() == 0) {
             return null;
         }
-        Collections.sort(eventsToFire, new WCETComparator());
+        Collections.sort(eventsToFire, new WCETComparator(physicalTime));
         DEEvent event;
         int index = 0;
         while (index < eventsToFire.size()) {
@@ -238,18 +235,18 @@ public class PreemptivePlatformExecutionStrategy extends
             Actor actorToFire = event.actor();
             if (actorsFiring.size() > 0
                     && !actorPreempts(actorsFiring.get(0).actor(), actorToFire,
-                            event.timeStamp())) {
+                            event.timeStamp(), physicalTime)) {
                 index++;
                 continue;
             }
 
             if (PtidesGraphUtilities.mustBeFiredAtRealTime(actorToFire, event
                     .ioPort())) {
-                if (_physicalTime.compareTo(event.timeStamp()) > 0) {
+                if (physicalTime.compareTo(event.timeStamp()) > 0) {
                     _displaySchedule(actorToFire, event.timeStamp()
-                            .getDoubleValue(), ScheduleListener.MISSEDEXECUTION);
+                            .getDoubleValue(), ScheduleEventType.missedexecution);
                     throw new IllegalActionException("missed execution!");
-                } else if (_physicalTime.compareTo(event.timeStamp()) < 0) {
+                } else if (physicalTime.compareTo(event.timeStamp()) < 0) {
                     index++;
                     continue;
                 }
@@ -261,7 +258,7 @@ public class PreemptivePlatformExecutionStrategy extends
     }
 
     private boolean actorPreempts(Actor currentlyExecuting, Actor actor2,
-            Time time) {
+            Time time, Time physicalTime) {
         boolean fireAtRT1 = PtidesGraphUtilities.mustBeFiredAtRealTime(
                 currentlyExecuting, null);
         boolean fireAtRT2 = PtidesGraphUtilities.mustBeFiredAtRealTime(actor2,
@@ -271,7 +268,7 @@ public class PreemptivePlatformExecutionStrategy extends
         if (fireAtRT2 && PtidesGraphUtilities.getWCET(actor2) == 0) {
             return true;
         }
-        if ((!fireAtRT1 && fireAtRT2 && time.equals(_physicalTime))
+        if ((!fireAtRT1 && fireAtRT2 && time.equals(physicalTime))
                 || fireAtRT1 && fireAtRT2 && prio2 > prio1) {
             return true;
         }
