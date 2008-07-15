@@ -143,7 +143,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
      *                The type of the event.
      */
     public void event(final Actor node, final Actor actor, double time,
-            int scheduleEvent) {
+            ScheduleEventType scheduleEvent) {
         if (plot == null) {
             return;
         }
@@ -153,24 +153,24 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
         int actorDataset = nodeActorStrings.indexOf(node.getName() + ": "
                 + actor.getName());
         int nodeDataSet = nodeActorStrings.indexOf(node.getName());
-        if (scheduleEvent == ScheduleListener.START
-                || scheduleEvent == ScheduleListener.STOP) {
+        if (scheduleEvent == ScheduleEventType.start
+                || scheduleEvent == ScheduleEventType.stop) {
             plot.addPoint(actorDataset, x, actorY,
-                    scheduleEvent == ScheduleListener.STOP);
+                    scheduleEvent == ScheduleEventType.stop);
             plot.addPoint(nodeDataSet, x, nodeY,
-                    scheduleEvent == ScheduleListener.STOP);
-            nodeActive[nodes.indexOf(node)] = scheduleEvent == ScheduleListener.START;
-        } else if (scheduleEvent == ScheduleListener.TRANSFERINPUT) {
+                    scheduleEvent == ScheduleEventType.stop);
+            nodeActive[nodes.indexOf(node)] = scheduleEvent == ScheduleEventType.start;
+        } else if (scheduleEvent == ScheduleEventType.transferinput) {
             plot.addPoint(nodeDataSet, x, nodeY, false || nodeActive[nodes
                     .indexOf(node)]);
             plot.addPoint(nodeDataSet, x - 0.05, nodeY - 0.05, false);
             plot.addPoint(nodeDataSet, x, nodeY, true);
-        } else if (scheduleEvent == ScheduleListener.TRANSFEROUTPUT) {
+        } else if (scheduleEvent == ScheduleEventType.transferoutput) {
             plot.addPoint(nodeDataSet, x, nodeY, false || nodeActive[nodes
                     .indexOf(node)]);
             plot.addPoint(nodeDataSet, x + 0.05, nodeY - 0.05, false);
             plot.addPoint(nodeDataSet, x, nodeY, true);
-        } else if (scheduleEvent == ScheduleListener.MISSEDEXECUTION) {
+        } else if (scheduleEvent == ScheduleEventType.missedexecution) {
             plot.addPoint(actorDataset, x - 0.05, actorY + 0.05, false);
             plot.addPoint(actorDataset, x + 0.05, actorY - 0.05, true);
             plot.addPoint(actorDataset, x - 0.05, actorY - 0.05, false);
