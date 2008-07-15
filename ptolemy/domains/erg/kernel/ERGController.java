@@ -1,4 +1,4 @@
-/*
+/* Controller for ERG modal models.
 
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
@@ -51,7 +51,6 @@ import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.erg.lib.SynchronizeToRealtime;
 import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.StateEvent;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentRelation;
@@ -60,24 +59,33 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
+ This controller is used in every ERG modal model. It contains an {@link
+ ERGDirector} to execute the events in it.
+ <p>
+ Each ERG modal model has one or more ERG controllers. One of those controllers
+ is the top level controller, which can be obtained with {@link
+ ERGModalModel#getController()}. The other controllers are refinements of
+ events.
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class ERGController extends ModalController {
 
-    /**
-     * @param container
-     * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+    /** Construct an ERG controller with a name and a container.
+     *
+     *  @param container The container, which must be an {@link ERGModalModel}.
+     *  @param name The name.
+     *  @exception IllegalActionException If the container is incompatible
+     *  with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *  an actor already in the container.
      */
     public ERGController(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -85,10 +93,11 @@ public class ERGController extends ModalController {
         _init();
     }
 
-    /**
-     * @param workspace
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+    /** Construct an ERG controller in the specified workspace with
+     *  no container and an empty string as a name. If the workspace argument is
+     *  null, then use the default workspace.
+     *
+     *  @param workspace The workspace that will list the controller.
      */
     public ERGController(Workspace workspace) throws IllegalActionException,
     NameDuplicationException {
@@ -96,17 +105,41 @@ public class ERGController extends ModalController {
         _init();
     }
 
+    /** Clone the controller into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new actor.
+     *
+     *  @param workspace The workspace for the new controller.
+     *  @return A new ERGController.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ERGController controller = (ERGController) super.clone(workspace);
+        controller._executiveDirector = null;
         controller._executiveDirectorVersion = -1;
+        controller._objectScope = null;
         controller._objectScopeVersion = -1;
         return controller;
     }
 
+    /** Invoke the fire() method of the enclosed {@link ERGDirector}.
+     *
+     *  @exception IllegalActionException If the ERGDirector throws it.
+     *  @see ERGDirector#fire()
+     */
     public void fire() throws IllegalActionException {
         director.fire();
     }
 
+    /** Return the executive director. If the current controller is the
+     *  top-level controller of an ERG modal model, then the executive director
+     *  is its director (returned by {@link #getDirector()}). Otherwise, the
+     *  executive director is the director of the ERG controller at a higher
+     *  level in the refinement hierarchy.
+     *
+     *  @return The executive director.
+     */
     public Director getExecutiveDirector() {
         Workspace workspace = workspace();
         try {
@@ -129,6 +162,9 @@ public class ERGController extends ModalController {
                             if (refinements != null) {
                                 for (Actor refinement : refinements) {
                                     if (refinement == this) {
+                                        // Return the director of the ERG
+                                        // controller that has an event with the
+                                        // current controller as its refinement.
                                         _executiveDirector = ((ERGController)
                                                 event.getContainer()).director;
                                         break;
@@ -146,15 +182,25 @@ public class ERGController extends ModalController {
         return _executiveDirector;
     }
 
+    /** Return null as the initial state. In ERG there are multiple initial
+     *  events. This method is overridden to return null. To get the list of
+     *  initial events, check the isInitialState parameter of the events
+     *  contained in this controller.
+     *
+     *  @return null
+     */
     public State getInitialState() {
         return null;
     }
 
     /** Return a scope object that has current values from input ports
-     *  of this FSMActor in scope.  This scope is used to evaluate
-     *  guard expressions and set and output actions.
+     *  of the containing ERG modal model in scope. This scope is used to
+     *  evaluate guard expressions and actions. This scope is also specialized
+     *  so that objects can be resolved and {@link ObjectToken} can be return
+     *  for them.
+     *
      *  @return A scope object that has current values from input ports of
-     *  this FSMActor in scope.
+     *  the containing ERG modal model in scope.
      */
     public ParserScope getPortScope() {
         if (_objectScopeVersion != workspace().getVersion()) {
@@ -164,7 +210,11 @@ public class ERGController extends ModalController {
         return _objectScope;
     }
 
-    public boolean hasInput() throws IllegalActionException {
+    /** Test whether new input tokens have been received at the input ports.
+     *
+     *  @return true if new input tokens have been received.
+     */
+    public boolean hasInput() {
         Iterator<?> inPorts = ((ERGModalModel) getContainer()).inputPortList()
                 .iterator();
         while (inPorts.hasNext() && !_stopRequested) {
@@ -178,31 +228,63 @@ public class ERGController extends ModalController {
         return false;
     }
 
+    /** Initialize this controller by initializing the director that it
+     *  contains, which sets the initial events.
+     *
+     *  @exception IllegalActionException If the director or initialize() of the
+     *  superclass throws it.
+     */
     public void initialize() throws IllegalActionException {
         director.initialize();
         super.initialize();
     }
 
+    /** Return the result of isFireFunctional() from the director.
+     *
+     *  @return The result of isFireFunctional() from the director.
+     */
     public boolean isFireFunctional() {
         return director.isFireFunctional();
     }
 
+    /** Return the result of isStrict() from the director.
+    *
+    *  @return The result of isStrict() from the director.
+    */
     public boolean isStrict() {
         return director.isStrict();
     }
 
+    /** Invoke a specified number of iterations of the actor by calling
+     *  iterate() of the director. An
+     *  iteration is equivalent to invoking prefire(), fire(), and
+     *  postfire(), in that order. In an iteration, if prefire()
+     *  returns true, then fire() will be called once, followed by
+     *  postfire(). Otherwise, if prefire() returns false, fire()
+     *  and postfire() are not invoked, and this method returns
+     *  NOT_READY. If postfire() returns false, then no more
+     *  iterations are invoked, and this method returns STOP_ITERATING.
+     *  Otherwise, it returns COMPLETED. If stop() is called while
+     *  this is executing, then cease executing and return STOP_ITERATING.
+     *
+     *  @param count The number of iterations to perform.
+     *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
+     *  @exception IllegalActionException If iterating is not
+     *   permitted, or if prefire(), fire(), or postfire() throw it.
+     */
     public int iterate(int count) throws IllegalActionException {
         return director.iterate(count);
     }
 
-    /** Create a new instance of Transition with the specified name in
-     *  this actor, and return it.
-     *  This method is write-synchronized on the workspace.
-     *  @param name The name of the new transition.
-     *  @return A transition with the given name.
+    /** Create a new instance of {@link SchedulingRelation} with the specified
+     *  name in this actor, and return it. This method is write-synchronized on
+     *  the workspace.
+     *
+     *  @param name The name of the new scheduling relation.
+     *  @return A scheduling relation with the given name.
      *  @exception IllegalActionException If the name argument is null.
      *  @exception NameDuplicationException If name collides with that
-     *   of a transition already in this actor.
+     *   of a scheduling relation already in this actor.
      */
     public ComponentRelation newRelation(String name)
             throws IllegalActionException, NameDuplicationException {
@@ -216,27 +298,55 @@ public class ERGController extends ModalController {
         }
     }
 
+    /** Invoke postfire() of the director.
+     *
+     *  @return Return value of postfire() of the director.
+     *  @exception IllegalActionException If postfire() of the director throws
+     *   it.
+     */
     public boolean postfire() throws IllegalActionException {
         return director.postfire();
     }
 
+    /** Invoke prefire() of the director.
+     *
+     *  @return Return value of prefire() of the director.
+     *  @exception IllegalActionException If prefire() of the director throws
+     *   it.
+     */
     public boolean prefire() throws IllegalActionException {
         return director.prefire();
     }
 
+    /** Preinitialize the controller by invoking preinitialize() of the
+     *  director.
+     *
+     *  @exception IllegalActionException If preinitialize() of the director
+     *   throws it.
+     */
     public void preinitialize() throws IllegalActionException {
         director.preinitialize();
         super.preinitialize();
     }
 
+    /** Stop execution by invoking stop() of the director.
+     */
     public void stop() {
         director.stop();
     }
 
+    /** Request that execution of the current iteration stop as soon
+     *  as possible by invoking stopFire() of the director.
+     */
     public void stopFire() {
         director.stopFire();
     }
 
+    /** Return whether the synchronizeToRealtime attribute of this controller is
+     *  set or not.
+     *
+     *  @return True if synchronizedToRealtime is set; false otherwise.
+     */
     public boolean synchronizeToRealtime() {
         List<?> synchronizeAttributes =
             attributeList(SynchronizeToRealtime.class);
@@ -245,7 +355,8 @@ public class ERGController extends ModalController {
             SynchronizeToRealtime attribute =
                 (SynchronizeToRealtime) synchronizeAttributes.get(0);
             try {
-                synchronize = ((BooleanToken) attribute.getToken()).booleanValue();
+                synchronize = ((BooleanToken) attribute.getToken())
+                        .booleanValue();
             } catch (IllegalActionException e) {
                 return false;
             }
@@ -253,10 +364,27 @@ public class ERGController extends ModalController {
         return synchronize;
     }
 
+    /** Invoke terminate() of the director.
+     */
     public void terminate() {
         director.terminate();
     }
 
+    /** Return the type constraints of this actor. The constraints
+     *  have the form of a set of inequalities. This method first
+     *  creates constraints such that the type of any input port that
+     *  does not have its type declared must be less than or equal to
+     *  the type of any output port that does not have its type
+     *  declared. Type constraints from the contained Typeables
+     *  (ports, variables, and parameters) are collected. In addition,
+     *  type constraints from all the transitions are added. These
+     *  constraints are determined by the guard and trigger expressions
+     *  of transitions, and actions contained by the transitions.
+     *  This method is read-synchronized on the workspace.
+     *
+     *  @return A list of inequalities.
+     *  @see ptolemy.graph.Inequality
+     */
     public Set<Inequality> typeConstraints() {
         Set<Inequality> constraintList = new HashSet<Inequality>(
                 super.typeConstraints());
@@ -273,27 +401,37 @@ public class ERGController extends ModalController {
         return constraintList;
     }
 
+    /** The ERG director contained by this controller. */
     public ERGDirector director;
 
-    protected void _debug(Event event) {
-        _debug(new StateEvent(this, event));
-    }
-
+    /** Set the event currently being executed.
+     *
+     *  @param event The current event.
+     */
     protected void _setCurrentEvent(Event event) {
         _currentState = event;
     }
 
+    /** Create director for this controller.
+     *
+     *  @exception IllegalActionException If the controller is incompatible
+     *  with the director.
+     *  @exception NameDuplicationException If the name of the director
+     *  coincides with a director already in the controller.
+     */
     private void _init() throws IllegalActionException,
     NameDuplicationException {
         director = new ERGDirector(this, "_Director");
-        new SingletonAttribute(director, "_hide");
     }
 
+    /** The last updated executive director. */
     private Director _executiveDirector;
 
+    /** The version of the workspace when _executiveDirector was updated. */
     private long _executiveDirectorVersion = -1;
 
-    private PortScope _objectScope = new ERGObjectScope();
+    /** The scope used to evaluate actions. */
+    private ERGObjectScope _objectScope = new ERGObjectScope();
 
     private long _objectScopeVersion = -1;
 

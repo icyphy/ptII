@@ -1,4 +1,4 @@
-/*
+/* An attribute associated with ERG events containing executable actions.
 
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
@@ -49,6 +49,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
 import ptolemy.domains.fsm.kernel.CommitActionsAttribute;
+import ptolemy.domains.fsm.kernel.OutputActionsAttribute;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.graph.InequalityTerm;
@@ -63,40 +64,77 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 /**
+ An attribute associated with ERG events containing executable actions. The
+ actions are written as assignments separated with semicolons. They can be
+ executed either to change the values of the variables assigned to, or to send
+ output tokens to ports.
+ <p>
+ This class is similar to {@link CommitActionsAttribute} and {@link
+ OutputActionsAttribute} in FSM. The difference is that in ERG, no distinction
+ is made between commit actions and output actions. The destination of an
+ assignment can be either a variable or a port. If a port and a variable have
+ the same name in an ERG model, then assigning to that name causes output to be
+ sent to the port instead of changing the value of the variable.
+ <p>
+ Another difference between this class and those in FSM is that in ERG, events
+ are allowed to receive parameters. The parameters can be referred to in the
+ actions associated with that event.
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @see CommitActionsAttribute
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class ActionsAttribute extends AbstractActionsAttribute {
 
-    /**
-     * @param container
-     * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+    /** Construct an ActionsAttribute for an ERG event.
+     *
+     *  @param event The event.
+     *  @param name The name of the attribute.
+     *  @exception IllegalActionException If the action is not of an
+     *   acceptable class for the container, or if the name contains
+     *   a period.
+     *  @exception NameDuplicationException If the container already
+     *   has an attribute with the name.
      */
-    public ActionsAttribute(Event container, String name)
+    public ActionsAttribute(Event event, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+        super(event, name);
     }
 
-    /**
-     * @param workspace
+    /** Construct an ActionsAttribute in the specified workspace with an empty
+     *  string as a name.
+     *  The attribute is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  
+     *  @param workspace The workspace that will list the attribute.
      */
     public ActionsAttribute(Workspace workspace) {
         super(workspace);
     }
 
+    /** Clone the attribute into the specified workspace. This calls the base
+     *  class and then resets the scope in which variable and port names are
+     *  looked up.
+     *
+     *  @param workspace The workspace.
+     *  @return A new ActionsAttribute.
+     *  @exception CloneNotSupportedException If the superclass throws it.
+     */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ActionsAttribute attribute = (ActionsAttribute) super.clone(workspace);
+        attribute._scope = null;
         attribute._scopeVersion = -1;
         return attribute;
     }
 
+    /** Execute the actions in this attribute in the given parser scope.
+     *
+     *  @param scope The parser scope in which the actions are to be executed.
+     *  @exception IllegalActionException If the actions cannot be executed.
+     */
     public void execute(ParserScope scope) throws IllegalActionException {
         super.execute();
 
@@ -166,14 +204,44 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// ParametersParserScope
+
+    /**
+     The parser scope that contains an parameter map. This parser scope is for
+     type-checking only. For evaluation of the actions, a different parser scope
+     needs to be
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     public static class ParametersParserScope implements ParserScope {
 
+        /** Throw an exception because this method is not expected to be called
+         *  in type-checking.
+         *
+         *  @param name The name of a variable or a port.
+         *  @return None.
+         *  @exception IllegalActionException Thrown always.
+         */
         public Token get(String name) throws IllegalActionException {
             throw new IllegalActionException("This parser scope is for "
                     + "type-checking only, and the get() method is not "
                     + "implemented.");
         }
 
+        /** Get the type of a variable or a port specified by the given name. If
+         *  a parameter is found in the parameter map, the type of that
+         *  parameter is returned. Otherwise, the super-scope is looked up.
+         *
+         *  @param name The name of a variable or a port.
+         *  @return The type.
+         *  @exception IllegalActionException If the getType() method of the
+         *  super-scope throws it.
+         */
         public Type getType(String name) throws IllegalActionException {
             if (_paramMap.containsKey(name)) {
                 return _paramMap.get(name);
@@ -182,11 +250,31 @@ public class ActionsAttribute extends AbstractActionsAttribute {
             }
         }
 
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @param name The name of the variable to be looked up.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
         public InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             return _superscope.getTypeTerm(name);
         }
 
+        /** Return a list of names corresponding to the identifiers
+         *  defined by this scope.  If an identifier is returned in this
+         *  list, then get() and getType() will return a value for the
+         *  identifier.  Note that generally speaking, this list is
+         *  extremely expensive to compute, and users should avoid calling
+         *  it.  It is primarily used for debugging purposes.
+         *  @return A list of names corresponding to the identifiers
+         *  defined by this scope.
+         *  @exception IllegalActionException If constructing the list causes
+         *  it.
+         */
         public Set<?> identifierSet() throws IllegalActionException {
             Set<Object> set = new HashSet<Object>(_paramMap.keySet());
             set.addAll((Set<?>) _superscope.identifierSet());
@@ -194,18 +282,34 @@ public class ActionsAttribute extends AbstractActionsAttribute {
 
         }
 
-        ParametersParserScope(Map<String, Type> argumentMap,
+        /** Construct a parser scope with a parameter map and a super-scope.
+         *
+         *  @param paramMap The parameter map.
+         *  @param superscope The super-scope.
+         */
+        ParametersParserScope(Map<String, Type> paramMap,
                 ParserScope superscope) {
-            _paramMap = argumentMap;
+            _paramMap = paramMap;
             _superscope = superscope;
         }
 
+        /** The parameter map. */
         private Map<String, Type> _paramMap;
 
+        /** The super-scope. */
         private ParserScope _superscope;
 
     }
 
+    /** Given a destination name, return a NamedObj that matches that
+     *  destination.  This method never returns null (throw an exception
+     *  instead).
+     *
+     *  @param name The name of the destination, or null if none is found.
+     *  @return An object (like a port or a variable) with the specified name.
+     *  @exception IllegalActionException If the associated FSMActor
+     *   does not have a destination with the specified name.
+     */
     protected NamedObj _getDestination(String name)
     throws IllegalActionException {
         Event event = (Event) getContainer();
@@ -265,6 +369,12 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         }
     }
 
+    /** Return a parser scope used to type-check the actions. To evaluate the
+     *  actions, use {@link #execute(ParserScope)} with an explicitly given
+     *  scope.
+     *
+     *  @return The parser scope.
+     */
     protected ParserScope _getParserScope() {
         if (_scopeVersion != _workspace.getVersion()) {
             try {
@@ -276,6 +386,11 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         return _scope;
     }
 
+    /** Update the parser scope.
+     *
+     *  @exception IllegalActionException If the format of the parameter list in
+     *  the event has errors.
+     */
     protected void _updateParserScope() throws IllegalActionException {
         Event event = (Event) getContainer();
         NamedObj eventContainer = event.getContainer();
@@ -299,6 +414,16 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         _scopeVersion = _workspace.getVersion();
     }
 
+    /** Get an attribute with the given name in the given container. The
+     *  attribute name may contain "."-separated parts, in which case entities
+     *  within the container are searched.
+     *
+     *  @param container The container.
+     *  @param name The name of the attribute.
+     *  @return The attribute if found, or null.
+     *  @exception IllegalActionException If error occurs when trying to get an
+     *  attribute.
+     */
     private Attribute _getAttribute(NamedObj container, String name)
     throws IllegalActionException {
         Attribute attribute = container.getAttribute(name);
@@ -338,7 +463,9 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         return null;
     }
 
+    /** The parser scope used to type-check the actions. */
     private ParserScope _scope;
 
+    /** The version of the workspace when _scope was last updated. */
     private long _scopeVersion = -1;
 }
