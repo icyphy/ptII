@@ -147,6 +147,8 @@ is stable statistically.</text></svg></configure>
         </property>
     </entity>
     <entity name="ERGModalModel" class="ptolemy.domains.erg.kernel.ERGModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.erg.ERGTableauFactory">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 170.0]">
         </property>
         <port name="serversInput" class="ptolemy.domains.fsm.modal.ModalPort">
@@ -274,7 +276,11 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
             </port>
             <entity name="Run" class="ptolemy.domains.erg.kernel.Event">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+<display name="isInitialEvent"/>                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 30.0]">
                 </property>
@@ -284,6 +290,8 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 165.0]">
                 </property>
             </entity>
@@ -292,6 +300,8 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 165.0]">
                 </property>
             </entity>
@@ -299,6 +309,8 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Servers = Servers + 1;&#10;  serversOutput = Servers;&#10;  queueOutput = Queue">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 310.0]">
                 </property>
@@ -309,6 +321,8 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 95.0]">
                 </property>
@@ -329,7 +343,7 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="Infinity">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -339,7 +353,7 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Servers &gt; 0">
-                </property>
+<display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.45297063878612387">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.08419402488051886">
@@ -353,7 +367,7 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -375,7 +389,7 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="5.0 + 20.0*random()">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -385,7 +399,7 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Queue &gt; 0">
-                </property>
+<display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5120821969714457">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.647293042395488">
@@ -399,7 +413,7 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -421,7 +435,7 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="3.0 + 5.0*random()">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -443,7 +457,7 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-                </property>
+<display name="delay (?)"/>                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">

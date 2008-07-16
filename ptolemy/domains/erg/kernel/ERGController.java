@@ -59,6 +59,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -422,6 +423,7 @@ public class ERGController extends ModalController {
     private void _init() throws IllegalActionException,
     NameDuplicationException {
         director = new ERGDirector(this, "_Director");
+        new SingletonAttribute(director, "_hide");
     }
 
     /** The last updated executive director. */

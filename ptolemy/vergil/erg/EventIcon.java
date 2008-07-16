@@ -59,12 +59,6 @@ import diva.util.java2d.Polygon2D;
  */
 public class EventIcon extends StateIcon {
 
-    /**
-     * @param container
-     * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
-     */
     public EventIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -80,7 +74,7 @@ public class EventIcon extends StateIcon {
         Event event = (Event) getContainer();
         if (event != null) {
             try { 
-                if (event.parameters.getArgumentNameList().size() > 0) {
+                if (event.parameters.getParameterNames().size() > 0) {
                     parameters = event.parameters.getValueAsString();
                 }
             } catch (IllegalActionException ex) {

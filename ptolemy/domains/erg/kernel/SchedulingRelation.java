@@ -1,4 +1,4 @@
-/*
+/* Scheduling relations between ERG events.
 
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
@@ -51,6 +51,20 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
+ A scheduling relation is an edge from one ERG event to another. If it is not a
+ cancelling edge, then processing the event at the starting point of the edge
+ causes the one at the end point to be scheduled after a certain amount of
+ model-time delay, if the guard of the scheduling relation is satisfied. If it
+ is a cancelling edge, then processing the first event causes the second one to
+ be cancelled if it is already scheduled in the containing ERG controller's
+ event queue.
+ <p>
+ A scheduling relation may carry argument values to be supplied to the event to
+ be scheduled, who has parameters defined on it. The number and types of the
+ evaluated arguments must match those of the parameters declared by the event.
+ <p>
+ If the guard of a scheduling relation is omitted, it is defaulted to true,
+ which means the scheduling relation is unconditional.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -60,29 +74,60 @@ import ptolemy.kernel.util.Workspace;
  */
 public class SchedulingRelation extends Transition {
 
-    /**
-     * @param container
-     * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+    /** Construct a scheduling relation with the given name contained by the
+     *  specified entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown. This transition will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *
+     *  @param container The container.
+     *  @param name The name of the scheduling relation.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this scheduling relation.
+     *  @exception NameDuplicationException If the name coincides with
+     *   any relation already in the container.
      */
     public SchedulingRelation(ERGController container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _init();
+
+        guardExpression.setDisplayName("condition");
+        outputActions.setVisibility(Settable.NONE);
+        setActions.setVisibility(Settable.NONE);
+        reset.setVisibility(Settable.NONE);
+        preemptive.setVisibility(Settable.NONE);
+        defaultTransition.setVisibility(Settable.NONE);
+        nondeterministic.setVisibility(Settable.NONE);
+        refinementName.setVisibility(Settable.NONE);
+
+        delay = new StringAttribute(this, "delay");
+        delay.setDisplayName("delay (\u03B4)");
+        delay.setExpression("0.0");
+
+        arguments = new StringAttribute(this, "arguments");
+        arguments.setExpression("{}");
+
+        canceling = new Parameter(this, "canceling");
+        canceling.setTypeEquals(BaseType.BOOLEAN);
+        canceling.setExpression("false");
     }
 
-    /**
-     * @param workspace
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+    /** React to a change in an attribute. If the changed attribute is
+     *  the <i>arguments</i> parameter, evaluate the arguments. If the changed
+     *  attribute is <i>delay</i>, evaluate the delay. Then, check whether the
+     *  combination of this scheduling relation's parameters is reasonable. If
+     *  the scheduling relation is cancelling, then its <i>arguments</i>
+     *  parameter must specify an empty list ("()"), and its delay must be
+     *  evaluated to 0.0.
+     *
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If thrown by the superclass
+     *   attributeChanged() method, or the changed attribute is the
+     *   <i>arguments</i> parameter or the <i>delay</i> parameter and is given
+     *   an expression that does not evaluate to a boolean value, or this
+     *   scheduling relation is set to cancelling but the values of
+     *   <i>arguments</i> and <i>delay</i> are not acceptable.
      */
-    public SchedulingRelation(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-        super(workspace);
-        _init();
-    }
-
     public void attributeChanged(Attribute attribute)
     throws IllegalActionException {
         if (attribute == arguments) {
@@ -108,6 +153,15 @@ public class SchedulingRelation extends Transition {
         }
     }
 
+    /** Clone the scheduling relation into the specified workspace. This calls
+     *  the base class and then sets the attribute public members to refer to
+     *  the attributes of the new scheduling relation.
+     *
+     *  @param workspace The workspace for the new scheduling relation.
+     *  @return A new scheduling relation.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SchedulingRelation relation =
             (SchedulingRelation) super.clone(workspace);
@@ -120,6 +174,13 @@ public class SchedulingRelation extends Transition {
         return relation;
     }
 
+    /** Evaluate the parse tree of the arguments and return an ArrayToken that
+     *  contains the values of those arguments in the given parser scope.
+     *
+     *  @param scope The parser scope in which the arguments are evaluated.
+     *  @return The ArrayToken containing the values of those arguments.
+     *  @exception IllegalActionException If the evaluation is unsuccessful.
+     */
     public ArrayToken getArguments(ParserScope scope)
     throws IllegalActionException {
         if (_argumentsTreeVersion != _workspace.getVersion()) {
@@ -134,6 +195,13 @@ public class SchedulingRelation extends Transition {
         return (ArrayToken) token;
     }
 
+    /** Evaluate the delay parameter in the given parse scope and return its
+     *  value.
+     *
+     *  @param scope The parser scope in which the delay is evaluated.
+     *  @return The value of the model-time delay.
+     *  @exception IllegalActionException If the evaluation is unsuccessful.
+     */
     public double getDelay(ParserScope scope) throws IllegalActionException {
         if (_delayTreeVersion != _workspace.getVersion()) {
             _parseDelay();
@@ -147,6 +215,30 @@ public class SchedulingRelation extends Transition {
         return result;
     }
 
+    /** Override the superclass to return the guard expression of this
+     *  scheduling relation. If the guard is an empty string, the return is
+     *  "true"; otherwise, the result of the overridden method in the superclass
+     *  is returned.
+     *
+     *  @return The non-empty guard expression.
+     */
+    public String getGuardExpression() {
+        String guard = super.getGuardExpression();
+        if (guard.trim().equals("")) {
+            guard = "true";
+        }
+        return guard;
+    }
+
+    /** Return a string describing this scheduling relation. The string has up
+     *  to three lines. The first line is the guard expression, preceded
+     *  by "guard: ". The second line is the delay expression, preceded by
+     *  "\u03B4: " (unicode for the delta character). The third line is the
+     *  list of arguments, preceded by "arguments: ". If any of these
+     *  is missing, then the corresponding line is omitted.
+     *
+     *  @return A string describing this transition.
+     */
     public String getLabel() {
         StringBuffer buffer = new StringBuffer(super.getLabel());
 
@@ -160,18 +252,28 @@ public class SchedulingRelation extends Transition {
         }
 
         String argumentsExpression = arguments.getExpression();
-        if ((argumentsExpression != null)
-                && !_isEmptyArguments(argumentsExpression)) {
-            if (buffer.length() > 0) {
-                buffer.append("\n");
+        if (argumentsExpression != null) {
+            String trimmedArguments = argumentsExpression.trim();
+            boolean emptyArguments = trimmedArguments.startsWith("{") &&
+                    trimmedArguments.endsWith("}") &&
+                    trimmedArguments.substring(1, trimmedArguments.length() - 1)
+                            .trim().equals("");
+            if (!emptyArguments) {
+                if (buffer.length() > 0) {
+                    buffer.append("\n");
+                }
+                buffer.append("arguments: ");
+                buffer.append(argumentsExpression);
             }
-            buffer.append("arguments: ");
-            buffer.append(argumentsExpression);
         }
 
         return buffer.toString();
     }
 
+    /** Return whether this scheduling relation is cancelling.
+     *
+     *  @return True if this scheduling relation is cancelling.
+     */
     public boolean isCanceling() {
         try {
             return ((BooleanToken) canceling.getToken()).booleanValue();
@@ -180,6 +282,13 @@ public class SchedulingRelation extends Transition {
         }
     }
 
+    /** Evaluate the guard in the given parser scope, and return whether this
+     *  scheduling relation is enabled (with its guard evaluated to true).
+     *
+     *  @param scope The parser scope in which the guard is to be evaluated.
+     *  @return True if the transition is enabled and some event is detected.
+     *  @exception IllegalActionException If thrown when evaluating the guard.
+     */
     public boolean isEnabled(ParserScope scope) throws IllegalActionException {
         String guard = getGuardExpression();
         if (guard.trim().equals("")) {
@@ -189,39 +298,26 @@ public class SchedulingRelation extends Transition {
         }
     }
 
+    /** The attribute for arguments. Its value must be evaluated to an
+        ArrayToken, though this evaluation is performed only when this
+        scheduling relation is to be considered by the starting event but not
+        when this attribute is set by the designer. */
     public StringAttribute arguments;
 
+    /** A Boolean-valued parameter that defines whether this scheduling relation
+        is cancelling. */
     public Parameter canceling;
 
+    /** The attribute for the model-time delay. Its value must be evaluated to a
+        ScalarToken, though this evaluation is performed only when this
+        scheduling relation is to be considered by the starting event but not
+        when this attribute is set by the designer. */
     public StringAttribute delay;
 
-    private void _init() throws IllegalActionException,
-    NameDuplicationException {
-        guardExpression.setDisplayName("condition");
-        outputActions.setVisibility(Settable.NONE);
-        setActions.setVisibility(Settable.NONE);
-        reset.setVisibility(Settable.NONE);
-        preemptive.setVisibility(Settable.NONE);
-        defaultTransition.setVisibility(Settable.NONE);
-        nondeterministic.setVisibility(Settable.NONE);
-        refinementName.setVisibility(Settable.NONE);
-
-        delay = new StringAttribute(this, "delay");
-        delay.setDisplayName("delay (\u03B4)");
-        delay.setExpression("0.0");
-
-        arguments = new StringAttribute(this, "arguments");
-        arguments.setExpression("{}");
-
-        canceling = new Parameter(this, "canceling");
-        canceling.setTypeEquals(BaseType.BOOLEAN);
-        canceling.setExpression("false");
-    }
-
-    private static boolean _isEmptyArguments(String argumentsExpression) {
-        return argumentsExpression.trim().equals("{}");
-    }
-
+    /** Return whether the delay is statically equal to 0.0.
+     *
+     *  @return True if the delay is statically equal to 0.0.
+     */
     private boolean _isZeroDelay() {
         try {
             double d =
@@ -234,6 +330,11 @@ public class SchedulingRelation extends Transition {
         return false;
     }
 
+    /** Parse the arguments.
+     *
+     *  @exception IllegalActionException If thrown when when parsing the
+     *   arguments.
+     */
     private void _parseArguments() throws IllegalActionException {
         try {
             _argumentsTree = (ASTPtArrayConstructNode)
@@ -246,20 +347,30 @@ public class SchedulingRelation extends Transition {
         }
     }
 
+    /** Parse the delay.
+     *
+     *  @exception IllegalActionException If thrown when when parsing the delay.
+     */
     private void _parseDelay() throws IllegalActionException {
         _delayTree = _parser.generateParseTree(delay.getExpression());
         _delayTreeVersion = _workspace.getVersion();
     }
 
+    /** The parse tree of arguments. */
     private ASTPtArrayConstructNode _argumentsTree;
 
+    /** Version of _argumentsTree. */
     private long _argumentsTreeVersion = -1;
 
+    /** The parse tree of delay. */
     private ASTPtRootNode _delayTree;
 
+    /** Version of _delayTree. */
     private long _delayTreeVersion = -1;
 
+    /** The evaluated to evaluate all parse trees. */
     private ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
 
+    /** The parser to generate all parse trees. */
     private PtParser _parser = new PtParser();
 }

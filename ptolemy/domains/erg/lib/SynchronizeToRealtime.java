@@ -1,4 +1,5 @@
-/*
+/* The parameter to set whether execution of an ERG model is synchronized to
+   real time.
 
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
@@ -22,8 +23,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -31,15 +32,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.erg.lib;
 
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
 
 /**
+ This parameter sets whether execution of an ERG model is synchronized to real
+ time. If it is added to an ERG controller and it has value true, then the ERG
+ controller delays its event processing to try to keep real time synchronized
+ with the advance of model time by incurring real-time delays in the execution.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -49,49 +52,26 @@ import ptolemy.kernel.util.Workspace;
  */
 public class SynchronizeToRealtime extends Parameter {
 
-    /**
-     * @throws IllegalActionException
+    /** Construct a parameter with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This parameter will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  The object is not added to the list of objects in the workspace
+     *  unless the container is null.
+     *  Increment the version of the workspace.
      *
-     */
-    public SynchronizeToRealtime() throws IllegalActionException {
-        _init();
-    }
-
-    /**
-     * @param container
-     * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     *  @param container The container.
+     *  @param name The name of the parameter.
+     *  @exception IllegalActionException If the parameter is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a parameter already in the container.
      */
     public SynchronizeToRealtime(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _init();
-    }
 
-    /**
-     * @param container
-     * @param name
-     * @param token
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
-     */
-    public SynchronizeToRealtime(NamedObj container, String name, Token token)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name, token);
-        _init();
-    }
-
-    /**
-     * @param workspace
-     * @throws IllegalActionException
-     */
-    public SynchronizeToRealtime(Workspace workspace) throws IllegalActionException {
-        super(workspace);
-        _init();
-    }
-
-    private void _init() throws IllegalActionException {
         setTypeEquals(BaseType.BOOLEAN);
         setExpression("false");
     }

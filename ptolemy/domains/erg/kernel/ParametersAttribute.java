@@ -1,4 +1,4 @@
-/*
+/* Attributes for the parameters of ERG events.
 
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
@@ -43,6 +43,10 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
+ This attribute keeps the parameters for an ERG event. These parameters are
+ syntactically defined as pairs of names and types separated by colons. An
+ example of this syntax is as follows:
+ <pre>(a:int, b:{boolean, string}, c:{x=double, y=object("ptolemy.actor.Actor")})</pre>
 
  @author Thomas Huining Feng
  @version $Id$
@@ -52,74 +56,122 @@ import ptolemy.kernel.util.Workspace;
  */
 public class ParametersAttribute extends StringAttribute {
 
-    /**
+    /** Construct a attribute for a list of typed parameters with the given name
+     *  contained by the specified container. The container argument must not be
+     *  null, or a NullPointerException will be thrown.  This attribute will use
+     *  the workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string. The object is added to the directory of the workspace
+     *  if the container is null.
      *
-     */
-    public ParametersAttribute() {
-    }
-
-    /**
-     * @param container
-     * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public ParametersAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
-    /**
-     * @param workspace
+    /** Clone the attribute into the specified workspace. The new attribute is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an attribute with no container.
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
      */
-    public ParametersAttribute(Workspace workspace) {
-        super(workspace);
-    }
-
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ParametersAttribute attribute =
             (ParametersAttribute) super.clone(workspace);
         attribute._parser = new PtParser();
-        _parseTreeVersion = -1;
+        attribute._parseTree = null;
+        attribute._parseTreeVersion = -1;
         return attribute;
     }
 
-    public List<?> getArgumentNameList() throws IllegalActionException {
+    /** Return a list of names (in the String type) of the parameters defined in
+     *  this attribute.
+     *
+     *  @return A list of names.
+     *  @exception IllegalActionException If the list of parameters cannot be
+     *   parsed.
+     *  @see #getParameterTypes()
+     */
+    public List<?> getParameterNames() throws IllegalActionException {
         if (_parseTreeVersion != _workspace.getVersion()) {
             _parse();
         }
         return _parseTree.getArgumentNameList();
     }
 
-    public Type[] getArgumentTypes() throws IllegalActionException {
+    /** Return an array of parameter types.
+     *
+     *  @return An array of parameter types.
+     *  @exception IllegalActionException If the list of parameters cannot be
+     *   parsed.
+     *  @see #getParameterNames()
+     */
+    public Type[] getParameterTypes() throws IllegalActionException {
         if (_parseTreeVersion != _workspace.getVersion()) {
             _parse();
         }
         return _parseTree.getArgumentTypes();
     }
 
+    /** Set the parameters and their types with an expression. The expression
+     *  must be a parentheses enclosed string with comma-separated pairs of
+     *  parameter names and types. Each name and type must be separated by a
+     *  colon. An example of an acceptable expression is this:
+     *  <pre>(a:int, b:double)</pre>
+     *
+     *  @param expression The expression that contains pairs of parameter names
+     *   and types.
+     *  @exception IllegalActionException If the format of the expression is
+     *   invalid, or some parameter names are invalid, or some of the types
+     *   cannot be evaluated.
+     */
     public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
 
+        _parse();
+    }
+
+    /** Parse the expression of this attribute to generate a parse tree to be
+     *  recorded locally.
+     *  <p>
+     *  To parse the expression, "function" is first added to the head and " 1"
+     *  is appended to the end so that the new string becomes a function
+     *  definition, and the parameters to be defined are the parameters of that
+     *  function.
+     *
+     *  @exception IllegalActionException If the format of the expression is
+     *   invalid, or some parameter names are invalid, or some of the types
+     *   cannot be evaluated.
+     */
+    private void _parse() throws IllegalActionException {
         try {
-            _parse();
+            String function = "function" + getExpression() + " 1";
+            _parseTree = (ASTPtFunctionDefinitionNode) _parser
+                    .generateParseTree(function);
+            _parseTreeVersion = _workspace.getVersion();
         } catch (Exception e) {
             throw new IllegalActionException("The argument list must be in the "
                     + "form of (v1 : type1, v2 : type2, ...).");
         }
-
     }
 
-    private void _parse() throws IllegalActionException {
-        String function = "function" + getExpression() + " 1";
-        _parseTree = (ASTPtFunctionDefinitionNode) _parser.generateParseTree(
-                function);
-        _parseTreeVersion = _workspace.getVersion();
-    }
-
+    /** The parse tree of the expression with "function" added to the head and
+        " 1" appended to the end. */
     private ASTPtFunctionDefinitionNode _parseTree;
 
+    /** Version of _parseTree. */
     private long _parseTreeVersion = -1;
 
+    /** The parser used to parse the expression. */
     private PtParser _parser = new PtParser();
 }

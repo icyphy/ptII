@@ -68,8 +68,11 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'ActionsAttribute$$ParametersParserScope.class' \
+	'ERGController$$1.class' \
+	'ERGController$$ERGObjectScope.class' \
 	'ERGDirector$$TimedEvent.class' \
-	'Event$$ParametersParserScope.class'
+	'Event$$ParameterParserScope.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

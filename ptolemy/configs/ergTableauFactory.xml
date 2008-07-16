@@ -10,7 +10,9 @@
         <configure>
           <entity name="EventLibrary" class="ptolemy.kernel.CompositeEntity">
             <input source="ptolemy/configs/basicUtilities.xml"/>
-            <entity name="Event" class="ptolemy.domains.erg.kernel.Event"/>
+            <entity name="Event" class="ptolemy.domains.erg.kernel.Event">
+              <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"/>
+            </entity>
             <property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime">
               <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">

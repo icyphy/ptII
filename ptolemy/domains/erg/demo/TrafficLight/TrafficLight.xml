@@ -273,6 +273,8 @@ ERG modal model.</text></svg></configure>
         </property>
     </property>
     <entity name="ERGModalModel" class="ptolemy.domains.erg.kernel.ERGModalModel">
+    	<property name="_tableauFactory" class="ptolemy.vergil.erg.ERGTableauFactory">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 170.0]">
         </property>
         <port name="Cred" class="ptolemy.domains.fsm.modal.ModalPort">
@@ -378,6 +380,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
             </port>
             <entity name="Normal" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Normal">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
@@ -388,6 +392,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
             </entity>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
 <display name="isInitialEvent"/>                </property>
                 <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
@@ -398,6 +404,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
             </entity>
             <entity name="ReactToError" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -406,6 +414,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
             </entity>
             <entity name="Error" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Error">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -414,6 +424,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
             </entity>
             <entity name="ReactToOK" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -711,6 +723,8 @@ The inputs are simply ignored.</text></svg></configure>
                 </property>
             </port>
             <entity name="CRed" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
 <display name="isInitialEvent"/>                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 1;&#10;  Cyel = 0;&#10;  Cgrn = 0">
@@ -721,6 +735,8 @@ The inputs are simply ignored.</text></svg></configure>
                 </property>
             </entity>
             <entity name="CGreen" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 0;&#10;  Cyel = 0;&#10;  Cgrn = 1">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -729,6 +745,8 @@ The inputs are simply ignored.</text></svg></configure>
                 </property>
             </entity>
             <entity name="CYellow" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 0;&#10;  Cyel = 1;&#10;  Cgrn = 0">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -737,6 +755,8 @@ The inputs are simply ignored.</text></svg></configure>
                 </property>
             </entity>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
 <display name="isInitialEvent"/>                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -745,6 +765,8 @@ The inputs are simply ignored.</text></svg></configure>
                 </property>
             </entity>
             <entity name="PRed" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Pred = 1;&#10;  Pgrn = 0">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -753,6 +775,8 @@ The inputs are simply ignored.</text></svg></configure>
                 </property>
             </entity>
             <entity name="PGreen" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Pred = 0;&#10;  Pgrn = 1">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -935,6 +959,8 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 </property>
             </port>
             <entity name="TurnYellowLight" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
 <display name="isInitialEvent"/>                </property>
                 <property name="parameters" class="ptolemy.domains.erg.kernel.ParametersAttribute" value="(param: int)">
@@ -947,6 +973,8 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 </property>
             </entity>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
+            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
 <display name="isInitialEvent"/>                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Pred = 0; Pgrn = 0">

@@ -528,6 +528,8 @@
         </property>
     </port>
     <entity name="CarController" class="ptolemy.domains.erg.kernel.ERGModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.erg.ERGTableauFactory">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 235.0]">
         </property>
         <port name="CarTrigger" class="ptolemy.domains.fsm.modal.ModalPort">
@@ -612,6 +614,8 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 85.0]">
                 </property>
             </entity>
@@ -619,6 +623,8 @@
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Light = G;&#10;  PedControl = PedStop;&#10;  CrossScheduled = true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[725.019252090648, 209.80865680775048]">
                 </property>
@@ -630,6 +636,8 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[132.00085299834814, 208.1906837698802]">
                 </property>
             </entity>
@@ -637,6 +645,8 @@
                 <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 255.0]">
                 </property>
@@ -646,6 +656,8 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[430.019252090648, 449.8086568077505]">
                 </property>
             </entity>
@@ -653,6 +665,8 @@
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="CarTrigger = 1">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 645.0]">
                 </property>
@@ -662,6 +676,8 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 560.0]">
                 </property>
             </entity>
@@ -670,11 +686,15 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 560.0]">
                 </property>
             </entity>
             <entity name="GreenToYellow" class="ptolemy.domains.erg.kernel.Event">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 355.0]">
                 </property>
@@ -684,6 +704,8 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 115.0]">
                 </property>
             </entity>
@@ -692,11 +714,15 @@
 <display name="isInitialEvent"/>                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[430.019252090648, 174.80865680775048]">
                 </property>
             </entity>
             <entity name="RedToGreen" class="ptolemy.domains.erg.kernel.Event">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 120.0]">
                 </property>

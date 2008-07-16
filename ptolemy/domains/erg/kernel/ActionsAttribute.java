@@ -397,8 +397,8 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         if (eventContainer instanceof ERGController) {
             ERGController controller = (ERGController) event.getContainer();
             ParserScope superscope = controller.getPortScope();
-            List<?> names = event.parameters.getArgumentNameList();
-            Type[] types = event.parameters.getArgumentTypes();
+            List<?> names = event.parameters.getParameterNames();
+            Type[] types = event.parameters.getParameterTypes();
             if (types != null && types.length > 0) {
                 Iterator<?> namesIter = names.iterator();
                 Map<String, Type> paramMap = new HashMap<String, Type>();
