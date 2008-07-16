@@ -225,6 +225,12 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                 Iterator inputPorts = _actor.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     IOPort inputPort = (IOPort)inputPorts.next();
+                    // Make sure that equivalentPorts() always returns at least a set
+                    // with one element.
+                    Set<IOPort> justTheInput= new HashSet<IOPort>();
+                    justTheInput.add(inputPort);
+                    _equivalenceClasses.put(inputPort, justTheInput);
+                    
                     // Construct a map of dependencies from this inputPort
                     // to all reachable ports.
                     Map<IOPort,Dependency> map = new HashMap<IOPort,Dependency>();
