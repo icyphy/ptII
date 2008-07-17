@@ -84,7 +84,7 @@ test TestExceptionHandler-1.2 {Run again, but with trainingMode false} {
 	[[getParameter $testExceptionHandler trainingMode] getExpression] \
 	[[getParameter $testExceptionHandler correctExceptionMessage] getExpression]
 } {false {Found a zero delay loop containing .top.const
-  in .top.DEDirector and .top.const}}
+  in .top and .top.const}}
 
 ######################################################################
 #### 
@@ -104,7 +104,7 @@ test TestExceptionHandler-1.3 {Run again, but with a different Exception} {
 } {{ptolemy.kernel.util.IllegalActionException:   in .top.testExceptionHandler
 Because:
 Found a zero delay loop containing .top.const
-  in .top.DEDirector and .top.const} false {This is not the exception}}
+  in .top and .top.const} false {This is not the exception}}
 
 # Reset the isRunningNightlyBuild property
 java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" \

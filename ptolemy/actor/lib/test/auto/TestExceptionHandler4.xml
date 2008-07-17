@@ -36,7 +36,7 @@
         </property>
     </entity>
     <entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Found a zero delay loop containing .TestExceptionHandler4.Const&#10;  in .TestExceptionHandler4.DE Director and .TestExceptionHandler4.Const">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Found a zero delay loop containing .TestExceptionHandler4.Const&#10;  in .TestExceptionHandler4 and .TestExceptionHandler4.Const">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -44,7 +44,7 @@
         </property>
     </entity>
     <entity name="TestExceptionHandler2" class="ptolemy.actor.lib.TestExceptionHandler">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Found a zero delay loop containing .TestExceptionHandler4.Const&#10;  in .TestExceptionHandler4.DE Director and .TestExceptionHandler4.Const">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Found a zero delay loop containing .TestExceptionHandler4.Const&#10;  in .TestExceptionHandler4 and .TestExceptionHandler4.Const">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
