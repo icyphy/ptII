@@ -56,40 +56,42 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * Top-level director for PTIDES models. A Ptides model consists of platforms
- * represented by CompositeActors that communicate via events. Those platforms
- * run in threads. This director is a timed director, the time represents the
- * global <i>physical time</i>. This physical time is used in all platforms, for
- * sending events between platforms, a global bounded clock synchronization
- * error and a global bounded network delay is considered.
+ * Top-level director for PTIDES models. A Ptides model consists of
+ * platforms represented by CompositeActors that communicate via
+ * events. Those platforms run in threads. This director is a timed
+ * director, the time represents the global <i>physical time</i>. This
+ * physical time is used in all platforms, for sending events between
+ * platforms, a global bounded clock synchronization error and a
+ * global bounded network delay is considered.
  * 
- * <p>
- * Platforms contain sensors, actuators, computation actors with worst case
- * execution times and model time delay actors. The execution of actors inside a
- * platform is governed by a director that executes events according to their
- * <i>model time</i> time stamps. This director can be either a DEDirector or
- * the PtidesEmbeddedDirector which is a smarter DEDirector in the sense that it
- * allows an out of time stamp order execution of events. Some actors inside a
- * platform require a mapping of the model time defined in event time stamps to
- * real time. Those actors are sensors and actuators. Also, the execution of
- * actors with a worst case execution time > 0 is simulated which requires the
- * simulation of real time passing between the start and the termination of an
+ * <p> Platforms contain sensors, actuators, computation actors with
+ * worst case execution times and model time delay actors. The
+ * execution of actors inside a platform is governed by a director
+ * that executes events according to their <i>model time</i> time
+ * stamps. This director can be either a DEDirector or the
+ * PtidesEmbeddedDirector which is a smarter DEDirector in the sense
+ * that it allows an out of time stamp order execution of events. Some
+ * actors inside a platform require a mapping of the model time
+ * defined in event time stamps to real time. Those actors are sensors
+ * and actuators. Also, the execution of actors with a worst case
+ * execution time > 0 is simulated which requires the simulation of
+ * real time passing between the start and the termination of an
  * actor.
  * 
- * <p>
- * A platform executes events as long as there are events safe to process and
- * possible to process. Safe to process means that there is no chance of an
- * event arriving at the same port with an earlier time stamp. Whether it is
- * possible to process an event is determined by the platform characteristics,
- * e.g. an event cannot be processed if the actor has a worst case execution
- * time that is bigger than the time stamp of an event for an actuator and the
+ * <p> A platform executes events as long as there are events safe to
+ * process and possible to process. Safe to process means that there
+ * is no chance of an event arriving at the same port with an earlier
+ * time stamp. Whether it is possible to process an event is
+ * determined by the platform characteristics, e.g. an event cannot be
+ * processed if the actor has a worst case execution time that is
+ * bigger than the time stamp of an event for an actuator and the
  * actuator event cannot preempt the execution of the first event.
  * 
- * <p>
- * When a platform has no more events safe and possible to process at the
- * current real time, it schedules a refiring at a future physical time. This
- * platform calls the fireAt() method of this director which blocks the
- * platform. A platform is resumed when:
+ * <p> When a platform has no more events safe and possible to process
+ * at the current real time, it schedules a refiring at a future
+ * physical time. This platform calls the fireAt() method of this
+ * director which blocks the platform. A platform is resumed when:
+ * 
  * <ul>
  * <li>The real time has been increased to the new real time at which the
  * platform wanted to be refired or</li>
@@ -97,23 +99,20 @@ import ptolemy.kernel.util.Workspace;
  * to process, it is up to the platform to find that out.</li>
  * </ul>
  * 
- * <p>
- * A Ptides model never terminates thus a stop time must be specified.
+ * <p> A Ptides model never terminates thus a stop time must be
+ * specified.
  * 
- * <p>
- * Difference to DE with threads: This director does not call the fire of the
- * contained actors, the contained actors fire in an infinite loop. If there is
- * nothing to fire, the actor waits until the physical time of the
- * PtidesDirector is increased.
+ * <p> Difference to DE with threads: This director does not call the
+ * fire of the contained actors, the contained actors fire in an
+ * infinite loop. If there is nothing to fire, the actor waits until
+ * the physical time of the PtidesDirector is increased.
  * 
- * <p>
- * Difference to PN, TimedPN and DDE: There are no blocking writes or reads
- * between actors. The only way an actor can be blocked is because it waits for
- * time to pass.
+ * <p> Difference to PN, TimedPN and DDE: There are no blocking writes
+ * or reads between actors. The only way an actor can be blocked is
+ * because it waits for time to pass.
  * 
- * <p>
- * Usage: Every actor in a model controlled by the PtidesDirector must be a
- * CompositeActor.
+ * <p> Usage: Every actor in a model controlled by the PtidesDirector
+ * must be a CompositeActor.
  * 
  * @author Patricia Derler
  * @version $Id$
@@ -124,9 +123,10 @@ import ptolemy.kernel.util.Workspace;
 public class PtidesDirector extends TimedPNDirector {
 
     /**
-     * Construct a director in the default workspace with an empty string as its
-     * name. The director is added to the list of objects in the workspace.
-     * Increment the version number of the workspace.
+     * Construct a director in the default workspace with an empty
+     * string as its name. The director is added to the list of
+     * objects in the workspace.  Increment the version number of the
+     * workspace.
      * 
      * @exception IllegalActionException
      *                If the name contains a period, or if the director is not
@@ -142,9 +142,9 @@ public class PtidesDirector extends TimedPNDirector {
     }
 
     /**
-     * Construct a director in the workspace with an empty name. The director is
-     * added to the list of objects in the workspace. Increment the version
-     * number of the workspace.
+     * Construct a director in the workspace with an empty name. The
+     * director is added to the list of objects in the
+     * workspace. Increment the version number of the workspace.
      * 
      * @param workspace
      *            The workspace of this object.
@@ -163,10 +163,11 @@ public class PtidesDirector extends TimedPNDirector {
     }
 
     /**
-     * Construct a director in the given container with the given name. If the
-     * container argument must not be null, or a NullPointerException will be
-     * thrown. If the name argument is null, then the name is set to the empty
-     * string. Increment the version number of the workspace.
+     * Construct a director in the given container with the given
+     * name. If the container argument must not be null, or a
+     * NullPointerException will be thrown. If the name argument is
+     * null, then the name is set to the empty string. Increment the
+     * version number of the workspace.
      * 
      * @param container
      *            The container.
@@ -212,11 +213,10 @@ public class PtidesDirector extends TimedPNDirector {
     // // public methods ////
 
     /**
-     * Add a new schedule listener that will receive all schedule events created
-     * by the platforms.
+     * Add a new schedule listener that will receive all schedule
+     * events created by the platforms.
      * 
-     * @param listener
-     *            The schedule listener to be added.
+     * @param listener The schedule listener to be added.
      */
     public void addScheduleListener(ScheduleListener listener) {
         _scheduleListeners.add(listener);
@@ -256,7 +256,8 @@ public class PtidesDirector extends TimedPNDirector {
      *                If one of the attributes cannot be cloned.
      * @return The new TimedPNDirector.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
         PtidesDirector newObject = (PtidesDirector) super.clone(workspace);
         _platformsToUnblock = new ArrayList<Actor>();
         _scheduleListeners = new LinkedList<ScheduleListener>();
@@ -307,7 +308,7 @@ public class PtidesDirector extends TimedPNDirector {
      * Initialize parameters and the schedule listeners. Calculate minimum
      * delays for ports on platforms according to Ptides.
      * 
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if other actors than CompositeActors are used in this
      *             model.
      */
@@ -372,9 +373,9 @@ public class PtidesDirector extends TimedPNDirector {
     }
 
     /**
-     * Set a new value to the current time of the model, where the new time must
-     * be no earlier than the current time. If the new time is bigger than the
-     * stop time, stop the execution of the model.
+     * Set a new value to the current time of the model, where the new
+     * time must be no earlier than the current time. If the new time
+     * is bigger than the stop time, stop the execution of the model.
      * 
      * @param newTime
      *            The new time of the model.
@@ -439,11 +440,12 @@ public class PtidesDirector extends TimedPNDirector {
     }
 
     /**
-     * Return false on detection of a real deadlock. Otherwise break the
-     * deadlock and return true. To break a timed deadlock, the time is advanced
-     * to the earliest time a delayed process is waiting for. If there are
-     * threads to unblock because they received new events, don't increase time
-     * but notify all platforms.
+     * Return false on detection of a real deadlock. Otherwise break
+     * the deadlock and return true. To break a timed deadlock, the
+     * time is advanced to the earliest time a delayed process is
+     * waiting for. If there are threads to unblock because they
+     * received new events, don't increase time but notify all
+     * platforms.
      * 
      * @return true if a real deadlock is detected, false otherwise.
      * @exception IllegalActionException
@@ -465,7 +467,7 @@ public class PtidesDirector extends TimedPNDirector {
     /**
      * Initialize parameters of the director.
      * 
-     * @throws NameDuplicationException
+     * @exception NameDuplicationException
      *             Could occur if parameter with same name already exists.
      */
     private void _initialize() throws IllegalActionException,
@@ -512,8 +514,8 @@ public class PtidesDirector extends TimedPNDirector {
     private List<Actor> _platformsToUnblock;
 
     /**
-     * Registered schedule listeners that want to be informed about all schedule
-     * events on the platforms.
+     * Registered schedule listeners that want to be informed about
+     * all schedule events on the platforms.
      */
     private Collection<ScheduleListener> _scheduleListeners;
 
