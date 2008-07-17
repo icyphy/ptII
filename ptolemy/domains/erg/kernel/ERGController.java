@@ -40,6 +40,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
@@ -131,6 +132,19 @@ public class ERGController extends ModalController {
      */
     public void fire() throws IllegalActionException {
         director.fire();
+    }
+
+    /** Return a causality interface for this actor.  This method returns the
+     *  causality interface that is returned from the superclass.
+     *
+     *  FIXME: A causality interface special for ERG should be returned instead
+     *  because ERG has a difference semantics from FSM.
+     *
+     *  @return A representation of the dependencies between input ports
+     *   and output ports.
+     */
+    public CausalityInterface getCausalityInterface() {
+        return super.getCausalityInterface();
     }
 
     /** Return the executive director. If the current controller is the
