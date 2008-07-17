@@ -3722,6 +3722,7 @@ public class IOPort extends ComponentPort {
      *  @param relation The relation.
      */
     protected void _removeReceivers(Relation relation) {
+        boolean removed = false;
         if (_localReceiversTable != null) {
             List receivers = (List) _localReceiversTable.get(relation);
             if (receivers != null) {
@@ -3733,6 +3734,7 @@ public class IOPort extends ComponentPort {
                             for (int j = 0; j < receiverArray[i].length; j++) {
                                 if (receiverArray[i][j] != null) {
                                     try {
+                                        removed = true;
                                         receiverArray[i][j].setContainer(null);
                                     } catch (IllegalActionException e) {
                                         // This should not happen because we are setting
@@ -3745,6 +3747,12 @@ public class IOPort extends ComponentPort {
                     }
                 }
             }
+        }
+        if (removed) {
+            // Must increment the workspace version if receivers have
+            // been removed. Otherwise, there will be lists of receivers
+            // cached where the receivers have no containers.
+            _workspace.incrVersion();
         }
     }
 
