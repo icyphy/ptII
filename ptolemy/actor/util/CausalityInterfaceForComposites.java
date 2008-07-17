@@ -28,9 +28,12 @@
 package ptolemy.actor.util;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,8 +41,10 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -79,6 +84,17 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Check the associated composite actor for causality cycles.
+     *  If a cycle is found, throw an exception. This method has as
+     *  a side effect computing the depths of actors and ports
+     *  within the composite, so subsequent queries for those depths
+     *  will be low cost.
+     *  @exception IllegalActionException If a cycle is found.
+     */
+    public void checkForCycles() throws IllegalActionException {
+        _computeActorDepth();
+    }
 
     /** Return a collection of the ports in the associated actor that depend on
      *  or are depended on by the specified port. A port X depends
@@ -127,6 +143,33 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         }
         return result;
     }
+    
+    /** Return a string that describes the depths of actors and their ports.
+     *  @see #getDepthOfActor(Actor)
+     *  @see #getDepthOfPort(IOPort)
+     *  @exception IllegalActionException If there is a causality loop.
+     */
+    public String describeDepths() throws IllegalActionException {
+        _computeActorDepth();
+        StringBuffer result = new StringBuffer();
+        List<Actor> actors = ((CompositeEntity)_actor).deepEntityList();
+        for (Actor actor : actors) {
+            result.append(actor.getFullName());
+            result.append(": ");
+            result.append(_actorToDepth.get(actor));
+            result.append("\n");
+            List<IOPort> ports = ((Entity)actor).portList();
+            for (IOPort port : ports) {
+                result.append("   ");
+                result.append(port.getName());
+                result.append(": ");
+                result.append(_portToDepth.get(port));
+                result.append("\n");
+            }
+        }
+        return result.toString();
+    }
+
 
     /** Return a set of the input ports in this actor that are
      *  in an equivalence class with the specified input.
@@ -270,6 +313,62 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         return _defaultDependency.oPlusIdentity();
     }
     
+    /** Return the depth of an actor contained (deeply) by the
+     *  associated composite actor.
+     *  The depth of an actor is the minimum depth of the output ports.
+     *  If there are no output ports, then the depth of
+     *  the actor it is the maximum depth of the input ports.
+     *  If there are no input ports or output ports, the depth is zero.
+     *  @see #getDepthOfPort(Actor)
+     *  @param actor An actor whose depth is requested.
+     *  @return An integer indicating the depth of the given actor.
+     *  @exception IllegalActionException If the actor is not within
+     *   the associated actor.
+     */
+    public int getDepthOfActor(Actor actor) throws IllegalActionException {
+        _computeActorDepth();
+        Integer depth = _actorToDepth.get(actor);
+        if (depth != null) {
+            return depth.intValue();
+        }
+        throw new IllegalActionException(_actor,
+                "Attempt to get depth of actor "
+                + actor.getFullName()
+                + " that was not sorted. It is probably not"
+                + " contained by "
+                + _actor.getFullName());
+    }
+    
+    /** Return the depth of a port of the associated actor
+     *  or an actor contained by it.
+     *  The depth of an output port is
+     *  the maximum of the depth of all the input ports
+     *  it directly depends on, or zero if there are no such
+     *  input ports.
+     *  The depth of an input port is maximum of the
+     *  "source depths" of all the input ports in the
+     *  same equivalence class with the specified port.
+     *  The "source depth" of an input port is one plus the maximum
+     *  depth of all output ports that directly source data
+     *  to it, or zero if there are no such ports.
+     *  @param ioPort A port whose depth is requested.
+     *  @return An integer representing the depth of the specified ioPort.
+     *  @exception IllegalActionException If the ioPort does not have
+     *   a depth (this should not occur if the ioPort is under the control
+     *   of this director).
+     */
+    public int getDepthOfPort(IOPort ioPort) throws IllegalActionException {
+        _computeActorDepth();
+        Integer depth = _portToDepth.get(ioPort);
+
+        if (depth != null) {
+            return depth.intValue();
+        }
+        throw new IllegalActionException("Attempt to get depth of ioPort "
+                + ((NamedObj) ioPort).getFullName()
+                + " that was not sorted.");
+    }
+
     /** Remove the dependency that the specified output port has
      *  on the specified input port. Specifically, calling this
      *  method ensures that subsequent calls to
@@ -300,9 +399,35 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         }
     }
 
+    /** Return a list of the actors deeply contained within
+     *  the associated composite actor sorted by actor depth.
+     *  For actors that have the same depth, the ordering is
+     *  the order returned by
+     *  {@link CompositeEntity#deepEntityList()}.
+     *  This method always creates a new list.
+     *  @return A sorted list of actors.
+     *  @throws IllegalActionException If a cycle is found.
+     */
+    public List<Actor> topologicalSort() throws IllegalActionException {
+        // Ensure the cache is up to date and check for cycles.
+        checkForCycles();
+        List<Actor> actors = ((CompositeEntity)_actor).deepEntityList();
+        // Create a copy to sort.
+        List<Actor> sorted = new LinkedList<Actor>(actors);
+        ActorComparator comparator = new ActorComparator();
+        Collections.sort(sorted, comparator);
+        return sorted;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
     
+    /** Workspace version when actor depth was last computed. */
+    protected long _actorDepthVersion = -1;
+    
+    /** A table giving the depths of actors. */
+    protected Map<Actor,Integer> _actorToDepth = null;
+
     /** The workspace version where the dependency was last updated. */
     protected long _dependencyVersion;
     
@@ -312,11 +437,298 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     /** Computed dependencies between input ports and output ports of the associated actor. */
     protected Map<IOPort,Map<IOPort,Dependency>> _forwardDependencies;
     
+    /** A table giving the depths of ports. */
+    private Map<IOPort,Integer> _portToDepth = null;
+
     /** Computed reverse dependencies (the key is now an output port). */
     protected Map<IOPort,Map<IOPort,Dependency>> _reverseDependencies;
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+    
+    /** Compute the depth of ports and actors.
+     *  The actor depth is typically used to prioritize firings in response
+     *  to pure events (fireAt() calls). The port depth is used
+     *  to prioritize firings due to input events. Lower depths
+     *  translate into higher priorities, with the lowest
+     *  value being zero.
+     *  The depth of an actor is the minimum depth of the output ports.
+     *  This typically causes the actor to fire as early as possible
+     *  to produce an output on those output ports in response
+     *  to a pure event, but no earlier than the firings of
+     *  actors that may source it data that the firing may
+     *  depend on. If there are no output ports, then the depth of
+     *  the actor it is the maximum depth of the input ports.
+     *  This typically delays the response to fireAt() until all input
+     *  events with the same tag have arrived.
+     *  If there are no input ports or output ports, the depth is zero.
+     *  @throws IllegalActionException If a zero-delay loop is found.
+     */
+    protected void _computeActorDepth() throws IllegalActionException {
+        if (_actorDepthVersion == ((NamedObj)_actor).workspace().getVersion()) {
+            return;
+        }
+        _portToDepth = new HashMap<IOPort,Integer>();
+        _actorToDepth = new HashMap<Actor,Integer>();
+        
+        // To ensure that the associated actor has the lowest priority,
+        // assign it the largest integer.
+        _actorToDepth.put(_actor, Integer.MAX_VALUE);
+        
+        // First iterate over all actors, ensuring that their
+        // ports all have depths. Note that each time an actor
+        // is visited, the depths of all upstream ports will be
+        // set, so by the time we get to the end of the list
+        // of actors, there will be nothing to do on them.
+        // But we have to visit all of them to support disconnected
+        // graphs. If the actors happen to be ordered in topological
+        // sort order, then this will be quite efficient.
+        // Otherwise, many actors will be visited twice.
+        List<Actor> actors = ((CompositeEntity)_actor).deepEntityList();
+        for (Actor actor : actors) {
+            // If the actor already has a depth, skip it.
+            Integer actorDepth = _actorToDepth.get(actor);
+            if (actorDepth != null) {
+                continue;
+            }
+            // First compute the depth of the input ports,
+            // recording the maximum value.
+            Integer maximumInputDepth = Integer.valueOf(0);
+            Iterator inputPorts = actor.inputPortList().iterator();
+            while (inputPorts.hasNext()) {
+                IOPort inputPort = (IOPort)inputPorts.next();
+                Integer inputPortDepth = _portToDepth.get(inputPort);
+                if (inputPortDepth == null) {
+                    // Keep track of ports that have been visited in
+                    // to detect causality loops.
+                    Set<IOPort> visited = new HashSet<IOPort>();
+                    _computeInputDepth(inputPort, visited);
+                    inputPortDepth = _portToDepth.get(inputPort);
+                }
+                // Record the maximum and continue to the next port.
+                if (inputPortDepth.compareTo(maximumInputDepth) > 0) {
+                    maximumInputDepth = inputPortDepth;
+                }
+            }
+            
+            // Next set the depth of the output ports.
+            Integer minimumOutputDepth = null;
+            Iterator outputPorts = actor.outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                IOPort outputPort = (IOPort)outputPorts.next();
+                Integer outputPortDepth = _portToDepth.get(outputPort);
+                if (outputPortDepth == null) {
+                    // Keep track of ports that have been visited in
+                    // to detect causality loops.
+                    Set<IOPort> visited = new HashSet<IOPort>();
+                    _computeOutputPortDepth(outputPort, visited);
+                    outputPortDepth = _portToDepth.get(outputPort);
+                }
+                // Record the minimum and continue to the next port.
+                if (minimumOutputDepth == null
+                        || outputPortDepth.compareTo(minimumOutputDepth) < 0) {
+                    minimumOutputDepth = outputPortDepth;
+                }
+            }
+            
+            // Finally, set the depth of the actor.
+            if (minimumOutputDepth != null) {
+                // There are output ports.
+                _actorToDepth.put(actor, minimumOutputDepth);
+            } else {
+                _actorToDepth.put(actor, maximumInputDepth);
+            }
+        }
+        // Next need to set the depth of all output ports of the
+        // actor.
+        List<IOPort> outputPorts = _actor.outputPortList();
+        for (IOPort outputPort : outputPorts) {
+            // The depth of each output port is one plus the maximum
+            // depth of all the output ports (or input ports) that source
+            // it data, or zero if there are no such ports.
+            int depth = 0;
+            List<IOPort> sourcePorts = outputPort.insideSourcePortList();
+            for (IOPort sourcePort : sourcePorts) {
+                Integer sourceDepth = _portToDepth.get(sourcePort);
+                if (sourceDepth == null) {
+                    if (sourcePort.isInput()) {
+                        // This is another external input.
+                        sourceDepth = Integer.valueOf(0);
+                        _portToDepth.put(sourcePort, sourceDepth);
+                    } else {
+                        // Source port is an output (should this be checked?)
+                        Set<IOPort> visited = new HashSet<IOPort>();
+                        _computeOutputPortDepth(sourcePort, visited);
+                        sourceDepth = _portToDepth.get(sourcePort);
+                        if (sourceDepth == null) {
+                            throw new InternalErrorException(
+                                    "Failed to compute port depth for "
+                                    + sourcePort.getFullName());
+                        }
+                    }
+                }
+                int newDepth = sourceDepth.intValue() + 1;
+                if (newDepth > depth) {
+                    depth = newDepth;
+                }
+            }
+            _portToDepth.put(outputPort, Integer.valueOf(depth));
+        }
+        _actorDepthVersion = ((NamedObj)_actor).workspace().getVersion();
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /** Compute the depth of the specified input port.
+     *  The depth of an input port is maximum of the
+     *  "source depths" of all the input ports in the
+     *  same equivalence class with the specified port.
+     *  An equivalence class is defined as follows.
+     *  If ports X and Y each have a dependency not equal to the
+     *  default depenency's oPlusIdentity(), then they
+     *  are in an equivalence class. That is,
+     *  there is a causal dependency. They are also in
+     *  the same equivalence class if there is a port Z
+     *  in an equivalence class with X and in an equivalence
+     *  class with Y. Otherwise, they are not in the same
+     *  equivalence class. If there are no
+     *  output ports, then all the input ports
+     *  are in a single equivalence class.
+     *  <p>
+     *  The "source depth" of an input port is one plus the maximum
+     *  depth of all output ports that directly source data
+     *  to it, or zero if there are no such ports.
+     *  This delays the firing of this actor until
+     *  all source actors have fired. As a side
+     *  effect, this method also sets the depth of all the
+     *  input ports in the same equivalence class, as well
+     *  as all upstream ports up to a break with non-causal
+     *  relationship. It also detects and reports dependency
+     *  cycles.  The entry point
+     *  to this method is _computeActorDepth().
+     *  @see #_computeActorDepth()
+     *  @param inputPort The port to compute the depth of.
+     *  @param visited The set of ports that have been visited
+     *   in this round.
+     *  @throws IllegalActionException If a zero-delay loop is found.
+     */
+    private void _computeInputDepth(IOPort inputPort, Set<IOPort> visited)
+             throws IllegalActionException {
+        // NOTE: The definition of equivalence class, which comes
+        // from CausalityInterface, is not quite what we want if
+        // we use RealDependency instead of BooleanDependency
+        // and represent metric delays.  In that case, we want
+        // the equivalence class to include only ports that
+        // have exactly zero delay dependency on some output port.
+        // So if we switch to using RealDependency, this implementation
+        // will have to change.
+        int depth = 0;
+        // Iterate over all the ports in the equivalence class.
+        Actor actor = (Actor)inputPort.getContainer();
+        CausalityInterface causality = actor.getCausalityInterface();
+        Collection<IOPort> equivalentPorts = causality.equivalentPorts(inputPort);
+        for (IOPort equivalentPort: equivalentPorts) {
+            visited.add(equivalentPort);
+            // Iterate over the source ports to compute the source depths.
+            List<IOPort> sourcePorts = equivalentPort.sourcePortList();
+            for (IOPort sourcePort : sourcePorts) {
+                // NOTE: source port may be an input port, in which case
+                // the port is an external input and should have depth 0.
+                // The input port depends directly on this output port.
+                // Find the depth of the output port.
+                Integer sourcePortDepth = _portToDepth.get(sourcePort);
+                if (sourcePortDepth == null) {
+                    // Have to compute the depth of the output port.
+                    if (visited.contains(sourcePort)) {
+                        // Found a causality loop.
+                        throw new IllegalActionException(_actor, actor,
+                                "Found a zero delay loop containing "
+                                + actor.getFullName());
+                    }
+                    if (sourcePort.isInput()) {
+                        // This had better be an external input.
+                        // Should this be checked?
+                        // Set the depth to zero.
+                        sourcePortDepth = Integer.valueOf(0);
+                        _portToDepth.put(sourcePort, sourcePortDepth);
+                    } else {
+                        // Source port is an output (should this be checked?)
+                        _computeOutputPortDepth(sourcePort, visited);
+                        sourcePortDepth = _portToDepth.get(sourcePort);
+                        if (sourcePortDepth == null) {
+                            throw new InternalErrorException(
+                                    "Failed to compute port depth for "
+                                    + sourcePort.getFullName());
+                        }
+                    }
+                }
+                // The depth needs to be one greater than any
+                // output port it depends on.
+                int newDepth = sourcePortDepth.intValue() + 1;
+                if (depth < newDepth) {
+                    depth = newDepth;
+                }
+            }
+        }
+        // We have now found the depth for the equivalence class.
+        // Set it.
+        for (IOPort equivalentPort: equivalentPorts) {
+            _portToDepth.put(equivalentPort, Integer.valueOf(depth));
+        }
+    }
+
+    /** Compute the depth of the specified output port.
+     *  The depth of an output port is
+     *  the maximum of the depth of all the input ports
+     *  it directly depends on, or zero if there are no such
+     *  input ports.  The entry point
+     *  to this method is _computeActorDepth().
+     *  @see #_computeActorDepth()
+     *  @param outputPort The actor to compute the depth of.
+     *  @param visited The set of ports that have been visited
+     *   in this round.
+     *  @throws IllegalActionException If a zero-delay loop is found.
+     */
+    private void _computeOutputPortDepth(IOPort outputPort, Set<IOPort> visited)
+             throws IllegalActionException {
+        visited.add(outputPort);
+        int depth = 0;
+        // Iterate over the input ports of the same actor that
+        // this output directly depends on.
+        Actor actor = (Actor)outputPort.getContainer();
+        CausalityInterface causality = actor.getCausalityInterface();
+        for (IOPort inputPort : causality.dependentPorts(outputPort)) {
+            // The output port depends directly on this input port.
+            // Find the depth of the input port.
+            Integer inputPortDepth = _portToDepth.get(inputPort);
+            if (inputPortDepth == null) {
+                // Have to compute the depth of the input port.
+                if (visited.contains(inputPort)) {
+                    // Found a causality loop.
+                    throw new IllegalActionException(_actor, actor,
+                            "Found a zero delay loop containing "
+                            + actor.getFullName());
+                }
+                // The following computes only the source depth,
+                // which may not be the final depth. As a consequence,
+                // _computeActorDepth(), the output depth that
+                // we calculate here may need to be modified.
+                _computeInputDepth(inputPort, visited);
+                inputPortDepth = _portToDepth.get(inputPort);
+                if (inputPortDepth == null) {
+                    throw new InternalErrorException(
+                            "Failed to compute port depth for "
+                            + inputPort.getFullName());
+                }
+            }
+            int newDepth = inputPortDepth.intValue();
+            if (depth < newDepth) {
+                depth = newDepth;
+            }
+        }
+        _portToDepth.put(outputPort, Integer.valueOf(depth));
+    }
     
     /** Record a dependency of the specified port on the specified
      *  input port in the specified map. The map records all the
@@ -507,6 +919,22 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         }
         if (!portsToProcessNext.isEmpty()) {
             _setDependency(inputPort, map, portsToProcessNext, dependsOnInputsMap);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Comparator used to sort the actors. */
+    private class ActorComparator implements Comparator<Actor> {
+        /** Compare the depths of two actors.
+         *  NOTE: This method assumes and does not check that the
+         *  depth cache is up to date and contains both specified actors.
+         */
+        public int compare(Actor actor1, Actor actor2) {
+            Integer level1 = _actorToDepth.get(actor1);
+            Integer level2 = _actorToDepth.get(actor2);
+            return level1.compareTo(level2);
         }
     }
 }
