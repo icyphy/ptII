@@ -54,6 +54,12 @@ the guards and actions of the transitions. If any transition in the
 model has an output action that writes to a port and a guard that
 references an input port, then there is a direct dependency of
 that output on that input. Otherwise, there is no dependency.
+Note that this is a conservative analysis in that it may indicate
+a dependency when there is none. For example, if all outgoing
+transitions from a state produce the same output value, and 
+a transition is always taken, then irrespective of the guards,
+the output has no dependency on the inputs.  A precise analysis,
+however, is much more difficult (probably undecidable).
 
 @author Edward A. Lee
 @version $Id: FSMCausalityInterface.java 47513 2007-12-07 06:32:21Z cxh $
