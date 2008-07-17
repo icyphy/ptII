@@ -190,8 +190,9 @@ public class PtidesDirector extends TimedPNDirector {
     // // public parameters ////
 
     /**
-     * The bounded clock synchonization error for all platforms. This parameter
-     * must contain a DoubleToken. The value defaults to 0.1.
+     * The bounded clock synchronization error for all platforms. This
+     * parameter must contain a DoubleToken. The value defaults to
+     * 0.1.
      */
     public Parameter clockSyncError;
 
