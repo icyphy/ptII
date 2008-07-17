@@ -188,8 +188,11 @@ public class AtomicActor extends ComponentEntity implements Actor,
 
         if (port instanceof IOPort) {
             IOPort castPort = (IOPort) port;
-
-            if (castPort.isInput() && (getDirector() != null)) {
+            Manager manager = getManager();
+            if (castPort.isInput() 
+                    && (getDirector() != null) 
+                    && (manager != null)
+                    && (manager.getState() != Manager.IDLE)) {
                 try {
                     workspace().getWriteAccess();
                     castPort.createReceivers();
