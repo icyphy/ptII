@@ -95,7 +95,7 @@ test SimpleDelay-4.1 {test a self loop with the zero delay} {
     catch {[$e0 getManager] execute} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .top.add
-  in .top.DEDirector and .top.add}}
+  in .top and .top.add}}
 
 test SimpleDelay-5.1 {test a more complex loop with the zero delay} {
     set e0 [deModel 3.0]
@@ -117,7 +117,7 @@ test SimpleDelay-5.1 {test a more complex loop with the zero delay} {
     catch {[$e0 getManager] execute} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .top.add
-  in .top.DEDirector and .top.add}}
+  in .top and .top.add}}
 
 test SimpleDelay-5.2 {fix the zero delay with a non-zero delay} {
     set delay [java::new ptolemy.domains.de.lib.test.SimpleDelay $e0 delay]

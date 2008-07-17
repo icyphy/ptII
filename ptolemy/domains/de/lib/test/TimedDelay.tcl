@@ -106,7 +106,7 @@ test TimedDelay-4.1 {test a self loop without a TimedDelay} {
     catch {[$e0 getManager] execute} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .top.add
-  in .top.DEDirector and .top.add}}
+  in .top and .top.add}}
 
 test TimedDelay-5.1 {test a more complex loop without a TimedDelay} {
     set e0 [deModel 3.0]
@@ -128,7 +128,7 @@ test TimedDelay-5.1 {test a more complex loop without a TimedDelay} {
     catch {[$e0 getManager] execute} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .top.add
-  in .top.DEDirector and .top.add}}
+  in .top and .top.add}}
 
 test TimedDelay-5.2 {fix the zero feedback loop with a non-zero TimedDelay} {
     set timedDelay [java::new ptolemy.domains.de.lib.TimedDelay $e0 TimedDelay]
