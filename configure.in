@@ -1142,13 +1142,25 @@ else
         fi
     fi	
 fi
-
 if test -z "$PTDOCLETS_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|doc/doclets/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$TOOLS_JAR\"/>"
+   addToolJarToEclipse=yes
 
+   case "`uname -s`" in
+	Darwin) 
+	    case "$TOOLS_JAR" in
+		*/Classes/classes.jar)
+		    addToolJarToEclipse=no
+  	            AC_MSG_WARN([Not including $TOOLS_JAR 
+   to the Eclipse classpath under Darwin because it is already present.]);;
+            esac;;
+   esac
+
+    if test "$addToolsJarToEclipse" = "yes" ; then
+       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$TOOLS_JAR\"/>"
+    fi
     JDOCTAG="-tag Pt.AcceptedRating -tag Pt.ProposedRating"
     # Use curly brackets so PTII gets expanded in the makefile
     JDOCTAGLET='-tagletpath "${PTII}" -taglet doc.doclets.RatingTaglet'
@@ -1575,9 +1587,17 @@ else
 	       PT_MSG_RESULT($JAI_JARS)
 	       # Here, we should not be adding JAI_JAR to Eclipse
 	       # if jai.jar was in the jre
-	       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+               case "`uname -s`" in
+	       Darwin) 
+  	            AC_MSG_WARN([Not including
+   $JAI_JARS_DIR/{jai_core.jar,jai_codec.jar}
+   to the Eclipse classpath under Darwin because it is already present.]);;
+               *)
+	           ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
 	           <classpathentry kind=\"lib\" path=\"$JAI_JARS_DIR/jai_core.jar\"/> \
 		   <classpathentry kind=\"lib\" path=\"$JAI_JARS_DIR/jai_codec.jar\"/>"
+		   ;;
+               esac
 	    else 
        	       AC_MSG_WARN([Either we could not find 
     javax.media.jai.RenderOp or else it was already in the JRE.
