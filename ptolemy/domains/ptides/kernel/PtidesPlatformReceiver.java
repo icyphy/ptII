@@ -138,7 +138,7 @@ public class PtidesPlatformReceiver extends TimedQueue {
     public void put(Token token, Time time) {
         try {
             PtidesEmbeddedDirector dir = _getDirector();
-            dir._enqueueTriggerEvent(getContainer(), time);
+            //dir._enqueueEvent(getContainer(), time);
             super.put(token, time);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex, null);
@@ -242,4 +242,9 @@ public class PtidesPlatformReceiver extends TimedQueue {
      * Version of the director.
      */
     private long _directorVersion = -1;
+
+    public void removeEvents(Time modelTime) {
+        while (_queue.size() > 0 && _queue.first()._timeStamp.equals(modelTime))
+            _queue.remove(_queue.first());
+    }
 }

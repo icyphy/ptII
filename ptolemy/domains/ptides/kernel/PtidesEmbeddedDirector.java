@@ -29,16 +29,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.kernel;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
+import java.util.Collection; 
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
-
+import java.util.TreeSet; 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -46,23 +43,17 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TimedDirector; 
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
-import ptolemy.actor.util.TimedEvent;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
+import ptolemy.actor.util.TimedEvent; 
+import ptolemy.data.DoubleToken; 
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.domains.de.kernel.DECQEventQueue;
-import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.kernel.DEEvent;
-import ptolemy.domains.de.kernel.DEEventQueue;
+import ptolemy.data.expr.StringParameter;    
 import ptolemy.domains.de.lib.TimedDelay;
-import ptolemy.domains.ptides.kernel.TimedQueue.Event;
-import ptolemy.domains.ptides.lib.ScheduleListener;
+import ptolemy.domains.ptides.kernel.TimedQueue.Event; 
 import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType;
 import ptolemy.domains.ptides.platform.NonPreemptivePlatformExecutionStrategy;
 import ptolemy.domains.ptides.platform.PlatformExecutionStrategy;
@@ -71,7 +62,7 @@ import ptolemy.domains.tt.tdl.kernel.TDLModule;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.CompositeEntity; 
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -83,24 +74,57 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * This director is used in a platform in the PTIDES domain. The director executes
- * actors according to their model time stamps. The difference between this and the DE director
- * is that events can be processed out of time stamped order. The only requirement
- * for events in the PTIDES domain is to execute events in time stamped order between 
- * ports that are connected through functional dependencies. 
- * only when there are dependencies between the events.
+ * This director implements the Ptides model of computation. It should be used in 
+ * composite actors that represent Ptides Platforms. It executes actors 
+ * according to event time stamps. The difference to the DE director is that events
+ * can be executed out of time stamped order. 
  * 
- * To satisfy this requirement,
- * an event can only be processed if no other event with an earlier time stamp can appear
- * on the same port or the port group.
+ * <p>
+ * Platforms contain sensors, actuators, computation actors with worst 
+ * case execution times and model time delay actors. The execution of 
+ * these actors is governed by this director. Some actors inside a platform 
+ * require a mapping of the model time defined in event time stamps to
+ * real time. Those actors are sensors and actuators. Also, the 
+ * execution of actors with a worst case execution time > 0 is 
+ * simulated which requires the simulation of real time passing between 
+ * the start and the termination of an actor. The enclosing director of 
+ * a Ptides platform maintains the simulated real time; this director receives 
+ * this time by calling the getModelTime() method of the enclosing director.
+ * This enclosing director can be the PtidesDirector.
  * 
+ * <p>
+ * Executing actors in platforms happens according to their model timestamps. The order
+ * of execution does not have to be in time stamp order, the only requirement is that
+ * events on a port are only processed in time stamped order. To satisfy this 
+ * requirement, an analysis on events is used to determine if they are safe to process,
+ * i.e. if no events with earlier time stamps can occur on the same port or on 
+ * another port in the port group. For this
+ * analysis, the causality interface and the real dependencies between ports are used.
+ *  
+ * <p> 
+ * This director executes actions in an infinite loop. At every iteration in the loop,
+ * a set of all events is selected. Those events are safe to process. Out of this 
+ * set of events, one event is selected to be actually processed. This selection is done
+ * by the PlatformExecutionStrategy by taking into account platform characteristics
+ * like preemption and priorities. The firing of an actor is divided into two steps, 
+ * a start and a terminate. At the start of a firing, an actor is put into a list of
+ * actors currently executing. For a platform that does not support preemption, this list
+ * will have at most one entry. If the actor has a worst case execution time > 0, 
+ * the platform schedules a refiring for the time = current physical time + WCET by
+ * calling the fireAt() of the enclosing director. After that WCET passed, the actor
+ * is taken out of the list of actors currently in execution. The actual firing of 
+ * an actor is done either at the start or the termination time. This depends on 
+ * whether the WCET is a static property of the actor or it is only known after
+ * firing the actor. Most actomic actors will fall into the first category whereas
+ * composite actors will fall into the second category. Also, actors for which the 
+ * simulation is required to determine the WCET fall into the second category.
  * 
- * An analysis of all events on the platform determines a set of events
- * that are safe to process. Those events are executed sequentially according to a platform
- * execution strategy. This execution strategy takes into account platform characteristics
- * like preemption and priorities.
- * 
- * define what a platform is, compare to PtidesDirector
+ * <p> 
+ * There are two types of events used in this domain: regular events and pure events.
+ * Regular events are stored in the receivers as pairs of timestamp and value. 
+ * Additionally, for every actor, a list is created that saves time stamps of pure 
+ * events for that actor.
+ *  
  * 
  * @author Patricia Derler
  * @version $Id$
@@ -108,7 +132,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating Yellow (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class PtidesEmbeddedDirector extends DEDirector {
+public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 
 	/**
 	 * Construct a director in the default workspace with an empty string as its
@@ -173,14 +197,13 @@ public class PtidesEmbeddedDirector extends DEDirector {
 
 	/**
 	 * The executionStrategy defines the order of execution of events.
+	 * This parameter defaults to a basic non preemptive execution 
+	 * strategy.
 	 */
 	public StringParameter executionStrategy;
 
 	/**
-	 * Update the director parameters when attributes are changed. Changes to
-	 * <i>isCQAdaptive</i>, <i>minBinCount</i>, and <i>binCountFactor</i>
-	 * parameters will only be effective on the next time when the model is
-	 * executed.
+	 * Update the director parameters when attributes are changed.
 	 * 
 	 * @param attribute
 	 *            The changed parameter.
@@ -207,7 +230,10 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	}
 
 	/**
-	 * Display event in Scheduleplotter.
+	 * If the enclosing director is a PtidesDirector, send these events 
+	 * to the enclosing director. The PtidesDirector collects all display
+	 * events from all platforms and sends them to schedule listeners. 
+	 * If the enclosing director is not a PtidesDirector, do nothing.
 	 * 
 	 * @param actor
 	 *            Actor for which the event occured.
@@ -218,10 +244,12 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 */
 	public final void displaySchedule(Actor actor, double time,
 			ScheduleEventType scheduleEvent) {
-		PtidesDirector dir = _getExecutiveDirector();
-		if (dir != null)
-			dir._displaySchedule((Actor) getContainer(), actor, time,
-					scheduleEvent);
+	    if (this.getContainer() != null && ((Actor) this.getContainer()).getExecutiveDirector() instanceof PtidesDirector) {
+    		PtidesDirector dir = (PtidesDirector) ((Actor) getContainer()).getExecutiveDirector();
+    		if (dir != null)
+    			dir._displaySchedule((Actor) getContainer(), actor, time,
+    					scheduleEvent);
+	    }
 	}
 
 	/**
@@ -240,34 +268,13 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		return Time.POSITIVE_INFINITY;
 	}
 
-	/**
-	 * Return the time stamp of the next event in the queue. 
-	 * 
-	 * @return The time stamp of the next event in the event queue.
-	 */
-	public Time getNextEventTimeStamp() {
-		try {
-			Time nextIterationTime = Time.POSITIVE_INFINITY;
-			List eventsToFire = _getNextEventsToFire();
-			if (eventsToFire == null || eventsToFire.size() == 0)
-				return _physicalTime;
-			for (Iterator it = eventsToFire.iterator(); it.hasNext();) {
-				DEEvent event = (DEEvent) it.next();
-				if (event.timeStamp().compareTo(nextIterationTime) < 0)
-					nextIterationTime = event.timeStamp();
-			}
-			return nextIterationTime;
-		} catch (IllegalActionException e) {
-			return null;
-		}
-	}
 
 	/**
-	 * Return the current model time. The notion of model time cannot be applied to 
-	 * the whole platform because it is possible to fire events out of time stamped
-	 * order. Model times are associated to actors only. When an actor is in 
-	 * execution, this method returns the model time of the actor currently in 
+	 * Return the current model time. When an actor is in 
+	 * execution, this method returns the model time of the event responsible
+	 * for firing the actor currently in 
 	 * execution. Otherwise, this method returns 0. 
+	 * @return The current model time.
 	 */
 	public Time getModelTime() {
 		if (_currentModelTime == null)
@@ -278,39 +285,28 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	}
 	
 	/**
-	 * infinite loop
-	 * 
-	 * Until a stop is requested, the director tries to fire actors or waits. First,
-	 * a set of events is calculated that can be fired at the current time. Out of
-	 * this set of events, one event is chosen that is fired. The actor for this
-	 * event is added to the list of actors in execution and its finishing time
-	 * is set to current physical time + WCET. After the expiration of the finishing
-	 * time, the actor is removed from the list and the fire() of the actor is
-	 * executed. 
-	 * 
-	 * <p>
-	 * If no actor is found that can execute now, this actor waits. It
-	 * continues execution when the physical time is increased or when tokens
-	 * are received on the input ports. If an actor is preempted, the preempting
-	 * actor is added to the list of actors in execution and the finishing times
-	 * for all other actors in execution are updated to oldFinishingTime + WCET
-	 * of the preempting actor.
-	 * 
-	 * <p> platform execution strategy
+	 * The fire implements an infinite loop. In every iteration, a set of 
+	 * events safe to process is selected. Out of these events. the platform 
+	 * execution strategy selects on event that will be processed. If there is 
+	 * no event selected, the platform waits. Otherwise, the actor targeted by
+	 * the event is added to a set of actors in execution. If the actor has 
+	 * a worst case execution time > 0, this Director calls the fireAt() with the
+	 * current physical time increased by the WCET. Then, the actor is taken 
+	 * out of the list of actors in execution.  
 	 */
 	public void fire() throws IllegalActionException {
 		if (_stopRequested)
 			return;
 		List eventsToFire = null;
-		DEEvent event;
+		TimedEvent event;
 		while (true) {
 		    if (_stopRequested)
 	            return;
 			if (_eventsInExecution.size() > 0) {
-				Actor actorToFire = _eventsInExecution
-						.get(_eventsInExecution.size() - 1).actor(); 
+				Actor actorToFire = (Actor) _eventsInExecution
+						.get(_eventsInExecution.size() - 1).contents; 
 				Time time = getFinishingTime(actorToFire);
-				if (time.equals(_physicalTime)) {
+				if (time.equals(_currentPhysicalTime)) {
 					_eventsInExecution.remove(_eventsInExecution
 	                        .get(_eventsInExecution.size() - 1));
 					if (!_fireAtTheBeginningOfTheWcet(actorToFire))
@@ -318,40 +314,44 @@ public class PtidesEmbeddedDirector extends DEDirector {
 					_transferAllOutputs();
 			        
 					displaySchedule(actorToFire,
-							_physicalTime.getDoubleValue(),
-							ScheduleEventType.stop);
+							_currentPhysicalTime.getDoubleValue(),
+							ScheduleEventType.STOP);
 					if (_eventsInExecution.size() > 0)
-					    _currentModelTime = _eventsInExecution.get(_eventsInExecution.size() - 1).timeStamp();
+					    _currentModelTime = _eventsInExecution.get(_eventsInExecution.size() - 1).timeStamp;
 					else 
 					    _currentModelTime = null;
 				}
-			}
-			_enqueueRemainingEventsAgain(eventsToFire);
+			} 
 			eventsToFire = _getNextEventsToFire();
 			Time nextRealTimeEventTime = _getNextRealTimeEventTime(eventsToFire, _eventsInExecution);
 			event = _executionStrategy.getNextEventToFire(_eventsInExecution,
-					eventsToFire, nextRealTimeEventTime, _physicalTime);
+					eventsToFire, nextRealTimeEventTime, _currentPhysicalTime);
 			eventsToFire.remove(event);
 			if (event != null) {
-				Actor actorToFire = event.actor();
+			 
+				Actor actorToFire = (Actor) event.contents;
+				
+				
+				
+				// TODO remove first condition
 				if (actorToFire.getDirector() == this && !actorToFire.prefire()) {
-                    _enqueueEventAgain(event);
+                    continue;
                 } else {
                     // start firing an actor
-    				_currentModelTime = event.timeStamp();
+    				_currentModelTime = event.timeStamp; 
+    				_removeEvents(actorToFire);
     				if (_debugging)
                         _debug(this.getContainer().getName() + "-fired "
                                         + actorToFire.getName());
                     displaySchedule(actorToFire,
-                                    _physicalTime.getDoubleValue(),
-                                    ScheduleEventType.start);     
+                                    _currentPhysicalTime.getDoubleValue(),
+                                    ScheduleEventType.START);     
     				if (_fireAtTheBeginningOfTheWcet(actorToFire))
     					_fireActorInZeroModelTime(actorToFire);
-    				double wcet = PtidesGraphUtilities.getWCET(actorToFire);
-    				//_getExecutiveDirector().fireAt((Actor) this.getContainer(), _physicalTime.add(wcet));
-					setFinishingTime(actorToFire, _physicalTime.add(wcet));
+    				double wcet = PtidesActorProperties.getWCET(actorToFire);
+    				setFinishingTime(actorToFire, _currentPhysicalTime.add(wcet));
 					for (int i = 0; i < _eventsInExecution.size(); i++) {
-						Actor actor = _eventsInExecution.get(i).actor();
+						Actor actor = (Actor) _eventsInExecution.get(i).contents;
 						setFinishingTime(actor,
 								getFinishingTime(actor).add(wcet)); 
 					}
@@ -361,44 +361,15 @@ public class PtidesEmbeddedDirector extends DEDirector {
 				if (_transferAllInputs()) {
 					continue;
 				}
-				_getExecutiveDirector().fireAt((Actor) this.getContainer(), nextRealTimeEventTime);
-				_physicalTime = _getExecutiveDirector().getModelTime();
+				((Actor) getContainer()).getExecutiveDirector().fireAt((Actor) this.getContainer(), nextRealTimeEventTime);
+				_currentPhysicalTime = ((Actor) getContainer()).getExecutiveDirector().getModelTime();
 				if (_stopRequested)
 					return;
 				_transferAllInputs();
 			}
 		}
 	}
-
-	private Time _getNextRealTimeEventTime(List<DEEvent> eventsToFire, 
-	        List<DEEvent> eventsInExecution) {
-        Time nextRealTimeEvent = Time.POSITIVE_INFINITY;
-        for (int i = 0; i < eventsToFire.size(); i++) {
-            DEEvent event = (DEEvent) eventsToFire.get(i);
-            Actor actor = event.actor();
-            if (PtidesGraphUtilities.mustBeFiredAtRealTime(actor, event
-                    .ioPort())) {
-                if (nextRealTimeEvent != null && 
-                        event.timeStamp().compareTo(nextRealTimeEvent) < 0) {
-                    nextRealTimeEvent = event.timeStamp();
-                }
-            }
-        }
-        if (eventsInExecution.size() > 0) {
-            Time time = getFinishingTime(eventsInExecution.get(0).actor());
-            if (nextRealTimeEvent != null && 
-                    time.compareTo(nextRealTimeEvent) < 0) 
-                nextRealTimeEvent = time;
-        }
-        if (_inputIsSafeToRead.size() > 0) {
-            DEEvent event = (DEEvent) _inputIsSafeToRead.get();
-            if (event.timeStamp().compareTo(nextRealTimeEvent) < 0) {
-                nextRealTimeEvent = event.timeStamp();
-                _inputIsSafeToRead.take();
-            }
-        }
-        return nextRealTimeEvent;
-    }
+	
 
     /**
 	 * Schedule an actor to be fired at the specified time by posting a pure
@@ -412,32 +383,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 *                If event queue is not ready.
 	 */
 	public void fireAt(Actor actor, Time time) throws IllegalActionException {
-		if (_eventQueues == null || _eventQueues.get(actor) == null) {
-			throw new IllegalActionException(this,
-					"Calling fireAt() before preinitialize().");
-		}
-		if (_debugging)
-			_debug("DEDirector: Actor " + actor.getFullName()
-					+ " requests refiring at " + time);
-
-		synchronized (_eventQueues) {
-			_enqueueEvent(actor, time);
-		}
-	}
-
-	/**
-	 * Initialize all the contained actors by invoke the initialize() method of
-	 * the super class.
-	 * 
-	 * @exception IllegalActionException
-	 *                If the initialize() method of the super class throws it.
-	 */
-	public void initialize() throws IllegalActionException {
-		_isInitializing = true;
-		_disabledActors = null;
-		_microstep = 0;
-		super.initialize();
-		_isInitializing = false;
+		_enqueueEvent(actor, time);
 	}
 
 	/**
@@ -453,11 +399,11 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * @return true if tokens can be transferred.
 	 */
 	public boolean isSafeToProcessOnNetwork(Time time, NamedObj object) {
-		double minDelayTime = PtidesGraphUtilities.getMinDelayTime(object);
+		double minDelayTime = PtidesActorProperties.getMinDelayTime(object);
 		System.out.println(minDelayTime + " " + Double.MAX_VALUE);
 		return minDelayTime == Double.MAX_VALUE 
 				|| time.subtract(minDelayTime).add(_clockSyncError).add(
-						_networkDelay).compareTo(_physicalTime) <= 0;
+						_networkDelay).compareTo(_currentPhysicalTime) <= 0;
 	}
 
 	/**
@@ -472,13 +418,13 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * @return True if it is safe to process a token.
 	 */
 	public boolean isSafeToProcessOnPlatform(Time time, NamedObj object) {
-		double minDelayTime = PtidesGraphUtilities.getMinDelayTime(object);
+		double minDelayTime = PtidesActorProperties.getMinDelayTime(object);
 		return minDelayTime == Double.MAX_VALUE
-				|| time.subtract(minDelayTime).compareTo(_physicalTime) <= 0;
+				|| time.subtract(minDelayTime).compareTo(_currentPhysicalTime) <= 0;
 	}
 
 	/**
-	 * Create a PtidesDEReceiver.
+	 * Create a PtidesPlatformReceiver.
 	 */
 	public Receiver newReceiver() {
 		if (_debugging && _verbose) {
@@ -502,95 +448,6 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	}
 
 	/**
-	 * Set the current time stamp to the model start time, invoke the
-	 * preinitialize() methods of all actors deeply contained by the container.
-	 * <p>
-	 * This method should be invoked once per execution, before any iteration.
-	 * Actors cannot produce output data in their preinitialize() methods. If
-	 * initial events are needed, e.g. pure events for source actor, the actors
-	 * should do so in their initialize() method.
-	 * </p>
-	 * <p>
-	 * This method is <i>not</i> synchronized on the workspace, so the caller
-	 * should be.
-	 * </p>
-	 * 
-	 * @exception IllegalActionException
-	 *                If the preinitialize() method of the container or one of
-	 *                the deeply contained actors throws it, or the parameters,
-	 *                minBinCount, binCountFactor, and isCQAdaptive, do not have
-	 *                valid tokens.
-	 */
-	public void preinitialize() throws IllegalActionException {
-		super.preinitialize(); // bad style, but has to be done because
-		// otherwise the eventqueue that is not used is
-		// not initialized and this causes problems in
-		// wrapup
-
-		_eventQueues = new Hashtable();
-		for (Iterator it = ((CompositeActor) getContainer()).entityList()
-				.iterator(); it.hasNext();) {
-			_eventQueues.put(it.next(), new DECQEventQueue(
-					((IntToken) minBinCount.getToken()).intValue(),
-					((IntToken) binCountFactor.getToken()).intValue(),
-					((BooleanToken) isCQAdaptive.getToken()).booleanValue()));
-		}
-
-		_physicalTime = ((Actor) getContainer()).getExecutiveDirector()
-				.getModelTime();
-		_eventsInExecution.clear();
-
-		// Call the preinitialize method of the super class.
-		if (_debugging) {
-			_debug(getFullName(), "Preinitializing ...");
-		}
-
-		// First invoke initializable methods.
-		if (_initializables != null) {
-			for (Initializable initializable : _initializables) {
-				initializable.preinitialize();
-			}
-		}
-
-		// validate all settable attributes.
-		Iterator attributes = attributeList(Settable.class).iterator();
-		while (attributes.hasNext()) {
-			Settable attribute = (Settable) attributes.next();
-			attribute.validate();
-		}
-		// preinitialize protected variables.
-		_stopRequested = false;
-		// preinitialize all the contained actors.
-		Nameable container = getContainer();
-		if (container instanceof CompositeActor) {
-			Iterator actors = ((CompositeActor) container).deepEntityList()
-					.iterator();
-			while (actors.hasNext()) {
-				Actor actor = (Actor) actors.next();
-				if (_debugging) {
-					_debug("Invoking preinitialize(): ", ((NamedObj) actor)
-							.getFullName());
-				}
-				actor.preinitialize();
-			}
-		}
-		if (_debugging) {
-			_debug(getFullName(), "Finished preinitialize().");
-		}
-	}
-
-	/**
-	 * The top level director (PtidesDirector) sets the clock synchronization
-	 * error.
-	 * 
-	 * @param syncError
-	 *            The clock synchronization error.
-	 */
-	public void setClockSyncError(double syncError) {
-		_clockSyncError = syncError;
-	}
-
-	/**
 	 * Set the finishing time of an actor. This method is called after the
 	 * execution of an actor is started.
 	 * 
@@ -607,15 +464,21 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	}
 
 	/**
-	 * The top-level director (PtidesDirector) sets the network delay.
-	 * 
-	 * @param delay
-	 *            The global network delay.
+	 * Initialize variables.
 	 */
-	public void setNetworkDelay(double delay) {
-		_networkDelay = delay;
-	}
+	public void preinitialize() throws IllegalActionException { 
+	    super.preinitialize();
+	    _eventQueues = new Hashtable();
+        for (Iterator it = ((CompositeActor) getContainer()).entityList()
+                .iterator(); it.hasNext();) {
+            _eventQueues.put((Actor) it.next(), new TreeSet<Time>());
+        }
 
+        _currentPhysicalTime = ((Actor) getContainer()).getExecutiveDirector()
+                .getModelTime();
+        _eventsInExecution.clear(); 
+	}
+	
 	/**
 	 * Transfer outputs and return true if any tokens were transfered.
 	 * 
@@ -647,13 +510,9 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 */
 	public void wrapup() throws IllegalActionException {
 		super.wrapup();
-		synchronized (this) {
-			_disabledActors = null;
-			_microstep = 0;
-		}
 		_eventQueues.clear();
 		_currentModelTime = new Time(this, 0.0);
-		_inputIsSafeToRead.clear();
+		_inputSafeToProcess.clear();
 		_finishingTimesOfActorsInExecution.clear();
 		_eventsInExecution.clear();
 	}
@@ -662,10 +521,32 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	// // protected methods ////
 
 	/**
+     * Clock synchronization error specified in the top level director.
+     */
+    protected double _clockSyncError;
+
+    /**
+     * Current physical time which is retrieved by getting the model time 
+     * of the enclosing director.
+     */
+    protected Time _currentPhysicalTime;
+
+    /**
+     * Events on input ports of the composite actor directed by this 
+     * director with the time stamp set to the physical time when they
+     * are safe to process.
+     */
+    protected CalendarQueue _inputSafeToProcess = new CalendarQueue(
+            new TimedEvent.TimeComparator());
+
+    /**
+     * Network delay time specified in the top-level director.
+     */
+    protected double _networkDelay;
+
+    /**
 	 * Put a pure event into the event queue for the given actor to fire at the
-	 * specified timestamp. The depth for the queued event is the minimum of the
-	 * depths of all the ports of the destination actor. If there is no event
-	 * queue or the given actor is disabled, then this method does nothing.
+	 * specified timestamp. 
 	 * 
 	 * @param actor
 	 *            The actor to be fired.
@@ -677,112 +558,15 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 *                new event can not be enqueued.
 	 */
 	protected synchronized void _enqueueEvent(Actor actor, Time time)
-			throws IllegalActionException {
-
-		// Adjust the microstep.
-		int microstep = 0;
-
-		if (time.compareTo(getModelTime()) == 0) {
-			// If during initialization, do not increase the microstep.
-			// This is based on the assumption that an actor only requests
-			// one firing during initialization. In fact, if an actor requests
-			// several firings at the same time,
-			// only the first request will be granted.
-			if (_isInitializing) {
-				microstep = _microstep;
-			} else {
-				microstep = _microstep + 1;
-			}
-		} else if (time.compareTo(getModelTime()) < 0) {
-			throw new IllegalActionException(actor,
-					"Attempt to queue an event in the past:"
-							+ " Current time is " + getModelTime()
-							+ " while event time is " + time);
-		}
-
-		int depth = _getDepthOfActor(actor);
-
-		if (_debugging) {
-			_debug("enqueue a pure event: ", ((NamedObj) actor).getName(),
-					"time = " + time + " microstep = " + microstep
-							+ " depth = " + depth);
-		}
-
-		DEEvent newEvent = new DEEvent(actor, time, microstep, depth);
-		((DEEventQueue) _eventQueues.get(actor)).put(newEvent); 
-	}
-
-	/**
-	 * Put a trigger event into the event queue.
-	 * <p>
-	 * The trigger event has the same time stamp as that of the director. The
-	 * microstep of this event is always equal to the current microstep of this
-	 * director. The depth for the queued event is the depth of the destination
-	 * IO port.
-	 * </p>
-	 * <p>
-	 * If the event queue is not ready or the actor contains the destination
-	 * port is disabled, do nothing.
-	 * </p>
-	 * 
-	 * @param ioPort
-	 *            The destination IO port.
-	 * @exception IllegalActionException
-	 *                If the time argument is not the current time, or the depth
-	 *                of the given IO port has not be calculated, or the new
-	 *                event can not be enqueued.
-	 */
-	protected synchronized void _enqueueTriggerEvent(IOPort ioPort)
-			throws IllegalActionException {
-		Actor actor = (Actor) ioPort.getContainer();
-
-		int depth = _getDepthOfIOPort(ioPort);
-
-		if (_debugging) {
-			_debug("enqueue a trigger event for ",
-					((NamedObj) actor).getName(), " time = " + getModelTime()
-							+ " microstep = " + _microstep + " depth = "
-							+ depth);
-		}
-
-		DEEvent newEvent = new DEEvent(ioPort, getModelTime(), _microstep,
-				depth);
-	}
-
-	/**
-	 * Put an event into the event queue for the IOPort to fire at the specified
-	 * time stamp. The depth for the queued event is the minimum of the depths
-	 * of all the ports of the destination actor. If there is no event queue or
-	 * the given actor is disabled, then this method does nothing.
-	 * 
-	 * @param ioPort
-	 *            Port which gets the new trigger event.
-	 * @param time
-	 *            The time stamp of the event.
-	 * @exception IllegalActionException
-	 *                If the time argument is less than the current model time,
-	 *                or the depth of the actor has not be calculated, or the
-	 *                new event can not be enqueued.
-	 */
-	protected synchronized void _enqueueTriggerEvent(IOPort ioPort, Time time)
-			throws IllegalActionException {
-		Actor actor = (Actor) ioPort.getContainer();
-
-		if ((getEventQueue() == null)
-				|| ((_disabledActors != null) && _disabledActors
-						.contains(actor))) {
-			return;
-		}
-
-		int depth = _getDepthOfIOPort(ioPort);
-
-		DEEvent newEvent = new DEEvent(ioPort, time, _microstep, depth); 
+			throws IllegalActionException { 
+		_eventQueues.get(actor).add(time); 
 	}
 
 	/**
 	 * Transfer input ports if they are safe to process. If the token is not
 	 * safe to process, inform the executive director to be refired at the time
 	 * it is safe to process the token.
+	 * @param port Transfer input on this port.
 	 */
 	protected boolean _transferInputs(IOPort port)
 			throws IllegalActionException {
@@ -802,18 +586,18 @@ public class PtidesEmbeddedDirector extends DEDirector {
 					Event event = receiver.getEvent();
 					Time time = event._timeStamp;
 					Token t = event._token;
-					if (time.compareTo(_physicalTime) < 0)
+					if (time.compareTo(_currentPhysicalTime) < 0)
 						throw new IllegalActionException(
 								"Network interface constraints violated at "
 										+ this.getContainer().getName()
 										+ ", tried to transfer event with timestamp "
 										+ time + " at physical time "
-										+ _physicalTime);
+										+ _currentPhysicalTime);
 					if (!((isSafeToProcessOnNetwork(time, port)) || (time
-							.compareTo(_physicalTime) > 0))) {
-					    _inputIsSafeToRead.put(new DEEvent(port, time.subtract(
-								PtidesGraphUtilities.getMinDelayTime(port))
-								.add(_clockSyncError).add(_networkDelay), 0, 0));
+							.compareTo(_currentPhysicalTime) > 0))) {
+					    _inputSafeToProcess.put(new TimedEvent(time.subtract(
+					            PtidesActorProperties.getMinDelayTime(port))
+								.add(_clockSyncError).add(_networkDelay), port));
 						// at this time, the new input should be read
 						receiver.put(t, time);
 						continue; // couldn't transfer newest token
@@ -828,8 +612,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
 							PtidesPlatformReceiver farReceiver = (PtidesPlatformReceiver) farReceivers[k][l];
 							farReceiver.put(t, time);
 							displaySchedule((Actor) port.getContainer(),
-									_physicalTime.getDoubleValue(),
-									ScheduleEventType.transferinput);
+									_currentPhysicalTime.getDoubleValue(),
+									ScheduleEventType.TRANSFERINPUT);
 							System.out.println("transfer input value " + t + " at "
                                                                                 + time);
 							if (_debugging)
@@ -877,14 +661,14 @@ public class PtidesEmbeddedDirector extends DEDirector {
 									((Actor) port.getContainer()).getDirector()
 											.getModelTime());
 							displaySchedule((Actor) port.getContainer(),
-									_physicalTime.getDoubleValue(),
-									ScheduleEventType.transferoutput);
+									_currentPhysicalTime.getDoubleValue(),
+									ScheduleEventType.TRANSFEROUTPUT);
 							System.out.println("transfer output value " + token
-                                                                                + " at rt: " + _physicalTime + "/mt: "
+                                                                                + " at rt: " + _currentPhysicalTime + "/mt: "
                                                                                 + getModelTime());
 							if (_debugging)
 								_debug("transfer output value " + token
-										+ " at rt: " + _physicalTime + "/mt: "
+										+ " at rt: " + _currentPhysicalTime + "/mt: "
 										+ getModelTime());
 						}
 					}
@@ -901,35 +685,43 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	// // private methods ////
 
 	/**
-	 * Put event back into the queue because it was not processed yet.
-	 * 
-	 * @param event
-	 *            The event that should be enqueued again.
-	 * @throws IllegalActionException
-	 *             Thrown if event cannot be enqueued.
+	 * Return time stamp of next real time event. A real time event is either
+	 * an event for a sensor or an actuator, the end of the WCET of an actor
+	 * in execution or the time stamp when an input event becomes safe to 
+	 * process.
+	 * @param eventsToFire Set of events that are safe to process.
+	 * @param eventsInExecution Set of events currently in execution
+	 * @return Time of next real time event.
 	 */
-	private void _enqueueEventAgain(DEEvent event)
-			throws IllegalActionException {
-		if (event.ioPort() == null) { // then it is a pure event
-			Actor actor = event.actor();
-			((DEEventQueue) _eventQueues.get(actor)).put(event);
-		}
-	}
+	private Time _getNextRealTimeEventTime(List<TimedEvent> eventsToFire, 
+            List<TimedEvent> eventsInExecution) {
+        Time nextRealTimeEvent = Time.POSITIVE_INFINITY;
+        for (int i = 0; i < eventsToFire.size(); i++) {
+            TimedEvent event = (TimedEvent) eventsToFire.get(i); 
+            if (PtidesActorProperties.mustBeFiredAtRealTime(event.contents)) {
+                if (nextRealTimeEvent != null && 
+                        event.timeStamp.compareTo(nextRealTimeEvent) < 0) {
+                    nextRealTimeEvent = event.timeStamp;
+                }
+            }
+        }
+        if (eventsInExecution.size() > 0) {
+            Time time = getFinishingTime((Actor)eventsInExecution.get(0).contents);
+            if (nextRealTimeEvent != null && 
+                    time.compareTo(nextRealTimeEvent) < 0) 
+                nextRealTimeEvent = time;
+        }
+        if (_inputSafeToProcess.size() > 0) {
+            TimedEvent event = (TimedEvent) _inputSafeToProcess.get();
+            if (event.timeStamp.compareTo(nextRealTimeEvent) < 0) {
+                nextRealTimeEvent = event.timeStamp;
+                _inputSafeToProcess.take();
+            }
+        }
+        return nextRealTimeEvent;
+    }
 
-	/**
-	 * Return executive director which is the PtidesDirector.
-	 * 
-	 * @return The executive director.
-	 */
-	private PtidesDirector _getExecutiveDirector() {
-		Director dir = ((Actor) getContainer()).getExecutiveDirector();
-		if (dir != null && dir instanceof PtidesDirector)
-			return (PtidesDirector) dir;
-		else
-			return null;
-	}
-
-	/**
+    /**
 	 * Determine if there is an event with time stamp - minDelay > time stamp of
 	 * event at current node upstream. if so, the current event can be
 	 * processed.
@@ -963,8 +755,8 @@ public class PtidesEmbeddedDirector extends DEDirector {
 							.doubleValue();
 					eventTimestamp = eventTimestamp.subtract(delay);
 				}
-				if (PtidesGraphUtilities
-						.mustBeFiredAtRealTime(inputActor, null))
+				if (PtidesActorProperties
+						.mustBeFiredAtRealTime(inputActor))
 					return false; // didn't find earlier events
 				else if (inputActor.equals(this.getContainer()))
 					return false; // didn't find earlier events in platform
@@ -999,14 +791,13 @@ public class PtidesEmbeddedDirector extends DEDirector {
      * @throws IllegalActionException Thrown if actor cannot be fired.
      */
     private void _fireActorInZeroModelTime(Actor actorToFire) throws IllegalActionException {
-            if (actorToFire instanceof CompositeActor)
-                    actorToFire.getDirector().setModelTime(getModelTime());
-            actorToFire.fire();
-            if (!actorToFire.postfire())
-                    _disableActor(actorToFire);
+        if (actorToFire instanceof CompositeActor)
+                actorToFire.getDirector().setModelTime(getModelTime());
+        actorToFire.fire(); 
+        actorToFire.postfire();
     }
+    
     /**
-	
      * Determines if the actor has to be fired at the beginning of the WCET. An actor
      * must be fired at the beginning of the WCET the WCET can only
      * be determined after firing the actor. An example for this actor is a TDLModule.
@@ -1020,27 +811,42 @@ public class PtidesEmbeddedDirector extends DEDirector {
                     return true;
             return false;
     }
+    
+    /**
+     * Remove all events for the given actor for the current model time. This method is
+     * called after firing an actor.
+     * @param actor Actor which was just fired, thus the events have to be removed.
+     */
+    private void _removeEvents(Actor actor) {
+        TreeSet<Time> set = _eventQueues.get(actor); 
+        // take pure events
+        if (!set.isEmpty()) {
+            Time time = set.first(); 
+            if (time.equals(getModelTime())) {
+                set.remove(time);
+            }
+        }
+    }
 
 	/**
-	 * Get the set of events that are safe to fire. Those events contain pure
+	 * Get the list of events that are safe to fire. Those events contain pure
 	 * events and triggered events.
 	 * 
 	 * @return List of events that can be fired next.
 	 */
-	private List<DEEvent> _getNextEventsToFire() throws IllegalActionException {
-		List<DEEvent> events = new LinkedList<DEEvent>();
+	private List<TimedEvent> _getNextEventsToFire() throws IllegalActionException {
+		List<TimedEvent> events = new LinkedList<TimedEvent>();
 		for (Iterator ait = _eventQueues.keySet().iterator(); ait.hasNext();) {
 			Actor actor = (Actor) ait.next();
-			DEEventQueue queue = (DEEventQueue) _eventQueues.get(actor);
+			TreeSet<Time> set = _eventQueues.get(actor);
 
 			// take pure events
-			if (!queue.isEmpty()) {
-				DEEvent event = queue.get();
-				boolean isSafe = isSafeToProcessOnPlatform(event.timeStamp(),
+			if (!set.isEmpty()) {
+			    Time time = set.first();
+				boolean isSafe = isSafeToProcessOnPlatform(time,
 						(NamedObj) actor);
 				if (isSafe) {
-					events.add(event);
-					queue.take();
+					events.add(new TimedEvent(time, actor)); 
 				}
 			}
 			// take trigger events
@@ -1048,7 +854,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 				for (Iterator<IOPort> it = actor.inputPortList().iterator(); it
 						.hasNext();) {
 					IOPort port = it.next();
-					if (_portIsTriggerPort(port)) {
+					if (PtidesActorProperties.portIsTriggerPort(port)) {
     					Receiver[][] receivers = port.getReceivers();
     					for (int i = 0; i < receivers.length; i++) {
     						Receiver[] recv = receivers[i];
@@ -1059,10 +865,16 @@ public class PtidesEmbeddedDirector extends DEDirector {
     									&& (isSafeToProcessOnPlatform(time, port) || _isSafeToProcess(
     											time, graph.node(port),
     											new TreeSet()))) {
-    								_removePureEvent(events, actor, time);
-    								events.add(new DEEvent(port, time, 0,
-    								// _getDepthOfIOPort(port)));
-    										0));
+    							    List<TimedEvent> toRemove = new ArrayList<TimedEvent>();
+    						        for (int k = 0; k < events.size(); k++) {
+    						            TimedEvent event = (TimedEvent) events.get(k);
+    						            if (event.contents == actor
+    						                    && event.timeStamp.equals(time))
+    						                toRemove.add(event);
+    						        }
+    						        for (int k = 0; k < toRemove.size(); k++)
+    						            events.remove(toRemove.get(k));
+    								events.add(new TimedEvent(time, port));
     							}
     						}
     					}
@@ -1076,56 +888,10 @@ public class PtidesEmbeddedDirector extends DEDirector {
 		return events;
 	}
 
-	private boolean _portIsTriggerPort(IOPort port) {
-        return !(port instanceof ParameterPort) && !(((Actor)port.getContainer()) instanceof TDLModule);
-    }
-
-    /**
-	 * If there is a pure event and a triggered event for the same actor with
-	 * the same time stamp, then the pure event can be deleted.
-	 * 
-	 * @param events
-	 *            List of events that can be fired next.
-	 * @param actor
-	 *            Pure events for this actor are being checked.
-	 * @param time
-	 *            Next receiver time.
-	 */
-	private void _removePureEvent(List<DEEvent> events, Actor actor, Time time) {
-		List<DEEvent> toRemove = new ArrayList<DEEvent>();
-		for (int i = 0; i < events.size(); i++) {
-			DEEvent event = (DEEvent) events.get(i);
-			if (event.ioPort() == null && event.actor().equals(actor)
-					&& event.timeStamp().equals(time))
-				toRemove.add(event);
-		}
-		for (int i = 0; i < toRemove.size(); i++)
-			events.remove(toRemove.get(i));
-	}
-
-	/**
-	 * Enqueue all remaining events because they were not processed.
-	 * 
-	 * @param list
-	 *            Events that were previously selected to be processed but were
-	 *            not processed.
-	 * @throws IllegalActionException
-	 *             If the event cannot be enqueued.
-	 */
-	private void _enqueueRemainingEventsAgain(List<DEEvent> list)
-			throws IllegalActionException {
-		if (list == null)
-			return;
-		for (int i = 0; i < list.size(); i++) {
-			DEEvent event = (DEEvent) list.get(i);
-			_enqueueEventAgain(event);
-		}
-	}
-
 	/**
 	 * Initialize the execution strategy parameter.
 	 */
-	private void _initialize() {
+	private void _initialize() { 
 		try {
 			executionStrategy = new StringParameter(this, "executionStrategy");
 			executionStrategy
@@ -1172,14 +938,14 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 *             input port.
 	 */
 	private boolean _transferAllOutputs() throws IllegalActionException {
-		boolean transferedOutputs = false;
-		Iterator outports = ((Actor) getContainer()).outputPortList()
-				.iterator();
-		while (outports.hasNext() && !_stopRequested) {
-			IOPort p = (IOPort) outports.next();
-			transferedOutputs = transferedOutputs | _transferOutputs(p);
-		}
-		return transferedOutputs;
+	    boolean transferedOutputs = false;
+        Iterator outports = ((Actor) getContainer()).outputPortList()
+                .iterator();
+        while (outports.hasNext() && !_stopRequested) {
+            IOPort p = (IOPort) outports.next();
+            transferedOutputs = transferedOutputs | _transferOutputs(p);
+        }
+        return transferedOutputs;
 	}
 
 	// /////////////////////////////////////////////////////////////////
@@ -1189,12 +955,7 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	 * List of actors in execution. In a non-preemptive execution, the list only
 	 * contains one item.
 	 */
-	private List<DEEvent> _eventsInExecution = new ArrayList<DEEvent>();
-
-	/**
-	 * Clock synchronization error specified in the top level director.
-	 */
-	private double _clockSyncError;
+	private List<TimedEvent> _eventsInExecution = new ArrayList<TimedEvent>();
 
 	/**
 	 * The current model time is adjusted when an actor is fired and set to the
@@ -1208,49 +969,17 @@ public class PtidesEmbeddedDirector extends DEDirector {
 	private Hashtable<Actor, Time> _finishingTimesOfActorsInExecution = new Hashtable();
 
 	/**
-	 * The set of actors that have returned false in their postfire() methods.
-	 * Events destined for these actors are discarded and the actors are never
-	 * fired.
-	 */
-	private Set _disabledActors;
-
-	/**
 	 * Contains an event queue for every actor.
 	 */
-	private Hashtable _eventQueues;
+	private Hashtable<Actor, TreeSet<Time>> _eventQueues;
 
 	/**
 	 * Used execution strategy which is set according to a parameter.
 	 */
 	private PlatformExecutionStrategy _executionStrategy;
 
-	/**
-	 * A local boolean variable indicating whether this director is in
-	 * initialization phase execution.
-	 */
-	private boolean _isInitializing = false;
-
-	/**
-	 * The current microstep.
-	 */
-	private int _microstep = 0;
-
-	/**
-	 * Network delay time specified in the top-level director.
-	 */
-	private double _networkDelay;
-
-	/**
-	 * Physical time that is managed by the top level director (PtidesDirector).
-	 */
-	private Time _physicalTime;
-
-	/**
-	 * Graph for the platform actors.
+	/**TODO: remove
 	 */
 	public DirectedGraph graph;
-	
-	protected CalendarQueue _inputIsSafeToRead = new CalendarQueue(
-            new TimedEvent.TimeComparator());
 
 }

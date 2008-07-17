@@ -57,9 +57,13 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * Top-level director for PTIDES models. A Ptides model consists of 
- * platforms represented by CompositeActors. Those platforms run in 
+ * platforms represented by CompositeActors that communicate via 
+ * events. Those platforms run in 
  * threads. This director is a timed director, the time represents 
- * the global <i>physical time</i>.
+ * the global <i>physical time</i>. This physical time is used in all
+ * platforms, for sending events between platforms, a global bounded 
+ * clock synchronization error and a global bounded network delay is
+ * considered.
  * 
  * <p>
  * Platforms contain sensors, actuators, computation actors with worst 
@@ -188,17 +192,18 @@ public class PtidesDirector extends TimedPNDirector {
         _initialize();
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // parameters ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public parameters                 ////
 
     /**
-     * The bounded clock synchonization error. This parameter must contain a
-     * DoubleToken. The value defaults to 0.1.
+     * The bounded clock synchonization error for all platforms. 
+     * This parameter must contain a DoubleToken. The value defaults to 0.1.
      */
     public Parameter clockSyncError;
 
     /**
-     * The bounded network delay. This parameter must contain a DoubleToken. The
+     * The bounded network delay for sending events between platforms. 
+     * This parameter must contain a DoubleToken. The
      * value defaults to 0.1.
      */
     public Parameter networkDelay;
@@ -209,8 +214,8 @@ public class PtidesDirector extends TimedPNDirector {
      */
     public Parameter stopTime;
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Add a new schedule listener that will receive all schedule events created
@@ -225,9 +230,11 @@ public class PtidesDirector extends TimedPNDirector {
 
     /**
      * Override the base class to update local variables.
+     * @param attribute Attribute that changed.
+     * @exception IllegalActionException Thrown if parameter cannot be read.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == clockSyncError) {
             _clockSyncError = ((DoubleToken) clockSyncError.getToken())
                     .doubleValue();
@@ -264,6 +271,8 @@ public class PtidesDirector extends TimedPNDirector {
      * queue of waiting processes and sort it by the time specified by the
      * method argument. Increment the count of the actors blocked on a delay.
      * 
+     * @param actor Actor that schedules to be refired.
+     * @param newFiringTime Future time actor wants to be refired at.
      * @exception IllegalActionException
      *                If the operation is not permissible (e.g. the given time
      *                is in the past).
@@ -296,6 +305,8 @@ public class PtidesDirector extends TimedPNDirector {
     /**
      * Initialize parameters and the schedule listeners. Calculate minimum
      * delays for ports on platforms according to Ptides.
+     * @throws IllegalActionException Thrown if other actors than CompositeActors
+     * are used in this model.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -303,6 +314,7 @@ public class PtidesDirector extends TimedPNDirector {
         _stopTime = new Time(this, ((DoubleToken) stopTime.getToken())
                 .doubleValue());
 
+        
         PtidesGraphUtilities utilities = new PtidesGraphUtilities(this
                 .getContainer());
         utilities.calculateMinDelays();
@@ -314,12 +326,12 @@ public class PtidesDirector extends TimedPNDirector {
                 .iterator(); it.hasNext();) {
             Object obj = it.next();
             if (obj instanceof CompositeActor) {
-                CompositeActor actor = (CompositeActor) obj;
+                CompositeActor actor = (CompositeActor) obj; 
                 if (actor.getDirector() instanceof PtidesEmbeddedDirector) {
                     PtidesEmbeddedDirector dir = (PtidesEmbeddedDirector) actor
                             .getDirector();
-                    dir.setClockSyncError(_clockSyncError);
-                    dir.setNetworkDelay(_networkDelay);
+                    dir._clockSyncError = _clockSyncError;
+                    dir._networkDelay = _networkDelay;
                 }
                 List<Actor> actors = new ArrayList<Actor>();
                 for (Iterator it2 = actor.entityList().iterator(); it2
@@ -348,7 +360,8 @@ public class PtidesDirector extends TimedPNDirector {
     }
 
     /**
-     * Return a new PtidesReceiver.
+     * Create a new PtidesReceiver.
+     * @return A new PtidesReceiver.
      */
     public Receiver newReceiver() {
         return new PtidesReceiver();
@@ -357,13 +370,12 @@ public class PtidesDirector extends TimedPNDirector {
     /**
      * Set a new value to the current time of the model, where the new time must
      * be no earlier than the current time. If the new time is bigger than the
-     * stop time, stop the execution of the model.
-     * 
-     * @exception IllegalActionException
-     *                If an attempt is made to change the time to less than the
-     *                current time.
+     * stop time, stop the execution of the model. 
      * @param newTime
      *            The new time of the model.
+     * @exception IllegalActionException
+     *                If an attempt is made to change the time to less than the
+     *                current time. 
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
         super.setModelTime(newTime);
@@ -373,8 +385,7 @@ public class PtidesDirector extends TimedPNDirector {
 
     /**
      * Schedule the thread that runs the platform represented by this actor to
-     * be resumed. The actual resuming is done in the fireAt() method.
-     * 
+     * be resumed. The actual resuming is done in the fireAt() method. 
      * @param actor
      *            Platform that should be resumed.
      */
@@ -390,23 +401,24 @@ public class PtidesDirector extends TimedPNDirector {
         _platformsToUnblock.clear();
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
-     * Forward display events from platforms to the schedule listeners. This
-     * method is used as the single point to monitor all events in the model.
+     * Forward display events to the schedule listeners. This
+     * method is used as the single point to monitor events from all actors
+     * in the model.
      * 
      * @param node
-     *            platform that forwards the event.
+     *            Platform that forwards the event.
      * @param actor
-     *            actor inside a platform for which the event was created. If
+     *            Actor inside a platform for which the event was created. If
      *            the actor is null, the event is a platform event, e.g. input
      *            ports read or output ports written.
      * @param time
-     *            physical time at which the event occurred.
+     *            Physical time at which the event occurred.
      * @param eventType
-     *            type of schedule event.
+     *            Type of schedule event.
      */
     protected final void _displaySchedule(Actor node, Actor actor, double time,
             ScheduleEventType eventType) {
@@ -441,8 +453,8 @@ public class PtidesDirector extends TimedPNDirector {
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Initialize parameters of the director.
@@ -474,27 +486,22 @@ public class PtidesDirector extends TimedPNDirector {
         _scheduleListeners = new LinkedList<ScheduleListener>();
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
 
     /**
-     * Global clock sychronization error.
+     * The bounded clock synchonization error for all platforms.
      */
     private double _clockSyncError;
 
     /**
-     * The stop time of the model.
-     */
-    private Time _stopTime;
-
-    /**
-     * The global network delay.
+     * The bounded network delay for sending events between platforms.
      */
     private double _networkDelay;
 
     /**
-     * Platforms that received new events and should be resumed at current model
-     * time.
+     * Platforms that are currently blocked but received new events and 
+     * should be resumed at current model time.
      */
     private List<Actor> _platformsToUnblock;
 
@@ -503,5 +510,10 @@ public class PtidesDirector extends TimedPNDirector {
      * events on the platforms.
      */
     private Collection<ScheduleListener> _scheduleListeners;
+
+    /**
+     * The stop time of the model.
+     */
+    private Time _stopTime;
 
 }

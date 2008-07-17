@@ -153,24 +153,24 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
         int actorDataset = nodeActorStrings.indexOf(node.getName() + ": "
                 + actor.getName());
         int nodeDataSet = nodeActorStrings.indexOf(node.getName());
-        if (scheduleEvent == ScheduleEventType.start
-                || scheduleEvent == ScheduleEventType.stop) {
+        if (scheduleEvent == ScheduleEventType.START
+                || scheduleEvent == ScheduleEventType.STOP) {
             plot.addPoint(actorDataset, x, actorY,
-                    scheduleEvent == ScheduleEventType.stop);
+                    scheduleEvent == ScheduleEventType.STOP);
             plot.addPoint(nodeDataSet, x, nodeY,
-                    scheduleEvent == ScheduleEventType.stop);
-            nodeActive[nodes.indexOf(node)] = scheduleEvent == ScheduleEventType.start;
-        } else if (scheduleEvent == ScheduleEventType.transferinput) {
+                    scheduleEvent == ScheduleEventType.STOP);
+            nodeActive[nodes.indexOf(node)] = scheduleEvent == ScheduleEventType.START;
+        } else if (scheduleEvent == ScheduleEventType.TRANSFERINPUT) {
             plot.addPoint(nodeDataSet, x, nodeY, false || nodeActive[nodes
                     .indexOf(node)]);
             plot.addPoint(nodeDataSet, x - 0.05, nodeY - 0.05, false);
             plot.addPoint(nodeDataSet, x, nodeY, true);
-        } else if (scheduleEvent == ScheduleEventType.transferoutput) {
+        } else if (scheduleEvent == ScheduleEventType.TRANSFEROUTPUT) {
             plot.addPoint(nodeDataSet, x, nodeY, false || nodeActive[nodes
                     .indexOf(node)]);
             plot.addPoint(nodeDataSet, x + 0.05, nodeY - 0.05, false);
             plot.addPoint(nodeDataSet, x, nodeY, true);
-        } else if (scheduleEvent == ScheduleEventType.missedexecution) {
+        } else if (scheduleEvent == ScheduleEventType.MISSEDEXECUTION) {
             plot.addPoint(actorDataset, x - 0.05, actorY + 0.05, false);
             plot.addPoint(actorDataset, x + 0.05, actorY - 0.05, true);
             plot.addPoint(actorDataset, x - 0.05, actorY - 0.05, false);

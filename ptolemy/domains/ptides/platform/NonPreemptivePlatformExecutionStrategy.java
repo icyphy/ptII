@@ -38,7 +38,8 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.actor.util.Time;
-import ptolemy.domains.de.kernel.DEEvent;
+import ptolemy.actor.util.TimedEvent; 
+import ptolemy.domains.ptides.kernel.PtidesActorProperties;
 import ptolemy.domains.ptides.kernel.PtidesGraphUtilities; 
 import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType; 
 import ptolemy.graph.DirectedAcyclicGraph;
@@ -92,18 +93,22 @@ public class NonPreemptivePlatformExecutionStrategy extends
          *         vice versa.
          */
         public int compare(Object arg0, Object arg1) {
-            DEEvent event1 = (DEEvent) arg0;
-            DEEvent event2 = (DEEvent) arg1;
-            Actor actor1 = event1.actor();
-            Actor actor2 = event2.actor();
-            double wcet1 = PtidesGraphUtilities.getWCET(actor1);
-            double wcet2 = PtidesGraphUtilities.getWCET(actor2);
-            Time time1 = event1.timeStamp();
-            Time time2 = event2.timeStamp();
-            boolean fireAtRT1 = PtidesGraphUtilities.mustBeFiredAtRealTime(
-                    actor1, event1.ioPort());
-            boolean fireAtRT2 = PtidesGraphUtilities.mustBeFiredAtRealTime(
-                    actor2, event2.ioPort());
+            TimedEvent event1 = (TimedEvent) arg0;
+            TimedEvent event2 = (TimedEvent) arg1;
+            Actor actor1 = event1.contents instanceof IOPort ? 
+                    (Actor) ((IOPort) event1.contents).getContainer() :
+                        (Actor) event1.contents;
+            Actor actor2 = event2.contents instanceof IOPort ? 
+                    (Actor) ((IOPort) event2.contents).getContainer() :
+                        (Actor) event2.contents;
+            double wcet1 = PtidesActorProperties.getWCET(actor1);
+            double wcet2 = PtidesActorProperties.getWCET(actor2);
+            Time time1 = event1.timeStamp;
+            Time time2 = event2.timeStamp;
+            boolean fireAtRT1 = PtidesActorProperties.mustBeFiredAtRealTime(
+                    event1.contents);
+            boolean fireAtRT2 = PtidesActorProperties.mustBeFiredAtRealTime(
+                    event2.contents);
             int index1 = -1;
             int index2 = -1;
 
@@ -156,11 +161,7 @@ public class NonPreemptivePlatformExecutionStrategy extends
                 if (time2.compareTo(time1) < 0) {
                     return 1;
                 } else {
-                    if (event1.depth() < event2.depth()) {
-                        return -1;
-                    } else if (event1.depth() > event2.depth()) {
-                        return 1;
-                    }
+                    return index2 - index1;
                 }
             } else { // wcet1 > 0 && wcet2 > 0
                 if (fireAtRT1 && !fireAtRT2) {
@@ -221,43 +222,46 @@ public class NonPreemptivePlatformExecutionStrategy extends
      *                Actors currently in execution.
      * @param eventsToFire
      *                Events that are safe to fire.
-     * 
+     * @param nextRealTimeEvent Smallest time stamp of events that have to be 
+     * fired at model time = real time.
+     * @param physicalTime Current physical time of the model.
      * @return The next event that can be fired.
      * @exception IllegalActionException
      *                 Thrown if an execution was missed.
      */
-    public DEEvent getNextEventToFire(List<DEEvent> actorsFiring,
-            List<DEEvent> eventsToFire, Time nextRealTimeEvent, Time physicalTime) throws IllegalActionException {
+    public TimedEvent getNextEventToFire(List<TimedEvent> actorsFiring,
+            List<TimedEvent> eventsToFire, Time nextRealTimeEvent, Time physicalTime) throws IllegalActionException {
         
         if (actorsFiring.size() > 0 || eventsToFire.size() == 0) {
             return null;
         }
         
         Collections.sort(eventsToFire, new WCETComparator(physicalTime));
-        DEEvent event;
+        TimedEvent event;
         int index = 0;
         
         while (index < eventsToFire.size()) {
-            event = (DEEvent) eventsToFire.get(index);
-            Actor actorToFire = event.actor();
+            event = (TimedEvent) eventsToFire.get(index);
+            Actor actorToFire = event.contents instanceof IOPort ? 
+                    (Actor) ((IOPort) event.contents).getContainer() :
+                        (Actor) event.contents;
 
-            if (PtidesGraphUtilities.mustBeFiredAtRealTime(actorToFire, event
-                    .ioPort())) {
-                if (physicalTime.compareTo(event.timeStamp()) > 0) {
-                    _displaySchedule(actorToFire, event.timeStamp()
-                            .getDoubleValue(), ScheduleEventType.missedexecution);
+            if (PtidesActorProperties.mustBeFiredAtRealTime(event.contents)) {
+                if (physicalTime.compareTo(event.timeStamp) > 0) {
+                    _displaySchedule(actorToFire, event.timeStamp
+                            .getDoubleValue(), ScheduleEventType.MISSEDEXECUTION);
                     throw new IllegalActionException("missed execution!");
-                } else if (physicalTime.compareTo(event.timeStamp()) < 0) {
+                } else if (physicalTime.compareTo(event.timeStamp) < 0) {
                     index++;
                     continue;
                 }
             } else if (physicalTime.add(
-                    PtidesGraphUtilities.getWCET(actorToFire)).compareTo(
+                    PtidesActorProperties.getWCET(actorToFire)).compareTo(
                     nextRealTimeEvent) > 0) {
                 index++;
                 continue;
             }
-            return event;
+            return new TimedEvent(event.timeStamp, actorToFire);
 
         }
         return null;

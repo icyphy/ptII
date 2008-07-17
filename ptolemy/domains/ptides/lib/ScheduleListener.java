@@ -57,7 +57,8 @@ public interface ScheduleListener {
      * @param scheduleEvent
      *                The type of the event.
      */
-    public void event(Actor node, Actor actor, double time, ScheduleEventType scheduleEvent);
+    public void event(Actor node, Actor actor, double time, 
+            ScheduleEventType scheduleEvent);
 
     /**
      * Initialize the legend of the plotter.
@@ -67,10 +68,19 @@ public interface ScheduleListener {
      */
     public void initialize(Hashtable nodesActors);
 
-	// enumeration
-	
+	/**
+	 * Type of schedule event:
+	 * <ul>
+	 * <li>start. Started the execution of an actor.</li>
+	 * <li>stop. Stopped the execution of an actor.</li>
+	 * <li>transferoutput. An Event is sent from a platform </li>
+	 * <li> transferinput. An Event is sent to a platform </li>
+	 * <li> missedexecution. An actors should have been executed at a previous
+	 * time </li>
+	 * </ul>.
+	 */
     public static enum ScheduleEventType {
-        start, stop, transferoutput, transferinput, missedexecution
+        START, STOP, TRANSFEROUTPUT, TRANSFERINPUT, MISSEDEXECUTION
     }
 
 }

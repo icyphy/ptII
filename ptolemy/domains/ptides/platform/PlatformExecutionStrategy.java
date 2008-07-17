@@ -33,10 +33,9 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
-import ptolemy.actor.util.Time;
-import ptolemy.domains.de.kernel.DEEvent;
-import ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector;
-import ptolemy.domains.ptides.kernel.PtidesGraphUtilities;
+import ptolemy.actor.util.Time; 
+import ptolemy.actor.util.TimedEvent;
+import ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector; 
 import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType; 
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -50,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Patricia Derler
  * 
  */
-public abstract class PlatformExecutionStrategy {
+public abstract class PlatformExecutionStrategy { 
 
     /**
      * The basic non-preemptive execution strategy is implemented by
@@ -83,16 +82,20 @@ public abstract class PlatformExecutionStrategy {
      * @param eventsToFire
      *                List of events that are safe to fire. This list is
      *                computed by the PtidesEmbeddedDirector.
+     * @param nextRealTimeEvent Smallest time stamp of events that have to be 
+     * fired at model time = real time.
+     * @param physicalTime Current physical time of the model.
      * @return event that can be fired. if no event can be fired then it returns
      *         null
-     * @exception IllegalActionException
+     * @exception IllegalActionException Thrown if the execution of an actor was
+     * missed.
      */
-    public abstract DEEvent getNextEventToFire(List<DEEvent> actorsFiring,
-            List<DEEvent> eventsToFire, Time nextRealTimeEvent, 
+    public abstract TimedEvent getNextEventToFire(List<TimedEvent> actorsFiring,
+            List<TimedEvent> eventsToFire, Time nextRealTimeEvent, 
             Time physicalTime) throws IllegalActionException;
 
     /**
-     * Forward an event that should be displayed by a schedule listener.
+     * Forward a schedule event to the enclosing director.
      * 
      * @param actor
      *                The actor that has an event to be displayed.

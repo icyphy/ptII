@@ -108,37 +108,7 @@ public class PtidesGraphUtilities {
         _adjustMinimumDelaysOfPortGroups();
     }
 
-    /**
-     * Returns the minimum delay for the an actor which is specified as a
-     * parameter of the actor or Double.MAX_VALUE if no delay is specified.
-     *
-     * @param actor
-     *                The actor for which minimum delays are calculated for.
-     * @return The minimum delay.
-     */
-    public static double getMinDelayTime(NamedObj actor) {
-        try {
 
-            // double clockSyncError =
-            // ((EmbeddedDEDirector4Ptides)((Actor)actor.getContainer()).getDirector()).getExecutiveDirector().getClockSyncError();
-            // double networkDelay =
-            // ((EmbeddedDEDirector4Ptides)((Actor)actor.getContainer()).getDirector()).getExecutiveDirector().getNetworkDelay();
-
-            Parameter parameter = (Parameter) actor.getAttribute("minDelay");
-
-            if (parameter != null) {
-                DoubleToken intToken = (DoubleToken) parameter.getToken();
-
-                return intToken.doubleValue();
-            } else {
-                return Double.MAX_VALUE;
-            }
-        } catch (ClassCastException ex) {
-            return Double.MAX_VALUE;
-        } catch (IllegalActionException ex) {
-            return Double.MAX_VALUE;
-        }
-    }
 
     /**
      * Sets minimum delays for ports of the contained actor.
@@ -222,69 +192,6 @@ public class PtidesGraphUtilities {
         }
     }
 
-    /**
-     * Return the worst case execution time of the actor or 0 if no worst case
-     * execution time was specified.
-     *
-     * @param actor
-     *                The actor for which the worst case execution time is
-     *                requested.
-     * @return The worst case execution time.
-     */
-    public static double getWCET(Actor actor) {
-        if (actor instanceof TDLModule) {
-            return ((TDLModuleDirector) ((TDLModule) actor).getDirector())
-                    .getWCET();
-        }
-        try {
-            Parameter parameter = (Parameter) ((NamedObj) actor)
-                    .getAttribute("WCET");
-
-            if (parameter != null) {
-                DoubleToken token = (DoubleToken) parameter.getToken();
-
-                return token.doubleValue();
-            } else {
-                return 0.0;
-            }
-        } catch (ClassCastException ex) {
-            return 0.0;
-        } catch (IllegalActionException ex) {
-            return 0.0;
-        }
-    }
-
-
-    /**
-     * Returns true if the actor is an actuator. A parameter of an actuator
-     * actor called "isActuator" is true if the actor is an actuator.
-     *
-     * @param actor
-     *                The actor which might be an actuator.
-     * @return True if the actor is an actuator.
-     */
-    public static boolean isActuator(Actor actor) {
-        try {
-            if (actor == null) {
-                return false;
-            } else {
-                Parameter parameter = (Parameter) ((NamedObj) actor)
-                        .getAttribute("isActuator");
-
-                if (parameter != null) {
-                    BooleanToken intToken = (BooleanToken) parameter.getToken();
-
-                    return intToken.booleanValue();
-                } else {
-                    return false;
-                }
-            }
-        } catch (ClassCastException ex) {
-            return false;
-        } catch (IllegalActionException ex) {
-            return false;
-        }
-    }
 
 
     /**
@@ -303,56 +210,6 @@ public class PtidesGraphUtilities {
             IOPort out) {
         DirectedAcyclicGraph graph = _computeGraph(container);
         return graph.reachableNodes(graph.node(in)).contains(graph.node(out));
-    }
-
-    /**
-     * Returns true if given actor is a sensor. A parameter "isSensor"
-     * is set to true if the actor is a sensor.
-     *
-     * @param actor
-     *                Actor that might be a sensor.
-     * @return True if the actor is a sensor.
-     */
-    public static boolean isSensor(Actor actor) {
-        try {
-            if (actor == null) {
-                return false;
-            } else {
-                Parameter parameter = (Parameter) ((NamedObj) actor)
-                        .getAttribute("isSensor");
-
-                if (parameter != null) {
-                    BooleanToken intToken = (BooleanToken) parameter.getToken();
-
-                    return intToken.booleanValue();
-                } else {
-                    return false;
-                }
-            }
-        } catch (ClassCastException ex) {
-            return false;
-        } catch (IllegalActionException ex) {
-            return false;
-        }
-    }
-
-    /**
-     * Returns true if the actor or port of an actor must be fired at
-     * real time.  Actors that must be fired at real time are sensors
-     * and actuators.
-     *
-     * @param actor
-     *                Actor that might need to be fired at real time.
-     * @param port
-     *                Port of an actor that might need to be fired at real time.
-     * @return True if actor must be fired at real time.
-     */
-    public static boolean mustBeFiredAtRealTime(Actor actor, Port port) {
-        if (actor instanceof Source && ((Source) actor).trigger == port) {
-            // trigger ports don't have to be fired at real time
-            return false;
-        }
-        return isSensor(actor) || isActuator(actor);
     }
 
     /**
@@ -400,7 +257,7 @@ public class PtidesGraphUtilities {
             for (Iterator inputs = actor.inputPortList().iterator(); inputs
                     .hasNext();) {
                 IOPort input = (IOPort) inputs.next();
-                double oldMinDelay = PtidesGraphUtilities
+                double oldMinDelay = PtidesActorProperties
                         .getMinDelayTime(input);
                 ArrayList list = new ArrayList();
                 double newMinDelay = _getMinDelayUpstream(graph, input, list);
@@ -435,7 +292,7 @@ public class PtidesGraphUtilities {
                     for (Iterator ports = equivalenceClass.iterator(); ports
                             .hasNext();) {
                         IOPort port = (IOPort) ports.next();
-                        double minDelay = PtidesGraphUtilities
+                        double minDelay = PtidesActorProperties
                                 .getMinDelayTime(port);
                         if (minMinDelay > minDelay) {
                             minMinDelay = minDelay;
@@ -444,7 +301,7 @@ public class PtidesGraphUtilities {
                     for (Iterator ports = equivalenceClass.iterator(); ports
                             .hasNext();) {
                         IOPort port = (IOPort) ports.next();
-                        if (PtidesGraphUtilities.getMinDelayTime(port) != minMinDelay) {
+                        if (PtidesActorProperties.getMinDelayTime(port) != minMinDelay) {
                             PtidesGraphUtilities.setMinDelay(port, minMinDelay);
                         }
                     }
@@ -494,7 +351,7 @@ public class PtidesGraphUtilities {
                 IOPort sinkPort = (IOPort) ((Node) nodeIterator.next())
                         .getWeight();
                 Actor a = (Actor) sinkPort.getContainer();
-                if (PtidesGraphUtilities.isSensor(a) && sinkPort.isInput()) {
+                if (PtidesActorProperties.isSensor(a) && sinkPort.isInput()) {
                     Collection edgesToRemove = new java.util.ArrayList();
                     for (Iterator it = _graph.inputEdges(_graph.node(sinkPort))
                             .iterator(); it.hasNext();) {
@@ -568,7 +425,7 @@ public class PtidesGraphUtilities {
                         nextNode = graph.node(delayActor.input);
                     }
                 }
-                if (PtidesGraphUtilities.isSensor(inputActor)
+                if (PtidesActorProperties.isSensor(inputActor)
                         || inputActor instanceof TDLModule) {
                     return delay;
                 } else if (inputActor instanceof Clock) { // assume periodic
@@ -606,7 +463,7 @@ public class PtidesGraphUtilities {
     private double _getMinDelayUpstream(DirectedAcyclicGraph graph,
             IOPort inputPort, List traversedActors) {
         double minDelay = Double.MAX_VALUE;
-        double delay = PtidesGraphUtilities.getMinDelayTime(inputPort);
+        double delay = PtidesActorProperties.getMinDelayTime(inputPort);
         for (Iterator it = graph.inputEdges(graph.node(inputPort)).iterator(); it
                 .hasNext();) {
             IOPort port = (IOPort) ((Edge) it.next()).source().getWeight();
@@ -617,7 +474,7 @@ public class PtidesGraphUtilities {
             traversedActors.add(actor);
             for (Iterator inputs = actor.inputPortList().iterator(); inputs
                     .hasNext();) {
-                delay = PtidesGraphUtilities.getMinDelayTime(inputPort);
+                delay = PtidesActorProperties.getMinDelayTime(inputPort);
                 IOPort input = (IOPort) inputs.next();
                 if (isInputConnectedToOutput(actor, input, port)) {
                     delay += _getMinDelayUpstream(graph, input, traversedActors);
@@ -685,7 +542,7 @@ public class PtidesGraphUtilities {
                     // one
                     Edge edge = (Edge) sinksIt.next();
                     IOPort sink = (IOPort) edge.sink().getWeight();
-                    double minDelay = PtidesGraphUtilities
+                    double minDelay = PtidesActorProperties
                             .getMinDelayTime(output);
                     PtidesGraphUtilities.setMinDelay(sink, minDelay);
                 }
