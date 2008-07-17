@@ -1685,6 +1685,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     protected LinkedList _actorFiringListeners = null;
 
+    /** The causality interface, if it has been created. */
+    protected CausalityInterface _causalityInterface;
+
     /** The function dependency, if it is present. */
     protected FunctionDependency _functionDependency;
 
@@ -1719,9 +1722,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
     private transient long _outputPortsVersion = -1;
 
     private transient List _cachedOutputPorts;
-    
-    /** The causality interface, if it has been created. */
-    private CausalityInterface _causalityInterface;
     
     /** The director for which the causality interface was created. */
     private Director _causalityInterfaceDirector;
