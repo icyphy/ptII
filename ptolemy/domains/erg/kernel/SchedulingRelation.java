@@ -215,21 +215,6 @@ public class SchedulingRelation extends Transition {
         return result;
     }
 
-    /** Override the superclass to return the guard expression of this
-     *  scheduling relation. If the guard is an empty string, the return is
-     *  "true"; otherwise, the result of the overridden method in the superclass
-     *  is returned.
-     *
-     *  @return The non-empty guard expression.
-     */
-    public String getGuardExpression() {
-        String guard = super.getGuardExpression();
-        if (guard.trim().equals("")) {
-            guard = "true";
-        }
-        return guard;
-    }
-
     /** Return a string describing this scheduling relation. The string has up
      *  to three lines. The first line is the guard expression, preceded
      *  by "guard: ". The second line is the delay expression, preceded by
