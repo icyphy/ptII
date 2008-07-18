@@ -49,6 +49,7 @@ PTPACKAGE = 	database
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	ArrayOfRecordsExporter.java \
 	ArrayOfRecordsRecorder.java \
 	DatabaseManager.java \
 	DatabaseQuery.java \

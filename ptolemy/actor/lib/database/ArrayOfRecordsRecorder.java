@@ -46,10 +46,11 @@ import ptolemy.vergil.icon.TableIcon;
 //// ArrayOfRecordsRecorder
 
 /**
- An actor that displays a record that arrives on its input port.
- The record (or a specified subset of it) is displayed in the icon
+ An actor that displays an array of records that arrives on its input port.
+ The records (or a specified subset of the records) are displayed in the icon
  of the actor. In addition, double clicking on the actor displays
- the entire record.
+ the entire array of records in a table.  Alt-clicking configures
+ the actor.
 
  @author Edward A. Lee
  @version $Id: Occupants.java 49820 2008-06-14 18:56:43Z eal $
@@ -123,8 +124,10 @@ public class ArrayOfRecordsRecorder extends Sink {
     
     /** The columns to display in the table.
      *  This is an array of strings specifying the column
-     *  names to display. It defaults to ALL, which indicates
-     *  that all fields should be displayed.
+     *  names to display, and the order in which they are
+     *  displayed. It defaults to ALL, which indicates
+     *  that all fields should be displayed. In this case,
+     *  the columns are organized alphabetically.
      */
     public Parameter columns;
 
