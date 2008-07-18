@@ -258,8 +258,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 	 * 
 	 * @param actor
 	 *            The actor in execution.
-	 * @return The finishing time of the actor.
-	 * @see #setFinishingTime(Actor, double)
+	 * @return The finishing time of the actor. 
 	 */
 	public Time getFinishingTime(Actor actor) {
 		if (_finishingTimesOfActorsInExecution.get(actor) != null) {
@@ -402,7 +401,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 		double minDelayTime = PtidesActorProperties.getMinDelayTime(object);
 		System.out.println(minDelayTime + " " + Double.MAX_VALUE);
 		return minDelayTime == Double.MAX_VALUE 
-				|| time.subtract(minDelayTime).add(_clockSyncError).add(
+				|| time.subtract(minDelayTime).add(_clockSyncronizationError).add(
 						_networkDelay).compareTo(_currentPhysicalTime) <= 0;
 	}
 
@@ -454,8 +453,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 	 * @param actor
 	 *            The actor in execution.
 	 * @param finishingTime
-	 *            The time the actor will finish.
-	 * @see #getFinishingTime(NamedObj)
+	 *            The time the actor will finish. 
 	 */
 	public void setFinishingTime(Actor actor, Time finishingTime) {
 		if (_finishingTimesOfActorsInExecution.get(actor) != null)
@@ -523,7 +521,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 	/**
      * Clock synchronization error specified in the top level director.
      */
-    protected double _clockSyncError;
+    protected double _clockSyncronizationError;
 
     /**
      * Current physical time which is retrieved by getting the model time 
@@ -597,7 +595,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 							.compareTo(_currentPhysicalTime) > 0))) {
 					    _inputSafeToProcess.put(new TimedEvent(time.subtract(
 					            PtidesActorProperties.getMinDelayTime(port))
-								.add(_clockSyncError).add(_networkDelay), port));
+								.add(_clockSyncronizationError).add(_networkDelay), port));
 						// at this time, the new input should be read
 						receiver.put(t, time);
 						continue; // couldn't transfer newest token

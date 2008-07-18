@@ -89,7 +89,7 @@ public class PtidesGraphUtilities {
      * @exception IllegalActionException
      *                 Thrown if parameters of actors cannot be read.
      */
-    public void calculateMinDelays() throws IllegalActionException {
+    public void calculateMinimumDelays() throws IllegalActionException {
         for (Iterator it = topLevelContainer.entityList().iterator(); it
                 .hasNext();) {
             Actor actor = (Actor) it.next();
