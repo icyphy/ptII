@@ -87,8 +87,7 @@ public class LineWriter extends Sink {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        input.setTypeEquals(BaseType.STRING);
-        input.setMultiport(false);
+        _setInputConstraints();
 
         fileName = new FilePortParameter(this, "fileName");
         fileName.setExpression("System.out");
@@ -233,12 +232,23 @@ public class LineWriter extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Set the type constraints and multiport property of the input
+     *  port. This is done here so that derived classes can override it.
+     *  @throws IllegalActionException If making the port a multiport
+     *   is not allowed.
+     */
+    protected void _setInputConstraints() throws IllegalActionException {
+        input.setTypeEquals(BaseType.STRING);
+        input.setMultiport(false);
+    }
+    
     /** Write the specified token to the current writer.
      *  This is protected so that derived classes can modify the
      *  format in which the token is written.
      *  @param token The token to write.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected void _writeToken(Token token) {
+    protected void _writeToken(Token token) throws IllegalActionException {
         // In this base class, the cast is safe.
         _writer.println(((StringToken) token).stringValue());
     }
