@@ -140,15 +140,17 @@ OPTIONAL_FILES = \
 	'TransformationEditor$$BatchMatchAction$$MultipleViewController.class' \
 	'TransformationEditor$$BatchMatchAction.class' \
 	'TransformationEditor$$CellEditor.class' \
-	'TransformationEditor$$CreatedPropertyAction.class' \
+	'TransformationEditor$$CreationAttributeAction.class' \
 	'TransformationEditor$$FileComparator.class' \
 	'TransformationEditor$$GTEntityConfigureAction.class' \
-	'TransformationEditor$$IgnoredPropertyAction.class' \
+	'TransformationEditor$$IgnoringAttributeAction.class' \
 	'TransformationEditor$$LayoutAction.class' \
 	'TransformationEditor$$MatchAction.class' \
 	'TransformationEditor$$MatchingAttributeAction.class' \
 	'TransformationEditor$$MatchingAttributeActionsFactory.class' \
-	'TransformationEditor$$PreservedPropertyAction.class' \
+	'TransformationEditor$$NegationAttributeAction.class' \
+	'TransformationEditor$$OptionAttributeAction.class' \
+	'TransformationEditor$$PreservationAttributeAction.class' \
 	'TransformationEditor$$SingleMatchAction$$SingleViewController.class' \
 	'TransformationEditor$$SingleMatchAction.class' \
 	'TransformationEditor$$TransformationActorController.class' \

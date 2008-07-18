@@ -51,6 +51,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -98,6 +99,7 @@ import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.IgnoringAttribute;
 import ptolemy.actor.gt.MatchingAttribute;
 import ptolemy.actor.gt.NegationAttribute;
+import ptolemy.actor.gt.OptionAttribute;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.PatternObjectAttribute;
 import ptolemy.actor.gt.PortMatcher;
@@ -713,10 +715,11 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
                 MatchingAttributeAction[] radioActions =
                     new MatchingAttributeAction[] {
-                        new CreatedPropertyAction("Created"),
-                        new IgnoredPropertyAction("Ignored"),
-                        new NegatedPropertyAction("Negated"),
-                        new PreservedPropertyAction("Preserved")
+                        new CreationAttributeAction("Created"),
+                        new IgnoringAttributeAction("Ignored"),
+                        new NegationAttributeAction("Negated"),
+                        new OptionAttributeAction("Optional"),
+                        new PreservationAttributeAction("Preserved")
                 };
                 JMenuItem[] radioItems = new JMenuItem[radioActions.length];
                 int i = 0;
@@ -1046,7 +1049,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         _table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         _table.setEnabled(true);
         _table.setRowHeight(22);
-        _table.setSelectionBackground(_SELECTED_COLOR);
+        _table.setSelectionBackground(_SELECTION_COLOR);
         _table.setSelectionForeground(Color.BLACK);
 
         TableColumnModel model = _table.getColumnModel();
@@ -1108,6 +1111,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             return _IGNORING_COLOR;
         } else if (!object.attributeList(NegationAttribute.class).isEmpty()) {
             return _NEGATION_COLOR;
+        } else if (!object.attributeList(OptionAttribute.class).isEmpty()) {
+            return _OPTION_COLOR;
         } else if (!object.attributeList(PreservationAttribute.class).isEmpty()) {
             return _PRESERVATION_COLOR;
         } else {
@@ -1194,8 +1199,19 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                             }
                             object.moveToIndex(i);
                         }
+
+                        String iconFile = optionalActorClass.replace('.', '/') +
+                                "Icon.xml";
+                        URL xmlFile = clazz.getClassLoader().getResource(
+                                iconFile);
+                        if (xmlFile != null) {
+                            MoMLParser parser = new MoMLParser(
+                                    object.workspace());
+                            parser.setContext(object);
+                            parser.parse(xmlFile, xmlFile);
+                        }
                     } catch (Throwable t) {
-                        // Do not add PtalonMatcher to the library.
+                        // Do not add the optional actor to the library.
                     }
                 }
 
@@ -1484,11 +1500,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private static final Color _IGNORING_COLOR = Color.GRAY;
 
-    private static final Color _NEGATION_COLOR = new Color(255, 64, 64);
+    private static final Color _NEGATION_COLOR = new Color(255, 32, 32);
 
-    private static final Color _PRESERVATION_COLOR = new Color(96, 96, 255);
+    private static final Color _OPTION_COLOR = new Color(160, 32, 160);
 
-    private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
+    private static final Color _PRESERVATION_COLOR = new Color(64, 64, 255);
+
+    private static final Color _SELECTION_COLOR = new Color(230, 230, 255);
 
     private CellEditor _cellEditor;
 
@@ -1803,9 +1821,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     ///////////////////////////////////////////////////////////////////
     ////                      private inner classes                ////
 
-    private class CreatedPropertyAction extends MatchingAttributeAction {
+    private class CreationAttributeAction extends MatchingAttributeAction {
 
-        public CreatedPropertyAction(String name) {
+        public CreationAttributeAction(String name) {
             super(name);
         }
 
@@ -1851,9 +1869,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
-    private class IgnoredPropertyAction extends MatchingAttributeAction {
+    private class IgnoringAttributeAction extends MatchingAttributeAction {
 
-        public IgnoredPropertyAction(String name) {
+        public IgnoringAttributeAction(String name) {
             super(name);
         }
 
@@ -2011,9 +2029,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
-    private class NegatedPropertyAction extends MatchingAttributeAction {
+    private class NegationAttributeAction extends MatchingAttributeAction {
 
-        public NegatedPropertyAction(String name) {
+        public NegationAttributeAction(String name) {
             super(name);
         }
 
@@ -2022,9 +2040,20 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
-    private class PreservedPropertyAction extends MatchingAttributeAction {
+    private class OptionAttributeAction extends MatchingAttributeAction {
 
-        public PreservedPropertyAction(String name) {
+        public OptionAttributeAction(String name) {
+            super(name);
+        }
+
+        public Class<? extends MatchingAttribute> getAttributeClass() {
+            return OptionAttribute.class;
+        }
+    }
+
+    private class PreservationAttributeAction extends MatchingAttributeAction {
+
+        public PreservationAttributeAction(String name) {
             super(name);
         }
 

@@ -96,6 +96,7 @@ JSRCS = \
 	ModelView.java \
 	NamedObjVariable.java \
 	NegationAttribute.java \
+	OptionAttribute.java \
 	ParameterAttribute.java \
 	Pattern.java \
 	PatternObjectAttribute.java \

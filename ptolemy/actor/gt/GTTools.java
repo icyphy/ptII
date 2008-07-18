@@ -113,6 +113,22 @@ public class GTTools {
         }
     }
 
+    public static Attribute findMatchingAttribute(Object object,
+            Class<? extends Attribute> attributeClass,
+            boolean searchContainers) {
+        if (object instanceof NamedObj) {
+            NamedObj namedObj = (NamedObj) object;
+            List<?> list = namedObj.attributeList(attributeClass);
+            if (!list.isEmpty()) {
+                return (Attribute) list.get(0);
+            } else if (searchContainers) {
+                return findMatchingAttribute(namedObj.getContainer(),
+                        attributeClass, searchContainers);
+            }
+        }
+        return null;
+    }
+
     public static NamedObj getChild(NamedObj object, String name,
             boolean allowAttribute, boolean allowPort, boolean allowEntity,
             boolean allowRelation) {
@@ -272,11 +288,13 @@ public class GTTools {
     }
 
     public static boolean isCreated(Object object) {
-        return _isAttributeFound(object, CreationAttribute.class);
+        return findMatchingAttribute(object, CreationAttribute.class, true)
+        		!= null;
     }
 
     public static boolean isIgnored(Object object) {
-        return _isAttributeFound(object, IgnoringAttribute.class);
+        return findMatchingAttribute(object, IgnoringAttribute.class, true)
+        		!= null;
     }
 
     public static boolean isInPattern(NamedObj entity) {
@@ -292,11 +310,18 @@ public class GTTools {
     }
 
     public static boolean isNegated(Object object) {
-        return _isAttributeFound(object, NegationAttribute.class);
+        return findMatchingAttribute(object, NegationAttribute.class, true)
+        		!= null;
+    }
+
+    public static boolean isOptional(Object object) {
+        return findMatchingAttribute(object, OptionAttribute.class, false)
+        		!= null;
     }
 
     public static boolean isPreserved(Object object) {
-        return _isAttributeFound(object, PreservationAttribute.class);
+        return findMatchingAttribute(object, PreservationAttribute.class, true)
+                != null;
     }
 
     /** Restore the values of the parameters that implement the {@link
@@ -349,21 +374,6 @@ public class GTTools {
             for (Object entity : ((CompositeEntity) root).entityList()) {
                 saveValues((ComponentEntity) entity, records);
             }
-        }
-    }
-
-    private static boolean _isAttributeFound(Object object,
-            Class<? extends Attribute> attributeClass) {
-        if (object instanceof NamedObj) {
-            NamedObj namedObj = (NamedObj) object;
-            if (!namedObj.attributeList(attributeClass).isEmpty()) {
-                return true;
-            } else {
-                return _isAttributeFound(namedObj.getContainer(),
-                        attributeClass);
-            }
-        } else {
-            return false;
         }
     }
 }

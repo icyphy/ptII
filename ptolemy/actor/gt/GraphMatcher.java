@@ -34,6 +34,7 @@ package ptolemy.actor.gt;
 import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -180,6 +181,8 @@ public class GraphMatcher extends GraphAnalyzer {
         _negation = false;
         _hasNegatedObject = false;
 
+        _ignoredOptionalObjects = new HashMap<OptionAttribute, Boolean>();
+
         _success = _matchChildrenCompositeEntity(pattern, hostGraph);
 
         // Restore the values of all the iterators.
@@ -294,7 +297,18 @@ public class GraphMatcher extends GraphAnalyzer {
     ////                        protected methods                  ////
 
     protected boolean _isIgnored(Object object) {
-        return GTTools.isCreated(object) || super._isIgnored(object);
+        if (GTTools.isCreated(object) || super._isIgnored(object)) {
+            return true;
+        }
+        OptionAttribute optionAttribute =
+            (OptionAttribute) GTTools.findMatchingAttribute(object,
+                    OptionAttribute.class, true);
+        if (optionAttribute != null
+                && _ignoredOptionalObjects.containsKey(optionAttribute)
+                && _ignoredOptionalObjects.get(optionAttribute)) {
+            return true;
+        }
+        return false;
     }
 
     /** Test whether the composite entity is opaque or not. Return <tt>true</tt>
@@ -749,19 +763,36 @@ public class GraphMatcher extends GraphAnalyzer {
 
         ObjectList.Entry patternEntry = patternList.getHead();
         boolean setHasNegatedObject = false;
-        while (!_negation && patternEntry != null && GTTools.isNegated(
-                patternEntry.getValue())) {
-            if (!_hasNegatedObject) {
-                _hasNegatedObject = true;
-                setHasNegatedObject = true;
+        while (!_negation && patternEntry != null) {
+            Object patternObject = patternEntry.getValue();
+            if (GTTools.isNegated(patternObject)) {
+                if (!_hasNegatedObject) {
+                    _hasNegatedObject = true;
+                    setHasNegatedObject = true;
+                }
+            } else if (!_isIgnored(patternObject)) {
+                break;
             }
             patternEntry = patternEntry.getNext();
         }
 
+        boolean optionalObjectMarked = false;
+        Object patternObject = null;
+        OptionAttribute optionAttribute = null;
+
         if (patternEntry != null) {
             ObjectList.Entry previous = patternEntry.getPrevious();
             patternEntry.remove();
-            Object patternObject = patternEntry.getValue();
+            patternObject = patternEntry.getValue();
+
+            optionAttribute = (OptionAttribute) GTTools.findMatchingAttribute(
+                    patternObject, OptionAttribute.class, true);
+            if (optionAttribute != null && !_ignoredOptionalObjects.containsKey(
+                    optionAttribute)) {
+                _ignoredOptionalObjects.put(optionAttribute, false);
+                optionalObjectMarked = true;
+            }
+
             patternChildChecked = true;
             success = false;
             ObjectList.Entry hostEntryPrevious = null;
@@ -798,16 +829,27 @@ public class GraphMatcher extends GraphAnalyzer {
             }
         }
 
-        if (firstEntrance) {
-            lookbackTail.remove();
+        if (setHasNegatedObject) {
+            _hasNegatedObject = false;
         }
 
         if (!success) {
             _matchResult.retain(matchSize);
+            if (optionalObjectMarked) {
+                _ignoredOptionalObjects.put(optionAttribute, true);
+                ObjectList.Entry previous = patternEntry.getPrevious();
+                patternEntry.remove();
+                success = _checkBackward();
+                patternList.addEntryAfter(patternEntry, previous);
+            }
         }
 
-        if (setHasNegatedObject) {
-            _hasNegatedObject = false;
+        if (firstEntrance) {
+            lookbackTail.remove();
+        }
+
+        if (optionalObjectMarked) {
+            _ignoredOptionalObjects.remove(optionAttribute);
         }
 
         return success;
@@ -1152,14 +1194,16 @@ public class GraphMatcher extends GraphAnalyzer {
         return true;
     }
 
+    private MatchCallback _callback = DEFAULT_CALLBACK;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
-    private MatchCallback _callback = DEFAULT_CALLBACK;
 
     private static final NameComparator _comparator = new NameComparator();
 
     private boolean _hasNegatedObject = false;
+
+    private Map<OptionAttribute, Boolean> _ignoredOptionalObjects;
 
     private LookbackList _lookbackList;
 
