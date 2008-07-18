@@ -32,6 +32,7 @@ package ptolemy.domains.ptides.lib;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Actor;
@@ -224,8 +225,8 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
      */
     private double getYForActor(final Actor node, final Actor actor) {
         return nodes.indexOf(node) * 2
-                + ((double) ((ArrayList) nodeActors.get(node)).indexOf(actor))
-                / ((ArrayList) nodeActors.get(node)).size() + 0.1;
+                + ((double) ((List) nodeActors.get(node)).indexOf(actor))
+                / ((List) nodeActors.get(node)).size() + 0.1;
     }
 
     /**
