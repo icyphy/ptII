@@ -64,6 +64,7 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
@@ -694,17 +695,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             JMenu submenu = new JMenu("Transformation");
             menu.add(submenu, location);
 
-            boolean added = false;
             if (GTTools.isInPattern(object)) {
                 _add(submenu, new ConfigureCriteriaAction(), false);
-                added = true;
-            }
-            if (GTTools.isInReplacement(object)) {
-                _add(submenu, new ConfigureOperationsAction(), false);
-                added = true;
-            }
-
-            if (added && GTTools.isInPattern(object)) {
                 submenu.addSeparator();
 
                 ButtonGroup group = new ButtonGroup();
@@ -714,13 +706,15 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 group.add(hiddenItem);
 
                 MatchingAttributeAction[] radioActions =
-                    new MatchingAttributeAction[] {
-                        new CreationAttributeAction("Created"),
-                        new IgnoringAttributeAction("Ignored"),
-                        new NegationAttributeAction("Negated"),
-                        new OptionAttributeAction("Optional"),
-                        new PreservationAttributeAction("Preserved")
-                };
+                    new MatchingAttributeAction[4];
+                radioActions[0] = new CreationAttributeAction("Created",
+                        radioActions);
+                radioActions[1] = new IgnoringAttributeAction("Ignored",
+                        radioActions);
+                radioActions[2] = new NegationAttributeAction("Negated",
+                        radioActions);
+                radioActions[3] = new PreservationAttributeAction("Preserved",
+                        radioActions);
                 JMenuItem[] radioItems = new JMenuItem[radioActions.length];
                 int i = 0;
                 for (Action radioAction : radioActions) {
@@ -730,34 +724,35 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 }
 
                 JMenuItem noneItem = _add(submenu, new MatchingAttributeAction(
-                        "None"), true);
+                        "None", radioActions), true);
                 group.add(noneItem);
 
-                Class<?> attributeClass = null;
                 Collection<?> objects = _getSelectionSet(true);
                 if (objects.isEmpty()) {
                     HashSet<NamedObj> set = new HashSet<NamedObj>();
                     set.add(object);
                     objects = set;
                 }
-                boolean set = false;
+                boolean setHidden = false;
+                Class<? extends MatchingAttribute> attributeClass = null;
+                i = 0;
                 for (Object childObject : objects) {
                     NamedObj child = (NamedObj) childObject;
-                    List<?> properties = child.attributeList(
-                            MatchingAttribute.class);
-                    if (properties.size() > 1
-                            || attributeClass != null && (properties.size() < 1
-                            || !attributeClass.equals(properties.get(0)
-                                    .getClass()))) {
+                    MatchingAttribute attribute = _getRadioAttribute(child,
+                            radioActions);
+                    if (attributeClass == null && attribute != null && i == 0) {
+                        attributeClass = attribute.getClass();
+                    } else if (attributeClass == null && attribute != null
+                            || attributeClass != null &&
+                                    !attributeClass.isInstance(attribute)) {
                         hiddenItem.setSelected(true);
                         attributeClass = null;
-                        set = true;
+                        setHidden = true;
                         break;
-                    } else if (properties.size() == 1) {
-                        attributeClass = properties.get(0).getClass();
                     }
+                    i++;
                 }
-                if (!set) {
+                if (!setHidden) {
                     if (attributeClass == null) {
                         noneItem.setSelected(true);
                     } else {
@@ -773,6 +768,30 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                         }
                     }
                 }
+
+                submenu.addSeparator();
+
+                OptionAttributeAction action = new OptionAttributeAction(
+                        "Optional", null);
+                JCheckBoxMenuItem item = new JCheckBoxMenuItem(action);
+                submenu.add(item);
+                boolean selected = true;
+                for (Object childObject : objects) {
+                    NamedObj child = (NamedObj) childObject;
+                    if (GTTools.findMatchingAttribute(child,
+                            action.getAttributeClass(), false) == null) {
+                        selected = false;
+                        break;
+                    }
+                }
+                action._setToggleAction(!selected);
+                if (selected) {
+                    item.setSelected(true);
+                }
+            }
+
+            if (GTTools.isInReplacement(object)) {
+                _add(submenu, new ConfigureOperationsAction(), false);
             }
 
             return submenu;
@@ -788,6 +807,31 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             menu.add(item);
             action.putValue("", item);
             return item;
+        }
+
+        private MatchingAttribute _getRadioAttribute(NamedObj object,
+                MatchingAttributeAction[] radioActions) {
+            MatchingAttribute attribute = null;
+            for (Object attributeObject : object.attributeList(
+                    MatchingAttribute.class)) {
+                boolean inArray = false;
+                for (MatchingAttributeAction action : radioActions) {
+                    if (action.getAttributeClass().isInstance(
+                            attributeObject)) {
+                        inArray = true;
+                    }
+                }
+                if (!inArray) {
+                    continue;
+                }
+                if (attribute == null) {
+                    attribute = (MatchingAttribute) attributeObject;
+                } else if (!attribute.getClass().equals(attributeObject
+                        .getClass())) {
+                    return null;
+                }
+            }
+            return attribute;
         }
     }
 
@@ -1111,8 +1155,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             return _IGNORING_COLOR;
         } else if (!object.attributeList(NegationAttribute.class).isEmpty()) {
             return _NEGATION_COLOR;
-        } else if (!object.attributeList(OptionAttribute.class).isEmpty()) {
-            return _OPTION_COLOR;
         } else if (!object.attributeList(PreservationAttribute.class).isEmpty()) {
             return _PRESERVATION_COLOR;
         } else {
@@ -1349,6 +1391,20 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 }
                 figure.add(index, bf);
             }
+
+            if (GTTools.isOptional(semanticObject)) {
+                Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
+                float padding = _HIGHLIGHT_PADDING +
+                        _HIGHLIGHT_THICKNESS / 2.0f;
+                BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
+                        bounds.getY() - padding,
+                        bounds.getWidth() + padding * 2.0,
+                        bounds.getHeight() + padding * 2.0,
+                        1.5f);
+                bf.setStrokePaint(Color.DARK_GRAY);
+                bf.setDashArray(new float[] {4.0f, 6.0f});
+                figure.add(bf);
+            }
         }
     }
 
@@ -1359,6 +1415,12 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 AbstractConnector c = (AbstractConnector) connector;
                 c.setStrokePaint(color);
                 c.setStroke(new BasicStroke(_HIGHLIGHT_THICKNESS));
+            }
+
+            if (GTTools.isOptional(semanticObject)) {
+                AbstractConnector c = (AbstractConnector) connector;
+                c.setLineWidth(1.5f);
+                c.setDashArray(new float[] {4.0f, 6.0f});
             }
         }
     }
@@ -1382,6 +1444,21 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     index = 0;
                 }
                 figure.add(index, rf);
+            }
+
+            if (GTTools.isOptional(semanticObject)) {
+                Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
+                float padding = _HIGHLIGHT_PADDING +
+                        _HIGHLIGHT_THICKNESS / 2.0f;
+                RoundedRectangle bf = new RoundedRectangle(
+                        bounds.getX() - padding,
+                        bounds.getY() - padding,
+                        bounds.getWidth() + padding * 2.0,
+                        bounds.getHeight() + padding * 2.0,
+                        null, 1.5f, 32.0, 32.0);
+                bf.setStrokePaint(Color.DARK_GRAY);
+                bf.setDashArray(new float[] {4.0f, 6.0f});
+                figure.add(bf);
             }
         }
     }
@@ -1501,8 +1578,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     private static final Color _IGNORING_COLOR = Color.GRAY;
 
     private static final Color _NEGATION_COLOR = new Color(255, 32, 32);
-
-    private static final Color _OPTION_COLOR = new Color(160, 32, 160);
 
     private static final Color _PRESERVATION_COLOR = new Color(64, 64, 255);
 
@@ -1823,8 +1898,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private class CreationAttributeAction extends MatchingAttributeAction {
 
-        public CreationAttributeAction(String name) {
-            super(name);
+        public CreationAttributeAction(String name,
+                MatchingAttributeAction[] group) {
+            super(name, group);
         }
 
         public Class<? extends MatchingAttribute> getAttributeClass() {
@@ -1871,8 +1947,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private class IgnoringAttributeAction extends MatchingAttributeAction {
 
-        public IgnoringAttributeAction(String name) {
-            super(name);
+        public IgnoringAttributeAction(String name,
+                MatchingAttributeAction[] group) {
+            super(name, group);
         }
 
         public Class<? extends MatchingAttribute> getAttributeClass() {
@@ -1967,53 +2044,51 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private class MatchingAttributeAction extends FigureAction {
 
-        public MatchingAttributeAction(String name) {
+        public MatchingAttributeAction(String name,
+                MatchingAttributeAction[] group) {
             super(name);
+            _group = group;
         }
 
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
-            Collection<?> objects = _getSelectionSet(true);
-            NamedObj target = getTarget();
-            if (objects.isEmpty() && target != null) {
-                HashSet<NamedObj> set = new HashSet<NamedObj>();
-                set.add(target);
-                objects = set;
-            }
             LinkedList<MoMLChangeRequest> changeRequests =
                 new LinkedList<MoMLChangeRequest>();
-            for (Object object : objects) {
-                NamedObj namedObj = (NamedObj) object;
-                for (Object attributeObject : namedObj.attributeList(
-                        MatchingAttribute.class)) {
-                    MatchingAttribute attribute =
-                        (MatchingAttribute) attributeObject;
-                    String moml = "<deleteProperty name=\""
-                        + attribute.getName() + "\"/>";
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            namedObj, moml);
-                    request.setUndoable(true);
-                    request.setMergeWithPreviousUndo(true);
-                    changeRequests.add(request);
-                }
-            }
+            _removeAttributes(changeRequests);
+
             Class<? extends MatchingAttribute> attributeClass =
                 getAttributeClass();
             if (attributeClass != null) {
-                String attributeName = attributeClass.getSimpleName();
-                for (Object object : objects) {
-                    NamedObj namedObj = (NamedObj) object;
-                    String moml = "<group name=\"auto\">" + "<property name=\""
-                        + attributeName + "\" class=\""
-                        + attributeClass.getName() + "\"/></group>";
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            namedObj, moml);
-                    request.setUndoable(true);
-                    request.setMergeWithPreviousUndo(true);
-                    changeRequests.add(request);
-                }
+                _addAttribute(attributeClass, changeRequests);
             }
+
+            _commitChangeRequests(changeRequests);
+        }
+
+        public Class<? extends MatchingAttribute> getAttributeClass() {
+            return null;
+        }
+
+        protected void _addAttribute(Class<? extends MatchingAttribute>
+                attributeClass, List<MoMLChangeRequest> changeRequests) {
+            Collection<?> objects = _getSelectedObjects();
+            String attributeName = attributeClass.getSimpleName();
+            for (Object object : objects) {
+                NamedObj namedObj = (NamedObj) object;
+                String moml = "<group name=\"auto\">" + "<property name=\""
+                    + attributeName + "\" class=\""
+                    + attributeClass.getName() + "\"/></group>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        namedObj, moml);
+                request.setUndoable(true);
+                request.setMergeWithPreviousUndo(true);
+                changeRequests.add(request);
+            }
+        }
+
+        protected void _commitChangeRequests(List<MoMLChangeRequest>
+                changeRequests) {
             boolean first = true;
             for (MoMLChangeRequest request : changeRequests) {
                 if (first) {
@@ -2024,15 +2099,55 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             }
         }
 
-        public Class<? extends MatchingAttribute> getAttributeClass() {
-            return null;
+        protected Collection<?> _getSelectedObjects() {
+            Collection<?> objects = _getSelectionSet(true);
+            NamedObj target = getTarget();
+            if (objects.isEmpty() && target != null) {
+                HashSet<NamedObj> set = new HashSet<NamedObj>();
+                set.add(target);
+                objects = set;
+            }
+            return objects;
         }
+
+        protected void _removeAttributes(List<MoMLChangeRequest>
+                changeRequests) {
+            Collection<?> objects = _getSelectedObjects();
+            List<Class<? extends MatchingAttribute>> attributeClasses =
+                new LinkedList<Class<? extends MatchingAttribute>>();
+            if (_group == null) {
+                attributeClasses.add(getAttributeClass());
+            } else {
+                for (MatchingAttributeAction action : _group) {
+                    attributeClasses.add(action.getAttributeClass());
+                }
+            }
+            for (Class<? extends MatchingAttribute> attributeClass
+                    : attributeClasses) {
+                for (Object object : objects) {
+                    NamedObj namedObj = (NamedObj) object;
+                    for (Object attribute : namedObj.attributeList(
+                            attributeClass)) {
+                        String moml = "<deleteProperty name=\""
+                            + ((NamedObj) attribute).getName() + "\"/>";
+                        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                namedObj, moml);
+                        request.setUndoable(true);
+                        request.setMergeWithPreviousUndo(true);
+                        changeRequests.add(request);
+                    }
+                }
+            }
+        }
+
+        private MatchingAttributeAction[] _group;
     }
 
     private class NegationAttributeAction extends MatchingAttributeAction {
 
-        public NegationAttributeAction(String name) {
-            super(name);
+        public NegationAttributeAction(String name,
+                MatchingAttributeAction[] group) {
+            super(name, group);
         }
 
         public Class<? extends MatchingAttribute> getAttributeClass() {
@@ -2042,19 +2157,34 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private class OptionAttributeAction extends MatchingAttributeAction {
 
-        public OptionAttributeAction(String name) {
-            super(name);
+        public OptionAttributeAction(String name,
+                MatchingAttributeAction[] group) {
+            super(name, group);
         }
 
         public Class<? extends MatchingAttribute> getAttributeClass() {
             return OptionAttribute.class;
         }
+
+        protected void _addAttribute(Class<? extends MatchingAttribute>
+                attributeClass, List<MoMLChangeRequest> changeRequests) {
+            if (_isSet) {
+                super._addAttribute(attributeClass, changeRequests);
+            }
+        }
+
+        protected void _setToggleAction(boolean isSet) {
+            _isSet = isSet;
+        }
+
+        private boolean _isSet;
     }
 
     private class PreservationAttributeAction extends MatchingAttributeAction {
 
-        public PreservationAttributeAction(String name) {
-            super(name);
+        public PreservationAttributeAction(String name,
+                MatchingAttributeAction[] group) {
+            super(name, group);
         }
 
         public Class<? extends MatchingAttribute> getAttributeClass() {
