@@ -27,17 +27,28 @@
  */
 package ptolemy.domains.sr.lib;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.FunctionDependency;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
+import ptolemy.actor.util.Dependency;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
@@ -113,98 +124,82 @@ public class EnabledComposite extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the <i>enable</i> input is known and true, then invoke the
-     *  fire() method of the superclass.
-     *  @exception IllegalActionException If the superclass throws it.
+    /** Return a causality interface for this actor, which overrides the
+     *  default behavior of composite actors to ensure that all outputs
+     *  depend on the <i>enable</i> input port.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports.
      */
-    public void fire() throws IllegalActionException {
-        if (_enabled) {
-            super.fire();
+    public CausalityInterface getCausalityInterface() {
+        if (_causalityInterface != null) {
+            return _causalityInterface;
         }
+        _causalityInterface = new CausalityInterfaceForEnabledComposite(this);
+        return _causalityInterface;
     }
 
-    /** Return a representation of the function dependencies that output
-     *  ports have on input ports.
-     *  @return A representation of the function dependencies of the
-     *   ports of this actor.
-     *  @see ptolemy.actor.util.FunctionDependency
-     */
-    public FunctionDependency getFunctionDependency() {
-        if (_functionDependency == null) {
-            try {
-                _functionDependency = new FunctionDependencyOfEnabledCompositeActor(
-                        this);
-            } catch (NameDuplicationException e) {
-                // This should not happen.
-                throw new InternalErrorException("Failed to construct a "
-                        + "function dependency object for " + getFullName());
-            } catch (IllegalActionException e) {
-                // This should not happen.
-                throw new InternalErrorException("Failed to construct a "
-                        + "function dependency object for " + getFullName());
-            }
-        }
-
-        return _functionDependency;
-    }
-
-    /** If the <i>enable</i> input is known and true, then invoke the
-     *  postfire() method of the superclass and return its value. Otherwise,
-     *  return true.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public boolean postfire() throws IllegalActionException {
-        if (_enabled) {
-            return super.postfire();
-        } else {
-            return true;
-        }
-    }
-
-    /** If the <i>enable</i> input is not known, then return true,
-     *  and set a flag that prevents fire() and postfire() from
-     *  doing anything;  if the <i>enable</i> input is known
-     *  and either absent or false, then return false;
+    /** If the <i>enable</i> input is not known, then return false;
+     *  if the <i>enable</i> input is known
+     *  and either absent or false, then also return false;
      *  if it is known and true, then invoke the prefire() method of the
      *  superclass and return what it returns.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean prefire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("EnabledComposite: Calling prefire()");
-        }
-        // By default prefire() returns true indicating it is ready to be
-        // prefired and fired again.  Note that it must return true
-        // if the inputs are not known since otherwise, if it returns
-        // false, the FixedPointDirector will set all its outputs
-        // to absent.
-        boolean prefireReturnValue = true;
-        // By default (in most cases), this actor is disabled.
-        _enabled = false;
+        boolean prefireReturnValue = false;
         if (enable.isKnown(0)) {
             if (enable.hasToken(0)) {
-                _enabled = ((BooleanToken) enable.get(0)).booleanValue();
-            }
-            if (!_enabled) {
-                // Not enabled. Return false and the outputs will be
-                // cleared by the director.
-                if (_debugging) {
-                    _debug("Not enabled: prefire() returns false.");
+                prefireReturnValue = ((BooleanToken) enable.get(0)).booleanValue();
+                if (prefireReturnValue) {
+                    // This will call prefire() on the contained director.
+                    prefireReturnValue = super.prefire();
                 }
-                prefireReturnValue = false;
-            } else {
-                // This will call prefire() on the contained director.
-                prefireReturnValue = super.prefire();
             }
+        }
+        if (_debugging) {
+            _debug("EnabledComposite: prefire() returns " + prefireReturnValue);
         }
         return prefireReturnValue;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Local variable indicating whether this actor can be fired.
-     *  The value of this variable is set in the prefire method.
+    ////                         inner classes                     ////
+    
+    /** Causality interface that overrides the behavior of the base
+     *  class to ensure that every output depends on the <i>enable</i>
+     *  input port.
      */
-    private boolean _enabled = false;
+    private class CausalityInterfaceForEnabledComposite
+            extends CausalityInterfaceForComposites {
+        public CausalityInterfaceForEnabledComposite(Actor actor)
+                throws IllegalArgumentException {
+            super(actor, BooleanDependency.OTIMES_IDENTITY);
+        }
+        protected void _computeActorDepth() throws IllegalActionException {
+            if (_actorDepthVersion == ((NamedObj)_actor).workspace().getVersion()) {
+                return;
+            }
+            super._computeActorDepth();
+            // Now fix the internal data structures.
+            // First, the equivalence classes. All inputs are equivalent
+            // because of the common dependency on the enable port.
+            Set<IOPort> allInputs = new HashSet<IOPort>(_actor.inputPortList());
+            for (IOPort input : _equivalenceClasses.keySet()) {
+                _equivalenceClasses.put(input, allInputs);
+            }
+            // Next, fix the forward and backward dependencies.
+            Map<IOPort,Dependency> enableDependents = new HashMap<IOPort,Dependency>();
+            _forwardDependencies.put(enable, enableDependents);
+            List<IOPort> outputs = _actor.outputPortList();
+            for (IOPort output : outputs) {
+                enableDependents.put(output, _defaultDependency.oTimesIdentity());
+                Map<IOPort,Dependency> backward = _reverseDependencies.get(output);
+                if (backward == null) {
+                    backward = new HashMap<IOPort,Dependency>();
+                    _reverseDependencies.put(output, backward);
+                }
+                backward.put(enable, _defaultDependency.oTimesIdentity());
+            }
+        }
+    }
 }

@@ -27,22 +27,9 @@
  */
 package ptolemy.domains.sr.kernel;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.sched.Firing;
-import ptolemy.actor.sched.NotSchedulableException;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.Scheduler;
-import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
-import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.actor.sched.FixedPointScheduler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// SROptimizedScheduler
@@ -63,6 +50,9 @@ import ptolemy.util.MessageHandler;
  repetitions of the parenthesized expression.  Finally, the schedules of the
  top-level SCCs are concatenated in topological order to obtain the schedule
  for the entire graph.
+ <p>
+ FIXME: This is not implemented!  This is a placeholder that uses the same
+ naive scheduler as the base class.
 
  @author Paul Whitaker
  @version $Id$
@@ -71,23 +61,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (pwhitake)
  @see ptolemy.domains.sr.kernel.SRDirector
  */
-public class SROptimizedScheduler extends Scheduler {
-    /** Construct a SR scheduler with no container (director)
-     *  in the default workspace.
-     */
-    public SROptimizedScheduler() {
-        super();
-    }
-
-    /** Construct a SR scheduler in the given workspace.
-     *  If the workspace argument is null, use the default workspace.
-     *  The scheduler is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace Object for synchronization and version tracking.
-     */
-    public SROptimizedScheduler(Workspace workspace) {
-        super(workspace);
-    }
+public class SROptimizedScheduler extends FixedPointScheduler {
 
     /** Construct a scheduler in the given container with the given name.
      *  The container argument must not be null, or a
@@ -102,128 +76,8 @@ public class SROptimizedScheduler extends Scheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public SROptimizedScheduler(Director container, String name)
+    public SROptimizedScheduler(SRDirector container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Return the scheduling sequence.
-     *  Overrides _getSchedule() method in the base class.
-     *
-     *  This method should not be called directly, rather the getSchedule()
-     *  method (which is defined in the superclass) will call it when the
-     *  schedule is invalid.  This method is not synchronized on the workspace.
-     *
-     *  @return A schedule representing the scheduling sequence.
-     *  @exception NotSchedulableException If the CompositeActor is not
-     *   schedulable.
-     */
-    protected Schedule _getSchedule() throws NotSchedulableException {
-        StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
-
-        if (director == null) {
-            throw new NotSchedulableException(this, "SROptimizedScheduler "
-                    + "cannot schedule graph with no director.");
-        }
-
-        CompositeActor compositeActor = (CompositeActor) (director
-                .getContainer());
-
-        if (compositeActor == null) {
-            throw new NotSchedulableException(this, "SROptimizedScheduler "
-                    + "cannot schedule graph with no container.");
-        }
-
-        FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) compositeActor
-                .getFunctionDependency();
-
-        Object[] cycleNodes = functionDependency.getCycleNodes();
-
-        if (cycleNodes.length != 0) {
-            StringBuffer names = new StringBuffer();
-
-            for (int i = 0; i < cycleNodes.length; i++) {
-                if (cycleNodes[i] instanceof Nameable) {
-                    if (i > 0) {
-                        names.append(", ");
-                    }
-
-                    names.append(((Nameable) cycleNodes[i]).getContainer()
-                            .getFullName());
-                }
-            }
-
-            MessageHandler.error("There are strict cycle loops in the model:"
-                    + names.toString() + "\n"
-                    + " The results may contain unknowns.  This optimized "
-                    + "scheduler does not handle this model. Try the "
-                    + "randomized scheduler instead.");
-        }
-
-        DirectedAcyclicGraph dependencyGraph = functionDependency
-                .getDetailedDependencyGraph().toDirectedAcyclicGraph();
-
-        if (_debugging) {
-            _debug("## dependency graph is:" + dependencyGraph.toString());
-        }
-
-        Object[] sort = dependencyGraph.topologicalSort();
-
-        if (_debugging) {
-            _debug("## Result of topological sort (highest depth to lowest):");
-        }
-
-        Schedule schedule = new Schedule();
-        Actor lastActor = null;
-        Actor actor = null;
-
-        for (int i = 0; i < sort.length; i++) {
-            IOPort ioPort = (IOPort) sort[i];
-
-            // If this ioPort is input but has no connections,
-            // we ignore it.
-            if (ioPort.isInput() && (ioPort.numLinks() == 0)) {
-                continue;
-            }
-
-            actor = (Actor) ioPort.getContainer();
-
-            // If the actor is the container of this director (which
-            // can occur if this director is not at the top level),
-            // then skip this actor. The container of the director
-            // should not be listed in the schedule.
-            if (actor == compositeActor) {
-                continue;
-            }
-
-            // We record the information of last actor.
-            // If some consecutive ports belong to the
-            // same actor, we only schedule that actor once.
-            if (lastActor == null) {
-                lastActor = actor;
-            } else {
-                if (lastActor.equals(actor)) {
-                    continue;
-                } else {
-                    lastActor = actor;
-                }
-            }
-
-            Firing firing = new Firing(actor);
-            schedule.add(firing);
-
-            if (_debugging) {
-                _debug(((Nameable) actor).getFullName(), "depth: " + i);
-            }
-        }
-
-        if (_debugging) {
-            _debug("## End of topological sort.");
-        }
-
-        return schedule;
     }
 }

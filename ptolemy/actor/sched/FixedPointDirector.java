@@ -643,12 +643,16 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 _sendClearToAllUnknownOutputsOf(actor);
             }
         } else {
-            // If prefire() returned false, the actor declines
-            // to fire, meaning all its outputs are absent.
+            // prefire() returned false. The actor declines
+            // to fire. This could be because some inputs are
+            // not known.  If all inputs are known, then we
+            // interpret this to mean that all outputs should be absent.
             // Note that prefire() is executed only after all the inputs are
-            // known or the actor is non-strict.
-            _actorsFinishedFiring.add(actor);
-            _sendClearToAllUnknownOutputsOf(actor);
+            // known if the actor is strict.
+            if (actor.isStrict() || _areAllInputsKnown(actor)) {
+                _actorsFinishedFiring.add(actor);
+                _sendClearToAllUnknownOutputsOf(actor);
+            }
         }
     }
 
