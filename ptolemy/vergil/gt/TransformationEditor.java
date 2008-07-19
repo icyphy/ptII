@@ -169,7 +169,7 @@ import diva.gui.GUIUtilities;
 import diva.gui.toolbox.JContextMenu;
 
 //////////////////////////////////////////////////////////////////////////
-//// GTGraphFrame
+//// TransformationEditor
 
 /**
  A graph editor frame for ptolemy graph transformation models.
@@ -225,6 +225,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         // FIXME
         // helpFile = "ptolemy/configs/doc/vergilFsmEditorHelp.htm";
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
@@ -298,9 +301,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super.delete();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
 
     public void fullScreen() {
         if (!getFrameController().hasTabs()) {
@@ -597,6 +597,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     public static final String[] OPTIONAL_ACTORS = {
         "ptolemy.actor.ptalon.gt.PtalonMatcher"
     };
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
 
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
@@ -1157,6 +1160,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             return _NEGATION_COLOR;
         } else if (!object.attributeList(PreservationAttribute.class).isEmpty()) {
             return _PRESERVATION_COLOR;
+        } else if (!object.attributeList(OptionAttribute.class).isEmpty()) {
+            return _OPTION_COLOR;
         } else {
             return null;
         }
@@ -1378,32 +1383,25 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             if (color != null) {
                 Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
                 float padding = _HIGHLIGHT_PADDING;
+                boolean isOptional = GTTools.isOptional(semanticObject);
+                float thickness = isOptional ? _OPTION_HIGHLIGHT_THICKNESS
+                        : _HIGHLIGHT_THICKNESS;
                 BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
                         bounds.getY() - padding,
                         bounds.getWidth() + padding * 2.0,
                         bounds.getHeight() + padding * 2.0,
-                        _HIGHLIGHT_THICKNESS);
+                        thickness);
                 bf.setStrokePaint(color);
+
+                if (isOptional) {
+                    bf.setDashArray(new float[] {3.0f, 7.0f});
+                }
 
                 int index = figure.getFigureCount();
                 if (index < 0) {
                     index = 0;
                 }
                 figure.add(index, bf);
-            }
-
-            if (GTTools.isOptional(semanticObject)) {
-                Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
-                float padding = _HIGHLIGHT_PADDING +
-                        _HIGHLIGHT_THICKNESS / 2.0f;
-                BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
-                        bounds.getY() - padding,
-                        bounds.getWidth() + padding * 2.0,
-                        bounds.getHeight() + padding * 2.0,
-                        1.5f);
-                bf.setStrokePaint(Color.DARK_GRAY);
-                bf.setDashArray(new float[] {4.0f, 6.0f});
-                figure.add(bf);
             }
         }
     }
@@ -1414,13 +1412,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             if (color != null) {
                 AbstractConnector c = (AbstractConnector) connector;
                 c.setStrokePaint(color);
-                c.setStroke(new BasicStroke(_HIGHLIGHT_THICKNESS));
-            }
 
-            if (GTTools.isOptional(semanticObject)) {
-                AbstractConnector c = (AbstractConnector) connector;
-                c.setLineWidth(1.5f);
-                c.setDashArray(new float[] {4.0f, 6.0f});
+                if (GTTools.isOptional(semanticObject)) {
+                    c.setStroke(new BasicStroke(_OPTION_HIGHLIGHT_THICKNESS));
+                    c.setDashArray(new float[] {3.0f, 7.0f});
+                } else {
+                    c.setStroke(new BasicStroke(_HIGHLIGHT_THICKNESS));
+                }
             }
         }
     }
@@ -1432,33 +1430,25 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             if (highlightColor != null) {
                 Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
                 float padding = _HIGHLIGHT_PADDING;
+                boolean isOptional = GTTools.isOptional(semanticObject);
+                float thickness = isOptional ? _OPTION_HIGHLIGHT_THICKNESS
+                        : _HIGHLIGHT_THICKNESS;
                 RoundedRectangle rf = new RoundedRectangle(
                         bounds.getX() - padding, bounds.getY() - padding,
                         bounds.getWidth() + padding * 2.0,
                         bounds.getHeight() + padding * 2.0,
-                        null, _HIGHLIGHT_THICKNESS, 32.0, 32.0);
+                        null, thickness, 32.0, 32.0);
                 rf.setStrokePaint(highlightColor);
+
+                if (isOptional) {
+                    rf.setDashArray(new float[] {3.0f, 7.0f});
+                }
 
                 int index = figure.getFigureCount();
                 if (index < 0) {
                     index = 0;
                 }
                 figure.add(index, rf);
-            }
-
-            if (GTTools.isOptional(semanticObject)) {
-                Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
-                float padding = _HIGHLIGHT_PADDING +
-                        _HIGHLIGHT_THICKNESS / 2.0f;
-                RoundedRectangle bf = new RoundedRectangle(
-                        bounds.getX() - padding,
-                        bounds.getY() - padding,
-                        bounds.getWidth() + padding * 2.0,
-                        bounds.getHeight() + padding * 2.0,
-                        null, 1.5f, 32.0, 32.0);
-                bf.setStrokePaint(Color.DARK_GRAY);
-                bf.setDashArray(new float[] {4.0f, 6.0f});
-                figure.add(bf);
             }
         }
     }
@@ -1566,7 +1556,10 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
-    private static final Color _CREATION_COLOR = Color.GREEN;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
+    private static final Color _CREATION_COLOR = new Color(0, 192, 0);
 
     private static final Border _EMPTY_BORDER = BorderFactory
             .createEmptyBorder();
@@ -1578,6 +1571,10 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     private static final Color _IGNORING_COLOR = Color.GRAY;
 
     private static final Color _NEGATION_COLOR = new Color(255, 32, 32);
+
+    private static final Color _OPTION_COLOR = Color.BLACK;
+
+    private static final float _OPTION_HIGHLIGHT_THICKNESS = 2.0f;
 
     private static final Color _PRESERVATION_COLOR = new Color(64, 64, 255);
 
@@ -1596,6 +1593,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     private JTable _table;
 
     private DefaultTableModel _tableModel;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private inner classes                ////
 
     private class BatchMatchAction extends MatchAction {
 
@@ -1892,9 +1892,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         private String _previousString;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      private inner classes                ////
 
     private class CreationAttributeAction extends MatchingAttributeAction {
 

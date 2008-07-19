@@ -179,7 +179,6 @@ public class GraphMatcher extends GraphAnalyzer {
 
         // Initially, we are not checking negated objects.
         _negation = false;
-        _hasNegatedObject = false;
 
         _ignoredOptionalObjects = new HashMap<OptionAttribute, Boolean>();
 
@@ -379,10 +378,10 @@ public class GraphMatcher extends GraphAnalyzer {
         if (entry == null) {
             if (_negation) {
                 return true;
-            } else if (_hasNegatedObject) {
+            } else {
                 _negation = true;
                 int matchSize = _matchResult.size();
-                if (_checkBackward()) {
+                if (_checkBackward() && _matchResult.size() > matchSize) {
                     _negation = false;
                     _matchResult.retain(matchSize);
                     return false;
@@ -762,35 +761,29 @@ public class GraphMatcher extends GraphAnalyzer {
         }
 
         ObjectList.Entry patternEntry = patternList.getHead();
-        boolean setHasNegatedObject = false;
-        while (!_negation && patternEntry != null) {
-            Object patternObject = patternEntry.getValue();
-            if (GTTools.isNegated(patternObject)) {
-                if (!_hasNegatedObject) {
-                    _hasNegatedObject = true;
-                    setHasNegatedObject = true;
-                }
-            } else if (!_isIgnored(patternObject)) {
+        Object patternObject = null;
+        while (patternEntry != null) {
+            patternObject = patternEntry.getValue();
+            if (_negation == GTTools.isNegated(patternObject)
+                    && !_isIgnored(patternObject)) {
                 break;
             }
             patternEntry = patternEntry.getNext();
         }
 
-        boolean optionalObjectMarked = false;
-        Object patternObject = null;
         OptionAttribute optionAttribute = null;
 
         if (patternEntry != null) {
             ObjectList.Entry previous = patternEntry.getPrevious();
             patternEntry.remove();
-            patternObject = patternEntry.getValue();
 
             optionAttribute = (OptionAttribute) GTTools.findMatchingAttribute(
                     patternObject, OptionAttribute.class, true);
             if (optionAttribute != null && !_ignoredOptionalObjects.containsKey(
                     optionAttribute)) {
                 _ignoredOptionalObjects.put(optionAttribute, false);
-                optionalObjectMarked = true;
+            } else {
+                optionAttribute = null;
             }
 
             patternChildChecked = true;
@@ -829,13 +822,11 @@ public class GraphMatcher extends GraphAnalyzer {
             }
         }
 
-        if (setHasNegatedObject) {
-            _hasNegatedObject = false;
-        }
-
-        if (!success) {
+        if (success == _negation) {
+            if (!success || optionAttribute != null) {
             _matchResult.retain(matchSize);
-            if (optionalObjectMarked) {
+            }
+            if (optionAttribute != null) {
                 _ignoredOptionalObjects.put(optionAttribute, true);
                 ObjectList.Entry previous = patternEntry.getPrevious();
                 patternEntry.remove();
@@ -848,7 +839,7 @@ public class GraphMatcher extends GraphAnalyzer {
             lookbackTail.remove();
         }
 
-        if (optionalObjectMarked) {
+        if (optionAttribute != null) {
             _ignoredOptionalObjects.remove(optionAttribute);
         }
 
@@ -1200,8 +1191,6 @@ public class GraphMatcher extends GraphAnalyzer {
     ////                         private fields                    ////
 
     private static final NameComparator _comparator = new NameComparator();
-
-    private boolean _hasNegatedObject = false;
 
     private Map<OptionAttribute, Boolean> _ignoredOptionalObjects;
 
