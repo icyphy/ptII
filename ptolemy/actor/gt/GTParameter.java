@@ -46,6 +46,10 @@ import ptolemy.data.expr.ParserScope;
 import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -132,15 +136,22 @@ public class GTParameter extends Parameter {
         }
 
         public Token get(String name) throws IllegalActionException {
-            NamedObj patternChild = GTTools.getChild(_pattern, name, true,
+            // Resolve ports, entities and relations in the pattern.
+            NamedObj patternChild = GTTools.getChild(_pattern, name, false,
                     true, true, true);
             if (patternChild != null &&
                     _matchResult.containsKey(patternChild)) {
+                // If found and there is a match (patternChild has not been
+                // ignored), return the matching object in the host.
                 NamedObj child = (NamedObj) _matchResult.get(patternChild);
                 return new ObjectToken(child, child.getClass());
             } else {
-                Token superToken = _superscope.get(name);
-                if (superToken == null) {
+                // If not, get from the superscope.
+                Token token = _superscope.get(name);
+                if (token == null) {
+                    // If not found, look for parameters in the entities that
+                    // contains the pattern (e.g., the transformation rule or
+                    // the model that encloses the transformation rule).
                     NamedObj container = _pattern.getContainer();
                     if (container != null) {
                         NamedObjVariable containerVar =
@@ -148,10 +159,22 @@ public class GTParameter extends Parameter {
                                     _pattern.getContainer(), true);
                         ParserScope containerScope =
                             containerVar.getParserScope();
-                        superToken = containerScope.get(name);
+                        token = containerScope.get(name);
+                        return token;
                     }
                 }
-                return superToken;
+                if (token instanceof ObjectToken) {
+                    Object value = ((ObjectToken) token).getValue();
+                    if (value instanceof Port || value instanceof Entity
+                            || value instanceof Relation) {
+                        // If the superscope returns an ObjectToken containing a
+                        // port, an entity, or a relation, do not return it
+                        // because we don't want this object in the pattern to
+                        // be referred to in a constraint.
+                        return null;
+                    }
+                }
+                return token;
             }
         }
 
