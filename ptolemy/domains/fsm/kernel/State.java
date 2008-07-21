@@ -123,25 +123,29 @@ public class State extends ComponentEntity {
         if (container instanceof FSMActor) {
             initialStateName = ((FSMActor) container).initialStateName
                     .getExpression().trim();
-        }
-        if (initialStateName.equals("")) {
-            if (container.entityList(State.class).size() == 1) {
-                isInitialState.setExpression("true");
-                // Have to force this to export to MoML, since
-                // the true value will otherwise be seen as the default.
-                isInitialState.setPersistent(true);
+            // If the container is an FSMActor, and this is the only
+            // state in it, then make the state an initial state.
+            // Also, for backward compatibility, if the container
+            // has an initialStateName value, and that value matches
+            // the name of this state, set the isInitialState parameter.
+            if (initialStateName.equals("")) {
+                if (container.entityList(State.class).size() == 1) {
+                    isInitialState.setExpression("true");
+                    // Have to force this to export to MoML, since
+                    // the true value will otherwise be seen as the default.
+                    isInitialState.setPersistent(true);
+                }
+            } else {
+                // Backward compatibility scenario. The initial state
+                // was given by a name in the container.
+                if (initialStateName.equals(name)) {
+                    isInitialState.setExpression("true");
+                    // Have to force this to export to MoML, since
+                    // the true value will otherwise be seen as the default.
+                    isInitialState.setPersistent(true);
+                }
             }
-        } else {
-            // Backward compatibility scenario. The initial state
-            // was given by a name in the container.
-            if (initialStateName.equals(name)) {
-                isInitialState.setExpression("true");
-                // Have to force this to export to MoML, since
-                // the true value will otherwise be seen as the default.
-                isInitialState.setPersistent(true);
-            }
         }
-
         isFinalState = new Parameter(this, "isFinalState");
         isFinalState.setTypeEquals(BaseType.BOOLEAN);
         isFinalState.setExpression("false");
