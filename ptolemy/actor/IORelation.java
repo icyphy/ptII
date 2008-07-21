@@ -846,7 +846,7 @@ public class IORelation extends ComponentRelation {
                 try {
                     _inferWidth();
                 } catch (InvalidStateException ex) {
-                    throw new IllegalActionException(this,
+                    throw new IllegalActionException(this, ex,
                             "Cannot use unspecified width on this relation "
                                     + "because of its links.");
                 }
