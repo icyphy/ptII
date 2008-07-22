@@ -52,9 +52,11 @@ import ptolemy.data.type.Typeable;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -1314,7 +1316,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         if (tokenString.length() > 50) {
             tokenString = "value elided";
         }
-
         return super.toString() + " " + tokenString;
     }
 
@@ -1635,8 +1636,16 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _setTokenAndNotify(result);
         } catch (IllegalActionException ex) {
             _needsEvaluation = true;
-            throw new IllegalActionException(this, ex,
-                    "Error evaluating expression: " + _currentExpression);
+            // Ignore the error if we are inside a class definition
+            // and the error is an undefined identifier.
+            // This is because one may want to define a class that
+            // contains default expressions that can only be evaluated
+            // in the context of the instances.
+            if (!_isWithinClassDefinition()
+                    || !(ex instanceof UndefinedConstantOrIdentifierException)) {
+                throw new IllegalActionException(this, ex,
+                        "Error evaluating expression: " + _currentExpression);
+            }
         } finally {
             _dependencyLoop = false;
             workspace().doneReading();
@@ -1715,7 +1724,15 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     // This is very confusing code.
                     // Don't mess with it if it works.
                     try {
-                        handleModelError(this, ex);
+                        // NOTE: When first opening a model, no ModelErrorHandler
+                        // has yet been registered with the model, so the following
+                        // method will simply return false. In this case, we report
+                        // an error just as if the handleModelError() method had
+                        // rethrown the exception.
+                        if (!handleModelError(this, ex)) {
+                            result = new LinkedList();
+                            result.add(ex);
+                        }
                     } catch (IllegalActionException ex2) {
                         result = new LinkedList();
                         result.add(ex2);
@@ -2225,6 +2242,33 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _invalidateShadowedSettables(container);
         }
     }
+    
+    /** Return true if this object is within
+     *  a class definition, which means that
+     *  any container above it in the hierarchy is
+     *  a class definition.
+     *  @return True if this object is within a class definition.
+     *  @see #setClassDefinition(boolean)
+     *  @see Instantiable
+     */
+    private boolean _isWithinClassDefinition() {
+        NamedObj container = getContainer();
+        while (container != null) {
+            if (container instanceof InstantiableNamedObj) {
+                if (((InstantiableNamedObj) container).isWithinClassDefinition()) {
+                    return true;
+                }
+                // No need to continue since isWithinClassDefinition()
+                // works its way further up the hierarchy.
+                return false;
+            }
+            container = container.getContainer();
+        }
+        return false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Empty string token.
     private static StringToken _EMPTY_STRING_TOKEN = new StringToken("");
@@ -2236,8 +2280,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     // BaseType.UNKNOWN, the type of this Variable is fixed to that type.
     private Type _declaredType = BaseType.UNKNOWN;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
     // Used to check for dependency loops among variables.
     private transient boolean _dependencyLoop = false;
 
