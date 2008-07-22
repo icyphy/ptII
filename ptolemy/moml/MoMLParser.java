@@ -6560,7 +6560,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private NamedObj _originalContext = null;
 
     // A list of settable parameters specified in property tags.
-    private List _paramsToParse = new LinkedList();
+    private Set _paramsToParse = new HashSet();
 
     /** The XmlParser. */
     private XmlParser _xmlParser;
