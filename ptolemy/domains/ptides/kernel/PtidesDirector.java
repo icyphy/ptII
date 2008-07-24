@@ -39,9 +39,11 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
+import ptolemy.actor.util.RealDelayCausalityInterfaceForComposites;
 import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
@@ -321,21 +323,14 @@ public class PtidesDirector extends TimedPNDirector {
      * Initialize parameters and the schedule listeners. Calculate minimum
      * delays for ports on platforms according to Ptides.
      * @throws IllegalActionException Thrown if other actors than CompositeActors
-     * are used in this model.
+     * are used in this model or embedded directors of these CompositeActors are not
+     * TimedDirectors.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentTime = new Time(this, 0.0);
         _stopTime = new Time(this, ((DoubleToken) stopTime.getToken())
                 .doubleValue());
-        
-        RealDelayCausalityInterfaceForComposites causalityInterface = 
-            (RealDelayCausalityInterfaceForComposites) ((CompositeActor) this.getContainer())
-            .getCausalityInterface();
-        
-//        PtidesGraphUtilities utilities = new PtidesGraphUtilities(this
-//                .getContainer());
-//        utilities.calculateMinimumDelays();
 
         // Iterate through all actors in the model and add them to a List. This
         // List is handed to the schedule listeners.
@@ -346,17 +341,14 @@ public class PtidesDirector extends TimedPNDirector {
             if (actor instanceof CompositeActor) {
                 CompositeActor compositeActor = (CompositeActor) actor; 
                 // better checking for director that can handle events
+                if (!(compositeActor.getDirector() instanceof TimedDirector))
+                    throw new IllegalActionException("Director of a CompositeActor in " +
+                    		"the Ptides domain must be a TimedDirector");
                 if (compositeActor.getDirector() instanceof PtidesEmbeddedDirector) {
                     PtidesEmbeddedDirector director = (PtidesEmbeddedDirector) actor
                             .getDirector();
                     director._clockSyncronizationError = _clockSyncronizationError;
                     director._networkDelay = _networkDelay;
-                    
-                    
-                    List<IOPort> inputPorts = compositeActor.inputPortList();
-                    for (IOPort port : inputPorts) {
-                        System.out.println("minDelay " + port + ": " + ((RealDependency)causalityInterface.getMinimumDelay(port)).value());
-                    }
                     
                 }
                 List<Actor> containedActors = compositeActor.entityList(); 
