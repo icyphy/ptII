@@ -37,7 +37,9 @@ import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
+import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
+import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -362,6 +364,15 @@ public class DEDirector extends Director implements TimedDirector {
         newObject._realStartTime = 0;
         newObject._stopFireRequested = false;
         return newObject;
+    }
+    
+    /** Return a boolean dependency representing a model-time delay
+     *  of the specified amount.
+     *  @param delay A non-negative delay.
+     *  @return A boolean dependency representing a delay.
+     */
+    public Dependency delayDependency(double delay) {
+        return BooleanDependency.OTIMES_IDENTITY;
     }
     
     /** Return a string that describes the depths of actors and their ports.

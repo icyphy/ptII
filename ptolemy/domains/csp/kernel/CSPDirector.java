@@ -38,6 +38,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.process.CompositeProcessDirector;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -178,6 +180,15 @@ public class CSPDirector extends CompositeProcessDirector implements
         newObject._actorsDelayed = 0;
         newObject._delayedActorList = new LinkedList();
         return newObject;
+    }
+    
+    /** Return a boolean dependency representing a model-time delay
+     *  of the specified amount.
+     *  @param delay A non-negative delay.
+     *  @return A boolean dependency representing a delay.
+     */
+    public Dependency delayDependency(double delay) {
+        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Reset flags to initialize values.

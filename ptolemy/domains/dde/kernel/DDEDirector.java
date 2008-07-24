@@ -40,6 +40,8 @@ import ptolemy.actor.process.CompositeProcessDirector;
 import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.ProcessThread;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -189,6 +191,15 @@ public class DDEDirector extends CompositeProcessDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
+    /** Return a boolean dependency representing a model-time delay
+     *  of the specified amount.
+     *  @param delay A non-negative delay.
+     *  @return A boolean dependency representing a delay.
+     */
+    public Dependency delayDependency(double delay) {
+        return BooleanDependency.OTIMES_IDENTITY;
+    }
+    
     /**
      * Schedule an actor to be fired at the specified time. If the thread that
      * calls this method is an instance of DDEThread, then the specified actor

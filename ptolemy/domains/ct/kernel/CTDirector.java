@@ -36,6 +36,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.GeneralComparator;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TotallyOrderedSet;
@@ -350,6 +352,15 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         CTDirector newObject = (CTDirector) super.clone(workspace);
         newObject._breakpoints = new TotallyOrderedSet(new GeneralComparator());
         return newObject;
+    }
+    
+    /** Return a boolean dependency representing a model-time delay
+     *  of the specified amount.
+     *  @param delay A non-negative delay.
+     *  @return A boolean dependency representing a delay.
+     */
+    public Dependency delayDependency(double delay) {
+        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Override the fire() method of the super class. This method is

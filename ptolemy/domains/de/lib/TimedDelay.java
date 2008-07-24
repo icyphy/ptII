@@ -27,16 +27,20 @@
  */
 package ptolemy.domains.de.lib;
 
+import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.DelayCausalityInterface;
+import ptolemy.actor.util.Dependency;
+import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.type.BaseType;  
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -194,14 +198,31 @@ public class TimedDelay extends DETransformer {
 
     /** Override the base class to return a causality interface that
      *  indicates that the output does not depend (immediately) on
-     *  the input.
+     *  the input. For a TimedDirector that deals with BooleanDependencies,
+     *  a BreakCausalityInterface will be created, for TimedDirectors that
+     *  deal with RealDependencies (e.g. PtidesDirector, PtidesEmbeddedDirector),
+     *  a DelayCausalityInterface will be created. In that case, the RealDependency is
+     *  the delay of this actor.
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
-    public CausalityInterface getCausalityInterface() {
-        if (_causalityInterface == null) {
-            _causalityInterface = new BreakCausalityInterface(
-                    this, BooleanDependency.OTIMES_IDENTITY);
+    public CausalityInterface getCausalityInterface() { 
+        if (_causalityInterface == null) { 
+            if (getDirector() instanceof TimedDirector) {
+                Dependency dependency = ((TimedDirector)getDirector()).delayDependency(_delay);
+                if (dependency instanceof BooleanDependency) {
+                    _causalityInterface = 
+                        new BreakCausalityInterface(
+                                this, dependency);
+                } else if (dependency instanceof RealDependency) {
+                    _causalityInterface = new DelayCausalityInterface(
+                          this, dependency);
+                } else {
+                   // TODO throw new IllegalActionException(this, "Type of delay dependency not recognized");
+                } 
+            } else {
+                // TODO throw new IllegalActionException(this, "Director must be a TimedDirector");
+            }
         }
         return _causalityInterface;
     }
@@ -259,7 +280,9 @@ public class TimedDelay extends DETransformer {
      */
     public void pruneDependencies() {
         super.pruneDependencies();
-        removeDependency(input, output);
+        if (getDirector().defaultDependency() instanceof BooleanDependency) {
+            removeDependency(input, output);
+        } 
     }
 
     ///////////////////////////////////////////////////////////////////

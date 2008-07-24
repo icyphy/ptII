@@ -44,6 +44,8 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -181,6 +183,15 @@ public class ERGDirector extends Director implements TimedDirector {
         newObject._controller = null;
         newObject._controllerVersion = -1;
         return newObject;
+    }
+    
+    /** Return a boolean dependency representing a model-time delay
+     *  of the specified amount.
+     *  @param delay A non-negative delay.
+     *  @return A boolean dependency representing a delay.
+     */
+    public Dependency delayDependency(double delay) {
+        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Fire the director and process the imminent events or the events that

@@ -32,6 +32,8 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.process.ProcessDirector;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.LongToken;
 import ptolemy.data.expr.Parameter;
@@ -123,6 +125,15 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a boolean dependency representing a model-time delay
+     *  of the specified amount.
+     *  @param delay A non-negative delay.
+     *  @return A boolean dependency representing a delay.
+     */
+    public Dependency delayDependency(double delay) {
+        return BooleanDependency.OTIMES_IDENTITY;
+    }
+    
     /** Return the time count of the computer in the number of milliseconds,
      *  starting from 1/1/1970 (UTC).
      *  @return The current computer time.

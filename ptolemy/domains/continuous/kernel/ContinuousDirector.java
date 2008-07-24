@@ -38,6 +38,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.sched.FixedPointDirector;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.GeneralComparator;
 import ptolemy.actor.util.SuperdenseTime;
 import ptolemy.actor.util.Time;
@@ -332,6 +334,15 @@ public class ContinuousDirector extends FixedPointDirector implements
         } else {
             super.attributeChanged(attribute);
         }
+    }
+    
+    /** Return a boolean dependency representing a model-time delay
+     *  of the specified amount.
+     *  @param delay A non-negative delay.
+     *  @return A boolean dependency representing a delay.
+     */
+    public Dependency delayDependency(double delay) {
+        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Perform an integration step. This invokes prefire() and fire() of
