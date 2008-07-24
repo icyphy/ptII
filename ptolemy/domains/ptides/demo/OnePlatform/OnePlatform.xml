@@ -14,7 +14,7 @@
     </property>
     <property name="PtidesDirector" class="ptolemy.domains.ptides.kernel.PtidesDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
-        </property>
+        </property>   
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
         </property>
     </property>

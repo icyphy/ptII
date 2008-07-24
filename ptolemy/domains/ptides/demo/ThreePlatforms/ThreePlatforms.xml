@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ThreePlatforms" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 272, 815, 505}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 43, 813, 506}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -13,19 +13,45 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="PtidesDirector" class="ptolemy.domains.ptides.kernel.PtidesDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 50}">
+         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property> 
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 45.0]">
         </property>
     </property>
     <property name="SchedulePlotter" class="ptolemy.domains.ptides.lib.SchedulePlotter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{375, 90}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 40.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="model time delay = 5.0&#10;WCET = 1.2&#10;&#10;event offset: 0.0&#10;event frequency: 1.0 ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 65.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="model time delay = 2.0&#10;WCET = 0.7&#10;&#10;event offset: 0.1&#10;event frequency: 1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 270.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="equivalent ports,&#10;minimum model &#10;time delay = 2.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 245.0]">
+        </property>
+    </property>
+    <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 214.0">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="39.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="63.0">
         </property>
     </property>
     <entity name="Platform1" class="ptolemy.actor.TypedCompositeActor">
-<display name="Platform 1"/>        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 150.0]">
+<display name="Platform 1"/>        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 150.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={312, 197, 815, 517}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={312, 197, 813, 506}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -34,7 +60,7 @@
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <property name="PtidesEmbeddedDirector" class="ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 155}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 60.0]">
             </property>
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -107,7 +133,7 @@
         <link port="Scale2.output" relation="relation3"/>
     </entity>
     <entity name="Platform3" class="ptolemy.actor.TypedCompositeActor">
-<display name="Platform 3"/>        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 200.0]">
+<display name="Platform 3"/>        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 215.0]">
         </property>
         <property name="PtidesEmbeddedDirector" class="ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 95.0]">
@@ -128,7 +154,7 @@
             </property>
         </port>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={747, 506, 508, 355}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={747, 506, 500, 344}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
@@ -143,7 +169,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="2.1" max="6.0"/>
+<xRange min="2.1" max="10.0"/>
 <yRange min="0.0" max="1.0"/>
 <default marks="dots"/>
 </plot>?>
@@ -163,7 +189,7 @@
         <link port="TimedPlotter.input" relation="relation2"/>
     </entity>
     <entity name="Platform2" class="ptolemy.actor.TypedCompositeActor">
-<display name="Platform 2"/>        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 265.0}">
+<display name="Platform 2"/>        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 265.0]">
         </property>
         <property name="PtidesEmbeddedDirector" class="ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 260}">
@@ -192,7 +218,7 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 165.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 165.0}">
             </property>
             <property name="WCET" class="ptolemy.data.expr.Parameter" value="0.7">
             </property>
