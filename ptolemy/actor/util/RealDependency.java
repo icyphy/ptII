@@ -144,6 +144,13 @@ public class RealDependency implements Dependency {
         return OTIMES_IDENTITY;
     }
     
+    /** Return the double value of the dependency.
+     * @return The value of the dependency.
+     */
+    public double value() {
+        return _value;
+    }
+    
     /** Return an instance of BooleanDependency with the specified
      *  value. This is preferable to use over the constructor
      *  because it uses the same instances for the most common

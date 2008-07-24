@@ -29,48 +29,49 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.kernel;
 
 import java.util.ArrayList;
-import java.util.Collection; 
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet; 
+import java.util.TreeSet;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Initializable;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TimedDirector; 
+import ptolemy.actor.TimedDirector;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.util.CalendarQueue;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.CalendarQueue; 
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.Dependency; 
+import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
-import ptolemy.actor.util.TimedEvent; 
-import ptolemy.data.DoubleToken; 
+import ptolemy.actor.util.TimedEvent;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.StringParameter;    
+import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.de.lib.TimedDelay;
-import ptolemy.domains.ptides.kernel.TimedQueue.Event; 
+import ptolemy.domains.ptides.kernel.PtidesReceiver.Event;
 import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType;
 import ptolemy.domains.ptides.platform.NonPreemptivePlatformExecutionStrategy;
 import ptolemy.domains.ptides.platform.PlatformExecutionStrategy;
 import ptolemy.domains.ptides.platform.PreemptivePlatformExecutionStrategy;
-import ptolemy.domains.tt.tdl.kernel.TDLModule;
+import ptolemy.domains.tt.tdl.kernel.TDLModule; 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
-import ptolemy.kernel.CompositeEntity; 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.NameDuplicationException; 
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -228,6 +229,20 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 			super.attributeChanged(attribute);
 		}
 	}
+	
+	@Override
+	public Dependency defaultDependency() {
+	    return RealDependency.OTIMES_IDENTITY;
+	}
+	
+	/** Return a boolean dependency representing a model-time delay
+     *  of the specified amount.
+     *  @param delay A non-negative delay.
+     *  @return A boolean dependency representing a delay.
+     */
+    public Dependency delayDependency(double delay) {
+        return RealDependency.valueOf(delay);
+    }
 
 	/**
 	 * If the enclosing director is a PtidesDirector, send these events 
@@ -396,12 +411,18 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 	 * @param object
 	 *            Port or Actor
 	 * @return true if tokens can be transferred.
+	 * @throws IllegalActionException 
 	 */
-	public boolean isSafeToProcessOnNetwork(Time time, NamedObj object) {
-		double minDelayTime = PtidesActorProperties.getMinDelayTime(object);
-		System.out.println(minDelayTime + " " + Double.MAX_VALUE);
-		return minDelayTime == Double.MAX_VALUE 
-				|| time.subtract(minDelayTime).add(_clockSyncronizationError).add(
+	public boolean isSafeToProcessOnNetwork(Time time, IOPort port) throws IllegalActionException {
+		RealDelayCausalityInterfaceForComposites causalityInterface = 
+            (RealDelayCausalityInterfaceForComposites) ((CompositeActor)
+                    ((CompositeActor) this.getContainer()).getContainer())
+            .getCausalityInterface();
+		RealDependency minimumDelay = (RealDependency) causalityInterface.getMinimumDelay(port);
+		
+		System.out.println(minimumDelay.value());
+		return minimumDelay.value() == Double.MAX_VALUE 
+				|| time.subtract(minimumDelay.value()).add(_clockSyncronizationError).add(
 						_networkDelay).compareTo(_currentPhysicalTime) <= 0;
 	}
 
@@ -415,11 +436,20 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 	 * @param object
 	 *            The object to to check the minimum delay time.
 	 * @return True if it is safe to process a token.
+	 * @throws IllegalActionException 
 	 */
-	public boolean isSafeToProcessOnPlatform(Time time, NamedObj object) {
-		double minDelayTime = PtidesActorProperties.getMinDelayTime(object);
-		return minDelayTime == Double.MAX_VALUE
-				|| time.subtract(minDelayTime).compareTo(_currentPhysicalTime) <= 0;
+	public boolean isSafeToProcessOnPlatform(Time time, IOPort port) throws IllegalActionException { 
+		
+		RealDelayCausalityInterfaceForComposites causalityInterface = 
+            (RealDelayCausalityInterfaceForComposites) 
+                    ((CompositeActor) this.getContainer())
+            .getCausalityInterface();
+		RealDependency minimumDelay = (RealDependency) causalityInterface.getMinimumDelay(port);
+        
+        System.out.println("min: " + minimumDelay.value());
+        
+		return minimumDelay.value() == Double.MAX_VALUE
+				|| time.subtract(minimumDelay.value()).compareTo(_currentPhysicalTime) <= 0;
 	}
 
 	/**
@@ -429,7 +459,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 		if (_debugging && _verbose) {
 			_debug("Creating a new DE receiver.");
 		}
-		return new PtidesPlatformReceiver();
+		return new PtidesActorReceiver();
 	}
 
 	/**
@@ -461,12 +491,14 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 		_finishingTimesOfActorsInExecution.put(actor, finishingTime);
 	}
 
+	
+	
 	/**
 	 * Initialize variables.
 	 */
 	public void preinitialize() throws IllegalActionException { 
-	    super.preinitialize();
-	    _eventQueues = new Hashtable();
+	    super.preinitialize(); 
+        _eventQueues = new Hashtable();
         for (Iterator it = ((CompositeActor) getContainer()).entityList()
                 .iterator(); it.hasNext();) {
             _eventQueues.put((Actor) it.next(), new TreeSet<Time>());
@@ -476,6 +508,8 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                 .getModelTime();
         _eventsInExecution.clear(); 
 	}
+	
+	
 	
 	/**
 	 * Transfer outputs and return true if any tokens were transfered.
@@ -580,7 +614,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 				while (port.hasToken(i)) {
 				      System.out.println("in");
 					Receiver[][] recv = port.getReceivers();
-					PtidesReceiver receiver = (PtidesReceiver) recv[0][0];
+					PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) recv[0][0];
 					Event event = receiver.getEvent();
 					Time time = event._timeStamp;
 					Token t = event._token;
@@ -593,8 +627,14 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 										+ _currentPhysicalTime);
 					if (!((isSafeToProcessOnNetwork(time, port)) || (time
 							.compareTo(_currentPhysicalTime) > 0))) {
+					    RealDelayCausalityInterfaceForComposites causalityInterface = 
+				            (RealDelayCausalityInterfaceForComposites) ((CompositeActor)
+				                    ((CompositeActor) this.getContainer()).getContainer())
+				            .getCausalityInterface();
+				        RealDependency minimumDelay = (RealDependency) causalityInterface.getMinimumDelay(port);
+				        
 					    _inputSafeToProcess.put(new TimedEvent(time.subtract(
-					            PtidesActorProperties.getMinDelayTime(port))
+					            minimumDelay.value())
 								.add(_clockSyncronizationError).add(_networkDelay), port));
 						// at this time, the new input should be read
 						receiver.put(t, time);
@@ -607,7 +647,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 					}
 					for (int k = 0; k < farReceivers.length; k++) {
 						for (int l = 0; l < farReceivers[k].length; l++) {
-							PtidesPlatformReceiver farReceiver = (PtidesPlatformReceiver) farReceivers[k][l];
+							PtidesActorReceiver farReceiver = (PtidesActorReceiver) farReceivers[k][l];
 							farReceiver.put(t, time);
 							displaySchedule((Actor) port.getContainer(),
 									_currentPhysicalTime.getDoubleValue(),
@@ -654,7 +694,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 					Receiver[][] outReceivers = port.getRemoteReceivers();
 					for (int k = 0; k < outReceivers.length; k++) {
 						for (int l = 0; l < outReceivers[k].length; l++) {
-							PtidesReceiver outReceiver = (PtidesReceiver) outReceivers[k][l];
+							PtidesPlatformReceiver outReceiver = (PtidesPlatformReceiver) outReceivers[k][l];
 							outReceiver.put(token,
 									((Actor) port.getContainer()).getDirector()
 											.getModelTime());
@@ -718,6 +758,86 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         }
         return nextRealTimeEvent;
     }
+	
+	// look for upstream events
+    private boolean _isSafeToProcess(IOPort port, Collection<IOPort> visitedPorts, Time delay, Time eventTimeStamp) throws IllegalActionException {
+        if (visitedPorts == null)
+            visitedPorts = new ArrayList<IOPort>();
+        visitedPorts.add(port); 
+        CompositeActor platform = (CompositeActor) this.getContainer();
+        if (port.isInput()) {
+            Time time = _getNextEventTimeStamp(port);
+            if (time != null && time.add(delay).compareTo(eventTimeStamp) >= 0)
+                return true;
+            
+            // if port is input port of this actor
+            if (platform.inputPortList().contains(port)) {
+                return false;
+            }
+            // else if port is input port of any actor in this actor
+            else {
+                if (port.getContainer() instanceof CompositeActor) {
+                    Collection<IOPort> equivalentPorts = (((CompositeActor)port.getContainer()).getCausalityInterface()).equivalentPorts(port);
+                    for (IOPort equivalentPort : equivalentPorts) {
+                        Collection<IOPort> sourcePorts = equivalentPort.sourcePortList(); // contains only one item (?)
+                        for (IOPort sourcePort : sourcePorts) {
+                            return _isSafeToProcess(sourcePort, visitedPorts, delay, eventTimeStamp);
+                        } 
+                    }
+                } else {
+                    Collection<IOPort> sourcePorts = port.sourcePortList(); // contains only one item (?)
+                    for (IOPort actorOutputPort : sourcePorts) {
+                        return _isSafeToProcess(actorOutputPort, visitedPorts, delay, eventTimeStamp);
+                    }
+                    if (sourcePorts.size() == 0) {
+                        return false;
+                    }
+                }
+            }
+        } else if (port.isOutput()) {
+            // if port is output port of this actor
+            if (platform.outputPortList().contains(port)) {
+                // impossible?
+            }
+            // else if port is output port of any actor in this actor
+            else { 
+                if (port.getContainer() instanceof CompositeActor) {
+                    CausalityInterface causalityInterface = ((Actor)port.getContainer()).getCausalityInterface();
+                    Collection<IOPort> deepInputPorts = port.deepInsidePortList();
+                    for (IOPort inputPort : deepInputPorts) { 
+                        delay.add(((RealDependency)causalityInterface.getDependency(inputPort, port)).value());
+                        return _isSafeToProcess(inputPort, visitedPorts, delay, eventTimeStamp);
+                    }
+                } else {
+                    CausalityInterface causalityInterface = ((Actor)port.getContainer()).getCausalityInterface();
+                    Collection<IOPort> inputPorts = causalityInterface.dependentPorts(port);
+                    for (IOPort inputPort : inputPorts) {
+                        delay.add(((RealDependency)causalityInterface.getDependency(inputPort, port)).value());
+                        return _isSafeToProcess(inputPort, visitedPorts, delay, eventTimeStamp);
+                    }
+                    if (inputPorts.size() == 0)
+                        return false;
+                }
+            }
+        }
+        return false;
+    } 
+
+    private Time _getNextEventTimeStamp(IOPort port) {
+        if (PtidesActorProperties.portIsTriggerPort(port)) {
+            Receiver[][] receivers = port.getReceivers();
+            for (int i = 0; i < receivers.length; i++) {
+                Receiver[] recv = receivers[i];
+                for (int j = 0; j < recv.length; j++) {
+                    
+                    PtidesReceiver receiver = (PtidesReceiver) recv[j];
+                    Time time = receiver.getNextTime();
+                    return time;
+                }
+            }
+        }
+        return null;
+    }
 
     /**
 	 * Determine if there is an event with time stamp - minDelay > time stamp of
@@ -734,53 +854,53 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 	 * @throws IllegalActionException
 	 *             Thrown if the delay of a DelayActor could not be retrieved.
 	 */
-	private boolean _isSafeToProcess(Time eventTimestamp, Node node,
-			Set<Edge> traversedEdges) throws IllegalActionException {
-		Collection inputs = graph.inputEdges(node);
-		if (inputs.size() == 0)
-			return false;
-		Iterator inputIt = inputs.iterator();
-		while (inputIt.hasNext()) {
-			Edge edge = (Edge) inputIt.next();
-			Node nextNode = edge.source();
-			Actor inputActor = (Actor) ((IOPort) nextNode.getWeight())
-					.getContainer();
-			if (!traversedEdges.contains(edge)) {
-				traversedEdges.add(edge);
-				if (inputActor instanceof TimedDelay) {
-					TimedDelay delayActor = (TimedDelay) inputActor;
-					double delay = ((DoubleToken) (delayActor.delay.getToken()))
-							.doubleValue();
-					eventTimestamp = eventTimestamp.subtract(delay);
-				}
-				if (PtidesActorProperties
-						.mustBeFiredAtRealTime(inputActor))
-					return false; // didn't find earlier events
-				else if (inputActor.equals(this.getContainer()))
-					return false; // didn't find earlier events in platform
-				for (Iterator it = inputActor.inputPortList().iterator(); it
-						.hasNext();) {
-					IOPort p = (IOPort) it.next();
-					Receiver[][] receivers = p.getReceivers();
-					for (int i = 0; i < receivers.length; i++) {
-						Receiver[] recv = receivers[i];
-						for (int j = 0; j < recv.length; j++) {
-							PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) recv[j];
-							Time time = receiver.getNextTime();
-							if (time.compareTo(eventTimestamp) > 0)
-								return true;
-						}
-					}
-				}
-			}
-			for (Iterator it = inputActor.inputPortList().iterator(); it
-					.hasNext();) {
-				return _isSafeToProcess(eventTimestamp, graph.node(it.next()),
-						traversedEdges);
-			}
-		}
-		return false; // should never come here
-	}
+//	private boolean _isSafeToProcess(Time eventTimestamp, IOPort port,
+//			Set<IOPort> visitedPorts) throws IllegalActionException { 	    
+//		if (inputs.size() == 0)
+//			return false;
+//		Iterator inputIt = inputs.iterator();
+//		while (inputIt.hasNext()) {
+//			Edge edge = (Edge) inputIt.next();
+//			Node nextNode = edge.source();
+//			Actor inputActor = (Actor) ((IOPort) nextNode.getWeight())
+//					.getContainer();
+//			if (!traversedEdges.contains(edge)) {
+//				traversedEdges.add(edge);
+//				if (inputActor instanceof TimedDelay) {
+//					TimedDelay delayActor = (TimedDelay) inputActor;
+//					double delay = ((DoubleToken) (delayActor.delay.getToken()))
+//							.doubleValue();
+//					eventTimestamp = eventTimestamp.subtract(delay);
+//				}
+//				if (PtidesActorProperties
+//						.mustBeFiredAtRealTime(inputActor))
+//					return false; // didn't find earlier events
+//				else if (inputActor.equals(this.getContainer()))
+//					return false; // didn't find earlier events in platform
+//				for (Iterator it = inputActor.inputPortList().iterator(); it
+//						.hasNext();) {
+//					IOPort p = (IOPort) it.next();
+//					Receiver[][] receivers = p.getReceivers();
+//					for (int i = 0; i < receivers.length; i++) {
+//						Receiver[] recv = receivers[i];
+//						for (int j = 0; j < recv.length; j++) {
+//							PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) recv[j];
+//							Time time = receiver.getNextTime();
+//							if (time.compareTo(eventTimestamp) > 0)
+//								return true;
+//						}
+//					}
+//				}
+//			}
+//			for (Iterator it = inputActor.inputPortList().iterator(); it
+//					.hasNext();) {
+//				return _isSafeToProcess(eventTimestamp, it.next(),
+//						traversedEdges);
+//			}
+//		}
+//		return false; // should never come here
+//	    return true;
+//	}
 	
     /**
      * The actual firing of an actor takes zero model time, the wcet is simulated by
@@ -840,12 +960,13 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 
 			// take pure events
 			if (!set.isEmpty()) {
-			    Time time = set.first();
-				boolean isSafe = isSafeToProcessOnPlatform(time,
-						(NamedObj) actor);
-				if (isSafe) {
+			    Time time = set.first(); 
+//				boolean isSafe = isSafeToProcessOnPlatform(time,
+//						(NamedObj) actor);
+//				if (isSafe) {
+			    // pure events are always safe to process
 					events.add(new TimedEvent(time, actor)); 
-				}
+//				}
 			}
 			// take trigger events
 			if (!_eventsInExecution.contains(actor)) {
@@ -857,12 +978,12 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     					for (int i = 0; i < receivers.length; i++) {
     						Receiver[] recv = receivers[i];
     						for (int j = 0; j < recv.length; j++) {
-    							PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) recv[j];
+    							PtidesActorReceiver receiver = (PtidesActorReceiver) recv[j];
     							Time time = receiver.getNextTime();
     							if (time != null
     									&& (isSafeToProcessOnPlatform(time, port) || _isSafeToProcess(
-    											time, graph.node(port),
-    											new TreeSet()))) {
+    											port,
+    											new ArrayList(), new Time(this, 0.0), time))) {
     							    List<TimedEvent> toRemove = new ArrayList<TimedEvent>();
     						        for (int k = 0; k < events.size(); k++) {
     						            TimedEvent event = (TimedEvent) events.get(k);
@@ -975,9 +1096,5 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 	 * Used execution strategy which is set according to a parameter.
 	 */
 	private PlatformExecutionStrategy _executionStrategy;
-
-	/**TODO: remove
-	 */
-	public DirectedGraph graph;
 
 }

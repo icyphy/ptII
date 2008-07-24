@@ -36,11 +36,12 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent; 
-import ptolemy.domains.ptides.kernel.PtidesActorProperties;
-import ptolemy.domains.ptides.kernel.PtidesGraphUtilities; 
+import ptolemy.domains.ptides.kernel.PtidesActorProperties; 
 import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType; 
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;
@@ -113,19 +114,16 @@ public class NonPreemptivePlatformExecutionStrategy extends
             int index2 = -1;
 
             // TODO wrong!!!
-            CompositeActor actor = (CompositeActor) actor1.getContainer();
-            FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (actor)
-                    .getFunctionDependency();
-            DirectedAcyclicGraph graph = functionDependency
-                    .getDetailedDependencyGraph().toDirectedAcyclicGraph();
-            Object[] objects = graph.topologicalSort();
-            for (int i = 0; i < objects.length; i++) {
-                if (((IOPort) objects[i]).getContainer() == actor1) {
-                    index1 = i;
-                } else if (((IOPort) objects[i]).getContainer() == actor2) {
-                    index2 = i;
-                }
+            CompositeActor compositeActor = (CompositeActor) actor1.getContainer();
+            CausalityInterfaceForComposites causalityInterface = (CausalityInterfaceForComposites) compositeActor.getCausalityInterface();
+            try {
+                index1 = causalityInterface.getDepthOfActor(actor1);
+                index2 = causalityInterface.getDepthOfActor(actor2);
+            } catch (IllegalActionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
+            
 
             if (wcet1 == 0 && (!fireAtRT1 || time1.equals(_physicalTime))
                     && wcet2 > 0) {

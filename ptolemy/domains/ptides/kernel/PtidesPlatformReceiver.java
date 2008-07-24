@@ -29,20 +29,22 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.kernel;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.NoRoomException;
-import ptolemy.actor.Receiver;
+import ptolemy.actor.NoTokenException;
+import ptolemy.actor.process.BoundaryDetector;
+import ptolemy.actor.process.ProcessReceiver;
+import ptolemy.actor.process.ProcessThread;
+import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
+
+// ////////////////////////////////////////////////////////////////////////
+// // DDEReceiver
 
 /**
- * Receiver used inside platforms of a ptides domain.
- *
- * This Receiver will not work with non-opaque actors inside a platform.
+ * Receiver used on the top level in the ptides domain.
  *
  * @author Patricia Derler
  * @version $Id$
@@ -50,201 +52,325 @@ import ptolemy.kernel.util.InternalErrorException;
  * @Pt.ProposedRating Yellow (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class PtidesPlatformReceiver extends TimedQueue {
-
+public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessReceiver {
     /**
-     * Creates a new Ptides platform receiver.
+     * Construct an empty receiver with no container.
      */
     public PtidesPlatformReceiver() {
         super();
+        _boundaryDetector = new BoundaryDetector(this);
     }
 
     /**
-     * Construct an empty DEReceiver with the specified container.
+     * Construct an empty receiver with the specified container.
      *
      * @param container
-     *                The container.
+     *                The IOPort that contains this receiver.
      * @exception IllegalActionException
-     *                    If the container does not accept this receiver.
+     *                    If this receiver cannot be contained by the proposed
+     *                    container.
      */
-    public PtidesPlatformReceiver(IOPort container)
-            throws IllegalActionException {
+    public PtidesPlatformReceiver(IOPort container) throws IllegalActionException {
         super(container);
-    }
-
-
-    /**
-     * Returns time stamp of next event in the receiver queue.
-     *
-     * @return The time stamp.
-     */
-    public Time getNextTime() {
-        if (_queue.isEmpty()) {
-            return null;
-        }
-        Time time = (_queue.first())._timeStamp;
-        return time;
-    }
-
-
-    /**
-     * Return true if there is at least one token available to the
-     * get() method.
-     *
-     * @return True if there are more tokens.
-     */
-    public boolean hasToken() {
-        return (getContainer().isOutput() && super.hasToken())
-                || (!(((Actor) (getContainer()).getContainer()).getDirector() instanceof PtidesEmbeddedDirector)
-                        && super.hasToken())
-                || (hasToken(getModelTime())
-                        && ((PtidesEmbeddedDirector) ((Actor) (getContainer())
-                                        .getContainer()).getDirector())
-                        .isSafeToProcessOnPlatform(getModelTime(),
-                                getContainer()));
-    }
-
-    /**
-     * Put a token into this receiver.
-     *
-     * @param token
-     *                The token to be put.
-     */
-    public void put(Token token) {
-        IOPort containerPort = getContainer();
-        Actor containerActor = (Actor) containerPort.getContainer();
-        Director dir;
-        if (containerActor instanceof CompositeActor) {
-            dir = containerActor.getExecutiveDirector();
-        } else {
-            dir = containerActor.getDirector();
-        }
-        Time modelTime = dir.getModelTime();
-        put(token, modelTime);
-    }
-
-    /**
-     * Put a token into this receiver and post a trigger event to the director.
-     * The director will be responsible to dequeue the trigger event at the
-     * correct timestamp and microstep and invoke the corresponding actor whose
-     * input port contains this receiver. This receiver may contain more than
-     * one events.
-     *
-     * @param token
-     *                The token to be put.
-     * @param time
-     *                The time stamp for the token.
-     */
-    public void put(Token token, Time time) {
-        try {
-            PtidesEmbeddedDirector dir = _getDirector();
-            //dir._enqueueEvent(getContainer(), time);
-            super.put(token, time);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(null, ex, null);
-        }
-    }
-
-    /**
-     * Puts a token into all receivers.
-     *
-     * @param token
-     *                The token to be put.
-     * @param receivers
-     *                The receivers that get the token.
-     * @param time
-     *                The time stamp for the token.
-     * @exception NoRoomException
-     *                 Thrown if the receiver is full.
-     * @exception IllegalActionException
-     *                 Thrown if container cannot convert token.
-     */
-    public void putToAll(Token token, Receiver[] receivers, Time time)
-            throws NoRoomException, IllegalActionException {
-        for (int j = 0; j < receivers.length; j++) {
-            IOPort container = receivers[j].getContainer();
-
-            // If there is no container, then perform no
-            // conversion.
-            if (container != null) {
-                ((PtidesPlatformReceiver) receivers[j]).put(container
-                        .convert(token), time);
-            }
-        }
+        _boundaryDetector = new BoundaryDetector(this);
     }
 
     // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    // // public methods ////
 
     /**
-     * Return the director that created this receiver. If this receiver is an
-     * inside receiver of an output port of an opaque composite actor, then the
-     * director will be the local director of the container of its port.
-     * Otherwise, it's the executive director of the container of its port.Note
-     * that the director returned is guaranteed to be non-null. This method is
-     * read synchronized on the workspace.
-     *
-     * @return An instance of DEDirector.
-     * @exception IllegalActionException
-     *                    If there is no container port, or if the port has no
-     *                    container actor, or if the actor has no director, or
-     *                    if the director is not an instance of DEDirector.
+     * Clear this receiver of any contained tokens.
      */
-    private PtidesEmbeddedDirector _getDirector() throws IllegalActionException {
-        IOPort port = getContainer();
+    public void clear() {
+        _queue.clear();
+    }
 
-        if (port != null) {
-            if (_directorVersion == port.workspace().getVersion()) {
-                return _director;
+    public Token get() {
+        if (!super.hasToken()) {
+            throw new NoTokenException(getContainer(),
+                    "Attempt to get token that does not have "
+                            + "have the earliest time stamp.");
+        }
+        synchronized (_director) {
+            if (_terminate) {
+                throw new TerminateProcessException("");
             }
+            Token token = super.get();
+            return token;
+        }
+    }
 
-            // Cache is invalid. Reconstruct it.
-            try {
-                port.workspace().getReadAccess();
-                Actor actor = (Actor) port.getContainer();
-                if (actor != null) {
-                    Director dir;
+    /**
+     * Returns the director.
+     *
+     * @return The director.
+     */
+    public PtidesDirector getDirector() {
+        return _director;
+    }
 
-                    if (!port.isInput() && (actor instanceof CompositeActor)
-                            && ((CompositeActor) actor).isOpaque()) {
-                        dir = actor.getDirector();
-                    } else {
-                        dir = actor.getExecutiveDirector();
-                    }
+    /**
+     * Return true if the receiver contains the given number of tokens
+     * that can be obtained by calling the get() method. Returning
+     * true in this method should also guarantee that calling the
+     * get() method will not result in an exception.
+     */
+    public boolean hasToken(int tokens) {
+        return super.hasToken(tokens);
+    }
 
-                    if (dir != null) {
-                        if (dir instanceof PtidesEmbeddedDirector) {
-                            _director = (PtidesEmbeddedDirector) dir;
-                            _directorVersion = port.workspace().getVersion();
-                            return _director;
-                        } else {
-                            throw new IllegalActionException(getContainer(),
-                                    "Does not have a "
-                                    + "EmbeddedDEDirector4Ptides.");
-                        }
-                    }
-                }
-            } finally {
-                port.workspace().doneReading();
-            }
+    /**
+     * Return true if this receiver is connected to the inside of a boundary
+     * port. A boundary port is an opaque port that is contained by a composite
+     * actor. If this receiver is connected to the inside of a boundary port,
+     * then return true; otherwise return false.
+     *
+     * @return True if this receiver is contained on the inside of a boundary
+     *         port; return false otherwise.
+     * @see ptolemy.actor.process.BoundaryDetector
+     */
+    public boolean isConnectedToBoundary() {
+        return _boundaryDetector.isConnectedToBoundary();
+    }
+
+    /**
+     * Return true if this receiver is connected to the inside of a boundary
+     * port. A boundary port is an opaque port that is contained by a composite
+     * actor. If this receiver is connected to the inside of a boundary port,
+     * then return true; otherwise return false.
+     *
+     * @return True if this receiver is connected to the inside of a boundary
+     *         port; return false otherwise.
+     * @see ptolemy.actor.process.BoundaryDetector
+     */
+    public boolean isConnectedToBoundaryInside() {
+        return _boundaryDetector.isConnectedToBoundaryInside();
+    }
+
+    /**
+     * Return true if this receiver is connected to the outside of a boundary
+     * port. A boundary port is an opaque port that is contained by a composite
+     * actor. If this receiver is connected to the outside of a boundary port,
+     * then return true; otherwise return false.
+     *
+     * @return True if this receiver is connected to the outside of a boundary
+     *         port; return false otherwise.
+     * @see ptolemy.actor.process.BoundaryDetector
+     */
+    public boolean isConnectedToBoundaryOutside() {
+        return _boundaryDetector.isConnectedToBoundaryOutside();
+    }
+
+    /**
+     * Return true if this receiver is a consumer receiver. A receiver is a
+     * consumer receiver if it is connected to a boundary port.
+     *
+     * @return True if this is a consumer receiver; return false otherwise.
+     */
+    public boolean isConsumerReceiver() {
+        if (isConnectedToBoundary()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Return true if this receiver is contained on the inside of a boundary
+     * port. A boundary port is an opaque port that is contained by a composite
+     * actor. If this receiver is contained on the inside of a boundary port
+     * then return true; otherwise return false.
+     *
+     * @return True if this receiver is contained on the inside of a boundary
+     *         port; return false otherwise.
+     * @see ptolemy.actor.process.BoundaryDetector
+     */
+    public boolean isInsideBoundary() {
+        return _boundaryDetector.isInsideBoundary();
+    }
+
+    /**
+     * Return true if this receiver is contained on the outside of a boundary
+     * port. A boundary port is an opaque port that is contained by a composite
+     * actor. If this receiver is contained on the outside of a boundary port
+     * then return true; otherwise return false.
+     *
+     * @return True if this receiver is contained on the outside of a boundary
+     *         port; return false otherwise.
+     * @see BoundaryDetector
+     */
+    public boolean isOutsideBoundary() {
+        return _boundaryDetector.isOutsideBoundary();
+    }
+
+    /**
+     * Return true if this receiver is a producer receiver. A receiver is a
+     * producer receiver if it is contained on the inside or outside of a
+     * boundary port.
+     *
+     * @return True if this is a producer receiver; return false otherwise.
+     */
+    public boolean isProducerReceiver() {
+        if (isOutsideBoundary() || isInsideBoundary()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Return a true or false to indicate whether there is a read block on this
+     * receiver or not, respectively.
+     *
+     * @return a boolean indicating whether a read is blocked on this receiver
+     *         or not.
+     */
+    public boolean isReadBlocked() {
+        return false;
+    }
+
+    /**
+     * Return a true or false to indicate whether there is a write
+     * block on this receiver or not.
+     *
+     * @return A boolean indicating whether a write is blocked on this receiver
+     *         or not.
+     */
+    public boolean isWriteBlocked() {
+        return false;
+    }
+
+    /**
+     * Do a blocking write on the queue. Set the time stamp to be the
+     * current time of the sending actor. If the current time is
+     * greater than the completionTime of this receiver, then set the
+     * time stamp to INACTIVE and the token to null. If the queue is
+     * full, then inform the director that this receiver is blocking
+     * on a write and wait until room becomes available. When room
+     * becomes available, put the token and time stamp in the queue
+     * and inform the director that the block no longer exists. If at
+     * any point during this method this receiver is scheduled for
+     * termination, then throw a TerminateProcessException which will
+     * cease activity for the actor that contains this receiver.
+     *
+     * @param token
+     *                The token to put in the queue.
+     * @exception TerminateProcessException
+     *                    If activity is scheduled to cease.
+     */
+    public void put(Token token) {
+        Thread thread = Thread.currentThread();
+        Time time = null;
+
+        if (thread instanceof ProcessThread) {
+            time = ((ProcessThread) thread).getActor().getDirector()
+                    .getModelTime();
         }
 
-        throw new IllegalActionException(getContainer(),
-                "Does not have a IOPort as the container of the receiver.");
+        put(token, time);
+    }
+
+	/**
+	 * Do a blocking write on the queue. Set the time stamp to be the time
+	 * specified by the time parameter. If the specified time is greater than
+	 * the completionTime of this receiver, then set the time stamp to INACTIVE
+	 * and the token to null. If the queue is full, then inform the director
+	 * that this receiver is blocking on a write and wait until room becomes
+	 * available. When room becomes available, put the token and time stamp in
+	 * the queue and inform the director that the block no longer exists. If at
+	 * any point during this method this receiver is scheduled for termination,
+	 * then throw a TerminateProcessException which will cease activity for the
+	 * actor that contains this receiver.
+	 * 
+	 * @param token
+	 *            The token to put in the queue.
+	 * @param time
+	 *            The specified time stamp.
+	 * @exception TerminateProcessException
+	 *                If activity is scheduled to cease.
+	 */
+	public void put(Token token, Time time) { 
+		if (super.hasRoom() && !_terminate) { // super will always have room
+												// for now
+			super.put(token, time);
+			this._director.unblockWaitingPlatform((Actor) this.getContainer().getContainer());
+			return;
+		}
+
+    }
+
+    /**
+     * Schedule this receiver to terminate. After this method is
+     * called, a TerminateProcessException will be thrown during the
+     * next call to get() or put() of this class.
+     */
+    public void requestFinish() {
+        synchronized (_director) {
+            _terminate = true;
+            _director.notifyAll();
+        }
+    }
+
+    /**
+     * Reset local flags. The local flag of this receiver indicates
+     * whether this receiver is scheduled for termination. Resetting
+     * the termination flag will make sure that this receiver is not
+     * scheduled for termination.
+     */
+    public void reset() {
+        _terminate = false;
+        _boundaryDetector.reset();
+    }
+
+    /**
+     * Set the container. This overrides the base class to record the director.
+     *
+     * @param port
+     *                The container.
+     * @exception IllegalActionException
+     *                    If the container is not of an appropriate subclass of
+     *                    IOPort, or if the container's director is not an
+     *                    instance of DDEDirector.
+     */
+    public void setContainer(IOPort port) throws IllegalActionException {
+        super.setContainer(port);
+
+        if (port == null) {
+            _director = null;
+        } else {
+            Actor actor = (Actor) port.getContainer();
+            Director director;
+
+            // For a composite actor,
+            // the receiver type of an input port is decided by
+            // the executive director.
+            // While the receiver type of an output is decided by the director.
+            // NOTE: getExecutiveDirector() and getDirector() yield the same
+            // result for actors that do not contain directors.
+            if (port.isInput()) {
+                director = actor.getExecutiveDirector();
+            } else {
+                director = actor.getDirector();
+            }
+
+            if (!(director instanceof PtidesDirector)) {
+                throw new IllegalActionException(port,
+                        "Cannot use an instance of PNQueueReceiver "
+                                + "since the director is not a PNDirector.");
+            }
+
+            _director = (PtidesDirector) director;
+        }
     }
 
     // /////////////////////////////////////////////////////////////////
     // // private variables ////
-    /** The director where this DEReceiver should register for De events. */
-    private PtidesEmbeddedDirector _director;
 
-    /**
-     * Version of the director.
-     */
-    private long _directorVersion = -1;
+    /** The boundary detector. */
+    private BoundaryDetector _boundaryDetector;
 
-    public void removeEvents(Time modelTime) {
-        while (_queue.size() > 0 && _queue.first()._timeStamp.equals(modelTime))
-            _queue.remove(_queue.first());
-    }
+    /** The director in charge of this receiver. */
+    private PtidesDirector _director;
+
+    /** Flag indicating that termination has been requested. */
+    private boolean _terminate = false;
+
 }

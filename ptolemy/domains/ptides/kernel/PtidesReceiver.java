@@ -25,26 +25,25 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.ptides.kernel;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
+import java.util.Comparator;
+import java.util.TreeSet;
+
+import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
-import ptolemy.actor.process.BoundaryDetector;
-import ptolemy.actor.process.ProcessReceiver;
-import ptolemy.actor.process.ProcessThread;
-import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.actor.util.Time;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-// ////////////////////////////////////////////////////////////////////////
-// // DDEReceiver
-
 /**
- * Receiver used on the top level in the ptides domain.
+ * Receivers in the Ptides domain use a this timed queue to sort and events in
+ * the receivers.
  *
  * @author Patricia Derler
  * @version $Id$
@@ -52,17 +51,16 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Yellow (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
+public class PtidesReceiver extends AbstractReceiver {
+
     /**
-     * Construct an empty receiver with no container.
+     * Construct an empty queue with no container.
      */
     public PtidesReceiver() {
-        super();
-        _boundaryDetector = new BoundaryDetector(this);
     }
 
     /**
-     * Construct an empty receiver with the specified container.
+     * Construct an empty queue with the specified IOPort container.
      *
      * @param container
      *                The IOPort that contains this receiver.
@@ -72,305 +70,292 @@ public class PtidesReceiver extends TimedQueue implements ProcessReceiver {
      */
     public PtidesReceiver(IOPort container) throws IllegalActionException {
         super(container);
-        _boundaryDetector = new BoundaryDetector(this);
     }
 
     // /////////////////////////////////////////////////////////////////
     // // public methods ////
 
-    /**
-     * Clear this receiver of any contained tokens.
-     */
-    public void clear() {
+    @Override
+    public void clear() throws IllegalActionException {
         _queue.clear();
     }
 
+    /**
+     * Take the the oldest token off of the queue and return it. If
+     * the queue is empty, throw a NoTokenException. If there are
+     * other tokens left on the queue after this removal, then set the
+     * receiver time of this receiver to equal that of the next oldest
+     * token. Update the TimeKeeper that manages this
+     * PrioritizedTimedQueue. If there are any receivers in the
+     * TimeKeeper with receiver times of PrioritizedTimedQueue.IGNORE,
+     * remove the first token from these receivers.
+     *
+     * @return The oldest token off of the queue.
+     * @exception NoTokenException
+     *                    If the queue is empty.
+     */
     public Token get() {
-        if (!super.hasToken()) {
-            throw new NoTokenException(getContainer(),
-                    "Attempt to get token that does not have "
-                            + "have the earliest time stamp.");
+        Token token;
+        Event event = _queue.first();
+        _queue.remove(event);
+        token = event.getToken();
+        return token;
+    }
+    
+    /**
+     * Returns time stamp of next event in the receiver queue.
+     *
+     * @return The time stamp.
+     */
+    public Time getNextTime() {
+        if (_queue.isEmpty()) {
+            return null;
         }
-        synchronized (_director) {
-            if (_terminate) {
-                throw new TerminateProcessException("");
-            }
-            Token token = super.get();
-            return token;
+        Time time = (_queue.first())._timeStamp;
+        return time;
+    }
+
+    /**
+     * Get the queue capacity of this receiver.
+     *
+     * @return The capacity of this receiver's queue.
+     */
+    public int getCapacity() {
+        return _queue.size();
+    }
+
+    /**
+     * Similar to get() but if not only token but also time stamp is
+     * required, this method is used.
+     *
+     * @return Event containing token and time stamp.
+     */
+    public Event getEvent() {
+        Event event = _queue.first();
+        _queue.remove(event);
+        return event;
+    }
+
+    /**
+     * This is an unbounded receiver thus always returns true.
+     *
+     * @return true because this is an unbounded receiver.
+     */
+    public boolean hasRoom() {
+        return true;
+    }
+
+    /**
+     * This is an unbounded receiver thus always returns true.
+     *
+     * @param numberOfTokens Number of tokens to be stored.
+     * @return true because this is an unbounded receiver.
+     */
+    public boolean hasRoom(int numberOfTokens)
+            throws IllegalArgumentException {
+        return true;
+    }
+
+    /**
+     * Return true if there are tokens stored on the queue. Return false if the
+     * queue is empty.
+     *
+     * @return True if the queue is not empty; return false otherwise.
+     */
+    public boolean hasToken() {
+        return _queue.size() > 0;
+    }
+
+    /**
+     * Returns true if there is a token with the specified time stamp.
+     *
+     * @param time
+     *                Time for which a token is required.
+     * @return True if the first element in the queue has the specified time
+     *         stamp.
+     */
+    public boolean hasToken(Time time) {
+        if (_queue.size() == 0) {
+            return false;
         }
+        return ((_queue.first())._timeStamp.equals(time));
     }
 
     /**
-     * Returns the director.
+     * Return true if queue size is at least the argument.
      *
-     * @return The director.
+     * @param numberOfTokens
+     *                The number of tokens to get from the queue.
+     * @return True if the queue has enough tokens.
+     * @exception IllegalArgumentException
+     *                    If the argument is not positive. This is a runtime
+     *                    exception, so it does not need to be declared
+     *                    explicitly.
      */
-    public PtidesDirector getDirector() {
-        return _director;
-    }
-
-    /**
-     * Return true if the receiver contains the given number of tokens
-     * that can be obtained by calling the get() method. Returning
-     * true in this method should also guarantee that calling the
-     * get() method will not result in an exception.
-     */
-    public boolean hasToken(int tokens) {
-        return super.hasToken(tokens);
-    }
-
-    /**
-     * Return true if this receiver is connected to the inside of a boundary
-     * port. A boundary port is an opaque port that is contained by a composite
-     * actor. If this receiver is connected to the inside of a boundary port,
-     * then return true; otherwise return false.
-     *
-     * @return True if this receiver is contained on the inside of a boundary
-     *         port; return false otherwise.
-     * @see ptolemy.actor.process.BoundaryDetector
-     */
-    public boolean isConnectedToBoundary() {
-        return _boundaryDetector.isConnectedToBoundary();
-    }
-
-    /**
-     * Return true if this receiver is connected to the inside of a boundary
-     * port. A boundary port is an opaque port that is contained by a composite
-     * actor. If this receiver is connected to the inside of a boundary port,
-     * then return true; otherwise return false.
-     *
-     * @return True if this receiver is connected to the inside of a boundary
-     *         port; return false otherwise.
-     * @see ptolemy.actor.process.BoundaryDetector
-     */
-    public boolean isConnectedToBoundaryInside() {
-        return _boundaryDetector.isConnectedToBoundaryInside();
-    }
-
-    /**
-     * Return true if this receiver is connected to the outside of a boundary
-     * port. A boundary port is an opaque port that is contained by a composite
-     * actor. If this receiver is connected to the outside of a boundary port,
-     * then return true; otherwise return false.
-     *
-     * @return True if this receiver is connected to the outside of a boundary
-     *         port; return false otherwise.
-     * @see ptolemy.actor.process.BoundaryDetector
-     */
-    public boolean isConnectedToBoundaryOutside() {
-        return _boundaryDetector.isConnectedToBoundaryOutside();
-    }
-
-    /**
-     * Return true if this receiver is a consumer receiver. A receiver is a
-     * consumer receiver if it is connected to a boundary port.
-     *
-     * @return True if this is a consumer receiver; return false otherwise.
-     */
-    public boolean isConsumerReceiver() {
-        if (isConnectedToBoundary()) {
-            return true;
+    public boolean hasToken(int numberOfTokens)
+            throws IllegalArgumentException {
+        if (numberOfTokens < 1) {
+            throw new IllegalArgumentException(
+                    "hasToken() requires a positive argument.");
         }
-        return false;
+
+        return (_queue.size() > numberOfTokens);
     }
 
     /**
-     * Return true if this receiver is contained on the inside of a boundary
-     * port. A boundary port is an opaque port that is contained by a composite
-     * actor. If this receiver is contained on the inside of a boundary port
-     * then return true; otherwise return false.
-     *
-     * @return True if this receiver is contained on the inside of a boundary
-     *         port; return false otherwise.
-     * @see ptolemy.actor.process.BoundaryDetector
-     */
-    public boolean isInsideBoundary() {
-        return _boundaryDetector.isInsideBoundary();
-    }
-
-    /**
-     * Return true if this receiver is contained on the outside of a boundary
-     * port. A boundary port is an opaque port that is contained by a composite
-     * actor. If this receiver is contained on the outside of a boundary port
-     * then return true; otherwise return false.
-     *
-     * @return True if this receiver is contained on the outside of a boundary
-     *         port; return false otherwise.
-     * @see BoundaryDetector
-     */
-    public boolean isOutsideBoundary() {
-        return _boundaryDetector.isOutsideBoundary();
-    }
-
-    /**
-     * Return true if this receiver is a producer receiver. A receiver is a
-     * producer receiver if it is contained on the inside or outside of a
-     * boundary port.
-     *
-     * @return True if this is a producer receiver; return false otherwise.
-     */
-    public boolean isProducerReceiver() {
-        if (isOutsideBoundary() || isInsideBoundary()) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Return a true or false to indicate whether there is a read block on this
-     * receiver or not, respectively.
-     *
-     * @return a boolean indicating whether a read is blocked on this receiver
-     *         or not.
-     */
-    public boolean isReadBlocked() {
-        return false;
-    }
-
-    /**
-     * Return a true or false to indicate whether there is a write
-     * block on this receiver or not.
-     *
-     * @return A boolean indicating whether a write is blocked on this receiver
-     *         or not.
-     */
-    public boolean isWriteBlocked() {
-        return false;
-    }
-
-    /**
-     * Do a blocking write on the queue. Set the time stamp to be the
-     * current time of the sending actor. If the current time is
-     * greater than the completionTime of this receiver, then set the
-     * time stamp to INACTIVE and the token to null. If the queue is
-     * full, then inform the director that this receiver is blocking
-     * on a write and wait until room becomes available. When room
-     * becomes available, put the token and time stamp in the queue
-     * and inform the director that the block no longer exists. If at
-     * any point during this method this receiver is scheduled for
-     * termination, then throw a TerminateProcessException which will
-     * cease activity for the actor that contains this receiver.
+     * Throw an exception, since this method is not used in Ptides.
      *
      * @param token
-     *                The token to put in the queue.
-     * @exception TerminateProcessException
-     *                    If activity is scheduled to cease.
+     *                The token to be put to the receiver.
+     * @exception NoRoomException
+     *                    If the receiver is full.
      */
     public void put(Token token) {
-        Thread thread = Thread.currentThread();
-        Time time = null;
-
-        if (thread instanceof ProcessThread) {
-            time = ((ProcessThread) thread).getActor().getDirector()
-                    .getModelTime();
-        }
-
-        put(token, time);
-    }
-
-	/**
-	 * Do a blocking write on the queue. Set the time stamp to be the time
-	 * specified by the time parameter. If the specified time is greater than
-	 * the completionTime of this receiver, then set the time stamp to INACTIVE
-	 * and the token to null. If the queue is full, then inform the director
-	 * that this receiver is blocking on a write and wait until room becomes
-	 * available. When room becomes available, put the token and time stamp in
-	 * the queue and inform the director that the block no longer exists. If at
-	 * any point during this method this receiver is scheduled for termination,
-	 * then throw a TerminateProcessException which will cease activity for the
-	 * actor that contains this receiver.
-	 * 
-	 * @param token
-	 *            The token to put in the queue.
-	 * @param time
-	 *            The specified time stamp.
-	 * @exception TerminateProcessException
-	 *                If activity is scheduled to cease.
-	 */
-	public void put(Token token, Time time) { 
-		if (super.hasRoom() && !_terminate) { // super will always have room
-												// for now
-			super.put(token, time);
-			this._director.unblockWaitingPlatform((Actor) this.getContainer().getContainer());
-			return;
-		}
-
+        throw new NoRoomException("put(Token) is not used in the "
+                + "Ptides domain.");
     }
 
     /**
-     * Schedule this receiver to terminate. After this method is
-     * called, a TerminateProcessException will be thrown during the
-     * next call to get() or put() of this class.
-     */
-    public void requestFinish() {
-        synchronized (_director) {
-            _terminate = true;
-            _director.notifyAll();
-        }
-    }
-
-    /**
-     * Reset local flags. The local flag of this receiver indicates
-     * whether this receiver is scheduled for termination. Resetting
-     * the termination flag will make sure that this receiver is not
-     * scheduled for termination.
-     */
-    public void reset() {
-        _terminate = false;
-        _boundaryDetector.reset();
-    }
-
-    /**
-     * Set the container. This overrides the base class to record the director.
+     * Put a token on the queue with the specified time stamp and set the last
+     * time value to be equal to this time stamp. If the queue is empty
+     * immediately prior to putting the token on the queue, then set the
+     * receiver time value to be equal to the last time value. If the queue is
+     * full, throw a NoRoomException. Time stamps can not be set to negative
+     * values that are not equal to IGNORE or INACTIVE; otherwise an
+     * IllegalArgumentException will be thrown.
      *
-     * @param port
-     *                The container.
-     * @exception IllegalActionException
-     *                    If the container is not of an appropriate subclass of
-     *                    IOPort, or if the container's director is not an
-     *                    instance of DDEDirector.
+     * @param token
+     *                The token to put on the queue.
+     * @param time
+     *                The time stamp of the token.
+     * @exception NoRoomException
+     *                    If the queue is full.
      */
-    public void setContainer(IOPort port) throws IllegalActionException {
-        super.setContainer(port);
-
-        if (port == null) {
-            _director = null;
-        } else {
-            Actor actor = (Actor) port.getContainer();
-            Director director;
-
-            // For a composite actor,
-            // the receiver type of an input port is decided by
-            // the executive director.
-            // While the receiver type of an output is decided by the director.
-            // NOTE: getExecutiveDirector() and getDirector() yield the same
-            // result for actors that do not contain directors.
-            if (port.isInput()) {
-                director = actor.getExecutiveDirector();
-            } else {
-                director = actor.getDirector();
-            }
-
-            if (!(director instanceof PtidesDirector)) {
-                throw new IllegalActionException(port,
-                        "Cannot use an instance of PNQueueReceiver "
-                                + "since the director is not a PNDirector.");
-            }
-
-            _director = (PtidesDirector) director;
-        }
+    public void put(Token token, Time time) throws NoRoomException {
+        Event event = new Event(token, time);
+        _queue.add(event); // is only inserted if same event not already
+        // exists
     }
 
     // /////////////////////////////////////////////////////////////////
     // // private variables ////
 
-    /** The boundary detector. */
-    private BoundaryDetector _boundaryDetector;
+    /** The set in which this receiver stores tokens. */
+    protected TreeSet<Event> _queue = new TreeSet<Event>(new TimeComparator());
 
-    /** The director in charge of this receiver. */
-    private PtidesDirector _director;
+    // The time stamp of the earliest token that is still in the queue.
+    // private Time _receiverTime;
 
-    /** Flag indicating that termination has been requested. */
-    private boolean _terminate = false;
+    /**
+     * An Event is an aggregation consisting of a Token, a time stamp
+     * and destination Receiver. Both the token and destination
+     * receiver are allowed to have null values. This is particularly
+     * useful in situations where the specification of the destination
+     * receiver may be considered redundant.
+     */
+    public static class Event {
 
+        /**
+         * Construct an Event with a token and time stamp.
+         *
+         * @param token
+         *                Token for the event.
+         * @param time
+         *                Time stamp of the event.
+         */
+        public Event(Token token, Time time) {
+            _token = token;
+            _timeStamp = time;
+        }
+
+        // /////////////////////////////////////////////////////////
+        // // public inner methods ////
+
+        /**
+         * Return the time stamp of this event.
+         *
+         * @return The time stamp of the event.
+         */
+        public Time getTime() {
+            return _timeStamp;
+        }
+
+        /**
+         * Return the token of this event.
+         *
+         * @return The token of the event.
+         */
+        public Token getToken() {
+            return _token;
+        }
+
+        // /////////////////////////////////////////////////////////
+        // // private inner variables ////
+        /** Time stamp of this event. */
+        Time _timeStamp;
+
+        /** Token of this event. */
+        Token _token = null;
+    }
+
+    /**
+     * Compare two events according to - time stamp - value did not find a way
+     * to compare Tokens, therefore am comparing DoubleTokens and IntTokens
+     * here. If other kinds of Tokens are used, this Comparer needs to be
+     * extended.
+     *
+     * @author Patricia Derler
+     *
+     */
+    public static class TimeComparator implements Comparator {
+
+        /**
+         * Compare two events according to time stamps and values.
+         *
+         * FIXME Because there is no general compare method for tokens, I
+         * implemented the comparison for int and double tokens. A more general
+         * compare is required.
+         *
+         * @param arg0
+         *                First event.
+         * @param arg1
+         *                Second event.
+         * @return -1 if event arg0 should be processed before event arg1, 0 if
+         *         they should be processed at the same time, 1 if arg1 should
+         *         be processed before arg0.
+         */
+        public int compare(Object arg0, Object arg1) {
+            Event event1 = (Event) arg0;
+            Event event2 = (Event) arg1;
+            Time time1 = event1._timeStamp;
+            Time time2 = event2._timeStamp;
+            if (time1.compareTo(time2) != 0) {
+                return time1.compareTo(time2);
+            }
+
+            if (event1._token instanceof DoubleToken) {
+                DoubleToken token1 = (DoubleToken) event1._token;
+                DoubleToken token2 = (DoubleToken) event2._token;
+                if (token1.doubleValue() < token2.doubleValue()) {
+                    return -1;
+                } else if (token1.doubleValue() > token2.doubleValue()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else if (event1._token instanceof IntToken) {
+                IntToken token1 = (IntToken) event1._token;
+                IntToken token2 = (IntToken) event2._token;
+                if (token1.intValue() < token2.intValue()) {
+                    return -1;
+                } else if (token1.intValue() > token2.intValue()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+            return 0;
+        }
+
+    }
 }

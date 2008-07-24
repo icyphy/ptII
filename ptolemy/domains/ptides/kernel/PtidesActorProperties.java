@@ -126,32 +126,6 @@ public class PtidesActorProperties {
         }
     }
     
-    /**
-     * Returns the minimum delay for the an actor which is specified as a
-     * parameter of the actor or Double.MAX_VALUE if no delay is specified.
-     *
-     * @param actor
-     *                The actor for which minimum delays are calculated for.
-     * @return The minimum delay.
-     */
-    public static double getMinDelayTime(NamedObj actor) {
-        try {
-            Parameter parameter = (Parameter) actor.getAttribute("minDelay");
-
-            if (parameter != null) {
-                DoubleToken intToken = (DoubleToken) parameter.getToken();
-
-                return intToken.doubleValue();
-            } else {
-                return Double.MAX_VALUE;
-            }
-        } catch (ClassCastException ex) {
-            return Double.MAX_VALUE;
-        } catch (IllegalActionException ex) {
-            return Double.MAX_VALUE;
-        }
-    }
-    
     public static int getPriority(Actor actor) {
         try {
             Parameter parameter = (Parameter) ((NamedObj) actor)

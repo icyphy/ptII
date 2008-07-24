@@ -37,7 +37,12 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.Dependency;
+import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
+import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
@@ -46,6 +51,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.pn.kernel.TimedPNDirector;
 import ptolemy.domains.ptides.lib.ScheduleListener;
 import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType;
+import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -265,6 +271,11 @@ public class PtidesDirector extends TimedPNDirector {
         _scheduleListeners = new LinkedList<ScheduleListener>();
         return newObject;
     }
+    
+    @Override
+    public Dependency defaultDependency() {
+        return RealDependency.OTIMES_IDENTITY;
+    }
 
     /**
      * Suspend the calling process that runs a platform until either time has 
@@ -317,11 +328,14 @@ public class PtidesDirector extends TimedPNDirector {
         _currentTime = new Time(this, 0.0);
         _stopTime = new Time(this, ((DoubleToken) stopTime.getToken())
                 .doubleValue());
-
         
-        PtidesGraphUtilities utilities = new PtidesGraphUtilities(this
-                .getContainer());
-        utilities.calculateMinimumDelays();
+        RealDelayCausalityInterfaceForComposites causalityInterface = 
+            (RealDelayCausalityInterfaceForComposites) ((CompositeActor) this.getContainer())
+            .getCausalityInterface();
+        
+//        PtidesGraphUtilities utilities = new PtidesGraphUtilities(this
+//                .getContainer());
+//        utilities.calculateMinimumDelays();
 
         // Iterate through all actors in the model and add them to a List. This
         // List is handed to the schedule listeners.
@@ -337,6 +351,13 @@ public class PtidesDirector extends TimedPNDirector {
                             .getDirector();
                     director._clockSyncronizationError = _clockSyncronizationError;
                     director._networkDelay = _networkDelay;
+                    
+                    
+                    List<IOPort> inputPorts = compositeActor.inputPortList();
+                    for (IOPort port : inputPorts) {
+                        System.out.println("minDelay " + port + ": " + ((RealDependency)causalityInterface.getMinimumDelay(port)).value());
+                    }
+                    
                 }
                 List<Actor> containedActors = compositeActor.entityList(); 
                 table.put(actor, containedActors);
@@ -346,6 +367,7 @@ public class PtidesDirector extends TimedPNDirector {
                                 + "be used here");
             }
         } 
+
         if (_scheduleListeners != null) {
             Iterator listeners = _scheduleListeners.iterator();
 
@@ -360,7 +382,7 @@ public class PtidesDirector extends TimedPNDirector {
      * @return A new PtidesReceiver.
      */
     public Receiver newReceiver() {
-        return new PtidesReceiver();
+        return new PtidesPlatformReceiver();
     }
 
     /**
@@ -398,6 +420,11 @@ public class PtidesDirector extends TimedPNDirector {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _platformsToUnblock.clear();
+        
+        RealDelayCausalityInterfaceForComposites causalityInterface = 
+            (RealDelayCausalityInterfaceForComposites) ((CompositeActor) this.getContainer())
+            .getCausalityInterface();
+        causalityInterface.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////
