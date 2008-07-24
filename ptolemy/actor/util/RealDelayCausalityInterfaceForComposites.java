@@ -1,20 +1,13 @@
-package ptolemy.domains.ptides.kernel;
+package ptolemy.actor.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.util.CausalityInterface;
-import ptolemy.actor.util.CausalityInterfaceForComposites;
-import ptolemy.actor.util.Dependency;
-import ptolemy.actor.util.RealDependency;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class RealDelayCausalityInterfaceForComposites extends
