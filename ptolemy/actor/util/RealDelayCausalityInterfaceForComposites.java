@@ -10,19 +10,42 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.util.IllegalActionException;
 
+//////////////////////////////////////////////////////////////////////////
+//// RealDelayCausalityInterfaceForComposites
+
+/**
+ * This class extends the causality interface for composites to compute minimum
+ * delays for ports. A minimum delay describes the minimum model time delay between
+ * all ports in an equivalence class and source actors. Minimum delays can only be
+ * computed for RealDependencies.
+ * @author Patricia Derler
+ *
+ */
 public class RealDelayCausalityInterfaceForComposites extends
         CausalityInterfaceForComposites {
 
+    /** Construct a causality interface for the specified actor.
+     *  @param actor The actor for which this is a causality interface.
+     *   This is required to be an instance of CompositeEntity.
+     *  @param defaultDependency The default dependency of an output
+     *   port on an input port.
+     */    
     public RealDelayCausalityInterfaceForComposites(
             Actor actor, Dependency defaultDependency) 
             throws IllegalArgumentException {
         super(actor, defaultDependency);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     
-    public Dependency getMinimumDeadline(IOPort outputPort) throws IllegalActionException {
-        return null;
-    }
-    
+    /** Return the minimum delay for this port. The minimum delay is the minimum
+     * model time delay between this port or any equivalent port and a source actor. 
+     *  @param port Port for which the minimum delay should be computed.
+     *  @return 
+     *  @exception IllegalActionException Thrown if minimum delay cannot be computed,
+     *   because e.g. equivalent ports cannot be computed. 
+     */
     public RealDependency getMinimumDelay(IOPort port) throws IllegalActionException {
         if (_minimumDelays.get(port) == null) {
             _getMinimumDelay(port, null);
@@ -30,10 +53,24 @@ public class RealDelayCausalityInterfaceForComposites extends
         return _minimumDelays.get(port); 
     }
     
+    /**
+     * Clear local variables.
+     */
     public void wrapup() {
         _minimumDelays.clear();
     }
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
+    /**
+     * Recursively compute the minimum delay. To avoid loops, remember visited ports.
+     * @param port Port to compute minimum delay for.
+     * @param visitedPorts Ports that have already been considered in the recursive computation.
+     * @return Dependency describing the minimum Delay.
+     * @exception IllegalActionException Thrown if minimum delay cannot be computed.
+     */
     private RealDependency _getMinimumDelay(IOPort port, Collection<IOPort> visitedPorts) throws IllegalActionException {
         if (visitedPorts == null)
             visitedPorts = new ArrayList<IOPort>();
@@ -111,8 +148,11 @@ public class RealDelayCausalityInterfaceForComposites extends
         return minimumDelay;
     } 
     
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
     
-    
+    /** Buffer for minimum delays that were already computed.  
+     */
     private Map<IOPort, RealDependency> _minimumDelays = new HashMap<IOPort, RealDependency>();
     
 }
