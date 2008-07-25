@@ -1726,13 +1726,22 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     try {
                         // NOTE: When first opening a model, no ModelErrorHandler
                         // has yet been registered with the model, so the following
-                        // method will simply return false. In this case, we report
-                        // an error just as if the handleModelError() method had
-                        // rethrown the exception.
+                        // method will simply return false. This is probably reasonable
+                        // since it allows opening models even if they have error
+                        // conditions.
+                        handleModelError(this, ex);
+                        // Thinking that this was the wrong behavior, I tried the
+                        // following. However, this resulted in an exception being
+                        // thrown when deleting a parameter that references another
+                        // one in scope. After the container has been set to null,
+                        // there is no error handler, so the above line correctly
+                        // ignores the error in evaluation.
+                        /* FIXME
                         if (!handleModelError(this, ex)) {
                             result = new LinkedList();
                             result.add(ex);
                         }
+                        */
                     } catch (IllegalActionException ex2) {
                         result = new LinkedList();
                         result.add(ex2);
