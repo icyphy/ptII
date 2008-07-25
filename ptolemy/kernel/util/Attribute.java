@@ -359,6 +359,9 @@ public class Attribute extends NamedObj {
      *  an attribute is an attribute of itself, or indirectly of any attribute
      *  it contains.  This method is write-synchronized on the
      *  workspace and increments its version number.
+     *  <p>
+     *  Subclasses may constrain the type of container by overriding
+     *  {@link #setContainer(NamedObj)}.
      *  @param container The container to attach this attribute to..
      *  @exception IllegalActionException If this attribute is not of the
      *   expected class for the container, or it has no name,
@@ -374,7 +377,7 @@ public class Attribute extends NamedObj {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
         }
-
+        _checkContainer(container);
         try {
             _workspace.getWriteAccess();
 
@@ -469,6 +472,17 @@ public class Attribute extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Check that the specified container is of a suitable class for
+     *  this attribute.  In this base class, this method returns immediately
+     *  without doing anything.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the container is not of
+     *   an acceptable class.  Not thrown in this base class.
+     */
+    protected void _checkContainer(NamedObj container)
+            throws IllegalActionException {
+    }
+    
     /** Get an attribute with the specified name in the specified container.
      *  The type of object sought is an instance of the same class as
      *  this object.  The returned object is assured of being an
