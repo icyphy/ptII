@@ -427,12 +427,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
-    /** Return a causality interface for this actor. In this base class,
-     *  if there is a director, we delegate to the director to return
-     *  a default causality interface. Otherwise, we return an instance
-     *  of CausalityInterface with BooleanDependency.OTIMES_IDENTITY as
-     *  its default. This declares the dependency between input ports
-     *  and output ports of an actor to be true, the multiplicative identity.
+    /** Return a causality interface for this actor. This returns an
+     *  instance of {@link CausalityInterfaceForComposites}.
      *  If this is called multiple times, the same object is returned each
      *  time unless the director has changed since the last call, in
      *  which case a new object is returned.
