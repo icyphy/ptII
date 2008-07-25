@@ -26,9 +26,12 @@
  */
 package ptolemy.actor;
 
+import java.util.List;
+
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -75,6 +78,10 @@ import ptolemy.kernel.util.Workspace;
  [int]    - int matrix
  {field1 = string, field2 = int} - record with two fields
  </pre>
+ <p>
+ This attribute is a singleton in a strong sense.
+ When its container is set, if the container contains any other instance
+ of TypeAttribute, that other instance is removed.
 
  @author Edward A. Lee, Xiaojun Liu
  @version $Id$
@@ -134,6 +141,40 @@ public class TypeAttribute extends Parameter {
     public TypeAttribute(Attribute container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Override the base class to remove any other instances of TypeAttribute.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the proposed container is not a
+     *   TypedIOPort, or if the base class throws it.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute that is not an instance
+     *   of TypeAttribute.
+     */
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
+        _checkContainer(container);
+        try {
+            workspace().getWriteAccess();
+            if (container != null) {
+                List<TypeAttribute> attributes = container.attributeList(TypeAttribute.class);
+                for (TypeAttribute attribute : attributes) {
+                    if (attribute != this) {
+                        try {
+                            attribute.setContainer(null);
+                        } catch (NameDuplicationException e) {
+                            throw new InternalErrorException(e);
+                        }
+                    }
+                }
+            }
+            super.setContainer(container);
+        } finally {
+            workspace().doneWriting();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
