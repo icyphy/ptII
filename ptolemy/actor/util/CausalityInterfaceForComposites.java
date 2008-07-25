@@ -170,7 +170,6 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         return result.toString();
     }
 
-
     /** Return a set of the input ports in this actor that are
      *  in an equivalence class with the specified input.
      *  The returned result includes the specified input port.
@@ -367,6 +366,13 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         throw new IllegalActionException("Attempt to get depth of ioPort "
                 + ((NamedObj) ioPort).getFullName()
                 + " that was not sorted.");
+    }
+    
+    /** Indicate that the cached causality information is invalid.
+     */
+    public void invalidate() {
+        _actorDepthVersion = -1;
+        _dependencyVersion = -1;
     }
 
     /** Remove the dependency that the specified output port has

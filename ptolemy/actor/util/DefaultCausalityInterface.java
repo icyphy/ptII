@@ -227,6 +227,13 @@ public class DefaultCausalityInterface implements CausalityInterface {
     public Actor getActor() {
         return _actor;
     }
+    
+    /** Return the default dependency specified in the constructor.
+     *  @return The default dependency.
+     */
+    public Dependency getDefaultDependency() {
+        return _defaultDependency;
+    }
 
     /** Return the dependency between the specified input port
      *  and the specified output port.  This base class returns

@@ -101,6 +101,11 @@ public interface CausalityInterface {
      *  @return The actor for which this is a dependency.
      */
     public Actor getActor();
+    
+    /** Return the default dependency.
+     *  @return The default dependency.
+     */
+    public Dependency getDefaultDependency();
 
     /** Return the dependency between the specified input port
      *  and the specified output port.
