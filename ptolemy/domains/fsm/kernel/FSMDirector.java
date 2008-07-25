@@ -45,15 +45,12 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
-import ptolemy.actor.util.CausalityInterfaceForComposites;
-import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.Variable;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -576,7 +573,6 @@ public class FSMDirector extends Director implements
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _mutationEnabled = true;
         _buildLocalReceiverMaps();
     }
 
@@ -627,32 +623,6 @@ public class FSMDirector extends Director implements
 
         _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
                 .currentState());
-
-        // Increment the workspace version such that the
-        // function dependencies will be reconstructed.
-        // Note that this occurs only if a transition was taken.
-        /* This was presumably inserted for the benefit of DE,
-         * where apparently Haiyang was trying to get it to support
-         * non-strict composite actors. This never worked however,
-         * and really requires a true fixed-point semantics in DE.
-         * In SR, the function dependencies affect efficiency but
-         * not correctness.  A more complete fix would modify
-         * ModalModel to perform a conservative approximation
-         * of the dependency by aggregating the dependencies
-         * of its state refinements.
-         */
-        /*
-        if (_mutationEnabled && (_enabledTransition != null)) {
-            ChangeRequest request = new ChangeRequest(this,
-                    "increment workspace version to force recalculation of function dependencies") {
-                protected void _execute() throws KernelException {
-                    getContainer().workspace().incrVersion();
-                }
-            };
-            request.setPersistent(false);
-            getContainer().requestChange(request);
-        }
-        */
 
         // If a transition was taken, then request a refiring at the current time
         // in case the destination state is a transient state.
@@ -1058,11 +1028,6 @@ public class FSMDirector extends Director implements
      *  controller is in that state.
      */
     protected Map _localReceiverMaps = new HashMap();
-
-    /** Boolean variable indicating whether model change is enabled. The
-     *  default value is true.
-     */
-    protected boolean _mutationEnabled = true;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

@@ -38,6 +38,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeFreeVariableCollector;
 import ptolemy.data.expr.PtParser;
@@ -117,6 +118,9 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
        if (_dependencyVersion != workspaceVersion) {
            // Need to update dependencies. The cached version
            // is obsolete.
+           boolean stateDependentCausality = ((BooleanToken)
+                   actor.stateDependentCausality.getToken())
+                   .booleanValue();
            try {
                actor.workspace().getReadAccess();
                _reverseDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
@@ -131,8 +135,15 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                    _equivalenceClasses.put(actorInput, equivalences);
                }
                
-               // Iterate over all the transitions.
-               Collection<Transition> transitions = actor.relationList();
+               // Iterate over all the transitions or just the transitions
+               // of the current state.
+               Collection<Transition> transitions;
+               if (!stateDependentCausality) {
+                   transitions = actor.relationList();
+               } else {
+                   State currentState = actor.currentState();
+                   transitions = currentState.outgoingPort.linkedRelationList();
+               }
                for (Transition transition : transitions) {
                    // Collect all the output ports that are written to on this transition.
                    Set<IOPort> outputs = new HashSet<IOPort>();

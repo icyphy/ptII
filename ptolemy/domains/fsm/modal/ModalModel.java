@@ -27,10 +27,13 @@
 package ptolemy.domains.fsm.modal;
 
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -39,6 +42,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -102,7 +106,19 @@ import ptolemy.util.MessageHandler;
  or in those. It works with continuous-time as well as discrete-time
  models.
  <p>
- This class also fulfills the CTEventGenerator interfact so that
+ By default, this actor has a conservative causality interface,
+ which examines the FSMActor controller and all the refinements
+ and defines input/output dependencies that are the oPlus combination
+ of all their dependencies. If
+ the <i>stateDependentCausality</i> is false (the default),
+ then this causality interface in conservative and valid in all
+ states. If it is true, then the causality interface will show
+ different input/output dependencies depending on the state.
+ In each state, only the controller and the current refinement
+ will be considered, and in the controller, only the outgoing
+ transitions from the current state will be considered.
+ <p>
+ This class also fulfills the CTEventGenerator interface so that
  it can report events generated inside.
 
  @see ModalController
@@ -160,8 +176,21 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      *  the model is performed. If the parameter value is true, conservative
      *  analysis is chosen; if false, optimistic analysis is chosen.
      *  The default value is true for conservative analysis.
+     *  FIXME: Remove this when purging FunctionDependency.
      */
     public Parameter conservativeAnalysis;
+
+    /** Indicate whether input/output dependencies can depend on the
+     *  state. By default, this is false (the default), indicating that a conservative
+     *  dependency is provided by the causality interface. Specifically,
+     *  if there is a dependency in any state, then the causality interface
+     *  indicates that there is a dependency. If this is true, then a less
+     *  conservative dependency is provided, indicating a dependency only
+     *  if there can be one in the current state.  If this is true, then
+     *  upon any state transition, this actor issues a change request, which
+     *  forces causality analysis to be redone. Note that this can be expensive.
+     */
+    public Parameter stateDependentCausality;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -328,6 +357,52 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         return result;
     }
 
+    /** Override the base class so that if the controller has
+     *  FIXME
+     *  @return A representation of the dependencies between input ports
+     *   and output ports.
+     */
+    public CausalityInterface getCausalityInterface() {
+        try {
+            boolean stateDependentCausality = ((BooleanToken)
+                    _controller.stateDependentCausality.getToken())
+                    .booleanValue();
+            if (!stateDependentCausality) {
+                return super.getCausalityInterface();
+            }
+            // Causality is state dependent if we get here.
+            // Return the causality interface of the
+            // controller FSMActor composed with
+            // the current refinement causality interfaces.
+            if (_causalityInterfacesVersions == null) {
+                _causalityInterfacesVersions = new HashMap<State,Long>();
+                _causalityInterfaces = new HashMap<State,MirrorCausalityInterface>();
+            }
+            State currentState = _controller.currentState();
+            Long version = _causalityInterfacesVersions.get(currentState);
+            MirrorCausalityInterface causality = _causalityInterfaces.get(currentState);
+            if (version == null
+                    || causality == null
+                    || version.longValue() != workspace().getVersion()) {
+                // Need to create or update a causality interface for the current state.
+                CausalityInterface controllerCausality = _controller.getCausalityInterface();
+                causality = new MirrorCausalityInterface(this, controllerCausality);
+                Actor[] refinements = currentState.getRefinement();
+                if (refinements != null) {
+                    for (int i = 0; i < refinements.length; i++) {
+                        CausalityInterface refinementCausality = refinements[i].getCausalityInterface();
+                        causality.composeWith(refinementCausality);
+                    }
+                }
+                _causalityInterfaces.put(currentState, causality);
+                _causalityInterfacesVersions.put(currentState, Long.valueOf(workspace().getVersion()));
+            }
+            return causality;
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+    }
+    
     /** Return an instance of DirectedGraph, where the nodes are IOPorts,
      *  and the edges are the relations between ports. The graph shows
      *  the dependencies between the input and output ports. If there is
@@ -447,12 +522,19 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.domains.fsm.modal.ModalModel");
+        
+        stateDependentCausality = new Parameter(this, "stateDependentCausality");
+        stateDependentCausality.setTypeEquals(BaseType.BOOLEAN);
+        stateDependentCausality.setExpression("false");
 
         // Create a default modal controller.
         // NOTE: It would be much nicer if the director created the
         // controller it likes (or has it configured) and returned it
         // (zk 2002/09/11)
         _controller = new ModalController(this, "_Controller");
+        // Whether the controller does conservative analysis or not should
+        // depend on the parameter of this actor.
+        _controller.stateDependentCausality.setExpression("stateDependentCausality");
 
         // configure the directorClass parameter
         directorClass = new StringParameter(this, "directorClass");
@@ -516,6 +598,16 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The causality interfaces by state, for the case
+     *  where the causality interface is state dependent.
+     */
+    private Map<State,MirrorCausalityInterface> _causalityInterfaces;
+
+    /** The workspace version for causality interfaces by state, for the case
+     *  where the causality interface is state dependent.
+     */
+    private Map<State,Long> _causalityInterfacesVersions;
 
     /** The function dependency, if it is present. */
     private FunctionDependencyOfModalModel _functionDependency;

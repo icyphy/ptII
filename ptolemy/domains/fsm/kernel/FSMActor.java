@@ -56,6 +56,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
@@ -71,6 +72,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -140,6 +142,14 @@ import ptolemy.kernel.util.Workspace;
  transition is chosen, the refinement of its source state is not
  fired. A non-preemptive transition can only be chosen after the
  refinement of its source state is fired.
+ 
+ <p> By default, this actor has a conservative causality interface,
+ implemented by the {@link FSMCausalityInterface} class. If
+ the <i>stateDependentCausality</i> is false (the default),
+ then this causality interface in conservative and valid in all
+ states. If it is true, then the causality interface will show
+ different input/output dependencies depending on the state.
+ See {@link FSMCausalityInterface} for details.
 
  @author Xiaojun Liu, Haiyang Zheng, Ye Zhou
  @version $Id$
@@ -207,7 +217,19 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  set the <i>isInitialState</i> parameter of a State.
      */
     public StringAttribute initialStateName = null;
-
+    
+    /** Indicate whether input/output dependencies can depend on the
+     *  state. By default, this is false (the default), indicating that a conservative
+     *  dependency is provided by the causality interface. Specifically,
+     *  if there is a dependency in any state, then the causality interface
+     *  indicates that there is a dependency. If this is true, then a less
+     *  conservative dependency is provided, indicating a dependency only
+     *  if there can be one in the current state.  If this is true, then
+     *  upon any state transition, this actor issues a change request, which
+     *  forces causality analysis to be redone. Note that this can be expensive.
+     */
+    public Parameter stateDependentCausality;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -338,6 +360,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._outputPortsVersion = -1;
         newObject._cachedOutputPorts = null;
         newObject._causalityInterface = null;
+        newObject._causalityInterfaces = null;
+        newObject._causalityInterfacesVersions = null;
         newObject._causalityInterfaceDirector = null;
         newObject._connectionMaps = null;
         newObject._connectionMapsVersion = -1;
@@ -408,31 +432,51 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         chooseTransition(transitionList);
     }
 
-    /** Return a causality interface for this actor. In this base class,
-     *  if there is a director, we delegate to the director to return
-     *  a default causality interface. Otherwise, we return an instance
-     *  of CausalityInterface with RealDependency.OTIMES_IDENTITY as
-     *  its default.
-     *  <p>
-     *  Note that this gives a conservative approximation of the
-     *  actual causality information. A better approach would be to
-     *  analyze which outputs actually depend on which inputs.
+    /** Return a causality interface for this actor. This
+     *  method returns an instance of
+     *  {@link FSMCausalityInterface}.
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
     public CausalityInterface getCausalityInterface() {
         Director director = getDirector();
-        if (_causalityInterface != null
-                && _causalityInterfaceDirector == director) {
-            return _causalityInterface;
-        }
         Dependency defaultDependency = BooleanDependency.OTIMES_IDENTITY;
         if (director != null) {
             defaultDependency = director.defaultDependency();
         }
-        _causalityInterface = new FSMCausalityInterface(this, defaultDependency);
-        _causalityInterfaceDirector = director;
-        return _causalityInterface;
+        boolean stateDependent = false;
+        try {
+            stateDependent = ((BooleanToken)
+                    stateDependentCausality.getToken()).booleanValue();
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+        if (!stateDependent) {
+            if (_causalityInterface != null
+                    && _causalityInterfaceDirector == director) {
+                return _causalityInterface;
+            }
+            _causalityInterface = new FSMCausalityInterface(this, defaultDependency);
+            _causalityInterfaceDirector = director;
+            return _causalityInterface;
+        }
+        // We need to return a different causality interface for each state.
+        // Construct one for the current state if necessary.
+        if (_causalityInterfacesVersions == null) {
+            _causalityInterfacesVersions = new HashMap<State,Long>();
+            _causalityInterfaces = new HashMap<State,FSMCausalityInterface>();
+        }
+        Long version = _causalityInterfacesVersions.get(_currentState);
+        FSMCausalityInterface causality = _causalityInterfaces.get(_currentState);
+        if (version == null
+                || causality == null
+                || version.longValue() != workspace().getVersion()) {
+            // Need to create or update a causality interface for the current state.
+            causality = new FSMCausalityInterface(this, defaultDependency);
+            _causalityInterfaces.put(_currentState, causality);
+            _causalityInterfacesVersions.put(_currentState, Long.valueOf(workspace().getVersion()));
+        }
+        return causality;
     }
 
     /**
@@ -1308,6 +1352,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             action.execute();
         }
 
+        // Before committing the new state, record whether it changed.
+        boolean stateChanged = _currentState != _lastChosenTransition.destinationState();
         _currentState = _lastChosenTransition.destinationState();
 
         if (((BooleanToken) _currentState.isFinalState.getToken())
@@ -1347,6 +1393,25 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
 
         _setCurrentConnectionMap();
+
+        // If the causality interface is state-dependent and the state
+        // has changed, invalidate the schedule. This is done in a ChangeRequest
+        // because the current iteration (processing all events with the same
+        // time stamp and microstep) has to be allowed to complete. Otherwise,
+        // the analysis for causality loops will be redone before other state
+        // machines have been given a chance to switch states.
+        boolean stateDependent = ((BooleanToken)
+                stateDependentCausality.getToken())
+                .booleanValue();
+        if (stateDependent && stateChanged) {
+            ChangeRequest request = new ChangeRequest(this, "Invalidate schedule") {
+                protected void _execute() {
+                    // Indicate to the director that the current schedule is invalid.
+                    getDirector().invalidateSchedule();
+                }
+            };
+            requestChange(request);
+        }
     }
 
     /** Return true if the channel of the port is connected to an output
@@ -1689,6 +1754,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 + " r=\"5\" style=\"fill:white\"/>\n" + "</svg>\n");
 
         try {
+            stateDependentCausality = new Parameter(this, "stateDependentCausality");
+            stateDependentCausality.setTypeEquals(BaseType.BOOLEAN);
+            stateDependentCausality.setExpression("false");
+            
             initialStateName = new StringAttribute(this, "initialStateName");
             initialStateName.setExpression("");
             initialStateName.setVisibility(Settable.EXPERT);
@@ -1778,8 +1847,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     private transient LinkedList _cachedOutputPorts;
 
-    /** The causality interface, if it has been created. */
+    /** The causality interface, if it has been created,
+     *  for the case where the causality interface is not state
+     *  dependent.
+     */
     private CausalityInterface _causalityInterface;
+    
+    /** The causality interfaces by state, for the case
+     *  where the causality interface is state dependent.
+     */
+    private Map<State,FSMCausalityInterface> _causalityInterfaces;
+
+    /** The workspace version for causality interfaces by state, for the case
+     *  where the causality interface is state dependent.
+     */
+    private Map<State,Long> _causalityInterfacesVersions;
 
     /** The director for which the causality interface was created. */
     private Director _causalityInterfaceDirector;

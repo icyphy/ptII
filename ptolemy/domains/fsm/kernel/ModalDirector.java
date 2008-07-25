@@ -35,9 +35,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -291,20 +289,6 @@ public class ModalDirector extends FSMDirector {
             // Update the _currentLocalReceiverMap to the new state.
             _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
                     .currentState());
-
-            // Increment the workspace version such that the
-            // function dependencies will be reconstructed.
-            // FIXME: Replace this with conservative approximation.
-            if (_mutationEnabled) {
-                ChangeRequest request = new ChangeRequest(this,
-                        "increment workspace version to force recalculation of function dependencies") {
-                    protected void _execute() throws KernelException {
-                        getContainer().workspace().incrVersion();
-                    }
-                };
-                request.setPersistent(false);
-                getContainer().requestChange(request);
-            }
         }
 
         // If a transition was taken, then request a refiring at the current time
@@ -343,6 +327,17 @@ public class ModalDirector extends FSMDirector {
         super.initialize();
         _actorsFired.clear();
         _disabledActors.clear();
+    }
+
+    /** Indicate that a schedule for the model may no longer be valid.
+     *  This method simply notifies the executive director.
+     */
+    public void invalidateSchedule() {
+        CompositeActor container = (CompositeActor) getContainer();
+        Director executiveDirector = container.getExecutiveDirector();
+        if (executiveDirector != null && executiveDirector != this) {
+            executiveDirector.invalidateSchedule();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
