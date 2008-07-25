@@ -871,6 +871,17 @@ public class DEDirector extends Director implements TimedDirector {
         _isInitializing = false;
     }
 
+    /** Indicate that a schedule for the model may no longer be valid.
+     *  This forces the actor depths to be recalculated the next time
+     *  they are accessed.
+     */
+    public void invalidateSchedule() {
+        CompositeActor container = (CompositeActor) getContainer();
+        CausalityInterfaceForComposites causality 
+                = (CausalityInterfaceForComposites)container.getCausalityInterface();
+        causality.invalidate();
+    }
+
     /** Return a new receiver of the type DEReceiver.
      *  @return A new DEReceiver.
      */
@@ -1107,7 +1118,6 @@ public class DEDirector extends Director implements TimedDirector {
                 = (CausalityInterfaceForComposites)container.getCausalityInterface();
         causality.checkForCycles();
         
-        // NOTE: Must call this after setting _actorDepthVersion.
         if (_debugging && _verbose) {
             _debug("## Depths assigned to actors and ports:");
             _debug(describePriorities());
@@ -1853,7 +1863,7 @@ public class DEDirector extends Director implements TimedDirector {
 
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0;
-
+    
     /** Start time. */
     private Time _startTime;
 
