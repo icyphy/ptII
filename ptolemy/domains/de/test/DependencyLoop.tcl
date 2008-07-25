@@ -50,5 +50,5 @@ test DependencyLoop-1.0 {} {
 test DependencyLoop-2.0 {} {
     catch {createAndExecute "auto/knownFailedTests/dependencyLoop2.xml"} foo
     list $foo
-} {{ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .dependencyLoop.original
-  in .dependencyLoop and .dependencyLoop.original}}
+} {{ptolemy.kernel.util.IllegalActionException: Found a zero delay loop containing .dependencyLoop2.original
+  in .dependencyLoop2 and .dependencyLoop2.original}}
