@@ -49,7 +49,6 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -171,7 +170,7 @@ public class GTParameter extends Parameter {
                         // port, an entity, or a relation, do not return it
                         // because we don't want this object in the pattern to
                         // be referred to in a constraint.
-                        return null;
+                        return ObjectToken.NULL;
                     }
                 }
                 return token;
@@ -271,6 +270,11 @@ public class GTParameter extends Parameter {
     protected void _evaluate(Pattern pattern, MatchResult matchResult)
             throws IllegalActionException {
         setParseTreeEvaluator(new Evaluator(pattern, matchResult));
-        super._evaluate();
+        try {
+            super._evaluate();
+        } finally {
+            setParseTreeEvaluator(null);
+            _parserScope = null;
+        }
     }
 }

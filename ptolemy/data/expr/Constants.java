@@ -237,7 +237,7 @@ public class Constants {
         _types.put("int", new IntToken(0));
         _types.put("long", new LongToken(0));
         _types.put("matrix", new ConcreteMatrixToken());
-        _types.put("object", new ObjectToken());
+        _types.put("object", ObjectToken.NULL);
         _types.put("xmltoken", new XMLToken());
         _types.put("scalar", new ConcreteScalarToken());
         _types.put("string", new StringToken(""));
@@ -248,6 +248,8 @@ public class Constants {
 
         ptolemy.data.Token nil = ptolemy.data.Token.NIL;
         _table.put("nil", nil);
+
+        _table.put("null", ObjectToken.NULL);
 
     }
 

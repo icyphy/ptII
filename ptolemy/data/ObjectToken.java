@@ -51,10 +51,10 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.AcceptedRating Yellow (wbwu)
  */
 public class ObjectToken extends Token {
+
     /** Construct an empty token.
      */
     public ObjectToken() {
-        super();
     }
 
     /** Construct a token with a reference to the specified object.
@@ -74,7 +74,7 @@ public class ObjectToken extends Token {
      *  @param value The value.
      *  @param valueClass The class of the value.
      *  @exception IllegalActionException If the argument is not of
-     *  the appropriate type.  
+     *  the appropriate type.
      */
     public ObjectToken(Object value, Class<?> valueClass)
             throws IllegalActionException {
@@ -233,6 +233,8 @@ public class ObjectToken extends Token {
         String clazz = _class == null ? "" : ": " + _class.getName();
         return "object(" + value + clazz + ")";
     }
+
+    public static final ObjectToken NULL = new ObjectToken();
 
     ///////////////////////////////////////////////////////////////////
     ////                          private variables                ////
