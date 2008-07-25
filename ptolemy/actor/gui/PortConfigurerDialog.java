@@ -559,20 +559,23 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                     TypedIOPort tiop = (TypedIOPort) actualPort;
 
                     if (_columnNames.contains(ColumnNames.COL_TYPE)) {
-                        String _type = null;
-                        TypeAttribute _typeAttribute = (TypeAttribute) tiop
-                                .getAttribute("_type");
-
-                        if (_typeAttribute != null) {
-                            _type = _typeAttribute.getExpression();
+                        String type = null;
+                        // NOTE: It is possible for there to be a type attribute
+                        // with some other name than "_type". In theory, there
+                        // should only be one, but just in case, always use the last
+                        // one.
+                        List<TypeAttribute> attributes = tiop.attributeList(TypeAttribute.class);
+                        if (attributes.size() > 0) {
+                            TypeAttribute typeAttribute = attributes.get(attributes.size() - 1);
+                            type = typeAttribute.getExpression();
                         }
 
                         String tableValue = (String) portInfo
                                 .get(ColumnNames.COL_TYPE);
 
-                        if (((_type == null) && (!tableValue.equals("")))
-                                || ((_type != null) && (!tableValue
-                                        .equals(_type)))) {
+                        if (((type == null) && (!tableValue.equals("")))
+                                || ((type != null) && (!tableValue
+                                        .equals(type)))) {
                             havePortUpdate = true;
                             updates.put(ColumnNames.COL_TYPE, Boolean.TRUE);
                         }
@@ -880,12 +883,14 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                     TypedIOPort tiop = (TypedIOPort) p;
 
                     if (_columnNames.contains(ColumnNames.COL_TYPE)) {
-                        TypeAttribute _type = (TypeAttribute) (tiop
-                                .getAttribute("_type"));
-
-                        if (_type != null) {
-                            portInfo.put(ColumnNames.COL_TYPE, _type
-                                    .getExpression());
+                        // NOTE: It is possible for there to be a type attribute
+                        // with some other name than "_type". In theory, there
+                        // should only be one, but just in case, always use the last
+                        // one.
+                        List<TypeAttribute> attributes = tiop.attributeList(TypeAttribute.class);
+                        if (attributes.size() > 0) {
+                            TypeAttribute type = attributes.get(attributes.size() - 1);
+                            portInfo.put(ColumnNames.COL_TYPE, type.getExpression());
                         } else {
                             portInfo.put(ColumnNames.COL_TYPE, "");
                         }
