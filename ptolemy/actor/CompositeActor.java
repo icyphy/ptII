@@ -44,9 +44,7 @@ import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.FunctionDependency;
-import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
-import ptolemy.actor.util.RealDelayCausalityInterfaceForComposites;
-import ptolemy.actor.util.RealDependency;  
+import ptolemy.actor.util.FunctionDependencyOfCompositeActor;  
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -445,11 +443,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         if (director != null) {
             defaultDependency = director.defaultDependency();
         }
-
-        if (defaultDependency instanceof RealDependency)
-              _causalityInterface = new RealDelayCausalityInterfaceForComposites(this, defaultDependency);
-        else 
-            _causalityInterface = new CausalityInterfaceForComposites(this, defaultDependency);
+        _causalityInterface = new CausalityInterfaceForComposites(this, defaultDependency);
         _causalityInterfaceDirector = director;
         return _causalityInterface;
     }

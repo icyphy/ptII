@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,6 +40,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -374,6 +376,28 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         _actorDepthVersion = -1;
         _dependencyVersion = -1;
     }
+    
+    
+    /** Return the minimum delay for this port. The minimum delay is the minimum
+     * model time delay between this port or any equivalent port and a source actor. 
+     *  @param port Port for which the minimum delay should be computed.
+     *  @return 
+     *  @exception IllegalActionException Thrown if minimum delay cannot be computed,
+     *   because e.g. equivalent ports cannot be computed. 
+     */
+    public Dependency getMinimumDelay(IOPort port) throws IllegalActionException {
+        if (_minimumDelays.get(port) == null) {
+            _getMinimumDelay(port, null);
+        } 
+        return _minimumDelays.get(port); 
+    }
+    
+    /**
+     * Clear local variables.
+     */
+    public void wrapup() {
+        _minimumDelays.clear();
+    }
 
     /** Remove the dependency that the specified output port has
      *  on the specified input port. Specifically, calling this
@@ -452,6 +476,11 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
     
+    /**
+     * Buffer for minimum delays that were already computed.  
+     */
+    private Map<IOPort, Dependency> _minimumDelays = new HashMap<IOPort, Dependency>();
+
     /** Compute the depth of ports and actors.
      *  The actor depth is typically used to prioritize firings in response
      *  to pure events (fireAt() calls). The port depth is used
@@ -736,6 +765,93 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         _portToDepth.put(outputPort, Integer.valueOf(depth));
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /**
+     * Recursively compute the minimum delay. To avoid loops, remember visited ports.
+     * @param port Port to compute minimum delay for.
+     * @param visitedPorts Ports that have already been considered in the recursive computation.
+     * @return Dependency describing the minimum Delay.
+     * @exception IllegalActionException Thrown if minimum delay cannot be computed.
+     */
+    private Dependency _getMinimumDelay(IOPort port, Collection<IOPort> visitedPorts) throws IllegalActionException {
+        if (visitedPorts == null)
+            visitedPorts = new ArrayList<IOPort>();
+        else if (visitedPorts.contains(port))
+            return RealDependency.OPLUS_IDENTITY;
+        visitedPorts.add(port);
+        Dependency minimumDelay = RealDependency.OPLUS_IDENTITY;
+        if (port.isInput()) {
+            // if port is input port of this actor
+            if (this._actor.inputPortList().contains(port)) {
+                minimumDelay = ((CausalityInterfaceForComposites)((CompositeActor)
+                        this._actor.getContainer()).getCausalityInterface())._getMinimumDelay(port, visitedPorts);
+            }
+            // else if port is input port of any actor in this actor
+            else {
+                if (port.getContainer() instanceof CompositeActor) {
+                    Collection<IOPort> equivalentPorts = (((CompositeActor)port.getContainer()).getCausalityInterface()).equivalentPorts(port);
+                    for (IOPort equivalentPort : equivalentPorts) {
+                        Collection<IOPort> sourcePorts = equivalentPort.sourcePortList(); // contains only one item (?)
+                        for (IOPort sourcePort : sourcePorts) {
+                            Dependency dependency = _getMinimumDelay(sourcePort, visitedPorts);
+                            if (dependency.compareTo(minimumDelay) == RealDependency.LESS_THAN)
+                                minimumDelay = dependency;
+                        } 
+                    }
+                } else {
+                    Collection<IOPort> sourcePorts = port.sourcePortList(); // contains only one item (?)
+                    for (IOPort actorOutputPort : sourcePorts) {
+                        Dependency dependency = _getMinimumDelay(actorOutputPort, visitedPorts);
+                        if (dependency.compareTo(minimumDelay) == RealDependency.LESS_THAN)
+                            minimumDelay = dependency;
+                    }
+                    if (sourcePorts.size() == 0) {
+                        minimumDelay = RealDependency.OTIMES_IDENTITY;
+                    }
+                }
+            }
+        } else if (port.isOutput()) {
+            // if port is output port of this actor
+            if (this._actor.outputPortList().contains(port)) {
+                Collection<IOPort> sourcePorts = port.sourcePortList(); // contains only one item (?)
+                for (IOPort actorOutputPort : sourcePorts) {
+                    Dependency dependency = _getMinimumDelay(actorOutputPort, visitedPorts);
+                    if (dependency.compareTo(minimumDelay) == RealDependency.LESS_THAN)
+                        minimumDelay = dependency;
+                }
+                if (sourcePorts.size() == 0) {
+                    minimumDelay = RealDependency.OTIMES_IDENTITY;
+                }
+            }
+            // else if port is output port of any actor in this actor
+            else { 
+                if (port.getContainer() instanceof CompositeActor) {
+                    Collection<IOPort> deepInputPorts = port.deepInsidePortList();
+                    for (IOPort inputPort : deepInputPorts) { 
+                        Dependency delay = _getMinimumDelay(inputPort, visitedPorts);
+                        if (delay.compareTo(minimumDelay) == RealDependency.LESS_THAN)
+                            minimumDelay = delay;
+                    }
+                } else {
+                    CausalityInterface causalityInterface = ((Actor)port.getContainer()).getCausalityInterface();
+                    Collection<IOPort> inputPorts = causalityInterface.dependentPorts(port);
+                    for (IOPort inputPort : inputPorts) {
+                        Dependency delay = _getMinimumDelay(inputPort, visitedPorts);
+                        delay = (RealDependency) delay.oTimes(causalityInterface.getDependency(inputPort, port));
+                        if (delay.compareTo(minimumDelay) == RealDependency.LESS_THAN)
+                            minimumDelay = delay;
+                    }
+                    if (inputPorts.size() == 0)
+                        minimumDelay = RealDependency.OTIMES_IDENTITY;
+                }
+            }
+        }
+        _minimumDelays.put(port, minimumDelay); 
+        return minimumDelay;
+    }
+
     /** Record a dependency of the specified port on the specified
      *  input port in the specified map. The map records all the
      *  dependencies for this particular input port.
