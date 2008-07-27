@@ -130,10 +130,10 @@ public class MathematicalModelConverter extends Attribute {
 
                     if (modelType
                             .equalsIgnoreCase("Kripke Structures (Acceptable by NuSMV under SR)")) {
-
+                        // use _model.clone() to avoid the breaking of the original model
                         systemDescription.append(SMVUtility
-                                .advancedGenerateSMVDescription(
-                                        (CompositeActor) _model,
+                                .generateSMVDescription(
+                                        (CompositeActor) _model.clone(),
                                         inputTemporalFormula, formulaType,
                                         variableSpanSize));
 
@@ -282,9 +282,10 @@ public class MathematicalModelConverter extends Attribute {
                         }
                     } else { // Communicating Timed Automata for RED
 
+                        // use _model.clone() to avoid the breaking of the original model
                         systemDescription.append(REDUtility
                                 .generateREDDescription(
-                                        (CompositeActor) _model,
+                                        (CompositeActor) _model.clone(),
                                         inputTemporalFormula, formulaType,
                                         variableSpanSize, FSMBufferSize));
 
