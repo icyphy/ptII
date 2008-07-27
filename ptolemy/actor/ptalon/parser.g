@@ -53,6 +53,8 @@ options {
 {
     private boolean _gtExtension = false;
     
+    private boolean _isInTransformation = false;
+    
     public void enableGTExtension(boolean enable) {
         _gtExtension = enable;
     }
@@ -277,7 +279,7 @@ assignment!
         }
     }
     |
-        (d:actor_declaration 
+        (d:actor_declaration
         {
             #assignment = #(a, l, d);
         }        
@@ -322,26 +324,67 @@ expression!
  */
 actor_declaration!
 :
-    a:ID LPAREN 
+	(a:actor_id ASSIGN)?
+    b:ID LPAREN 
     {
-        #a = #[ACTOR_DECLARATION, a.getText()];
-        #actor_declaration = #(a);
+        #b = #[ACTOR_DECLARATION, b.getText()];
+        #actor_declaration = #(b);
+        if (#a != null) {
+        	#actor_declaration.addChild(#a);
+        }
     }
-    (b:assignment 
-    {
-        #actor_declaration.addChild(#b);
-    }
-    (COMMA c:assignment
+    (c:assignment 
     {
         #actor_declaration.addChild(#c);
+    }
+    (COMMA d:assignment
+    {
+        #actor_declaration.addChild(#d);
     }
     )*)? RPAREN
 ;
 
+actor_id!
+:
+	a:ID
+	{
+		#actor_id = #[ACTOR_ID, a.getText()];
+	}
+	(b:expression)?
+	{
+		#actor_id.addChild(#b);
+	}
+;
+
 atomic_statement : 
-    ((port_declaration | parameter_declaration |
-    relation_declaration | transparent_relation_declaration | 
-    actor_declaration) SEMI!)
+    (port_declaration
+    | parameter_declaration
+    | relation_declaration
+    | transparent_relation_declaration 
+    | actor_declaration
+    | transformation_declaration) SEMI!
+;
+
+transformation_declaration!
+{
+    boolean dynamic_name = false;
+}
+:
+	(({!_isInTransformation}? (n:NEGATE { #transformation_declaration = #n; }))
+	| ({_isInTransformation}? (r:REMOVE { #transformation_declaration = #r; }
+		| p:PRESERVE { #transformation_declaration = #p; })))
+	d:ID (e:expression
+    {
+        dynamic_name = true;
+    }
+    )?
+    {
+        if (dynamic_name) {
+            #transformation_declaration.addChild(#([DYNAMIC_NAME, "dynamic"], d, e));
+        } else {
+            #transformation_declaration.addChild(#d);
+        }
+    }
 ;
 
 conditional_statement!
@@ -421,6 +464,7 @@ actor_definition!
 :
     {
         #actor_definition = #[ACTOR_DEFINITION];
+        _isInTransformation = false;
     }
     (d:danglingPortsOkay
     {
@@ -463,6 +507,7 @@ actor_definition!
 transformation! :
     {
         #transformation = #[TRANSFORMATION];
+    	_isInTransformation = true;
     }
     TRANSFORM (s:PLUS
     {
@@ -479,7 +524,11 @@ transformation! :
     {
         #transformation.addChild(#i);
     }
-    )* RCURLY!
+    )*
+    {
+    	_isInTransformation = false;
+    }
+    RCURLY!
 ;
 
 danglingPortsOkay :
@@ -555,6 +604,10 @@ tokens {
     DYNAMIC_NAME;
     ACTOR_LABEL;
     QUALIFIED_PORT;
+    NEGATE = "negate";
+    REMOVE = "remove";
+    PRESERVE = "preserve";
+    ACTOR_ID;
 }
 
 

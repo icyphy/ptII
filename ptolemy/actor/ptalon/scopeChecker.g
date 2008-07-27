@@ -173,10 +173,15 @@ actor_declaration throws PtalonScopeException
     {
         info.pushActorDeclaration(a.getText());
     }
-    (b:assignment)*)
+    (#(b:ACTOR_ID (c:EXPRESSION)?))?
+    (assignment)*)
     {
         String uniqueName = info.popActorDeclaration();
         #actor_declaration.setText(uniqueName);
+        
+    	if (b != null && c == null) {
+    		info.addSymbol(b.getText(), "actor");
+    	}
     }    
 ;
 
@@ -196,10 +201,20 @@ nested_actor_declaration [String paramValue] throws PtalonScopeException
 
 atomic_statement throws PtalonScopeException
 :
-    (port_declaration | parameter_declaration |
-        assigned_parameter_declaration |
-        relation_declaration | transparent_relation_declaration | 
-        actor_declaration)
+    (port_declaration
+    | parameter_declaration
+    | assigned_parameter_declaration
+    | relation_declaration
+    | transparent_relation_declaration
+    | actor_declaration
+    | transformation_declaration)
+;
+
+transformation_declaration throws PtalonScopeException
+:
+	(#(NEGATE (ID | #(DYNAMIC_NAME ID EXPRESSION)))
+	| #(REMOVE (ID | #(DYNAMIC_NAME ID EXPRESSION)))
+	| #(PRESERVE (ID | #(DYNAMIC_NAME ID EXPRESSION))))
 ;
 
 conditional_statement throws PtalonScopeException

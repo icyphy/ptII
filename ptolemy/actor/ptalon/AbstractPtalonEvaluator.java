@@ -681,8 +681,9 @@ public abstract class AbstractPtalonEvaluator {
         }
     }
 
-    public void enterTransformation(boolean emptyStart) {
-        _inTransformation = true;
+    public void enterTransformation(boolean incremental)
+    throws PtalonRuntimeException {
+        throw new PtalonRuntimeException("Transformation is not implemented.");
     }
 
     /** Evaluate the given expression and return its boolean
@@ -786,8 +787,8 @@ public abstract class AbstractPtalonEvaluator {
         _currentIfTree = _currentIfTree.getParent();
     }
 
-    public void exitTransformation() {
-        _inTransformation = false;
+    public void exitTransformation() throws PtalonRuntimeException {
+    	throw new PtalonRuntimeException("Transformation is not implemented.");
     }
 
     /** Get the unique name for the symbol in the PtalonActor.
@@ -944,6 +945,10 @@ public abstract class AbstractPtalonEvaluator {
                 .getCurrentBranch());
     }
 
+    public void negateObject(String name) throws PtalonRuntimeException {
+    	throw new PtalonRuntimeException("Negation is not implemented.");
+    }
+
     /** Pop out of the scope of the current for statement and into its
      *  container block's scope.
      *
@@ -972,6 +977,10 @@ public abstract class AbstractPtalonEvaluator {
         return name;
     }
 
+    public void preserveObject(String name) throws PtalonRuntimeException {
+    	throw new PtalonRuntimeException("Preservation is not implemented.");
+    }
+
     /** Push into the scope of a new for statement contained as a
      *  sub-block of the current (FIXME: if or for) statement.
      *
@@ -998,6 +1007,10 @@ public abstract class AbstractPtalonEvaluator {
     public void pushIfStatement() {
         String name = _getNextIfSymbol();
         _currentIfTree = _currentIfTree.addChild(name);
+    }
+
+    public void removeObject(String name) throws PtalonRuntimeException {
+    	throw new PtalonRuntimeException("Removing is not implemented.");
     }
 
     /** Set the active branch for the current if statement.
@@ -1057,6 +1070,9 @@ public abstract class AbstractPtalonEvaluator {
     public void startAtTop() {
         _currentIfTree = _root;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
 
     /** Return a number of spaces that is proportional to the
      *  argument. If the argument is negative or zero, return an empty
@@ -1121,13 +1137,6 @@ public abstract class AbstractPtalonEvaluator {
      */
     protected boolean _inNewWhileIteration() {
         return _currentIfTree.inNewWhileIteration();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
-
-    protected boolean _isInTransformation() {
-        return _inTransformation;
     }
 
     protected boolean _isPreservingTransformation() {
@@ -1968,8 +1977,6 @@ public abstract class AbstractPtalonEvaluator {
     /** A counter used to associate a unique number with each if-block.
      */
     private int _counter;
-
-    private boolean _inTransformation = false;
 
     private boolean _isPreservingTransformation = false;
 

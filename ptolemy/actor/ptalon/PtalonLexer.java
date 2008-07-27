@@ -84,7 +84,9 @@ public PtalonLexer(LexerSharedInputState state) {
 	literals.put(new ANTLRHashString("parameter", this), new Integer(10));
 	literals.put(new ANTLRHashString("false", this), new Integer(21));
 	literals.put(new ANTLRHashString("true", this), new Integer(20));
+	literals.put(new ANTLRHashString("preserve", this), new Integer(38));
 	literals.put(new ANTLRHashString("actor", this), new Integer(12));
+	literals.put(new ANTLRHashString("remove", this), new Integer(37));
 	literals.put(new ANTLRHashString("import", this), new Integer(19));
 	literals.put(new ANTLRHashString("next", this), new Integer(27));
 	literals.put(new ANTLRHashString("inport", this), new Integer(7));
@@ -97,6 +99,7 @@ public PtalonLexer(LexerSharedInputState state) {
 	literals.put(new ANTLRHashString("attachDanglingPorts", this), new Integer(29));
 	literals.put(new ANTLRHashString("relation", this), new Integer(14));
 	literals.put(new ANTLRHashString("if", this), new Integer(22));
+	literals.put(new ANTLRHashString("negate", this), new Integer(36));
 	literals.put(new ANTLRHashString("else", this), new Integer(23));
 }
 
@@ -552,7 +555,7 @@ tryAgain:
 		}
 		}
 		{
-		_loop79:
+		_loop88:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -591,7 +594,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop79;
+				break _loop88;
 			}
 			}
 		} while (true);
@@ -610,34 +613,34 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt82=0;
-		_loop82:
+		int _cnt91=0;
+		_loop91:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt82>=1 ) { break _loop82; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt91>=1 ) { break _loop91; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt82++;
+			_cnt91++;
 		} while (true);
 		}
 		{
 		if ((LA(1)=='.')) {
 			match('.');
 			{
-			int _cnt85=0;
-			_loop85:
+			int _cnt94=0;
+			_loop94:
 			do {
 				if (((LA(1) >= '0' && LA(1) <= '9'))) {
 					matchRange('0','9');
 				}
 				else {
-					if ( _cnt85>=1 ) { break _loop85; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt94>=1 ) { break _loop94; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt85++;
+				_cnt94++;
 			} while (true);
 			}
 		}
@@ -659,7 +662,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop89:
+		_loop98:
 		do {
 			switch ( LA(1)) {
 			case '\\':
@@ -706,7 +709,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop89;
+				break _loop98;
 			}
 			}
 		} while (true);
@@ -783,7 +786,7 @@ tryAgain:
 		
 		match("//");
 		{
-		_loop96:
+		_loop105:
 		do {
 			if ((_tokenSet_1.member(LA(1)))) {
 				{
@@ -791,7 +794,7 @@ tryAgain:
 				}
 			}
 			else {
-				break _loop96;
+				break _loop105;
 			}
 			
 		} while (true);
@@ -840,15 +843,15 @@ tryAgain:
 		match('[');
 		match('[');
 		{
-		_loop102:
+		_loop111:
 		do {
 			// nongreedy exit test
-			if ((LA(1)==']') && (LA(2)==']') && (true)) break _loop102;
+			if ((LA(1)==']') && (LA(2)==']') && (true)) break _loop111;
 			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
 				matchNot(EOF_CHAR);
 			}
 			else {
-				break _loop102;
+				break _loop111;
 			}
 			
 		} while (true);
@@ -870,15 +873,15 @@ tryAgain:
 		match('/');
 		match('*');
 		{
-		_loop105:
+		_loop114:
 		do {
 			// nongreedy exit test
-			if ((LA(1)=='*') && (LA(2)=='/') && (true)) break _loop105;
+			if ((LA(1)=='*') && (LA(2)=='/') && (true)) break _loop114;
 			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
 				matchNot(EOF_CHAR);
 			}
 			else {
-				break _loop105;
+				break _loop114;
 			}
 			
 		} while (true);

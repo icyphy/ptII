@@ -140,6 +140,12 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             }
 
             String uniqueName = _actor.uniqueName(symbol);
+            if (name != null) {
+                if (!inScope(name)) {
+                    addSymbol(name, "actor");
+                }
+                _currentIfTree.mapName(name, uniqueName);
+            }
 
             if (_getType(symbol).equals("import")) {
                 PtalonActor actor = new PtalonActor(_actor, uniqueName);
@@ -820,7 +826,6 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             }
         }
 
-        // FIXME comment
         /** Add an assignment of the specified port of this actor
          *  declaration to the containing Ptalon actor connection
          *  point, which is either a port or a relation. Here

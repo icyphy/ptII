@@ -71,12 +71,6 @@ import ptolemy.kernel.util.Settable;
 public class PtalonMatcher extends TypedCompositeActor
         implements GTCompositeActor {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
-     */
     public PtalonMatcher(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

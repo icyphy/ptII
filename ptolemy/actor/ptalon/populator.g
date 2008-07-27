@@ -389,22 +389,34 @@ assignment throws PtalonRuntimeException
 
 /**
  * This is for a top level actor declaration, which 
- * requires separate treatement from a nested actor
+ * requires separate treatment from a nested actor
  * declaration.
  */
 actor_declaration throws PtalonRuntimeException
 {
     boolean oldEvalBool = false;
+    String name = null;
 }
 :
     #(a:ACTOR_DECLARATION 
     {
         info.enterActorDeclaration(a.getText());
     }
-    (b:assignment)*
+    (#(b:ACTOR_ID { name = b.getText(); } (c:EXPRESSION
+    {
+    	if (info.isReady()) {
+	    	String value = info.evaluateString(c.getText());
+	    	if (value != null) {
+				name = name + value;
+			}
+		} else {
+			name = null;
+		}
+    })?))?
+    (assignment)*
     {
         if (info.isActorReady()) {
-            info.addActor(a.getText());
+            info.addActor(name);
         }
         info.exitActorDeclaration();
     }
@@ -430,9 +442,50 @@ nested_actor_declaration throws PtalonRuntimeException
 
 atomic_statement throws PtalonRuntimeException
 :
-    (port_declaration | parameter_declaration |
-    assigned_parameter_declaration | relation_declaration | 
-    transparent_relation_declaration | actor_declaration)
+    (port_declaration
+    | parameter_declaration
+    | assigned_parameter_declaration
+    | relation_declaration
+    | transparent_relation_declaration
+    | actor_declaration
+    | transformation_declaration)
+;
+
+transformation_declaration throws PtalonRuntimeException
+{
+	String id;
+	String expr = null;
+	int type = -1;
+}
+:
+	(#(NEGATE { type = 0; } (a:ID { id = a.getText(); }
+		| #(DYNAMIC_NAME b:ID c:EXPRESSION)
+			{ id = b.getText(); expr = c.getText(); }))
+	|#(REMOVE { type = 1; } (d:ID { id = d.getText(); }
+		| #(DYNAMIC_NAME e:ID f:EXPRESSION)
+			{ id = e.getText(); expr = f.getText(); }))
+	| #(PRESERVE { type = 2; } (g:ID { id = g.getText(); }
+		| #(DYNAMIC_NAME h:ID i:EXPRESSION)
+			{ id = h.getText(); expr = i.getText(); })))
+	{
+		if (expr != null) {
+        	String value = info.evaluateString(expr);
+        	if (value != null) {
+        		id = id + value;
+        	} else {
+        		id = null;
+        	}
+        }
+        if (id != null && info.isReady()) {
+        	if (type == 0) {
+        		info.negateObject(id);
+        	} else if (type == 1) {
+        		info.removeObject(id);
+        	} else if (type == 2) {
+        		info.preserveObject(id);
+        	}
+        }
+    }
 ;
 
 conditional_statement throws PtalonRuntimeException
@@ -503,12 +556,12 @@ iterative_statement_evaluator throws PtalonRuntimeException
 
 transformation throws PtalonRuntimeException
 {
-    boolean emptyStart = true;
+    boolean incremental = false;
 }
 :
-    #(TRANSFORMATION (PLUS { emptyStart = false; } )?
+    #(TRANSFORMATION (PLUS { incremental = true; } )?
     {
-        info.enterTransformation(emptyStart);
+        info.enterTransformation(incremental);
     }
     (atomic_statement | conditional_statement | iterative_statement)*)
     {
