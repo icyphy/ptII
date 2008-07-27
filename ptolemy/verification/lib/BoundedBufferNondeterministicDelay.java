@@ -32,38 +32,17 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+ 
 
-    /** Update the delay parameter from the delay port and ensure the delay
-     *  is not negative. Call the fire method of super class to consume
-     *  inputs and generate outputs.
-     *  @exception IllegalActionException If the super class throws it,
-     *  or a negative delay is received.
+    /** Throw an IllegalActionException to indicate that this actor
+     *  is used for code generation only.
+     *  @exception IllegalActionException No simulation
      */
-    public void fire() throws IllegalActionException {
-        delay.update();
-        _delay = ((DoubleToken) delay.getToken()).doubleValue();
-
-        if (_delay < 0) {
-            throw new IllegalActionException("Can not have a "
-                    + "negative delay: " + _delay + ". "
-                    + "Check whether overflow happens.");
-        }
-
-        // NOTE: _delay may be 0.0, which may change
-        // the causality property of the model.
-        // We leave the model designers to decide whether the
-        // zero delay is really what they want.
-        super.fire();
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> or <i>delay</i> ports
-     *  in a firing.
-     */
-    public void pruneDependencies() {
-        super.pruneDependencies();
-        removeDependency(delay.getPort(), output);
-    }
+    public void preinitialize() throws IllegalActionException {
+        throw new IllegalActionException(this, getName() + " can not run in "
+                + "simulation mode.");
+    }       
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected method                    ////
