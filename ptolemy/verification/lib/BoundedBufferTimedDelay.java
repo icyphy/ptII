@@ -42,6 +42,17 @@ public class BoundedBufferTimedDelay extends TimedDelay {
             super.attributeChanged(attribute);
         }
     }
+     
+    
+    /** Throw an IllegalActionException to indicate that this actor
+     *  is used for code generation only.
+     *  @exception IllegalActionException No simulation
+     */
+    public void preinitialize() throws IllegalActionException {
+        throw new IllegalActionException(this, getName() + " can not run in "
+                + "simulation mode.");
+    }   
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
