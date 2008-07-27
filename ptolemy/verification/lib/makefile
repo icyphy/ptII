@@ -47,7 +47,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	BoundedBufferNondeterministicDelay.java \
-	BoundedBufferTimedDelay.java
+	BoundedBufferTimedDelay.java \
+	SMVLegacyCodeActor.java
 
 OTHER_FILES_TO_BE_JARED = \
 	BoundedBufferNondeterministicDelayIcon.xml \
