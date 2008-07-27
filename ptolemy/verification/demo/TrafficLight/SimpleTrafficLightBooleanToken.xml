@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SimpleTrafficLight" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SimpleTrafficLightBooleanToken" class="ptolemy.actor.TypedCompositeActor">
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 45.0]">
         </property>
@@ -16,18 +16,18 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 916, 551}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 81, 1054, 574}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[701, 419]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[839, 442]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 209.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{419.5, 221.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Contrary to TrafficLight.xml in ptolemy/domains/sr/demo/TrafficLight, &#10;SimpleTrafficLight.xml is a simplified version of traffic control which &#10;only simulates the behavior of normal situation. &#10;&#10;Another difference is that SimpleTrafficLight.xml only uses FSMActors &#10;to represent extended state machines rather than ModalModels &#10;(which are used in TrafficLight.xml). An user may generate codes for&#10;both models using Formal Model Converter.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Contrary to TrafficLight.xml in ptolemy/domains/sr/demo/TrafficLight, &#10;SimpleTrafficLight.xml is a simplified version of traffic control which &#10;only simulates the behavior of normal situation. &#10;&#10;Another difference is that SimpleTrafficLightBooleanToken.xml &#10;examplifies methods to recognize Boolean tokens in the &#10;verification model. ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 180.0]">
         </property>
@@ -39,7 +39,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this model, the undesired behavior is to have the &#10;car light and pedestrian light green at the same time.&#10;This would lead to accidents. To avoid this, we use&#10;temporal logic to describe the specification and &#10;generate a file acceptable by model checker NuSMV.&#10;&#10;CTL Specification (Copy the line below when double clicking the SMV CodeGenerator)&#10;! EF (CarLightNormal.state = Cgrn &amp; PedestrianLightNormal.state = Pgreen)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 270.0}">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -222,7 +222,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Chihhong Patrick Cheng, Edward A. Lee, Christopher Brooks">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 410.0]">
         </property>
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
@@ -457,7 +457,7 @@
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pgo = 1; Cred = 1; Cyel = 0; Cgrn = 0">
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pgo = 0; Cred = 1; Cyel = 0; Cgrn = 0">
             </property>
             <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 0">
             </property>
@@ -581,7 +581,7 @@
         <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Pgo_isPresent">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Pgo == 0">
             </property>
             <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pred=0; Pgrn = 1">
             </property>
@@ -601,7 +601,7 @@
         <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Pstop_isPresent">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Pstop == 1">
             </property>
             <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pred = 1; Pgrn = 0">
             </property>
