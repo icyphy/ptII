@@ -56,7 +56,8 @@ PTCLASSALLJARS = \
 JSRCS = \
 	FmvAutomatonGraphController.java \
 	FmvAutomatonGraphFrame.java \
-	FmvAutomatonGraphTableau.java
+	FmvAutomatonGraphTableau.java \
+	FmvStateIcon.java
 
 EXTRA_SRCS =	$(JSRCS)
 
