@@ -53,6 +53,7 @@ JSRCS = \
 	FmvState.java
 
 OTHER_FILES_TO_BE_JARED =
+    FmvStateIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
