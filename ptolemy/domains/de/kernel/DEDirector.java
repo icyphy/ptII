@@ -135,16 +135,17 @@ import ptolemy.kernel.util.Workspace;
  method, and trigger events can only be produced by actors that produce
  outputs. See {@link ptolemy.domains.de.kernel.DEReceiver#put(Token)}.
  </p><p>
- Directed loops of IO ports with no delay are not permitted because it is
- impossible to do a topological sort to assign depths. Such a loop can be
- broken by inserting some special actors, such as the <i>TimedDelay</i> actor.
- If zero delay in the loop is truly required, then set the <i>delay</i>
- parameter of those actors to zero. This zero-delay actor plays the same
- role as that of delta delay in VHDL. Note that the detection of directed
- loops are based on port connections rather than data dependencies between
- actors because port connections reflect the data dependencies more
- accurately. The information of port connections are stored in the
- nonpersistent attribute <i>FunctionDependency</i>.
+ Directed loops of IO ports with no delay will trigger an exception.
+ These are called <i>causality loops</i>. Such loops can be broken with
+ actors whose output ports do not have an immediate dependence on their
+ input ports, such as the <i>TimedDelay</i> actor.  Notice that the
+ <i>TimedDelay</i> actor breaks a causality loop even if the time
+ delay is set to 0.0. This is because DE uses a <i>superdense</i>
+ notion of time.  The output is interpreted as being strictly later
+ than the input even though its time value is the same.
+ Whether a causality loop exists is determined by the
+ {@link CausalityInterface} returned by each actor's
+ getCausalityInterface() method.
  </p><p>
  An input port in a DE model contains an instance of DEReceiver.
  When a token is put into a DEReceiver, that receiver posts a trigger
