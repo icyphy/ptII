@@ -171,7 +171,9 @@ test Attribute-7.5 {move* methods with no container} {
     catch {$n moveToIndex} msg3
     catch {$n moveToLast} msg4
     catch {$n moveUp} msg5
-    list $msg1 $msg2 $msg3 $msg4 $msg5
+    # For the mac
+    regsub {accessible method} $msg3 {method} msg3b
+    list $msg1 $msg2 $msg3b $msg4 $msg5
 } {{ptolemy.kernel.util.IllegalActionException: Has no container.
   in .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Has no container.
   in .<Unnamed Object>} {can't find method "moveToIndex" with 0 argument(s) for class "ptolemy.kernel.util.Attribute"} {ptolemy.kernel.util.IllegalActionException: Has no container.
