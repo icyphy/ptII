@@ -122,7 +122,7 @@ public class ArrayOfRecordsExporter extends LineWriter {
      *  This is protected so that derived classes can modify the
      *  format in which the token is written.
      *  @param token The token to write.
-     *  @param IllegalActionException If the input token cannot be read.
+     *  @exception IllegalActionException If the input token cannot be read.
      */
     protected void _writeToken(Token token) throws IllegalActionException {
         ArrayToken castToken = (ArrayToken)token;
