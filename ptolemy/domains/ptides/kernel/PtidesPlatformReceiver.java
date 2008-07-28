@@ -45,14 +45,15 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * Receiver used on the top level in the ptides domain.
- *
+ * 
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Yellow (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessReceiver {
+public class PtidesPlatformReceiver extends PtidesReceiver implements
+        ProcessReceiver {
     /**
      * Construct an empty receiver with no container.
      */
@@ -63,14 +64,15 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
 
     /**
      * Construct an empty receiver with the specified container.
-     *
+     * 
      * @param container
-     *                The IOPort that contains this receiver.
+     *            The IOPort that contains this receiver.
      * @exception IllegalActionException
-     *                    If this receiver cannot be contained by the proposed
-     *                    container.
+     *                If this receiver cannot be contained by the proposed
+     *                container.
      */
-    public PtidesPlatformReceiver(IOPort container) throws IllegalActionException {
+    public PtidesPlatformReceiver(IOPort container)
+            throws IllegalActionException {
         super(container);
         _boundaryDetector = new BoundaryDetector(this);
     }
@@ -102,7 +104,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
 
     /**
      * Returns the director.
-     *
+     * 
      * @return The director.
      */
     public PtidesDirector getDirector() {
@@ -110,10 +112,10 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
     }
 
     /**
-     * Return true if the receiver contains the given number of tokens
-     * that can be obtained by calling the get() method. Returning
-     * true in this method should also guarantee that calling the
-     * get() method will not result in an exception.
+     * Return true if the receiver contains the given number of tokens that can
+     * be obtained by calling the get() method. Returning true in this method
+     * should also guarantee that calling the get() method will not result in an
+     * exception.
      */
     public boolean hasToken(int tokens) {
         return super.hasToken(tokens);
@@ -124,7 +126,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is connected to the inside of a boundary port,
      * then return true; otherwise return false.
-     *
+     * 
      * @return True if this receiver is contained on the inside of a boundary
      *         port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
@@ -138,7 +140,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is connected to the inside of a boundary port,
      * then return true; otherwise return false.
-     *
+     * 
      * @return True if this receiver is connected to the inside of a boundary
      *         port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
@@ -152,7 +154,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is connected to the outside of a boundary port,
      * then return true; otherwise return false.
-     *
+     * 
      * @return True if this receiver is connected to the outside of a boundary
      *         port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
@@ -164,7 +166,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
     /**
      * Return true if this receiver is a consumer receiver. A receiver is a
      * consumer receiver if it is connected to a boundary port.
-     *
+     * 
      * @return True if this is a consumer receiver; return false otherwise.
      */
     public boolean isConsumerReceiver() {
@@ -179,7 +181,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is contained on the inside of a boundary port
      * then return true; otherwise return false.
-     *
+     * 
      * @return True if this receiver is contained on the inside of a boundary
      *         port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
@@ -193,7 +195,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is contained on the outside of a boundary port
      * then return true; otherwise return false.
-     *
+     * 
      * @return True if this receiver is contained on the outside of a boundary
      *         port; return false otherwise.
      * @see BoundaryDetector
@@ -206,7 +208,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
      * Return true if this receiver is a producer receiver. A receiver is a
      * producer receiver if it is contained on the inside or outside of a
      * boundary port.
-     *
+     * 
      * @return True if this is a producer receiver; return false otherwise.
      */
     public boolean isProducerReceiver() {
@@ -219,7 +221,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
     /**
      * Return a true or false to indicate whether there is a read block on this
      * receiver or not, respectively.
-     *
+     * 
      * @return a boolean indicating whether a read is blocked on this receiver
      *         or not.
      */
@@ -228,9 +230,9 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
     }
 
     /**
-     * Return a true or false to indicate whether there is a write
-     * block on this receiver or not.
-     *
+     * Return a true or false to indicate whether there is a write block on this
+     * receiver or not.
+     * 
      * @return A boolean indicating whether a write is blocked on this receiver
      *         or not.
      */
@@ -239,22 +241,21 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
     }
 
     /**
-     * Do a blocking write on the queue. Set the time stamp to be the
-     * current time of the sending actor. If the current time is
-     * greater than the completionTime of this receiver, then set the
-     * time stamp to INACTIVE and the token to null. If the queue is
-     * full, then inform the director that this receiver is blocking
-     * on a write and wait until room becomes available. When room
-     * becomes available, put the token and time stamp in the queue
-     * and inform the director that the block no longer exists. If at
-     * any point during this method this receiver is scheduled for
-     * termination, then throw a TerminateProcessException which will
-     * cease activity for the actor that contains this receiver.
-     *
+     * Do a blocking write on the queue. Set the time stamp to be the current
+     * time of the sending actor. If the current time is greater than the
+     * completionTime of this receiver, then set the time stamp to INACTIVE and
+     * the token to null. If the queue is full, then inform the director that
+     * this receiver is blocking on a write and wait until room becomes
+     * available. When room becomes available, put the token and time stamp in
+     * the queue and inform the director that the block no longer exists. If at
+     * any point during this method this receiver is scheduled for termination,
+     * then throw a TerminateProcessException which will cease activity for the
+     * actor that contains this receiver.
+     * 
      * @param token
-     *                The token to put in the queue.
+     *            The token to put in the queue.
      * @exception TerminateProcessException
-     *                    If activity is scheduled to cease.
+     *                If activity is scheduled to cease.
      */
     public void put(Token token) {
         Thread thread = Thread.currentThread();
@@ -268,39 +269,40 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
         put(token, time);
     }
 
-	/**
-	 * Do a blocking write on the queue. Set the time stamp to be the time
-	 * specified by the time parameter. If the specified time is greater than
-	 * the completionTime of this receiver, then set the time stamp to INACTIVE
-	 * and the token to null. If the queue is full, then inform the director
-	 * that this receiver is blocking on a write and wait until room becomes
-	 * available. When room becomes available, put the token and time stamp in
-	 * the queue and inform the director that the block no longer exists. If at
-	 * any point during this method this receiver is scheduled for termination,
-	 * then throw a TerminateProcessException which will cease activity for the
-	 * actor that contains this receiver.
-	 * 
-	 * @param token
-	 *            The token to put in the queue.
-	 * @param time
-	 *            The specified time stamp.
-	 * @exception TerminateProcessException
-	 *                If activity is scheduled to cease.
-	 */
-	public void put(Token token, Time time) { 
-		if (super.hasRoom() && !_terminate) { // super will always have room
-												// for now
-			super.put(token, time);
-			this._director.unblockWaitingPlatform((Actor) this.getContainer().getContainer());
-			return;
-		}
+    /**
+     * Do a blocking write on the queue. Set the time stamp to be the time
+     * specified by the time parameter. If the specified time is greater than
+     * the completionTime of this receiver, then set the time stamp to INACTIVE
+     * and the token to null. If the queue is full, then inform the director
+     * that this receiver is blocking on a write and wait until room becomes
+     * available. When room becomes available, put the token and time stamp in
+     * the queue and inform the director that the block no longer exists. If at
+     * any point during this method this receiver is scheduled for termination,
+     * then throw a TerminateProcessException which will cease activity for the
+     * actor that contains this receiver.
+     * 
+     * @param token
+     *            The token to put in the queue.
+     * @param time
+     *            The specified time stamp.
+     * @exception TerminateProcessException
+     *                If activity is scheduled to cease.
+     */
+    public void put(Token token, Time time) {
+        if (super.hasRoom() && !_terminate) { // super will always have room
+            // for now
+            super.put(token, time);
+            this._director.unblockWaitingPlatform((Actor) this.getContainer()
+                    .getContainer());
+            return;
+        }
 
     }
 
     /**
-     * Schedule this receiver to terminate. After this method is
-     * called, a TerminateProcessException will be thrown during the
-     * next call to get() or put() of this class.
+     * Schedule this receiver to terminate. After this method is called, a
+     * TerminateProcessException will be thrown during the next call to get() or
+     * put() of this class.
      */
     public void requestFinish() {
         synchronized (_director) {
@@ -310,10 +312,9 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
     }
 
     /**
-     * Reset local flags. The local flag of this receiver indicates
-     * whether this receiver is scheduled for termination. Resetting
-     * the termination flag will make sure that this receiver is not
-     * scheduled for termination.
+     * Reset local flags. The local flag of this receiver indicates whether this
+     * receiver is scheduled for termination. Resetting the termination flag
+     * will make sure that this receiver is not scheduled for termination.
      */
     public void reset() {
         _terminate = false;
@@ -322,13 +323,13 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements ProcessRec
 
     /**
      * Set the container. This overrides the base class to record the director.
-     *
+     * 
      * @param port
-     *                The container.
+     *            The container.
      * @exception IllegalActionException
-     *                    If the container is not of an appropriate subclass of
-     *                    IOPort, or if the container's director is not an
-     *                    instance of DDEDirector.
+     *                If the container is not of an appropriate subclass of
+     *                IOPort, or if the container's director is not an instance
+     *                of DDEDirector.
      */
     public void setContainer(IOPort port) throws IllegalActionException {
         super.setContainer(port);

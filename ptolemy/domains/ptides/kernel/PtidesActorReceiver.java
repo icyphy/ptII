@@ -41,9 +41,9 @@ import ptolemy.kernel.util.InternalErrorException;
 
 /**
  * Receiver used inside platforms of a ptides domain.
- *
+ * 
  * This Receiver will not work with non-opaque actors inside a platform.
- *
+ * 
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -61,42 +61,35 @@ public class PtidesActorReceiver extends PtidesReceiver {
 
     /**
      * Construct an empty DEReceiver with the specified container.
-     *
+     * 
      * @param container
-     *                The container.
+     *            The container.
      * @exception IllegalActionException
-     *                    If the container does not accept this receiver.
+     *                If the container does not accept this receiver.
      */
-    public PtidesActorReceiver(IOPort container)
-            throws IllegalActionException {
+    public PtidesActorReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
 
-
-    
-
-
     /**
-     * Return true if there is at least one token available to the
-     * get() method.
-     *
+     * Return true if there is at least one token available to the get() method.
+     * 
      * @return True if there are more tokens.
      */
-    public boolean hasToken() { 
-            IOPort port = getContainer();
-            Actor actor = (Actor) port.getContainer();
-            
-            return (port.isOutput() && super.hasToken())
-                    || (!(actor.getDirector() instanceof PtidesEmbeddedDirector)
-                            && super.hasToken())
-                    || (hasToken(getModelTime()));
+    public boolean hasToken() {
+        IOPort port = getContainer();
+        Actor actor = (Actor) port.getContainer();
+
+        return (port.isOutput() && super.hasToken())
+                || (!(actor.getDirector() instanceof PtidesEmbeddedDirector) && super
+                        .hasToken()) || (hasToken(getModelTime()));
     }
 
     /**
      * Put a token into this receiver.
-     *
+     * 
      * @param token
-     *                The token to be put.
+     *            The token to be put.
      */
     public void put(Token token) {
         IOPort containerPort = getContainer();
@@ -117,16 +110,16 @@ public class PtidesActorReceiver extends PtidesReceiver {
      * correct timestamp and microstep and invoke the corresponding actor whose
      * input port contains this receiver. This receiver may contain more than
      * one events.
-     *
+     * 
      * @param token
-     *                The token to be put.
+     *            The token to be put.
      * @param time
-     *                The time stamp for the token.
+     *            The time stamp for the token.
      */
     public void put(Token token, Time time) {
         try {
-            PtidesEmbeddedDirector dir = _getDirector();
-            //dir._enqueueEvent(getContainer(), time);
+            _getDirector();
+            // dir._enqueueEvent(getContainer(), time);
             super.put(token, time);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex, null);
@@ -135,17 +128,17 @@ public class PtidesActorReceiver extends PtidesReceiver {
 
     /**
      * Puts a token into all receivers.
-     *
+     * 
      * @param token
-     *                The token to be put.
+     *            The token to be put.
      * @param receivers
-     *                The receivers that get the token.
+     *            The receivers that get the token.
      * @param time
-     *                The time stamp for the token.
+     *            The time stamp for the token.
      * @exception NoRoomException
-     *                 Thrown if the receiver is full.
+     *                Thrown if the receiver is full.
      * @exception IllegalActionException
-     *                 Thrown if container cannot convert token.
+     *                Thrown if container cannot convert token.
      */
     public void putToAll(Token token, Receiver[] receivers, Time time)
             throws NoRoomException, IllegalActionException {
@@ -171,12 +164,12 @@ public class PtidesActorReceiver extends PtidesReceiver {
      * Otherwise, it's the executive director of the container of its port.Note
      * that the director returned is guaranteed to be non-null. This method is
      * read synchronized on the workspace.
-     *
+     * 
      * @return An instance of DEDirector.
      * @exception IllegalActionException
-     *                    If there is no container port, or if the port has no
-     *                    container actor, or if the actor has no director, or
-     *                    if the director is not an instance of DEDirector.
+     *                If there is no container port, or if the port has no
+     *                container actor, or if the actor has no director, or if
+     *                the director is not an instance of DEDirector.
      */
     private PtidesEmbeddedDirector _getDirector() throws IllegalActionException {
         IOPort port = getContainer();
@@ -208,7 +201,7 @@ public class PtidesActorReceiver extends PtidesReceiver {
                         } else {
                             throw new IllegalActionException(getContainer(),
                                     "Does not have a "
-                                    + "EmbeddedDEDirector4Ptides.");
+                                            + "EmbeddedDEDirector4Ptides.");
                         }
                     }
                 }
@@ -232,7 +225,8 @@ public class PtidesActorReceiver extends PtidesReceiver {
     private long _directorVersion = -1;
 
     public void removeEvents(Time modelTime) {
-        while (_queue.size() > 0 && _queue.first()._timeStamp.equals(modelTime))
+        while (_queue.size() > 0 && _queue.first()._timeStamp.equals(modelTime)) {
             _queue.remove(_queue.first());
+        }
     }
 }

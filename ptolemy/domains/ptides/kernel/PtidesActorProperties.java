@@ -16,27 +16,28 @@ import ptolemy.kernel.util.NamedObj;
 public class PtidesActorProperties {
 
     public static boolean mustBeFiredAtRealTime(Object object) {
-        if (object instanceof IOPort && 
-                ((Actor) ((IOPort) object).getContainer()) instanceof Source && 
-                ((Source) ((Actor) ((IOPort) object).getContainer())).trigger == object) {
+        if (object instanceof IOPort
+                && ((Actor) ((IOPort) object).getContainer()) instanceof Source
+                && ((Source) ((Actor) ((IOPort) object).getContainer())).trigger == object) {
             // trigger ports don't have to be fired at real time
             return false;
         }
-        
+
         Actor actor = null;
-        if (object instanceof IOPort)
+        if (object instanceof IOPort) {
             actor = (Actor) ((IOPort) object).getContainer();
-        else 
+        } else {
             actor = (Actor) object;
+        }
         return isSensor(actor) || isActuator(actor);
     }
-    
+
     /**
      * Returns true if the actor is an actuator. A parameter of an actuator
      * actor called "isActuator" is true if the actor is an actuator.
-     *
+     * 
      * @param actor
-     *                The actor which might be an actuator.
+     *            The actor which might be an actuator.
      * @return True if the actor is an actuator.
      */
     public static boolean isActuator(Actor actor) {
@@ -61,13 +62,13 @@ public class PtidesActorProperties {
             return false;
         }
     }
-    
+
     /**
-     * Returns true if given actor is a sensor. A parameter "isSensor"
-     * is set to true if the actor is a sensor.
-     *
+     * Returns true if given actor is a sensor. A parameter "isSensor" is set to
+     * true if the actor is a sensor.
+     * 
      * @param actor
-     *                Actor that might be a sensor.
+     *            Actor that might be a sensor.
      * @return True if the actor is a sensor.
      */
     public static boolean isSensor(Actor actor) {
@@ -92,15 +93,14 @@ public class PtidesActorProperties {
             return false;
         }
     }
-    
-    
+
     /**
      * Return the worst case execution time of the actor or 0 if no worst case
      * execution time was specified.
-     *
+     * 
      * @param actor
-     *                The actor for which the worst case execution time is
-     *                requested.
+     *            The actor for which the worst case execution time is
+     *            requested.
      * @return The worst case execution time.
      */
     public static double getWCET(Actor actor) {
@@ -125,7 +125,7 @@ public class PtidesActorProperties {
             return 0.0;
         }
     }
-    
+
     public static int getPriority(Actor actor) {
         try {
             Parameter parameter = (Parameter) ((NamedObj) actor)
@@ -144,9 +144,9 @@ public class PtidesActorProperties {
             return 0;
         }
     }
-    
+
     public static boolean portIsTriggerPort(IOPort port) {
-        return !(port instanceof ParameterPort) && 
-                !(((Actor)port.getContainer()) instanceof TDLModule);
+        return !(port instanceof ParameterPort)
+                && !(((Actor) port.getContainer()) instanceof TDLModule);
     }
 }

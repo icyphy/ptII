@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * Receivers in the Ptides domain use a this timed queue to sort and events in
  * the receivers.
- *
+ * 
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -61,12 +61,12 @@ public class PtidesReceiver extends AbstractReceiver {
 
     /**
      * Construct an empty queue with the specified IOPort container.
-     *
+     * 
      * @param container
-     *                The IOPort that contains this receiver.
+     *            The IOPort that contains this receiver.
      * @exception IllegalActionException
-     *                    If this receiver cannot be contained by the proposed
-     *                    container.
+     *                If this receiver cannot be contained by the proposed
+     *                container.
      */
     public PtidesReceiver(IOPort container) throws IllegalActionException {
         super(container);
@@ -81,18 +81,17 @@ public class PtidesReceiver extends AbstractReceiver {
     }
 
     /**
-     * Take the the oldest token off of the queue and return it. If
-     * the queue is empty, throw a NoTokenException. If there are
-     * other tokens left on the queue after this removal, then set the
-     * receiver time of this receiver to equal that of the next oldest
-     * token. Update the TimeKeeper that manages this
-     * PrioritizedTimedQueue. If there are any receivers in the
-     * TimeKeeper with receiver times of PrioritizedTimedQueue.IGNORE,
-     * remove the first token from these receivers.
-     *
+     * Take the the oldest token off of the queue and return it. If the queue is
+     * empty, throw a NoTokenException. If there are other tokens left on the
+     * queue after this removal, then set the receiver time of this receiver to
+     * equal that of the next oldest token. Update the TimeKeeper that manages
+     * this PrioritizedTimedQueue. If there are any receivers in the TimeKeeper
+     * with receiver times of PrioritizedTimedQueue.IGNORE, remove the first
+     * token from these receivers.
+     * 
      * @return The oldest token off of the queue.
      * @exception NoTokenException
-     *                    If the queue is empty.
+     *                If the queue is empty.
      */
     public Token get() {
         Token token;
@@ -101,10 +100,10 @@ public class PtidesReceiver extends AbstractReceiver {
         token = event.getToken();
         return token;
     }
-    
+
     /**
      * Returns time stamp of next event in the receiver queue.
-     *
+     * 
      * @return The time stamp.
      */
     public Time getNextTime() {
@@ -117,7 +116,7 @@ public class PtidesReceiver extends AbstractReceiver {
 
     /**
      * Get the queue capacity of this receiver.
-     *
+     * 
      * @return The capacity of this receiver's queue.
      */
     public int getCapacity() {
@@ -125,9 +124,9 @@ public class PtidesReceiver extends AbstractReceiver {
     }
 
     /**
-     * Similar to get() but if not only token but also time stamp is
-     * required, this method is used.
-     *
+     * Similar to get() but if not only token but also time stamp is required,
+     * this method is used.
+     * 
      * @return Event containing token and time stamp.
      */
     public Event getEvent() {
@@ -138,7 +137,7 @@ public class PtidesReceiver extends AbstractReceiver {
 
     /**
      * This is an unbounded receiver thus always returns true.
-     *
+     * 
      * @return true because this is an unbounded receiver.
      */
     public boolean hasRoom() {
@@ -147,19 +146,19 @@ public class PtidesReceiver extends AbstractReceiver {
 
     /**
      * This is an unbounded receiver thus always returns true.
-     *
-     * @param numberOfTokens Number of tokens to be stored.
+     * 
+     * @param numberOfTokens
+     *            Number of tokens to be stored.
      * @return true because this is an unbounded receiver.
      */
-    public boolean hasRoom(int numberOfTokens)
-            throws IllegalArgumentException {
+    public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
         return true;
     }
 
     /**
      * Return true if there are tokens stored on the queue. Return false if the
      * queue is empty.
-     *
+     * 
      * @return True if the queue is not empty; return false otherwise.
      */
     public boolean hasToken() {
@@ -168,9 +167,9 @@ public class PtidesReceiver extends AbstractReceiver {
 
     /**
      * Returns true if there is a token with the specified time stamp.
-     *
+     * 
      * @param time
-     *                Time for which a token is required.
+     *            Time for which a token is required.
      * @return True if the first element in the queue has the specified time
      *         stamp.
      */
@@ -183,17 +182,15 @@ public class PtidesReceiver extends AbstractReceiver {
 
     /**
      * Return true if queue size is at least the argument.
-     *
+     * 
      * @param numberOfTokens
-     *                The number of tokens to get from the queue.
+     *            The number of tokens to get from the queue.
      * @return True if the queue has enough tokens.
      * @exception IllegalArgumentException
-     *                    If the argument is not positive. This is a runtime
-     *                    exception, so it does not need to be declared
-     *                    explicitly.
+     *                If the argument is not positive. This is a runtime
+     *                exception, so it does not need to be declared explicitly.
      */
-    public boolean hasToken(int numberOfTokens)
-            throws IllegalArgumentException {
+    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
                     "hasToken() requires a positive argument.");
@@ -204,11 +201,11 @@ public class PtidesReceiver extends AbstractReceiver {
 
     /**
      * Throw an exception, since this method is not used in Ptides.
-     *
+     * 
      * @param token
-     *                The token to be put to the receiver.
+     *            The token to be put to the receiver.
      * @exception NoRoomException
-     *                    If the receiver is full.
+     *                If the receiver is full.
      */
     public void put(Token token) {
         throw new NoRoomException("put(Token) is not used in the "
@@ -223,13 +220,13 @@ public class PtidesReceiver extends AbstractReceiver {
      * full, throw a NoRoomException. Time stamps can not be set to negative
      * values that are not equal to IGNORE or INACTIVE; otherwise an
      * IllegalArgumentException will be thrown.
-     *
+     * 
      * @param token
-     *                The token to put on the queue.
+     *            The token to put on the queue.
      * @param time
-     *                The time stamp of the token.
+     *            The time stamp of the token.
      * @exception NoRoomException
-     *                    If the queue is full.
+     *                If the queue is full.
      */
     public void put(Token token, Time time) throws NoRoomException {
         Event event = new Event(token, time);
@@ -247,21 +244,20 @@ public class PtidesReceiver extends AbstractReceiver {
     // private Time _receiverTime;
 
     /**
-     * An Event is an aggregation consisting of a Token, a time stamp
-     * and destination Receiver. Both the token and destination
-     * receiver are allowed to have null values. This is particularly
-     * useful in situations where the specification of the destination
-     * receiver may be considered redundant.
+     * An Event is an aggregation consisting of a Token, a time stamp and
+     * destination Receiver. Both the token and destination receiver are allowed
+     * to have null values. This is particularly useful in situations where the
+     * specification of the destination receiver may be considered redundant.
      */
     public static class Event {
 
         /**
          * Construct an Event with a token and time stamp.
-         *
+         * 
          * @param token
-         *                Token for the event.
+         *            Token for the event.
          * @param time
-         *                Time stamp of the event.
+         *            Time stamp of the event.
          */
         public Event(Token token, Time time) {
             _token = token;
@@ -273,7 +269,7 @@ public class PtidesReceiver extends AbstractReceiver {
 
         /**
          * Return the time stamp of this event.
-         *
+         * 
          * @return The time stamp of the event.
          */
         public Time getTime() {
@@ -282,7 +278,7 @@ public class PtidesReceiver extends AbstractReceiver {
 
         /**
          * Return the token of this event.
-         *
+         * 
          * @return The token of the event.
          */
         public Token getToken() {
@@ -303,23 +299,23 @@ public class PtidesReceiver extends AbstractReceiver {
      * to compare Tokens, therefore am comparing DoubleTokens and IntTokens
      * here. If other kinds of Tokens are used, this Comparer needs to be
      * extended.
-     *
+     * 
      * @author Patricia Derler
-     *
+     * 
      */
     public static class TimeComparator implements Comparator {
 
         /**
          * Compare two events according to time stamps and values.
-         *
+         * 
          * FIXME Because there is no general compare method for tokens, I
          * implemented the comparison for int and double tokens. A more general
          * compare is required.
-         *
+         * 
          * @param arg0
-         *                First event.
+         *            First event.
          * @param arg1
-         *                Second event.
+         *            Second event.
          * @return -1 if event arg0 should be processed before event arg1, 0 if
          *         they should be processed at the same time, 1 if arg1 should
          *         be processed before arg0.
