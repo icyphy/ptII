@@ -33,10 +33,10 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
 
-import javax.comm.CommPortIdentifier;
-import javax.comm.SerialPort;
-import javax.comm.SerialPortEvent;
-import javax.comm.SerialPortEventListener;
+import gnu.io.CommPortIdentifier;
+import gnu.io.SerialPort;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;

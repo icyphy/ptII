@@ -367,7 +367,6 @@ ALL1_4PACKAGES = \
 	$(GRAPHTRANSFORMATIONPACKAGES) \
 	$(PTBACKTRACK_PACKAGES) \
 	$(PTBSH_PACKAGES) \
-	$(PTCOMM_PACKAGES) \
 	$(PTDATABASE_PACKAGES) \
 	$(PTDISTRIBUTED_PACKAGES) \
 	$(PTGR_PACKAGES) \
@@ -377,6 +376,7 @@ ALL1_4PACKAGES = \
 	$(PTJMF_PACKAGES) \
 	$(PTJOYSTICK_PACKAGES) \
 	$(PTQUICKTIME_PACKAGES) \
+	$(PTRXTX_PACKAGES) \
 	$(PTSPACEDOMAIN_PACKAGES) \
 	$(PTX10_PACKAGES) \
 	$(SUPERBPACKAGES) \
@@ -521,7 +521,7 @@ install: all jars codeDoc.jar \
 all_packages:
 	$(MAKE) \
 	  EXPERIMENTALPACKAGES= \
-	  PTCOMM_PACKAGES=ptolemy.actor.lib.io.comm \
+	  PTRXTX_PACKAGES=ptolemy.actor.lib.io.comm \
 	  "PTGR_PACKAGES=ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" \
 	  PTJAI_PACKAGES=ptolemy.actor.lib.jai \
 	  PTJMF_PACKAGES=ptolemy.actor.lib.jmf \

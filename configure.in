@@ -995,100 +995,6 @@ fi
 
 
 #--------------------------------------------------------------------
-#       commapi is the Java serial interface, see
-#	http://java.sun.com/products/javacomm/
-#	See if there was a command-line option for commapi is
-#       If not, check to see if $PTII/vendors/sun/commapi
-#--------------------------------------------------------------------
-
-# We only need to look for commapi if $PTII/ptolemy/actor/lib/io/comm is present
-COMMAPI_USER_DIR="$PTII/ptolemy/actor/lib/io/comm"
-COMMAPI_PRESENT=no
-# PTLEGO_DIR is set to lego
-# $PTII/ptolemy/apps/makefile if the Java Communications API was found
-#
-PTLEGO_DIR=
-# PTCOMM_DIR is set to comm and used in 
-# $PTII/ptolemy/actor/lib/io/makefile if the Java Communications API was found
-#
-PTCOMM_DIR=
-if test ! -d "$COMMAPI_USER_DIR"; then
-    PT_MSG_STATUS([$COMMAPI_USER_DIR is not present,
-    so we need not find commapi.])
-    # Use curly brackets around PTII so that if commapi is not present
-    # then ${PTII} will appear in ptinvoke.
-    COMMAPI_DIR='${PTII}/vendors/sun/commapi'
-else
-    # Under windows, use $PTII/vendors/sun/commapi
-    case "`uname -s`" in
-    CYGWIN*)	 
-	PTCYGWIN=yes
-        COMMAPI_DIR_DEFAULT="$PTII/vendors/sun/commapi"
-        ;;
-    *)  PTCYGWIN=no;
-        COMMAPI_DIR_DEFAULT="$PTJAVA_HOME/../commapi/jar"
-        ;;
-    esac
-
-    AC_MSG_CHECKING([for commapi directory])
-    AC_ARG_WITH(commapi, [  --with-commapi=DIR       use Java commapi from DIR,
-                          defaults to $COMMAPI_DIR_DEFAULT],
-	COMMAPI_DIR=$withval,
-	COMMAPI_DIR=$COMMAPI_DIR_DEFAULT)
-
-    if test -f "$COMMAPI_DIR/comm.jar"; then
-        PT_MSG_RESULT(ok)
-	# Subdirectories that contains Java Communications API specific code
-	PTLEGO_DIR=lego
-	PTCOMM_DIR=comm
-	# PTCOMM_PACKAGES is used in ptII/doc/makefile
-	PTCOMM_PACKAGES=ptolemy.actor.lib.io.comm
-	COMMAPI_PRESENT=yes
-    else
-	PT_MSG_RESULT([Did not find
-	'$COMMAPI_DIR/comm.jar'])
-    fi
-
-    AC_MSG_CHECKING([for javax.comm.properties ])
-    if test -f "$PTJAVA_HOME/lib/javax.comm.properties"; then
-        PT_MSG_RESULT([$PTJAVA_HOME/lib/javax.comm.properties])
-    else   
-        AC_MSG_WARN([$PTJAVA_HOME/lib/javax.comm.properties
-    not found.
-    If you try to access a serial port and get 'No serial ports found!',
-    then the problem is that javax.comm.properties is not being found.
-    Download the Java Comm API from http://java.sun.com/products/javacomm/
-    and place javax.comm.properties in $PTJAVA_HOME/lib])
-    fi  
-
-    if test $PTCYGWIN = "yes"; then
-       AC_MSG_CHECKING([for win32com.dll ])
-       if test -f "$PTJAVA_HOME/bin/win32com.dll"; then
-           PT_MSG_RESULT([$PTJAVA_HOME/bin/win32com.dll])
-       else   
-           AC_MSG_WARN([$PTJAVA_HOME/bin/win32com.dll
-    not found.
-    Download the Java Comm API from http://java.sun.com/products/javacomm/
-    and place win32com.dll in $PTJAVA_HOME/jre/bin])
-       fi
-    fi
-
-    if test "$COMMAPI_PRESENT" = "no"; then
-        AC_MSG_WARN([Perhaps commapi is not installed?
-    You need not download commapi unless you plan the actors in actor.lib.comm.
-    The commapi can be downloaded from http://java.sun.com/products/javacomm/
-    and placed  in \$PTII/vendors/sun/commapi])
-    fi
-fi
-
-if test -z "$PTCOMM_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/io/comm/"
-else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$COMMAPI_DIR/comm.jar\"/>"
-fi 
-
-#--------------------------------------------------------------------
 #       doclets are used to control javadoc
 #	The Ptolemy II doclets are in $PTII/doc/doclets
 #	and use $PTJAVA_HOME/../tools.jar to compile
@@ -1231,8 +1137,11 @@ changequote([, ])dnl
         else 
            TMP_ECLIPSE_DIR="c:/Program\ Files/eclipse"
         fi
+	if test -d "/Applications/eclipse"; then
+	    TMP_ECLIPSE_DIR=/Applications/eclipse
+        fi
         AC_ARG_WITH(eclipse, [  --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
-                          defaults to c:/Program Files/Eclipse],
+                         defaults to $TMP_ECLIPSE_DIR],
             ECLIPSE_DIR=$withval,
             ECLIPSE_DIR=$TMP_ECLIPSE_DIR)
 
@@ -1254,6 +1163,7 @@ changequote([, ])dnl
             fi
         fi 
         if test -d "$ECLIPSE_DIR"; then
+	    PT_MSG_RESULT([$ECLIPSE_DIR])
 	    AC_MSG_CHECKING([for jars used by backtracking in $ECLIPSE_DIR])
 	    # jars="jdt.core osgi resources runtime" 
 	    # jdt.core core.runtime_ are needed to build backtrack
@@ -1262,10 +1172,18 @@ changequote([, ])dnl
 	    eclipsejarpath=
 	    for jar in $jars
 	    do
+	    	case "`uname -s`" in
+		Darwin) ECLIPSE_SWT_JAR=org.eclipse.swt.carbon.macosx_
+			# Darwin has problems with echo -n?
+			PT_ECHO="/bin/echo -n"
+			;;
+		*)      PT_ECHO=echo
+			;;
+		esac
 	    	if test "${PTVERBOSE:-none}" = "none"; then
-	            echo $ECHO_N "."
+	            $PT_ECHO $ECHO_N "."
 	        else
-                    echo $ECHO_N "$jar "
+                    $PT_ECHO $ECHO_N "$jar "
                 fi
 	        jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
    	        if test -f "$jarpath"; then
@@ -1289,21 +1207,35 @@ changequote([, ])dnl
                 PT_MSG_RESULT([ok])
 
 	        # Get the plugin jar files for use with javadoc in $PTII/doc
+		case "`uname -s`" in
+		Darwin) ECLIPSE_SWT_JAR=org.eclipse.swt.carbon.macosx_
+			# Darwin has problems with echo -n?
+			PT_ECHO="/bin/echo -n"
+			;;
+		*)	ECLIPSE_SWT_JAR=eclipse.swt.win32.win32.x86_
+			PT_ECHO=echo
+			;; 
+		esac
 	        AC_MSG_CHECKING([for Eclipse jars used with javadoc])
-	        docjars="eclipse.core.commands_ eclipse.equinox.registry_ eclipse.jface_ eclipse.jface.text_ eclipse.swt.win32.win32.x86_ eclipse.ui.workbench_ eclipse.ui.workbench.texteditor_ eclipse.ui.console_ eclipse.ui.editors_ eclipse.text_ eclipse.ui.forms_ eclipse.ui.ide_ eclipse.jdt.ui_"
+		docjars="eclipse.core.commands_ eclipse.equinox.registry_ eclipse.jface_ eclipse.jface.text_ eclipse.ui.workbench_ eclipse.ui.workbench.texteditor_ eclipse.ui.console_ eclipse.ui.editors_ eclipse.text_ eclipse.ui.forms_ eclipse.ui.ide_ eclipse.jdt.ui_ $ECLIPSE_SWT_JAR"
+		# eclipse.core.runtime_ org.eclipse.equinox.common_ org.eclipse.core.resources_ org.eclipse.core.jobs_
 	        PTBACKTRACK_ECLIPSE_DOC_JARS=
 	        for jar in $docjars
 	        do
 	    	    if test "${PTVERBOSE:-none}" = "none"; then
-	                echo $ECHO_N "."
+	                $PT_ECHO $ECHO_N "."
 	            else
-                        echo $ECHO_N "$jar "
+                        $PT_ECHO $ECHO_N "$jar "
                     fi
 	            jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
    	            if test -f "$jarpath"; then
 	                # Keep track of the jars so we can use them while
 		        # building with make.
 	                PTBACKTRACK_ECLIPSE_DOC_JARS="$PTBACKTRACK_ECLIPSE_DOC_JARS$CLASSPATHSEPARATOR$jarpath"
+#			case "`uname -s`" in
+#			Darwin) ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+#           <classpathentry kind=\"lib\" path=\"$jarpath\"/>";;
+#	   		esac 
  	            else   
 		        AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
 			failedToFindEclipseDocJars=1
@@ -1341,7 +1273,7 @@ changequote([, ])dnl
         fi	
         if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
             AC_MSG_WARN([Failed to find Eclipse
-    perhaps the Eclipse is not installed?
+    perhaps Eclipse is not installed?
     $eclipseMessage])
 	    PTBACKTRACK_ECLIPSE_JARS=
         fi
@@ -1944,7 +1876,7 @@ fi
 #       If not, look for $PTII/vendors/sun/jxta/jxta.jar
 #--------------------------------------------------------------------
 
-# We only need to look for commapi if $PTII/ptolemy/actor/lib/jxta is present
+# We only need to look for jxta if $PTII/ptolemy/actor/lib/jxta is present
 JXTA_USER_DIR="$PTII/ptolemy/actor/lib/jxta"
 # PTJXTA_DIR is set to jxta and used in
 # $PTII/actor/lib/makefile if jxta was found
@@ -1996,13 +1928,101 @@ else
 fi 
 
 #--------------------------------------------------------------------
+#       RXTX is the Serial Port interface that replaces
+#       Sun's commapi.
+#	See if there was a command-line option for rxtx is
+#       If not, check to see if $PTII/vendors/sun/rxtx
+#--------------------------------------------------------------------
+# We only need to look for rxtx if $PTII/ptolemy/actor/lib/io/comm is present
+RXTX_USER_DIR="$PTII/ptolemy/actor/lib/io/comm"
+RXTX_JAR_DEFAULT='${PTII}/vendors/misc/rxtx/RXTXcomm.jar'
+RXTX_PRESENT=no
+# PTLEGO_DIR is set to lego
+# $PTII/ptolemy/apps/makefile if the Java Communications API was found
+#
+PTLEGO_DIR=
+# PTCOMM_DIR is set to comm and used in 
+# $PTII/ptolemy/actor/lib/io/makefile if the Java Communications API was found
+#
+PTCOMM_DIR=
+if test ! -d "$RXTX_USER_DIR"; then
+    PT_MSG_STATUS([$RXTX_USER_DIR is not present,
+    so we need not find rxtx.])
+    # Use curly brackets around PTII so that if rxtx is not present
+    # then ${PTII} will appear in ptinvoke.
+else
+    AC_MSG_CHECKING([for rxtx directory])
+    AC_ARG_WITH(rxtx, [  --with-rxtx=DIR       use Java Serial Port Interfacrxtx from DIR,
+                          defaults to $RXTX_JAR_DEFAULT],
+	RXTX_JAR=$withval,
+	RXTX_JAR=$RXTX_JAR_DEFAULT)
+
+    if test -f "$RXTX_JAR"; then
+        PT_MSG_RESULT(ok)
+	RXTX_PRESENT=yes
+    else 
+	AC_MSG_RESULT([Did not find 
+	'$RXTX_JAR'])
+        AC_MSG_CHECKING([for rxtx classes in CLASSPATH])
+        startdir=$PTII
+        cd "$srcdir/config"
+
+        if "$JAVAC" FindClass.java ; then
+	    # Usually RXTXcomm.jar will be in the CLASSPATH
+	    RXTX_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass gnu.io.SerialPort`
+	    if test -f "$RXTX_JAR" ; then
+	       PT_MSG_RESULT($RXTC_JAR)
+	       RXTX_PRESENT=yes
+	       # Here, we should not be adding RXTX_JAR to Eclipse
+	       # if RXTXcomm.jar was in the jre
+               case "`uname -s`" in
+	       Darwin) 
+  	            AC_MSG_WARN([Not including
+   $RXTX_JAR
+   to the Eclipse classpath under Darwin because it is already present.]);;
+               *)
+	           ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$RXTX_JAR\"/>"
+		   ;;
+               esac
+            else
+	       CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass gnu.io.SerialPort > /dev/null
+	       retval=$?
+	       if test "$retval" = "0"; then
+	       	       PT_MSG_RESULT([ok, RXTX is probably in the jre directory])
+		       RXTX_PRESENT=yes
+	       fi
+	    fi
+        cd "$startdir"
+        fi
+    fi
+    if test "$RXTX_PRESENT" = "no"; then
+        AC_MSG_WARN([Perhaps rxtx is not installed?
+    You need not download rxtx unless you plan the actors in actor.lib.comm.])
+
+    fi
+fi
+
+if test "$RXTX_PRESENT" = "yes"; then
+    # Subdirectories that contains Java Communications API specific code
+    PTLEGO_DIR=lego
+    PTCOMM_DIR=comm
+    # PTRXTX_PACKAGES is used in ptII/doc/makefile
+    PTRXTX_PACKAGES=ptolemy.actor.lib.io.comm
+else
+    RXTX_JAR="$RXTX_JAR_DEFAULT"
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/io/comm/"
+fi 
+
+
+#--------------------------------------------------------------------
 #       Lejos is a Java Virtual machine that runs on the Lego Mindstorm
 #	For more information, see http://lejos.sourceforge.net
-#	See if there was a command-line option for commapi is
+#	See if there was a command-line option for rxtxi is
 #       If not, check to see if $PTII/vendors/lejos/lejos/lejosBeta3
 #--------------------------------------------------------------------
 
-# We only need to look for commapi if $PTII/ptolemy/apps/lejos
+# We only need to look for rxtx if $PTII/ptolemy/apps/lejos
 LEJOS_USER_DIR="$PTII/ptolemy/apps/lejos"
 LEJOS_PRESENT=no
 # PTLEJOS_DIR is set to lejos
@@ -2015,8 +2035,8 @@ if test ! -d "$LEJOS_USER_DIR"; then
     # then ${PTII} will appear in ptinvoke.
     LEJOS_DIR='${PTII}/vendors/lejos/lejosBeta3'
 else
-    if test "$COMMAPI_PRESENT" = "no"; then
-        AC_MSG_WARN([Lejos requires commapi, which was not found.])
+    if test "$RXTX_PRESENT" = "no"; then
+        AC_MSG_WARN([Lejos requires rxtx, which was not found.])
     else 
 	AC_MSG_CHECKING([for lejos directory])
 	AC_ARG_WITH(lejos, [  --with-lejos=DIR       use Java lejos from DIR,
@@ -3561,9 +3581,9 @@ if test ! -d "$X10_USER_DIR"; then
     PT_MSG_STATUS([$X10_USER_DIR is not present,
     so we need not find the X10 SDK. X10 is the power line comm interface.])
 else
-    if test "$COMMAPI_PRESENT" = "no"; then
+    if test "$RXTX_PRESENT" = "no"; then
         AC_MSG_WARN([The Java Serial Port Communications API is not installed.
-    The X10 Interface requires the commapi.
+    The X10 Interface requires rxtx to interface to the serial port
     The commapi can be downloaded from http://java.sun.com/products/javacomm/
     and placed  in \$PTII/vendors/sun/commapi])
     else
@@ -3657,12 +3677,6 @@ AC_SUBST(COLT_DIR)
 # Directory that contains the CaffeineMark Java Benchmark kit
 # used by C code generation in copernicus/c
 AC_SUBST(CMKIT_DIR)
-
-# Directory that contains the Java Serial Comm API
-AC_SUBST(COMMAPI_DIR)
-
-# If Commapi is present, then set to yes, otherwise set to no
-AC_SUBST(COMMAPI_PRESENT)
 
 # Location of Eclipse, which is used by ptolemy/backtracking
 AC_SUBST(ECLIPSE_DIR)
@@ -4074,6 +4088,10 @@ AC_SUBST(PTQUICKTIME_DIR)
 # PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTQUICKTIME_PACKAGES)
 
+# Ptolemy II packages that use the RXTX Java Serial Communication facility
+# PTRXTX_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTRXTX_PACKAGES)
+
 # PTSPACE_DIR is set to space and used in
 # $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.
 AC_SUBST(PTSPACE_DIR)
@@ -4131,6 +4149,12 @@ AC_SUBST(PTII_LOCALURL)
 
 # Set to the location of the QTJava.zip file
 AC_SUBST(QTJAVA_ZIP)
+
+# Jar file that contains RXTX Serial Port Interface
+AC_SUBST(RXTX_JAR)
+
+# If Rxtx is present, then set to yes, otherwise set to no
+AC_SUBST(RXTX_PRESENT)
 
 # tini/bin/tinclasses.jar file used Soot - a Java Optimization Framework
 AC_SUBST(SOOT_CLASSES)

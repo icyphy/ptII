@@ -266,9 +266,6 @@ JHDL_JAR =	@JHDL_JAR@
 # If Jini is present, the set to yes, otherwise, set to no
 JINI_PRESENT =  @JINI_PRESENT@
 
-# Directory that contains the Java Serial Comm API, see
-# http://java.sun.com/products/javacomm/
-COMMAPI_DIR =   @COMMAPI_DIR@
 
 # ImageJ Jar file, used to compile ptolemy/domains/gr/lib/vr
 IMAGEJ_JAR =	@IMAGEJ_JAR@
@@ -634,6 +631,9 @@ X10_JAR =       @X10_CLASSES@
 # Ptolemy II packages that use the X10 facilty.
 # PTX10_PACKAGES is used in ptII/doc/makefile
 PTX10_PACKAGES = @PTX10_PACKAGES@	
+
+# # Jar file that contains RXTX Serial Port Interface
+RXTX_JAR =   @RXTXJARR@
 
 # Location of the diva.jar file.  Diva is (among other things) a graph
 # visualization tool used by some of the demos.  For more information, see
