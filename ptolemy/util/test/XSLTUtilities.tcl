@@ -62,7 +62,8 @@ test XSLTUtilities-1.1 {Call main} {
     # Insert newlines between ><
     regsub -all {><} $results2 ">\n<" results3
     # Get rid of leading spaces
-    regsub -all {^[ ]*} $results3 {} results4
+    #regsub -all {^( )+} $results3 {} results4
+    regsub -all "\n *" $results3 "\n" results4
 
     list $results4
 } {{<?xml version="1.0" encoding="UTF-8"?>
@@ -100,8 +101,8 @@ test XSLTUtilities-2.1 {test parse and toString} {
     # Insert newlines between ><
     regsub -all {><} $results2 ">\n<" results3
     # Get rid of leading spaces
-    regsub -all {^[ ]*} $results3 {} results4
-
+    #regsub -all {^[ ]*} $results3 {} results4
+    regsub -all "\n *" $results3 "\n" results4
     list $results4
 } {{<?xml version="1.0" encoding="UTF-8"?>
 <WMBasicEdit>
@@ -152,7 +153,8 @@ test XSLTUtilities-3.2 {Call transform(Document, List) using local files} {
     # Insert newlines between ><
     regsub -all {><} $results2 ">\n<" results3
     # Get rid of leading spaces
-    regsub -all {^[ ]*} $results3 {} results4
+    #regsub -all {^[ ]*} $results3 {} results4
+    regsub -all "\n *" $results3 "\n" results4
 
     list $results4
 } {{<?xml version="1.0" encoding="UTF-8"?>
@@ -191,7 +193,8 @@ test XSLTUtilities-3.3 {Call transform(Document, List) using files found in the 
     # Insert newlines between ><
     regsub -all {><} $results2 ">\n<" results3
     # Get rid of leading spaces
-    regsub -all {^[ ]*} $results3 {} results4
+    #regsub -all {^[ ]*} $results3 {} results4
+    regsub -all "\n *" $results3 "\n" results4
 
     list $results4
 } {{<?xml version="1.0" encoding="UTF-8"?>
