@@ -176,29 +176,42 @@ proc print_verbose {test_name test_description contents_of_test code answer {tes
 # number but not have to update all the tests
 proc ptFilterOutVersion {answer passing_results} {
 
-    set createdByRegularExpression \
-	    {[ ]*<property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="[0-9][^"]*">\n[ ]*</property>\n}
-
-
+    # 1. Convert line separator to \n
     regsub -all [java::call System getProperty "line.separator"] \
 	    $answer "\n" answer2a
+
+    # 2. Remove the VersionAttribute
+#    set createdByRegularExpression 	    {[ ]*<property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="[0-9][^"]*">\n[ ]*</property>\n}
+
+    set createdByRegularExpression 	    {[ ]*<property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="[0-9][^"]*">
+[ ]*</property>
+}
     regsub -all $createdByRegularExpression $answer2a {} answer2b
 
-    # NamedObj version 1.319 changed exportMoML so that exportMoML()
-    # now exports the header.
+    # 3. NamedObj version 1.319 changed exportMoML so that exportMoML()
+    #    now exports the header.
     set headerRegularExpression \
 	    {[ ]*<.xml version="1.0" standalone="no".>\n<\!DOCTYPE relation PUBLIC "-//UC Berkeley//DTD MoML 1//EN"\n[ ]*"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">\n}
 
     regsub -all $headerRegularExpression $answer2b {} answer3
 
+    # 4.  Apple decided to change Double.POSITIVE_INFINITY to "Infinity".
+    #     Other platforms use "Inf".  Call Steve and complain :-)
+
+    regsub -all {Infinity} $answer3 {Inf} answer4
+
+    #########
+    # Now do the changes for the passing_result
     regsub -all [java::call System getProperty "line.separator"] \
 	    $passing_results "\n" passing_results2
 
     regsub -all $createdByRegularExpression $passing_results2 {} passing_results3
+    
+    regsub -all {Infinity} $passing_results3 {Inf} passing_results4
 
-    #puts "answer3: $answer3"
-    #puts "passing_results3: $passing_results3"
-    return [string compare $answer3 $passing_results3]
+#    puts "answer4: $answer4"
+#    puts "passing_results4: $passing_results4"
+    return [string compare $answer4 $passing_results4]
 }
 
 
