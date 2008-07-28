@@ -79,5 +79,5 @@ proc removeGraphicalClasses {parser} {
     $filter put "ptolemy.vergil.kernel.attributes.AttributeValueAttribute" [java::null]
     $filter put "ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute" [java::null]
 
-    $parser addMoMLFilter $filter
+    java::call ptolemy.moml.MoMLParser addMoMLFilter $filter
 }

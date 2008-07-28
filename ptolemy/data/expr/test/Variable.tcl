@@ -229,7 +229,7 @@ test Variable-5.1 {Set types without first clearing} {
   in .E.P1}}
 
 test Variable-5.2 {Set types with first clearing} {
-    $p1 setToken [java::null]
+    $p1 {setToken ptolemy.data.Token} [java::null]
     $p1 setTypeEquals $doubleClass
     [$p1 getType] toString
 } {double}
@@ -545,7 +545,7 @@ test Variable-14.1 {Check string with only spaces evaluation} {
 test Variable-15.1 { setTypeAtLeast(InequalityTerm)} {
     set e15 [java::new {ptolemy.kernel.Entity String} E15]
     set p15 [java::new ptolemy.data.expr.Variable $e15 P15]
-    $p15 setToken [java::null]
+    $p15 {setToken ptolemy.data.Token} [java::null]
 
     set doubleClass [java::field ptolemy.data.type.BaseType DOUBLE]
     set typeConstant15 [java::new ptolemy.data.type.TypeConstant $doubleClass]
@@ -564,7 +564,7 @@ test Variable-15.1 { setTypeAtLeast(InequalityTerm)} {
 test Variable-16.1 {setTypeAtLeast(Typeable)} {
     set e16 [java::new {ptolemy.kernel.Entity String} E16]
     set p16 [java::new ptolemy.data.expr.Variable $e16 P16]
-    $p16 setToken [java::null]
+    $p16 {setToken ptolemy.data.Token} [java::null]
 
     set tok16 [java::new  {ptolemy.data.DoubleToken double} 16.16]
     set p16_2 [java::new ptolemy.data.expr.Variable $e16 P16_2 $tok16]

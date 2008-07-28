@@ -549,11 +549,11 @@ test PtParser-10.0 {Test that constants can be registered and recognized by the 
     set res1 [ $root1 evaluateParseTree ]
     set value1 [$res1 toString]
 
-    $p1 registerConstant "neil" "neil"
-    $p1 registerConstant "one" [java::new {Integer int} 1]
-    $p1 registerConstant "half" [java::new {Double double} "0.5"]
-    $p1 registerConstant "long" [java::new {Long long} "1000"]
-    $p1 registerConstant "boolean" [java::new {Boolean boolean} "true"]
+    java::call ptolemy.data.expr.PtParser registerConstant "neil" "neil"
+    java::call ptolemy.data.expr.PtParser registerConstant "one" [java::new {Integer int} 1]
+    java::call ptolemy.data.expr.PtParser registerConstant "half" [java::new {Double double} "0.5"]
+    java::call ptolemy.data.expr.PtParser registerConstant "long" [java::new {Long long} "1000"]
+    java::call ptolemy.data.expr.PtParser registerConstant "boolean" [java::new {Boolean boolean} "true"]
 
     set root1 [ $p1 {generateParseTree String} "half + one + neil"]
     set res1 [ $root1 evaluateParseTree ]

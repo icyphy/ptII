@@ -536,7 +536,7 @@ test MoMLChangeRequest-5.1 {getDeferredToParent} {
 
 
 # Save the original MoMLParser Error Handler
-set originalParserErrorHandler [$parser getErrorHandler]
+set originalParserErrorHandler [java::call ptolemy.moml.MoMLParser getErrorHandler]
 ######################################################################
 ####
 # Procedure used to test setReportErrorsToHandler
@@ -547,7 +547,7 @@ proc testSetReportErrorsToHandler {reportErrorsToHandler} {
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
     set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
-    $parser setErrorHandler $recorderErrorHandler
+    java::call ptolemy.moml.MoMLParser setErrorHandler $recorderErrorHandler
 
     set baseModel6 {<?xml version="1.0" standalone="no"?>
     <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -652,7 +652,7 @@ Because:
 
 
 # Restore the original MoMLParser Error Handler
-$parser setErrorHandler $originalParserErrorHandler
+java::call ptolemy.moml.MoMLParser setErrorHandler $originalParserErrorHandler
 
 ######################################################################
 ####

@@ -154,19 +154,17 @@ test UndoContext-3.4.0.1 {moveContextStart: use example from method documentatio
     set containee [java::new ptolemy.kernel.CompositeEntity $c d] 
 
     set undoContext [java::new ptolemy.moml.UndoContext true]
-    $undoContext moveContextStart $container $containee
+    java::call ptolemy.moml.UndoContext moveContextStart $container $containee
 } {<entity name="a.b.c" >
 }
 
 test UndoContext-3.4.1 {moveContextStart: use a containee that is already immediately contained} {
     # Use container and a from 3.4 above	
-    set undoContext [java::new ptolemy.moml.UndoContext true]
-    $undoContext moveContextStart $container $a
+    java::call ptolemy.moml.UndoContext moveContextStart $container $a
 } {}
 
 test UndoContext-3.5 {moveContextEnd: use example from method documentation } {
     # Use container and containee from 3.4 above	
-    set undoContext [java::new ptolemy.moml.UndoContext true]
-    $undoContext moveContextEnd $container $containee
+    java::call ptolemy.moml.UndoContext moveContextEnd $container $containee
 } {</entity>
 }

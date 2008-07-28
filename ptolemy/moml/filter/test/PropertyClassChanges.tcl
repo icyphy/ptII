@@ -74,7 +74,7 @@ test PropertyClassChanges-1.1 {A _hideName that is after an Attribute} {
 
     # The list of filters is static, so we reset it in case there
     # filters were already added.
-    $parser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
 
     #$parser addMoMLFilters \
     #	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
@@ -89,7 +89,7 @@ test PropertyClassChanges-1.1 {A _hideName that is after an Attribute} {
     $filter put "ptolemy.actor.TypedCompositeActor" [java::null]
     $filter remove "ptolemy.actor.TypedCompositeActor"
 
-    $parser addMoMLFilter $filter
+    java::call ptolemy.moml.MoMLParser addMoMLFilter $filter
     set toplevel [$parser parse $hideMoml]
     set newMoML [$toplevel exportMoML]
     list $newMoML
@@ -140,9 +140,9 @@ test PropertyClassChanges-1.2 {Remove _Director from a modal model, based on dom
 
     # The list of filters is static, so we reset it in case there
     # filters were already added.
-    $parser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
 
-    $parser addMoMLFilters \
+    java::call ptolemy.moml.MoMLParser addMoMLFilters \
     	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
     set filter [java::new ptolemy.moml.filter.PropertyClassChanges]
@@ -151,11 +151,11 @@ test PropertyClassChanges-1.2 {Remove _Director from a modal model, based on dom
     # ptolemy.copernicus.kernel.KernelMain does this
     $filter put "ptolemy.copernicus.kernel.GeneratorAttribute" [java::null]
 
-    $parser addMoMLFilter $filter
+    java::call ptolemy.moml.MoMLParser addMoMLFilter $filter
 
     # Run RemoveGraphicalClasses in case 
     # ptolemy.vergil.fsm.modal.ModalTableauFactory is not present.
-    $parser addMoMLFilter \
+    java::call ptolemy.moml.MoMLParser addMoMLFilter \
         [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
 
     set toplevel [$parser parse $modalMoml]

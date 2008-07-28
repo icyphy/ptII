@@ -54,11 +54,11 @@ proc parseMoML {moml workspaceName } {
     set parser [java::new ptolemy.moml.MoMLParser $w]
     # The list of filters is static, so we reset it in case there
     # filters were already added.
-    $parser setMoMLFilters [java::null]
-    $parser addMoMLFilters \
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser addMoMLFilters \
 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
-    $parser addMoMLFilter [java::new \
+    java::call ptolemy.moml.MoMLParser addMoMLFilter [java::new \
 	    ptolemy.moml.filter.RemoveGraphicalClasses]
 
 
@@ -464,7 +464,7 @@ test MoMLVariableChecker-2.3.3 {copy a class that does exist to a top level that
     # Uses instance2_0 from 2.0 above
     set w [java::new ptolemy.kernel.util.Workspace w2_3a]
     set parser [java::new ptolemy.moml.MoMLParser $w]
-    $parser purgeModelRecord ConstClassDefinition.xml
+    java::call ptolemy.moml.MoMLParser purgeModelRecord ConstClassDefinition.xml
 
     #set moml2_3_3 "$header $entityStart</entity>"
     #set toplevel2_3_3 [parseMoML $moml2_3_3 w2_3_3]
@@ -484,7 +484,7 @@ test MoMLVariableChecker-2.3.3 {copy a class that does exist to a top level that
 	       "<group name=\"auto\">$copyMoML $instance2_0</group>" \
 	       ConstClassDefinition.Const]
 
-    $parser purgeModelRecord ConstClassDefinition.xml
+    java::call ptolemy.moml.MoMLParser purgeModelRecord ConstClassDefinition.xml
 
     list [$results toString]
 } {666}
@@ -498,7 +498,7 @@ test MoMLVariableChecker-2.3.4 {copy a class that does exist to a top level that
     # Uses instance2_0 from 2.0 above
     set w [java::new ptolemy.kernel.util.Workspace w2_3a]
     set parser [java::new ptolemy.moml.MoMLParser $w]
-    $parser purgeModelRecord ConstClassDefinition.xml
+    java::call ptolemy.moml.MoMLParser purgeModelRecord ConstClassDefinition.xml
 
     #set moml2_3_4 "$header $entityStart</entity>"
     #set toplevel2_3_4 [parseMoML $moml2_3_4 w2_3_4]
@@ -514,7 +514,7 @@ test MoMLVariableChecker-2.3.4 {copy a class that does exist to a top level that
 
     # Reread the class
     $parser reset
-    $parser purgeModelRecord ConstClassDefinition.xml
+    java::call ptolemy.moml.MoMLParser purgeModelRecord ConstClassDefinition.xml
     set toplevelClassDefinition2_3_4b \
 	[java::cast ptolemy.actor.CompositeActor \
 		      [$parser parseFile ConstClassDefinition.xml]]
@@ -533,7 +533,7 @@ test MoMLVariableChecker-2.3.4 {copy a class that does exist to a top level that
     # Make sure that we have only one class definition 
     set classDefinitions [$toplevelClassDefinition2_3_4b classDefinitionList]
 
-    $parser purgeModelRecord ConstClassDefinition.xml
+    java::call ptolemy.moml.MoMLParser purgeModelRecord ConstClassDefinition.xml
 
     list [$classDefinitions size] [$results toString]
 } {1 777}
@@ -544,7 +544,7 @@ test MoMLVariableChecker-2.3.4 {copy a class that does exist to a top level that
 test MoMLVariableChecker-3.0 {copy a composite that has an expression that refers to a top-level parameter} {
     set w [java::new ptolemy.kernel.util.Workspace w3_0]
     set parser [java::new ptolemy.moml.MoMLParser $w]
-    $parser purgeModelRecord CompositeCopyAndPasteTest.xml
+    java::call ptolemy.moml.MoMLParser purgeModelRecord CompositeCopyAndPasteTest.xml
 
     set toplevel3_0 [java::cast ptolemy.actor.CompositeActor \
 			 [$parser parseFile CompositeCopyAndPasteTest.xml]]
@@ -581,7 +581,7 @@ test MoMLVariableChecker-3.0 {copy a composite that has an expression that refer
 test MoMLVariableChecker-3.1 {copy a composite that has an expression that refers to a top-level parameter} {
     set w [java::new ptolemy.kernel.util.Workspace w3_1]
     set parser [java::new ptolemy.moml.MoMLParser $w]
-    $parser purgeModelRecord ComplexCompositeCopyAndPasteTest.xml
+    java::call ptolemy.moml.MoMLParser purgeModelRecord ComplexCompositeCopyAndPasteTest.xml
 
     set toplevel3_1 [java::cast ptolemy.actor.CompositeActor \
 			 [$parser parseFile \

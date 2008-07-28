@@ -68,11 +68,11 @@ test BackwardCompatibility-1.1 {Const: added an _icon} {
 
     # The list of filters is static, so we reset it in case there
     # filters were already added.
-    $parser setMoMLFilters [java::null]
-    $parser addMoMLFilters \
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser addMoMLFilters \
 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
-    $parser addMoMLFilter [java::new \
+    java::call ptolemy.moml.MoMLParser addMoMLFilter [java::new \
 	    ptolemy.moml.filter.RemoveGraphicalClasses]
 
     set toplevel [$parser parse $constMoml]
@@ -614,7 +614,7 @@ test BackwardCompatibility-10.1 {PNDirectory parameter named Initial_queue_capac
 }}
 
 test BackwardCompatiblity-11.1 {Call toString on all the filters} {
-    set filters [$parser getMoMLFilters]
+    set filters [java::call ptolemy.moml.MoMLParser getMoMLFilters]
     # listToStrings is defined in  util/testsuite/enums.tcl
     # The toString output is rather voluminous, so we just check that
     # it is more than 1000 chars.
@@ -724,12 +724,12 @@ test BackwardCompatibility-13.2 {ModelReference modelFileOrURL parameter change 
 
     # Test out the modified flag
     $parser reset
-    set modified [$parser isModified]
+    set modified [java::call ptolemy.moml.MoMLParser isModified]
 
     set toplevel [$parser parse $testMoML]
     set newMoML [$toplevel exportMoML]
 
-    list $modified [$parser isModified] $newMoML
+    list $modified [java::call ptolemy.moml.MoMLParser isModified] $newMoML
 } {0 1 {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -767,12 +767,12 @@ test BackwardCompatibility-13.3 {The input directive also calls setContext() whi
 
     # Test out the modified flag
     $parser reset
-    set modified [$parser isModified]
+    set modified [java::call ptolemy.moml.MoMLParser isModified]
 
     set toplevel [$parser parse $testMoML]
     set newMoML [$toplevel exportMoML]
 
-    list $modified [$parser isModified] $newMoML
+    list $modified [java::call ptolemy.moml.MoMLParser isModified] $newMoML
 } {0 1 {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -809,12 +809,12 @@ test BackwardCompatibility-14.1 {ModalModel _tableauFactory changed} {
 
     # Test out the modified flag
     $parser reset
-    set modified [$parser isModified]
+    set modified [java::call ptolemy.moml.MoMLParser isModified]
 
     set toplevel [$parser parse $testMoML]
     set newMoML [$toplevel exportMoML]
 
-    list $modified [$parser isModified] $newMoML
+    list $modified [java::call ptolemy.moml.MoMLParser isModified] $newMoML
 } {0 1 {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">

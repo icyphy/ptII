@@ -67,12 +67,12 @@ test StreamErrorHandler-1.1 {Create a stream to stderr} {
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
     set streamErrorHandler [java::new ptolemy.moml.StreamErrorHandler]
-    $parser setErrorHandler $streamErrorHandler
+    java::call ptolemy.moml.MoMLParser setErrorHandler $streamErrorHandler
     
     # We don't actually exercise the default StreamErrorHandler
     # because it would end up clutter the output with error strings
 
-    list [expr {$streamErrorHandler == [java::cast ptolemy.moml.StreamErrorHandler [$parser getErrorHandler]]}]
+    list [expr {$streamErrorHandler == [java::cast ptolemy.moml.StreamErrorHandler [java::call ptolemy.moml.MoMLParser getErrorHandler]]}]
     
 } {1}
 
@@ -87,7 +87,7 @@ test StreamErrorHandler-1.2 {Create a stream that we can read} {
     # This method does nothing, but we call it anyway.
     $streamErrorHandler enableErrorSkipping true
 
-    $parser setErrorHandler $streamErrorHandler
+    java::call ptolemy.moml.MoMLParser setErrorHandler $streamErrorHandler
 
     set toplevel [java::cast ptolemy.kernel.CompositeEntity \
             [$parser parse $moml]]

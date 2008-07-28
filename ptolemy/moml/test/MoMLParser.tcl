@@ -106,7 +106,7 @@ test MoMLParser-0.9 {parse a file in two different workspaces.  Note use of setC
 	[java::null] $url1]
     $parser1 setContext $toplevel1
 
-    $parser1 purgeModelRecord $url1
+    java::call ptolemy.moml.MoMLParser purgeModelRecord $url1
 
     set w4 [java::new ptolemy.kernel.util.Workspace w4]
     set parser2 [java::new ptolemy.moml.MoMLParser $w4]
@@ -124,8 +124,8 @@ test MoMLParser-0.9 {parse a file in two different workspaces.  Note use of setC
 } .top .top {ptolemy.kernel.util.Workspace {w4}}}
 
 # call purgeModelRecord in case we run this twice
-$parser1 purgeModelRecord $url1
-$parser1 purgeModelRecord $url2
+java::call ptolemy.moml.MoMLParser purgeModelRecord $url1
+java::call ptolemy.moml.MoMLParser purgeModelRecord $url2
 
 ######################################################################
 ####
@@ -613,10 +613,10 @@ test MoMLParser-1.11.2 {test link errors to cover LinkRequest.toString() } {
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
     set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
-    $parser setErrorHandler $recorderErrorHandler
+    java::call ptolemy.moml.MoMLParser setErrorHandler $recorderErrorHandler
 
     set toplevel [$parser parse $moml11_2]
-    $parser setErrorHandler [java::null]
+    java::call ptolemy.moml.MoMLParser setErrorHandler [java::null]
     list [string range [$recorderErrorHandler getMessages] 0 166]
 } {{RecorderErrorHandler: Error encountered in:
 link C to C1.R1
@@ -640,10 +640,10 @@ test MoMLParser-1.11.3 {test link errors to cover UnlinkRequest.toString() } {
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
     set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
-    $parser setErrorHandler $recorderErrorHandler
+    java::call ptolemy.moml.MoMLParser setErrorHandler $recorderErrorHandler
 
     set toplevel [$parser parse $moml11_3]
-    $parser setErrorHandler [java::null]
+    java::call ptolemy.moml.MoMLParser setErrorHandler [java::null]
     list [string range [$recorderErrorHandler getMessages] 0 124]
 } {{RecorderErrorHandler: Error encountered in:
 unlink C from Foo
@@ -773,7 +773,7 @@ set body {
 set moml "$header $body"
 
 test MoMLParser-1.12.3 {test class instances with no override} {
-	$parser purgeAllModelRecords
+    java::call ptolemy.moml.MoMLParser purgeAllModelRecords
     $parser reset
     set toplevel [java::cast ptolemy.kernel.CompositeEntity \
             [$parser parse $moml]]
@@ -3290,12 +3290,12 @@ test MoMLParser-16.1 {get XmlParser to call MoMLParser.error() by trying to pars
 test MoMLParser-17.1 {Call isModified and setModified} {
     # isModified and setModified are called by the filter code
     $parser reset
-    set r1 [$parser isModified]
-    $parser setModified 1
-    set r2 [$parser isModified]
+    set r1 [java::call ptolemy.moml.MoMLParser isModified]
+    java::call ptolemy.moml.MoMLParser setModified 1
+    set r2 [java::call ptolemy.moml.MoMLParser isModified]
     # Resetting should set _modified back to false
     $parser reset
-    set r3 [$parser isModified]
+    set r3 [java::call ptolemy.moml.MoMLParser isModified]
     list $r1 $r2 $r3
 } {0 1 0}
 
@@ -3308,11 +3308,11 @@ test MoMLParser-18.1 {parse testdir.moml and get the filename of the inner part 
     $parser reset
     # The list of filters is static, so we reset it in case there
     # filters were already added.
-    $parser setMoMLFilters [java::null]
-    $parser addMoMLFilters \
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser addMoMLFilters \
 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
-    $parser addMoMLFilter [java::new \
+    java::call ptolemy.moml.MoMLParser addMoMLFilter [java::new \
 	    ptolemy.moml.filter.RemoveGraphicalClasses]
     set toplevel [$parser parseFile "testdir.moml"]
     set compositeEntity [java::cast ptolemy.kernel.CompositeEntity $toplevel]
@@ -3926,7 +3926,7 @@ test MoMLParser-24.1 {purgeModelRecord} {
     # I would expect that this is .p2, but we have not yet purged and reset.
     set r3 [$toplevel2 getFullName]
 
-    $parser purgeModelRecord $url1
+    java::call ptolemy.moml.MoMLParser purgeModelRecord $url1
     $parser reset
     # Need to purge the record and reset to see the change
 
@@ -3935,7 +3935,7 @@ test MoMLParser-24.1 {purgeModelRecord} {
     set r4 [$toplevel3 getFullName]
 
     # Do a little cleanup	
-    $parser purgeModelRecord $url1
+    java::call ptolemy.moml.MoMLParser purgeModelRecord $url1
     $parser reset
     file delete -force purgeModelRecordTest.moml
 
@@ -3966,7 +3966,7 @@ set moml_25 "$classheader
 test MoMLParser-25.1 {Replicated the problems I was having with adding a Sinewave to the user library.  The problem was that Sinewave had a _hideName Parameter that was set to true.  Instead, hideName should be a SingletonAttribute.  This test replicates that} {
     $parser reset
     set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
-    $parser setErrorHandler $recorderErrorHandler
+    java::call ptolemy.moml.MoMLParser setErrorHandler $recorderErrorHandler
     set toplevel [$parser parse $moml_25]
 
     # We need a ChangeListener at the top
@@ -4035,9 +4035,9 @@ test MoMLParser-26.2 {changeFailed} {
     }]
 
     set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
-    $parser26 setErrorHandler $recorderErrorHandler
+    java::call ptolemy.moml.MoMLParser setErrorHandler $recorderErrorHandler
     $parser26 changeFailed $change26 [java::new Exception {MoMLParser26.1 testException}]
-    $parser26 setErrorHandler [java::null]
+    java::call ptolemy.moml.MoMLParser setErrorHandler [java::null]
     
     jdkCaptureErr {
 	$parser26 changeFailed $change26 [java::new Exception {MoMLParser26.1 testException}]
@@ -4055,7 +4055,7 @@ test MoMLParser-27.1 {getIconLoader(), setIconLoader()} {
     set w27 [java::new ptolemy.kernel.util.Workspace w27]
     set parser27 [java::new ptolemy.moml.MoMLParser $w27]
     $parser27 reset
-    list [java::isnull [$parser27 getIconLoader]]
+    list [java::isnull [java::call ptolemy.moml.MoMLParser getIconLoader]]
 } {1}
 
 ######################################################################
@@ -4078,17 +4078,17 @@ test MoMLParser-28.1 {setIconLoader()} {
     set w28 [java::new ptolemy.kernel.util.Workspace w28]
     set parser28 [java::new ptolemy.moml.MoMLParser $w28]
     $parser28 reset
-    $parser28 setIconLoader [java::new ptolemy.moml.test.TestIconLoader]
+    java::call ptolemy.moml.MoMLParser setIconLoader [java::new ptolemy.moml.test.TestIconLoader]
     set toplevel28 [java::cast ptolemy.kernel.CompositeEntity \
             [$parser28 parse $moml28]]
     list \
-	[[$parser28 getIconLoader] loadIconForClass \
+	[[java::call ptolemy.moml.MoMLParser getIconLoader] loadIconForClass \
 	     ptolemy.moml.test.testClass $toplevel28] \
-	[[$parser28 getIconLoader] loadIconForClass testClassFoo $toplevel28]
+	[[java::call ptolemy.moml.MoMLParser getIconLoader] loadIconForClass testClassFoo $toplevel28]
 } {1 0}
 
 # Reset the iconLoader in case we run this twice
-$parser28 setIconLoader [java::null]
+java::call ptolemy.moml.MoMLParser setIconLoader [java::null]
 
 set moml29 "$header $body28"
 test MoMLParser-29.1 {The contents of the icon should not be in the exported Moml} {
@@ -4110,7 +4110,7 @@ test MoMLParser-29.1 {The contents of the icon should not be in the exported Mom
    regexp {<.*height.*>} "$moml" results
 
    # Should be empty, should not contain the contents of testClassIcon.xml
-   list $results 
+   list $results
 } {{}}
 
 
@@ -4122,11 +4122,11 @@ test MoMLParser-30.1 {If an actor has no package, then we should be able to have
     $parser reset
     # The list of filters is static, so we reset it in case there
     # filters were already added.
-    $parser setMoMLFilters [java::null]
-    $parser addMoMLFilters \
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser addMoMLFilters \
 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
-    $parser addMoMLFilter [java::new \
+    java::call ptolemy.moml.MoMLParser addMoMLFilter [java::new \
 	    ptolemy.moml.filter.RemoveGraphicalClasses]
     set toplevel [$parser parseFile "NoPackageActors.xml"]
     set compositeEntity [java::cast ptolemy.kernel.CompositeEntity $toplevel]

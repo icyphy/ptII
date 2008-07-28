@@ -324,11 +324,11 @@ test UndoPort-2.1 {Test undoing an actor with two channels} {
 
     # The list of filters is static, so we reset it in case there
     # filters were already added.
-    $parser setMoMLFilters [java::null]
-    $parser addMoMLFilters \
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser addMoMLFilters \
 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
-    $parser addMoMLFilter [java::new \
+    java::call ptolemy.moml.MoMLParser addMoMLFilter [java::new \
 	    ptolemy.moml.filter.RemoveGraphicalClasses]
 
     set toplevel [java::cast ptolemy.actor.CompositeActor \

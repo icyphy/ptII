@@ -60,7 +60,7 @@ test UndoStackAttribute-1.1 {Create an UndoStackAttribute} {
 #
 test UndoStackAttribute-2.1 {call getUndoInfo } {
     # Uses 1.1 above
-    [$p getUndoInfo $n] toString
+    [java::call ptolemy.kernel.undo.UndoStackAttribute getUndoInfo $n] toString
 } {ptolemy.kernel.undo.UndoStackAttribute {.N.P}}
 
 ######################################################################

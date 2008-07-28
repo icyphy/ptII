@@ -89,9 +89,9 @@ test RemoveGraphicalClasses-1.1 {This annotation already has a _hideName} {
 
     # The list of filters is static, so we reset it in case there
     # filters were already added.
-    $parser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
 
-    $parser addMoMLFilters \
+    java::call ptolemy.moml.MoMLParser addMoMLFilters \
 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
     set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
@@ -103,8 +103,8 @@ test RemoveGraphicalClasses-1.1 {This annotation already has a _hideName} {
     $filter put "ptolemy.actor.TypedCompositeActor" [java::null]
     $filter remove "ptolemy.actor.TypedCompositeActor"
 
-    $parser addMoMLFilter $filter
-    $parser addMoMLFilter [java::new ptolemy.moml.filter.HideAnnotationNames]
+    java::call ptolemy.moml.MoMLParser addMoMLFilter $filter
+    java::call ptolemy.moml.MoMLParser addMoMLFilter [java::new ptolemy.moml.filter.HideAnnotationNames]
     set toplevel [$parser parse $hideMoml]
     set newMoML [$toplevel exportMoML]
     list $newMoML
@@ -406,7 +406,7 @@ RemoveGraphicalClasses.</text></svg></configure>
 test RemoveGraphicalClasses-1.5 {clear} {
     # This removes the graphical classes for all subsequent runs
     set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
-    $filter clear
+    java::call ptolemy.moml.filter.RemoveGraphicalClasses clear
     $filter toString
 } {ptolemy.moml.filter.RemoveGraphicalClasses: Remove or replace classes that are graphical.
 This filter is used by the nightly build, and

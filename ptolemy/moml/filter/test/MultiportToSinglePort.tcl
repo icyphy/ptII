@@ -93,9 +93,9 @@ test MultiportToSinglePort-1.1 {output port should not be a multi port} {
 
     # The list of filters is static, so we reset it in case there
     # filters were already added.
-    $parser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
 
-    $parser addMoMLFilters \
+    java::call ptolemy.moml.MoMLParser addMoMLFilters \
 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
     set toplevel [$parser parse $autocorrelationMoML]
@@ -149,16 +149,16 @@ test MultiportToSinglePort-2.1 {output port is not a multiport, should not be ma
     $parser reset
     # The list of filters is static, so we reset it in case there
     # filters were already added.
-    $parser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
 
     # We do not add the backward compatibility filter and then
     # the remove graphical classes filter because they will modify
     # the Const actor, thus making this test pointless	
 	
-    $parser addMoMLFilter \
+    java::call ptolemy.moml.MoMLParser addMoMLFilter \
 	[java::new ptolemy.moml.filter.MultiportToSinglePort]
 
     set toplevel [$parser parse $chainedTransitionMoML]
     set newMoML [$toplevel exportMoML]
-    list [$parser isModified]
+    list [java::call ptolemy.moml.MoMLParser isModified]
 } {0}
