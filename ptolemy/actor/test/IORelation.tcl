@@ -316,7 +316,10 @@ test IORelation-3.15 {No two relations from both inside and outside can be a bus
     catch {$r2 setWidth 0} msg1
     list $msg1
 } {{ptolemy.kernel.util.IllegalActionException: Cannot use unspecified width on this relation because of its links.
-  in .<Unnamed Object>.R2}}
+  in .<Unnamed Object>.R2
+Because:
+Width of inside relations cannot be determined.
+  in .<Unnamed Object>.E1.P0}}
 
 test IORelation-3.16 {Resolve width through three levels} {
     # E0 contains E1 contains E2
@@ -390,7 +393,10 @@ test IORelation-3.18 {Resolve width through three levels} {
 #settings in 3.17, which makes the width of port p1 undecidable. 
     list $msg1
 } {{ptolemy.kernel.util.IllegalActionException: Cannot use unspecified width on this relation because of its links.
-  in .E0.R1}}
+  in .E0.R1
+Because:
+Width of inside relations cannot be determined.
+  in .E0.E1.P1}}
 
 test IORelation-3.19 {Resolve width through three levels} {
 	# use the above settings
