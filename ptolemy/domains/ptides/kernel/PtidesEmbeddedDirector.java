@@ -47,6 +47,7 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
+import ptolemy.actor.util.RealDelayCausalityInterfaceForComposites;
 import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
