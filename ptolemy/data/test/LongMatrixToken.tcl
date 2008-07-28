@@ -136,7 +136,7 @@ test LongMatrixToken-2.6 {Test multiplicative identity} {
 ####
 # 
 test LongMatrixToken-2.7 {Test matrixToArray} {
-    set array [java::call ptolemy.data.MatrixToken matrixToArray [$p one]]
+    set array [java::call ptolemy.data.MatrixToken matrixToArray [java::cast ptolemy.data.MatrixToken [$p one]]]
     $array toString
 } {{1L, 0L, 0L, 1L}}
 

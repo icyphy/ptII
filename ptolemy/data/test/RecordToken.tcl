@@ -412,7 +412,7 @@ test RecordToken-merge.0 {Test merge} {
 
     set r2 [java::new {ptolemy.data.RecordToken} $l2 $v2]
 
-    [$r1 merge $r1 $r2] toString
+    [java::call ptolemy.data.RecordToken merge $r1 $r2] toString
 } {{extra1 = 2, extra2 = 8.5, name = 2.5, value = 1}}
 
 ######################################################################
@@ -434,11 +434,11 @@ test RecordToken-merge.1 {Test merge with empty record} {
 
     set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
 
-    [$r merge $r $r1] toString
+    [java::call ptolemy.data.RecordToken merge $r $r1] toString
 } {{extra1 = 2, name = "foo", value = 1}}
 
 test RecordToken-merge.4.2 {Test merge with two empty records} {
-    [$r merge $r $r] toString
+    [java::call ptolemy.data.RecordToken merge $r $r] toString
 } {{}}
 
 test RecordToken-merge.5 {Test mergeReturnType, increase coverage} {

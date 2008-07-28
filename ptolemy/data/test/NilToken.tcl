@@ -172,7 +172,7 @@ foreach type $types {
 	    #set nil [java::new ptolemy.data.$type [java::null]] 
 	    set nil [java::field ptolemy.data.${type}Token NIL]
 	    set matrixToken [java::new ptolemy.data.${type}MatrixToken] 
-	    catch {$matrixToken $operation $nil} msg
+   	    catch {java::call ptolemy.data.${type}MatrixToken $operation $nil} msg
 	    regsub -all $type $msg "XXX" result
 	    regsub -all {\[[a-zA-Z].*\]}  $result "xxx" result2
 	    list $result2
@@ -187,7 +187,7 @@ foreach type $types {
 	    #set nil [java::new ptolemy.data.$type [java::null]] 
 	    set nil [java::field ptolemy.data.${type}Token NIL]
 	    set matrixToken [java::new ptolemy.data.${type}MatrixToken] 
-	    catch {$matrixToken $operation $nil 2} msg
+	    catch {java::call ptolemy.data.${type}MatrixToken $operation $nil 2} msg
 	    regsub -all $type $msg "XXX" result
 	    regsub -all {\[[a-zA-Z].*\]}  $result "xxx" result2
 	    list $result2

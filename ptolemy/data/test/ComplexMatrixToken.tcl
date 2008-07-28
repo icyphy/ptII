@@ -148,7 +148,7 @@ test ComplexMatrixToken-2.6 {Test multiplicative identity} {
 ####
 # 
 test ComplexMatrixToken-2.7 {Test matrixToArray} {
-    set array [java::call ptolemy.data.MatrixToken matrixToArray [$p one]]
+    set array [java::call ptolemy.data.MatrixToken matrixToArray [java::cast ptolemy.data.MatrixToken [$p one]]]
     $array toString
 } {{1.0 + 0.0i, 0.0 + 0.0i, 0.0 + 0.0i, 1.0 + 0.0i}}
 

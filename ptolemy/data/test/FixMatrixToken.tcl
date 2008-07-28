@@ -75,7 +75,7 @@ test FixMatrixToken-2.6 {Test multiplicative identity} {
 ####
 # 
 test FixMatrixToken-2.7 {Test matrixToArray} {
-    set array [java::call ptolemy.data.MatrixToken matrixToArray [$p one]]
+    set array [java::call ptolemy.data.MatrixToken matrixToArray [java::cast ptolemy.data.MatrixToken [$p one]]]
     $array toString
 } {{fix(1.0,8,4), fix(0.0,8,4), fix(0.0,8,4), fix(1.0,8,4)}}
 
