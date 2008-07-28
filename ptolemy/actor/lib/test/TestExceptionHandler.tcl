@@ -71,7 +71,7 @@ test TestExceptionHandler-1.1 {test with the default output values} {
 	[[getParameter $testExceptionHandler trainingMode] getExpression] \
 	[[getParameter $testExceptionHandler correctExceptionMessage] getExpression]
 } {false {Found a zero delay loop containing .top.const
-  in .top.DEDirector and .top.const}}
+  in .top and .top.const}
 
 ######################################################################
 #### 
