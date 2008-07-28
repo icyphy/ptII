@@ -68,56 +68,52 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * This director implements the Ptides (= Programming Temporally Integrated Distributed 
- * Systems) model of computation. It executes actors according to event time stamps. The 
- * difference to the DE director is that events can be executed out of time stamped order.
-
+ * This director implements the Ptides (= Programming Temporally Integrated
+ * Distributed Systems) model of computation. It executes actors according to
+ * event time stamps. The difference to the DE director is that events can be
+ * executed out of time stamped order.
  * <p>
- * Actors using this director can contain sensors, actuators, computation actors with worst 
- * case execution times and model time delay actors. The execution of these actors is
- * governed by this director. Some of these actors require a mapping of
- * the model time defined in event time stamps to physical time defined by the model
- * time of the executive director. Those actors are
- * sensors and actuators. Also, the execution of actors with a worst case
- * execution time > 0 is simulated which requires the simulation of physical time
- * passing between the start and the termination of an actor. 
+ * Composite actors using this director can contain sensors, actuators,
+ * computation actors with worst case execution times and model time delay
+ * actors. The execution of these actors is governed by this director. Some of
+ * these actors require a mapping of the model time defined in event time stamps
+ * of contained actors to physical time defined by the model time of the
+ * executive director. Actors that require this mapping are sensors and
+ * actuators. This mapping is also required to simulate the execution of actors
+ * with a worst case execution time > 0.
  * <p>
- * Executing actors in platforms happens according to their model timestamps.
+ * Executing actors in platforms happens according to their model time stamps.
  * The order of execution does not have to be in time stamp order, the only
- * requirement is that events on ports in a port group are only processed in time stamped
- * order. To satisfy this requirement, an analysis on events is used to
- * determine if they are safe to process. For
- * this analysis, the causality interface and the real dependencies between
- * ports are used.
+ * requirement is that events on ports in a port group are only processed in
+ * time stamped order. To satisfy this requirement, an analysis on events is
+ * used to determine if they are safe to process. For this analysis, the
+ * causality interface and the real dependencies between ports are used.
  * <p>
- * This director executes actions in an infinite loop. At every iteration in the
- * loop, a set of all events is selected that are safe to process. Out
- * of this set of events, one event is selected to be processed. This
- * selection is done by the PlatformExecutionStrategy which takes into account
- * platform characteristics like preemption and priorities. The firing of an
- * actor is divided into two steps, a start and a terminate. At the start of a
- * firing, an actor is put into a list of actors currently executing. 
- * If the actor has a worst case execution time > 0, the platform
- * schedules a refiring for the time = current physical time + WCET by calling
- * the fireAt() of the enclosing director. After that WCET passed, the actor is
- * taken out of the list of actors currently in execution in the second step 
- * of the firing. If another actor should be fired in the meantime, it preempts
- * the currently executing actor thus is also added to the list of actors
- * in execution. When using a platform execution strategy
- * that does not support preemption, this list will have at most one
- * entry. The actual firing of
- * an actor is done either at the start or the termination time. This depends on
- * whether the WCET is a static property of the actor or it is only known after
- * firing the actor. Most atomic actors will fall into the first category
- * whereas composite actors will fall into the second category. Also, actors for
- * which the simulation is required to determine the WCET fall into the second
- * category.
+ * This director executes actors in an infinite loop. At every iteration in the
+ * loop, a set of all events is selected that are safe to process. Out of this
+ * set of events, one event is selected to be processed. This selection is done
+ * by the PlatformExecutionStrategy which takes into account platform
+ * characteristics like preemption and priorities. The firing of an actor is
+ * divided into two steps, a start and a terminate. At the start of a firing, an
+ * actor is put into a list of actors currently executing. If the actor has a
+ * worst case execution time > 0, the platform schedules a refiring for the
+ * current physical time + WCET by calling the fireAt() of the enclosing
+ * director. When the WCET passed, the actor is taken out of the list of actors
+ * currently in execution in the second step of the firing. If another actor
+ * should be fired in the meantime, it preempts the currently executing actor
+ * thus is also added to the list of actors in execution. When using a platform
+ * execution strategy that does not support preemption, this list will have at
+ * most one entry. The actual firing of an actor is done either at the start or
+ * the termination time. This depends on whether the WCET is a static property
+ * of the actor or it is only known after firing the actor. E.g. actors that
+ * require simulation to determine the WCET such as TDLModules have to be fired
+ * at the beginning of the execution.
  * <p>
- * Events are not maintained by a single event queue. 
- * There are two types of events used in this domain: regular events and pure
- * events. Regular events are stored in the receivers as pairs of timestamp and
- * value. Additionally, for every actor, a list is created that saves time
- * stamps of pure events for that actor.
+ * Events are not maintained by a single event queue. There are two types of
+ * events used in this domain: regular events and pure events. Regular events
+ * are stored in the receivers as pairs of timestamp and value. Additionally,
+ * for every actor, a list is created that saves time stamps of pure events for
+ * that actor.
  * 
  * @author Patricia Derler
  * @version $Id$
@@ -227,6 +223,24 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             super.attributeChanged(attribute);
         }
     }
+    
+    /**
+     * Clone the director into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (It must be added
+     *  by the user if he wants it to be there). 
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
+     *  @return The new PtidesEmbeddedDirector.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PtidesEmbeddedDirector newObject = (PtidesEmbeddedDirector) super.clone(workspace);
+        _eventQueues = new Hashtable<Actor, TreeSet<Time>>();
+        _currentPhysicalTime = ((Actor) getContainer()).getExecutiveDirector()
+                .getModelTime();   
+        return newObject;
+    }
 
     /**
      * Return the default dependency between input and output ports which for
@@ -238,9 +252,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     public Dependency defaultDependency() {
         return RealDependency.OTIMES_IDENTITY;
     }
+    
 
     /**
-     * Return a boolean dependency representing a model-time delay of the
+     * Return a real dependency representing a model-time delay of the
      * specified amount.
      * 
      * @param delay
@@ -308,17 +323,23 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     }
 
     /**
-     * The fire implements an infinite loop. In every iteration, a set of events
-     * safe to process is selected. Out of these events. the platform execution
-     * strategy selects one event that will be processed. If there is no event
-     * selected, the actor schedules a refiring by calling the fireAt() method of 
-     * the enclosing director for the next time that this actor wants to do
-     * something. If an event was selected, the actor is added to a set of actors 
-     * in execution. If the actor has a worst case execution time > 0, this director 
-     * calls the fireAt() method of the enclosing director with the current
-     * physical time increased by the WCET. After that time passed, the actor is 
-     * taken out of the
-     * list of actors in execution.
+     * This method implements an infinite loop. In every iteration, a set of
+     * events that is safe to process is selected. Out of these events. the
+     * platform execution strategy selects one event that will be processed.
+     * <p>
+     * If there is no event selected, the actor schedules a refiring by calling
+     * the fireAt() method of the enclosing director. The time stamp in the
+     * fireAt is the time stamp of the next real time event or infinity if there
+     * is no such event. The enclosing director will stall this platform until
+     * the model time of the enclosing director which is used as the physical
+     * time reached the time requested in the fireAt() or if an event was sent
+     * to the composite actor governed by this director.
+     * <p>
+     * If an event was selected, the actor is added to a set of actors in
+     * execution. If the actor has a worst case execution time > 0, this
+     * director calls the fireAt() method of the enclosing director with the
+     * current physical time increased by the WCET. After that time passed, the
+     * actor is taken out of the list of actors in execution.
      */
     public void fire() throws IllegalActionException {
         List<TimedEvent> eventsToFire = null;
@@ -327,6 +348,8 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             if (_stopRequested)
                 return;
 
+            // take events out of the list of events in execution if the WCET 
+            // of the actor has passed
             if (_eventsInExecution.size() > 0) {
                 Actor actorToFire = (Actor) _eventsInExecution
                         .get(_eventsInExecution.size() - 1).contents;
@@ -347,18 +370,19 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                 }
             }
 
+            // get the next event
             eventsToFire = _getNextEventsToFire();
             Time nextRealTimeEventTime = _getNextRealTimeEventTime(
                     eventsToFire, _eventsInExecution);
             event = _executionStrategy.getNextEventToFire(_eventsInExecution,
                     eventsToFire, nextRealTimeEventTime, _currentPhysicalTime);
             
+            // start firing an actor defined by the previously selected event
             if (event != null) {
                 Actor actorToFire = (Actor) event.contents;
                 if (!actorToFire.prefire()) {
                     continue;
-                } else {
-                    // start firing an actor
+                } else { 
                     _currentModelTime = event.timeStamp;
                     // remove events that caused the firing of that actor
                     TreeSet<Time> set = _eventQueues.get(actorToFire);
@@ -383,6 +407,8 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                     _eventsInExecution.add(event);
                 }
             } else {
+                // if new inputs are read, continue firing, otherwise call 
+                // the fireAt of the enclosing director
                 if (_transferAllInputs()) {
                     continue;
                 }
@@ -413,23 +439,25 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     }
 
     /**
-     * This method returns true if it is safe to read inputs. Inputs can only be read 
-     * if there cannot be any other events with smaller time stamps on ports
-     * in the same port group. This method implements the network interface constraint
-     * described by Ptides.
-     * This method only does a static analysis by using the minimum delay between this 
-     * port and any source actor to determine if inputs can be read.
-     * Tokens are
-     * safe to process if eventTimestamp - minimumDelay + clockSyncError +
-     * networkDelay <= physicalTime.
-     * @param time 
-     *            Timestamp of the event.
-     * @param port 
+     * This method returns true if it is safe to read inputs on the ports of the
+     * composite actor containing this director. Inputs are safe to process if
+     * there cannot appear another event with an earlier time stamp on any port
+     * in the same port group as the given port. This method implements a static
+     * analysis which determines that events are safe to process if
+     * eventTimestamp - minimumDelay + clockSyncError + networkDelay <=
+     * physicalTime. The minimum delay is determined by the causality interface
+     * This method might return false but an event is still safe to process
+     * because there are events upstream which will certainly arrive at this
+     * port and all other ports in the same port group with a greater time
+     * stamp. 
+     * 
+     * @param time
+     *            Time stamp of the event.
+     * @param port
      *            Port where inputs should be read.
-     * @return 
-     *            True if tokens can be transferred.
-     * @exception IllegalActionException 
-     *            Thrown if minimum delay.
+     * @return True if tokens can be transferred.
+     * @exception IllegalActionException
+     *                Thrown if minimum delay cannot be computed.
      */
     public boolean isSafeToProcessStaticallyOnNetwork(Time time, IOPort port)
             throws IllegalActionException {
@@ -444,18 +472,22 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                         .compareTo(_currentPhysicalTime) <= 0;
     }
 
-    /** This method returns true if an event on a port of an actor is safe to 
+    /**
+     * This method returns true if an event on a port of an actor is safe to
      * process. This method does a static analysis. Events are safe to process
-     * if timestamp - minimumDelay <= physicalTime. The minimum delay must be specified as a
-     * parameter at the port. 
-     * @param time 
+     * if timestamp - minimumDelay <= physicalTime. The minimum delay is
+     * determined by the causality interface. This method might return false but
+     * an event is still safe to process because there are events upstream which
+     * will certainly arrive at this port and all other ports in the same port
+     * group with a greater time stamp.
+     * 
+     * @param time
      *            The time stamp of the event.
-     * @param object 
+     * @param object
      *            The object to to check the minimum delay time.
-     * @return True 
-     *            If it is safe to process a token.
-     * @throws IllegalActionException 
-     *            Thrown if CausalityInterface cannot be computed.
+     * @return True If it is safe to process a token.
+     * @throws IllegalActionException
+     *             Thrown if CausalityInterface cannot be computed.
      */
     public boolean isSafeToProcessStatically(Time time, IOPort port)
             throws IllegalActionException { 
@@ -477,20 +509,6 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     }
 
     /**
-     * Prefire of the director.
-     * 
-     * @return True if the composite actor is ready to fire.
-     * @exception IllegalActionException If there is a missed event, or the
-     *                prefire method of the super class throws it, or can not
-     *                query the tokens of the input ports of the container of
-     *                this director.
-     *                </p>
-     */
-    public boolean prefire() throws IllegalActionException {
-        return !_stopRequested;
-    }
-
-    /**
      * Set the finishing time of an actor. This method is called after the
      * execution of an actor is started.
      * 
@@ -509,15 +527,13 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * Initialize variables.
      */
     public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        _eventQueues = new Hashtable<Actor, TreeSet<Time>>();
+        super.preinitialize();_eventQueues = new Hashtable<Actor, TreeSet<Time>>();
         List<CompositeActor> platforms = (List<CompositeActor>) ((CompositeActor)getContainer()).entityList();
         for (Actor platform : platforms) {
             _eventQueues.put(platform, new TreeSet<Time>());
         } 
         _currentPhysicalTime = ((Actor) getContainer()).getExecutiveDirector()
-                .getModelTime();
-        _eventsInExecution.clear();
+                .getModelTime(); 
     }
 
     /**
@@ -529,7 +545,8 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      *            The port to transfer tokens from.
      * @return 
      *            True if data are transferred.
-     * ???
+     * @throws IllegalActionException
+     *            Thrown if output cannot be transfered.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         boolean anyWereTransferred = false;
@@ -574,14 +591,6 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     protected Time _currentPhysicalTime;
 
     /**
-     * Events on input ports of the composite actor directed by this director
-     * with the time stamp set to the physical time when they are safe to
-     * process.
-     */
-    protected CalendarQueue _inputSafeToProcess = new CalendarQueue(
-            new TimedEvent.TimeComparator());
-
-    /**
      * Network delay time specified in the top-level director.
      */
     protected double _networkDelay;
@@ -603,11 +612,13 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     }
 
     /**
-     * Transfer input ports if they are safe to process. If the token is not
-     * safe to process, inform the executive director to be refired at the time
-     * it is safe to process the token.
+     * Transfer input ports if they are safe to process. If the event is not
+     * safe to process, put the event into a list of inputs with the time stamp
+     * when this event will become safe to process. This list is used in the
+     * fire method when no event is selected to process and this director
+     * schedules a refiring at a future time.
      * 
-     * @param port 
+     * @param port
      *            Transfer input on this port.
      */
     protected boolean _transferInputs(IOPort port)
@@ -619,65 +630,64 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         }
         boolean wasTransferred = false;
 
-        for (int i = 0; i < port.getWidth(); i++) {
-            try {
-                while (port.hasToken(i)) {
-                    System.out.println("in");
-                    Receiver[][] recv = port.getReceivers();
-                    PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) recv[0][0];
-                    Event event = receiver.getEvent();
-                    Time time = event._timeStamp;
-                    Token t = event._token;
-                    if (time.compareTo(_currentPhysicalTime) < 0)
-                        throw new IllegalActionException(
-                                "Network interface constraints violated at "
-                                        + this.getContainer().getName()
-                                        + ", tried to transfer event with timestamp "
-                                        + time + " at physical time "
-                                        + _currentPhysicalTime);
-                    if (!((isSafeToProcessStaticallyOnNetwork(time, port)) || (time
-                            .compareTo(_currentPhysicalTime) > 0))) {
-                        CompositeActor platform = ((CompositeActor)this.getContainer());
-                        CompositeActor model = ((CompositeActor) platform.getContainer());
-                        CausalityInterfaceForComposites causalityInterface = 
-                            (CausalityInterfaceForComposites) model
-                                .getCausalityInterface();
-                        RealDependency minimumDelay = (RealDependency) causalityInterface
-                                .getMinimumDelay(port); 
-                        _inputSafeToProcess.put(new TimedEvent(time.subtract(
-                                minimumDelay.value()).add(
-                                _clockSyncronizationError).add(_networkDelay),
-                                port)); 
-                        receiver.put(t, time);
-                        continue; 
-                    }
-                    Receiver[][] farReceivers = port.deepGetReceivers();
-                    if ((farReceivers == null) || (farReceivers.length <= i)
-                            || (farReceivers[i] == null)) {
-                        continue;
-                    }
-                    for (int k = 0; k < farReceivers.length; k++) {
-                        for (int l = 0; l < farReceivers[k].length; l++) {
-                            PtidesActorReceiver farReceiver = (PtidesActorReceiver) farReceivers[k][l];
-                            farReceiver.put(t, time);
-                            displaySchedule((Actor) port.getContainer(),
-                                    _currentPhysicalTime.getDoubleValue(),
-                                    ScheduleEventType.TRANSFERINPUT);
-                            wasTransferred = true;
+        for (int i = 0; i < port.getWidth(); i++) { 
+            while (port.hasToken(i)) {   
+                Receiver[][] receivers = port.getReceivers();
+            
+                for (int k = 0; k < receivers.length; k++) {
+                    for (int l = 0; l < receivers[k].length; l++) { 
+                        PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) receivers[k][l];
+                        Event event = receiver.getEvent();
+                        Time time = event._timeStamp;
+                        Token t = event._token;
+                        if (time.compareTo(_currentPhysicalTime) < 0)
+                            throw new IllegalActionException(
+                                    "Network interface constraints violated at "
+                                            + this.getContainer().getName()
+                                            + ", tried to transfer event with timestamp "
+                                            + time + " at physical time "
+                                            + _currentPhysicalTime);
+                        // TODO implement the dynamic analysis too
+                        if (!((isSafeToProcessStaticallyOnNetwork(time, port)) || (time
+                                .compareTo(_currentPhysicalTime) > 0))) {
+                            CompositeActor platform = ((CompositeActor)this.getContainer());
+                            CompositeActor model = ((CompositeActor) platform.getContainer());
+                            CausalityInterfaceForComposites causalityInterface = 
+                                (CausalityInterfaceForComposites) model
+                                    .getCausalityInterface();
+                            RealDependency minimumDelay = (RealDependency) causalityInterface
+                                    .getMinimumDelay(port); 
+                            _inputSafeToProcess.put(new TimedEvent(time.subtract(
+                                    minimumDelay.value()).add(
+                                    _clockSyncronizationError).add(_networkDelay),
+                                    port)); 
+                            receiver.put(t, time);
+                            continue; 
                         }
+                        Receiver[][] farReceivers = port.deepGetReceivers();
+                        if ((farReceivers == null) || (farReceivers.length <= i)
+                                || (farReceivers[i] == null)) {
+                            continue;
+                        }
+                        for (int m = 0; m < farReceivers.length; m++) {
+                            for (int n = 0; n < farReceivers[m].length; n++) {
+                                PtidesActorReceiver farReceiver = (PtidesActorReceiver) farReceivers[m][n];
+                                farReceiver.put(t, time);
+                                displaySchedule((Actor) port.getContainer(),
+                                        _currentPhysicalTime.getDoubleValue(),
+                                        ScheduleEventType.TRANSFERINPUT);
+                                wasTransferred = true;
+                            } 
+                        } 
                     }
                 }
-            } catch (ArithmeticException ex) {
-                return false;
-            } catch (NoTokenException ex) {
-                throw new InternalErrorException(this, ex, null);
-            }
+            } 
         }
         return wasTransferred;
     }
 
     /**
-     * Transfer output ports.
+     * Transfer output ports and return true if outputs were transferred.
      * 
      * @throws IllegalActionException 
      *            Attempted to transferOutputs on a port that is not an opaque 
@@ -724,7 +734,8 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     /**
      * Return time stamp of next real time event. A real time event is either an
      * event for a sensor or an actuator, the end of the WCET of an actor in
-     * execution or the time stamp when an input event becomes safe to process.
+     * execution or the time stamp when an input event to the composite
+     * actor which uses this director that becomes safe to process.
      * 
      * @param eventsToFire 
      *            Set of events that are safe to process.
@@ -760,7 +771,26 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         return nextRealTimeEvent;
     }
 
-    // look for upstream events
+    /**
+     * This recursive method returns true if an event exists on the given port
+     * that has a time stamp greater than the eventTimeStamp - delay. This
+     * method is used to dynamically determine if an event is safe to process.
+     * 
+     * @param port
+     *            Port that might have an event with time stamp + delay >
+     *            eventTimeStamp.
+     * @param visitedPorts
+     *            Already visited ports on this analysis. This method is
+     *            recursive and the visitedPorts are used to detect loops.
+     * @param delay
+     *            The delay between the port with the event that is checked for
+     *            being safe to process and the current port.
+     * @param eventTimeStamp
+     *            Time stamp of the event which is checked.
+     * @return True if the given port has an event with the time stamp + delay >
+     *         eventTimeStamp.
+     * @throws IllegalActionException
+     */
     private boolean _isSafeToProcess(IOPort port,
             Collection<IOPort> visitedPorts, Time delay, Time eventTimeStamp)
             throws IllegalActionException {
@@ -847,28 +877,29 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      *            Port for which time stamp of next event is requested.
      * @return Time stamp of next event or null if there are no events.
      */
-    private Time _getNextEventTimeStamp(IOPort port) { 
+    private Time _getNextEventTimeStamp(IOPort port) {
+        Time time = Time.POSITIVE_INFINITY;
         Receiver[][] receivers = port.getReceivers();
         for (int i = 0; i < receivers.length; i++) {
             Receiver[] recv = receivers[i];
             for (int j = 0; j < recv.length; j++) { 
                 PtidesReceiver receiver = (PtidesReceiver) recv[j];
-                Time time = receiver.getNextTime();
-                return time;
+                if (time.compareTo(receiver.getNextTime()) > 0)
+                    time = receiver.getNextTime(); 
             }
         } 
-        return null;
+        return time;
     }
 
     /**
-     * The actual firing of an actor takes zero model time, the wcet is
-     * simulated by either firing an actor at the beginning or the end of the
-     * wcet.
+     * This method fires an actor. The actual firing of an actor takes zero
+     * model time, the WCET is simulated by either firing an actor at the
+     * beginning or the end of the WCET.
      * 
-     * @param actorToFire 
+     * @param actorToFire
      *            Actor that has to be fired.
-     * @throws IllegalActionException 
-     *            Thrown if actor cannot be fired.
+     * @throws IllegalActionException
+     *             Thrown if actor cannot be fired.
      */
     private void _fireActorInZeroModelTime(Actor actorToFire)
             throws IllegalActionException {
@@ -880,12 +911,12 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 
     /**
      * Determines if the actor has to be fired at the beginning of the WCET. An
-     * actor must be fired at the beginning of the WCET the WCET can only be
-     * determined after firing the actor. An example for this actor is a
-     * TDLModule. An actor can only be fired at the beginning of the LET if the
-     * output values are not updated immediately.
+     * actor must be fired at the beginning of the WCET if the firing is
+     * required to determine the WCET. This is the case for actors that do not
+     * have a static WCET but the WCET is defined for contained actors. An
+     * example for such an actor is a TDLModule.
      * 
-     * @param actor 
+     * @param actor
      *            Actor that has to be fired.
      * @return True if actor has to be fired at the beginning of the WCET.
      */
@@ -904,8 +935,8 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     private List<TimedEvent> _getNextEventsToFire()
             throws IllegalActionException {
         List<TimedEvent> events = new LinkedList<TimedEvent>();
-        for (Actor actor : _eventQueues.keySet()) { 
-            TreeSet<Time> set = _eventQueues.get(actor); 
+        for (Actor actor : _eventQueues.keySet()) {
+            TreeSet<Time> set = _eventQueues.get(actor);
             // take pure events
             if (!set.isEmpty()) {
                 Time time = set.first();
@@ -914,7 +945,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             // take trigger events
             if (!_eventsInExecution.contains(actor)) {
                 List<IOPort> inputPorts = actor.inputPortList();
-                for (IOPort port : inputPorts) { 
+                for (IOPort port : inputPorts) {
                     if (PtidesActorProperties.portIsTriggerPort(port)) {
                         Receiver[][] receivers = port.getReceivers();
                         for (int i = 0; i < receivers.length; i++) {
@@ -923,12 +954,14 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                                 PtidesActorReceiver receiver = (PtidesActorReceiver) recv[j];
                                 Time time = receiver.getNextTime();
                                 if (time != null
-                                        && (isSafeToProcessStatically(time, port) || _isSafeToProcess(
-                                                port,
-                                                new ArrayList(), new Time(this, 0.0), time))) {
+                                        && (isSafeToProcessStatically(time,
+                                                port) || _isSafeToProcess(port,
+                                                new ArrayList(), new Time(this,
+                                                        0.0), time))) {
                                     List<TimedEvent> toRemove = new ArrayList<TimedEvent>();
                                     for (int k = 0; k < events.size(); k++) {
-                                        TimedEvent event = (TimedEvent) events.get(k);
+                                        TimedEvent event = (TimedEvent) events
+                                                .get(k);
                                         if (event.contents == actor
                                                 && event.timeStamp.equals(time))
                                             toRemove.add(event);
@@ -943,9 +976,6 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                 }
             }
         }
-        if (_debugging)
-            _debug("events that are safe to fire: " + events.size() + " "
-                    + events);
         return events;
     }
 
@@ -968,18 +998,17 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     }
 
     /**
-     * Transfer all input tokens. If input ports were transferred, the next
-     * actor to be fired might have changed.
+     * Transfer all input tokens and return true if inputs were transfered.
      * 
      * @return True if input ports were transferred.
-     * @throws IllegalActionException 
-     *            If reading from the associated port throws
-     *            it or inputs could not be transferred.
+     * @throws IllegalActionException
+     *             If reading from the associated port throws it or inputs could
+     *             not be transferred.
      */
     private boolean _transferAllInputs() throws IllegalActionException {
         boolean inputTransferred = false;
         List<IOPort> inputPorts = ((Actor) getContainer()).inputPortList();
-        for (IOPort port : inputPorts) { 
+        for (IOPort port : inputPorts) {
             if (port instanceof ParameterPort) {
                 ((ParameterPort) port).getParameter().update();
             } else {
@@ -990,12 +1019,12 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     }
 
     /**
-     * Transfer all output tokens.
+     * Transfer all output tokens and return true if outputs were transfered.
      * 
      * @return True if output tokens were transfered.
-     * @throws IllegalActionException 
-     *            Attempted to transferOutputs on a port
-     *            that is not an opaque input port.
+     * @throws IllegalActionException
+     *             Attempted to transferOutputs on a port that is not an opaque
+     *             input port.
      */
     private boolean _transferAllOutputs() throws IllegalActionException {
         boolean transferedOutputs = false;
@@ -1035,5 +1064,13 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * Used execution strategy which is set according to a parameter.
      */
     private PlatformExecutionStrategy _executionStrategy;
+
+    /**
+     * Events on input ports of the composite actor directed by this director
+     * with the time stamp set to the physical time when they are safe to
+     * process.
+     */
+    private CalendarQueue _inputSafeToProcess = new CalendarQueue(
+            new TimedEvent.TimeComparator());
 
 }
