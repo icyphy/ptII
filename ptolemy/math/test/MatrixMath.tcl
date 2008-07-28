@@ -262,7 +262,7 @@ proc testMatrixMath {op types matrixSize opSignature \
 		    set matrixResults [java::call \
 			    ptolemy.math.${m}${baseclass} \
 			    [subst $opSignature] [subst $arg1] \
-			    [subst $arg2] [subst $arg3]]
+			    [subst $arg2] [subst $arg3] ]
 		}
 	    }
 
@@ -339,14 +339,14 @@ proc testMatrixMath {op types matrixSize opSignature \
 #                etc. should exist
 
 proc testArrayMathArray {op types {matrixSize 2_2}} {
-    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]"} \
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]"]} \
 	    {[subst $$array]} {} {} ArrayMath
 }
 
 # Test a *ArrayMath  operation that takes an array, and an array
 # like xxx[] add(xxx[], xxx[])
 proc testArrayMathArrayArray {op types {matrixSize 2_2}} {
-    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" "$t\[\]"} \
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" "$t\[\]"]} \
 	    {[subst $$array]} {[subst $$array]} {} ArrayMath
 }
 
@@ -355,34 +355,34 @@ proc testArrayMathArrayArray {op types {matrixSize 2_2}} {
 proc testArrayMathArrayArrayArray {op types {matrixSize 2_2}} {
     testMatrixMath $op $types $matrixSize \
 	    {[list $op "$t\[\]" "$t\[\]" "$t\[\]"]} \
-	    {[subst $$array]} {[subst $$array]} {[subst $$array} ArrayMath
+  	{[subst $$array]} {[subst $$array]} {[subst $$array]} ArrayMath
 }
 
 # Test a *ArrayMath  operation that takes an array, an array and a scalar
 # like boolean within(xxx[], xxx[], scalar)
 proc testArrayMathArrayArrayScalar {op types {matrixSize 2_2}} {
-    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" "$t\[\]" $t} \
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" "$t\[\]" $t]} \
 	    {[subst $$array]} {[subst $$array]} {[subst $${v}1]} ArrayMath
 }
 
 # Test a *ArrayMath  operation that takes an array, and an int
 # like xxx[] shiftArithmetic(xxx[] int)
 proc testArrayMathArrayInt {op types {matrixSize 2_2} {intValue 1}} {
-    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" int} \
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" int]} \
 	    {[subst $$array]} [list $intValue] {} ArrayMath
 }
 
 # Test a *ArrayMath  operation that takes an array, and a scalar
 # like xxx[] add(xxx[], xxx)
 proc testArrayMathArrayScalar {op types {matrixSize 2_2}} {
-    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" $t} \
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" $t]} \
 	    {[subst $$array]} {[subst $${v}1]} {} ArrayMath
 }
 
 # Test a *ArrayMath  operation that takes an array, a scalar and a scalar
 # like xxx[] limit(xxx[], xxx, xxx)
 proc testArrayMathArrayScalarScalar {op types {matrixSize 2_2}} {
-    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" $t $t} \
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" $t $t]} \
 	    {[subst $$array]} {[subst $${v}0]} {[subst $${v}1]} ArrayMath
 }
 
@@ -405,7 +405,9 @@ proc testArrayMathArrayScalarScalar {op types {matrixSize 2_2}} {
 #                the test data. If matrixSize is 2_2, then long2_2, int2_2
 #                etc. should exist
 proc testArrayMatrix {op types {matrixSize 2_2}} {
-    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" "$t\[\]\[\]"} {[subst $$array]} {[subst $$matrix]}
+    testMatrixMath $op $types $matrixSize \
+	{[list $op "$t\[\]" "$t\[\]\[\]"]} \
+	{[subst $$array]} {[subst $$matrix]}
 }
 
 # Test a *MatrixMath operation that takes an array, an int and an int
@@ -685,7 +687,7 @@ set types [list \
 	[list Long long long {{{0 3} {1 2}}}]]
 
 testMatrixMath applyBinaryOperation $types 2_2 \
-	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation $t $t\[\]\[\]} \
+    {[list applyBinaryOperation ptolemy.math.${m}BinaryOperation $t $t\[\]\[\]]} \
 	{[subst $$binaryOperation]} \
 	{[subst $${v}1]} {[subst $$matrix]} MatrixMath
 
@@ -702,7 +704,8 @@ set types [list \
 	[list Long long long {{{0 -3} {-1 -2}}}]]
 
 testMatrixMath applyBinaryOperation $types 2_2 \
-	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation $t\[\]\[\] $t} \
+	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation \
+	      $t\[\]\[\] $t]} \
 	{[subst $$binaryOperation]} \
         {[subst $$matrix]} {[subst $${v}1]} MatrixMath
 
@@ -719,7 +722,8 @@ set types [list \
 	[list Long long long {{{0 3} {1 2}}}]]
 
 testMatrixMath applyBinaryOperation $types 2_2 \
-	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation $t $t\[\]\[\]} \
+	{[list applyBinaryOperation ptolemy.math.${m}BinaryOperation \
+	      $t $t\[\]\[\]]} \
 	{[subst $$binaryOperation]} \
 	{[subst $${v}1]} {[subst $$matrix]} MatrixMath
 
@@ -736,7 +740,7 @@ set types [list \
 	[list Long long long {{{-2 1} {-1 0}}}]]
 
 testMatrixMath applyUnaryOperation $types 2_2 \
-	{[list applyUnaryOperation ptolemy.math.${m}UnaryOperation $t\[\]\[\]} \
+    {[list applyUnaryOperation ptolemy.math.${m}UnaryOperation $t\[\]\[\]]} \
 	{[subst $$unaryOperation]} \
 	{[subst $$matrix]} {} MatrixMath
 
