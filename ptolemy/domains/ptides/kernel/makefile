@@ -50,7 +50,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	PtidesDirector.java \
 	PtidesEmbeddedDirector.java \
-	PtidesGraphUtilities.java \
 	PtidesPlatformReceiver.java \
 	PtidesReceiver.java \
 	TimedQueue.java
