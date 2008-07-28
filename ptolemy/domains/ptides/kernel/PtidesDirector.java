@@ -37,13 +37,14 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
-import ptolemy.actor.util.RealDelayCausalityInterfaceForComposites;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -330,6 +331,10 @@ public class PtidesDirector extends TimedPNDirector {
         _currentTime = new Time(this, 0.0);
         _stopTime = new Time(this, ((DoubleToken) stopTime.getToken())
                 .doubleValue());
+        
+        CausalityInterfaceForComposites causalityInterface = 
+            (CausalityInterfaceForComposites) ((CompositeActor) this.getContainer())
+            .getCausalityInterface();
 
         // Iterate through all actors in the model and add them to a List. This
         // List is handed to the schedule listeners.
@@ -351,7 +356,13 @@ public class PtidesDirector extends TimedPNDirector {
                             .getDirector();
                     director._clockSyncronizationError = _clockSyncronizationError;
                     director._networkDelay = _networkDelay;
-
+                    
+                    
+                    List<IOPort> inputPorts = compositeActor.inputPortList();
+                    for (IOPort port : inputPorts) {
+                        System.out.println("minDelay " + port + ": " + ((RealDependency)causalityInterface.getMinimumDelay(port)).value());
+                    }
+                    
                 }
                 List<Actor> containedActors = compositeActor.entityList();
                 table.put(actor, containedActors);
@@ -419,9 +430,10 @@ public class PtidesDirector extends TimedPNDirector {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _platformsToUnblock.clear();
-
-        RealDelayCausalityInterfaceForComposites causalityInterface = (RealDelayCausalityInterfaceForComposites) ((CompositeActor) this
-                .getContainer()).getCausalityInterface();
+        
+        CausalityInterfaceForComposites causalityInterface = 
+            (CausalityInterfaceForComposites) ((CompositeActor) this.getContainer())
+            .getCausalityInterface();
         causalityInterface.wrapup();
     }
 
@@ -461,8 +473,7 @@ public class PtidesDirector extends TimedPNDirector {
      * reached if all platforms are stalled in the fireAt() method of this
      * director because they are waiting for a future physical time.
      * 
-     * @return true if a real deadlock (see super class) is detected, false
-     *         otherwise.
+     * @return true if a real deadlock (see super class) is detected, false otherwise.
      * @exception IllegalActionException
      *                Not thrown in this base class. This might be thrown by
      *                derived classes.
@@ -475,9 +486,9 @@ public class PtidesDirector extends TimedPNDirector {
             return super._resolveDeadlock();
         }
     }
-
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Initialize parameters of the director.
@@ -509,8 +520,8 @@ public class PtidesDirector extends TimedPNDirector {
         _scheduleListeners = new LinkedList<ScheduleListener>();
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
 
     /**
      * The bounded clock synchonization error for all platforms.
