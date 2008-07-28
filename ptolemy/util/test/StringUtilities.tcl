@@ -166,7 +166,8 @@ proc ptjaclPolicy {script} {
         getProperty path.separator]
 
     puts "# About to run \"make test_policy SCRIPT=$script\""
-    set results [exec -stderrok make test_policy SCRIPT=$script]
+    #set results [exec -stderrok make test_policy SCRIPT=$script]
+    set results [exec make test_policy SCRIPT=$script]
     regsub -all {^make\[.*$\n*} $results {} results2
     list $results2
 }
