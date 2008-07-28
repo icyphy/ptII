@@ -932,8 +932,9 @@ proc _testSignalProcessingFunction { function period phase \
 
 ####################################################################
 test SignalProcessing-19.1 {sawtooth} {
-    _testSignalProcessingFunction sawtooth 1.0 0.0 -1.0 2.0 0.2
-} {0.0 0.4 0.8 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4}
+    ptclose [_testSignalProcessingFunction sawtooth 1.0 0.0 -1.0 2.0 0.2] \
+	{0.0 0.4 0.8 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4 0.0 0.4 0.8 -0.8 -0.4}
+} {1}
 
 ####################################################################
 test SignalProcessing-19.2 {sawtooth: negative period} {
@@ -966,8 +967,8 @@ test SignalProcessing-20.3 {square: negative phase} {
 
 ####################################################################
 test SignalProcessing-21.1 {triangle} {
-    _testSignalProcessingFunction triangle 1.0 0.5 -1.0 2.0 0.2
-} {0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8}
+    ptclose [_testSignalProcessingFunction triangle 1.0 0.5 -1.0 2.0 0.2] {0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8}
+} {1}
 
 ####################################################################
 test SignalProcessing-21.2 {triangle: negative period} {
@@ -978,8 +979,9 @@ test SignalProcessing-21.2 {triangle: negative period} {
 
 ####################################################################
 test SignalProcessing-21.3 {triangle: negative phase} {
-    _testSignalProcessingFunction triangle 1.0 -0.5 -1.0 2.0 0.2
-} {0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8}
+    ptclose [_testSignalProcessingFunction triangle 1.0 -0.5 -1.0 2.0 0.2] \
+	{0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8 0.0 -0.8 -0.4 0.4 0.8}
+} {1}
 
 ####################################################################
 test SignalProcessing-22.1 {unwrap double[] start at 0.0} {
