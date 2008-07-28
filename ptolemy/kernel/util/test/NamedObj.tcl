@@ -96,7 +96,7 @@ test NamedObj-2.3 { Check names with dots} {
 ####
 #
 test NamedObj-4.1 {Set the name to null in the constructor} {
-    set n [java::new ptolemy.kernel.util.NamedObj [java::null]]
+    set n [java::new {ptolemy.kernel.util.NamedObj String} [java::null]]
     $n getName
 } {}
 
