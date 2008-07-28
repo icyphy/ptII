@@ -48,11 +48,12 @@ PTPACKAGE = 	kernel
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	PtidesActorProperties.java \
+	PtidesActorReceiver.java \
 	PtidesDirector.java \
 	PtidesEmbeddedDirector.java \
 	PtidesPlatformReceiver.java \
-	PtidesReceiver.java \
-	TimedQueue.java
+	PtidesReceiver.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -63,7 +64,9 @@ MISC_FILES =	$(DIRS) #test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'PtidesReceiver$$Event.class' \
+	'PtidesReceiver$$TimeComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
