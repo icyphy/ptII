@@ -39,7 +39,7 @@ import ptolemy.vergil.fsm.StateIcon;
 /**
 
 @author Chihhong Patrick Cheng
-@version 
+@version $Id$ 
 @since Ptolemy II 7.1
 @Pt.ProposedRating Red (patrickj)
 @Pt.AcceptedRating Red (patrickj)

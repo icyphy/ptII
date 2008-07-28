@@ -265,7 +265,7 @@ public final class Workspace implements Nameable, Serializable {
      *  changing the structure of the model.
      *  @exception InvalidStateException If this method is called before
      *   a corresponding call to getWriteAccess() by the same thread.
-     *  @see ptolemy.kernel.util.Attribute.Attribute(NamedObj, String, boolean)
+     *  @see ptolemy.kernel.util.Attribute#Attribute(NamedObj, String, boolean)
      *  @see #doneWriting()
      */
     public final synchronized void doneTemporaryWriting() {

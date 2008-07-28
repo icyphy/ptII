@@ -58,9 +58,6 @@ public class NonPreemptivePlatformExecutionStrategy extends
     /**
      * Create new non-preemptive platform execution strategy.
      * 
-     * @param physicalTime
-     *                required to sort events that are safe to process and
-     *                determine which event can be fired next
      * @param director
      *                required to display the schedule
      */

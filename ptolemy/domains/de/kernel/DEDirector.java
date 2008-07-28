@@ -144,7 +144,7 @@ import ptolemy.kernel.util.Workspace;
  notion of time.  The output is interpreted as being strictly later
  than the input even though its time value is the same.
  Whether a causality loop exists is determined by the
- {@link CausalityInterface} returned by each actor's
+ {@link ptolemy.actor.util.CausalityInterface} returned by each actor's
  getCausalityInterface() method.
  </p><p>
  An input port in a DE model contains an instance of DEReceiver.

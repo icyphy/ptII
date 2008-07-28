@@ -320,7 +320,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  If there are no output ports, then the depth of
      *  the actor it is the maximum depth of the input ports.
      *  If there are no input ports or output ports, the depth is zero.
-     *  @see #getDepthOfPort(Actor)
+     *  @see #getDepthOfPort(IOPort)
      *  @param actor An actor whose depth is requested.
      *  @return An integer indicating the depth of the given actor.
      *  @exception IllegalActionException If the actor is not within
@@ -357,6 +357,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  @exception IllegalActionException If the ioPort does not have
      *   a depth (this should not occur if the ioPort is under the control
      *   of this director).
+     *  @see #getDepthOfActor(Actor)
      */
     public int getDepthOfPort(IOPort ioPort) throws IllegalActionException {
         _computeActorDepth();
@@ -378,14 +379,17 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     }
     
     
-    /** Return the minimum delay for this port. The minimum delay is the minimum
-     * model time delay between this port or any equivalent port and a source actor. 
+    /** Return the minimum delay for this port. The minimum delay is
+     * the minimum model time delay between this port or any
+     * equivalent port and a source actor.
      *  @param port Port for which the minimum delay should be computed.
-     *  @return 
-     *  @exception IllegalActionException Thrown if minimum delay cannot be computed,
-     *   because e.g. equivalent ports cannot be computed. 
+     *  @return the minimum delay for the specified port.
+     *  @exception IllegalActionException Thrown if minimum delay
+     *  cannot be computed, because e.g. equivalent ports cannot be
+     *  computed.
      */
-    public Dependency getMinimumDelay(IOPort port) throws IllegalActionException {
+    public Dependency getMinimumDelay(IOPort port)
+	throws IllegalActionException {
         if (_minimumDelays.get(port) == null) {
             _getMinimumDelay(port, null);
         } 
