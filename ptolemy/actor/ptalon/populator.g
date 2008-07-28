@@ -461,12 +461,15 @@ transformation_declaration throws PtalonRuntimeException
 	(#(NEGATE { type = 0; } (a:ID { id = a.getText(); }
 		| #(DYNAMIC_NAME b:ID c:EXPRESSION)
 			{ id = b.getText(); expr = c.getText(); }))
-	|#(REMOVE { type = 1; } (d:ID { id = d.getText(); }
+	|#(OPTIONAL { type = 1; } (d:ID { id = d.getText(); }
 		| #(DYNAMIC_NAME e:ID f:EXPRESSION)
 			{ id = e.getText(); expr = f.getText(); }))
-	| #(PRESERVE { type = 2; } (g:ID { id = g.getText(); }
+	|#(REMOVE { type = 2; } (g:ID { id = g.getText(); }
 		| #(DYNAMIC_NAME h:ID i:EXPRESSION)
-			{ id = h.getText(); expr = i.getText(); })))
+			{ id = h.getText(); expr = i.getText(); }))
+	| #(PRESERVE { type = 3; } (l:ID { id = l.getText(); }
+		| #(DYNAMIC_NAME m:ID n:EXPRESSION)
+			{ id = m.getText(); expr = n.getText(); })))
 	{
 		if (expr != null) {
         	String value = info.evaluateString(expr);
@@ -480,8 +483,10 @@ transformation_declaration throws PtalonRuntimeException
         	if (type == 0) {
         		info.negateObject(id);
         	} else if (type == 1) {
-        		info.removeObject(id);
+        		info.optionalObject(id);
         	} else if (type == 2) {
+        		info.removeObject(id);
+        	} else if (type == 3) {
         		info.preserveObject(id);
         	}
         }

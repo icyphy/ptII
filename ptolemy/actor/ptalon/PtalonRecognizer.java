@@ -1382,6 +1382,7 @@ inputState.guessing--;
 			break;
 		}
 		case NEGATE:
+		case OPTIONAL:
 		case REMOVE:
 		case PRESERVE:
 		{
@@ -1415,6 +1416,8 @@ inputState.guessing--;
 		PtalonAST transformation_declaration_AST = null;
 		Token  n = null;
 		PtalonAST n_AST = null;
+		Token  o = null;
+		PtalonAST o_AST = null;
 		Token  r = null;
 		PtalonAST r_AST = null;
 		Token  p = null;
@@ -1429,21 +1432,47 @@ inputState.guessing--;
 		{
 		switch ( LA(1)) {
 		case NEGATE:
+		case OPTIONAL:
 		{
 			{
 			if (!(!_isInTransformation))
 			  throw new SemanticException("!_isInTransformation");
 			{
-			n = LT(1);
-			n_AST = (PtalonAST)astFactory.create(n);
-			match(NEGATE);
-			if ( inputState.guessing==0 ) {
-				transformation_declaration_AST = (PtalonAST)currentAST.root;
-				transformation_declaration_AST = n_AST;
-				currentAST.root = transformation_declaration_AST;
-				currentAST.child = transformation_declaration_AST!=null &&transformation_declaration_AST.getFirstChild()!=null ?
-					transformation_declaration_AST.getFirstChild() : transformation_declaration_AST;
-				currentAST.advanceChildToEnd();
+			switch ( LA(1)) {
+			case NEGATE:
+			{
+				n = LT(1);
+				n_AST = (PtalonAST)astFactory.create(n);
+				match(NEGATE);
+				if ( inputState.guessing==0 ) {
+					transformation_declaration_AST = (PtalonAST)currentAST.root;
+					transformation_declaration_AST = n_AST;
+					currentAST.root = transformation_declaration_AST;
+					currentAST.child = transformation_declaration_AST!=null &&transformation_declaration_AST.getFirstChild()!=null ?
+						transformation_declaration_AST.getFirstChild() : transformation_declaration_AST;
+					currentAST.advanceChildToEnd();
+				}
+				break;
+			}
+			case OPTIONAL:
+			{
+				o = LT(1);
+				o_AST = (PtalonAST)astFactory.create(o);
+				match(OPTIONAL);
+				if ( inputState.guessing==0 ) {
+					transformation_declaration_AST = (PtalonAST)currentAST.root;
+					transformation_declaration_AST = o_AST;
+					currentAST.root = transformation_declaration_AST;
+					currentAST.child = transformation_declaration_AST!=null &&transformation_declaration_AST.getFirstChild()!=null ?
+						transformation_declaration_AST.getFirstChild() : transformation_declaration_AST;
+					currentAST.advanceChildToEnd();
+				}
+				break;
+			}
+			default:
+			{
+				throw new NoViableAltException(LT(1), getFilename());
+			}
 			}
 			}
 			}
@@ -1592,6 +1621,7 @@ inputState.guessing--;
 			case RELATION:
 			case TRANSPARENT:
 			case NEGATE:
+			case OPTIONAL:
 			case REMOVE:
 			case PRESERVE:
 			{
@@ -1650,6 +1680,7 @@ inputState.guessing--;
 			case RELATION:
 			case TRANSPARENT:
 			case NEGATE:
+			case OPTIONAL:
 			case REMOVE:
 			case PRESERVE:
 			{
@@ -1786,6 +1817,7 @@ inputState.guessing--;
 			case RELATION:
 			case TRANSPARENT:
 			case NEGATE:
+			case OPTIONAL:
 			case REMOVE:
 			case PRESERVE:
 			{
@@ -1930,6 +1962,7 @@ inputState.guessing--;
 			case RELATION:
 			case TRANSPARENT:
 			case NEGATE:
+			case OPTIONAL:
 			case REMOVE:
 			case PRESERVE:
 			{
@@ -2091,6 +2124,7 @@ inputState.guessing--;
 			case RELATION:
 			case TRANSPARENT:
 			case NEGATE:
+			case OPTIONAL:
 			case REMOVE:
 			case PRESERVE:
 			{
@@ -2183,6 +2217,7 @@ inputState.guessing--;
 		"LPAREN",
 		"SEMI",
 		"\"negate\"",
+		"\"optional\"",
 		"\"remove\"",
 		"\"preserve\"",
 		"LCURLY",

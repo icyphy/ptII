@@ -213,8 +213,9 @@ atomic_statement throws PtalonScopeException
 transformation_declaration throws PtalonScopeException
 :
 	(#(NEGATE (ID | #(DYNAMIC_NAME ID EXPRESSION)))
-	| #(REMOVE (ID | #(DYNAMIC_NAME ID EXPRESSION)))
-	| #(PRESERVE (ID | #(DYNAMIC_NAME ID EXPRESSION))))
+	|#(OPTIONAL (ID | #(DYNAMIC_NAME ID EXPRESSION)))
+	|#(REMOVE (ID | #(DYNAMIC_NAME ID EXPRESSION)))
+	|#(PRESERVE (ID | #(DYNAMIC_NAME ID EXPRESSION))))
 ;
 
 conditional_statement throws PtalonScopeException

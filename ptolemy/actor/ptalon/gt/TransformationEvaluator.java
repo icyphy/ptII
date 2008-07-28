@@ -33,6 +33,7 @@ import java.util.List;
 import ptolemy.actor.gt.CreationAttribute;
 import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.NegationAttribute;
+import ptolemy.actor.gt.OptionAttribute;
 import ptolemy.actor.gt.PreservationAttribute;
 import ptolemy.actor.ptalon.PtalonActor;
 import ptolemy.actor.ptalon.PtalonEvaluator;
@@ -64,19 +65,20 @@ public class TransformationEvaluator extends PtalonEvaluator {
 
     public void enterTransformation(boolean incremental)
     throws PtalonRuntimeException {
-    	_isInTransformation = true;
+        _isInTransformation = true;
         _isIncrementalTransformation = incremental;
         _negatedObjects.clear();
+        _optionalObjects.clear();
         _removedObjects.clear();
         _preservedObjects.clear();
     }
 
     public void exitTransformation() throws PtalonRuntimeException {
-    	_isInTransformation = false;
+        _isInTransformation = false;
         _removedObjects.clear();
         _preservedObjects.clear();
     }
-    
+
     public void negateObject(String name) throws PtalonRuntimeException {
         if (_isInTransformation) {
             throw new PtalonRuntimeException("Objects can be marked negated " +
@@ -97,7 +99,33 @@ public class TransformationEvaluator extends PtalonEvaluator {
                 _negatedObjects.add(object);
             }
         } catch (PtalonScopeException e) {
-        	// Ignore if we can't resolve the name.
+            // Ignore if we can't resolve the name.
+        } catch (Exception e) {
+            throw new PtalonRuntimeException("Unable to preserve object.", e);
+        }
+    }
+
+    public void optionalObject(String name) throws PtalonRuntimeException {
+        if (_isInTransformation) {
+            throw new PtalonRuntimeException("Objects can be marked optional " +
+                    "only in the pattern but not in the transformation " +
+                    "following the \"=>\" or \"=>+\" mark.");
+        }
+        try {
+            NamedObj object = _getObject(name);
+            if (object != null) {
+                if (_optionalObjects.contains(object)) {
+                    throw new PtalonRuntimeException("Object \"" + name + "\" "
+                            + "has already been marked optional.");
+                }
+                _removeAttributes(object, new Class<?>[] {
+                        OptionAttribute.class
+                });
+                new OptionAttribute(object, object.uniqueName("_optional"));
+                _optionalObjects.add(object);
+            }
+        } catch (PtalonScopeException e) {
+            // Ignore if we can't resolve the name.
         } catch (Exception e) {
             throw new PtalonRuntimeException("Unable to preserve object.", e);
         }
@@ -129,7 +157,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
                 _preservedObjects.add(object);
             }
         } catch (PtalonScopeException e) {
-        	// Ignore if we can't resolve the name.
+            // Ignore if we can't resolve the name.
         } catch (Exception e) {
             throw new PtalonRuntimeException("Unable to preserve object.", e);
         }
@@ -163,6 +191,12 @@ public class TransformationEvaluator extends PtalonEvaluator {
         } catch (Exception e) {
             throw new PtalonRuntimeException("Unable to remove object.", e);
         }
+    }
+
+    public void startAtTop() {
+        _negatedObjects.clear();
+        _optionalObjects.clear();
+        super.startAtTop();
     }
 
     protected void _processAttributes(NamedObj object)
@@ -219,17 +253,14 @@ public class TransformationEvaluator extends PtalonEvaluator {
             attribute.setContainer(null);
         }
     }
-    
-    public void startAtTop() {
-    	_negatedObjects.clear();
-    	super.startAtTop();
-    }
-    
-    private List<NamedObj> _negatedObjects = new LinkedList<NamedObj>();
 
     private boolean _isInTransformation = false;
 
     private boolean _isIncrementalTransformation = false;
+
+    private List<NamedObj> _negatedObjects = new LinkedList<NamedObj>();
+
+    private List<NamedObj> _optionalObjects = new LinkedList<NamedObj>();
 
     private List<NamedObj> _preservedObjects = new LinkedList<NamedObj>();
 

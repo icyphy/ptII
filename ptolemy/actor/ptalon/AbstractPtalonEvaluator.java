@@ -948,6 +948,11 @@ public abstract class AbstractPtalonEvaluator {
     public void negateObject(String name) throws PtalonRuntimeException {
     	throw new PtalonRuntimeException("Negation is not implemented.");
     }
+    
+    public void optionalObject(String name) throws PtalonRuntimeException {
+    	throw new PtalonRuntimeException("Optional objects are not " +
+    			"implemented.");
+    }
 
     /** Pop out of the scope of the current for statement and into its
      *  container block's scope.

@@ -81,12 +81,13 @@ public PtalonLexer(LexerSharedInputState state) {
 	literals.put(new ANTLRHashString("for", this), new Integer(25));
 	literals.put(new ANTLRHashString("outport", this), new Integer(8));
 	literals.put(new ANTLRHashString("transparent", this), new Integer(15));
+	literals.put(new ANTLRHashString("optional", this), new Integer(37));
 	literals.put(new ANTLRHashString("parameter", this), new Integer(10));
 	literals.put(new ANTLRHashString("false", this), new Integer(21));
 	literals.put(new ANTLRHashString("true", this), new Integer(20));
-	literals.put(new ANTLRHashString("preserve", this), new Integer(38));
+	literals.put(new ANTLRHashString("preserve", this), new Integer(39));
 	literals.put(new ANTLRHashString("actor", this), new Integer(12));
-	literals.put(new ANTLRHashString("remove", this), new Integer(37));
+	literals.put(new ANTLRHashString("remove", this), new Integer(38));
 	literals.put(new ANTLRHashString("import", this), new Integer(19));
 	literals.put(new ANTLRHashString("next", this), new Integer(27));
 	literals.put(new ANTLRHashString("inport", this), new Integer(7));

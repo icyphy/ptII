@@ -370,7 +370,8 @@ transformation_declaration!
     boolean dynamic_name = false;
 }
 :
-	(({!_isInTransformation}? (n:NEGATE { #transformation_declaration = #n; }))
+	(({!_isInTransformation}? (n:NEGATE { #transformation_declaration = #n; }
+		| o:OPTIONAL { #transformation_declaration = #o; }))
 	| ({_isInTransformation}? (r:REMOVE { #transformation_declaration = #r; }
 		| p:PRESERVE { #transformation_declaration = #p; })))
 	d:ID (e:expression
@@ -605,6 +606,7 @@ tokens {
     ACTOR_LABEL;
     QUALIFIED_PORT;
     NEGATE = "negate";
+    OPTIONAL = "optional";
     REMOVE = "remove";
     PRESERVE = "preserve";
     ACTOR_ID;
