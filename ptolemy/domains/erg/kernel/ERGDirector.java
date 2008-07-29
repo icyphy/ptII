@@ -49,6 +49,8 @@ import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
@@ -56,6 +58,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
@@ -112,7 +115,11 @@ public class ERGDirector extends Director implements TimedDirector {
     public ERGDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         controllerName = new StringAttribute(this, "controllerName");
+        LIFO = new Parameter(this, "LIFO");
+        LIFO.setTypeEquals(BaseType.BOOLEAN);
+        LIFO.setToken(BooleanToken.TRUE);
     }
 
     /** React to a change in an attribute. If the changed attribute is
@@ -176,15 +183,16 @@ public class ERGDirector extends Director implements TimedDirector {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ERGDirector newObject = (ERGDirector) super.clone(workspace);
+        newObject._eventComparator = new EventComparator();
         newObject._eventQueue = new PriorityQueue<TimedEvent>(10,
-                _EVENT_COMPARATOR);
+                newObject._eventComparator);
         newObject._inputQueue = new PriorityQueue<TimedEvent>(5,
-                _EVENT_COMPARATOR);
+                newObject._eventComparator);
         newObject._controller = null;
         newObject._controllerVersion = -1;
         return newObject;
     }
-    
+
     /** Return a boolean dependency representing a model-time delay
      *  of the specified amount.
      *  @param delay A non-negative delay.
@@ -490,13 +498,19 @@ public class ERGDirector extends Director implements TimedDirector {
         _eventQueue.clear();
     }
 
+    /** A Boolean parameter that decides whether simultaneous events should be
+     *  placed in the event queue in the last-in-first-out (LIFO) fashion or
+     *  not.
+     */
+    public Parameter LIFO;
+
     /** Attribute specifying the name of the ERG controller in the
      *  container of this director. This director must have an ERG
      *  controller that has the same container as this director,
      *  otherwise an IllegalActionException will be thrown when action
      *  methods of this director are called.
      */
-    public StringAttribute controllerName = null;
+    public StringAttribute controllerName;
 
     /** Initialize the schedule by putting the initial events in the event
      *  queue. If this director is directly associated with a modal model, it
@@ -729,27 +743,72 @@ public class ERGDirector extends Director implements TimedDirector {
         return true;
     }
 
-    /** The comparator used to compare the time stamps of any two events. */
-    @SuppressWarnings("unchecked")
-    private static final Comparator<TimedEvent> _EVENT_COMPARATOR =
-        new TimedEvent.TimeComparator();
-
     /** Cached reference to mode controller. */
     private ERGController _controller = null;
+
+    //////////////////////////////////////////////////////////////////////////
+    //// EventComparator
 
     /** Version of cached reference to mode controller. */
     private long _controllerVersion = -1;
 
+    /** The comparator used to compare the time stamps of any two events. */
+    private EventComparator _eventComparator = new EventComparator();
+
     /** The event queue. */
     private PriorityQueue<TimedEvent> _eventQueue =
-        new PriorityQueue<TimedEvent>(10, _EVENT_COMPARATOR);
+        new PriorityQueue<TimedEvent>(10, _eventComparator);
 
     /** The event queue that contains only events that can react to inputs. */
     private PriorityQueue<TimedEvent> _inputQueue =
-        new PriorityQueue<TimedEvent>(5, _EVENT_COMPARATOR);
+        new PriorityQueue<TimedEvent>(5, _eventComparator);
 
     /** The real time at which the execution started. */
     private long _realStartTime;
+
+    /**
+     A comparator that compares the time stamps of two timed events in the event
+     queue.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
+    private class EventComparator implements Comparator<TimedEvent> {
+
+        /** Compare the two timed events. If the first timed event has a time
+         *  stamp less than that of the second event, then a negative integer is
+         *  returned. If the first timed event has a time stamp greater than
+         *  that of the second event, then a positive integer is returned. If
+         *  they have exactly the same time stamp, then either a negative
+         *  integer or a positive integer is returned, depending on the LIFO
+         *  parameter of the director. If LIFO is set to true, then a negative
+         *  integer is returned in that case. Otherwise, a positive integer is
+         *  returned instead.
+         *
+         *  @param a The first timed event.
+         *  @param b The second timed event.
+         *  @return -1 or +1 depending on whether the time stamp of the first
+         *   timed event is less than, equal to, or greater than that of the
+         *   second.
+         */
+        public int compare(TimedEvent a, TimedEvent b) {
+            int result = a.timeStamp.compareTo(b.timeStamp);
+            if (result == 0) {
+                try {
+                    boolean isLIFO =
+                        ((BooleanToken) LIFO.getToken()).booleanValue();
+                    result = isLIFO ? -1 : 1;
+                } catch (IllegalActionException e) {
+                    throw new KernelRuntimeException(e,
+                            "Unable to obtain value for the LIFO parameter.");
+                }
+            }
+            return result;
+        }
+    }
 
     //////////////////////////////////////////////////////////////////////////
     //// TimedEvent

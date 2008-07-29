@@ -45,8 +45,10 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
@@ -56,6 +58,7 @@ import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -105,6 +108,22 @@ public class ERGController extends ModalController {
     NameDuplicationException {
         super(workspace);
         _init();
+    }
+
+    /** React to a change in an attribute.
+     *
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If thrown by the superclass
+     *   attributeChanged() method, or if the value of the LIFO parameter cannot
+     *   be read.
+     */
+    public void attributeChanged(Attribute attribute)
+    throws IllegalActionException {
+        if (attribute == LIFO) {
+            director.LIFO.setToken(LIFO.getToken());
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** Clone the controller into the specified workspace. This calls the
@@ -416,6 +435,12 @@ public class ERGController extends ModalController {
         return constraintList;
     }
 
+    /** A Boolean parameter that decides whether simultaneous events should be
+     *  placed in the event queue in the last-in-first-out (LIFO) fashion or
+     *  not.
+     */
+    public Parameter LIFO;
+
     /** The ERG director contained by this controller. */
     public ERGDirector director;
 
@@ -438,6 +463,11 @@ public class ERGController extends ModalController {
     NameDuplicationException {
         director = new ERGDirector(this, "_Director");
         new SingletonAttribute(director, "_hide");
+
+        LIFO = new Parameter(this, "LIFO");
+        LIFO.setTypeEquals(BaseType.BOOLEAN);
+        LIFO.setToken(BooleanToken.TRUE);
+        director.LIFO.setToken(BooleanToken.TRUE);
     }
 
     /** The last updated executive director. */

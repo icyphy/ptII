@@ -160,8 +160,8 @@ public class ParametersAttribute extends StringAttribute {
                     .generateParseTree(function);
             _parseTreeVersion = _workspace.getVersion();
         } catch (Exception e) {
-            throw new IllegalActionException("The argument list must be in the "
-                    + "form of (v1 : type1, v2 : type2, ...).");
+            throw new IllegalActionException("The parameter list must be in "
+                    + "the form of (v1 : type1, v2 : type2, ...).");
         }
     }
 

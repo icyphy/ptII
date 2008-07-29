@@ -36,6 +36,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /**
  This is a typed composite actor to be an ERG modal model. An ERG modal model
@@ -68,7 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class ERGModalModel extends ModalModel {
 
-	/** Construct an ERG modal model with a name and a container.
+    /** Construct an ERG modal model with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  @param container The container.
@@ -81,7 +82,35 @@ public class ERGModalModel extends ModalModel {
     public ERGModalModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _init();
+    }
 
+    /** Construct an ERG modal model in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.
+     *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
+     */
+    public ERGModalModel(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
+        super(workspace);
+        _init();
+    }
+
+    /** Initialize the ERG modal model by creating the parameter directorClass
+     *  and an ERG controller inside.
+     *
+     *  @throws IllegalActionException If the ERG modal model is incompatible
+     *   with the controller.
+     *  @throws NameDuplicationException NameDuplicationException If the name of
+     *   the controller collides with a name already in the container.
+     */
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         setClassName("ptolemy.domains.erg.kernel.ERGModalModel");
 
         directorClass.removeAllChoices();
