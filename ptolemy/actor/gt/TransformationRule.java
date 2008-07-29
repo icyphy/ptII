@@ -72,7 +72,7 @@ import ptolemy.kernel.util.Workspace;
 
 @author Thomas Huining Feng
 @version $Id$
-@since Ptolemy II 6.1
+@since Ptolemy II 7.1
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
@@ -93,16 +93,33 @@ public class TransformationRule extends MultiCompositeActor implements
 
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        String modeString = mode.getExpression();
-        boolean singleRunMode = modeString.equals(Mode.REPLACE_FIRST.toString())
-                || modeString.equals(Mode.REPLACE_ANY.toString())
-                || modeString.equals(Mode.REPLACE_ALL.toString());
-        boolean repeat = ((BooleanToken) repeatUntilFixpoint.getToken())
-                .booleanValue();
-        if (repeat && !singleRunMode) {
-            throw new IllegalActionException("When the mode is set to \""
-                    + modeString + "\", "
-                    + "repeatUntilFixpoint must be false.");
+        if (attribute == matchOnly) {
+            // Show or hide other parameters if matchOnly is set/unset.
+            if (isMatchOnly()) {
+                mode.setVisibility(Settable.EXPERT);
+                repeatCount.setVisibility(Settable.EXPERT);
+                repeatUntilFixpoint.setVisibility(Settable.EXPERT);
+            } else {
+                mode.setVisibility(Settable.FULL);
+                repeatCount.setVisibility(Settable.FULL);
+                repeatUntilFixpoint.setVisibility(Settable.FULL);
+            }
+
+        } else if (attribute == mode || attribute == repeatUntilFixpoint) {
+            // Check whether the mode is not set to single run but
+            // repeatUntilFixpoint is set to true. If so, raise exception.
+            String modeString = mode.getExpression();
+            boolean singleRunMode =
+                modeString.equals(Mode.REPLACE_FIRST.toString())
+                    || modeString.equals(Mode.REPLACE_ANY.toString())
+                    || modeString.equals(Mode.REPLACE_ALL.toString());
+            boolean repeat = ((BooleanToken) repeatUntilFixpoint.getToken())
+                    .booleanValue();
+            if (repeat && !singleRunMode) {
+                throw new IllegalActionException("When the mode is set to \""
+                        + modeString + "\", repeatUntilFixpoint must be "
+                        + "false.");
+            }
         }
 
         super.attributeChanged(attribute);
@@ -140,7 +157,8 @@ public class TransformationRule extends MultiCompositeActor implements
                 GraphMatcher matcher = new GraphMatcher();
                 matcher.setMatchCallback(this);
 
-                _collectAllMatches = mode != Mode.REPLACE_FIRST;
+                boolean isMatchOnly = isMatchOnly();
+                _collectAllMatches = !isMatchOnly && mode != Mode.REPLACE_FIRST;
                 _lastResults.clear();
 
                 // Obtain a working copy of this transformation rule, which can
@@ -159,6 +177,13 @@ public class TransformationRule extends MultiCompositeActor implements
                     }
                 }
                 matcher.match(workingCopy.getPattern(), _lastModel);
+
+                if (isMatchOnly) {
+                    matched.send(0, BooleanToken.getInstance(
+                            !_lastResults.isEmpty()));
+                    _lastResults.clear();
+                    return;
+                }
 
                 if (mode == Mode.REPLACE_FIRST || mode == Mode.REPLACE_ANY
                         || mode == Mode.REPLACE_ALL) {
@@ -197,7 +222,7 @@ public class TransformationRule extends MultiCompositeActor implements
                     }
 
                     modelOutput.send(0, new ActorToken(_lastModel));
-                    modified.send(0, BooleanToken.getInstance(foundMatch));
+                    matched.send(0, BooleanToken.getInstance(foundMatch));
                     return;
                 }
             }
@@ -207,14 +232,15 @@ public class TransformationRule extends MultiCompositeActor implements
                 ObjectToken token = (ObjectToken) matchInput.get(0);
                 MatchResult match = (MatchResult) token.getValue();
                 if (match != null) {
+                    TransformationRule workingCopy = _getWorkingCopy();
                     CompositeEntity host = (CompositeEntity) match
-                            .get(getPattern());
+                            .get(workingCopy.getPattern());
                     if (_lastModel != host && !_lastModel.deepContains(host)) {
                         throw new IllegalActionException(this,
                                 "The match result cannot be used with the "
                                         + "current model.");
                     }
-                    GraphTransformer.transform(this, match);
+                    GraphTransformer.transform(workingCopy, match);
                     modelOutput.send(0, new ActorToken(_lastModel));
                 }
             }
@@ -253,6 +279,14 @@ public class TransformationRule extends MultiCompositeActor implements
         _lastResults.clear();
     }
 
+    public boolean isMatchOnly() {
+        try {
+            return ((BooleanToken) matchOnly.getToken()).booleanValue();
+        } catch (IllegalActionException e) {
+            return false;
+        }
+    }
+
     public boolean postfire() throws IllegalActionException {
         switch (_lastResultsOperation) {
         case CLEAR:
@@ -287,60 +321,26 @@ public class TransformationRule extends MultiCompositeActor implements
     }
 
     public void valueChanged(Settable settable) {
-        if (settable == mode) {
-            String modeString = mode.getExpression();
-            boolean singleRunMode = modeString.equals(Mode.REPLACE_FIRST
-                    .toString())
-                    || modeString.equals(Mode.REPLACE_ANY.toString())
-                    || modeString.equals(Mode.REPLACE_ALL.toString());
-            if (singleRunMode) {
-                try {
-                    if (matchInput != null) {
-                        matchInput.setContainer(null);
-                        matchInput = null;
-                    }
-                    if (matchOutput != null) {
-                        matchOutput.setContainer(null);
-                        matchOutput = null;
-                    }
-                    if (trigger != null) {
-                        trigger.setContainer(null);
-                        trigger = null;
-                    }
-                    if (remaining != null) {
-                        remaining.setContainer(null);
-                        remaining = null;
-                    }
-                    if (modified == null) {
-                        modified = new TypedIOPort(this, "modified", false,
-                                true);
-                        modified.setTypeEquals(BaseType.BOOLEAN);
-                        modified.setPersistent(false);
-                        new StringAttribute(modified, "_cardinal")
-                                .setExpression("SOUTH");
-                    }
-                } catch (KernelException e) {
-                    throw new InternalErrorException(this, e,
-                            "Cannot remove port.");
+        // Create or remove ports depending on the mode.
+        if (mode != null && matchOnly != null
+                && (settable == mode || settable == matchOnly)) {
+            try {
+                boolean showFullControlPorts = false;
+                boolean isMatchOnly = isMatchOnly();
+                if (!isMatchOnly) {
+                    String modeString = mode.getExpression();
+                    showFullControlPorts = modeString.equals(Mode.EXPERT
+                            .toString());
                 }
-            } else if (modeString.equals(Mode.EXPERT.toString())) {
-                try {
-                    boolean repeat = ((BooleanToken) repeatUntilFixpoint
-                            .getToken()).booleanValue();
-                    if (repeat) {
-                        // Repeat is not supported in EXPERT mode, so do not
-                        // modify the ports; otherwise, the links to the
-                        // original ports will be lost after cancellation.
-                        return;
-                    }
-                } catch (IllegalActionException e) {
-                    throw new InternalErrorException(e);
+
+                if (modelInput == null) {
+                    modelInput = new TypedIOPort(this, "modelInput", true,
+                            false);
+                    modelInput.setTypeEquals(ActorToken.TYPE);
+                    modelInput.setPersistent(false);
                 }
-                try {
-                    if (modified != null) {
-                        modified.setContainer(null);
-                        modified = null;
-                    }
+
+                if (showFullControlPorts) {
                     if (matchInput == null) {
                         matchInput = new TypedIOPort(this, "matchInput", true,
                                 false);
@@ -352,6 +352,12 @@ public class TransformationRule extends MultiCompositeActor implements
                                 false, true);
                         matchOutput.setTypeEquals(BaseType.OBJECT);
                         matchOutput.setPersistent(false);
+                    }
+                    if (modelOutput == null) {
+                        modelOutput = new TypedIOPort(this, "modelOutput",
+                                false, true);
+                        modelOutput.setTypeEquals(ActorToken.TYPE);
+                        modelOutput.setPersistent(false);
                     }
                     if (trigger == null) {
                         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -368,28 +374,74 @@ public class TransformationRule extends MultiCompositeActor implements
                         new StringAttribute(remaining, "_cardinal")
                                 .setExpression("SOUTH");
                     }
-                } catch (KernelException e) {
-                    throw new InternalErrorException(this, e,
-                            "Cannot create port.");
+                    if (matched != null) {
+                        matched.setContainer(null);
+                        matched = null;
+                    }
+                } else {
+                    if (matchInput != null) {
+                        matchInput.setContainer(null);
+                        matchInput = null;
+                    }
+                    if (matchOutput != null) {
+                        matchOutput.setContainer(null);
+                        matchOutput = null;
+                    }
+                    if (trigger != null) {
+                        trigger.setContainer(null);
+                        trigger = null;
+                    }
+                    if (remaining != null) {
+                        remaining.setContainer(null);
+                        remaining = null;
+                    }
+                    if (isMatchOnly) {
+                        if (modelOutput != null) {
+                            modelOutput.setContainer(null);
+                            modelOutput = null;
+                        }
+                    } else {
+                        if (modelOutput == null) {
+                            modelOutput = new TypedIOPort(this, "modelOutput",
+                                    false, true);
+                            modelOutput.setTypeEquals(ActorToken.TYPE);
+                            modelOutput.setPersistent(false);
+                        }
+                        if (matched == null) {
+                            matched = new TypedIOPort(this, "matched", false,
+                                    true);
+                            matched.setTypeEquals(BaseType.BOOLEAN);
+                            matched.setPersistent(false);
+                            new StringAttribute(matched, "_cardinal")
+                                    .setExpression("SOUTH");
+                        }
+                    }
                 }
-            } else {
-                throw new InternalErrorException("Cannot set mode to "
-                        + modeString + ".");
+            } catch (KernelException e) {
+                throw new InternalErrorException(this, e,
+                        "Cannot add or remove port.");
             }
         }
     }
 
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        _lastResults.clear();
+    }
+
     public TypedIOPort matchInput;
 
+    public Parameter matchOnly;
+
     public TypedIOPort matchOutput;
+
+    public TypedIOPort matched;
 
     public StringParameter mode;
 
     public TypedIOPort modelInput;
 
     public TypedIOPort modelOutput;
-
-    public TypedIOPort modified;
 
     public TypedIOPort remaining;
 
@@ -401,12 +453,6 @@ public class TransformationRule extends MultiCompositeActor implements
 
     public static class TransformationDirector extends Director {
 
-        /**
-         * @param container
-         * @param name
-         * @exception IllegalActionException
-         * @exception NameDuplicationException
-         */
         public TransformationDirector(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
@@ -470,12 +516,6 @@ public class TransformationRule extends MultiCompositeActor implements
         new Pattern(this, "Pattern");
         new Replacement(this, "Replacement");
 
-        // Create ports.
-        modelInput = new TypedIOPort(this, "modelInput", true, false);
-        modelInput.setTypeEquals(ActorToken.TYPE);
-        modelOutput = new TypedIOPort(this, "modelOutput", false, true);
-        modelOutput.setTypeEquals(ActorToken.TYPE);
-
         mode = new StringParameter(this, "mode");
         for (int i = Mode.values().length - 1; i >= 0; i--) {
             mode.addChoice(Mode.values()[i].toString());
@@ -490,6 +530,11 @@ public class TransformationRule extends MultiCompositeActor implements
         repeatCount = new Parameter(this, "repeatCount");
         repeatCount.setTypeAtMost(BaseType.LONG);
         repeatCount.setExpression("1");
+
+        matchOnly = new Parameter(this, "matcherOnly");
+        matchOnly.setTypeEquals(BaseType.BOOLEAN);
+        matchOnly.addValueListener(this);
+        matchOnly.setToken(BooleanToken.FALSE);
 
         new TransformationDirector(this, "GTDirector");
     }

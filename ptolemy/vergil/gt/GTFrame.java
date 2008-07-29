@@ -39,6 +39,7 @@ import javax.swing.JComponent;
 
 import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredientsAttribute;
+import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.SizeAttribute;
@@ -151,7 +152,13 @@ public class GTFrame extends ExtendedGraphFrame {
         _frameController = new GTFrameController(this);
         JComponent component = _frameController._createRightComponent(entity);
         if (component == null) {
-            component = super._createRightComponent(entity);
+        	if (entity instanceof TransformationRule
+        			&& ((TransformationRule) entity).isMatchOnly()) {
+        		component = super._createRightComponent(
+        				((TransformationRule) entity).getPattern());
+        	} else {
+        		component = super._createRightComponent(entity);
+        	}
         }
         return component;
     }

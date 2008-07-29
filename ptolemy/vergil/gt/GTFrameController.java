@@ -49,6 +49,7 @@ import ptolemy.actor.gt.FSMMatcher;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyPreferences;
+import ptolemy.data.BooleanToken;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -269,7 +270,8 @@ public class GTFrameController implements ChangeListener, KeyListener {
         _graphController.setConfiguration(getConfiguration());
         _graphController.setFrame(_frame);
 
-        if (!(entity instanceof TransformationRule)) {
+        if (!(entity instanceof TransformationRule)
+                || ((TransformationRule) entity).isMatchOnly()) {
             return null;
         }
 

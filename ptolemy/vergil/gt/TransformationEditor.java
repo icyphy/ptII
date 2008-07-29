@@ -1185,15 +1185,16 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private TransformationEditor _getToplevelFrame() {
         NamedObj toplevel = getFrameController().getTransformationRule();
+        TransformationEditor editor = null;
         for (Frame frame : getFrames()) {
             if (frame instanceof TransformationEditor) {
                 TransformationEditor gtGraphFrame = (TransformationEditor) frame;
                 if (gtGraphFrame.getModel() == toplevel) {
-                    return gtGraphFrame;
+                    editor = gtGraphFrame;
                 }
             }
         }
-        return null;
+        return editor;
     }
 
     private static LibraryAttribute _importActorLibrary(Tableau tableau,

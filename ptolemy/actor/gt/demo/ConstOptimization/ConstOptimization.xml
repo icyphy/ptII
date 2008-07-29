@@ -442,7 +442,7 @@ result of static evaluation step by step.</text></svg></configure>
     <link port="Const.trigger" relation="relation6"/>
     <link port="OptimizeOnce.modelInput" relation="relation7"/>
     <link port="OptimizeOnce.modelOutput" relation="relation8"/>
-    <link port="OptimizeOnce.modified" relation="relation11"/>
+    <link port="OptimizeOnce.matched" relation="relation11"/>
     <link port="OptimizedModel.input" relation="relation9"/>
     <link port="OptimizedModel.output" relation="relation10"/>
     <link port="DDFBooleanSelect.trueInput" relation="relation2"/>
