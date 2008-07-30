@@ -47,7 +47,7 @@ public class FindClass {
         // The first argument should be a dot separated classname,
         // for example javax.media.CaptureDeviceInfo
         String className = args[0];
-        Class refClass;
+        Class refClass = null;
 
         try {
             refClass = Class.forName(className);
@@ -55,7 +55,7 @@ public class FindClass {
             // Test this with:
             // java FindClass foo
             System.out.println("Not Found");
-            return;
+            System.exit(1);
         }
 
         // Convert the classname to a path
@@ -125,5 +125,6 @@ public class FindClass {
         } else {
             System.out.print(entryURL);
         }
+	System.exit(0);
     }
 }
