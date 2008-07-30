@@ -473,6 +473,9 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         return false;
                     }
                 }
+            } else if (_currentIfTree == null) {
+                // If we are not in a loop or in an if statement, then we should
+                // only check isReady().  -- tfeng
             } else {
                 return false;
             }

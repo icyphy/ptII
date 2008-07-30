@@ -788,7 +788,7 @@ public abstract class AbstractPtalonEvaluator {
     }
 
     public void exitTransformation() throws PtalonRuntimeException {
-    	throw new PtalonRuntimeException("Transformation is not implemented.");
+        throw new PtalonRuntimeException("Transformation is not implemented.");
     }
 
     /** Get the unique name for the symbol in the PtalonActor.
@@ -807,6 +807,15 @@ public abstract class AbstractPtalonEvaluator {
         }
         throw new PtalonRuntimeException("Could not find mapped name for"
                 + symbol);
+    }
+
+    /** Return whether there are unassigned parameters to be handled with the
+     *  {@link #assignInternalParameters()} method.
+     *
+     *  @return true if there are unassigned parameters, and false otherwise.
+     */
+    public boolean hasUnassignedParameters() {
+        return !_unassignedParameters.isEmpty();
     }
 
     /** Return true if the given symbol exists in the current scope.
@@ -946,12 +955,12 @@ public abstract class AbstractPtalonEvaluator {
     }
 
     public void negateObject(String name) throws PtalonRuntimeException {
-    	throw new PtalonRuntimeException("Negation is not implemented.");
+        throw new PtalonRuntimeException("Negation is not implemented.");
     }
-    
+
     public void optionalObject(String name) throws PtalonRuntimeException {
-    	throw new PtalonRuntimeException("Optional objects are not " +
-    			"implemented.");
+        throw new PtalonRuntimeException("Optional objects are not " +
+                "implemented.");
     }
 
     /** Pop out of the scope of the current for statement and into its
@@ -983,7 +992,7 @@ public abstract class AbstractPtalonEvaluator {
     }
 
     public void preserveObject(String name) throws PtalonRuntimeException {
-    	throw new PtalonRuntimeException("Preservation is not implemented.");
+        throw new PtalonRuntimeException("Preservation is not implemented.");
     }
 
     /** Push into the scope of a new for statement contained as a
@@ -1015,7 +1024,7 @@ public abstract class AbstractPtalonEvaluator {
     }
 
     public void removeObject(String name) throws PtalonRuntimeException {
-    	throw new PtalonRuntimeException("Removing is not implemented.");
+        throw new PtalonRuntimeException("Removing is not implemented.");
     }
 
     /** Set the active branch for the current if statement.

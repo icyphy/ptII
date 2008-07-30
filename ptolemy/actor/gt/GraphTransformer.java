@@ -441,6 +441,13 @@ public class GraphTransformer extends ChangeRequest {
                 request.execute();
                 NamedObj hostChild = _getNewlyAddedObject(host,
                         child.getClass());
+                try {
+                    GTTools.deepRemoveAttributes(hostChild,
+                            MatchingAttribute.class);
+                } catch (KernelException e) {
+                    throw new TransformationException("Unable to remove " +
+                            "matching attributes.", e);
+                }
                 _recordMirroredObjects(child, hostChild);
             } else {
                 _addObjectsWithCreationAttributes(child);

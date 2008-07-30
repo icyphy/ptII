@@ -197,8 +197,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     }
                     if (ready) {
                         PtalonPopulator populator = new PtalonPopulator();
-                        populator
-                                .setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
+                        populator.setASTNodeClass(
+                                "ptolemy.actor.ptalon.PtalonAST");
                         populator.actor_definition(_ast, _codeManager);
                         _ast = (PtalonAST) populator.getAST();
                         _codeManager.assignInternalParameters();
@@ -593,8 +593,18 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             _codeManager = checker.getCodeManager();
             PtalonPopulator populator = _createPtalonPopulator();
             populator.setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
-            populator.actor_definition(_ast, _codeManager);
-            _ast = (PtalonAST) populator.getAST();
+            try {
+                populator.actor_definition(_ast, _codeManager);
+                _ast = (PtalonAST) populator.getAST();
+            } catch (PtalonRuntimeException e) {
+                if (_codeManager.hasUnassignedParameters()) {
+                    // Ignore because we will set the parameters next and
+                    // re-populate the Ptalon actor. At that time, the model may
+                    // be valid.
+                } else {
+                    throw e;
+                }
+            }
             _astCreated = true;
             ptalonCodeLocation.setVisibility(Settable.NOT_EDITABLE);
             _codeManager.assignInternalParameters();
