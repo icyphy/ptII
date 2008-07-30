@@ -34,7 +34,7 @@
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
-} {}
+}
 
 # Get the value of ptolemy.ptII.isRunningNightlyBuild and save it,
 # then reset the property to the empty string.
@@ -71,7 +71,7 @@ test TestExceptionHandler-1.1 {test with the default output values} {
 	[[getParameter $testExceptionHandler trainingMode] getExpression] \
 	[[getParameter $testExceptionHandler correctExceptionMessage] getExpression]
 } {false {Found a zero delay loop containing .top.const
-  in .top and .top.const}
+  in .top and .top.const}}
 
 ######################################################################
 #### 
