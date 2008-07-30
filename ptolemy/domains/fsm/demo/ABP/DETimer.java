@@ -115,9 +115,10 @@ public class DETimer extends TypedAtomicActor {
 
     /** Override the base class to declare that the <i>expired</i>
      *  port does not depend on the <i>set</i> port in a firing.
+     *  @throws IllegalActionException If the superclass throws it.
      */
-    public void pruneDependencies() {
-        super.pruneDependencies();
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         removeDependency(set, expired);
     }
 

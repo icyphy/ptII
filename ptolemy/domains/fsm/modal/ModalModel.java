@@ -34,7 +34,6 @@ import java.util.Map;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.util.CausalityInterface;
-import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -172,14 +171,6 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      */
     public StringParameter directorClass;
 
-    /** A boolean parameter indicating how the function dependency analysis of
-     *  the model is performed. If the parameter value is true, conservative
-     *  analysis is chosen; if false, optimistic analysis is chosen.
-     *  The default value is true for conservative analysis.
-     *  FIXME: Remove this when purging FunctionDependency.
-     */
-    public Parameter conservativeAnalysis;
-
     /** Indicate whether input/output dependencies can depend on the
      *  state. By default, this is false (the default), indicating that a conservative
      *  dependency is provided by the causality interface. Specifically,
@@ -268,8 +259,6 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                 };
                 requestChange(request);
             }
-        } else if (attribute == conservativeAnalysis) {
-            _functionDependency = null;
         } else {
             super.attributeChanged(attribute);
         }
@@ -401,32 +390,6 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
-    }
-    
-    /** Return an instance of DirectedGraph, where the nodes are IOPorts,
-     *  and the edges are the relations between ports. The graph shows
-     *  the dependencies between the input and output ports. If there is
-     *  a path between a pair, input and output, they are dependent.
-     *  Otherwise, they are independent.
-     */
-    public FunctionDependency getFunctionDependency() {
-        if (_functionDependency == null) {
-            try {
-                _functionDependency = new FunctionDependencyOfModalModel(this);
-                boolean value = ((BooleanToken) conservativeAnalysis.getToken())
-                        .booleanValue();
-                _functionDependency.setConservativeAnalysis(value);
-            } catch (NameDuplicationException e) {
-                // This should not happen.
-                throw new InternalErrorException("Failed to construct a "
-                        + "function dependency object for " + getFullName());
-            } catch (IllegalActionException e) {
-                // This should not happen.
-                throw new InternalErrorException("Failed to construct a "
-                        + "function dependency object for " + getFullName());
-            }
-        }
-        return _functionDependency;
     }
 
     /** Get the FSM controller.
@@ -577,12 +540,6 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                     .setExpression("ptolemy.domains.fsm.kernel.FSMDirector");
         }
 
-        // Create the parameter indicating whether the dependency analysis
-        // is optimistic or conservative.
-        conservativeAnalysis = new Parameter(this, "conservativeAnalysis");
-        conservativeAnalysis.setTypeEquals(BaseType.BOOLEAN);
-        conservativeAnalysis.setToken(BooleanToken.TRUE);
-
         // Create a more reasonable default icon.
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
@@ -608,7 +565,4 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      *  where the causality interface is state dependent.
      */
     private Map<State,Long> _causalityInterfacesVersions;
-
-    /** The function dependency, if it is present. */
-    private FunctionDependencyOfModalModel _functionDependency;
 }

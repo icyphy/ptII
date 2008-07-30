@@ -51,7 +51,6 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
-import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -367,7 +366,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._connectionMapsVersion = -1;
         newObject._currentConnectionMap = null;
         newObject._finalStateNames = null;
-        newObject._functionDependency = null;
         newObject._receiversVersion = -1;
         newObject._receiversVersion = -1;
         newObject._tokenListArrays = null;
@@ -545,31 +543,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     "No initial state has been specified.");
         }
         return _initialState;
-    }
-
-    /** Return an instance of DirectedGraph, where the nodes are IOPorts,
-     *  and the edges are the relations between ports. The graph shows
-     *  the dependencies between the input and output ports. If there is
-     *  a path between a pair, input and output, they are dependent.
-     *  Otherwise, they are independent.
-     *  @return A FunctionDependency object of an FSM actor.
-     */
-    public FunctionDependency getFunctionDependency() {
-        if (_functionDependency == null) {
-            try {
-                _functionDependency = new FunctionDependencyOfFSMActor(this);
-            } catch (NameDuplicationException e) {
-                // This should not happen.
-                throw new InternalErrorException("Failed to construct a "
-                        + "function dependency object for " + getFullName());
-            } catch (IllegalActionException e) {
-                // This should not happen.
-                throw new InternalErrorException("Failed to construct a "
-                        + "function dependency object for " + getFullName());
-            }
-        }
-
-        return _functionDependency;
     }
 
     /** Return the Manager responsible for execution of this actor,
@@ -952,11 +925,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         _inputTokenMap.clear();
 
-        // We aave to reset to the initial state here rather than in
-        // the initialize() method because the FunctionDependency analysis
-        // needs to know the current active state of the FSM actor.
-        // In DE/ModalModel, reset() happening in the initialize method
-        // is too late. hyzheng 1/7/2004
+        // In case any further static analysis depends on the initial
+        // state, reset to that state here.
         reset();
     }
 
@@ -1022,7 +992,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     public void reset() throws IllegalActionException {
         _currentState = getInitialState();
         if (_debugging) {
-            _debug(new StateEvent(this, _currentState));
+            _debug("Resetting to initial state: " + _currentState.getName());
         }
         _setCurrentConnectionMap();
     }
@@ -1324,7 +1294,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
 
         if (_debugging) {
-            _debug("Commit transition ", _lastChosenTransition.getFullName());
+            _debug("Commit transition ", _lastChosenTransition.getFullName()
+                    + " at time " + getDirector().getModelTime());
+            _debug("  Guard evaluating to true: " + _lastChosenTransition.guardExpression.getExpression());
         }
         if (_lastChosenTransition.destinationState() == null) {
             throw new IllegalActionException(this, _lastChosenTransition,
@@ -1501,14 +1473,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         .get(port);
 
                 // Update the value variable if there is/are token(s) in
-                // the channel. The HDF(SDF) schedule will gurantee there
+                // the channel. The HDF(SDF) schedule will guarantee there
                 // are always enough tokens.
                 while (port.hasToken(channel)) {
                     Token token = port.get(channel);
 
                     if (_debugging) {
                         _debug("---", port.getName(), "(" + channel + ") has ",
-                                token.toString());
+                                token.toString() + " at time " + getDirector().getModelTime());
                     }
 
                     tokenListArray[channel].add(0, token);
@@ -1546,7 +1518,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                     if (_debugging) {
                         _debug("---", port.getName(), "(" + channel
-                                + ") has no token.");
+                                + ") has no token at time " + getDirector().getModelTime());
                     }
                 }
             } else {
@@ -1557,7 +1529,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                     if (_debugging) {
                         _debug("---", port.getName(), "(" + channel + ") has ",
-                                token.toString());
+                                token.toString() + " at time " + getDirector().getModelTime());
                     }
 
                     _setInputTokenMap(portName + "_isPresent", port,
@@ -1574,7 +1546,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                     if (_debugging) {
                         _debug("---", port.getName(), "(" + channel
-                                + ") has no token.");
+                                + ") has no token at time " + getDirector().getModelTime());
                     }
                 }
             }
@@ -1882,9 +1854,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // Map of final state names recording in the obsolete finalStateNames
     // parameter.
     private HashSet<String> _finalStateNames = null;
-
-    /** The function dependency, if it is present. */
-    private FunctionDependency _functionDependency;
 
     // A flag indicating whether this is at the beginning
     // of one iteration (firing). Normally it is set to true.

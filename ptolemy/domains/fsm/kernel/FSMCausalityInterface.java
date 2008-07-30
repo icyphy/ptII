@@ -61,6 +61,16 @@ transitions from a state produce the same output value, and
 a transition is always taken, then irrespective of the guards,
 the output has no dependency on the inputs.  A precise analysis,
 however, is much more difficult (probably undecidable).
+<p>
+All input ports that affect the state (i.e. that are mentioned in
+any guard) must be in an equivalence class. Otherwise, we cannot
+reliably make a decision about what the next state is. In addition,
+if any input in a refinement affects an output, that input must
+also be in this equivalence class. Otherwise, the scheduler
+will assume there is no relationship between these inputs and
+could provide an event that triggers a state transition in an
+earlier firing than an event that triggers an output from the
+current refinement.
 
 @author Edward A. Lee
 @version $Id: FSMCausalityInterface.java 47513 2007-12-07 06:32:21Z cxh $
@@ -100,12 +110,12 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
     *  the FSM and caches the result. Subsequent calls just
     *  look up the result.
     *  @param input The input port.
-     *  @param output The output port, or null to update the
-     *   dependencies (and record equivalence classes) without
-     *   requiring there to be an output port.
-     *  @return The dependency between the specified input port
-     *   and the specified output port, or null if a null output
-     *   is port specified.
+    *  @param output The output port, or null to update the
+    *   dependencies (and record equivalence classes) without
+    *   requiring there to be an output port.
+    *  @return The dependency between the specified input port
+    *   and the specified output port, or null if a null output
+    *   is port specified.
     *  @exception IllegalActionException If a guard expression cannot be parsed.
     */
    public Dependency getDependency(IOPort input, IOPort output)

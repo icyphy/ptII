@@ -48,7 +48,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	Case.java \
-	FunctionDependencyOfModalModel.java \
 	MirrorCausalityInterface.java \
 	ModalController.java \
 	ModalModel.java \
