@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import ptolemy.actor.Actor;
@@ -46,19 +46,16 @@ import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.ScheduleElement;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.actor.util.FunctionDependency;
-import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.apps.cacheAwareScheduler.lib.ExperimentalActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
-import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.ExtendedMath;
 import ptolemy.math.Fraction;
@@ -977,169 +974,22 @@ public class CacheAwareScheduler extends SDFScheduler {
      *  last actor in the n-actor chain has an order n-1.
      */
     private void _computeOrder() throws IllegalActionException {
-        DirectedAcyclicGraph dag = _constructDirectedGraph();
-        Object[] sort = dag.topologicalSort();
+        Director director = (Director)getContainer();
+        CompositeActor composite = (CompositeActor)director.getContainer();
+        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites)
+                composite.getCausalityInterface();
+        List<Actor> actors = causality.topologicalSort();
 
         // Allocate a new hash table with the equal to the
         // number of actors sorted.
-        _orderToActor = new Hashtable(sort.length);
+        _orderToActor = new Hashtable(actors.size());
 
-        for (int i = sort.length - 1; i >= 0; i--) {
-            Actor actor = (Actor) sort[i];
-
+        int i = 0;
+        for (Actor actor : actors) {
             // Insert the hashtable entry.
             _orderToActor.put(new Integer(i), actor);
+            i++;
         }
-    }
-
-    /** Construct a directed graph with the nodes representing actors and
-     *  directed edges representing dependencies.
-     *
-     *  @return The directed graph that is constructed.
-     */
-    private DirectedAcyclicGraph _constructDirectedGraph()
-            throws IllegalActionException {
-        // Declare the new graph.
-        DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
-
-        SDFDirector director = (SDFDirector) getContainer();
-        CompositeActor container = (CompositeActor) director.getContainer();
-
-        CompositeActor castContainer = container;
-
-        // Get the function dependency object of the container of this
-        // director. If there is no such attribute, construct one.
-        FunctionDependency functionDependency = castContainer
-                .getFunctionDependency();
-
-        // The FunctionDependency attribute is used to construct
-        // the schedule. If the schedule needs recalculation,
-        // the FunctionDependency also needs recalculation.
-        // functionDependency.invalidate();
-        // FIXME: The following may be a very costly test.
-        // -- from the comments of former implementation.
-        // If the port based data flow graph contains directed
-        // loops, the model is invalid. An IllegalActionException
-        // is thrown with the names of the actors in the loop.
-        Object[] cycleNodes = ((FunctionDependencyOfCompositeActor) functionDependency)
-                .getCycleNodes();
-
-        if (cycleNodes.length != 0) {
-            StringBuffer names = new StringBuffer();
-
-            for (int i = 0; i < cycleNodes.length; i++) {
-                if (cycleNodes[i] instanceof Nameable) {
-                    if (i > 0) {
-                        names.append(", ");
-                    }
-
-                    names.append(((Nameable) cycleNodes[i]).getContainer()
-                            .getFullName());
-                }
-            }
-
-            throw new IllegalActionException(this.getContainer(),
-                    "Found zero delay loop including: " + names.toString());
-        }
-
-        // First, include all actors as nodes in the graph.
-        // get all the contained actors.
-        Iterator actors = castContainer.deepEntityList().iterator();
-
-        while (actors.hasNext()) {
-            dag.addNodeWeight(actors.next());
-        }
-
-        // Next, create the directed edges by iterating the actors again.
-        actors = castContainer.deepEntityList().iterator();
-
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-
-            // Get the FunctionDependency attribute of current actor.
-            functionDependency = actor.getFunctionDependency();
-
-            // The following check may not be necessary since the FunctionDependency
-            // attribute is constructed before. However, we check
-            // it anyway.
-            if (functionDependency == null) {
-                throw new IllegalActionException(this, "doesn't "
-                        + "contain a valid FunctionDependency attribute.");
-            }
-
-            // get all the input ports of the current actor
-            Iterator inputPorts = actor.inputPortList().iterator();
-
-            while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort) inputPorts.next();
-
-                Set directlyDependentOutputPorts = functionDependency
-                        .getDependentOutputPorts(inputPort);
-
-                // get all the output ports of the current actor.
-                Iterator outputPorts = actor.outputPortList().iterator();
-
-                while (outputPorts.hasNext()) {
-                    IOPort outputPort = (IOPort) outputPorts.next();
-
-                    if ((directlyDependentOutputPorts != null)
-                            && !directlyDependentOutputPorts
-                                    .contains(outputPort)) {
-                        // Skip the port without direct dependence.
-                        continue;
-                    }
-
-                    // find the inside input ports connected to outputPort
-                    Iterator inPortIterator = outputPort
-                            .deepConnectedInPortList().iterator();
-                    int referenceDepth = outputPort.depthInHierarchy();
-
-                    while (inPortIterator.hasNext()) {
-                        IOPort port = (IOPort) inPortIterator.next();
-
-                        if (port.depthInHierarchy() < referenceDepth) {
-                            // This destination port is higher in the hierarchy.
-                            // We may be connected to it on the inside,
-                            // in which case, we do not want to record
-                            // this link.  To check whether we are connected
-                            // on the inside, we check whether the container
-                            // of the destination port deeply contains
-                            // source port.
-                            if (port.getContainer().deepContains(outputPort)) {
-                                continue;
-                            }
-                        }
-
-                        Actor successor = (Actor) (port.getContainer());
-
-                        // If the destination is the same as the current
-                        // actor, skip the destination.
-                        if (successor.equals(actor)) {
-                            continue;
-                        }
-
-                        // create an arc from the current actor to the successor.
-                        if (dag.containsNodeWeight(successor)) {
-                            // 'contains' replaced with 'containsNodeWeight'
-                            // Should not affect function since former has
-                            // already been defined in Graph.java as latter.
-                            dag.addEdge(actor, successor);
-                        } else {
-                            // This happens if there is a
-                            // level-crossing transition.
-                            throw new IllegalActionException(this,
-                                    "Level-crossing transition from "
-                                            + ((Nameable) actor).getFullName()
-                                            + " to "
-                                            + ((Nameable) successor)
-                                                    .getFullName());
-                        }
-                    }
-                }
-            }
-        }
-
-        return dag;
     }
 
     /** Generates the cache aware schedule for the given SDF graph and

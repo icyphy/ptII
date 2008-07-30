@@ -43,8 +43,6 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
-import ptolemy.actor.util.FunctionDependency;
-import ptolemy.actor.util.FunctionDependencyOfCompositeActor;  
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -252,7 +250,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
         CompositeActor newObject = (CompositeActor) super.clone(workspace);
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
-        newObject._functionDependency = null;
         newObject._causalityInterface = null;
         newObject._causalityInterfaceDirector = null;
         return newObject;
@@ -501,31 +498,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
         } finally {
             _workspace.doneReading();
         }
-    }
-
-    /** Return a representation of the function dependencies that output
-     *  ports have on input ports.
-     *  @return A representation of the function dependencies of the
-     *   ports of this actor.
-     *  @see ptolemy.actor.util.FunctionDependency
-     */
-    public FunctionDependency getFunctionDependency() {
-        if (_functionDependency == null) {
-            try {
-                _functionDependency = new FunctionDependencyOfCompositeActor(
-                        this);
-            } catch (NameDuplicationException e) {
-                // This should not happen.
-                throw new InternalErrorException("Failed to construct a "
-                        + "function dependency object for " + getFullName());
-            } catch (IllegalActionException e) {
-                // This should not happen.
-                throw new InternalErrorException("Failed to construct a "
-                        + "function dependency object for " + getFullName());
-            }
-        }
-
-        return _functionDependency;
     }
 
     /** Get the manager responsible for execution of this composite actor.
@@ -1075,7 +1047,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *   is not opaque.
      */
     public void preinitialize() throws IllegalActionException {
-        _functionDependency = null;
         _stopRequested = false;
 
         if (_debugging) {
@@ -1683,9 +1654,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     /** The causality interface, if it has been created. */
     protected CausalityInterface _causalityInterface;
-
-    /** The function dependency, if it is present. */
-    protected FunctionDependency _functionDependency;
 
     /** List of objects whose (pre)initialize() and wrapup() methods
      *  should be slaved to these.

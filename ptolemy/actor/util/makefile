@@ -75,9 +75,6 @@ JSRCS = \
 	ExplicitChangeContext.java \
 	FIFOQueue.java \
 	FreeVariableModelAnalysis.java \
-	FunctionDependency.java \
-	FunctionDependencyOfAtomicActor.java \
-	FunctionDependencyOfCompositeActor.java \
 	FuzzyDoubleComparator.java \
 	GeneralComparator.java \
 	RealDependency.java \

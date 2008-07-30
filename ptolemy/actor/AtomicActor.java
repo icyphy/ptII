@@ -36,8 +36,6 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
-import ptolemy.actor.util.FunctionDependency;
-import ptolemy.actor.util.FunctionDependencyOfAtomicActor;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -171,7 +169,6 @@ public class AtomicActor extends ComponentEntity implements Actor,
         // Reset to force reinitialization of cache.
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
-        newObject._functionDependency = null;
         newObject._causalityInterface = null;
         newObject._causalityInterfaceDirector = null;
         return newObject;
@@ -265,30 +262,6 @@ public class AtomicActor extends ComponentEntity implements Actor,
      */
     public Director getExecutiveDirector() {
         return getDirector();
-    }
-
-    /** Return a representation of the function dependencies that output
-     *  ports have on input ports.
-     *  @return A representation of the function dependencies of the
-     *   ports of this actor.
-     *  @see ptolemy.actor.util.FunctionDependency
-     */
-    public FunctionDependency getFunctionDependency() {
-        if (_functionDependency == null) {
-            try {
-                _functionDependency = new FunctionDependencyOfAtomicActor(this);
-            } catch (NameDuplicationException e) {
-                // This should not happen.
-                throw new InternalErrorException("Failed to construct a "
-                        + "function dependency object for " + getFullName());
-            } catch (IllegalActionException e) {
-                // This should not happen.
-                throw new InternalErrorException("Failed to construct a "
-                        + "function dependency object for " + getFullName());
-            }
-        }
-
-        return _functionDependency;
     }
 
     /** Return the Manager responsible for execution of this actor,
@@ -597,6 +570,9 @@ public class AtomicActor extends ComponentEntity implements Actor,
 
         _stopRequested = false;
         
+        // For backward compatibility, in case there are actors
+        // that override pruneDependencies() to alter their
+        // causality interface, call it here.
         pruneDependencies();
 
         // First invoke initializable methods.
@@ -622,10 +598,14 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  output ports that do not depend on input ports should override
      *  this method to prune the dependencies.  To declare that an
      *  output port does not depend on an input port, subclasses
-     *  should call removeDependency(input, output).
+     *  can call removeDependency(input, output) rather than implementing
+     *  a specialized {@link CausalityInterface}, at least for the simple
+     *  cases where output ports do not depend at all on input ports.
      *  @see ptolemy.domains.de.lib.TimedDelay
      *  @see #removeDependency(IOPort, IOPort)
-     *  @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
+     *  @see #getCausalityInterface()
+     *  @deprecated There is no need to override this method anymore.
+     *   Just call removeDependency() in preinitialize().
      */
     public void pruneDependencies() {
     }
@@ -665,23 +645,18 @@ public class AtomicActor extends ComponentEntity implements Actor,
     /** Remove the dependency that the specified output port has,
      *  by default, on the specified input port. By default, each
      *  output port is assumed to have a dependency on all input
-     *  ports. Subclasses should
-     *  call this method inside their override of the
-     *  {@link #pruneDependencies()} method if a particular output
-     *  port does not depend on data from a particular input port
-     *  in a firing. There should be one such call for each
+     *  ports. Subclasses can call this method in preinitialize()
+     *  instead of implementing a custom {@link CausalityInterface}
+     *  for the simple cases where output ports do not depend
+     *  at all on certain input ports.
+     *  There should be one such call for each
      *  input, output pair that does not have a dependency.
      *  @param input The input port.
      *  @param output The output port that does not depend on the
      *   input port.
-     *  @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
+     *  @see #getCausalityInterface()
      */
     public void removeDependency(IOPort input, IOPort output) {
-        // FIXME: FunctionDependency is obsolete. Remove when
-        // CausalityInterface mechanism is fully tested.
-        FunctionDependencyOfAtomicActor functionDependency = (FunctionDependencyOfAtomicActor) getFunctionDependency();
-        functionDependency.removeDependency(input, output);
-        
         CausalityInterface causality = getCausalityInterface();
         causality.removeDependency(input, output);
     }
@@ -905,9 +880,6 @@ public class AtomicActor extends ComponentEntity implements Actor,
     
     /** The director for which the causality interface was created. */
     private Director _causalityInterfaceDirector;
-
-    /** The function dependency, if it is present. */
-    private FunctionDependency _functionDependency;
 
     /** Record of the workspace version the last time receivers were created. */
     private long _receiversVersion = -1;

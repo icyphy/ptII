@@ -47,7 +47,6 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
-import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.domains.fsm.kernel.State;
@@ -167,10 +166,6 @@ ValueListener {
     }
 
     public Director getExecutiveDirector() {
-        return null;
-    }
-
-    public FunctionDependency getFunctionDependency() {
         return null;
     }
 

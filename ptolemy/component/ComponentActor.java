@@ -323,14 +323,6 @@ public class ComponentActor extends TypedCompositeActor implements Component {
     // Indicator that we are in the connectionsChanged method.
     private boolean _inConnectionsChanged = false;
 
-    // Cached lists of input and output ports.
-    //private transient long _inputPortsVersion = -1;
-
-    //private transient long _outputPortsVersion = -1;
-
-    // Cached FunctionDependency object.
-    //private FunctionDependencyOfCompositeActor _functionDependency;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _addIcon() {
