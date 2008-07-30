@@ -38,7 +38,6 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
-import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent; 
 import ptolemy.domains.ptides.kernel.PtidesActorProperties; 
