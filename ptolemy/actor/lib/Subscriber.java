@@ -207,7 +207,10 @@ public class Subscriber extends TypedAtomicActor {
         int width = input.getWidth();
         if (width == 0) {
             throw new IllegalActionException(this,
-                    "Subscriber has no matching Publisher.");
+   	            "Subscriber could not find a matching Publisher "
+		    + "with channel \""
+                    + channel.getExpression() + "\"");
+
         }
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
