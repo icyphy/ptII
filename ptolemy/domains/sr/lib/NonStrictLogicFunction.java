@@ -147,9 +147,10 @@ public class NonStrictLogicFunction extends LogicFunction {
 
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
+     *  @throws IllegalActionException If the superclass throws it.
      */
-    public void pruneDependencies() {
-        super.pruneDependencies();
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         removeDependency(input, output);
     }
 

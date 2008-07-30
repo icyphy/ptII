@@ -91,9 +91,10 @@ public class Absent extends Undefined {
 
     /** Override the base class to declare that the <i>output</i>
      *  port does not depend on the <i>trigger</i> port in a firing.
+     *  @throws IllegalActionException If the superclass throws it.
      */
-    public void pruneDependencies() {
-        super.pruneDependencies();
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         removeDependency(trigger, output);
     }
 }
