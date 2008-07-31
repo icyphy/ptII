@@ -31,6 +31,7 @@ package ptolemy.domains.ptides.platform;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Queue;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -109,7 +110,6 @@ public class NonPreemptivePlatformExecutionStrategy extends
             int index1 = -1;
             int index2 = -1;
 
-            // TODO wrong!!!
             CompositeActor compositeActor = (CompositeActor) actor1.getContainer();
             CausalityInterfaceForComposites causalityInterface = (CausalityInterfaceForComposites) compositeActor.getCausalityInterface();
             try {
@@ -223,7 +223,7 @@ public class NonPreemptivePlatformExecutionStrategy extends
      * @exception IllegalActionException
      *                 Thrown if an execution was missed.
      */
-    public TimedEvent getNextEventToFire(List<TimedEvent> actorsFiring,
+    public TimedEvent getNextEventToFire(Queue<TimedEvent> actorsFiring,
             List<TimedEvent> eventsToFire, Time nextRealTimeEvent, Time physicalTime) throws IllegalActionException {
         
         if (actorsFiring.size() > 0 || eventsToFire.size() == 0) {

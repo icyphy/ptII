@@ -31,17 +31,18 @@ package ptolemy.domains.ptides.platform;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Queue;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;  
 import ptolemy.domains.ptides.kernel.PtidesActorProperties;
-import ptolemy.domains.ptides.lib.ScheduleListener;
 import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;
@@ -113,18 +114,14 @@ public class PreemptivePlatformExecutionStrategy extends
             int priority1 = PtidesActorProperties.getPriority(actor1);
             int priority2 = PtidesActorProperties.getPriority(actor2);
 
-            CompositeActor actor = (CompositeActor) actor1.getContainer();
-            FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) (actor)
-                    .getFunctionDependency();
-            DirectedAcyclicGraph graph = functionDependency
-                    .getDetailedDependencyGraph().toDirectedAcyclicGraph();
-            Object[] objects = graph.topologicalSort();
-            for (int i = 0; i < objects.length; i++) {
-                if (((IOPort) objects[i]).getContainer() == actor1) {
-                    index1 = i;
-                } else if (((IOPort) objects[i]).getContainer() == actor2) {
-                    index2 = i;
-                }
+            CompositeActor compositeActor = (CompositeActor) actor1.getContainer();
+            CausalityInterfaceForComposites causalityInterface = (CausalityInterfaceForComposites) compositeActor.getCausalityInterface();
+            try {
+                index1 = causalityInterface.getDepthOfActor(actor1);
+                index2 = causalityInterface.getDepthOfActor(actor2);
+            } catch (IllegalActionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
 
             if (priority1 != priority2) {
@@ -216,7 +213,7 @@ public class PreemptivePlatformExecutionStrategy extends
      * @exception IllegalActionException
      *                 Thrown if an execution was missed.
      */
-    public TimedEvent getNextEventToFire(List<TimedEvent> actorsFiring,
+    public TimedEvent getNextEventToFire(Queue<TimedEvent> actorsFiring,
             List<TimedEvent> eventsToFire, Time nextRealTimeEvent, 
             Time physicalTime) throws IllegalActionException {
         if (eventsToFire.size() == 0) {
@@ -232,7 +229,7 @@ public class PreemptivePlatformExecutionStrategy extends
                     (Actor) ((IOPort) event.contents).getContainer() :
                         (Actor) event.contents;
             if (actorsFiring.size() > 0
-                    && !_actorPreempts((Actor) actorsFiring.get(0).contents, actorToFire,
+                    && !_actorPreempts((Actor) actorsFiring.peek().contents, actorToFire,
                             event.timeStamp, physicalTime)) {
                 index++;
                 continue;

@@ -30,6 +30,7 @@ package ptolemy.domains.ptides.platform;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
@@ -90,7 +91,7 @@ public abstract class PlatformExecutionStrategy {
      * @exception IllegalActionException Thrown if the execution of an actor was
      * missed.
      */
-    public abstract TimedEvent getNextEventToFire(List<TimedEvent> actorsFiring,
+    public abstract TimedEvent getNextEventToFire(Queue<TimedEvent> actorsFiring,
             List<TimedEvent> eventsToFire, Time nextRealTimeEvent, 
             Time physicalTime) throws IllegalActionException;
 

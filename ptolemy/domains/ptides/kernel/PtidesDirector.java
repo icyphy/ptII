@@ -296,17 +296,17 @@ public class PtidesDirector extends TimedPNDirector {
             throws IllegalActionException {
         if (newFiringTime.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this, "The process wants to "
-                    + " get fired in the past!");
+                    + " get fired in the past! (current time: " + getModelTime() + ", " +
+                    		"requestedFiring: " + newFiringTime + ")");
         }
 
         _eventQueue.put(new TimedEvent(newFiringTime, actor));
         _informOfDelayBlock();
 
         try {
-            while (!_stopRequested // check other places where _stopRequested is
-                    // checked
+            while (!_stopRequested 
                     && getModelTime().compareTo(newFiringTime) < 0) {
-                if (_platformsToUnblock.remove(actor)) {
+                if (_platformsToUnblock.remove(actor)) { 
                     _informOfDelayUnblock();
                     break;
                 }
