@@ -7,6 +7,10 @@
 
 
 
+
+
+  
+  
   
   
   
@@ -16,9 +20,15 @@
 
 
 
+
+
   
 
 
+  
+  
+  
+  
   
   
   
@@ -37,8 +47,12 @@
 
 
 
+
+
 <h1><span lang="EN-US">Correctness Checking using
 Formal Verification</span></h1>
+
+
 
 
 
@@ -58,7 +72,11 @@ by <a href="http://www.kenmcmil.com/smv.html" target="_blank"></a></span><span s
 
 
 
+
+
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Demo_1">Demo 1: Traffic light example</a></span></li>
+
+
 
 
 
@@ -66,13 +84,21 @@ by <a href="http://www.kenmcmil.com/smv.html" target="_blank"></a></span><span s
 
 
 
+
+
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#Demo_3">Demo 3: SMVLegacyCodeActor</a></span></li>
+
+
 
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="#LargeExample">A larger example in robotic controller design (reactive control)</a><br>
 
 
+
+
     </span></li>
+
+
 
 
 
@@ -85,8 +111,12 @@ setup environment variables</a>&nbsp;</span></li>
 
 
 
+
+
   <li class="MsoNormal" style=""><a href="#Integration"><span style="font-family: Arial;" lang="EN-US">Integrating verification engines using
 the&nbsp;EmbeddedCActor&nbsp;</span></a></li>
+
+
 
 
 
@@ -99,7 +129,11 @@ the&nbsp;EmbeddedCActor&nbsp;</span></a></li>
 
 
 
+
+
 </ul>
+
+
 
 
 
@@ -112,7 +146,11 @@ the&nbsp;EmbeddedCActor&nbsp;</span></a></li>
 
 
 
+
+
 <ol start="1" type="1">
+
+
 
 
 
@@ -120,6 +158,8 @@ the&nbsp;EmbeddedCActor&nbsp;</span></a></li>
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Open <big><a href="../verification/demo/TrafficLight/SimpleTrafficLight.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/TrafficLight/SimpleTrafficLight.xml</span></code></a></big>
     <o:p></o:p></span></li>
+
+
 
 
 
@@ -133,11 +173,15 @@ on the <span class="SpellE">MathematicalModelConverter</span>
 
 
 
+
+
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">A dialog box
 will appear, ask you to input temporal formula. Type&nbsp;<b style="">! EF (<span class="SpellE">CarLightNormal</span>.state
 = <span class="SpellE">Cgrn</span> &amp;&nbsp;<span class="SpellE">PedestrianLightNormal</span>.state
 = <span class="SpellE">Pgreen</span>)</b>.
 You may want to copy the above line; it would be a lot faster.<span style="">&nbsp; </span><o:p></o:p></span></li>
+
+
 
 
 
@@ -154,11 +198,15 @@ Generated Format" in step 3. <o:p></o:p></span></li>
 
 
 
+
+
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Invoke <span class="SpellE">NuSMV</span> or SMV to see if the
 property is hold. If you have installed NuSMV and set up the path
 environment variable (<a href="../verification/README.html#Install">how?</a>),
 you may also check the result of verification by selecting "Invoke
 NuSMV" options in step 3.&nbsp;</span></li>
+
+
 
 
 
@@ -173,11 +221,17 @@ the result would be false with a counter example.&nbsp;</span></li>
 
 
 
+
+
 </ol>
 
 
 
+
+
 <h2><a name="Demo_2"><span lang="EN-US"></span></a>Demo 2: Generate the specification directly from the graph</h2>
+
+
 
 
 
@@ -193,11 +247,17 @@ this can be done easily by annotating properties on states.&nbsp;</span><span st
 
 
 
+
+
 <ol start="1" type="1">
 
 
 
+
+
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Open <big><a href="demo/TrafficLight/SimpleTrafficLightGraphicalSpec.xml"><code><span style="font-size: 10pt;">$PTII/ptolemy/verification/demo/TrafficLight/SimpleTrafficLightGraphicalSpec.xml</span></code></a></big></span></li>
+
+
 
 
 
@@ -208,9 +268,13 @@ FMVPedestrianLightNormal.&nbsp;</span></li>
 
 
 
+
+
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">Double click
 on the&nbsp;<span class="SpellE"></span></span><span style="font-family: Arial;" lang="EN-US"><span class="SpellE">MathematicalModelConverter</span></span><span style="font-family: Arial;" lang="EN-US"><span class="SpellE"></span>
 (Pink color).</span></li>
+
+
 
 
 
@@ -218,6 +282,8 @@ on the&nbsp;<span class="SpellE"></span></span><span style="font-family: Arial;"
 will appear, ask you to input temporal formula. This time, for the <span style="text-decoration: underline;">formula type</span>, choose <span style="font-style: italic; font-weight: bold;">Risk</span>,
 and you don't need to type the formula. The specification will be
 annotated automatically in the file based on red-labeled states.</span></li>
+
+
 
 
 
@@ -229,12 +295,18 @@ Libraries -- CodeGenerators -- Verification -- FmvAutomaton).</span></li>
 
 
 
+
+
 </ol>
+
+
 
 
 
 <span style="font-family: Arial;" lang="EN-US"></span>
 <h2><a name="Demo_3"><span lang="EN-US"></span></a>Demo 3: SMVLegacyCodeActor</h2>
+
+
 
 
 
@@ -250,7 +322,11 @@ template as the converted result.</span><span style="font-family: Arial;" lang="
 
 
 
+
+
 <ol>
+
+
 
 
 
@@ -258,7 +334,11 @@ template as the converted result.</span><span style="font-family: Arial;" lang="
 
 
 
+
+
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">You can open the PedestrianLightSMV actor, and you can find some code written in formats acceptable by SMV.&nbsp;</span><span style="font-family: Arial;" lang="EN-US"></span></li>
+
+
 
 
 
@@ -269,10 +349,16 @@ You may want to copy the above line; it would be a lot faster.<span style=""> Pe
 
 
 
+
+
 </ol>
 
 
+
+
 <h2><a name="LargeExample"><span lang="EN-US"></span></a>A larger example in robotic controller design (reactive control)</h2>
+
+
 
 
 
@@ -283,6 +369,8 @@ You may want to copy the above line; it would be a lot faster.<span style=""> Pe
 
 <h2><a name="Install"><span lang="EN-US"></span></a>Install
 NuSMV and set up environment variables&nbsp;</h2>
+
+
 
 
 
@@ -300,7 +388,11 @@ approaches).&nbsp;</span></p>
 
 
 
+
+
 <ol start="1" type="1">
+
+
 
 
 
@@ -308,6 +400,8 @@ approaches).&nbsp;</span></p>
 
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US"><a href="../verification/demo/TrafficLight/SimpleTrafficLight.xml"><code><span style="font-size: 10pt;"></span></code></a>Install
 NuSMV by downloading from its <a href="http://nusmv.irst.itc.it/" target="_blank">website</a>.&nbsp;</span></li>
+
+
 
 
 
@@ -325,9 +419,13 @@ Environment Variable). &nbsp;Save your changes. <o:p></o:p></span></li>
 
 
 
+
+
   <li class="MsoNormal" style=""><span style="font-family: Arial;" lang="EN-US">That's all
 you need to do! Now you can invoke NuSMV within Ptolemy II
 software!&nbsp;<o:p></o:p></span></li>
+
+
 
 
 
@@ -339,8 +437,12 @@ software!&nbsp;<o:p></o:p></span></li>
 
 
 
+
+
 <h2 style="font-weight: bold;"><a name="Integration"><span lang="EN-US">Integrating verification engines using
 the&nbsp;EmbeddedCActor&nbsp;</span></a></h2>
+
+
 
 
 
@@ -355,7 +457,9 @@ technique is to use EmbeddedCActor instead of using Java Native
 Interface directly (it is relatively complicated for&nbsp;C++
 programmers to learn Java and JNI).&nbsp; Therefore, for researchers
 willing to use Ptolemy II as their front-end, this offers excellent
-guidance.</span> <span style="font-family: Arial;" lang="EN-US"></span></p>
+guidance.&nbsp;</span> <span style="font-family: Arial;" lang="EN-US"></span></p>
+
+
 
 
 
@@ -367,14 +471,20 @@ guidance.</span> <span style="font-family: Arial;" lang="EN-US"></span></p>
 
 
 
+
+
 <p class="MsoNormal"><span style="font-family: Arial;" lang="EN-US">This is a highly
 preliminary code generator facility, with many limitations. It is best
 viewed
 as a concept demonstration. Currently i</span><span style="font-family: Arial;" lang="EN-US">t
 may analyze a single FSMActor, and a system consisting of multiple
 FSMActors or ModalModels (with state or SR refinement&nbsp;)
-interacting with SMVLegacyCodeActors in the SR domain.&nbsp;We will expand
-existing functionalities soon.</span></p>
+interacting with SMVLegacyCodeActors in the SR domain. For models in
+the DE domain, we are also performing preliminary experiments. We will
+expand
+existing functionalities soon.&nbsp;</span></p>
+
+
 
 
 
