@@ -31,9 +31,9 @@ package ptolemy.codegen.kernel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -1126,7 +1126,7 @@ public class CodeStream {
          * scope is being added always add to the end of the list.
          */
         public void addScope() {
-            _codeTableList.addLast(new Hashtable());
+            _codeTableList.addLast(new LinkedHashMap());
         }
 
         /**
@@ -1187,7 +1187,7 @@ public class CodeStream {
         public void putCode(Signature signature, String filePath,
                 StringBuffer code) {
 
-            Hashtable currentScope = (Hashtable) _codeTableList.getLast();
+            LinkedHashMap currentScope = (LinkedHashMap) _codeTableList.getLast();
 
             Object[] codeBlock = (Object[]) currentScope.get(signature);
             codeBlock[0] = filePath;
@@ -1204,7 +1204,7 @@ public class CodeStream {
          */
         public void putParameters(Signature signature, List parameters)
                 throws IllegalActionException {
-            Hashtable currentScope = (Hashtable) _codeTableList.getLast();
+            LinkedHashMap currentScope = (LinkedHashMap) _codeTableList.getLast();
             currentScope.get(signature);
             Object[] codeBlock = new Object[3];
             codeBlock[2] = parameters;
@@ -1242,7 +1242,7 @@ public class CodeStream {
                 return null;
             }
 
-            Hashtable table = (Hashtable) scopeList.get(0);
+            LinkedHashMap table = (LinkedHashMap) scopeList.get(0);
 
             if (!table.containsKey(signature)) {
                 return _getCode(signature, arguments, scopeList
@@ -1273,7 +1273,7 @@ public class CodeStream {
                 return null;
             }
 
-            Hashtable table = (Hashtable) scopeList.get(0);
+            LinkedHashMap table = (LinkedHashMap) scopeList.get(0);
 
             if (!table.containsKey(signature)) {
                 return _getHeader(signature, scopeList
@@ -1379,7 +1379,7 @@ public class CodeStream {
             if (scopeList.isEmpty()) {
                 return new LinkedList();
             }
-            Hashtable currentScope = (Hashtable) scopeList.get(0);
+            LinkedHashMap currentScope = (LinkedHashMap) scopeList.get(0);
 
             if (currentScope.containsKey(signature)) {
                 return (List) ((Object[]) currentScope.get(signature))[2];
@@ -1390,10 +1390,14 @@ public class CodeStream {
             }
         }
 
+        /**
+         * Return all the keys contained in this code block table.
+         * @return The set of keys contained in this code block table.
+         */
         private Set keySet() {
-            HashSet signatures = new HashSet();
+            LinkedHashSet signatures = new LinkedHashSet();
 
-            for (Hashtable table : _codeTableList) {
+            for (LinkedHashMap table : _codeTableList) {
                 signatures.addAll(table.keySet());
             }
             return signatures;
@@ -1409,10 +1413,10 @@ public class CodeStream {
         }
 
         /**
-         * LinkedList of Hashtable of code blocks. Each index of the
+         * LinkedList of LinkedHashMap of code blocks. Each index of the
          * LinkedList represents a separate helper .c code block file.
          */
-        private LinkedList<Hashtable> _codeTableList = new LinkedList<Hashtable>();
+        private LinkedList<LinkedHashMap> _codeTableList = new LinkedList<LinkedHashMap>();
     }
 
     /**
