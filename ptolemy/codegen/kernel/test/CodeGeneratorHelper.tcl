@@ -89,10 +89,17 @@ test CodeGeneratorHelper-5.1 {getSourceChannel} {
     $model connect \
             [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+
     set outputPort [$ramp getPort output]
     set inputPort [$rec getPort input]
+
+	# Create the receivers explicitly.
+	[java::cast ptolemy.actor.IOPort $outputPort] createReceivers
+	[java::cast ptolemy.actor.IOPort $inputPort] createReceivers
+    
     catch {$cgHelper getSourceChannel $inputPort 1} errMsg
     set channel [$cgHelper getSourceChannel $inputPort 0]
+    
     list $errMsg [$channel toString]
 } {{java.lang.ArrayIndexOutOfBoundsException: 1} output_0}
 
