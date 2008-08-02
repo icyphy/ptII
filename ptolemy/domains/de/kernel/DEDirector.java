@@ -156,20 +156,21 @@ import ptolemy.kernel.util.Workspace;
  whose tags are equal to the current tag of the director (also called the
  model tag). At the beginning of the fire() method, this director dequeues
  a subset of the earliest events (the ones with smallest timestamp, microstep,
- and depth) from the global event queue. These events have the same
- destination actor. Then, this director invokes that actor to iterate.
+ and depth) that have the same destination actor
+ from the global event queue. Then, this director fires that actor.
  This actor must consume tokens from its input port(s),
  and usually produces new events on its output port(s). These new events will
- be trigger the receiving actors to fire. It is important that the actor
+ trigger the destination actors to fire. It is important that the actor
  actually consumes tokens from its inputs, even if the tokens are solely
- used to trigger reactions. This is how polymorphic actors are used in the
- DE domain. The actor will be fired repeatedly until there are no more tokens
- in its input ports, or the actor returns false in its prefire() method. Then,
- this director keeps dequeuing and processing the earliest events from the
- event queue until no more events have the same tag as the model tag.
- After calling the postfire() method, this director finishes an iteration.
- This director is responsible to advance the model tag to perform another
- iteration.
+ used to trigger reactions, because the actor will be fired repeatedly
+ until there are no more tokens in its input ports with the same tag,
+ or until the actor returns false in its prefire() method. The
+ director then keeps dequeuing and processing the earliest events from the
+ event queue until no more events have the same tag. At that point, and
+ only at that point, it invokes postfire() on all the actors that were
+ fired during the iteration, and concludes the iteration.
+ Note that under this policy, it is possible for an actor to be fired
+ multiple times in an iteration prior to invocation of its postfire() method.
  </p><p>
  A model starts from the time specified by <i>startTime</i>, which
  has default value 0.0. The stop time of the execution can be set
@@ -388,16 +389,19 @@ public class DEDirector extends Director implements TimedDirector {
         return causality.describeDepths();
     }
 
-    /** <p>Advance the current model tag to that of the earliest event in
+    /** Advance the current model tag to that of the earliest event in
      *  the event queue, and fire all actors that have requested or
      *  are triggered to be fired at the current tag. If
      *  <i>synchronizeToRealTime</i> is true, then before firing, wait
      *  until real time matches or exceeds the timestamp of the
      *  event. Note that the default unit for time is seconds.
      *  </p><p>
-     *  Each actor is iterated repeatedly (prefire(), fire(), postfire()),
+     *  Each actor is fired repeatedly (prefire(), fire()),
      *  until either it has no more input tokens, or its prefire() method
-     *  returns false.
+     *  returns false. Note that if the actor fails to consume its
+     *  inputs, then this can result in an infinite loop.
+     *  Each actor that is fired is then postfired once at the
+     *  conclusion of the iteration.
      *  </p><p>
      *  If there are no events in the event queue, then the behavior
      *  depends on the <i>stopWhenQueueIsEmpty</i> parameter. If it is
@@ -406,10 +410,15 @@ public class DEDirector extends Director implements TimedDirector {
      *  the stop time and the execution will halt.</p>
      *
      *  @exception IllegalActionException If the firing actor throws it, or
-     *  event queue is not ready, or an event is missed, or time is set
-     *  backwards.
+     *   event queue is not ready, or an event is missed, or time is set
+     *   backwards.
      */
     public void fire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("========= DE director fires at " + getModelTime()
+                    + "  with microstep as " + _microstep);
+        }
+
         // NOTE: This fire method does not call super.fire()
         // because this method is very different from that of the super class.
         // A BIG while loop that handles all events with the same tag.
@@ -453,7 +462,6 @@ public class DEDirector extends Director implements TimedDirector {
                                 + "at the current tag.");
                     }
                 }
-
                 // Nothing more needs to be done in the current iteration.
                 // Simply return.
                 // Since we are now actually stopping the firing, we can set this false.
@@ -478,12 +486,11 @@ public class DEDirector extends Director implements TimedDirector {
             }
 
             if (_debugging) {
-                _debug("DE director fires at " + getModelTime()
-                        + "  with microstep as " + _microstep);
+                _debug("****** Actor to fire: " + actorToFire.getFullName());
             }
 
             // Keep firing the actor to be fired until there are no more input
-            // tokens available in any of its input ports, or its prefire()
+            // tokens available in any of its input ports with the same tag, or its prefire()
             // method returns false.
             boolean refire;
 
@@ -495,11 +502,11 @@ public class DEDirector extends Director implements TimedDirector {
                 // into two duplicate versions.
                 if (_debugging) {
                     // Debugging. Report everything.
-                    if (((Nameable) actorToFire).getContainer() == null) {
-                        // If the actor to be fired does not have a container,
-                        // it may just be deleted. Put this actor to the
-                        // list of disabled actors.
-                        _debug("Actor has no container. Disabling actor.");
+                    // If the actor to be fired is not contained by the container,
+                    // it may just be deleted. Put this actor to the
+                    // list of disabled actors.
+                    if (!((CompositeEntity)getContainer()).deepContains((NamedObj)actorToFire)) {
+                        _debug("Actor no longer under the control of this director. Disabling actor.");
                         _disableActor(actorToFire);
                         break;
                     }
@@ -537,10 +544,10 @@ public class DEDirector extends Director implements TimedDirector {
                             FiringEvent.AFTER_POSTFIRE));
                 } else {
                     // No debugging.
-                    if (((Nameable) actorToFire).getContainer() == null) {
-                        // If the actor to be fired does not have a container,
-                        // it may just be deleted. Put this actor to the
-                        // list of disabled actors.
+                    // If the actor to be fired is not contained by the container,
+                    // it may just be deleted. Put this actor to the
+                    // list of disabled actors.
+                    if (!((CompositeEntity)getContainer()).deepContains((NamedObj)actorToFire)) {
                         _disableActor(actorToFire);
                         break;
                     }
@@ -551,6 +558,11 @@ public class DEDirector extends Director implements TimedDirector {
 
                     actorToFire.fire();
 
+                    // NOTE: It is the fact that we postfire actors now that makes
+                    // this director not comply with the actor abstract semantics.
+                    // However, it's quite a redesign to make it comply, and the
+                    // semantics would not be backward compatible. It really needs
+                    // to be a new director to comply.
                     if (!actorToFire.postfire()) {
                         // This actor requests not to be fired again.
                         _disableActor(actorToFire);
@@ -560,6 +572,14 @@ public class DEDirector extends Director implements TimedDirector {
 
                 // Check all the input ports of the actor to see whether there
                 // are more input tokens to be processed.
+                // FIXME: This particular situation can only occur if either the
+                // actor failed to consume a token, or multiple
+                // events with the same destination were queued with the same tag.
+                // In theory, both are errors. One possible fix for the latter
+                // case would be to requeue the token with a larger microstep.
+                // A possible fix for the former (if we can detect it) would
+                // be to throw an exception. This would be far better than
+                // going into an infinite loop.
                 Iterator inputPorts = actorToFire.inputPortList().iterator();
 
                 while (inputPorts.hasNext() && !refire) {
