@@ -63,6 +63,7 @@ JSRCS = \
 	Server.java \
 	SingleEvent.java \
 	TestActorPortDepth.java \
+	TimeCompare.java \
 	TimeGap.java \
 	TimedDelay.java \
 	Timer.java \

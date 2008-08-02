@@ -55,12 +55,6 @@ import ptolemy.util.StringUtilities;
  */
 public class NaomiParameter extends StringParameter implements ChangeListener {
 
-    /**
-     * @param container
-     * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
-     */
     public NaomiParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -72,7 +66,8 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
             if (container != null && container.getContainer() ==
                     ((MoMLChangeRequest) change).getContext()) {
                 String expression = StringUtilities.unescapeForXML(
-                        getExpression(_method, _attributeName, new Date()));
+                        getExpression(_method, _attributeName, new Date(),
+                                _unit, _documentation));
                 String moml = "<property name=\"" + getName() + "\" value=\"" +
                         expression + "\"/>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
@@ -91,10 +86,14 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
         return _attributeName;
     }
 
+    public String getDocumentation() {
+        return _documentation;
+    }
+
     public static String getExpression(Method method, String attributeName,
-            Date modifiedDate) {
+            Date modifiedDate, String unit, String documentation) {
         return method + ":" + attributeName + " (" + DATE_FORMAT.format(
-                modifiedDate) + ")";
+                modifiedDate) + ") (" + unit + ") (" + documentation + ")";
     }
 
     public Method getMethod() {
@@ -105,8 +104,13 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
         return _modifiedDate;
     }
 
+    public String getUnit() {
+        return _unit;
+    }
+
     public void setAttributeName(String name) {
-        setExpression(getExpression(_method, name, _modifiedDate));
+        setExpression(getExpression(_method, name, _modifiedDate, _unit,
+                _documentation));
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
@@ -123,6 +127,11 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
         }
     }
 
+    public void setDocumentation(String documentation) {
+        setExpression(getExpression(_method, _attributeName, _modifiedDate,
+                _unit, documentation));
+    }
+
     public void setExpression(String expr) {
         if (expr == null || expr.equals("")) {
             expr = "get:no_name (" + DATE_FORMAT.format(new Date()) + ")";
@@ -131,11 +140,18 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
     }
 
     public void setMethod(Method method) {
-        setExpression(getExpression(method, _attributeName, _modifiedDate));
+        setExpression(getExpression(method, _attributeName, _modifiedDate,
+                _unit, _documentation));
     }
 
     public void setModifiedDate(Date date) {
-        setExpression(getExpression(_method, _attributeName, date));
+        setExpression(getExpression(_method, _attributeName, date, _unit,
+                _documentation));
+    }
+
+    public void setUnit(String unit) {
+        setExpression(getExpression(_method, _attributeName, _modifiedDate,
+                unit, _documentation));
     }
 
     public Collection<?> validate() throws IllegalActionException {
@@ -162,6 +178,8 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
             throw new IllegalActionException(this, e, "Fail to parse: " +
                     expression);
         }
+        _unit = matcher.group(4);
+        _documentation = matcher.group(5);
         return super.validate();
     }
 
@@ -185,11 +203,15 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
     private static final Pattern _PATTERN = Pattern.compile("\\s*" +
             "((?:get)|(?:put)|(?:sync)):" +
             "([a-zA-Z\\$_][a-zA-Z\\$_0-9]*(?:\\.[a-zA-Z\\$_][a-zA-Z\\$_0-9]*)*)"
-            + "\\s+\\((.*)\\)\\s*");
+            + "\\s+\\((.*)\\)\\s+\\((.*)\\)\\s+\\((.*)\\)\\s*");
 
     private String _attributeName;
+
+    private String _documentation;
 
     private Method _method;
 
     private Date _modifiedDate;
+
+    private String _unit;
 }

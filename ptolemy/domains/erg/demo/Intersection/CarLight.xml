@@ -72,7 +72,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 310.0]">
         </property>
     </property>
     <property name="RedDuration" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -91,7 +91,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 310.0]">
         </property>
     </property>
     <property name="GreenDuration" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -110,7 +110,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 330.0]">
         </property>
     </property>
     <property name="YellowDuration" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -129,7 +129,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 350.0]">
         </property>
     </property>
     <property name="CrossTime" class="ptolemy.data.expr.Parameter" value="0.065">
@@ -148,7 +148,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 330.0]">
         </property>
     </property>
     <property name="LightInit" class="ptolemy.data.expr.Parameter" value="R">
@@ -167,7 +167,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 350.0]">
         </property>
     </property>
     <property name="RequestPolicyFile" class="ptolemy.data.expr.FileParameter" value="RequestPolicy.xml">
@@ -186,11 +186,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 370.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 370.0]">
         </property>
     </property>
     <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 275.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="277.0">
         </property>
@@ -204,7 +204,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Parameters">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 280.0]">
         </property>
     </property>
     <property name="Light" class="ptolemy.data.expr.Parameter" value="LightInit">
@@ -223,11 +223,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 110.0]">
         </property>
     </property>
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 75.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="162.0">
         </property>
@@ -254,7 +254,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 110.0]">
         </property>
     </property>
     <property name="G" class="ptolemy.data.expr.Parameter" value="2">
@@ -273,7 +273,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 110.0]">
         </property>
     </property>
     <property name="Y" class="ptolemy.data.expr.Parameter" value="4">
@@ -292,7 +292,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 110.0]">
         </property>
     </property>
     <property name="PedGo" class="ptolemy.data.expr.Parameter" value="1">
@@ -311,7 +311,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 130.0]">
         </property>
     </property>
     <property name="PedStop" class="ptolemy.data.expr.Parameter" value="2">
@@ -330,17 +330,17 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 130.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Constants">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 80.0]">
         </property>
     </property>
     <property name="Rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 75.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="109.0">
         </property>
@@ -354,20 +354,20 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Variables">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 80.0]">
         </property>
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 40.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={295, 268, 823, 528}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={295, 268, 854, 548}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 414]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[631, 434]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 207.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.5, 217.0}">
     </property>
     <property name="RequestChannel" class="ptolemy.data.expr.Parameter" value="&quot;RequestChannel&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -410,15 +410,15 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 350.0]">
         </property>
     </property>
     <property name="Rectangle5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 275.0}">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="293.0">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="317.0">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="128.0">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="147.0">
         </property>
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
         </property>
@@ -441,7 +441,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 370.0]">
         </property>
     </property>
     <property name="LightChannel" class="ptolemy.data.expr.Parameter" value="&quot;CarLightChannel&quot;">
@@ -460,7 +460,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 390.0]">
         </property>
     </property>
     <property name="OrthogonalRequestChannel" class="ptolemy.data.expr.Parameter" value="&quot;RequestChannel&quot;">
@@ -479,7 +479,26 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 410.0]">
+        </property>
+    </property>
+    <property name="CarWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;CarWaitingTimeChannel&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 330.0]">
         </property>
     </property>
     <port name="Request" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -488,7 +507,14 @@
         </property>
         <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 180.0]">
+        </property>
+    </port>
+    <port name="CarWaitingTime" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+        <property name="output"/>
+        <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="$CarWaitingTimeChannel">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 45.0]">
         </property>
     </port>
     <port name="CarCount" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -497,7 +523,7 @@
         </property>
         <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 155.0]">
         </property>
     </port>
     <port name="PedControl" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -506,7 +532,7 @@
         </property>
         <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 200.0]">
         </property>
     </port>
     <port name="Light" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -515,7 +541,7 @@
         </property>
         <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 245.0]">
         </property>
     </port>
     <port name="OrthogonalRequest" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -524,13 +550,11 @@
         </property>
         <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 245.0]">
         </property>
     </port>
     <entity name="CarController" class="ptolemy.domains.erg.kernel.ERGModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.erg.ERGTableauFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 235.0]">
         </property>
         <port name="CarTrigger" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -614,8 +638,6 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 85.0]">
                 </property>
             </entity>
@@ -623,8 +645,6 @@
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Light = G;&#10;  PedControl = PedStop;&#10;  CrossScheduled = true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[725.019252090648, 209.80865680775048]">
                 </property>
@@ -636,8 +656,6 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[132.00085299834814, 208.1906837698802]">
                 </property>
             </entity>
@@ -645,8 +663,6 @@
                 <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 255.0]">
                 </property>
@@ -656,8 +672,6 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[430.019252090648, 449.8086568077505]">
                 </property>
             </entity>
@@ -665,8 +679,6 @@
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="CarTrigger = 1">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 645.0]">
                 </property>
@@ -676,8 +688,6 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 560.0]">
                 </property>
             </entity>
@@ -686,15 +696,11 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 560.0]">
                 </property>
             </entity>
             <entity name="GreenToYellow" class="ptolemy.domains.erg.kernel.Event">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 355.0]">
                 </property>
@@ -704,8 +710,6 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 115.0]">
                 </property>
             </entity>
@@ -714,15 +718,11 @@
 <display name="isInitialEvent"/>                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[430.019252090648, 174.80865680775048]">
                 </property>
             </entity>
             <entity name="RedToGreen" class="ptolemy.domains.erg.kernel.Event">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 120.0]">
                 </property>
@@ -1458,7 +1458,7 @@
         <link port="_Controller.OrthogonalRequest" relation="OrthogonalRequestRelation"/>
     </entity>
     <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 105.0]">
         </property>
     </entity>
     <entity name="CarArrival" class="ptolemy.actor.lib.PoissonClock">
@@ -1466,7 +1466,7 @@
         </property>
         <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 105.0]">
         </property>
     </entity>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
@@ -1480,35 +1480,35 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 245.0]">
         </property>
     </entity>
     <entity name="LocalPolicy" class="RequestPolicyExecutor">
         <property name="RequestPolicyFile" class="ptolemy.data.expr.FileParameter" value="$RequestPolicyFile">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 180.0]">
         </property>
     </entity>
     <entity name="OrthogonalPolicy" class="RequestPolicyExecutor">
         <property name="RequestPolicyFile" class="ptolemy.data.expr.FileParameter" value="$RequestPolicyFile">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 245.0]">
         </property>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 45.0]">
         </property>
-    </relation>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[415.0, 170.0]">
+        <vertex name="vertex1" value="[420.0, 185.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[275.0, 135.0]">
+        <vertex name="vertex1" value="[275.0, 155.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -1539,7 +1539,28 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[215.0, 105.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[215.0, 35.0]">
+        </vertex>
+    </relation>
     <link port="Request" relation="relation"/>
+    <link port="CarWaitingTime" relation="relation12"/>
     <link port="CarCount" relation="relation5"/>
     <link port="PedControl" relation="relation6"/>
     <link port="Light" relation="relation7"/>
@@ -1550,14 +1571,19 @@
     <link port="CarController.PedRequest" relation="relation2"/>
     <link port="CarController.Light" relation="relation8"/>
     <link port="CarController.OrthogonalRequest" relation="relation10"/>
-    <link port="Queue.input" relation="relation3"/>
+    <link port="Queue.input" relation="relation11"/>
+    <link port="Queue.output" relation="relation3"/>
     <link port="Queue.trigger" relation="relation4"/>
     <link port="Queue.size" relation="relation5"/>
-    <link port="CarArrival.output" relation="relation3"/>
+    <link port="CarArrival.output" relation="relation11"/>
     <link port="SetVariable.input" relation="relation8"/>
     <link port="SetVariable.output" relation="relation7"/>
     <link port="LocalPolicy.RequestInput" relation="relation"/>
     <link port="LocalPolicy.RequestOutput" relation="relation2"/>
     <link port="OrthogonalPolicy.RequestInput" relation="relation9"/>
     <link port="OrthogonalPolicy.RequestOutput" relation="relation10"/>
+    <link port="TimeCompare.input1" relation="relation13"/>
+    <link port="TimeCompare.input2" relation="relation3"/>
+    <link port="TimeCompare.output" relation="relation12"/>
+    <link relation1="relation11" relation2="relation13"/>
 </class>

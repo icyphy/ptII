@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 997, 639}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1117, 675}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[774, 525]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[894, 561]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{387.0, 262.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{447.0, 280.5}">
     </property>
     <property name="MeanCarArrivalNS" class="ptolemy.data.expr.Parameter" value="0.2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -36,7 +36,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 75.0]">
         </property>
     </property>
     <property name="MeanCarArrivalEW" class="ptolemy.data.expr.Parameter" value="0.2">
@@ -55,7 +55,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 75.0]">
         </property>
     </property>
     <property name="MeanPedArrivalNS" class="ptolemy.data.expr.Parameter" value="1.5">
@@ -74,7 +74,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 95.0]">
         </property>
     </property>
     <property name="MeanPedArrivalEW" class="ptolemy.data.expr.Parameter" value="1.5">
@@ -93,7 +93,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 95.0]">
         </property>
     </property>
     <property name="RedDurationNS" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -112,7 +112,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 115.0]">
         </property>
     </property>
     <property name="RedDurationEW" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -131,7 +131,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 115.0]">
         </property>
     </property>
     <property name="GreenDurationNS" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -150,7 +150,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 135.0]">
         </property>
     </property>
     <property name="GreenDurationEW" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -169,7 +169,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 135.0]">
         </property>
     </property>
     <property name="YellowDurationNS" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -188,7 +188,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 155.0]">
         </property>
     </property>
     <property name="YellowDurationEW" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -207,7 +207,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 155.0]">
         </property>
     </property>
     <property name="CarCrossTimeNS" class="ptolemy.data.expr.Parameter" value="0.065">
@@ -226,7 +226,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 175.0]">
         </property>
     </property>
     <property name="CarCrossTimeEW" class="ptolemy.data.expr.Parameter" value="0.065">
@@ -245,7 +245,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 175.0]">
         </property>
     </property>
     <property name="StopTime" class="ptolemy.data.expr.Parameter" value="1000.0">
@@ -264,7 +264,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 195.0]">
         </property>
     </property>
     <property name="AnimationDelay" class="ptolemy.data.expr.Parameter" value="false">
@@ -283,7 +283,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 195.0]">
         </property>
     </property>
     <property name="RequestPolicyFile" class="ptolemy.data.expr.FileParameter" value="BerkeleyPolicy.xml">
@@ -302,13 +302,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 215.0]">
         </property>
     </property>
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 40.0]">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="332.0">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="435.0">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="203.0">
         </property>
@@ -320,7 +320,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Parameters">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 45.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -338,17 +338,18 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 5.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">    This model simulates the car and pedestrian traffic at a 4-way intersection. The car lights function according to the
-given red/green/yellow durations, until a pedestrian arrives at any pedestrian light and presses the request button. The
-Berkeley policy is to serve the pedestrian immediately. Another policy, the Manhattan policy, completely ignores
-pedestrian requests.
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">    This model simulates the car and pedestrian traffic at a 4-way
+intersection. The car lights function according to the given red,
+green and yellow durations, until a pedestrian arrives at any
+pedestrian light and presses the request button. The Berkeley
+policy is to serve the pedestrian immediately. Another policy, the Manhattan policy, completely ignores pedestrian requests.
     The time that it takes for a car to cross is defined by the CarCrossTimes. Pedestrian cross time is assumed to be 0.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -360,7 +361,7 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 420.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -368,17 +369,17 @@ pedestrian requests.
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(Try setting it to ManhattanPolicy.xml.)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(Set this parameter to ManhattanPolicy.xml for a different request policy.)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 220.0]">
         </property>
     </property>
     <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 255.0]">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="332.0">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="435.0">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="149.0">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="226.0">
         </property>
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
         </property>
@@ -388,10 +389,10 @@ pedestrian requests.
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Output">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 260.0]">
         </property>
     </property>
-    <property name="MaxCarWaitingNS" class="ptolemy.data.expr.Parameter" value="1812">
+    <property name="MaxCarWaitingNS" class="ptolemy.data.expr.Parameter" value="327">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -407,12 +408,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 290.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxcarnum_ns (Sun, Jun 29 2008 15:58:40.111 -0700)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxcarnum_ns (Sat, Aug 02 2008 01:17:58.534 -0700) () ()">
         </property>
     </property>
-    <property name="MaxCarWaitingEW" class="ptolemy.data.expr.Parameter" value="1747">
+    <property name="MaxCarWaitingEW" class="ptolemy.data.expr.Parameter" value="327">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -428,12 +429,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 290.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxcarnum_ew (Sun, Jun 29 2008 15:58:40.111 -0700)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxcarnum_ew (Sat, Aug 02 2008 01:17:58.534 -0700) () ()">
         </property>
     </property>
-    <property name="MaxPedWaitingNS" class="ptolemy.data.expr.Parameter" value="5">
+    <property name="MaxPedWaitingNS" class="ptolemy.data.expr.Parameter" value="4">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -449,12 +450,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 310.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxpednum_ns (Sun, Jun 29 2008 15:58:40.111 -0700)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxpednum_ns (Sat, Aug 02 2008 01:17:58.534 -0700) () ()">
         </property>
     </property>
-    <property name="MaxPedWaitingEW" class="ptolemy.data.expr.Parameter" value="5">
+    <property name="MaxPedWaitingEW" class="ptolemy.data.expr.Parameter" value="3">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -470,12 +471,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 310.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxpednum_ew (Sun, Jun 29 2008 15:58:40.111 -0700)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxpednum_ew (Sat, Aug 02 2008 01:17:58.533 -0700) () ()">
         </property>
     </property>
-    <property name="AverageCarWaitingNS" class="ptolemy.data.expr.Parameter" value="852.7996492566908">
+    <property name="AvgCarWaitingNS" class="ptolemy.data.expr.Parameter" value="172.3390526263283">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -491,12 +492,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 330.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.avgcarnum_ns (Sun, Jun 29 2008 15:58:40.111 -0700)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.avgcarnum_ns (Sat, Aug 02 2008 01:17:58.533 -0700) () ()">
         </property>
     </property>
-    <property name="AverageCarWaitingEW" class="ptolemy.data.expr.Parameter" value="922.474301798184">
+    <property name="AvgCarWaitingEW" class="ptolemy.data.expr.Parameter" value="160.2276196630483">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -512,12 +513,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 350.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.avgcarnum_ew (Sun, Jun 29 2008 15:58:40.111 -0700)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.avgcarnum_ew (Sat, Aug 02 2008 01:17:58.533 -0700) () ()">
         </property>
     </property>
-    <property name="AveragePedWaitingNS" class="ptolemy.data.expr.Parameter" value="1.4647706135005">
+    <property name="AvgPedWaitingNS" class="ptolemy.data.expr.Parameter" value="1.4385559675458">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -533,12 +534,12 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 370.0}">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.avgpednum_ns (Sun, Jun 29 2008 15:58:40.111 -0700)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.avgpednum_ns (Sat, Aug 02 2008 01:17:58.533 -0700) () ()">
         </property>
     </property>
-    <property name="AveragePedWaitingEW" class="ptolemy.data.expr.Parameter" value="1.4895015349237">
+    <property name="AvgPedWaitingEW" class="ptolemy.data.expr.Parameter" value="1.3600686485861">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -554,16 +555,100 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 390.0}">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.avgpednum_ew (Sun, Jun 29 2008 15:58:40.110 -0700)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.avgpednum_ew (Sat, Aug 02 2008 01:17:58.533 -0700) () ()">
+        </property>
+    </property>
+    <property name="MaxCarQueueLength" class="ptolemy.data.expr.Parameter" value="max(MaxCarWaitingNS, MaxCarWaitingEW)">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 410.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.queue.length.maximum (Sat, Aug 02 2008 01:22:06.200 -0700) () (SOW TPM R9)">
+        </property>
+    </property>
+    <property name="AvgCarQueueLength" class="ptolemy.data.expr.Parameter" value="(AvgCarWaitingNS + AvgCarWaitingEW) / 2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 430.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.queue.length.average (Sat, Aug 02 2008 01:22:19.598 -0700) (cars) (SOW TPM R8)">
+        </property>
+    </property>
+    <property name="MaxCarWaitingTime" class="ptolemy.data.expr.Parameter" value="63.3481139019">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 450.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.wait.time.maximum (Sat, Aug 02 2008 01:23:01.364 -0700) (minutes) (SOW TPM R10)">
+        </property>
+    </property>
+    <property name="MaxPedWaitingTime" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 470.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.pedestrian.wait.time.maximum (Sat, Aug 02 2008 01:23:22.636 -0700) (minutes) (SOW TPM R11)">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Thomas Huining Feng</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Authors: Christopher Brooks, Thomas Huining Feng, Edward A. Lee</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -574,7 +659,7 @@ pedestrian requests.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 530.0]">
         </property>
     </property>
     <entity name="4WayIntersection" class="ptolemy.actor.TypedCompositeActor">
@@ -828,7 +913,7 @@ pedestrian requests.
             </property>
         </property>
         <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 280.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 280.0}">
             </property>
             <property name="width" class="ptolemy.data.expr.Parameter" value="249.0">
             </property>
@@ -964,7 +1049,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 823, 655}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1416, 1036}, maximized=true}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 541]">
         </property>
@@ -1158,7 +1243,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="CarLightW == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="CarLightE == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="ellipse8" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -1170,7 +1255,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="CarLightW == Y ? {1.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="CarLightE == Y ? {1.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="ellipse9" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -1182,7 +1267,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="CarLightW == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="CarLightE == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -1258,7 +1343,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="CarLightE == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="CarLightW == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="ellipse11" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -1270,7 +1355,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="CarLightE == Y ? {1.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="CarLightW == Y ? {1.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="ellipse12" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -1282,7 +1367,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="CarLightE == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="CarLightW == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="rectangle7" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -1306,7 +1391,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightE == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightW == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="ellipse14" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -1318,7 +1403,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightE == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightW == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="rectangle8" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -1414,7 +1499,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightW == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightE == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="ellipse18" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -1426,7 +1511,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightW == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightE == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="rectangle11" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -1450,7 +1535,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightE == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightW == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="ellipse22" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -1462,7 +1547,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightE == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightW == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="rectangle12" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -1522,7 +1607,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightW == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightE == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="ellipse26" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -1534,7 +1619,7 @@ pedestrian requests.
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightW == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="PedLightE == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
             <property name="rectangle14" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -1690,7 +1775,7 @@ pedestrian requests.
                 </property>
                 <property name="center" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="CarCountE">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="CarCountW">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
@@ -1714,7 +1799,7 @@ pedestrian requests.
                 </property>
                 <property name="center" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="CarCountW">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="CarCountE">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
@@ -1818,7 +1903,7 @@ pedestrian requests.
                 </property>
             </property>
         </property>
-        <property name="CarLightN" class="ptolemy.data.expr.Parameter" value="4">
+        <property name="CarLightN" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1856,7 +1941,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 65.0]">
             </property>
         </property>
-        <property name="CarLightS" class="ptolemy.data.expr.Parameter" value="4">
+        <property name="CarLightS" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2003,7 +2088,7 @@ pedestrian requests.
         <property name="Rectangle5" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 440.0]">
             </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="323.0">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="343.0">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="154.0">
             </property>
@@ -2012,7 +2097,7 @@ pedestrian requests.
             <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="CarCountN" class="ptolemy.data.expr.Parameter" value="1792">
+        <property name="CarCountN" class="ptolemy.data.expr.Parameter" value="305">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2031,7 +2116,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 45.0]">
             </property>
         </property>
-        <property name="CarCountE" class="ptolemy.data.expr.Parameter" value="1738">
+        <property name="CarCountE" class="ptolemy.data.expr.Parameter" value="295">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2050,7 +2135,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 65.0]">
             </property>
         </property>
-        <property name="CarCountS" class="ptolemy.data.expr.Parameter" value="1812">
+        <property name="CarCountS" class="ptolemy.data.expr.Parameter" value="288">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2069,7 +2154,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 85.0]">
             </property>
         </property>
-        <property name="CarCountW" class="ptolemy.data.expr.Parameter" value="1745">
+        <property name="CarCountW" class="ptolemy.data.expr.Parameter" value="327">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2088,7 +2173,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 105.0]">
             </property>
         </property>
-        <property name="PedCountN" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="PedCountN" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2107,7 +2192,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 125.0]">
             </property>
         </property>
-        <property name="PedCountE" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="PedCountE" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2126,7 +2211,7 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 145.0]">
             </property>
         </property>
-        <property name="PedCountS" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="PedCountS" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2166,6 +2251,18 @@ pedestrian requests.
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
+        <property name="Rectangle6" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 605.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="412.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="154.0">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            </property>
+            <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
         <entity name="CarLightN" class="CarLight">
             <property name="MeanCarArrival" class="ptolemy.data.expr.Parameter" value="MeanCarArrivalNS">
             </property>
@@ -2199,6 +2296,8 @@ pedestrian requests.
             </property>
             <property name="OrthogonalRequestChannel" class="ptolemy.data.expr.Parameter" value="&quot;RequestChannelEW&quot;">
             </property>
+            <property name="CarWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;CarWaitingTimeChannelN&quot;">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 85.0]">
             </property>
         </entity>
@@ -2227,6 +2326,8 @@ pedestrian requests.
             </property>
             <property name="LightChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedLightChannelN&quot;">
             </property>
+            <property name="PedWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedWaitingTimeChannelN&quot;">
+            </property>
         </entity>
         <entity name="PedControlChannelN" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
             <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range = 1000}">
@@ -2243,7 +2344,7 @@ pedestrian requests.
         <entity name="PedControlChannelE" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
             <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range = 1000}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 100.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 100.0]">
             </property>
         </entity>
         <entity name="RequestChannelEW" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
@@ -2287,11 +2388,13 @@ pedestrian requests.
             </property>
             <property name="OrthogonalRequestChannel" class="ptolemy.data.expr.Parameter" value="&quot;RequestChannelNS&quot;">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 160.0]">
+            <property name="CarWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;CarWaitingTimeChannelE&quot;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 165.0]">
             </property>
         </entity>
         <entity name="PedLightE" class="PedLight">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 165.0]">
             </property>
             <property name="MeanPedArrival" class="ptolemy.data.expr.Parameter" value="MeanPedArrivalEW">
             </property>
@@ -2314,6 +2417,8 @@ pedestrian requests.
             <property name="RequestChannel" class="ptolemy.data.expr.Parameter" value="&quot;RequestChannelEW&quot;">
             </property>
             <property name="LightChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedLightChannelE&quot;">
+            </property>
+            <property name="PedWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedWaitingTimeChannelE&quot;">
             </property>
         </entity>
         <entity name="CarLightS" class="CarLight">
@@ -2349,6 +2454,8 @@ pedestrian requests.
             </property>
             <property name="OrthogonalRequestChannel" class="ptolemy.data.expr.Parameter" value="&quot;RequestChannelEW&quot;">
             </property>
+            <property name="CarWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;CarWaitingTimeChannelS&quot;">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 240.0]">
             </property>
         </entity>
@@ -2377,17 +2484,19 @@ pedestrian requests.
             </property>
             <property name="LightChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedLightChannelS&quot;">
             </property>
+            <property name="PedWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedWaitingTimeChannelS&quot;">
+            </property>
         </entity>
         <entity name="PedControlChannelS" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
             <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range = 1000}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 235.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 235.0]">
             </property>
         </entity>
         <entity name="PedControlChannelW" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
             <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range = 1000}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 100.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 100.0]">
             </property>
         </entity>
         <entity name="CarLightW" class="CarLight">
@@ -2425,11 +2534,13 @@ pedestrian requests.
             </property>
             <property name="OrthogonalRequestChannel" class="ptolemy.data.expr.Parameter" value="&quot;RequestChannelNS&quot;">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 160.0]">
+            <property name="CarWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;CarWaitingTimeChannelW&quot;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 165.0]">
             </property>
         </entity>
         <entity name="PedLightW" class="PedLight">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 165.0]">
             </property>
             <property name="MeanPedArrival" class="ptolemy.data.expr.Parameter" value="MeanPedArrivalEW">
             </property>
@@ -2452,6 +2563,8 @@ pedestrian requests.
             <property name="RequestChannel" class="ptolemy.data.expr.Parameter" value="&quot;RequestChannelEW&quot;">
             </property>
             <property name="LightChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedLightChannelW&quot;">
+            </property>
+            <property name="PedWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedWaitingTimeChannelW&quot;">
             </property>
         </entity>
         <entity name="LightSetter" class="ptolemy.domains.wireless.kernel.WirelessComposite">
@@ -2766,14 +2879,14 @@ pedestrian requests.
             <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 575.0]">
             </property>
         </entity>
-        <entity name="Logger" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+        <entity name="CountLogger" class="ptolemy.domains.wireless.kernel.WirelessComposite">
             <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 515.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 520.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1416, 1036}, maximized=true}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 823, 514}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -3093,7 +3206,7 @@ pedestrian requests.
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Car(R)/Ped(B) - N</title>
-<xLabel>Time (sec)</xLabel>
+<xLabel>Time (min)</xLabel>
 <yLabel>Count</yLabel>
 <xRange min="0.0" max="30.0"/>
 <yRange min="0.0" max="80.0"/>
@@ -3114,7 +3227,7 @@ pedestrian requests.
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Car(R)/Ped(B) - E</title>
-<xLabel>Time (sec)</xLabel>
+<xLabel>Time (min)</xLabel>
 <yLabel>Count</yLabel>
 <xRange min="0.0" max="30.0"/>
 <yRange min="0.0" max="80.0"/>
@@ -3135,7 +3248,7 @@ pedestrian requests.
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Car(R)/Ped(B) - S</title>
-<xLabel>Time (sec)</xLabel>
+<xLabel>Time (min)</xLabel>
 <yLabel>Count</yLabel>
 <xRange min="0.0" max="30.0"/>
 <yRange min="0.0" max="80.0"/>
@@ -3156,10 +3269,10 @@ pedestrian requests.
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Car(R)/Ped(B) - W</title>
-<xLabel>Time (sec)</xLabel>
+<xLabel>Time (min)</xLabel>
 <yLabel>Count</yLabel>
-<xRange min="0.0" max="206.7805064042"/>
-<yRange min="0.0" max="355.0"/>
+<xRange min="0.0" max="30.0"/>
+<yRange min="0.0" max="80.0"/>
 </plot>?>
                 </configure>
             </entity>
@@ -3290,7 +3403,7 @@ pedestrian requests.
                 </property>
             </entity>
             <entity name="SetVariable10" class="ptolemy.actor.lib.SetVariable">
-                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="AverageCarWaitingNS">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="AvgCarWaitingNS">
                 </property>
                 <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -3300,7 +3413,7 @@ pedestrian requests.
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 70.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 70.0]">
                 </property>
             </entity>
             <entity name="Statistics1" class="Statistics">
@@ -3326,7 +3439,7 @@ pedestrian requests.
                 </property>
             </entity>
             <entity name="SetVariable12" class="ptolemy.actor.lib.SetVariable">
-                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="AverageCarWaitingEW">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="AvgCarWaitingEW">
                 </property>
                 <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -3336,7 +3449,7 @@ pedestrian requests.
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 150.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 150.0]">
                 </property>
             </entity>
             <entity name="SetVariable13" class="ptolemy.actor.lib.SetVariable">
@@ -3354,7 +3467,7 @@ pedestrian requests.
                 </property>
             </entity>
             <entity name="SetVariable14" class="ptolemy.actor.lib.SetVariable">
-                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="AveragePedWaitingEW">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="AvgPedWaitingEW">
                 </property>
                 <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -3364,7 +3477,7 @@ pedestrian requests.
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 560.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 560.0]">
                 </property>
             </entity>
             <entity name="Statistics3" class="Statistics">
@@ -3390,7 +3503,7 @@ pedestrian requests.
                 </property>
             </entity>
             <entity name="SetVariable16" class="ptolemy.actor.lib.SetVariable">
-                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="AveragePedWaitingNS">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="AvgPedWaitingNS">
                 </property>
                 <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -3400,7 +3513,7 @@ pedestrian requests.
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 640.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 640.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -3571,6 +3684,234 @@ pedestrian requests.
             <link port="Statistics4.average" relation="relation24"/>
             <link port="SetVariable15.input" relation="relation23"/>
             <link port="SetVariable16.input" relation="relation24"/>
+        </entity>
+        <entity name="CarWaitingTimeChannelN" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 635.0]">
+            </property>
+        </entity>
+        <entity name="PedWaitingTimeChannelS" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 705.0]">
+            </property>
+        </entity>
+        <entity name="CarWaitingTimeChannelS" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 705.0]">
+            </property>
+        </entity>
+        <entity name="PedWaitingTimeChannelE" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 670.0]">
+            </property>
+        </entity>
+        <entity name="CarWaitingTimeChannelE" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 670.0]">
+            </property>
+        </entity>
+        <entity name="PedWaitingTimeChannelN" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 635.0]">
+            </property>
+        </entity>
+        <entity name="PedWaitingTimeChannelW" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 740.0]">
+            </property>
+        </entity>
+        <entity name="CarWaitingTimeChannelW" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 740.0]">
+            </property>
+        </entity>
+        <entity name="TimeLogger" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+            <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 685.0]">
+            </property>
+            <port name="CarWaitingTimeN" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+                <property name="input"/>
+                <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="CarWaitingTimeChannelN">
+                </property>
+                <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 90.0]">
+                </property>
+            </port>
+            <port name="CarWaitingTimeE" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+                <property name="input"/>
+                <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="CarWaitingTimeChannelE">
+                </property>
+                <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 140.0]">
+                </property>
+            </port>
+            <port name="CarWaitingTimeS" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+                <property name="input"/>
+                <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="CarWaitingTimeChannelS">
+                </property>
+                <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 185.0]">
+                </property>
+            </port>
+            <port name="CarWaitingTimeW" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+                <property name="input"/>
+                <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="CarWaitingTimeChannelW">
+                </property>
+                <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 230.0]">
+                </property>
+            </port>
+            <port name="PedWaitingTimeN" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+                <property name="input"/>
+                <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PedWaitingTimeChannelN">
+                </property>
+                <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 275.0]">
+                </property>
+            </port>
+            <port name="PedWaitingTimeE" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+                <property name="input"/>
+                <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PedWaitingTimeChannelE">
+                </property>
+                <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 325.0]">
+                </property>
+            </port>
+            <port name="PedWaitingTimeS" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+                <property name="input"/>
+                <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PedWaitingTimeChannelS">
+                </property>
+                <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 370.0]">
+                </property>
+            </port>
+            <port name="PedWaitingTimeW" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
+                <property name="input"/>
+                <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PedWaitingTimeChannelW">
+                </property>
+                <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 415.0]">
+                </property>
+            </port>
+            <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 150.0]">
+                </property>
+            </entity>
+            <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 335.0]">
+                </property>
+            </entity>
+            <entity name="MovingMaximum" class="ptolemy.actor.lib.MovingMaximum">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 150.0]">
+                </property>
+            </entity>
+            <entity name="MovingMaximum2" class="ptolemy.actor.lib.MovingMaximum">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 335.0]">
+                </property>
+            </entity>
+            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MaxCarWaitingTime">
+                </property>
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 150.0]">
+                </property>
+            </entity>
+            <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="MaxPedWaitingTime">
+                </property>
+                <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 335.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="CarWaitingTimeN" relation="relation5"/>
+            <link port="CarWaitingTimeE" relation="relation6"/>
+            <link port="CarWaitingTimeS" relation="relation7"/>
+            <link port="CarWaitingTimeW" relation="relation8"/>
+            <link port="PedWaitingTimeN" relation="relation9"/>
+            <link port="PedWaitingTimeE" relation="relation10"/>
+            <link port="PedWaitingTimeS" relation="relation11"/>
+            <link port="PedWaitingTimeW" relation="relation12"/>
+            <link port="Merge.input" relation="relation5"/>
+            <link port="Merge.input" relation="relation6"/>
+            <link port="Merge.input" relation="relation7"/>
+            <link port="Merge.input" relation="relation8"/>
+            <link port="Merge.output" relation="relation"/>
+            <link port="Merge2.input" relation="relation9"/>
+            <link port="Merge2.input" relation="relation10"/>
+            <link port="Merge2.input" relation="relation11"/>
+            <link port="Merge2.input" relation="relation12"/>
+            <link port="Merge2.output" relation="relation2"/>
+            <link port="MovingMaximum.input" relation="relation"/>
+            <link port="MovingMaximum.output" relation="relation3"/>
+            <link port="MovingMaximum2.input" relation="relation2"/>
+            <link port="MovingMaximum2.output" relation="relation4"/>
+            <link port="SetVariable.input" relation="relation3"/>
+            <link port="SetVariable2.input" relation="relation4"/>
         </entity>
     </entity>
 </entity>

@@ -113,19 +113,10 @@ import ptolemy.vergil.VergilErrorHandler;
  */
 public class Connector extends MoMLApplication {
 
-    /**
-     * @param basePath
-     * @param args
-     * @throws Exception
-     */
     public Connector(String basePath, String[] args) throws Exception {
         super(basePath, args);
     }
 
-    /**
-     * @param args
-     * @throws Exception
-     */
     public Connector(String[] args) throws Exception {
         super(args);
     }
@@ -312,6 +303,8 @@ public class Connector extends MoMLApplication {
             }
             query.addChoice("method", "Method", choices, choices[0]);
             query.addLine("naomiName", "NAOMI attribute", "");
+            query.addLine("unit", "Unit", "");
+            query.addLine("documentation", "Documentation", "");
             ComponentDialog dialog = new ComponentDialog(_frame,
                     (String) getValue("tooltip"), query);
             if (dialog.buttonPressed().equals("OK")) {
@@ -325,6 +318,8 @@ public class Connector extends MoMLApplication {
                     }
                 }
                 String naomiName = query.getStringValue("naomiName");
+                String unit = query.getStringValue("unit");
+                String documentation = query.getStringValue("documentation");
 
                 if (naomiName.equals("")) {
                     MessageHandler.error("The \"NAOMI attribute\" must not be "
@@ -346,7 +341,7 @@ public class Connector extends MoMLApplication {
 
                 Attribute attribute = model.getAttribute(paramName);
                 String expression = NaomiParameter.getExpression(method,
-                        naomiName, new Date());
+                        naomiName, new Date(), unit, documentation);
                 String moml = "<property name=\"" +
                         attribute.uniqueName("naomi") + "\" class=\"" +
                         NaomiParameter.class.getName() + "\" value=\"" +
@@ -475,26 +470,6 @@ public class Connector extends MoMLApplication {
         private Map<String, String> _map;
     }
 
-    public static class Pair<T1, T2> {
-
-        public Pair(T1 v1, T2 v2) {
-            _v1 = v1;
-            _v2 = v2;
-        }
-
-        public T1 getV1() {
-            return _v1;
-        }
-
-        public T2 getV2() {
-            return _v2;
-        }
-
-        private T1 _v1;
-
-        private T2 _v2;
-    }
-
     public class SaveAction extends AbstractAction {
 
         public SaveAction(PtolemyFrame frame) {
@@ -559,6 +534,40 @@ public class Connector extends MoMLApplication {
         }
 
         private PtolemyFrame _frame;
+    }
+
+    public static class Tuple<T1, T2, T3, T4> {
+
+        public Tuple(T1 v1, T2 v2, T3 v3, T4 v4) {
+            _v1 = v1;
+            _v2 = v2;
+            _v3 = v3;
+            _v4 = v4;
+        }
+
+        public T1 getV1() {
+            return _v1;
+        }
+
+        public T2 getV2() {
+            return _v2;
+        }
+
+        public T3 getV3() {
+            return _v3;
+        }
+
+        public T4 getV4() {
+            return _v4;
+        }
+
+        private T1 _v1;
+
+        private T2 _v2;
+
+        private T3 _v3;
+
+        private T4 _v4;
     }
 
     public class UnlinkNaomiAttributeAction extends AbstractAction {
@@ -713,8 +722,9 @@ public class Connector extends MoMLApplication {
         }
     }
 
-    protected Pair<String, Date> _loadAttribute(File attributesPath,
-            String attributeName) throws IllegalActionException {
+    protected Tuple<String, Date, String, String> _loadAttribute(
+            File attributesPath, String attributeName)
+            throws IllegalActionException {
         File attributeFile = new File(attributesPath, attributeName);
         Date fileDate = new Date(attributeFile.lastModified());
         try {
@@ -724,11 +734,32 @@ public class Connector extends MoMLApplication {
             XPath xpath = xpathFactory.newXPath();
             xpath.setNamespaceContext(new MappedNamespaceContext(
                     NAMESPACES));
+
             XPathExpression expr = xpath.compile(
                     "/att:attribute/att:value");
             String value = (String) expr.evaluate(document);
             value = StringUtilities.unescapeForXML(value);
-            return new Pair<String, Date>(value, fileDate);
+
+            String unit;
+            try {
+                expr = xpath.compile("/att:attribute/att:units");
+                unit = (String) expr.evaluate(document);
+                unit = StringUtilities.unescapeForXML(unit);
+            } catch (Exception e) {
+                unit = "";
+            }
+
+            String doc;
+            try {
+                doc = (String) expr.evaluate(document);
+                expr = xpath.compile("/att:attribute/att:documentation");
+                doc = StringUtilities.unescapeForXML(doc);
+            } catch (Exception e) {
+                doc = "";
+            }
+
+            return new Tuple<String, Date, String, String>(value, fileDate,
+                    unit, doc);
         } catch (XPathExpressionException e) {
             throw new KernelRuntimeException(e, "Unexpected error.");
         }
@@ -747,10 +778,12 @@ public class Connector extends MoMLApplication {
                     continue;
                 }
 
-                Pair<String, Date> pair = _loadAttribute(attributesPath,
-                        attributeName);
-                String value = pair.getV1();
-                Date date = pair.getV2();
+                Tuple<String, Date, String, String> tuple = _loadAttribute(
+                        attributesPath, attributeName);
+                String value = tuple.getV1();
+                Date date = tuple.getV2();
+                String unit = tuple.getV3();
+                String doc = tuple.getV4();
 
                 if (!force) {
                     Date attributeDate = naomiParam.getModifiedDate();
@@ -775,7 +808,8 @@ public class Connector extends MoMLApplication {
                 moml = "<property name=\"" + naomiParam.getName() + "\" " +
                         "value=\"" + NaomiParameter.getExpression(
                                 naomiParam.getMethod(),
-                                naomiParam.getAttributeName(), date) +
+                                naomiParam.getAttributeName(), date, unit,
+                                doc) +
                         "\"/>";
                 request = new MoMLChangeRequest(this, attr, moml);
                 if (_undoable) {
@@ -984,8 +1018,11 @@ public class Connector extends MoMLApplication {
                     }
                 }
 
-                String newValue = attr.getExpression();
+                String newValue = attr.getToken().toString();
                 System.out.println("Save: " + attributeName + " = " + newValue);
+
+                String unit = naomiParam.getUnit();
+                String doc = naomiParam.getDocumentation();
 
                 try {
                     DocumentBuilderFactory docFactory =
@@ -1015,9 +1052,17 @@ public class Connector extends MoMLApplication {
                     root.appendChild(value);
                     Element units = document.createElementNS(NAMESPACES[0][1],
                             "units");
+                    if (!unit.equals("")) {
+                        units.setTextContent(StringUtilities.escapeForXML(
+                                unit));
+                    }
                     root.appendChild(units);
                     Element documentation = document.createElementNS(
                             NAMESPACES[0][1], "documentation");
+                    if (!doc.equals("")) {
+                        documentation.setTextContent(StringUtilities
+                                .escapeForXML(doc));
+                    }
                     root.appendChild(documentation);
 
                     FileOutputStream stream =
