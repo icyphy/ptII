@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.sr.lib;
 
-import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.lib.Transformer;
@@ -126,6 +125,15 @@ public class Pre extends Transformer {
         }
 
         return super.postfire();
+    }
+
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     *  @throws IllegalActionException If the superclass throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        removeDependency(input, output);
     }
 
     /** Override the method in the base class so that the type
