@@ -563,6 +563,29 @@ public class Director extends Attribute implements Executable {
         return _timeResolution;
     }
 
+    /** Return true if this director assumes and exports
+     *  the strict actor semantics, as described in this paper:
+     *  <p>
+     *  A. Goderis, C. Brooks, I. Altintas, E. A. Lee, and C. Goble,
+     *  "Heterogeneous Composition of Models of Computation," 
+     *  EECS Department, University of California, Berkeley,
+     *  Tech. Rep. UCB/EECS-2007-139, Nov. 2007. 
+     *  http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-139.html
+     *  <p>
+     *  In particular, a director that implements this interface guarantees
+     *  that it will not invoke the postfire() method of an actor until all 
+     *  its inputs are known at the current tag.  Moreover, it it will only
+     *  do so in its own postfire() method, and in its prefire() and fire()
+     *  methods, it does not change its own state.  Thus, such a director
+     *  can be used within a model of computation that has a fixed-point
+     *  semantics, such as SRDirector and ContinuousDirector.
+     *  This base class returns false.
+     *  @return True if the director assumes and exports strict actor semantics.
+     */
+    public boolean implementsStrictActorSemantics() {
+        return false;
+    }
+    
     /** Initialize the model controlled by this director.  Set the
      *  current time to the start time or the current time of the
      *  executive director, and then invoke the initialize() method
