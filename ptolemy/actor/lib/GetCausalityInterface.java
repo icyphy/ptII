@@ -38,6 +38,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -48,7 +49,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// GetCausalityInterface
 
 /**
- Actor that reads the causality interface of its container and produces a
+ Actor that reads the causality interface of its container or an
+ actor inside the container and produces a
  string describing it. This actor is meant mainly for testing.
 
  @author Edward A. Lee
@@ -78,10 +80,18 @@ public class GetCausalityInterface extends Source {
         
         equivalences = new TypedIOPort(this, "equivalences", false, true);
         equivalences.setTypeEquals(BaseType.STRING);
+        
+        actorName = new StringParameter(this, "actorName");
+        actorName.setExpression("");
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                            ports                          ////
+    ////                  ports and parameters                     ////
+    
+    /** Name of the actor to get the causality interface of. If this
+     *  is the empty string (the default), then the container is used.
+     */
+    public StringParameter actorName;
     
     /** Output port on which to put the description of the dependent ports. */
     public TypedIOPort dependents;
@@ -99,11 +109,19 @@ public class GetCausalityInterface extends Source {
     public void fire() throws IllegalActionException {
         super.fire();
         Actor container = (Actor)getContainer();
-        CausalityInterface causalityInterface = container.getCausalityInterface();
+        Actor target = container;
+        String targetName = actorName.stringValue();
+        if (targetName != null && !targetName.trim().equals("")) {
+            target = (Actor)((CompositeEntity)container).getEntity(targetName);
+            if (target == null) {
+                throw new IllegalActionException(this, "No actor named " + targetName);
+            }
+        }
+        CausalityInterface causalityInterface = target.getCausalityInterface();
         output.send(0, new StringToken(causalityInterface.toString()));
         
         StringBuffer dependentsResult = new StringBuffer();
-        List<IOPort> inputs = container.inputPortList();
+        List<IOPort> inputs = target.inputPortList();
         for (IOPort input : inputs) {
             Collection<IOPort> outputs = causalityInterface.dependentPorts(input);
             if (outputs.size() > 0) {
@@ -122,7 +140,7 @@ public class GetCausalityInterface extends Source {
                 }
             }
         }
-        List<IOPort> outputs = container.outputPortList();
+        List<IOPort> outputs = target.outputPortList();
         for (IOPort output : outputs) {
             Collection<IOPort> ports = causalityInterface.dependentPorts(output);
             if (ports.size() > 0) {
