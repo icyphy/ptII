@@ -36,6 +36,8 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedActor;
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.data.BooleanToken;
@@ -145,6 +147,10 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                    _equivalenceClasses.put(actorInput, equivalences);
                }
                
+               // Keep track of all the ports that must go into the
+               // equivalence class of input ports that affect the state.
+               Set<IOPort> stateEquivalentPorts = new HashSet<IOPort>();
+               
                // Iterate over all the transitions or just the transitions
                // of the current state.
                Collection<Transition> transitions;
@@ -205,20 +211,8 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                    if (inputs.isEmpty()) {
                        continue;
                    }
-                   // If any guard references more than one input, then
-                   // those inputs need to be in the same equivalence class.
-                   if (inputs.size() > 1) {
-                       Set<IOPort> merge = new HashSet<IOPort>(inputs);
-                       for (IOPort actorInput : inputs) {
-                           // Add all input ports that are equivalence classes with
-                           // these input ports.
-                           Set<IOPort> equivalences = _equivalenceClasses.get(actorInput);
-                           merge.addAll(equivalences);
-                       }
-                       for (IOPort actorInput : merge) {
-                           _equivalenceClasses.put(actorInput, merge);
-                       }
-                   }
+                   stateEquivalentPorts.addAll(inputs);
+
                    // Set dependencies of all the found output
                    // ports on all the found input ports.
                    for (IOPort writtenOutput : outputs) {
@@ -239,6 +233,48 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                            inputMap.put(writtenOutput, _defaultDependency.oTimesIdentity());
                        }
                    }
+               } // End of iteration over transitions.
+               
+               // Iterate over the refinements to find any additional ports that may
+               // have to be added to the state equivalent ports. These are input
+               // ports where the corresponding input port on the refinement has
+               // a direct effect on an output.
+               Collection<State> states;
+               if (!stateDependentCausality) {
+                   states = actor.entityList();
+               } else {
+                   State currentState = actor.currentState();
+                   states = new HashSet<State>();
+                   states.add(currentState);
+               }
+               for (State state : states) {
+                   TypedActor[] refinements = state.getRefinement();
+                   if (refinements != null && refinements.length > 0) {
+                       for (int i = 0; i < refinements.length; i++) {
+                           CausalityInterface causality = refinements[i].getCausalityInterface();
+                           // For each output port, find the input ports that affect it.
+                           Collection<IOPort> outputs = refinements[i].outputPortList();
+                           for (IOPort refinementOutput : outputs) {
+                               Collection<IOPort> inputs = causality.dependentPorts(refinementOutput);
+                               for (IOPort refinementInput : inputs) {
+                                   Collection<IOPort> equivalents = causality.equivalentPorts(refinementInput);
+                                   for (IOPort equivalent : equivalents) {
+                                       // Whew... Need to add the port with the same name to
+                                       // the state equivalents.
+                                       IOPort port = (IOPort)actor.getPort(equivalent.getName());
+                                       // This should not be null, but if it is, ignore.
+                                       if (port != null) {
+                                           stateEquivalentPorts.add(port);
+                                       }
+                                   }
+                               }
+                           }
+                       }
+                   }
+               }
+               // Now set the equivalence classes.
+               for (IOPort equivalent : stateEquivalentPorts) {
+                   _equivalenceClasses.put(equivalent, stateEquivalentPorts);
                }
            } finally {
                actor.workspace().doneReading();

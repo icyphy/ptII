@@ -12,8 +12,10 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
         </property>
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -27,8 +29,10 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 60.0}">
+        <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
             </property>
         </property>
         <port name="in1" class="ptolemy.actor.TypedIOPort">
@@ -96,6 +100,8 @@
                 </property>
             </port>
             <entity name="State" class="ptolemy.domains.fsm.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 180.0]">
@@ -175,7 +181,9 @@
             </property>
         </entity>
         <entity name="Display3" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;in1 has equivalent input ports:\n  in1\nin2 has equivalent input ports:\n  in2\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;in1 has equivalent input ports:\n  in1\n  in2\nin2 has equivalent input ports:\n  in1\n  in2\n&quot;}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={613, 519, 334, 241}, maximized=false}">
             </property>
@@ -234,10 +242,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 135.0]">
         </property>
     </entity>
+    <entity name="SingleEvent2" class="ptolemy.domains.de.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 200.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="CompositeActor.in1" relation="relation"/>
+    <link port="CompositeActor.in2" relation="relation2"/>
     <link port="SingleEvent.output" relation="relation"/>
+    <link port="SingleEvent2.output" relation="relation2"/>
 </entity>

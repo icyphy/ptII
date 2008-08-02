@@ -26,6 +26,7 @@
  */
 package ptolemy.domains.fsm.kernel;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -563,6 +564,41 @@ public class FSMDirector extends Director implements
         return false;
     }
 
+    /** Return true if all state refinements have directors that implement
+     *  the strict actor semantics and if the enclosing executive director
+     *  also returns true.
+     *  @return True if the director assumes and exports strict actor semantics.
+     */
+    public boolean implementsStrictActorSemantics() {
+        Nameable container = getContainer();
+        if (container instanceof Actor) {
+            Actor modalModel = (Actor) container;
+            Director executiveDirector = modalModel.getExecutiveDirector();
+            if (executiveDirector != null && !executiveDirector.implementsStrictActorSemantics()) {
+                return false;
+            }
+        }
+        // Iterate over the state refinements.
+        List<State> states = _controller.entityList();
+        for (State state : states) {
+            TypedActor[] refinements;
+            try {
+                refinements = state.getRefinement();
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
+            if (refinements != null) {
+                for (int i = 0; i < refinements.length; i++) {
+                    Director director = refinements[i].getDirector();
+                    if (director != null && !director.implementsStrictActorSemantics()) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     /** Initialize the mode controller and all the refinements by calling the
      *  initialize() method in the super class. Build the local maps for
      *  receivers.
@@ -574,6 +610,33 @@ public class FSMDirector extends Director implements
     public void initialize() throws IllegalActionException {
         super.initialize();
         _buildLocalReceiverMaps();
+    }
+
+    /** Return false if there is any output of the container does not depend
+     *  directly on all inputs of the container.
+     *  @return False if there is any output that does not
+     *   depend directly on an input.
+     */
+    public boolean isStrict() {
+        Actor container = (Actor)getContainer();
+        CausalityInterface causality = container.getCausalityInterface();
+        int numberOfOutputs = container.outputPortList().size();
+        Collection<IOPort> inputs = container.inputPortList();
+        for (IOPort input : inputs) {
+            // If the input is also output, skip it.
+            // This is the output of a refinement.
+            if (input.isOutput()) {
+                continue;
+            }
+            try {
+                if (causality.dependentPorts(input).size() < numberOfOutputs) {
+                    return false;
+                }
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
+        }
+        return true;
     }
 
     /** Return a receiver that is a one-place buffer. A token put into the
@@ -717,32 +780,34 @@ public class FSMDirector extends Director implements
 
         for (int i = 0; i < port.getWidth(); i++) {
             try {
-                if (port.hasToken(i)) {
-                    Token t = port.get(i);
+                if (port.isKnown(i)) {
+                    if (port.hasToken(i)) {
+                        Token t = port.get(i);
 
-                    if ((insideReceivers != null)
-                            && (insideReceivers[i] != null)) {
-                        for (int j = 0; j < insideReceivers[i].length; j++) {
-                            insideReceivers[i][j].put(t);
-                            if (_debugging) {
-                                _debug(getFullName(),
-                                        "transferring input from "
-                                                + port.getFullName()
-                                                + " to "
-                                                + (insideReceivers[i][j])
-                                                        .getContainer()
-                                                        .getFullName());
+                        if ((insideReceivers != null)
+                                && (insideReceivers[i] != null)) {
+                            for (int j = 0; j < insideReceivers[i].length; j++) {
+                                insideReceivers[i][j].put(t);
+                                if (_debugging) {
+                                    _debug(getFullName(),
+                                            "transferring input from "
+                                            + port.getFullName()
+                                            + " to "
+                                            + (insideReceivers[i][j])
+                                            .getContainer()
+                                            .getFullName());
+                                }
                             }
-                        }
 
-                        transferredToken = true;
-                    }
-                } else {
-                    if ((insideReceivers != null)
-                            && (insideReceivers[i] != null)) {
-                        for (int j = 0; j < insideReceivers[i].length; j++) {
-                            if (insideReceivers[i][j].hasToken()) {
-                                insideReceivers[i][j].get();
+                            transferredToken = true;
+                        }
+                    } else {
+                        if ((insideReceivers != null)
+                                && (insideReceivers[i] != null)) {
+                            for (int j = 0; j < insideReceivers[i].length; j++) {
+                                if (insideReceivers[i][j].hasToken()) {
+                                    insideReceivers[i][j].get();
+                                }
                             }
                         }
                     }

@@ -26,6 +26,7 @@
  */
 package ptolemy.domains.fsm.kernel;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -49,6 +50,7 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.ArrayToken;
@@ -143,6 +145,12 @@ import ptolemy.kernel.util.Workspace;
  refinement of its source state is fired.
  
  <p> By default, this actor has a conservative causality interface,
+ implemented by the {@link DefaultCausalityInterface}, which declares
+ that all outputs depend on all inputs. If, however, the enclosing
+ director and all state refinement directors implement the
+ strict actor semantics (as indicated by their
+ implementsStrictActorSemantics() method), then the returned
+ causality interface is
  implemented by the {@link FSMCausalityInterface} class. If
  the <i>stateDependentCausality</i> is false (the default),
  then this causality interface in conservative and valid in all
@@ -431,8 +439,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Return a causality interface for this actor. This
-     *  method returns an instance of
-     *  {@link FSMCausalityInterface}.
+     *  method returns an instance of class
+     *  {@link FSMCausalityInterface} if the enclosing director
+     *  returns true in its implementsStrictActorSemantics() method.
+     *  Otherwise, it returns an interface of class
+     *  {@link DefaultCausalityInterface}.
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
@@ -441,6 +452,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         Dependency defaultDependency = BooleanDependency.OTIMES_IDENTITY;
         if (director != null) {
             defaultDependency = director.defaultDependency();
+            if (!director.implementsStrictActorSemantics()) {
+                if (_causalityInterface != null
+                        && _causalityInterfaceDirector == director) {
+                    return _causalityInterface;
+                }
+                _causalityInterface = new DefaultCausalityInterface(this, defaultDependency);
+                _causalityInterfaceDirector = director;
+                return _causalityInterface;                
+            }
         }
         boolean stateDependent = false;
         try {
@@ -719,13 +739,29 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         return true;
     }
 
-    /** Return true. This actor does not tolerate unknown inputs.
-     *  This actor does not check their inputs to see whether they
-     *  are known.  They assume they are known.
-     *
-     *  @return True.
+    /** Return false if there is any output does not depend
+     *  directly on all inputs.
+     *  @return False if there is any output that does not
+     *   depend directly on an input.
      */
     public boolean isStrict() {
+        CausalityInterface causality = getCausalityInterface();
+        int numberOfOutputs = outputPortList().size();
+        Collection<IOPort> inputs = inputPortList();
+        for (IOPort input : inputs) {
+            // If the input is also output, skip it.
+            // This is the output of a refinement.
+            if (input.isOutput()) {
+                continue;
+            }
+            try {
+                if (causality.dependentPorts(input).size() < numberOfOutputs) {
+                    return false;
+                }
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
+        }
         return true;
     }
 

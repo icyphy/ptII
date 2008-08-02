@@ -54,7 +54,10 @@ in the constructor and in the {@link #composeWith} method. For each of these
 interfaces, this interface finds ports in its own actor that match the names
 of those for the specified interfaces, and constructs dependencies that
 are oPlus compositions of the dependencies in the specified interfaces for
-ports with the same names.
+ports with the same names. For equivalence classes, it merges the equivalence
+classes so that if two ports are equivalent in any of the provided causality
+interfaces, then the corresponding (same named) ports in the actor are also
+equivalent.
 
 @author Edward A. Lee
 @version $Id: MirrorCausalityInterface.java 47513 2007-12-07 06:32:21Z cxh $
@@ -113,15 +116,7 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
                ((NamedObj)_actor).workspace().getReadAccess();
                _reverseDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
                _forwardDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
-               _equivalenceClasses = new HashMap<IOPort,Set<IOPort>>();
-               // Initialize equivalence classes for each input port.
-               List<IOPort> actorInputs = _actor.inputPortList();
-               for (IOPort actorInput : actorInputs) {
-                   Set<IOPort> equivalences = new HashSet<IOPort>();
-                   equivalences.add(actorInput);
-                   _equivalenceClasses.put(actorInput, equivalences);
-                   // FIXME
-               }
+
                // Iterate over all the associated interfaces.
                for (CausalityInterface causality : _composedInterfaces) {
                    List<IOPort> mirrorInputs = causality.getActor().inputPortList();
@@ -130,6 +125,13 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
                        if (!(localInput instanceof IOPort)) {
                            throw new IllegalActionException(_actor, mirrorInput.getContainer(),
                                    "No matching port with name " + mirrorInput.getName());
+                       }
+                       // The localInput may not be an input port...
+                       // It may have been an output port that the FSMActor controller
+                       // also has as an input port. But we don't want to set a forward
+                       // depedency in this case.
+                       if (!((IOPort)localInput).isInput()) {
+                           continue;
                        }
                        Map<IOPort,Dependency> forwardMap = _forwardDependencies.get((IOPort)localInput);
                        if (forwardMap == null) {
@@ -152,18 +154,35 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
                            }
                            backwardMap.put((IOPort)localInput, dependency);
                        }
-                       // Next do equivalence classes.
-                       // The following cannot be null... initialized above.
-                       Set<IOPort> equivalences = _equivalenceClasses.get(localInput);
-                       Collection<IOPort> mirrorEquivalents = causality.equivalentPorts(mirrorInput);
-                       for (IOPort equivalent : mirrorEquivalents) {
-                           Port localEquivalent = ((Entity)_actor).getPort(equivalent.getName());
-                           if (!(localEquivalent instanceof IOPort)) {
-                               throw new IllegalActionException(_actor, mirrorInput.getContainer(),
-                                       "No matching port with name " + equivalent.getName());
-                           }
-                           mirrorEquivalents.add((IOPort)localEquivalent);
+                   }
+               }
+               // Next do equivalence classes.
+               // We iterate over the input ports, and for each one,
+               // find the ports for which it has equivalents in any
+               // associated causality.
+               _equivalenceClasses = new HashMap<IOPort,Set<IOPort>>();
+               Collection<IOPort> localInputs = _actor.inputPortList();
+               for (IOPort localInput : localInputs) {
+                   Set<IOPort> equivalences = _equivalenceClasses.get(localInput);
+                   if (equivalences != null) {
+                       // This input port is done.
+                       continue;
+                   }
+                   equivalences = new HashSet<IOPort>();
+                   // Iterate over all the associated interfaces.
+                   for (CausalityInterface causality : _composedInterfaces) {
+                       IOPort mirrorInput = (IOPort)((Entity)causality.getActor())
+                               .getPort(localInput.getName());
+                       if (mirrorInput == null) {
+                           throw new IllegalActionException(_actor, localInput,
+                                   "Expected matching port in "
+                                   + causality.getActor().getFullName());
                        }
+                       equivalences.addAll(_localMirrors(causality.equivalentPorts(mirrorInput)));
+                   }
+                   // Set the equivalence class for all ports in the set.
+                   for (IOPort equivalentPort : equivalences) {
+                       _equivalenceClasses.put(equivalentPort, equivalences);
                    }
                }
            } finally {
@@ -186,7 +205,30 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
        // dependency).
        return _defaultDependency.oPlusIdentity();
    }
-   
+
+   ///////////////////////////////////////////////////////////////////
+   ////                         private methods                   ////
+
+   /** Return the local ports whose names match the ports in the
+    *  specified collection.
+    *  @param ports A collection of ports.
+    *  @throws IllegalActionException If no matching port is found.
+    */
+   private Collection<IOPort> _localMirrors(Collection<IOPort> ports)
+           throws IllegalActionException {
+       Set<IOPort> result = new HashSet<IOPort>();
+       for (IOPort port : ports) {
+           IOPort localPort = (IOPort)((Entity)_actor).getPort(port.getName());
+           if (localPort == null) {
+               throw new IllegalActionException(port.getContainer(), port,
+                       "Expected matching port in "
+                       + _actor.getFullName());               
+           }
+           result.add(localPort);
+       }
+       return result;
+   }
+
    ///////////////////////////////////////////////////////////////////
    ////                         private fields                    ////
 
