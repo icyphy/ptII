@@ -77,6 +77,12 @@ public class RegisterSR extends SynchronousFixTransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The input port.  The default type is Fix. */
+    public TypedIOPort input;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** If the input known and there is a token on the input port,
@@ -110,9 +116,4 @@ public class RegisterSR extends SynchronousFixTransformer {
         super.pruneDependencies();
         removeDependency(input, output);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    TypedIOPort input;
 }
