@@ -2,9 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StaticUnits" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+        </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
@@ -33,24 +35,12 @@
                 </property>
             </property>
         </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
-                </property>
-            </property>
-        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={10, 1, 1003, 761}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={10, 22, 1001, 749}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[788, 643]">
     </property>
@@ -166,7 +156,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="population">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="population">
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -179,7 +169,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="degree">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="degree">
             </property>
         </port>
         <entity name="growthAddSubtract" class="ptolemy.actor.lib.AddSubtract">
@@ -285,7 +275,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="joule">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="joule">
             </property>
         </port>
         <port name="heat" class="ptolemy.actor.TypedIOPort">
@@ -298,7 +288,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="calorie">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="calorie">
             </property>
         </port>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -345,7 +335,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="degree">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="degree">
             </property>
         </port>
         <port name="TempCW" class="ptolemy.actor.TypedIOPort">
@@ -358,7 +348,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="degree">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="degree">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -369,7 +359,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="calorie second^-1">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="calorie second^-1">
             </property>
         </port>
         <port name="flow" class="ptolemy.actor.TypedIOPort">
@@ -380,7 +370,7 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="gallonUS hour^-1">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="gallonUS hour^-1">
             </property>
         </port>
         <entity name="HeatExchanger" class="ptolemy.actor.lib.Expression">
@@ -453,7 +443,7 @@
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[317.5, 132.5]">
         </property>
-        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$output=$minus;$plus=$minus">
+        <property name="_unitConstraints" class="ptolemy.moml.unit.UnitAttribute" value="$plus=$minus;$output=$minus">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
         </property>
@@ -480,7 +470,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[392.5, 132.5]">
         </property>
-        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$output=$input second">
+        <property name="_unitConstraints" class="ptolemy.moml.unit.UnitAttribute" value="$output=$input second">
         </property>
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
         </property>
@@ -509,7 +499,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="degree">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="degree">
             </property>
         </port>
     </entity>
@@ -527,7 +517,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="gallonUS">
+            <property name="_units" class="ptolemy.moml.unit.UnitAttribute" value="gallonUS">
             </property>
         </port>
     </entity>

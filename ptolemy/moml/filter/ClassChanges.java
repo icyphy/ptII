@@ -277,6 +277,8 @@ public class ClassChanges implements MoMLFilter {
                     "ptolemy.kernel.util.StringAttribute");
         }
 
+        _classChanges.put("ptolemy.data.unit.UnitAttribute",
+			  "ptolemy.moml.unit.UnitAttribute");
     }
 
     // Set of class names that are obsolete and should be simply
