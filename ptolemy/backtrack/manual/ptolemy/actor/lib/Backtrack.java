@@ -43,6 +43,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Backtrack
@@ -102,6 +103,56 @@ public class Backtrack extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Backtrack newObject = (Backtrack) super.clone(workspace);
+
+	newObject._handleMap = new HashMap();
+
+	try { 
+
+	    ptolemy.kernel.Port oldPort = newObject.getPort("checkpoint");
+	    if (oldPort != null) {
+		oldPort.setContainer(null);
+	    }
+	    newObject._checkpoint = new TypedIOPort(newObject, "checkpoint",
+ 						    true, false);
+	    newObject._checkpoint.setTypeEquals(BaseType.BOOLEAN);
+
+	    // These ports do not follow the naming convention, so we have
+	    // to clone them separately.
+
+	    oldPort = newObject.getPort("rollback");
+	    if (oldPort != null) {
+		oldPort.setContainer(null);
+	    }
+	    newObject._rollback = new TypedIOPort(newObject, "rollback",
+						  true, false);
+	    newObject._rollback.setTypeEquals(BaseType.LONG);
+
+	    oldPort = newObject.getPort("handle");
+	    if (oldPort != null) {
+		oldPort.setContainer(null);
+	    }
+
+ 	    newObject._handle = new TypedIOPort(newObject, "handle", false, true);
+	    newObject._handle.setTypeEquals(BaseType.LONG);
+        } catch (Exception ex) {
+            // CloneNotSupportedException does not have a constructor
+            // that takes a cause argument, so we use initCause
+            CloneNotSupportedException throwable = new CloneNotSupportedException();
+            throwable.initCause(ex);
+            throw throwable;
+        }
+
+	return newObject;
+    }
 
     /** Create checkpoint and record the given checkpoint handle if required. A
      *  boolean token is read from the "checkpoint" port. If the token is true,

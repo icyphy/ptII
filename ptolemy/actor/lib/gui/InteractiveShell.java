@@ -51,6 +51,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -163,6 +164,23 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         newObject.shell = null;
         newObject._container = null;
         newObject._frame = null;
+	newObject._outputValues = new LinkedList();
+
+	try {
+	    Attribute old =  newObject.getAttribute("_windowProperties");
+	    if (old != null) {
+		old.setContainer(null);
+	    }
+	    newObject._windowProperties = new WindowPropertiesAttribute(newObject,
+                "_windowProperties");
+	    newObject._windowProperties.setPersistent(true);
+        } catch (Exception ex) {
+            // CloneNotSupportedException does not have a constructor
+            // that takes a cause argument, so we use initCause
+            CloneNotSupportedException throwable = new CloneNotSupportedException();
+            throwable.initCause(ex);
+            throw throwable;
+        }
         return newObject;
     }
 

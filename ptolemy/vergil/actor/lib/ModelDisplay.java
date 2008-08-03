@@ -51,6 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.ParserAttribute;
@@ -133,7 +134,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
                 }
             } else {
                 // No URL given, so we should create a blank entity.
-                _createBlankEntity();
+                _entity = _createBlankEntity();
             }
             // Make sure there is no display of the old entity.
             place(null);
@@ -172,6 +173,18 @@ public class ModelDisplay extends AbstractPlaceableActor implements
         }
     }
 
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has an
+     *   attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ModelDisplay newObject = (ModelDisplay) super.clone(workspace);
+	newObject._entity = _createBlankEntity();
+        return newObject;
+    }
+
     /** If the model is not yet displayed, then display it in its
      *  own window.
      *  @exception IllegalActionException If there is an constructing
@@ -183,7 +196,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
         // If we have no entity at this point, then create a simple
         // top-level entity into which we can put attributes.
         if (_entity == null) {
-            _createBlankEntity();
+            _entity = _createBlankEntity();
         }
 
         // If there is no graph display yet, then create a
@@ -235,7 +248,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
             ActorEditorGraphController controller = new ActorEditorGraphController();
             // _entity might be null, in which case we have to make an empty model.
             if (_entity == null) {
-                _createBlankEntity();
+                _entity = _createBlankEntity();
             }
 
             ActorGraphModel graphModel = new ActorGraphModel(_entity);
@@ -263,17 +276,19 @@ public class ModelDisplay extends AbstractPlaceableActor implements
 
     /** Create a blank entity associated with this display.
      */
-    private void _createBlankEntity() {
+    private static NamedObj _createBlankEntity() {
         String moml = "<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\"/>";
+	NamedObj entity = null;
         MoMLParser parser = new MoMLParser();
         try {
-            _entity = parser.parse(null, moml);
-            ParserAttribute parserAttribute = new ParserAttribute(_entity,
+            entity = parser.parse(null, moml);
+            ParserAttribute parserAttribute = new ParserAttribute(entity,
                     "_parser");
             parserAttribute.setParser(parser);
         } catch (Exception ex) {
             throw new InternalErrorException(ex);
         }
+	return entity;
     }
 
     ///////////////////////////////////////////////////////////////////

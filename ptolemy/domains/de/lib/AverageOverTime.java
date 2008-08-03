@@ -89,6 +89,10 @@ public class AverageOverTime extends DETransformer {
         newObject._sum = null;
         newObject._lastToken = null;
         newObject._lastTime = null;
+
+        newObject.input.setTypeAtMost(BaseType.SCALAR);
+        newObject.output.setTypeEquals(BaseType.SCALAR.divide(BaseType.DOUBLE));
+
         return newObject;
     }
 

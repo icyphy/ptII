@@ -42,6 +42,7 @@ import ptolemy.domains.rendezvous.kernel.RendezvousReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 ////
@@ -118,6 +119,19 @@ public class Buffer extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Buffer newObject = (Buffer) super.clone(workspace);
+	newObject._buffer = new LinkedList();
+
+	return newObject;
+    }
 
     /** If it has not already been done, start a thread to read tokens from the
      *  <i>input</i> port and store them in the buffer.
