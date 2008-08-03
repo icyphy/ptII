@@ -234,6 +234,16 @@ public class FIR extends SDFTransformer {
         // Set the type constraints.
         newObject.taps.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         newObject._initTypeConstraints();
+
+	try {
+	    ArrayToken tapsToken = (ArrayToken) (newObject.taps.getToken());
+	    newObject._taps = tapsToken.arrayValue();
+	} catch (IllegalActionException throwable) {
+            CloneNotSupportedException exception = new CloneNotSupportedException();
+            exception.initCause(throwable);
+            throw exception;
+ 	}
+
         return newObject;
     }
 
