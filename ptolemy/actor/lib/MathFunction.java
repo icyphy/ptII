@@ -38,6 +38,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/math.xml.
@@ -207,6 +208,21 @@ public class MathFunction extends TypedAtomicActor {
             throw new InternalErrorException(this, nameDuplication,
                     "Unexpected name duplication");
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MathFunction newObject = (MathFunction) super.clone(workspace);
+
+        newObject._resultArray = new DoubleToken[_resultArray.length];
+	System.arraycopy(_resultArray, 0, newObject._resultArray,
+			 0, _resultArray.length);
+        return newObject;
     }
 
     /** Consume at most one input token from each input channel, and

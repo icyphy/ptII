@@ -35,6 +35,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// RecursiveLattice
@@ -160,16 +161,59 @@ public class RecursiveLattice extends Transformer {
                 _backwardCache = new double[valueLength + 1];
                 _forward = new double[valueLength + 1];
                 _forwardCache = new double[valueLength + 1];
-                _reflectionCoefs = new double[valueLength];
+                _reflectionCoefficients = new double[valueLength];
             }
 
             for (int i = 0; i < valueLength; i++) {
-                _reflectionCoefs[i] = ((DoubleToken) value.getElement(i))
+                _reflectionCoefficients[i] = ((DoubleToken) value.getElement(i))
                         .doubleValue();
             }
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        RecursiveLattice newObject = (RecursiveLattice) super.clone(workspace);
+
+        newObject._backward = new double[_forward.length];
+        newObject._backwardCache = new double[_forward.length];
+        newObject._forward = new double[_forward.length];
+        newObject._forwardCache = new double[_forward.length];
+        newObject._reflectionCoefficients = new double[_forward.length];
+
+	System.arraycopy(_backward, 0, newObject._backward,
+			 0, _backward.length);
+	System.arraycopy(_backwardCache, 0, newObject._backwardCache,
+			 0, _backwardCache.length);
+	System.arraycopy(_forward, 0, newObject._forward,
+			 0, _forward.length);
+	System.arraycopy(_forwardCache, 0, newObject._forwardCache,
+			 0, _forwardCache.length);
+	System.arraycopy(_reflectionCoefficients, 0,
+			 newObject._reflectionCoefficients,
+			 0, _reflectionCoefficients.length);
+
+	try {
+            ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
+            for (int i = 0; i < value.length(); i++) {
+                _reflectionCoefficients[i] = ((DoubleToken) value.getElement(i))
+                        .doubleValue();
+            }
+        } catch (IllegalActionException ex) {
+            // CloneNotSupportedException does not have a constructor
+            // that takes a cause argument, so we use initCause
+            CloneNotSupportedException throwable = new CloneNotSupportedException();
+            throwable.initCause(ex);
+            throw throwable;
+        }
+        return newObject;
     }
 
     /** Consume one input token, if there is one, and produce one output
@@ -189,7 +233,7 @@ public class RecursiveLattice extends Transformer {
             _forwardCache[0] = inputValue.doubleValue(); // _forward(0) = x(n)
 
             for (int i = 1; i <= M; i++) {
-                k = _reflectionCoefs[M - i];
+                k = _reflectionCoefficients[M - i];
                 _forwardCache[i] = (k * _backwardCache[i])
                         + _forwardCache[i - 1];
             }
@@ -198,7 +242,7 @@ public class RecursiveLattice extends Transformer {
 
             // Backward:  Compute the w's for the next round
             for (int i = 1; i < M; i++) {
-                k = -_reflectionCoefs[M - 1 - i];
+                k = -_reflectionCoefficients[M - 1 - i];
                 _backwardCache[i] = _backwardCache[i + 1]
                         + (k * _forwardCache[i + 1]);
             }
@@ -269,5 +313,5 @@ public class RecursiveLattice extends Transformer {
     private double[] _forwardCache = null;
 
     // Cache of reflection coefficients.
-    private double[] _reflectionCoefs = null;
+    private double[] _reflectionCoefficients = null;
 }

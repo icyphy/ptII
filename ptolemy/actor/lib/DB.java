@@ -35,6 +35,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// DB
@@ -100,6 +101,21 @@ public class DB extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DB newObject = (DB) super.clone(workspace);
+
+        newObject._resultArray = new DoubleToken[_resultArray.length];
+	System.arraycopy(_resultArray, 0, newObject._resultArray,
+			 0, _resultArray.length);
+        return newObject;
+    }
 
     /** Read a token from the input and convert its value into a
      *  decibel representation. If the input does not contain any tokens,

@@ -35,6 +35,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Lattice
@@ -162,6 +163,49 @@ public class Lattice extends Transformer {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Lattice newObject = (Lattice) super.clone(workspace);
+
+        newObject._backward = new double[newObject._order + 1];
+        newObject._backwardCache = new double[newObject._order + 1];
+        newObject._forward = new double[newObject._order + 1];
+        newObject._forwardCache = new double[newObject._order + 1];
+        newObject._reflectionCoefficients = new double[newObject._order];
+
+	System.arraycopy(_backward, 0, newObject._backward,
+			 0, _backward.length);
+	System.arraycopy(_backwardCache, 0, newObject._backwardCache,
+			 0, _backwardCache.length);
+	System.arraycopy(_forward, 0, newObject._forward,
+			 0, _forward.length);
+	System.arraycopy(_forwardCache, 0, newObject._forwardCache,
+			 0, _forwardCache.length);
+	System.arraycopy(_reflectionCoefficients, 0,
+			 newObject._reflectionCoefficients,
+			 0, _reflectionCoefficients.length);
+
+	try {
+            ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
+            for (int i = 0; i < _order; i++) {
+                _reflectionCoefficients[i] = ((DoubleToken) value.getElement(i))
+                        .doubleValue();
+            }
+        } catch (IllegalActionException ex) {
+            // CloneNotSupportedException does not have a constructor
+            // that takes a cause argument, so we use initCause
+            CloneNotSupportedException throwable = new CloneNotSupportedException();
+            throwable.initCause(ex);
+            throw throwable;
+        }
+        return newObject;
     }
 
     /** Consume one input token, if there is one, and produce one output

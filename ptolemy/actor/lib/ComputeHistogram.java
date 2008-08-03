@@ -43,6 +43,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComputeHistogram
@@ -181,6 +182,21 @@ public class ComputeHistogram extends TypedAtomicActor {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ComputeHistogram newObject = (ComputeHistogram) super.clone(workspace);
+
+        newObject._bins = new int[_numberOfBins];
+	System.arraycopy(_bins, 0, newObject._bins,
+			 0, _bins.length);
+        return newObject;
     }
 
     /** Read at most one input token from each input channel
