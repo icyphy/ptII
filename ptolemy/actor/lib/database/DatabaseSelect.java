@@ -53,6 +53,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// DatabaseSelect
@@ -162,6 +163,27 @@ public class DatabaseSelect extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        DatabaseSelect newObject = (DatabaseSelect) super.clone(workspace);
+
+	try { 
+	    newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.columns));
+        } catch (IllegalActionException ex) {
+            // CloneNotSupportedException does not have a constructor
+            // that takes a cause argument, so we use initCause
+            CloneNotSupportedException throwable = new CloneNotSupportedException();
+            throwable.initCause(ex);
+            throw throwable;
+        }
+	return newObject;
+    }
+
     /** Perform the query on the database and produce the result
      *  on the output port.
      *  @throws IllegalActionException If the database query fails.
