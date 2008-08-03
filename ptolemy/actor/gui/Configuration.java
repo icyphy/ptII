@@ -52,6 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -879,12 +880,16 @@ public class Configuration extends CompositeEntity implements
                     // Skip fields introduced by javascope
                     && !fieldType.toString().equals("COM.sun.suntest.javascope.database.CoverageUnit")
                     && !field.getName().equals("js$p")
+                    // Skip fields introduced by backtracking
+		    && !(field.getName().indexOf("$RECORD$") != -1)
+		    && !(field.getName().indexOf("$RECORDS") != -1)
+		    && !(field.getName().indexOf("$CHECKPOINT") != -1)
                     // Skip immutables
                     && !fieldType.equals(java.net.InetAddress.class)
                     && !fieldType.equals(java.util.regex.Pattern.class)
                     && !fieldType.equals(String.class)
-                    && !fieldType.equals(Token.class)) { 
-
+                    && !fieldType.equals(Token.class)
+                    && !fieldType.equals(Settable.Visibility.class)) { 
 
                 // If an object is equal and the default hashCode() from
                 // Object is the same, then we have a problem.
@@ -899,7 +904,21 @@ public class Configuration extends CompositeEntity implements
                         assignment = ".getPort(\"" + assignment + "\")";
                         //                       } else if (fieldType.isInstance( new Attribute())) {
                     } else if (Class.forName("ptolemy.kernel.util.Attribute").isAssignableFrom(fieldType)) { 
-                        assignment = ".getAttribute(\"" + assignment + "\")";
+			Attribute fieldAttribute = (Attribute)field.get(namedObjClone); 
+
+			if (fieldAttribute.getContainer() != namedObjClone) {
+			    // If the attribute is actually contained by a Port
+			    // and not by the AtomicActor, then get its value.
+			    // SDF actors that have ports that have
+			    // tokenConsumptionRate and tokenProductionRate 
+			    // such as ConvolutionalCoder need this.
+			    assignment = "."
+				+ fieldAttribute.getContainer().getName()
+				+ ".getAttribute(\"" + fieldAttribute.getName()
+				+ "\")";
+			} else {
+			    assignment = ".getAttribute(\"" + assignment + "\")";
+			}
                     } else {
                         assignment = "\n\t/* Get the object method "
                             + "or null?  */ "
