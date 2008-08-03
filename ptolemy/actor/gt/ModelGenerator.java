@@ -46,6 +46,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
@@ -84,7 +85,25 @@ public class ModelGenerator extends Source {
         output.setTypeEquals(ActorToken.TYPE);
     }
 
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ModelGenerator newObject = (ModelGenerator) super.clone(workspace);
+        newObject._emptyModel = null;
+        newObject._parser = new MoMLParser();
+        return newObject;
+    }
+
+
     public Object clone() throws CloneNotSupportedException {
+	System.err.println("FIXME: the ModelGenerator.clone() method should not "
+			   + "be called, instead call "
+			   + "ModelGenerator.clone(Workspace)");
         ModelGenerator actor = (ModelGenerator) super.clone();
         actor._emptyModel = null;
         actor._parser = new MoMLParser();
