@@ -655,6 +655,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             if (osName != null) {
                 if (osName.startsWith("Windows")) {
                     fileName = sanitizedActorName + ".dll";
+                } else if (osName.startsWith("Mac OS X")) {
+                    fileName = "lib" + sanitizedActorName + ".dylib";
                 } else {
                     fileName = "lib" + sanitizedActorName + ".so";
                 }

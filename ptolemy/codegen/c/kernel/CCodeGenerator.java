@@ -1093,21 +1093,36 @@ public class CCodeGenerator extends CodeGenerator {
 
             String osName = StringUtilities.getProperty("os.name");
             if (osName != null) {
-                // FIXME: What about Darwin/MacOS?
-                if (osName.startsWith("Windows")) {
-                    substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
-                            "-Wl,--add-stdcall-alias");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
+		// Keep these alphabetical
+                if (osName.startsWith("Linux")) {
+                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
+                } else if (osName.startsWith("Mac OS X")) {
+                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-dynamiclib");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
                 } else if (osName.startsWith("SunOS")) {
+                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
-                } else if (osName.startsWith("Linux")) {
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
-                }
+		} else if (osName.startsWith("Windows")) {
+                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
+                    substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
+                            "-Wl,--add-stdcall-alias");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
+		} else {
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", 
+				      "# Unknown java property os.name \"" + osName 
+				      + "\" please edit ptolemy/codegen/c/"
+				      + "kernel/CCodeGenerator.java and "
+				      + "ptolemy/actor/lib/jni/"
+				      + "CompiledCompositeActor.java");
+		}
+
             }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(this, ex,
