@@ -633,7 +633,7 @@ X10_JAR =       @X10_CLASSES@
 PTX10_PACKAGES = @PTX10_PACKAGES@	
 
 # # Jar file that contains RXTX Serial Port Interface
-RXTX_JAR =   @RXTXJARR@
+RXTX_JAR =   @RXTX_JAR@
 
 # Location of the diva.jar file.  Diva is (among other things) a graph
 # visualization tool used by some of the demos.  For more information, see
