@@ -156,7 +156,14 @@ public class PortNameChanges implements MoMLFilter {
             // The reason to add the code is that a port may not be contained in
             // _containerPortMap if it is encountered the first time here --- Gang
         } else if (_doneProcessingActorWithPortNameChanges
-                && attributeName.equals("port")) {
+                && attributeName.equals("port")
+                // If we don't have the following case, sometimes opening a
+                // model with a TransformationController inside may cause an
+                // exception because the container may be an ERG event, not a
+                // CompositeEntity. (tfeng 08/03/2008)
+                // <<<
+                && container instanceof CompositeEntity) {
+        	    // >>>
             int lastIndex = attributeValue.lastIndexOf(".");
             NamedObj portContainer = null;
             String portContainerName = null;
