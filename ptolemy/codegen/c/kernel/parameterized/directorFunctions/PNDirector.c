@@ -319,6 +319,10 @@ inline void incrementReadBlockingThreads(struct directorHeader* directorHeader) 
 /**/
 
 /*** incrementWriteBlockingThreads ***/
+// generate $declarePNDirectorStruct()
+// The above comment is necessary in this code block
+// to ensure the "declarePNDirectorStruct" code block is generated
+// before this code block.
 inline void incrementWriteBlockingThreads(struct directorHeader* directorHeader) {
     pthread_mutex_lock(&directorHeader->writeBlockMutex);
     directorHeader->writeBlockingThreads++;
