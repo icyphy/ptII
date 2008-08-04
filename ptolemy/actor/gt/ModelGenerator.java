@@ -99,17 +99,6 @@ public class ModelGenerator extends Source {
         return newObject;
     }
 
-
-    public Object clone() throws CloneNotSupportedException {
-	System.err.println("FIXME: the ModelGenerator.clone() method should not "
-			   + "be called, instead call "
-			   + "ModelGenerator.clone(Workspace)");
-        ModelGenerator actor = (ModelGenerator) super.clone();
-        actor._emptyModel = null;
-        actor._parser = new MoMLParser();
-        return actor;
-    }
-
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -128,7 +117,7 @@ public class ModelGenerator extends Source {
                 }
             } else {
                 if (_emptyModel == null) {
-                    _emptyModel = new TypedCompositeActor(workspace());
+                    _emptyModel = new TypedCompositeActor(new Workspace());
                 }
                 entity = _emptyModel;
             }
