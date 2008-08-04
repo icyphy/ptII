@@ -259,13 +259,28 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PtidesEmbeddedDirector newObject = (PtidesEmbeddedDirector) super.clone(workspace);
         newObject._eventQueues = new Hashtable<Actor, TreeSet<Time>>();
-        newObject._currentPhysicalTime = ((Actor) getContainer()).getExecutiveDirector()
-                .getModelTime();   
+        try {
+	    // Don't call getContainer here because we might be cloning and the
+	    // container is not an Actor.
+	    if (_currentPhysicalTime != null) {
+		newObject._currentPhysicalTime = new Time(newObject, 
+							  _currentPhysicalTime.getDoubleValue());
+	    }
+	} catch (Exception ex) {
+            // CloneNotSupportedException does not have a constructor
+            // that takes a cause argument, so we use initCause
+            CloneNotSupportedException throwable = new CloneNotSupportedException();
+            throwable.initCause(ex);
+            throw throwable;
+	}
+
         String strategy = null;
         try {
            strategy = ((StringToken) executionStrategy.getToken()).stringValue();
-        } catch (Exception exception) {
-            // cannot produce an exception, this is checked before
+        } catch (Exception ex) {
+	    throw new InternalErrorException(this, ex,
+					     "Should not produce an exception,"
+					     + " this is checked before.");
         }
         newObject._chooseExecutionStrategy(strategy);
         return newObject;
@@ -618,7 +633,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      */
     protected double _clockSyncronizationError;
 
-    /**a
+    /**
      * Current physical time which is retrieved by getting the model time of the
      * enclosing director.
      */
