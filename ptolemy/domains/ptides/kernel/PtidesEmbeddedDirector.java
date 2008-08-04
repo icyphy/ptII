@@ -531,8 +531,8 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * 
      * @param time
      *            The time stamp of the event.
-     * @param object
-     *            The object to to check the minimum delay time.
+     * @param port
+     *            The port on which to check the minimum delay time.
      * @return True If it is safe to process a token.
      * @throws IllegalActionException
      *             Thrown if CausalityInterface cannot be computed.
