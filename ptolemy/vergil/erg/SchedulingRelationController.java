@@ -30,6 +30,7 @@ package ptolemy.vergil.erg;
 
 import java.awt.BasicStroke;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.erg.kernel.SchedulingRelation;
 import ptolemy.vergil.fsm.Arc;
 import ptolemy.vergil.fsm.TransitionController;
@@ -48,12 +49,17 @@ import diva.graph.GraphController;
  */
 public class SchedulingRelationController extends TransitionController {
 
-    /**
-     * @param controller
-     */
     public SchedulingRelationController(GraphController controller) {
         super(controller);
         setEdgeRenderer(new SchedulingRelationRenderer());
+    }
+    
+    public void setConfiguration(Configuration configuration) {
+    	super.setConfiguration(configuration);
+    	
+    	if (_lookInsideActionFactory != null) {
+    		_menuFactory.removeMenuItemFactory(_lookInsideActionFactory);
+    	}
     }
 
     public static class SchedulingRelationRenderer extends LinkRenderer {

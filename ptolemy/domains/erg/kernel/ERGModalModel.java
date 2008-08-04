@@ -32,6 +32,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.erg.kernel;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.BreakCausalityInterface;
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -101,6 +104,20 @@ public class ERGModalModel extends ModalModel {
             NameDuplicationException {
         super(workspace);
         _init();
+    }
+
+    /** Return a causality interface for this actor.  This method returns the
+     *  causality interface where no output port depends on the input ports.  It
+     *  is an instance of {@link BreakCausalityInterface}.
+     *
+     *  FIXME: A causality interface special for ERG should be returned instead.
+     *
+     *  @return A representation of the dependencies between input ports
+     *   and output ports.
+     */
+    public CausalityInterface getCausalityInterface() {
+        return new BreakCausalityInterface(this,
+                BooleanDependency.OPLUS_IDENTITY);
     }
 
     /** Create an ERG controller within this ERG modal model. A subclass may

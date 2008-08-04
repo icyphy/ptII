@@ -2,6 +2,18 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ConstOptimizationDDF" class="ptolemy.actor.TypedCompositeActor">
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="    This model demonstrates how one can optimize a model. The original input is the model in&#10;BaseModel.xml, which the FileReader reads in. The contents of this model are then converted into an&#10;ActorToken by the ModelGenerator. OptimizeOnce is a transformation rule that gets repeatedly applied&#10;to this model until no further optimization is possible (i.e., a fixpoint is reached). In each application, two&#10;Consts that are wired to an AddSubtract actor, a MultiplyDivide actor, or a Maximum actor are replaced&#10;by a single Const with the statically computed value.&#10;    ConstOptimization.xml in the same directory contains a DE model that has exactly the same&#10;functionality, but has a much simpler design for using an ERG TransformationController.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 325.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
@@ -16,95 +28,42 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.5, 253.0}">
     </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Thomas Huining Feng (Inspired by Thomas Mandl)</text></svg></configure>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Thomas Huining Feng (Inspired by Thomas Mandl)">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 475.0]">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 465.0]">
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model demonstrates how one can possibly optimize a model. The original input is the model in
-BaseModel.xml, which the FileReader actor reads in. The contents of this model are then converted
-into an ActorToken by the ModelGenerator. OptimizeOnce is a transformation rule that gets
-repeatedly applied to this model until no further optimization is possible (i.e., a fixpoint is reached).
-In each application, two Consts that are wired to an AddSubtract actor, a MultiplyDivide actor, or a
-Maximum actor are replaced by a single Const with the statically computed value.</text></svg></configure>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click the run to execute. The new window to the left shows the original&#10;model. The right one shows the result of static evaluation step by step.">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 40.0]">
         </property>
     </property>
-    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Click the run button to observe the behavior reflected in the popup windows. The
-new window to the left shows the original model. The one to the right shows the
-result of static evaluation step by step.</text></svg></configure>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model Size Reduction">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 15.0]">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 30.0]">
-        </property>
-    </property>
-    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">Model Size Reduction</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 10.0]">
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 125.0]">
         </property>
     </entity>
     <entity name="OriginalModel" class="ptolemy.actor.gt.ModelView">
@@ -112,18 +71,18 @@ result of static evaluation step by step.</text></svg></configure>
         </property>
         <property name="screenLocation" class="ptolemy.data.expr.Parameter" value="{x=0, y=0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 135.0]">
         </property>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="BaseModel.xml">
         </property>
         <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 125.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 265.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -136,13 +95,13 @@ result of static evaluation step by step.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 265.0]">
         </property>
     </entity>
     <entity name="OptimizeOnce" class="ptolemy.actor.gt.TransformationRule">
         <property name="mode" class="ptolemy.data.expr.StringParameter" value="replace any">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 215.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 240, 833, 570}, maximized=false}">
         </property>
@@ -308,7 +267,7 @@ result of static evaluation step by step.</text></svg></configure>
     <entity name="OptimizedModel" class="ptolemy.actor.gt.ModelView">
         <property name="screenLocation" class="ptolemy.data.expr.Parameter" value="{x=662, y=0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 215.0]">
         </property>
     </entity>
     <entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect">
@@ -318,7 +277,7 @@ result of static evaluation step by step.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 185.0]">
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -330,7 +289,7 @@ result of static evaluation step by step.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 250.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -345,7 +304,7 @@ result of static evaluation step by step.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 250.0]">
         </property>
     </entity>
     <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
@@ -355,7 +314,7 @@ result of static evaluation step by step.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 215.0]">
         </property>
         <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -374,7 +333,7 @@ result of static evaluation step by step.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 205.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -406,13 +365,13 @@ result of static evaluation step by step.</text></svg></configure>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[310.0, 280.0]">
+        <vertex name="vertex1" value="[310.0, 265.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[185.0, 320.0]">
+        <vertex name="vertex1" value="[185.0, 305.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -430,7 +389,7 @@ result of static evaluation step by step.</text></svg></configure>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[185.0, 140.0]">
+        <vertex name="vertex1" value="[185.0, 125.0]">
         </vertex>
     </relation>
     <link port="ModelGenerator.model" relation="relation2"/>

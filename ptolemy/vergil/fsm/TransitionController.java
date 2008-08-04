@@ -134,11 +134,11 @@ public class TransitionController extends BasicEdgeController {
 
         interactor.addInteractor(doubleClickInteractor);
 
-        if (_configuration != null) {
+        if (_configuration != null && _lookInsideActionFactory == null) {
+            _lookInsideActionFactory = new MenuActionFactory(_lookInsideAction);
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _lookInsideAction));
+            _menuFactory.addMenuItemFactory(_lookInsideActionFactory);
         }
     }
 
@@ -152,11 +152,11 @@ public class TransitionController extends BasicEdgeController {
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
 
-        if (_configuration != null) {
+        if (_configuration != null && _lookInsideActionFactory == null) {
+            _lookInsideActionFactory = new MenuActionFactory(_lookInsideAction);
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _lookInsideAction));
+            _menuFactory.addMenuItemFactory(_lookInsideActionFactory);
         }
     }
 
@@ -289,6 +289,10 @@ public class TransitionController extends BasicEdgeController {
 
     /** The action that handles look inside. */
     protected LookInsideAction _lookInsideAction = new LookInsideAction();
+
+    /** The menu factory for _lookInsideAction. null if the factory has not been
+    added to the context menu. */
+    protected MenuActionFactory _lookInsideActionFactory;
 
     /** The menu creator. */
     protected MenuCreator _menuCreator;

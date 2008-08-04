@@ -32,6 +32,7 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.GraphTransformer;
@@ -45,14 +46,18 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
-//// GTTask
+//// Transform
 
 /**
 
@@ -69,14 +74,24 @@ public class Transform extends GTEvent implements Configurable, MatchCallback {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        _transformation = new TransformationRule(workspace());
-        _transformation.setName("Transformation");
+        configurer = new Configurer(workspace());
+        configurer.setContainer(this);
+
+        _transformation = new TransformationRule(configurer, "Transformation");
+        _clearURI(_transformation);
     }
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Transform newObject = (Transform) super.clone(workspace);
+        newObject.configurer = new Configurer(workspace);
+        newObject.configurer.setContainer(newObject);
         newObject._transformation = (TransformationRule) _transformation.clone(
                 workspace);
+        try {
+            newObject._transformation.setContainer(newObject.configurer);
+        } catch (KernelException e) {
+            throw new InternalErrorException(e);
+        }
         newObject._matchResult = null;
         return newObject;
     }
@@ -90,6 +105,9 @@ public class Transform extends GTEvent implements Configurable, MatchCallback {
             MoMLParser parser = new MoMLParser(workspace());
             _transformation = (TransformationRule) parser.parse(base,
                     new StringReader(text));
+            configurer.removeAllEntities();
+            _transformation.setContainer(configurer);
+            _clearURI(_transformation);
         }
     }
 
@@ -115,7 +133,7 @@ public class Transform extends GTEvent implements Configurable, MatchCallback {
         }
 
         _scheduleEvents(scope, new ActorToken(model), BooleanToken.getInstance(
-        		_matchResult != null));
+                _matchResult != null));
     }
 
     public boolean foundMatch(GraphMatcher matcher) {
@@ -133,6 +151,29 @@ public class Transform extends GTEvent implements Configurable, MatchCallback {
 
     public TypedActor[] getRefinement() {
         return new TypedActor[] {_transformation};
+    }
+
+    public Configurer configurer;
+
+    public static class Configurer extends CompositeActor {
+
+        public Configurer(Workspace workspace) {
+            super(workspace);
+        }
+
+        public NamedObj getContainer() {
+            if (_container == null) {
+                return super.getContainer();
+            } else {
+                return _container;
+            }
+        }
+
+        public void setContainer(Transform container) {
+            _container = container;
+        }
+
+        private Transform _container;
     }
 
     protected void _exportMoMLContents(Writer output, int depth)
@@ -154,6 +195,15 @@ public class Transform extends GTEvent implements Configurable, MatchCallback {
     protected MatchResult _matchResult;
 
     protected TransformationRule _transformation;
+
+    private static void _clearURI(NamedObj object)
+    throws IllegalActionException, NameDuplicationException {
+        URIAttribute attribute = (URIAttribute) object.getAttribute("_uri",
+                URIAttribute.class);
+        if (attribute != null) {
+            attribute.setContainer(null);
+        }
+    }
 
     private String _configureSource;
 }
