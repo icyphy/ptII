@@ -12,6 +12,8 @@
         <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator"/>
         <entity name="ModelView" class="ptolemy.actor.gt.ModelView"/>
         <entity name="MoMLGenerator" class="ptolemy.actor.gt.MoMLGenerator"/>
+        <!-- <input source="../../actor/gt/controller/TransformationController.xml"/> -->
+        <entity name="TransformationController" class="ptolemy.actor.gt.controller.TransformationController"/>
         <entity name="TransformationRule" class="ptolemy.actor.gt.TransformationRule"/>
       </group>
     ?>

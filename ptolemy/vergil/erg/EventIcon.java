@@ -30,11 +30,15 @@ package ptolemy.vergil.erg;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.erg.kernel.Event;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -109,8 +113,9 @@ public class EventIcon extends StateIcon {
             return _iconCache;
         }
 
-        Figure figure = new RoundedRectangle(0, 0, 20, 10, Color.white, 1.0f,
-                5.0, 5.0);
+        RoundedRectangle figure = new RoundedRectangle(0, 0, 20, 10,
+        		Color.white, 1.0f, 5.0, 5.0);
+        figure.setFillPaint(_getFill());
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
     }
@@ -164,7 +169,33 @@ public class EventIcon extends StateIcon {
                 backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0);
         figure.add(label);
     }
+    
+    protected Paint _getFill() {
+    	Parameter colorParameter;
+		try {
+			colorParameter = (Parameter) (getAttribute("_fill",
+					Parameter.class));
+	        if (colorParameter != null) {
+	        	ArrayToken array = (ArrayToken) colorParameter.getToken();
+	        	if (array.length() == 4) {
+	        		Color color = new Color(
+	        				(float) ((ScalarToken) array.getElement(0))
+	        						.doubleValue(),
+	        				(float) ((ScalarToken) array.getElement(1))
+	        						.doubleValue(),
+	        				(float) ((ScalarToken) array.getElement(2))
+	        						.doubleValue(),
+	        				(float) ((ScalarToken) array.getElement(3))
+	        						.doubleValue());
+	        		return color;
+	        	}
+	        }
+		} catch (Throwable e) {
+			// Ignore and return the default.
+		}
+    	return super._getFill();
+    }
 
-    private static final Font _ACTION_FONT =
-        new Font("SansSerif", Font.PLAIN, 10);
+    private static final Font _ACTION_FONT = new Font("SansSerif", Font.PLAIN,
+    		10);
 }

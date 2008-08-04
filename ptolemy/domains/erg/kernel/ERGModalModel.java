@@ -31,11 +31,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.erg.kernel;
 
+import ptolemy.actor.Director;
 import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -101,25 +103,52 @@ public class ERGModalModel extends ModalModel {
         _init();
     }
 
+    /** Create an ERG controller within this ERG modal model. A subclass may
+     *  return a different controller to be used in this ERG modal model.
+     *
+     *  @return A controller to be used in this modal model.
+     *  @exception IllegalActionException If the ERG modal model is incompatible
+     *   with the controller.
+     *  @exception NameDuplicationException If the name of the controller
+     *   collides with a name already in the container.
+     */
+    protected ERGController _createController() throws IllegalActionException,
+    NameDuplicationException {
+        return new ERGController(this, "_Controller");
+    }
+
     /** Initialize the ERG modal model by creating the parameter directorClass
      *  and an ERG controller inside.
      *
-     *  @throws IllegalActionException If the ERG modal model is incompatible
+     *  @exception IllegalActionException If the ERG modal model is incompatible
      *   with the controller.
-     *  @throws NameDuplicationException NameDuplicationException If the name of
-     *   the controller collides with a name already in the container.
+     *  @exception NameDuplicationException If the name of the controller
+     *   collides with a name already in the container.
      */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         setClassName("ptolemy.domains.erg.kernel.ERGModalModel");
 
+        // Set the director before changing directorClass, because changing the
+        // latter causes a ChangeRequest to be issued (in superclass'
+        // attributeChanged(), which then causes the expanded node in the actor
+        // library to be collapsed immediately.
+        Director director = getDirector();
+        if (director != null && director.getContainer() == this) {
+            director.setContainer(null);
+        }
+        ERGDirector ergDirector = new ERGDirector(this, uniqueName(
+                "_Director"));
+        ergDirector.controllerName.setExpression(_controller.getName());
+
         directorClass.removeAllChoices();
         directorClass.setExpression("ptolemy.domains.erg.kernel.ERGDirector");
+        directorClass.setVisibility(Settable.NONE);
 
         ComponentEntity controller = getEntity("_Controller");
         if (controller != null) {
             controller.setContainer(null);
         }
-        _controller = new ERGController(this, "_Controller");
+        _controller = _createController();
     }
 }

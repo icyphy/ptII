@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.actor.Actor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -167,58 +168,10 @@ public class Event extends State {
      *   evaluated.
      */
     public void fire(ArrayToken arguments) throws IllegalActionException {
-        ERGController controller = (ERGController) getContainer();
-
-        List<?> names = parameters.getParameterNames();
-        int paramCount = names == null ? 0 : names.size();
-        int argCount = arguments == null ? 0 : arguments.length();
-        if (paramCount != argCount) {
-            throw new IllegalActionException(this, "The number of arguments to "
-                    + "this event must be equal to the number of declared "
-                    + "parameters, which is " + paramCount + ".");
-        }
-
-        ParserScope scope = controller.getPortScope();
-
-        if (paramCount > 0) {
-            Map<String, Token> parameterMap = new HashMap<String, Token>();
-            Iterator<?> namesIter = names.iterator();
-            Type[] types = parameters.getParameterTypes();
-            for (int i = 0; namesIter.hasNext(); i++) {
-                String name = (String) namesIter.next();
-                Token argument = arguments.getElement(i);
-                if (!types[i].isCompatible(argument.getType())) {
-                    throw new IllegalActionException(this, "Argument " + (i + 1)
-                            + "must have type " + types[i]);
-                }
-                parameterMap.put(name, argument);
-            }
-            scope = new ParameterParserScope(parameterMap, scope);
-        }
-
+        ParserScope scope = _getParserScope(arguments);
         actions.execute(scope);
-
-        ERGDirector director = (ERGDirector) controller.director;
-        List<?>[] schedulesArray = new List<?>[2];
-        schedulesArray[0] = preemptiveTransitionList();
-        schedulesArray[1] = nonpreemptiveTransitionList();
-        for (List<?> schedules : schedulesArray) {
-            for (Object scheduleObject : schedules) {
-                SchedulingRelation schedule =
-                    (SchedulingRelation) scheduleObject;
-                if (schedule.isEnabled(scope)) {
-                    double delay = schedule.getDelay(scope);
-                    Event nextEvent = (Event) schedule.destinationState();
-                    if (schedule.isCanceling()) {
-                        director.cancel(nextEvent);
-                    } else {
-                        ArrayToken edgeArguments = schedule.getArguments(scope);
-                        director.fireAt(nextEvent, director.getModelTime().add(
-                                delay), edgeArguments);
-                    }
-                }
-            }
-        }
+        _fireRefinements();
+        _scheduleEvents(scope);
     }
 
     /** Return whether this event is an input event, which is processed when any
@@ -341,5 +294,108 @@ public class Event extends State {
             parameters. */
         private ParserScope _superscope;
 
+    }
+
+    /** Fire all the refinements in this event once, if there is any. The
+     *  refinements can be either ERG models or actor models. For ERG models,
+     *  the initial events in them are scheduled for immediate processing.
+     *
+     *  @exception IllegalActionException If the refinements cannot be obtained,
+     *  or the refinements cannot be fired.
+     */
+    protected void _fireRefinements() throws IllegalActionException {
+        ERGController controller = (ERGController) getContainer();
+        ERGDirector director = (ERGDirector) controller.director;
+
+        Actor[] refinements = getRefinement();
+        if (refinements != null) {
+            for (Actor refinement : refinements) {
+                if (refinement instanceof ERGController) {
+                    ((ERGController) refinement).director._initializeSchedule();
+                    director.fireAt(refinement, director.getModelTime());
+                } else {
+                    if (refinement.prefire()) {
+                        refinement.fire();
+                        refinement.postfire();
+                    }
+                }
+            }
+        }
+    }
+
+    /** Return the parser scope used to evaluate the actions and values
+     *  associated with scheduling relations. The parser scope can evaluate
+     *  names in the parameter list of this event. The values for those names
+     *  are obtained from the given array of arguments.
+     *
+     *  @param arguments The array of arguments.
+     *  @return The parser scope.
+     *  @exception IllegalActionException If the number or types of the given
+     *  arguments do not match those of the defined parameters.
+     */
+    protected ParserScope _getParserScope(ArrayToken arguments)
+            throws IllegalActionException {
+        ERGController controller = (ERGController) getContainer();
+        ParserScope scope = controller.getPortScope();
+
+        List<?> names = parameters.getParameterNames();
+        int paramCount = names == null ? 0 : names.size();
+        int argCount = arguments == null ? 0 : arguments.length();
+        if (paramCount > argCount) {
+            throw new IllegalActionException(this, "The number of arguments to "
+                    + "this event must be greater than or equal to the number "
+                    + "of declared parameters, which is " + paramCount + ".");
+        }
+
+        if (paramCount > 0) {
+            Map<String, Token> parameterMap = new HashMap<String, Token>();
+            Iterator<?> namesIter = names.iterator();
+            Type[] types = parameters.getParameterTypes();
+            for (int i = 0; namesIter.hasNext(); i++) {
+                String name = (String) namesIter.next();
+                Token argument = arguments.getElement(i);
+                if (!types[i].isCompatible(argument.getType())) {
+                    throw new IllegalActionException(this, "Argument " + (i + 1)
+                            + "must have type " + types[i]);
+                }
+                parameterMap.put(name, argument);
+            }
+            scope = new ParameterParserScope(parameterMap, scope);
+        }
+        return scope;
+    }
+
+    /** Schedule the next events by evaluating all scheduling relations from
+     *  this event.
+     *
+     *  @param scope The parser scope used in the evaluation.
+     *  @exception IllegalActionException If the scheduling relations cannot be
+     *  evaluated.
+     */
+    protected void _scheduleEvents(ParserScope scope)
+            throws IllegalActionException {
+        ERGController controller = (ERGController) getContainer();
+        ERGDirector director = (ERGDirector) controller.director;
+
+        List<?>[] schedulesArray = new List<?>[2];
+        schedulesArray[0] = preemptiveTransitionList();
+        schedulesArray[1] = nonpreemptiveTransitionList();
+        for (List<?> schedules : schedulesArray) {
+            for (Object scheduleObject : schedules) {
+                SchedulingRelation schedule =
+                    (SchedulingRelation) scheduleObject;
+                if (schedule.isEnabled(scope)) {
+                    double delay = schedule.getDelay(scope);
+                    Event nextEvent = (Event) schedule.destinationState();
+                    if (schedule.isCanceling()) {
+                        director.cancel(nextEvent);
+                    } else {
+                        ArrayToken edgeArguments = schedule.getArguments(scope);
+                        director.fireAt(nextEvent, director.getModelTime().add(
+                                delay), edgeArguments);
+                    }
+                }
+            }
+        }
     }
 }

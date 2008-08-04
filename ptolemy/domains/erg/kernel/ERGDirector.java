@@ -594,25 +594,6 @@ public class ERGDirector extends Director implements TimedDirector {
             controller._setCurrentEvent(event);
             event.fire(timedEvent._arguments);
 
-            Actor[] refinements = event.getRefinement();
-            if (refinements != null) {
-                for (Actor refinement : refinements) {
-                    if (_stopRequested) {
-                        break;
-                    }
-                    if (refinement instanceof ERGController) {
-                        ((ERGController) refinement).director
-                                ._initializeSchedule();
-                        _fireAt(refinement, _currentTime, null);
-                    } else {
-                        if (refinement.prefire()) {
-                            refinement.fire();
-                            refinement.postfire();
-                        }
-                    }
-                }
-            }
-
             if (((BooleanToken) event.isFinalState.getToken()).booleanValue()) {
                 _eventQueue.clear();
             }

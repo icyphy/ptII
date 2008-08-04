@@ -69,6 +69,7 @@ JSRCS = \
 	MatchResultViewer.java \
 	StateMatcherController.java \
 	StateMatcherIcon.java \
+	TestIcon.java \
 	TransformationAttributeController.java \
 	TransformationAttributeEditorFactory.java \
 	TransformationAttributeIcon.java \

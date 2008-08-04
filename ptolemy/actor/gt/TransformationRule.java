@@ -457,7 +457,8 @@ public class TransformationRule extends MultiCompositeActor implements
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
-            setClassName("ptolemy.actor.gt.TransformationRule$GTDirector");
+            setClassName("ptolemy.actor.gt.TransformationRule" +
+            		"$TransformationDirector");
         }
 
         public void initialize() throws IllegalActionException {
