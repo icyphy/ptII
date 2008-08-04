@@ -44,6 +44,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// SubscriptionAggregator
@@ -164,9 +165,27 @@ public class SubscriptionAggregator extends Subscriber {
             // FIXME: this might end up consuming lots of space in large
             // graphs.  We could store the hash of the channelName
             // and if the hash is present, then do the comparison.
+
+	    // FIXME: so when does _channelDoesNotMatch and _channelMatches
+	    // get reset?  What if the channel name changes?
             _channelDoesNotMatch.add(channelName);
         }
         return false;
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SubscriptionAggregator newObject = (SubscriptionAggregator) super.clone(workspace);
+
+	newObject._channelDoesNotMatch = new HashSet();
+	newObject._channelMatches = new HashSet();
+	newObject._relations = new LinkedList();
+        return newObject;
     }
 
     /** Read at most one input token from each input

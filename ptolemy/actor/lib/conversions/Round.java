@@ -38,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/math.xml.
@@ -136,6 +137,23 @@ public class Round extends Transformer {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Round newObject = (Round) super.clone(workspace);
+
+	// The non-primitive fields of the clone must refer to objects
+	// distinct from the objects of the same name in the class.
+	// If this is not done, then there may be problems with actor
+	// oriented classes.
+        newObject._resultArray = new IntToken[0];
+        return newObject;
     }
 
     /** This computes the specified rounded value of the input.
