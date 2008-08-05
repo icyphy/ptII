@@ -36,6 +36,7 @@ DIRS = \
 	CircularRange \
 	Collisions \
 	EvaderAndPursuer \
+	Intersections \
 	LinkVisualizer \
 	MatlabWirelessSoundDetection \
 	Network \
@@ -70,6 +71,7 @@ PTCLASSALLJARS = \
 	CircularRange/CircularRange.jar \
 	Collisions/Collisions.jar \
 	EvaderAndPursuer/EvaderAndPursuer.jar \
+	Intersections/Intersections.jar \
 	MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.jar \
 	LinkVisualizer/LinkVisualizer.jar \
 	PowerVariability/PowerVariability.jar \

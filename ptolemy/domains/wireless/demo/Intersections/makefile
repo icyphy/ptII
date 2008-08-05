@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Graph Transformation demo
+# Makefile for Ptolemy II Intersections demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gt/demo/SimTraffic
+ME =		ptolemy/domains/wireless/demo/Intersections
 
 DIRS =
 
@@ -79,7 +79,7 @@ all: jclass
 install: jclass jars
 
 demo:
-	$(ROOT)/bin/vergil SimTraffic.xml
+	$(ROOT)/bin/vergil Intersections.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

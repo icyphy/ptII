@@ -33,7 +33,7 @@ ME =		ptolemy/actor/gt/demo
 
 DIRS =		BouncingBallX2 ConstOptimization DiningPhilosophers \
 		HierarchyFlattening MapReduce ModelGeneration \
-		PublisherTest RegressionTest SimTraffic
+		PublisherTest RegressionTest
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -58,8 +58,7 @@ PTCLASSALLJARS = \
 	MapReduce/MapReduce.jar \
 	ModelGeneration/ModelGeneration.jar \
 	PublisherTest/PublisherTest.jar \
-	RegressionTest/RegressionTest.jar \
-	SimTraffic/SimTraffic.jar
+	RegressionTest/RegressionTest.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
