@@ -273,8 +273,6 @@ ERG modal model.</text></svg></configure>
         </property>
     </property>
     <entity name="ERGModalModel" class="ptolemy.domains.erg.kernel.ERGModalModel">
-    	<property name="_tableauFactory" class="ptolemy.vergil.erg.ERGTableauFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 170.0]">
         </property>
         <port name="Cred" class="ptolemy.domains.fsm.modal.ModalPort">

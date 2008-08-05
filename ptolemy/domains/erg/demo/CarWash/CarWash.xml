@@ -147,8 +147,6 @@ is stable statistically.</text></svg></configure>
         </property>
     </entity>
     <entity name="ERGModalModel" class="ptolemy.domains.erg.kernel.ERGModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.erg.ERGTableauFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 170.0]">
         </property>
         <port name="serversInput" class="ptolemy.domains.fsm.modal.ModalPort">

@@ -4,8 +4,6 @@
 <class name="TransformationController" extends="ptolemy.domains.erg.kernel.ERGModalModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_tableauFactory" class="ptolemy.vergil.erg.ERGTableauFactory">
-    </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 135}">
     </property>
     <port name="modelInput" class="ptolemy.domains.fsm.modal.ModalPort">

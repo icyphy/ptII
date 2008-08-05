@@ -3,8 +3,6 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <group>
   <entity name="Event Relationship Graph" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-    <entity name="blank" class="ptolemy.domains.erg.kernel.ERGModalModel">
-      <property name="_tableauFactory" class="ptolemy.vergil.erg.ERGTableauFactory"/>
-    </entity>
+    <entity name="blank" class="ptolemy.domains.erg.kernel.ERGModalModel"/>
   </entity>
 </group>

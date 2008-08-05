@@ -28,11 +28,13 @@
 
 package ptolemy.vergil.erg;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.domains.erg.kernel.ERGController;
+import ptolemy.domains.erg.kernel.ERGModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -126,7 +128,12 @@ public class ERGGraphTableau extends FSMGraphTableau {
 
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
-            if (model instanceof ERGController) {
+            if (model instanceof ERGModalModel) {
+                Configuration configuration = (Configuration) effigy.toplevel();
+                ERGController controller = (ERGController)
+                        ((ERGModalModel) model).getController();
+                return configuration.openModel(controller);
+            } else if (model instanceof ERGController) {
                 // Check to see whether this factory contains a
                 // default library.
                 LibraryAttribute library = (LibraryAttribute) getAttribute(

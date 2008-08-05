@@ -56,7 +56,6 @@ JSRCS = \
 	ERGGraphController.java \
 	ERGGraphFrame.java \
 	ERGGraphTableau.java \
-	ERGTableauFactory.java \
 	EventIcon.java \
 	SchedulingRelationController.java
 
