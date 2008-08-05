@@ -27,19 +27,14 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.actor.gt.GraphMatcher;
-import ptolemy.actor.gt.Pattern;
-import ptolemy.data.ActorToken;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.ParserScope;
+import ptolemy.actor.gt.TransformationMode;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
-//// GTTest
+//// Match
 
 /**
 
@@ -52,29 +47,13 @@ import ptolemy.kernel.util.Workspace;
  */
 public class Match extends Transform {
 
-	public Match(CompositeEntity container, String name)
-			throws IllegalActionException, NameDuplicationException {
-		super(container, name);
-		
-		_transformation.matchOnly.setToken(BooleanToken.TRUE);
-	}
+    public Match(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
 
-	public void fire(ArrayToken arguments) throws IllegalActionException {
-        ParserScope scope = _getParserScope(arguments);
-        actions.execute(scope);
-
-        ActorToken modelToken = _getModelArgument(arguments);
-        CompositeEntity model = (CompositeEntity) modelToken.getEntity(
-        		new Workspace());
-        model.setDeferringChangeRequests(false);
-
-        Pattern pattern = _transformation.getPattern();
-        GraphMatcher matcher = new GraphMatcher();
-        matcher.setMatchCallback(this);
-        _matchResult = null;
-        matcher.match(pattern, model);
-        
-        _scheduleEvents(scope, modelToken, BooleanToken.getInstance(
-        		_matchResult != null));
+        _transformation.mode.setExpression(TransformationMode.Mode.MATCH_ONLY
+        		.toString());
+        mode.setExpression(TransformationMode.Mode.MATCH_ONLY.toString());
+        mode.setVisibility(Settable.NONE);
     }
 }

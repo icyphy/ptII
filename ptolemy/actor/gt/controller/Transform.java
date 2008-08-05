@@ -34,13 +34,8 @@ import java.net.URL;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.gt.GraphMatcher;
-import ptolemy.actor.gt.GraphTransformer;
-import ptolemy.actor.gt.MatchCallback;
-import ptolemy.actor.gt.Pattern;
-import ptolemy.actor.gt.TransformationException;
+import ptolemy.actor.gt.TransformationMode;
 import ptolemy.actor.gt.TransformationRule;
-import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -68,7 +63,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Transform extends GTEvent implements Configurable, MatchCallback {
+public class Transform extends GTEvent implements Configurable {
 
     public Transform(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -78,7 +73,12 @@ public class Transform extends GTEvent implements Configurable, MatchCallback {
         configurer.setContainer(this);
 
         _transformation = new TransformationRule(configurer, "Transformation");
+        TransformationMode helper = new TransformationMode(_transformation,
+        		"_helper");
+        helper.setPersistent(false);
         _clearURI(_transformation);
+        
+        mode = new TransformationMode(this, "mode");
     }
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -92,7 +92,6 @@ public class Transform extends GTEvent implements Configurable, MatchCallback {
         } catch (KernelException e) {
             throw new InternalErrorException(e);
         }
-        newObject._matchResult = null;
         return newObject;
     }
 
@@ -105,6 +104,9 @@ public class Transform extends GTEvent implements Configurable, MatchCallback {
             MoMLParser parser = new MoMLParser(workspace());
             _transformation = (TransformationRule) parser.parse(base,
                     new StringReader(text));
+            TransformationMode helper = new TransformationMode(
+            		_transformation, "_helper");
+		    helper.setPersistent(false);
             configurer.removeAllEntities();
             _transformation.setContainer(configurer);
             _clearURI(_transformation);
@@ -119,26 +121,11 @@ public class Transform extends GTEvent implements Configurable, MatchCallback {
                 .getEntity(new Workspace());
         model.setDeferringChangeRequests(false);
 
-        Pattern pattern = _transformation.getPattern();
-        GraphMatcher matcher = new GraphMatcher();
-        matcher.setMatchCallback(this);
-        _matchResult = null;
-        matcher.match(pattern, model);
-        if (_matchResult != null) {
-            try {
-                GraphTransformer.transform(_transformation, _matchResult);
-            } catch (TransformationException e) {
-                throw new IllegalActionException("Unable to transform model.");
-            }
-        }
+        boolean matched = mode.transform(mode.getWorkingCopy(_transformation),
+        		model);
 
         _scheduleEvents(scope, new ActorToken(model), BooleanToken.getInstance(
-                _matchResult != null));
-    }
-
-    public boolean foundMatch(GraphMatcher matcher) {
-        _matchResult = (MatchResult) matcher.getMatchResult().clone();
-        return false;
+        		matched));
     }
 
     public String getConfigureSource() {
@@ -175,6 +162,8 @@ public class Transform extends GTEvent implements Configurable, MatchCallback {
 
         private Transform _container;
     }
+    
+    public TransformationMode mode;
 
     protected void _exportMoMLContents(Writer output, int depth)
     throws IOException {
@@ -191,8 +180,6 @@ public class Transform extends GTEvent implements Configurable, MatchCallback {
         _transformation.exportMoML(output, depth + 1);
         output.write("</configure>\n");
     }
-
-    protected MatchResult _matchResult;
 
     protected TransformationRule _transformation;
 

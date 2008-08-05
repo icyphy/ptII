@@ -112,17 +112,18 @@ JSRCS = \
 	ToplevelTransformer.java \
 	TransformationAttribute.java \
 	TransformationException.java \
+	TransformationMode.java \
 	TransformationRule.java \
 	TransitionMatcher.java \
 	ValidationException.java \
 	ValueIterator.java
 
 OTHER_FILES_TO_BE_JARED = \
+	MoMLGeneratorIcon.xml \
 	ModelCombineIcon.xml \
 	ModelExecutorIcon.xml \
 	ModelGeneratorIcon.xml \
 	ModelViewIcon.xml \
-	MoMLGeneratorIcon.xml \
 	StateMatcherIcon.xml \
 	TransformationRuleIcon.xml
 
@@ -159,15 +160,15 @@ OPTIONAL_FILES = \
 	'ModelExecutor$$WrapperPort.class' \
 	'ToplevelTransformer$$TransformerPort.class' \
 	'TransformationAttribute$$TransformerAttribute.class' \
-	'TransformationRule$$1.class' \
-	'TransformationRule$$LastResultsOperation.class' \
-	'TransformationRule$$Mode$$1.class' \
-	'TransformationRule$$Mode$$2.class' \
-	'TransformationRule$$Mode$$3.class' \
-	'TransformationRule$$Mode$$4.class' \
-	'TransformationRule$$Mode.class' \
+	'TransformationMode$$1.class' \
+	'TransformationMode$$Mode$$1.class' \
+	'TransformationMode$$Mode$$2.class' \
+	'TransformationMode$$Mode$$3.class' \
+	'TransformationMode$$Mode$$4.class' \
+	'TransformationMode$$Mode$$5.class' \
+	'TransformationMode$$Mode.class' \
+	'TransformationMode$$WorkingCopyScopeExtender.class' \
 	'TransformationRule$$TransformationDirector.class' \
-	'TransformationRule$$WorkingCopyScopeExtender.class' \
 	demo
 
 JCLASS = $(JSRCS:%.java=%.class)

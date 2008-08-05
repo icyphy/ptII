@@ -152,13 +152,13 @@ public class GTFrame extends ExtendedGraphFrame {
         _frameController = new GTFrameController(this);
         JComponent component = _frameController._createRightComponent(entity);
         if (component == null) {
-        	if (entity instanceof TransformationRule
-        			&& ((TransformationRule) entity).isMatchOnly()) {
-        		component = super._createRightComponent(
-        				((TransformationRule) entity).getPattern());
-        	} else {
-        		component = super._createRightComponent(entity);
-        	}
+            if (entity instanceof TransformationRule
+                    && ((TransformationRule) entity).mode.isMatchOnly()) {
+                component = super._createRightComponent(
+                        ((TransformationRule) entity).getPattern());
+            } else {
+                component = super._createRightComponent(entity);
+            }
         }
         return component;
     }

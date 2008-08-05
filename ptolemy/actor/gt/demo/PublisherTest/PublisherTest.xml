@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PublisherTest" class="ptolemy.actor.gt.TransformationRule">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={243, 166, 913, 717}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={241, 153, 742, 469}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[690, 602]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[514, 327]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{305.0, 77.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{217.0, -60.5}">
     </property>
     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
         <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute">
@@ -27,14 +27,14 @@
           </svg>
         </configure>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, -105.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.5, -200.0]">
             </property>
         </property>
         <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute">
             <property name="directory" class="ptolemy.data.expr.FileParameter" value="../../../lib/test/auto">
-            </property>
+<display name="Directory"/>            </property>
             <property name="filter" class="ptolemy.data.expr.StringParameter" value="Publisher*.xml">
-            </property>
+<display name="File filter (*.xml)"/>            </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>
@@ -46,13 +46,13 @@
           </svg>
         </configure>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, -70.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.5, -175.0]">
             </property>
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This transformation rule demonstrates transforming Publishers (instances of&#10;ptolemy.actor.lib.Publisher or its subclasses) into CompositeActors with the&#10;Publishers inside, as well as extra Test actors.&#10;&#10;This version does not support multiple connections to a Publisher's input port.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 105.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, -40.0]">
             </property>
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -72,7 +72,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 210.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 65.0]">
             </property>
             <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation">
             </property>
@@ -80,13 +80,13 @@
         <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/false/false)(ptolemy.actor.gt.ingredients.criteria.SubclassCriterion/true/&quot;ptolemy.actor.lib.Publisher&quot;)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 35.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, -100.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[120.0, 35.0]">
+            <vertex name="vertex1" value="[50.0, -100.0]">
             </vertex>
         </relation>
         <link port="AtomicActorMatcher.criterion1" relation="relation"/>

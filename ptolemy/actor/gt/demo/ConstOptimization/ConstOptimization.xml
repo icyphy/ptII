@@ -82,6 +82,8 @@
                 </property>
             </entity>
             <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">
+                <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace any">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 160.0]">

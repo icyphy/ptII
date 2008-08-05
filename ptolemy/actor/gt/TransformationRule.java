@@ -32,13 +32,11 @@ package ptolemy.actor.gt;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.MatchResult;
-import ptolemy.actor.gt.util.VariableScope;
 import ptolemy.actor.lib.hoc.MultiCompositeActor;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
@@ -48,9 +46,6 @@ import ptolemy.data.LongToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.ScopeExtender;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
@@ -59,7 +54,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.ValueListener;
@@ -77,7 +71,7 @@ import ptolemy.kernel.util.Workspace;
 @Pt.AcceptedRating Red (tfeng)
 */
 public class TransformationRule extends MultiCompositeActor implements
-        GTCompositeActor, MatchCallback, ValueListener {
+        GTCompositeActor, ValueListener {
 
     public TransformationRule(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -93,31 +87,19 @@ public class TransformationRule extends MultiCompositeActor implements
 
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == matchOnly) {
-            // Show or hide other parameters if matchOnly is set/unset.
-            if (isMatchOnly()) {
-                mode.setVisibility(Settable.EXPERT);
-                repeatCount.setVisibility(Settable.EXPERT);
-                repeatUntilFixpoint.setVisibility(Settable.EXPERT);
-            } else {
-                mode.setVisibility(Settable.FULL);
-                repeatCount.setVisibility(Settable.FULL);
-                repeatUntilFixpoint.setVisibility(Settable.FULL);
-            }
-
-        } else if (attribute == mode || attribute == repeatUntilFixpoint) {
+        if (attribute == mode || attribute == repeatUntilFixpoint) {
             // Check whether the mode is not set to single run but
             // repeatUntilFixpoint is set to true. If so, raise exception.
-            String modeString = mode.getExpression();
+            TransformationMode.Mode modeValue = mode.getMode();
             boolean singleRunMode =
-                modeString.equals(Mode.REPLACE_FIRST.toString())
-                    || modeString.equals(Mode.REPLACE_ANY.toString())
-                    || modeString.equals(Mode.REPLACE_ALL.toString());
+                modeValue == TransformationMode.Mode.REPLACE_FIRST
+                    || modeValue == TransformationMode.Mode.REPLACE_ANY
+                    || modeValue == TransformationMode.Mode.REPLACE_ALL;
             boolean repeat = ((BooleanToken) repeatUntilFixpoint.getToken())
                     .booleanValue();
-            if (repeat && !singleRunMode) {
+            if (repeat && !singleRunMode && !mode.isMatchOnly()) {
                 throw new IllegalActionException("When the mode is set to \""
-                        + modeString + "\", repeatUntilFixpoint must be "
+                        + modeValue + "\", repeatUntilFixpoint must be "
                         + "false.");
             }
         }
@@ -129,7 +111,6 @@ public class TransformationRule extends MultiCompositeActor implements
         TransformationRule actor = (TransformationRule) super.clone();
         actor._lastModel = null;
         actor._lastResults = new LinkedList<MatchResult>();
-        actor._random = new Random();
         return actor;
     }
 
@@ -147,23 +128,18 @@ public class TransformationRule extends MultiCompositeActor implements
                 _workspace.doneReading();
             }
 
+            TransformationMode.Mode modeValue = mode.getMode();
+
             if (modelInput.hasToken(0)) {
                 ActorToken token = (ActorToken) modelInput.get(0);
                 _lastModel = (CompositeEntity) token.getEntity(new Workspace());
                 _lastModel.setDeferringChangeRequests(false);
 
-                Mode mode = _getMode();
-
-                GraphMatcher matcher = new GraphMatcher();
-                matcher.setMatchCallback(this);
-
-                boolean isMatchOnly = isMatchOnly();
-                _collectAllMatches = !isMatchOnly && mode != Mode.REPLACE_FIRST;
                 _lastResults.clear();
 
                 // Obtain a working copy of this transformation rule, which can
                 // be safely modified in the process of pattern matching.
-                TransformationRule workingCopy = _getWorkingCopy();
+                TransformationRule workingCopy = mode.getWorkingCopy(this);
 
                 // Transfer the most updated values of the PortParameters to the
                 // working copy.
@@ -171,60 +147,37 @@ public class TransformationRule extends MultiCompositeActor implements
                     if (parameterObject instanceof PortParameter) {
                         PortParameter param = (PortParameter) parameterObject;
                         Token paramToken = param.getToken();
-                        PortParameter paramCopy = (PortParameter) _workingCopy
+                        PortParameter paramCopy = (PortParameter) workingCopy
                                 .getAttribute(param.getName());
                         paramCopy.setToken(paramToken);
                     }
                 }
-                matcher.match(workingCopy.getPattern(), _lastModel);
 
-                if (isMatchOnly) {
-                    matched.send(0, BooleanToken.getInstance(
-                            !_lastResults.isEmpty()));
-                    _lastResults.clear();
-                    return;
-                }
-
-                if (mode == Mode.REPLACE_FIRST || mode == Mode.REPLACE_ANY
-                        || mode == Mode.REPLACE_ALL) {
-                    boolean foundMatch = !_lastResults.isEmpty();
-                    if (foundMatch) {
-                        boolean untilFixpoint = ((BooleanToken)
-                                repeatUntilFixpoint.getToken()).booleanValue();
-                        long count = LongToken.convert(repeatCount.getToken())
-                                .longValue();
-                        while (!_lastResults.isEmpty()) {
-                            if (count <= 0) {
-                                break;
-                            }
-
-                            switch (mode) {
-                            case REPLACE_FIRST:
-                                MatchResult result = _lastResults.peek();
-                                GraphTransformer.transform(workingCopy, result);
-                                break;
-                            case REPLACE_ANY:
-                                result = _lastResults.get(_random
-                                        .nextInt(_lastResults.size()));
-                                GraphTransformer.transform(workingCopy, result);
-                                break;
-                            case REPLACE_ALL:
-                                GraphTransformer.transform(workingCopy,
-                                        _lastResults);
-                                break;
-                            }
-                            if (!untilFixpoint && --count <= 0) {
-                                break;
-                            }
-                            _lastResults.clear();
-                            matcher.match(workingCopy.getPattern(), _lastModel);
+                if (modeValue == null) {
+                    // Full control.
+                    _lastResults = mode.findAllMatches(workingCopy, _lastModel);
+                } else {
+                    boolean untilFixpoint = ((BooleanToken)
+                            repeatUntilFixpoint.getToken()).booleanValue();
+                    long count = LongToken.convert(repeatCount.getToken())
+                            .longValue();
+                    boolean matchOnly = mode.isMatchOnly();
+                    boolean foundMatch = count > 0;
+                    while (foundMatch) {
+                        foundMatch = mode.transform(workingCopy, _lastModel);
+                        if (matchOnly || !untilFixpoint && --count <= 0) {
+                            break;
                         }
                     }
-
-                    modelOutput.send(0, new ActorToken(_lastModel));
+                    if (!matchOnly) {
+                        modelOutput.send(0, new ActorToken(_lastModel));
+                    }
                     matched.send(0, BooleanToken.getInstance(foundMatch));
-                    return;
                 }
+            }
+
+            if (modeValue != null) {
+                return;
             }
 
             if (matchInput.getWidth() > 0 && matchInput.hasToken(0)
@@ -232,7 +185,7 @@ public class TransformationRule extends MultiCompositeActor implements
                 ObjectToken token = (ObjectToken) matchInput.get(0);
                 MatchResult match = (MatchResult) token.getValue();
                 if (match != null) {
-                    TransformationRule workingCopy = _getWorkingCopy();
+                    TransformationRule workingCopy = mode.getWorkingCopy(this);
                     CompositeEntity host = (CompositeEntity) match
                             .get(workingCopy.getPattern());
                     if (_lastModel != host && !_lastModel.deepContains(host)) {
@@ -248,21 +201,16 @@ public class TransformationRule extends MultiCompositeActor implements
             if (trigger.getWidth() > 0 && trigger.hasToken(0)
                     && !_lastResults.isEmpty()) {
                 trigger.get(0);
-                _lastResultsOperation = LastResultsOperation.REMOVE_FIRST;
-                MatchResult result = _lastResults.peek();
+                _removeFirst = true;
+                MatchResult result = _lastResults.get(0);
                 matchOutput.send(0, new ObjectToken(result));
             }
+
+            remaining.send(0, new IntToken(_lastResults.size()));
         } catch (TransformationException e) {
             throw new IllegalActionException(this, e,
                     "Unable to transform model.");
         }
-
-        remaining.send(0, new IntToken(_lastResults.size()));
-    }
-
-    public boolean foundMatch(GraphMatcher matcher) {
-        _lastResults.add((MatchResult) matcher.getMatchResult().clone());
-        return !_collectAllMatches;
     }
 
     public Pattern getPattern() {
@@ -279,40 +227,29 @@ public class TransformationRule extends MultiCompositeActor implements
         _lastResults.clear();
     }
 
-    public boolean isMatchOnly() {
-        try {
-            return ((BooleanToken) matchOnly.getToken()).booleanValue();
-        } catch (IllegalActionException e) {
-            return false;
-        }
-    }
-
     public boolean postfire() throws IllegalActionException {
-        switch (_lastResultsOperation) {
-        case CLEAR:
-            _lastResults.clear();
-            break;
-        case NONE:
-            break;
-        case REMOVE_FIRST:
-            _lastResults.poll();
-            break;
+        if (_removeFirst) {
+            _lastResults.remove(0);
         }
-        return true;
+        return super.postfire();
     }
 
     public boolean prefire() throws IllegalActionException {
-        _lastResultsOperation = LastResultsOperation.NONE;
-        String modeString = mode.getExpression();
-        if (modeString.equals(Mode.REPLACE_FIRST.toString())
-                || modeString.equals(Mode.REPLACE_ANY.toString())
-                || modeString.equals(Mode.REPLACE_ALL.toString())) {
-            return modelInput.hasToken(0);
+        if (super.prefire()) {
+            _removeFirst = false;
+            TransformationMode.Mode modeValue = mode.getMode();
+            if (modeValue == TransformationMode.Mode.REPLACE_FIRST
+                    || modeValue == TransformationMode.Mode.REPLACE_ANY
+                    || modeValue == TransformationMode.Mode.REPLACE_ALL) {
+                return modelInput.hasToken(0);
+            } else {
+                return modelInput.hasToken(0) || matchInput.getWidth() > 0
+                                && matchInput.hasToken(0) && _lastModel != null
+                        || trigger.getWidth() > 0 && trigger.hasToken(0)
+                                && !_lastResults.isEmpty();
+            }
         } else {
-            return modelInput.hasToken(0) || matchInput.getWidth() > 0
-                    && matchInput.hasToken(0) && _lastModel != null
-                    || trigger.getWidth() > 0 && trigger.hasToken(0)
-                    && !_lastResults.isEmpty();
+            return false;
         }
     }
 
@@ -322,15 +259,13 @@ public class TransformationRule extends MultiCompositeActor implements
 
     public void valueChanged(Settable settable) {
         // Create or remove ports depending on the mode.
-        if (mode != null && matchOnly != null
-                && (settable == mode || settable == matchOnly)) {
+        if (settable == mode) {
             try {
                 boolean showFullControlPorts = false;
-                boolean isMatchOnly = isMatchOnly();
+                boolean isMatchOnly = mode.isMatchOnly();
                 if (!isMatchOnly) {
                     String modeString = mode.getExpression();
-                    showFullControlPorts = modeString.equals(Mode.EXPERT
-                            .toString());
+                    showFullControlPorts = modeString.equals(_FULL_CONTROL);
                 }
 
                 if (modelInput == null) {
@@ -407,14 +342,14 @@ public class TransformationRule extends MultiCompositeActor implements
                             modelOutput.setTypeEquals(ActorToken.TYPE);
                             modelOutput.setPersistent(false);
                         }
-                        if (matched == null) {
-                            matched = new TypedIOPort(this, "matched", false,
-                                    true);
-                            matched.setTypeEquals(BaseType.BOOLEAN);
-                            matched.setPersistent(false);
-                            new StringAttribute(matched, "_cardinal")
-                                    .setExpression("SOUTH");
-                        }
+                    }
+                    if (matched == null) {
+                        matched = new TypedIOPort(this, "matched", false,
+                                true);
+                        matched.setTypeEquals(BaseType.BOOLEAN);
+                        matched.setPersistent(false);
+                        new StringAttribute(matched, "_cardinal")
+                                .setExpression("SOUTH");
                     }
                 }
             } catch (KernelException e) {
@@ -431,13 +366,11 @@ public class TransformationRule extends MultiCompositeActor implements
 
     public TypedIOPort matchInput;
 
-    public Parameter matchOnly;
-
     public TypedIOPort matchOutput;
 
     public TypedIOPort matched;
 
-    public StringParameter mode;
+    public TransformationMode mode;
 
     public TypedIOPort modelInput;
 
@@ -458,7 +391,7 @@ public class TransformationRule extends MultiCompositeActor implements
             super(container, name);
 
             setClassName("ptolemy.actor.gt.TransformationRule" +
-            		"$TransformationDirector");
+                    "$TransformationDirector");
         }
 
         public void initialize() throws IllegalActionException {
@@ -471,44 +404,6 @@ public class TransformationRule extends MultiCompositeActor implements
         }
     }
 
-    public enum Mode {
-        EXPERT {
-            public String toString() {
-                return "full control";
-            }
-        },
-        REPLACE_ALL {
-            public String toString() {
-                return "replace all";
-            }
-        },
-        REPLACE_ANY {
-            public String toString() {
-                return "replace any";
-            }
-        },
-        REPLACE_FIRST {
-            public String toString() {
-                return "replace first";
-            }
-        }
-    }
-
-    protected TransformationRule _getWorkingCopy()
-    throws IllegalActionException {
-        if (_workingCopyVersion != _workspace.getVersion()) {
-            try {
-                _workingCopy = (TransformationRule) clone(new Workspace());
-                new WorkingCopyScopeExtender(_workingCopy, "_scopeExtender");
-            } catch (Exception e) {
-                throw new IllegalActionException(this, e, "Cannot get a " +
-                        "working copy this transformation rule.");
-            }
-            _workingCopyVersion = _workspace.getVersion();
-        }
-        return _workingCopy;
-    }
-
     protected void _init() throws IllegalActionException,
             NameDuplicationException {
         setClassName("ptolemy.actor.gt.TransformationRule");
@@ -517,12 +412,10 @@ public class TransformationRule extends MultiCompositeActor implements
         new Pattern(this, "Pattern");
         new Replacement(this, "Replacement");
 
-        mode = new StringParameter(this, "mode");
-        for (int i = Mode.values().length - 1; i >= 0; i--) {
-            mode.addChoice(Mode.values()[i].toString());
-        }
+        mode = new TransformationMode(this, "mode");
+        mode.addChoice(_FULL_CONTROL);
         mode.addValueListener(this);
-        mode.setExpression(Mode.REPLACE_FIRST.toString());
+        valueChanged(mode);
 
         repeatUntilFixpoint = new Parameter(this, "repeatUntilFixpoint");
         repeatUntilFixpoint.setTypeEquals(BaseType.BOOLEAN);
@@ -532,74 +425,17 @@ public class TransformationRule extends MultiCompositeActor implements
         repeatCount.setTypeAtMost(BaseType.LONG);
         repeatCount.setExpression("1");
 
-        matchOnly = new Parameter(this, "matcherOnly");
-        matchOnly.setTypeEquals(BaseType.BOOLEAN);
-        matchOnly.addValueListener(this);
-        matchOnly.setToken(BooleanToken.FALSE);
-
         new TransformationDirector(this, "GTDirector");
-    }
-
-    private Mode _getMode() throws IllegalActionException {
-        String modeString = mode.getExpression();
-        if (modeString.equals(Mode.REPLACE_FIRST.toString())) {
-            return Mode.REPLACE_FIRST;
-        } else if (modeString.equals(Mode.REPLACE_ANY.toString())) {
-            return Mode.REPLACE_ANY;
-        } else if (modeString.equals(Mode.REPLACE_ALL.toString())) {
-            return Mode.REPLACE_ALL;
-        } else if (modeString.equals(Mode.EXPERT.toString())) {
-            return Mode.EXPERT;
-        } else {
-            throw new IllegalActionException("Unexpected mode: " + modeString);
-        }
     }
 
     private static final Set<Inequality> _EMPTY_SET = new HashSet<Inequality>();
 
-    private boolean _collectAllMatches;
+    private static final String _FULL_CONTROL = "full control";
 
     private CompositeEntity _lastModel;
 
-    private LinkedList<MatchResult> _lastResults =
-        new LinkedList<MatchResult>();
+    private List<MatchResult> _lastResults = new LinkedList<MatchResult>();
 
-    private LastResultsOperation _lastResultsOperation;
-
-    private Random _random = new Random();
-
-    private TransformationRule _workingCopy;
-
-    private long _workingCopyVersion = -1;
-
-    private class WorkingCopyScopeExtender extends Attribute
-    implements ScopeExtender {
-
-        public List<?> attributeList() {
-            NamedObj container = TransformationRule.this;
-            Set<?> names = VariableScope.getAllScopedVariableNames(null,
-                    container);
-            List<Variable> variables = new LinkedList<Variable>();
-            for (Object name : names) {
-                variables.add(VariableScope.getScopedVariable(null, container,
-                        (String) name));
-            }
-            return variables;
-        }
-
-        public Attribute getAttribute(String name) {
-            NamedObj container = TransformationRule.this;
-            return VariableScope.getScopedVariable(null, container, name);
-        }
-
-        WorkingCopyScopeExtender(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-        }
-    }
-
-    private enum LastResultsOperation {
-        CLEAR, NONE, REMOVE_FIRST
-    }
+    private boolean _removeFirst;
 
 }

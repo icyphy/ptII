@@ -4,13 +4,13 @@
 <entity name="ModelGeneration" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 42, 938, 716}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 42, 901, 713}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[723, 599]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[678, 599]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{361.5, 299.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.0, 299.5}">
     </property>
     <property name="n" class="ptolemy.data.expr.Parameter" value="4">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -64,7 +64,7 @@
         </property>
     </property>
     <entity name="CreateDisplay" class="ptolemy.actor.gt.TransformationRule">
-        <property name="mode" class="ptolemy.data.expr.StringParameter" value="replace first">
+        <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace first">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[441.5, 108.0]">
         </property>
@@ -171,7 +171,7 @@
         </property>
     </entity>
     <entity name="CreateNode" class="ptolemy.actor.gt.TransformationRule">
-        <property name="mode" class="ptolemy.data.expr.StringParameter" value="replace first">
+        <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace first">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[441.5, 298.0]">
         </property>
