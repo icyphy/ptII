@@ -512,8 +512,12 @@ public class PNDirector extends Director {
                 // Increment port offset.
                 for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
                     // Determine the amount to increment.
-                    int rate = DFUtilities.getRate(port);
-
+                    int rate = 0;
+                	try {
+                		rate = DFUtilities.getRate(port);
+                	} catch (NullPointerException ex) {
+                		int i = 0;
+                	}
                     PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
                     CodeGeneratorHelper portCGHelper = (CodeGeneratorHelper) portHelper;
                     

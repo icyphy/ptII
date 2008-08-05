@@ -14,7 +14,6 @@
         false,              // terminate
         $numBuffers,		// numBuffers
         $name_condition,    // allConditions
-        $name_conditionMutex// allConditionMutexes
                             // writeBlockMutex (init by pthread_mutex_init());
                             // readBlockMutex (init by pthread_mutex_init());
     };

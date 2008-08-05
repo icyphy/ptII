@@ -17,7 +17,6 @@
         // Array of the condition variables of buffers 
         // controlled by this director (needed to handle real deadlock).
         pthread_cond_t* allConditions;
-        pthread_mutex_t* allConditionMutexes;
 
         // FIXME: We can also use only one mutex to guard both variables.
         pthread_mutex_t writeBlockMutex;
@@ -298,21 +297,20 @@ inline void incrementReadBlockingThreads(struct directorHeader* directorHeader) 
     pthread_mutex_unlock(&directorHeader->readBlockMutex);
 
     if (directorHeader->readBlockingThreads == directorHeader->totalNumThreads) {
-        // read deadlock;
+	    // Real deadlock;
         //printf("global terminate.\n");
         directorHeader->terminate = true;
         
         for (i = 0; i < directorHeader->numBuffers; i++) {
-            pthread_mutex_lock(&directorHeader->allConditionMutexes[i]);
 			#ifdef DEBUG_PN
 				printf("[%x] broadcast [%d].\n", pthread_self(), &directorHeader->allConditions[i]);
 			#endif
             pthread_cond_broadcast(&directorHeader->allConditions[i]);
-            pthread_mutex_unlock(&directorHeader->allConditionMutexes[i]);
         }
         pthread_exit(NULL);
     }
     // else if (directorHeader->readBlockingThreads + directorHeader->readBlockingThreads == directorHeader->totalNumThreads) {
+	    // FIXME: handle artificial deadlock.
         // write deadlock;
     //}
 }
