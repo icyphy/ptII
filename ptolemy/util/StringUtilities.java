@@ -736,6 +736,9 @@ public class StringUtilities {
      */
     public static String substitute(String string, String pattern,
             String replacement) {
+	if (string == null) {
+	    return null;
+	}
         int start = string.indexOf(pattern);
 
         while (start != -1) {
