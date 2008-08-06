@@ -46,6 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 /**
  A Documentation attribute for actors.
@@ -192,16 +193,16 @@ public class KeplerDocumentationAttribute extends Attribute implements
                 "<property name=\"" + name + "\" class=\"" + getClassName()
                 + "\">\n"
                 + "<property name=\"description\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                + "<configure>" + _description + "</configure>"
+                + "<configure>" + StringUtilities.escapeForXML(_description) + "</configure>"
                 + "</property>\n"
                 + "<property name=\"author\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                + "<configure>" + _author + "</configure>"
+                + "<configure>" + StringUtilities.escapeForXML(_author) + "</configure>"
                 + "</property>\n"
                 + "<property name=\"version\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                + "<configure>" + _version + "</configure>"
+                + "<configure>" + StringUtilities.escapeForXML(_version) + "</configure>"
                 + "</property>\n"
                 + "<property name=\"userLevelDocumentation\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                + "<configure>" + _userLevelDocumentation + "</configure>"
+                + "<configure>" + StringUtilities.escapeForXML(_userLevelDocumentation) + "</configure>"
                 + "</property>\n");
 
         Enumeration portKeys = _portHash.keys();
