@@ -37,6 +37,7 @@ import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.erg.kernel.Event;
@@ -190,11 +191,32 @@ public class EventIcon extends StateIcon {
 	        		return color;
 	        	}
 	        }
-		} catch (Throwable e) {
+		} catch (Throwable t) {
 			// Ignore and return the default.
 		}
+		
+		Event event = (Event) getContainer();
+		try {
+			boolean isInitial = ((BooleanToken) event.isInitialState.getToken())
+					.booleanValue();
+			if (isInitial) {
+				return _INITIAL_COLOR;
+			}
+			boolean isFinal = ((BooleanToken) event.isFinalState.getToken())
+					.booleanValue();
+			if (isFinal) {
+				return _FINAL_COLOR;
+			}
+		} catch (Throwable t) {
+			// Ignore and return the default.
+		}
+		
     	return super._getFill();
     }
+    
+    private static final Color _INITIAL_COLOR = new Color(0, 255, 0);
+    
+    private static final Color _FINAL_COLOR = new Color(255, 0, 0);
 
     private static final Font _ACTION_FONT = new Font("SansSerif", Font.PLAIN,
     		10);
