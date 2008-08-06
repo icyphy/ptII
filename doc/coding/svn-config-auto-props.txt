@@ -7,6 +7,8 @@
 *.MF = svn:eol-style=native
 *.aart = svn:eol-style=native
 *.ac = svn:eol-style=native
+*.adb = svn:eol-style=native
+*.ads = svn:eol-style=native
 *.am = svn:eol-style=native
 *.apt = svn:eol-style=native
 *.avi = svn:mime-type=video/avi
