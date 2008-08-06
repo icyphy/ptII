@@ -378,55 +378,55 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
             </port>
             <entity name="Normal" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Normal">
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
 <display name="isInitialEvent"/>                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 80.0]">
                 </property>
             </entity>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
 <display name="isInitialEvent"/>                </property>
                 <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 35.0]">
                 </property>
             </entity>
             <entity name="ReactToError" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 80.0]">
                 </property>
             </entity>
             <entity name="Error" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Error">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 200.0]">
                 </property>
             </entity>
             <entity name="ReactToOK" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 200.0]">
                 </property>
@@ -446,8 +446,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -468,8 +468,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="Infinity">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -492,8 +492,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="true">
@@ -516,8 +516,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="Infinity">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -540,8 +540,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -562,8 +562,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="Infinity">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -586,8 +586,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="Infinity">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -610,8 +610,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -634,8 +634,8 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="true">
@@ -721,63 +721,63 @@ The inputs are simply ignored.</text></svg></configure>
                 </property>
             </port>
             <entity name="CRed" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
 <display name="isInitialEvent"/>                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 1;&#10;  Cyel = 0;&#10;  Cgrn = 0">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 125.0]">
                 </property>
             </entity>
             <entity name="CGreen" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 0;&#10;  Cyel = 0;&#10;  Cgrn = 1">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 225.0]">
                 </property>
             </entity>
             <entity name="CYellow" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 0;&#10;  Cyel = 1;&#10;  Cgrn = 0">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 225.0]">
                 </property>
             </entity>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
 <display name="isInitialEvent"/>                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 50.0]">
                 </property>
             </entity>
             <entity name="PRed" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Pred = 1;&#10;  Pgrn = 0">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 225.0]">
                 </property>
             </entity>
             <entity name="PGreen" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Pred = 0;&#10;  Pgrn = 1">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 130.0]">
                 </property>
@@ -797,8 +797,8 @@ The inputs are simply ignored.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="3.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="3.0">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
@@ -815,8 +815,8 @@ The inputs are simply ignored.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="2.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="2.0">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
@@ -833,8 +833,8 @@ The inputs are simply ignored.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="1.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="1.0">
+                </property>
             </relation>
             <relation name="relation4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
@@ -957,8 +957,6 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 </property>
             </port>
             <entity name="TurnYellowLight" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
 <display name="isInitialEvent"/>                </property>
                 <property name="parameters" class="ptolemy.domains.erg.kernel.ParametersAttribute" value="(param: int)">
@@ -967,17 +965,19 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 175.0]">
                 </property>
             </entity>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
-            	<property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
 <display name="isInitialEvent"/>                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Pred = 0; Pgrn = 0">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 45.0]">
                 </property>
@@ -997,8 +997,8 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{1}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -1019,8 +1019,8 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="1.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="1.0">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{1-param}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">

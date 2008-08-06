@@ -90,17 +90,17 @@
                 </property>
                 <configure>
                     <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
-                        <property name="mode" class="ptolemy.data.expr.StringParameter" value="replace first">
+                        <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace first">
                         </property>
                         <property name="repeatUntilFixpoint" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="repeatCount" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
-                        <property name="matcherOnly" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
                         <property name="GTDirector" class="ptolemy.actor.gt.TransformationRule$TransformationDirector">
                             <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
                             </property>
+                        </property>
+                        <property name="matcherOnly" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={286, 254, 828, 542}, maximized=false}">
                         </property>
@@ -300,8 +300,8 @@
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.8">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.8">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -322,8 +322,8 @@
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -344,8 +344,8 @@
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.8">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.8">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -366,8 +366,8 @@
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -388,8 +388,8 @@
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
@@ -410,8 +410,8 @@
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.kernel.util.StringAttribute" value="0.0">
-<display name="delay (?)"/>                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">

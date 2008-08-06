@@ -31,6 +31,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.erg.kernel;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
@@ -100,7 +103,18 @@ public class SchedulingRelation extends Transition {
         nondeterministic.setVisibility(Settable.NONE);
         refinementName.setVisibility(Settable.NONE);
 
-        delay = new StringAttribute(this, "delay");
+        delay = new StringAttribute(this, "delay") {
+            protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+                String displayName = getDisplayName();
+                setDisplayName(null);
+                try {
+                    super._exportMoMLContents(output, depth);
+                } finally {
+                    setDisplayName(displayName);
+                }
+            }
+        };
         delay.setDisplayName("delay (\u03B4)");
         delay.setExpression("0.0");
 

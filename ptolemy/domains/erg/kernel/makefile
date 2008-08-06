@@ -73,7 +73,8 @@ OPTIONAL_FILES = \
 	'ERGController$$ERGObjectScope.class' \
 	'ERGDirector$$EventComparator.class' \
 	'ERGDirector$$TimedEvent.class' \
-	'Event$$ParameterParserScope.class'
+	'Event$$ParameterParserScope.class' \
+	'SchedulingRelation$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
