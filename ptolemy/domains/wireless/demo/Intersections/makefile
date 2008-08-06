@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =	SimTraffic
+PTPACKAGE =	Intersections
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
