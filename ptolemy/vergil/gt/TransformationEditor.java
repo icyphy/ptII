@@ -39,6 +39,10 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -56,6 +60,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -120,8 +125,10 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -140,6 +147,7 @@ import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.LinkController;
+import ptolemy.vergil.basic.OffsetMoMLChangeRequest;
 import ptolemy.vergil.basic.ParameterizedNodeController;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
@@ -281,18 +289,41 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         _getRightComponent().requestFocus();
     }
 
+    public void changeExecuted(ChangeRequest change) {
+        super.changeExecuted(change);
+        _refreshTable();
+    }
+
     public void copy() {
         if (!getFrameController().isTableActive()) {
             CompositeEntity model = getFrameController().getActiveModel();
+            String header = "";
             if (GTTools.isInPattern(model)) {
+                header = _COPY_FROM_PATTERN_HEADER;
                 _setOrClearPatternObjectAttributes(model, true,
                         _getSelectionSet());
                 super.copy();
                 _setOrClearPatternObjectAttributes(model, false,
                         _getSelectionSet());
-            } else {
+            } else if (GTTools.isInReplacement(model)) {
+                header = _COPY_FROM_REPLACEMENT_HEADER;
                 super.copy();
             }
+
+            Clipboard clipboard = Toolkit.getDefaultToolkit()
+                    .getSystemClipboard();
+            Transferable transferable = clipboard.getContents(this);
+            if (transferable == null) {
+                return;
+            }
+            try {
+                String data = (String) transferable.getTransferData(DataFlavor
+                        .stringFlavor);
+                clipboard.setContents(new StringSelection(header + data), this);
+            } catch (Exception e) {
+                // Ignore. Do not add the header.
+            }
+
         }
     }
 
@@ -392,14 +423,25 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     public void paste() {
         if (!getFrameController().isTableActive()) {
-            super.paste();
+            Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
+                    .getSystemClipboard();
+            Transferable transferable = clipboard.getContents(this);
+            GraphModel model = _getGraphModel();
 
-            CompositeEntity model = getFrameController().getActiveModel();
-            if (GTTools.isInPattern(model)) {
-                // FIXME: modify only newly created entities and relations.
-                _setOrClearPatternObjectAttributes(model, false, null);
-            } else {
-                _refreshTable();
+            if (transferable == null) {
+                return;
+            }
+
+            try {
+                NamedObj container = (NamedObj) model.getRoot();
+                String moml = (String) transferable.getTransferData(DataFlavor
+                        .stringFlavor);
+                MoMLChangeRequest change = new PasteMoMLChangeRequest(this,
+                        container, moml);
+                change.setUndoable(true);
+                container.requestChange(change);
+            } catch (Exception ex) {
+                MessageHandler.error("Paste failed", ex);
             }
         }
     }
@@ -420,23 +462,17 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         TransformationRule transformer = (TransformationRule) getModel();
         CompositeActorMatcher replacement = transformer.getReplacement();
         List<ComponentEntity> entities = new LinkedList<ComponentEntity>();
-        boolean needRefresh = false;
         for (int i = 0; i < rows.length; i++) {
             String replacementName = _getCellEditorValue((JPanel) _tableModel
                     .getValueAt(rows[i], 2));
             ComponentEntity entity = replacement.getEntity(replacementName);
-            if (entity == null) {
-                needRefresh = true;
-            } else {
+            if (entity != null) {
                 entities.add(entity);
             }
         }
         int i = 0;
         for (ComponentEntity entity : entities) {
             _setPatternObject(entity, "", i++ > 0);
-        }
-        if (entities.isEmpty() && needRefresh) {
-            _refreshTable();
         }
     }
 
@@ -573,7 +609,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         if (_cellEditor != null) {
             _cellEditor.stopCellEditing();
         }
-        _refreshTable();
     }
 
     public void zoom(double factor) {
@@ -597,9 +632,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     public static final String[] OPTIONAL_ACTORS = {
         "ptolemy.actor.ptalon.gt.PtalonMatcher"
     };
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
 
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
@@ -640,6 +672,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     protected RunnableGraphController _createFSMGraphController() {
         return new TransformationFSMGraphController();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
 
     protected JComponent _createRightComponent(NamedObj entity) {
         JComponent component = super._createRightComponent(entity);
@@ -1307,27 +1342,33 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private void _refreshTable() {
         TransformationEditor frame = _getToplevelFrame();
+        DefaultTableModel tableModel = frame._tableModel;
+        if (tableModel == null) {
+            return;
+        }
         if (frame._cellEditor != null) {
             frame._cellEditor.stopCellEditing();
         }
-        frame._tableModel.removeTableModelListener(this);
+        tableModel.removeTableModelListener(this);
 
-        while (frame._tableModel.getRowCount() > 0) {
-            frame._tableModel.removeRow(0);
+        while (tableModel.getRowCount() > 0) {
+            tableModel.removeRow(0);
         }
 
         TransformationRule transformer =
             (TransformationRule) getFrameController().getTransformationRule();
-        CompositeActorMatcher replacement = transformer.getReplacement();
-        _refreshTable(frame, replacement, 1, replacement);
+        _refreshTable(frame, transformer, 1, transformer);
 
-        frame._tableModel.addTableModelListener(this);
+        tableModel.addTableModelListener(this);
     }
 
     private int _refreshTable(TransformationEditor topLevelFrame,
-            CompositeActorMatcher replacement, int index,
+            TransformationRule transformer, int index,
             CompositeEntity container) {
         try {
+            Replacement replacement = transformer.getReplacement();
+            Pattern pattern = transformer.getPattern();
+
             container.workspace().getReadAccess();
             Collection<?> objectCollection = new CombinedCollection<Object>(
                     new Collection<?>[] { container.entityList(),
@@ -1339,8 +1380,35 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 if (attribute != null) {
                     attribute.addValueListener(this);
                     String patternObject = attribute.getExpression();
-                    if (patternObject.length() != 0) {
-                        String name = _getNameWithinContainer(object, replacement);
+                    if (!patternObject.equals("")) {
+
+                        String patternObjectName = attribute.getExpression();
+                        if (patternObjectName.equals("")) {
+                            continue;
+                        }
+
+                        boolean found = false;
+                        if (object instanceof Entity) {
+                            found = pattern.getEntity(patternObjectName)
+                                    != null;
+                        } else if (object instanceof Relation) {
+                            found = pattern.getRelation(patternObjectName)
+                                    != null;
+                        }
+                        if (!found) {
+                            // If the entity or relation is not found in the
+                            // pattern, remove the correspondence.
+                            String moml = "<property name=\"" +
+                                    attribute.getName() + "\" value=\"\"/>";
+                            MoMLChangeRequest request = new MoMLChangeRequest(
+                                    this, object, moml);
+                            request.setUndoable(true);
+                            request.setMergeWithPreviousUndo(true);
+                            object.requestChange(request);
+                            continue;
+                        }
+                        String name = _getNameWithinContainer(object,
+                                replacement);
                         topLevelFrame._tableModel.addRow(new Object[] {
                                 _createCellPanel(Integer.toString(index++)),
                                 _createCellPanel(patternObject),
@@ -1348,7 +1416,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     }
                 }
                 if (object instanceof CompositeEntity) {
-                    index = _refreshTable(topLevelFrame, replacement, index,
+                    index = _refreshTable(topLevelFrame, transformer, index,
                             (CompositeEntity) object);
                 }
             }
@@ -1465,45 +1533,42 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         _tableModel.fireTableCellUpdated(row, column);
     }
 
-    private void _setOrClearPatternObjectAttributes(CompositeEntity container,
+    private void _setOrClearPatternObjectAttributes(NamedObj object,
             boolean isSet, Collection<?> filter) {
         try {
-            Collection<?> children;
-            if (filter == null) {
-                container.workspace().getReadAccess();
-                children = GTTools.getChildren(container, true, true,true,
-                        true);
-            } else {
-                children = filter;
-            }
-            for (Object childObject : children) {
-                NamedObj child = (NamedObj) childObject;
+            if (filter == null || filter.contains(object)) {
                 PatternObjectAttribute patternObject = GTTools
-                        .getPatternObjectAttribute(child);
+                        .getPatternObjectAttribute(object);
                 if (isSet) {
                     if (patternObject == null) {
-                        patternObject = new PatternObjectAttribute(child,
+                        patternObject = new PatternObjectAttribute(object,
                                 "patternObject");
                     }
-                    String name = _getNameWithinContainer(child,
+                    String name = _getNameWithinContainer(object,
                             getFrameController().getTransformationRule()
-                            .getPattern());
+                                    .getPattern());
                     patternObject.setPersistent(true);
                     patternObject.setExpression(name);
                 } else if (patternObject != null) {
                     patternObject.setPersistent(false);
                     patternObject.setExpression("");
                 }
-                if (child instanceof CompositeEntity) {
-                    _setOrClearPatternObjectAttributes(
-                            (CompositeEntity) child, isSet, null);
-                }
             }
         } catch (KernelException e) {
             throw new KernelRuntimeException(e, "Cannot set attribute.");
+        }
+
+        try {
+            object.workspace().getReadAccess();
+            Collection<?> children = GTTools.getChildren(object, true, true,
+                    true, true);
+            for (Object childObject : children) {
+                NamedObj child = (NamedObj) childObject;
+                _setOrClearPatternObjectAttributes(child, isSet, filter);
+            }
         } finally {
             if (filter == null) {
-                container.workspace().doneReading();
+                object.workspace().doneReading();
             }
         }
     }
@@ -1557,10 +1622,16 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
+    private static final String _COPY_FROM_PATTERN_HEADER =
+        "<!-- From Pattern -->\n";
+
+    private static final String _COPY_FROM_REPLACEMENT_HEADER =
+        "<!-- From Replacement -->\n";
 
     private static final Color _CREATION_COLOR = new Color(0, 192, 0);
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
 
     private static final Border _EMPTY_BORDER = BorderFactory
             .createEmptyBorder();
@@ -1594,9 +1665,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     private JTable _table;
 
     private DefaultTableModel _tableModel;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                      private inner classes                ////
 
     private class BatchMatchAction extends MatchAction {
 
@@ -1872,6 +1940,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private inner classes                ////
 
     private static class CellEditor extends CellPanelEditor {
 
@@ -2176,6 +2247,47 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
 
         private boolean _isSet;
+    }
+
+    private class PasteMoMLChangeRequest extends OffsetMoMLChangeRequest {
+
+        public PasteMoMLChangeRequest(Object originator, NamedObj context,
+                String request) {
+            super(originator, context, "<group name=\"auto\">\n" + request +
+                    "</group>\n");
+
+            _isFromPattern = request.startsWith(_COPY_FROM_PATTERN_HEADER);
+            _isFromReplacement = request.startsWith(
+                    _COPY_FROM_REPLACEMENT_HEADER);
+
+            CompositeEntity model = getFrameController().getActiveModel();
+            _isToPattern = GTTools.isInPattern(model);
+            _isToReplacement = GTTools.isInReplacement(model);
+        }
+
+        protected void _postParse(MoMLParser parser) {
+            Iterator<?> topObjects = parser.topObjectsCreated().iterator();
+            while (topObjects.hasNext()) {
+                NamedObj topObject = (NamedObj) topObjects.next();
+                if (_isToPattern || _isFromReplacement && _isToReplacement) {
+                    _setOrClearPatternObjectAttributes(topObject, false, null);
+                }
+            }
+            if (_isFromPattern && _isToReplacement || _isFromReplacement
+                    && _isToPattern) {
+                parser.clearTopObjectsList();
+            } else {
+                super._postParse(parser);
+            }
+        }
+
+        private boolean _isFromPattern;
+
+        private boolean _isFromReplacement;
+
+        private boolean _isToPattern;
+
+        private boolean _isToReplacement;
     }
 
     private class PreservationAttributeAction extends MatchingAttributeAction {
