@@ -282,6 +282,8 @@
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 350.0]">
                 </property>
             </entity>
@@ -467,7 +469,7 @@
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 260.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
