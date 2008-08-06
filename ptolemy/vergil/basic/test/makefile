@@ -51,7 +51,8 @@ JSRCS =
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.
 JSIMPLE_TESTS = \
-	DocAttribute.tcl
+	DocAttribute.tcl \
+	KeplerDocumentationAttribute.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
