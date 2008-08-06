@@ -78,7 +78,7 @@ public class EventIcon extends StateIcon {
 
         Event event = (Event) getContainer();
         if (event != null) {
-            try { 
+            try {
                 if (event.parameters.getParameterNames().size() > 0) {
                     parameters = event.parameters.getValueAsString();
                 }
@@ -115,10 +115,53 @@ public class EventIcon extends StateIcon {
         }
 
         RoundedRectangle figure = new RoundedRectangle(0, 0, 20, 10,
-        		Color.white, 1.0f, 5.0, 5.0);
+                Color.white, 1.0f, 5.0, 5.0);
         figure.setFillPaint(_getFill());
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
+    }
+
+    protected Paint _getFill() {
+        Parameter colorParameter;
+        try {
+            colorParameter = (Parameter) (getAttribute("_fill",
+                    Parameter.class));
+            if (colorParameter != null) {
+                ArrayToken array = (ArrayToken) colorParameter.getToken();
+                if (array.length() == 4) {
+                    Color color = new Color(
+                            (float) ((ScalarToken) array.getElement(0))
+                                    .doubleValue(),
+                            (float) ((ScalarToken) array.getElement(1))
+                                    .doubleValue(),
+                            (float) ((ScalarToken) array.getElement(2))
+                                    .doubleValue(),
+                            (float) ((ScalarToken) array.getElement(3))
+                                    .doubleValue());
+                    return color;
+                }
+            }
+        } catch (Throwable t) {
+            // Ignore and return the default.
+        }
+
+        Event event = (Event) getContainer();
+        try {
+            boolean isInitial = ((BooleanToken) event.isInitialState.getToken())
+                    .booleanValue();
+            if (isInitial) {
+                return _INITIAL_COLOR;
+            }
+            boolean isFinal = ((BooleanToken) event.isFinalState.getToken())
+                    .booleanValue();
+            if (isFinal) {
+                return _FINAL_COLOR;
+            }
+        } catch (Throwable t) {
+            // Ignore and return the default.
+        }
+
+        return super._getFill();
     }
 
     private void _addInputIcon(CompositeFigure figure) {
@@ -152,14 +195,15 @@ public class EventIcon extends StateIcon {
         double height = backBounds.getHeight() + stringBounds.getHeight();
 
         background.setParent(null);
-        RoundedRectangle border = new RoundedRectangle(left, 0.0, width, height,
-                _getFill(), _getLineWidth(), _roundingValue, _roundingValue);
+        RoundedRectangle border = new RoundedRectangle(left, 0.0, width,
+                height - 2.0 *_spacingValue, _getFill(), _getLineWidth(),
+                _roundingValue, _roundingValue);
         if (_spacingValue == 0.0) {
             background = border;
         } else {
             background = new CompositeFigure(new RoundedRectangle(
                     left - _spacingValue, - _spacingValue,
-                    width + 2.0 * _spacingValue, height + 2.0 * _spacingValue,
+                    width + 2.0 * _spacingValue, height,
                     null, _getLineWidth(), _roundingValue + _spacingValue,
                     _roundingValue + _spacingValue));
             ((CompositeFigure) background).add(border);
@@ -167,57 +211,15 @@ public class EventIcon extends StateIcon {
         figure.setBackgroundFigure(background);
 
         label.translateTo(background.getBounds().getCenterX(),
-                backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0);
+                backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0 -
+                _spacingValue);
         figure.add(label);
     }
-    
-    protected Paint _getFill() {
-    	Parameter colorParameter;
-		try {
-			colorParameter = (Parameter) (getAttribute("_fill",
-					Parameter.class));
-	        if (colorParameter != null) {
-	        	ArrayToken array = (ArrayToken) colorParameter.getToken();
-	        	if (array.length() == 4) {
-	        		Color color = new Color(
-	        				(float) ((ScalarToken) array.getElement(0))
-	        						.doubleValue(),
-	        				(float) ((ScalarToken) array.getElement(1))
-	        						.doubleValue(),
-	        				(float) ((ScalarToken) array.getElement(2))
-	        						.doubleValue(),
-	        				(float) ((ScalarToken) array.getElement(3))
-	        						.doubleValue());
-	        		return color;
-	        	}
-	        }
-		} catch (Throwable t) {
-			// Ignore and return the default.
-		}
-		
-		Event event = (Event) getContainer();
-		try {
-			boolean isInitial = ((BooleanToken) event.isInitialState.getToken())
-					.booleanValue();
-			if (isInitial) {
-				return _INITIAL_COLOR;
-			}
-			boolean isFinal = ((BooleanToken) event.isFinalState.getToken())
-					.booleanValue();
-			if (isFinal) {
-				return _FINAL_COLOR;
-			}
-		} catch (Throwable t) {
-			// Ignore and return the default.
-		}
-		
-    	return super._getFill();
-    }
-    
-    private static final Color _INITIAL_COLOR = new Color(0, 255, 0);
-    
-    private static final Color _FINAL_COLOR = new Color(255, 0, 0);
 
     private static final Font _ACTION_FONT = new Font("SansSerif", Font.PLAIN,
-    		10);
+            10);
+
+    private static final Color _FINAL_COLOR = new Color(255, 64, 64);
+
+    private static final Color _INITIAL_COLOR = new Color(64, 255, 64);
 }
