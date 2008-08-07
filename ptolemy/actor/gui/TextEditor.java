@@ -189,7 +189,7 @@ public class TextEditor extends TableauFrame implements DocumentListener, Printa
             return NO_SUCH_PAGE;
         }
 
-        int pageCount = (text.getLineCount()/linesPerPage) + 1;
+        //int pageCount = (text.getLineCount()/linesPerPage) + 1;
         int endLine = startLine + linesPerPage;
         int linePosition = (int)Math.ceil(format.getImageableY() + lineHeight);
 
