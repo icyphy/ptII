@@ -97,7 +97,7 @@ Edge Set:
 #
 test Graph-2.4 {try to add duplicate edges} {
     # use the graph above
-    catch {$p {addEdge ptolemy.graph.Edge} $newEdge} msg
+    catch {$p {addEdge ptolemy.graph.Edge} [java::cast ptolemy.graph.Edge $newEdge]} msg
     list $msg
 } {{ptolemy.graph.GraphConstructionException: Attempt to add an edge that is already in the graph.
 Dumps of the offending edge and graph follow.
@@ -119,7 +119,7 @@ Edge Set:
 ######################################################################
 ####
 #
-test Graph-2.4 {Create a graph with 4 nodes forming a diamond} {
+test Graph-2.4.1 {Create a graph with 4 nodes forming a diamond} {
     set p [java::new ptolemy.graph.Graph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
@@ -141,9 +141,10 @@ test Graph-2.4 {Create a graph with 4 nodes forming a diamond} {
     set nw [java::call ptolemy.graph.Graph weightArray $nodes]
     set edges [$p edges]
     set ew [java::call ptolemy.graph.Graph weightArray $edges]
-    list [$nw get 0] [$nw get 1] [$nw get 2] [$nw get 3] \
-     [$ew get 0] [$ew get 1] [$ew get 2] [$ew get 3]
-} {node1 node2 node3 node4 edge1 edge2 edge3 edge4}
+    list \
+	[objectsToStrings [$nw -noconvert getrange 0]] \
+	[objectsToStrings [$ew -noconvert getrange 0]]
+} {{node1 node2 node3 node4} {edge1 edge2 edge3 edge4}}
 
 ######################################################################
 ####
@@ -273,7 +274,7 @@ Edge Set:
 #
 test Graph-4.3 {Test computation of connected components} {
     set collection [$p3 connectedComponents]
-    set obj [java::cast java.lang.Object $collection]
+    set obj [java::cast java.util.Collection $collection]
     set result [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
     list $result
 } {{[[v1, v3, v5, v6, v7, v8], [v2, v4, v9]]}}
@@ -461,16 +462,16 @@ test Graph-5.7 { neighbors with duplicate node weights} {
 #
 test Graph-6.1 {Test neighbor edges} {
     set collection [$p3 neighborEdges $v1 $v8]
-    set obj [java::cast java.lang.Object $collection]
+    set obj [java::cast java.util.Collection $collection]
     set result1 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
     set collection [$p3 neighborEdges $v3 $v6]
-    set obj [java::cast java.lang.Object $collection]
+    set obj [java::cast java.util.Collection $collection]
     set result2 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
     set collection [$p3 neighborEdges $v5 $v9]
-    set obj [java::cast java.lang.Object $collection]
+    set obj [java::cast java.util.Collection $collection]
     set result3 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
     set collection [$p3 neighborEdges $v9 $v9]
-    set obj [java::cast java.lang.Object $collection]
+    set obj [java::cast java.util.Collection $collection]
     set result4 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
     list $result1 $result2 $result3 $result4
 } {{[(v1, v8, e8), (v8, v1, e11)]} {[(v3, v6, e2)]} {[]} {[(v4, v9, e10), (v9, v9, e12)]}}
