@@ -726,8 +726,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 .insideSourcePortList().iterator();
                         label1: while (sourcePorts.hasNext()) {
                             IOPort sourcePort = (IOPort) sourcePorts.next();
-                            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
-                                    .getContainer());
+//                            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
+//                                    .getContainer());
                             int width;
                             if (sourcePort.isInput()) {
                                 width = sourcePort.getWidthInside();
@@ -735,7 +735,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 width = sourcePort.getWidth();
                             }
                             for (int j = 0; j < width; j++) {
-                                Iterator channels = helper.getSinkChannels(
+                                Iterator channels = CodeGeneratorHelper.getSinkChannels(
                                         sourcePort, j).iterator();
                                 while (channels.hasNext()) {
                                     Channel channel = (Channel) channels.next();
@@ -811,8 +811,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                                     .iterator();
                             label2: while (sourcePorts.hasNext()) {
                                 IOPort sourcePort = (IOPort) sourcePorts.next();
-                                CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
-                                        .getContainer());
+//                                CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
+//                                        .getContainer());
                                 int width;
                                 if (sourcePort.isInput()) {
                                     width = sourcePort.getWidthInside();
@@ -820,7 +820,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                                     width = sourcePort.getWidth();
                                 }
                                 for (int j = 0; j < width; j++) {
-                                    Iterator channels = helper.getSinkChannels(
+                                    Iterator channels = CodeGeneratorHelper.getSinkChannels(
                                             sourcePort, j).iterator();
                                     while (channels.hasNext()) {
                                         Channel channel = (Channel) channels

@@ -1010,7 +1010,7 @@ public class MoMLApplication implements ExecutionListener {
             // FIXME: this could cause problem with RemoveGraphicalClasses
             // elsewhere, but usually we run w/o _classesToRemove
             RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
-            filter.clear();
+            RemoveGraphicalClasses.clear();
             // _classesToRemove is an array of Strings where each element
             // names a class to be added to the MoMLFilter for removal.
             for (int i = 0; i < classesToRemoveToken.length(); i++) {
@@ -1018,7 +1018,7 @@ public class MoMLApplication implements ExecutionListener {
                     .getElement(i)).stringValue();
                 filter.put(classNameToRemove, null);
             }
-            _parser.addMoMLFilter(filter);
+            MoMLParser.addMoMLFilter(filter);
         }
 
         for (int i = 0; i < args.length; i++) {

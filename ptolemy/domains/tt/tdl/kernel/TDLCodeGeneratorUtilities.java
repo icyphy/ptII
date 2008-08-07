@@ -281,7 +281,7 @@ public class TDLCodeGeneratorUtilities {
 
 		modeName = state.getName();
 
-		double periodValue = ((TDLModuleDirector) module.getDirector())
+		double periodValue = TDLModuleDirector
 				.getModePeriod(state);
 		String start = "";
 		if (((BooleanToken) state.isInitialState.getToken()).booleanValue())

@@ -402,7 +402,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
 
                 TypedIOPort port = (TypedIOPort) outputPorts.next();
 
-                Iterator sinks = helper.getSinkChannels(port, 0).iterator();
+                Iterator sinks = VHDLCodeGeneratorHelper.getSinkChannels(port, 0).iterator();
 
                 boolean notGenerated = true;
 

@@ -705,7 +705,7 @@ public abstract class PropertySolver extends Attribute {
                     System.gc();
                     memStart = Runtime.getRuntime().totalMemory();
                     parser.reset();    
-                    parser.purgeModelRecord(args[i]);
+                    MoMLParser.purgeModelRecord(args[i]);
                     toplevel = _getModel(args[i], parser);
 
                     //isDone = true;

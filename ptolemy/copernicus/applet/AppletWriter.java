@@ -484,7 +484,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // So, we do reset here.  If we don't, then we get the old
         // model that was parsed in Copernicus.readInModel()
         parser.reset();
-        parser.purgeAllModelRecords();
+        MoMLParser.purgeAllModelRecords();
 
         // Get the old filters, save them, add our own
         // filters, use them, remove our filters,

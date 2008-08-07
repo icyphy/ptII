@@ -455,7 +455,7 @@ public class MpiPNDirector extends Director {
     public int getBufferSize(IOPort port, int channelNumber)
     throws IllegalActionException {
 
-        if (this.isMpiReceiveBuffer(port, channelNumber)) {
+        if (isMpiReceiveBuffer(port, channelNumber)) {
             // mpi buffer size.        
             IntToken sizeToken = (IntToken)
             ((ptolemy.domains.pn.kernel.PNDirector) _director)
@@ -647,8 +647,6 @@ public class MpiPNDirector extends Director {
                     for (TypedIOPort input : (List<TypedIOPort>) actor.inputPortList()) {
 
                         for (int i = 0; i < input.getWidth(); i++) {
-
-                            int sourceIndex = 0;
                             Channel source = CodeGeneratorHelper.getSourceChannel(input, i);
 
                             Actor sourceActor = (Actor) source.port.getContainer();
@@ -844,7 +842,7 @@ public class MpiPNDirector extends Director {
             args.add("");
 
 
-            int variableInitializationPos;
+            //int variableInitializationPos;
             _codeStream.clear();
             for (TypedIOPort outport : (List<TypedIOPort>) actor.outputPortList()) {
                 int maxWidth = Math.max(outport.getWidth(), outport.getWidthInside());
@@ -892,7 +890,7 @@ public class MpiPNDirector extends Director {
             }
             code.append(_codeStream.toString());
 
-            variableInitializationPos = code.length();
+            // variableInitializationPos = code.length();
 
             // mainLoop
 

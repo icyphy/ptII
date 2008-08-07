@@ -149,7 +149,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         }
 
         for (int j = 0; j < length; j++) {
-            List sinkChannels = helper.getSinkChannels(port, j);
+            List sinkChannels = CodeGeneratorHelper.getSinkChannels(port, j);
 
             for (int k = 0; k < sinkChannels.size(); k++) {
                 Channel channel = (Channel) sinkChannels.get(k);
@@ -210,8 +210,8 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
             int sinkChannelNumber, Director director) throws IllegalActionException {
         ptolemy.actor.TypedIOPort port = (ptolemy.actor.TypedIOPort) getComponent();
 
-        CodeGeneratorHelper sinkHelper = 
-            (CodeGeneratorHelper) _getHelper(sinkPort.getContainer());
+        //CodeGeneratorHelper sinkHelper = 
+        //    (CodeGeneratorHelper) _getHelper(sinkPort.getContainer());
 
         StringBuffer code = new StringBuffer();
 
@@ -240,7 +240,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
             MpiPNDirector.generatePortHeader(sinkPort, sinkChannelNumber) + ".current]";
 
             String buffer = 
-                sinkHelper.generatePortReference(sinkPort, channelAndOffset , false);
+                CodeGeneratorHelper.generatePortReference(sinkPort, channelAndOffset , false);
 
             code.append(buffer);
 
@@ -288,7 +288,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        ptolemy.actor.TypedIOPort port = (ptolemy.actor.TypedIOPort) getComponent();
+        //ptolemy.actor.TypedIOPort port = (ptolemy.actor.TypedIOPort) getComponent();
 
         CodeGeneratorHelper helper = 
             (CodeGeneratorHelper) _getHelper(getComponent().getContainer());
@@ -308,12 +308,12 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
         String code = getCodeGenerator().comment("\n....................Begin updateOffset..." + port.getFullName());
 
-        int width = 0;
-        if (port.isInput()) {
-            width = port.getWidth();
-        } else {
-            width = port.getWidthInside();
-        }
+//        int width = 0;
+//        if (port.isInput()) {
+//            width = port.getWidth();
+//        } else {
+//            width = port.getWidthInside();
+//        }
 
         for (int i = 0; i < port.getWidth(); i++) {
             if (MpiPNDirector.isMpiReceiveBuffer(port, i)) {
@@ -321,10 +321,10 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
             } else if (!isMpi() && receiver instanceof PNQueueReceiver) {
 
                 // FIXME: this is kind of hacky.
-                PNDirector pnDirector = (PNDirector)//directorHelper;         
+                //PNDirector pnDirector = (PNDirector)//directorHelper;         
                 _getHelper(((Actor) port.getContainer()).getExecutiveDirector());
 
-                List<Channel> channels = pnDirector.getReferencedChannels(port, i);
+                List<Channel> channels = PNDirector.getReferencedChannels(port, i);
 
                 for (Channel channel : channels) {
                     code += _updatePNOffset(rate, channel.port, 
@@ -365,7 +365,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
         return incrementFunction + "(" + 
         incrementArg + "&" +
-        pnDirector.generatePortHeader(port, channelNumber) + ", &" +
+        PNDirector.generatePortHeader(port, channelNumber) + ", &" +
         pnDirector.generateDirectorHeader() + ");" + _eol;
     }
 
@@ -423,9 +423,9 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
 
-        if (MpiPNDirector.isLocalBuffer(port, channel)) {
-            int i = 1;
-        }
+        //if (MpiPNDirector.isLocalBuffer(port, channel)) {
+        //    int i = 1;
+        //}
 
 
         // When dynamic references are allowed, any input ports require
