@@ -83,6 +83,7 @@ import ptolemy.moml.MoMLParser;
  of the token is copied using the setExpression() method.
  Input ports should not be multiports, and if they are, then
  all but the first channel will be ignored.
+ </p>
  <p>
  If this actor has output ports and the referenced model is executed,
  then upon completion of that execution, this actor looks for top-level
@@ -102,9 +103,11 @@ import ptolemy.moml.MoMLParser;
  Normally, when you create output ports for this actor, you will have
  to manually set the type.  There is no type inference from the
  parameter of the referenced model.
+ </p>
  <p>
  A typical use of this actor will use the SetVariable actor
  inside to define the value of the output port.
+ </p>
  <p>
  A suite of parameters is provided to control what happens when this
  actor executes:
@@ -114,9 +117,9 @@ import ptolemy.moml.MoMLParser;
  happens when the fire() method is invoked.  The recognized
  values are:
  <ul>
- <li> "run in calling thread" (the default)
- <li> "run in a new thread"
- <li> "do nothing".
+ <li> "run in calling thread" (the default) </li>
+ <li> "run in a new thread" </li>
+ <li> "do nothing". </li>
  </ul>
  If execution in a separate thread is selected, then the execution can
  optionally be stopped by the postfire() method (see below). If the model
@@ -128,7 +131,7 @@ import ptolemy.moml.MoMLParser;
  output ports, the data is produced to those output ports when
  the execution completes, whenever that might be.  This may make
  output ports difficult to use in some domains.
-
+ </li>
  <li> <i>lingerTime</i>:
  The amount of time (in milliseconds) to linger in the fire()
  method of this actor.  This is a long that defaults to 0L.
@@ -138,36 +141,41 @@ import ptolemy.moml.MoMLParser;
  and the run is stopped after the linger time expires.
  This can be used, for example, to run a model for a specified
  amount of time, then ask it to finish() and continue.
-
+ </li>
  <li> <i>modelFileOrURL</i>:
  The file name or URL of the model that this actor will execute.
  This can be specified either by setting the parameter or by
  providing a string at the input port.
-
+ </li>
  <li> <i>postfireAction</i>:
  The value of this string attribute determines what happens
  in the postfire() method.  The recognized values are:
  <ul>
- <li> "do nothing" (the default)
- <li> "stop executing"
+ <li> "do nothing" (the default) </li>
+ <li> "stop executing" </li>
  </ul>
  The "stop executing" choices will only have an effect if
  if <i>executionOnFiring</i> is set to "run in a new thread".
  This can be used, for example, to run a model for a specified
  amount of time, and then stop it.
+ </li>
  </ul>
+ </p>
  <p>
  There are currently some limitations:
  <ul>
  <li>
  The referenced model cannot create any displays. Use the subclass
  VisualModelReference to do that.
+ </li>
  <li>
  FIXME: Pausing the referring model doesn't pause the referenced model.
+ </li>
  <li>
  FIXME: Need options for error handling.
+ </li>
  </ul>
- <P>
+ </p>
 
  @author Edward A. Lee, Elaine Cheong
  @version $Id$
@@ -228,9 +236,9 @@ public class ModelReference extends TypedAtomicActor implements
      *  happens when the fire() method is invoked.  The recognized
      *  values are:
      *  <ul>
-     *  <li> "run in calling thread" (the default)
-     *  <li> "run in a new thread"
-     *  <li> "do nothing".
+     *  <li> "run in calling thread" (the default) </li>
+     *  <li> "run in a new thread" </li>
+     *  <li> "do nothing". </li>
      *  </ul>
      */
     public StringParameter executionOnFiring;
@@ -252,8 +260,8 @@ public class ModelReference extends TypedAtomicActor implements
     /** The value of this string attribute determines what happens
      *  in the postfire() method.  The recognized values are:
      *  <ul>
-     *  <li> "do nothing" (the default)
-     *  <li> "stop executing"
+     *  <li> "do nothing" (the default) </li>
+     *  <li> "stop executing" </li>
      *  </ul>
      *  The "stop executing" choices will only have an effect if
      *  if <i>executionOnFiring</i> is set to "run in a new thread".
