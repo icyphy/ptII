@@ -1986,6 +1986,8 @@ else
 		   ;;
                esac
             else
+	       # RXTX_JAR might contain a warning message from FindClass
+	       RXTX_JAR="" 
 	       CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass gnu.io.SerialPort > /dev/null
 	       retval=$?
 	       if test "$retval" = "0"; then
@@ -2425,6 +2427,13 @@ else
 	    *) PTJNI_NO_CYGWIN=;;
         esac
         PT_MSG_RESULT(['$PTJNI_NO_CYGWIN'])
+
+        AC_MSG_CHECKING([for the proper shared library gcc flag])
+        case "`uname -s`" in
+	     Darwin) PTJNI_GCC_SHARED_FLAG=-dynamiclib;;
+	     *) PTJNI_GCC_SHARED_FLAG=-shared;
+        esac
+        PT_MSG_RESULT(['$PTJNI_GCC_SHARED_FLAG'])
 
         AC_MSG_CHECKING([for the proper shared library cc flag])
 	# Under Cygwin with gcc, we need -D__int64="long long"
@@ -3992,6 +4001,9 @@ AC_SUBST(PTJNI_LIB_ARCHITECTURE)
 
 # Flag to use with TinyOS under Cygwin (-mno-cygwin)
 AC_SUBST(PTJNI_NO_CYGWIN)
+
+# GCC shared flag.  Usually -shared, except on the mac, where it is -dynamiclib
+AC_SUBST(PTJNI_GCC_SHARED_FLAG)
 
 # JNI shared library C compiler flag, under Solaris this would be -fPIC.
 AC_SUBST(PTJNI_SHAREDLIBRARY_CFLAG)
