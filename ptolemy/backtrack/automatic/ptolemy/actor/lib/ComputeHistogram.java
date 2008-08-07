@@ -50,6 +50,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 /** 
  * Compute a histogram.
@@ -197,6 +198,20 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
     }
 
     /**     
+     * Clone the actor into the specified workspace.
+     * @param workspace The workspace for the new object.
+     * @return A new actor.
+     * @exception CloneNotSupportedException If a derived class contains
+     * an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        ComputeHistogram newObject = (ComputeHistogram)super.clone(workspace);
+        newObject.$ASSIGN$_bins(new int[_numberOfBins]);
+        System.arraycopy($BACKUP$_bins(), 0, newObject.$BACKUP$_bins(), 0, _bins.length);
+        return newObject;
+    }
+
+    /**     
      * Read at most one input token from each input channel
      * and update the histogram.
      * @exception IllegalActionException If there is no director.
@@ -287,6 +302,11 @@ public class ComputeHistogram extends TypedAtomicActor implements Rollbackable {
             default:
                 return _bins[index0];
         }
+    }
+
+    private final int[] $BACKUP$_bins() {
+        $RECORD$_bins.backup(null, _bins, $CHECKPOINT.getTimestamp());
+        return _bins;
     }
 
     private final double $ASSIGN$_minimumValue(double newValue) {

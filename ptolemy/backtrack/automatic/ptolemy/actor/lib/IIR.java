@@ -194,11 +194,17 @@ public class IIR extends Transformer implements Rollbackable {
             newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.denominator));
             newObject.input.setTypeAtLeast(newObject.output);
             newObject.output.setTypeAtLeast(newObject.input);
+            ArrayToken numeratorValue = (ArrayToken)newObject.numerator.getToken();
+            newObject.$ASSIGN$_numerator(numeratorValue.arrayValue());
+            ArrayToken denominatorValue = (ArrayToken)denominator.getToken();
+            newObject.$ASSIGN$_denominator(denominatorValue.arrayValue());
         } catch (IllegalActionException ex) {
             CloneNotSupportedException throwable = new CloneNotSupportedException();
             throwable.initCause(ex);
             throw throwable;
         }
+        newObject.$ASSIGN$_stateVector(new Token[_stateVector.length]);
+        System.arraycopy($BACKUP$_stateVector(), 0, newObject.$BACKUP$_stateVector(), 0, _stateVector.length);
         return newObject;
     }
 
@@ -291,6 +297,13 @@ public class IIR extends Transformer implements Rollbackable {
         return _denominator[index0] = newValue;
     }
 
+    private final Token[] $ASSIGN$_stateVector(Token[] newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$_stateVector.add(null, _stateVector, $CHECKPOINT.getTimestamp());
+        }
+        return _stateVector = newValue;
+    }
+
     private final Token $ASSIGN$_stateVector(int index0, Token newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
             $RECORD$_stateVector.add(new int[] {
@@ -300,11 +313,9 @@ public class IIR extends Transformer implements Rollbackable {
         return _stateVector[index0] = newValue;
     }
 
-    private final Token[] $ASSIGN$_stateVector(Token[] newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_stateVector.add(null, _stateVector, $CHECKPOINT.getTimestamp());
-        }
-        return _stateVector = newValue;
+    private final Token[] $BACKUP$_stateVector() {
+        $RECORD$_stateVector.backup(null, _stateVector, $CHECKPOINT.getTimestamp());
+        return _stateVector;
     }
 
     private final int $ASSIGN$_currentTap(int newValue) {

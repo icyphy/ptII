@@ -43,6 +43,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** 
  * Produce a token that is the value of the input in decibels.
@@ -113,6 +114,20 @@ public class DB extends Transformer implements Rollbackable {
         inputIsPower.setTypeEquals(BaseType.BOOLEAN);
         min = new Parameter(this, "min", new DoubleToken(-100.0));
         min.setTypeEquals(BaseType.DOUBLE);
+    }
+
+    /**     
+     * Clone the actor into the specified workspace.
+     * @param workspace The workspace for the new object.
+     * @return A new actor.
+     * @exception CloneNotSupportedException If a derived class contains
+     * an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        DB newObject = (DB)super.clone(workspace);
+        newObject.$ASSIGN$_resultArray(new DoubleToken[_resultArray.length]);
+        System.arraycopy($BACKUP$_resultArray(), 0, newObject.$BACKUP$_resultArray(), 0, _resultArray.length);
+        return newObject;
     }
 
     /**     

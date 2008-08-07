@@ -43,6 +43,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** 
  * A recursive (all-pole) filter with a lattice structure.
@@ -128,6 +129,8 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     // Need to allocate or reallocate the arrays.
+    // CloneNotSupportedException does not have a constructor
+    // that takes a cause argument, so we use initCause
     // NOTE: The following code is ported from Ptolemy Classic.
     // Forward prediction error
     // _forward(0) = x(n)
@@ -159,7 +162,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
 
     private double[] _forwardCache = null;
 
-    private double[] _reflectionCoefs = null;
+    private double[] _reflectionCoefficients = null;
 
     /**     
      * Construct an actor with the given container and name.
@@ -193,14 +196,46 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
                 $ASSIGN$_backwardCache(new double[valueLength + 1]);
                 $ASSIGN$_forward(new double[valueLength + 1]);
                 $ASSIGN$_forwardCache(new double[valueLength + 1]);
-                $ASSIGN$_reflectionCoefs(new double[valueLength]);
+                $ASSIGN$_reflectionCoefficients(new double[valueLength]);
             }
             for (int i = 0; i < valueLength; i++) {
-                $ASSIGN$_reflectionCoefs(i, ((DoubleToken)value.getElement(i)).doubleValue());
+                $ASSIGN$_reflectionCoefficients(i, ((DoubleToken)value.getElement(i)).doubleValue());
             }
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /**     
+     * Clone the actor into the specified workspace.
+     * @param workspace The workspace for the new object.
+     * @return A new actor.
+     * @exception CloneNotSupportedException If a derived class contains
+     * an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        RecursiveLattice newObject = (RecursiveLattice)super.clone(workspace);
+        newObject.$ASSIGN$_backward(new double[_forward.length]);
+        newObject.$ASSIGN$_backwardCache(new double[_forward.length]);
+        newObject.$ASSIGN$_forward(new double[_forward.length]);
+        newObject.$ASSIGN$_forwardCache(new double[_forward.length]);
+        newObject.$ASSIGN$_reflectionCoefficients(new double[_forward.length]);
+        System.arraycopy($BACKUP$_backward(), 0, newObject.$BACKUP$_backward(), 0, _backward.length);
+        System.arraycopy($BACKUP$_backwardCache(), 0, newObject.$BACKUP$_backwardCache(), 0, _backwardCache.length);
+        System.arraycopy($BACKUP$_forward(), 0, newObject.$BACKUP$_forward(), 0, _forward.length);
+        System.arraycopy($BACKUP$_forwardCache(), 0, newObject.$BACKUP$_forwardCache(), 0, _forwardCache.length);
+        System.arraycopy($BACKUP$_reflectionCoefficients(), 0, newObject.$BACKUP$_reflectionCoefficients(), 0, _reflectionCoefficients.length);
+        try {
+            ArrayToken value = (ArrayToken)reflectionCoefficients.getToken();
+            for (int i = 0; i < value.length(); i++) {
+                $ASSIGN$_reflectionCoefficients(i, ((DoubleToken)value.getElement(i)).doubleValue());
+            }
+        } catch (IllegalActionException ex) {
+            CloneNotSupportedException throwable = new CloneNotSupportedException();
+            throwable.initCause(ex);
+            throw throwable;
+        }
+        return newObject;
     }
 
     /**     
@@ -216,12 +251,12 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
             int M = _backward.length - 1;
             $ASSIGN$_forwardCache(0, inputValue.doubleValue());
             for (int i = 1; i <= M; i++) {
-                k = _reflectionCoefs[M - i];
+                k = _reflectionCoefficients[M - i];
                 $ASSIGN$_forwardCache(i, (k * _backwardCache[i]) + _forwardCache[i - 1]);
             }
             output.broadcast(new DoubleToken(_forwardCache[M]));
             for (int i = 1; i < M; i++) {
-                k = -_reflectionCoefs[M - 1-i];
+                k = -_reflectionCoefficients[M - 1-i];
                 $ASSIGN$_backwardCache(i, _backwardCache[i + 1] + (k * _forwardCache[i + 1]));
             }
             $ASSIGN$_backwardCache(M, _forwardCache[M]);
@@ -346,20 +381,25 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
         return _forwardCache;
     }
 
-    private final double[] $ASSIGN$_reflectionCoefs(double[] newValue) {
+    private final double[] $ASSIGN$_reflectionCoefficients(double[] newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_reflectionCoefs.add(null, _reflectionCoefs, $CHECKPOINT.getTimestamp());
+            $RECORD$_reflectionCoefficients.add(null, _reflectionCoefficients, $CHECKPOINT.getTimestamp());
         }
-        return _reflectionCoefs = newValue;
+        return _reflectionCoefficients = newValue;
     }
 
-    private final double $ASSIGN$_reflectionCoefs(int index0, double newValue) {
+    private final double $ASSIGN$_reflectionCoefficients(int index0, double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_reflectionCoefs.add(new int[] {
+            $RECORD$_reflectionCoefficients.add(new int[] {
                     index0
-                }, _reflectionCoefs[index0], $CHECKPOINT.getTimestamp());
+                }, _reflectionCoefficients[index0], $CHECKPOINT.getTimestamp());
         }
-        return _reflectionCoefs[index0] = newValue;
+        return _reflectionCoefficients[index0] = newValue;
+    }
+
+    private final double[] $BACKUP$_reflectionCoefficients() {
+        $RECORD$_reflectionCoefficients.backup(null, _reflectionCoefficients, $CHECKPOINT.getTimestamp());
+        return _reflectionCoefficients;
     }
 
     public void $COMMIT(long timestamp) {
@@ -372,7 +412,7 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
         _backwardCache = (double[])$RECORD$_backwardCache.restore(_backwardCache, timestamp, trim);
         _forward = (double[])$RECORD$_forward.restore(_forward, timestamp, trim);
         _forwardCache = (double[])$RECORD$_forwardCache.restore(_forwardCache, timestamp, trim);
-        _reflectionCoefs = (double[])$RECORD$_reflectionCoefs.restore(_reflectionCoefs, timestamp, trim);
+        _reflectionCoefficients = (double[])$RECORD$_reflectionCoefficients.restore(_reflectionCoefficients, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
             $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
@@ -408,14 +448,14 @@ public class RecursiveLattice extends Transformer implements Rollbackable {
 
     private transient FieldRecord $RECORD$_forwardCache = new FieldRecord(1);
 
-    private transient FieldRecord $RECORD$_reflectionCoefs = new FieldRecord(1);
+    private transient FieldRecord $RECORD$_reflectionCoefficients = new FieldRecord(1);
 
     private transient FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$_backward,
             $RECORD$_backwardCache,
             $RECORD$_forward,
             $RECORD$_forwardCache,
-            $RECORD$_reflectionCoefs
+            $RECORD$_reflectionCoefficients
         };
 
 }
