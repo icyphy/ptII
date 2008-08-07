@@ -469,10 +469,11 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @param value A String representing the port.
      */
     public void addPort(String name, String value)
-            throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException, Exception {
         _portHash.put(name, value);
-        /*ConfigurableAttribute port =*/ new ConfigurableAttribute(this, "port:"
+        ConfigurableAttribute port = new ConfigurableAttribute(this, "port:"
                 + name);
+        port.configure(null, null, value);
     }
 
     /** return the port docs
@@ -501,10 +502,11 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @param value A string representing the propety.
      */
     public void addProperty(String name, String value)
-            throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException, Exception {
         _propertyHash.put(name, value);
-        /* ConfigurableAttribute ca =*/ new ConfigurableAttribute(this, "prop:"
+        ConfigurableAttribute ca = new ConfigurableAttribute(this, "prop:"
                 + name);
+        ca.configure(null, null, value);
     }
 
     /** Return the property docs.
