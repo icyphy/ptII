@@ -40,6 +40,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.TableIcon;
 
 //////////////////////////////////////////////////////////////////////////
@@ -139,6 +140,19 @@ public class ArrayOfRecordsRecorder extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ArrayOfRecordsRecorder newObject = (ArrayOfRecordsRecorder) super.clone(workspace);
+
+	newObject.input.setTypeAtMost(new ArrayType(RecordType.EMPTY_RECORD));
+	return newObject;
+    }
+
     /** Read the input and update the display.
      *  @throws IllegalActionException If we fail to update the
      *   contents parameter.
