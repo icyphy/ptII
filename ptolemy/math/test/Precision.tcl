@@ -367,15 +367,15 @@ test Precision-7.0 {union} {
     set union {ptolemy.math.Precision union}
 
     list "
-[$p0 toString] [$p1 toString] [[$p0 union $p0 $p1] toString]
-[$p1 toString] [$p2 toString] [[$p1 union $p1 $p2] toString]
-[$p2 toString] [$p3 toString] [[$p2 union $p2 $p3] toString]
-[$p3 toString] [$p4 toString] [[$p3 union $p3 $p4] toString]
-[$p4 toString] [$p5 toString] [[$p4 union $p4 $p5] toString]
-[$p5 toString] [$p6 toString] [[$p5 union $p5 $p6] toString]
-[$p6 toString] [$p7 toString] [[$p6 union $p6 $p7] toString]
-[$p5 toString] [$p11 toString] [[$p5 union $p5 $p11] toString]
-[$p4 toString] [$p4 toString] [[$p4 union $p4 $p4] toString] "
+[$p0 toString] [$p1 toString] [[java::call ptolemy.math.Precision union $p0 $p1] toString]
+[$p1 toString] [$p2 toString] [[java::call ptolemy.math.Precision union $p1 $p2] toString]
+[$p2 toString] [$p3 toString] [[java::call ptolemy.math.Precision union $p2 $p3] toString]
+[$p3 toString] [$p4 toString] [[java::call ptolemy.math.Precision union $p3 $p4] toString]
+[$p4 toString] [$p5 toString] [[java::call ptolemy.math.Precision union $p4 $p5] toString]
+[$p5 toString] [$p6 toString] [[java::call ptolemy.math.Precision union $p5 $p6] toString]
+[$p6 toString] [$p7 toString] [[java::call ptolemy.math.Precision union $p6 $p7] toString]
+[$p5 toString] [$p11 toString] [[java::call ptolemy.math.Precision union $p5 $p11] toString]
+[$p4 toString] [$p4 toString] [[java::call ptolemy.math.Precision union $p4 $p4] toString] "
 } {{
 (3.2) (0.7) (3.7)
 (0.7) (-2.12) (0.12)
