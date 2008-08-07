@@ -223,7 +223,7 @@ public class PreemptivePlatformExecutionStrategy extends
         TimedEvent event;
         int index = 0;
         while (index < eventsToFire.size()) {
-            event = (TimedEvent) eventsToFire.get(index);
+            event = eventsToFire.get(index);
 
             Actor actorToFire = event.contents instanceof IOPort ? 
                     (Actor) ((IOPort) event.contents).getContainer() :

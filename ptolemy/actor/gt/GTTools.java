@@ -104,7 +104,7 @@ public class GTTools {
             Class<? extends Attribute> attributeClass)
             throws IllegalActionException, NameDuplicationException {
         List<Object> attributes = new LinkedList<Object>(
-                (Collection<?>) container.attributeList(attributeClass));
+                container.attributeList(attributeClass));
         for (Object attribute : attributes) {
             ((Attribute) attribute).setContainer(null);
         }
@@ -155,19 +155,19 @@ public class GTTools {
             boolean includeEntities, boolean includeRelations) {
         Collection<Object> collection = new CombinedCollection<Object>();
         if (includeAttributes) {
-            collection.addAll((Collection<?>) object.attributeList());
+            collection.addAll(object.attributeList());
         }
         if (includePorts && object instanceof Entity) {
             Entity entity = (Entity) object;
-            collection.addAll((Collection<?>) entity.portList());
+            collection.addAll(entity.portList());
         }
         if (object instanceof CompositeEntity) {
             CompositeEntity entity = (CompositeEntity) object;
             if (includeEntities) {
-                collection.addAll((Collection<?>) entity.entityList());
+                collection.addAll(entity.entityList());
             }
             if (includeRelations) {
-                collection.addAll((Collection<?>) entity.relationList());
+                collection.addAll(entity.relationList());
             }
         }
         return collection;

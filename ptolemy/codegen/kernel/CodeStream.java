@@ -1187,7 +1187,7 @@ public class CodeStream {
         public void putCode(Signature signature, String filePath,
                 StringBuffer code) {
 
-            LinkedHashMap currentScope = (LinkedHashMap) _codeTableList.getLast();
+            LinkedHashMap currentScope = _codeTableList.getLast();
 
             Object[] codeBlock = (Object[]) currentScope.get(signature);
             codeBlock[0] = filePath;
@@ -1204,7 +1204,7 @@ public class CodeStream {
          */
         public void putParameters(Signature signature, List parameters)
                 throws IllegalActionException {
-            LinkedHashMap currentScope = (LinkedHashMap) _codeTableList.getLast();
+            LinkedHashMap currentScope = _codeTableList.getLast();
             currentScope.get(signature);
             Object[] codeBlock = new Object[3];
             codeBlock[2] = parameters;

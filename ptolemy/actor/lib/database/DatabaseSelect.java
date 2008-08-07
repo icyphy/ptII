@@ -255,7 +255,7 @@ public class DatabaseSelect extends Source {
                 HashMap<String,Token> map = new HashMap<String,Token>();
                 columnEntries = columnValue.labelSet().iterator();
                 while (columnEntries.hasNext()) {
-                    String label = (String)columnEntries.next();
+                    String label = columnEntries.next();
                     String value = rset.getString(label);
                     if (value == null) {
                         value = "";

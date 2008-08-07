@@ -838,7 +838,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 if (jarsToAdd == null) {
                     jarsToAdd = new HashMap();
                 }
-                jarsToAdd.put(className, (String)auxiliaryJarMap.get(className));
+                jarsToAdd.put(className, auxiliaryJarMap.get(className));
 
             }
         }

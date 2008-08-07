@@ -122,7 +122,7 @@ public class MatchResultTableau extends Tableau {
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
         MatchResultViewer frame = new MatchResultViewer(
-                (CompositeEntity) model, this, defaultLibrary);
+                model, this, defaultLibrary);
 
         try {
             setFrame(frame);

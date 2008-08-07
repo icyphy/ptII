@@ -113,7 +113,7 @@ public class GTFrameTools {
                         (FSMGraphController) frame.getJGraph()
                         .getGraphPane().getGraphController();
                     FSMGraphModel graphModel = new FSMGraphModel(
-                            (CompositeEntity) model);
+                            model);
                     frame.getJGraph().setGraphPane(new FSMGraphPane(controller,
                             graphModel, model));
                 } else if (frame instanceof GTFrame) {

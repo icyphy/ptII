@@ -2851,7 +2851,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         newRelation.propagateExistence();
                     } else {
                         Object[] arguments = new Object[2];
-                        arguments[0] = (CompositeEntity) _current;
+                        arguments[0] = _current;
                         arguments[1] = relationName;
                         newRelation = _createInstance(newClass, arguments);
 

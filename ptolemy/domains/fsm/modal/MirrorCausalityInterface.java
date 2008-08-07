@@ -133,7 +133,7 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
                        if (!((IOPort)localInput).isInput()) {
                            continue;
                        }
-                       Map<IOPort,Dependency> forwardMap = _forwardDependencies.get((IOPort)localInput);
+                       Map<IOPort,Dependency> forwardMap = _forwardDependencies.get(localInput);
                        if (forwardMap == null) {
                            forwardMap = new HashMap<IOPort,Dependency>();
                            _forwardDependencies.put((IOPort)localInput, forwardMap);
@@ -147,7 +147,7 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
                            Dependency dependency = causality.getDependency(mirrorInput, dependentOutput);
                            forwardMap.put((IOPort)localOutput, dependency);
                            // Now handle the reverse dependencies.
-                           Map<IOPort,Dependency> backwardMap = _reverseDependencies.get((IOPort)localOutput);
+                           Map<IOPort,Dependency> backwardMap = _reverseDependencies.get(localOutput);
                            if (backwardMap == null) {
                                backwardMap = new HashMap<IOPort,Dependency>();
                                _reverseDependencies.put((IOPort)localOutput, backwardMap);

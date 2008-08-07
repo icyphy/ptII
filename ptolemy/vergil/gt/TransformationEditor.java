@@ -654,7 +654,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         LayoutAction layoutAction = new LayoutAction();
         GUIUtilities.addMenuItem(_ruleMenu, layoutAction);
 
-        GraphController controller = (GraphController) _getGraphController();
+        GraphController controller = _getGraphController();
         if (controller instanceof RunnableGraphController) {
             ((RunnableGraphController) controller).addToMenuAndToolbar(
                     _ruleMenu, _toolbar);
@@ -1356,7 +1356,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
 
         TransformationRule transformer =
-            (TransformationRule) getFrameController().getTransformationRule();
+            getFrameController().getTransformationRule();
         _refreshTable(frame, transformer, 1, transformer);
 
         tableModel.addTableModelListener(this);
@@ -1858,7 +1858,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
                 _viewers = new MatchResultViewer[_files.length];
                 _models = new CompositeEntity[_files.length];
-                _allResults = (List<MatchResult>[]) new List[_files.length];
+                _allResults = new List[_files.length];
 
                 try {
                     _index = _findNextMatch(-1);

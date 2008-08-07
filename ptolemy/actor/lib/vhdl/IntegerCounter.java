@@ -190,7 +190,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
 
         } else {
 
-            ((QueuedTypedIOPort) output).resend(0);
+            (output).resend(0);
         }
     }
 

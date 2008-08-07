@@ -424,7 +424,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                         } else if (destination instanceof Variable) {
                             codeBuffer
                                     .append(_codeGenerator
-                                            .generateVariableName((Variable) destination)
+                                            .generateVariableName(destination)
                                             + " = ");
                         }
 

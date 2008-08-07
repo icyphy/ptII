@@ -1268,7 +1268,7 @@ public class ModelTransformer extends SceneTransformer implements
                     continue;
                 }
 
-                InvokeExpr r = (InvokeExpr) stmt.getInvokeExpr();
+                InvokeExpr r = stmt.getInvokeExpr();
                 SootMethod targetMethod = r.getMethod();
 
                 // Don't inline obviously recursive methods.
@@ -2081,16 +2081,16 @@ public class ModelTransformer extends SceneTransformer implements
                 _createCompositeActor(composite, newClassName, options);
             } else if (entity instanceof Expression) {
                 AtomicActorCreator creator = new ExpressionCreator();
-                creator.createAtomicActor((Expression) entity, newClassName,
+                creator.createAtomicActor(entity, newClassName,
                         constAnalysis, options);
             } else if (entity instanceof FSMActor) {
                 FSMCreator creator = new FSMCreator();
-                creator.createAtomicActor((FSMActor) entity, newClassName,
+                creator.createAtomicActor(entity, newClassName,
                         constAnalysis, options);
             } else {
                 // Must be an atomicActor.
                 GenericAtomicActorCreator creator = new GenericAtomicActorCreator();
-                creator.createAtomicActor((AtomicActor) entity, newClassName,
+                creator.createAtomicActor(entity, newClassName,
                         constAnalysis, options);
             }
 

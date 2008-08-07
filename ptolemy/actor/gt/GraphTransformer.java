@@ -152,10 +152,10 @@ public class GraphTransformer extends ChangeRequest {
             List<?> hostLinkdList;
             if (host instanceof Port) {
                 replacementLinkedList = new LinkedList<Object>(
-                        (Collection<?>) ((Port) replacement)
+                        ((Port) replacement)
                         .linkedRelationList());
                 hostLinkdList = new LinkedList<Object>(
-                        (Collection<?>) ((Port) host).linkedRelationList());
+                        ((Port) host).linkedRelationList());
             } else {
                 continue;
             }
@@ -163,7 +163,7 @@ public class GraphTransformer extends ChangeRequest {
             for (Object replacementLinkedObjectRaw : replacementLinkedList) {
                 NamedObj replacementLinkedObject =
                     (NamedObj) replacementLinkedObjectRaw;
-                NamedObj hostLinkedObject = (NamedObj) _replacementToHost.get(
+                NamedObj hostLinkedObject = _replacementToHost.get(
                         replacementLinkedObject);
                 // FIXME: hostRelation shouldn't be null, but it seems if a
                 // Publisher appears in the host model, then an extra relation
@@ -492,7 +492,7 @@ public class GraphTransformer extends ChangeRequest {
 
         while (container != null) {
             if (_replacementToHost.containsValue(container)) {
-                container = (NamedObj) _replacementToHost.getKey(container);
+                container = _replacementToHost.getKey(container);
             }
             Attribute attribute = container.getAttribute(name);
             if (attribute != null && attributeClass.isInstance(attribute)) {
@@ -867,7 +867,7 @@ public class GraphTransformer extends ChangeRequest {
         // of the ports, the "removed" relation won't be removed if it is
         // connected to a port that is connected to more than one relations.
         List<?> removedLinkedObjects =
-            new LinkedList<Object>((Collection<?>) removed.linkedObjectsList());
+            new LinkedList<Object>(removed.linkedObjectsList());
         for (Object removedLinkedObject : removedLinkedObjects) {
             if (removedLinkedObject instanceof Port) {
                 if (((Port) removedLinkedObject).linkedRelationList().size()
@@ -1004,9 +1004,9 @@ public class GraphTransformer extends ChangeRequest {
                 for (Object portObject : entity.portList()) {
                     ComponentPort port = (ComponentPort) portObject;
                     List<Object> linkedRelations = new LinkedList<Object>();
-                    linkedRelations.addAll((Collection<?>) port
+                    linkedRelations.addAll(port
                             .linkedRelationList());
-                    linkedRelations.addAll((Collection<?>) port
+                    linkedRelations.addAll(port
                             .insideRelationList());
                     portLinks.put(port, linkedRelations);
                 }
@@ -1146,7 +1146,7 @@ public class GraphTransformer extends ChangeRequest {
                             || GTTools.isPreserved(patternChild)) {
                         continue;
                     }
-                    NamedObj replacementChild = (NamedObj) _replacementToHost
+                    NamedObj replacementChild = _replacementToHost
                             .getKey(child);
                     if (replacementChild == null && patternChild != null
                             && !GTTools.isCreated(patternChild)) {

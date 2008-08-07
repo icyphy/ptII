@@ -38,7 +38,7 @@ public class PropertyTokenAttribute extends PropertyAttribute {
             // in the expression.
             Token token = evaluator.evaluateParseTree(root);
             
-            _property = (PropertyToken) new PropertyToken(token);
+            _property = new PropertyToken(token);
         }
         super.setExpression(expression);
     }

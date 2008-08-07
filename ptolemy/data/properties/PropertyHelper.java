@@ -229,14 +229,14 @@ public abstract class PropertyHelper {
                     ((((StringAttribute)attribute).getContainer() instanceof Expression)) && 
                      ((StringAttribute)attribute).getName().equalsIgnoreCase("expression")) {
             
-                     result.add((Attribute) attribute);
+                     result.add(attribute);
                 }             
             } else if (attribute instanceof Variable) {
                 if (((Variable) attribute).getVisibility() == Settable.FULL) {
 
                     // filter Parameters with certain names; ignore all subclasses
                     if (attribute instanceof PortParameter) {
-                        result.add((Attribute) attribute);
+                        result.add(attribute);
                     } else if ((attribute.getClass().equals(ptolemy.data.expr.Parameter.class)) ||
                                (attribute.getClass().equals(ptolemy.data.expr.StringParameter.class))) {
 
@@ -253,7 +253,7 @@ public abstract class PropertyHelper {
                         	
                             // do nothing, ignore the parameter
                         } else {
-                            result.add((Attribute) attribute);
+                            result.add(attribute);
                         }
                     }
                 }

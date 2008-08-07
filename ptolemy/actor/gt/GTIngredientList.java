@@ -119,7 +119,7 @@ public class GTIngredientList extends LinkedList<GTIngredient> {
                 Class<? extends GTIngredient> ruleClass = namedClass
                         .asSubclass(GTIngredient.class);
                 String values = ruleString.substring(separator + 1);
-                return (GTIngredient) ruleClass.getConstructor(
+                return ruleClass.getConstructor(
                         GTIngredientList.class, String.class).newInstance(this,
                         values);
             } catch (ClassNotFoundException e) {

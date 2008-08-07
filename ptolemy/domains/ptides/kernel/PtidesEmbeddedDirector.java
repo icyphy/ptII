@@ -577,7 +577,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();_eventQueues = new Hashtable<Actor, TreeSet<Time>>();
-        List<CompositeActor> platforms = (List<CompositeActor>) ((CompositeActor)getContainer()).entityList();
+        List<CompositeActor> platforms = ((CompositeActor)getContainer()).entityList();
         for (Actor platform : platforms) {
             _eventQueues.put(platform, new TreeSet<Time>());
         } 
@@ -1009,7 +1009,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                                                         0.0), time))) {
                                     List<TimedEvent> toRemove = new ArrayList<TimedEvent>();
                                     for (int k = 0; k < events.size(); k++) {
-                                        TimedEvent event = (TimedEvent) events
+                                        TimedEvent event = events
                                                 .get(k);
                                         if (event.contents == actor
                                                 && event.timeStamp.equals(time))

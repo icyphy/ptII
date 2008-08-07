@@ -119,15 +119,15 @@ public class FSMGraphReader {
                 
                 State sink = transition.destinationState();
                 
-                if (graph.containsNode((Node) (_stateMap.get(sink)))) {
+                if (graph.containsNode((_stateMap.get(sink)))) {
                     if (_debug) {
                         System.out.println("Adding edge from " + source
                                 + " to " + sink);
                     }
 
                     Edge newEdge = graph.addEdge(
-                            (Node) (_stateMap.get(source)), 
-                            (Node) (_stateMap.get(sink)),
+                            (_stateMap.get(source)), 
+                            (_stateMap.get(sink)),
                             _computeEdgeWeight(transition));
                     
                     

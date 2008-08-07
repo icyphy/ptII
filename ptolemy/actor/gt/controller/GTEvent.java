@@ -110,7 +110,7 @@ public class GTEvent extends Event {
     protected void _scheduleEvents(ParserScope scope, ActorToken modelToken,
             BooleanToken matchToken) throws IllegalActionException {
         ERGController controller = (ERGController) getContainer();
-        ERGDirector director = (ERGDirector) controller.director;
+        ERGDirector director = controller.director;
 
         List<?>[] schedulesArray = new List<?>[2];
         schedulesArray[0] = preemptiveTransitionList();

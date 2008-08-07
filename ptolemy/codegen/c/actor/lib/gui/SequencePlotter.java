@@ -48,7 +48,7 @@ public class SequencePlotter extends PlotterBase {
      *  @param actor the associated actor.
      */
     public SequencePlotter(ptolemy.actor.lib.gui.SequencePlotter actor) {
-        super((ptolemy.actor.lib.gui.PlotterBase) actor);
+        super(actor);
     }
 
     /** Generate fire code.

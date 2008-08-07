@@ -163,7 +163,7 @@ public class StreamExec implements ExecuteCommands {
             // not see the change.  So, we search the env for a direct
             // match
             Map<String,String> environmentMap = System.getenv(); 
-            return (String) environmentMap.get(key);
+            return environmentMap.get(key);
         }
         for ( int i = 0; i < _envp.length; i++) {
             if (key.regionMatches(false /*ignoreCase*/,

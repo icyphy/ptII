@@ -124,7 +124,7 @@ public class AddSubtract extends SynchronousFixTransformer {
             }
             sendOutput(output, 0, result);
         } else {
-            ((QueuedTypedIOPort) output).resend(0);
+            (output).resend(0);
         }
     }
 

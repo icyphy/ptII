@@ -399,7 +399,7 @@ public class ERGDirector extends Director implements TimedDirector {
         if (result) {
             if (!_eventQueue.isEmpty()) {
                 if (_isTopLevel()) {
-                    TimedEvent event = (TimedEvent) _eventQueue.peek();
+                    TimedEvent event = _eventQueue.peek();
                     setModelTime(event.timeStamp);
                 }
             } else {
@@ -434,12 +434,12 @@ public class ERGDirector extends Director implements TimedDirector {
 
         if (!_eventQueue.isEmpty()) {
             Time modelTime = getModelTime();
-            Time nextEventTime = ((TimedEvent) _eventQueue.peek()).timeStamp;
+            Time nextEventTime = (_eventQueue.peek()).timeStamp;
             while (modelTime.compareTo(nextEventTime) > 0) {
                 _eventQueue.poll();
 
                 if (!_eventQueue.isEmpty()) {
-                    TimedEvent event = (TimedEvent) _eventQueue.peek();
+                    TimedEvent event = _eventQueue.peek();
                     nextEventTime = event.timeStamp;
                 } else {
                     nextEventTime = Time.POSITIVE_INFINITY;

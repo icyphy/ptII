@@ -81,7 +81,7 @@ public abstract class GraphAnalyzer {
         try {
             top.workspace().getReadAccess();
 
-            children = new LinkedList<Object>((Collection<?>) top.entityList(
+            children = new LinkedList<Object>(top.entityList(
                     ComponentEntity.class));
 
             boolean collapsing = _relationCollapsing(top);
@@ -445,7 +445,7 @@ public abstract class GraphAnalyzer {
             int i = 0;
             while (entry != null) {
                 IndexedList markedList = entry.getValue();
-                List<?> list = (List<?>) markedList.getFirst();
+                List<?> list = markedList.getFirst();
                 NamedObj object = (NamedObj) list.get(markedList.getSecond());
                 if (i++ > 0) {
                     buffer.append(", ");

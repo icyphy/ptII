@@ -87,7 +87,7 @@ public class TDLActionsGraph {
         if (sinkNodes.size() == 0) {
             throw new IllegalActionException("Graph Error: no sink nodes from node " + _currentNode);
         } else if (sinkNodes.size() == 1) {
-            _nextNodes.add((Node) sinkNodes.iterator().next());
+            _nextNodes.add(sinkNodes.iterator().next());
         } else {
             // current node is task output port that is connected to
             // another tasks input port
@@ -97,7 +97,7 @@ public class TDLActionsGraph {
             // current node is transition 
             else if (((TDLAction)_currentNode.getWeight()).actionType == TDLAction.AFTERMODESWITCH &&
                     nextMode != null) {
-                _nextNodes.add((Node) ((Object[])_modeSwitches.get(nextMode))[1]);
+                _nextNodes.add(((Object[])_modeSwitches.get(nextMode))[1]);
             } else {
                 throw new IllegalActionException("Graph Error: multiple sink nodes but not an output port or mode switch");
             } 
@@ -143,7 +143,7 @@ public class TDLActionsGraph {
                     Node outNode = _getNodeForPortWrittenBetweenTime(
                             outputPort, modeSwitchTimeBeforeRead, readTime);
                     if (outNode != null) {
-                        Node inNode = _getNode(readTime, (Actor) inputPort);
+                        Node inNode = _getNode(readTime, inputPort);
                         Edge edge = new Edge(outNode, inNode, 0); // TODO:
                                                                     // outnode.time
                                                                     // -
@@ -165,8 +165,8 @@ public class TDLActionsGraph {
      */
     private LetTask _analyzeSlotSelection(TDLTask actor, long modePeriod)
             throws TDLModeSchedulerException {
-        String slots = TDLModeScheduler.getSlots((NamedObj) actor);
-        int frequency = TDLModeScheduler.getFrequency((NamedObj) actor);
+        String slots = TDLModeScheduler.getSlots(actor);
+        int frequency = TDLModeScheduler.getFrequency(actor);
         ArrayList invocations = _getInvocations(slots, frequency);
         // if task is periodic, it is a let task. otherwise schedule it as a
         // special action
@@ -351,7 +351,7 @@ public class TDLActionsGraph {
         while (portIterator.hasNext()) {
             IOPort actuator = (IOPort) portIterator.next();
 
-            int frequency = TDLModeScheduler.getFrequency((NamedObj) actuator);
+            int frequency = TDLModeScheduler.getFrequency(actuator);
             long invocationPeriod = modePeriod / frequency;
 
             IOPort connectedPort = null;
@@ -536,7 +536,7 @@ public class TDLActionsGraph {
                     && invocationTime <= upper) {
                 if (upper - invocationTime < diff) {
                     diff = upper - invocationTime;
-                    Node outNode = _getNode(invocationTime, (Actor) port);
+                    Node outNode = _getNode(invocationTime, port);
                     return outNode;
                 }
             }
@@ -588,7 +588,7 @@ public class TDLActionsGraph {
                     IOPort taskInputPort = (IOPort) it.next();
                     prev = _createNode(i, TDLAction.READINPUT,
                             taskInputPort, prev);
-                    _registerTaskInputPortReading(i, (IOPort) taskInputPort);
+                    _registerTaskInputPortReading(i, taskInputPort);
                     _connectToOtherTasksOutputPorts(taskInputPort);
                 }
                 prev = _createNode(i, TDLAction.EXECUTETASK, actor, prev);
@@ -597,7 +597,7 @@ public class TDLActionsGraph {
                     IOPort port = (IOPort) it.next();
                     prev = _createNode(i + task.getLet(),
                             TDLAction.WRITEOUTPUT, port, prev);
-                    _registerTaskOutputPortWriting(i, (IOPort) port);
+                    _registerTaskOutputPortWriting(i, port);
                 }
                 _connectToIntermediateModeSwitch(prev, i, task
                         .getInvocationPeriod());
@@ -633,7 +633,7 @@ public class TDLActionsGraph {
                 .hasNext();) {
             TDLTransition transition = (TDLTransition) it.next();
             int frequency = TDLModeScheduler
-                    .getFrequency((NamedObj) transition);
+                    .getFrequency(transition);
             long invocationPeriod = modePeriod / frequency;
             transition.invocationPeriod = invocationPeriod;
             for (int i = 0; i < frequency; i++) {

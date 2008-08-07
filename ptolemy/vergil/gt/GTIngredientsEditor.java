@@ -258,7 +258,7 @@ public class GTIngredientsEditor extends PtolemyDialog implements
                 + StringUtilities.escapeForXML(ingredientList.toString())
                 + "\"/>";
         MoMLChangeRequest request = new MoMLChangeRequest(this,
-                (NamedObj) _target, moml, null);
+                _target, moml, null);
         request.setUndoable(true);
         _attribute.requestChange(request);
         return true;

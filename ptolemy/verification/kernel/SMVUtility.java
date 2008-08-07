@@ -131,7 +131,7 @@ public class SMVUtility {
         // List out all FSMs/ModalModels(with refinements) with their
         // states and transitions.
 
-        for (Iterator actors = (((CompositeActor) model).entityList())
+        for (Iterator actors = ((model).entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
@@ -183,7 +183,7 @@ public class SMVUtility {
         mainModuleDescription.append("\n\nMODULE main \n");
         mainModuleDescription.append("\tVAR \n");
 
-        for (Iterator actors = (((CompositeActor) model).entityList())
+        for (Iterator actors = ((model).entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if ((innerEntity instanceof FSMActor)
@@ -362,7 +362,7 @@ public class SMVUtility {
      * @return a boolean value indicating if the director is SR.
      */
     public static boolean isValidModelForVerification(CompositeActor model) {
-        Director director = ((CompositeActor) model).getDirector();
+        Director director = (model).getDirector();
         if (!(director instanceof SRDirector)) {
             return false;
         } else {
@@ -418,8 +418,8 @@ public class SMVUtility {
             // easy way to pick an arbitrary entry from a HashMap, except
             // through Iterator
             Iterator<String> iterator = frontier.keySet().iterator();
-            name = (String) iterator.next();
-            stateInThis = (State) frontier.remove(name);
+            name = iterator.next();
+            stateInThis = frontier.remove(name);
             if (stateInThis == null) {
                 throw new IllegalActionException("Internal error, removing \""
                         + name + "\" returned null?");
@@ -543,8 +543,8 @@ public class SMVUtility {
             // easy way to pick an arbitrary entry from a HashMap, except
             // through Iterator
             Iterator<String> iterator = frontier.keySet().iterator();
-            name = (String) iterator.next();
-            stateInThis = (State) frontier.remove(name);
+            name = iterator.next();
+            stateInThis = frontier.remove(name);
             if (stateInThis == null) {
                 throw new IllegalActionException("Internal error, removing \""
                         + name + "\" returned null?");
@@ -658,8 +658,8 @@ public class SMVUtility {
             // easy way to pick an arbitrary entry from a HashMap, except
             // through Iterator
             Iterator<String> iterator = frontier.keySet().iterator();
-            name = (String) iterator.next();
-            stateInThis = (State) frontier.remove(name);
+            name = iterator.next();
+            stateInThis = frontier.remove(name);
             if (stateInThis == null) {
                 throw new IllegalActionException("Internal error, removing \""
                         + name + "\" returned null?");
@@ -763,7 +763,7 @@ public class SMVUtility {
                                                         .add(characterOfSubGuard[0]
                                                                 .trim());
 
-                                                VariableInfo variable = (VariableInfo) _variableInfo
+                                                VariableInfo variable = _variableInfo
                                                         .get(characterOfSubGuard[0]
                                                                 .trim());
                                                 if (variable != null) {
@@ -832,7 +832,7 @@ public class SMVUtility {
                                 int numberRetrival = Integer
                                         .parseInt(characters[1].trim());
                                 // add it into the _variableInfo
-                                VariableInfo variable = (VariableInfo) _variableInfo
+                                VariableInfo variable = _variableInfo
                                         .get(lValue);
                                 if (variable == null) {
                                     // Create a new one and insert all info.
@@ -890,7 +890,7 @@ public class SMVUtility {
                 property = "";
             }
 
-            VariableInfo variableInfo = (VariableInfo) _variableInfo
+            VariableInfo variableInfo = _variableInfo
                     .get(variableName);
 
             if (Pattern.matches("^-?\\d+$", property) == true) {
@@ -917,11 +917,11 @@ public class SMVUtility {
         Iterator<String> itVariableSet = returnVariableSet.iterator();
         while (itVariableSet.hasNext()) {
 
-            String valName = (String) itVariableSet.next();
+            String valName = itVariableSet.next();
 
             // Retrieve the lower bound and upper bound of the variable used in
             // the system based on inequalities or assignments
-            VariableInfo individual = (VariableInfo) _variableInfo
+            VariableInfo individual = _variableInfo
                     .remove(valName);
             if (individual != null) {
                 try {
@@ -973,8 +973,8 @@ public class SMVUtility {
                 // easy way to pick an arbitrary entry from a HashMap, except
                 // through Iterator
                 Iterator<String> iterator = frontier.keySet().iterator();
-                name = (String) iterator.next();
-                stateInThis = (State) frontier.remove(name);
+                name = iterator.next();
+                stateInThis = frontier.remove(name);
                 if (stateInThis != null) {
                     ComponentPort outPort = stateInThis.outgoingPort;
                     Iterator transitions = outPort.linkedRelationList()
@@ -1042,8 +1042,8 @@ public class SMVUtility {
             // through Iterator
 
             Iterator<String> iterator = frontier.keySet().iterator();
-            name = (String) iterator.next();
-            stateInThis = (State) frontier.remove(name);
+            name = iterator.next();
+            stateInThis = frontier.remove(name);
             if (stateInThis == null) {
                 throw new IllegalActionException("Internal error, removing \""
                         + name + "\" returned null?");
@@ -1237,7 +1237,7 @@ public class SMVUtility {
                 HashMap<String, ArrayList<Integer>> valueDomain = new HashMap<String, ArrayList<Integer>>();
                 Iterator<String> it = variableUsedInTransitionSet.iterator();
                 while (it.hasNext()) {
-                    String val = (String) it.next();
+                    String val = it.next();
                     boolean b1 = Pattern.matches(".*_isPresent", val);
                     boolean b2 = Pattern.matches(".*_value", val);
                     if (b1 == true || b2 == true) {
@@ -2229,7 +2229,7 @@ public class SMVUtility {
         }
 
         // List out all FSMs with their states.
-        for (Iterator actors = (((CompositeActor) model).entityList())
+        for (Iterator actors = (model.entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FmvAutomaton) {
@@ -2583,7 +2583,7 @@ public class SMVUtility {
         StringBuffer returnFmvFormat = new StringBuffer("");
 
         // List out all FSMs with their states.
-        for (Iterator actors = (((CompositeActor) model).entityList())
+        for (Iterator actors = (model.entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
@@ -2622,7 +2622,7 @@ public class SMVUtility {
 
         // String[] keySetArray = (String[]) valueDomain.keySet().toArray(
         // new String[0]);
-        String[] keySetArray = (String[]) valueDomain.keySet().toArray(
+        String[] keySetArray = valueDomain.keySet().toArray(
                 new String[valueDomain.keySet().size()]);
 
         _recursiveStepGeneratePremiseAndResultEachTransition(statePrecondition,
@@ -2670,7 +2670,7 @@ public class SMVUtility {
 
         ArrayList<String> subSystemNameList = new ArrayList<String>();
 
-        for (Iterator actors = (((CompositeActor) model).entityList())
+        for (Iterator actors = (model.entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
@@ -2698,13 +2698,13 @@ public class SMVUtility {
                 Iterator<String> itSignalVariableSet = signalVariableSet
                         .iterator();
                 while (itSignalVariableSet.hasNext()) {
-                    String valName = (String) itSignalVariableSet.next();
+                    String valName = itSignalVariableSet.next();
                     variableSet.add(valName);
                 }
                 HashSet<String> signalOfferedSet = new HashSet<String>();
                 Iterator<String> newItVariableSet = variableSet.iterator();
                 while (newItVariableSet.hasNext()) {
-                    String valName = (String) newItVariableSet.next();
+                    String valName = newItVariableSet.next();
                     boolean b1 = Pattern.matches(".*_isPresent", valName);
                     if (b1 == true) {
                         signalOfferedSet.add(valName);
@@ -2730,7 +2730,7 @@ public class SMVUtility {
                 Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
                         .iterator();
                 while (itGuardSignalVariableSet.hasNext()) {
-                    String valName = (String) itGuardSignalVariableSet.next();
+                    String valName = itGuardSignalVariableSet.next();
                     guardSignalVariableInfo.add(valName);
                 }
 
@@ -2792,7 +2792,7 @@ public class SMVUtility {
                                         Iterator<String> itSignalVariableSet = signalVariableSet
                                                 .iterator();
                                         while (itSignalVariableSet.hasNext()) {
-                                            String valName = (String) itSignalVariableSet
+                                            String valName = itSignalVariableSet
                                                     .next();
                                             variableSet.add(valName);
                                         }
@@ -2801,7 +2801,7 @@ public class SMVUtility {
                                             Iterator<String> newItVariableSet = variableSet
                                                     .iterator();
                                             while (newItVariableSet.hasNext()) {
-                                                String valName = (String) newItVariableSet
+                                                String valName = newItVariableSet
                                                         .next();
                                                 boolean b1 = Pattern
                                                         .matches(
@@ -2841,7 +2841,7 @@ public class SMVUtility {
                                                 .iterator();
                                         while (itGuardSignalVariableSet
                                                 .hasNext()) {
-                                            String valName = (String) itGuardSignalVariableSet
+                                            String valName = itGuardSignalVariableSet
                                                     .next();
                                             guardSignalVariableInfo
                                                     .add(valName);
@@ -2916,13 +2916,13 @@ public class SMVUtility {
                         .iterator();
                 while (itSignalVariableSet.hasNext()) {
 
-                    String valName = (String) itSignalVariableSet.next();
+                    String valName = itSignalVariableSet.next();
                     variableSet.add(valName);
                 }
                 HashSet<String> signalOfferedSet = new HashSet<String>();
                 Iterator<String> newItVariableSet = variableSet.iterator();
                 while (newItVariableSet.hasNext()) {
-                    String valName = (String) newItVariableSet.next();
+                    String valName = newItVariableSet.next();
                     boolean b1 = Pattern.matches(".*_isPresent", valName);
                     if (b1 == true) {
                         signalOfferedSet.add(valName);
@@ -2975,7 +2975,7 @@ public class SMVUtility {
                 Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
                         .iterator();
                 while (itGuardSignalVariableSet.hasNext()) {
-                    String valName = (String) itGuardSignalVariableSet.next();
+                    String valName = itGuardSignalVariableSet.next();
                     guardSignalVariableInfo.add(valName);
                 }
 
@@ -4721,7 +4721,7 @@ public class SMVUtility {
         // Print out all these states
         Iterator<State> it = frontier.iterator();
         while (it.hasNext()) {
-            State val = (State) it.next();
+            State val = it.next();
             returnSmvFormat.append(val.getDisplayName());
             if (it.hasNext()) {
                 returnSmvFormat.append(",");
@@ -4740,12 +4740,12 @@ public class SMVUtility {
         Iterator<String> itVariableSet = variableSet.iterator();
         while (itVariableSet.hasNext()) {
 
-            String valName = (String) itVariableSet.next();
+            String valName = itVariableSet.next();
             returnSmvFormat.append("\t\t" + valName + " : {");
             // Retrieve the lower bound and upper bound of the variable used in
             // the system based on inequalities or assignments
             // Also, add up symbols "ls" and "gt" within the variable domain.
-            VariableInfo individual = (VariableInfo) _variableInfo.get(valName);
+            VariableInfo individual = _variableInfo.get(valName);
             if (individual == null) {
                 throw new IllegalActionException(
                         "Error in SMVUtility.translateSingleFSMActor(): \n_variableInfo.get(valName) == null?");
@@ -4776,7 +4776,7 @@ public class SMVUtility {
         if (signalVariableSet != null) {
             Iterator<String> itSignalVariableSet = signalVariableSet.iterator();
             while (itSignalVariableSet.hasNext()) {
-                String valName = (String) itSignalVariableSet.next();
+                String valName = itSignalVariableSet.next();
                 variableSet.add(valName);
             }
         }
@@ -4826,7 +4826,7 @@ public class SMVUtility {
         Iterator<String> newItVariableSet = variableSet.iterator();
         while (newItVariableSet.hasNext()) {
 
-            String valName = (String) newItVariableSet.next();
+            String valName = newItVariableSet.next();
             boolean b1 = Pattern.matches(".*_isPresent", valName);
             boolean b2 = Pattern.matches(".*_value", valName);
             if ((b1 == true) || (b2 == true)) {
@@ -4886,7 +4886,7 @@ public class SMVUtility {
             Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
                     .iterator();
             while (itGuardSignalVariableSet.hasNext()) {
-                String valName = (String) itGuardSignalVariableSet.next();
+                String valName = itGuardSignalVariableSet.next();
                 // guardSignalVariableInfo.add(valName);
                 if (itGuardSignalVariableSet.hasNext() == true) {
                     frontAttachment.append(valName + ",");
@@ -4927,7 +4927,7 @@ public class SMVUtility {
                 Iterator<String> newItSignalVariableSet = signalVariableSet
                         .iterator();
                 while (newItSignalVariableSet.hasNext()) {
-                    String valName = (String) newItSignalVariableSet.next();
+                    String valName = newItSignalVariableSet.next();
                     frontAttachment.append("\t\t" + valName + " := ");
 
                     List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo

@@ -203,7 +203,7 @@ public class ShortToken extends ScalarToken {
      *  @return The value contained in this token as a float.
      */
     public float floatValue() {
-        return (float) _value;
+        return _value;
     }
 
     /** Return the type of this token.

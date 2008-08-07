@@ -1756,7 +1756,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     private int[][] deepClone(int[][] array) {
         int[][] result = new int[array.length][];
         for (int i = 0; i < result.length; i++) {
-            result[i] = (int[]) array[i].clone();
+            result[i] = array[i].clone();
         }
         return result;
     }

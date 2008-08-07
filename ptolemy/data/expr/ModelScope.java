@@ -178,7 +178,7 @@ public abstract class ModelScope implements ParserScope {
                     }
                 }
                 if (lookup && result == null) {
-                    List attributes = ((NamedObj) container).attributeList(
+                    List attributes = (container).attributeList(
                             ContainmentExtender.class);
                     Iterator attrIterator = attributes.iterator();
                     NamedObj extendedContainer = null;
@@ -234,7 +234,7 @@ public abstract class ModelScope implements ParserScope {
             if (result != null) {
                 return result;
             } else {
-                List attributes = ((NamedObj) container).attributeList(
+                List attributes = (container).attributeList(
                         ContainmentExtender.class);
                 Iterator attrIterator = attributes.iterator();
                 NamedObj extendedContainer = null;

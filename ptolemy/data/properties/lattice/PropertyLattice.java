@@ -95,7 +95,7 @@ public class PropertyLattice {
                             + "Arguments are not instances of Property: " + " property1 = "
                             + t1 + ", property2 = " + t2);
                 }
-                return _basicLattice.compare((Property)t1, (Property)t2);
+                return _basicLattice.compare(t1, t2);
             }
         }
 

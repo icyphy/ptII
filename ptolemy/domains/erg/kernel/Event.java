@@ -269,7 +269,7 @@ public class Event extends State {
          */
         public Set<?> identifierSet() throws IllegalActionException {
             Set<Object> set = new HashSet<Object>(_parameterMap.keySet());
-            set.addAll((Set<?>) _superscope.identifierSet());
+            set.addAll(_superscope.identifierSet());
             return set;
         }
 
@@ -305,7 +305,7 @@ public class Event extends State {
      */
     protected void _fireRefinements() throws IllegalActionException {
         ERGController controller = (ERGController) getContainer();
-        ERGDirector director = (ERGDirector) controller.director;
+        ERGDirector director = controller.director;
 
         Actor[] refinements = getRefinement();
         if (refinements != null) {
@@ -375,7 +375,7 @@ public class Event extends State {
     protected void _scheduleEvents(ParserScope scope)
             throws IllegalActionException {
         ERGController controller = (ERGController) getContainer();
-        ERGDirector director = (ERGDirector) controller.director;
+        ERGDirector director = controller.director;
 
         List<?>[] schedulesArray = new List<?>[2];
         schedulesArray[0] = preemptiveTransitionList();

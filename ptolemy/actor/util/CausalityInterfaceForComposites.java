@@ -843,7 +843,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                     Collection<IOPort> inputPorts = causalityInterface.dependentPorts(port);
                     for (IOPort inputPort : inputPorts) {
                         Dependency delay = _getMinimumDelay(inputPort, visitedPorts);
-                        delay = (RealDependency) delay.oTimes(causalityInterface.getDependency(inputPort, port));
+                        delay = delay.oTimes(causalityInterface.getDependency(inputPort, port));
                         if (delay.compareTo(minimumDelay) == RealDependency.LESS_THAN)
                             minimumDelay = delay;
                     }

@@ -237,7 +237,7 @@ public class ContainerLayout implements LayoutManager2 {
     }
 
     public CellConstraints removeCellConstraints(String name) {
-        CellConstraints constraints = (CellConstraints) componentConstraints
+        CellConstraints constraints = componentConstraints
                 .remove(name);
         return constraints;
     }
@@ -274,7 +274,7 @@ public class ContainerLayout implements LayoutManager2 {
     }
 
     public String removeRowSpec(int index) {
-        String rowSpec = (String) rowSpecs.remove(index);
+        String rowSpec = rowSpecs.remove(index);
         try {
             buildLayout();
         } catch (IllegalArgumentException e) {

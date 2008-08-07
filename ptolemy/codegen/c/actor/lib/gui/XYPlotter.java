@@ -48,7 +48,7 @@ public class XYPlotter extends PlotterBase {
      *  @param actor the associated actor.
      */
     public XYPlotter(ptolemy.actor.lib.gui.XYPlotter actor) {
-        super((ptolemy.actor.lib.gui.PlotterBase) actor);
+        super(actor);
     }
 
     /** Generate fire code.

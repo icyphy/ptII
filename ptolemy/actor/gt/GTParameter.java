@@ -192,7 +192,7 @@ public class GTParameter extends Parameter {
         }
 
         public Set<?> identifierSet() throws IllegalActionException {
-            Set<Object> identifiers = new HashSet<Object>((Set<?>) _superscope
+            Set<Object> identifiers = new HashSet<Object>(_superscope
                     .identifierSet());
             try {
                 _pattern.workspace().getReadAccess();

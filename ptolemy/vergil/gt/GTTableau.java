@@ -125,7 +125,7 @@ public class GTTableau extends Tableau {
         }
 
         ExtendedGraphFrame frame = new TransformationEditor(
-                (CompositeEntity) model, this, defaultLibrary);
+                model, this, defaultLibrary);
         try {
             setFrame(frame);
         } catch (IllegalActionException ex) {

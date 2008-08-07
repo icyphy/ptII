@@ -893,7 +893,7 @@ public class Configuration extends CompositeEntity implements
 
                 // If an object is equal and the default hashCode() from
                 // Object is the same, then we have a problem.
-                if ( ((Object)field.get(namedObj)).equals((Object)field.get(namedObjClone))
+                if ( (field.get(namedObj)).equals(field.get(namedObjClone))
                         && (System.identityHashCode(field.get(namedObj)) 
                                 == System.identityHashCode(field.get(namedObjClone)))) {
 

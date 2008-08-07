@@ -362,12 +362,12 @@ String tidied, x;
 
                 if (mustBeLong) {
                     // If the size was specified as long, then create a long.
-                    {if (true) return (double)(Long.parseLong(x, radix));}
+                    {if (true) return (Long.parseLong(x, radix));}
                 } else {
                     // Try to infer the size.  Inferred sizes are at least
                     // integer.
                     try {
-                        {if (true) return (double)(Integer.parseInt(x, radix));}
+                        {if (true) return (Integer.parseInt(x, radix));}
                     } catch (NumberFormatException nfe) {
                         {if (true) return Double.NaN;}
                     }

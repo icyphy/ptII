@@ -248,7 +248,7 @@ public class ComponentDef implements Comparable<Object> {
             }
         }
         Node[] result = new Node[childList.size()];
-        return (Node[]) childList.toArray(result);
+        return childList.toArray(result);
     }
 
     public String getConfigure(String name) {

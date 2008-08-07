@@ -26,7 +26,8 @@ public class Unboxing10 {
         IntToken[] inttokens_0_ = new IntToken[tokens.length];
 
         for (int i = 0; i < tokens.length; i++) {
-            ((ptolemy.data.Token[]) inttokens_0_)[i] = tokens[i];
+            // This cast is required, otherwise we see "cannot convert from Token to IntToken"
+            (inttokens_0_)[i] = (IntToken) tokens[i];
         }
 
         (this).arraytoken2 = new ArrayToken(inttokens_0_);

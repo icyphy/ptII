@@ -1176,7 +1176,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                 continue;
             }
 
-            RefType type = (RefType) PtolemyUtilities
+            RefType type = PtolemyUtilities
                     .getBaseTokenType(fieldType);
             SootClass fieldClass = type.getSootClass();
 
@@ -1420,7 +1420,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                 if (unit instanceof InvokeStmt) {
                     // Handle java.lang.arraycopy
-                    InvokeExpr r = (InvokeExpr) ((InvokeStmt) unit)
+                    InvokeExpr r = ((InvokeStmt) unit)
                             .getInvokeExpr();
 
                     if (r.getMethod().equals(PtolemyUtilities.arraycopyMethod)) {
@@ -1451,10 +1451,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                             {
                                 List argumentList = new LinkedList();
-                                argumentList.add((Local) localToIsNotNullLocal
+                                argumentList.add(localToIsNotNullLocal
                                         .get(toLocal));
                                 argumentList.add(r.getArg(1));
-                                argumentList.add((Local) localToIsNotNullLocal
+                                argumentList.add(localToIsNotNullLocal
                                         .get(fromLocal));
                                 argumentList.add(r.getArg(3));
                                 argumentList.add(r.getArg(4));

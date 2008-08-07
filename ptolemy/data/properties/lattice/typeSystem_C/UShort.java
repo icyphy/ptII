@@ -55,7 +55,7 @@ public class UShort extends LatticeProperty implements TypeProperty {
    }
 
    public LongToken getMinValue() {
-       return new LongToken((long)0);
+       return new LongToken(0);
    }
 
    public boolean hasMinMaxValue() {

@@ -489,7 +489,7 @@ public abstract class PropertySolver extends Attribute {
 
     protected PropertyHelper _getHelper(Object object) throws IllegalActionException {
         if (_helperStore.containsKey(object)) {
-            return (PropertyHelper) _helperStore.get(object);
+            return _helperStore.get(object);
         }
 
         if ((object instanceof IOPort) || (object instanceof Attribute)) {
@@ -939,7 +939,7 @@ public abstract class PropertySolver extends Attribute {
 
 
     public Property getResolvedProperty(Object object, boolean resolve) {
-        Property property = (Property) _resolvedProperties.get(object);
+        Property property = _resolvedProperties.get(object);
 
         // See if it is already resolved.
         if (property != null) {
@@ -968,11 +968,11 @@ public abstract class PropertySolver extends Attribute {
                     KernelException.stackTraceToString(ex));
         }
 
-        return (Property) _resolvedProperties.get(object);
+        return _resolvedProperties.get(object);
     }
 
     public Property getDeclaredProperty(Object object) {
-        return (Property) _declaredProperties.get(object);
+        return _declaredProperties.get(object);
     }
 
     public void setResolvedProperty(Object object, Property property) {
@@ -984,7 +984,7 @@ public abstract class PropertySolver extends Attribute {
     }
 
     public Property getPreviousProperty(Object object) {
-        return (Property) _previousProperties.get(object);
+        return _previousProperties.get(object);
     }
 
     public void setDeclaredProperty(Object object, Property property)  {

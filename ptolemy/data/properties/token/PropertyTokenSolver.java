@@ -205,7 +205,7 @@ public class PropertyTokenSolver extends PropertySolver {
     }
 
     public Token getToken(Object object) {
-        return (Token)_tokenMap.get(object);
+        return _tokenMap.get(object);
     }
 
     private FirstTokenSentListener _sentListener = new FirstTokenSentListener(this);

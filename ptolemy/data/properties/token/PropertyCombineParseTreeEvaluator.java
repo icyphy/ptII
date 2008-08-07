@@ -78,7 +78,7 @@ public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
                     return;
                 } else {
                     // get helper and property
-                    Property property = (Property)propertyConstraintSolver.getProperty(_object);
+                    Property property = propertyConstraintSolver.getProperty(_object);
                     if (property != null) {
                         _evaluatedChildToken = new StringToken(property.toString());                            
                     } else {

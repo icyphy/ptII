@@ -277,7 +277,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
          */
         public Set<?> identifierSet() throws IllegalActionException {
             Set<Object> set = new HashSet<Object>(_paramMap.keySet());
-            set.addAll((Set<?>) _superscope.identifierSet());
+            set.addAll(_superscope.identifierSet());
             return set;
 
         }
@@ -335,7 +335,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
                 variable = _getAttribute(container, name);
                 NamedObj containerContainer = container.getContainer();
                 if (container instanceof ModalController) {
-                    State state = (State) ((ModalController) container)
+                    State state = ((ModalController) container)
                             .getRefinedState();
                     if (state == null) {
                         container = containerContainer;

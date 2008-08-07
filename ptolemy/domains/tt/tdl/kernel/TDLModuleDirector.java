@@ -165,7 +165,7 @@ public class TDLModuleDirector extends ModalDirector {
             _currentSchedule.firstSlot = false;
             long nextTimeStamp = _getNextTimeStamp();
             Time t = new Time(this,
-                    (long) (getModelTime().getLongValue() + nextTimeStamp));
+                    (getModelTime().getLongValue() + nextTimeStamp));
             fireAt((TDLModule) getContainer(), t);
             _currentSchedule.nextFireTime = t.getLongValue();
             _currentSchedule.currentPositionInSlot = 0;
@@ -513,7 +513,7 @@ public class TDLModuleDirector extends ModalDirector {
                 while (portIterator.hasNext()) {
                     IOPort port = (IOPort) portIterator.next();
                     if (!isFast(port))
-                        scheduler.addActuator((IOPort) port);
+                        scheduler.addActuator(port);
                 }
 
                 // compute schedule
@@ -673,7 +673,7 @@ public class TDLModuleDirector extends ModalDirector {
         Parameter parameter = (Parameter) obj.getAttribute("guard");
         StringToken token = (StringToken) parameter.getToken();
         ParseTreeEvaluator parseTreeEvaluator = getParseTreeEvaluator();
-        FSMActor fsmActor = (FSMActor) getController();
+        FSMActor fsmActor = getController();
         ASTPtRootNode _guardParseTree = null;
         String expr = token.stringValue();
 

@@ -626,7 +626,7 @@ public class LayoutConstraintsManager {
                 childList.add(children.item(i));
         }
         Node[] result = new Node[childList.size()];
-        return (Node[]) childList.toArray(result);
+        return childList.toArray(result);
     }
 
     public static void main(String[] args) {

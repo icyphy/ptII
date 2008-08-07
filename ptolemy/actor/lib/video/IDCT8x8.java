@@ -106,14 +106,14 @@ public class IDCT8x8 extends TypedAtomicActor {
         super.initialize();
         _output = new IntMatrixToken[1];
         cos_values = new double[8];
-        cos_values[0] = (double)0.7071068;
-        cos_values[1] = (double)0.4903926;
-        cos_values[2] = (double)0.4619398;
-        cos_values[3] = (double)0.4157348;
-        cos_values[4] = (double)0.3535534;
-        cos_values[5] = (double)0.2777851;
-        cos_values[6] = (double)0.1913417;
-        cos_values[7] = (double)0.0975452;
+        cos_values[0] = 0.7071068;
+        cos_values[1] = 0.4903926;
+        cos_values[2] = 0.4619398;
+        cos_values[3] = 0.4157348;
+        cos_values[4] = 0.3535534;
+        cos_values[5] = 0.2777851;
+        cos_values[6] = 0.1913417;
+        cos_values[7] = 0.0975452;
     }
     /** .
      *

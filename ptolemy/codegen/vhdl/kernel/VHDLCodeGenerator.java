@@ -306,7 +306,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
 
         StringBuffer result = new StringBuffer();
 
-        VHDLCodeGeneratorHelper compositeActorHelper = (VHDLCodeGeneratorHelper) _getHelper(getContainer());
+        VHDLCodeGeneratorHelper compositeActorHelper = _getHelper(getContainer());
 
         Iterator gateways = _gatewayPorts.iterator();
 

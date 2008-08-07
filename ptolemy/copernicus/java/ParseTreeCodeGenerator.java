@@ -1241,7 +1241,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         FunctionType functionType = (FunctionType) node.getType();
 
-        ASTPtRootNode cloneTree = (ASTPtRootNode) node.getExpressionTree(); //.clone();
+        ASTPtRootNode cloneTree = node.getExpressionTree(); //.clone();
 
         //         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
         //         cloneTree = specializer.specialize(node.getExpressionTree(),
@@ -2049,7 +2049,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
-        Token operator = (Token) node.getOperator();
+        Token operator = node.getOperator();
         Local leftLocal = (Local) _nodeToLocal.get(node.jjtGetChild(0));
         Local rightLocal = (Local) _nodeToLocal.get(node.jjtGetChild(1));
 
@@ -2150,7 +2150,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
         Type scalarType = RefType.v("ptolemy.data.ScalarToken");
-        Token operator = (Token) node.getOperator();
+        Token operator = node.getOperator();
         Local tokenLocal = (Local) _nodeToLocal.get(node.jjtGetChild(0));
         Local bitsLocal = (Local) _nodeToLocal.get(node.jjtGetChild(1));
         Local resultLocal = Jimple.v().newLocal("tokenResult",

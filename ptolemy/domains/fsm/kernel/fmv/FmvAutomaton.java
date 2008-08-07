@@ -163,7 +163,7 @@ public class FmvAutomaton extends FSMActor {
         // Print out all these states
         Iterator<State> it = frontier.iterator();
         while (it.hasNext()) {
-            State val = (State) it.next();
+            State val = it.next();
             returnSmvFormat.append(val.getDisplayName());
             if (it.hasNext()) {
                 returnSmvFormat.append(",");
@@ -186,7 +186,7 @@ public class FmvAutomaton extends FSMActor {
         Iterator<String> itVariableSet = variableSet.iterator();
         while (itVariableSet.hasNext()) {
 
-            String valName = (String) itVariableSet.next();
+            String valName = itVariableSet.next();
             returnSmvFormat.append("\t\t" + valName + " : {");
             // Retrieve the lower bound and upper bound of the variable used in
             // the system based on inequalities or assignments
@@ -261,7 +261,7 @@ public class FmvAutomaton extends FSMActor {
         Iterator<String> newItVariableSet = variableSet.iterator();
         while (newItVariableSet.hasNext()) {
 
-            String valName = (String) newItVariableSet.next();
+            String valName = newItVariableSet.next();
             returnSmvFormat.append("\t\tinit(" + valName + ") := "
                     + variableInitialValue.get(valName) + ";\n");
             returnSmvFormat.append("\t\tnext(" + valName + ") :=\n");
@@ -319,8 +319,8 @@ public class FmvAutomaton extends FSMActor {
             // easy way to pick an arbitrary entry from a HashMap, except
             // through Iterator
             Iterator<String> iterator = frontier.keySet().iterator();
-            name = (String) iterator.next();
-            stateInThis = (State) frontier.remove(name);
+            name = iterator.next();
+            stateInThis = frontier.remove(name);
             if (stateInThis == null) {
                 throw new IllegalActionException(
                         "FmvAutomaton._decideVariableSet() clashes:\n Internal error, removing \""
@@ -408,7 +408,7 @@ public class FmvAutomaton extends FSMActor {
                                                     .add(characterOfSubGuard[0]
                                                             .trim());
 
-                                            VariableInfo variable = (VariableInfo) _variableInfo
+                                            VariableInfo variable = _variableInfo
                                                     .get(characterOfSubGuard[0]
                                                             .trim());
                                             if (variable == null) {
@@ -471,7 +471,7 @@ public class FmvAutomaton extends FSMActor {
 
                                 int numberRetrival = Integer.parseInt(rValue);
                                 // add it into the _variableInfo
-                                VariableInfo variable = (VariableInfo) _variableInfo
+                                VariableInfo variable = _variableInfo
                                         .get(lValue);
                                 if (variable == null) {
                                     // Create a new one and insert all info.
@@ -508,11 +508,11 @@ public class FmvAutomaton extends FSMActor {
         Iterator<String> itVariableSet = returnVariableSet.iterator();
         while (itVariableSet.hasNext()) {
 
-            String valName = (String) itVariableSet.next();
+            String valName = itVariableSet.next();
 
             // Retrieve the lower bound and upper bound of the variable used in
             // the system based on inequalities or assignments
-            VariableInfo individual = (VariableInfo) _variableInfo
+            VariableInfo individual = _variableInfo
                     .remove(valName);
             if (individual != null) {
                 try {
@@ -562,9 +562,9 @@ public class FmvAutomaton extends FSMActor {
                 // easy way to pick an arbitrary entry from a HashMap, except
                 // through Iterator
                 Iterator<String> iterator = frontier.keySet().iterator();
-                name = (String) iterator.next();
+                name = iterator.next();
                 if (name != null)
-                    stateInThis = (State) frontier.remove(name);
+                    stateInThis = frontier.remove(name);
                 if (stateInThis != null) {
                     ComponentPort outPort = stateInThis.outgoingPort;
                     Iterator transitions = outPort.linkedRelationList()
@@ -627,8 +627,8 @@ public class FmvAutomaton extends FSMActor {
             // through Iterator
 
             Iterator<String> iterator = frontier.keySet().iterator();
-            name = (String) iterator.next();
-            stateInThis = (State) frontier.remove(name);
+            name = iterator.next();
+            stateInThis = frontier.remove(name);
             if (stateInThis == null) {
                 throw new IllegalActionException(
                         "FmvAutomaton._generateAllVariableTransitions clashes:\n"
@@ -781,7 +781,7 @@ public class FmvAutomaton extends FSMActor {
                 HashMap<String, ArrayList<Integer>> valueDomain = new HashMap<String, ArrayList<Integer>>();
                 Iterator<String> it = variableUsedInTransitionSet.iterator();
                 while (it.hasNext()) {
-                    String val = (String) it.next();
+                    String val = it.next();
                     // Retrieve the value in the
                     if (val != null) {
                         VariableInfo variableInfo = _variableInfo.get(val);
@@ -1327,7 +1327,7 @@ public class FmvAutomaton extends FSMActor {
         // 3. For rest cases (operatingSign=="+","-","*","/"), variable
         // has "X = X operatingSign offset".
 
-        String[] keySetArray = (String[]) valueDomain.keySet().toArray(
+        String[] keySetArray = valueDomain.keySet().toArray(
                 new String[valueDomain.keySet().size()]);
 
         _recursiveStepGeneratePremiseAndResultEachTransition(statePrecondition,
@@ -1656,7 +1656,7 @@ public class FmvAutomaton extends FSMActor {
                                                         .intValue()
                                                         + (Integer
                                                                 .parseInt(newVariableValue)));
-                                        VariableInfo variableInfo = (VariableInfo) _variableInfo
+                                        VariableInfo variableInfo = _variableInfo
                                                 .get(lValue);
                                         if (variableInfo != null) {
                                             if (variableInfo._minValue != null) {

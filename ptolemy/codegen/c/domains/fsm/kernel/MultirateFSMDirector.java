@@ -679,7 +679,7 @@ public class MultirateFSMDirector extends FSMDirector {
                             .getParseTree(destinationName);
                     if (destination instanceof Variable) {
                         codeBuffer.append(_codeGenerator
-                                .generateVariableName((Variable) destination)
+                                .generateVariableName(destination)
                                 + " = ");
                     } else {
                         throw new IllegalActionException("No output can be"

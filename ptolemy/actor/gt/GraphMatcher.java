@@ -482,7 +482,7 @@ public class GraphMatcher extends GraphAnalyzer {
                         (ParameterAttribute) attributes.get(0);
                     try {
                         attribute.workspace().getReadAccess();
-                        Parameter parameter = (Parameter) attribute.parameter;
+                        Parameter parameter = attribute.parameter;
                         return parameter == null ? null : parameter.getToken();
                     } catch (IllegalActionException e) {
                         return null;

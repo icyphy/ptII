@@ -43,7 +43,7 @@ public class PropertyCombineHelper extends PropertyHelper {
             // do evaluation for port
             PropertyCombineParseTreeEvaluator evaluator = new PropertyCombineParseTreeEvaluator(port, _solver);                
             Token token = evaluator.evaluateParseTree(parseTree);        
-            PropertyToken property = (PropertyToken) new PropertyToken(token);
+            PropertyToken property = new PropertyToken(token);
             if (!((getSolver().getUnconnectedPorts()) && port.connectedPortList().isEmpty())) {                
                 setEquals(port, property);
             }            

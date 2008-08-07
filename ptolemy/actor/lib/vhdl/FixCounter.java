@@ -129,7 +129,7 @@ public class FixCounter extends SynchronousFixTransformer {
                 sendOutput(output, 0, outputToken);
             }
         } else {
-            ((QueuedTypedIOPort) output).resend(0);
+            (output).resend(0);
         }
     }
 

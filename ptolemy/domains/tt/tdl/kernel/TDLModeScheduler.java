@@ -285,7 +285,7 @@ public class TDLModeScheduler extends LetModeScheduler {
 		while (it.hasNext()) {
 			Transition transition = (Transition) it.next();
 			long invocationPeriod = _modePeriod
-					/ TDLModeScheduler.getFrequency((NamedObj) transition);
+					/ TDLModeScheduler.getFrequency(transition);
 			if (invocationPeriod % super.lcmPeriod != 0)
 				throw new TDLModeSchedulerException(
 						"Mode Switch can only take place when no task is running.");

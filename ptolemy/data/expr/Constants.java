@@ -145,7 +145,7 @@ public class Constants {
         // types in the port configurer dialog
         // We return a TreeMap here because we do not need the
         // synchronization in a Hashtable, but we do want it sorted.
-        return new TreeMap((SortedMap) _types);
+        return new TreeMap(_types);
     }
 
     ///////////////////////////////////////////////////////////////////

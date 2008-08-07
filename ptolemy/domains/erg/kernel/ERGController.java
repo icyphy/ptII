@@ -538,7 +538,7 @@ public class ERGController extends ModalController {
         @SuppressWarnings("unchecked")
         public Set<?> identifierSet() {
             Set<Object> set = super.identifierSet();
-            set.addAll((Collection<?>) ModelScope.getAllScopedObjectNames(
+            set.addAll(ModelScope.getAllScopedObjectNames(
                     ERGController.this));
             return set;
         }

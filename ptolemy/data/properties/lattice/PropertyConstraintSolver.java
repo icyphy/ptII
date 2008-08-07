@@ -192,7 +192,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     public PropertyHelper getHelper(NamedObj component)
     throws IllegalActionException {
 
-        return (PropertyHelper) _getHelper(component);
+        return _getHelper(component);
     }
 
 
@@ -204,7 +204,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     public PropertyHelper getHelper(Object object) 
     throws IllegalActionException {
 
-        return (PropertyHelper) _getHelper(object);
+        return _getHelper(object);
     }
 
     /**
@@ -827,7 +827,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                     attribute[i] = new ConstraintAttribute(namedObj, attributeName[i]);                    
                 }
 //              FIXME: Remove??
-                TextStyle style = new TextStyle(((ConstraintAttribute)attribute[i]), "_style");
+                TextStyle style = new TextStyle((attribute[i]), "_style");
                 style.height.setExpression("10");
                 style.width.setExpression("60");
 

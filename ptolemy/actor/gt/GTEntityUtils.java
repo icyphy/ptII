@@ -132,8 +132,7 @@ public class GTEntityUtils {
             ComponentEntity component = (ComponentEntity) entity;
             try {
                 component.workspace().getReadAccess();
-                List<?> portList = new LinkedList<Object>((List<?>)
-                        component.portList());
+                List<?> portList = new LinkedList<Object>(component.portList());
                 for (i = 0; i < portList.size(); i++) {
                     Port port = (Port) portList.get(i);
                     if (port instanceof PortMatcher
@@ -281,7 +280,7 @@ public class GTEntityUtils {
         }
 
         RestoreAppearanceChangeRequest(GTEntity entity) {
-            super((NamedObj) entity, "Restore the default appearance.");
+            super(entity, "Restore the default appearance.");
             _entity = entity;
         }
 

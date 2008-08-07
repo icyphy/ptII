@@ -383,7 +383,7 @@ public class TypeSpecializerAnalysis {
                 while (terms.hasNext()) {
                     Map.Entry pairs = (Map.Entry) terms.next();
                     System.out.println(pairs.getKey() + " = "
-                            + (InequalityTerm) (pairs.getValue()));
+                            + (pairs.getValue()));
                 }
                 System.out.println(nullTypeMessage
                         + "\n\t typetokenCompare: type1 = " + type1

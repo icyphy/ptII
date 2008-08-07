@@ -661,7 +661,7 @@ public class MpiPNDirector extends Director {
                     }
 
                     List outputList =  actor.outputPortList();
-                    Iterator outputIt = (Iterator) outputList.listIterator();
+                    Iterator outputIt = outputList.listIterator();
 
                     while(outputIt.hasNext()) {
                         TypedIOPort thisOutput = (TypedIOPort) outputIt.next();
@@ -671,7 +671,7 @@ public class MpiPNDirector extends Director {
                         clearPortParam.setExpression("");
 
                         // Iterator connIn = (Iterator) thisOutput.deepConnectedInPortList().iterator();
-                        Iterator connIn = (Iterator) thisOutput.sinkPortList().iterator();
+                        Iterator connIn = thisOutput.sinkPortList().iterator();
                         int sinkIndex = 0;
                         while (connIn.hasNext()) {
                             TypedIOPort tempInput = (TypedIOPort) connIn.next();

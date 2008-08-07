@@ -146,7 +146,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
         // Generate a table of discrete values for RGB.
         for (int i = 0; i < numberOfDiscreteValues; i++) {
-            colorValues[i] = 1.0f - ((float) i) / ((float) numberOfDiscreteValues - 1);
+            colorValues[i] = 1.0f - (i) / ((float) numberOfDiscreteValues - 1);
 
             // Fix the values just in case.
             if (Float.isNaN(colorValues[i]) || Float.isInfinite(colorValues[i])) {
@@ -254,7 +254,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                         } else {
                             for (Relation relation : (List<Relation>) middlePort.linkedRelationList()) {
                                 List nextMiddlePortList = relation.linkedPortList(middlePort);
-                                Iterator nextMiddlePortListIt = (Iterator) nextMiddlePortList.listIterator();
+                                Iterator nextMiddlePortListIt = nextMiddlePortList.listIterator();
                                 while (foundFlag == false && nextMiddlePortListIt.hasNext()) {
                                     TypedIOPort nextMiddlePort = (TypedIOPort)nextMiddlePortListIt.next();
                                     if (partialEdgeWeights.get(nextMiddlePort) == null ) {
@@ -369,7 +369,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
                         } else {
                             for (Relation relation : (List<Relation>) middlePort.linkedRelationList()) {
                                 List nextMiddlePortList = relation.linkedPortList(middlePort);
-                                Iterator nextMiddlePortListIt = (Iterator) nextMiddlePortList.listIterator();
+                                Iterator nextMiddlePortListIt = nextMiddlePortList.listIterator();
                                 while (foundFlag == false && nextMiddlePortListIt.hasNext()) {
                                     TypedIOPort nextMiddlePort = (TypedIOPort)nextMiddlePortListIt.next();
                                     if (partialEdgeWeights.get(nextMiddlePort) == null ) {
@@ -769,7 +769,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
     private Parameter _getNumConnectionsParameter()
     throws IllegalActionException {
 
-        Director director = (Director) ((TypedCompositeActor) 
+        Director director = ((TypedCompositeActor) 
                 getContainer()).getDirector();
 
         Parameter attribute = (Parameter) 
@@ -808,7 +808,7 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
         if (result == null) {
             try {
-                result = new StringAttribute((NamedObj) port, "_mpiBuffer");
+                result = new StringAttribute(port, "_mpiBuffer");
             } catch (NameDuplicationException e) {
                 assert false;
             }

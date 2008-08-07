@@ -253,7 +253,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                         + environmentMap.get(key));
             }
 
-            return (String) environmentMap.get(key);
+            return environmentMap.get(key);
         }
         for ( int i = 0; i < _envp.length; i++) {
             String envpKey = _envp[i].substring(0, _envp[i].indexOf("="));

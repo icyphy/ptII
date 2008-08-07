@@ -737,13 +737,13 @@ public class Connector extends MoMLApplication {
 
             XPathExpression expr = xpath.compile(
                     "/att:attribute/att:value");
-            String value = (String) expr.evaluate(document);
+            String value = expr.evaluate(document);
             value = StringUtilities.unescapeForXML(value);
 
             String unit;
             try {
                 expr = xpath.compile("/att:attribute/att:units");
-                unit = (String) expr.evaluate(document);
+                unit = expr.evaluate(document);
                 unit = StringUtilities.unescapeForXML(unit);
             } catch (Exception e) {
                 unit = "";
@@ -751,7 +751,7 @@ public class Connector extends MoMLApplication {
 
             String doc;
             try {
-                doc = (String) expr.evaluate(document);
+                doc = expr.evaluate(document);
                 expr = xpath.compile("/att:attribute/att:documentation");
                 doc = StringUtilities.unescapeForXML(doc);
             } catch (Exception e) {

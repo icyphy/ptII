@@ -198,7 +198,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
                 // Take care of actors without nodes, e.g. MonitorValue actors without previous execution
                 if (node != null) {
                     PropertyConstraintASTNodeHelper astHelper = 
-                        (PropertyConstraintASTNodeHelper) ((PropertyConstraintSolver)_solver).getHelper(node);
+                        ((PropertyConstraintSolver)_solver).getHelper(node);
                     
                     List list = new ArrayList();
                     list.add(node);
@@ -303,7 +303,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @return
      */
     public List<PropertyTerm> getConstraintingTerms(Object object) {
-        return (List<PropertyTerm>) getSolver().getConstraintManager()
+        return getSolver().getConstraintManager()
         .getConstraintingTerms(object);
     }
 
