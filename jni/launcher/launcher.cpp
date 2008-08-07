@@ -172,6 +172,9 @@ public:
 #if defined(__CYGWIN__)
     return findWin32JvmLibrary();
 #else
+#if defined(__MACH__)
+    return "libjvm.dylib";
+#endif
     // This only works on Linux if LD_LIBRARY_PATH is already set up to include something like:
     // "$JAVA_HOME/jre/lib/$ARCH/" + jvmDirectory
     // "$JAVA_HOME/jre/lib/$ARCH"
