@@ -85,6 +85,7 @@ public class Transformer {
      *  @exception Exception If any exception occues.
      */
     public static void main(String[] args) throws Exception {
+	try {
         if (args.length == 0) {
             _printUsage();
         } else {
@@ -239,6 +240,10 @@ public class Transformer {
                 standardWriter.close();
             }
         }
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+	    System.exit(2);
+	}
     }
 
     /** Parse the command-line arguments starting from the given position.
