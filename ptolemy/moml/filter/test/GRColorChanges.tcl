@@ -58,14 +58,14 @@ set header {<?xml version="1.0" standalone="no"?>
     # The list of filters is static, so we reset it in case there
     # filters were already added.
     $parser reset
-    $parser setMoMLFilters [java::null]
-    $parser addMoMLFilters \
+    java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+    java::call ptolemy.moml.MoMLParser addMoMLFilters \
 	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
     set removeGraphicalClasses	[java::new \
     	    ptolemy.moml.filter.RemoveGraphicalClasses]
     $removeGraphicalClasses setRemoveGR false
-    $parser addMoMLFilter $removeGraphicalClasses
+    java::call ptolemy.moml.MoMLParser addMoMLFilter $removeGraphicalClasses
 
 
 
