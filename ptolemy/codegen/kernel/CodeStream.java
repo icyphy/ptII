@@ -644,7 +644,7 @@ public class CodeStream {
 
     private static String _checkArgumentName(String name)
             throws IllegalActionException {
-        return name.replaceAll("//$", "//////$");
+        return name.replaceAll("\\$", "\\\\\\$");
     }
 
     /**

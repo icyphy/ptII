@@ -145,6 +145,25 @@ test CodeStream-3.5 {appendCodeBlock initBlock} {
     list $results
 } {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "initBlock()" in file:<<path_substituted>>/testCodeBlock.c.}}
 
+
+#####
+test CodeStream-3.6 {appendCodeBlock arguments contains mutliple "$"'s} {
+    set fileTestBlock [java::new java.io.File testCodeBlock.c]
+    set codeStream3_6 [java::new ptolemy.codegen.kernel.CodeStream \
+			[[$fileTestBlock toURL] toString] $codeGenerator]
+
+    set args [java::new java.util.ArrayList]
+    $args add [java::new String "(\$ref(input) + \$ref(input))"]
+    $codeStream3_2 appendCodeBlock "initBlock" $args false 0
+    list [$codeStream3_2 toString]
+} {{if ($ref(input) != 3) {
+    $ref(output) = 3;
+}
+if ($ref(input) != ($ref(input) + $ref(input))) {
+    $ref(output) = ($ref(input) + $ref(input));
+}
+}}
+
 #####
 test CodeStream-4.0 {appendCodeBlock(nameExpression)} {
     set codeStream4_0 [java::new ptolemy.codegen.kernel.CodeStream \
