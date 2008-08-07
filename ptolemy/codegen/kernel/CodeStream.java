@@ -644,11 +644,7 @@ public class CodeStream {
 
     private static String _checkArgumentName(String name)
             throws IllegalActionException {
-        if (name.startsWith("$")) {
-            return '\\' + name;
-        } else {
-            return name;
-        }
+        return name.replaceAll("//$", "//////$");
     }
 
     /**
@@ -890,16 +886,25 @@ public class CodeStream {
                         .charAt(0) == ' ')) {
             body.deleteCharAt(0);
         }
+        
         // strip ending new lines and white spaces
+        boolean hasNewline = false;
         int endChar = body.length() - 1;
         while (endChar >= 0
                 && (body.charAt(endChar) == '\n'
                         || body.charAt(endChar) == '\r' || body.charAt(endChar) == ' ')) {
             body.deleteCharAt(endChar);
             endChar = body.length() - 1;
+            hasNewline = true;
         }
-        // add back one ending new line
-        body.append(_eol);
+        
+        // Conditionally add a newline. This is important
+        // for code blocks that contain partial phrases 
+        // rather than complete statements.
+        if (hasNewline) {
+            // add back one ending new line
+            body.append(_eol);
+        }
 
         // Recursively parsing for nested code blocks
         //for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;) {
@@ -1187,7 +1192,7 @@ public class CodeStream {
         public void putCode(Signature signature, String filePath,
                 StringBuffer code) {
 
-            LinkedHashMap currentScope = _codeTableList.getLast();
+            LinkedHashMap currentScope = (LinkedHashMap) _codeTableList.getLast();
 
             Object[] codeBlock = (Object[]) currentScope.get(signature);
             codeBlock[0] = filePath;
