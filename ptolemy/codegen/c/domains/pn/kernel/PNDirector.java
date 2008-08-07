@@ -516,7 +516,7 @@ public class PNDirector extends Director {
                 	try {
                 		rate = DFUtilities.getRate(port);
                 	} catch (NullPointerException ex) {
-                		int i = 0;
+                		//int i = 0;
                 	}
                     PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
                     CodeGeneratorHelper portCGHelper = (CodeGeneratorHelper) portHelper;
