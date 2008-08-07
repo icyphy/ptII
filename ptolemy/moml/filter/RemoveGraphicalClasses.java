@@ -225,8 +225,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses = new HashMap();
 
         // Alphabetical by key class
-        // It would be nice if we could substitute in Discard actors
-        // when we see the plotter or the display.
+	// We can convert any graphical classes that have a port named "input" to
+	// a Discard actor.  However, classes like XYPlot have ports named "X" and Y",
+	// so XYPlot cannot be converted.
         _graphicalClasses.put("ptolemy.actor.lib.gui.ArrayPlotter",
                 "ptolemy.actor.lib.Discard");
         _graphicalClasses.put("ptolemy.actor.lib.gui.BarGraph",
