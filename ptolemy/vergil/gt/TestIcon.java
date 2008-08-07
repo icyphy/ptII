@@ -1,6 +1,7 @@
 package ptolemy.vergil.gt;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Paint;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -12,13 +13,16 @@ import diva.canvas.Figure;
 import diva.canvas.ZList;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.LabelFigure;
+import diva.canvas.toolbox.RoundedRectangle;
 import diva.util.java2d.Polygon2D;
 import ptolemy.actor.gt.controller.Test;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.erg.kernel.Event;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.icon.NameIcon;
@@ -44,12 +48,37 @@ public class TestIcon extends NameIcon {
         // requires generating a label figure that we will not use.
         LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
                 SwingConstants.CENTER);
-        Rectangle2D stringBounds = label.getBounds();
+        CompositeFigure figure = new CompositeFigure(label);
+        Event event = (Event) getContainer();
+        String parameters = null;
+        String actions = null;
+        if (event != null) {
+            try {
+                if (event.parameters.getParameterNames().size() > 0) {
+                    parameters = event.parameters.getValueAsString();
+                }
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(event.parameters, ex,
+                        "Failed to get argument name list.");
+            }
+            String exp = event.actions.getExpression();
+            if (exp != null && !exp.trim().equals("")) {
+                actions = "{ " + exp + " }";
+            }
+        }
+        if (parameters != null) {
+            label = _addLabel(figure, label, parameters);
+        }
+        if (actions != null) {
+            _addLabel(figure, label, actions);
+        }
+
+        Rectangle2D stringBounds = figure.getBounds();
 
         // NOTE: Padding of 20. Quantize the height so that
         // snap to grid still works.
         width = Math.floor(stringBounds.getWidth()) + 40;
-        height = Math.floor(stringBounds.getHeight()) + 25;
+        height = Math.floor(stringBounds.getHeight()) + 24;
 
         Polygon2D polygon = new Polygon2D.Double(new double[] {
                 0.0, height / 2.0, width / 2, 0.0, width, height / 2.0,
@@ -61,29 +90,62 @@ public class TestIcon extends NameIcon {
     public Figure createFigure() {
         CompositeFigure result = (CompositeFigure) super.createFigure();
         Test test = (Test) getContainer();
+        LabelFigure label = null;
+        boolean matched = true;
         try {
-            if (!((BooleanToken) test.matched.getToken()).booleanValue()) {
-                ZList children = result.getChildren();
-                LabelFigure label = null;
-                for (int i = children.getFigureCount() - 1; i >= 0; i--) {
-                    Figure figure = children.get(i);
-                    if (figure instanceof LabelFigure) {
-                        label = (LabelFigure) figure;
-                        break;
-                    }
-                }
-
-                if (label != null) {
-                    label.translate(0.0, 2.0);
-                    Rectangle2D bounds = label.getBounds();
-                    double y = bounds.getMinY() - 2.5;
-                    Line2D overline = new Line2D.Double(bounds.getMinX(), y,
-                            bounds.getMaxX(), y);
-                    result.add(new BasicFigure(overline, 1.5f));
-                }
-            }
+            matched = ((BooleanToken) test.matched.getToken()).booleanValue();
         } catch (IllegalActionException e) {
             // Ignore.
+        }
+
+        ZList children = result.getChildren();
+        for (int i = children.getFigureCount() - 1; i >= 0; i--) {
+            Figure figure = children.get(i);
+            if (figure instanceof LabelFigure) {
+                label = (LabelFigure) figure;
+                break;
+            }
+        }
+
+        if (label == null) {
+            return result;
+        } else if (label != null) {
+            Rectangle2D bounds = result.getBounds();
+            label.translateTo(bounds.getCenterX(), bounds.getMinY() +
+                    label.getBounds().getHeight() / 2.0 + 15.0);
+
+            if (!matched) {
+                label.translate(0.0, 2.0);
+                Rectangle2D labelBounds = label.getBounds();
+                double y = labelBounds.getMinY() - 2.5;
+                Line2D overline = new Line2D.Double(labelBounds.getMinX(), y,
+                        labelBounds.getMaxX(), y);
+                result.add(new BasicFigure(overline, 1.5f));
+            }
+        }
+
+        String actions = null;
+        String parameters = null;
+        Event event = (Event) getContainer();
+        if (event != null) {
+            try {
+                if (event.parameters.getParameterNames().size() > 0) {
+                    parameters = event.parameters.getValueAsString();
+                }
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(event.parameters, ex,
+                        "Failed to get argument name list.");
+            }
+            String exp = event.actions.getExpression();
+            if (exp != null && !exp.trim().equals("")) {
+                actions = "{ " + exp + " }";
+            }
+        }
+        if (parameters != null) {
+            label = _addLabel(result, label, parameters);
+        }
+        if (actions != null) {
+            _addLabel(result, label, actions);
         }
 
         return result;
@@ -114,4 +176,19 @@ public class TestIcon extends NameIcon {
         }
         return super._getFill();
     }
+
+    private LabelFigure _addLabel(CompositeFigure figure, Figure previous,
+            String text) {
+        Rectangle2D bounds = previous.getBounds();
+        LabelFigure label = new LabelFigure(text, _ACTION_FONT, 1.0,
+                SwingConstants.CENTER);
+        Rectangle2D newBounds = label.getBounds();
+        label.translateTo(bounds.getCenterX(),
+                bounds.getMaxY() + newBounds.getHeight() / 2.0 + 7.0);
+        figure.add(label);
+        return label;
+    }
+
+    private static final Font _ACTION_FONT = new Font("SansSerif", Font.PLAIN,
+            10);
 }
