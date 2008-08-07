@@ -766,6 +766,7 @@ PTJNI_INCLUDE
 PTJNI_DL_LIBRARY
 PTJNI_LIB_ARCHITECTURE
 PTJNI_NO_CYGWIN
+PTJNI_GCC_SHARED_FLAG
 PTJNI_SHAREDLIBRARY_CFLAG
 PTJNI_SHAREDLIBRARY_LDFLAG
 PTJNI_SHAREDLIBRARY_PREFIX
@@ -7213,6 +7214,8 @@ echo "$as_me: WARNING: Not including
 		   ;;
                esac
             else
+	       # RXTX_JAR might contain a warning message from FindClass
+	       RXTX_JAR=""
 	       CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass gnu.io.SerialPort > /dev/null
 	       retval=$?
 	       if test "$retval" = "0"; then
@@ -7910,6 +7913,16 @@ echo $ECHO_N "checking for if the -mno-cygwin flag is available... $ECHO_C" >&6;
         if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: '$PTJNI_NO_CYGWIN'" >&5
 echo "${ECHO_T}'$PTJNI_NO_CYGWIN'" >&6; }; fi
+
+        { echo "$as_me:$LINENO: checking for the proper shared library gcc flag" >&5
+echo $ECHO_N "checking for the proper shared library gcc flag... $ECHO_C" >&6; }
+        case "`uname -s`" in
+	     Darwin) PTJNI_GCC_SHARED_FLAG=-dynamiclib;;
+	     *) PTJNI_GCC_SHARED_FLAG=-shared;
+        esac
+        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: '$PTJNI_GCC_SHARED_FLAG'" >&5
+echo "${ECHO_T}'$PTJNI_GCC_SHARED_FLAG'" >&6; }; fi
 
         { echo "$as_me:$LINENO: checking for the proper shared library cc flag" >&5
 echo $ECHO_N "checking for the proper shared library cc flag... $ECHO_C" >&6; }
@@ -10027,6 +10040,9 @@ fi
 # Flag to use with TinyOS under Cygwin (-mno-cygwin)
 
 
+# GCC shared flag.  Usually -shared, except on the mac, where it is -dynamiclib
+
+
 # JNI shared library C compiler flag, under Solaris this would be -fPIC.
 
 
@@ -11063,6 +11079,7 @@ PTJNI_INCLUDE!$PTJNI_INCLUDE$ac_delim
 PTJNI_DL_LIBRARY!$PTJNI_DL_LIBRARY$ac_delim
 PTJNI_LIB_ARCHITECTURE!$PTJNI_LIB_ARCHITECTURE$ac_delim
 PTJNI_NO_CYGWIN!$PTJNI_NO_CYGWIN$ac_delim
+PTJNI_GCC_SHARED_FLAG!$PTJNI_GCC_SHARED_FLAG$ac_delim
 PTJNI_SHAREDLIBRARY_CFLAG!$PTJNI_SHAREDLIBRARY_CFLAG$ac_delim
 PTJNI_SHAREDLIBRARY_LDFLAG!$PTJNI_SHAREDLIBRARY_LDFLAG$ac_delim
 PTJNI_SHAREDLIBRARY_PREFIX!$PTJNI_SHAREDLIBRARY_PREFIX$ac_delim
@@ -11104,7 +11121,6 @@ PTX10_PACKAGES!$PTX10_PACKAGES$ac_delim
 PTII_LOCALURL!$PTII_LOCALURL$ac_delim
 QTJAVA_ZIP!$QTJAVA_ZIP$ac_delim
 RXTX_JAR!$RXTX_JAR$ac_delim
-RXTX_PRESENT!$RXTX_PRESENT$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -11146,6 +11162,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+RXTX_PRESENT!$RXTX_PRESENT$ac_delim
 SOOT_CLASSES!$SOOT_CLASSES$ac_delim
 SOOT_DIR!$SOOT_DIR$ac_delim
 TINI_CLASSES!$TINI_CLASSES$ac_delim
@@ -11163,7 +11180,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 15; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 16; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
