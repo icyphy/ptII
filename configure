@@ -1406,6 +1406,7 @@ Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-verbose,	configure prints verbose msgs
+  --enable-eclipse-plugins,	Use eclipse plugins for backtracking and others
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -5260,6 +5261,22 @@ eclipseMessage="The backtracking facility requires Eclipse 3.2 or greater.
     facility in ptolemy.backtrack.
     Eclipse may be downloaded from http://www.eclipse.org/"
 
+# If configure is called with --disable-eclipse, don't include backtrack/eclipse and
+# ptolemy/apps/eclipse. This can happen if the user has eclipse but does not have
+# plugins
+# Check whether --enable-eclipse was given.
+if test "${enable_eclipse+set}" = set; then
+  enableval=$enable_eclipse; PTECLIPSE_PLUGINS=yes
+else
+  PTECLIPSE_PLUGINS=no
+fi
+
+
+if test $PTECLIPSE_PLUGINS = "no"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/apps/eclipse/"
+fi
+
+if test $PTECLIPSE_PLUGINS = "yes"; then
 # We only need to look for Eclipse if $PTII/ptolemy/backtrack/eclipse exists
 if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
     if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $PTII/ptolemy/backtrack/eclipse is not present,
@@ -5494,6 +5511,7 @@ echo "$as_me: WARNING: Failed to find Eclipse
 	    PTBACKTRACK_ECLIPSE_JARS=
         fi
     fi
+fi
 fi
 
 if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
