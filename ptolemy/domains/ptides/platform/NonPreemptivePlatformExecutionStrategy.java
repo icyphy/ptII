@@ -37,13 +37,11 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Time;
-import ptolemy.actor.util.TimedEvent; 
-import ptolemy.domains.ptides.kernel.PtidesActorProperties; 
-import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType; 
-import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.actor.util.TimedEvent;
+import ptolemy.domains.ptides.kernel.PtidesActorProperties;
+import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**

@@ -27,6 +27,13 @@
  */
 package ptolemy.vergil.actor;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -51,7 +58,6 @@ import ptolemy.moml.Vertex;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
 import ptolemy.vergil.kernel.Link;
-
 import diva.graph.GraphEvent;
 import diva.graph.GraphUtilities;
 import diva.graph.modular.CompositeModel;
@@ -60,13 +66,6 @@ import diva.graph.modular.EdgeModel;
 import diva.graph.modular.MutableEdgeModel;
 import diva.graph.modular.NodeModel;
 import diva.util.NullIterator;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 // NOTE: The inner classes here should be factored out as independent
 // classes, and the resulting NodeModel hierarchy should be carefully

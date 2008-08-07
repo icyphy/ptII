@@ -29,14 +29,24 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.sdf.demo.OrthogonalCom;
 
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.data.*;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.lib.AddSubtract;
+import ptolemy.actor.lib.Const;
+import ptolemy.actor.lib.DiscreteRandomSource;
+import ptolemy.actor.lib.FileWriter;
+import ptolemy.actor.lib.Gaussian;
+import ptolemy.actor.lib.MaxIndex;
+import ptolemy.actor.lib.Multiplexor;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.domains.sdf.lib.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
+import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.domains.sdf.lib.DotProduct;
+import ptolemy.domains.sdf.lib.SequenceToArray;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /**
 An binary, orthogonal communication system. Randomly choose a bit,

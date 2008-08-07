@@ -1,6 +1,5 @@
 package ptolemy.domains.tt.tdl.kernel;
 
-import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,10 +15,8 @@ import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.domains.tt.kernel.LetTask;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
-import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 /**
  * Build a graph containing all TDL actions.

@@ -40,13 +40,9 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;  
 import ptolemy.domains.ptides.kernel.PtidesActorProperties;
 import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType;
-import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 /**
  * This execution strategy 

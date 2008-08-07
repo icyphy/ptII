@@ -28,16 +28,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.domains.ptides.platform;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
-import ptolemy.actor.util.Time; 
+import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
-import ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector; 
-import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType; 
+import ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector;
+import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**

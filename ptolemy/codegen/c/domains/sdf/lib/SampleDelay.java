@@ -31,7 +31,6 @@ import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////

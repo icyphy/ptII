@@ -28,27 +28,9 @@ package ptolemy.data.properties;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.data.expr.ASTPtArrayConstructNode;
-import ptolemy.data.expr.ASTPtAssignmentNode;
-import ptolemy.data.expr.ASTPtBitwiseNode;
-import ptolemy.data.expr.ASTPtFunctionApplicationNode;
-import ptolemy.data.expr.ASTPtFunctionDefinitionNode;
-import ptolemy.data.expr.ASTPtFunctionalIfNode;
-import ptolemy.data.expr.ASTPtLeafNode;
-import ptolemy.data.expr.ASTPtLogicalNode;
-import ptolemy.data.expr.ASTPtMatrixConstructNode;
-import ptolemy.data.expr.ASTPtMethodCallNode;
-import ptolemy.data.expr.ASTPtPowerNode;
-import ptolemy.data.expr.ASTPtProductNode;
-import ptolemy.data.expr.ASTPtRecordConstructNode;
-import ptolemy.data.expr.ASTPtRelationalNode;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ASTPtShiftNode;
-import ptolemy.data.expr.ASTPtSumNode;
-import ptolemy.data.expr.ASTPtUnaryNode;
 import ptolemy.data.expr.AbstractParseTreeVisitor;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreePropertyInference

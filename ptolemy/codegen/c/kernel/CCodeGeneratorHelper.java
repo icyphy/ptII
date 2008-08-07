@@ -30,7 +30,6 @@ package ptolemy.codegen.c.kernel;
 import java.io.File;
 import java.io.FileFilter;
 import java.net.URL;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;

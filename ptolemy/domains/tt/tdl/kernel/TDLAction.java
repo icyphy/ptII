@@ -2,10 +2,6 @@ package ptolemy.domains.tt.tdl.kernel;
 
 import java.util.Comparator;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.util.Time;
-import ptolemy.kernel.util.NamedObj;
-
 /**
  * Describes a TDL action. Used in the TDLActionsGraph.
  * @author Patricia Derler

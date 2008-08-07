@@ -32,7 +32,6 @@ package ptolemy.domains.ptides.lib;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Actor;

@@ -21,7 +21,6 @@ import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;

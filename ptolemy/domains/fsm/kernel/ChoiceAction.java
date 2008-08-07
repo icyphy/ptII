@@ -26,7 +26,6 @@
  */
 package ptolemy.domains.fsm.kernel;
 
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ChoiceAction

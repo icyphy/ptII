@@ -29,8 +29,6 @@ package ptolemy.data.properties.lattice.exampleSetLattice;
 
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.PropertySetLattice;
-import ptolemy.graph.DirectedAcyclicGraph;
-import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PropertyLattice

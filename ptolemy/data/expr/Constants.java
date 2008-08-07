@@ -30,7 +30,6 @@ package ptolemy.data.expr;
 
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 import ptolemy.data.BooleanToken;

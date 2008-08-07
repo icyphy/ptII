@@ -6,17 +6,11 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.IOPort;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParseTreeFreeVariableCollector;
-import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
-import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.domains.fsm.kernel.FSMActor.PortScope;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

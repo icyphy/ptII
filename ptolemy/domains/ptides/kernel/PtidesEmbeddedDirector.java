@@ -30,7 +30,7 @@ package ptolemy.domains.ptides.kernel;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable; 
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;

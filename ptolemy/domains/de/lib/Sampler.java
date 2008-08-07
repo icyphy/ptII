@@ -28,7 +28,6 @@
  */
 package ptolemy.domains.de.lib;
 
-import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;

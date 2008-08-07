@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.List;
 import java.util.Set;
 
 import ptolemy.data.ArrayToken;

@@ -40,7 +40,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.LimitedFiringSource;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.Director;
 import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.data.BooleanToken;

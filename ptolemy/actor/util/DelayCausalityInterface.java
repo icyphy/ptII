@@ -28,7 +28,7 @@
 package ptolemy.actor.util;
 
 
-import ptolemy.actor.Actor; 
+import ptolemy.actor.Actor;
 
 
 //////////////////////////////////////////////////////////////////////////

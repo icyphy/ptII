@@ -27,8 +27,8 @@
  */
 package ptolemy.graph.test;
 
-import ptolemy.graph.InequalityTerm;
 import ptolemy.graph.GraphActionException;
+import ptolemy.graph.InequalityTerm;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestConstant

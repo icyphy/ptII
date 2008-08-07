@@ -27,6 +27,12 @@
  */
 package ptolemy.vergil.fsm;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import ptolemy.actor.TypedActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
@@ -45,19 +51,12 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
-
 import diva.graph.GraphEvent;
 import diva.graph.GraphUtilities;
 import diva.graph.modular.EdgeModel;
 import diva.graph.modular.MutableEdgeModel;
 import diva.graph.modular.NodeModel;
 import diva.util.NullIterator;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphModel

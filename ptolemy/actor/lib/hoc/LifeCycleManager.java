@@ -28,6 +28,10 @@
  */
 package ptolemy.actor.lib.hoc;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
@@ -43,10 +47,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// LifeCycleManager
