@@ -79,3 +79,31 @@ test KeplerDocumentationAttribute-3.1 {setUserLevelDocumentation} {
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $exported]
 } {}
+
+test KeplerDocumentatonAttribute-4.1 {addPort} {
+    set kda [java::new ptolemy.vergil.basic.KeplerDocumentationAttribute]
+    set stringWriter [java::new java.io.StringWriter]
+    $kda addPort portname portvalue
+    $kda exportMoML $stringWriter 2 myKDA
+    set result1 [$stringWriter toString]
+} {<property name="myKDA" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="port:portname" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>portvalue</configure></property>
+</property>}
+
+test KeplerDocumentatonAttribute-5.1 {addProperty} {
+    set kda [java::new ptolemy.vergil.basic.KeplerDocumentationAttribute]
+    set stringWriter [java::new java.io.StringWriter]
+    $kda addProperty propname propvalue
+    $kda exportMoML $stringWriter 2 myKDA
+    set result1 [$stringWriter toString]
+} {<property name="myKDA" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="prop:propname" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>propvalue</configure></property>
+</property>}
