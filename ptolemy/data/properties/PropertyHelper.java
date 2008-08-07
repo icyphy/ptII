@@ -307,7 +307,7 @@ public abstract class PropertyHelper {
                 } catch (IllegalActionException ex) {
                     // This means the expression is not parse-able.
                     // FIXME: So, we will discard it for now.
-                    throw new AssertionError(ex.stackTraceToString(ex));
+                    throw new AssertionError(ex);
                 }
             }
         }
@@ -338,7 +338,7 @@ public abstract class PropertyHelper {
                 // This means the expression is not parse-able.
                 // FIXME: So, we will discard it for now.
                 //System.out.println(KernelException.stackTraceToString(ex));
-                throw new AssertionError(ex.stackTraceToString(ex));
+                throw new AssertionError(ex);
             }
         }
         return result;
