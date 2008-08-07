@@ -227,8 +227,27 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // Alphabetical by key class
         // It would be nice if we could substitute in Discard actors
         // when we see the plotter or the display.
-        //_graphicalClasses.put("ptolemy.actor.lib.gui.Display",
-        //        "ptolemy.actor.lib.Discard");
+        _graphicalClasses.put("ptolemy.actor.lib.gui.ArrayPlotter",
+                "ptolemy.actor.lib.Discard");
+        _graphicalClasses.put("ptolemy.actor.lib.gui.BarGraph",
+                "ptolemy.actor.lib.Discard");
+        _graphicalClasses.put("ptolemy.actor.lib.gui.Display",
+                "ptolemy.actor.lib.Discard");
+        _graphicalClasses.put("ptolemy.actor.lib.gui.HistogramPlotter",
+                "ptolemy.actor.lib.Discard");
+        _graphicalClasses.put("ptolemy.actor.lib.gui.RealTimePlotter",
+                "ptolemy.actor.lib.Discard");
+        _graphicalClasses.put("ptolemy.actor.lib.gui.TimedPlotter",
+                "ptolemy.actor.lib.Discard");
+        _graphicalClasses.put("ptolemy.actor.lib.gui.SequencePlotter",
+                "ptolemy.actor.lib.Discard");
+
+        _graphicalClasses.put("ptolemy.domains.sr.lib.NonStrictDisplay",
+                "ptolemy.actor.lib.Discard");
+
+        _graphicalClasses.put("ptolemy.domains.tm.kernel.SchedulePlotter",
+                "ptolemy.actor.lib.Discard");
+
         // Generated applet from moml/demo/modulation.xml
         // fails to run if substitute Attribute for NodeControllerFactory
         // so we set it to null instead.

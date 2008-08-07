@@ -307,6 +307,405 @@ test RemoveGraphicalClasses-1.4 {Try a configuration has a class that we are goi
 ######################################################################
 ####
 #
+set hideMoml  {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DisplayTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={477, 346, 484, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="7">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="My Display">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 220.0}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
+</entity>
+}
+
+test RemoveGraphicalClasses-2.1 {Filter a Display} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
+    removeGraphicalClasses $parser
+    set toplevel [java::cast ptolemy.actor.CompositeActor [$parser parse $hideMoml]]
+    set newMoML [$toplevel exportMoML]
+
+    set workspace [$toplevel workspace]
+    set manager [java::new ptolemy.actor.Manager \
+	    $workspace "compatibilityChecking"]
+    
+    $toplevel setManager $manager
+    $manager execute
+    
+    list $newMoML
+
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DisplayTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.Discard">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={477, 346, 484, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="7">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="My Display">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 220.0}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
+</entity>
+}}
+
+
+######################################################################
+####
+#
+set hideMoml {
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RemovePlots" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 60}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={227, 353, 813, 506}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 200}">
+        </property>
+    </entity>
+    <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="RealTimePlotter" class="ptolemy.actor.lib.gui.RealTimePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 278, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 65.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>RealTimePlotter</title>
+<xRange min="0.108" max="0.179"/>
+<yRange min="0.0" max="796.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 277, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 355.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>ArrayPlotter</title>
+<xRange min="0.0" max="1.0"/>
+<yRange min="795.0" max="799.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={762, 30, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 210.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xRange min="0.0" max="199.0"/>
+<yRange min="2.0" max="798.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={849, 103, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 130.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>HistogramPlotter</title>
+<xRange min="1.5" max="798.0"/>
+<yRange min="0.0" max="1.0"/>
+<barGraph width="0.5" offset="0.15"/>
+<bin width="1.0" offset="0.5"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={846, 501, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 290.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>BarGraph</title>
+<xRange min="0.0" max="1.0"/>
+<yRange min="0.0" max="799.0"/>
+<default connected="no"/>
+<barGraph width="0.5" offset="0.05"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 270.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Distributor.input" relation="relation2"/>
+    <link port="Distributor.output" relation="relation"/>
+    <link port="Distributor.output" relation="relation3"/>
+    <link port="Distributor.output" relation="relation5"/>
+    <link port="Distributor.output" relation="relation7"/>
+    <link port="RealTimePlotter.input" relation="relation"/>
+    <link port="ArrayPlotter.input" relation="relation4"/>
+    <link port="SequencePlotter.input" relation="relation5"/>
+    <link port="HistogramPlotter.input" relation="relation3"/>
+    <link port="BarGraph.input" relation="relation6"/>
+    <link port="SequenceToArray.input" relation="relation7"/>
+    <link port="SequenceToArray.output" relation="relation6"/>
+    <link port="SequenceToArray.output" relation="relation4"/>
+</entity>
+}
+
+test RemoveGraphicalClasses-2.2 {Filter a SequencePlotter} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+
+    # Note that 1.1 added the filter for all the parsers
+    removeGraphicalClasses $parser
+    set toplevel [java::cast ptolemy.actor.CompositeActor [$parser parse $hideMoml]]
+    set newMoML [$toplevel exportMoML]
+
+    set workspace [$toplevel workspace]
+    set manager [java::new ptolemy.actor.Manager \
+	    $workspace "compatibilityChecking"]
+    
+    $toplevel setManager $manager
+    $manager execute
+    
+    list $newMoML
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RemovePlots" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 60}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={227, 353, 813, 506}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 200}">
+        </property>
+    </entity>
+    <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="RealTimePlotter" class="ptolemy.actor.lib.Discard">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 278, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 65.0]">
+        </property>
+    </entity>
+    <entity name="ArrayPlotter" class="ptolemy.actor.lib.Discard">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 277, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 355.0]">
+        </property>
+    </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.Discard">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={762, 30, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="HistogramPlotter" class="ptolemy.actor.lib.Discard">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={849, 103, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 130.0}">
+        </property>
+    </entity>
+    <entity name="BarGraph" class="ptolemy.actor.lib.Discard">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={846, 501, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 270.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Distributor.input" relation="relation2"/>
+    <link port="Distributor.output" relation="relation"/>
+    <link port="Distributor.output" relation="relation3"/>
+    <link port="Distributor.output" relation="relation5"/>
+    <link port="Distributor.output" relation="relation7"/>
+    <link port="RealTimePlotter.input" relation="relation"/>
+    <link port="ArrayPlotter.input" relation="relation4"/>
+    <link port="SequencePlotter.input" relation="relation5"/>
+    <link port="HistogramPlotter.input" relation="relation3"/>
+    <link port="BarGraph.input" relation="relation6"/>
+    <link port="SequenceToArray.input" relation="relation7"/>
+    <link port="SequenceToArray.output" relation="relation6"/>
+    <link port="SequenceToArray.output" relation="relation4"/>
+</entity>
+}}
+
+######################################################################
+####
+#
 test RemoveGraphicalClasses-1.6 {main} { 
     set args [java::new {String[]} 1 \
 	  [list "RemoveGraphicalClasses.xml"]]
