@@ -807,12 +807,44 @@ void stringModeElement()       :
 {
     stringModeString() |
         <SMDOLLAR> identifier() | 
-        <SMDOLLARBRACE> identifier() <SMBRACE> | 
-        <SMDOLLARPAREN> {
-            token_source.SwitchTo(DEFAULT);
-        } expression() <CLOSEPAREN> {
-            token_source.SwitchTo(StringMode);
+        <SMDOLLARBRACE> identifier() <SMBRACE> |/*@bgen(jjtree) PtSumNode */
+        {
+          ASTPtSumNode jjtn001 = new ASTPtSumNode(JJTPTSUMNODE);
+          boolean jjtc001 = true;
+          jjtree.openNodeScope(jjtn001);
         }
+        try {
+/*@egen*/ 
+        ( <SMDOLLARPAREN> {
+            token_source.SwitchTo(DEFAULT);
+        } expression() <CLOSEPAREN>/*@bgen(jjtree)*/
+                                    {
+                                      jjtree.closeNodeScope(jjtn001, true);
+                                      jjtc001 = false;
+                                    }
+/*@egen*/ {
+            token_source.SwitchTo(StringMode);
+        } )/*@bgen(jjtree)*/
+        } catch (Throwable jjte001) {
+          if (jjtc001) {
+            jjtree.clearNodeScope(jjtn001);
+            jjtc001 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte001 instanceof RuntimeException) {
+            throw (RuntimeException)jjte001;
+          }
+          if (jjte001 instanceof ParseException) {
+            throw (ParseException)jjte001;
+          }
+          throw (Error)jjte001;
+        } finally {
+          if (jjtc001) {
+            jjtree.closeNodeScope(jjtn001, true);
+          }
+        }
+/*@egen*/
 }
 void stringModeString()       :
 {}

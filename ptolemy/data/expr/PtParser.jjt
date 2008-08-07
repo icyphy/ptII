@@ -662,11 +662,11 @@ void stringModeElement() #void :
     stringModeString() |
         <SMDOLLAR> identifier() | 
         <SMDOLLARBRACE> identifier() <SMBRACE> | 
-        <SMDOLLARPAREN> {
+        ( <SMDOLLARPAREN> {
             token_source.SwitchTo(DEFAULT);
         } expression() <CLOSEPAREN> {
             token_source.SwitchTo(StringMode);
-        }
+        } ) #PtSumNode
 }
 void stringModeString() #void :
 {}

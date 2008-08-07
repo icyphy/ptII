@@ -611,11 +611,36 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
       jj_consume_token(SMBRACE);
       break;
     case SMDOLLARPAREN:
-      jj_consume_token(SMDOLLARPAREN);
+          ASTPtSumNode jjtn001 = new ASTPtSumNode(JJTPTSUMNODE);
+          boolean jjtc001 = true;
+          jjtree.openNodeScope(jjtn001);
+      try {
+        jj_consume_token(SMDOLLARPAREN);
             token_source.SwitchTo(DEFAULT);
-      expression();
-      jj_consume_token(CLOSEPAREN);
+        expression();
+        jj_consume_token(CLOSEPAREN);
+                                      jjtree.closeNodeScope(jjtn001, true);
+                                      jjtc001 = false;
             token_source.SwitchTo(StringMode);
+      } catch (Throwable jjte001) {
+          if (jjtc001) {
+            jjtree.clearNodeScope(jjtn001);
+            jjtc001 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte001 instanceof RuntimeException) {
+            {if (true) throw (RuntimeException)jjte001;}
+          }
+          if (jjte001 instanceof ParseException) {
+            {if (true) throw (ParseException)jjte001;}
+          }
+          {if (true) throw (Error)jjte001;}
+      } finally {
+          if (jjtc001) {
+            jjtree.closeNodeScope(jjtn001, true);
+          }
+      }
       break;
     default:
       jj_la1[2] = jj_gen;
