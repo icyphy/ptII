@@ -114,7 +114,7 @@ test FunctionType-1.3 {Create an instance with an UNKNOWN arg} {
 test FunctionType-2.0 {Test convert} {
     set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y,z) x+y+z"]
 
-    list [[$TypeNothingToUnknown convert $r1] toString] [[$TypeIntIntToInt convert $r1] toString] \
+    list [[java::call ptolemy.data.type.FunctionType convert $r1] toString] [[$TypeIntIntToInt convert $r1] toString] \
          [[$TypeStringDoubleToDouble convert $r1] toString]
 } {{(function(x, y, z) (x+y+z))} {(function(x, y, z) (x+y+z))} {(function(x, y, z) (x+y+z))}} {Yeah, We haven't written the conversion yet.}
 
