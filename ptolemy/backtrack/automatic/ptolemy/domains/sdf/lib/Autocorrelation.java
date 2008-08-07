@@ -464,6 +464,8 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
         Autocorrelation newObject = (Autocorrelation)super.clone(workspace);
         newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
         newObject.output.setTypeAtLeast(newObject.new OutputTypeTerm());
+        newObject.$ASSIGN$_outputs(new Token[newObject._lengthOfOutput]);
+        System.arraycopy($BACKUP$_outputs(), 0, newObject.$BACKUP$_outputs(), 0, _outputs.length);
         return newObject;
     }
 
