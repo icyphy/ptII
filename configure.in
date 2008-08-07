@@ -1115,6 +1115,17 @@ eclipseMessage="The backtracking facility requires Eclipse 3.2 or greater.
     facility in ptolemy.backtrack.
     Eclipse may be downloaded from http://www.eclipse.org/"
 
+# If configure is called with --disable-eclipse, don't include backtrack/eclipse and
+# ptolemy/apps/eclipse. This can happen if the user has eclipse but does not have 
+# plugins
+AC_ARG_ENABLE(eclipse, [  --enable-eclipse-plugins,	Use eclipse plugins for backtracking and others],
+    PTECLIPSE_PLUGINS=yes, PTECLIPSE_PLUGINS=no)
+
+if test $PTECLIPSE_PLUGINS = "no"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/apps/eclipse/"
+fi
+
+if test $PTECLIPSE_PLUGINS = "yes"; then
 # We only need to look for Eclipse if $PTII/ptolemy/backtrack/eclipse exists
 if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
     PT_MSG_STATUS([$PTII/ptolemy/backtrack/eclipse is not present,
@@ -1278,6 +1289,7 @@ changequote([, ])dnl
 	    PTBACKTRACK_ECLIPSE_JARS=
         fi
     fi
+fi
 fi
 
 if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
