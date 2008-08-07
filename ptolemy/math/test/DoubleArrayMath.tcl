@@ -437,8 +437,8 @@ test DoubleArrayMath-14.1 {l2norm} {
 ####################################################################
 test DoubleArrayMath-14.2 {normalize} {
     set r [java::call ptolemy.math.DoubleArrayMath normalize $a1]
-    jdkPrintArray $r
-} {0.000966307504363 -0.00172368365643 7.83492571105e-08 -0.99999768492 -0.000851656424791}
+    ptclose [jdkPrintArray $r] {0.000966307504363 -0.00172368365643 7.83492571105e-08 -0.99999768492 -0.000851656424791}
+} {1}
 
 ####################################################################
 test DoubleArrayMath-14.3.1 {sum} {
