@@ -151,7 +151,7 @@ public class PublisherNonStrictTest extends Publisher {
         }
         _firedOnce = true;
 
-        int width = input.getWidth();
+        //int width = input.getWidth();
 
         //         // If we are in training mode, read the inputs and add to the
         //         // training data.

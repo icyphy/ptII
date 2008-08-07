@@ -79,8 +79,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
         
         // NOTE: The following depends on vergil, so with this
         // here, the actor can't run headless.
-        OccupantsConfigureFactory factory
-                = new OccupantsConfigureFactory(this, "factory");
+        /* OccupantsConfigureFactory factory
+                = */ new OccupantsConfigureFactory(this, "factory");
         
         columns.setExpression("{\"deskno\", \"lname\"}");
         colorKey.setExpression("sponsorlname");

@@ -1979,13 +1979,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             //List arguments = parseArgumentList(name);
 
             try {
-                if (macro == null) {
-                    int i = 1;
-                }
-                if (name.startsWith("Array")) {
-                    int i = 1;
-                    
-                }
+//                if (macro == null) {
+//                    int i = 1;
+//                }
+//                if (name.startsWith("Array")) {
+//                    int i = 1;
+//                    
+//                }
                 result.append(_replaceMacro(macro, name));
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(this, ex,

@@ -379,7 +379,7 @@ public class GetDocumentationAction extends FigureAction {
         boolean retVal = false;
         List configsList = Configuration.configurations();
         Configuration config = null;
-        Object object = null;
+       
         for (Iterator it = configsList.iterator(); it.hasNext();) {
             config = (Configuration) it.next();
             if (config != null) {

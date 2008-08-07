@@ -500,9 +500,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Offset used when pasting objects. See also OffsetMoMLChangeRequest. */
-    private static int _PASTE_OFFSET = 10;
-
     private ConfigureUnitsAction _configureUnitsAction;
 
     /** The interactors that interactively creates edges. */

@@ -109,7 +109,6 @@ public class UpdateAnnotations implements MoMLFilter {
                 // <property name="annotation1"
                 //           class="ptolemy.kernel.util.Attribute">
                 _currentlyProcessingAnnotation = true;
-                _currentAnnotationName = attributeValue;
                 _currentAnnotationContainerFullName = container.getFullName();
                 _currentAnnotationFullName = container.getFullName() + "."
                         + attributeValue;
@@ -137,7 +136,6 @@ public class UpdateAnnotations implements MoMLFilter {
                     && attributeName.equals("value")) {
                 // Found the location
                 _currentlyProcessingLocation = false;
-                _currentLocation = attributeValue;
             }                
         }
         if (_currentlyProcessingAnnotation
@@ -267,7 +265,7 @@ public class UpdateAnnotations implements MoMLFilter {
             Attribute currentAttribute = (Attribute) container;
             if (_textAttribute == null) {
                 //System.out.println("UpdateAnnotation: create TextAttribute 2");
-                NamedObj parentContainer = currentAttribute.getContainer();
+                //NamedObj parentContainer = currentAttribute.getContainer();
                 NamedObj grandparentContainer = currentAttribute.getContainer().getContainer();
                 //((Attribute)parentContainer).setContainer(null);
                 // Use a new name instead of annotation and avoid the HideAnnotationNames filter
@@ -293,9 +291,9 @@ public class UpdateAnnotations implements MoMLFilter {
             // 3) We are at the end of the annotation, so we delete the
             //    old annotation by setting its container to null.
             //System.out.println("UpdateAnnotation: closing up " + _textAttribute.getContainer().getFullName() + "\n" + _textAttribute.exportMoML());
-            NamedObj top = _textAttribute.toplevel();
+            //NamedObj top = _textAttribute.toplevel();
             Attribute currentAttribute = (Attribute) container;
-            String name = currentAttribute.getName(); 
+            //String name = currentAttribute.getName(); 
             currentAttribute.setContainer(null);
             MoMLParser.setModified(true);
             _reset();
@@ -318,7 +316,6 @@ public class UpdateAnnotations implements MoMLFilter {
         _currentlyProcessingAnnotation = false;
         _currentAnnotationContainerFullName = null;
         _currentAnnotationFullName = null;
-        _currentAnnotationName = null;
         _currentlyProcessingLocation = false;
         _textAttribute = null;
     }
@@ -334,15 +331,8 @@ public class UpdateAnnotations implements MoMLFilter {
     // The the full name of the annotation we are currently processing.
     private String _currentAnnotationFullName;
 
-    // The the short name (without the container) of the annotation we
-    // are currently processing.
-    private String _currentAnnotationName;
-
     // True if we are currently processing a location inside an annotation.
     private boolean _currentlyProcessingLocation = false;
-
-    // The location of the annotation.
-    private String _currentLocation;
 
     // The TextAttribute that is being created.
     private TextAttribute _textAttribute;

@@ -246,7 +246,7 @@ public class TableIcon extends DynamicEditorIcon {
                                     int j = 0;
                                     double columnPosition = _HORIZONTAL_PADDING;
                                     while (labelSet.hasNext()) {
-                                        String column = (String)labelSet.next();
+                                        /*String column = (String) */ labelSet.next();
                                         tableElement[i][j].translateTo(columnPosition, rowPosition);
                                         result.add(tableElement[i][j]);
                                         columnPosition += columnWidth[j] + _HORIZONTAL_PADDING;
@@ -256,7 +256,7 @@ public class TableIcon extends DynamicEditorIcon {
                                     // Display specified fields.
                                     double columnPosition = _HORIZONTAL_PADDING;
                                     for(int j = 0; j < fieldsValue.length(); j++) {
-                                        String column = ((StringToken)fieldsValue.getElement(j)).stringValue();
+                                        // String column = ((StringToken)fieldsValue.getElement(j)).stringValue();
                                         tableElement[i][j].translateTo(columnPosition, rowPosition);
                                         result.add(tableElement[i][j]);
                                         columnPosition += columnWidth[j] + _HORIZONTAL_PADDING;

@@ -731,9 +731,8 @@ public class FmvAutomaton extends FSMActor {
                                     // capture cases when single "true"
                                     // exists.
                                     boolean isTrue = false;
-                                    String rValue = null;
                                     try {
-                                        rValue = characterOfSubGuard[1].trim();
+                                        characterOfSubGuard[1].trim();
                                     } catch (Exception ex) {
                                         isTrue = true;
                                     }
@@ -1087,7 +1086,7 @@ public class FmvAutomaton extends FSMActor {
                                                 .trim();
 
                                         try {
-                                            int value = Integer
+                                            /*int value =*/ Integer
                                                     .parseInt(rValueOperends[1]
                                                             .trim());
                                         } catch (Exception ex) {
@@ -1141,8 +1140,7 @@ public class FmvAutomaton extends FSMActor {
                                                 .trim();
 
                                         try {
-                                            int value = Integer
-                                                    .parseInt(rValueOperends[1]
+                                            Integer.parseInt(rValueOperends[1]
                                                             .trim());
                                         } catch (Exception ex) {
                                             // check if the value is of format
@@ -1192,7 +1190,7 @@ public class FmvAutomaton extends FSMActor {
                                                 .trim();
 
                                         try {
-                                            int value = Integer
+                                            Integer
                                                     .parseInt(rValueOperends[1]
                                                             .trim());
                                         } catch (Exception ex) {
@@ -1247,7 +1245,7 @@ public class FmvAutomaton extends FSMActor {
                                                 .trim();
 
                                         try {
-                                            int value = Integer
+                                            Integer
                                                     .parseInt(rValueOperends[1]
                                                             .trim());
                                         } catch (Exception ex) {

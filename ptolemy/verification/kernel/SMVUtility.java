@@ -566,17 +566,17 @@ public class SMVUtility {
                 // get transitionLabel, transitionName and relation
                 // name for later use. Retrieve the transition
 
-                boolean hasAnnotation = false;
+                //boolean hasAnnotation = false;
                 String text;
                 try {
                     text = transition.annotation.stringValue();
                 } catch (IllegalActionException e) {
                     text = "Exception evaluating annotation: " + e.getMessage();
                 }
-                if (!text.trim().equals("")) {
-                    hasAnnotation = true;
-                    // buffer.append(text);
-                }
+//                if (!text.trim().equals("")) {
+//                    hasAnnotation = true;
+//                    // buffer.append(text);
+//                }
 
                 String expression = transition.outputActions.getExpression();
                 if ((expression != null) && !expression.trim().equals("")) {
@@ -1148,9 +1148,8 @@ public class SMVUtility {
                                     // capture cases when single "true"
                                     // exists.
                                     boolean isTrue = false;
-                                    String rValue = null;
                                     try {
-                                        rValue = characterOfSubGuard[1].trim();
+                                        characterOfSubGuard[1].trim();
                                     } catch (Exception ex) {
                                         isTrue = true;
                                     }
@@ -1935,7 +1934,7 @@ public class SMVUtility {
                                     String offset = rValueOperends[1].trim();
 
                                     try {
-                                        int value = Integer
+                                        Integer
                                                 .parseInt(rValueOperends[1]
                                                         .trim());
                                     } catch (Exception ex) {
@@ -1991,7 +1990,7 @@ public class SMVUtility {
                                     String offset = rValueOperends[1].trim();
 
                                     try {
-                                        int value = Integer
+                                        Integer
                                                 .parseInt(rValueOperends[1]
                                                         .trim());
                                     } catch (Exception ex) {
@@ -2046,7 +2045,7 @@ public class SMVUtility {
                                     String offset = rValueOperends[1].trim();
 
                                     try {
-                                        int value = Integer
+                                        Integer
                                                 .parseInt(rValueOperends[1]
                                                         .trim());
                                     } catch (Exception ex) {
@@ -2105,7 +2104,7 @@ public class SMVUtility {
                                     String offset = rValueOperends[1].trim();
 
                                     try {
-                                        int value = Integer
+                                        Integer
                                                 .parseInt(rValueOperends[1]
                                                         .trim());
                                     } catch (Exception ex) {
