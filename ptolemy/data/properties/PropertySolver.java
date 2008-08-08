@@ -1096,7 +1096,7 @@ public abstract class PropertySolver extends Attribute {
         }
 
         List directoryPath = Arrays.asList(
-                file.getAbsolutePath().split(file.separator.replace("\\", "\\\\")));
+                file.getAbsolutePath().split(File.separator.replace("\\", "\\\\")));
 
         return 
         directoryPath.contains("test") ||
