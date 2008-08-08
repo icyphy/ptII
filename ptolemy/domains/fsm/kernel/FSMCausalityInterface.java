@@ -37,6 +37,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
@@ -139,7 +140,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                _forwardDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
                
                // Initialize the equivalence classes to contain each input port.
-               _equivalenceClasses = new HashMap<IOPort,Set<IOPort>>();
+               _equivalenceClasses = new HashMap<IOPort,Collection<IOPort>>();
                List<IOPort> actorInputs = _actor.inputPortList();
                for (IOPort actorInput : actorInputs) {
                    Set<IOPort> equivalences = new HashSet<IOPort>();
@@ -149,7 +150,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                
                // Keep track of all the ports that must go into the
                // equivalence class of input ports that affect the state.
-               Set<IOPort> stateEquivalentPorts = new HashSet<IOPort>();
+               Collection<IOPort> stateEquivalentPorts = new HashSet<IOPort>();
                
                // Iterate over all the transitions or just the transitions
                // of the current state.
@@ -270,6 +271,15 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                                }
                            }
                        }
+                   }
+               }
+               // If any input is an instance of ParameterPort, then
+               // all inputs must be in the same equivalence class.
+               List<IOPort> inputs = _actor.inputPortList();
+               for (IOPort actorInput : inputs) {
+                   if (actorInput instanceof ParameterPort) {
+                       stateEquivalentPorts = inputs;
+                       break;
                    }
                }
                // Now set the equivalence classes.
