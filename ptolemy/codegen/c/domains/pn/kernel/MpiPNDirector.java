@@ -613,100 +613,100 @@ public class MpiPNDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    private class Analyzer {
-        private Set mpiReceivePorts = new HashSet();
-        private Set mpiSendPorts = new HashSet();
-
-        public boolean _isMpiReceive(TypedIOPort port, int channel) {
-            return mpiReceivePorts.contains(new Channel(port, channel));
-        }
-
-        public boolean _isMpiSend(TypedIOPort port, int channel) {
-            return mpiSendPorts.contains(new Channel(port, channel));
-        }
-
-        public boolean _isLocalBuffer(TypedIOPort port, int channel) {
-            return !mpiReceivePorts.contains(new Channel(port, channel))
-            && !mpiSendPorts.contains(new Channel(port, channel));
-        }
-
-        private int _getPartitionNumber(Actor actor)
-        throws IllegalActionException {
-            Parameter result = (Parameter) ((NamedObj) actor).getAttribute("_partition");
-            assert result != null;
-
-            return ((IntToken) result.getToken()).intValue();
-        }
-
-        protected void _analyzeMpiPorts(CompositeActor container) {
-            try {
-                for (Actor actor : (List<Actor>) container.deepEntityList()) {
-
-                    int actorPartition = _getPartitionNumber(actor);
-
-                    for (TypedIOPort input : (List<TypedIOPort>) actor.inputPortList()) {
-
-                        for (int i = 0; i < input.getWidth(); i++) {
-                            Channel source = CodeGeneratorHelper.getSourceChannel(input, i);
-
-                            Actor sourceActor = (Actor) source.port.getContainer();
-
-                            if (actorPartition != _getPartitionNumber(sourceActor)) {
-                                // Add (sourcePort, )
-                                mpiSendPorts.add(source);
-                            }
-                        }
-
-                        //Iterator connOut = (Iterator) thisInput.deepConnectedOutPortList().iterator();
-                    }
-
-                    List outputList =  actor.outputPortList();
-                    Iterator outputIt = outputList.listIterator();
-
-                    while(outputIt.hasNext()) {
-                        TypedIOPort thisOutput = (TypedIOPort) outputIt.next();
-
-                        // Clear the _isMpiBuffer parameter if it already exists
-                        Parameter clearPortParam = _getMpiParameter(thisOutput);
-                        clearPortParam.setExpression("");
-
-                        // Iterator connIn = (Iterator) thisOutput.deepConnectedInPortList().iterator();
-                        Iterator connIn = thisOutput.sinkPortList().iterator();
-                        int sinkIndex = 0;
-                        while (connIn.hasNext()) {
-                            TypedIOPort tempInput = (TypedIOPort) connIn.next();
-                            Actor tempActor = (Actor) tempInput.getContainer();
-                            Parameter attrTemp = new Parameter();
-                            attrTemp = (Parameter)((NamedObj)tempActor).getAttribute("_partition");
-                            assert attrTemp != null;
-                            if (!attrTemp.getExpression().equals(attrTemp.getExpression())) {                      
-                                Parameter portParam = _getMpiParameter(thisOutput);
-                                String tempString = portParam.getExpression();
-                                if (tempString.length() == 0) {
-                                    tempString = "sender";
-                                }
-                                tempString = tempString.concat("_" + Integer.toString(sinkIndex));
-                                portParam.setExpression(tempString);
-                                //portParam.setExpression("sender");
-                            }
-                            sinkIndex++;
-                        }
-                    }
-
-                }
-
-
-            } catch (IllegalActionException e) {
-                System.err.println("Error: " + e.getMessage());
-            }
-
-        }
-
-        private Parameter _getMpiParameter(TypedIOPort thisOutput) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-    }
+//    private class Analyzer {
+//        private Set mpiReceivePorts = new HashSet();
+//        private Set mpiSendPorts = new HashSet();
+//
+//        public boolean _isMpiReceive(TypedIOPort port, int channel) {
+//            return mpiReceivePorts.contains(new Channel(port, channel));
+//        }
+//
+//        public boolean _isMpiSend(TypedIOPort port, int channel) {
+//            return mpiSendPorts.contains(new Channel(port, channel));
+//        }
+//
+//        public boolean _isLocalBuffer(TypedIOPort port, int channel) {
+//            return !mpiReceivePorts.contains(new Channel(port, channel))
+//            && !mpiSendPorts.contains(new Channel(port, channel));
+//        }
+//
+//        private int _getPartitionNumber(Actor actor)
+//        throws IllegalActionException {
+//            Parameter result = (Parameter) ((NamedObj) actor).getAttribute("_partition");
+//            assert result != null;
+//
+//            return ((IntToken) result.getToken()).intValue();
+//        }
+//
+//        protected void _analyzeMpiPorts(CompositeActor container) {
+//            try {
+//                for (Actor actor : (List<Actor>) container.deepEntityList()) {
+//
+//                    int actorPartition = _getPartitionNumber(actor);
+//
+//                    for (TypedIOPort input : (List<TypedIOPort>) actor.inputPortList()) {
+//
+//                        for (int i = 0; i < input.getWidth(); i++) {
+//                            Channel source = CodeGeneratorHelper.getSourceChannel(input, i);
+//
+//                            Actor sourceActor = (Actor) source.port.getContainer();
+//
+//                            if (actorPartition != _getPartitionNumber(sourceActor)) {
+//                                // Add (sourcePort, )
+//                                mpiSendPorts.add(source);
+//                            }
+//                        }
+//
+//                        //Iterator connOut = (Iterator) thisInput.deepConnectedOutPortList().iterator();
+//                    }
+//
+//                    List outputList =  actor.outputPortList();
+//                    Iterator outputIt = outputList.listIterator();
+//
+//                    while(outputIt.hasNext()) {
+//                        TypedIOPort thisOutput = (TypedIOPort) outputIt.next();
+//
+//                        // Clear the _isMpiBuffer parameter if it already exists
+//                        Parameter clearPortParam = _getMpiParameter(thisOutput);
+//                        clearPortParam.setExpression("");
+//
+//                        // Iterator connIn = (Iterator) thisOutput.deepConnectedInPortList().iterator();
+//                        Iterator connIn = thisOutput.sinkPortList().iterator();
+//                        int sinkIndex = 0;
+//                        while (connIn.hasNext()) {
+//                            TypedIOPort tempInput = (TypedIOPort) connIn.next();
+//                            Actor tempActor = (Actor) tempInput.getContainer();
+//                            Parameter attrTemp = new Parameter();
+//                            attrTemp = (Parameter)((NamedObj)tempActor).getAttribute("_partition");
+//                            assert attrTemp != null;
+//                            if (!attrTemp.getExpression().equals(attrTemp.getExpression())) {                      
+//                                Parameter portParam = _getMpiParameter(thisOutput);
+//                                String tempString = portParam.getExpression();
+//                                if (tempString.length() == 0) {
+//                                    tempString = "sender";
+//                                }
+//                                tempString = tempString.concat("_" + Integer.toString(sinkIndex));
+//                                portParam.setExpression(tempString);
+//                                //portParam.setExpression("sender");
+//                            }
+//                            sinkIndex++;
+//                        }
+//                    }
+//
+//                }
+//
+//
+//            } catch (IllegalActionException e) {
+//                System.err.println("Error: " + e.getMessage());
+//            }
+//
+//        }
+//
+//        private Parameter _getMpiParameter(TypedIOPort thisOutput) {
+//            // TODO Auto-generated method stub
+//            return null;
+//        }
+//    }
 
     /** Create offset variables for the channels of the given port.
      *  The offset variables are generated unconditionally.
