@@ -34,9 +34,9 @@ import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.lib.AddSubtract;
 import ptolemy.actor.lib.Const;
 import ptolemy.actor.lib.DiscreteRandomSource;
-import ptolemy.actor.lib.FileWriter;
+import ptolemy.actor.lib.io.ExpressionWriter;
 import ptolemy.actor.lib.Gaussian;
-import ptolemy.actor.lib.MaxIndex;
+import ptolemy.actor.lib.Maximum;
 import ptolemy.actor.lib.Multiplexor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -111,11 +111,11 @@ public class OrthogonalCom extends TypedCompositeActor {
             DotProduct correlator2 = new DotProduct(this, "correlator2");
 
             // Decision
-            MaxIndex decision = new MaxIndex(this, "decision");
+            Maximum decision = new Maximum(this, "decision");
 
             // Displays
-            FileWriter outputBitDisplay =
-                new FileWriter(this, "outputBitDisplay");
+            ExpressionWriter outputBitDisplay =
+                new ExpressionWriter(this, "outputBitDisplay");
 
             AddSubtract diff = new AddSubtract(this, "diff");
 
@@ -148,7 +148,7 @@ public class OrthogonalCom extends TypedCompositeActor {
             connect(correlator1.output, decision.input);
             connect(correlator2.output, decision.input);
 
-            connect(decision.output, diff.minus);
+            connect(decision.maximumValue, diff.minus);
 
             connect(diff.output, outputBitDisplay.input);
 
