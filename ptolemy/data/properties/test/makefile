@@ -1,10 +1,10 @@
-# Makefile for the Java classes used to test CGC actors
+# Makefile for the Java classes used to test properties
 #
-# @Authors: Christopher Brooks
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2005-2006 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -33,7 +33,7 @@
 ME =		ptolemy/data/properties/test
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
