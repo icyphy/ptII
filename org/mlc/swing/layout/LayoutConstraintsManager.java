@@ -274,11 +274,14 @@ public class LayoutConstraintsManager {
                     // isTextComponent to false.
                     isTextComponent = false;
 
-                    for (String propertyName : customProperties.keySet()) {
-                        if ((!isTextComponent) /* EAL: || (!propertyName.equals("text")) */) {
-                            hasProperties = true;
-                            break;
-                        }
+                    //for (String propertyName : customProperties.keySet()) {
+                    //    if ((!isTextComponent) /* EAL: || (!propertyName.equals("text")) */) {
+                    //        hasProperties = true;
+                    //        break;
+                    //    }
+                    //}
+                    if (!customProperties.keySet().isEmpty()) {
+                        hasProperties = true;
                     }
 
                     if (hasProperties) {
