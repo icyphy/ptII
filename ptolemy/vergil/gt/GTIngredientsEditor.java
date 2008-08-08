@@ -136,12 +136,10 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class GTIngredientsEditor extends PtolemyDialog implements
-        ActionListener {
+public class GTIngredientsEditor extends PtolemyDialog {
 
     public GTIngredientsEditor(DialogTableau tableau, Frame owner,
-            NamedObj target, Configuration configuration)
-    throws IllegalActionException {
+            NamedObj target, Configuration configuration) {
         super("", tableau, owner, null, configuration);
 
         _owner = owner;
