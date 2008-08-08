@@ -28,12 +28,14 @@
 package ptolemy.codegen.chaco.kernel;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -652,23 +654,19 @@ public class ChacoCodeGenerator extends CodeGenerator {
         
         File file = new File(codeFileNameWritten);
         FileInputStream fis = null;
-        BufferedInputStream bis = null;
-        DataInputStream dis = null;
+        BufferedReader reader = null;
 
         try {
             fis = new FileInputStream(file);
-
-            // Here BufferedInputStream is added for fast reading.
-            bis = new BufferedInputStream(fis);
-            dis = new DataInputStream(bis);
+            reader = new BufferedReader(new InputStreamReader(fis));
 
             int actorNum = 1;
-            // dis.available() returns 0 if the file does not have more lines.
-            while (dis.available() != 0) {
+            String rankString = null;
+            while ( (rankString = reader.readLine()) != null) {
 
                 // this statement reads the line from the file and print it to
                 // the console.
-                String rankString = dis.readLine();
+                
                 Actor actor = (Actor) _HashNumberKey.get(actorNum);
 
                 Parameter parameter = _getPartitionParameter(actor);
@@ -678,15 +676,23 @@ public class ChacoCodeGenerator extends CodeGenerator {
 
                 _rankNumbers.add(rankString);                
             }
-
-            // dispose all the resources after using them.
-            fis.close();
-            bis.close();
-            dis.close();
-
-
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (Exception ex) {
+                    System.err.println("Failed to close " +  file + " " + ex);
+                }
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (Exception ex) {
+                    System.err.println("Failed to close " +  file + " " + ex);
+                }
+            }
         }
 
     }
