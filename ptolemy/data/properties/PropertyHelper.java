@@ -231,13 +231,13 @@ public abstract class PropertyHelper {
     throws IllegalActionException {
         Map map;
         try {
-            ASTPtRootNode parseTree = _solver.getParser()
+            ASTPtRootNode parseTree = PropertySolver.getParser()
             .generateParseTree(annotation.getExpression());
 
             map = new HashMap();
             map.put(parseTree, parseTree);
         } catch (IllegalActionException ex) {
-            map = _solver.getParser()
+            map = PropertySolver.getParser()
             .generateAssignmentMap(annotation.getExpression());
 
         }
@@ -365,7 +365,7 @@ public abstract class PropertyHelper {
                 } catch (IllegalActionException ex) {
                     // This means the expression is not parse-able.
                     // FIXME: So, we will discard it for now.
-                    throw new AssertionError(ex.stackTraceToString(ex));
+                    throw new AssertionError(ex);
                 }
             }
         }
@@ -396,7 +396,7 @@ public abstract class PropertyHelper {
                 // This means the expression is not parse-able.
                 // FIXME: So, we will discard it for now.
                 //System.out.println(KernelException.stackTraceToString(ex));
-                throw new AssertionError(ex.stackTraceToString(ex));
+                throw new AssertionError(ex);
             }
         }
         return result;
