@@ -460,6 +460,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         checkForCycles();
         List<Actor> actors = ((CompositeEntity)_actor).deepEntityList();
         // Create a copy to sort.
+        // FIXME: Would it be more efficient to just create a TreeSet?
         List<Actor> sorted = new LinkedList<Actor>(actors);
         ActorComparator comparator = new ActorComparator();
         Collections.sort(sorted, comparator);
@@ -552,9 +553,13 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                 Integer inputPortDepth = _portToDepth.get(inputPort);
                 if (inputPortDepth == null) {
                     // Keep track of ports that have been visited in
-                    // to detect causality loops.
-                    Set<IOPort> visited = new HashSet<IOPort>();
-                    _computeInputDepth(inputPort, visited);
+                    // to detect causality loops. Have to separately
+                    // keep track of inputs and outputs because a port
+                    // may be both, but the output may not depend on the
+                    // input (an example is the ChannelPort in a wireless channel).
+                    Set<IOPort> visitedInputs = new HashSet<IOPort>();
+                    Set<IOPort> visitedOutputs = new HashSet<IOPort>();
+                    _computeInputDepth(inputPort, visitedInputs, visitedOutputs);
                     inputPortDepth = _portToDepth.get(inputPort);
                 }
                 // Record the maximum and continue to the next port.
@@ -571,9 +576,13 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                 Integer outputPortDepth = _portToDepth.get(outputPort);
                 if (outputPortDepth == null) {
                     // Keep track of ports that have been visited in
-                    // to detect causality loops.
-                    Set<IOPort> visited = new HashSet<IOPort>();
-                    _computeOutputPortDepth(outputPort, visited);
+                    // to detect causality loops. Have to separately
+                    // keep track of inputs and outputs because a port
+                    // may be both, but the output may not depend on the
+                    // input (an example is the ChannelPort in a wireless channel).
+                    Set<IOPort> visitedInputs = new HashSet<IOPort>();
+                    Set<IOPort> visitedOutputs = new HashSet<IOPort>();
+                    _computeOutputPortDepth(outputPort, visitedInputs, visitedOutputs);
                     outputPortDepth = _portToDepth.get(outputPort);
                 }
                 // Record the minimum and continue to the next port.
@@ -603,14 +612,19 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
             for (IOPort sourcePort : sourcePorts) {
                 Integer sourceDepth = _portToDepth.get(sourcePort);
                 if (sourceDepth == null) {
-                    if (sourcePort.isInput()) {
+                    if (!sourcePort.isOutput()) {
                         // This is another external input.
+                        // Should this be checked?
                         sourceDepth = Integer.valueOf(0);
                         _portToDepth.put(sourcePort, sourceDepth);
                     } else {
-                        // Source port is an output (should this be checked?)
-                        Set<IOPort> visited = new HashSet<IOPort>();
-                        _computeOutputPortDepth(sourcePort, visited);
+                        // Source port is an output. Have to separately
+                        // keep track of inputs and outputs because a port
+                        // may be both, but the output may not depend on the
+                        // input (an example is the ChannelPort in a wireless channel).
+                        Set<IOPort> visitedInputs = new HashSet<IOPort>();
+                        Set<IOPort> visitedOutputs = new HashSet<IOPort>();
+                        _computeOutputPortDepth(sourcePort, visitedInputs, visitedOutputs);
                         sourceDepth = _portToDepth.get(sourcePort);
                         if (sourceDepth == null) {
                             throw new InternalErrorException(
@@ -661,12 +675,15 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  to this method is _computeActorDepth().
      *  @see #_computeActorDepth()
      *  @param inputPort The port to compute the depth of.
-     *  @param visited The set of ports that have been visited
+     *  @param visitedInputs The set of input ports that have been visited
+     *   in this round.
+     *  @param visitedOutputs The set of output ports that have been visited
      *   in this round.
      *  @throws IllegalActionException If a zero-delay loop is found.
      */
-    private void _computeInputDepth(IOPort inputPort, Set<IOPort> visited)
-             throws IllegalActionException {
+    private void _computeInputDepth(IOPort inputPort,
+            Set<IOPort> visitedInputs, Set<IOPort> visitedOutputs)
+            throws IllegalActionException {
         // NOTE: The definition of equivalence class, which comes
         // from CausalityInterface, is not quite what we want if
         // we use RealDependency instead of BooleanDependency
@@ -681,7 +698,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         CausalityInterface causality = actor.getCausalityInterface();
         Collection<IOPort> equivalentPorts = causality.equivalentPorts(inputPort);
         for (IOPort equivalentPort: equivalentPorts) {
-            visited.add(equivalentPort);
+            visitedInputs.add(equivalentPort);
             // Iterate over the source ports to compute the source depths.
             List<IOPort> sourcePorts = equivalentPort.sourcePortList();
             for (IOPort sourcePort : sourcePorts) {
@@ -692,21 +709,22 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                 Integer sourcePortDepth = _portToDepth.get(sourcePort);
                 if (sourcePortDepth == null) {
                     // Have to compute the depth of the output port.
-                    if (visited.contains(sourcePort)) {
+                    if (visitedOutputs.contains(sourcePort)) {
                         // Found a causality loop.
                         throw new IllegalActionException(_actor, actor,
                                 "Found a zero delay loop containing "
                                 + actor.getFullName());
                     }
-                    if (sourcePort.isInput()) {
+                    if (!sourcePort.isOutput()) {
                         // This had better be an external input.
                         // Should this be checked?
                         // Set the depth to zero.
                         sourcePortDepth = Integer.valueOf(0);
                         _portToDepth.put(sourcePort, sourcePortDepth);
                     } else {
-                        // Source port is an output (should this be checked?)
-                        _computeOutputPortDepth(sourcePort, visited);
+                        // Source port is an output (it may also be
+                        // an input).
+                        _computeOutputPortDepth(sourcePort, visitedInputs, visitedOutputs);
                         sourcePortDepth = _portToDepth.get(sourcePort);
                         if (sourcePortDepth == null) {
                             throw new InternalErrorException(
@@ -738,13 +756,16 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  to this method is _computeActorDepth().
      *  @see #_computeActorDepth()
      *  @param outputPort The actor to compute the depth of.
-     *  @param visited The set of ports that have been visited
+     *  @param visitedInputs The set of input ports that have been visited
+     *   in this round.
+     *  @param visitedOutputs The set of output ports that have been visited
      *   in this round.
      *  @throws IllegalActionException If a zero-delay loop is found.
      */
-    private void _computeOutputPortDepth(IOPort outputPort, Set<IOPort> visited)
-             throws IllegalActionException {
-        visited.add(outputPort);
+    private void _computeOutputPortDepth(IOPort outputPort,
+            Set<IOPort> visitedInputs, Set<IOPort> visitedOutputs)
+            throws IllegalActionException {
+        visitedOutputs.add(outputPort);
         int depth = 0;
         // Iterate over the input ports of the same actor that
         // this output directly depends on.
@@ -756,7 +777,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
             Integer inputPortDepth = _portToDepth.get(inputPort);
             if (inputPortDepth == null) {
                 // Have to compute the depth of the input port.
-                if (visited.contains(inputPort)) {
+                if (visitedInputs.contains(inputPort)) {
                     // Found a causality loop.
                     throw new IllegalActionException(_actor, actor,
                             "Found a zero delay loop containing "
@@ -766,7 +787,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                 // which may not be the final depth. As a consequence,
                 // _computeActorDepth(), the output depth that
                 // we calculate here may need to be modified.
-                _computeInputDepth(inputPort, visited);
+                _computeInputDepth(inputPort, visitedInputs, visitedOutputs);
                 inputPortDepth = _portToDepth.get(inputPort);
                 if (inputPortDepth == null) {
                     throw new InternalErrorException(
