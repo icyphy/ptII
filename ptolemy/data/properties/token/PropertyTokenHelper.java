@@ -32,7 +32,7 @@ public class PropertyTokenHelper extends PropertyHelper {
     public void addListener(boolean listenInputs, boolean listenOutputs) throws IllegalActionException {
         Iterator propertyables = getPropertyables().iterator();
         while (propertyables.hasNext()) {
-            Object propertyable = (Object)propertyables.next();
+            Object propertyable = propertyables.next();
         
             if (propertyable instanceof IOPort) {                
                 IOPort port = (IOPort)propertyable;
@@ -52,7 +52,7 @@ public class PropertyTokenHelper extends PropertyHelper {
     public void removeListener(boolean listenInputs, boolean listenOutputs) throws IllegalActionException {
         Iterator propertyables = getPropertyables().iterator();
         while (propertyables.hasNext()) {
-            Object propertyable = (Object)propertyables.next();
+            Object propertyable = propertyables.next();
             
             if (propertyable instanceof IOPort) {                
                 IOPort port = (IOPort)propertyable;

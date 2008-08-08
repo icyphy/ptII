@@ -1190,7 +1190,7 @@ public class CodeStream {
         public void putCode(Signature signature, String filePath,
                 StringBuffer code) {
 
-            LinkedHashMap currentScope = (LinkedHashMap) _codeTableList.getLast();
+            LinkedHashMap currentScope = _codeTableList.getLast();
 
             Object[] codeBlock = (Object[]) currentScope.get(signature);
             codeBlock[0] = filePath;

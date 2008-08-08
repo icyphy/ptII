@@ -142,7 +142,7 @@ public class InequalitySolver {
         StringBuffer results = new StringBuffer("{_Ilist:\n ");
 
         for (int i = 0; i < _Ilist.size(); i++) {
-            Info info = (Info) _Ilist.get(i);
+            Info info = _Ilist.get(i);
             results.append("{_ineq: " + info._ineq + " _inCvar: "
                     + info._inCvar + " _inserted: " + info._inserted + "}\n  ");
         }
@@ -255,7 +255,7 @@ public class InequalitySolver {
         LinkedList<Inequality> result = new LinkedList<Inequality>();
 
         for (int i = 0; i < _Ilist.size(); i++) {
-            Info info = (Info) _Ilist.get(i);
+            Info info = _Ilist.get(i);
 
             if (!info._ineq.isSatisfied(_cpo)) {
                 result.addLast(info._ineq);
@@ -334,7 +334,7 @@ public class InequalitySolver {
                         + " try removing the type constraint and possibly"
                         + " placing it on the output.");
             }
-            ArrayList<Integer> entry = (ArrayList) (_Clist.get(variables[i]));
+            ArrayList<Integer> entry = (_Clist.get(variables[i]));
 
             if (entry == null) {
                 // variable not in Hashtable
@@ -423,7 +423,7 @@ public class InequalitySolver {
         LinkedList<Integer> _NS = new LinkedList<Integer>();
 
         for (int i = 0; i < _Ilist.size(); i++) {
-            Info info = (Info) _Ilist.get(i);
+            Info info = _Ilist.get(i);
             info._inCvar = least ? info._ineq.getGreaterTerm().isSettable()
                     : info._ineq.getLesserTerm().isSettable();
 
@@ -448,9 +448,9 @@ public class InequalitySolver {
         while (!allSatisfied) {
             // solve the inequalities
             while (_NS.size() > 0) {
-                int index = ((Integer) (_NS.removeFirst())).intValue();
+                int index = (_NS.removeFirst()).intValue();
 
-                Info info = (Info) (_Ilist.get(index));
+                Info info = (_Ilist.get(index));
                 info._inserted = false;
 
                 Object value = null;
@@ -483,21 +483,21 @@ public class InequalitySolver {
                 }
 
                 // insert or drop the inequalities affected
-                ArrayList affected = (ArrayList) _Clist.get(updateTerm);
+                ArrayList affected = _Clist.get(updateTerm);
 
                 //*****************************************************
                 Iterator terms = 
                     _solver.getAffectedTerms((PropertyTerm) updateTerm).iterator();
                 
                 while (terms.hasNext()) {
-                    affected.addAll((ArrayList) _Clist.get(terms.next()));
+                    affected.addAll(_Clist.get(terms.next()));
                 }
                 //*****************************************************
 
                 for (int i = 0; i < affected.size(); i++) {
                     Integer index1Wrap = (Integer) (affected.get(i));
                     int index1 = index1Wrap.intValue();
-                    Info affectedInfo = (Info) _Ilist.get(index1);
+                    Info affectedInfo = _Ilist.get(index1);
 
                     if ((index1 != index) && affectedInfo._inCvar) {
                         if (affectedInfo._ineq.isSatisfied(_cpo)) { // drop
@@ -518,7 +518,7 @@ public class InequalitySolver {
             allSatisfied = true;
 
             for (int i = 0; i < _Ilist.size(); i++) {
-                Info info = (Info) _Ilist.get(i);
+                Info info = _Ilist.get(i);
 
                 if (info._inCvar) {
                     if (info._ineq.isSatisfied(_cpo)) {
@@ -536,7 +536,7 @@ public class InequalitySolver {
         // These inequalities are the ones in the "Ccnst" set in the
         // Rehof paper.
         for (int i = 0; i < _Ilist.size(); i++) {
-            Info info = (Info) _Ilist.get(i);
+            Info info = _Ilist.get(i);
 
             if (!info._inCvar) {
                 if (!info._ineq.isSatisfied(_cpo)) {

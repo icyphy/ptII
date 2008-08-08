@@ -327,7 +327,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @return
      */
     public List<PropertyTerm> getConstraintingTerms(Object object) {
-        return (List<PropertyTerm>) getSolver().getConstraintManager()
+        return getSolver().getConstraintManager()
         .getConstraintingTerms(object);
     }
 

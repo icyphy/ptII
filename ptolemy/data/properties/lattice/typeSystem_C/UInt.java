@@ -56,7 +56,7 @@ public class UInt extends LatticeProperty implements TypeProperty {
    }
 
    public Token getMinValue() {
-       return new LongToken((long)0);
+       return new LongToken(0);
    }
 
    public boolean hasMinMaxValue() {
