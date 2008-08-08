@@ -162,10 +162,10 @@ public class ExampleSystem implements Serializable {
     public String printLinkedPorts(ComponentRelation r) {
         StringBuffer st = new StringBuffer(r.getName() + ": ");
         ComponentPort po;
-        Enumeration ports = r.linkedPorts();
+        Iterator ports = r.linkedPortList().iterator();
 
-        while (ports.hasMoreElements()) {
-            po = (ComponentPort) ports.nextElement();
+        while (ports.hasNext()) {
+            po = (ComponentPort) ports.next();
             st.append(po.getName() + " ");
         }
 
