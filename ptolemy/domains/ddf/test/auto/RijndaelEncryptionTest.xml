@@ -1143,6 +1143,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <entity name="DoNothing" class="ptolemy.domains.fsm.kernel.State">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="DoNothing">
                         </property>
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -1565,6 +1567,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
                 <entity name="regular" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="regular">
+                    </property>
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
