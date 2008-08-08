@@ -227,29 +227,35 @@ public class FSMDirector extends Director implements
 
     /** Fire the model model for one iteration.
      *  If there is a preemptive transition enabled, execute its choice
-     *  actions (outputActions) and fire its refinement. Otherwise,
+     *  actions (outputActions). Otherwise,
      *  fire the refinement of the current state. After this firing,
-     *  if there is a transition enabled, execute its choice actions
-     *  and fire the refinement of the transition.
+     *  if there is a transition enabled, execute its choice actions.
      *  If any tokens are produced during this iteration, they are sent to
      *  both the output ports of the model model but also the input ports of
      *  the mode controller.
      *  @exception IllegalActionException If there is more than one
-     *   transition enabled, or there is no controller, or thrown by any
+     *   transition enabled and nondeterminism is not permitted,
+     *   or there is no controller, or it is thrown by any
      *   choice action.
      */
     public void fire() throws IllegalActionException {
+        _stateRefinementsToPostfire.clear();
+        _transitionRefinementsToPostfire.clear();
         FSMActor ctrl = getController();
-        if (_debugging) {
-            _debug("Firing " + getFullName(), " at time " + getModelTime());
-        }
         ctrl.readInputs();
         State st = ctrl.currentState();
+        if (_debugging) {
+            _debug("*** Firing " + getFullName(), " at time " + getModelTime());
+            _debug("Current state is:", st.getName());
+        }
 
         Transition tr = ctrl.chooseTransition(st.preemptiveTransitionList());
         _enabledTransition = tr;
 
         if (tr != null) {
+            if (_debugging) {
+                _debug("Preemptive transition enabled:",  tr.getName());
+            }
             // First execute the refinements of the transition.
             Actor[] actors = tr.getRefinement();
 
@@ -258,10 +264,12 @@ public class FSMDirector extends Director implements
                     if (_stopRequested) {
                         break;
                     }
-
+                    if (_debugging) {
+                        _debug("Fire transition refinement:",  actors[i].getName());
+                    }
                     if (actors[i].prefire()) {
                         actors[i].fire();
-                        actors[i].postfire();
+                        _transitionRefinementsToPostfire.add(actors[i]);
                     }
                 }
             }
@@ -277,54 +285,41 @@ public class FSMDirector extends Director implements
                 if (_stopRequested) {
                     break;
                 }
-
                 if (actors[i].prefire()) {
                     if (_debugging) {
-                        _debug(getFullName(), " fire refinement",
-                                ((ptolemy.kernel.util.NamedObj) actors[i])
-                                        .getName());
+                        _debug("Fire state refinement:",  actors[i].getName());
                     }
-
                     actors[i].fire();
-                    actors[i].postfire();
+                    _stateRefinementsToPostfire.add(actors[i]);
                 }
             }
         }
-
         st.setVisited(true);
-
         ctrl.readOutputsFromRefinement();
 
         tr = ctrl.chooseTransition(st.nonpreemptiveTransitionList());
         _enabledTransition = tr;
-
         if (tr != null) {
+            if (_debugging) {
+                _debug("Nonpreemptive transition enabled:",  tr.getName());
+            }
             actors = tr.getRefinement();
-
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_stopRequested) {
                         break;
                     }
-
                     if (actors[i].prefire()) {
                         if (_debugging) {
-                            _debug(getFullName(),
-                                    " fire transition refinement",
-                                    ((ptolemy.kernel.util.NamedObj) actors[i])
-                                            .getName());
+                            _debug("Fire transition refinement:",  actors[i].getName());
                         }
-
                         actors[i].fire();
-                        actors[i].postfire();
+                        _transitionRefinementsToPostfire.add(actors[i]);
                     }
                 }
-
                 ctrl.readOutputsFromRefinement();
             }
         }
-
-        return;
     }
 
     /** Schedule a firing of the given actor at the given time.
@@ -672,22 +667,39 @@ public class FSMDirector extends Director implements
         };
     }
 
-    /** Return true if the mode controller wishes to be scheduled for
-     *  another iteration. Execute the commit actions contained by the last
-     *  chosen transition of the mode controller and set its current
+    /** Invoke postfire() on any state refinements that were fired,
+     *  then execute the commit actions contained by the last
+     *  chosen transition, if any, then invoke postfire() on any transition
+     *  refinements that were fired, and finally set the current
      *  state to the destination state of the transition.
+     *  This will return false if any refinement that is postfired
+     *  returns false.
      *  @return True if the mode controller wishes to be scheduled for
-     *  another iteration.
+     *   another iteration.
      *  @exception IllegalActionException If thrown by any commit action
      *  or there is no controller.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_debugging && _verbose) {
-            _debug(getFullName(), "postfire called at time: " + getModelTime());
+        boolean result = true;
+        if (_debugging) {
+            _debug("*** postfire called at time: ", getModelTime().toString());
+        }
+        for (Actor stateRefinement : _stateRefinementsToPostfire) {
+            if (_debugging) {
+                _debug("Postfiring state refinment:", stateRefinement.getName());
+            }
+            result &= stateRefinement.postfire();
         }
 
         FSMActor controller = getController();
-        boolean result = controller.postfire();
+        result &= controller.postfire();
+
+        for (Actor transitionRefinement : _transitionRefinementsToPostfire) {
+            if (_debugging) {
+                _debug("Postfiring transition refinment:", transitionRefinement.getName());
+            }
+            result &= transitionRefinement.postfire();
+        }
 
         _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
                 .currentState());
@@ -706,7 +718,6 @@ public class FSMDirector extends Director implements
                 executiveDirector.fireAt(container, getModelTime());
             }
         }
-
         return result && !_stopRequested;
     }
 
@@ -1130,12 +1141,19 @@ public class FSMDirector extends Director implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Cached reference to mode controller.
+    
+    /** Cached reference to mode controller. */
     private FSMActor _controller = null;
 
-    // Version of cached reference to mode controller.
+    /** Version of cached reference to mode controller. */
     private long _controllerVersion = -1;
 
     // Version of the local receiver maps.
     private long _localReceiverMapsVersion = -1;
+
+    /** State refinements to postfire(), as determined by the fire() method. */
+    private List<Actor> _stateRefinementsToPostfire = new LinkedList<Actor>();
+
+    /** Transition refinements to postfire(), as determined by the fire() method. */
+    private List<Actor> _transitionRefinementsToPostfire = new LinkedList<Actor>();
 }
