@@ -36,7 +36,6 @@ import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.properties.lattice.PropertyConstraintASTNodeHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.PropertyTerm;
 import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;

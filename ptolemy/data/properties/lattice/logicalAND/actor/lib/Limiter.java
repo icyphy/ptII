@@ -33,7 +33,6 @@ import ptolemy.data.ScalarToken;
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.PropertyTerm;
 import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.graph.InequalityTerm;
