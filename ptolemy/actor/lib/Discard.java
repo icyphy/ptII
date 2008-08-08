@@ -27,7 +27,10 @@
  */
 package ptolemy.actor.lib;
 
+import java.net.URL;
+
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -36,20 +39,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  A simple sink actor that consumes and discards input tokens.
- This actor is useful in situations where the value of an output is not
+ <p>This actor is useful in situations where the value of an output is not
  needed, but for some reason, the output cannot be left unconnected.
  Also, when manipulating bus signals, this actor is useful if values
  in the middle of the bus need to be discarded.  Leaving the bus
  unconnected in the middle will not work because no channel is allocated
  to an unconnected relation in a bus.
 
- @author Edward A. Lee
+ @author Edward A. Lee, contributors: Christopher Brooks, Brian Hudson
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (ssachs)
  */
-public class Discard extends Sink {
+public class Discard extends Sink implements Configurable {
+
     /** Construct an actor with an input multiport.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,6 +70,20 @@ public class Discard extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Do nothing, as this actor is not actually configurable.
+     *  <p>This class implements {@link ptolemy.kernel.Configurable} so 
+     *  that the MoML filters can replace graphical actors that
+     *  implement Configurable with this actor.  Note that the actors
+     *  to be replaced must have an input port named <i>input</i>, so not
+     *  all Configurable actors can be replaced with this actor.
+     *  @param base Ignored.
+     *  @param source Ignored.
+     *  @param text Ignored.
+     *  @exception Exception Not thrown in this base class.
+     */
+    public void configure(URL base, String source, String text) throws Exception {
+    }
+
     /** Read one token from each input channel and discard it.
      *  If there is no input on a channel, then skip that channel, doing
      *  nothing with it.
@@ -80,5 +98,19 @@ public class Discard extends Sink {
                 input.get(i);
             }
         }
+    }
+
+    /** Return null because this actor is not actually configurable.
+     *  @return Always return null.
+     */
+    public String getConfigureSource() {
+	return null;
+    }
+
+    /** Return null because this actor is not actually configurable.
+     *  @return Always return null.
+     */
+    public String getConfigureText() {
+	return null;
     }
 }

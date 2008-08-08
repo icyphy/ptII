@@ -75,6 +75,7 @@ import quicktime.util.RawEncodedImage;
  @Pt.ProposedRating Red (chf)
  @Pt.AcceptedRating Red (chf)
  */
+@SuppressWarnings("deprecation")
 public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants,
         Errors {
     /** Construct a ViewScreen2D in the given container with the given name.

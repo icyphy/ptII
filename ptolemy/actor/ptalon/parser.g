@@ -41,6 +41,7 @@ package ptolemy.actor.ptalon;
   @Pt.AcceptedRating Red (celaine)
 */
 }
+@SuppressWarnings("unused")
 class PtalonRecognizer extends Parser;
 options {
     exportVocab = Ptalon;

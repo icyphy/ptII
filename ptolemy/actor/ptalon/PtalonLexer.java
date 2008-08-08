@@ -57,7 +57,7 @@ import antlr.collections.impl.BitSet;
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
 */
-
+@SuppressWarnings("unused")
 public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes, TokenStream
  {
 public PtalonLexer(InputStream in) {

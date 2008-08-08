@@ -44,14 +44,14 @@ import antlr.collections.impl.BitSet;
 
 /** 
   PtalonRecognizer.java generated from populator.g by ANTLR.
-
+  
   @author Adam Cataldo, Elaine Cheong, Thomas Huining Feng
   @version $Id$
   @since Ptolemy II 7.0
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
 */
-
+@SuppressWarnings("unused")
 public class PtalonRecognizer extends antlr.LLkParser       implements PtalonTokenTypes
  {
 

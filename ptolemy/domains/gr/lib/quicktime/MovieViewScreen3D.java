@@ -84,6 +84,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
  @Pt.ProposedRating Red (chf)
  @Pt.AcceptedRating Red (chf)
  */
+@SuppressWarnings("deprecation")
 public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
         Errors {
     /** Construct a ViewScreen2D in the given container with the given name.

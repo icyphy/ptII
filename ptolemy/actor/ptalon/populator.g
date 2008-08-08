@@ -39,6 +39,7 @@ package ptolemy.actor.ptalon;
   @Pt.AcceptedRating Red (celaine)
 */
 }
+@SuppressWarnings("unused")
 class PtalonPopulator extends TreeParser;
 options {
     importVocab = Ptalon;

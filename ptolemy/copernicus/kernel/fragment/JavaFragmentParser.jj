@@ -15,7 +15,7 @@ import java.io.*;
 import java.util.*;
 
 import ptolemy.copernicus.kernel.*;
-
+@SuppressWarnings("unused")
 public class JavaFragmentParser {
     
     public JavaFragmentParser(JimpleBody body, Stmt insertPoint) {
