@@ -38,7 +38,7 @@ import ptolemy.data.properties.token.PropertyToken;
 import ptolemy.data.properties.token.PropertyTokenCompositeHelper;
 import ptolemy.data.properties.token.PropertyTokenSolver;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.KernelException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CompositeActor
@@ -70,7 +70,7 @@ public class CompositeEntity extends PropertyTokenCompositeHelper {
         super(solver, entity);
     }
 
-    public void determineProperty() throws IllegalActionException, NameDuplicationException {
+    public void determineProperty() throws IllegalActionException, KernelException {
         super.determineProperty();
         
         Iterator ports = getPropertyables(IOPort.class).iterator();

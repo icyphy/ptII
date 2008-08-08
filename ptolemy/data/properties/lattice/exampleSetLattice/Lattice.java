@@ -28,7 +28,9 @@
 package ptolemy.data.properties.lattice.exampleSetLattice;
 
 import ptolemy.data.properties.Property;
+import ptolemy.data.properties.lattice.PropertySet;
 import ptolemy.data.properties.lattice.PropertySetLattice;
+import ptolemy.graph.DirectedAcyclicGraph;
 
 //////////////////////////////////////////////////////////////////////////
 //// PropertyLattice
@@ -57,10 +59,12 @@ public class Lattice extends PropertySetLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public /*static*/ Property TRUE = new True(this);
+    public /*static*/ Property A = new A(this);
 
-    public /*static*/ Property FALSE = new False(this);
+    public /*static*/ Property B = new B(this);
     
+    public /*static*/ Property C = new C(this);
+
     public /*static*/ Property UNKNOWN = new Unknown(this);
 
     ///////////////////////////////////////////////////////////////////
@@ -70,6 +74,15 @@ public class Lattice extends PropertySetLattice {
     // The infinite property lattice
     public Lattice() {
         super();
+        _lattice.setBasicLattice(new DirectedAcyclicGraph());
+
+        DirectedAcyclicGraph basicLattice = 
+            (DirectedAcyclicGraph) _lattice.basicLattice();
+        
+        // Add the empty set as the bottom.
+        basicLattice.addNodeWeight(new PropertySet(this, 
+                new Property[0]));
+        
     }
 
     ///////////////////////////////////////////////////////////////////

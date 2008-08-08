@@ -90,9 +90,10 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
     extends MonotonicFunction implements PropertyTerm {
         
         /**
+         * @throws IllegalActionException 
          * 
          */        
-        public Object getValue() {
+        public Object getValue() throws IllegalActionException {
             boolean isAllSameTokenValue = true;
             Token token = null;
             
@@ -101,19 +102,17 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
                     (ptolemy.data.expr.ASTPtRootNode) _node.jjtGetChild(i);
                 
                 Property childProperty = 
-                    _solver.getProperty(childNode);
+                    getSolver().getProperty(childNode);
                 
-                if (childProperty == _lattice.UNKNOWN) {
-                    return _lattice.UNKNOWN;
-                } else if (childProperty == _lattice.FALSE) {
-                    return _lattice.FALSE;
+                if ((childProperty == null) || (childProperty == _lattice.UNKNOWN) || (childProperty == _lattice.FALSE)) {
+                    return childProperty;
                 } else if (!(childNode.isConstant() && childNode.isEvaluated())) {
                     return _lattice.FALSE;
                 } else {
                     if (token == null) {
                         token = childNode.getToken();
                     } else {
-                        if (!(childNode.getToken().equals(token))) {
+                        if (!(childNode.getToken().isEqualTo(token).booleanValue())) {
                             isAllSameTokenValue = false;
                         }
                     }
@@ -140,7 +139,7 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
                     
                     PropertyConstraintASTNodeHelper helper;
                     
-                    helper = (PropertyConstraintASTNodeHelper) _solver.getHelper(child);
+                    helper = (PropertyConstraintASTNodeHelper) getSolver().getHelper(child);
                     InequalityTerm term = helper.getPropertyTerm(child);
                     
                     terms.add(term);

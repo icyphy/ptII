@@ -27,10 +27,13 @@
  */
 package ptolemy.data.properties.lattice;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import ptolemy.data.properties.Property;
 
 
 
@@ -49,6 +52,11 @@ import java.util.Set;
  */
 
 public class PropertySet extends LatticeProperty implements Set {
+
+    public PropertySet(PropertyLattice lattice, Property[] elements) {
+        super(lattice);
+        _elements = new HashSet(Arrays.asList(elements));
+    }
 
     public PropertySet(PropertyLattice lattice, Collection elements) {
         super(lattice);
@@ -115,5 +123,21 @@ public class PropertySet extends LatticeProperty implements Set {
 
     public Object[] toArray(Object[] a) {
         return _elements.toArray(a);
+    }
+    
+    public String toString() {
+        StringBuffer result = new StringBuffer("{");
+        
+        Iterator iterator = _elements.iterator();
+
+        if (!_elements.isEmpty()) {
+            result.append(iterator.next().toString());
+        }
+        for (int i = 1; i < _elements.size(); i++) {
+            result.append(", " + iterator.next().toString());
+        }
+        result.append("}");
+        
+        return result.toString();
     }
 }

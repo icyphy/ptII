@@ -13,13 +13,13 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.5, 306.5}">
     </property>
     <property name="LogicalAND_Forward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS">
-        <property name="action" class="ptolemy.moml.SharedParameter" value="TEST">
+        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
         </property>
         <property name="logMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH\trainedConstraints">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{435, 75}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{435.0, 75.0}">
         </property>
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -29,22 +29,22 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[131.75, 141.875]">
             </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="False">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
-            </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
             </property>
         </port>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 145.0]">
             </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="False">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
-            </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
             </property>
         </port>
         <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -54,22 +54,22 @@
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 205.0]">
                 </property>
+                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+                </property>
                 <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="False">
                 </property>
                 <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
-                </property>
-                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
                 </property>
             </port>
             <port name="out" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 210.0]">
                 </property>
+                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+                </property>
                 <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="False">
                 </property>
                 <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
-                </property>
-                <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
                 </property>
             </port>
             <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -79,22 +79,22 @@
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 175.0]">
                     </property>
+                    <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+                    </property>
                     <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="False">
                     </property>
                     <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
-                    </property>
-                    <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
                     </property>
                 </port>
                 <port name="out" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 180.0]">
                     </property>
+                    <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+                    </property>
                     <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="False">
                     </property>
                     <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
-                    </property>
-                    <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
                     </property>
                 </port>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -132,11 +132,11 @@
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
-            </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
             </property>
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
@@ -144,11 +144,11 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="False">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
-            </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -169,11 +169,11 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="False">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
-            </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
             </property>
         </port>
     </entity>

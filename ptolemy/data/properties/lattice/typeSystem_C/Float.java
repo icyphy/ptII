@@ -29,6 +29,7 @@
 package ptolemy.data.properties.lattice.typeSystem_C;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
@@ -52,11 +53,11 @@ public class Float extends LatticeProperty implements TypeProperty {
         super(lattice);
     }
 
-    public DoubleToken getMaxValue() {
+    public Token getMaxValue() {
         return new DoubleToken(3.40282347E38F);
     }
 
-    public DoubleToken getMinValue() {
+    public Token getMinValue() {
        return new DoubleToken(1.17549435E-38F);
     }
 

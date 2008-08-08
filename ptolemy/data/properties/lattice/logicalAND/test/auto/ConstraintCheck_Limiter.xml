@@ -19,13 +19,15 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.5, 310.0}">
     </property>
     <property name="LogicalAND_Forward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS">
-        <property name="action" class="ptolemy.moml.SharedParameter" value="TEST">
+        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
         </property>
         <property name="logMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH\trainedConstraints">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 170.0]">
+        </property>
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Limiter.Limiter.input}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Limiter.Limiter.output}.&#13;&#10;]&#10;  in .ConstraintCheck_Limiter.LogicalAND_Forward">
         </property>
     </property>
     <entity name="Limiter" class="ptolemy.actor.lib.Limiter">

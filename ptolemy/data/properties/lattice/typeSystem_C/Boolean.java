@@ -29,6 +29,7 @@
 package ptolemy.data.properties.lattice.typeSystem_C;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
@@ -51,11 +52,11 @@ public class Boolean extends LatticeProperty implements TypeProperty {
         super(lattice);
     }
 
-    public BooleanToken getMaxValue() {
+    public Token getMaxValue() {
         return new BooleanToken(true);
     }
 
-    public BooleanToken getMinValue() {
+    public Token getMinValue() {
        return new BooleanToken(false);
     }
 

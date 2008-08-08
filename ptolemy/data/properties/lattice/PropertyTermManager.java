@@ -95,7 +95,7 @@ public class PropertyTermManager implements PropertyTermFactory {
         if (!_propertyTerms.containsKey(object)) {
             _propertyTerms.put(object, new InequalityTerm(object));                        
         }
-        return _propertyTerms.get(object);         
+        return (PropertyTerm) _propertyTerms.get(object);         
     }
 
     
@@ -107,9 +107,6 @@ public class PropertyTermManager implements PropertyTermFactory {
         new HashMap<Object, PropertyTerm>();
 
     protected PropertyConstraintSolver _solver;
-    
-    
-    
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////

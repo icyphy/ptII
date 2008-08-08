@@ -38,7 +38,7 @@ import ptolemy.data.properties.token.PropertyToken;
 import ptolemy.data.properties.token.PropertyTokenHelper;
 import ptolemy.data.properties.token.PropertyTokenSolver;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.KernelException;
 
 //////////////////////////////////////////////////////////////////////////
 //// AtomicActor
@@ -69,7 +69,7 @@ public class AtomicActor extends PropertyTokenHelper {
         super(solver, actor);
     }
 
-    public void determineProperty() throws IllegalActionException, NameDuplicationException {
+    public void determineProperty() throws IllegalActionException, KernelException {
         super.determineProperty();
         
         Iterator ports = getPropertyables(IOPort.class).iterator();

@@ -28,6 +28,7 @@
  */
 package ptolemy.data.properties.lattice.typeSystem_C;
 
+import ptolemy.data.Token;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
@@ -51,11 +52,11 @@ public class Void extends LatticeProperty implements TypeProperty {
         super(lattice);
     }
 
-    public NullToken getMaxValue() {
+    public Token getMaxValue() {
         return new NullToken();
     }
 
-    public NullToken getMinValue() {
+    public Token getMinValue() {
        return new NullToken();
     }
 

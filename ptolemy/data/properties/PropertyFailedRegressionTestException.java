@@ -27,13 +27,12 @@
  */
 package ptolemy.data.properties;
 
-import ptolemy.kernel.util.NamedObj;
 
 
 public class PropertyFailedRegressionTestException extends PropertyResolutionException {
 
-    public PropertyFailedRegressionTestException(NamedObj object1, String detail) {
-        super(object1, detail);
+    public PropertyFailedRegressionTestException(PropertySolver solver, String detail) {
+        super(solver, detail);
     }
 
     /**

@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 50}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 90, 950, 727}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={106, 54, 950, 727}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 620]">
     </property>
@@ -19,13 +19,15 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.5, 310.0}">
     </property>
     <property name="LogicalAND_Forward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS">
-        <property name="action" class="ptolemy.moml.SharedParameter" value="TEST">
+        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
         </property>
         <property name="logMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH\trainedConstraints">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 160.0]">
+        </property>
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_Join_MultiPorts_to_Sink_Multiport.Discard.input}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_Join_MultiPorts_to_Sink_Multiport.Subscriber.input}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_Join_MultiPorts_to_Sink_Multiport.Subscriber.output}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_Join_MultiPorts_to_Sink_Multiport.Subscriber2.input}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_Join_MultiPorts_to_Sink_Multiport.Subscriber2.output}.&#13;&#10;]&#10;  in .ConstraintCheck_Relation_Join_MultiPorts_to_Sink_Multiport.LogicalAND_Forward">
         </property>
     </property>
     <entity name="Discard" class="ptolemy.actor.lib.Discard">
@@ -34,11 +36,11 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
     </entity>
@@ -65,21 +67,21 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
     </entity>
@@ -106,21 +108,21 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
     </entity>

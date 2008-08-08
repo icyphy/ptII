@@ -1,5 +1,7 @@
- subHelper's 	eff	eff	(ptolemy.data.expr.Parameter {.ConstraintCheck_AtomicActor_1input_SinglePort_1output_Mulitport.Const.value} 1, True)	<=	(ptolemy.actor.TypedIOPort {.ConstraintCheck_AtomicActor_1input_SinglePort_1output_Mulitport.Const.output}, True)
- subHelper's 	eff	eff	.ConstraintCheck_AtomicActor_1input_SinglePort_1output_Mulitport.Const (PtLeafNode:true:null:1:null, True)	<=	(ptolemy.data.expr.Parameter {.ConstraintCheck_AtomicActor_1input_SinglePort_1output_Mulitport.Const.value} 1, True)
- subHelper's 	eff	eff	(ptolemy.actor.TypedIOPort {.ConstraintCheck_AtomicActor_1input_SinglePort_1output_Mulitport.Distributor.input}, True)	<=	(ptolemy.actor.TypedIOPort {.ConstraintCheck_AtomicActor_1input_SinglePort_1output_Mulitport.Distributor.output}, True)
- subHelper's 	eff	eff	(ptolemy.actor.TypedIOPort {.ConstraintCheck_AtomicActor_1input_SinglePort_1output_Mulitport.Const.output}, True)	<=	(ptolemy.actor.TypedIOPort {.ConstraintCheck_AtomicActor_1input_SinglePort_1output_Mulitport.Distributor.input}, True)
- subHelper's 	eff	eff	.ConstraintCheck_AtomicActor_1input_SinglePort_1output_Mulitport.Distributor (PtLeafNode:true:null:1:null, True)	<=	(ptolemy.data.expr.Parameter {.ConstraintCheck_AtomicActor_1input_SinglePort_1output_Mulitport.Distributor.blockSize} 1, True)
+ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Const.output	True	<=	eff		TypedIOPort	.Distributor.input	True
+ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Distributor.output	True	<=	eff		TypedIOPort	.Discard.input	True
+ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Distributor.output	True	<=	eff		TypedIOPort	.Discard2.input	True
+ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Distributor.output	True	<=	eff		TypedIOPort	.Discard3.input	True
+ptolemy.data.properties.lattice.logicalAND.actor.lib	Const	.Const	base	eff		Parameter	.Const.value	True	<=	eff		TypedIOPort	.Const.output	True
+ptolemy.data.properties.lattice.logicalAND.actor.lib	Const	.Const	base	eff	.Const	ASTPtLeafNode	PtLeafNode:true:null:1:null	True	<=	eff		Parameter	.Const.value	True
+ptolemy.data.properties.lattice.logicalAND.actor	AtomicActor	.Distributor	base	eff		TypedIOPort	.Distributor.input	True	<=	eff		TypedIOPort	.Distributor.output	True

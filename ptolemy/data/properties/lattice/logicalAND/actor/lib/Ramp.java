@@ -29,6 +29,7 @@ package ptolemy.data.properties.lattice.logicalAND.actor.lib;
 
 import java.util.List;
 
+import ptolemy.data.IntToken;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.kernel.util.Attribute;
@@ -58,7 +59,7 @@ public class Ramp extends Source {
     public List<Inequality> constraintList() throws IllegalActionException {
         if (_actor.step.getPort().connectedPortList().isEmpty()) {
             setAtLeast(_actor.output, _actor.step);
-            if (_actor.step.getToken().equals(_actor.step.getToken().zero())) {
+            if (_actor.step.getToken().isEqualTo(new IntToken(0)).booleanValue()) {
                 setAtLeast(_actor.output, _lattice.TRUE);
             } else {
                 setAtLeast(_actor.output, _lattice.FALSE);                

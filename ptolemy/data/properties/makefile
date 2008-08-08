@@ -51,7 +51,6 @@ JSRCS = \
 	ModelAnalyzer.java \
 	ModelWriter.java \
 	ParseTreeASTNodeHelperCollector.java \
-	ParseTreeNodeCollector.java \
 	Property.java \
 	PropertyAttribute.java \
 	PropertyFailedRegressionTestException.java \
@@ -66,8 +65,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo here, otherwise "make sources" will run the demos
-MISC_FILES =	configuredSolvers gui lattice test token util
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -79,7 +77,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
-
+#$(EXTRA_SRCS) jclass 
+propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

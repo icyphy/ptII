@@ -32,6 +32,7 @@ import java.util.HashMap;
 import ptolemy.data.properties.Property;
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PropertyLattice
@@ -55,24 +56,24 @@ import ptolemy.graph.DirectedAcyclicGraph;
  @Pt.AcceptedRating Red (mankit)
  @see ptolemy.graph.CPO
  */
-public class PropertyLattice {
+public class PropertyLattice extends DirectedAcyclicGraph implements CPO {
     
     protected PropertyLattice() {
     }
         
-    protected class ThePropertyLattice implements CPO {
+//    protected class ThePropertyLattice implements CPO {
         
         /** Return the bottom element of the property lattice, which is UNKNOWN.
          *  @return The Property object representing UNKNOWN.
          */
         public Object bottom() {
             synchronized (PropertyLattice.class) {
-                return _basicLattice.bottom();
+                return /*_basicLattice*/super.bottom();
             }
         }
         
         public CPO basicLattice() {
-            return _basicLattice;
+            return this; //_basicLattice;
         }
 
         /** Compare two properties in the property lattice. The arguments must be
@@ -95,7 +96,7 @@ public class PropertyLattice {
                             + "Arguments are not instances of Property: " + " property1 = "
                             + t1 + ", property2 = " + t2);
                 }
-                return _basicLattice.compare(t1, t2);
+                return /*_basicLattice*/super.compare((Property)t1, (Property)t2);
             }
         }
 
@@ -127,15 +128,15 @@ public class PropertyLattice {
                             "ThePropertyLattice.greatestLowerBound: "
                             + "Arguments are not instances of Property.");
                 }
-                if (!_basicLattice.containsNodeWeight(t1)) {
+                if (!/*_basicLattice*/super.containsNodeWeight(t1)) {
                     throw new IllegalArgumentException(
                             "ThePropertyLattice does not contain " + t1);
                 }
-                if (!_basicLattice.containsNodeWeight(t2)) {
+                if (!/*_basicLattice*/super.containsNodeWeight(t2)) {
                     throw new IllegalArgumentException(
                             "ThePropertyLattice does not contain " + t2);
                 }
-                int relation = _basicLattice.compare(t1, t2);
+                int relation = /*_basicLattice*/super.compare(t1, t2);
                 if (relation == SAME) {
                     return t1;
                 } else if (relation == LOWER) {
@@ -143,7 +144,7 @@ public class PropertyLattice {
                 } else if (relation == HIGHER) {
                     return t2;
                 } else { // INCOMPARABLE
-                    return _basicLattice.greatestLowerBound(t1, t2);
+                    return /*_basicLattice*/super.greatestLowerBound(t1, t2);
                 }
             }
         }
@@ -252,7 +253,7 @@ public class PropertyLattice {
                     // Both are neither the same structured property, nor an array
                     // and non-array pair, so their property relation is defined
                     // by the basic lattice.
-                    int relation = _basicLattice.compare(t1, t2);
+                    int relation = /*_basicLattice*/super.compare(t1, t2);
 
                     if (relation == SAME) {
                         return t1;
@@ -261,7 +262,7 @@ public class PropertyLattice {
                     } else if (relation == HIGHER) {
                         return t1;
                     } else { // INCOMPARABLE
-                        return _basicLattice.leastUpperBound(t1, t2);
+                        return /*_basicLattice*/super.leastUpperBound(t1, t2);
                     }
             }
         }
@@ -281,7 +282,7 @@ public class PropertyLattice {
          */
         public Object top() {
             synchronized (PropertyLattice.class) {
-                return _basicLattice.top();
+                return /*_basicLattice*/super.top(); 
             }
         }
 
@@ -296,12 +297,12 @@ public class PropertyLattice {
                             + "the property lattice.");
         }
         
-        protected DirectedAcyclicGraph _basicLattice = new DirectedAcyclicGraph();
+        protected DirectedAcyclicGraph _basicLattice = this; //new DirectedAcyclicGraph();
 
         public void setBasicLattice(DirectedAcyclicGraph graph) {
-            _basicLattice = graph;
+            //_basicLattice = graph;
         }
-    }
+//    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -310,9 +311,9 @@ public class PropertyLattice {
      *  lattice.
      *  @return an instance of CPO.
      */
-    public CPO basicLattice() {
-        return _lattice.basicLattice();
-    }
+//    public CPO basicLattice() {
+//        return _lattice.basicLattice();
+//    }
 
     /** Compare two properties in the property lattice.
      *  This method returns one of ptolemy.graph.CPO.LOWER,
@@ -324,16 +325,16 @@ public class PropertyLattice {
      *  @param property2 an instance of Property.
      *  @return An integer.
      */
-    public synchronized int compare(Property property1, Property property2) {
-        if ((property1 == null) || (property2 == null)) {
-            throw new IllegalArgumentException(
-                    "PropertyLattice.compare(Property, Property): "
-                            + "one or both of the argument properties is null: "
-                            + " property1 = " + property1 + ", property2 = " + property2);
-        }
-
-        return _lattice.compare(property1, property2);
-    }
+//    public synchronized int compare(Property property1, Property property2) {
+//        if ((property1 == null) || (property2 == null)) {
+//            throw new IllegalArgumentException(
+//                    "PropertyLattice.compare(Property, Property): "
+//                            + "one or both of the argument properties is null: "
+//                            + " property1 = " + property1 + ", property2 = " + property2);
+//        }
+//
+//        return _lattice.compare(property1, property2);
+//    }
 
     public static void resetAll() {
         _lattices.clear();
@@ -368,6 +369,16 @@ public class PropertyLattice {
         return lattice;
     }
 
+    public Property getElement(String fieldName)
+    throws IllegalActionException {
+        try {
+            return (Property) getClass().getField(fieldName).get(this);
+        } catch (Exception ex) {
+//            return null;
+            throw new IllegalActionException(
+                    "No lattice element named \"" + fieldName + "\".");
+        }
+    }
     
     /** Return the greatest lower bound of the two given properties.
      *  @param property1 The first given property.
@@ -375,7 +386,7 @@ public class PropertyLattice {
      *  @return The greatest lower bound of property1 and property2.
      */
     public synchronized Property greatestLowerBound(Property property1, Property property2) {
-        return (Property) _lattice.greatestLowerBound(property1, property2);
+        return (Property) _lattice.greatestLowerBound((Property) property1, (Property) property2);
     }
 
     /** Return the an instance of CPO representing the infinite property
@@ -392,7 +403,7 @@ public class PropertyLattice {
      *  @return The least upper bound of property1 and property2.
      */
     public synchronized Property leastUpperBound(Property property1, Property property2) {
-        return (Property) _lattice.leastUpperBound(property1, property2);
+        return (Property) leastUpperBound((Object) property1, (Object) property2);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -403,7 +414,7 @@ public class PropertyLattice {
     ////                         private variables                 ////
 
     /** The infinite property lattice. */
-    protected ThePropertyLattice _lattice = new ThePropertyLattice();
+    protected PropertyLattice _lattice = this;
 
     /**
      * A HashMap that contains all property lattices with unique

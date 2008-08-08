@@ -46,7 +46,11 @@ public class FirstTokenSentListener implements TokenSentListener, IOPortEventLis
         } 
 
         try {
-            ((PropertyTokenHelper)_solver.getHelper(port.getContainer())).setEquals(port, new PropertyToken(token));
+            // prevent of logging an event multiple times (necessary for SampleDelay in combination 
+            // with value inference for extendedFirstValueToken solver)
+            if (_solver.getToken(port) == null) {
+                ((PropertyTokenHelper)_solver.getHelper(port.getContainer())).setEquals(port, new PropertyToken(token));
+            }
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

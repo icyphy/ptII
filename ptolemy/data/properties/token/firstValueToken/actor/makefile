@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/properties/token/firstValueToken/actor
 
-DIRS = 		
+DIRS =      lib
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..

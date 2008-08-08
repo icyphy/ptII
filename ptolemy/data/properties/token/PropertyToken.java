@@ -48,6 +48,7 @@ public class PropertyToken extends Property {
                 // numbers in MoML file
                 return _token.toString().equals(property.getToken().toString());
             } else {
+                // compare tokens, not values!
                 return _token.equals(property._token);
             }
         } 

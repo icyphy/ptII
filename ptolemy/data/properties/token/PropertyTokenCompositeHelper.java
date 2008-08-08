@@ -14,8 +14,8 @@ public class PropertyTokenCompositeHelper extends PropertyTokenHelper {
         super(solver, component);
     }
     
-    public void addListener() throws IllegalActionException {
-        super.addListener();
+    public void addListener(boolean listenInputs, boolean listenOutputs) throws IllegalActionException {
+        super.addListener(listenInputs, listenOutputs);
         
         Iterator iterator = _getSubHelpers().iterator();
         
@@ -23,12 +23,12 @@ public class PropertyTokenCompositeHelper extends PropertyTokenHelper {
             PropertyTokenHelper helper = 
                 (PropertyTokenHelper) iterator.next();
             
-            helper.addListener();
+            helper.addListener(listenInputs, listenOutputs);
         }
     }
     
-    public void removeListener() throws IllegalActionException {
-        super.removeListener();
+    public void removeListener(boolean listenInputs, boolean listenOutputs) throws IllegalActionException {
+        super.removeListener(listenInputs, listenOutputs);
         
         Iterator iterator = _getSubHelpers().iterator();
         
@@ -36,7 +36,7 @@ public class PropertyTokenCompositeHelper extends PropertyTokenHelper {
             PropertyTokenHelper helper = 
                 (PropertyTokenHelper) iterator.next();
             
-            helper.removeListener();
+            helper.removeListener(listenInputs, listenOutputs);
         }
     }
 

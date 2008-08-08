@@ -52,7 +52,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	LogicalAND.xml
+	multipleActorsHierarchyLoopFSM.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -72,7 +72,7 @@ all: jclass
 	@echo "To run the demo, run 'make demo'"
 
 demo:
-	"$(PTII)/bin/vergil" LogicalAND.xml
+	"$(PTII)/bin/vergil" multipleActorsHierarchyLoopFSM.xml
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 

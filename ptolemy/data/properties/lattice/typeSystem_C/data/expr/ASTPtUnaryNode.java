@@ -68,9 +68,9 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
                 setEquals(node, lattice.convertJavaToCtype(node.getToken().getType(), node.getToken()));
             } else {
                 // get extendedFirstValueToken from helper
-                PropertySolver solver = _solver.findSolver("extendedFirstValueToken");
+                PropertySolver solver = getSolver().findSolver("extendedFirstValueToken");
                 PropertyToken propertyToken = (PropertyToken) solver.getProperty(node);
-                Token valueToken = propertyToken.getToken();
+                Token valueToken = (Token) propertyToken.getToken();
                 setEquals(node, lattice.convertJavaToCtype(valueToken.getType(), valueToken));                
             }
         }

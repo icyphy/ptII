@@ -19,13 +19,15 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.5, 310.0}">
     </property>
     <property name="LogicalAND_Forward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS">
-        <property name="action" class="ptolemy.moml.SharedParameter" value="TEST">
+        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
         </property>
         <property name="logMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH\trainedConstraints">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, 110.0}">
+        </property>
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.AtomicActor_Expression_3inputs.Discard2.input}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.AtomicActor_Expression_3inputs.Expression2.output}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.AtomicActor_Expression_3inputs.Expression2.in1}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.AtomicActor_Expression_3inputs.Expression2.in2}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.AtomicActor_Expression_3inputs.Expression2.in3}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.kernel.util.StringAttribute {.AtomicActor_Expression_3inputs.Expression2.expression}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.AtomicActor_Expression_3inputs.Expression3.in1}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.AtomicActor_Expression_3inputs.Expression3.in3}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtSumNode:false:null:null.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtLeafNode:false:null:null:in1.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtLeafNode:false:null:null:in2.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtLeafNode:false:null:null:in3.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtLeafNode:false:null:null:in1.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtLeafNode:false:null:null:in3.&#13;&#10;]&#10;  in .AtomicActor_Expression_3inputs.LogicalAND_Forward">
         </property>
     </property>
     <entity name="Discard" class="ptolemy.actor.lib.Discard">

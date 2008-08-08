@@ -40,6 +40,7 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.properties.ParseTreeAnnotationEvaluator;
 import ptolemy.data.properties.PropertyHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver.ConstraintType;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -198,7 +199,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
                 // Take care of actors without nodes, e.g. MonitorValue actors without previous execution
                 if (node != null) {
                     PropertyConstraintASTNodeHelper astHelper = 
-                        ((PropertyConstraintSolver)_solver).getHelper(node);
+                        (PropertyConstraintASTNodeHelper) ((PropertyConstraintSolver)_solver).getHelper(node);
                     
                     List list = new ArrayList();
                     list.add(node);
@@ -244,6 +245,11 @@ public class PropertyConstraintHelper extends PropertyHelper {
         return (PropertyConstraintSolver) _solver;
     }
     
+    public boolean isAnnotated(Object object) {
+        return ((PropertyConstraintSolver) _solver)
+        .isAnnotatedTerm(object);
+    }
+    
     public boolean isConstraintSource() {
         boolean constraintSource = 
             (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||  
@@ -265,6 +271,16 @@ public class PropertyConstraintHelper extends PropertyHelper {
         if (term1 != null && term2 != null) {
             _solver.incrementStats("# of default constraints", 1);
             _solver.incrementStats("# of atomic actor default constraints", 1);
+        }
+    }
+
+    public void setAtLeastManualAnnotation(Object term1, Object term2) {
+        setAtLeast(term1, term2);
+        
+        if (term1 != null && term2 != null) {
+            getSolver().addAnnotated(term1);
+            getSolver().addAnnotated(term2);
+            _solver.incrementStats("# of manual annotations", 1);
         }
     }
 
@@ -297,13 +313,23 @@ public class PropertyConstraintHelper extends PropertyHelper {
         }
     }
     
+    public void setSameAsManualAnnotation(Object term1, Object term2) {
+        setSameAs(term1, term2);
+        
+        if (term1 != null && term2 != null) {
+            getSolver().addAnnotated(term1);
+            getSolver().addAnnotated(term2);
+            _solver.incrementStats("# of manual annotations", 2);
+        }
+    }
+
     /**
      * 
      * @param object
      * @return
      */
     public List<PropertyTerm> getConstraintingTerms(Object object) {
-        return getSolver().getConstraintManager()
+        return (List<PropertyTerm>) getSolver().getConstraintManager()
         .getConstraintingTerms(object);
     }
 
@@ -327,10 +353,6 @@ public class PropertyConstraintHelper extends PropertyHelper {
     
     public PropertyTerm getPropertyTerm(Object object) {
         return getSolver().getPropertyTerm(object);
-    }
-    
-    public Object getPropertyTermValue(Object object) {
-        return getPropertyTerm(object).getValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -595,5 +617,11 @@ public class PropertyConstraintHelper extends PropertyHelper {
         private boolean _isBase;
         
         private PropertyHelper _helper;
+    }
+
+
+    @Override
+    protected ParseTreeAnnotationEvaluator _annotationEvaluator() {
+        return new ParseTreeConstraintAnnotationEvaluator();
     }
 }

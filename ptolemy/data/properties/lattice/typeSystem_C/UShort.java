@@ -29,6 +29,7 @@
 package ptolemy.data.properties.lattice.typeSystem_C;
 
 import ptolemy.data.LongToken;
+import ptolemy.data.Token;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
@@ -50,12 +51,12 @@ public class UShort extends LatticeProperty implements TypeProperty {
     public UShort(PropertyLattice lattice) {
         super(lattice);
     }
-    public LongToken getMaxValue() {
+    public Token getMaxValue() {
         return new LongToken((long)Math.pow(2, 16)-1);
    }
 
-   public LongToken getMinValue() {
-       return new LongToken(0);
+   public Token getMinValue() {
+       return new LongToken((long)0);
    }
 
    public boolean hasMinMaxValue() {

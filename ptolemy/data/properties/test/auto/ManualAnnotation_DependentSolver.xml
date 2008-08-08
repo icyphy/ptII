@@ -1,0 +1,172 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ManualAnnotation_DependentSolver" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 28, 816, 520}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="LogicalAND_OR_Value_CS" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_OR_Value_CS">
+        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
+        </property>
+        <property name="manualAnnotation" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 45.0]">
+        </property>
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ManualAnnotation_DependentSolver.Expression.in}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ManualAnnotation_DependentSolver.AddSubtract.plus}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ManualAnnotation_DependentSolver.AddSubtract.minus}.&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ManualAnnotation_DependentSolver.AddSubtract.output}.&#10;]&#10;  in .ManualAnnotation_DependentSolver.LogicalAND_OR_Value_CS">
+        </property>
+    </property>
+    <property name="FirstValuePTS" class="ptolemy.data.properties.configuredSolvers.token.FirstValuePTS">
+        <property name="manualAnnotation" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 110.0]">
+        </property>
+    </property>
+    <property name="FirstValuePTS::0" class="ptolemy.data.properties.AnnotationAttribute" value="Expression.out = 1">
+    </property>
+    <property name="LogicalOR_Backward_CS" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalOR_Backward_CS">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 185.0]">
+        </property>
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170, 85}">
+        </property>
+    </property>
+    <entity name="Discard" class="ptolemy.actor.lib.Discard">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 265.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
+            </property>
+            <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+            </property>
+        </port>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(2+in)">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
+            </property>
+            <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 255.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="True">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.2,1.0}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="True">
+            </property>
+            <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+            </property>
+        </port>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+            <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+            </property>
+        </port>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 245.0]">
+        </property>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+            <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+            </property>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+            <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
+            <property name="lattice::logicalAND" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
+            <property name="token::firstValueToken" class="ptolemy.data.properties.token.PropertyTokenAttribute" value="nil">
+            </property>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="False">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Discard.input" relation="relation"/>
+    <link port="Expression.output" relation="relation"/>
+    <link port="Expression.in" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation2"/>
+</entity>

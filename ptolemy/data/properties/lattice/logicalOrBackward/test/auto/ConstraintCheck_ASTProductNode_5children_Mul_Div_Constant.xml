@@ -19,13 +19,15 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.5, 310.0}">
     </property>
     <property name="LogicalOR_Backward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalOR_Backward_CS">
-        <property name="action" class="ptolemy.moml.SharedParameter" value="TEST">
+        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
         </property>
         <property name="logMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="Trained constraint directory" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH\trainedConstraints">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 140.0}">
+        </property>
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant.Parameter} 0.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.data.expr.Parameter {.ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant.Parameter} 0.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtProductNode:true:null:null.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtLeafNode:true:null:1:null.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtLeafNode:true:null:2:null.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtLeafNode:true:null:3:null.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtLeafNode:true:null:4:null.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for PtLeafNode:true:null:5:null.&#13;&#10;]&#10;  in .ConstraintCheck_ASTProductNode_5children_Mul_Div_Constant.LogicalOR_Backward">
         </property>
     </property>
     <property name="Parameter" class="ptolemy.data.expr.Parameter" value="1*2/3*4%5">

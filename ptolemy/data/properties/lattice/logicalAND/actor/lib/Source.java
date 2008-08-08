@@ -37,8 +37,8 @@ import ptolemy.data.properties.lattice.logicalAND.Lattice;
 import ptolemy.data.properties.lattice.logicalAND.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
-//// Const
+
+////Const
 
 /**
  A helper class for ptolemy.actor.lib.Source.
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
-*/
+ */
 public class Source extends AtomicActor {
 
     /**
@@ -61,35 +61,35 @@ public class Source extends AtomicActor {
      */
     public Source(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.Source actor)
-            throws IllegalActionException {
+    throws IllegalActionException {
 
         super(solver, actor, false);
         _actor = actor;
         _lattice = (Lattice) getSolver().getLattice();        
-     }
+    }
 
     public Source(PropertyConstraintSolver solver, 
             ptolemy.actor.lib.Source actor,
             boolean useDefaultConstraints)
-            throws IllegalActionException {
+    throws IllegalActionException {
 
         super(solver, actor, useDefaultConstraints);
         _actor = actor;
         _lattice = (Lattice) getSolver().getLattice();        
-     }
-    
+    }
+
     public List<Inequality> constraintList() 
     throws IllegalActionException {
         // add default constraints if no constraints specified in actor helper 
-        
+
         if (_ownConstraints.isEmpty()) {
             // force outputs to FALSE by default; overwrite in actor specific helper class
             setAtLeast(_actor.output, _lattice.FALSE);        
         }
-        
+
         return super.constraintList();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private ptolemy.actor.lib.Source _actor;
@@ -100,12 +100,14 @@ public class Source extends AtomicActor {
         while (ports.hasNext()) {                    
             TypedIOPort port = (TypedIOPort) ports.next();
             if ((port.numLinks() <= 0) &&
-                (port.isInput()) && 
-                (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER)) {
-                    
-                getPropertyTerm(port).setEffective(false);
+                    (port.isInput()) && 
+                    (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER)) {
+
+                if (!isAnnotated(port)) {
+                    getPropertyTerm(port).setEffective(false);
+                }
             }
         }
-        
+
     }
 }

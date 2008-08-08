@@ -28,7 +28,7 @@
  */
 package ptolemy.data.properties.lattice.typeSystem_C;
 
-import ptolemy.data.ScalarToken;
+import ptolemy.data.Token;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
@@ -51,11 +51,11 @@ public class Unknown extends LatticeProperty implements TypeProperty {
     public Unknown(PropertyLattice lattice) {
         super(lattice);
     }
-    public ScalarToken getMaxValue() {
+    public Token getMaxValue() {
         return null;
     }
 
-    public ScalarToken getMinValue() {
+    public Token getMinValue() {
         return null;
     }
 

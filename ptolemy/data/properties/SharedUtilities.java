@@ -1,10 +1,9 @@
 package ptolemy.data.properties;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,17 +11,16 @@ import java.util.Set;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NamedObj;
 
 public class SharedUtilities {
 
-    private SharedParameter _sharedParameter;
+    //private SharedParameter _sharedParameter;
 
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
     public SharedUtilities(SharedParameter parameter) {
-        _sharedParameter = parameter;
+        //_sharedParameter = parameter;
         id = count++;
     }
     
@@ -32,38 +30,9 @@ public class SharedUtilities {
         _attributes = new HashMap<ASTPtRootNode, Attribute>();
         _errors = new ArrayList<String>();
 
-        Iterator iterator = getAllSolvers().iterator();
-        while (iterator.hasNext()) {
-            PropertySolver solver = (PropertySolver) iterator.next();
-            solver.reset();
-        }
         PropertyHelper.resetAll();
     }
-
     
-    public List<PropertySolver> getAllSolvers() {
-        List<NamedObj> parameters = new ArrayList<NamedObj>(_sharedParameter.sharedParameterSet());
-        List<PropertySolver>  solvers= new LinkedList<PropertySolver>();
-        for (NamedObj parameter : parameters) {
-            Object container = parameter.getContainer();
-            if (container instanceof PropertySolver) {
-                solvers.add((PropertySolver) container);
-            }
-        }
-        return solvers;
-        
-        /*
-        ArrayList<PropertySolver> result = new ArrayList<PropertySolver>();
-        Enumeration attributes = this.toplevel().getAttributes();
-        while (attributes.hasMoreElements()) {
-            Attribute attrribute = (Attribute) attributes.nextElement();
-            if (attribute instanceof PropertySolver) {
-                result.add((PropertySolver) attribute);
-            }
-        }
-        */
-    }
-
     /**
      * @param _parseTrees the _parseTrees to set
      */
@@ -134,7 +103,13 @@ public class SharedUtilities {
      * @return the _errors
      */
     public ArrayList<String> getErrors() {
+        Collections.sort(_errors);
         return _errors;
     }
 
+    public List removeErrors() {
+        List result = new ArrayList(_errors);
+        _errors.clear();
+	return result;
+    }
 }

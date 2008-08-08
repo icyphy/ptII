@@ -30,6 +30,8 @@ package ptolemy.data.properties;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,9 +46,11 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
@@ -158,6 +162,17 @@ public class ModelAnalyzer extends Transformer {
             String actionValue = action.getExpression();
             
             try {
+
+                URIAttribute attribute = (URIAttribute) 
+                entity.getAttribute("_uri", URIAttribute.class);
+                if (attribute == null) {
+                    attribute = new URIAttribute(entity, "_uri");
+                }
+                if (attribute.getURI() == null) {
+                    URI uri = _getModelURI(getName() + "_" + entity.getName());
+                    attribute.setURI(uri);
+                }
+                
                 PropertySolver chosenSolver = null;
                 
                 List solversInModel = entity.attributeList(PropertySolver.class);
@@ -182,30 +197,27 @@ public class ModelAnalyzer extends Transformer {
                 }
 
                 if (chosenSolver instanceof PropertyConstraintSolver) {
-                    ((PropertyConstraintSolver) chosenSolver).setLogMode(logMode.getToken() == BooleanToken.TRUE);
+                    ((PropertyConstraintSolver) chosenSolver)
+                    .setLogMode(logMode.getToken() == BooleanToken.TRUE);
                 }
     
-                // Clear the resolved properties for the chosen solver.
-                if (actionValue.equals(PropertySolver.CLEAR)) {
-                    chosenSolver.clearDisplay();
-                    chosenSolver.clearProperties();
-                } else if (actionValue.equals(PropertySolver.VIEW)) {
-                    _displayProperties(chosenSolver);
-                    
-                } else {
-                    chosenSolver.setAction(actionValue);
-                    chosenSolver.resolveProperties(this, true);
-                    chosenSolver.updateProperties();
-                    chosenSolver.checkRegressionTestErrors();
-                    
-                    _displayProperties(chosenSolver);
-                }            
+                String previousAction = chosenSolver.setAction(actionValue);
+                chosenSolver.invokeSolver(this);
+                chosenSolver.setAction(previousAction);
+                
             } catch (PropertyFailedRegressionTestException ex) {
                 errorString = KernelException.generateMessage(
-                        entity, null, ex, "Failed: Property regression test failed.") + "\n\n";
+                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
                 
-            } catch (KernelException e) {
-                throw new IllegalActionException(this, e, "");
+            } catch (KernelException ex) {
+                errorString = KernelException.generateMessage(
+                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
+            } catch (URISyntaxException ex) {
+                errorString = KernelException.generateMessage(
+                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
+            } catch (Exception ex) {
+                errorString = KernelException.generateMessage(
+                        entity, null, ex, "****Failed: Property regression test failed.") + "\n\n";
             } 
             /*catch (KernelException ex) {
                 errorMessage.send(0, new StringToken(KernelException.generateMessage(
@@ -216,10 +228,13 @@ public class ModelAnalyzer extends Transformer {
             }
         }
         errorMessage.send(0, new StringToken(errorString));
+
         output.send(0, new ActorToken(entity));
     }
 
+    
     private PropertySolver _instantiateSolver(CompositeEntity entity, String className) {
+
         for (Class solver : solvers) {
             if (className.equals(
                     solver.getSimpleName())) {
@@ -227,7 +242,12 @@ public class ModelAnalyzer extends Transformer {
                     Constructor constructor = 
                         solver.getConstructor(NamedObj.class, String.class);
                     
-                    return (PropertySolver) constructor.newInstance(entity, "ModelAnalyzer_" + solver.getSimpleName());
+                    PropertySolver solverObject = (PropertySolver) constructor
+                    .newInstance(entity, "ModelAnalyzer_" + solver.getSimpleName());
+                    
+                    new Location(solverObject, "_location");
+                    
+                    return solverObject;
                     
                 } catch (Exception ex) {
                     assert false;
@@ -292,6 +312,19 @@ public class ModelAnalyzer extends Transformer {
             }
             
         }
+    }
+
+    private URI _getModelURI(String modelName) throws URISyntaxException {
+        URI uri = URIAttribute.getModelURI(this);
+        String path = uri.getPath();
+        int pos = path.lastIndexOf('/');
+        if (pos >= 0) {
+            path = path.substring(0, pos + 1) + modelName + ".xml";
+        } else {
+            path += "/" + modelName + ".xml";
+        }
+        return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
+                uri.getPort(), path, uri.getQuery(), uri.getFragment());
     }
     
 

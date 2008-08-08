@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.5, 374.0}">
     </property>
     <property name="LogicalOR_Backward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalOR_Backward_CS">
-        <property name="action" class="ptolemy.moml.SharedParameter" value="TEST">
+        <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="TEST">
         </property>
         <property name="logMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -27,35 +27,37 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 130.0]">
         </property>
+        <property name="PropertyResolutionExceptionMessage" class="ptolemy.kernel.util.StringAttribute" value="[Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.NoRelation.increment}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.NoRelation.decrement}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.NoRelation.output}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.IncrementRelation.increment}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.IncrementRelation.decrement}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.IncrementRelation.output}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.DecrementRelation.increment}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.DecrementRelation.decrement}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.DecrementRelation.output}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.AllInputsRelation.increment}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.AllInputsRelation.decrement}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.AllInputsRelation.output}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.AllPortsRelation.increment}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.AllPortsRelation.decrement}.&#13;&#10;, Property &quot;Unknown&quot; is not an acceptable solution for ptolemy.actor.TypedIOPort {.ConstraintCheck_Relation_AtomicActor_Singleport.AllPortsRelation.output}.&#13;&#10;]&#10;  in .ConstraintCheck_Relation_AtomicActor_Singleport.LogicalOR_Backward">
+        </property>
     </property>
     <entity name="NoRelation" class="ptolemy.actor.lib.Counter">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 145.0]">
         </property>
         <port name="increment" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <port name="decrement" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
     </entity>
@@ -64,29 +66,29 @@
         </property>
         <port name="increment" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <port name="decrement" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
     </entity>
@@ -95,29 +97,29 @@
         </property>
         <port name="increment" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <port name="decrement" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
     </entity>
@@ -126,29 +128,29 @@
         </property>
         <port name="increment" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <port name="decrement" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
     </entity>
@@ -157,29 +159,29 @@
         </property>
         <port name="increment" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <port name="decrement" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
+            </property>
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
             <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-            </property>
-            <property name="lattice::logicalOrBackward" class="ptolemy.data.properties.lattice.PropertyConstraintAttribute" value="Unknown">
             </property>
         </port>
     </entity>

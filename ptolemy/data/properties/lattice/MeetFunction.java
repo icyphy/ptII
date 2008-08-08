@@ -36,6 +36,7 @@ import java.util.Set;
 
 import ptolemy.data.properties.Property;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// MeetFunction
@@ -85,8 +86,9 @@ public class MeetFunction
     
     /** Return the function result.
      *  @return A Property.
+     * @throws IllegalActionException 
      */
-    public Object getValue() {
+    public Object getValue() throws IllegalActionException {
         Property meetValue = null;
         Property termValue = null;
         

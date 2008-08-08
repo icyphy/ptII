@@ -1,9 +1,11 @@
 package ptolemy.data.properties;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.Expression;
@@ -27,17 +29,17 @@ public abstract class PropertyHelper {
     public Entity getContainerEntity(ASTPtRootNode node) {
         Attribute attribute = _solver.getAttribute(node);
         NamedObj container = attribute.getContainer();
-        
+
         while (!(container instanceof Entity)) {
             container = container.getContainer();
         }
         return (Entity) container;
     }
-    
+
     public String getName() {
         return "Helper_" + _component.toString();
     }
-    
+
     public String toString() {
         return getName() + " " + super.toString();
     }
@@ -48,10 +50,10 @@ public abstract class PropertyHelper {
      * @throws IllegalActionException
      */
     protected ASTPtRootNode getParseTree(Attribute attribute) 
-            throws IllegalActionException {
+    throws IllegalActionException {
         return _solver.getParseTree(attribute);
     }
-    
+
     /**
      * Return the associated property solver
      * @return The property solver associated with this helper.
@@ -59,7 +61,7 @@ public abstract class PropertyHelper {
     public PropertySolver getSolver() {
         return _solver;
     }
-    
+
 
     /**
      * @param _attributes the _attributes to set
@@ -68,17 +70,28 @@ public abstract class PropertyHelper {
         _solver.getSharedUtilities().putAttributes(node, attribute);
     }
 
-    
+
     public static void resetAll() {
     }
-    
+
+    protected ParseTreeAnnotationEvaluator _annotationEvaluator;
 
     /** The associated component of this helper. */
     private Object _component;
-    
+
     /** The associated property lattice. */
     protected PropertySolver _solver;
-    
+
+    /** Create an new use-case specific annotation evaluator */
+    protected abstract ParseTreeAnnotationEvaluator _annotationEvaluator();    
+
+    protected final ParseTreeAnnotationEvaluator _getAnnotationEvaluator() {
+        if (_annotationEvaluator == null) {
+            _annotationEvaluator = _annotationEvaluator();
+        }
+        return _annotationEvaluator;
+    }
+
     /**
      * Return a list of property-able object(s) for this helper.
      * @return a list of property-able objects.
@@ -91,28 +104,27 @@ public abstract class PropertyHelper {
      * @throws IllegalActionException
      */
     protected abstract List<PropertyHelper> _getSubHelpers() throws IllegalActionException;
-    
-    
+
     protected static List<Port> _getSinkPortList(IOPort port) {
         List<Port> result = new ArrayList<Port>();
-        
+
         for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
             boolean isInput = connectedPort.isInput();
             boolean isCompositeOutput = 
                 (connectedPort.getContainer() instanceof CompositeEntity)
                 && !isInput &&            
                 port.depthInHierarchy() > connectedPort.depthInHierarchy();            
-            
-            if (isInput || isCompositeOutput) {
-                result.add(connectedPort);
-            }
+
+                if (isInput || isCompositeOutput) {
+                    result.add(connectedPort);
+                }
         }
         return result;
     }
-    
+
     protected static List<Port> _getSourcePortList(IOPort port) {
         List<Port> result = new ArrayList<Port>();
-        
+
         for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
             boolean isInput = connectedPort.isInput();
             boolean isCompositeInput = 
@@ -120,13 +132,13 @@ public abstract class PropertyHelper {
                 && isInput &&
                 port.depthInHierarchy() > connectedPort.depthInHierarchy();            
 
-            if (!isInput || isCompositeInput) {
-                result.add(connectedPort);
-            }
+                if (!isInput || isCompositeInput) {
+                    result.add(connectedPort);
+                }
         }
         return result;
     }    
-    
+
     /**
      * Create a constraint that set the given object to be equal
      * to the given property. Mark the property of the given object
@@ -148,51 +160,50 @@ public abstract class PropertyHelper {
      * @throws IllegalActionException Thrown if 
      */
     public void reinitialize() throws IllegalActionException {
-        boolean record = _solver.isTraining() || _solver._isInvoked;
-        boolean isManualAnnotate = _solver.isManualAnnotate();
-        boolean clearShowInfo = _solver.isTraining() || isManualAnnotate;
-        
-        List propertyables = getPropertyables();
-        Iterator iterator = propertyables.iterator();
-        while (iterator.hasNext()) {
-            Object propertyable = iterator.next();
+        boolean record = _solver.isResolve() || _solver._isInvoked;
+        boolean clearShowInfo = _solver.isResolve();
+
+
+        if (_solver.isManualAnnotate()) {
+            for (AnnotationAttribute annotation : _getAnnotationAttributes()) {
+                _evaluateAnnotation(annotation);
+            }
+        }
+
+
+        for (Object propertyable : getPropertyables()) {
 
             // Remove all PropertyAttributes.
             if (propertyable instanceof NamedObj) {
                 NamedObj namedObj = (NamedObj) propertyable; 
                 PropertyAttribute attribute = (PropertyAttribute) 
-                namedObj.getAttribute(getSolver().getExtendedUseCaseName());
-                
+                namedObj.getAttribute(_solver.getExtendedUseCaseName());
+
                 if (attribute != null) {
-                    if (isManualAnnotate) {
-                        // Indicate this to be non-settable.
-                        setEquals(propertyable, attribute.getProperty());
-                    }
-                    
                     // Clear the property under two cases:
                     // 1. The (invoked or auxilary) solver is in trainingMode.
                     // 2. The solver is invoked under testing mode.
                     if (record) {
-                        
+
                         _solver.recordPreviousProperty(
                                 propertyable, attribute.getProperty());
-                        
+
                         // Remove the property attribute.
                         try {
                             attribute.setContainer(null);
-                            
+
                         } catch (NameDuplicationException e) {
                             // This shouldn't happen since we are removing it.
                             assert false;
                         }
-                        
+
                     }
-                } 
-                                
+                }
+
                 if (_solver.isSettable(propertyable)) {
                     _solver.clearResolvedProperty(propertyable);
                 }
-                
+
                 if (clearShowInfo) {
                     // Clear the expression of the _showInfo attribute.
                     // It will be updated later.
@@ -204,11 +215,64 @@ public abstract class PropertyHelper {
                 }         
             }            
         }        
-        
+
         // The recursive case.
         for (PropertyHelper helper : _getSubHelpers()) {
             helper.reinitialize();
         }
+    }
+
+    /**
+     * 
+     * @param annotation
+     * @throws IllegalActionException
+     */
+    private void _evaluateAnnotation(AnnotationAttribute annotation)
+    throws IllegalActionException {
+        Map map;
+        try {
+            ASTPtRootNode parseTree = _solver.getParser()
+            .generateParseTree(annotation.getExpression());
+
+            map = new HashMap();
+            map.put(parseTree, parseTree);
+        } catch (IllegalActionException ex) {
+            map = _solver.getParser()
+            .generateAssignmentMap(annotation.getExpression());
+
+        }
+        
+        // Evaluate each assignment constraints.
+        for (Object assignment : map.values()) {
+            ASTPtRootNode parseTree = (ASTPtRootNode) assignment;
+            _getAnnotationEvaluator().evaluate(parseTree, this);
+        }
+    }
+
+    /**
+     * Return the list of annotation attributes relevant to this use-case. 
+     * @return The list of annotation attributes.
+     * @exception IllegalActionException Thrown if there is a problem
+     *  obtaining the use-case identifier for an annotation attribute.
+     */
+    private List<AnnotationAttribute> _getAnnotationAttributes() 
+    throws IllegalActionException {
+        List result = new LinkedList();
+        if (_component instanceof NamedObj) {
+
+            for (Object attribute : ((NamedObj) _component).attributeList()) {
+
+                if (AnnotationAttribute.class.isInstance(attribute)) {
+                    String usecase = ((AnnotationAttribute) 
+                            attribute).getUseCaseIdentifier();
+
+                    if (_solver.isIdentifiable(usecase)) {
+                        result.add(attribute);
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -219,57 +283,54 @@ public abstract class PropertyHelper {
         List<Attribute> result = new LinkedList<Attribute>();
         Iterator attributes = 
             ((Entity) getComponent()).attributeList().iterator();
-    
+
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
 
             // only consider StringAttributes, ignore all subclasses
             if (attribute.getClass().equals(ptolemy.kernel.util.StringAttribute.class))  {
                 if ((((StringAttribute)attribute).getName().equalsIgnoreCase("guardTransition")) ||
-                    ((((StringAttribute)attribute).getContainer() instanceof Expression)) && 
-                     ((StringAttribute)attribute).getName().equalsIgnoreCase("expression")) {
-            
-                     result.add(attribute);
+                        ((((StringAttribute)attribute).getContainer() instanceof Expression)) && 
+                        ((StringAttribute)attribute).getName().equalsIgnoreCase("expression")) {
+
+                    result.add((Attribute) attribute);
                 }             
             } else if (attribute instanceof Variable) {
                 if (((Variable) attribute).getVisibility() == Settable.FULL) {
 
                     // filter Parameters with certain names; ignore all subclasses
                     if (attribute instanceof PortParameter) {
-                        result.add(attribute);
+                        result.add((Attribute) attribute);
                     } else if ((attribute.getClass().equals(ptolemy.data.expr.Parameter.class)) ||
-                               (attribute.getClass().equals(ptolemy.data.expr.StringParameter.class))) {
+                            (attribute.getClass().equals(ptolemy.data.expr.StringParameter.class))) {
 
-// FIXME: implement filter interface, so that helper classes can specify which attributes
-//        need to be filtered (either by name or by class)
-//        Currently all filtered attributes need to be specified here                        
+//                      FIXME: implement filter interface, so that helper classes can specify which attributes
+//                      need to be filtered (either by name or by class)
+//                      Currently all filtered attributes need to be specified here                        
                         if (((Parameter)attribute).getName().equals("firingCountLimit") ||
-            	            ((Parameter)attribute).getName().equals("NONE") ||
-                            ((Parameter)attribute).getName().equals("_hideName") ||
-                            ((Parameter)attribute).getName().equals("_showName") ||
-                            ((Parameter)attribute).getName().equals("conservativeAnalysis") ||
-                            ((Parameter)attribute).getName().equals("directorClass") ||
-                            ((Parameter)attribute).getName().equals("displayWidth")) {
-                        	
+                                ((Parameter)attribute).getName().equals("NONE") ||
+                                ((Parameter)attribute).getName().equals("_hideName") ||
+                                ((Parameter)attribute).getName().equals("_showName") ||
+                                ((Parameter)attribute).getName().equals("conservativeAnalysis") ||
+                                ((Parameter)attribute).getName().equals("directorClass") ||
+                                ((Parameter)attribute).getName().equals("displayWidth")) {
+
                             // do nothing, ignore the parameter
                         } else {
-                            result.add(attribute);
+                            result.add((Attribute) attribute);
                         }
                     }
                 }
             }
         }        
-        
+
         return result;
     }
 
     public List<Object> getPropertyables(Class filter) {
         List<Object> list = new LinkedList<Object>();
-        Iterator iterator = getPropertyables().iterator();
-        
-        
-        while (iterator.hasNext()) {
-            Object object = iterator.next();
+
+        for (Object object : getPropertyables()) {
             if (filter.isInstance(object)) {
                 list.add(object);
             }
@@ -295,11 +356,8 @@ public abstract class PropertyHelper {
         List<PropertyHelper> astHelpers = new ArrayList<PropertyHelper>();
         ParseTreeASTNodeHelperCollector collector = 
             new ParseTreeASTNodeHelperCollector();
-        
-        Iterator roots = _getAttributeParseTrees().iterator();
-        
-        while (roots.hasNext()) {
-            ASTPtRootNode root = (ASTPtRootNode) roots.next();
+
+        for (ASTPtRootNode root : _getAttributeParseTrees()) {
             if (root != null) {
                 try {
                     List<PropertyHelper> helpers = collector.collectHelpers(root, getSolver());
@@ -307,7 +365,7 @@ public abstract class PropertyHelper {
                 } catch (IllegalActionException ex) {
                     // This means the expression is not parse-able.
                     // FIXME: So, we will discard it for now.
-                    throw new AssertionError(ex);
+                    throw new AssertionError(ex.stackTraceToString(ex));
                 }
             }
         }
@@ -321,14 +379,14 @@ public abstract class PropertyHelper {
      */
     protected List<ASTPtRootNode> _getAttributeParseTrees() {
         List<ASTPtRootNode> result = new ArrayList<ASTPtRootNode>();
-        
+
         Iterator attributes = null;
-        
+
         attributes = _getPropertyableAttributes().iterator();
-    
+
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute) attributes.next();
-    
+
             try {
                 ASTPtRootNode pt = getParseTree(attribute);
                 if (pt != null) {
@@ -338,12 +396,12 @@ public abstract class PropertyHelper {
                 // This means the expression is not parse-able.
                 // FIXME: So, we will discard it for now.
                 //System.out.println(KernelException.stackTraceToString(ex));
-                throw new AssertionError(ex);
+                throw new AssertionError(ex.stackTraceToString(ex));
             }
         }
         return result;
     }
-    
+
     /////////////////////////////////////////////////////////////////////
     ////                      public inner classes                   ////
 
@@ -401,5 +459,4 @@ public abstract class PropertyHelper {
         public int channelNumber;
     }
 
-    
 }

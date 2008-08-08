@@ -8,6 +8,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
+import ptolemy.data.properties.ParseTreeAnnotationEvaluator;
 import ptolemy.data.properties.PropertyHelper;
 import ptolemy.data.properties.PropertySolver;
 import ptolemy.kernel.Entity;
@@ -43,7 +44,7 @@ public class PropertyCombineHelper extends PropertyHelper {
             // do evaluation for port
             PropertyCombineParseTreeEvaluator evaluator = new PropertyCombineParseTreeEvaluator(port, _solver);                
             Token token = evaluator.evaluateParseTree(parseTree);        
-            PropertyToken property = new PropertyToken(token);
+            PropertyToken property = (PropertyToken) new PropertyToken(token);
             if (!((getSolver().getUnconnectedPorts()) && port.connectedPortList().isEmpty())) {                
                 setEquals(port, property);
             }            
@@ -79,6 +80,11 @@ public class PropertyCombineHelper extends PropertyHelper {
         }
     }
 
+    @Override
+    protected ParseTreeAnnotationEvaluator _annotationEvaluator() {
+        return new ParseTreeAnnotationEvaluator();
+    }   
+    
     protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {        
         return new ArrayList<PropertyHelper>();
     }   

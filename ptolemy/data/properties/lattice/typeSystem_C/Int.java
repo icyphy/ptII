@@ -29,6 +29,7 @@
 package ptolemy.data.properties.lattice.typeSystem_C;
 
 import ptolemy.data.LongToken;
+import ptolemy.data.Token;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
@@ -51,11 +52,11 @@ public class Int extends LatticeProperty implements TypeProperty {
         super(lattice);
     }
     
-    public LongToken getMaxValue() {
+    public Token getMaxValue() {
         return new LongToken((long)Math.pow(2, 31)-1);
     }
 
-    public LongToken getMinValue() {
+    public Token getMinValue() {
         return new LongToken((long)-Math.pow(2, 31));
     }
 

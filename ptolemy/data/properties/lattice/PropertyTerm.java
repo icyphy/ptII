@@ -30,10 +30,11 @@
 package ptolemy.data.properties.lattice;
 
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.IllegalActionException;
 
 public interface PropertyTerm extends InequalityTerm {
     
-    public Object getValue();
+    public Object getValue() throws IllegalActionException;
     
     public boolean isEffective();
 

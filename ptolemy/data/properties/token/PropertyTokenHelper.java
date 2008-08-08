@@ -7,13 +7,14 @@ import java.util.List;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.properties.ParseTreeAnnotationEvaluator;
 import ptolemy.data.properties.PropertyHelper;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.KernelException;
 
 public class PropertyTokenHelper extends PropertyHelper {
 
@@ -28,21 +29,19 @@ public class PropertyTokenHelper extends PropertyHelper {
     }
 
 
-    public void addListener() throws IllegalActionException {
+    public void addListener(boolean listenInputs, boolean listenOutputs) throws IllegalActionException {
         Iterator propertyables = getPropertyables().iterator();
         while (propertyables.hasNext()) {
-            Object propertyable = propertyables.next();
+            Object propertyable = (Object)propertyables.next();
         
             if (propertyable instanceof IOPort) {                
                 IOPort port = (IOPort)propertyable;
-                if ((getSolver().getListening().contains("Output")) && 
-                    (port.isOutput())) {
+                if (listenOutputs && (port.isOutput())) {
                     
                     port.addIOPortEventListener(getSolver().getSentListener());
                 }
                 
-                if ((getSolver().getListening().contains("Input")) && 
-                    (port.isInput())) {                   
+                if (listenInputs && (port.isInput())) {                   
                     
                     port.addIOPortEventListener(getSolver().getGotListener());
                 }
@@ -50,20 +49,20 @@ public class PropertyTokenHelper extends PropertyHelper {
         }
     }
     
-    public void removeListener() throws IllegalActionException {
+    public void removeListener(boolean listenInputs, boolean listenOutputs) throws IllegalActionException {
         Iterator propertyables = getPropertyables().iterator();
         while (propertyables.hasNext()) {
-            Object propertyable = propertyables.next();
+            Object propertyable = (Object)propertyables.next();
             
             if (propertyable instanceof IOPort) {                
                 IOPort port = (IOPort)propertyable;
         
-                if ((getSolver().getListening().contains("Output")) && 
+                if (listenOutputs && 
                     (port.isOutput())) {
                     port.removeIOPortEventListener(getSolver().getSentListener());
                 }
                 
-                if ((getSolver().getListening().contains("Input")) && 
+                if (listenInputs && 
                     (port.isInput())) {                   
                     port.removeIOPortEventListener(getSolver().getGotListener());
                 }
@@ -71,7 +70,7 @@ public class PropertyTokenHelper extends PropertyHelper {
         }
     }
 
-    public void determineProperty() throws IllegalActionException, NameDuplicationException {
+    public void determineProperty() throws IllegalActionException, KernelException {
         // determine ASTNodeHelpers
         List<IOPort> inputPortList = new ArrayList<IOPort>();
         List<IOPort> outputPortList = new ArrayList<IOPort>();
@@ -134,6 +133,10 @@ public class PropertyTokenHelper extends PropertyHelper {
     }
 
     public void setEquals(Object object, PropertyToken property) {
+        if (!_solver.isSettable(object)) {
+            return;
+        }
+        
         super.setEquals(object, property);
         if (property != null) {
             getSolver().putToken(object, property.getToken());
@@ -170,6 +173,11 @@ public class PropertyTokenHelper extends PropertyHelper {
 //        }
 
         return list;
+    }
+    
+    @Override
+    protected ParseTreeAnnotationEvaluator _annotationEvaluator() {
+        return new ParseTreeTokenAnnotationEvaluator();
     }
 
     protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
@@ -317,15 +325,15 @@ public class PropertyTokenHelper extends PropertyHelper {
         return result;
     }
 
-    protected void _determineInputPorts(List <IOPort>inputPortList) {
+    protected void _determineInputPorts(List <IOPort>inputPortList) throws IllegalActionException {
         // do nothing in base class
     }
     
-    protected void _determineOutputPorts(List <IOPort>outputPortList) {
+    protected void _determineOutputPorts(List <IOPort>outputPortList) throws IllegalActionException {
         // do nothing in base class
     }
 
-    protected void _determineAttributes(List <Attribute>attributeList, List <PropertyTokenASTNodeHelper>ASTNodeHelperList) throws IllegalActionException, NameDuplicationException {        
+    protected void _determineAttributes(List <Attribute>attributeList, List <PropertyTokenASTNodeHelper>ASTNodeHelperList) throws KernelException {        
         Iterator ASTNodeHelperIterator = ASTNodeHelperList.iterator();
         while (ASTNodeHelperIterator.hasNext()) {
             PropertyTokenASTNodeHelper ASTNodeHelper=(PropertyTokenASTNodeHelper)ASTNodeHelperIterator.next();
@@ -334,8 +342,7 @@ public class PropertyTokenHelper extends PropertyHelper {
         }        
     }
 
-    protected void _determineRefinement() {
+    protected void _determineRefinement() throws IllegalActionException, KernelException {
         // do nothing in base class
     }
-
 }

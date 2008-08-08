@@ -157,7 +157,7 @@ public class PropertyHighlighter extends NodeControllerFactory {
             
             solver.resolveProperties(true);
 
-            solver.checkRegressionTestErrors();
+            solver.checkErrors();
             
             solver.displayProperties();
 

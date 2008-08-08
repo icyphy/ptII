@@ -32,13 +32,11 @@ import java.awt.Frame;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.data.properties.PropertySolver;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
-//// CodeGeneratorGUIFactory
+
+////PropertySolverGUIFactory
 
 /**
  This is an attribute that creates an editor for configuring and
@@ -55,49 +53,36 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (eal)
  */
 public class PropertySolverGUIFactory extends EditorFactory {
-    /** Construct a factory with the specified container and name.
-     *  @param container The container.
-     *  @param name The name of the factory.
-     *  @exception IllegalActionException If the factory is not of an
-     *   acceptable attribute for the container.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
-    public PropertySolverGUIFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-    }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+	/** Construct a factory with the specified container and name.
+	 *  @param container The container.
+	 *  @param name The name of the factory.
+	 *  @exception IllegalActionException If the factory is not of an
+	 *   acceptable attribute for the container.
+	 *  @exception NameDuplicationException If the name coincides with
+	 *   an attribute already in the container.
+	 */
+	public PropertySolverGUIFactory(NamedObj container, String name)
+	throws IllegalActionException, NameDuplicationException {
+		super(container, name);
+	}
 
-    /** Create an editor for configuring the specified object with the
-     *  specified parent window.
-     *  @param object The object to configure.
-     *  @param parent The parent window, or null if there is none.
-     */
-    public void createEditor(NamedObj object, Frame parent) {
-        // This is always used to configure the container, so
-        // we just use that.
-        PropertySolver solver = (PropertySolver) getContainer();
-        try {
-            solver.workspace().getWriteAccess();
-            
-            solver.resolveProperties(true);
-            solver.updateProperties();
+	///////////////////////////////////////////////////////////////////
+	////                         public methods                    ////
 
-            solver.checkRegressionTestErrors();
-            
-            solver.displayProperties();
+	/** Create an editor for configuring the specified object with the
+	 *  specified parent window.
+	 *  @param object The object to configure.
+	 *  @param parent The parent window, or null if there is none.
+	 */
+	public void createEditor(NamedObj object, Frame parent) {
+		// This is always used to configure the container, so
+		// we just use that.
+		PropertySolver solver = (PropertySolver) getContainer();
+		workspace().getWriteAccess();
+		solver.invokeSolver();
+        solver.resetAll();
+		workspace().doneWriting();
 
-            solver.workspace().doneWriting();
-            
-        } catch (KernelException e) {
-            throw new InternalErrorException(e);
-        } finally {
-            solver.getSharedUtilities().resetAll();
-        }
-    }
-
-    // FIXME: Check that the container is an instance of PropertyConstraintSolver.
+	}
 }

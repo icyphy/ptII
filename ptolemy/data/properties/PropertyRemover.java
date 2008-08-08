@@ -2,7 +2,6 @@ package ptolemy.data.properties;
 
 import java.util.Iterator;
 
-import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.properties.gui.PropertyDisplayGUIFactory;
 import ptolemy.kernel.CompositeEntity;
@@ -11,6 +10,7 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.actor.parameters.SharedParameter;
 
 public class PropertyRemover extends Attribute {
 
@@ -61,10 +61,21 @@ public class PropertyRemover extends Attribute {
     
     public void removeProperties(CompositeEntity component) throws IllegalActionException {
 
-        Iterator solvers = _sharedUtilities.getAllSolvers().iterator();
+        Iterator solvers = PropertySolver.getAllSolvers(sharedUtilitiesWrapper).iterator();
 
         while (solvers.hasNext()) {
             PropertySolver solver = (PropertySolver) solvers.next();
+
+            // Clear trained exception.
+            Attribute trainedException = solver.getTrainedExceptionAttribute();
+            if (trainedException != null) {
+                try {
+                    trainedException.setContainer(null);
+                    
+                } catch (NameDuplicationException ex) {
+                    assert false;
+                }
+            }
             
             PropertyHelper helper = solver.getHelper(component); 
             removeProperties(helper);

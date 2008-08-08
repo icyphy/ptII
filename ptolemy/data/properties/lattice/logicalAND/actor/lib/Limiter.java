@@ -30,6 +30,7 @@ package ptolemy.data.properties.lattice.logicalAND.actor.lib;
 import java.util.List;
 
 import ptolemy.data.ScalarToken;
+import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.PropertyTerm;
@@ -96,21 +97,21 @@ public class Limiter extends AtomicActor {
     
         /** Return the function result.
          *  @return A Type.
+         * @throws IllegalActionException 
          */
-        public Object getValue() {
+        public Object getValue() throws IllegalActionException {
+            Property inputProperty = (Property) getSolver().getProperty(_actor.input);            
+            if ((inputProperty == null) || (inputProperty == _lattice.UNKNOWN)) {                    
+                return inputProperty;
+            }                
           
-            try {
-                if ((getSolver().getProperty(_actor.bottom) == _lattice.TRUE) &&
-                    (getSolver().getProperty(_actor.top) == _lattice.TRUE) &&
-                    (!((ScalarToken)_actor.bottom.getToken()).isLessThan(
-                      ((ScalarToken)_actor.top.getToken())).booleanValue())) {
-                        
-                    return(_lattice.TRUE);
-                }
-            } catch (IllegalActionException e) {
-                assert false;
-                return(_lattice.FALSE);
-            } 
+            if ((getSolver().getProperty(_actor.bottom) == _lattice.TRUE) &&
+                (getSolver().getProperty(_actor.top) == _lattice.TRUE) &&
+                (!((ScalarToken)_actor.bottom.getToken()).isLessThan(
+                  ((ScalarToken)_actor.top.getToken())).booleanValue())) {
+                    
+                return(_lattice.TRUE);
+            }
 
             return(getSolver().getProperty(_actor.input));
         }

@@ -69,7 +69,9 @@ public class PropertySetLattice extends PropertyLattice {
      *  @param property2 an instance of Property.
      *  @return An integer.
      */
-    public synchronized int compare(PropertySet property1, PropertySet property2) {
+    public int compare(Object t1, Object t2) {
+        PropertySet property1 = (PropertySet) t1;
+        PropertySet property2 = (PropertySet) t2;
         if ((property1 == null) || (property2 == null)) {
             throw new IllegalArgumentException(
                     "PropertySetLattice.compare(Property, Property): "
@@ -78,7 +80,7 @@ public class PropertySetLattice extends PropertyLattice {
         }
 
         boolean isSuperset = property1.containsAll(property2);
-        boolean isSubset = property1.containsAll(property2);
+        boolean isSubset = property2.containsAll(property1);
         
         if (isSuperset && isSubset) {
             return CPO.SAME;
@@ -96,11 +98,12 @@ public class PropertySetLattice extends PropertyLattice {
      *  @param property2 The second given property.
      *  @return The greatest lower bound of property1 and property2.
      */
-    public synchronized PropertySet greatestLowerBound(
-            PropertySet property1, PropertySet property2) {
-        PropertySet union = new PropertySet(this, property1);
-        union.addAll(property2);
-        return union;
+    public Object greatestLowerBound(Object t1, Object t2) {
+        PropertySet property1 = (PropertySet) t1;
+        PropertySet property2 = (PropertySet) t2;
+        PropertySet intersection = new PropertySet(this, property1);
+        intersection.retainAll(property2);
+        return intersection;
     }
 
     /**
@@ -108,9 +111,10 @@ public class PropertySetLattice extends PropertyLattice {
      * @return true if this is an acceptable solution; otherwise, false;
      */
     public boolean isAcceptableSolution(PropertySet propertySet) {
-        throw new UnsupportedOperationException(
-                "PropertySetLattice.isAcceptableSolution(): " +
-                "operation not supported for the base class.");
+        return true;
+//        throw new UnsupportedOperationException(
+//                "PropertySetLattice.isAcceptableSolution(): " +
+//                "operation not supported for the base class.");
     }
 
     /** Return the least upper bound of the two given properties.
@@ -118,10 +122,12 @@ public class PropertySetLattice extends PropertyLattice {
      *  @param property2 The second given property.
      *  @return The least upper bound of property1 and property2.
      */
-    public synchronized PropertySet leastUpperBound(PropertySet property1, PropertySet property2) {
-        PropertySet intersection = new PropertySet(this, property1);
-        intersection.retainAll(property2);
-        return intersection;
+    public Object leastUpperBound(Object t1, Object t2) {
+        PropertySet property1 = (PropertySet) t1;
+        PropertySet property2 = (PropertySet) t2;
+        PropertySet union = new PropertySet(this, property1);
+        union.addAll(property2);
+        return union;
     }
 
     public String toString() {

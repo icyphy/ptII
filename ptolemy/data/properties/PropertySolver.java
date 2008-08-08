@@ -1,18 +1,28 @@
 package ptolemy.data.properties;
 
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
@@ -24,6 +34,8 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.properties.lattice.PropertyConstraintAttribute;
 import ptolemy.data.properties.token.PropertyTokenAttribute;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
@@ -33,10 +45,11 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
-import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -61,28 +74,32 @@ public abstract class PropertySolver extends Attribute {
             sharedUtilitiesWrapper.setToken(new ObjectToken(new SharedUtilities(sharedUtilitiesWrapper)));
         }
 
+        Collection<SharedParameter> parameters = sharedUtilitiesWrapper.sharedParameterSet();
+        for (SharedParameter parameter : parameters) {
+            parameters = parameter.sharedParameterSet();
+        }
+        
+        
         _sharedUtilities = (SharedUtilities) ((ObjectToken) 
                 sharedUtilitiesWrapper.getToken()).getValue();
 
         _highlighter = new PropertyHighlighter(this, "PropertyHighlighter");
+
+        manualAnnotation = new Parameter(this, "manualAnnotation", BooleanToken.FALSE);
+        manualAnnotation.setTypeEquals(BaseType.BOOLEAN);
+
+        all = new SharedParameter(this, "all", PropertySolver.class, "false");
+        all.setTypeEquals(BaseType.BOOLEAN);
     }
 
     public Parameter action;
+    public Parameter all;
+    public Parameter manualAnnotation;
 
     public SharedParameter sharedUtilitiesWrapper;
 
-    /**
-     * 
-     * @param actionParameter
-     */
-    protected static void _addActions(Parameter actionParameter) {
-        actionParameter.addChoice(ANNOTATE);
-        actionParameter.addChoice(ANNOTATE_ALL);
-        actionParameter.addChoice(CLEAR);
-        actionParameter.addChoice(MANUAL_ANNOTATE);
-        actionParameter.addChoice(TEST);
-        actionParameter.addChoice(TRAINING);
-        actionParameter.addChoice(VIEW);
+    public void addErrors(String error) {
+        _sharedUtilities.addErrors(error);
     }
 
     /** React to a change in an attribute. 
@@ -94,24 +111,228 @@ public abstract class PropertySolver extends Attribute {
     throws IllegalActionException {
 
         super.attributeChanged(attribute);
-    }    
-
-//  FIXME: Do we need the clone method?
-    /*
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-    	PropertySolver solver = (PropertySolver) super.clone(workspace);
-    	try {
-			solver.sharedUtilitiesWrapper.setToken(new ObjectToken(new SharedUtilities(sharedUtilitiesWrapper)));
-	    	solver._sharedUtilities = (SharedUtilities) ((ObjectToken) 
-	    			solver.sharedUtilitiesWrapper.getToken()).getValue();
-
-		} catch (IllegalActionException e) {
-			assert false;
-		}
-
-    	return solver;
     }
+
+    /**
+     * Check if there is any regression testing errors after resolving
+     * properties. If so, throw a new PropertyFailedRegressionTestException
+     * with an error message that includes all the properties that does not
+     * match the regression test values. 
+     * @throws PropertyFailedRegressionTestException Thrown if there is any
+     *  errors in the regression test.
      */
+    public void checkErrors() 
+    throws PropertyResolutionException {
+
+        // FIXME: remove the errors as well.
+
+        List errors = _sharedUtilities.removeErrors();
+
+        if (!errors.isEmpty()) {
+            String errorMessage = errors.toString();
+
+            if (isTesting()) {
+                throw new PropertyFailedRegressionTestException(
+                        this, errorMessage);
+            } else {
+                throw new PropertyResolutionException(
+                        this, errorMessage);
+            }
+        }
+    }
+
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PropertySolver newObject = (PropertySolver) super.clone(workspace);
+        return newObject;
+    }
+    
+    public void checkResolutionErrors() throws PropertyResolutionException {
+		for (Object propertyable : getAllPropertyables()) {
+			_recordUnacceptableSolution(
+				propertyable, getProperty(propertyable));
+		}
+        checkErrors();
+    }
+
+    /**
+     * Clear the manual annotation constraints assoicated with
+     * this solver use-case.
+     * @exception IllegalActionException Not Thrown.
+     */
+    public void clearAnnotations() throws IllegalActionException {
+
+        for (PropertyHelper helper : getAllHelpers()) {
+            if (helper.getComponent() instanceof NamedObj) {
+                NamedObj namedObj = (NamedObj) helper.getComponent();
+
+                for (AnnotationAttribute attribute : (List<AnnotationAttribute>)
+                        namedObj.attributeList(AnnotationAttribute.class)) {
+
+                    if (isIdentifiable(attribute.getUseCaseIdentifier())) {
+
+                        try {
+                            attribute.setContainer(null);
+                        } catch (NameDuplicationException e) {
+                            assert false;
+                        }
+                    }
+                }
+            }
+        }
+        _repaintGUI();
+    }
+
+    /**
+     * Clear the display properties.
+     */
+    public void clearDisplay() {
+        _highlighter.clearDisplay();
+    }
+
+    /**
+     * Clear the resolved properties for this solver. This goes through
+     * all property-able objects and removes the property attributes 
+     * that has the extended use-case name of this solver. 
+     * @exception IllegalActionException Not Thrown.
+     */
+    public void clearProperties() throws IllegalActionException {
+        _resolvedProperties.clear();
+
+        try {
+            for (Object propertyable : getAllPropertyables()) {
+                if (propertyable instanceof NamedObj) {
+                    NamedObj namedObj = (NamedObj) propertyable;
+
+                    PropertyAttribute attribute = (PropertyAttribute)
+                    namedObj.getAttribute(getExtendedUseCaseName());
+
+                    if (attribute != null) {
+                        attribute.setContainer(null);
+                    }
+                }
+            }
+
+            Attribute trainedException = 
+                getTrainedExceptionAttribute();
+
+            if (trainedException != null) {
+                trainedException.setContainer(null);
+            }
+
+        } catch (NameDuplicationException e1) {
+            assert false;
+        }
+        _repaintGUI();
+    }
+
+    public void displayProperties() throws IllegalActionException {
+        // Do nothing if we are not in a mode that allows display.
+        if (!(isResolve() || isView())) {
+            return;
+        }
+        Iterator propertyables = getAllPropertyables().iterator();
+        while (propertyables.hasNext()) {
+            Object propertyableObject = propertyables.next();
+
+            if (propertyableObject instanceof NamedObj) {
+                NamedObj namedObj = (NamedObj) propertyableObject;
+
+                Property property = getResolvedProperty(namedObj, false);
+
+                _highlighter.showProperty(namedObj, property);
+                _highlighter.highlightProperty(namedObj, property);
+            }
+        }
+        _repaintGUI();
+    }
+
+    /**
+     * Find a constraint solver that is associated with the given 
+     * property lattice name. There can be more than one solvers with
+     * the same lattice. This method returns whichever it finds first. 
+     * @param latticeName The given name of the property lattice. 
+     * @return The property constraint solver associated with the
+     *  given lattice name. 
+     * @throws IllegalActionException Thrown if no matched solver
+     *  is found.
+     */
+    public PropertySolver findSolver(String identifier) 
+    throws PropertyResolutionException {
+
+        for (PropertySolver solver : getAllSolvers(sharedUtilitiesWrapper)) {
+            if (solver.getUseCaseName().equals(identifier)) {
+                return solver;
+            }
+            if (solver.getClass().getSimpleName().equals(identifier)) {
+                return solver;
+            }
+            if (solver.getName().equals(identifier)) {
+                return solver;
+            }
+        }
+
+        throw new PropertyResolutionException(this,
+                "Cannot find \"" + identifier + "\" solver.");
+    }
+
+    public abstract String getExtendedUseCaseName();
+
+    /**
+     * Return the property helper for the given object. 
+     * @param object The given object.
+     * @return The property helper for the object.
+     * @throws IllegalActionException Thrown if the helper cannot
+     *  be found or instantiated.
+     */
+    public abstract PropertyHelper getHelper(Object object) 
+    throws IllegalActionException;
+
+    /**
+     * @param attribute
+     * @return
+     * @throws IllegalActionException
+     */
+    public ASTPtRootNode getParseTree(Attribute attribute) throws IllegalActionException {
+        Map<Attribute, ASTPtRootNode> parseTrees = 
+            getSharedUtilities().getParseTrees();
+
+        if (!parseTrees.containsKey(attribute)) {
+
+            String expression = ((Settable) attribute).getExpression().trim();
+
+            if (expression.length() == 0) {
+                return null;
+            }
+
+            ASTPtRootNode parseTree;
+            //          if ((attribute instanceof StringAttribute) || 
+            //          ((attribute instanceof Variable 
+            //          && ((Variable) attribute).isStringMode()))) {
+            if ((attribute instanceof Variable) 
+                    && ((Variable) attribute).isStringMode()) {
+
+                parseTree = getParser().generateStringParseTree(expression);
+
+            } else {
+                parseTree = getParser().generateParseTree(expression);
+            }
+
+            parseTrees.put(attribute, parseTree);
+            getSharedUtilities().putAttributes(parseTree, attribute);
+        }
+        return parseTrees.get(attribute);
+    }
+
+    public abstract String getUseCaseName();
+
+    public void highlightProperties() throws IllegalActionException {
+        _highlighter.highlightProperties();        
+        _repaintGUI();
+    }
+
+    public static void main(String[] args) {
+        testPropertiesAndGenerateReports(args[0]);
+    }
 
     /** Parse a command-line argument. This method recognized -help
      *  and -version command-line arguments, and prints usage or
@@ -144,52 +365,68 @@ public abstract class PropertySolver extends Attribute {
         return false;
     }
 
+    public boolean isClear() {
+        return action.getExpression().equals(PropertySolver.CLEAR);
+    }
+
     public void reset() {
         _declaredProperties = new HashMap<Object, Property>();
         _resolvedProperties = new HashMap<Object, Property>();
         _nonSettables = new HashSet<Object>();
         _previousProperties = new HashMap<Object, Property>();
         _helperStore = new HashMap<Object, PropertyHelper>();
-        _stats.clear();
+        _stats = new TreeMap<Object, Object>();
 
-        if (action.getExpression().equals(TRAINING)) {
-            action.setExpression(TEST);
-            _repaintGUI();
-        }
     }
 
     /**
      * Resolve the property values for the given top-level entity.
      * @param topLevel The given top level entity.
+     * @return True if resolution succeeds as expected; Otherwise, false.
      * @throws IllegalActionException TODO
      */
-    public void resolveProperties(ModelAnalyzer analyzer, boolean isInvoked)
+    public boolean resolveProperties(ModelAnalyzer analyzer, boolean isInvoked)
     throws KernelException {
-        getSharedUtilities().addRanSolvers(this);
 
-        _analyzer = analyzer;
-        _isInvoked = isInvoked;        
+        boolean success = true;
 
-        // Clear the resolved properties for the chosen solver.
-        String actionValue = action.getExpression();
-        if (actionValue.equals(PropertySolver.CLEAR)) {
-            if (isInvoked) {
-                clearProperties();
-                clearDisplay();
-            }
-            return;
+        boolean noException = true;
 
-        } else if (actionValue.equals(PropertySolver.VIEW)) {
-            if (isInvoked) {
-                clearDisplay();
-                showProperties();
-                highlightProperties();        
-            }
-            return;
-        } else {
+        try {
+
+            getSharedUtilities().addRanSolvers(this);
+
+            _analyzer = analyzer;
+            _isInvoked = isInvoked;        
+
+            // Clear the resolved properties for the chosen solver.
+            String actionValue = action.getExpression();
+            if (actionValue.equals(CLEAR_ANNOTATION)) {
+                if (isInvoked) {
+                    clearAnnotations();
+                }
+                return true;
+            } else if (actionValue.equals(CLEAR)) {
+                if (isInvoked) {
+                    clearProperties();
+                    clearDisplay();
+                }
+                return true;
+
+            } else if (actionValue.equals(VIEW)) {
+                if (isInvoked) {
+                    clearDisplay();
+                    showProperties();
+                    highlightProperties();        
+                }
+                return true;
+
+            } 
+
+
             // If this is not an intermediate (invoked) solver, 
             // we need to clear the display.
-            if (isInvoked && (isTraining() || isManualAnnotate())) {
+            if (isInvoked && isResolve()) {
                 PropertySolver previousSolver = 
                     _sharedUtilities._previousInvokedSolver;
 
@@ -203,79 +440,85 @@ public abstract class PropertySolver extends Attribute {
 
                 _sharedUtilities._previousInvokedSolver = this;
 
-                // If we are in ANNOTATE_ALL or TRAINING mode, then keep
+                // If we are in TRAINING mode, then keep
                 // all the intermediate results.
                 boolean keepIntermediates = 
-                    action.equals(ANNOTATE_ALL) || action.equals(TRAINING);
-                
+                    //actionValue.equals(ANNOTATE_ALL) || 
+                    ((BooleanToken)all.getToken()).booleanValue() ||
+                    actionValue.equals(TRAINING);
+
                 for (String solverName : _dependentSolvers) {
                     PropertySolver dependentSolver = findSolver(solverName);
-                    
+
                     dependentSolver.resolveProperties(
                             analyzer, keepIntermediates);
-                    
+
                     dependentSolver.updateProperties();
                 }
             } else if (isInvoked && isTesting()) {
                 for (String solverName : _dependentSolvers) {
                     PropertySolver dependentSolver = findSolver(solverName);
-                    
-                    dependentSolver.resolveProperties(
-                            analyzer, false);
+
+                    dependentSolver.resolveProperties(analyzer, false);
                 }
             }
             _resolveProperties(analyzer);
-        }
-    }
 
-    /**
-     * Resolve the property values for the given top-level entity.
-     * Do nothing in this base class. Sub-classes should overrides
-     * this method.
-     * @param topLevel The given top level entity.
-     * @throws IllegalActionException TODO
-     */
-    protected void _resolveProperties(ModelAnalyzer analyzer) 
-    throws KernelException {
-    }
+            checkResolutionErrors();
 
-    /**
-     * Return the property helper for the given object. 
-     * @param object The given object.
-     * @return The property helper for the object.
-     * @throws IllegalActionException Thrown if the helper cannot
-     *  be found or instantiated.
-     */
-    public abstract PropertyHelper getHelper(Object object) 
-    throws IllegalActionException;
+        } catch (PropertyResolutionException ex) {
+            noException = false;
+            //     resolution exceptions. that means resolution ended prematurely.
+            //     But that may not means that this is an improper behavior
+            //     Check whether we are expecting an exception,
+            //     if in testing mode, then add a RegressionTestErrorException
+            PropertySolver failedSolver = ex.getSolver();
+            String trainedException = failedSolver.getTrainedException();
+            String exception = ex.getMessage();
+            if (isTesting()) {
+                if (!exception.equals(trainedException)) {
+                    addErrors(PropertySolver.getTrainedExceptionMismatchMessage(
+                            exception, trainedException));
+                }
+            } else if (isResolve()) {
+                if (!exception.equals(trainedException)) {
 
-    public abstract String getExtendedUseCaseName();
+                    // ask the user if this is expected, 
+                    boolean doRecord = MessageHandler.yesNoQuestion(
+                            PropertySolver.getTrainedExceptionMismatchMessage(
+                                    exception, trainedException) + 
+                    "Do you want to record it?");
 
-    public abstract String getUseCaseName();
-
-    public void setAction (String actionString) {
-        action.setExpression(actionString);
-    }
-
-    public void displayProperties() throws IllegalActionException {
-        // Do nothing if we are not in a mode that allow display.
-        if (!(isTraining() || isView() || isManualAnnotate())) {
-            return;
-        }        
-        Iterator propertyables = getAllPropertyables().iterator();
-        while (propertyables.hasNext()) {
-            Object propertyableObject = propertyables.next();
-
-            if (propertyableObject instanceof NamedObj) {
-                NamedObj namedObj = (NamedObj) propertyableObject;
-
-                Property property = getResolvedProperty(namedObj, false);
-
-                _highlighter.showProperty(namedObj, property);
-                _highlighter.highlightProperty(namedObj, property);
+                    if (doRecord) {
+                        // If so, record the exception in ex.solver.
+                        failedSolver.recordTrainedException(exception);
+                    } else {
+                        if (isTraining()) {
+                            // Don't set mode to TEST because the user
+                            // did not train (record) this exception.
+                            success = false;
+                        }
+                    }
+                }
             }
         }
-        _repaintGUI();
+
+        if (isTesting() && noException && !getTrainedException().isEmpty()) {
+            // if in TEST mode, if there is a previously trained 
+            // RegressionTestErrorExceptionException
+            // and we do not get one in the resolution, 
+            // then we throw an exception.
+            addErrors(PropertySolver.getTrainedExceptionMismatchMessage(
+                    "", getTrainedException()));
+        }			
+
+        return success;
+    }
+
+    public String setAction (String actionString) {
+        String oldAction = action.getExpression();
+        action.setExpression(actionString);
+        return oldAction;
     }
 
     public void showProperties() throws IllegalActionException {
@@ -283,9 +526,17 @@ public abstract class PropertySolver extends Attribute {
         _repaintGUI();
     }
 
-    public void highlightProperties() throws IllegalActionException {
-        _highlighter.highlightProperties();        
-        _repaintGUI();
+    /**
+     * Resolve the property values for the given top-level entity.
+     * Print out the name of the this solver. Sub-classes should
+     * overrides this method.
+     * @param topLevel The given top level entity.
+     * @throws IllegalActionException TODO
+     */
+    protected void _resolveProperties(ModelAnalyzer analyzer) 
+    throws KernelException {
+        System.out.println("Invoking \"" + getName() + "\" (" 
+                + getExtendedUseCaseName() + "):");
     }
 
     private void _repaintGUI() {
@@ -297,93 +548,28 @@ public abstract class PropertySolver extends Attribute {
     }
 
     /**
-     * Update the property. This method is called from both invoked
-     * and auxiliary solvers.
-     * @throws IllegalActionException
+     * 
+     * @param actionParameter
      */
-    public void updateProperties() throws IllegalActionException {
-        if (isView() || isClear()) {
-            return;
-        }
+    protected static void _addActions(Parameter actionParameter) {
+        actionParameter.addChoice(ANNOTATE);
+        actionParameter.addChoice(CLEAR);
+        actionParameter.addChoice(TEST);
+        actionParameter.addChoice(TRAINING);
+        actionParameter.addChoice(VIEW);
+        actionParameter.addChoice(CLEAR_ANNOTATION);
+    }
 
-        boolean hasDecided = false;
-        boolean userDecision = true;
-
-        // Only test the invoked solver.
-        boolean doTest = isTesting() && _isInvoked;
-        boolean doUpdate = isTraining() || isManualAnnotate();
-
-        _addStatistics();
-
-        for (PropertyHelper helper : _helperStore.values()) {
-
-            for (Object propertyable : helper.getPropertyables()) {
-
-                if (propertyable instanceof NamedObj) {
-                    NamedObj namedObj = (NamedObj) propertyable;
-
-                    // Get the value resolved by the solver.
-                    Property property = getProperty(namedObj);
-
-                    if (doTest) {    // Regression testing.
-                        _regressionTest(namedObj, property);
-
-                    } else if (doUpdate) {
-                        Property previous = getPreviousProperty(namedObj);
-
-                        if (!_isInvoked && !hasDecided) {
-
-                            // Check if the previous and resolved properties are different.
-                            if ((previous == null && property != null) ||
-                                    previous != null && !previous.equals(property)) {
-
-                                if (_analyzer == null) {
-                                    // Get user's decision.
-                                    userDecision = MessageHandler.yesNoQuestion(
-                                            "Resolved auxilary property for \"" + 
-                                            getExtendedUseCaseName() + 
-                                            "\" is different from previous. " +
-                                    "Update this property?");
-                                } else {
-                                    // Suppress the dialog.
-                                    userDecision = (_analyzer.overwriteDependentProperties
-                                            .getToken() == BooleanToken.TRUE);
-
-                                }
-                                // Remember that we have made a decision.
-                                hasDecided = true;
-                            }
-                        }
-
-                        // Do nothing only if the previous resolved property 
-                        // did not exist AND the user did not want to update.
-                        if (userDecision || previous != null) {
-
-                            // Get the property attribute so we can either update
-                            // its value or compare its value against the resolved
-                            // value (regression testing).
-                            PropertyAttribute attribute = _getPropertyAttribute(namedObj);                            
-                            _updatePropertyAttribute(attribute, userDecision ? property : previous);
-
-                            // Check for unacceptable solution.
-                            if ((property != null) && 
-                                    (!property.isAcceptableSolution())) {
-                                getSharedUtilities().addErrors("Property \"" 
-                                        + property + "\" is not an acceptable solution for "
-                                        + namedObj + "." + _eol);
-                            }
-
-                        }
-                    } 
-                } else {
-                    // FIXME: This happens when the propertyable is an ASTNodes,
-                    // or any non-Ptolemy objects. We are not updating their
-                    // property values, nor doing regression test for them.
-                }
-            }
-        }
+    private void _recordUnacceptableSolution(
+            Object propertyable, Property property) {
         
-        System.out.println(getStatistics());        
+        // Check for unacceptable solution.
+        if ((property != null) && 
+                (!property.isAcceptableSolution())) {
+            addErrors("Property \"" 
+                    + property + "\" is not an acceptable solution for "
+                    + propertyable + "." + _eol);
+        }
     }
 
     /**
@@ -391,7 +577,8 @@ public abstract class PropertySolver extends Attribute {
      * @param property
      * @throws IllegalActionException
      */
-    private void _updatePropertyAttribute(PropertyAttribute attribute, Property property) throws IllegalActionException {
+    private void _updatePropertyAttribute(PropertyAttribute attribute, Property property) 
+    throws IllegalActionException {
         if (property != null) {
             // Write results to attribute
             attribute.setExpression(property.toString());
@@ -436,7 +623,7 @@ public abstract class PropertySolver extends Attribute {
             }
         } else {
             //FIXME: Error checking?
-            throw new PropertyResolutionException(propertyable, 
+            throw new PropertyResolutionException(this, propertyable, 
             "Failed to get the PropertyAttribute.");
         }
         return attribute;
@@ -451,22 +638,30 @@ public abstract class PropertySolver extends Attribute {
      * @throws IllegalActionException
      */
     protected void _regressionTest(NamedObj namedObj, Property property) 
-    throws IllegalActionException {
+    throws PropertyResolutionException {
 
         Property previousProperty = 
             getPreviousProperty(namedObj);
 
         // Restore the previous resolved property, if there exists one.
         if (previousProperty != null) {
-            PropertyAttribute attribute = _getPropertyAttribute(namedObj);
-            _updatePropertyAttribute(attribute, previousProperty);
+            try {
+                PropertyAttribute attribute = _getPropertyAttribute(namedObj);
+                _updatePropertyAttribute(attribute, previousProperty);
+
+            } catch (IllegalActionException ex) {
+                throw new PropertyResolutionException(this, ex);
+            }
         }
 
-        if (previousProperty != property) {
+        // The first check is for singleton elements, and the equals()
+        // comparison is necessary for "equivalent" elements, such as
+        // those in the SetLattice usecase.
+        if (previousProperty != property && !previousProperty.equals(property)) {
             if (previousProperty == null ||
                     (previousProperty != null && !previousProperty.equals(property))) {
 
-                _sharedUtilities.addErrors(_eol + "Property \"" + getUseCaseName() + 
+                addErrors(_eol + "Property \"" + getUseCaseName() + 
                         "\" resolution failed for " + namedObj.getFullName() + 
                         "." + _eol + "    Trained value: \"" +
                         previousProperty +
@@ -489,7 +684,7 @@ public abstract class PropertySolver extends Attribute {
 
     protected PropertyHelper _getHelper(Object object) throws IllegalActionException {
         if (_helperStore.containsKey(object)) {
-            return _helperStore.get(object);
+            return (PropertyHelper) _helperStore.get(object);
         }
 
         if ((object instanceof IOPort) || (object instanceof Attribute)) {
@@ -560,90 +755,352 @@ public abstract class PropertySolver extends Attribute {
         return (PropertyHelper) helperObject;
     }
 
-    /**
-     * @param attribute
-     * @return
-     * @throws IllegalActionException
-     */
-    public ASTPtRootNode getParseTree(Attribute attribute) throws IllegalActionException {
-        Map<Attribute, ASTPtRootNode> parseTrees = 
-            getSharedUtilities().getParseTrees();
 
-        if (!parseTrees.containsKey(attribute)) {
-
-            String expression = ((Settable) attribute).getExpression().trim();
-
-            if (expression.length() == 0) {
-                return null;
-            }
-
-            ASTPtRootNode parseTree;
-//          if ((attribute instanceof StringAttribute) || 
-//          ((attribute instanceof Variable 
-//          && ((Variable) attribute).isStringMode()))) {
-            if ((attribute instanceof Variable) 
-                    && ((Variable) attribute).isStringMode()) {
-
-                parseTree = getParser().generateStringParseTree(expression);
-
-            } else {
-                parseTree = getParser().generateParseTree(expression);
-            }
-
-            parseTrees.put(attribute, parseTree);
-            getSharedUtilities().putAttributes(parseTree, attribute);
-        }
-        return parseTrees.get(attribute);
-    }
-
-    /**
-     * Find a constraint solver that is associated with the given 
-     * property lattice name. There can be more than one solvers with
-     * the same lattice. This method returns whichever it finds first. 
-     * @param latticeName The given name of the property lattice. 
-     * @return The property constraint solver associated with the
-     *  given lattice name. 
-     * @throws IllegalActionException Thrown if no matched solver
-     *  is found.
-     */
-    public PropertySolver findSolver(String identifier) 
-    throws PropertyResolutionException {
-
-        for (PropertySolver solver : _sharedUtilities.getAllSolvers()) {
-            if (solver.getUseCaseName().equals(identifier)) {
-                return solver;
-            }
-            if (solver.getClass().getSimpleName().equals(identifier)) {
-                return solver;
-            }
-        }
-
-        throw new PropertyResolutionException(
-                "Cannot find \"" + identifier + "\" solver.");
-    }
-
-    public static void main(String[] args) {
+    public static void testPropertiesAndGenerateReports(String directoryPath) {
         try {
-            File testDirectory = new File(FileUtilities.nameToURL("$CLASSPATH\\ptolemy\\data\\properties\\test\\auto\\", null, null).toURI());
-            //File testDirectory = new File("C:\\eclipse\\workspace\\ptII\\ptolemy\\data\\properties\\test\\auto");
 
-            File[] tests = testDirectory.listFiles(new FilenameFilter() {
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".xml");
+            Map[] stats;
+            stats = _testPropertiesDirectory(directoryPath);
+            _printGlobalStats(stats[0]);
+            _printLocalStats(stats[1]);
+        
+        } catch (Exception ex) {
+            // Force the error to show up on console.
+            // We may want to direct this an error file.
+            ex.printStackTrace(System.out);
+        }
+    }
+
+    /**
+     * 
+     * @param directoryPath
+     * @return
+     * @throws IOException
+     */
+    private static Map[] _testPropertiesDirectory(String directoryPath) throws IOException {
+        // Create the log directories.
+        new File(_statsDirectory).mkdirs();
+        new File(_exceptionLogsDirectory).mkdirs();
+        
+        // See MoMLSimpleApplication for similar code
+        MoMLParser parser = new MoMLParser();
+        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+        MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
+
+        // FIXME: get "stdout", "nondeep" options
+
+        HashMap<Object, Map> localStats = new LinkedHashMap<Object, Map>();
+        HashMap globalStats = new LinkedHashMap();
+        
+        Map[] summary = new Map[] { globalStats, localStats };
+
+        File directory = new File(directoryPath);
+
+        for (File file : directory.listFiles()) {
+
+            if (file.isDirectory()) {
+                Map[] directoryOutputs = _testPropertiesDirectory(file.getAbsolutePath());
+
+                _composeOutputs(summary[0], directoryOutputs[0]);
+                _composeOutputs(summary[1], directoryOutputs[1]);
+
+            } else if (_isTestableFile(file)) {
+                System.out.println("***isTestable: " + file.getAbsolutePath());
+                
+                // Redirect System.err to a byteArrayStream.
+                ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
+                PrintStream errorStream = new PrintStream(byteArrayStream);
+                System.setErr(errorStream);
+                
+                // FIXME: Implement option to redirect System.out to a file.
+//                String outputFilename = 
+//                    StringUtilities.getProperty("ptolemy.ptII.dir") 
+//                    + "/BOSCH_Logfiles/" + file.getName();
+//                
+//                outputFilename = outputFilename.replace(".xml", "_output.txt");
+//                File outputFile = new File(outputFilename);
+//                outputFile.createNewFile();
+//                
+//                FileOutputStream fos2 = new FileOutputStream(outputFilename);
+//                PrintStream ps2 = new PrintStream(fos2);
+//                System.setOut(ps2);
+
+                boolean failed = false;
+                
+                String filePath = file.getAbsolutePath();
+
+                //==========================================================
+                // Record timestamp and memory usage (per testcase).
+                System.gc();
+                long startTime = System.currentTimeMillis();
+
+                // Format the current time.
+                SimpleDateFormat formatter
+                    = new SimpleDateFormat ("yyyy.MM.dd G 'at' hh:mm:ss a zzz");
+                Date currentTime_1 = new Date(startTime);
+                String startTimeString = formatter.format(currentTime_1);
+
+                _addLocalStatsEntry(localStats, _createKey(filePath, null, null), "Start time ", startTimeString);
+                _addLocalStatsEntry(localStats, _createKey(filePath, null, null), "Memory usage before", Runtime.getRuntime().totalMemory());
+                
+                //==========================================================
+
+                try {
+                    parser.reset();
+                    MoMLParser.purgeModelRecord(filePath);
+                    CompositeEntity toplevel = _getModel(filePath, parser);		
+
+                    // Get all instances of PropertySolver contained in the model.
+                    // FIXME: This only gets solvers in the top-level.
+                    List<PropertySolver> solvers = 
+                        toplevel.attributeList(PropertySolver.class);
+
+                    // There is no PropertySolver in the model. 
+                    if (solvers.size() == 0) {
+                        System.err.println("The model does not contain a solver.");
+                    } 
+
+                    for (PropertySolver solver : solvers) {
+                        if (solver.isTesting()) {
+                            // FIXME:
+                            //solver._prepareForTesting(options);                                
+                            failed &= solver.invokeSolver();
+
+                            localStats.put(_createKey(filePath, solver, solver), solver._stats); 
+                            _solverStatsHeaders.addAll(solver._stats.keySet());
+
+                            for (String solverName : solver.getDependentSolvers()) {
+                                PropertySolver dependentSolver = solver.findSolver(solverName);
+
+                                localStats.put(_createKey(filePath, 
+                                        dependentSolver, solver), dependentSolver._stats); 
+                                _solverStatsHeaders.addAll(dependentSolver._stats.keySet());
+                            }
+
+                            solver.resetAll();
+
+                        } else {
+                            System.err.println("Warning: regression test not performed. " + 
+                                    solver.getDisplayName() + " in " + filePath + 
+                                    " is set to [" + solver.action.getExpression() + "] mode.");
+
+                            failed = true;
+                        }
+                    }
+                } catch (Exception ex) {
+                    failed = true;
+                    ex.printStackTrace(System.err);
                 }
-            });
 
-            int i = 0;
-            for (File file : tests) {
-                //System.out.flush();
-                System.out.println(++i + ".) -------Testing " + file.getName());
-                testProperties(new String[]{file.getPath()});
+                //==========================================================
+                // Record timestamp and memory usage (per testcase).
+                long finishTime = System.currentTimeMillis();
+                System.gc();
+                _addLocalStatsEntry(localStats, _createKey(filePath, null, null), "Time used (ms)", finishTime - startTime);
+                _addLocalStatsEntry(localStats, _createKey(filePath, null, null), "Memory usage after", Runtime.getRuntime().totalMemory());
+                _addLocalStatsEntry(localStats, _createKey(filePath, null, null), "Failed?", failed);
+
+                _incrementStats(globalStats, "#Total tests", 1);
+
+                String errors = byteArrayStream.toString();
+                
+                if (!failed) {
+                    // Should not succeed with errors.
+                    assert errors.length() == 0;
+
+                    _incrementStats(globalStats, "#Passed", 1);
+
+                } else {
+                    // Should not have a failure without error message.
+                    assert errors.length() > 0;
+
+                    _incrementStats(globalStats, "#Failed", 1);
+
+                    File errorFile = _getExceptionLogFile(file, failed);
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(errorFile));
+                    writer.write(errors);
+                    writer.close();
+                }
+                //==========================================================
             }
 
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
+            //		statistics log (global, **this is the compare file)
+            //		    comprehensive overview (#failure, #success, #knownFailure, global)
+            //		        - on top
+            //		    stats field identifier (one headline)
+            //		    testcase id (name, no timestamp, per model)
+            //		        - each stats info (separated by [tab])
+
+            //		    multiple invocations of (intermediate) solver are mapped to the same id
+            //		        - create separate entries for these invocations
+
         }
+        return summary;
+    }
+
+    /**
+     * 
+     * @param stats
+     * @param key
+     * @param entryHeader
+     * @param entryValue
+     */
+    private static void _addLocalStatsEntry(
+            Map<Object, Map> stats, Object key, String entryHeader, Object entryValue) {
+        _modelStatsHeaders.add(entryHeader);
+        
+        Map entry;
+        if (stats.containsKey(key)) {
+            entry = stats.get(key);
+        } else {
+            entry = new HashMap();
+            stats.put(key, entry);
+        }
+        entry.put(entryHeader, entryValue);        
+    }
+
+    private static Object _createKey(String filePath, PropertySolver solver, PropertySolver invokedSolver) {
+        String key = filePath + _separator;
+        
+        if (solver != null) {
+            key += solver.getName();
+        }
+
+        key += _separator;
+        
+        if (solver == null && invokedSolver == null) {
+            // no solver is invoked.
+        } else if (solver == invokedSolver || invokedSolver == null) {
+            key += "directly invoked";
+        } else {
+            key += "dependent for (" + invokedSolver + ")";
+        }
+        return key;
+    }
+
+    /**
+     * Get the exception log file for the given test model. The exception log
+     * filename reflects whether the test has failed or not. For example,
+     * a test model named "model.xml" may have a corresponding exception
+     * file named "Failed_errors_model.log". If a file with the same name
+     * already existed, a suffix number is attached. This occurs when 
+     * logs generated by previous runs of the test script are not removed,
+     * or there are multiple model files with the same name with under
+     * different directories. 
+     * @param modelFile The given test model file.
+     * @param failed Indicate whether the test had failed or not.
+     * @return The exception log file that did not previously exist. 
+     */
+    private static File _getExceptionLogFile(File modelFile, boolean failed) {
+        int suffixId = 0;
+        
+        File errorFile;
+        
+        do {
+            String exceptionLogFilename = _exceptionLogsDirectory + "/" +
+            (failed ? "Failed_errors_" : "Passed_errors_") + modelFile.getName();
+            
+            // Replace the extension.
+            exceptionLogFilename = exceptionLogFilename.substring(0, exceptionLogFilename.length() - 4);
+            
+            // Duplicate filenames (under different directories) are handled by
+            // appending a serial suffix. We assume the file content would
+            // specify the path to the model file.
+            if (suffixId == 0) {
+                errorFile = new File(exceptionLogFilename + ".log");
+            } else {
+                errorFile = new File(exceptionLogFilename + suffixId + ".log");
+            }
+            
+            suffixId++;
+        } while (errorFile.exists());
+
+        return errorFile;
+    }
+
+    /** The directory path to store the test statistics reports. */
+    private static String _statsDirectory = StringUtilities.getProperty("ptolemy.ptII.dir") + "/BOSCH_Logfiles";
+
+    /** The directory path to store the exception log files. */
+    private static String _exceptionLogsDirectory = _statsDirectory + "/exceptionLogs";
+
+    /** The file path for the overview report file. */ 
+    private static String _statsFilename = _statsDirectory + "/propertyTestReports.tsv";
+    
+    private static void _printLocalStats(Map<Object, Map> stats) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(_statsFilename), true));
+
+        // Give ordering to the header fields.
+        List headers = new LinkedList(_modelStatsHeaders);
+        headers.addAll(_solverStatsHeaders);
+        
+        // Print the header row.
+        writer.append("Filename" + _separator);
+        writer.append("Solver" + _separator);
+        writer.append("Invocation");
+        for (Object header : headers) {
+            writer.append(_separator + header.toString());
+        }
+        writer.newLine();
+        
+        // Iterate using triplet keys {testFile, solver, isInvoked}.
+        for (Object key : stats.keySet()) {
+            Map entry = stats.get(key);
+            writer.append(key.toString());                    
+
+            for (Object header : headers) {
+                writer.append(_separator);
+                if (entry.containsKey(header)) {
+                    writer.append(entry.get(header).toString());                    
+                }
+            }
+            writer.newLine();
+        }
+        writer.close();
+    }
+
+    private static void _printGlobalStats(Map stats) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(_statsFilename)));
+        for (Object field : stats.keySet()) {
+            writer.append(field + _separator + stats.get(field));
+            writer.newLine();
+        }
+        writer.close();
+    }
+
+    private static LinkedHashSet _solverStatsHeaders = new LinkedHashSet();
+    private static LinkedHashSet _modelStatsHeaders = new LinkedHashSet();
+
+    private static void _composeOutputs(Map summary, Map intermediateOutputs) {
+        for (Object field : intermediateOutputs.keySet()) {
+            Object value = intermediateOutputs.get(field);
+            if (value instanceof Number) {
+                _incrementStats(summary, field, (Number) value);
+            } else if (value instanceof Map) {
+                summary.put(field, value);
+            }
+        }
+    }
+
+    private static boolean _isTestableFile(File file) {
+        if (!file.getName().endsWith(".xml")) {
+            return false;
+        }
+        return _isTestableDirectory(file.getParentFile());
+    }
+
+    private static boolean _isTestableDirectory(File file) {
+        if (!file.isDirectory()) {
+            return false;
+        }
+
+        List directoryPath = Arrays.asList(
+                file.getAbsolutePath().split(file.separator.replace("\\", "\\\\")));
+
+        return 
+        directoryPath.contains("test") ||
+        directoryPath.contains("demo");
     }
 
     /** Resolve properties for a model.
@@ -694,81 +1151,64 @@ public abstract class PropertySolver extends Attribute {
                 continue;
             }
 
-            CompositeActor toplevel = null;
+            CompositeEntity toplevel = null;
             boolean isDone = false;
             int numberOfSolverTested = 0;
 
             while (!isDone) {
-                long memStart = 0, memEnd;
+                long memStart, memEnd;
                 PropertySolver solver = null;
-                try {
-                    System.gc();
-                    memStart = Runtime.getRuntime().totalMemory();
-                    parser.reset();    
-                    MoMLParser.purgeModelRecord(args[i]);
-                    toplevel = _getModel(args[i], parser);
 
-                    //isDone = true;
-                    ///*
+                System.gc();
+                memStart = Runtime.getRuntime().totalMemory();
+                parser.reset();
+                MoMLParser.purgeModelRecord(args[i]);
+                toplevel = _getModel(args[i], parser);
 
-                    // Get all instances of PropertySolver contained in the model.
-                    // FIXME: This only gets solvers in the top-level.
-                    List solvers = toplevel.attributeList(PropertySolver.class);
+                // Get all instances of PropertySolver contained in the model.
+                // FIXME: This only gets solvers in the top-level.
+                List solvers = toplevel.attributeList(PropertySolver.class);
 
-                    if (solvers.size() == 0) {
-                        // There is no PropertySolver in the model. 
-                        throw new PropertyResolutionException(
-                        "The model does not contain a solver.");
+                if (solvers.size() == 0) {
+                    // There is no PropertySolver in the model. 
+                    System.err.println("The model does not contain a solver.");
 
-                    } else if (numberOfSolverTested < solvers.size()) {
-                        // Get the last PropertySolver in the list, maybe
-                        // it was added last?
-                        solver = (PropertySolver) solvers.get(numberOfSolverTested++);
+                } else if (numberOfSolverTested < solvers.size()) {
+                    // Get the last PropertySolver in the list, maybe
+                    // it was added last?
+                    solver = (PropertySolver) solvers.get(numberOfSolverTested++);
 
-                        try {
-                            //solver.setAction(PropertySolver.TEST);
-                            if (solver.isTesting()) {
-                                solver._prepareForTesting(options);
-                                solver.resolveProperties(true);
-                                solver.updateProperties();
-                                solver.checkRegressionTestErrors();
-                            } else {
-                                System.err.println("Warning: regression test not performed. " + 
-                                        solver.getDisplayName() + " in " + args[i] + 
-                                        " is set to [" + solver.action.getExpression() + "] mode.");
-                            }
-                        } catch (Exception ex) {
-                            // log ex to error files.
+                    if (solver.isTesting()) {
+                        solver._prepareForTesting(options);                                
+                        solver.invokeSolver();
+                        solver.resetAll();
 
-                            throw new PropertyResolutionException(solver, ex,
-                                    " Failed to resolve properties for \""
-                                    + args[i] + "\"");
-
-                        } finally {
-                            solver.resetAll();
-                        } 
                     } else {
-                        isDone = true;
+                        System.err.println("Warning: regression test not performed. " + 
+                                solver.getDisplayName() + " in " + args[i] + 
+                                " is set to [" + solver.action.getExpression() + "] mode.");
                     }
+                } else {
+                    isDone = true;
+                }
 
-                    //*/
+                // Destroy the top level so that we avoid
+                // problems with running the model after generating code
+                if (toplevel != null) {
+                    toplevel.setContainer(null);
+                    toplevel = null;
+                }
 
-                } finally {
-                    // Destroy the top level so that we avoid
-                    // problems with running the model after generating code
-                    if (toplevel != null) {
-                        toplevel.setContainer(null);
-                        toplevel = null;
-                    }
+                //==========================================================
+                System.gc();
+                memEnd = Runtime.getRuntime().totalMemory();
+                if ((memEnd - memStart) != 0) {
+                    // FIXME: throw some sort of memory leak exception?
+//                  System.out.println("Memory Usage Before PS: " + memStart);                    
+//                  System.out.println("Memory Usage After PS: " + memEnd);
+//                  System.out.println("Memory diff = : " + (memEnd - memStart));
+                    //==========================================================
 
-                    System.gc();
-                    memEnd = Runtime.getRuntime().totalMemory();
-                    if ((memEnd - memStart) != 0) {
-                        // FIXME: throw some sort of memory leak exception?
-//                      System.out.println("Memory Usage Before PS: " + memStart);                    
-//                      System.out.println("Memory Usage After PS: " + memEnd);
-//                      System.out.println("Memory diff = : " + (memEnd - memStart));
-                    }
                 }
             }
 
@@ -783,79 +1223,71 @@ public abstract class PropertySolver extends Attribute {
         return;
     }
 
-    /**
-     * Clear the display properties.
-     */
-    public void clearDisplay() {
-        _highlighter.clearDisplay();
-    }
-
-    public void clearProperties() throws IllegalActionException {
-
-        for (Object propertyable : getAllPropertyables()) {
-            if (propertyable instanceof NamedObj) {
-                NamedObj namedObj = (NamedObj) propertyable;
-
-                PropertyAttribute attribute = (PropertyAttribute)
-                namedObj.getAttribute(getExtendedUseCaseName());
-
-                try {
-                    if (attribute != null) {
-                        attribute.setContainer(null);
-                    }
-                } catch (NameDuplicationException e1) {
-                    assert false;
-                }
-            }
-        }
-        _repaintGUI();
-    }
-
-    /**
-     * Check if there is any regression testing errors after resolving
-     * properties. If so, throw a new PropertyFailedRegressionTestException
-     * with an error message that includes all the properties that does not
-     * match the regression test values. 
-     * @throws PropertyFailedRegressionTestException Thrown if there is any
-     *  errors in the regression test.
-     */
-    public void checkRegressionTestErrors() 
-    throws PropertyFailedRegressionTestException {
-
-        List errors = _sharedUtilities.getErrors();
-
-        if (isTesting() && !errors.isEmpty()) {
-            String errorMessage = errors.toString();
-
-            throw new PropertyFailedRegressionTestException(
-                    this, errorMessage);
-        }
+    public boolean invokeSolver() {
+        return invokeSolver(null);
     }
     
-    public boolean isClear() {
-        return action.getExpression().equals(PropertySolver.CLEAR);
+    public boolean invokeSolver(ModelAnalyzer analyzer) {
+        boolean success = false;
+
+        try {
+            success = resolveProperties(analyzer, true);	            
+            
+            updateProperties();
+
+            checkErrors();
+
+            displayProperties();
+
+            if (isTraining() && success) {
+                setTesting();
+            }
+
+        } catch (KernelException e) {
+            throw new InternalErrorException(e);
+        } 
+        
+        return success;
     }
 
     public boolean isManualAnnotate() {
-        return action.getExpression().
-        equals(PropertySolver.MANUAL_ANNOTATE);
+        return manualAnnotation.getExpression().equals("true");
     }
 
     public boolean isTesting() {
         return action.getExpression().equals(PropertySolver.TEST);
     }
 
-    public boolean isTraining() {
+    public boolean isResolve() {
         return ((action.getExpression().equals(ANNOTATE)) ||
-                (action.getExpression().equals(ANNOTATE_ALL)) ||
-                (action.getExpression().equals(MANUAL_ANNOTATE)) ||
+                //(action.getExpression().equals(ANNOTATE_ALL)) ||
+                //(action.getExpression().equals(MANUAL_ANNOTATE)) ||
                 (action.getExpression().equals(TRAINING)));
+    }
+
+    public boolean isTraining() {
+        return action.getExpression().equals(TRAINING);
     }
 
     public boolean isView() {
         return action.getExpression().equals(PropertySolver.VIEW);
     }
-    
+
+    /**
+     * 
+     * @param usecase
+     * @return
+     */
+    public boolean isIdentifiable(String usecase) {
+        return usecase.equals(getName()) ||
+        usecase.equals(getUseCaseName()) ||
+        usecase.equals(getExtendedUseCaseName());
+    }
+
+    public boolean isSettable(Object object) {
+        return !_nonSettables.contains(object);
+    }
+
     /**
      * Increment the given field the solver statistics by a
      * given number. This is used for incrementing integer
@@ -864,21 +1296,26 @@ public abstract class PropertySolver extends Attribute {
      * @param field The given field of the solver statistics.
      * @param increment The given number to increment by.
      */
-    public void incrementStats(Object field, int increment) {
-        Integer current = (Integer) _stats.get(field);
+    public void incrementStats(Object field, long increment) {
+        _incrementStats(_stats, field, increment);
+    }
+
+    private static void _incrementStats(Map map, Object field, Number increment) {
+        Number current = (Number) map.get(field);
         if (current == null) {
             current = 0;
         }
-        _stats.put(field, current + increment);
+        map.put(field, current.longValue() + increment.longValue());
     }
-
+    
     /**
      * @param path
      * @param parser
      * @return
-     * @throws PropertyResolutionException
+     * @throws IllegalActionException 
      */
-    private static CompositeActor _getModel(String path, MoMLParser parser) throws PropertyResolutionException {
+    private static CompositeEntity _getModel(String path, MoMLParser parser) 
+    throws IllegalActionException {
         // Note: the code below uses explicit try catch blocks
         // so we can provide very clear error messages about what
         // failed to the end user.  The alternative is to wrap the
@@ -889,16 +1326,17 @@ public abstract class PropertySolver extends Attribute {
         try {
             modelURL = new File(path).toURL();
         } catch (Exception ex) {
-            throw new PropertyResolutionException("Could not open \"" + path + "\"", ex);
+            throw new IllegalActionException(null, ex, 
+                    "Could not open \"" + path + "\"");
         }
 
-        CompositeActor toplevel = null;
+        CompositeEntity toplevel = null;
 
         try {
-            toplevel = (CompositeActor) parser.parse(null, modelURL);
+            toplevel = (CompositeEntity) parser.parse(null, modelURL);
         } catch (Exception ex) {
-            throw new PropertyResolutionException("Failed to parse \"" + path + "\"",
-                    ex);
+            throw new IllegalActionException(null, ex, 
+                    "Failed to parse \"" + path + "\"");
         }
         return toplevel;
     }
@@ -917,20 +1355,27 @@ public abstract class PropertySolver extends Attribute {
      * Resolve the properties.
      * @throws KernelException
      */
-    public void resolveProperties(boolean isInvoked) throws KernelException {
-        resolveProperties(null, isInvoked);
+    public boolean resolveProperties(boolean isInvoked) throws KernelException {
+        return resolveProperties(null, isInvoked);
+    }
+
+    public void addNonSettable(Object object) {
+        _nonSettables.add(object);
     }
 
     /**
-     * Reset all internal states including utilities shared across
-     * solvers in the same model. To release used memory, maps of 
-     * the resolved and declared properties are cleared. The shared
-     * parser used particularly by PropertySolvers is set to null. 
-     * 
+     * Add the given unique solver identifier to the dependency list. 
+     * A dependent solver is one whose analysis result is required
+     * for this solver's analysis. The dependent solvers are run in
+     * order before invoking this solver.
+     * @param solverName The 
      */
-    public void resetAll() {     
-        _parser = null;
-        getSharedUtilities().resetAll();        
+    public void addDependentSolver(String solverName) {
+        _dependentSolvers.add(solverName);
+    }
+
+    public void clearResolvedProperty (Object object) {
+        _resolvedProperties.remove(object);
     }
 
     public Property getResolvedProperty(Object object) {
@@ -939,7 +1384,7 @@ public abstract class PropertySolver extends Attribute {
 
 
     public Property getResolvedProperty(Object object, boolean resolve) {
-        Property property = _resolvedProperties.get(object);
+        Property property = (Property) _resolvedProperties.get(object);
 
         // See if it is already resolved.
         if (property != null) {
@@ -968,31 +1413,15 @@ public abstract class PropertySolver extends Attribute {
                     KernelException.stackTraceToString(ex));
         }
 
-        return _resolvedProperties.get(object);
+        return (Property) _resolvedProperties.get(object);
     }
 
     public Property getDeclaredProperty(Object object) {
-        return _declaredProperties.get(object);
-    }
-
-    public void setResolvedProperty(Object object, Property property) {
-        _resolvedProperties.put(object, property);
-    }
-
-    public void recordPreviousProperty(Object object, Property property)  {
-        _previousProperties.put(object, property);
+        return (Property) _declaredProperties.get(object);
     }
 
     public Property getPreviousProperty(Object object) {
-        return _previousProperties.get(object);
-    }
-
-    public void setDeclaredProperty(Object object, Property property)  {
-        _declaredProperties.put(object, property);
-    }
-
-    public void clearResolvedProperty (Object object) {
-        _resolvedProperties.remove(object);
+        return (Property) _previousProperties.get(object);
     }
 
     /**
@@ -1019,14 +1448,6 @@ public abstract class PropertySolver extends Attribute {
         }
 
         return attributes.get(root);
-    }
-
-    public void addNonSettable(Object object) {
-        _nonSettables.add(object);
-    }
-
-    public boolean isSettable(Object object) {
-        return !_nonSettables.contains(object);
     }
 
     /**
@@ -1067,7 +1488,7 @@ public abstract class PropertySolver extends Attribute {
      */
     protected HashMap<Object, PropertyHelper> _helperStore = new HashMap<Object, PropertyHelper>();
 
-    protected Map<Object, Object> _stats = new TreeMap<Object, Object>();
+    protected Map<Object, Object> _stats = new LinkedHashMap<Object, Object>();
 
     /**
      * @return the _parser
@@ -1094,14 +1515,16 @@ public abstract class PropertySolver extends Attribute {
         _stats.put("# of helpers", _helperStore.size());
         _stats.put("# of propertyables", getAllPropertyables().size());
         _stats.put("# of resolved properties", _resolvedProperties.size());
+        _stats.put("# of resolution errors", _sharedUtilities.getErrors().size());
+        _stats.put("has trained resolution errors", getTrainedException().length() > 0);
     }
 
-    public String getStatistics() {
-        String result = "";
-        for (Object key : _stats.keySet()) {
-            result += key + ": " + _stats.get(key) + _eol;
+    protected String _getStatsAsString(String separator) {
+        StringBuffer result = new StringBuffer();
+        for (Object field : _stats.keySet()) {
+            result.append(field + separator + _stats.get(field) + _eol);
         }
-        return result;
+        return result.toString();
     }
 
     private static PtParser _parser;
@@ -1135,8 +1558,22 @@ public abstract class PropertySolver extends Attribute {
         }
         return result;
     }
-
+    
+    public static List<PropertySolver> getAllSolvers(SharedParameter sharedParameter) {
+        List<NamedObj> parameters = new ArrayList<NamedObj>(sharedParameter.sharedParameterSet());
+        List<PropertySolver>  solvers= new LinkedList<PropertySolver>();
+        for (NamedObj parameter : parameters) {
+            Object container = parameter.getContainer();
+            if (container instanceof PropertySolver) {
+                solvers.add((PropertySolver) container);
+            }
+        }
+        return solvers;        
+    }
+    
     protected static String _eol = StringUtilities.getProperty("line.separator");
+
+    protected static String _separator = "\t";
 
     protected boolean _isInvoked;
 
@@ -1149,17 +1586,19 @@ public abstract class PropertySolver extends Attribute {
      * be a case where two solvers exist in each other's dependency list. 
      */
     private List<String> _dependentSolvers = new LinkedList<String>();
-    
+
     private SharedUtilities _sharedUtilities;
-    
+
+    private static String _TRAINED_EXCEPTION_ATTRIBUTE_NAME = "PropertyResolutionExceptionMessage";
+
     /** The display label for "annotate" in the action choices */
     protected static final String ANNOTATE = "ANNOTATE";
 
-    /** The display label for "annotate all" in the action choices */
-    protected static final String ANNOTATE_ALL = "ANNOTATE_ALL";
-    
     /** The display label for "clear" in the action choices */
     protected static final String CLEAR = "CLEAR";
+
+    /** The display label for "clear annotation" in the action choices */
+    protected static final String CLEAR_ANNOTATION = "CLEAR_ANNOTATION";
 
     /** The display label for "test" in the action choices */
     protected static final String TEST = "TEST";
@@ -1171,21 +1610,10 @@ public abstract class PropertySolver extends Attribute {
     protected static final String VIEW = "VIEW";
 
     /** The display label for "manual annotation" in the action choices */
-    protected static final String MANUAL_ANNOTATE = "MANUAL ANNOTATE";
+    //protected static final String MANUAL_ANNOTATE = "MANUAL ANNOTATE";
 
     public static final String NONDEEP_TEST_OPTION = "-nondeep"; 
 
-    /**
-     * Add the given unique solver identifier to the dependency list. 
-     * A dependent solver is one whose analysis result is required
-     * for this solver's analysis. The dependent solvers are run in
-     * order before invoking this solver.
-     * @param solverName The 
-     */
-    public void addDependentSolver(String solverName) {
-        _dependentSolvers.add(solverName);
-    }
-    
     /**
      * Return the list of dependent solvers. The list contains the
      * unique name of the solvers.
@@ -1195,5 +1623,163 @@ public abstract class PropertySolver extends Attribute {
         return _dependentSolvers;
     }
 
+    public String getTrainedException() {
+        StringAttribute attribute = (StringAttribute)
+        getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
+
+        if (attribute == null) {
+            return "";
+        } else {
+            return attribute.getExpression();
+        }
+    }
+
+    /**
+     * Reset all internal states including utilities shared across
+     * solvers in the same model. To release used memory, maps of 
+     * the resolved and declared properties are cleared. The shared
+     * parser used particularly by PropertySolvers is set to null. 
+     * 
+     */
+    public void resetAll() {     
+        _parser = null;
+        for (PropertySolver solver : getAllSolvers(sharedUtilitiesWrapper)) {
+            solver.reset();
+        }
+        getSharedUtilities().resetAll();        
+    }
+
+    public void recordPreviousProperty(Object object, Property property)  {
+        _previousProperties.put(object, property);
+    }
+
+    public void recordTrainedException(String exceptionMessage) throws IllegalActionException {
+        StringAttribute attribute = (StringAttribute)
+        getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
+        if (attribute == null) {
+
+            try {
+                attribute = new StringAttribute(
+                        this, _TRAINED_EXCEPTION_ATTRIBUTE_NAME);
+
+            } catch (NameDuplicationException e) {
+                assert false;
+            }
+        } 
+        attribute.setExpression(exceptionMessage);
+    }
+
+    public void setDeclaredProperty(Object object, Property property)  {
+        _declaredProperties.put(object, property);
+    }
+
+    public void setResolvedProperty(Object object, Property property) {
+        _resolvedProperties.put(object, property);
+    }
+
+    /**
+     * Update the property. This method is called from both invoked
+     * and auxiliary solvers.
+     * @throws IllegalActionException 
+     * @throws IllegalActionException
+     */
+    public void updateProperties() throws IllegalActionException {
+        if (isView() || isClear()) {
+            return;
+        }
+
+        boolean hasDecided = false;
+        boolean userDecision = true;
+
+        // Only test the invoked solver.
+        boolean doTest = isTesting() && _isInvoked;
+        boolean doUpdate = isResolve();
+
+        _addStatistics();
+
+        for (Object propertyable : getAllPropertyables()) {
+
+            if (!NamedObj.class.isInstance(propertyable)) {
+                // FIXME: This happens when the propertyable is an ASTNodes,
+                // or any non-Ptolemy objects. We are not updating their
+                // property values, nor doing regression test for them.
+                continue;
+            }
+
+            NamedObj namedObj = (NamedObj) propertyable;
+
+            // Get the value resolved by the solver.
+            Property property = getProperty(namedObj);
+
+            if (doTest) {    // Regression testing.
+                _regressionTest(namedObj, property);
+
+            } else if (doUpdate) {
+                Property previous = getPreviousProperty(namedObj);
+
+                if (!_isInvoked && !hasDecided) {
+
+                    // Check if the previous and resolved properties are different.
+                    if ((previous == null && property != null) ||
+                            previous != null && !previous.equals(property)) {
+
+                        if (_analyzer == null) {
+                            // Get user's decision.
+                            userDecision = MessageHandler.yesNoQuestion(
+                                    "Resolved auxilary property for \"" + 
+                                    getExtendedUseCaseName() + 
+                                    "\" is different from previous. " +
+                            "Update this property?");
+                        } else {
+                            // Suppress the dialog.
+                            userDecision = _analyzer.overwriteDependentProperties
+                            .getToken() == BooleanToken.TRUE;
+
+                        }
+                        // Remember that we have made a decision.
+                        hasDecided = true;
+                    }
+                }
+
+                // Do nothing only if the previous resolved property 
+                // did not exist AND the user did not want to update.
+                if (userDecision || previous != null) {
+
+                    // Get the property attribute so we can either update
+                    // its value or compare its value against the resolved
+                    // value (regression testing).
+                    PropertyAttribute attribute = _getPropertyAttribute(namedObj);                            
+                    _updatePropertyAttribute(attribute, userDecision ? property : previous);
+
+                }
+            } 
+        }
+
+        System.out.println(_getStatsAsString(": "));        
+    }
+
+    public void setTesting() {
+        action.setPersistent(true);
+        setAction(TEST);
+        _repaintGUI();
+    }
+
+    // FIXME: Check that the container is an instance of PropertyConstraintSolver.
+
+    public static String getTrainedExceptionMismatchMessage(
+            String exception, String trainedException) {
+        return "The generated exception:" + _eol + 
+        "-------------------------------------------------------" + _eol + 
+        exception + _eol + 
+        "-------------------------------------------------------" + _eol + 
+        " does not match the trained exception:" + _eol + 
+        "-------------------------------------------------------" + _eol + 
+        trainedException + _eol +
+        "-------------------------------------------------------" + _eol;
+    }
+
+    public Attribute getTrainedExceptionAttribute() {
+        return getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
+    }
 
 }

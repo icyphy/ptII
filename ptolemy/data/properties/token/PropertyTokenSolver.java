@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.IntToken;
@@ -90,29 +91,21 @@ public class PropertyTokenSolver extends PropertySolver {
         super._resolveProperties(analyzer);
         
         topLevelHelper.reinitialize();
-
+        
         // run model
         if (!getListening().equals("NONE")) {
 
-            topLevelHelper.addListener();
+            topLevelHelper.addListener(getListening().contains("Input"), 
+                                       getListening().contains("Output"));
             
             NamedObj topLevel = toplevel();
             
             // run simulation
+            Manager manager = new Manager(topLevel.workspace(), "PortValueManager");
+
             if (topLevel instanceof TypedCompositeActor) {
 
-                Manager manager = new Manager(topLevel.workspace(), "PortValueManager");
                 ((TypedCompositeActor) topLevel).setManager(manager);
-                manager.preinitializeAndResolveTypes();
-                // ((CompositeActor) topLevel).preinitialize();
-                ((TypedCompositeActor) topLevel).initialize();
-                ((TypedCompositeActor) topLevel).iterate(((IntToken)(numberIterations.getToken())).intValue());
-                ((TypedCompositeActor) topLevel).wrapup();
-                ((TypedCompositeActor) topLevel).stop();
-    
-                manager.wrapup();
-                manager.finish();
-                manager.stop();
                 
             } else if (topLevel instanceof FSMActor) {
 
@@ -121,25 +114,29 @@ public class PropertyTokenSolver extends PropertySolver {
                 
                 compositeActor.setDirector(fsmDirector);
                 ((FSMActor)topLevel).setContainer(compositeActor);
-                Manager manager = new Manager(topLevel.workspace(), "PortValueManager");
+               
                 compositeActor.setManager(manager);
-                manager.preinitializeAndResolveTypes();
-                
-                ((FSMActor)topLevel).initialize();
-                ((FSMActor)topLevel).iterate(((IntToken)(numberIterations.getToken())).intValue());
-                ((FSMActor)topLevel).wrapup();
-                ((FSMActor) topLevel).stop();
-                
-                manager.wrapup();
-                manager.finish();
-                manager.stop();
 
                 ((FSMActor)topLevel).setContainer(null);
             } else {
-                // FIXME: should trow some sort of "Not supported" exception
+                throw new IllegalActionException(
+                        "Not able to fire this type of toplevel actor (" + topLevel + ").");
             }
+            
+            
+            manager.preinitializeAndResolveTypes();
+            ((Actor) topLevel).initialize();
+            ((Actor) topLevel).iterate(((IntToken)(numberIterations.getToken())).intValue());
+            ((Actor) topLevel).wrapup();
+//FIXME: stoping the manager conflicts with extendedFirstListener. No iterations can be done there.                 
+//            ((Actor) topLevel).stop();
 
-            topLevelHelper.removeListener();
+            manager.wrapup();
+            manager.finish();
+            manager.stop();
+
+            topLevelHelper.removeListener(getListening().contains("Input"), 
+                                          getListening().contains("Output"));
 
         }
             
@@ -151,6 +148,11 @@ public class PropertyTokenSolver extends PropertySolver {
         return "token::" + getUseCaseName();
     }
         
+    public void reset() {
+        super.reset();
+        _clearTokenMap();
+    }
+    
     public StringParameter useCase;
     public StringParameter listeningMethod;
     public Parameter numberIterations;
@@ -170,7 +172,7 @@ public class PropertyTokenSolver extends PropertySolver {
         File[] lattices = file.listFiles(); 
         for (int i = 0; i < lattices.length; i++) {
             String latticeName = lattices[i].getName();
-            if (lattices[i].isDirectory() && !latticeName.equals("CVS")) {
+            if (lattices[i].isDirectory() && !latticeName.equals("CVS") && !latticeName.equals(".svn")) {
                 useCase.addChoice(latticeName);
             }
         }
@@ -205,9 +207,13 @@ public class PropertyTokenSolver extends PropertySolver {
     }
 
     public Token getToken(Object object) {
-        return _tokenMap.get(object);
+        return (Token)_tokenMap.get(object);
     }
 
+    private void _clearTokenMap() {
+        _tokenMap.clear();
+    }
+    
     private FirstTokenSentListener _sentListener = new FirstTokenSentListener(this);
     private FirstTokenGotListener _gotListener = new FirstTokenGotListener(this);
        
