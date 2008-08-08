@@ -55,7 +55,7 @@ This Class provides a parser for read matrices in matlab format.
 @Pt.ProposedRating Red
 @Pt.AcceptedRating Red (kienhuis)
 */
-@SuppressWarnings("unused")
+@SuppressWarnings("static-access")
 public class MatrixParser {
 
     /** Read a Matrix from File.
