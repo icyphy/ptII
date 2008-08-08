@@ -30,7 +30,6 @@
 package ptolemy.caltrop.util;
 
 import java.util.AbstractList;
-import java.util.List;
 
 import ptolemy.data.ArrayToken;
 
