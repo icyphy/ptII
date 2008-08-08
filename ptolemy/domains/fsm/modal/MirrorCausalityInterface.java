@@ -160,10 +160,10 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
                // We iterate over the input ports, and for each one,
                // find the ports for which it has equivalents in any
                // associated causality.
-               _equivalenceClasses = new HashMap<IOPort,Set<IOPort>>();
+               _equivalenceClasses = new HashMap<IOPort,Collection<IOPort>>();
                Collection<IOPort> localInputs = _actor.inputPortList();
                for (IOPort localInput : localInputs) {
-                   Set<IOPort> equivalences = _equivalenceClasses.get(localInput);
+                   Collection<IOPort> equivalences = _equivalenceClasses.get(localInput);
                    if (equivalences != null) {
                        // This input port is done.
                        continue;
