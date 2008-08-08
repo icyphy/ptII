@@ -71,7 +71,7 @@ import caltrop.interpreter.util.PriorityUtil;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class CSP extends AbstractDDI implements DDI {
+public class CSP extends AbstractDDI {
     public CSP(TypedAtomicActor ptActor, Actor actor, Context context,
             Environment env) {
         _ptActor = ptActor;

@@ -90,7 +90,7 @@ public class Limiter extends AtomicActor {
     // type. The result of the function is the same as the input type
     // if is not Complex; otherwise, the result is Double.
     private class FunctionTerm 
-    extends MonotonicFunction implements PropertyTerm {
+    extends MonotonicFunction {
     
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////

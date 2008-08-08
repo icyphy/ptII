@@ -56,7 +56,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (mankit)
  @see ptolemy.graph.CPO
  */
-public class PropertyLattice extends DirectedAcyclicGraph implements CPO {
+public class PropertyLattice extends DirectedAcyclicGraph {
     
     protected PropertyLattice() {
     }

@@ -63,7 +63,7 @@ import caltrop.interpreter.util.PriorityUtil;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Dataflow extends AbstractDDI implements DDI {
+public class Dataflow extends AbstractDDI {
     public Dataflow(TypedAtomicActor ptActor, Actor actor, Context context,
             Environment env) {
         _ptActor = ptActor;

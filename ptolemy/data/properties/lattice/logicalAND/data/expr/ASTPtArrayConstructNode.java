@@ -87,7 +87,7 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
      *
      */
     private class FunctionTerm 
-    extends MonotonicFunction implements PropertyTerm {
+    extends MonotonicFunction {
         
         /**
          * @throws IllegalActionException 

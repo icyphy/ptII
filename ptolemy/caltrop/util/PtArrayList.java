@@ -45,7 +45,7 @@ import ptolemy.data.ArrayToken;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class PtArrayList extends AbstractList implements List {
+public class PtArrayList extends AbstractList {
     /** Construct a PtArrayList from an ArrayToken.
      *  @param arrayToken The arrayToken with which to construct the List.
      */

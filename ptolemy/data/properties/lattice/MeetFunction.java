@@ -55,7 +55,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 
 public class MeetFunction 
-    extends MonotonicFunction implements PropertyTerm {
+    extends MonotonicFunction {
 
     public MeetFunction(PropertyConstraintSolver solver, List<Object> objects) {
         this(solver, objects.toArray());
