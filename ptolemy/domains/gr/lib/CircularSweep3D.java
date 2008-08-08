@@ -43,7 +43,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import com.sun.j3d.utils.geometry.GeometryInfo;
 import com.sun.j3d.utils.geometry.NormalGenerator;
 import com.sun.j3d.utils.geometry.Stripifier;
-import com.sun.j3d.utils.geometry.Triangulator;
 
 //////////////////////////////////////////////////////////////////////////
 //// CircularSweep3D
@@ -183,9 +182,14 @@ public class CircularSweep3D extends GRShadedShape {
         gi.setCoordinates(polydata);
         gi.setStripCounts(stripCount);
 
-        Triangulator tr = new Triangulator();
-        tr.triangulate(gi);
-        gi.recomputeIndices();
+        // The Triangulator constructor was deprecated.  The javadocs say:
+        // "This class [Triangulator] is created automatically when needed
+        // in GeometryInfo and never needs to be used directly. Putting data
+        // into a GeometryInfo with primitive POLYGON_ARRAY automatically
+        // causes the triangulator to be created and used."
+        //Triangulator tr = new Triangulator();
+        //tr.triangulate(gi);
+        //gi.recomputeIndices();
 
         NormalGenerator ng = new NormalGenerator();
         ng.generateNormals(gi);

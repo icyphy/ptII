@@ -44,7 +44,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import com.sun.j3d.utils.geometry.GeometryInfo;
 import com.sun.j3d.utils.geometry.NormalGenerator;
 import com.sun.j3d.utils.geometry.Stripifier;
-import com.sun.j3d.utils.geometry.Triangulator;
 
 //////////////////////////////////////////////////////////////////////////
 //// PolyCylinder3D
@@ -224,9 +223,14 @@ public class PolyCylinder3D extends GRShadedShape {
         geometryInfo.setCoordinates(data);
         geometryInfo.setStripCounts(stripCount);
 
-        Triangulator triangulator = new Triangulator();
-        triangulator.triangulate(geometryInfo);
-        geometryInfo.recomputeIndices();
+        // The Triangulator constructor was deprecated.  The javadocs say:
+        // "This class [Triangulator] is created automatically when needed
+        // in GeometryInfo and never needs to be used directly. Putting data
+        // into a GeometryInfo with primitive POLYGON_ARRAY automatically
+        // causes the triangulator to be created and used."
+        //Triangulator triangulator = new Triangulator();
+        //triangulator.triangulate(geometryInfo);
+        //geometryInfo.recomputeIndices();
 
         NormalGenerator normalGenerator = new NormalGenerator();
         normalGenerator.generateNormals(geometryInfo);
