@@ -579,22 +579,27 @@ public class FSMDirector extends Director implements
             }
         }
         // Iterate over the state refinements.
-        List<State> states = _controller.entityList();
-        for (State state : states) {
-            TypedActor[] refinements;
-            try {
-                refinements = state.getRefinement();
-            } catch (IllegalActionException e) {
-                throw new InternalErrorException(e);
-            }
-            if (refinements != null) {
-                for (int i = 0; i < refinements.length; i++) {
-                    Director director = refinements[i].getDirector();
-                    if (director != null && !director.implementsStrictActorSemantics()) {
-                        return false;
+        try {
+            FSMActor controller = getController();
+            List<State> states = controller.entityList();
+            for (State state : states) {
+                TypedActor[] refinements;
+                try {
+                    refinements = state.getRefinement();
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException(e);
+                }
+                if (refinements != null) {
+                    for (int i = 0; i < refinements.length; i++) {
+                        Director director = refinements[i].getDirector();
+                        if (director != null && !director.implementsStrictActorSemantics()) {
+                            return false;
+                        }
                     }
                 }
             }
+        } catch (IllegalActionException e1) {
+            throw new InternalErrorException(e1);
         }
         return true;
     }
