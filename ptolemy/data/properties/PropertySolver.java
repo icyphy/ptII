@@ -503,7 +503,7 @@ public abstract class PropertySolver extends Attribute {
             }
         }
 
-        if (isTesting() && noException && !getTrainedException().isEmpty()) {
+        if (isTesting() && noException && getTrainedException().length() > 0) {
             // if in TEST mode, if there is a previously trained 
             // RegressionTestErrorExceptionException
             // and we do not get one in the resolution, 
