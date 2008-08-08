@@ -2770,7 +2770,7 @@ public class FmvAutomaton extends FSMActor {
      * 
      */
     private HashMap<String, String> _retrieveVariableInitialValue(
-            HashSet<String> variableSet) throws IllegalActionException {
+            HashSet<String> variableSet) {
 
         // One problem regarding the initial value retrieval from parameters
         // is that when retrieving parameters, the return value would consist

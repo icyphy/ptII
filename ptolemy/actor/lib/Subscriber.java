@@ -314,7 +314,7 @@ public class Subscriber extends TypedAtomicActor {
     /** Find the publisher, if there is one.
      *  @return A publisher, or null if none is found.
      */
-    private Publisher _findPublisher() throws IllegalActionException {
+    private Publisher _findPublisher() {
         // Find the nearest opaque container above in the hierarchy.
         CompositeEntity container = (CompositeEntity) getContainer();
         while (container != null && !container.isOpaque()) {

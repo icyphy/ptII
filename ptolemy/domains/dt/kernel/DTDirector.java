@@ -1082,7 +1082,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      *  TypedCompositeActor directed by this director.  This is
      *  used in composing DT with DE and CT.
      */
-    private void _makeTokensAvailable() throws IllegalActionException {
+    private void _makeTokensAvailable() {
         List list = ((TypedCompositeActor) getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
 
@@ -1102,7 +1102,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      *  TypedCompositeActor directed by this director.  This is
      *  used in composing DT with DE and CT.
      */
-    private void _makeTokensUnavailable() throws IllegalActionException {
+    private void _makeTokensUnavailable() {
         List list = ((TypedCompositeActor) getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
 

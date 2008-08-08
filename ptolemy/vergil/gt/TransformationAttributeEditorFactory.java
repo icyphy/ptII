@@ -159,7 +159,7 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
         }
 
         ActorFrameListener(BasicGraphFrame parent, ActorGraphFrame child)
-        throws IllegalActionException, NameDuplicationException {
+        throws NameDuplicationException {
             _parent = parent;
             _child = child;
         }

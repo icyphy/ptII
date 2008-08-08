@@ -509,8 +509,7 @@ public class DFUtilities {
     ////                         private methods                   ////
     // If a variable exists with the given container and given name,
     // then return it. Otherwise, create the variable and return it.
-    private static Variable _getOrCreate(NamedObj container, String name)
-            throws IllegalActionException {
+    private static Variable _getOrCreate(NamedObj container, String name) {
         Variable variable = (Variable) container.getAttribute(name);
 
         if (variable == null) {

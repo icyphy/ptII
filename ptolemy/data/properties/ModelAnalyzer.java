@@ -109,7 +109,7 @@ public class ModelAnalyzer extends Transformer {
         output.setTypeEquals(ActorToken.TYPE);        
     }
 
-    private void _addChoices() throws IllegalActionException, NameDuplicationException {
+    private void _addChoices() throws IllegalActionException {
         _createSolvers("ptolemy.data.properties.configuredSolvers");
         
         if (solvers.size() > 0) {

@@ -417,12 +417,8 @@ public class Exec extends LimitedFiringSource {
         // NOTE: This method used to be synchronized, as
         // was the fire() method, but this caused deadlocks.  EAL
         super.stop();
-
-        try {
-            _terminateProcess();
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex);
-        }
+        _terminateProcess();
+        
     }
 
     /** Override the base class to stop waiting for input data.
@@ -432,12 +428,7 @@ public class Exec extends LimitedFiringSource {
         // was the fire() method, but this caused deadlocks.  EAL
         super.stopFire();
         _stopFireRequested = true;
-
-        try {
-            _terminateProcess();
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex);
-        }
+        _terminateProcess();
     }
 
     /** Terminate the subprocess.
@@ -594,7 +585,7 @@ public class Exec extends LimitedFiringSource {
     }
 
     // Terminate the process and close any associated streams.
-    private void _terminateProcess() throws IllegalActionException {
+    private void _terminateProcess() {
         if (_process != null) {
             _process.destroy();
             _process = null;

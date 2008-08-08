@@ -619,8 +619,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  @param expression A string expression representing the
          *  number of times to fire the actor.
          */
-        public SymbolicFiring(Actor actor, String expression)
-                throws IllegalActionException {
+        public SymbolicFiring(Actor actor, String expression) {
             super(actor);
             setIterationCount(expression);
         }
@@ -704,8 +703,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  @param expression A string expression representing the
          *  number of times to execute the schedule.
          */
-        public SymbolicSchedule(String expression)
-                throws IllegalActionException {
+        public SymbolicSchedule(String expression) {
             setIterationCount(expression);
         }
 

@@ -449,12 +449,7 @@ public class KeyStoreActor extends TypedAtomicActor {
     public synchronized void stopFire() {
         super.stopFire();
         _stopFireRequested = true;
-
-        try {
-            _terminateProcess();
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex);
-        }
+        _terminateProcess();
     }
 
     /** Terminate the subprocess.
@@ -748,7 +743,7 @@ public class KeyStoreActor extends TypedAtomicActor {
     }
 
     // Terminate the process and close any associated streams.
-    private void _terminateProcess() throws IllegalActionException {
+    private void _terminateProcess() {
         if (_process != null) {
             _process.destroy();
             _process = null;

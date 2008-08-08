@@ -1637,13 +1637,11 @@ public class JNIUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         private method                    ////
 
-    private static String _getInterNativeFunction(GenericJNIActor actor)
-            throws IllegalActionException {
+    private static String _getInterNativeFunction(GenericJNIActor actor) {
         return "jni" + actor.getName();
     }
 
-    private static String _getInterNativeLibrary(GenericJNIActor actor)
-            throws IllegalActionException {
+    private static String _getInterNativeLibrary(GenericJNIActor actor) {
         return "jni" + actor.getName();
     }
 

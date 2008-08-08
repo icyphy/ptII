@@ -685,8 +685,7 @@ public class ViterbiDecoder extends Transformer {
      *  @return The distance.
      */
     private double _computeSoftDistance(double[] y, double falseAmp,
-            double trueAmp, int truthValue, int inputRate)
-            throws IllegalActionException {
+            double trueAmp, int truthValue, int inputRate) {
         /*if (trellisMode) {
          Complex truthComplex = constellation[truthValue];
          Complex z = truthComplex.subtract(y[0].complexValue());

@@ -132,8 +132,7 @@ public class MultiCompositeActor extends TypedCompositeActor {
     ////                         private methods                   ////
 
     /** Initialize the model. */
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    private void _init() {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.actor.lib.hoc.MultiCompositeActor");

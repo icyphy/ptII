@@ -203,8 +203,7 @@ public class MoMLVariableChecker {
     /** Given a MissingClassException, find missing classes.
      */
     private boolean _findMissingClass(MissingClassException exception,
-            NamedObj container, TypedCompositeActor parsedContainer)
-            throws IllegalActionException {
+            NamedObj container, TypedCompositeActor parsedContainer) {
 
         // True if we should rerun the outer parse
         boolean doRerun = false;

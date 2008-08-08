@@ -633,8 +633,7 @@ public class CodeStream {
      * @return The well-formed code block name after lexical checking.
      * @exception Thrown if the given name is not well-formed.
      */
-    private static String _checkCodeBlockName(String name)
-            throws IllegalActionException {
+    private static String _checkCodeBlockName(String name) {
         // FIXME: extra lexical checking
         // e.g. Do we allow nested code block within code block name??
         // e.g. ...spaces??
@@ -642,8 +641,7 @@ public class CodeStream {
         return name.trim();
     }
 
-    private static String _checkArgumentName(String name)
-            throws IllegalActionException {
+    private static String _checkArgumentName(String name) {
         return name.replaceAll("\\$", "\\\\\\$");
     }
 
