@@ -567,12 +567,12 @@ public class SMVUtility {
                 // name for later use. Retrieve the transition
 
                 //boolean hasAnnotation = false;
-                String text;
-                try {
-                    text = transition.annotation.stringValue();
-                } catch (IllegalActionException e) {
-                    text = "Exception evaluating annotation: " + e.getMessage();
-                }
+//                String text;
+//                try {
+//                    text = transition.annotation.stringValue();
+//                } catch (IllegalActionException e) {
+//                    text = "Exception evaluating annotation: " + e.getMessage();
+//                }
 //                if (!text.trim().equals("")) {
 //                    hasAnnotation = true;
 //                    // buffer.append(text);

@@ -1088,7 +1088,7 @@ ParseTreeCodeGenerator {
             //_fireCode.append(", ");
 
             //ptolemy.data.Token token = tokens[i];
-            ptolemy.data.Token token = _evaluateChild(node, i);
+            /*ptolemy.data.Token token =*/ _evaluateChild(node, i);
 
             result = "pow(" + result + ", " + _childCode;
 
@@ -1359,7 +1359,7 @@ ParseTreeCodeGenerator {
 
         //_fireCode.append("(");
 
-        ptolemy.data.Token token = _evaluateChild(node, 0);
+        /*ptolemy.data.Token token =*/ _evaluateChild(node, 0);
         String result = _childCode;
 
         if (operator.kind == PtParserConstants.SHL) {
@@ -1373,7 +1373,7 @@ ParseTreeCodeGenerator {
             result += " >>> ";
         }
 
-        ptolemy.data.Token bitsToken = _evaluateChild(node, 1);
+        /*ptolemy.data.Token bitsToken =*/ _evaluateChild(node, 1);
         ptolemy.data.Token resultToken = null;
 
         //_fireCode.append(")");

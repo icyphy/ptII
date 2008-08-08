@@ -156,7 +156,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                 _table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                 _table.getSelectionModel().addListSelectionListener(new RowListener());
                 
-                ComponentDialog dialog = new ComponentDialog(
+                /*ComponentDialog dialog =*/ new ComponentDialog(
                         parent, object.getFullName(), panel);
             } catch (KernelException ex) {
                 MessageHandler.error(

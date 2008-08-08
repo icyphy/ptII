@@ -27,7 +27,6 @@
 package ptolemy.kernel.test;
 
 import java.io.Serializable;
-import java.util.Enumeration;
 import java.util.Iterator;
 
 import ptolemy.kernel.ComponentEntity;

@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.TypeConflictException;
-import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ASTPtAssignmentNode;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -814,48 +813,48 @@ public class PropertyConstraintSolver extends PropertySolver {
         return logConstraints;
     }
 
-    /**
-     * Return null if the associated component of the helper is not
-     * a NamedObj (e.g. if it is a PtASTRootNode); Otherwise, return
-     * an array of two ConstraintAttribute's that store the list of
-     * constraints as String's.
-     * @param helper
-     * @return
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
-     */
-    private ConstraintAttribute[] _getConstraintAttributes(
-            PropertyConstraintHelper helper) throws IllegalActionException, NameDuplicationException {
-
-        Object object = helper.getComponent();
-
-        if (object instanceof NamedObj) {
-            NamedObj namedObj = (NamedObj) object;
-
-            String attributeName[] = new String[2];
-            ConstraintAttribute attribute[] = new ConstraintAttribute[2];
-            attributeName[0] = getExtendedUseCaseName() + "::OwnConstraints";
-            attributeName[1] = getExtendedUseCaseName() + "::SubHelperConstraints";
-
-            for (int i = 0; i < 2; i++) {
-                attribute[i] = (ConstraintAttribute) 
-                namedObj.getAttribute(attributeName[i]);
-
-                if (attribute[i] == null) {
-                    attribute[i] = new ConstraintAttribute(namedObj, attributeName[i]);                    
-                }
-//              FIXME: Remove??
-                TextStyle style = new TextStyle(((ConstraintAttribute)attribute[i]), "_style");
-                style.height.setExpression("10");
-                style.width.setExpression("60");
-
-            }
-            return attribute;
-        } else {
-            // FIXME: This happens for ASTNodeHelper.
-            return null;
-        }
-    }
+//    /**
+//     * Return null if the associated component of the helper is not
+//     * a NamedObj (e.g. if it is a PtASTRootNode); Otherwise, return
+//     * an array of two ConstraintAttribute's that store the list of
+//     * constraints as String's.
+//     * @param helper
+//     * @return
+//     * @throws IllegalActionException
+//     * @throws NameDuplicationException
+//     */
+//    private ConstraintAttribute[] _getConstraintAttributes(
+//            PropertyConstraintHelper helper) throws IllegalActionException, NameDuplicationException {
+//
+//        Object object = helper.getComponent();
+//
+//        if (object instanceof NamedObj) {
+//            NamedObj namedObj = (NamedObj) object;
+//
+//            String attributeName[] = new String[2];
+//            ConstraintAttribute attribute[] = new ConstraintAttribute[2];
+//            attributeName[0] = getExtendedUseCaseName() + "::OwnConstraints";
+//            attributeName[1] = getExtendedUseCaseName() + "::SubHelperConstraints";
+//
+//            for (int i = 0; i < 2; i++) {
+//                attribute[i] = (ConstraintAttribute) 
+//                namedObj.getAttribute(attributeName[i]);
+//
+//                if (attribute[i] == null) {
+//                    attribute[i] = new ConstraintAttribute(namedObj, attributeName[i]);                    
+//                }
+////              FIXME: Remove??
+//                TextStyle style = new TextStyle(((ConstraintAttribute)attribute[i]), "_style");
+//                style.height.setExpression("10");
+//                style.width.setExpression("60");
+//
+//            }
+//            return attribute;
+//        } else {
+//            // FIXME: This happens for ASTNodeHelper.
+//            return null;
+//        }
+//    }
 
 
 

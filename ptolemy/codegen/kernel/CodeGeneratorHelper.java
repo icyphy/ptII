@@ -613,7 +613,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             // getComponent() is at the top level. Use it's local director.
             director = ((Actor) _object).getDirector();
         }
-        Director directorHelper = (Director) _getHelper(director);
+        //Director directorHelper = (Director) _getHelper(director);
 
         //Receiver receiver = _getReceiver(port, channel);
 
@@ -2994,6 +2994,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     private static final String[] _defaultBlocks = { "preinitBlock",
         "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
 
-    private boolean printedNullPortWarnings = false;
+    //private boolean printedNullPortWarnings = false;
 
 }

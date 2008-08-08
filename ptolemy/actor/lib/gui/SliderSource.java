@@ -317,8 +317,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
 
     /** The value of the slider changed, record the new value. */
     public void stateChanged(ChangeEvent e) {
-        // FIXME: Why is _val never read?
-        _val = slider.getValue();
+        slider.getValue();
     }
 
     /** The frame for the slider. */
@@ -409,8 +408,6 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
     private JPanel _panel;
 
     private Container _container;
-
-    private int _val;
 
     private IntToken _outputVal;
 

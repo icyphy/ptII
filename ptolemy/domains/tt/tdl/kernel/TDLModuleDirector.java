@@ -14,7 +14,6 @@ import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
@@ -135,8 +134,8 @@ public class TDLModuleDirector extends ModalDirector {
                         _updateOutputPort(port);
                         _currentWCET = 0.0;
                     } else if (port.isInput()) {
-                        Director executiveDirector = ((Actor) getContainer()
-                                .getContainer()).getDirector();
+//                        Director executiveDirector = ((Actor) getContainer()
+//                                .getContainer()).getDirector();
                         if (i > 0) {
                             fireAt((TDLModule) getContainer(), getModelTime());
                             return;

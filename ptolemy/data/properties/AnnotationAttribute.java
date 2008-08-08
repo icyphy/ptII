@@ -44,7 +44,7 @@ public class AnnotationAttribute extends StringAttribute {
      */
     private void _checkAttributeName(String name) 
     throws IllegalActionException, NameDuplicationException {
-        String usecaseName = getUseCaseIdentifier();
+        /*String usecaseName =*/ getUseCaseIdentifier();
 
         // FIXME: Cannot check if there is an assoicated solver
         // because it may not be instantiated yet.

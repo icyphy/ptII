@@ -29,7 +29,6 @@
 package ptolemy.data.properties.lattice;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,7 +50,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -117,24 +115,24 @@ public class PropertyConstraintHelper extends PropertyHelper {
         return _union(_ownConstraints, _subHelperConstraints);
     }
 
-    /**
-     * Return the helper of the container. If the container is
-     * null (which means this is the toplevel), returns this.
-     * @return The helper of the container. If the container is
-     * null (which means this is the toplevel), returns this.
-     * @exception IllegalActionException Thrown if an error occurs
-     * when getting the helper. 
-     */
-    private PropertyConstraintHelper _getContainerHelper()
-            throws IllegalActionException {
-        PropertyConstraintHelper containerHelper = this;
-
-        NamedObj container = ((Actor) getComponent()).getContainer();
-        if (container != null) {
-            containerHelper = (PropertyConstraintHelper)getSolver().getHelper(container);
-        }
-        return containerHelper;
-    }
+//    /**
+//     * Return the helper of the container. If the container is
+//     * null (which means this is the toplevel), returns this.
+//     * @return The helper of the container. If the container is
+//     * null (which means this is the toplevel), returns this.
+//     * @exception IllegalActionException Thrown if an error occurs
+//     * when getting the helper. 
+//     */
+//    private PropertyConstraintHelper _getContainerHelper()
+//            throws IllegalActionException {
+//        PropertyConstraintHelper containerHelper = this;
+//
+//        NamedObj container = ((Actor) getComponent()).getContainer();
+//        if (container != null) {
+//            containerHelper = (PropertyConstraintHelper)getSolver().getHelper(container);
+//        }
+//        return containerHelper;
+//    }
 
     /*
     private void _removeConstraints() {
@@ -501,20 +499,20 @@ public class PropertyConstraintHelper extends PropertyHelper {
         }
     }
     
-    private List<InequalityTerm> _deepGetVariables(InequalityTerm[] variables) {
-        List<InequalityTerm> result = new ArrayList<InequalityTerm>();
-        
-        for (int i = 0; i < variables.length; i++) {
-            if (variables[i].getAssociatedObject() != null) {
-
-                result.addAll(Arrays.asList(variables[i].getVariables()));                
-            } else {
-                
-                result.addAll(_deepGetVariables(variables[i].getVariables()));
-            }
-        }
-        return result;
-    }
+//    private List<InequalityTerm> _deepGetVariables(InequalityTerm[] variables) {
+//        List<InequalityTerm> result = new ArrayList<InequalityTerm>();
+//        
+//        for (int i = 0; i < variables.length; i++) {
+//            if (variables[i].getAssociatedObject() != null) {
+//
+//                result.addAll(Arrays.asList(variables[i].getVariables()));                
+//            } else {
+//                
+//                result.addAll(_deepGetVariables(variables[i].getVariables()));
+//            }
+//        }
+//        return result;
+//    }
 
     /**
      * 

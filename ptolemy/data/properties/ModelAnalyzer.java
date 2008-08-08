@@ -40,7 +40,6 @@ import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ActorToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
@@ -258,25 +257,25 @@ public class ModelAnalyzer extends Transformer {
         return null;
     }
 
-    /**
-     * @param chosenSolver
-     * @throws IllegalActionException
-     */
-    private void _displayProperties(PropertySolver chosenSolver) 
-    throws IllegalActionException {
-        
-        chosenSolver.clearDisplay();
-        
-        Token oldValue = chosenSolver._highlighter.showText.getToken();            
-        chosenSolver._highlighter.showText.setToken(showProperty.getToken());
-        chosenSolver.showProperties();
-        chosenSolver._highlighter.showText.setToken(oldValue);
-
-        oldValue = chosenSolver._highlighter.highlight.getToken();            
-        chosenSolver._highlighter.highlight.setToken(highlight.getToken());
-        chosenSolver.highlightProperties();
-        chosenSolver._highlighter.highlight.setToken(oldValue);
-    }
+//    /**
+//     * @param chosenSolver
+//     * @throws IllegalActionException
+//     */
+//    private void _displayProperties(PropertySolver chosenSolver) 
+//    throws IllegalActionException {
+//        
+//        chosenSolver.clearDisplay();
+//        
+//        Token oldValue = chosenSolver._highlighter.showText.getToken();            
+//        chosenSolver._highlighter.showText.setToken(showProperty.getToken());
+//        chosenSolver.showProperties();
+//        chosenSolver._highlighter.showText.setToken(oldValue);
+//
+//        oldValue = chosenSolver._highlighter.highlight.getToken();            
+//        chosenSolver._highlighter.highlight.setToken(highlight.getToken());
+//        chosenSolver.highlightProperties();
+//        chosenSolver._highlighter.highlight.setToken(oldValue);
+//    }
 
     private void _createSolvers(String path) throws IllegalActionException {
         File file = null;

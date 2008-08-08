@@ -349,7 +349,7 @@ public class HTMLAbout {
             URI aboutURI = new URI(event.getDescription());
             newURL = runAllDemos(aboutURI.getFragment(), configuration);
         } else if (event.getDescription().startsWith("about:expandLibrary")) {
-            URI aboutURI = new URI(event.getDescription());
+            //URI aboutURI = new URI(event.getDescription());
             newURL = _expandLibrary(".*.xml",
                     configuration);
         } else {
