@@ -194,23 +194,23 @@ public class ArrayOfRecordsRecorder extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Given a string, remove quotation marks if it has them.
-     *  If the string is then empty, return the specified default.
-     *  Otherwise, return the string without quotation marks.
-     *  This method also trims white space, unless the white
-     *  space is inside quotation marks.
-     *  @param string String to sanitize.
-     *  @param ifEmpty Default to use if result is empty.
-     *  @return A string with no quotation marks that is not empty.
-     */
-    private String sanitize(String string, String ifEmpty) {
-        string = string.trim();
-        if (string.startsWith("\"") && string.endsWith("\"")) {
-            string = string.substring(1, string.length() - 1);
-        }
-        if (string.trim().equals("")) {
-            string = ifEmpty;
-        }
-        return string;
-    }
+//    /** Given a string, remove quotation marks if it has them.
+//     *  If the string is then empty, return the specified default.
+//     *  Otherwise, return the string without quotation marks.
+//     *  This method also trims white space, unless the white
+//     *  space is inside quotation marks.
+//     *  @param string String to sanitize.
+//     *  @param ifEmpty Default to use if result is empty.
+//     *  @return A string with no quotation marks that is not empty.
+//     */
+//    private String sanitize(String string, String ifEmpty) {
+//        string = string.trim();
+//        if (string.startsWith("\"") && string.endsWith("\"")) {
+//            string = string.substring(1, string.length() - 1);
+//        }
+//        if (string.trim().equals("")) {
+//            string = ifEmpty;
+//        }
+//        return string;
+//    }
 }
