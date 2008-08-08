@@ -211,11 +211,9 @@ public class ChacoCodeGenerator extends CodeGenerator {
         // Traversing through the actor list to see all actors
         CompositeEntity compositeActor = (CompositeEntity) getContainer();
         for (Actor actor : (List<Actor>) compositeActor.deepEntityList()) {
-            if (actor instanceof Actor) {
-                _numVertices++;
-                _HashActorKey.put(actor, _numVertices);
-                _HashNumberKey.put(_numVertices, actor);
-            }
+             _numVertices++;
+             _HashActorKey.put(actor, _numVertices);
+             _HashNumberKey.put(_numVertices, actor);
         }
         code.append(_numVertices + " ");
 
