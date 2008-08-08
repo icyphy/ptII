@@ -42,6 +42,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -178,17 +179,18 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  <p>
      *  An equivalence class is defined as follows.
      *  If input ports X and Y each have a dependency not equal to the
-     *  default depenency's oPlusIdentity() on any common port,
-     *  or any two ports in an equivalence class,
+     *  default depenency's oPlusIdentity() on any common port
+     *  or on two equivalent ports
      *  or on the state of the associated actor, then they
      *  are in an equivalence class. That is,
      *  there is a causal dependency. They are also in
      *  the same equivalence class if there is a port Z
      *  in an equivalence class with X and in an equivalence
-     *  class with Y. Otherwise, they are not in the same
-     *  equivalence class. If there are no
-     *  output ports, then include all the input ports
-     *  are in a single equivalence class.
+     *  class with Y. Moreover, if the actor has any instance
+     *  of ParameterPort among its input ports, then all input
+     *  ports are in an equivalence class.
+     *  Otherwise, they are not in the same
+     *  equivalence class.
      *  In this base class, we assume the actor has no
      *  state and return the equivalence classes determined
      *  only by the common dependence of output ports.
@@ -261,14 +263,18 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                 actor.workspace().getReadAccess();
                 _reverseDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
                 _forwardDependencies = new HashMap<IOPort,Map<IOPort,Dependency>>();
-                _equivalenceClasses = new HashMap<IOPort,Set<IOPort>>();
+                _equivalenceClasses = new HashMap<IOPort,Collection<IOPort>>();
                 // The following map keeps track for each port in the model which input
                 // ports of the associated actor it depends on. This is used to build
                 // the equivalence classes.
-                Map<IOPort,Set<IOPort>> dependsOnInputsMap = new HashMap<IOPort,Set<IOPort>>();
+                Map<IOPort,Collection<IOPort>> dependsOnInputsMap = new HashMap<IOPort,Collection<IOPort>>();
                 Iterator inputPorts = _actor.inputPortList().iterator();
+                boolean hasPortParameter = false;
                 while (inputPorts.hasNext()) {
                     IOPort inputPort = (IOPort)inputPorts.next();
+                    if (inputPort instanceof ParameterPort) {
+                        hasPortParameter = true;
+                    }
                     // Make sure that equivalentPorts() always returns at least a set
                     // with one element.
                     Set<IOPort> justTheInput= new HashSet<IOPort>();
@@ -291,6 +297,13 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                                 map,
                                 portsToProcess,
                                 dependsOnInputsMap);
+                    }
+                }
+                // Adjust the equivalent ports list if any ParameterPort was found.
+                if (hasPortParameter) {
+                    List<IOPort> allInputs = _actor.inputPortList();
+                    for (IOPort inputPort : allInputs) {
+                        _equivalenceClasses.put(inputPort, allInputs);
                     }
                 }
             } finally {
@@ -466,7 +479,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     protected long _dependencyVersion;
     
     /** Computed equivalence classes of input ports. */
-    protected Map<IOPort,Set<IOPort>> _equivalenceClasses;
+    protected Map<IOPort,Collection<IOPort>> _equivalenceClasses;
     
     /** Computed dependencies between input ports and output ports of the associated actor. */
     protected Map<IOPort,Map<IOPort,Dependency>> _forwardDependencies;
@@ -881,7 +894,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
             IOPort port,
             Map<IOPort,Dependency> map,
             Dependency dependency,
-            Map<IOPort,Set<IOPort>> dependsOnInputsMap)
+            Map<IOPort,Collection<IOPort>> dependsOnInputsMap)
             throws IllegalActionException {
         if (dependency.equals(_defaultDependency.oPlusIdentity())) {
             return false;
@@ -889,7 +902,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         // First, update the equivalence classes.
         // Construct a set that merges all known input port dependencies
         // for this port with any known equivalents of the input port.
-        Set<IOPort> merged = _equivalenceClasses.get(inputPort);
+        Collection<IOPort> merged = _equivalenceClasses.get(inputPort);
         if (merged == null) {
             merged = new HashSet<IOPort>();
             merged.add(inputPort);
@@ -899,7 +912,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
         // If the port is not already entered in the dependsOnInputsMap,
         // then enter it. The entry will eventually be
         // all the actor input ports that this port depends on.
-        Set<IOPort> dependsOn = dependsOnInputsMap.get(port);
+        Collection<IOPort> dependsOn = dependsOnInputsMap.get(port);
         if (dependsOn != null) {
             // Make sure to include any previously found dependencies.
             merged.addAll(dependsOn);
@@ -912,14 +925,14 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                     = ((Actor)port.getContainer()).getCausalityInterface().equivalentPorts(port);
             for (IOPort equivalent : equivalents) {
                 // This is guaranteed to include port.
-                Set<IOPort> otherInputs = dependsOnInputsMap.get(equivalent);
+                Collection<IOPort> otherInputs = dependsOnInputsMap.get(equivalent);
                 if (otherInputs != null) {
                     merged.addAll(otherInputs);
                     // For each of the other inputs, it may have
                     // equivalents. Add those.
                     for(IOPort dependentInputPort : otherInputs) {
                         // Get the equivalence class for another port depended on.
-                        Set<IOPort> equivalenceClass
+                        Collection<IOPort> equivalenceClass
                                 = _equivalenceClasses.get(dependentInputPort);
                         if (equivalenceClass != null) {
                             merged.addAll(equivalenceClass);
@@ -993,7 +1006,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
             IOPort inputPort, 
             Map<IOPort,Dependency> map, 
             Collection<IOPort> portsToProcess,
-            Map<IOPort,Set<IOPort>> dependsOnInputsMap)
+            Map<IOPort,Collection<IOPort>> dependsOnInputsMap)
             throws IllegalActionException {
         Set<IOPort> portsToProcessNext = new HashSet<IOPort>();
         for (IOPort port : portsToProcess) {

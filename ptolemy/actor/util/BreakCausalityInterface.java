@@ -29,9 +29,11 @@ package ptolemy.actor.util;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.parameters.ParameterPort;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -42,7 +44,17 @@ import ptolemy.actor.IOPort;
  where no output port depends on any input port.
  That is, the dependency of any output port on any
  input port is the oPlusIdentity() of the specified
- default dependency. It is more efficient to use this
+ default dependency.
+ <p>
+ The {@link #equivalentPorts(IOPort)} normally returns list
+ containing only the specified port. If, however, the actor
+ has any instance of PortParameter in its input port list, then
+ it returns a list of all input ports. The reason for this is
+ that any output, present or future, may depend on the values at
+ such port parameters. In particular, it is necessary for inputs
+ on these port parameters to be present when any other input is
+ processed because it affects the parameters of the actor.
+ It is more efficient to use this
  class than to use the base class and call removeDependency()
  to remove all the dependencies.
 
@@ -92,6 +104,17 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
      *  @param input The port to find the equivalence class of.
      */
     public Collection<IOPort> equivalentPorts(IOPort input) {
+        // FIXME: Should the result be cached?
+        // Presumably, this can only change
+        // if ports are added or removed from the actor.
+        List<IOPort> inputs = _actor.inputPortList();
+        // If there is an instance of PortParameter, then return the
+        // whole collection of input ports.
+        for (IOPort actorInput : inputs) {
+            if (actorInput instanceof ParameterPort) {
+                return _actor.inputPortList();
+            }
+        }
         LinkedList<IOPort> result = new LinkedList<IOPort>();
         result.add(input);
         return result;

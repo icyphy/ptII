@@ -38,6 +38,7 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.kernel.util.IllegalActionException;
 
 
@@ -52,7 +53,18 @@ import ptolemy.kernel.util.IllegalActionException;
  Technical Report No. UCB/EECS-2006-148</a>,
  November 16, 2006.  Specifically, this class represents a simple
  default causality interface where every output port depends on every
- input port.
+ input port, unless {@link #removeDependency(IOPort, IOPort)} has
+ been called to prune the dependencies. In the latter case, the dependencies
+ are pruned to not include the ones that were specified in that call.
+ <p>
+ In all cases, if there is any PortParameter in the actor, then all
+ input ports become members of the same equivalence class, regardless
+ of what dependencies have been pruned using
+ {@link #removeDependency(IOPort, IOPort)}. The reason for this is
+ that any output, present or future, may depend on the values at
+ such port parameters. In particular, it is necessary for inputs
+ on these port parameters to be present when any other input is
+ processed because it affects the parameters of the actor.
  <p>
  Causality interfaces represent dependencies between input and output ports
  of an actor and can be used to perform scheduling or static analysis
@@ -107,6 +119,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
                     HashSet<IOPort> result = new HashSet<IOPort>();
                     result.addAll(_actor.inputPortList());
                     result.addAll(_actor.outputPortList());
+                    return result;
                 }
                 // Port is output and not input.
                 return _actor.inputPortList();
@@ -169,7 +182,11 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  the input ports of the associated actor, unless
      *  removeDependencies() has been called. In the latter
      *  case, it constructs the equivalence class based on
-     *  the remaining dependencies on output ports.
+     *  the remaining dependencies on output ports, unless
+     *  there is an instance of PortParameter in the actor.
+     *  In that case, it again returns a collection of all
+     *  the input ports.
+     *  <p>
      *  If derived classes override this, they may also
      *  need to override {@link #getDependency(IOPort,IOPort)}
      *  and {@link #dependentPorts(IOPort)} to be consistent.
@@ -177,14 +194,15 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  <p>
      *  An equivalence class is defined as follows.
      *  If input ports X and Y each have a dependency on any
-     *  common port not equal to the
-     *  default depenency's oPlusIdentity(), or they each can
+     *  common port or on two equivalent ports, or they each can
      *  affect the state of the associated actor, then they
      *  are in an equivalence class. That is,
      *  there is a causal dependency. They are also in
      *  the same equivalence class if there is a port Z
      *  in an equivalence class with X and in an equivalence
-     *  class with Y. Otherwise, they are not in the same
+     *  class with Y. If the actor has any instance of
+     *  ParameterPort, then all input ports are in the same
+     *  equivalence class. Otherwise, they are not in the same
      *  equivalence class.
      *  @param input The port to find the equivalence class of.
      *  @throws IllegalArgumentException If the argument is not
@@ -206,8 +224,17 @@ public class DefaultCausalityInterface implements CausalityInterface {
         }
         // FIXME: Should the result be cached?
         // If removeDependencies() has been called, finding the equivalent
-        // ports is rather complicated.
+        // ports is rather complicated. Presumably, this can only change
+        // if ports are added or removed from the actor, or if
+        // removeDependency() is called.
         List<IOPort> inputs = _actor.inputPortList();
+        // If there is an instance of ParameterPort, then return the
+        // whole collection of input ports.
+        for (IOPort actorInput : inputs) {
+            if (actorInput instanceof ParameterPort) {
+                return _actor.inputPortList();
+            }
+        }
         List<IOPort> outputs = _actor.outputPortList();
         // Deal with simple cases first.
         if (inputs.size() == 1 || outputs.size() == 0) {
