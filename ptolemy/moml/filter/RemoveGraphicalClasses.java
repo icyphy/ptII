@@ -246,9 +246,6 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.domains.sr.lib.NonStrictDisplay",
                 "ptolemy.actor.lib.Discard");
 
-        _graphicalClasses.put("ptolemy.domains.tm.kernel.SchedulePlotter",
-                "ptolemy.actor.lib.Discard");
-
         // Generated applet from moml/demo/modulation.xml
         // fails to run if substitute Attribute for NodeControllerFactory
         // so we set it to null instead.
