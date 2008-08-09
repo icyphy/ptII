@@ -43,8 +43,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  A nonstrict actor that delays tokens by one iteration.
-
- <p>This actor provides a one-tick delay.  On each firing, it produces
+ <p>
+ This actor provides a one-tick delay.  On each firing, it produces
  on the output port whatever value it read on the input port in the
  previous tick of the clock. If the input was absent on the previous
  tick of the clock, then the output will be absent. On the first tick,
@@ -82,21 +82,22 @@ public class NonStrictDelay extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Initial token value.  Can be of any type.
-     *  @see #typeConstraints()
+    /** Initial token value.  This defaults to no value, which results
+     *  in the first output being absent. If a value is given, then
+     *  output will be constrained to have at least the type of the value
+     *  (as well as at least the type of the input).
      */
     public Parameter initialValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the input known and there is a token on the input port,
-     *  consume the token from the input port, and store it for output
-     *  on the next iteration. Otherwise, store an AbsentToken for
-     *  output on the next iteration.
-     *  If a token was received on the previous iteration, output it to the
-     *  receivers. Otherwise, notify the receivers that there will never be
-     *  any token available in the current iteration.
+    /** Send to the output the previous token received. If no token
+     *  was received on the previous tick,
+     *  then assert that the output is absent. If this is
+     *  the first tick, then produce on the output the value
+     *  provided by <i>initialValue</i>, or there was none, then
+     *  assert that the output is empty.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -123,15 +124,16 @@ public class NonStrictDelay extends Transformer {
 
     /** Return false. This actor can produce some output event the input
      *  receiver has status unknown.
-     *
      *  @return False.
      */
     public boolean isStrict() {
         return false;
     }
 
-    /** Update the state of the actor.
-     *  @exception IllegalActionException If there is no director.
+    /** If the input is known, then read it and record
+     *  it for the next tick. Otherwise, throw an exception.
+     *  @exception IllegalActionException If the input is not
+     *   known, or if there is no director.
      */
     public boolean postfire() throws IllegalActionException {
         if (input.isKnown(0)) {
@@ -140,6 +142,9 @@ public class NonStrictDelay extends Transformer {
             } else {
                 _previousToken = AbsentToken.ABSENT;
             }
+        } else {
+            throw new IllegalActionException(this,
+                    "Input is unknown.");
         }
         return super.postfire();
     }
@@ -156,7 +161,7 @@ public class NonStrictDelay extends Transformer {
     /** Override the method in the base class so that the type
      *  constraint for the <i>initialValue</i> parameter will be set
      *  if it contains a value.
-     *  @return a list of Inequality objects.
+     *  @return A list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      */
     public Set<Inequality> typeConstraints() {
@@ -172,7 +177,7 @@ public class NonStrictDelay extends Transformer {
             // Errors in the initialValue parameter should already
             // have been caught in getAttribute() method of the base
             // class.
-            throw new InternalErrorException("Bad initialValue value!");
+            throw new InternalErrorException(ex);
         }
 
         return typeConstraints;
