@@ -70,7 +70,10 @@ MISC_FILES =
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	demo
+	demo \
+	'Occupants$$1.class' \
+	'Occupants$$OccupantsConfigureFactory.class' \
+	'Occupants$$RowListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

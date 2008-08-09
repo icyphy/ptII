@@ -71,6 +71,7 @@ OPTIONAL_FILES = \
 	'ActionsAttribute$$ParametersParserScope.class' \
 	'ERGController$$1.class' \
 	'ERGController$$ERGObjectScope.class' \
+	'ERGDirector$$1.class' \
 	'ERGDirector$$EventComparator.class' \
 	'ERGDirector$$TimedEvent.class' \
 	'Event$$ParameterParserScope.class' \

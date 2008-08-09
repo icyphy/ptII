@@ -47,6 +47,7 @@ PTPACKAGE = 	lattice
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	ExampleSet_CS.java \
 	LogicalAND_Forward_CS.java \
 	LogicalAND_OR_Value_CS.java \
 	LogicalOR_Backward_CS.java \

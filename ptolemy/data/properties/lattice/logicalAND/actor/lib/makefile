@@ -64,7 +64,9 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc
+	doc \
+	'Limiter$$1.class' \
+	'Limiter$$FunctionTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

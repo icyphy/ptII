@@ -63,12 +63,15 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'SMVUtility$$VariableInfo.class' \
-	'SMVUtility$$VariableTransitionInfo.class' \
+	'REDUtility$$1.class' \
+	'REDUtility$$REDTransitionBean.class' \
 	'REDUtility$$REDModuleNameInitialBean.class' \
 	'REDUtility$$REDSingleEntityBean.class' \
 	'REDUtility$$REDSingleTransitionBean.class' \
-	'REDUtility$$VariableInfo.class' \ 
+	'REDUtility$$VariableInfo.class' \
+	'SMVUtility$$1.class' \
+	'SMVUtility$$VariableInfo.class' \
+	'SMVUtility$$VariableTransitionInfo.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

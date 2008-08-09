@@ -49,7 +49,6 @@ PTCLASSJAR =
 # this one do not follow our coding standards.
 OTHER_JARS =    $(PTPACKAGE).jar
 
-
 # GCC files.
 GCC_FILES = \
 	java/util/AbstractCollection.java \
@@ -114,7 +113,8 @@ OPTIONAL_FILES = \
 	'FieldRecord$$Record.class' \
 	'FieldRecord$$RecordList.class' \
 	'PathFinder$$DirectoryFilter.class' \
-	'PathFinder$$PostfixFilter.class'
+	'PathFinder$$PostfixFilter.class' \
+	$(OTHER_JARS)
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -65,7 +65,7 @@ OTHER_FILES_TO_BE_JARED = \
 	TransformIcon.xml \
 	TransformationController.xml
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,7 +73,8 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'Transform$$Configurer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

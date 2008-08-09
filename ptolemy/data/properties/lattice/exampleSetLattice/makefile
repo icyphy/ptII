@@ -47,10 +47,12 @@ PTPACKAGE =     properties
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	False.java \
+	A.java \
+	B.java \
+	C.java \
 	Lattice.java \
-	True.java \
 	Unknown.java
+
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't

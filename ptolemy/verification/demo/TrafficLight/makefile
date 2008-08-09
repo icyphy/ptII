@@ -50,7 +50,9 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = 
 	
 OTHER_FILES_TO_BE_JARED = \
+	PedestrianLightNormal.xml \
 	SimpleTrafficLight.xml \
+	SimpleTrafficLightBooleanToken.xml \
 	SimpleTrafficLightGraphicalSpec.xml \
 	SimpleTrafficLightSMVModule.xml \
 	DE_SimpleTrafficLight.xml \

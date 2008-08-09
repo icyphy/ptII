@@ -70,6 +70,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'FmvAutomatonGraphFrame$$InvokeNuSMVAction.class' \
+	'FmvAutomatonGraphController$$NewFmvStateAction.class' \
 	'FmvAutomatonGraphFrame$$SMVFileFilter.class' \
 	'FmvAutomatonGraphFrame$$TranslateSmvAction.class' \
 	'FmvAutomatonGraphTableau$$Factory.class'

@@ -151,6 +151,7 @@ OPTIONAL_FILES = \
 	'TransformationEditor$$MatchingAttributeActionsFactory.class' \
 	'TransformationEditor$$NegationAttributeAction.class' \
 	'TransformationEditor$$OptionAttributeAction.class' \
+	'TransformationEditor$$PasteMoMLChangeRequest.class' \
 	'TransformationEditor$$PreservationAttributeAction.class' \
 	'TransformationEditor$$SingleMatchAction$$SingleViewController.class' \
 	'TransformationEditor$$SingleMatchAction.class' \

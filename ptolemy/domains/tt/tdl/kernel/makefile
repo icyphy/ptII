@@ -49,6 +49,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	MathUtilities.java \
+	TDLAction.java \
+	TDLActionsGraph.java \
 	TDLActor.java  \
 	TDLCodeGenerator.java \
 	TDLCodeGeneratorUtilities.java \
@@ -81,6 +83,7 @@ MISC_FILES =	$(DIRS) #test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'TDLAction$$TDLActionComparator.class' \
 	'TDLCodeGenerator$$TDLEditorFactory.class' \
 	'TDLModule$$1.class'
 

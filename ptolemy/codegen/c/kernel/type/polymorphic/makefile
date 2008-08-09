@@ -53,6 +53,7 @@ OTHER_FILES_TO_BE_JARED = \
 	add.c \
 	convert.c \
 	divide.c \
+	equals.c \
 	multiply.c \
 	negate.c \
 	print.c \

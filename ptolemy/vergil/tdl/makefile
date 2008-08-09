@@ -67,7 +67,10 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    $(PTCLASSJAR)
+    $(PTCLASSJAR) \
+	'HierarchicalModeController$$AddRefinementAction$$1.class' \
+	'HierarchicalModeController$$AddRefinementAction.class' \
+	'HierarchicalModeController$$RemoveRefinementAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

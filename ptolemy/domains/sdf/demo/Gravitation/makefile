@@ -50,6 +50,7 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Gravitation.xml \
 	Gravitation.htm \
+	GravitationWithCollisionDetection.xml \
 	GravitationVergil.htm
 
 EXTRA_SRCS = \

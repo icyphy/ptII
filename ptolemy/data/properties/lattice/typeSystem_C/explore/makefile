@@ -31,7 +31,7 @@
 
 ME =        ptolemy/data/properties/lattice/typeSystem_C/explore
 
-DIRS =      .svn
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../..
@@ -47,7 +47,10 @@ PTPACKAGE =     explore
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS =
-EXTRA_SRCS =    $(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	model.xml
+
+EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

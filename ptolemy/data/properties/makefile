@@ -47,9 +47,11 @@ PTPACKAGE = 	properties
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	AnnotationAttribute.java \
 	FSMGraphReader.java \
 	ModelAnalyzer.java \
 	ModelWriter.java \
+	ParseTreeAnnotationEvaluator.java \
 	ParseTreeASTNodeHelperCollector.java \
 	Property.java \
 	PropertyAttribute.java \
@@ -61,7 +63,11 @@ JSRCS = \
 	PropertySolver.java \
 	SharedUtilities.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	ModelAnalyzerIcon.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -70,7 +76,20 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'PropertyHelper$$Channel.class' \
+	'PropertyHighlighter$$1.class' \
+	'PropertyHighlighter$$ClearDisplay.class' \
+	'PropertyHighlighter$$ClearProperty.class' \
+	'PropertyHighlighter$$ConfigureHighlightAction.class' \
+	'PropertyHighlighter$$EditHighlightDialog.class' \
+	'PropertyHighlighter$$HighlightProperty$$1.class' \
+	'PropertyHighlighter$$HighlightProperty.class' \
+	'PropertyHighlighter$$HighlighterController.class' \
+	'PropertyHighlighter$$ShowProperty$$1.class' \
+	'PropertyHighlighter$$ShowProperty.class' \
+	'PropertyRemover$$1.class' \
+	'PropertySolver$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

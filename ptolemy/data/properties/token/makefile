@@ -47,6 +47,7 @@ PTPACKAGE = 	properties
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	ParseTreeTokenAnnotationEvaluator.java \
 	PropertyCombineCompositeHelper.java \
 	PropertyCombineFSMHelper.java \
 	PropertyCombineHelper.java \
@@ -69,7 +70,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'ParseTreeTokenAnnotationEvaluator$$VariableScope.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

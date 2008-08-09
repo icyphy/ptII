@@ -1,11 +1,10 @@
-# Makefile for the PTIDES domain library
-# PTIDES: Programming Temporally Integrated Distributed Embedded Systems
+# Makefile for Ptolemy II Ptides Demo
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Hylands (makefile only)
 #
-# @Version: $Id$
+# @Version: 
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2000-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,12 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/lib
-
-DIRS =		test
+ME =		ptolemy/domains/ptides/demo/ManyPlatforms
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -44,35 +41,46 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	TDLModuleInPtides
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	ScheduleListener.java \
-	SchedulePlotter.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ptidesentities.xml
+	$(JSRCS) \
+	TDLModuleInPtides.xml 
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	'ScheduleListener$$ScheduleEventType.class' \
-	'SchedulePlotter$$SchedulePlotterEditorFactory.class'
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
 
-all: jclass
-install: jclass jars
 
+install: all
+
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) appletviewer 
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" TDLModuleInPtides.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" TDLModuleInPtides.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

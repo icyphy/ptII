@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/properties/lattice/typeSystem_C
 
-DIRS = 		actor data domains kernel test
+DIRS = 		actor data domains explore kernel test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..

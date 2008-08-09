@@ -84,7 +84,36 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'CustomizableRunFrame$$CustomizeMenuListener$$1$$1.class' \
+	'CustomizableRunFrame$$CustomizeMenuListener$$1.class' \
+	'CustomizableRunFrame$$CustomizeMenuListener.class' \
+	'CustomizableRunPane$$1.class' \
+	'CustomizableRunPane$$2.class' \
+	'CustomizableRunPane$$3.class' \
+	'CustomizableRunPane$$4.class' \
+	'InterfaceTableau$$Factory.class' \
+	'PtolemyFormEditor$$1.class' \
+	'PtolemyFormEditor$$2.class' \
+	'PtolemyFormEditor$$3.class' \
+	'PtolemyFormEditor$$4.class' \
+	'PtolemyFormEditor$$5.class' \
+	'PtolemyFormEditor$$6.class' \
+	'PtolemyFormEditor$$7.class' \
+	'PtolemyFormEditor$$ColSpanSpinnerModel.class' \
+	'PtolemyFormEditor$$ComponentPaletteListModel.class' \
+	'PtolemyFormEditor$$ComponentPaletteListRenderer.class' \
+	'PtolemyFormEditor$$ConstraintTableCellRenderer.class' \
+	'PtolemyFormEditor$$DeleteColumnAction.class' \
+	'PtolemyFormEditor$$DeleteRowAction.class' \
+	'PtolemyFormEditor$$GridTableModel.class' \
+	'PtolemyFormEditor$$InsertColumnAfterAction.class' \
+	'PtolemyFormEditor$$InsertColumnBeforeAction.class' \
+	'PtolemyFormEditor$$InsertRowAfterAction.class' \
+	'PtolemyFormEditor$$InsertRowBeforeAction.class' \
+	'PtolemyFormEditor$$PackAction.class' \
+	'PtolemyFormEditor$$RemoveComponentAction.class' \
+	'PtolemyFormEditor$$RowSpanSpinnerModel.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -171,6 +171,10 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'ArrayOfRecordsPane$$1.class' \
+	'ArrayOfRecordsPane$$ArrayAsTable.class' \
+	'ArrayOfRecordsPane$$EmptyTableModel.class' \
+	'ArrayOfRecordsPane$$SimpleTable.class' \
 	'BrowserEffigy$$Factory.class' \
 	'BrowserTableau$$Factory.class' \
 	'CompositeActorApplication$$1.class' \

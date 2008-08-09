@@ -31,7 +31,7 @@
 ME =		ptolemy/data/properties/demo
 
 # Keep these alphabetical please.
-DIRS = 		ConstNonconst LogicalAND
+DIRS = 		ConstNonconst LogicalAND LogicalOrBackward RegressionTest Workflow
 
 # Root of Ptolemy II directory
 ROOT =		../../../..

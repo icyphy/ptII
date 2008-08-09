@@ -69,6 +69,7 @@ MISC_FILES =	test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'EmbeddedCActor$$EmbeddedActor.class' \
+	'EmbeddedCFileActor$$EmbeddedFileActor.class' \
 	'EmbeddedCActor$$DummyActor.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

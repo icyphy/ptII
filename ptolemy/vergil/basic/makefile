@@ -95,6 +95,12 @@ OPTIONAL_FILES = \
 	'BasicGraphFrame$$DocumentationMenuItemFactory.class' \
 	'BasicGraphFrame$$MoveToBackAction$$1.class' \
 	'BasicGraphFrame$$MoveToFrontAction$$1.class' \
+	'BasicGraphFrame$$OpenContainerAction.class' \
+	'BasicGraphFrame$$PrintAction.class' \
+	'BasicGraphFrame$$SaveAction.class' \
+	'CustomizeDocumentationAction$$3.class' \
+	'DependencyHighlighter$$DependencyController.class' \
+	'DependencyHighlighter$$HighlightDependents.class' \
 	'BasicGraphFrame$$OpenLibraryMenuItemFactory$$1.class' \
 	'CustomizeDocumentationAction$$2.class' \
 	'WithIconGraphController$$NewPortAction$$1.class' \

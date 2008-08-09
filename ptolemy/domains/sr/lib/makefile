@@ -85,7 +85,8 @@ MISC_FILES =	 $(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	'ButtonTime$$1.class' \
-	'ButtonTime$$ButtonListener.class'
+	'ButtonTime$$ButtonListener.class' \
+	'EnabledComposite$$CausalityInterfaceForEnabledComposite.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

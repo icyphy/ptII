@@ -34,6 +34,7 @@ ME =		ptolemy/data/properties/lattice
 DIRS = \
 	academicFalseTrueEqualPriority \
 	academicFalseTrueSet \
+	exampleSetLattice \
 	logicalAND \
 	logicalOrBackward \
 	typeSystem_C
@@ -57,6 +58,8 @@ JSRCS = \
 	InequalitySolver.java \
 	LatticeProperty.java \
 	MeetFunction.java \
+	MonotonicFunction.java \
+	ParseTreeConstraintAnnotationEvaluator.java \
 	PropertyConstraintASTNodeHelper.java \
 	PropertyConstraintAttribute.java \
 	PropertyConstraintCompositeHelper.java \
@@ -81,7 +84,12 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'InequalitySolver$$1.class' \
+	'InequalitySolver$$Info.class' \
+	'PropertyConstraintHelper$$Inequality.class' \
+	'PropertyConstraintSolver$$ConstraintType.class' \
+	'PropertyTermManager$$InequalityTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

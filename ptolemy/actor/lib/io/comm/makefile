@@ -67,6 +67,8 @@ MISC_FILES =
 OPTIONAL_FILES = \
 	demo \
         doc \
+	'SerialComm$$1.class' \
+	'SerialComm$$PortListener.class' \
 	'TxDatagram$$UpdateThread.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

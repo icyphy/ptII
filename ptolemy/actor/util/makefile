@@ -68,6 +68,7 @@ JSRCS = \
 	CausalityInterfaceForComposites.java \
 	ConstVariableModelAnalysis.java \
 	CQComparator.java \
+	DelayCausalityInterface.java \
 	Dependency.java \
 	DefaultCausalityInterface.java \
 	DFUtilities.java \
@@ -99,6 +100,8 @@ OPTIONAL_FILES = \
 	'CalendarQueue$$CQLinkedList.class' \
 	'CalendarQueue$$EntryComparator.class' \
 	'CalendarQueue$$SortedLinkedList.class' \
+	'CausalityInterfaceForComposites$$1.class' \
+	'CausalityInterfaceForComposites$$ActorComparator.class' \
 	'DFUtilities$$NamedObjComparator.class' \
 	'TimedEvent$$TimeComparator.class'
 

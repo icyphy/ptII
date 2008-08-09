@@ -61,6 +61,9 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'MathematicalModelConverterGUI$$1.class' \
+	'MathematicalModelConverterGUI$$2.class' \
+	'MathematicalModelConverterGUI$$3.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

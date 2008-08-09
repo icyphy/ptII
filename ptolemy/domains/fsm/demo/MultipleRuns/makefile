@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	diagrams.xml \
 	MultipleRuns.xml
 
 EXTRA_SRCS = \
