@@ -1,5 +1,5 @@
-/* A marker interface for attributes that extend the container's containment
-relations.
+/* An interface to specify the containment relationship as seen by the model
+designer.
 
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
@@ -36,8 +36,27 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- A marker interface for attributes that extend the container's containment
- relations.
+ An interface to specify the containment relationship as seen by the model
+ designer. This interface can be implemented by an attribute (such as {@link
+ ptolemy.domains.fsm.kernel.ContainmentExtender}. Such an attribute defines a
+ special containment relationship that is slightly different from the
+ containment relationship defined by {@link NamedObj#getContainer()}. The {@link
+ #getExtendedContainer()} method returns the container of the object that
+ contains the implementing attribute. The returned container is supposed to be
+ the object that visually contains the object that owns the implementing
+ attribute, as seen by the model designer. In particular, for a modal model
+ (either FSM or ERG), even though a refinement is visually contained by a state
+ or an event, {@link NamedObj#getContainer()} of that refinement does not return
+ the state or event because of a difference between the visual representation
+ and internal data representation. In that case, {@link #getExtendedContainer()}
+ of this interface returns the state or event.
+ <p>
+ When the expression evaluator tries to resolve a variable name starting from an
+ object, it checks whether an attribute implementing this interface is owned by
+ the object if the variable cannot be found in that object. If one such
+ attribute is found, the evaluator considers the container returned by {@link
+ #getExtendedContainer()}, instead of the {@link NamedObj#getContainer()} that
+ it normally uses.
 
  @author Thomas Huining Feng
  @version $Id$

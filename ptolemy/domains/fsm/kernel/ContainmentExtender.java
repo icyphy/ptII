@@ -1,5 +1,4 @@
-/* A marker interface for attributes that extend the container's containment
-relations.
+/* An implementation of containment extender for modal models.
 
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
@@ -40,8 +39,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- A marker interface for attributes that extend the container's containment
- relations.
+ An implementation of containment extender for modal models as an attribute.
+ This attribute defines a special containment relationship that is slightly
+ different from the containment relationship defined by {@link
+ NamedObj#getContainer()}. The {@link #getExtendedContainer()} method returns
+ the container of the object that contains the implementing attribute. The
+ returned container is supposed to be the object that visually contains the
+ object that owns the implementing attribute, as seen by the model designer. In
+ particular, for a modal model (either FSM or ERG), even though a refinement is
+ visually contained by a state or an event, {@link NamedObj#getContainer()} of
+ that refinement does not return the state or event because of a difference
+ between the visual representation and internal data representation. In that
+ case, {@link #getExtendedContainer()} of this class returns the state or event.
 
  @author Thomas Huining Feng
  @version $Id$
