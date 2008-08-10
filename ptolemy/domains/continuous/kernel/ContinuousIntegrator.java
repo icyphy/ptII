@@ -27,10 +27,19 @@
  */
 package ptolemy.domains.continuous.kernel;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.DefaultCausalityInterface;
+import ptolemy.actor.util.Dependency;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -51,15 +60,15 @@ import ptolemy.kernel.util.StringAttribute;
  dx/dt = f(x, t), can be built as follows:
  <P>
  <pre>
- +---------------+
- dx/dt  |               |   x
+            +---------------+
+     dx/dt  |               |   x
  +--------->|   Integrator  |---------+----->
  |          |               |         |
  |          +----^-----^----+         |
  |                                    |
  |             |---------|            |
  +-------------| f(x, t) |<-----------+
- |---------|
+               |---------|
  </pre>
  <P>
  An integrator also has a port-parameter called <i>initialState</i>. The
@@ -134,6 +143,9 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         initialState.setTypeEquals(BaseType.DOUBLE);
         cardinality = new StringAttribute(initialState.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
+        
+        _causalityInterface = new IntegratorCausalityInterface(
+                this, BooleanDependency.OTIMES_IDENTITY);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -291,6 +303,30 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         return _auxVariables;
     }
 
+    /** Return a causality interface for this actor. This causality interface
+     *  expresses dependencies that are instances of BooleanDependency
+     *  that declare that the <i>state</i> output port does not depend
+     *  on the <i>derivative</i> input port, but does depend on the
+     *  <i>initialState</i> and <i>impulse</i> input ports. Moreover,
+     *  the latter two input ports are equivalent (to process inputs
+     *  at either, you need to know about inputs at the other).
+     *  You do not need to know about inputs at <i>derivative</i>.
+     *  Moreover, the way fire() is implemented, you do not need to
+     *  know the inputs at <i>initialState</i> and <i>impulse</i>
+     *  in order to invoke fire(). If these inputs are not known
+     *  when fire() is invoked, then fire() returns leaving the
+     *  output unknown. Thus, we rely on the fixed-point semantics
+     *  to converge to the right solution even if the scheduler
+     *  chooses to react to an input at <i>derivative</i> before
+     *  those other inputs are known. Hence, <i>derivative</i>
+     *  is in its own equivalence class.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports.
+     */
+    public CausalityInterface getCausalityInterface() {
+        return _causalityInterface;
+    }
+    
     /** Get the current value of the derivative input port.
      *  @return The current value at the derivative input port.
      *  @exception NoTokenException If reading the input throws it.
@@ -471,6 +507,9 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  record intermediate values in a multi-step solver algorithm.
      */
     private double[] _auxVariables;
+    
+    /** The custom causality interface. */
+    private CausalityInterface _causalityInterface;
 
     /** The last round this integrator is fired. */
     private int _lastRound;
@@ -488,4 +527,39 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** The tentative state. */
     private double _tentativeState;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Custom causality interface that fine tunes the equivalent ports.
+     */
+    private class IntegratorCausalityInterface extends DefaultCausalityInterface {
+        public IntegratorCausalityInterface(Actor actor,
+                Dependency defaultDependency) {
+            super(actor, defaultDependency);
+            _derivativeEquivalents.add(derivative);
+            _otherEquivalents.add(impulse);
+            _otherEquivalents.add(initialState.getPort());
+        }
+
+        /** Override the base class to declare that the <i>initialState</i>
+         *  and <i>impulse</i> inputs are equivalent, but not the <i>derivative</i>
+         *  input port.  This is because to react to inputs at either <i>initialState</i>
+         *  or <i>impulse</i>, we have to know what the input at the other is.
+         *  But the input at <i>derivative</i> does not need to be known.
+         *  It will affect the future only.
+         *  @param input The port to find the equivalence class of.
+         *  @throws IllegalArgumentException If the argument is not
+         *   contained by the associated actor.
+         */
+        public Collection<IOPort> equivalentPorts(IOPort input) {
+            if (input == derivative) {
+                return _derivativeEquivalents;
+            }
+            return _otherEquivalents;
+        }
+        
+        private LinkedList<IOPort> _derivativeEquivalents = new LinkedList<IOPort>();
+        private LinkedList<IOPort> _otherEquivalents = new LinkedList<IOPort>();
+    }
 }
