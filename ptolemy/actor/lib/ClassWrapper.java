@@ -147,6 +147,7 @@ public class ClassWrapper extends TypedAtomicActor {
      *   port, or an instance of the class cannot be created.
      */
     public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         try {
             _class = Class.forName(className.getExpression());
         } catch (ClassNotFoundException ex) {
