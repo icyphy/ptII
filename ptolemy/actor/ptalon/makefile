@@ -125,13 +125,13 @@ install: all jars
 
 # Derived java files
 PtalonRecognizer.java: parser.g
-	$(ANTLR) $<
+	$(ANTLR) parser.g
 PtalonLexer.java: parser.g
-	$(ANTLR) $<
+	$(ANTLR) parser.g
 PtalonPopulator.java: populator.g
-	$(ANTLR) $<
+	$(ANTLR) populator.g
 PtalonScopeChecker.java: scopeChecker.g
-	$(ANTLR) $<
+	$(ANTLR) scopeChecker.g
 
 # This rule is useful for cvs committing the derived files
 # For example:
