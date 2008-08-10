@@ -37,6 +37,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.sched.NotSchedulableException;
+import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.Time;
@@ -535,11 +536,15 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         // force the schedule to be computed.
         if (_debugging) {
-            _debug("Computing schedule");
+            _debug("*** Schedule:");
         }
 
         try {
-            scheduler.getSchedule();
+            Schedule schedule = scheduler.getSchedule();
+            if (_debugging) {
+                _debug(schedule.toString());
+                _debug("*** End schedule");
+            }
         } catch (NotSchedulableException ex) {
             // Capt. Robbins suggested that we show which actors are connected
             // or disconnected at the top, rather than burying it.
