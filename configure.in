@@ -1105,28 +1105,19 @@ PTBACKTRACK_DIR=backtrack
 # PTBACKTRACK_ECLIPSE_DIR is set to eclipse and used in
 # $PTII/ptolemy/backtrack/makefile if Eclipse was found
 # and the jar files were found
-PTBACKTRACK_ECLIPSE_DIR=
+urePTBACKTRACK_ECLIPSE_DIR=
 
 # Jar files used by ptolemy/backtrack/eclipse
 PTBACKTRACK_ECLIPSE_JARS=
+
+# Default to looking for Eclipse
+PTECLIPSE_PLUGINS=yes
 
 eclipseMessage="The backtracking facility requires Eclipse 3.2 or greater.
     You need not download Eclipse unless you plan on using the backtracking
     facility in ptolemy.backtrack.
     Eclipse may be downloaded from http://www.eclipse.org/"
 
-# If configure is called with --disable-eclipse, don't include backtrack/eclipse and
-# ptolemy/apps/eclipse. This can happen if the user has eclipse but does not have 
-# plugins
-AC_ARG_ENABLE(eclipse, [  --enable-eclipse-plugins,	Use eclipse plugins for backtracking and others],
-    PTECLIPSE_PLUGINS=yes, PTECLIPSE_PLUGINS=no)
-
-if test $PTECLIPSE_PLUGINS = "no"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/apps/eclipse/"
-fi
-
-if test $PTECLIPSE_PLUGINS = "yes"; then
-# We only need to look for Eclipse if $PTII/ptolemy/backtrack/eclipse exists
 if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
     PT_MSG_STATUS([$PTII/ptolemy/backtrack/eclipse is not present,
     so we need not find Eclipse.])
@@ -1156,22 +1147,28 @@ changequote([, ])dnl
             ECLIPSE_DIR=$withval,
             ECLIPSE_DIR=$TMP_ECLIPSE_DIR)
 
-        if test ! -d "$ECLIPSE_DIR"; then
-            AC_MSG_WARN([Failed to find Eclipse in $ECLIPSE_DIR])
-            AC_MSG_CHECKING([for $PTII/vendors/eclipse])
-            if test -d  "$PTII/vendors/eclipse"; then
-	        PT_MSG_RESULT([ok])
-	        ECLIPSE_DIR="$PTII/vendors/eclipse"
-            else
-	        AC_MSG_WARN([Failed to find Eclipse in $PTII/vendors/eclipse])
-                AC_PATH_PROG(PTECLIPSE, eclipse)
-                if test "${PTECLIPSE:-none}" != "none"; then
-            # Remove /cygdrive	
+        if test "$ECLIPSE_DIR" = "no"; then
+	    AC_MSG_WARN([configure called with --without-eclipse-plugins,
+   not building in ptolemy/apps/eclipse and ptolemy/backtrack.])
+           ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/apps/eclipse/"
+        else
+	    if test ! -d "$ECLIPSE_DIR"; then
+                AC_MSG_WARN([Failed to find Eclipse in $ECLIPSE_DIR])
+                AC_MSG_CHECKING([for $PTII/vendors/eclipse])
+                if test -d  "$PTII/vendors/eclipse"; then
+	            PT_MSG_RESULT([ok])
+	            ECLIPSE_DIR="$PTII/vendors/eclipse"
+                else
+	            AC_MSG_WARN([Failed to find Eclipse in $PTII/vendors/eclipse])
+                    AC_PATH_PROG(PTECLIPSE, eclipse)
+                    if test "${PTECLIPSE:-none}" != "none"; then
+                 # Remove /cygdrive	
 changequote(<<, >>)dnl
-	        ECLIPSE_DIR=`dirname $PTECLIPSE | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`
+	                ECLIPSE_DIR=`dirname $PTECLIPSE | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`
 changequote([, ])dnl
-	        fi   
-            fi
+	             fi
+	         fi
+             fi
         fi 
         if test -d "$ECLIPSE_DIR"; then
 	    PT_MSG_RESULT([$ECLIPSE_DIR])
@@ -1282,14 +1279,15 @@ changequote([, ])dnl
 	        cd "$startdir"
              fi
         fi	
-        if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
+
+
+        if test "$ECLIPSE_DIR" != "no" -a "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
             AC_MSG_WARN([Failed to find Eclipse
     perhaps Eclipse is not installed?
     $eclipseMessage])
 	    PTBACKTRACK_ECLIPSE_JARS=
         fi
     fi
-fi
 fi
 
 if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
