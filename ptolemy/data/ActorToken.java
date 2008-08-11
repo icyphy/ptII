@@ -26,7 +26,9 @@
  */
 package ptolemy.data;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.Writer;
 
 import ptolemy.data.type.Type;
 import ptolemy.kernel.Entity;
@@ -93,6 +95,15 @@ public class ActorToken extends Token implements Cloneable {
             throw new RuntimeException(
                     "Failed to clone actor, but I already cloned it once!!!");
         }
+    }
+
+    /** Output the MoML of the enclosed entity to the given writer.
+     *
+     *  @param output The writer to which the MoML is output.
+     *  @exception IOException If an I/O error occurs.
+     */
+    public void getMoML(Writer output) throws IOException {
+        _entity.exportMoML(output);
     }
 
     /** Return the type of this token.
