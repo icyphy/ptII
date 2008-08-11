@@ -8,7 +8,8 @@
 <body>
 <h1>Setting up Ptolemy II and Eclipse</h1>
 <p>
-These instructions assume you are using Eclipse 3.3 under Windows.
+These instructions assume you are using Eclipse 3.4 under
+Windows or Mac OS X.
 Other ways of setting up and building Ptolemy II are described on the
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm">
 Ptolemy II install page</a>. 
@@ -43,7 +44,7 @@ facility, which is an optional part of Ptolemy II that allows models to
 restore their old state.  If the version of Eclipse that you install
 does not have the PDE, then there will be build errors, which can be fixed by
 excluding <CODE>ptolemy/backtrack/</CODE> from the build.
-<li>
+<li> (<i>Windows<./i>): 
 Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe</code>.
 <li>
 Finish the installation by running <CODE>eclipse/eclipse.exe</CODE>.
@@ -56,12 +57,12 @@ Finish the installation by running <CODE>eclipse/eclipse.exe</CODE>.
 The default configuration of Eclipse has some difficulties with Ptolemy II,
 so a few changes are necessary.
 <ol>
-<li>
+<li>(<i>Windows<./i>): 
 We will need to change the default memory size for Eclipse
 because Ptolemy II is a big project.
 In Windows,  create a shortcut to eclipse.exe by going to the
 directory where Eclipse is installed, right clicking on eclipse.exe
-and selecting <code>Create Shortcut</code>. <I>Mac users: use Control-click to get the context menu.</I>
+and selecting <code>Create Shortcut</code>. <I>Mac OS X: use Control-click to get the context menu.</I>
 
 <p>Then right mouse click on the shortcut and select Properties and change
 the target to increase the memory allocated by default. E.g.,
@@ -78,9 +79,14 @@ select <code>Pin to Start Menu</code>
 <li>Eclipse requires some customization to build Ptolemy II
 and to keep the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/style.htm" target="_top">Ptolemy II coding style</a>.
 In the steps below, we
-outline changes to be made in the Eclipse Preferences window,
-which is invoked via <code>Window</code> | <code>Preferences</code>.
-For each of the
+outline changes to be made in the Eclipse Preferences window.
+<br> Under <i>Windows</i>h the Eclipse Preferences window
+is invoked via <code>Window</code> | <code>Preferences</code>.
+
+<br> Under <i>Mac OS X</i>h the Eclipse Preferences window
+is invoked via <code>Eclipse</code> | <code>Preferences</code>.
+
+<br>For each of the
 changes, hit <code>Apply</code>.  When all the changes are done, hit
 <code>OK</code>, which will close the Eclipse Preferences Window.
 
@@ -92,7 +98,8 @@ of the pauses it creates. We suggest disabling this feature as
 follows:
 <ol>
 <li> While still in the preferences window 
-  (<code>Window</code> | <code>Preferences</code>).
+<br> (<i>Windows</i>:<code>Window</code> | <code>Preferences</code>)
+<br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
 <li> Select <code>General</code> | <code>Workspace</code>
 <li> Deselect <code>Build automatically</code>.
 <li> Click Apply. 
@@ -133,12 +140,13 @@ to format comments.  We hope to change this policy in the future.
   <li> Under the "New Lines" tab, select "at end of file"
   <li> Under the "Comments" tab, <b>unselect</b> "Enable block comment formatting"
   <li> Click OK.
-
-  <li> In the Preferences Window, click Apply
-
-
-
+  <li> In the Preferences Window, click Apply.
  </ol>
+
+<li>The PtDoc Doclet in <code>$PTII/doc/doclets/PtDoclet.java</code>
+requires <code>tools.jar</code>, which is only in the Java Development
+Kit (JDK), not the Java Runtime Environment (JRE).  So, be sure that a
+JDK is selected for building, not a JRE.
 
 <li>
 Ptolemy II uses some features of Java 5.0.
@@ -168,7 +176,16 @@ if you are tightly managing serialization, we turn it off:
   <li> Click Apply.  If you are prompted for a full rebuild, click Yes.
  </ol>
 
-<li> Click OK to apply all of the above changes.
+<ol>
+<li> While still in the preferences window 
+<br> (<i>Windows</i>:<code>Window</code> | <code>Preferences</code>)
+<br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
+<li> Select <code>Java</code> | <code>Installed JREs</code>
+<li> Verify that the checked line corresponds with a JDK, not
+a JRE.
+</ol>
+
+<li> Click OK  in the Preferences window to apply all of the above changes.
 </menu>
 
 </ol>
