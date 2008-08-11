@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/gt/demo
 
 DIRS =		BouncingBallX2 ConstOptimization DiningPhilosophers \
-		HierarchyFlattening MapReduce ModelGeneration \
+		GameOfLife HierarchyFlattening MapReduce ModelGeneration \
 		PublisherTest RegressionTest
 
 # Root of the Ptolemy II directory
@@ -54,6 +54,7 @@ PTCLASSALLJARS = \
 	BouncingBallX2/BouncingBallX2.jar \
 	ConstOptimization/ConstOptimization.jar \
 	DiningPhilosophers/DiningPhilosophers.jar \
+	GameOfLife/GameOfLife.jar \
 	HierarchyFlattening/HierarchyFlattening.jar \
 	MapReduce/MapReduce.jar \
 	ModelGeneration/ModelGeneration.jar \

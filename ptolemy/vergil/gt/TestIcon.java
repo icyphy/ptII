@@ -3,14 +3,11 @@ package ptolemy.vergil.gt;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
-import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
 
-import ptolemy.actor.gt.controller.Test;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.erg.kernel.Event;
@@ -88,14 +85,7 @@ public class TestIcon extends NameIcon {
 
     public Figure createFigure() {
         CompositeFigure result = (CompositeFigure) super.createFigure();
-        Test test = (Test) getContainer();
         LabelFigure label = null;
-        boolean matched = true;
-        try {
-            matched = ((BooleanToken) test.matched.getToken()).booleanValue();
-        } catch (IllegalActionException e) {
-            // Ignore.
-        }
 
         ZList children = result.getChildren();
         for (int i = children.getFigureCount() - 1; i >= 0; i--) {
@@ -112,15 +102,6 @@ public class TestIcon extends NameIcon {
             Rectangle2D bounds = result.getBounds();
             label.translateTo(bounds.getCenterX(), bounds.getMinY() +
                     label.getBounds().getHeight() / 2.0 + 15.0);
-
-            if (!matched) {
-                label.translate(0.0, 2.0);
-                Rectangle2D labelBounds = label.getBounds();
-                double y = labelBounds.getMinY() - 2.5;
-                Line2D overline = new Line2D.Double(labelBounds.getMinX(), y,
-                        labelBounds.getMaxX(), y);
-                result.add(new BasicFigure(overline, 1.5f));
-            }
         }
 
         String actions = null;

@@ -29,7 +29,6 @@ package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.domains.fsm.modal.RefinementPort;
@@ -60,14 +59,14 @@ public class OutputEvent extends GTEvent {
         ParserScope scope = _getParserScope(arguments);
         actions.execute(scope);
 
-        ActorToken modelToken = _getModelArgument(arguments);
+        CompositeEntity entity = _getModelVariable();
         ERGController container = (ERGController) getContainer();
         final String outputPort = "modelOutput";
         RefinementPort destination = (RefinementPort) container.getPort(
                 outputPort);
         destination.broadcastClear();
-        destination.broadcast(modelToken);
-        
-        _scheduleEvents(scope, modelToken, BooleanToken.TRUE);
+        destination.broadcast(new ActorToken(entity));
+
+        _scheduleEvents(scope);
     }
 }

@@ -31,6 +31,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.gt;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +44,9 @@ import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.actor.gt.ingredients.criteria.SubclassCriterion;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.KernelException;
@@ -51,6 +55,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.EditorIcon;
 
 /**
@@ -63,12 +68,54 @@ import ptolemy.vergil.icon.EditorIcon;
  */
 public class GTEntityUtils {
 
+    public static void exportExtraProperties(GTEntity entity, Writer output,
+            int depth) throws IOException {
+        if (entity instanceof Entity) {
+            Entity ptEntity = (Entity) entity;
+            for (Object portObject : ptEntity.portList()) {
+                Port port = (Port) portObject;
+                if (port.isPersistent()) {
+                	continue;
+                }
+                boolean outputStarted = false;
+                for (Object attributeObject : port.attributeList()) {
+                    Attribute attribute = (Attribute) attributeObject;
+                    if (attribute.isPersistent()) {
+                        if (!outputStarted) {
+                            output.write(StringUtilities.getIndentPrefix(depth)
+                                    + "<port name=\"" + port.getName()
+                                    + "\">\n");
+                            outputStarted = true;
+                        }
+                        attribute.exportMoML(output, depth + 1);
+                    }
+                }
+                if (outputStarted) {
+                    output.write(StringUtilities.getIndentPrefix(depth)
+                            + "</port>\n");
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
     public static void updateAppearance(final GTEntity entity,
             GTIngredientsAttribute attribute) {
 
-        Workspace workspace = ((NamedObj) entity).workspace();
+        NamedObj object = (NamedObj) entity;
+        Workspace workspace = object.workspace();
         try {
             workspace.getWriteAccess();
+
+            List<?> icons = object.attributeList(EditorIcon.class);
+            boolean foundPersistentIcon = false;
+            for (Object iconObject : icons) {
+                EditorIcon icon = (EditorIcon) iconObject;
+                if (icon.isPersistent()) {
+                    foundPersistentIcon = true;
+                    break;
+                }
+            }
 
             Set<String> preservedPortNames = new HashSet<String>();
             boolean isIconSet = false;
@@ -92,7 +139,7 @@ public class GTEntityUtils {
                             port.setOutput(isOutput);
                         } else {
                             MoMLChangeRequest request =
-                                new MoMLChangeRequest(entity, (NamedObj) entity,
+                                new MoMLChangeRequest(entity, object,
                                         "<deletePort name=\"" + port.getName()
                                         + "\"/>");
                             request.setUndoable(true);
@@ -111,10 +158,11 @@ public class GTEntityUtils {
                     }
                     port.setMultiport(isMultiport);
                 } else if (ingredient instanceof SubclassCriterion
-                        && !isIconSet) {
-                    SubclassCriterion criterion = (SubclassCriterion) ingredient;
+                        && !isIconSet && !foundPersistentIcon) {
+                    SubclassCriterion criterion =
+                        (SubclassCriterion) ingredient;
                     final String superclass = criterion.getSuperclass();
-                    ((NamedObj) entity).requestChange(new ChangeRequest(entity,
+                    object.requestChange(new ChangeRequest(entity,
                             "Deferred load actor icon action.") {
                         protected void _execute() throws Exception {
                             _loadActorIcon(entity, superclass);
@@ -124,9 +172,9 @@ public class GTEntityUtils {
                 }
                 i++;
             }
-            if (!isIconSet) {
-                ((NamedObj) entity).requestChange(
-                        new RestoreAppearanceChangeRequest(entity));
+            if (!isIconSet && !foundPersistentIcon) {
+                object.requestChange(new RestoreAppearanceChangeRequest(
+                        entity));
             }
 
             ComponentEntity component = (ComponentEntity) entity;
@@ -189,24 +237,30 @@ public class GTEntityUtils {
             new MoMLChangeRequest(entity, container, moml).execute();
             new LoadActorIconChangeRequest(entity, container).execute();
         } catch (Throwable t) {
-            _removeEditorIcons(entity);
-            _setIconDescription(entity, entity.getDefaultIconDescription());
+            if (_removeEditorIcons(entity)) {
+                _setIconDescription(entity, entity.getDefaultIconDescription());
+            }
         }
     }
 
-    private static void _removeEditorIcons(GTEntity entity)
+    private static boolean _removeEditorIcons(GTEntity entity)
     throws KernelException {
         NamedObj object = (NamedObj) entity;
+        boolean foundPersistentIcon = false;
         try {
             object.workspace().getReadAccess();
-            for (Object editorIconObject
-                    : object.attributeList(EditorIcon.class)) {
-                EditorIcon editorIcon = (EditorIcon) editorIconObject;
-                editorIcon.setContainer(null);
+            for (Object iconObject : object.attributeList(EditorIcon.class)) {
+                EditorIcon icon = (EditorIcon) iconObject;
+                if (icon.isPersistent()) {
+                    foundPersistentIcon = true;
+                } else {
+                    icon.setContainer(null);
+                }
             }
         } finally {
             object.workspace().doneReading();
         }
+        return !foundPersistentIcon;
     }
 
     private static void _setIconDescription(GTEntity entity,
@@ -239,7 +293,9 @@ public class GTEntityUtils {
                 _container.workspace().doneReading();
             }
 
-            _removeEditorIcons(_entity);
+            if (!_removeEditorIcons(_entity)) {
+                return;
+            }
 
             ConfigurableAttribute actorAttribute = (ConfigurableAttribute) actor
                     .getAttribute("_iconDescription");
@@ -260,6 +316,7 @@ public class GTEntityUtils {
                         oldIcon.setContainer(null);
                     }
                     icon.setContainer((NamedObj) _entity);
+                    icon.setPersistent(false);
                     break;
                 }
             } finally {
@@ -275,8 +332,10 @@ public class GTEntityUtils {
     private static class RestoreAppearanceChangeRequest extends ChangeRequest {
 
         protected void _execute() throws Exception {
-            _removeEditorIcons(_entity);
-            _setIconDescription(_entity, _entity.getDefaultIconDescription());
+            if (_removeEditorIcons(_entity)) {
+                _setIconDescription(_entity, _entity
+                        .getDefaultIconDescription());
+            }
         }
 
         RestoreAppearanceChangeRequest(GTEntity entity) {

@@ -399,17 +399,20 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             Component[] menuItems = submenu.getMenuComponents();
             for (Component itemComponent : menuItems) {
                 JMenuItem item = (JMenuItem) itemComponent;
-                Action action = item.getAction();
                 if (object instanceof PortMatcher) {
                     // Disable all the items for a PortMatcher, which should be
                     // configured by double-clicking the containing
                     // CompositeActor.
                     item.setEnabled(false);
-                } else if (action instanceof PortDialogAction
+                }
+                // Allow to configure ports as usual. Extra properties of ports
+                // are stored in the moml with
+                // GTEntityUtils.ExportExtraProperties().
+                /* else if (item.getAction() instanceof PortDialogAction
                         && object instanceof GTEntity) {
                     // Disable the PortDialogAction from the context menu.
                     item.setEnabled(false);
-                }
+                } */
             }
         } else {
             Action action = menuItem.getAction();

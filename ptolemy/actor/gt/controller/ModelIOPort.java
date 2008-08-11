@@ -48,14 +48,14 @@ import ptolemy.kernel.util.Workspace;
  */
 public class ModelIOPort extends RefinementPort {
 
-	public ModelIOPort(Workspace workspace) {
-		super(workspace);
-		setTypeEquals(ActorToken.TYPE);
-	}
+    public ModelIOPort(ComponentEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        setTypeEquals(ActorToken.TYPE);
+    }
 
-	public ModelIOPort(ComponentEntity container, String name)
-			throws IllegalActionException, NameDuplicationException {
-		super(container, name);
-		setTypeEquals(ActorToken.TYPE);
-	}
+    public ModelIOPort(Workspace workspace) {
+        super(workspace);
+        setTypeEquals(ActorToken.TYPE);
+    }
 }

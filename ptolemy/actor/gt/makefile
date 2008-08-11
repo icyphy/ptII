@@ -154,6 +154,7 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$NameComparator.class' \
 	'GraphMatcher$$ObjectList.class' \
 	'GraphMatcher$$ParameterIterator.class' \
+	'GraphTransformer$$CreateObjectChangeRequest.class' \
 	'IterativeParameter$$ConstraintViolationException.class' \
 	'ModelExecutor$$Wrapper$$WrapperDirector.class' \
 	'ModelExecutor$$Wrapper.class' \

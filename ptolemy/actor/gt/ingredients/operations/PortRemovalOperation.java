@@ -64,10 +64,11 @@ public class PortRemovalOperation extends Operation {
 
     public ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
-            Entity patternEntity, Entity replacementEntity, Entity hostEntity) {
+            NamedObj patternObject, NamedObj replacementObject,
+            NamedObj hostObject) {
         if (isNameEnabled()) {
             String name = _name;
-            Port patternPort = patternEntity.getPort(_name);
+            Port patternPort = ((Entity) patternObject).getPort(_name);
             if (patternPort != null) {
                 // If the port is a port in the pattern, find the matched port
                 // in the host actor.
@@ -75,7 +76,7 @@ public class PortRemovalOperation extends Operation {
                 name = hostPort.getName();
             }
             String moml = "<deletePort name=\"" + name + "\"/>";
-            return new MoMLChangeRequest(this, hostEntity, moml, null);
+            return new MoMLChangeRequest(this, hostObject, moml, null);
         } else {
             return null;
         }

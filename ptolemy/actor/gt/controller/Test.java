@@ -28,10 +28,7 @@
 package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -53,21 +50,11 @@ public class Test extends GTEvent {
     public Test(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        matched = new Parameter(this, "matched");
-        matched.setTypeEquals(BaseType.BOOLEAN);
-        matched.setToken(BooleanToken.TRUE);
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
         ParserScope scope = _getParserScope(arguments);
         actions.execute(scope);
-
-        BooleanToken matchArgument = _getMatchArgument(arguments);
-        if (matched.getToken().equals(matchArgument)) {
-            _scheduleEvents(scope, _getModelArgument(arguments), matchArgument);
-        }
+        _scheduleEvents(scope);
     }
-
-    public Parameter matched;
 }

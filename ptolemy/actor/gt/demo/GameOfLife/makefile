@@ -1,10 +1,10 @@
-# Makefile for the ptolemy/actor/gt/controller package
+# Makefile for Ptolemy II Javasound Karplus-Strong Demo
 #
-# @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2007-2008 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,45 +28,33 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-#
-#
 
-ME =		ptolemy/actor/gt/controller
+ME =		ptolemy/actor/gt/demo/GameOfLife
 
-DIRS = 		
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
-CLASSPATH = 	$(ROOT)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	controller
+PTPACKAGE =	GameOfLife
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	ActorParameter.java \
-	GTEvent.java \
-	InitEvent.java \
-	InputEvent.java \
-	Match.java \
-	ModelIOPort.java \
-	OutputEvent.java \
-	Test.java \
-	Transform.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	MatchIcon.xml \
-	TestIcon.xml \
-	TransformIcon.xml \
-	TransformationController.xml
+	$(JSRCS) \
+	GameOfLife.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -75,13 +63,17 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'Transform$$Configurer.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+	@echo "To run the demos, run 'make demo'"
 
+install: jclass jars
+
+demo:
+	$(ROOT)/bin/vergil GameOfLife.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

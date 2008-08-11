@@ -41,7 +41,6 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ASTPtSumNode;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -74,13 +73,13 @@ public class RenameOperation extends Operation {
 
     public ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
-            Entity patternEntity, Entity replacementEntity, Entity hostEntity)
-    throws IllegalActionException {
+            NamedObj patternObject, NamedObj replacementObject,
+            NamedObj hostObject) throws IllegalActionException {
         if (_valueParseTree == null) {
             _reparse();
         }
 
-        ParserScope scope = NamedObjVariable.getNamedObjVariable(hostEntity,
+        ParserScope scope = NamedObjVariable.getNamedObjVariable(hostObject,
                 true).getParserScope();
         GTParameter.Evaluator evaluator = new GTParameter.Evaluator(pattern,
                 matchResult);
@@ -111,8 +110,8 @@ public class RenameOperation extends Operation {
             name = _name.get();
         }
 
-        NamedObj parent = hostEntity.getContainer();
-        String moml = "<entity name=\"" + hostEntity.getName()
+        NamedObj parent = hostObject.getContainer();
+        String moml = "<entity name=\"" + hostObject.getName()
                 + "\"><rename name=\"" + name + "\"/></entity>";
         return new MoMLChangeRequest(this, parent, moml, null);
     }

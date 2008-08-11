@@ -32,6 +32,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -65,7 +66,14 @@ public class InputEvent extends GTEvent {
                 "_isPresent");
         if (inputPortPresent != null && inputPortPresent.booleanValue()) {
             ActorToken modelToken = (ActorToken) scope.get(inputPort);
-            _scheduleEvents(scope, modelToken, BooleanToken.TRUE);
+            Entity entity = modelToken.getEntity();
+            if (!(entity instanceof CompositeEntity)) {
+                throw new IllegalActionException("Only instances of " +
+                        "CompositeEntity are accepted in the input " +
+                        "ActorTokens to the transformation controller.");
+            }
+            _setModelVariable((CompositeEntity) entity);
+            _scheduleEvents(scope);
         }
     }
 }

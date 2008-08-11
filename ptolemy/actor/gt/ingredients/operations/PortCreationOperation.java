@@ -83,8 +83,8 @@ public class PortCreationOperation extends Operation {
 
     public ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
-            Entity patternEntity, Entity replacementEntity, Entity hostEntity)
-            throws IllegalActionException {
+            NamedObj patternObject, NamedObj replacementObject,
+            NamedObj hostObject) throws IllegalActionException {
         StringBuffer moml = new StringBuffer();
         moml.append("<port name=\"");
         moml.append(_portName);
@@ -117,7 +117,7 @@ public class PortCreationOperation extends Operation {
             moml.insert(0, "<group name=\"auto\">\n");
             moml.append("</group>\n");
         }
-        return new MoMLChangeRequest(this, hostEntity, moml.toString(), null);
+        return new MoMLChangeRequest(this, hostObject, moml.toString(), null);
     }
 
     public GTIngredientElement[] getElements() {

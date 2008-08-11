@@ -42,12 +42,11 @@ implements MatchCallback {
     public List<MatchResult> findAllMatches(TransformationRule workingCopy,
             CompositeEntity model) throws IllegalActionException {
         Pattern pattern = workingCopy.getPattern();
-        GraphMatcher matcher = new GraphMatcher();
 
-        matcher.setMatchCallback(this);
+        _matcher.setMatchCallback(this);
         _matchResults.clear();
         _collectAllMatches = true;
-        matcher.match(pattern, model);
+        _matcher.match(pattern, model);
 
         return _matchResults;
     }
@@ -67,20 +66,42 @@ implements MatchCallback {
         return null;
     }
 
+    public TransformationRule getWorkingCopy(TransformationRule masterRule)
+    throws IllegalActionException {
+        if (_masterRule != masterRule || _workingCopy == null
+                || _workingCopyVersion != masterRule.workspace().getVersion()) {
+            if (_workingCopy != null) {
+                _workspace.remove(_workingCopy);
+                _workingCopy = null;
+            }
+            try {
+                _workingCopy = (TransformationRule) masterRule.clone(
+                        _workspace);
+                new WorkingCopyScopeExtender(_workingCopy, "_scopeExtender",
+                        masterRule);
+                _masterRule = masterRule;
+                _workingCopyVersion = masterRule.workspace().getVersion();
+            } catch (Exception e) {
+                throw new IllegalActionException(this, e, "Cannot get a " +
+                        "working copy this transformation rule.");
+            }
+        }
+        return _workingCopy;
+    }
+
     public boolean isMatchOnly() {
         return getMode() == Mode.MATCH_ONLY;
     }
 
     public boolean transform(TransformationRule workingCopy,
-    		CompositeEntity model) throws IllegalActionException {
+            CompositeEntity model) throws IllegalActionException {
         Pattern pattern = workingCopy.getPattern();
-        GraphMatcher matcher = new GraphMatcher();
         Mode mode = getMode();
 
-        matcher.setMatchCallback(this);
+        _matcher.setMatchCallback(this);
         _matchResults.clear();
         _collectAllMatches = mode != Mode.REPLACE_FIRST;
-        matcher.match(pattern, model);
+        _matcher.match(pattern, model);
 
         if (_matchResults.isEmpty()) {
             return false;
@@ -141,35 +162,14 @@ implements MatchCallback {
         }
     }
 
-    public TransformationRule getWorkingCopy(TransformationRule masterRule)
-    throws IllegalActionException {
-        if (_masterRule != masterRule || _workingCopy == null
-                || _workingCopyVersion != masterRule.workspace().getVersion()) {
-            if (_workingCopy != null) {
-                _workspace.remove(_workingCopy);
-                _workingCopy = null;
-            }
-            try {
-                _workingCopy = (TransformationRule) masterRule.clone(
-                        _workspace);
-                new WorkingCopyScopeExtender(_workingCopy, "_scopeExtender",
-                        masterRule);
-                _masterRule = masterRule;
-                _workingCopyVersion = masterRule.workspace().getVersion();
-            } catch (Exception e) {
-                throw new IllegalActionException(this, e, "Cannot get a " +
-                        "working copy this transformation rule.");
-            }
-        }
-        return _workingCopy;
-    }
-
     private boolean _collectAllMatches;
 
     private TransformationRule _masterRule;
 
     private LinkedList<MatchResult> _matchResults =
         new LinkedList<MatchResult>();
+
+    private GraphMatcher _matcher = new GraphMatcher();
 
     private Random _random = new Random();
 

@@ -65,6 +65,7 @@ import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.kernel.attributes.VisibleAttribute;
 
@@ -141,6 +142,7 @@ public class GraphTransformer extends ChangeRequest {
         host.requestChange(transformer);
     }
 
+    @SuppressWarnings("unchecked")
     protected void _addConnections() throws TransformationException {
         for (NamedObj replacement : _replacementToHost.keySet()) {
             if (!(replacement instanceof Port)) {
@@ -152,8 +154,7 @@ public class GraphTransformer extends ChangeRequest {
             List<?> hostLinkdList;
             if (host instanceof Port) {
                 replacementLinkedList = new LinkedList<Object>(
-                        ((Port) replacement)
-                        .linkedRelationList());
+                        ((Port) replacement).linkedRelationList());
                 hostLinkdList = new LinkedList<Object>(
                         ((Port) host).linkedRelationList());
             } else {
@@ -222,7 +223,7 @@ public class GraphTransformer extends ChangeRequest {
 
     protected void _addObjects() throws TransformationException {
         _addObjectsWithCreationAttributes(_pattern);
-        _addObjects(_replacement, _host);
+        _addObjects(_replacement, _host, true);
     }
 
     protected void _execute() throws TransformationException {
@@ -281,25 +282,16 @@ public class GraphTransformer extends ChangeRequest {
             NamedObj host = entry.getValue();
             NamedObj pattern = _patternToReplacement.getKey(replacement);
 
-            if (!(pattern == null || pattern instanceof Entity)
-                    || !(replacement instanceof Entity)
-                    || !(host instanceof Entity)) {
-                continue;
-            }
-
             try {
-                Entity patternEntity = (Entity) pattern;
-                Entity replacementEntity = (Entity) replacement;
-                Entity hostEntity = (Entity) host;
                 GTIngredientList ingredientList;
-                if (replacementEntity instanceof GTEntity) {
-                    ingredientList = ((GTEntity) replacementEntity)
+                if (replacement instanceof GTEntity) {
+                    ingredientList = ((GTEntity) replacement)
                             .getOperationsAttribute().getIngredientList();
                 } else {
                     try {
-                        replacementEntity.workspace().getReadAccess();
-                        List<?> attributes = replacementEntity
-                                .attributeList(GTIngredientsAttribute.class);
+                        replacement.workspace().getReadAccess();
+                        List<?> attributes = replacement.attributeList(
+                                GTIngredientsAttribute.class);
                         if (attributes.isEmpty()) {
                             continue;
                         } else {
@@ -307,15 +299,15 @@ public class GraphTransformer extends ChangeRequest {
                                     attributes.get(0)).getIngredientList();
                         }
                     } finally {
-                        replacementEntity.workspace().doneReading();
+                        replacement.workspace().doneReading();
                     }
                 }
                 for (GTIngredient ingredient : ingredientList) {
                     ChangeRequest request;
                     try {
                         request = ((Operation) ingredient).getChangeRequest(
-                                _pattern, _replacement, _matchResult,
-                                patternEntity, replacementEntity, hostEntity);
+                                _pattern, _replacement, _matchResult, pattern,
+                                replacement, host);
                         if (request != null) {
                             request.execute();
                         }
@@ -369,23 +361,26 @@ public class GraphTransformer extends ChangeRequest {
         _removeReplacementObjectAttributes(_replacement);
     }
 
-    private void _addObjects(NamedObj replacement, NamedObj host)
-            throws TransformationException {
+    private void _addObjects(NamedObj replacement, NamedObj host,
+            boolean copyAttributes) throws TransformationException {
         try {
             replacement.workspace().getReadAccess();
-            // Copy attributes for composite entities.
-            if (replacement instanceof CompositeEntity) {
-                for (Object attributeObject : replacement.attributeList()) {
-                    Attribute attribute = (Attribute) attributeObject;
-                    if (!_isAttributeCopied(attribute)) {
-                        continue;
-                    }
 
-                    String moml = "<group name=\"auto\">"
-                        + attribute.exportMoML() + "</group>";
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            host, moml);
-                    request.execute();
+            if (copyAttributes) {
+                // Copy attributes for composite entities.
+                if (replacement instanceof CompositeEntity) {
+                    for (Object attributeObject : replacement.attributeList()) {
+                        Attribute attribute = (Attribute) attributeObject;
+                        if (!_isAttributeCopied(attribute)) {
+                            continue;
+                        }
+
+                        String moml = "<group name=\"auto\">"
+                            + attribute.exportMoML() + "</group>";
+                        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                host, moml);
+                        request.execute();
+                    }
                 }
             }
 
@@ -408,14 +403,14 @@ public class GraphTransformer extends ChangeRequest {
                 }
                 if (moml != null && !moml.equals("")) {
                     moml = "<group name=\"auto\">\n" + moml + "</group>";
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            host, moml);
+                    CreateObjectChangeRequest request =
+                        new CreateObjectChangeRequest(this, host, moml);
                     request.execute();
-                    hostChild = _getNewlyAddedObject(host, child.getClass());
+                    hostChild = request.getCreatedObjects().get(0);
                     _addReplacementToHostEntries(hostChild);
                 }
                 if (hostChild != null) {
-                    _addObjects(child, hostChild);
+                    _addObjects(child, hostChild, false);
                 }
             }
         } finally {
@@ -436,11 +431,10 @@ public class GraphTransformer extends ChangeRequest {
                 String moml = child.exportMoMLPlain();
                 NamedObj host = _findChangeContext(pattern);
                 moml = "<group name=\"auto\">\n" + moml + "</group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        host, moml);
+                CreateObjectChangeRequest request =
+                    new CreateObjectChangeRequest(this, host, moml);
                 request.execute();
-                NamedObj hostChild = _getNewlyAddedObject(host,
-                        child.getClass());
+                NamedObj hostChild = request.getCreatedObjects().get(0);
                 try {
                     GTTools.deepRemoveAttributes(hostChild,
                             MatchingAttribute.class);
@@ -556,44 +550,26 @@ public class GraphTransformer extends ChangeRequest {
         return moml;
     }
 
-    private String _getMoML(NamedObj host) throws TransformationException {
+    private String _getMoML(NamedObj host) {
         if (host instanceof CompositeEntity) {
-            try {
-                CompositeEntity clone = (CompositeEntity) host.clone();
-                clone.removeAllEntities();
-                clone.removeAllRelations();
-                return clone.exportMoMLPlain();
-            } catch (CloneNotSupportedException e) {
-                throw new TransformationException(
-                        "Cannot clone composite entity " + host.getFullName()
-                                + ".", e);
+            CompositeEntity entity = (CompositeEntity) host;
+            Set<NamedObj> objectsChanged = new HashSet<NamedObj>();
+            Collection<?> children = GTTools.getChildren(host, false, false,
+                    true, true);
+            for (Object childObject : children) {
+                NamedObj child = (NamedObj) childObject;
+                if (child.isPersistent()) {
+                    objectsChanged.add(child);
+                    child.setPersistent(false);
+                }
             }
+            String moml = entity.exportMoMLPlain();
+            for (NamedObj child : objectsChanged) {
+                child.setPersistent(true);
+            }
+            return moml;
         } else {
             return host.exportMoMLPlain();
-        }
-    }
-
-    private NamedObj _getNewlyAddedObject(NamedObj container,
-            Class<? extends NamedObj> objectClass) {
-        List<?> objectList;
-        try {
-            container.workspace().getReadAccess();
-            if (Attribute.class.isAssignableFrom(objectClass)) {
-                objectList = container.attributeList();
-            } else if (Entity.class.isAssignableFrom(objectClass)) {
-                objectList = ((CompositeEntity) container).entityList();
-            } else if (Port.class.isAssignableFrom(objectClass)) {
-                objectList = ((Entity) container).portList();
-            } else if (Relation.class.isAssignableFrom(objectClass)) {
-                objectList = ((CompositeEntity) container).relationList();
-            } else {
-                return null;
-            }
-
-            int lastIndex = objectList.size() - 1;
-            return (NamedObj) objectList.get(lastIndex);
-        } finally {
-            container.workspace().doneReading();
         }
     }
 
@@ -862,6 +838,7 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private boolean _relink(Relation preserved, Relation removed) {
         // FIXME: Because we can't find a nice way to preserve the channel index
         // of the ports, the "removed" relation won't be removed if it is
@@ -983,6 +960,7 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private Set<NamedObj> _removeObject(NamedObj object, boolean shallowRemoval)
             throws TransformationException {
         if (shallowRemoval && object instanceof CompositeEntity) {
@@ -1004,10 +982,8 @@ public class GraphTransformer extends ChangeRequest {
                 for (Object portObject : entity.portList()) {
                     ComponentPort port = (ComponentPort) portObject;
                     List<Object> linkedRelations = new LinkedList<Object>();
-                    linkedRelations.addAll(port
-                            .linkedRelationList());
-                    linkedRelations.addAll(port
-                            .insideRelationList());
+                    linkedRelations.addAll(port.linkedRelationList());
+                    linkedRelations.addAll(port.insideRelationList());
                     portLinks.put(port, linkedRelations);
                 }
 
@@ -1024,10 +1000,12 @@ public class GraphTransformer extends ChangeRequest {
                     NamedObj child = (NamedObj) childObject;
                     String moml = "<group name=\"auto\">\n"
                             + child.exportMoMLPlain() + "</group>";
-                    request = new MoMLChangeRequest(this, container, moml);
-                    request.execute();
-                    NamedObj newlyAddedObject = _getNewlyAddedObject(container,
-                            child.getClass());
+                    CreateObjectChangeRequest request2 =
+                        new CreateObjectChangeRequest(this, container, moml);
+                    request2.execute();
+                    //NamedObj newlyAddedObject = _getNewlyAddedObject(container,
+                    //        child.getClass());
+                    NamedObj newlyAddedObject = request2.getCreatedObjects().get(0);
                     _addReplacementToHostEntries(newlyAddedObject);
                     _replaceMatchResultEntries(child, newlyAddedObject);
                     entityMap.put(child, newlyAddedObject);
@@ -1064,11 +1042,12 @@ public class GraphTransformer extends ChangeRequest {
                         + "<relation name=\"relation\" "
                         + "  class=\"ptolemy.actor.TypedIORelation\">"
                         + "</relation>" + "</group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        container, moml);
+                CreateObjectChangeRequest request =
+                    new CreateObjectChangeRequest(this, container, moml);
                 request.execute();
-                Relation newRelation = (Relation) _getNewlyAddedObject(
-                        container, Relation.class);
+                //Relation newRelation = (Relation) _getNewlyAddedObject(
+                //        container, Relation.class);
+                Relation newRelation = (Relation) request.getCreatedObjects().get(0);
 
                 entityMap.put(port, newRelation);
             }
@@ -1289,5 +1268,33 @@ public class GraphTransformer extends ChangeRequest {
     private Replacement _replacement;
 
     private TwoWayHashMap<NamedObj, NamedObj> _replacementToHost;
+
+    private class CreateObjectChangeRequest extends MoMLChangeRequest {
+
+        public CreateObjectChangeRequest(Object originator, NamedObj context,
+                String request) {
+            super(originator, context, request);
+        }
+
+        public List<NamedObj> getCreatedObjects() {
+            return _createdObjects;
+        }
+
+        @SuppressWarnings("unchecked")
+        protected void _postParse(MoMLParser parser) {
+            super._postParse(parser);
+
+            _createdObjects = new LinkedList<NamedObj>(parser
+                    .topObjectsCreated());
+            parser.clearTopObjectsList();
+        }
+
+        protected void _preParse(MoMLParser parser) {
+            super._preParse(parser);
+            parser.clearTopObjectsList();
+        }
+
+        private List<NamedObj> _createdObjects;
+    }
 
 }

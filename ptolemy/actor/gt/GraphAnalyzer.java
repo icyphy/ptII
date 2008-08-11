@@ -166,8 +166,7 @@ public abstract class GraphAnalyzer {
 
         for (Object relationObject : relationList) {
             Relation relation = (Relation) relationObject;
-            if (visitedRelations.contains(relation)
-                    || _ignoreRelation(relation)) {
+            if (visitedRelations.contains(relation)) {
                 i++;
                 continue;
             }
@@ -325,8 +324,7 @@ public abstract class GraphAnalyzer {
                     visitedPorts.remove(port);
                 } else {
                     Relation relation = (Relation) nextObject;
-                    if (visitedRelations.contains(relation)
-                            || _ignoreRelation(relation)) {
+                    if (visitedRelations.contains(relation)) {
                         continue;
                     }
 
@@ -466,28 +464,6 @@ public abstract class GraphAnalyzer {
 
     protected boolean _isIgnored(Object object) {
         return GTTools.isIgnored(object);
-    }
-
-    /** Test whether a relation should be ignored in the matching; return true
-     *  if the given relation is hidden (i.e., has a parameter "_hide" whose
-     *  value is {@link BooleanToken} true).
-     *
-     *  @param relation The relation.
-     *  @return true if the relation should be ignored in the matching; false
-     *   otherwise.
-     */
-    protected boolean _ignoreRelation(Relation relation) {
-        Attribute hideAttribute = relation.getAttribute("_hide");
-        if (hideAttribute != null) {
-            try {
-                BooleanToken token = (BooleanToken) ((Parameter) hideAttribute)
-                .getToken();
-                boolean hide = token.booleanValue();
-                return hide;
-            } catch (IllegalActionException e) {
-            }
-        }
-        return false;
     }
 
     protected abstract boolean _isOpaque(CompositeEntity entity);

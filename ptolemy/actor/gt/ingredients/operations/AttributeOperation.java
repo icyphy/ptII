@@ -41,7 +41,6 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ASTPtSumNode;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -83,8 +82,8 @@ public class AttributeOperation extends Operation {
 
     public ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
-            Entity patternEntity, Entity replacementEntity, Entity hostEntity)
-            throws IllegalActionException {
+            NamedObj patternObject, NamedObj replacementObject,
+            NamedObj hostObject) throws IllegalActionException {
         if (_valueParseTree == null) {
             _reparse();
         }
@@ -93,17 +92,17 @@ public class AttributeOperation extends Operation {
         if (isAttributeClassEnabled()) {
             attributeClass = _attributeClass;
         } else {
-            Attribute oldAttribute = hostEntity.getAttribute(_attributeName);
+            Attribute oldAttribute = hostObject.getAttribute(_attributeName);
             if (oldAttribute == null) {
                 throw new IllegalActionException(
                         "Unable to determine the class" + " of attribute "
-                                + _attributeName + " for entity " + hostEntity
+                                + _attributeName + " for entity " + hostObject
                                 + ".");
             }
             attributeClass = oldAttribute.getClassName();
         }
 
-        ParserScope scope = NamedObjVariable.getNamedObjVariable(hostEntity,
+        ParserScope scope = NamedObjVariable.getNamedObjVariable(hostObject,
                 true).getParserScope();
         GTParameter.Evaluator evaluator = new GTParameter.Evaluator(pattern,
                 matchResult);
@@ -135,7 +134,7 @@ public class AttributeOperation extends Operation {
         String moml = "<property name=\"" + _attributeName + "\" class=\""
                 + attributeClass + "\" value=\""
                 + StringUtilities.escapeForXML(expression) + "\"/>";
-        return new MoMLChangeRequest(this, hostEntity, moml, null);
+        return new MoMLChangeRequest(this, hostObject, moml, null);
     }
 
     public GTIngredientElement[] getElements() {

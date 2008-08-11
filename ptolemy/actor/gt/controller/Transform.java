@@ -36,9 +36,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gt.TransformationMode;
 import ptolemy.actor.gt.TransformationRule;
-import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -74,10 +72,10 @@ public class Transform extends GTEvent implements Configurable {
 
         _transformation = new TransformationRule(configurer, "Transformation");
         TransformationMode helper = new TransformationMode(_transformation,
-        		"_helper");
+                "_helper");
         helper.setPersistent(false);
         _clearURI(_transformation);
-        
+
         mode = new TransformationMode(this, "mode");
     }
 
@@ -105,8 +103,8 @@ public class Transform extends GTEvent implements Configurable {
             _transformation = (TransformationRule) parser.parse(base,
                     new StringReader(text));
             TransformationMode helper = new TransformationMode(
-            		_transformation, "_helper");
-		    helper.setPersistent(false);
+                    _transformation, "_helper");
+            helper.setPersistent(false);
             configurer.removeAllEntities();
             _transformation.setContainer(configurer);
             _clearURI(_transformation);
@@ -114,18 +112,22 @@ public class Transform extends GTEvent implements Configurable {
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
+        if (getName().equals("Compute")) {
+            int i = 0;
+            i++;
+        }
+
         ParserScope scope = _getParserScope(arguments);
         actions.execute(scope);
 
-        CompositeEntity model = (CompositeEntity) _getModelArgument(arguments)
-                .getEntity(new Workspace());
+        CompositeEntity model = _getModelVariable();
         model.setDeferringChangeRequests(false);
-
         boolean matched = mode.transform(mode.getWorkingCopy(_transformation),
-        		model);
+                model);
+        _setModelVariable(model);
+        _setSuccessVariable(matched);
 
-        _scheduleEvents(scope, new ActorToken(model), BooleanToken.getInstance(
-        		matched));
+        _scheduleEvents(scope);
     }
 
     public String getConfigureSource() {
@@ -141,6 +143,8 @@ public class Transform extends GTEvent implements Configurable {
     }
 
     public Configurer configurer;
+
+    public TransformationMode mode;
 
     public static class Configurer extends CompositeActor {
 
@@ -162,8 +166,6 @@ public class Transform extends GTEvent implements Configurable {
 
         private Transform _container;
     }
-    
-    public TransformationMode mode;
 
     protected void _exportMoMLContents(Writer output, int depth)
     throws IOException {

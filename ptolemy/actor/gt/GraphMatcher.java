@@ -161,12 +161,14 @@ public class GraphMatcher extends GraphAnalyzer {
     public boolean match(Pattern pattern, CompositeEntity hostGraph) {
 
         // Matching result.
-        _parameterValues = new SequentialTwoWayHashMap<ValueIterator, Token>();
         _matchResult = new MatchResult(_parameterValues);
 
         // Temporary data structures.
-        _lookbackList = new LookbackList();
-        _temporaryMatch = new MatchResult();
+        _parameterValues.clear();
+        _lookbackList.clear();
+        _temporaryMatch.clear();
+        _ignoredOptionalObjects.clear();
+        _clearCaches();
 
         // Record the values of all the iterators.
         Hashtable<ValueIterator, Token> records =
@@ -179,10 +181,15 @@ public class GraphMatcher extends GraphAnalyzer {
 
         // Initially, we are not checking negated objects.
         _negation = false;
+        _success = false;
 
-        _ignoredOptionalObjects = new HashMap<OptionAttribute, Boolean>();
-
-        _success = _matchChildrenCompositeEntity(pattern, hostGraph);
+        try {
+            _success = _matchCompositeEntityAtAllLevels(pattern, hostGraph);
+        } finally {
+            _parameterValues.clear();
+            _ignoredOptionalObjects.clear();
+            _clearCaches();
+        }
 
         // Restore the values of all the iterators.
         try {
@@ -196,9 +203,6 @@ public class GraphMatcher extends GraphAnalyzer {
         if (!_success) {
             assert _matchResult.isEmpty();
         }
-
-        // Clear temporary data structures to free memory.
-        _lookbackList = null;
 
         return _success;
     }
@@ -296,18 +300,25 @@ public class GraphMatcher extends GraphAnalyzer {
     ////                        protected methods                  ////
 
     protected boolean _isIgnored(Object object) {
-        if (GTTools.isCreated(object) || super._isIgnored(object)) {
+        Boolean ignored = _cachedIgnoredObjects.get(object);
+        if (ignored != null) {
+            return ignored.booleanValue();
+        }
+
+        if (_isCreated(object) || GTTools.isIgnored(object)) {
             return true;
         }
-        OptionAttribute optionAttribute =
-            (OptionAttribute) GTTools.findMatchingAttribute(object,
-                    OptionAttribute.class, true);
-        if (optionAttribute != null
-                && _ignoredOptionalObjects.containsKey(optionAttribute)
-                && _ignoredOptionalObjects.get(optionAttribute)) {
-            return true;
+        boolean optional = _isOptional(object);
+        boolean result;
+        if (optional && _ignoredOptionalObjects.containsKey(object)
+                && _ignoredOptionalObjects.get(object)) {
+            result = true;
+        } else {
+            result = false;
         }
-        return false;
+
+        _cachedIgnoredObjects.put(object, result);
+        return result;
     }
 
     /** Test whether the composite entity is opaque or not. Return <tt>true</tt>
@@ -350,9 +361,6 @@ public class GraphMatcher extends GraphAnalyzer {
             return ((BooleanToken) collapsingToken).booleanValue();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     /** Check the items in the lookback list for more matching requirements. If
      *  no more requirements are found (i.e., all the lists in the lookback list
@@ -450,14 +458,53 @@ public class GraphMatcher extends GraphAnalyzer {
         return true;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     private static boolean _checkCriterion(NamedObj patternObject,
             NamedObj hostObject) {
-        Criterion criterion = _getCheckableCriterion(patternObject);
-        if (criterion == null) {
-            return true;
+        GTIngredientList ruleList = null;
+        if (patternObject instanceof GTEntity) {
+            try {
+                ruleList = ((GTEntity) patternObject).getCriteriaAttribute()
+                        .getIngredientList();
+            } catch (MalformedStringException e) {
+                return false;
+            }
         } else {
-            return criterion.match(hostObject);
+            List<?> attributeList = patternObject.attributeList(
+                    GTIngredientsAttribute.class);
+            if (!attributeList.isEmpty()) {
+                try {
+                    ruleList = ((GTIngredientsAttribute) attributeList.get(
+                            0)).getIngredientList();
+                } catch (MalformedStringException e) {
+                    return false;
+                }
+            }
         }
+
+        if (ruleList != null) {
+            for (GTIngredient rule : ruleList) {
+                if (rule instanceof Criterion) {
+                    Criterion criterion = (Criterion) rule;
+                    if (criterion.canCheck(hostObject)) {
+                        if (!((Criterion) rule).match(hostObject)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private void _clearCaches() {
+        _cachedCreatedObjects.clear();
+        _cachedIgnoredObjects.clear();
+        _cachedNegatedObjects.clear();
+        _cachedOptionalObjects.clear();
     }
 
     private Token _getAttribute(NamedObj container,
@@ -502,7 +549,7 @@ public class GraphMatcher extends GraphAnalyzer {
         return null;
     }
 
-    private static Criterion _getCheckableCriterion(NamedObj patternObject) {
+    private static Criterion _getDefiningCriterion(NamedObj patternObject) {
         if (patternObject instanceof Checkable) {
             return ((Checkable) patternObject).getCriterion();
         } else {
@@ -521,6 +568,39 @@ public class GraphMatcher extends GraphAnalyzer {
     private static String _getNameString(Object object) {
         return object instanceof NamedObj ? ((NamedObj) object).getFullName()
                 : object.toString();
+    }
+
+    private boolean _isCreated(Object object) {
+        Boolean created = _cachedCreatedObjects.get(object);
+        if (created != null) {
+            return created.booleanValue();
+        }
+
+        created = GTTools.isCreated(object);
+        _cachedCreatedObjects.put(object, created);
+        return created;
+    }
+
+    private boolean _isNegated(Object object) {
+        Boolean negated = _cachedNegatedObjects.get(object);
+        if (negated != null) {
+            return negated.booleanValue();
+        }
+
+        negated = GTTools.isNegated(object);
+        _cachedNegatedObjects.put(object, negated);
+        return negated;
+    }
+
+    private boolean _isOptional(Object object) {
+        Boolean optional = _cachedOptionalObjects.get(object);
+        if (optional != null) {
+            return optional.booleanValue();
+        }
+
+        optional = GTTools.isOptional(object);
+        _cachedOptionalObjects.put(object, optional);
+        return optional;
     }
 
     private boolean _matchAtomicEntity(ComponentEntity patternEntity,
@@ -545,43 +625,6 @@ public class GraphMatcher extends GraphAnalyzer {
             success = patternEntity.getClass().isInstance(hostEntity);
         }
 
-        GTIngredientList ruleList = null;
-        if (success) {
-            if (patternEntity instanceof GTEntity) {
-                try {
-                    ruleList = ((GTEntity) patternEntity).getCriteriaAttribute()
-                            .getIngredientList();
-                } catch (MalformedStringException e) {
-                    success = false;
-                }
-            } else {
-                List<?> attributeList = patternEntity.attributeList(
-                        GTIngredientsAttribute.class);
-                if (!attributeList.isEmpty()) {
-                    try {
-                        ruleList = ((GTIngredientsAttribute) attributeList.get(
-                                0)).getIngredientList();
-                    } catch (MalformedStringException e) {
-                        success = false;
-                    }
-                }
-            }
-        }
-
-        if (success && ruleList != null) {
-            for (GTIngredient rule : ruleList) {
-                if (rule instanceof Criterion) {
-                    Criterion criterion = (Criterion) rule;
-                    if (criterion.canCheck(hostEntity)) {
-                        success = ((Criterion) rule).match(hostEntity);
-                        if (!success) {
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
         if (success) {
             for (Object portObject : patternEntity.portList()) {
                 if (!_isIgnored(portObject)) {
@@ -602,45 +645,6 @@ public class GraphMatcher extends GraphAnalyzer {
         }
 
         return success;
-    }
-
-    private boolean _matchChildrenCompositeEntity(
-            CompositeEntity patternEntity, CompositeEntity hostEntity) {
-        ObjectList patternList = new ObjectList();
-        if (!_isIgnored(patternEntity)) {
-            patternList.add(patternEntity);
-        }
-        ObjectList hostList = new ObjectList();
-        if (!_isIgnored(hostEntity)) {
-            hostList.add(hostEntity);
-        }
-        IndexedLists markedList = new IndexedLists();
-        boolean added = true;
-        int i = 0;
-        ObjectList.Entry entry = hostList.getHead();
-
-        while (added) {
-            added = false;
-            int size = hostList.size();
-            for (; i < size; i++) {
-                markedList.clear();
-                hostEntity = (CompositeEntity) entry.getValue();
-
-                NamedObj nextChild = findFirstChild(hostEntity, markedList,
-                        _matchResult.keySet());
-                while (nextChild != null) {
-                    if (nextChild instanceof CompositeEntity) {
-                        hostList.add(nextChild);
-                        added = true;
-                    }
-                    nextChild = findNextChild(hostEntity, markedList,
-                            _matchResult.keySet());
-                }
-                entry = entry.getNext();
-            }
-        }
-
-        return _matchObject(patternList, hostList);
     }
 
     private boolean _matchCompositeEntity(CompositeEntity patternEntity,
@@ -744,6 +748,45 @@ public class GraphMatcher extends GraphAnalyzer {
         return success;
     }
 
+    private boolean _matchCompositeEntityAtAllLevels(
+            CompositeEntity patternEntity, CompositeEntity hostEntity) {
+        ObjectList patternList = new ObjectList();
+        if (!_isIgnored(patternEntity)) {
+            patternList.add(patternEntity);
+        }
+        ObjectList hostList = new ObjectList();
+        if (!_isIgnored(hostEntity)) {
+            hostList.add(hostEntity);
+        }
+        IndexedLists markedList = new IndexedLists();
+        boolean added = true;
+        int i = 0;
+        ObjectList.Entry entry = hostList.getHead();
+
+        while (added) {
+            added = false;
+            int size = hostList.size();
+            for (; i < size; i++) {
+                markedList.clear();
+                hostEntity = (CompositeEntity) entry.getValue();
+
+                NamedObj nextChild = findFirstChild(hostEntity, markedList,
+                        _matchResult.keySet());
+                while (nextChild != null) {
+                    if (nextChild instanceof CompositeEntity) {
+                        hostList.add(nextChild);
+                        added = true;
+                    }
+                    nextChild = findNextChild(hostEntity, markedList,
+                            _matchResult.keySet());
+                }
+                entry = entry.getNext();
+            }
+        }
+
+        return _matchObject(patternList, hostList);
+    }
+
     private boolean _matchList(LookbackEntry matchedObjectLists) {
         ObjectList patternList = matchedObjectLists.getPatternList();
         ObjectList hostList = matchedObjectLists.getHostList();
@@ -764,26 +807,25 @@ public class GraphMatcher extends GraphAnalyzer {
         Object patternObject = null;
         while (patternEntry != null) {
             patternObject = patternEntry.getValue();
-            if (_negation == GTTools.isNegated(patternObject)
+            if (_negation == _isNegated(patternObject)
                     && !_isIgnored(patternObject)) {
                 break;
             }
             patternEntry = patternEntry.getNext();
         }
 
-        OptionAttribute optionAttribute = null;
+        boolean optional = false;
 
         if (patternEntry != null) {
             ObjectList.Entry previous = patternEntry.getPrevious();
             patternEntry.remove();
 
-            optionAttribute = (OptionAttribute) GTTools.findMatchingAttribute(
-                    patternObject, OptionAttribute.class, true);
-            if (optionAttribute != null && !_ignoredOptionalObjects.containsKey(
-                    optionAttribute)) {
-                _ignoredOptionalObjects.put(optionAttribute, false);
+            optional = _isOptional(patternObject);
+            if (optional && !_ignoredOptionalObjects.containsKey(
+                    patternObject)) {
+                _ignoredOptionalObjects.put(patternObject, false);
             } else {
-                optionAttribute = null;
+                optional = false;
             }
 
             patternChildChecked = true;
@@ -823,11 +865,11 @@ public class GraphMatcher extends GraphAnalyzer {
         }
 
         if (success == _negation) {
-            if (!success || optionAttribute != null) {
-            _matchResult.retain(matchSize);
+            if (!success || optional) {
+                _matchResult.retain(matchSize);
             }
-            if (optionAttribute != null) {
-                _ignoredOptionalObjects.put(optionAttribute, true);
+            if (optional) {
+                _ignoredOptionalObjects.put(patternObject, true);
                 ObjectList.Entry previous = patternEntry.getPrevious();
                 patternEntry.remove();
                 success = _checkBackward();
@@ -839,8 +881,8 @@ public class GraphMatcher extends GraphAnalyzer {
             lookbackTail.remove();
         }
 
-        if (optionAttribute != null) {
-            _ignoredOptionalObjects.remove(optionAttribute);
+        if (optional) {
+            _ignoredOptionalObjects.remove(patternObject);
         }
 
         return success;
@@ -990,15 +1032,13 @@ public class GraphMatcher extends GraphAnalyzer {
             } else {
                 for (Object relationObject : patternPort.linkedRelationList()) {
                     Relation relation = (Relation) relationObject;
-                    if (!_isIgnored(relation)
-                            && !_ignoreRelation(relation)) {
+                    if (!_isIgnored(relation)) {
                         patternList.add(relation);
                     }
                 }
                 for (Object relationObject : hostPort.linkedRelationList()) {
                     Relation relation = (Relation) relationObject;
-                    if (!_isIgnored(relation)
-                            && !_ignoreRelation(relation)) {
+                    if (!_isIgnored(relation)) {
                         hostList.add(relation);
                     }
                 }
@@ -1108,7 +1148,7 @@ public class GraphMatcher extends GraphAnalyzer {
             if (hostPort instanceof IOPort) {
                 IOPort patternIOPort = (IOPort) patternPort;
                 IOPort hostIOPort = (IOPort) hostPort;
-                Criterion criterion = _getCheckableCriterion(patternIOPort);
+                Criterion criterion = _getDefiningCriterion(patternIOPort);
                 if (criterion == null) {
                     boolean isInputEqual =
                         patternIOPort.isInput() == hostIOPort.isInput();
@@ -1185,16 +1225,29 @@ public class GraphMatcher extends GraphAnalyzer {
         return true;
     }
 
-    private MatchCallback _callback = DEFAULT_CALLBACK;
+    private Map<Object, Boolean> _cachedCreatedObjects =
+        new HashMap<Object, Boolean>();
+
+    private Map<Object, Boolean> _cachedIgnoredObjects =
+        new HashMap<Object, Boolean>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
+    private Map<Object, Boolean> _cachedNegatedObjects =
+        new HashMap<Object, Boolean>();
+
+    private Map<Object, Boolean> _cachedOptionalObjects =
+        new HashMap<Object, Boolean>();
+
+    private MatchCallback _callback = DEFAULT_CALLBACK;
+
     private static final NameComparator _comparator = new NameComparator();
 
-    private Map<OptionAttribute, Boolean> _ignoredOptionalObjects;
+    private Map<Object, Boolean> _ignoredOptionalObjects =
+        new HashMap<Object, Boolean>();
 
-    private LookbackList _lookbackList;
+    private LookbackList _lookbackList = new LookbackList();
 
     /** The map that matches objects in the pattern to the objects in the host.
      *  These objects include actors, ports, relations, etc.
@@ -1203,14 +1256,15 @@ public class GraphMatcher extends GraphAnalyzer {
 
     private boolean _negation = false;
 
-    private SequentialTwoWayHashMap<ValueIterator, Token> _parameterValues;
+    private SequentialTwoWayHashMap<ValueIterator, Token> _parameterValues =
+        new SequentialTwoWayHashMap<ValueIterator, Token>();
 
     /** The variable that indicates whether the last match operation is
      *  successful. (See {@link #match(CompositeActorMatcher, NamedObj)})
      */
     private boolean _success = false;
 
-    private MatchResult _temporaryMatch;
+    private MatchResult _temporaryMatch = new MatchResult();
 
     ///////////////////////////////////////////////////////////////////
     ////                      private inner classes                ////
@@ -1325,6 +1379,7 @@ public class GraphMatcher extends GraphAnalyzer {
                     ValueIterator iterator = iterators.previous();
                     _parameterValues.removeLast();
                     try {
+                        _clearCaches();
                         Token next = iterator.next();
                         _parameterValues.put(iterator, next);
                         terminate = false;

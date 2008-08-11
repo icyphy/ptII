@@ -4,7 +4,7 @@
 <entity name="HierarchyFlattening" class="ptolemy.actor.gt.TransformationRule">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={257, 131, 797, 685}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={301, 182, 797, 685}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[569, 543]">
     </property>
@@ -217,7 +217,7 @@ perform hierarchy flattening on it.</text></svg></configure>
             </property>
         </property>
         <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, -160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, -150.0]">
             </property>
         </entity>
     </entity>

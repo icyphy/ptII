@@ -41,9 +41,9 @@ import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParseTreeWriter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParserTreeConstants;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 /**
 
@@ -72,8 +72,8 @@ public abstract class Operation extends GTIngredient {
 
     public abstract ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
-            Entity patternEntity, Entity replacementEntity, Entity hostEntity)
-            throws IllegalActionException;
+            NamedObj patternObject, NamedObj replacementObject,
+            NamedObj hostObject) throws IllegalActionException;
 
     protected ASTPtLeafNode _evaluate(ASTPtRootNode node,
             ParseTreeEvaluator evaluator, ParserScope scope)

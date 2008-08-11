@@ -1,4 +1,5 @@
-/*  This actor opens a window to display the specified model and applies its inputs to the model.
+/* This actor opens a window to display the specified model and applies its
+inputs to the model.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -35,6 +36,7 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.StringWriter;
 import java.net.URI;
 
 import javax.swing.JFrame;
@@ -43,14 +45,17 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -59,6 +64,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.gt.GTFrameTools;
 
@@ -103,13 +109,13 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
         title.setStringMode(true);
         title.setExpression("");
 
-        Parameter NONE = new Parameter(this, "NONE");
-        NONE.setToken("{x=-1, y=-1}");
-        NONE.setVisibility(Settable.EXPERT);
-
         screenLocation = new Parameter(this, "screenLocation");
-        screenLocation.setTypeAtMost(LocationType.LOCATION);
-        screenLocation.setToken("NONE");
+        screenLocation.setTypeEquals(BaseType.INT_MATRIX);
+        screenLocation.setToken("[-1, -1]");
+
+        screenSize = new Parameter(this, "screenSize");
+        screenSize.setTypeEquals(BaseType.INT_MATRIX);
+        screenSize.setToken("[-1, -1]");
 
         reopenWindow = new Parameter(this, "reopenWindow");
         reopenWindow.setTypeEquals(BaseType.BOOLEAN);
@@ -133,11 +139,43 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
             if (input.hasToken(i)) {
                 synchronized (this) {
                     ActorToken token = (ActorToken) input.get(i);
-                    Entity model = token.getEntity(new Workspace());
+                    // Sometimes the model cannot be shown correctly if it is
+                    // not reparsed.
+                    // Entity model = token.getEntity(new Workspace());
+                    MoMLParser parser = new MoMLParser(new Workspace());
+                    Entity model;
+                    try {
+                        StringWriter writer = new StringWriter();
+                        token.getMoML(writer);
+                        model = (Entity) parser.parse(writer.getBuffer()
+                                .toString());
+                    } catch (Exception e) {
+                        throw new IllegalActionException(this, e,
+                                "Unable to reparse model.");
+                    }
+
                     Effigy effigy = Configuration.findEffigy(toplevel());
                     Configuration configuration = (Configuration) effigy
                             .toplevel();
                     try {
+                        // Compute size of the new frame.
+                        IntMatrixToken size = (IntMatrixToken) screenSize
+                                .getToken();
+                        int width = size.getElementAt(0, 0);
+                        int height = size.getElementAt(0, 1);
+                        Dimension newSize = null;
+                        if (width >= 0 && height >= 0) {
+                            newSize = new Dimension(width, height);
+                            SizeAttribute sizeAttribute =
+                                (SizeAttribute) model.getAttribute(
+                                        "_vergilSize", SizeAttribute.class);
+                            if (sizeAttribute == null) {
+                                sizeAttribute = new SizeAttribute(model,
+                                        "_vergilSize");
+                            }
+                            sizeAttribute.setExpression("[" + newSize.width + ", " + newSize.height + "]");
+                        }
+
                         Tableau tableau = _tableaus[i];
                         boolean reopen = ((BooleanToken) reopenWindow
                                 .getToken()).booleanValue();
@@ -160,27 +198,31 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
 
                         if (!modelChanged) {
                             JFrame frame = tableau.getFrame();
+
                             // Compute location of the new frame.
-                            RecordToken location =
-                                (RecordToken) screenLocation.getToken();
-                            int x = ((IntToken) location.get("x")).intValue();
-                            int y = ((IntToken) location.get("y")).intValue();
-                            Point newLocation = frame.getLocation();
-                            if (x >= 0) {
-                                newLocation.x = x;
+                            IntMatrixToken location =
+                                (IntMatrixToken) screenLocation.getToken();
+                            int x = location.getElementAt(0, 0);
+                            int y = location.getElementAt(0, 1);
+                            Point newLocation;
+                            if (x >= 0 && y >= 0) {
+                                newLocation = new Point(x, y);
+                            } else {
+                                newLocation = frame.getLocation();
                             }
-                            if (y >= 0) {
-                                newLocation.y = y;
+
+                            if (newSize == null) {
+                                newSize = frame.getSize();
                             }
+
                             // Move the frame to the edge if it exceeds the
                             // screen.
-                            Dimension size = frame.getSize();
                             Toolkit toolkit = Toolkit.getDefaultToolkit();
                             Dimension screenSize = toolkit.getScreenSize();
                             newLocation.x = Math.min(newLocation.x,
-                                    screenSize.width - size.width);
+                                    screenSize.width - newSize.width);
                             newLocation.y = Math.min(newLocation.y,
-                                    screenSize.height - size.height);
+                                    screenSize.height - newSize.height);
                             frame.setLocation(newLocation);
                             frame.addWindowListener(this);
                         }
@@ -269,6 +311,8 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
     public Parameter reopenWindow;
 
     public Parameter screenLocation;
+
+    public Parameter screenSize;
 
     public PortParameter title;
 

@@ -28,7 +28,6 @@
 package ptolemy.actor.gt.controller;
 
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ParserScope;
@@ -78,8 +77,14 @@ public class InitEvent extends GTEvent {
     public void fire(ArrayToken arguments) throws IllegalActionException {
         ParserScope scope = _getParserScope(arguments);
         actions.execute(scope);
-
-        _scheduleEvents(scope, new ActorToken(_emptyModel), BooleanToken.TRUE);
+        try {
+            _setModelVariable((CompositeEntity) _emptyModel.clone(
+                    new Workspace()));
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalActionException("Unable to clone an empty model.");
+        }
+        _setSuccessVariable(true);
+        _scheduleEvents(scope);
     }
 
     public StringParameter modelName;

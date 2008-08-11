@@ -29,6 +29,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.gt;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Set;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -192,9 +194,6 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
         GTEntityUtils.updateAppearance(this, attribute);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public fields                     ////
-
     /** React to the fact that the specified Settable has changed.
      *
      *  @param settable The object that has changed value.
@@ -203,6 +202,9 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
     public void valueChanged(Settable settable) {
         GTEntityUtils.valueChanged(this, settable);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
 
     /** The attribute containing all the criteria in a list
      *  ({@link GTIngredientList}).
@@ -218,13 +220,19 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      */
     public GTIngredientsAttribute operations;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
-
     /** The attribute that specifies the name of the corresponding entity in the
      *  pattern.
      */
     public PatternObjectAttribute patternObject;
+
+    protected void _exportMoMLContents(Writer output, int depth)
+    throws IOException {
+        super._exportMoMLContents(output, depth);
+        GTEntityUtils.exportExtraProperties(this, output, depth);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
 
     /** The default icon description.
      */

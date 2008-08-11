@@ -289,12 +289,12 @@ public class GTTools {
 
     public static boolean isCreated(Object object) {
         return findMatchingAttribute(object, CreationAttribute.class, true)
-        		!= null;
+                != null;
     }
 
     public static boolean isIgnored(Object object) {
         return findMatchingAttribute(object, IgnoringAttribute.class, true)
-        		!= null;
+                != null;
     }
 
     public static boolean isInPattern(NamedObj entity) {
@@ -311,12 +311,12 @@ public class GTTools {
 
     public static boolean isNegated(Object object) {
         return findMatchingAttribute(object, NegationAttribute.class, true)
-        		!= null;
+                != null;
     }
 
     public static boolean isOptional(Object object) {
         return findMatchingAttribute(object, OptionAttribute.class, false)
-        		!= null;
+                != null;
     }
 
     public static boolean isPreserved(Object object) {

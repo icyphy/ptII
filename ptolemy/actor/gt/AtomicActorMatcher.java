@@ -30,6 +30,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.gt;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -219,9 +221,6 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
         GTEntityUtils.updateAppearance(this, attribute);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public fields                     ////
-
     /** React to the fact that the specified Settable has changed.
      *
      *  @param settable The object that has changed value.
@@ -230,6 +229,9 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
     public void valueChanged(Settable settable) {
         GTEntityUtils.valueChanged(this, settable);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
 
     /** The attribute containing all the criteria in a list
      *  ({@link GTIngredientList}).
@@ -245,13 +247,19 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      */
     public GTIngredientsAttribute operations;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
-
     /** The attribute that specifies the name of the corresponding entity in the
      *  pattern.
      */
     public PatternObjectAttribute patternObject;
+
+    protected void _exportMoMLContents(Writer output, int depth)
+    throws IOException {
+		super._exportMoMLContents(output, depth);
+		GTEntityUtils.exportExtraProperties(this, output, depth);
+	}
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
 
     /** The default icon description.
      */

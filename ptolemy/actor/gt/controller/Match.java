@@ -52,7 +52,7 @@ public class Match extends Transform {
         super(container, name);
 
         _transformation.mode.setExpression(TransformationMode.Mode.MATCH_ONLY
-        		.toString());
+                .toString());
         mode.setExpression(TransformationMode.Mode.MATCH_ONLY.toString());
         mode.setVisibility(Settable.NONE);
     }

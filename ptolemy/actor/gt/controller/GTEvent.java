@@ -27,17 +27,11 @@
 */
 package ptolemy.actor.gt.controller;
 
-import java.util.List;
-
-import ptolemy.data.ActorToken;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.ParserScope;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.erg.kernel.ERGController;
-import ptolemy.domains.erg.kernel.ERGDirector;
 import ptolemy.domains.erg.kernel.Event;
-import ptolemy.domains.erg.kernel.SchedulingRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -66,73 +60,57 @@ public class GTEvent extends Event {
         isFinalState.setVisibility(Settable.NONE);
     }
 
-    protected BooleanToken _getMatchArgument(ArrayToken arguments)
+    protected CompositeEntity _getModelVariable()
     throws IllegalActionException {
-        int length = parameters.getParameterNames().size();
-        if (arguments.length() > length + 1) {
-            return (BooleanToken) arguments.getElement(length + 1);
-        } else {
-            return null;
+        ActorParameter actorParameter = _getActorParameter();
+        ObjectToken token = (ObjectToken) actorParameter.getToken();
+        try {
+            CompositeEntity entity = (CompositeEntity) token.getValue();
+            return entity;
+        } catch (ClassCastException e) {
+            throw new IllegalActionException("The object stored in the " +
+                    "HostModel parameter must be an instanceof " +
+                    "CompositeEntity.");
         }
     }
 
-    protected ActorToken _getModelArgument(ArrayToken arguments)
+    protected boolean _getSuccessVariable() throws IllegalActionException {
+        Parameter parameter = _getPatternMatchedParameter();
+        return ((BooleanToken) parameter.getToken()).booleanValue();
+    }
+
+    protected void _setModelVariable(CompositeEntity entity)
     throws IllegalActionException {
-        int length = parameters.getParameterNames().size();
-        if (arguments.length() > length) {
-            return (ActorToken) arguments.getElement(length);
-        } else {
-            return null;
-        }
+        ActorParameter actorParameter = _getActorParameter();
+        actorParameter.setToken(new ObjectToken(entity, CompositeEntity.class));
     }
 
-    protected ArrayToken _getOutputArguments(ArrayToken arguments,
-            ActorToken modelToken, BooleanToken matchToken)
-            throws IllegalActionException {
-        int length = parameters.getParameterNames().size();
-        int newLength = length;
-        if (matchToken != null) {
-            newLength += 2;
-        } else if (modelToken != null) {
-            newLength ++;
-        }
-        Token[] tokens = new Token[newLength];
-        System.arraycopy(arguments.arrayValue(), 0, tokens, 0, length);
-        if (matchToken != null) {
-            tokens[length++] = modelToken;
-            tokens[length++] = matchToken;
-        } else if (modelToken != null) {
-            tokens[length++] = modelToken;
-        }
-        return new ArrayToken(tokens);
+    protected void _setSuccessVariable(boolean patternMatched)
+    throws IllegalActionException {
+        Parameter parameter = _getPatternMatchedParameter();
+        parameter.setToken(BooleanToken.getInstance(patternMatched));
     }
 
-    protected void _scheduleEvents(ParserScope scope, ActorToken modelToken,
-            BooleanToken matchToken) throws IllegalActionException {
+    private ActorParameter _getActorParameter() throws IllegalActionException {
         ERGController controller = (ERGController) getContainer();
-        ERGDirector director = controller.director;
-
-        List<?>[] schedulesArray = new List<?>[2];
-        schedulesArray[0] = preemptiveTransitionList();
-        schedulesArray[1] = nonpreemptiveTransitionList();
-        for (List<?> schedules : schedulesArray) {
-            for (Object scheduleObject : schedules) {
-                SchedulingRelation schedule =
-                    (SchedulingRelation) scheduleObject;
-                if (schedule.isEnabled(scope)) {
-                    double delay = schedule.getDelay(scope);
-                    Event nextEvent = (Event) schedule.destinationState();
-                    if (schedule.isCanceling()) {
-                        director.cancel(nextEvent);
-                    } else {
-                        ArrayToken edgeArguments = schedule.getArguments(scope);
-                        ArrayToken outputArguments = _getOutputArguments(
-                                edgeArguments, modelToken, matchToken);
-                        director.fireAt(nextEvent, director.getModelTime().add(
-                                delay), outputArguments);
-                    }
-                }
-            }
+        ActorParameter actorParameter = (ActorParameter) controller
+                .getAttribute("HostModel", ActorParameter.class);
+        if (actorParameter == null) {
+            throw new IllegalActionException("Unable to find the HostModel " +
+                    "parameter in the ERG controller of type ActorParameter.");
         }
+        return actorParameter;
+    }
+
+    private Parameter _getPatternMatchedParameter()
+    throws IllegalActionException {
+        ERGController controller = (ERGController) getContainer();
+        Parameter parameter = (Parameter) controller.getAttribute(
+                "PatternMatched", Parameter.class);
+        if (parameter == null) {
+            throw new IllegalActionException("Unable to find the " +
+                    "PatternMatched parameter in the ERG controller.");
+        }
+        return parameter;
     }
 }
