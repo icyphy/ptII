@@ -1406,7 +1406,6 @@ Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-verbose,	configure prints verbose msgs
-  --enable-eclipse-plugins,	Use eclipse plugins for backtracking and others
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -5251,33 +5250,19 @@ PTBACKTRACK_DIR=backtrack
 # PTBACKTRACK_ECLIPSE_DIR is set to eclipse and used in
 # $PTII/ptolemy/backtrack/makefile if Eclipse was found
 # and the jar files were found
-PTBACKTRACK_ECLIPSE_DIR=
+urePTBACKTRACK_ECLIPSE_DIR=
 
 # Jar files used by ptolemy/backtrack/eclipse
 PTBACKTRACK_ECLIPSE_JARS=
+
+# Default to looking for Eclipse
+PTECLIPSE_PLUGINS=yes
 
 eclipseMessage="The backtracking facility requires Eclipse 3.2 or greater.
     You need not download Eclipse unless you plan on using the backtracking
     facility in ptolemy.backtrack.
     Eclipse may be downloaded from http://www.eclipse.org/"
 
-# If configure is called with --disable-eclipse, don't include backtrack/eclipse and
-# ptolemy/apps/eclipse. This can happen if the user has eclipse but does not have
-# plugins
-# Check whether --enable-eclipse was given.
-if test "${enable_eclipse+set}" = set; then
-  enableval=$enable_eclipse; PTECLIPSE_PLUGINS=yes
-else
-  PTECLIPSE_PLUGINS=no
-fi
-
-
-if test $PTECLIPSE_PLUGINS = "no"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/apps/eclipse/"
-fi
-
-if test $PTECLIPSE_PLUGINS = "yes"; then
-# We only need to look for Eclipse if $PTII/ptolemy/backtrack/eclipse exists
 if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
     if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $PTII/ptolemy/backtrack/eclipse is not present,
     so we need not find Eclipse." >&5
@@ -5314,20 +5299,27 @@ else
 fi
 
 
-        if test ! -d "$ECLIPSE_DIR"; then
-            { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse in $ECLIPSE_DIR" >&5
+        if test "$ECLIPSE_DIR" = "no"; then
+	    { echo "$as_me:$LINENO: WARNING: configure called with --without-eclipse-plugins,
+   not building in ptolemy/apps/eclipse and ptolemy/backtrack." >&5
+echo "$as_me: WARNING: configure called with --without-eclipse-plugins,
+   not building in ptolemy/apps/eclipse and ptolemy/backtrack." >&2;}
+           ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/apps/eclipse/"
+        else
+	    if test ! -d "$ECLIPSE_DIR"; then
+                { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse in $ECLIPSE_DIR" >&5
 echo "$as_me: WARNING: Failed to find Eclipse in $ECLIPSE_DIR" >&2;}
-            { echo "$as_me:$LINENO: checking for $PTII/vendors/eclipse" >&5
+                { echo "$as_me:$LINENO: checking for $PTII/vendors/eclipse" >&5
 echo $ECHO_N "checking for $PTII/vendors/eclipse... $ECHO_C" >&6; }
-            if test -d  "$PTII/vendors/eclipse"; then
-	        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+                if test -d  "$PTII/vendors/eclipse"; then
+	            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; fi
-	        ECLIPSE_DIR="$PTII/vendors/eclipse"
-            else
-	        { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse in $PTII/vendors/eclipse" >&5
+	            ECLIPSE_DIR="$PTII/vendors/eclipse"
+                else
+	            { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse in $PTII/vendors/eclipse" >&5
 echo "$as_me: WARNING: Failed to find Eclipse in $PTII/vendors/eclipse" >&2;}
-                # Extract the first word of "eclipse", so it can be a program name with args.
+                    # Extract the first word of "eclipse", so it can be a program name with args.
 set dummy eclipse; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
@@ -5367,11 +5359,12 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
-                if test "${PTECLIPSE:-none}" != "none"; then
-            # Remove /cygdrive
-	        ECLIPSE_DIR=`dirname $PTECLIPSE | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`
-	        fi
-            fi
+                    if test "${PTECLIPSE:-none}" != "none"; then
+                 # Remove /cygdrive
+	                ECLIPSE_DIR=`dirname $PTECLIPSE | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`
+	             fi
+	         fi
+             fi
         fi
         if test -d "$ECLIPSE_DIR"; then
 	    if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
@@ -5501,7 +5494,9 @@ echo "$as_me: WARNING: Failed to compile config/EclipseITreeSelection.java with
 	        cd "$startdir"
              fi
         fi
-        if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
+
+
+        if test "$ECLIPSE_DIR" != "no" -a "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
             { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse
     perhaps Eclipse is not installed?
     $eclipseMessage" >&5
@@ -5511,7 +5506,6 @@ echo "$as_me: WARNING: Failed to find Eclipse
 	    PTBACKTRACK_ECLIPSE_JARS=
         fi
     fi
-fi
 fi
 
 if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
