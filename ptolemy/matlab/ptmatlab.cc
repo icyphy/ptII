@@ -394,7 +394,7 @@ extern "C"
     jsize nfields = jni->GetArrayLength(fieldNames);
     // MSVC can't deal with variable length arrays
     //char *names[nfields];
-    char **names = (char **)malloc(nfields * sizeof(char));
+    char **names = (char **)malloc(nfields * sizeof(char *));
     for (i = 0; i < nfields; i++) {
       names[i] = (char*) jni->GetStringUTFChars((jstring)jni->GetObjectArrayElement(fieldNames,i),0);
       if (debug > 1) printf(" %s", names[i]);
