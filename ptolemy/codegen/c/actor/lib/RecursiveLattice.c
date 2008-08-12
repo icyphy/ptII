@@ -1,5 +1,5 @@
 /*** preinitBlock ***/
-    $this.preinitOrderBlock();
+    $this.preinitOrderBlock()
     double $actorSymbol(_forward)[$actorSymbol(_order) + 1];
     double $actorSymbol(_backward)[$actorSymbol(_order) + 1];
     double $actorSymbol(_forwardCache)[$actorSymbol(_order) + 1];
@@ -17,7 +17,7 @@
 /**/
 
 /*** sharedArrayCopyBlock ***/
-    $super.arraycopyBlock(double);
+    $super.arraycopyBlock(double)
 /**/
 
 
@@ -56,7 +56,7 @@
 /**/
 
 /*** fireBlock ***/
-$this.fireBlock (\$actorSymbol(_order), 0);
+$this.fireBlock($actorSymbol(_order), 0)
 /**/
 
 /*** initReflectionCoefsBlock ***/
@@ -68,7 +68,7 @@ $this.fireBlock (\$actorSymbol(_order), 0);
 /**/
 
 /*** initBlock ***/
-    $this.initReflectionCoefsBlock();
+    $this.initReflectionCoefsBlock()
     for ($actorClass(i) = 0; $actorClass(i) < ($actorSymbol(_order) + 1); $actorClass(i)++) {
         $actorSymbol(_forward)[$actorClass(i)] = 0.0;
         $actorSymbol(_backward)[$actorClass(i)] = 0.0;

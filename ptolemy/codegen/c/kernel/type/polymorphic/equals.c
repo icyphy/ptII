@@ -91,8 +91,8 @@ boolean equals_Int_Array(int a1, Token a2) {
 /**/
 
 /*** equals_Int_Boolean() ***/
-boolean equals_Int_Boolean(int a1, boolean a2) {
-    return (!a1 == !a2);
+inline boolean equals_Int_Boolean(int a1, boolean a2) {
+    return $equals_String_Int(a2, a1);
 }
 /**/
 
@@ -104,9 +104,7 @@ inline boolean equals_Int_Int(int a1, int a2) {
 
 /*** equals_Int_String() ***/
 boolean equals_Int_String(int a1, char* a2) {
-    char* string = (char*) malloc(sizeof(char) * (12 + strlen(a2)));
-    sprintf((char*) string, "%d%s", a1, a2);
-    return string;
+    return a1 == atoi(a2);
 }
 /**/
 
@@ -144,33 +142,26 @@ boolean equals_Long_Token(long long a1, Token a2) {
 
 /*** equals_String_Boolean() ***/
 boolean equals_String_Boolean(char* a1, boolean a2) {
-    char* result = (char*) malloc(sizeof(char) * ((a2 ? 5 : 6) + strlen(a1)));
-    strcpy(result, a1);
-    strcat(result, (a2 ? "true" : "false");
-    return result;
+    char* a2String = a2 ? "true" : "false";
+    return strcmp(a1, a2String) == 0 ? true : false;
 }
 /**/
 
 /*** equals_String_Double() ***/
 boolean equals_String_Double(char* a1, double a2) {
-    char* string = (char*) malloc(sizeof(char) * (20 + strlen(a1)));
-    sprintf((char*) string, "%s%g", a1, a2);
-    return string;
+	return atof(a1) == a2;
 }
 /**/
 
 /*** equals_String_Int() ***/
 boolean char* equals_String_Int(char* a1, int a2) {
-    return $equals_Int_String(a2, a1);
+	return atoi(a1) == a2;
 }
 /**/
 
 /*** equals_String_String() ***/
 boolean equals_String_String(char* a1, char* a2) {
-    char* result = (char*) malloc(sizeof(char) * (1 + strlen(a1) + strlen(a2)));
-    strcpy(result, a1);
-    strcat(result, a2);
-    return result;
+    return strcmp(a1, a2) == 0 ? true : false;
 }
 /**/
 

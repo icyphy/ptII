@@ -70,8 +70,8 @@ $ref(peakIndices) = $new(Array(0, 0));
             $actorClass(dipThreshold) = $val(dip);
             $actorClass(riseThreshold) = $val(dip);
 
-        $this.fireBlock1_$scale($scale);
-        $this.fireBlock2($scale);
+        $this.fireBlock1_$scale($scale)
+        $this.fireBlock2($scale)
 
     }
 /**/
@@ -80,15 +80,15 @@ $ref(peakIndices) = $new(Array(0, 0));
 /**/
 
 /*** fireBlock1_RELATIVE_DB($scale) ***/
-    $this.fireBlock1_ScaleNotAbsolute($scale);
+    $this.fireBlock1_ScaleNotAbsolute($scale)
 /**/
 
 /*** fireBlock1_RELATIVE_DB_POWER($scale) ***/
-    $this.fireBlock1_ScaleNotAbsolute($scale);
+    $this.fireBlock1_ScaleNotAbsolute($scale)
 /**/
 
 /*** fireBlock1_RELATIVE_LINEAR($scale) ***/
-    $this.fireBlock1_ScaleNotAbsolute($scale);
+    $this.fireBlock1_ScaleNotAbsolute($scale)
 /**/
 
 
@@ -105,7 +105,7 @@ $ref(peakIndices) = $new(Array(0, 0));
             $actorClass(maxValue) = $actorClass(indata);
         }
     }
-    $this.fireBlock11_$scale();
+    $this.fireBlock11_$scale()
 /**/
 
 
@@ -137,13 +137,13 @@ $ref(peakIndices) = $new(Array(0, 0));
                     if ($actorClass(indata) < $actorClass(localMin)) {
                         $actorClass(localMin) = $actorClass(indata);
 
-                    $this.fireBlock21_$scale();
+                    $this.fireBlock21_$scale()
                 }
 
                 if (($actorClass(indata) > $actorClass(riseThreshold)) && ($actorClass(indata) > $actorClass(squelchValue))) {
                     $actorClass(localMax) = $actorClass(indata);
 
-                    $this.fireBlock22_$scale();
+                    $this.fireBlock22_$scale()
 
                     $actorClass(localMaxIndex) = $actorClass(i);
                     $actorClass(searchValley) = false;
@@ -153,7 +153,7 @@ $ref(peakIndices) = $new(Array(0, 0));
                 if (($actorClass(indata) > $actorClass(localMax)) && ($actorClass(indata) > $actorClass(squelchValue))) {
                     $actorClass(localMax) = $actorClass(indata);
 
-                    $this.fireBlock23_$scale();
+                    $this.fireBlock23_$scale()
 
                     $actorClass(localMaxIndex) = $actorClass(i);
                 }
@@ -169,7 +169,7 @@ $ref(peakIndices) = $new(Array(0, 0));
 
                     $actorClass(localMin) = $actorClass(indata);
 
-                    $this.fireBlock24_$scale();
+                    $this.fireBlock24_$scale()
 
                     $actorClass(searchValley) = true;
                     $actorClass(searchPeak) = false;

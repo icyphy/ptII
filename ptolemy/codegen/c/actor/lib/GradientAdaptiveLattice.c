@@ -1,5 +1,5 @@
 /*** sharedBlock ***/
-$super();
+$super()
 double $actorClass(fe_i);
 double $actorClass(be_i);
 double $actorClass(fe_ip);
@@ -10,7 +10,7 @@ double $actorClass(newCoefficient);
 
 
 /*** preinitBlock***/
-$super();
+$super()
 double $actorSymbol(_estimatedErrorPower)[$actorSymbol(_order)+1];
 double $actorSymbol(_estimatedErrorPowerCache)[$actorSymbol(_order)+1];
 double $actorSymbol(_reflectionCoefficientsCache)[$actorSymbol(_order)];
@@ -79,9 +79,9 @@ double $actorSymbol(_alpha);
 /**/
 
 /*** fireBlock ***/
-    $this.prefireBlock();
-    $super.fireBlock();
-    $this.postfireBlock();
+    $this.prefireBlock()
+    $super.fireBlock()
+    $this.postfireBlock()
 /**/
 
 /*** postfireBlock ***/

@@ -52,7 +52,7 @@
 /**/
 
 /***sharedInterpolateBlock***/
-    $this.hermiteBlock();
+    $this.hermiteBlock()
     
     inline double $actorClass(interpolate)(int index, Token indexes, Token values, int period, int order, int numRefPoints, int largestIndex) {
         //int numRefPoints = indexes.length;

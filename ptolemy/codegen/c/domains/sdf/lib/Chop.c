@@ -13,7 +13,7 @@
 /**/
 
 /*** sharedBlock ***/
-    $super.arraycopyBlock($targetType(input));
+    $super.arraycopyBlock($targetType(input))
 /**/
 
 /*** initBlock ***/

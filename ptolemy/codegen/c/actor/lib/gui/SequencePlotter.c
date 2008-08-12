@@ -1,10 +1,10 @@
 /***preinitBlock***/
-$super();
+$super()
 jdouble $actorSymbol(xValue);
 /**/
 
 /***initBlock***/
-$super();
+$super()
 $actorSymbol(xValue) = $val(xInit);
 /**/
 

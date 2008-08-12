@@ -1,5 +1,5 @@
 /*** preinitBlock ***/
-$super();
+$super()
 boolean $actorSymbol(haveNextNextGaussian) = false;
 double $actorSymbol(nextNextGaussian);
 

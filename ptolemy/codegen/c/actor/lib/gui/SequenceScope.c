@@ -1,11 +1,11 @@
 /***preinitBlock***/
-$super();
+$super()
 jdouble $actorSymbol(xValue);
 jmethodID $actorSymbol(plotSetPointsPersistence);
 /**/
 
 /***initBlock***/
-$super();
+$super()
 $actorSymbol(plotSetPointsPersistence) = (*env)->GetMethodID
         (env, $actorSymbol(plotClass), "setPointsPersistence", "(I)V");
 (*env)->CallVoidMethod(env, $actorSymbol(plotObject),

@@ -1,5 +1,5 @@
 /*** preinitBlock ***/
-    $super.preinitOrderBlock();
+    $super.preinitOrderBlock()
     double *$actorSymbol(_forward);
     double *$actorSymbol(_backward);
     double *$actorSymbol(_forwardCache);
@@ -8,12 +8,12 @@
 /**/
 
 /*** initBlock ***/
-    $this.reallocateBlock();
-    $this.initReflectionCoefsBlock();
+    $this.reallocateBlock()
+    $this.initReflectionCoefsBlock()
 /**/
 
 /*** sharedBlock ***/
-$super();
+$super()
 int $actorClass(j);
 int $actorClass(_valueLength);
 /**/
@@ -26,13 +26,13 @@ $actorClass(_valueLength) = $ref(reflectionCoefficients).payload.Array->size;
 $ref(reflectionCoefficients) = $ref(newCoefficients);
 
 if ($actorClass(_valueLength) != $ref(reflectionCoefficients).payload.Array->size) {
-    $this.reallocateBlock();
+    $this.reallocateBlock()
 }
 
-$this.initReflectionCoefsBlock();
+$this.initReflectionCoefsBlock()
 
 for ($actorClass(j) = 0; $actorClass(j) < $val(blockSize); $actorClass(j)++) {
-    $super.fireBlock(\$actorClass(_valueLength), \$actorClass(j));
+    $super.fireBlock($actorClass(_valueLength), $actorClass(j))
 }
 //this.postfireBlock();
 /**/

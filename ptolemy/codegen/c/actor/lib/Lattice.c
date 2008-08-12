@@ -57,7 +57,7 @@ void $actorClass(arraycopy)(double *src, int srcPos, double *dest, int destPos, 
 /*** fireBlock ***/
     $actorSymbol(_forwardCache)[0] = $ref(input); // $actorSymbol(_forwardCache)(0) = x(n)
 
-    $this.doFilterBlock();
+    $this.doFilterBlock()
 
     $actorSymbol(_backwardCache)[0] = $actorSymbol(_forwardCache)[0]; // $actorSymbol(_backwardCache)[0] = x[n]
 

@@ -1,5 +1,5 @@
 /*** sharedBlock ***/
-        $super();
+        $super()
         int $actorClass(i);
         int $actorClass(index);
         double $actorClass(factor);
@@ -11,7 +11,7 @@
 
 /*** initBlock ***/
         $actorSymbol(_taps) = $typeFunc(TYPE_Array::clone($ref(taps)));
-        $super();
+        $super()
 /**/
 
 /*** fireBlock ***/
@@ -33,11 +33,11 @@
         $ref(tapValues) = $actorSymbol(_taps);
 
         // Then run FIR filter
-        $super.fireBlock0();
-        $super();
+        $super.fireBlock0()
+        $super()
 /**/
 
 /*** wrapupBlock ***/
         Array_delete($actorSymbol(_taps));
-        $super();
+        $super()
 /**/
