@@ -634,8 +634,11 @@ X10_JAR =       @X10_CLASSES@
 # PTX10_PACKAGES is used in ptII/doc/makefile
 PTX10_PACKAGES = @PTX10_PACKAGES@	
 
-# # Jar file that contains RXTX Serial Port Interface
-RXTX_JAR =   @RXTX_JAR@
+# Jar file that contains RXTX Serial Port Interface
+RXTX_JAR =   		@RXTX_JAR@
+
+# PTRXTX_PACKAGES is used in ptII/doc/makefile
+PTRXTX_PACKAGES =	@PTRXTX_PACKAGES@
 
 # Location of the diva.jar file.  Diva is (among other things) a graph
 # visualization tool used by some of the demos.  For more information, see
