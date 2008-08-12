@@ -321,7 +321,11 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 	    if (javaHome != null) {
 		libjvmAbsoluteDirectory = javaHome + "/../Libraries";
 	    }
-	}
+	} else {
+            // Solaris, Linux etc.
+	    getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
+					  + platform + "\"");
+        }
 	getCodeGenerator().addLibrary(
                 "-L\"" + libjvmAbsoluteDirectory + "\"");
         getCodeGenerator().addLibrary(jvmLoaderDirective);
