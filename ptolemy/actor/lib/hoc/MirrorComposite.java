@@ -83,11 +83,21 @@ public class MirrorComposite extends TypedCompositeActor implements
     public MirrorComposite(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        setClassName("ptolemy.actor.lib.hoc.MirrorComposite");
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-6\" y=\"10\""
-                + "style=\"font-size:24\">?</text>\n" + "</svg>\n");
+        _init();
+    }
+    
+    /** Construct a MirrorComposite in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.  You should set the local director or
+     *  executive director before attempting to send data to the actor
+     *  or to execute it. Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public MirrorComposite(Workspace workspace) {
+        super(workspace);
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -503,6 +513,18 @@ public class MirrorComposite extends TypedCompositeActor implements
 
     /** Flag indicating that we are executing _removeEntity(). */
     private boolean _inRemoveEntity = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Initialize the class. */
+    private void _init() {
+        setClassName("ptolemy.actor.lib.hoc.MirrorComposite");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n" + "<text x=\"-6\" y=\"10\""
+                + "style=\"font-size:24\">?</text>\n" + "</svg>\n");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

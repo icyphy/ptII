@@ -76,24 +76,23 @@ public class Case extends MultiCompositeActor {
     public Case(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        // Create the control port.
-        control = new PortParameter(this, "control");
-        // FIXME: This is awkward... If I provide some
-        // non-boolean control input, I get obscure type
-        // conflict error messages and have to change this
-        // to match.
-        control.setExpression("true");
-        ParameterPort port = control.getPort();
-        // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal = new StringAttribute(port, "_cardinal");
-        controlCardinal.setExpression("SOUTH");
-
-        // Create the default refinement.
-        _default = newRefinement("default");
-
-        // Create the director.
-        _director = _createDirector();
+        _init();
+    }
+    
+    /** Construct a Case in the specified workspace with no container and
+     *  an empty string as a name. You can then change the name with
+     *  setName(). If the workspace argument is null, then use the default
+     *  workspace.
+     *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
+     */
+    public Case(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -235,4 +234,32 @@ public class Case extends MultiCompositeActor {
 
     /** The director. */
     protected CaseDirector _director;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+
+    /** Initialize the class. */
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
+        setClassName("ptolemy.actor.lib.hoc.Case");
+
+        // Create the control port.
+        control = new PortParameter(this, "control");
+        // FIXME: This is awkward... If I provide some
+        // non-boolean control input, I get obscure type
+        // conflict error messages and have to change this
+        // to match.
+        control.setExpression("true");
+        ParameterPort port = control.getPort();
+        // Put the control input on the bottom of the actor.
+        StringAttribute controlCardinal = new StringAttribute(port, "_cardinal");
+        controlCardinal.setExpression("SOUTH");
+
+        // Create the default refinement.
+        _default = newRefinement("default");
+
+        // Create the director.
+        _director = _createDirector();
+    }
 }

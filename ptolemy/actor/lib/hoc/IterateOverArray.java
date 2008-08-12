@@ -196,11 +196,26 @@ public class IterateOverArray extends MirrorComposite {
     public IterateOverArray(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        setClassName("ptolemy.actor.lib.hoc.IterateOverArray");
-        new IterateDirector(this, uniqueName("IterateDirector"));
+        _init();
+    }
 
-        _iterationCount = new Variable(this, "iterationCount", new IntToken(0));
-        _iterationCount.setTypeEquals(BaseType.INT);
+    /** Construct an IterateOverArray in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.  You should set the local director or
+     *  executive director before attempting to send data to the actor
+     *  or to execute it. Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
+    public IterateOverArray(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -421,6 +436,19 @@ public class IterateOverArray extends MirrorComposite {
     // Variable that reflects the current iteration count on the
     // inside.
     private Variable _iterationCount;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Initialize the class. */
+    private void _init()
+            throws IllegalActionException, NameDuplicationException {
+        setClassName("ptolemy.actor.lib.hoc.IterateOverArray");
+        new IterateDirector(this, uniqueName("IterateDirector"));
+
+        _iterationCount = new Variable(this, "iterationCount", new IntToken(0));
+        _iterationCount.setTypeEquals(BaseType.INT);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
