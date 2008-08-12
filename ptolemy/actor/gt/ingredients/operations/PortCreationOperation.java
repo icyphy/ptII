@@ -40,7 +40,6 @@ import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.util.PtolemyExpressionString;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
