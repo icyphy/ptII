@@ -74,8 +74,6 @@ public class TDLCodeGeneratorUtilities {
 
 		try {
 			if (_initialize(model)) {
-				String containerName = model.getName();
-
 				_headerCode(sb, model);
 				_getModules(model);
 				Iterator it = _modules.iterator();
@@ -272,10 +270,6 @@ public class TDLCodeGeneratorUtilities {
 	 */
 	protected static void _modeCode(StringBuffer sb, State state,
 			TDLModule module) throws IllegalActionException {
-		int actorFreq = 0;
-
-		String outputName;
-		String actorName;
 		String modeName;
 
 		modeName = state.getName();

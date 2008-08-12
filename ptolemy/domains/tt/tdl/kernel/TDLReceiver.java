@@ -125,7 +125,6 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 	public void put(Token token) throws NoRoomException {
 		if (token == null)
 			return;
-		IOPort port = this.getContainer();
 		_nextToken = token;
 	}
 
@@ -164,7 +163,6 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 	public void update() {
 		if (_nextToken == null) 
 			return;
-		IOPort port = getContainer();
 		_token = _nextToken;
 	}
 

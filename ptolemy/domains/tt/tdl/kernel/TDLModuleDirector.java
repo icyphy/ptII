@@ -39,7 +39,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
 /**
@@ -449,7 +448,6 @@ public class TDLModuleDirector extends ModalDirector {
             try {
                 double modePeriod = getModePeriod(state);
                 scheduler.setModePeriod(modePeriod, getTimeResolution());
-                long _modePeriod = (long) (modePeriod / getTimeResolution());
 
                 // get transitions
                 for (Iterator transitionIterator = state
@@ -508,7 +506,6 @@ public class TDLModuleDirector extends ModalDirector {
 
                 // get regular actuators
                 Iterator portIterator = refinement.outputPortList().iterator();
-                Nameable container = getContainer();
                 while (portIterator.hasNext()) {
                     IOPort port = (IOPort) portIterator.next();
                     if (!isFast(port))
@@ -564,28 +561,28 @@ public class TDLModuleDirector extends ModalDirector {
         return true;
     }
 
-    private void _enqueueEvent(Time timestamp, TDLAction action) {
-        ArrayList l = (ArrayList) _eventQueue.get(timestamp);
-        if (l == null) {
-            l = new ArrayList();
-            _eventQueue.put(timestamp, l);
-        }
-        l.add(action);
-    }
+//    private void _enqueueEvent(Time timestamp, TDLAction action) {
+//        ArrayList l = (ArrayList) _eventQueue.get(timestamp);
+//        if (l == null) {
+//            l = new ArrayList();
+//            _eventQueue.put(timestamp, l);
+//        }
+//        l.add(action);
+//    }
     
-    private void _enqueueSensorEvent(IOPort sensor, Time timestamp, TDLAction action) {      
-        HashMap map = (HashMap) _sensorEventQueues.get(sensor);
-        if (map == null) {
-            map = new HashMap();
-            _sensorEventQueues.put(timestamp, map);
-        }
-        ArrayList l = (ArrayList) map.get(timestamp);
-        if (l == null) {
-            l = new ArrayList();
-            _eventQueue.put(timestamp, l);
-        }
-        l.add(action);
-    }
+//    private void _enqueueSensorEvent(IOPort sensor, Time timestamp, TDLAction action) {      
+//        HashMap map = (HashMap) _sensorEventQueues.get(sensor);
+//        if (map == null) {
+//            map = new HashMap();
+//            _sensorEventQueues.put(timestamp, map);
+//        }
+//        ArrayList l = (ArrayList) map.get(timestamp);
+//        if (l == null) {
+//            l = new ArrayList();
+//            _eventQueue.put(timestamp, l);
+//        }
+//        l.add(action);
+//    }
 
     /**
      * Check if there is something to do now.
@@ -1016,9 +1013,7 @@ public class TDLModuleDirector extends ModalDirector {
         }
     }
     
-    private HashMap _eventQueue;
-    private HashMap _sensorEventQueues;
-    
+ 
     /**
      * Current node in the TDL actions graph.
      */
