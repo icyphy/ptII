@@ -463,7 +463,7 @@ public class CodeStream {
 
         if (result == null) {
             throw new IllegalActionException("Cannot find code block: \""
-                    + name + "\".");
+                    + name + "\" in " + _filePath + ".");
         }
         return result.toString();
     }
@@ -549,22 +549,22 @@ public class CodeStream {
     IllegalActionException {
         selfTest();
         
-        try {
-            CodeStream code = new CodeStream(args[0], null);
-
-            System.out.println(_eol + "----------Result-----------------------"
-                    + _eol);
-            //System.out.println(code.description());
-            System.out.println(_eol + "----------Result-----------------------"
-                    + _eol);
-
-            LinkedList codeBlockArgs = new LinkedList();
-            codeBlockArgs.add(Integer.toString(3));
-            code.appendCodeBlock("initBlock", codeBlockArgs, false);
-            System.out.println(code);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+//        try {
+//            CodeStream code = new CodeStream(args[0], null);
+//
+//            System.out.println(_eol + "----------Result-----------------------"
+//                    + _eol);
+//            //System.out.println(code.description());
+//            System.out.println(_eol + "----------Result-----------------------"
+//                    + _eol);
+//
+//            LinkedList codeBlockArgs = new LinkedList();
+//            codeBlockArgs.add(Integer.toString(3));
+//            code.appendCodeBlock("initBlock", codeBlockArgs, false);
+//            System.out.println(code);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
     }
 
     /**
@@ -615,6 +615,21 @@ public class CodeStream {
     
     public static void selfTest() {
         StringBuffer code;
+
+        code = new StringBuffer("$target(input)");
+        _assert(_parseParameterList(code, 0, code.length()).size() == 1);
+        _assert(_parseParameterList(code, 0, code.length()).get(0).equals("input"));
+        _assert(_parseParameterList(code, 0, code.length() - 1).size() == 1);
+        _assert(_parseParameterList(code, 0, code.length() - 1).get(0).equals("input"));
+
+        code = new StringBuffer("($target(input))");
+        _assert(_parseParameterList(code, 0, code.length()).size() == 1);
+        _assert(_parseParameterList(code, 0, code.length()).get(0).equals("$target(input)"));
+        _assert(_parseParameterList(code, 0, code.length() - 1).size() == 1);
+        _assert(_parseParameterList(code, 0, code.length() - 1).get(0).equals("$target(input)"));
+        
+        code = new StringBuffer("()");
+        _assert(_parseParameterList(code, 0, 1).size() == 0);
         
         code = new StringBuffer("(,,,,)");
         _assert(_parseParameterList(code, 0, code.length()).size() == 5);
@@ -653,9 +668,10 @@ public class CodeStream {
         _assert(_parseParameterList(code, 0, code.length()).get(0).equals("(1)"));
 
         code = new StringBuffer("()");
-        _assert(_parseParameterList(code, 0, code.length()).size() == 0);
-
+        _assert(_parseParameterList(code, 0, 0).size() == 0);
         
+        code = new StringBuffer("()");
+        _assert(_parseParameterList(code, 0, 2).size() == 0);
     }
 
     /** Set the indent level.
@@ -1091,7 +1107,7 @@ public class CodeStream {
         LinkedList parameterList = new LinkedList();
 
         int startIndex = codeInFile.indexOf(startSymbol, start) + 1;
-        if (startIndex >= end) {
+        if (startIndex > end) {
             startIndex = start;
         }
         
@@ -1377,37 +1393,46 @@ public class CodeStream {
 
                 boolean isSuper = macro.equals("super");
 
-                int macroIndex = codeBlock.indexOf("$" + macro + ".");            
-
                 int lastMacroEnd = 0;
+
+                int macroIndex = _indexOfMacro(codeBlock, macro, 0, true); 
+                
                 while (macroIndex >= 0) {
                     result.append(codeBlock.substring(lastMacroEnd, macroIndex));
 
+                    int dotIndex = codeBlock.indexOf(".", macroIndex);
                     int openIndex = codeBlock.indexOf("(", macroIndex);
                     int closeParen = CodeGeneratorHelper._findClosedParen(codeBlock.toString(), openIndex);
-                    int dotIndex = macroIndex + macro.length() + 1;
 
-                    if (openIndex < 0 || closeParen < 0 || dotIndex < 0 || dotIndex > openIndex || dotIndex > closeParen) {
-                        throw new IllegalActionException("Bad format");
+                    boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
+
+                    if (isImplicit) {
+                        int i = 0;
+                    }
+                    if (openIndex < 0 || closeParen < 0 || openIndex > closeParen) {
+                        throw new IllegalActionException(_helper, 
+                                signature + " contains an ill-formatted $" + macro + "().");
                     }
                     
-                    // FIXME: implicit this.
-                    String blockName = codeBlock.substring(dotIndex + 1, openIndex).trim();
+                    String blockName = (isImplicit) ? signature.functionName : 
+                        codeBlock.substring(dotIndex + 1, openIndex).trim();
+                    
+                    // Arguments need to include the opening and closing parenthese.
+                    // This is necessary for parsing the arguments properly.
                     String arguments = codeBlock.substring(openIndex, closeParen + 1);
 
                     StringBuffer subBlock = _substituteSuperAndThis(
                             signature, scopeList, codeObject, new StringBuffer(arguments));
                     
                     // recursively substitute the arguments.
-                    List callArguments = CodeStream._parseParameterList(subBlock, 
-                            0, subBlock.length() - 1);
+                    List callArguments = _parseParameterList(subBlock, 
+                            0, subBlock.length());
 
                     Signature callSignature = new Signature(blockName,
                             callArguments.size());
 
                     if (!isSuper && callSignature.equals(signature)) {
                         throw new IllegalActionException(_helper, callSignature
-                                .toString()
                                 + " recursively appends itself in "
                                 + codeObject[0]);
                     }
@@ -1426,7 +1451,7 @@ public class CodeStream {
                     result.append(callCodeBlock);
 
                     lastMacroEnd = closeParen + 1;
-                    macroIndex = codeBlock.indexOf("$" + macro + ".", lastMacroEnd);            
+                    macroIndex = _indexOfMacro(codeBlock, macro, lastMacroEnd, true);
                 }
                 result.append(codeBlock.substring(lastMacroEnd, codeBlock.length()));
                 
@@ -1435,12 +1460,31 @@ public class CodeStream {
             return codeBlock;
         }
 
+        private int _indexOfMacro(StringBuffer codeBlock, String macro, int start, boolean allowDot) {
+            int macroIndex = macroIndex = codeBlock.indexOf("$" + macro, start);            
+            while (macroIndex >= 0) {
+                int i = macroIndex + macro.length();
+
+                // Allow whitespaces between macro name and the '(' or '.'.
+                while (codeBlock.charAt(++i) == ' ');
+                
+                if (codeBlock.charAt(i) == '(') {
+                    return macroIndex;
+                } else if (allowDot && codeBlock.charAt(i) == '.') {
+                    return macroIndex;
+                }
+                macroIndex = codeBlock.indexOf("$" + macro, start);            
+            }
+            return macroIndex;
+        }
+
 
         /**
          * @param signature
          * @param scopeList
          * @param codeObject
          * @param codeBlock
+         * @deprecated
          * @return
          * @throws IllegalActionException
          */

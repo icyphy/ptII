@@ -74,7 +74,7 @@ public class Pulse extends CCodeGeneratorHelper {
         Type type = ((ArrayToken) actor.values.getToken()).getElementType();
 
         if (!isPrimitive(type)) {
-            args.add("\\$tokenFunc(\\$ref(values, 0)::zero())");
+            args.add("$tokenFunc($ref(values, 0)::zero())");
         } else {
             args.add("0");
         }

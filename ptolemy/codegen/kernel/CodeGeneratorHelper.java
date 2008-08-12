@@ -29,6 +29,7 @@ package ptolemy.codegen.kernel;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
@@ -2740,29 +2741,28 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return getFunctionInvocation(parameter, true);
 
         } else {
+            Method handler = null;
+            Method checker = null;
+            Class userMacro = null;
             try {
-                Class userMacro = Class.forName(
+                userMacro = Class.forName(
                         "ptolemy.codegen.kernel.userMacro." + macro);
                 
-                Method handler = userMacro.getMethod("handleMacro", new Class[] { List.class });
-                Method checker = userMacro.getMethod("checkArguments", new Class[] { List.class });
-
-                try {
-                    return (String) handler.invoke(userMacro, new Object[] { _parseList(parameter) });
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    // do nothing.
-                }
+                handler = userMacro.getMethod("handleMacro", new Class[] { List.class });
+                checker = userMacro.getMethod("checkArguments", new Class[] { List.class });
             } catch (Exception ex) {
-                // do nothing.
-                ex.printStackTrace();
+                // Don't print out error, since this is probably not an user macro.
                 return null;
             }
-                
 
-            return null;
-            // This macro is not handled.
-            //throw new IllegalActionException("Macro is not handled.");
+            try {
+                checker.invoke(userMacro, new Object[] { _parseList(parameter) });
+                return (String) handler.invoke(userMacro, 
+                        new Object[] { _parseList(parameter) });
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex, 
+                        "Failed to invoke user macro ($" + macro + ").");
+            }
         }
     }
 

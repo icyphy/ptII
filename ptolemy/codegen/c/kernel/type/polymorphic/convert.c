@@ -123,6 +123,13 @@ inline Token convert_Long_Token(long long a) {
 }
 /**/
 
+/*** convert_Matrix_Matrix() ***/
+inline Token convert_Matrix_Matrix(Token a1) {
+    return a1;
+}
+/**/
+
+
 /*** convert_String_Boolean() ***/
 char* convert_String_Boolean(char* a) {
 

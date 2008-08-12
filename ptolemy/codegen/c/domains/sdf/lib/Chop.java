@@ -69,7 +69,7 @@ public class Chop extends CCodeGeneratorHelper {
 
         Type type = actor.input.getType();
         if (!isPrimitive(type)) {
-            args.add("\\$tokenFunc(\\$ref(input)::zero())");
+            args.add("$tokenFunc($ref(input)::zero())");
         } else {
             args.add("0");
         }
