@@ -71,11 +71,11 @@ public class Discard extends Sink implements Configurable {
     ////                         public methods                    ////
 
     /** Do nothing, as this actor is not actually configurable.
-     *  <p>This class implements {@link ptolemy.kernel.Configurable} so 
-     *  that the MoML filters can replace graphical actors that
+     *  <p>This class implements {@link ptolemy.kernel.util.Configurable}
+     *  so that the MoML filters can replace graphical actors that
      *  implement Configurable with this actor.  Note that the actors
-     *  to be replaced must have an input port named <i>input</i>, so not
-     *  all Configurable actors can be replaced with this actor.
+     *  to be replaced must have an input port named <i>input</i>, so
+     *  not all Configurable actors can be replaced with this actor.
      *  @param base Ignored.
      *  @param source Ignored.
      *  @param text Ignored.
