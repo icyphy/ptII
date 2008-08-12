@@ -192,6 +192,12 @@ myOtherBlock:
 
 }}
 
+#####
+test CodeStream-9.0 {selTest} {
+    catch {java::call ptolemy.codegen.kernel.CodeStream selfTest} errMsg
+    list $errMsg
+} {{}}
+
 
 
 #####
@@ -212,3 +218,5 @@ if ($ref(input) != 3) {
 }
 
 }}
+
+
