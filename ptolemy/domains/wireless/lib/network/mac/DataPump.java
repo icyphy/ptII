@@ -270,12 +270,12 @@ public class DataPump extends MACActorBase {
      *  depend on the <i>TXTXRequest</i> and <i>RXTXRequest</i>
      *  in a firing.
      */
-    public void pruneDependencies() {
-        super.pruneDependencies();
-        super.removeDependency(TXTXRequest, TXTXConfirm);
-        super.removeDependency(RXTXRequest, RXTXConfirm);
-        super.removeDependency(TXTXRequest, RXTXConfirm);
-        super.removeDependency(RXTXRequest, TXTXConfirm);
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        removeDependency(TXTXRequest, TXTXConfirm);
+        removeDependency(RXTXRequest, RXTXConfirm);
+        removeDependency(TXTXRequest, RXTXConfirm);
+        removeDependency(RXTXRequest, TXTXConfirm);
     }
 
     ///////////////////////////////////////////////////////////////////

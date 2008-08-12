@@ -493,10 +493,13 @@ public class PHY extends NetworkActorBase {
         }
     }
 
-    /** FIXME!
+    /** Override the base class to declare that the <i>fromMAC</i>
+     *  output port does not
+     *  depend on the <i>toMAC</i>, <i>channelStatus</i>
+     *  and <i>PHYConfirm</i> ports in a firing.
      */
-    public void pruneDependencies() {
-        super.pruneDependencies();
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         removeDependency(fromMAC, toMAC);
         removeDependency(fromMAC, channelStatus);
         removeDependency(fromMAC, PHYConfirm);

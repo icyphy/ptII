@@ -149,11 +149,12 @@ public class FixCounter extends SynchronousFixTransformer {
         return super.postfire();
     }
 
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
+    /** Override the base class to declare that the <i>increment</i>
+     *  and <i>decrement</i> ports do not depend on the <i>output</i>
+     *  in a firing.
      */
-    public void pruneDependencies() {
-        super.pruneDependencies();
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         removeDependency(increment, output);
         removeDependency(decrement, output);
     }

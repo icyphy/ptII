@@ -109,10 +109,11 @@ public class RegisterSR extends SynchronousFixTransformer {
         }
     }
 
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
+    /** Override the base class to declare that the <i>input</i>
+     *  port does not depend on the <i>output</i> in a firing.
      */
-    public void pruneDependencies() {
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         super.pruneDependencies();
         removeDependency(input, output);
     }

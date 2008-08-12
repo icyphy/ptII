@@ -199,15 +199,12 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
      */
-    public void pruneDependencies() {
-        super.pruneDependencies();
-
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         try {
             int latencyValue = ((ScalarToken) latency.getToken()).intValue();
 
             if (latencyValue > 0) {
-                super.pruneDependencies();
-
                 Iterator inputPorts = inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     IOPort input = (IOPort) inputPorts.next();

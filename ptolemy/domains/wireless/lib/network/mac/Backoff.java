@@ -287,12 +287,12 @@ public class Backoff extends MACActorBase {
      *  output port does not depend on the <i>getBackoff</i>
      *  of <i>fromDataPump</i> input ports in a firing.
      */
-    public void pruneDependencies() {
-        super.pruneDependencies();
-        super.removeDependency(getBackoff, BKDone);
-        super.removeDependency(fromDataPump, BKDone);
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        removeDependency(getBackoff, BKDone);
+        removeDependency(fromDataPump, BKDone);
     }
-
+   
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private int _generateRandom(int ccw) {
