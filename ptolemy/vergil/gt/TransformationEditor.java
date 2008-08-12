@@ -300,11 +300,24 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             String header = "";
             if (GTTools.isInPattern(model)) {
                 header = _COPY_FROM_PATTERN_HEADER;
-                _setOrClearPatternObjectAttributes(model, true,
-                        _getSelectionSet());
+                
+                try {
+                	model.workspace().getReadAccess();
+                    _setOrClearPatternObjectAttributes(model, true,
+                            _getSelectionSet());
+                } finally {
+                	model.workspace().doneReading();
+                }
+                
                 super.copy();
-                _setOrClearPatternObjectAttributes(model, false,
-                        _getSelectionSet());
+                
+                try {
+                	model.workspace().getReadAccess();
+	                _setOrClearPatternObjectAttributes(model, false,
+	                        _getSelectionSet());
+                } finally {
+                	model.workspace().doneReading();
+                }
             } else if (GTTools.isInReplacement(model)) {
                 header = _COPY_FROM_REPLACEMENT_HEADER;
                 super.copy();
@@ -1352,7 +1365,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         if (frame._cellEditor != null) {
             frame._cellEditor.stopCellEditing();
         }
-        tableModel.removeTableModelListener(this);
+        tableModel.removeTableModelListener(frame);
 
         while (tableModel.getRowCount() > 0) {
             tableModel.removeRow(0);
@@ -1362,7 +1375,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             getFrameController().getTransformationRule();
         _refreshTable(frame, transformer, 1, transformer);
 
-        tableModel.addTableModelListener(this);
+        tableModel.addTableModelListener(frame);
     }
 
     private int _refreshTable(TransformationEditor topLevelFrame,
@@ -1538,41 +1551,38 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private void _setOrClearPatternObjectAttributes(NamedObj object,
             boolean isSet, Collection<?> filter) {
-        try {
-            if (filter == null || filter.contains(object)) {
-                PatternObjectAttribute patternObject = GTTools
-                        .getPatternObjectAttribute(object);
-                if (isSet) {
-                    if (patternObject == null) {
-                        patternObject = new PatternObjectAttribute(object,
-                                "patternObject");
-                    }
-                    String name = _getNameWithinContainer(object,
-                            getFrameController().getTransformationRule()
-                                    .getPattern());
-                    patternObject.setPersistent(true);
-                    patternObject.setExpression(name);
-                } else if (patternObject != null) {
-                    patternObject.setPersistent(false);
-                    patternObject.setExpression("");
-                }
-            }
+    	try {
+	    	Collection<?> children;
+	        if (filter == null) {
+	            children = GTTools.getChildren(object, false, true, true, true);
+	        } else {
+	            children = filter;
+	        }
+	        for (Object childObject : children) {
+	            NamedObj child = (NamedObj) childObject;
+	            PatternObjectAttribute patternObject = GTTools
+	                    .getPatternObjectAttribute(child);
+	            if (isSet) {
+	                if (patternObject == null) {
+	                    patternObject = new PatternObjectAttribute(child,
+	                            "patternObject");
+	                }
+	                String name = _getNameWithinContainer(child,
+	                        getFrameController().getTransformationRule()
+	                        .getPattern());
+	                patternObject.setPersistent(true);
+	                patternObject.setExpression(name);
+	            } else if (patternObject != null) {
+	                patternObject.setPersistent(false);
+	                patternObject.setExpression("");
+	            }
+	            if (child instanceof CompositeEntity) {
+	                _setOrClearPatternObjectAttributes((CompositeEntity) child,
+	                		isSet, null);
+	            }
+	        }
         } catch (KernelException e) {
             throw new KernelRuntimeException(e, "Cannot set attribute.");
-        }
-
-        try {
-            object.workspace().getReadAccess();
-            Collection<?> children = GTTools.getChildren(object, true, true,
-                    true, true);
-            for (Object childObject : children) {
-                NamedObj child = (NamedObj) childObject;
-                _setOrClearPatternObjectAttributes(child, isSet, filter);
-            }
-        } finally {
-            if (filter == null) {
-                object.workspace().doneReading();
-            }
         }
     }
 
@@ -2273,7 +2283,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             while (topObjects.hasNext()) {
                 NamedObj topObject = (NamedObj) topObjects.next();
                 if (_isToPattern || _isFromReplacement && _isToReplacement) {
-                    _setOrClearPatternObjectAttributes(topObject, false, null);
+                	try {
+                		topObject.workspace().getReadAccess();
+                		_setOrClearPatternObjectAttributes(topObject, false,
+                				null);
+                	} finally {
+                		topObject.workspace().doneReading();
+                	}
                 }
             }
             if (_isFromPattern && _isToReplacement || _isFromReplacement
