@@ -29,6 +29,7 @@ package ptolemy.codegen.kernel;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1916,6 +1917,18 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return CodeGenerator._primitiveTypes.contains(cgType);
     }
 
+    public static void main(String[] args) {
+    	selfTest();
+    }
+    
+    public static void selfTest() {
+        System.out.println(_parseList("(a, b, abc)"));
+        System.out.println(_indexOf(",", "(a, b, abc,), (a , b, abc,)", 0));
+        System.out.println(_indexOf(",", "a, b, abc,, (a , b, abc,)", 0));
+        System.out.println(_indexOf(",", ", (b), abc,, (a , b, abc,)", 0));
+        System.out.println(_indexOf(",", "a, (b, abc,), (a , b, abc,)", 0));
+        System.out.println(_indexOf(",", "(((a), b,) a),bc,, (a , b, abc,)", 0));
+    }
     /** Process the specified code, replacing macros with their values.
      * @param code The code to process.
      * @return The processed code.
@@ -1979,13 +1992,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             //List arguments = parseArgumentList(name);
 
             try {
-//                if (macro == null) {
-//                    int i = 1;
-//                }
-//                if (name.startsWith("Array")) {
-//                    int i = 1;
-//                    
-//                }
                 result.append(_replaceMacro(macro, name));
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(this, ex,
@@ -2574,8 +2580,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         //     "port, offset", or
         //     "port#channel, offset".
 
-        int poundIndex = _indexOf('#', name, 0);
-        int commaIndex = _indexOf(',', name, 0);
+        int poundIndex = _indexOf("#", name, 0);
+        int commaIndex = _indexOf(",", name, 0);
 
         if (commaIndex < 0) {
             commaIndex = name.length();
@@ -2603,26 +2609,26 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param fromIndex The index to start the search.
      * @return The first occurence of the character in the string that
      *  is not embedded in parentheses.
-     * @throws IllegalActionException Thrown if the given string does not
-     *  contain the same number of open and closed parentheses.
      */
-    private static int _indexOf(char ch, String string, int fromIndex)
-    throws IllegalActionException {
+    public static int _indexOf(String ch, String string, int fromIndex) {
 
         int parenIndex = fromIndex;
         int result = -1;
-
+        int closedParenIndex = parenIndex;
+        
         do {
-            int closedParenIndex = parenIndex;
-
             result = string.indexOf(ch, closedParenIndex);
 
             parenIndex = string.indexOf('(', closedParenIndex);
 
             if (parenIndex >= 0) {
-                closedParenIndex = _findClosedParen(string, parenIndex);
+                try {
+                    closedParenIndex = _findClosedParen(string, parenIndex);
+                } catch (IllegalActionException e) {
+                    closedParenIndex = -1;
+                }
             }
-        } while (parenIndex > 0 && result > parenIndex);
+        } while (result > parenIndex && result < closedParenIndex);
 
         return result;
     }
@@ -2734,6 +2740,26 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return getFunctionInvocation(parameter, true);
 
         } else {
+            try {
+                Class userMacro = Class.forName(
+                        "ptolemy.codegen.kernel.userMacro." + macro);
+                
+                Method handler = userMacro.getMethod("handleMacro", new Class[] { List.class });
+                Method checker = userMacro.getMethod("checkArguments", new Class[] { List.class });
+
+                try {
+                    return (String) handler.invoke(userMacro, new Object[] { _parseList(parameter) });
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    // do nothing.
+                }
+            } catch (Exception ex) {
+                // do nothing.
+                ex.printStackTrace();
+                return null;
+            }
+                
+
             return null;
             // This macro is not handled.
             //throw new IllegalActionException("Macro is not handled.");
@@ -2742,6 +2768,31 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    public static List<String> _parseList(String parameters) {
+        List<String> result = new ArrayList<String>();
+        int previousCommaIndex = 0;
+        int commaIndex = _indexOf(",", parameters, 0);
+        
+        while (commaIndex >= 0) {
+            String item = parameters.substring(
+                    previousCommaIndex, commaIndex).trim();
+
+            result.add(item);
+            
+            previousCommaIndex = commaIndex + 1;
+            commaIndex = _indexOf(",", parameters, previousCommaIndex);
+        }
+
+        String item = parameters.substring(
+                previousCommaIndex, parameters.length()).trim();
+
+        if (item.trim().length() > 0) {
+            result.add(item);
+        }
+        
+        return result;
+    }
 
     /** Generate a variable name for the NamedObj.
      *  @param namedObj The NamedObj to generate variable name for.
@@ -2821,7 +2872,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *   given position of the string is not an open parenthesis or
      *   if the index is less than 0 or past the end of the string.
      */
-    private static int _findClosedParen(String string, int pos)
+    protected static int _findClosedParen(String string, int pos)
     throws IllegalActionException {
         if (pos < 0 || pos >= string.length()) {
             throw new IllegalActionException("The character index " + pos

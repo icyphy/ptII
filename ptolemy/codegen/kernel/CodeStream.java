@@ -183,7 +183,7 @@ public class CodeStream {
      *  appendCodeBlock(String, List, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName, boolean mayNotExist)
-            throws IllegalActionException {
+    throws IllegalActionException {
         appendCodeBlock(blockName, new LinkedList(), mayNotExist);
     }
 
@@ -218,7 +218,7 @@ public class CodeStream {
      *  appendCodeBlock(String, List, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName, List arguments)
-            throws IllegalActionException {
+    throws IllegalActionException {
         appendCodeBlock(blockName, arguments, false);
     }
 
@@ -281,7 +281,7 @@ public class CodeStream {
             String[] blocks = CodeGeneratorHelper.getDefaultBlocks();
 
             for (int i = 0; i < blocks.length; i++) {
-                
+
                 // The default blocks are automatically appended 
                 // by CodeGeneratorHelper.
                 if (_helper != null && blockName.matches(blocks[i])) {
@@ -293,7 +293,7 @@ public class CodeStream {
         }
 
         String codeBlock = getCodeBlock(blockName, arguments, mayNotExist);
-        
+
         _stream.append(codeBlock);
     }
 
@@ -308,7 +308,7 @@ public class CodeStream {
     public String getCodeBlock(String blockName, List arguments) throws IllegalActionException {
         return getCodeBlock(blockName, arguments, false);
     }
-    
+
     /** Return a codeBlock with a given name and substitute in the
      * given arguments.
      * @param blockName The given name that identifies the code block.
@@ -356,7 +356,7 @@ public class CodeStream {
      *  be found, or if the numbers of arguments and parameters do not match.
      */
     public void appendCodeBlocks(String nameExpression)
-            throws IllegalActionException {
+    throws IllegalActionException {
         // First, it checks if the code file is parsed already.
         // If so, it gets the code block from the well-constructed code
         // block table.  If not, it has to construct the table.
@@ -436,7 +436,7 @@ public class CodeStream {
         }
         return result;
     }
-    
+
     /**
      * Return a set of code block signatures contained by this CodeStream.
      * @return The set of code block signatures contained by this CodeStream.
@@ -444,7 +444,7 @@ public class CodeStream {
      * parsing the code helper .[target] file.
      */
     public Set<Signature> getAllCodeBlockSignatures() 
-            throws IllegalActionException {
+    throws IllegalActionException {
         if (_doParsing) {
             _constructCodeTable(true);
         }
@@ -478,15 +478,15 @@ public class CodeStream {
      *  template with the name of the signature.
      */
     public String getCodeBlockTemplate(Object signature)
-            throws IllegalActionException {
+    throws IllegalActionException {
         if (signature instanceof Signature) {
             return _declarations.getTemplateCode((Signature) signature)
-                    .toString();
+            .toString();
         }
         return "";
     }
 
-    
+
     /** Indent the string to the default indent level.
      * @param inputString The string to be indented.
      * @return The indented string.
@@ -546,7 +546,9 @@ public class CodeStream {
      *  the helper .[target] file.
      */
     public static void main(String[] args) throws IOException,
-            IllegalActionException {
+    IllegalActionException {
+        selfTest();
+        
         try {
             CodeStream code = new CodeStream(args[0], null);
 
@@ -605,6 +607,57 @@ public class CodeStream {
         _codeBlocks = codeBlocks;
     }
 
+    private static void _assert(boolean invariant) {
+        if (!invariant) {
+            throw new AssertionError("CodeStream self test error.");
+        }
+    }
+    
+    public static void selfTest() {
+        StringBuffer code;
+        
+        code = new StringBuffer("(,,,,)");
+        _assert(_parseParameterList(code, 0, code.length()).size() == 5);
+        
+        code = new StringBuffer("");
+        _assert(_parseParameterList(code, 0, code.length()).size() == 0);
+        
+        code = new StringBuffer(",,,,");
+        _assert(_parseParameterList(code, 0, code.length()).size() == 5);
+
+        code = new StringBuffer("$arg, $channel");
+        _assert(_parseParameterList(code, 0, code.length()).size() == 2);
+        _assert(_parseParameterList(code, 0, code.length()).get(0).equals("$arg"));
+        _assert(_parseParameterList(code, 0, code.length()).get(1).equals("$channel"));
+
+        code = new StringBuffer("($arg, $channel)");
+        _assert(_parseParameterList(code, 0, code.length()).size() == 2);
+        _assert(_parseParameterList(code, 0, code.length()).get(0).equals("$arg"));
+        _assert(_parseParameterList(code, 0, code.length()).get(1).equals("$channel"));
+        
+        code = new StringBuffer("((1), 2)");
+        _assert(_parseParameterList(code, 0, code.length()).size() == 2);
+        _assert(_parseParameterList(code, 0, code.length()).get(0).equals("(1)"));
+        _assert(_parseParameterList(code, 0, code.length()).get(1).equals("2"));
+
+        code = new StringBuffer("((1, 2))");
+        _assert(_parseParameterList(code, 0, code.length()).size() == 1);
+        _assert(_parseParameterList(code, 0, code.length()).get(0).equals("(1, 2)"));
+
+        code = new StringBuffer("(1)");
+        _assert(_parseParameterList(code, 0, code.length()).size() == 1);
+        _assert(_parseParameterList(code, 0, code.length()).get(0).equals("1"));
+        
+        code = new StringBuffer("((1))");
+        _assert(_parseParameterList(code, 0, code.length()).size() == 1);
+        _assert(_parseParameterList(code, 0, code.length()).get(0).equals("(1)"));
+
+        code = new StringBuffer("()");
+        _assert(_parseParameterList(code, 0, code.length()).size() == 0);
+
+        
+    }
+
     /** Set the indent level.
      *  @param indentLevel The indent level, where 0 means no indentation,
      *  1 means indent one level (probably 4 spaces).
@@ -633,7 +686,8 @@ public class CodeStream {
      * @return The well-formed code block name after lexical checking.
      * @exception Thrown if the given name is not well-formed.
      */
-    private static String _checkCodeBlockName(String name) {
+    private static String _checkCodeBlockName(String name)
+    throws IllegalActionException {
         // FIXME: extra lexical checking
         // e.g. Do we allow nested code block within code block name??
         // e.g. ...spaces??
@@ -641,7 +695,8 @@ public class CodeStream {
         return name.trim();
     }
 
-    private static String _checkArgumentName(String name) {
+    private static String _checkArgumentName(String name)
+    throws IllegalActionException {
         return name.replaceAll("\\$", "\\\\\\$");
     }
 
@@ -658,7 +713,7 @@ public class CodeStream {
      * @exception Thrown if the given name is not well-formed.
      */
     private static String _checkParameterName(String name)
-            throws IllegalActionException {
+    throws IllegalActionException {
         if (!name.startsWith("$")) {
             throw new IllegalActionException("Parameter \"" + name
                     + "\" is not well-formed." + _eol
@@ -680,7 +735,7 @@ public class CodeStream {
      *  helper .[target] file.
      */
     private void _constructCodeTable(boolean mayNotExist)
-            throws IllegalActionException {
+    throws IllegalActionException {
 
         if (_declarations == null) {
             _declarations = new CodeBlockTable();
@@ -694,7 +749,7 @@ public class CodeStream {
             _constructCodeTableHelper(mayNotExist);
         } else {
             for (Class helperClass = _helper.getClass(); helperClass != null; helperClass = helperClass
-                    .getSuperclass()) {
+            .getSuperclass()) {
 
                 _filePath = _getPath(helperClass);
 
@@ -713,7 +768,7 @@ public class CodeStream {
      * @exception IllegalActionException
      */
     private void _constructCodeTableHelper(boolean mayNotExist)
-            throws IllegalActionException {
+    throws IllegalActionException {
         BufferedReader reader = null;
 
         try {
@@ -732,8 +787,8 @@ public class CodeStream {
                 int lineNumber = 1;
 
                 String filename = FileUtilities
-                        .nameToURL(_filePath, null, 
-                                getClass().getClassLoader()).getPath();
+                .nameToURL(_filePath, null, 
+                        getClass().getClassLoader()).getPath();
 
                 if (_codeGenerator == null && _helper != null) {
                     _codeGenerator = _helper._codeGenerator;
@@ -741,7 +796,7 @@ public class CodeStream {
 
                 // Read the entire content of the code block file.
                 for (String line = reader.readLine(); line != null; line = reader
-                        .readLine(), lineNumber++) {
+                .readLine(), lineNumber++) {
 
                     if (_needLineInfo()) {
                         codeToBeParsed.append(_codeGenerator.generateLineInfo(
@@ -832,10 +887,10 @@ public class CodeStream {
             return "";
         }
         String extension = _helper._codeGenerator.generatorPackage
-                .getExpression();
+        .getExpression();
         extension = extension.substring(extension.lastIndexOf(".") + 1);
         return "$CLASSPATH/" + helperClass.getName().replace('.', '/') + "."
-                + extension;
+        + extension;
     }
 
     /**
@@ -850,7 +905,7 @@ public class CodeStream {
      * @see _BLOCKEND
      */
     private StringBuffer _parseBody(StringBuffer codeInFile)
-            throws IllegalActionException {
+    throws IllegalActionException {
         int openBlock = 1;
         int scanIndex = _parseIndex;
 
@@ -884,18 +939,18 @@ public class CodeStream {
                         .charAt(0) == ' ')) {
             body.deleteCharAt(0);
         }
-        
+
         // strip ending new lines and white spaces
         boolean hasNewline = false;
         int endChar = body.length() - 1;
         while (endChar >= 0
                 && (body.charAt(endChar) == '\n'
-                        || body.charAt(endChar) == '\r' || body.charAt(endChar) == ' ')) {
+                    || body.charAt(endChar) == '\r' || body.charAt(endChar) == ' ')) {
             body.deleteCharAt(endChar);
             endChar = body.length() - 1;
             hasNewline = true;
         }
-        
+
         // Conditionally add a newline. This is important
         // for code blocks that contain partial phrases 
         // rather than complete statements.
@@ -933,7 +988,7 @@ public class CodeStream {
      * @see parseBody(StringBuffer)
      */
     private Signature _parseCodeBlock(StringBuffer codeInFile)
-            throws IllegalActionException {
+    throws IllegalActionException {
 
         Signature signature = _parseHeader(codeInFile);
 
@@ -964,7 +1019,7 @@ public class CodeStream {
      * @see _parameterTable
      */
     private Signature _parseHeader(StringBuffer codeInFile)
-            throws IllegalActionException {
+    throws IllegalActionException {
         Signature signature;
 
         _parseIndex = codeInFile.indexOf(_BLOCKSTART, _parseIndex);
@@ -1029,23 +1084,35 @@ public class CodeStream {
      * @param end The given end index to stop parsing.
      * @return The list of parameter expressions.
      */
-    private static LinkedList _parseParameterList(StringBuffer codeInFile,
+    private static List _parseParameterList(StringBuffer codeInFile,
             int start, int end, String startSymbol, String endSymbol) {
 
-        int parameterIndex = codeInFile.indexOf(startSymbol, start);
 
         LinkedList parameterList = new LinkedList();
 
+        int startIndex = codeInFile.indexOf(startSymbol, start) + 1;
+        if (startIndex >= end) {
+            startIndex = start;
+        }
+        
+        int endIndex = codeInFile.lastIndexOf(endSymbol, end);
+        if (endIndex < 0) {
+            endIndex = end;
+        }
+
         // Keep parsing for extra parameters.
-        for (int commaIndex = codeInFile.indexOf(",", start); commaIndex != -1
-                && (commaIndex < end); commaIndex = codeInFile.indexOf(",",
-                commaIndex + 1)) {
+        for (int commaIndex = CodeGeneratorHelper._indexOf(",", codeInFile.toString(), startIndex); 
+        commaIndex != -1 && commaIndex <= endIndex; 
+        commaIndex = CodeGeneratorHelper._indexOf(",", codeInFile.toString(), commaIndex + 1)) {
 
-            String newParameter = codeInFile.substring(parameterIndex + 1,
-                    commaIndex);
+            if (startIndex > commaIndex) {
+                int i = 0;
+            }
+            String newParameter = codeInFile.substring(
+                    startIndex, commaIndex);
 
-            int openIndex = 0;
-            int closeIndex = 0;
+            int openIndex = -1;
+            int closeIndex = -1;
             do {
                 openIndex = newParameter.indexOf(startSymbol, openIndex + 1);
                 closeIndex = newParameter.indexOf(endSymbol, closeIndex + 1);
@@ -1055,13 +1122,15 @@ public class CodeStream {
             // in order to parse nested parenthesis.
             if (openIndex < 0 && closeIndex < 0) {
                 parameterList.add(newParameter.trim());
-                parameterIndex = commaIndex;
+                startIndex = commaIndex + 1;
             }
         }
 
-        String newParameter = codeInFile.substring(parameterIndex + 1, end);
+        String newParameter = codeInFile.substring(startIndex, endIndex);
 
         if (newParameter.trim().length() > 0) {
+            parameterList.add(newParameter.trim());
+        } else if (parameterList.size() > 0) {
             parameterList.add(newParameter.trim());
         }
 
@@ -1096,7 +1165,7 @@ public class CodeStream {
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex,
                         "Failed to replace \"" + parameterName + "\" with \""
-                                + replaceString + "\"");
+                        + replaceString + "\"");
             }
         }
         return codeBlock;
@@ -1143,7 +1212,7 @@ public class CodeStream {
          *  getCode(Signature, List, List) throws it.
          */
         public StringBuffer getCode(Signature signature, List arguments)
-                throws IllegalActionException {
+        throws IllegalActionException {
             return _getCode(signature, arguments, _codeTableList);
         }
 
@@ -1157,17 +1226,17 @@ public class CodeStream {
          *  getCode(Signature, List, List) throws it.
          */
         public StringBuffer getTemplateCode(Signature signature) 
-                throws IllegalActionException {
-            
+        throws IllegalActionException {
+
             StringBuffer result = new StringBuffer();
-            
+
             result.append("/*** " + 
                     _getHeader(signature, _codeTableList) + " ***/\n");
             result.append(_getCode(signature, null, _codeTableList));
             result.append("/**/\n\n");
             return result;
         }
-        
+
         /**
          * Get the list of parameters for the code block with the given
          * signature. This searches the code block from the entire list
@@ -1190,7 +1259,7 @@ public class CodeStream {
         public void putCode(Signature signature, String filePath,
                 StringBuffer code) {
 
-            LinkedHashMap currentScope = _codeTableList.getLast();
+            LinkedHashMap currentScope = (LinkedHashMap) _codeTableList.getLast();
 
             Object[] codeBlock = (Object[]) currentScope.get(signature);
             codeBlock[0] = filePath;
@@ -1206,7 +1275,7 @@ public class CodeStream {
          *  already exists in the current scope.
          */
         public void putParameters(Signature signature, List parameters)
-                throws IllegalActionException {
+        throws IllegalActionException {
             LinkedHashMap currentScope = _codeTableList.getLast();
             currentScope.get(signature);
             Object[] codeBlock = new Object[3];
@@ -1215,12 +1284,12 @@ public class CodeStream {
             if (currentScope.containsKey(signature)) {
                 throw new IllegalActionException(
                         "Multiple code blocks have the same signature: "
-                                + signature + " in " + _filePath);
+                        + signature + " in " + _filePath);
             }
 
             currentScope.put(signature, codeBlock);
         }
-
+        
         ///////////////////////////////////////////////////////////////////
         ////                         private methods                   ////
 
@@ -1258,8 +1327,8 @@ public class CodeStream {
                 if (arguments != null) {
                     codeBlock = _substituteParameters(codeBlock, parameters,
                             arguments);
-    
-                    codeBlock = _substituteSuper(signature, 
+
+                    codeBlock = _substituteSuperAndThis(signature, 
                             scopeList, codeObject, codeBlock);
                 }                
 
@@ -1267,7 +1336,7 @@ public class CodeStream {
 
             }
         }
-        
+
         private String _getHeader(Signature signature,
                 List scopeList) throws IllegalActionException {
             int size = scopeList.size();
@@ -1296,6 +1365,77 @@ public class CodeStream {
             }
         }
 
+
+        private StringBuffer _substituteSuperAndThis(Signature signature, 
+                List scopeList, Object[] codeObject, StringBuffer codeBlock) 
+        throws IllegalActionException {
+
+            StringBuffer result;
+
+            for (String macro : new String[] { "this", "super" }) {
+                result = new StringBuffer();
+
+                boolean isSuper = macro.equals("super");
+
+                int macroIndex = codeBlock.indexOf("$" + macro + ".");            
+
+                int lastMacroEnd = 0;
+                while (macroIndex >= 0) {
+                    result.append(codeBlock.substring(lastMacroEnd, macroIndex));
+
+                    int openIndex = codeBlock.indexOf("(", macroIndex);
+                    int closeParen = CodeGeneratorHelper._findClosedParen(codeBlock.toString(), openIndex);
+                    int dotIndex = macroIndex + macro.length() + 1;
+
+                    if (openIndex < 0 || closeParen < 0 || dotIndex < 0 || dotIndex > openIndex || dotIndex > closeParen) {
+                        throw new IllegalActionException("Bad format");
+                    }
+                    
+                    // FIXME: implicit this.
+                    String blockName = codeBlock.substring(dotIndex + 1, openIndex).trim();
+                    String arguments = codeBlock.substring(openIndex, closeParen + 1);
+
+                    StringBuffer subBlock = _substituteSuperAndThis(
+                            signature, scopeList, codeObject, new StringBuffer(arguments));
+                    
+                    // recursively substitute the arguments.
+                    List callArguments = CodeStream._parseParameterList(subBlock, 
+                            0, subBlock.length() - 1);
+
+                    Signature callSignature = new Signature(blockName,
+                            callArguments.size());
+
+                    if (!isSuper && callSignature.equals(signature)) {
+                        throw new IllegalActionException(_helper, callSignature
+                                .toString()
+                                + " recursively appends itself in "
+                                + codeObject[0]);
+                    }
+
+                    StringBuffer callCodeBlock = (!isSuper) ? getCode(
+                            callSignature, callArguments) : _getCode(
+                                    callSignature, callArguments, scopeList.subList(1,
+                                            scopeList.size()));
+
+                    if (callCodeBlock == null) {
+                        throw new IllegalActionException(_helper,
+                                "Cannot find " + (isSuper ? "super" : "this")
+                                + " block for " + callSignature
+                                + " in " + codeObject[0]);
+                    }
+                    result.append(callCodeBlock);
+
+                    lastMacroEnd = closeParen + 1;
+                    macroIndex = codeBlock.indexOf("$" + macro + ".", lastMacroEnd);            
+                }
+                result.append(codeBlock.substring(lastMacroEnd, codeBlock.length()));
+                
+                codeBlock = result;
+            }
+            return codeBlock;
+        }
+
+
         /**
          * @param signature
          * @param scopeList
@@ -1304,13 +1444,14 @@ public class CodeStream {
          * @return
          * @throws IllegalActionException
          */
-        private StringBuffer _substituteSuper(Signature signature, 
-            List scopeList, Object[] codeObject, StringBuffer codeBlock) 
-                throws IllegalActionException {
-            
+        private StringBuffer _substituteSuperAndThis_orig(Signature signature, 
+                List scopeList, Object[] codeObject, StringBuffer codeBlock) 
+        throws IllegalActionException {
+
+            // FIXME: Cannot handle nested parentheses.
             String callExpression = "(\\$super\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)"
-                    + "|(\\$this\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)"
-                    + "|(\\$super\\s*\\(.*\\)\\s*;)";
+                + "|(\\$this\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)"
+                + "|(\\$super\\s*\\(.*\\)\\s*;)";
 
             String[] subBlocks = codeBlock.toString().split(callExpression);
 
@@ -1351,21 +1492,21 @@ public class CodeStream {
 
                 StringBuffer callCodeBlock = (!isSuper) ? getCode(
                         callSignature, callArguments) : _getCode(
-                        callSignature, callArguments, scopeList.subList(1,
-                                scopeList.size()));
+                                callSignature, callArguments, scopeList.subList(1,
+                                        scopeList.size()));
 
-                if (callCodeBlock == null) {
-                    throw new IllegalActionException(_helper,
-                            "Cannot find " + (isSuper ? "super" : "this")
+                        if (callCodeBlock == null) {
+                            throw new IllegalActionException(_helper,
+                                    "Cannot find " + (isSuper ? "super" : "this")
                                     + " block for " + callSignature
                                     + " in " + codeObject[0]);
-                }
+                        }
 
-                //superBlock.insert(0, "///////// Super Block ///////////////\n");
-                //superBlock.append("///////// End of Super Block ////////\n");
+                        //superBlock.insert(0, "///////// Super Block ///////////////\n");
+                        //superBlock.append("///////// End of Super Block ////////\n");
 
-                returnCode.append(callCodeBlock);
-                returnCode.append(subBlocks[i]);
+                        returnCode.append(callCodeBlock);
+                        returnCode.append(subBlocks[i]);
             }
             return returnCode;
         }
@@ -1405,7 +1546,7 @@ public class CodeStream {
             }
             return signatures;
         }
-        
+
         /**
          * Return all contained signature keys. This method is used for
          * testing purposes.
@@ -1439,7 +1580,7 @@ public class CodeStream {
          *  or the number of parameters is less than zero.
          */
         public Signature(String functionName, int numParameters)
-                throws IllegalActionException {
+        throws IllegalActionException {
 
             if (functionName == null || numParameters < 0) {
                 throw new IllegalActionException("Bad code block signature: ("
@@ -1461,8 +1602,8 @@ public class CodeStream {
          */
         public boolean equals(Object object) {
             return object instanceof Signature
-                    && functionName.equals(((Signature) object).functionName)
-                    && numParameters == ((Signature) object).numParameters;
+            && functionName.equals(((Signature) object).functionName)
+            && numParameters == ((Signature) object).numParameters;
         }
 
         /**
