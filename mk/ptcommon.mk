@@ -595,6 +595,10 @@ test_codegen:
 
 test_properties:
 	$(JTCLSH) $(ROOT)/util/testsuite/properties.tcl
+	
+test_properties_reports:
+	$(JTCLSH) $(ROOT)/util/testsuite/propertytestreports.tcl
+	
 
 # Generate html files from itcl files, requires itclsh and tycho
 # We use a GNU make extension here
