@@ -114,7 +114,6 @@ public class RegisterSR extends SynchronousFixTransformer {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        super.pruneDependencies();
         removeDependency(input, output);
     }
 }
