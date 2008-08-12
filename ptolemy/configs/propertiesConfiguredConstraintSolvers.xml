@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<!-- Library of actors that are properties. -->
+  <entity name="Configured ConstraintSolvers" class="ptolemy.moml.EntityLibrary">
+    <configure>
+ 	  <?moml
+		<group>
+		  <property name="LogicalAND_Forward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS"/>
+		  <property name="LogicalOR_Backward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalOR_Backward_CS"/>
+		  <property name="LogicalAND_OR_Value_CS" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_OR_Value_CS"/>
+		  <property name="TypeSystem_C" class="ptolemy.data.properties.configuredSolvers.lattice.TypeSystemCCS"/>
+  	  	</group>
+ 	  ?>
+    </configure>
+  </entity>
