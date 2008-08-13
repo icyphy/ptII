@@ -1455,7 +1455,7 @@ public class CodeStream {
         }
 
         private int _indexOfMacro(StringBuffer codeBlock, String macro, int start, boolean allowDot) {
-            int macroIndex = macroIndex = codeBlock.indexOf("$" + macro, start);            
+            int macroIndex = codeBlock.indexOf("$" + macro, start);            
             while (macroIndex >= 0) {
                 int i = macroIndex + macro.length();
 
@@ -1472,82 +1472,6 @@ public class CodeStream {
             return macroIndex;
         }
 
-
-        /**
-         * @param signature
-         * @param scopeList
-         * @param codeObject
-         * @param codeBlock
-         * @deprecated
-         * @return
-         * @throws IllegalActionException
-         */
-        private StringBuffer _substituteSuperAndThis_orig(Signature signature, 
-                List scopeList, Object[] codeObject, StringBuffer codeBlock) 
-        throws IllegalActionException {
-
-            // FIXME: Cannot handle nested parentheses.
-            String callExpression = "(\\$super\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)"
-                + "|(\\$this\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)"
-                + "|(\\$super\\s*\\(.*\\)\\s*;)";
-
-            String[] subBlocks = codeBlock.toString().split(callExpression);
-
-            StringBuffer returnCode = new StringBuffer(subBlocks[0]);
-
-            Pattern pattern = Pattern.compile(callExpression);
-            Matcher matcher = pattern.matcher(codeBlock);
-
-            for (int i = 1; i < subBlocks.length; i++) {
-
-                String call = "";
-
-                if (matcher.find()) {
-                    call = matcher.group();
-                }
-
-                int dotIndex = call.indexOf(".");
-                int openIndex = call.indexOf("(");
-
-                boolean isSuper = call.contains("super");
-                boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
-
-                String blockName = (isImplicit) ? signature.functionName
-                        : call.substring(dotIndex + 1, openIndex).trim();
-
-                List callArguments = CodeStream._parseParameterList(
-                        new StringBuffer(call), 0, call.length() - 2);
-
-                Signature callSignature = new Signature(blockName,
-                        callArguments.size());
-
-                if (!isSuper && callSignature.equals(signature)) {
-                    throw new IllegalActionException(_helper, callSignature
-                            .toString()
-                            + " recursively appends itself in "
-                            + codeObject[0]);
-                }
-
-                StringBuffer callCodeBlock = (!isSuper) ? getCode(
-                        callSignature, callArguments) : _getCode(
-                                callSignature, callArguments, scopeList.subList(1,
-                                        scopeList.size()));
-
-                        if (callCodeBlock == null) {
-                            throw new IllegalActionException(_helper,
-                                    "Cannot find " + (isSuper ? "super" : "this")
-                                    + " block for " + callSignature
-                                    + " in " + codeObject[0]);
-                        }
-
-                        //superBlock.insert(0, "///////// Super Block ///////////////\n");
-                        //superBlock.append("///////// End of Super Block ////////\n");
-
-                        returnCode.append(callCodeBlock);
-                        returnCode.append(subBlocks[i]);
-            }
-            return returnCode;
-        }
 
         /**
          * Get the parameters for the code block with the given signature.
