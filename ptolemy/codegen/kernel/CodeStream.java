@@ -1121,9 +1121,6 @@ public class CodeStream {
         commaIndex != -1 && commaIndex <= endIndex; 
         commaIndex = CodeGeneratorHelper._indexOf(",", codeInFile.toString(), commaIndex + 1)) {
 
-            if (startIndex > commaIndex) {
-                int i = 0;
-            }
             String newParameter = codeInFile.substring(
                     startIndex, commaIndex);
 
@@ -1406,9 +1403,6 @@ public class CodeStream {
 
                     boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
 
-                    if (isImplicit) {
-                        int i = 0;
-                    }
                     if (openIndex < 0 || closeParen < 0 || openIndex > closeParen) {
                         throw new IllegalActionException(_helper, 
                                 signature + " contains an ill-formatted $" + macro + "().");
