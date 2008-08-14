@@ -65,9 +65,9 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
  happens when the fire() method is invoked.  The recognized
  values are:
  <ul>
- <li> "do not open" (the default)
- <li> "open in Vergil"
- <li> "open in Vergil (full screen)"
+ <li> "do not open" (the default) </li>
+ <li> "open in Vergil" </li>
+ <li> "open in Vergil (full screen)" </li>
  </ul>
  Note that it is dangerous to use the full-screen mode because it
  becomes difficult to stop execution of the model that contains this
@@ -76,15 +76,15 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
  stop the current iteration, and very likely, another iteration will
  begin immediately and again occupy the entire screen.
  Use this option with care.
-
+ </li>
  <li> <i>closeOnPostfire</i>:
  The value of this string attribute determines what happens
  in the postfire() method.  The recognized values are:
  <ul>
- <li> "do nothing" (the default)
- <li> "close Vergil graph"
+ <li> "do nothing" (the default) </li>
+ <li> "close Vergil graph" </li>
  </ul>
-
+ </li>
  </ul>
 
 
@@ -144,9 +144,9 @@ public class VisualModelReference extends ModelReference {
      *  happens when the fire() method is invoked.  The recognized
      *  values are:
      *  <ul>
-     *  <li> "do not open" (the default)
-     *  <li> "open in Vergil"
-     *  <li> "open in Vergil (full screen)"
+     *  <li> "do not open" (the default) </li>
+     *  <li> "open in Vergil" </li>
+     *  <li> "open in Vergil (full screen)" </li>
      *  </ul>
      */
     public StringParameter openOnFiring;
@@ -154,8 +154,8 @@ public class VisualModelReference extends ModelReference {
     /** The value of this string parameter determines what close action
      *  happens in the postfire() method.  The recognized values are:
      *  <ul>
-     *  <li> "do nothing" (the default)
-     *  <li> "close Vergil graph"
+     *  <li> "do nothing" (the default) </li>
+     *  <li> "close Vergil graph" </li>
      *  </ul>
      */
     public StringParameter closeOnPostfire;
