@@ -37,13 +37,16 @@ import java.util.List;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
@@ -146,6 +149,9 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     /** The index of this instance. */
     public Parameter instance;
 
+    /** If true, show the clones. */
+    public Parameter showClones;
+
     /** Clone a "master copy" of this actor into the specified workspace
      *  - note that this is not used for creating the additional
      *  instances.
@@ -198,7 +204,29 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                 } catch (CloneNotSupportedException ex) {
                     throw new IllegalActionException(this, ex, "Clone failed.");
                 }
+
                 try {
+                    // See if we should draw the clone.
+                    if (((BooleanToken)showClones.getToken()).booleanValue()) {
+                        // Draw the clone beneath the master's location.
+                        Location location = (Location) clone
+                                .getAttribute("_location");
+                        if (location != null) {
+                            double coords[] = location.getLocation();
+                            coords[1] += 60 * i;
+                            location.setLocation(coords);
+                        }
+                    } else {
+                        // Hide the clone.
+                        try {
+                            new Attribute(clone, "_hide");
+                        } catch (KernelException e) {
+                            // This should not occur.  Ignore if it does
+                            // since the only downside is that the actor is
+                            // rendered.
+                        }
+                    }
+
                     clone.setName(getName() + "_" + i);
                     clone.setContainer(container);
                     clone.validateSettables();
@@ -424,13 +452,6 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         // during execution because then wrapup might not properly complete.
         newObject.setPersistent(false);
 
-        try {
-            new Attribute(newObject, "_hide");
-        } catch (KernelException e) {
-            // This should not occur.  Ignore if it does
-            // since the only downside is that the actor is
-            // rendered.
-        }
         return newObject;
     }
 
@@ -442,6 +463,9 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         try {
             nInstances = new Parameter(this, "nInstances", new IntToken(1));
             instance = new Parameter(this, "instance", new IntToken(0));
+            showClones = new Parameter(this, "showClones",
+                new BooleanToken(false));
+            showClones.setTypeEquals(BaseType.BOOLEAN);
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
                     "Problem setting up instances or nInstances parameter");
