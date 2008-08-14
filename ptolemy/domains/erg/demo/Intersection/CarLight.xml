@@ -632,8 +632,8 @@
                 </property>
             </port>
             <entity name="Red" class="ptolemy.domains.erg.kernel.Event">
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
-<display name="isInitialEvent"/>                </property>
+                <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Light = R;&#10;  PedControl = PedGo">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -714,8 +714,8 @@
                 </property>
             </entity>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-<display name="isInitialEvent"/>                </property>
+                <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[430.019252090648, 174.80865680775048]">

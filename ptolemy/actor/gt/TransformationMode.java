@@ -122,7 +122,8 @@ implements MatchCallback {
                     GraphTransformer.transform(workingCopy, result);
                     break;
                 case REPLACE_ALL:
-                    GraphTransformer.transform(workingCopy, _matchResults);
+                    GraphTransformer.transform(workingCopy,
+                            new LinkedList<MatchResult>(_matchResults));
                     break;
                 case MATCH_ONLY:
                     break;

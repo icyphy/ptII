@@ -56,7 +56,7 @@ public class InitEvent extends GTEvent {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        isInitialState.setToken(BooleanToken.TRUE);
+        isInitialEvent.setToken(BooleanToken.TRUE);
         modelName = new StringParameter(this, "modelName");
     }
 
@@ -77,17 +77,20 @@ public class InitEvent extends GTEvent {
     public void fire(ArrayToken arguments) throws IllegalActionException {
         ParserScope scope = _getParserScope(arguments);
         actions.execute(scope);
-        try {
-            _setModelVariable((CompositeEntity) _emptyModel.clone(
-                    new Workspace()));
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalActionException("Unable to clone an empty model.");
-        }
+        _setModelVariable(_getInitialModel());
         _setSuccessVariable(true);
         _scheduleEvents(scope);
     }
 
     public StringParameter modelName;
+
+    protected CompositeEntity _getInitialModel() throws IllegalActionException {
+        try {
+            return (CompositeEntity) _emptyModel.clone(new Workspace());
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalActionException("Unable to clone an empty model.");
+        }
+    }
 
     private CompositeEntity _emptyModel;
 }

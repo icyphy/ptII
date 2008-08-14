@@ -84,22 +84,22 @@ public class TestIcon extends NameIcon {
     }
 
     public Figure createFigure() {
-        CompositeFigure result = (CompositeFigure) super.createFigure();
+        CompositeFigure figure = (CompositeFigure) super.createFigure();
         LabelFigure label = null;
 
-        ZList children = result.getChildren();
+        ZList children = figure.getChildren();
         for (int i = children.getFigureCount() - 1; i >= 0; i--) {
-            Figure figure = children.get(i);
-            if (figure instanceof LabelFigure) {
-                label = (LabelFigure) figure;
+            Figure childFigure = children.get(i);
+            if (childFigure instanceof LabelFigure) {
+                label = (LabelFigure) childFigure;
                 break;
             }
         }
 
         if (label == null) {
-            return result;
+            return figure;
         } else if (label != null) {
-            Rectangle2D bounds = result.getBounds();
+            Rectangle2D bounds = figure.getBounds();
             label.translateTo(bounds.getCenterX(), bounds.getMinY() +
                     label.getBounds().getHeight() / 2.0 + 15.0);
         }
@@ -107,6 +107,8 @@ public class TestIcon extends NameIcon {
         String actions = null;
         String parameters = null;
         Event event = (Event) getContainer();
+        boolean fireOnInput = false;
+        boolean monitor = false;
         if (event != null) {
             try {
                 if (event.parameters.getParameterNames().size() > 0) {
@@ -120,15 +122,32 @@ public class TestIcon extends NameIcon {
             if (exp != null && !exp.trim().equals("")) {
                 actions = "{ " + exp + " }";
             }
-        }
-        if (parameters != null) {
-            label = _addLabel(result, label, parameters);
-        }
-        if (actions != null) {
-            _addLabel(result, label, actions);
+            fireOnInput = event.fireOnInput();
+            monitor = !event.monitoredVariables.getExpression().trim().equals(
+                    "");
         }
 
-        return result;
+        if (parameters != null) {
+            label = _addLabel(figure, label, parameters);
+        }
+
+        if (actions != null) {
+            _addLabel(figure, label, actions);
+        }
+
+        Rectangle2D bounds = figure.getBounds();
+        double y = bounds.getCenterY();
+        double x = bounds.getMinX();
+        if (monitor) {
+            _addTrianglarIcon(figure, fireOnInput ? x + 2.0 : x + 7.0, y,
+                    Color.blue);
+        }
+
+        if (fireOnInput) {
+            _addTrianglarIcon(figure, x + 7.0, y, Color.red);
+        }
+
+        return figure;
     }
 
     protected Paint _getFill() {
@@ -167,6 +186,20 @@ public class TestIcon extends NameIcon {
                 bounds.getMaxY() + newBounds.getHeight() / 2.0 + 7.0);
         figure.add(label);
         return label;
+    }
+
+    private void _addTrianglarIcon(CompositeFigure figure, double x, double y,
+            Paint fill) {
+        Polygon2D.Double polygon = new Polygon2D.Double();
+        polygon.moveTo(-5, 0);
+        polygon.lineTo(-5, 5);
+        polygon.lineTo(5, 0);
+        polygon.lineTo(-5, -5);
+        polygon.lineTo(-5, 0);
+        polygon.closePath();
+        polygon.translate(x, y);
+        Figure inputIcon = new BasicFigure(polygon, fill, 1.5f);
+        figure.add(inputIcon);
     }
 
     private static final Font _ACTION_FONT = new Font("SansSerif", Font.PLAIN,

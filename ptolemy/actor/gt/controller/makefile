@@ -52,6 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ActorParameter.java \
 	GTEvent.java \
+	InitContainingModelEvent.java \
 	InitEvent.java \
 	InputEvent.java \
 	Match.java \
@@ -62,6 +63,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	MatchIcon.xml \
+	ModelUpdater.xml \
 	TestIcon.xml \
 	TransformIcon.xml \
 	TransformationController.xml

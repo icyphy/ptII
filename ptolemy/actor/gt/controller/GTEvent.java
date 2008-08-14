@@ -56,8 +56,8 @@ public class GTEvent extends Event {
         super(container, name);
 
         fireOnInput.setVisibility(Settable.NONE);
-        isInitialState.setVisibility(Settable.NONE);
-        isFinalState.setVisibility(Settable.NONE);
+        isInitialEvent.setVisibility(Settable.NONE);
+        isFinalEvent.setVisibility(Settable.NONE);
     }
 
     protected CompositeEntity _getModelVariable()
@@ -75,7 +75,7 @@ public class GTEvent extends Event {
     }
 
     protected boolean _getSuccessVariable() throws IllegalActionException {
-        Parameter parameter = _getPatternMatchedParameter();
+        Parameter parameter = _getMatchedParameter();
         return ((BooleanToken) parameter.getToken()).booleanValue();
     }
 
@@ -87,7 +87,7 @@ public class GTEvent extends Event {
 
     protected void _setSuccessVariable(boolean patternMatched)
     throws IllegalActionException {
-        Parameter parameter = _getPatternMatchedParameter();
+        Parameter parameter = _getMatchedParameter();
         parameter.setToken(BooleanToken.getInstance(patternMatched));
     }
 
@@ -102,11 +102,11 @@ public class GTEvent extends Event {
         return actorParameter;
     }
 
-    private Parameter _getPatternMatchedParameter()
+    private Parameter _getMatchedParameter()
     throws IllegalActionException {
         ERGController controller = (ERGController) getContainer();
-        Parameter parameter = (Parameter) controller.getAttribute(
-                "PatternMatched", Parameter.class);
+        Parameter parameter = (Parameter) controller.getAttribute("Matched",
+                Parameter.class);
         if (parameter == null) {
             throw new IllegalActionException("Unable to find the " +
                     "PatternMatched parameter in the ERG controller.");

@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Discrete Event domain demos
+# Makefile for Ptolemy II fsm domain documentation
 #
-# @Authors: Thomas Huining Feng
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2008 The Regents of the University of California.
+# @Copyright (c) 2002-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/erg/demo
+ME =		ptolemy/domains/erg/doc
 
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		AdaptiveCarWash CarWash Intersection TrafficLight
+DIRS =
 
 CLASSPATH =	$(ROOT)
 
@@ -43,21 +43,21 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTPACKAGE = 	doc
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	AdaptiveCarWash/AdaptiveCarWash.jar \
-	CarWash/CarWash.jar \
-	Intersection/Intersection.jar \
-	TrafficLight/TrafficLight.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	acks.htm \
+	body.htm \
+	buttons.htm \
+	index.htm \
+	main.htm \
+	toc.htm
 
 # Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS =
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -67,12 +67,10 @@ MISC_FILES = $(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-all: jclass
-	@echo "To run all the demos, run 'make demo'"
+all:
+	@echo "Nothing to be done in this directory"
 
-install: jclass jars
-
-demo: subdemo
+install: jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

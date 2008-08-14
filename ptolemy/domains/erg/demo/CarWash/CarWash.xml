@@ -60,7 +60,7 @@ design in ERG.</text></svg></configure>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">CarWash</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">Car Wash</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -275,7 +275,9 @@ are reset at the start of each run.</text></svg></configure>
             </port>
             <entity name="Run" class="ptolemy.domains.erg.kernel.Event">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-<display name="isInitialEvent"/>                </property>
+                </property>
+                <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">

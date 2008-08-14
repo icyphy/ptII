@@ -151,25 +151,13 @@ public class ERGDirector extends Director implements TimedDirector {
      *  @exception IllegalActionException If the refinement of the given event
      *  (if any) cannot be obtained.
      */
-    public Time cancel(Event event) throws IllegalActionException {
-        Iterator<TimedEvent> iterator = _eventQueue.iterator();
-        Set<TypedActor> refinementSet = new HashSet<TypedActor>();
-        TypedActor[] refinements = event.getRefinement();
-        if (refinements != null) {
-            for (TypedActor refinement : refinements) {
-                refinementSet.add(refinement);
-            }
+    public TimedEvent cancel(Event event) throws IllegalActionException {
+        TimedEvent timedEvent = findFirst(event);
+        if (timedEvent != null) {
+            _eventQueue.remove(timedEvent);
+            _inputQueue.remove(timedEvent);
         }
-        while (iterator.hasNext()) {
-            TimedEvent timedEvent = iterator.next();
-            if (timedEvent.contents == event
-                    || refinementSet.contains(timedEvent.contents)) {
-                iterator.remove();
-                _inputQueue.remove(timedEvent);
-                return timedEvent.timeStamp;
-            }
-        }
-        return null;
+        return timedEvent;
     }
 
     /** Clone the director into the specified workspace. This calls the
@@ -200,6 +188,25 @@ public class ERGDirector extends Director implements TimedDirector {
      */
     public Dependency delayDependency(double delay) {
         return BooleanDependency.OTIMES_IDENTITY;
+    }
+
+    public TimedEvent findFirst(Event event) throws IllegalActionException {
+        Set<TypedActor> refinementSet = new HashSet<TypedActor>();
+        TypedActor[] refinements = event.getRefinement();
+        if (refinements != null) {
+            for (TypedActor refinement : refinements) {
+                refinementSet.add(refinement);
+            }
+        }
+        Iterator<TimedEvent> iterator = _eventQueue.iterator();
+        while (iterator.hasNext()) {
+            TimedEvent timedEvent = iterator.next();
+            if (timedEvent.contents == event
+                    || refinementSet.contains(timedEvent.contents)) {
+                return timedEvent;
+            }
+        }
+        return null;
     }
 
     /** Fire the director and process the imminent events or the events that
@@ -371,6 +378,17 @@ public class ERGDirector extends Director implements TimedDirector {
         }
     }
 
+    public Time getModelTime() {
+        if (_delegateFireAt && _isEmbedded()) {
+            NamedObj container = getContainer();
+            if (container instanceof Actor) {
+                return ((Actor) container).getExecutiveDirector()
+                        .getModelTime();
+            }
+        }
+        return super.getModelTime();
+    }
+
     /** Initialize the model controlled by this director. The initialize()
      *  method of the superclass is called. After that, the initial schedule is
      *  computed. To initialize a schedule, the initial events are placed in the
@@ -408,6 +426,7 @@ public class ERGDirector extends Director implements TimedDirector {
         }
         if (_isEmbedded()) {
             _requestFiring();
+            _delegateFireAt = true;
         }
         return result;
     }
@@ -428,33 +447,33 @@ public class ERGDirector extends Director implements TimedDirector {
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
 
-        if (_hasInput() && !_inputQueue.isEmpty()) {
-            return result;
-        }
+        if (!_hasInput() || _inputQueue.isEmpty()) {
+            if (!_eventQueue.isEmpty()) {
+                Time modelTime = getModelTime();
+                Time nextEventTime = (_eventQueue.peek()).timeStamp;
+                while (modelTime.compareTo(nextEventTime) > 0) {
+                    _eventQueue.poll();
 
-        if (!_eventQueue.isEmpty()) {
-            Time modelTime = getModelTime();
-            Time nextEventTime = (_eventQueue.peek()).timeStamp;
-            while (modelTime.compareTo(nextEventTime) > 0) {
-                _eventQueue.poll();
-
-                if (!_eventQueue.isEmpty()) {
-                    TimedEvent event = _eventQueue.peek();
-                    nextEventTime = event.timeStamp;
-                } else {
-                    nextEventTime = Time.POSITIVE_INFINITY;
+                    if (!_eventQueue.isEmpty()) {
+                        TimedEvent event = _eventQueue.peek();
+                        nextEventTime = event.timeStamp;
+                    } else {
+                        nextEventTime = Time.POSITIVE_INFINITY;
+                    }
                 }
-            }
 
-            if (!nextEventTime.equals(modelTime)) {
-                result = false;
-            }
+                if (!nextEventTime.equals(modelTime)) {
+                    result = false;
+                }
 
+            }
         }
 
         if (_debugging) {
             _debug("Prefire returns: " + result);
         }
+
+        _delegateFireAt = !result;
 
         return result;
     }
@@ -512,6 +531,47 @@ public class ERGDirector extends Director implements TimedDirector {
      */
     public StringAttribute controllerName;
 
+    //////////////////////////////////////////////////////////////////////////
+    //// TimedEvent
+
+    /**
+     The class to encapsulate information to be stored in an entry in the event
+     queue.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
+    public static class TimedEvent extends ptolemy.actor.util.TimedEvent {
+
+        /** Construct a TimedEvent.
+         *
+         *  @param time The model time at which the actor or event is scheduled.
+         *  @param object The actor or event.
+         *  @param arguments Arguments to the event.
+         */
+        public TimedEvent(Time time, Object object, ArrayToken arguments) {
+            super(time, object);
+            this.arguments = arguments;
+        }
+
+        /** Display timeStamp and contents.
+         */
+        public String toString() {
+            String result = "timeStamp: " + timeStamp + ", contents: " +
+                    contents;
+            if (arguments != null) {
+                result += "(" + arguments + ")";
+            }
+            return result;
+        }
+
+        /** Arguments to the event. */
+        public ArrayToken arguments;
+    }
+
     /** Initialize the schedule by putting the initial events in the event
      *  queue. If this director is directly associated with a modal model, it
      *  schedules itself to be fired immediately.
@@ -532,7 +592,7 @@ public class ERGDirector extends Director implements TimedDirector {
             Iterator<?> entities = controller.deepEntityList().iterator();
             while (entities.hasNext()) {
                 Event event = (Event) entities.next();
-                boolean isInitial = ((BooleanToken) event.isInitialState
+                boolean isInitial = ((BooleanToken) event.isInitialEvent
                         .getToken()).booleanValue();
                 if (isInitial) {
                     _eventQueue.add(new TimedEvent(_currentTime, event, null));
@@ -543,6 +603,10 @@ public class ERGDirector extends Director implements TimedDirector {
             if (_isEmbedded()) {
                 _requestFiring();
             }
+        }
+
+        if (_isEmbedded()) {
+            _delegateFireAt = true;
         }
     }
 
@@ -592,9 +656,9 @@ public class ERGDirector extends Director implements TimedDirector {
 
             Event event = (Event) timedEvent.contents;
             controller._setCurrentEvent(event);
-            event.fire(timedEvent._arguments);
+            event.fire(timedEvent.arguments);
 
-            if (((BooleanToken) event.isFinalState.getToken()).booleanValue()) {
+            if (((BooleanToken) event.isFinalEvent.getToken()).booleanValue()) {
                 _eventQueue.clear();
             }
 
@@ -624,6 +688,10 @@ public class ERGDirector extends Director implements TimedDirector {
         }
 
         TimedEvent timedEvent = new TimedEvent(time, object, arguments);
+        Time topTime = null;
+        if (!_eventQueue.isEmpty()) {
+            topTime = _eventQueue.peek().timeStamp;
+        }
         _eventQueue.add(timedEvent);
         if (object instanceof Actor) {
             _inputQueue.add(timedEvent);
@@ -632,6 +700,11 @@ public class ERGDirector extends Director implements TimedDirector {
             if (event.fireOnInput()) {
                 _inputQueue.add(timedEvent);
             }
+        }
+
+        if (_delegateFireAt && (topTime == null || topTime.compareTo(time)
+                > 0)) {
+            _requestFiring();
         }
     }
 
@@ -727,11 +800,12 @@ public class ERGDirector extends Director implements TimedDirector {
     /** Cached reference to mode controller. */
     private ERGController _controller = null;
 
-    //////////////////////////////////////////////////////////////////////////
-    //// EventComparator
-
     /** Version of cached reference to mode controller. */
     private long _controllerVersion = -1;
+
+    /** Whether fireAt() invocations should be delegated to the director at the
+    higher level. */
+    private boolean _delegateFireAt = false;
 
     /** The comparator used to compare the time stamps of any two events. */
     private EventComparator _eventComparator = new EventComparator();
@@ -746,6 +820,9 @@ public class ERGDirector extends Director implements TimedDirector {
 
     /** The real time at which the execution started. */
     private long _realStartTime;
+
+    //////////////////////////////////////////////////////////////////////////
+    //// EventComparator
 
     /**
      A comparator that compares the time stamps of two timed events in the event
@@ -789,46 +866,5 @@ public class ERGDirector extends Director implements TimedDirector {
             }
             return result;
         }
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    //// TimedEvent
-
-    /**
-     The class to encapsulate information to be stored in an entry in the event
-     queue.
-
-     @author Thomas Huining Feng
-     @version $Id$
-     @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
-     @Pt.AcceptedRating Red (tfeng)
-     */
-    private static class TimedEvent extends ptolemy.actor.util.TimedEvent {
-
-        /** Construct a TimedEvent.
-         *
-         *  @param time The model time at which the actor or event is scheduled.
-         *  @param object The actor or event.
-         *  @param arguments Arguments to the event.
-         */
-        public TimedEvent(Time time, Object object, ArrayToken arguments) {
-            super(time, object);
-            _arguments = arguments;
-        }
-
-        /** Display timeStamp and contents.
-         */
-        public String toString() {
-            String result = "timeStamp: " + timeStamp + ", contents: " +
-                    contents;
-            if (_arguments != null) {
-                result += "(" + _arguments + ")";
-            }
-            return result;
-        }
-
-        /** Arguments to the event. */
-        private ArrayToken _arguments;
     }
 }

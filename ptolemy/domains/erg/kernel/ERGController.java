@@ -168,6 +168,14 @@ public class ERGController extends ModalController {
                 BooleanDependency.OPLUS_IDENTITY);
     }
 
+    /** Return the director responsible for the execution of this actor.
+     *
+     *  @return The director responsible for the execution of this actor.
+     */
+    public Director getDirector() {
+        return director;
+    }
+
     /** Return the executive director. If the current controller is the
      *  top-level controller of an ERG modal model, then the executive director
      *  is its director (returned by {@link #getDirector()}). Otherwise, the
@@ -183,7 +191,7 @@ public class ERGController extends ModalController {
             if (_executiveDirectorVersion != workspace.getVersion()) {
                 ERGModalModel modalModel = (ERGModalModel) getContainer();
                 if (modalModel.getController() == this) {
-                    _executiveDirector = super.getExecutiveDirector();
+                    _executiveDirector = super.getDirector();
                 } else {
                     for (Object atomicEntity
                             : modalModel.allAtomicEntityList()) {

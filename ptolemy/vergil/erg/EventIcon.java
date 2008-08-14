@@ -75,6 +75,7 @@ public class EventIcon extends StateIcon {
         String actions = null;
         String parameters = null;
         boolean fireOnInput = false;
+        boolean monitor = false;
 
         Event event = (Event) getContainer();
         if (event != null) {
@@ -92,6 +93,8 @@ public class EventIcon extends StateIcon {
             }
 
             fireOnInput = event.fireOnInput();
+            monitor = !event.monitoredVariables.getExpression().trim().equals(
+                    "");
         }
 
         if (parameters != null) {
@@ -102,8 +105,16 @@ public class EventIcon extends StateIcon {
             _addLabel(figure, actions);
         }
 
+        Rectangle2D bounds = figure.getBounds();
+        double y = bounds.getMinY() + 12.5;
+        double x = bounds.getMinX();
+        if (monitor) {
+            _addTrianglarIcon(figure, fireOnInput ? x - 1.0 : x + 4.0, y,
+                    Color.blue);
+        }
+
         if (fireOnInput) {
-            _addInputIcon(figure);
+            _addTrianglarIcon(figure, x + 4.0, y, Color.red);
         }
 
         return figure;
@@ -147,12 +158,12 @@ public class EventIcon extends StateIcon {
 
         Event event = (Event) getContainer();
         try {
-            boolean isInitial = ((BooleanToken) event.isInitialState.getToken())
+            boolean isInitial = ((BooleanToken) event.isInitialEvent.getToken())
                     .booleanValue();
             if (isInitial) {
                 return _INITIAL_COLOR;
             }
-            boolean isFinal = ((BooleanToken) event.isFinalState.getToken())
+            boolean isFinal = ((BooleanToken) event.isFinalEvent.getToken())
                     .booleanValue();
             if (isFinal) {
                 return _FINAL_COLOR;
@@ -164,18 +175,28 @@ public class EventIcon extends StateIcon {
         return super._getFill();
     }
 
-    private void _addInputIcon(CompositeFigure figure) {
-        Rectangle2D bounds = figure.getBounds();
-        Polygon2D.Double polygon = new Polygon2D.Double();
-        polygon.moveTo(-5, 0);
-        polygon.lineTo(-5, 5);
-        polygon.lineTo(5, 0);
-        polygon.lineTo(-5, -5);
-        polygon.lineTo(-5, 0);
-        polygon.closePath();
-        polygon.translate(bounds.getMinX() + 4, bounds.getMinY() + 12.5);
-        Figure inputIcon = new BasicFigure(polygon, Color.red, 1.5f);
-        figure.add(inputIcon);
+    /** Return the line width to use in rendering the box.
+     *  This returns 1.0f, unless the container is an instance of State
+     *  and its <i>isInitialState</i> parameter is set to true.
+     *  @return The line width to use in rendering the box.
+     */
+    protected float _getLineWidth() {
+        NamedObj container = getContainer();
+        if (container instanceof Event) {
+            try {
+                if (((BooleanToken) (((Event) container).isInitialEvent
+                        .getToken())).booleanValue()) {
+                    return 2.0f;
+                }
+            } catch (IllegalActionException e) {
+                // Ignore and return the default.
+            }
+        }
+        return 1.0f;
+    }
+
+    protected boolean _middleTrangles() {
+        return false;
     }
 
     private void _addLabel(CompositeFigure figure, String text) {
@@ -214,6 +235,20 @@ public class EventIcon extends StateIcon {
                 backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0 -
                 _spacingValue);
         figure.add(label);
+    }
+
+    private void _addTrianglarIcon(CompositeFigure figure, double x, double y,
+            Paint fill) {
+        Polygon2D.Double polygon = new Polygon2D.Double();
+        polygon.moveTo(-5, 0);
+        polygon.lineTo(-5, 5);
+        polygon.lineTo(5, 0);
+        polygon.lineTo(-5, -5);
+        polygon.lineTo(-5, 0);
+        polygon.closePath();
+        polygon.translate(x, y);
+        Figure inputIcon = new BasicFigure(polygon, fill, 1.5f);
+        figure.add(inputIcon);
     }
 
     private static final Font _ACTION_FONT = new Font("SansSerif", Font.PLAIN,

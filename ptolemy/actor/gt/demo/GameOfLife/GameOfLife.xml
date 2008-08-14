@@ -1115,7 +1115,7 @@
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-            <property name="PatternMatched" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="Matched" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <port name="stable" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -2430,7 +2430,7 @@
 </configure>
             </entity>
             <entity name="Update" class="ptolemy.actor.gt.controller.Transform">
-                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="stable = !PatternMatched">
+                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="stable = !Matched">
                 </property>
                 <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace all">
                 </property>
@@ -2817,7 +2817,7 @@
             <relation name="relation_1_5" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="PatternMatched">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Matched">
 <display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6108698956811778">
                 </property>
@@ -2841,7 +2841,7 @@
             <relation name="relation_1_6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!PatternMatched">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!Matched">
 <display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5924931545056886">
                 </property>

@@ -34,16 +34,21 @@ package ptolemy.domains.erg.kernel;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.Initializable;
+import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -52,8 +57,11 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
+import ptolemy.kernel.util.Workspace;
 
 /**
  An ERG event is contained by an ERG controller in an ERG modal model. Each
@@ -63,20 +71,32 @@ import ptolemy.kernel.util.Settable;
  each event, so that processing an event causes those actions to be executed.
  <p>
  An event may schedule another event after a 0 or greater delay of model time.
- This scheduling relation may be guarded by a Boolean expression.
- When an event schedules another, processing the first one causes the second one
- to be placed in the same ERG controller's event queue. An event may also cancel
- another event that was previously placed in the same ERG controller's event
- queue but has not been processed yet.
+ This scheduling relation may be guarded by a Boolean expression. When an event
+ schedules another, processing the first one causes the second one to be placed
+ in the same ERG controller's event queue. An event may also cancel another
+ event that was previously placed in the same ERG controller's event queue but
+ has not been processed yet.
  <p>
- If the <i>fireOnInput</i> parameter of an event is set to true, then the event
- is also placed in its ERG controller's input event queue when scheduled. When
- the ERG controller receives an input at any of its input ports, all the events
- in its input event queue are removed and processed. Those events can use the
- value of that input in their guards or actions.
+ If the <code>fireOnInput</code> parameter of an event is set to true, then the
+ event is also placed in its ERG controller's input event queue when scheduled.
+ When the ERG controller receives an input at any of its input ports, all the
+ events in its input event queue are removed and processed. Those events can use
+ the value of that input in their guards or actions.
  <p>
  An event may also define 0 or more formal parameters. When it is scheduled, on
  the scheduling relation, values to those parameters must be provided.
+ <p>
+ When an event is processed, if there are actions defined for it, then those
+ actions are executed. This happens before the refinements of the event is
+ fired, if any.
+ <p>
+ One or more variable names can be listed in the <code>monitoredVariables</code>
+ parameter, separated by commas. If any such variable names are specified, when
+ the model is executed, changes on those variables are captured by the event.
+ This means, if the event is scheduled in the ERG controller's event queue and a
+ change is made on the variable (e.g., by the user or by actors such as {@link
+ ptolemy.actor.lib.SetVariable}), then the event is processed even though its
+ scheduled time has not arrive yet.
  <p>
  This class extends the {@link State} class in FSM, but it implements a model of
  computation whose semantics is completely different from FSM. Extending from
@@ -89,7 +109,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Event extends State {
+public class Event extends State implements Initializable, ValueListener {
 
     /** Construct an event with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -112,8 +132,18 @@ public class Event extends State {
         super(container, name);
 
         refinementName.setVisibility(Settable.NONE);
-        isInitialState.setDisplayName("isInitialEvent");
-        isFinalState.setDisplayName("isFinalEvent");
+
+        //isInitialState.setDisplayName("isInitialEvent");
+        //isFinalState.setDisplayName("isFinalEvent");
+        isInitialState.setVisibility(Settable.NONE);
+        isFinalState.setVisibility(Settable.NONE);
+
+        isInitialEvent = new Parameter(this, "isInitialEvent");
+        isInitialEvent.setTypeEquals(BaseType.BOOLEAN);
+        isInitialEvent.setExpression("false");
+        isFinalEvent = new Parameter(this, "isFinalEvent");
+        isFinalEvent.setTypeEquals(BaseType.BOOLEAN);
+        isFinalEvent.setExpression("false");
 
         parameters = new ParametersAttribute(this, "parameters");
 
@@ -127,15 +157,22 @@ public class Event extends State {
         fireOnInput = new Parameter(this, "fireOnInput");
         fireOnInput.setToken(BooleanToken.FALSE);
         fireOnInput.setTypeEquals(BaseType.BOOLEAN);
+
+        monitoredVariables = new StringParameter(this, "monitoredVariables");
+    }
+
+    public void addInitializable(Initializable initializable) {
     }
 
     /** React to a change in an attribute. If the changed attribute is
-     *  the <i>parameters</i> attribute, update the parser scope for the actions
-     *  so that the parameters' names can be referred to in those actions. If
-     *  the changed attribute is <i>isInitialState</i>, do nothing. This is
-     *  because the ERG controller need not be updated with this attribute is
-     *  set. If the changed attribute is among the other attributes, then the
-     *  superclass is called.
+     *  the <code>parameters</code> attribute, update the parser scope for the
+     *  actions so that the parameters' names can be referred to in those
+     *  actions. If it is <code>monitoredVariables</code>, register this event
+     *  as a value listener of all the monitored variables. If the changed
+     *  attribute is <code>isInitialState</code>, do nothing. This is because
+     *  the ERG controller need not be updated with this attribute is set. If
+     *  the changed attribute is among the other attributes, then the superclass
+     *  is called.
      *
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If thrown by the superclass
@@ -143,11 +180,29 @@ public class Event extends State {
      */
     public void attributeChanged(Attribute attribute)
     throws IllegalActionException {
-        if (attribute == parameters) {
-            actions._updateParserScope();
-        } else if (attribute != isInitialState) {
+        if (attribute != isInitialState) {
             super.attributeChanged(attribute);
         }
+
+        if (attribute == monitoredVariables) {
+            _addValueListener();
+        } else if (attribute == parameters) {
+            actions._updateParserScope();
+        }
+    }
+
+    /** Clone the state into the specified workspace. This calls the
+     *  base class and then sets the attribute and port public members
+     *  to refer to the attributes and ports of the new state.
+     *  @param workspace The workspace for the new event.
+     *  @return A new event.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Event newObject = (Event) super.clone(workspace);
+        newObject._monitoredVariables = null;
+        return newObject;
     }
 
     /** Process this event with the given arguments. The number of arguments
@@ -187,17 +242,118 @@ public class Event extends State {
         }
     }
 
+    /** Begin execution of the actor and start to monitor the variables whose
+     *  values this event listens to.
+     *
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void initialize() throws IllegalActionException {
+        _monitoring = true;
+    }
+
+    /** Do nothing.
+     *
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void preinitialize() throws IllegalActionException {
+    }
+
+    /** Do nothing.
+     *
+     *  @param initializable The object whose methods should no longer be
+     *  invoked.
+     */
+    public void removeInitializable(Initializable initializable) {
+    }
+
+    /** Call the superclass to set the container (which should be an instance of
+     *  {@link ERGController}) of this event, and then register this event as a
+     *  value listener of all the variables listed in the
+     *  <code>monitoredVariables</code> parameter. This method also adds the
+     *  event to the container's initializable objects by calling its
+     *  {@link Initializable#addInitializable(Initializable)} method.
+     *
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace, or
+     *   if the protected method _checkContainer() throws it, or if
+     *   a contained Settable becomes invalid and the error handler
+     *   throws it.
+     *  @exception NameDuplicationException If the name of this entity
+     *   collides with a name already in the container.
+     */
+    public void setContainer(CompositeEntity container)
+    throws IllegalActionException, NameDuplicationException {
+        CompositeEntity oldContainer = (CompositeEntity) getContainer();
+        if (oldContainer instanceof Initializable) {
+            ((Initializable) oldContainer).removeInitializable(this);
+        }
+
+        super.setContainer(container);
+
+        if (container instanceof Initializable) {
+            ((Initializable) container).addInitializable(this);
+        }
+        if (container != null) {
+            _addValueListener();
+        }
+    }
+
+    /** Monitor the change of a variable specified by the <code>settable</code>
+     *  argument if the execution has started, and invokes fireAt() of the
+     *  director to request to fire this event at the current model time.
+     *
+     *  @param settable The variable that has been changed.
+     */
+    public void valueChanged(Settable settable) {
+        if (_monitoring) {
+            ERGDirector director =
+                (ERGDirector) ((ERGController) getContainer()).getDirector();
+            try {
+                ERGDirector.TimedEvent timedEvent = director.findFirst(this);
+                if (timedEvent != null) {
+                    // This event has been scheduled at least once.
+                    Time modelTime = director.getModelTime();
+                    if (modelTime.compareTo(timedEvent.timeStamp) < 0) {
+                        director.cancel(this);
+                        director.fireAt(this, modelTime, timedEvent.arguments);
+                    }
+                }
+            } catch (IllegalActionException e) {
+                // This shouldn't happen because this event does not have any
+                // refinement.
+                throw new InternalErrorException(e);
+            }
+        }
+    }
+
+    /** Stop monitoring variables.
+     *
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void wrapup() throws IllegalActionException {
+        _monitoring = false;
+    }
+
     /** The actions for this event. */
     public ActionsAttribute actions;
 
     /** A Boolean value representing whether this event is an input event. */
     public Parameter fireOnInput;
 
+    /** A Boolean parameter to specify whether this event is a final event. */
+    public Parameter isFinalEvent;
+
+    /** A Boolean parameter to specify whether this event is an initial
+    event. */
+    public Parameter isInitialEvent;
+
+    /** A comma-separated list of variable names to be monitored. */
+    public StringParameter monitoredVariables;
+
     /** A list of formal parameters. */
     public ParametersAttribute parameters;
-
-    //////////////////////////////////////////////////////////////////////////
-    //// ParameterParserScope
 
     /**
      The parser scope that resolves the parameters for an ERG event with their
@@ -323,6 +479,9 @@ public class Event extends State {
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// ParameterParserScope
+
     /** Return the parser scope used to evaluate the actions and values
      *  associated with scheduling relations. The parser scope can evaluate
      *  names in the parameter list of this event. The values for those names
@@ -398,4 +557,50 @@ public class Event extends State {
             }
         }
     }
+
+    /** Remove this event from the value listener lists of the previously
+     *  monitored variables, and register in the value listener lists of the
+     *  newly monitored variables specified by the
+     *  <code>monitoredVariables</code> parameter.
+     *
+     *  @exception IllegalActionException If value of the
+     *  <code>monitoredVariables</code> parameter cannot be obtained, or it is
+     *  malformed.
+     */
+    private void _addValueListener() throws IllegalActionException {
+        if (_monitoredVariables == null) {
+            _monitoredVariables = new LinkedList<Variable>();
+        } else {
+            for (Variable variable : _monitoredVariables) {
+                variable.removeValueListener(this);
+            }
+            _monitoredVariables.clear();
+        }
+
+        if (monitoredVariables == null) {
+            return;
+        }
+        String[] names = monitoredVariables.stringValue().split(",");
+        for (String name : names) {
+            name = name.trim();
+            if (name.equals("")) {
+                continue;
+            }
+            Variable variable = ModelScope.getScopedVariable(null, this, name);
+            if (variable == null) {
+                throw new IllegalActionException(this, "Unable to find " +
+                        "variable with name\"" + name + "\".");
+            } else {
+                _monitoredVariables.add(variable);
+                variable.addValueListener(this);
+            }
+        }
+    }
+
+    /** The variables that this event has been monitoring. */
+    private List<Variable> _monitoredVariables;
+
+    /** Whether this event is monitoring the change of values of the monitored
+    variables. */
+    private boolean _monitoring = false;
 }

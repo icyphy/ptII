@@ -55,6 +55,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.EditorIcon;
 
@@ -75,7 +76,7 @@ public class GTEntityUtils {
             for (Object portObject : ptEntity.portList()) {
                 Port port = (Port) portObject;
                 if (port.isPersistent()) {
-                	continue;
+                    continue;
                 }
                 boolean outputStarted = false;
                 for (Object attributeObject : port.attributeList()) {
@@ -233,6 +234,7 @@ public class GTEntityUtils {
         String moml = "<group><entity name=\"NewActor\" class=\""
                 + actorClassName + "\"/></group>";
 
+        boolean isModified = MoMLParser.isModified();
         try {
             new MoMLChangeRequest(entity, container, moml).execute();
             new LoadActorIconChangeRequest(entity, container).execute();
@@ -240,6 +242,8 @@ public class GTEntityUtils {
             if (_removeEditorIcons(entity)) {
                 _setIconDescription(entity, entity.getDefaultIconDescription());
             }
+        } finally {
+            MoMLParser.setModified(isModified);
         }
     }
 
