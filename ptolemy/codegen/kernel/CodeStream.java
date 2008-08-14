@@ -549,22 +549,22 @@ public class CodeStream {
     IllegalActionException {
         selfTest();
         
-//        try {
-//            CodeStream code = new CodeStream(args[0], null);
-//
-//            System.out.println(_eol + "----------Result-----------------------"
-//                    + _eol);
-//            //System.out.println(code.description());
-//            System.out.println(_eol + "----------Result-----------------------"
-//                    + _eol);
-//
-//            LinkedList codeBlockArgs = new LinkedList();
-//            codeBlockArgs.add(Integer.toString(3));
-//            code.appendCodeBlock("initBlock", codeBlockArgs, false);
-//            System.out.println(code);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
+        try {
+            CodeStream code = new CodeStream(args[0], null);
+
+            System.out.println(_eol + "----------Result-----------------------"
+                    + _eol);
+            //System.out.println(code.description());
+            System.out.println(_eol + "----------Result-----------------------"
+                    + _eol);
+
+            LinkedList codeBlockArgs = new LinkedList();
+            codeBlockArgs.add(Integer.toString(3));
+            code.appendCodeBlock("initBlock", codeBlockArgs, false);
+            System.out.println(code);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
