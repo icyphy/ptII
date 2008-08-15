@@ -107,6 +107,20 @@ test KeplerDocumentatonAttribute-4.1 {addPort} {
 <property name="port:portname" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>portvalue</configure></property>
 </property>}
 
+test KeplerDocumentatonAttribute-4.2 {addPort} {
+    set kda [java::new ptolemy.vergil.basic.KeplerDocumentationAttribute]
+    set stringWriter [java::new java.io.StringWriter]
+    $kda addPort portname p&o<rt>value
+    $kda exportMoML $stringWriter 2 myKDA
+    set result1 [$stringWriter toString]
+} {<property name="myKDA" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="port:portname" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>p&amp;o&lt;rt&gt;value</configure></property>
+</property>}
+
 test KeplerDocumentatonAttribute-5.1 {addProperty} {
     set kda [java::new ptolemy.vergil.basic.KeplerDocumentationAttribute]
     set stringWriter [java::new java.io.StringWriter]
@@ -119,4 +133,18 @@ test KeplerDocumentatonAttribute-5.1 {addProperty} {
 <property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
 <property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
 <property name="prop:propname" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>propvalue</configure></property>
+</property>}
+
+test KeplerDocumentatonAttribute-5.2 {addProperty} {
+    set kda [java::new ptolemy.vergil.basic.KeplerDocumentationAttribute]
+    set stringWriter [java::new java.io.StringWriter]
+    $kda addProperty propname p&ro<pv>alue
+    $kda exportMoML $stringWriter 2 myKDA
+    set result1 [$stringWriter toString]
+} {<property name="myKDA" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="prop:propname" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>p&amp;ro&lt;pv&gt;alue</configure></property>
 </property>}
