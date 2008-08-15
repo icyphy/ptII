@@ -106,7 +106,7 @@ public class BubbleRenderer implements NodeRenderer {
 
         // Set the label
         Object p = "node"; //n.getProperty("label");
-        String label = (p == null) ? "Unnamed" : (String) p;
+        String label = (String) p;
         LabelWrapper w = new LabelWrapper(e, label);
         return w;
     }

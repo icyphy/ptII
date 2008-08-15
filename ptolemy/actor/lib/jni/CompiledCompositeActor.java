@@ -580,10 +580,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 .longValue();
 
         File sharedObjectFile = new File(_sharedObjectPath(_sanitizedActorName));
-        if (sharedObjectFile == null || !(sharedObjectFile.canRead())) {
-            System.out.println(message + "Can't read the shared object file.");
-            return true;
-        }
+        
         Effigy effigy = Configuration.findEffigy(this.toplevel());
         if (effigy != null && effigy.isModified()) {
             System.out
@@ -616,15 +613,6 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             System.out.println(message
                     + "The sharedObjectFile has a modification time "
                     + "that is earlier than the modelFile modification time.");
-            return true;
-        }
-
-        if (modelFile == null
-                || sharedObjectFile.lastModified() < fileDependenciesModificationTime) {
-            System.out.println(message
-                    + "The sharedObjectFile has a modification time "
-                    + "that is earlier than modification time of one of the "
-                    + "files in the fileDependency block.");
             return true;
         }
 

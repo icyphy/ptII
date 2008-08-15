@@ -197,7 +197,7 @@ public class DFUtilities {
             throw new IllegalActionException("Variable "
                     + parameter.getFullName() + " was expected "
                     + "to contain an IntToken, but instead " + "contained a "
-                    + (token == null ? "null token" : token.getType()) + ".");
+                    + token.getType() + ".");
         }
     }
 

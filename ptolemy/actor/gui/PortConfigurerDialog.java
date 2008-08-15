@@ -399,11 +399,6 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                 boolean foundPort = false;
                 actualPort = (Port) candidate;
 
-                if (actualPort == null) {
-                    throw new InternalErrorException(
-                            "The target contains a null Port.");
-                }
-
                 for (int i = 0; i < _ports.size(); i++) {
                     Hashtable portInfo = (Hashtable) (_ports.elementAt(i));
 

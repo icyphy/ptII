@@ -401,10 +401,6 @@ public class PropertyHighlighter extends NodeControllerFactory {
 
                 NamedObj target = PropertyHighlighter.this;
                 
-                if (target == null) {
-                    return;
-                }
-
                 // Create a dialog for configuring the object.
                 // First, identify the top parent frame.
                 Frame parent = getFrame();

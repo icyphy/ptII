@@ -135,7 +135,6 @@ public class URIAttribute extends SingletonAttribute {
             } catch (IllegalActionException ex) {
                 // An attribute was found with name "_uri", but it is not
                 // an instance of URIAttribute.  Continue the search.
-                modelURI = null;
             }
 
             container = container.getContainer();

@@ -558,12 +558,6 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 }
             }
 
-            if (inputURL == null) {
-               throw new IllegalActionException(this,
-                       "Failed to open \"" + ptalonCodeLocation.asURL()
-                       + "\" as a URL.");
-            }
-
             try {
                 inputStream = inputURL.openStream();
                 lex = new PtalonLexer(inputStream);

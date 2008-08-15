@@ -53,7 +53,7 @@ public class ArcRenderer implements EdgeRenderer {
         c.setHeadEnd(arrow);
 
         Object p = "edge"; //edge.getProperty("label");
-        String label = (p == null) ? "#" : (String) p;
+        String label = p.toString();
         LabelFigure labelFigure = new LabelFigure(label);
         String fontname = labelFigure.getFont().getFontName();
         labelFigure.setFont(new Font(fontname, Font.ITALIC, 14));

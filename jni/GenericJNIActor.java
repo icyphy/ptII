@@ -611,10 +611,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                         }
                     } else if (typ.equals("class [I")) {
                         try {
-                            if (field == null) {
-                                throw new InternalErrorException(
-                                        "field == null?");
-                            }
                             if (obj == null) {
                                 throw new InternalErrorException("obj == null?");
                             }

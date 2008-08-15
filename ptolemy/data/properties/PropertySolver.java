@@ -654,21 +654,6 @@ public abstract class PropertySolver extends Attribute {
             }
         }
 
-        // The first check is for singleton elements, and the equals()
-        // comparison is necessary for "equivalent" elements, such as
-        // those in the SetLattice usecase.
-        if (previousProperty != property && !previousProperty.equals(property)) {
-            if (previousProperty == null ||
-                    (previousProperty != null && !previousProperty.equals(property))) {
-
-                addErrors(_eol + "Property \"" + getUseCaseName() + 
-                        "\" resolution failed for " + namedObj.getFullName() + 
-                        "." + _eol + "    Trained value: \"" +
-                        previousProperty +
-                        "\"; Resolved value: \"" +
-                        property + "\".");
-            }
-        }
     }
 
     /**
