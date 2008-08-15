@@ -263,6 +263,10 @@ public class Manager extends NamedObj implements Runnable {
             _executionListeners = new LinkedList();
         }
 
+        // Do not add the same listener twice, so if it is already in the list,
+        // remove it. See NamedObj.addChangeListener(). -- tfeng
+        removeExecutionListener(listener);
+
         _executionListeners.add(new WeakReference(listener));
     }
 
