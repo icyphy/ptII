@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/ptinyos/util
 
-DIRS =		nc2moml ncapp2moml
+DIRS =		
 
 # Root of Ptolemy II directory
 ROOT =		../../../..

@@ -71,6 +71,7 @@ JSRCS = \
 	DelayCausalityInterface.java \
 	Dependency.java \
 	DefaultCausalityInterface.java \
+	DelayCausalityInterface.java \
 	DFUtilities.java \
 	DependencyDeclaration.java \
 	ExplicitChangeContext.java \

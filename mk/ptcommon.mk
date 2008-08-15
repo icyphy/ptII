@@ -714,3 +714,75 @@ extraclean:
 	fi
 	rm -f $(CRUD) $(DISTCLEAN_STUFF) $(EXTRA_SRCS) $(JSRCS)
 	-rm -f doc/codeDoc/* $(OPTIONAL_FILES) $(HTMLCHEKOUT)*
+
+FROM_DIR:=`echo o | awk '{ split(PWD, a, PTII); print a[2] }' PTII=$(PTII)/ PWD=\`pwd\``
+BASE_DIR=`echo o | awk '{ split(PWD, a, PTII); split(a[2], b, "/"); c=(""); for (i in b) { c=(c "../") }; print c }' PTII=$(PTII)/ PWD=\`pwd\``
+COPY_OP=cp
+ADD_OP=test -e
+
+maven:
+	@if [ "x$(DIRS)" != "x" ]; then \
+		set $(DIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making $@ in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) maven ;\
+			) \
+		    fi ; \
+		done ; \
+	fi
+	@if [ "x$(JSRCS)" != "x" ]; then \
+		TO_DIR=$(BASE_DIR)src/main/java/$(FROM_DIR) ;\
+		mkdir -p $$TO_DIR ;\
+		$(ADD_OP) $$TO_DIR ;\
+		set $(JSRCS); \
+		for x do \
+			if [ -w $$x ] ; then \
+				( $(COPY_OP) $$x $$TO_DIR/; )\
+			fi ; \
+		done ; \
+	fi
+	@if [ "x$(EXTRA_SRCS)" != "x" ]; then \
+		MISC_DIR=$(BASE_DIR)src/main/other/$(FROM_DIR) ;\
+		JJT_DIR=$(BASE_DIR)src/main/jjtree/$(FROM_DIR) ;\
+		ANTLR_DIR=$(BASE_DIR)src/main/antlr/$(FROM_DIR) ;\
+		RESOURCES_DIR=$(BASE_DIR)src/main/resources/$(FROM_DIR) ;\
+		set $(EXTRA_SRCS); \
+		for x do \
+			if echo o | awk '{ if (index(V, C) == 0) { exit(0) } else { exit(1) } }' C="$$x" V="$(JSRCS)" ;\
+			then \
+				if [ -w $$x ] ; then \
+					if echo o | awk '{ if (match(S, M) > 0) \
+							{ exit(0) } else { exit(1) } }' \
+							S="$$x" M=\\.jjt$$ ; then \
+						( mkdir -p $$JJT_DIR ; $(ADD_OP) $$JJT_DIR ; $(COPY_OP) $$x $$JJT_DIR/ ; )\
+					elif echo o | awk '{ if (match(S, M) > 0) \
+							{ exit(0) } else { exit(1) } }' \
+							S="$$x" M=\\.\(gif\|xml\|ico\|png\|jpg\)$$ ; then \
+						( mkdir -p $$RESOURCES_DIR ; $(ADD_OP) $$RESOURCES_DIR ; $(COPY_OP) $$x $$RESOURCES_DIR/ ; )\
+					elif echo o | awk '{ if (match(S, M) > 0) \
+							{ exit(0) } else { exit(1) } }' \
+							S="$$x" M=\\.\(gif\|xml\|ico\|png\|jpg\)$$ ; then \
+						( mkdir -p $$RESOURCES_DIR ; $(ADD_OP) $$RESOURCES_DIR ; $(COPY_OP) $$x $$RESOURCES_DIR/ ; )\
+					elif echo o | awk '{ if (match(S, M) > 0) \
+							{ exit(0) } else { exit(1) } }' \
+							S="$$x" M=\\.html\*$$ ; then \
+						if echo o | awk '{ if (match(S, M) > 0) \
+								{ exit(1) } else { exit(0) } }' \
+								S="$$x" M=package\\.html\*$$ ; then \
+							( mkdir -p $$RESOURCES_DIR ; $(ADD_OP) $$RESOURCES_DIR ; $(COPY_OP) $$x $$RESOURCES_DIR/ ; )\
+						else \
+							( mkdir -p $$MISC_DIR ; $(ADD_OP) $$MISC_DIR ; $(COPY_OP) $$x $$MISC_DIR/ ; )\
+						fi ; \
+					elif echo o | awk '{ if (match(S, M) > 0) \
+							{ exit(0) } else { exit(1) } }' \
+							S="$$x" M=\(\\.g\|PtalonTokenTypes.txt\)$$ ; then \
+						( mkdir -p $$ANTLR_DIR ; $(ADD_OP) $$ANTLR_DIR ; $(COPY_OP) $$x $$ANTLR_DIR/ ; )\
+					else \
+						( mkdir -p $$MISC_DIR ; $(ADD_OP) $$MISC_DIR ; $(COPY_OP) $$x $$MISC_DIR/ ; )\
+					fi ; \
+				fi ; \
+			fi ; \
+		done ; \
+	fi

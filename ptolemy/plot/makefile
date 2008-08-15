@@ -31,7 +31,7 @@
 
 ME =		ptolemy/plot
 
-DIRS = 		demo doc test plotml compat
+DIRS = 		demo doc test plotml compat img
 
 # Root of the Ptolemy II directory
 ROOT =		../..

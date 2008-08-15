@@ -63,17 +63,10 @@ JSRCS = \
 	PtalonAST.java \
 	PtalonEvaluator.java \
 	PtalonExpressionParameter.java \
-	PtalonLexer.java \
 	PtalonMLHandler.java \
 	PtalonParameter.java \
-	PtalonPopulator.java \
-	PtalonPopulatorTokenTypes.java \
-	PtalonRecognizer.java  \
 	PtalonRuntimeException.java \
-	PtalonScopeChecker.java \
-	PtalonScopeCheckerTokenTypes.java \
 	PtalonScopeException.java \
-	PtalonTokenTypes.java \
 	Tester.java
 
 OTHER_FILES_TO_BE_JARED = \
