@@ -42,6 +42,20 @@ import ptolemy.kernel.util.NameDuplicationException;
  on-screen display of values in a diagram. The value is
  updated only in postfire.
 
+ <p>Note that the icon for this actor is defined in 
+ <code>ptolemy/actor/lib/genericsinks.xml</code>, which looks something
+ like
+ <pre>
+&lt;entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue"&gt;
+&lt;doc&gt;Monitor and display values&lt;/doc&gt;
+   &lt;property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20"/&gt;
+   &lt;property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon"&gt;
+      &lt;property name="attributeName" value="value"/&gt;
+      &lt;property name="displayWidth" value="displayWidth"/&gt;
+   &lt;/property&gt;
+&lt;/entity&gt;
+ </pre>
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.3
