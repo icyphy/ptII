@@ -289,7 +289,6 @@ class DnDTable extends JTable implements DragSourceListener,
                         }
                         componentDef.name = componentName; // store new name for later edit
 
-                        component = null;
                         try {
                             component = dlg.getInstance();
                             componentConstraints = new CellConstraints(col, row);

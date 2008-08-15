@@ -177,9 +177,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements
                     NamedObj leftObject = null;
                     NamedObj rightObject = null;
 
-                    if (left.getType() instanceof NullType) {
-                        leftObject = null;
-                    } else if (left.getType() instanceof RefType) {
+                    if (left.getType() instanceof RefType) {
                         RefType leftType = (RefType) left.getType();
                         SootClass leftClass = leftType.getSootClass();
 
@@ -201,9 +199,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements
                         continue;
                     }
 
-                    if (right.getType() instanceof NullType) {
-                        rightObject = null;
-                    } else if (right.getType() instanceof RefType) {
+                    if (right.getType() instanceof RefType) {
                         RefType rightType = (RefType) right.getType();
                         SootClass rightClass = rightType.getSootClass();
 
