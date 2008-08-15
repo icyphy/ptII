@@ -57,7 +57,9 @@ JSRCS = \
 	MessageHandler.java \
 	PtGUIUtilities.java \
 	Query.java \
+	QueryChooserHelper.java \
 	QueryListener.java \
+	SettableQueryChooser.java \
 	ShellInterpreter.java \
 	ShellTextArea.java \
 	StatusBar.java \

@@ -38,6 +38,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.Box;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -49,6 +51,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.CustomQueryBoxParameter;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
@@ -216,6 +219,13 @@ public class PtolemyQuery extends Query implements QueryListener,
                             .getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
+               } else if (attribute instanceof CustomQueryBoxParameter) {
+		    JLabel label = new JLabel(displayName + ": ");
+		    label.setBackground(_background);
+		    Box box = ((CustomQueryBoxParameter) attribute).createQueryBox(this, attribute);
+		    _addPair(name, label, box, box);
+		    attachParameter(attribute, name);
+                  foundStyle = true;
                 } else if (attribute instanceof FileParameter
                         || attribute instanceof FilePortParameter) {
                     // Specify the directory in which to start browsing

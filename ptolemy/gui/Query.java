@@ -971,6 +971,8 @@ public class Query extends JPanel {
             return toReturn.toString();
         } else if (result instanceof QueryScrollPane) {
             return ((QueryScrollPane) result).getText();
+        } else if (result instanceof SettableQueryChooser) {
+            return ((SettableQueryChooser) result).getQueryValue();
         } else {
             throw new IllegalArgumentException("Query class cannot generate"
                     + " a string representation for entries of type "
@@ -1108,6 +1110,8 @@ public class Query extends JPanel {
             }
         } else if (result instanceof QueryColorChooser) {
             ((QueryColorChooser) result).setColor(value);
+        } else if (result instanceof SettableQueryChooser) {
+           ((SettableQueryChooser) result).setQueryValue(value);
         } else if (result instanceof QueryFileChooser) {
             ((QueryFileChooser) result).setFileName(value);
         } else {
