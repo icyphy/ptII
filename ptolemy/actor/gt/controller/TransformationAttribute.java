@@ -19,7 +19,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.gt.TransformationAttributeController;
 import ptolemy.vergil.gt.TransformationAttributeEditorFactory;
@@ -43,9 +42,15 @@ implements Configurable {
 
         String moml = "<entity name=\"ModelUpdater\" " +
                 "class=\"ptolemy.actor.gt.controller.ModelUpdater\"/>";
-        MoMLChangeRequest request = new MoMLChangeRequest(this, _configurer,
-                moml);
-        request.execute();
+        MoMLParser parser = new MoMLParser();
+        parser.setContext(_configurer);
+        try {
+            parser.parse(moml);
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e, "Unable to populate " +
+                    "the transformation rule within \"" + getFullName() +
+                    "\".");
+        }
         _modelUpdater = (ERGModalModel) _configurer.getEntity("ModelUpdater");
 
         new TransformationAttributeIcon(this, "_icon");
