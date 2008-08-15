@@ -212,7 +212,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
             results.append("<property name=\"port:"
                             + key
                             + "\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                    + "<configure>" + val + "</configure>"
+                    + "<configure>" + StringUtilities.escapeForXML(val) + "</configure>"
                     + "</property>\n");
         }
 
@@ -223,7 +223,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
             results.append("<property name=\"prop:"
                             + key
                             + "\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">"
-                    + "<configure>" + val + "</configure>"
+                    + "<configure>" + StringUtilities.escapeForXML(val) + "</configure>"
                     + "</property>\n");
         }
 
