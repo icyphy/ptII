@@ -1,0 +1,116 @@
+<d!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <title>Setting up Ptolemy II using Maven</title>
+<link href="../default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Setting up Ptolemy II using Maven</h1>
+<h2>Install</h2>
+
+<ol>
+  <li> Download ptolemyII from svn and set the $PTII environment variable.
+
+     <br>	     example:
+<pre>
+		cd /path/to/working/directory/
+		svn co svn://source.eecs.berkeley.edu/chess/ptII/trunk ptII
+		export PTII=/path/to/working/directory/ptII
+<pre>
+<li> Delete $PTII/vendors
+
+  <br>example:
+<pre>
+		rm -r $PTII/vendors
+</pre>
+
+<li> Apply the ptII.patch to $PTII.
+
+   	     example:
+<pre>
+		cd $PTII
+		patch -p1 < /path/to/ptII.patch
+</pre>
+
+<li> Run "make maven" in $PTII.
+
+   	<br>     example:
+<pre>
+		cd $PTII
+		make maven
+</pre>
+
+<li> Move $PTII/src into the ptII-maven project
+
+   	<br>     example:
+<pre>
+		mv $PTII/src /path/to/ptII-maven/
+</pre>
+<li> Set MAVEN_OPTS to configure maven to use large amounts of memory
+
+        <br>     example:
+<pre>
+		export MAVEN_OPTS="-Xms512m -Xmx512m -XX:PermSize=48m"
+</pre>
+
+<li> Run vergil! This can be done in a few different ways:
+   (see notes below before this step)
+
+   <ol>
+   <li> Run vergil using maven.
+
+       	 <br>    example:
+<pre>
+		cd /path/to/ptII-maven/
+		mvn compile
+		mvn exec:exec
+</pre>
+   <li> Build a ptolemy II jar and run vergil from run-vergil.sh.
+
+       	<br>     example:
+<pre>  
+	        # run these two steps only once
+		cd /path/to/ptII-maven/
+		mvn package
+		# then
+		/path/to/run-vergil.sh
+</pre>
+    </ol>
+</ol>
+
+<h2>Notes</h2>
+
+The first time you run maven it will most probably require you to install the
+jar dependencies maven needs to build and run ptolemy II. These can be quickly
+added by the following:
+<pre>
+mvn install:install-file -DgroupId=jython -DartifactId=jython -Dversion=svn \
+-Dpackaging=jar -Dfile=$PTII/vendors/jython/jython.jar
+mvn install:install-file -DgroupId=javajoystick -DartifactId=joystick \
+-Dversion=0.7 -Dpackaging=jar -Dfile=$PTII/vendors/misc/joystick/Joystick.jar 
+mvn install:install-file -DgroupId=jxta -DartifactId=jxta -Dversion=1.0 \
+-Dpackaging=jar -Dfile=$PTII/vendors/sun/jxta/jxta.jar
+mvn install:install-file -DgroupId=jxta -DartifactId=jxtasecurity -Dversion=1.0 \
+-Dpackaging=jar -Dfile=$PTII/vendors/sun/jxta/jxtasecurity.jar
+mvn install:install-file -DgroupId=soot -DartifactId=sootclasses -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/lib/sootclasses.jar
+mvn install:install-file -DgroupId=mapss -DartifactId=mapss -Dversion=unknown \
+-Dpackaging=jar -Dfile=$PTII/lib/mapss.jar
+mvn install:install-file -DgroupId=caltrop -DartifactId=ptCal -Dversion=unknown \
+-Dpackaging=jar -Dfile=$PTII/lib/ptCal.jar
+mvn install:install-file -DgroupId=chic -DartifactId=chic -Dversion=unknown \
+-Dpackaging=jar -Dfile=$PTII/lib/chic.jar
+mvn install:install-file -DgroupId=jacl -DartifactId=jacl -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/lib/ptjacl.jar
+</pre>
+
+Along with these there will be a few dependencies that you will have to download
+manually from sun. The "mvn compile" command will return a list of these and
+provide urls for download locations and install instructions.
+
+After all the dependencies have been met, the mvn commands should work
+fine.
+
+</body>
+</html>
