@@ -110,6 +110,16 @@ public class GraphTransformer extends ChangeRequest {
         return _replacement;
     }
 
+    public static void startUndoableTransformation(boolean mergeWithPrevious) {
+        _undoable = true;
+        _mergeWithPrevious = mergeWithPrevious;
+    }
+
+    public static void stopUndoableTransformation() {
+        _undoable = false;
+        _mergeWithPrevious = false;
+    }
+
     public static void transform(TransformationRule transformationRule,
             List<MatchResult> matchResults) throws TransformationException {
         if (matchResults.isEmpty()) {
@@ -183,7 +193,7 @@ public class GraphTransformer extends ChangeRequest {
                     } else {
                         moml = _getLinkMoML(hostLinkedObject, relation);
                     }
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    MoMLChangeRequest request = _createChangeRequest(
                             hostContainer, moml);
                     request.execute();
                 }
@@ -209,8 +219,8 @@ public class GraphTransformer extends ChangeRequest {
                             NamedObj hostContainer =
                                 hostRelation.getContainer();
                             String moml = _getLinkMoML(host, hostRelation);
-                            MoMLChangeRequest request = new MoMLChangeRequest(
-                                    this, hostContainer, moml);
+                            MoMLChangeRequest request = _createChangeRequest(
+                                    hostContainer, moml);
                             request.execute();
                         }
                     }
@@ -377,8 +387,8 @@ public class GraphTransformer extends ChangeRequest {
 
                         String moml = "<group name=\"auto\">"
                             + attribute.exportMoML() + "</group>";
-                        MoMLChangeRequest request = new MoMLChangeRequest(this,
-                                host, moml);
+                        MoMLChangeRequest request = _createChangeRequest(host,
+                                moml);
                         request.execute();
                     }
                 }
@@ -404,7 +414,7 @@ public class GraphTransformer extends ChangeRequest {
                 if (moml != null && !moml.equals("")) {
                     moml = "<group name=\"auto\">\n" + moml + "</group>";
                     CreateObjectChangeRequest request =
-                        new CreateObjectChangeRequest(this, host, moml);
+                        new CreateObjectChangeRequest(host, moml);
                     request.execute();
                     hostChild = request.getCreatedObjects().get(0);
                     _addReplacementToHostEntries(hostChild);
@@ -432,7 +442,7 @@ public class GraphTransformer extends ChangeRequest {
                 NamedObj host = _findChangeContext(pattern);
                 moml = "<group name=\"auto\">\n" + moml + "</group>";
                 CreateObjectChangeRequest request =
-                    new CreateObjectChangeRequest(this, host, moml);
+                    new CreateObjectChangeRequest(host, moml);
                 request.execute();
                 NamedObj hostChild = request.getCreatedObjects().get(0);
                 try {
@@ -470,6 +480,20 @@ public class GraphTransformer extends ChangeRequest {
         } finally {
             host.workspace().doneReading();
         }
+    }
+
+    private MoMLChangeRequest _createChangeRequest(NamedObj context,
+            String moml) {
+        MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
+        if (_undoable) {
+            request.setUndoable(true);
+            if (_mergeWithPrevious) {
+                request.setMergeWithPreviousUndo(true);
+            } else {
+                _mergeWithPrevious = true;
+            }
+        }
+        return request;
     }
 
     private NamedObj _findChangeContext(NamedObj pattern) {
@@ -596,7 +620,7 @@ public class GraphTransformer extends ChangeRequest {
                 if (linkedObjects.size() == 1) {
                     String moml = "<deleteRelation name=\""
                             + relation.getName() + "\"/>";
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    MoMLChangeRequest request = _createChangeRequest(
                             relation.getContainer(), moml);
                     request.execute();
                 }
@@ -643,19 +667,19 @@ public class GraphTransformer extends ChangeRequest {
                                 || tail instanceof Relation) {
                             String moml = "<deleteRelation name=\""
                                     + relation.getName() + "\"/>";
-                            MoMLChangeRequest request = new MoMLChangeRequest(
-                                    this, relation.getContainer(), moml);
+                            MoMLChangeRequest request = _createChangeRequest(
+                                    relation.getContainer(), moml);
                             request.execute();
 
                             if (tail instanceof Relation) {
                                 moml = _getLinkMoML(head, (Relation) tail);
-                                request = new MoMLChangeRequest(this, tail
-                                        .getContainer(), moml);
+                                request = _createChangeRequest(
+                                        tail.getContainer(), moml);
                                 request.execute();
                             } else {
                                 moml = _getLinkMoML(tail, (Relation) head);
-                                request = new MoMLChangeRequest(this, head
-                                        .getContainer(), moml);
+                                request = _createChangeRequest(
+                                        head.getContainer(), moml);
                                 request.execute();
                             }
                         }
@@ -666,7 +690,7 @@ public class GraphTransformer extends ChangeRequest {
                                 + "<vertex name=\"vertex\" value=\"["
                                 + location[0] + ", " + location[1] + "]\"/>"
                                 + "</group>";
-                        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        MoMLChangeRequest request = _createChangeRequest(
                                 relation, moml);
                         request.execute();
                     }
@@ -675,8 +699,8 @@ public class GraphTransformer extends ChangeRequest {
                         Vertex vertex = (Vertex) vertexObject;
                         String moml = "<deleteProperty name=\""
                             + vertex.getName() + "\"/>";
-                        MoMLChangeRequest request = new MoMLChangeRequest(
-                                this, relation, moml);
+                        MoMLChangeRequest request = _createChangeRequest(
+                                relation, moml);
                         request.execute();
                     }
                 }
@@ -856,8 +880,8 @@ public class GraphTransformer extends ChangeRequest {
 
         // Remove the relation to be removed.
         String moml = "<deleteRelation name=\"" + removed.getName() + "\"/>";
-        MoMLChangeRequest request = new MoMLChangeRequest(
-                this, removed.getContainer(), moml);
+        MoMLChangeRequest request = _createChangeRequest(removed.getContainer(),
+                moml);
         request.execute();
 
         // Reconnect the objects previously linked to the removed relation to
@@ -869,8 +893,7 @@ public class GraphTransformer extends ChangeRequest {
 
             // Reconnect the preserved relation.
             moml = _getLinkMoML((NamedObj) removedLinkedObject, preserved);
-            request = new MoMLChangeRequest(this, preserved.getContainer(),
-                    moml);
+            request = _createChangeRequest(preserved.getContainer(), moml);
             request.execute();
         }
 
@@ -941,7 +964,7 @@ public class GraphTransformer extends ChangeRequest {
 
             String moml = "<unlink port=\"" + name + "\" relation=\""
                     + hostRelation.getName() + "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this,
+            MoMLChangeRequest request = _createChangeRequest(
                     hostRelation.getContainer(), moml);
             request.execute();
         }
@@ -992,6 +1015,14 @@ public class GraphTransformer extends ChangeRequest {
                 // of this composite entity.
                 MoMLChangeRequest request = GTTools.getDeletionChangeRequest(
                         this, object);
+                if (_undoable) {
+                    request.setUndoable(true);
+                    if (_mergeWithPrevious) {
+                        request.setMergeWithPreviousUndo(true);
+                    } else {
+                        _mergeWithPrevious = true;
+                    }
+                }
                 request.execute();
                 _removeReplacementToHostEntries(object);
 
@@ -1001,7 +1032,7 @@ public class GraphTransformer extends ChangeRequest {
                     String moml = "<group name=\"auto\">\n"
                             + child.exportMoMLPlain() + "</group>";
                     CreateObjectChangeRequest request2 =
-                        new CreateObjectChangeRequest(this, container, moml);
+                        new CreateObjectChangeRequest(container, moml);
                     request2.execute();
                     //NamedObj newlyAddedObject = _getNewlyAddedObject(container,
                     //        child.getClass());
@@ -1043,7 +1074,7 @@ public class GraphTransformer extends ChangeRequest {
                         + "  class=\"ptolemy.actor.TypedIORelation\">"
                         + "</relation>" + "</group>";
                 CreateObjectChangeRequest request =
-                    new CreateObjectChangeRequest(this, container, moml);
+                    new CreateObjectChangeRequest(container, moml);
                 request.execute();
                 //Relation newRelation = (Relation) _getNewlyAddedObject(
                 //        container, Relation.class);
@@ -1075,8 +1106,8 @@ public class GraphTransformer extends ChangeRequest {
                                 relation1 = (Relation) linkedObject;
                             }
                             String moml = _getLinkMoML(relation1, relation2);
-                            MoMLChangeRequest request = new MoMLChangeRequest(
-                                    this, container, moml);
+                            MoMLChangeRequest request = _createChangeRequest(
+                                    container, moml);
                             request.execute();
                         } else if (linkedObject instanceof Port) {
                             Port originalPort = (Port) linkedObject;
@@ -1087,8 +1118,7 @@ public class GraphTransformer extends ChangeRequest {
                                         .getName());
                                 String moml = _getLinkMoML(port1, relation2);
                                 MoMLChangeRequest request =
-                                    new MoMLChangeRequest(this, container,
-                                            moml);
+                                    _createChangeRequest(container, moml);
                                 request.execute();
                             }
                         }
@@ -1100,6 +1130,14 @@ public class GraphTransformer extends ChangeRequest {
         } else {
             MoMLChangeRequest request = GTTools.getDeletionChangeRequest(this,
                     object);
+            if (_undoable) {
+                request.setUndoable(true);
+                if (_mergeWithPrevious) {
+                    request.setMergeWithPreviousUndo(true);
+                } else {
+                    _mergeWithPrevious = true;
+                }
+            }
             request.execute();
             return null;
         }
@@ -1259,6 +1297,8 @@ public class GraphTransformer extends ChangeRequest {
 
     private List<MatchResult> _matchResults;
 
+    private static boolean _mergeWithPrevious = false;
+
     private Map<NamedObj, String> _moml;
 
     private Pattern _pattern;
@@ -1269,11 +1309,21 @@ public class GraphTransformer extends ChangeRequest {
 
     private TwoWayHashMap<NamedObj, NamedObj> _replacementToHost;
 
+    private static boolean _undoable = false;
+
     private class CreateObjectChangeRequest extends MoMLChangeRequest {
 
-        public CreateObjectChangeRequest(Object originator, NamedObj context,
-                String request) {
-            super(originator, context, request);
+        public CreateObjectChangeRequest(NamedObj context, String request) {
+            super(GraphTransformer.this, context, request);
+
+            if (_undoable) {
+                setUndoable(true);
+                if (_mergeWithPrevious) {
+                    setMergeWithPreviousUndo(true);
+                } else {
+                    _mergeWithPrevious = true;
+                }
+            }
         }
 
         public List<NamedObj> getCreatedObjects() {

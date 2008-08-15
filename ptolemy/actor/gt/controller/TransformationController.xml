@@ -38,7 +38,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="HostModel" class="ptolemy.actor.gt.controller.ActorParameter">
+        <property name="HostModel" class="ptolemy.actor.gt.controller.ModelAttribute">
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1.0, -5.0]">

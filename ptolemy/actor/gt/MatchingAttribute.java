@@ -33,7 +33,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// ChangeAttribute
+//// MatchingAttribute
 
 /**
 
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class MatchingAttribute extends TransformationAttribute {
+public class MatchingAttribute extends GTAttribute {
 
 	/**
 	 *  @param container

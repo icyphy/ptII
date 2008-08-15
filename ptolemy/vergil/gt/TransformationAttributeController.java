@@ -29,23 +29,30 @@
 package ptolemy.vergil.gt;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.lang.ref.WeakReference;
+import java.util.List;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gt.GTTools;
-import ptolemy.actor.gt.ToplevelTransformer;
-import ptolemy.actor.gt.TransformationAttribute;
-import ptolemy.data.ActorToken;
+import ptolemy.actor.gt.controller.TransformationAttribute;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.domains.erg.kernel.ERGModalModel;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLParser;
-import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
+import ptolemy.vergil.erg.ERGGraphFrame;
+import ptolemy.vergil.gt.TransformationAttributeEditorFactory.TransformationListener;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -61,23 +68,16 @@ import diva.graph.GraphController;
  */
 public class TransformationAttributeController extends AttributeController {
 
-    /**
-     * @param controller
-     */
     public TransformationAttributeController(GraphController controller) {
         this(controller, FULL);
     }
 
-    /**
-     * @param controller
-     * @param access
-     */
     public TransformationAttributeController(GraphController controller,
             Access access) {
         super(controller, access);
 
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new ApplyTransformationAction()));
+                new LookInsideAction()));
     }
 
 
@@ -93,89 +93,120 @@ public class TransformationAttributeController extends AttributeController {
         }
     }
 
-    protected static void _applyTransformationResult(
-            ToplevelTransformer transformer, BasicGraphFrame frame) {
-        ActorToken token = transformer.getOutputToken();
-        if (token == null) {
-            MessageHandler.message("No output is generated.");
-            return;
-        }
+    private static class Listener extends TransformationListener
+    implements ChangeListener, WindowListener {
 
-        CompositeEntity result = (CompositeEntity) token.getEntity(
-                transformer.workspace());
-        try {
-            result = (CompositeEntity) GTTools.cleanupModel(result);
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(result, e, "Unable to " +
-                    "generate transformation result.");
-        }
-
-        GTFrameTools.changeModel(frame, result, true);
-    }
-
-    protected static ToplevelTransformer _getTransformer(
-            TransformationAttribute attribute) throws IllegalActionException {
-        ToplevelTransformer transformer =
-            attribute.transformer.getTransformer();
-        if (transformer == null) {
-            String moml = attribute.transformer.getExpression();
-            if (moml.equals("")) {
-                moml = new ToplevelTransformer().exportMoML();
-            }
-            MoMLParser parser = new MoMLParser(attribute.workspace());
-            try {
-                transformer = (ToplevelTransformer) parser.parse(moml);
-            } catch (Exception e) {
-                throw new IllegalActionException(null, e,
-                        "Unable to parse transformer.");
+        public void changeExecuted(ChangeRequest change) {
+            if (_child.isModified()) {
+                _parent.setModified(true);
+                _child.setModified(false);
             }
         }
 
-        Manager manager = transformer.getManager();
-        if (manager != null) {
-            transformer.workspace().remove(manager);
+        public void changeFailed(ChangeRequest change, Exception exception) {
         }
-        manager = new Manager(transformer.workspace(), "_manager");
-        transformer.setManager(manager);
 
-        return transformer;
+        public void managerStateChanged(Manager manager) {
+            if (manager.getState() == Manager.PREINITIALIZING) {
+                try {
+                    _model = (CompositeEntity) GTTools.cleanupModel(
+                            _parent.getModel());
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException(null, e, "Unable to " +
+                            "clean up model.");
+                }
+            }
+            super.managerStateChanged(manager);
+        }
+
+        public void windowActivated(WindowEvent e) {
+        }
+
+        public void windowClosed(WindowEvent e) {
+            if (e.getWindow() == _child) {
+                _removeListeners();
+            }
+        }
+
+        public void windowClosing(WindowEvent e) {
+            if (e.getWindow() == _parent) {
+                _child.close();
+            }
+        }
+
+        public void windowDeactivated(WindowEvent e) {
+        }
+
+        public void windowDeiconified(WindowEvent e) {
+        }
+
+        public void windowIconified(WindowEvent e) {
+        }
+
+        public void windowOpened(WindowEvent e) {
+        }
+
+        Listener(TransformationAttribute attribute, BasicGraphFrame parent,
+                ERGGraphFrame child) throws NameDuplicationException {
+            super(attribute, null, parent);
+            _parent = parent;
+            _child = child;
+        }
+
+        @SuppressWarnings("unchecked")
+        private void _addListeners() {
+            _parent.addWindowListener(this);
+            _child.addWindowListener(this);
+
+            CompositeActor toplevel = (CompositeActor) _child.getModel()
+                    .toplevel();
+            List<Object> changeListeners = toplevel.getChangeListeners();
+            if (changeListeners == null) {
+                toplevel.addChangeListener(this);
+            } else {
+                changeListeners.add(new WeakReference<Listener>(this));
+            }
+            toplevel.getManager().addExecutionListener(this);
+        }
+
+        private void _removeListeners() {
+            _parent.removeWindowListener(this);
+            _child.removeWindowListener(this);
+
+            CompositeActor toplevel = (CompositeActor) _child.getModel()
+                    .toplevel();
+            toplevel.removeChangeListener(this);
+            toplevel.getManager().removeExecutionListener(this);
+        }
+
+        private ERGGraphFrame _child;
+
+        private BasicGraphFrame _parent;
     }
 
-    private class ApplyTransformationAction extends FigureAction {
+    private class LookInsideAction extends FigureAction {
 
-        public ApplyTransformationAction() {
-            super("Apply Transformation");
+        public LookInsideAction() {
+            super("Open Transformation Controller");
         }
 
         public void actionPerformed(ActionEvent event) {
             super.actionPerformed(event);
 
-            final TransformationAttribute attribute =
+            TransformationAttribute attribute =
                 (TransformationAttribute) getTarget();
+            BasicGraphFrame actorFrame = (BasicGraphFrame) getFrame();
+            Configuration configuration = actorFrame.getConfiguration();
             try {
-                final ToplevelTransformer transformer =
-                    _getTransformer(attribute);
-                final Manager manager = transformer.getManager();
-                new Thread() {
-                    public void run() {
-                        BasicGraphFrame frame = (BasicGraphFrame) getFrame();
-                        try {
-                            frame.report("Applying model transformation: " +
-                                    attribute.getName());
-                            transformer.setInputToken(new ActorToken((Entity)
-                                    frame.getModel()));
-                            manager.execute();
-                            _applyTransformationResult(transformer, frame);
-                        } catch (Throwable t) {
-                            MessageHandler.error("Error while executing the " +
-                                    "transformation model.", t);
-                        } finally {
-                            frame.report("");
-                        }
-                    }
-                }.start();
-            } catch (IllegalActionException e) {
-                throw new InternalErrorException(e);
+                ERGModalModel modelUpdater = attribute.getModelUpdater();
+                Tableau tableau = configuration.openInstance(modelUpdater);
+                ERGGraphFrame frame = (ERGGraphFrame) tableau.getFrame();
+
+                Listener listener = new Listener(attribute, actorFrame, frame);
+                listener._addListeners();
+            } catch (Exception e) {
+                throw new InternalErrorException(null, e, "Unable to create " +
+                        "transformation editor for " + attribute.getName());
             }
         }
     }

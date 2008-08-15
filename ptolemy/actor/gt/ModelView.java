@@ -188,7 +188,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                         } else {
                             GTFrameTools.changeModel(
                                     (BasicGraphFrame) tableau.getFrame(),
-                                    (CompositeEntity) model, true);
+                                    (CompositeEntity) model, true, true);
                             modelChanged = true;
                         }
 

@@ -50,16 +50,19 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	ActorParameter.java \
+	ConfigurableEntity.java \
+	Configurer.java \
 	GTEvent.java \
 	InitContainingModelEvent.java \
 	InitEvent.java \
 	InputEvent.java \
 	Match.java \
+	ModelAttribute.java \
 	ModelIOPort.java \
 	OutputEvent.java \
 	Test.java \
-	Transform.java
+	Transform.java \
+	TransformationAttribute.java
 
 OTHER_FILES_TO_BE_JARED = \
 	MatchIcon.xml \
@@ -77,7 +80,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'Transform$$Configurer.class'
+	'Configurer$$ContainmentExtender.class' \
+	'Transform$$EmbeddedConfigurer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

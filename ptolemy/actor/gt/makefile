@@ -109,8 +109,6 @@ JSRCS = \
 	ReplacementObjectAttribute.java \
 	StateMatcher.java \
 	SubgraphMatchingException.java \
-	ToplevelTransformer.java \
-	TransformationAttribute.java \
 	TransformationException.java \
 	TransformationMode.java \
 	TransformationRule.java \
@@ -159,8 +157,6 @@ OPTIONAL_FILES = \
 	'ModelExecutor$$Wrapper$$WrapperDirector.class' \
 	'ModelExecutor$$Wrapper.class' \
 	'ModelExecutor$$WrapperPort.class' \
-	'ToplevelTransformer$$TransformerPort.class' \
-	'TransformationAttribute$$TransformerAttribute.class' \
 	'TransformationMode$$1.class' \
 	'TransformationMode$$Mode$$1.class' \
 	'TransformationMode$$Mode$$2.class' \

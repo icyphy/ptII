@@ -27,8 +27,6 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.domains.erg.kernel.Event;
@@ -60,50 +58,7 @@ public class GTEvent extends Event {
         isFinalEvent.setVisibility(Settable.NONE);
     }
 
-    protected CompositeEntity _getModelVariable()
-    throws IllegalActionException {
-        ActorParameter actorParameter = _getActorParameter();
-        ObjectToken token = (ObjectToken) actorParameter.getToken();
-        try {
-            CompositeEntity entity = (CompositeEntity) token.getValue();
-            return entity;
-        } catch (ClassCastException e) {
-            throw new IllegalActionException("The object stored in the " +
-                    "HostModel parameter must be an instanceof " +
-                    "CompositeEntity.");
-        }
-    }
-
-    protected boolean _getSuccessVariable() throws IllegalActionException {
-        Parameter parameter = _getMatchedParameter();
-        return ((BooleanToken) parameter.getToken()).booleanValue();
-    }
-
-    protected void _setModelVariable(CompositeEntity entity)
-    throws IllegalActionException {
-        ActorParameter actorParameter = _getActorParameter();
-        actorParameter.setToken(new ObjectToken(entity, CompositeEntity.class));
-    }
-
-    protected void _setSuccessVariable(boolean patternMatched)
-    throws IllegalActionException {
-        Parameter parameter = _getMatchedParameter();
-        parameter.setToken(BooleanToken.getInstance(patternMatched));
-    }
-
-    private ActorParameter _getActorParameter() throws IllegalActionException {
-        ERGController controller = (ERGController) getContainer();
-        ActorParameter actorParameter = (ActorParameter) controller
-                .getAttribute("HostModel", ActorParameter.class);
-        if (actorParameter == null) {
-            throw new IllegalActionException("Unable to find the HostModel " +
-                    "parameter in the ERG controller of type ActorParameter.");
-        }
-        return actorParameter;
-    }
-
-    private Parameter _getMatchedParameter()
-    throws IllegalActionException {
+    public Parameter getMatchedParameter() throws IllegalActionException {
         ERGController controller = (ERGController) getContainer();
         Parameter parameter = (Parameter) controller.getAttribute("Matched",
                 Parameter.class);
@@ -112,5 +67,16 @@ public class GTEvent extends Event {
                     "PatternMatched parameter in the ERG controller.");
         }
         return parameter;
+    }
+
+    public ModelAttribute getModelAttribute() throws IllegalActionException {
+        ERGController controller = (ERGController) getContainer();
+        ModelAttribute actorParameter = (ModelAttribute) controller
+                .getAttribute("HostModel", ModelAttribute.class);
+        if (actorParameter == null) {
+            throw new IllegalActionException("Unable to find the HostModel " +
+                    "parameter in the ERG controller of type ActorParameter.");
+        }
+        return actorParameter;
     }
 }

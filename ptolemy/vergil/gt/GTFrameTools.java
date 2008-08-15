@@ -68,13 +68,14 @@ import diva.graph.GraphPane;
  */
 public class GTFrameTools {
     public static void changeModel(BasicGraphFrame frame, CompositeEntity model,
-            boolean delegateUndoStack) {
-        changeModel(frame, model, delegateUndoStack, null);
+            boolean undoable, boolean delegateUndoStack) {
+        changeModel(frame, model, undoable, delegateUndoStack, null);
     }
 
     public static void changeModel(BasicGraphFrame frame, CompositeEntity model,
-            boolean delegateUndoStack, UndoAction undoAction) {
-        if (delegateUndoStack) {
+            boolean undoable, boolean delegateUndoStack,
+            UndoAction undoAction) {
+        if (undoable && delegateUndoStack) {
             UndoStackAttribute oldAttribute = UndoStackAttribute.getUndoInfo(
                     frame.getModel());
             try {
@@ -87,7 +88,7 @@ public class GTFrameTools {
 
         ModelChangeRequest request = new ModelChangeRequest(null, frame, model,
                 undoAction);
-        request.setUndoable(true);
+        request.setUndoable(undoable);
         model.requestChange(request);
     }
 
@@ -213,8 +214,8 @@ public class GTFrameTools {
                 } else {
                     undoInfo.push(_undoAction);
                 }
-                executeModelChange(_frame, _model);
             }
+            executeModelChange(_frame, _model);
         }
 
         private BasicGraphFrame _frame;

@@ -77,8 +77,13 @@ public class InitEvent extends GTEvent {
     public void fire(ArrayToken arguments) throws IllegalActionException {
         ParserScope scope = _getParserScope(arguments);
         actions.execute(scope);
-        _setModelVariable(_getInitialModel());
-        _setSuccessVariable(true);
+
+        ModelAttribute modelAttribute = getModelAttribute();
+        if (modelAttribute.getModel() == null) {
+            modelAttribute.setModel(_getInitialModel());
+            getMatchedParameter().setToken(BooleanToken.getInstance(true));
+        }
+
         _scheduleEvents(scope);
     }
 

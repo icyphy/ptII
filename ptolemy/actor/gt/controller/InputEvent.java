@@ -72,7 +72,8 @@ public class InputEvent extends GTEvent {
                         "CompositeEntity are accepted in the input " +
                         "ActorTokens to the transformation controller.");
             }
-            _setModelVariable((CompositeEntity) entity);
+            getModelAttribute().setModel((CompositeEntity) entity);
+            getMatchedParameter().setToken(BooleanToken.getInstance(true));
             _scheduleEvents(scope);
         }
     }

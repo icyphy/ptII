@@ -130,10 +130,11 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$TransformUntilFixpointAction.class' \
 	'MatchResultViewer$$UndoChangeModelAction.class' \
 	'StateMatcherController$$Factory.class' \
-	'TransformationAttributeController$$ApplyTransformationAction$$1.class' \
-	'TransformationAttributeController$$ApplyTransformationAction.class' \
 	'TransformationAttributeController$$Factory.class' \
-	'TransformationAttributeEditorFactory$$ActorFrameListener.class' \
+	'TransformationAttributeController$$Listener.class' \
+	'TransformationAttributeController$$LookInsideAction.class' \
+	'TransformationAttributeEditorFactory$$ExecutionThread.class' \
+	'TransformationAttributeEditorFactory$$TransformationListener.class' \
 	'TransformationEditor$$1.class' \
 	'TransformationEditor$$2.class' \
 	'TransformationEditor$$3.class' \

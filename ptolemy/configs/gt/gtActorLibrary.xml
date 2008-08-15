@@ -6,7 +6,7 @@
   <configure>
     <?moml
       <group>
-        <property name="TransformationAttribute" class="ptolemy.actor.gt.TransformationAttribute"/>
+        <property name="TransformationAttribute" class="ptolemy.actor.gt.controller.TransformationAttribute"/>
         <entity name="ModelCombine" class="ptolemy.actor.gt.ModelCombine"/>
         <entity name="ModelExecutor" class="ptolemy.actor.gt.ModelExecutor"/>
         <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator"/>

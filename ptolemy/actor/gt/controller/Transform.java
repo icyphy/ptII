@@ -32,15 +32,14 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gt.TransformationMode;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -61,16 +60,17 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Transform extends GTEvent implements Configurable {
+public class Transform extends GTEvent implements ConfigurableEntity {
 
     public Transform(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        configurer = new Configurer(workspace());
-        configurer.setContainer(this);
+        _configurer = new EmbeddedConfigurer(workspace());
+        _configurer.setName("Configurer");
+        _configurer.setConfiguredObject(this);
 
-        _transformation = new TransformationRule(configurer, "Transformation");
+        _transformation = new TransformationRule(_configurer, "Transformation");
         TransformationMode helper = new TransformationMode(_transformation,
                 "_helper");
         helper.setPersistent(false);
@@ -81,12 +81,13 @@ public class Transform extends GTEvent implements Configurable {
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Transform newObject = (Transform) super.clone(workspace);
-        newObject.configurer = new Configurer(workspace);
-        newObject.configurer.setContainer(newObject);
-        newObject._transformation = (TransformationRule) _transformation.clone(
-                workspace);
         try {
-            newObject._transformation.setContainer(newObject.configurer);
+            newObject._configurer = new EmbeddedConfigurer(workspace);
+            newObject._configurer.setName("Configurer");
+            newObject._configurer.setConfiguredObject(newObject);
+            newObject._transformation = (TransformationRule) _transformation
+                    .clone(workspace);
+            newObject._transformation.setContainer(newObject._configurer);
         } catch (KernelException e) {
             throw new InternalErrorException(e);
         }
@@ -98,34 +99,29 @@ public class Transform extends GTEvent implements Configurable {
         _configureSource = source;
         text = text.trim();
         if (!text.equals("")) {
-            workspace().remove(_transformation);
             MoMLParser parser = new MoMLParser(workspace());
-            _transformation = (TransformationRule) parser.parse(base,
-                    new StringReader(text));
-            TransformationMode helper = new TransformationMode(
-                    _transformation, "_helper");
+            _configurer.removeAllEntities();
+            parser.setContext(_configurer);
+            parser.parse(base, new StringReader(text));
+            _transformation = (TransformationRule) _configurer.entityList().get(
+                    0);
+            TransformationMode helper = new TransformationMode(_transformation,
+                    "_helper");
             helper.setPersistent(false);
-            configurer.removeAllEntities();
-            _transformation.setContainer(configurer);
             _clearURI(_transformation);
         }
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
-        if (getName().equals("Compute")) {
-            int i = 0;
-            i++;
-        }
-
         ParserScope scope = _getParserScope(arguments);
         actions.execute(scope);
 
-        CompositeEntity model = _getModelVariable();
+        CompositeEntity model = getModelAttribute().getModel();
         model.setDeferringChangeRequests(false);
         boolean matched = mode.transform(mode.getWorkingCopy(_transformation),
                 model);
-        _setModelVariable(model);
-        _setSuccessVariable(matched);
+        getModelAttribute().setModel(model);
+        getMatchedParameter().setToken(BooleanToken.getInstance(matched));
 
         _scheduleEvents(scope);
     }
@@ -138,17 +134,20 @@ public class Transform extends GTEvent implements Configurable {
         return null;
     }
 
+    public Configurer getConfigurer() {
+        return _configurer;
+    }
+
     public TypedActor[] getRefinement() {
         return new TypedActor[] {_transformation};
     }
 
-    public Configurer configurer;
-
     public TransformationMode mode;
 
-    public static class Configurer extends CompositeActor {
+    public class EmbeddedConfigurer extends Configurer {
 
-        public Configurer(Workspace workspace) {
+        public EmbeddedConfigurer(Workspace workspace)
+                throws IllegalActionException, NameDuplicationException {
             super(workspace);
         }
 
@@ -160,11 +159,12 @@ public class Transform extends GTEvent implements Configurable {
             }
         }
 
-        public void setContainer(Transform container) {
-            _container = container;
+        public void setConfiguredObject(NamedObj configured) {
+            super.setConfiguredObject(configured);
+            _container = configured;
         }
 
-        private Transform _container;
+        private NamedObj _container;
     }
 
     protected void _exportMoMLContents(Writer output, int depth)
@@ -195,4 +195,6 @@ public class Transform extends GTEvent implements Configurable {
     }
 
     private String _configureSource;
+
+    private Configurer _configurer;
 }

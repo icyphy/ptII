@@ -540,7 +540,7 @@ public class MatchResultViewer extends GTFrame {
                     "Unable to clean up model.");
         }
         if (_topFrame == null) {
-            GTFrameTools.changeModel(this, model, true,
+            GTFrameTools.changeModel(this, model, true, true,
                     new UndoChangeModelAction(oldModel, _currentPosition));
         }
 
