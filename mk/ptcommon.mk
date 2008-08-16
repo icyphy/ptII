@@ -595,10 +595,9 @@ test_codegen:
 
 test_properties:
 	$(JTCLSH) $(ROOT)/util/testsuite/properties.tcl
-	
+
 test_properties_reports:
 	$(JTCLSH) $(ROOT)/util/testsuite/propertytestreports.tcl
-	
 
 # Generate html files from itcl files, requires itclsh and tycho
 # We use a GNU make extension here
@@ -715,10 +714,18 @@ extraclean:
 	rm -f $(CRUD) $(DISTCLEAN_STUFF) $(EXTRA_SRCS) $(JSRCS)
 	-rm -f doc/codeDoc/* $(OPTIONAL_FILES) $(HTMLCHEKOUT)*
 
-FROM_DIR:=`echo o | awk '{ split(PWD, a, PTII); print a[2] }' PTII=$(PTII)/ PWD=\`pwd\``
+
+AWK=gawk
+# /usr/ccs/bin/make under Solaris does not have :=
+
+#FROM_DIR:=`echo o | "$(AWK)" '{ split(PWD, a, PTII); print a[2] }' PTII=$(PTII)/ PWD=\`pwd\``
+FROM_DIR=`echo o | $(AWK) '{ split(PWD, a, PTII); print a[2] }' PTII=$(PTII)/ PWD=$(PWD)`
+
 BASE_DIR=`echo o | awk '{ split(PWD, a, PTII); split(a[2], b, "/"); c=(""); for (i in b) { c=(c "../") }; print c }' PTII=$(PTII)/ PWD=\`pwd\``
+#BASE_DIR=`echo o | $(AWK) '{ split(PWD, a, PTII); split(a[2], b, "/"); c=(""); for (i in b) { c=(c "../") }; print c }' PTII=$(PTII)/ PWD=$(PWD)`
 COPY_OP=cp
 ADD_OP=test -e
+ADD_OP=echo 
 
 maven:
 	@if [ "x$(DIRS)" != "x" ]; then \
@@ -750,32 +757,32 @@ maven:
 		RESOURCES_DIR=$(BASE_DIR)src/main/resources/$(FROM_DIR) ;\
 		set $(EXTRA_SRCS); \
 		for x do \
-			if echo o | awk '{ if (index(V, C) == 0) { exit(0) } else { exit(1) } }' C="$$x" V="$(JSRCS)" ;\
+			if echo o | "$(AWK)" '{ if (index(V, C) == 0) { exit(0) } else { exit(1) } }' C="$$x" V="$(JSRCS)" ;\
 			then \
 				if [ -w $$x ] ; then \
-					if echo o | awk '{ if (match(S, M) > 0) \
+					if echo o | "$(AWK)" '{ if (match(S, M) > 0) \
 							{ exit(0) } else { exit(1) } }' \
 							S="$$x" M=\\.jjt$$ ; then \
 						( mkdir -p $$JJT_DIR ; $(ADD_OP) $$JJT_DIR ; $(COPY_OP) $$x $$JJT_DIR/ ; )\
-					elif echo o | awk '{ if (match(S, M) > 0) \
+					elif echo o | "$(AWK)" '{ if (match(S, M) > 0) \
 							{ exit(0) } else { exit(1) } }' \
 							S="$$x" M=\\.\(gif\|xml\|ico\|png\|jpg\)$$ ; then \
 						( mkdir -p $$RESOURCES_DIR ; $(ADD_OP) $$RESOURCES_DIR ; $(COPY_OP) $$x $$RESOURCES_DIR/ ; )\
-					elif echo o | awk '{ if (match(S, M) > 0) \
+					elif echo o | "$(AWK)" '{ if (match(S, M) > 0) \
 							{ exit(0) } else { exit(1) } }' \
 							S="$$x" M=\\.\(gif\|xml\|ico\|png\|jpg\)$$ ; then \
 						( mkdir -p $$RESOURCES_DIR ; $(ADD_OP) $$RESOURCES_DIR ; $(COPY_OP) $$x $$RESOURCES_DIR/ ; )\
-					elif echo o | awk '{ if (match(S, M) > 0) \
+					elif echo o | "$(AWK)" '{ if (match(S, M) > 0) \
 							{ exit(0) } else { exit(1) } }' \
 							S="$$x" M=\\.html\*$$ ; then \
-						if echo o | awk '{ if (match(S, M) > 0) \
+						if echo o | "$(AWK)" '{ if (match(S, M) > 0) \
 								{ exit(1) } else { exit(0) } }' \
 								S="$$x" M=package\\.html\*$$ ; then \
 							( mkdir -p $$RESOURCES_DIR ; $(ADD_OP) $$RESOURCES_DIR ; $(COPY_OP) $$x $$RESOURCES_DIR/ ; )\
 						else \
 							( mkdir -p $$MISC_DIR ; $(ADD_OP) $$MISC_DIR ; $(COPY_OP) $$x $$MISC_DIR/ ; )\
 						fi ; \
-					elif echo o | awk '{ if (match(S, M) > 0) \
+					elif echo o | "$(AWK)" '{ if (match(S, M) > 0) \
 							{ exit(0) } else { exit(1) } }' \
 							S="$$x" M=\(\\.g\|PtalonTokenTypes.txt\)$$ ; then \
 						( mkdir -p $$ANTLR_DIR ; $(ADD_OP) $$ANTLR_DIR ; $(COPY_OP) $$x $$ANTLR_DIR/ ; )\
