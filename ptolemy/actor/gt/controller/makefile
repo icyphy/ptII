@@ -52,6 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ConfigurableEntity.java \
 	Configurer.java \
+	FileUpdater.java \
 	GTEvent.java \
 	InitContainingModelEvent.java \
 	InitEvent.java \
@@ -81,6 +82,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'Configurer$$ContainmentExtender.class' \
+	'FileUpdater$$MoMLContentFilter.class' \
 	'Transform$$EmbeddedConfigurer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
