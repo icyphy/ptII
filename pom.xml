@@ -1,3 +1,6 @@
+<!-- $Id$ 
+ Maven configuration
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <version>7.1.devel</version>
   <modelVersion>4.0.0</modelVersion>
@@ -24,6 +27,7 @@
     <archive>http://groups.google.com/groups?hl=en&lr=&safe=off&group=comp.soft-sys.ptolemy</archive>
   </mailingList> -->
   <developers>
+    <!-- See doc/authors.htm -->
     <developer>
       <id>eal</id>
       <name>Edward A. Lee</name>
@@ -35,13 +39,352 @@
 	<role>Java Developer</role>
       </roles>
       <timezone>-8</timezone>
-      </developer>
-    </developers>
+    </developer>
+    <developer>
+      <id>cxh</id>
+      <name>Christopher Brooks</name>
+      <url>http://ptolemy.eecs.berkeley.edu/~cxh</url>
+      <organization>EECS Department, University of California, Berkeley</organization>
+      <organizationUrl>http://www.eecs.berkeley.edu</organizationUrl>
+      <roles>
+	<role>Release Engineer</role>
+	<role>Java Developer</role>
+      </roles>
+      <timezone>-8</timezone>
+    </developer>
+    <developer>
+      <name>Elaine Cheong</name>
+      <roles>
+        <role>Ptolemy II 7.0 Ptalon Updates</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>tfeng</id>
+      <name>Thomas Huining Feng</name>
+      <roles>
+        <role>Model Transformation, Event Relationship Graph</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>mankit</id>
+      <name>Man-kit (Jackie) Leung</name>
+      <roles>
+        <role>Code Generation</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>johnr</id>
+      <name>John Reekie</name>
+      <roles>
+        <role>Vergil Graphical User Interface</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>chf</id>
+      <name>Chamberlain Fong</name>
+      <roles>
+        <role>Java 3D domain</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>davisj</id>
+      <name>John Davis, II</name>
+    </developer>
+    <developer>
+      <name>Mudit Goel</name>
+    </developer>
+    <developer>
+      <name>Rowland Johnson</name>
+      <roles>
+        <role>Unit System</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Bilung Lee</name>
+    </developer>
+    <developer>
+      <name>Jie Liu</name>
+    </developer>
+    <developer>
+      <name>Xiaojun Liu</name>
+    </developer>
+    <developer>
+      <name>Lukito Muliadi</name>
+    </developer>
+    <developer>
+      <name>Stephen Neuendorffer</name>
+      <roles>
+        <role>7.0 Copernicus and Type System updates</role>
+        <role>Vergil Graphical User Interface</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Neil Smyth</name>
+    </developer>
+    <developer>
+      <name>Jeff Tsay</name>
+    </developer>
+    <developer>
+      <name>Yuhong Xiong</name>
+      <roles>
+        <role>Type System</role>
+      </roles>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Chad Berkley</name>
+      <roles>
+        <role>Kepler Support</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Adam Cataldo</name>
+      <roles>
+        <role>Ptalon</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Christine Cavanessians</name>
+      <roles>
+        <role>7.0 XSLT Actors</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Teale Fristoe</name>
+      <roles>
+        <role>7.0 Code Generation</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Ben Lickly</name>
+      <roles>
+        <role>7.0 Float Type</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Isaac Liu</name>
+      <roles>
+        <role>7.0 Short Type</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Haiyang Zheng</name>
+      <roles>
+        <role>7.0 Continuous Domain</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Gang Zhou - Code Generation</name>
+      <roles>
+        <role>7.0 Code Generation</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Jim Armstrong</name>
+    </contributor>
+    <contributor>
+      <name>Vincent Arnould</name>
+    </contributor>
+    <contributor>
+      <name>Philip Baldwin</name>
+    </contributor>
+    <contributor>
+      <name>Frederic Boulanger</name>
+    </contributor>
+    <contributor>
+      <name>Raymond Cardillo</name>
+    </contributor>
+    <contributor>
+      <name>Chris Chang</name>
+    </contributor>
+    <contributor>
+      <name>Albert Chen</name>
+    </contributor>
+    <contributor>
+      <name>Colin Cochran</name>
+    </contributor>
+    <contributor>
+      <name>Brieuc Desoutter</name>
+    </contributor>
+    <contributor>
+      <name>Pedro Domecq</name>
+    </contributor>
+    <contributor>
+      <name>William Douglas</name>
+    </contributor>
+    <contributor>
+      <name>Johan Eker</name>
+    </contributor>
+    <contributor>
+      <name>Thomas Huining Feng</name>
+    </contributor>
+    <contributor>
+      <name>Tobin Fricke</name>
+    </contributor>
+    <contributor>
+      <name>Geroncio Galicia</name>
+    </contributor>
+    <contributor>
+      <name>Ben Horowitz</name>
+    </contributor>
+    <contributor>
+      <name>Heloise Hse</name>
+    </contributor>
+    <contributor>
+      <name>Efrat Jaeger</name>
+    </contributor>
+    <contributor>
+      <name>J&ouml;rn Janneck</name>
+    </contributor>
+    <contributor>
+      <name>Zoltan Kemenczy</name>
+    </contributor>
+    <contributor>
+      <name>Bart Kienhuis</name>
+    </contributor>
+    <contributor>
+      <name>Christoph Meyer Kirsch</name>
+    </contributor>
+    <contributor>
+      <name>Sanjeev Kohli</name>
+    </contributor>
+    <contributor>
+      <name>Vinay Krishnan</name>
+    </contributor>
+    <contributor>
+      <name>Robert Kroeger</name>
+    </contributor>
+    <contributor>
+      <name>Daniel Lázaro Cuadrado</name>
+    </contributor>
+    <contributor>
+      <name>David Lee</name>
+    </contributor>
+    <contributor>
+      <name>Michael Leung</name>
+    </contributor>
+    <contributor>
+      <name>John Li</name>
+    </contributor>
+    <contributor>
+      <name>Andrew Mihal</name>
+    </contributor>
+    <contributor>
+      <name>Eleftherios Matsikoudis</name>
+    </contributor>
+    <contributor>
+      <name>Aleksandar Necakov</name>
+    </contributor>
+    <contributor>
+      <name>Mike Kofi Okyere</name>
+    </contributor>
+    <contributor>
+      <name>Sarah Packman</name>
+    </contributor>
+    <contributor>
+      <name>Shankar Rao</name>
+    </contributor>
+    <contributor>
+      <name>Rakesh Reddy</name>
+    </contributor>
+    <contributor>
+      <name>Adriana Ricchiuti</name>
+    </contributor>
+    <contributor>
+      <name>Sonia Sachs</name>
+    </contributor>
+    <contributor>
+      <name>Ismael M. Sarmiento</name>
+    </contributor>
+    <contributor>
+      <name>Michael Shilman</name>
+    </contributor>
+    <contributor>
+      <name>Sean Simmons</name>
+    </contributor>
+    <contributor>
+      <name>Mandeep Singh</name>
+    </contributor>
+    <contributor>
+      <name>Peter N. Steinmetz</name>
+    </contributor>
+    <contributor>
+      <name>Dick Stevens</name>
+    </contributor>
+    <contributor>
+      <name>Mary Stewart</name>
+    </contributor>
+    <contributor>
+      <name>Ned Stoffel</name>
+    </contributor>
+    <contributor>
+      <name>Manda Sutijono</name>
+    </contributor>
+    <contributor>
+      <name>Neil Turner</name>
+    </contributor>
+    <contributor>
+      <name>Guillaume Vibert</name>
+    </contributor>
+    <contributor>
+      <name>Kees Vissers</name>
+    </contributor>
+    <contributor>
+      <name>Brian K. Vogel</name>
+    </contributor>
+    <contributor>
+      <name>Yuke Wang</name>
+    </contributor>
+    <contributor>
+      <name>Xavier Warzee</name>
+    </contributor>
+    <contributor>
+      <name>Scott Weber</name>
+    </contributor>
+    <contributor>
+      <name>Paul Whitaker</name>
+    </contributor>
+    <contributor>
+      <name>Winthrop Williams</name>
+    </contributor>
+    <contributor>
+      <name>Ed Willink</name>
+    </contributor>
+    <contributor>
+      <name>Michael Wirthlin</name>
+    </contributor>
+    <contributor>
+      <name>William Wu</name>
+    </contributor>
+    <contributor>
+      <name>Xiaowen Xin</name>
+    </contributor>
+    <contributor>
+      <name>Paul Yang</name>
+    </contributor>
+    <contributor>
+      <name>James Yeh</name>
+    </contributor>
+    <contributor>
+      <name>Nick Zamora</name>
+    </contributor>
+    <contributor>
+      <name>Charlie Zhong</name>
+    </contributor>
+  </contributors>
   <licenses>
     <license>
-      <name>Ptolemy II Copyright</name>
-      <url>http://ptolemy.eecs.berkeley.edu/ptIIcopyright.htm</url>
+      <name>BSD License</name>
+      <url>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/copyright.txt</url>
       <distribution>manual</distribution>
+      <comments>Ptolemy II is licensed under the BSD License</comments>
+    </license>
+    <license>
+      <name>Aelfred License</name>
+      <url>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/com/microstar/xml/README.txt</url>
+      <distribution>manual</distribution>
+      <comments>Ptolemy II uses Aelfred to parse xml files.</comments>
     </license>
   </licenses>
   <!-- <versions>
