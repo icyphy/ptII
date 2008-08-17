@@ -129,7 +129,7 @@
     <dependency>  <!-- $PTII/vendors/sun/jxta/jxta.jar -->
       <groupId>jxta</groupId>
       <artifactId>jxta</artifactId>
-      <version>1.0</version>
+      <version>2.0</version>
     </dependency>
     <dependency>  <!-- $PTII/vendors/sun/jxta/jxtasecurity.jar -->
       <groupId>jxta</groupId>
@@ -172,6 +172,12 @@
       <layout>default</layout>
     </repository>
     <repository>
+      <id>ptolemy_repo</id>
+      <name>Ptolemy II Repository</name>
+      <url>http://chess.eecs.berkeley.edu/ptexternal/src/maven</url>
+    </repository>
+    <!-- 
+    <repository>
       <id>archer_repo</id>
       <url>http://dev.archer.edu.au/maven</url>
     </repository>
@@ -183,11 +189,16 @@
 	<enabled>true</enabled>
       </snapshots>
     </repository>
+    -->
   </repositories>
   <build>
+    <!-- Don't use the Maven layout, use the Ptolemy layout -->
     <directory>${project.basedir}</directory>
     <outputDirectory>${project.basedir}</outputDirectory>
     <sourceDirectory>${project.basedir}</sourceDirectory>
+    <scriptSourceDirectory>${project.basedir}</scriptSourceDirectory>
+    <testSourceDirectory>${project.basedir}</testSourceDirectory>
+    <testOutputDirectory>${project.basedir}</testOutputDirectory>
     <plugins>
       <plugin>
 	<groupId>org.apache.maven.plugins</groupId>
@@ -242,6 +253,9 @@
               <goal>jjtree-javacc</goal>
             </goals>
 	    <configuration>
+	      <directory>${project.basedir}</directory>
+	      <outputDirectory>${project.basedir}</outputDirectory>
+	      <sourceDirectory>${project.basedir}</sourceDirectory>
 	      <isStatic>false</isStatic>
 	      <buildNodeFiles>false</buildNodeFiles>
 	      <includes>
