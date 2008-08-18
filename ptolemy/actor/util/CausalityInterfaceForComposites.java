@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NamedObj;
  of its component actors and their interconnection topology.
 
  @author Edward A. Lee
- @version $Id: CausalityInterfaceForComposites.java 47513 2007-12-07 06:32:21Z cxh $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)

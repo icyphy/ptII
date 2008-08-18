@@ -40,7 +40,7 @@ package ptolemy.actor.util;
  November 16, 2006.
 
  @author Edward A. Lee
- @version $Id: BooleanDependency.java 47513 2007-12-07 06:32:21Z cxh $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)

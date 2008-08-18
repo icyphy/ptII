@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  string describing it. This actor is meant mainly for testing.
 
  @author Edward A. Lee
- @version $Id: GetCausalityInterface.java 47513 2007-12-07 06:32:21Z cxh $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)

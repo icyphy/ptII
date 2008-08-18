@@ -55,7 +55,7 @@ import ptolemy.kernel.util.IllegalActionException;
  parse tree.  This property is stored in the parse tree.
 
  @author Man-Kit Leung
- @version $Id: ParseTreeNodeCollector.java,v 1.3 2008/04/20 05:34:59 mankit Exp $
+ @version $Id$
  @since Ptolemy II 2.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

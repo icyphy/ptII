@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  of the same director.
 
  @author Edward A. Lee
- @version $Id: TestActorPortDepth.java 41587 2006-03-30 16:36:39Z cxh $
+ @version $Id$
  @since Ptolemy II 0.3
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
