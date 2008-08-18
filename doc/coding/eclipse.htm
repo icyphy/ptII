@@ -62,7 +62,7 @@ We will need to change the default memory size for Eclipse
 because Ptolemy II is a big project.
 In Windows,  create a shortcut to eclipse.exe by going to the
 directory where Eclipse is installed, right clicking on eclipse.exe
-and selecting <code>Create Shortcut</code>. <I>Mac OS X: use Control-click to get the context menu.</I>
+and selecting <code>Create Shortcut</code>. 
 
 <p>Then right mouse click on the shortcut and select Properties and change
 the target to increase the memory allocated by default. E.g.,
@@ -80,10 +80,10 @@ select <code>Pin to Start Menu</code>
 and to keep the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/style.htm" target="_top">Ptolemy II coding style</a>.
 In the steps below, we
 outline changes to be made in the Eclipse Preferences window.
-<br> Under <i>Windows</i>h the Eclipse Preferences window
+<br> Under <i>Windows</i> the Eclipse Preferences window
 is invoked via <code>Window</code> | <code>Preferences</code>.
 
-<br> Under <i>Mac OS X</i>h the Eclipse Preferences window
+<br> Under <i>Mac OS X</i> the Eclipse Preferences window
 is invoked via <code>Eclipse</code> | <code>Preferences</code>.
 
 <br>For each of the
@@ -98,7 +98,7 @@ of the pauses it creates. We suggest disabling this feature as
 follows:
 <ol>
 <li> While still in the preferences window 
-<br> (<i>Windows</i>:<code>Window</code> | <code>Preferences</code>)
+<br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
 <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
 <li> Select <code>General</code> | <code>Workspace</code>
 <li> Deselect <code>Build automatically</code>.
@@ -143,11 +143,6 @@ to format comments.  We hope to change this policy in the future.
   <li> In the Preferences Window, click Apply.
  </ol>
 
-<li>The PtDoc Doclet in <code>$PTII/doc/doclets/PtDoclet.java</code>
-requires <code>tools.jar</code>, which is only in the Java Development
-Kit (JDK), not the Java Runtime Environment (JRE).  So, be sure that a
-JDK is selected for building, not a JRE.
-
 <li>
 Ptolemy II uses some features of Java 5.0.
 In particular, <CODE>ptolemy/actor/ptalon</CODE> uses generics,
@@ -156,7 +151,10 @@ which require Java 5.0 or later.
 <ol>
  <li> While still in the preferences window (<code>Window</code> | <code>Preferences</code>).
  <li> Expand the Java tree, select <code>Compiler</code>
- <li> Make sure that Set "Compiler compliance level" is "5.0" or later.
+ <li> Make sure that Set "Compiler compliance level" is "1.5", "5.0"
+ or later.
+<i>Note that Java 1.5 is the same as Java 5.0</i>.  What we don't want
+is "1.4" or "4.0".
  <li> Click Apply. 
 </ol>
 
@@ -176,10 +174,14 @@ if you are tightly managing serialization, we turn it off:
   <li> Click Apply.  If you are prompted for a full rebuild, click Yes.
  </ol>
 
-<ol>
-<li> While still in the preferences window 
-<br> (<i>Windows</i>:<code>Window</code> | <code>Preferences</code>)
+<li> The PtDoc Doclet in <code>$PTII/doc/doclets/PtDoclet.java</code>
+requires <code>tools.jar</code>, which is only in the Java Development
+Kit (JDK), not the Java Runtime Environment (JRE).  So, be sure that a
+JDK is selected for building, not a JRE.
+<br>While still in the preferences window 
+<br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
 <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
+<ol>
 <li> Select <code>Java</code> | <code>Installed JREs</code>
 <li> Verify that the checked line corresponds with a JDK, not
 a JRE.
@@ -301,8 +303,14 @@ Follow the <a href="http://subclipse.tigris.org/install.html" target="_top">Subc
 <p>For your convenience, an abbreviated version of the Subclipse instructions
 are below:
 <ol>
-<li> To download Subclipse, in Eclipse, follow these menus <code>Help<code>
- | <code>Software Updates<code> | <code>Find and Install</code> | <code>Search for new features to install</code> | <code>New Remote Site</code>.  
+<li> To download Subclipse, in Eclipse, follow these menus
+<i>Windows</i>:
+ <code>Help<code> | <code>Software Updates<code> | <code>Find and Install</code> | <code>Search for new features to install</code> | <code>New Remote Site</code>.  
+
+<br><i>Mac OS X</i>:
+ <code>Help<code> | <code>Software Updates<code> | <code>Available
+ Software</code> | <code>Add Site</code>.  
+
 <li>Then enter
 <pre> 
 Name: Subclipse 1.2.x (Eclipse 3.2+)
@@ -574,7 +582,7 @@ svn+ssh://source.eecs.berkeley.edu/home/svn/chess/ptII
 Or, if your user id on source.eecs is different than your current user id
 on your machine:
 <pre>
-svn co svn+ssh://<I>yourID</I>@source.eecs.berkeley.edu/chess/ptII/trunk ptII
+svn co svn+ssh://<I>yourID</I>@source.eecs.berkeley.edu/chess/ptII
 </pre>
 Read/write users will be prompted for their source.eecs.berkeley.edu
 username and password. 
