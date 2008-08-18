@@ -57,7 +57,7 @@ import antlr.collections.impl.BitSet;
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
 */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused"})
 public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes, TokenStream
  {
 public PtalonLexer(InputStream in) {
@@ -268,7 +268,9 @@ tryAgain:
 	}
 }
 
-	public final void mASSIGN(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
+
+   
+    public final void mASSIGN(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
 		_ttype = ASSIGN;
 		int _saveIndex;
@@ -776,7 +778,8 @@ tryAgain:
 		_returnToken = _token;
 	}
 	
-	public final void mLINE_COMMENT(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
+
+    public final void mLINE_COMMENT(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
 		_ttype = LINE_COMMENT;
 		int _saveIndex;
