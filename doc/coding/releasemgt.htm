@@ -174,13 +174,20 @@ cat /tmp/j | xargs $PTII/adm/bin/fix-files -n
 
 <li> On a Unix box, check for files with control-Ms:
 <pre>
-cat /tmp/f | xargs $PTII/util/testsuite/controlm
+cat /tmp/f | xargs $PTII/util/testsuite/controlm > /tmp/cms
 </pre>
-Use dos2unix to fix the files.
-
  <br>Note many of the files in
 <CODE>ptolemy/copernicus/c/test/</CODE>
 <B>should</B> have a control-M in them, so don't remove them.
+
+<p>To fix the files, run:
+<pre>
+grep "has controlms" /tmp/cms | awk '{print $1}' > /tmp/cmfs
+svn propset svn:keywords "Author Date Id Revision" `cat /tmp/cmfs`
+svn propset svn:eol-style native `cat /tmp/cmfs`
+svn commit -m "Added keywords and eol-style properties" `cat /tmp/cmfs`
+<pre>
+You may need to use dos2unix to fix the files.
 
 <br>Also, check that text files that have control-ms are not
 checked in to cvs with -kb:
