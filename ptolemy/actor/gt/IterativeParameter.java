@@ -49,22 +49,20 @@ import ptolemy.vergil.gt.IterativeParameterIcon;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class IterativeParameter extends Parameter implements ValueIterator {
+public class IterativeParameter extends Parameter implements MatchCallback,
+ValueIterator {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
-     */
     public IterativeParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         initial = new Parameter(this, "initial");
         constraint = new Parameter(this, "constraint");
-        constraint.setTypeEquals(BaseType.BOOLEAN);
+        constraint.setTypeAtMost(BaseType.BOOLEAN);
         next = new Parameter(this, "next");
+        stopIfNotMatch = new Parameter(this, "stopIfNotMatch");
+        stopIfNotMatch.setTypeEquals(BaseType.BOOLEAN);
+        stopIfNotMatch.setToken(BooleanToken.FALSE);
 
         new IterativeParameterIcon(this, "_icon");
 
@@ -92,16 +90,28 @@ public class IterativeParameter extends Parameter implements ValueIterator {
         return newObject;
     }
 
+    public boolean foundMatch(GraphMatcher matcher) {
+        _foundMatch = true;
+        return true;
+    }
+
     public Token initial() throws IllegalActionException {
         Token initialToken = initial.getToken();
         setToken(initialToken);
+        _foundMatch = false;
         return initialToken;
     }
 
     public Token next() throws IllegalActionException {
+        if (((BooleanToken) stopIfNotMatch.getToken()).booleanValue()
+                && !_foundMatch) {
+            throw new IllegalActionException("Stop because the last match " +
+                    "was not successful.");
+        }
         Token nextToken = next.getToken();
         setToken(nextToken);
         validate();
+        _foundMatch = false;
         return nextToken;
     }
 
@@ -116,6 +126,8 @@ public class IterativeParameter extends Parameter implements ValueIterator {
     public Parameter initial;
 
     public Parameter next;
+
+    public Parameter stopIfNotMatch;
 
     public class ConstraintViolationException extends IllegalActionException {
 
@@ -133,4 +145,6 @@ public class IterativeParameter extends Parameter implements ValueIterator {
             }
         }
     }
+
+    private boolean _foundMatch = false;
 }

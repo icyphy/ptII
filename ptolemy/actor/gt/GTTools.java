@@ -150,10 +150,10 @@ public class GTTools {
         return child;
     }
 
-    public static Collection<?> getChildren(NamedObj object,
+    public static Collection<NamedObj> getChildren(NamedObj object,
             boolean includeAttributes, boolean includePorts,
             boolean includeEntities, boolean includeRelations) {
-        Collection<Object> collection = new CombinedCollection<Object>();
+        Collection<NamedObj> collection = new CombinedCollection<NamedObj>();
         if (includeAttributes) {
             collection.addAll(object.attributeList());
         }

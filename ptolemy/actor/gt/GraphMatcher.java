@@ -32,6 +32,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.gt;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -168,6 +169,7 @@ public class GraphMatcher extends GraphAnalyzer {
         _lookbackList.clear();
         _temporaryMatch.clear();
         _ignoredOptionalObjects.clear();
+        _callbacksInPattern.clear();
         _clearCaches();
 
         // Record the values of all the iterators.
@@ -183,11 +185,14 @@ public class GraphMatcher extends GraphAnalyzer {
         _negation = false;
         _success = false;
 
+        _findAllMatchCallbacksInPattern(pattern);
+
         try {
             _success = _matchCompositeEntityAtAllLevels(pattern, hostGraph);
         } finally {
             _parameterValues.clear();
             _ignoredOptionalObjects.clear();
+            _callbacksInPattern.clear();
             _clearCaches();
         }
 
@@ -296,9 +301,6 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     };
 
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
-
     protected boolean _isIgnored(Object object) {
         Boolean ignored = _cachedIgnoredObjects.get(object);
         if (ignored != null) {
@@ -352,6 +354,9 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
     protected boolean _relationCollapsing(NamedObj container) {
         Token collapsingToken = _getAttribute(container,
                 RelationCollapsingAttribute.class, true, false, false);
@@ -398,6 +403,11 @@ public class GraphMatcher extends GraphAnalyzer {
                 }
             }
             if (_checkConstraints()) {
+                for (MatchCallback callback : _callbacksInPattern) {
+                    if (!callback.foundMatch(this)) {
+                        return false;
+                    }
+                }
                 return _callback.foundMatch(this);
             } else {
                 return false;
@@ -458,9 +468,6 @@ public class GraphMatcher extends GraphAnalyzer {
         return true;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     private static boolean _checkCriterion(NamedObj patternObject,
             NamedObj hostObject) {
         GTIngredientList ruleList = null;
@@ -505,6 +512,26 @@ public class GraphMatcher extends GraphAnalyzer {
         _cachedIgnoredObjects.clear();
         _cachedNegatedObjects.clear();
         _cachedOptionalObjects.clear();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Find all instances of NamedObj that implement the MatchCallback
+     *  interface, and record them in the _callbacksInPattern list to be
+     *  invoked when a match is found.
+     *
+     *  @param container
+     */
+    private void _findAllMatchCallbacksInPattern(NamedObj container) {
+        if (container instanceof MatchCallback) {
+            _callbacksInPattern.add((MatchCallback) container);
+        }
+        Collection<NamedObj> children = GTTools.getChildren(container, true,
+                true, true, true);
+        for (NamedObj child : children) {
+            _findAllMatchCallbacksInPattern(child);
+        }
     }
 
     private Token _getAttribute(NamedObj container,
@@ -1231,16 +1258,26 @@ public class GraphMatcher extends GraphAnalyzer {
     private Map<Object, Boolean> _cachedIgnoredObjects =
         new HashMap<Object, Boolean>();
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
-
     private Map<Object, Boolean> _cachedNegatedObjects =
         new HashMap<Object, Boolean>();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
 
     private Map<Object, Boolean> _cachedOptionalObjects =
         new HashMap<Object, Boolean>();
 
     private MatchCallback _callback = DEFAULT_CALLBACK;
+
+    /** The objects in the pattern that implement the MatchCallback interface,
+     *  which are to be invoked when a match is found. All these objects are
+     *  invoked when a match is found, and if they all return true, the callback
+     *  set by the user (using {@link #setMatchCallback(MatchCallback)}) is
+     *  invoked. If not all of them return true, a false is returned by the
+     *  matcher without invoking the callback set by the user.
+     */
+    private List<MatchCallback> _callbacksInPattern =
+        new LinkedList<MatchCallback>();
 
     private static final NameComparator _comparator = new NameComparator();
 
