@@ -1,6 +1,6 @@
 /* Interface representing dependencies between ports of an associated actor.
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @see Dependency
 
  @author Edward A. Lee
- @version $Id: CausalityInterface.java 47513 2007-12-07 06:32:21Z cxh $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
