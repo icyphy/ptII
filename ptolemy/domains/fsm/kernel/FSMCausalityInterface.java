@@ -76,7 +76,7 @@ earlier firing than an event that triggers an output from the
 current refinement.
 
 @author Edward A. Lee
-@version $Id: FSMCausalityInterface.java 47513 2007-12-07 06:32:21Z cxh $
+@version $Id$
 @since Ptolemy II 7.2
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (eal)
