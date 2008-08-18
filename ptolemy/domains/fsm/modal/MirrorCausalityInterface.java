@@ -60,7 +60,7 @@ interfaces, then the corresponding (same named) ports in the actor are also
 equivalent.
 
 @author Edward A. Lee
-@version $Id: MirrorCausalityInterface.java 47513 2007-12-07 06:32:21Z cxh $
+@version $Id$
 @since Ptolemy II 7.2
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (eal)
