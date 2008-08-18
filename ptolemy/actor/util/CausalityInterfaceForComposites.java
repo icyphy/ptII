@@ -404,7 +404,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     public Dependency getMinimumDelay(IOPort port)
 	throws IllegalActionException {
         if (_minimumDelays.get(port) == null) {
-            _getMinimumDelay(port, null);
+            _getMinimumDelay(port, new ArrayList());
         } 
         return _minimumDelays.get(port); 
     }
@@ -814,17 +814,25 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      * @exception IllegalActionException Thrown if minimum delay cannot be computed.
      */
     private Dependency _getMinimumDelay(IOPort port, Collection<IOPort> visitedPorts) throws IllegalActionException {
-        if (visitedPorts == null)
-            visitedPorts = new ArrayList<IOPort>();
-        else if (visitedPorts.contains(port))
-            return RealDependency.OPLUS_IDENTITY;
-        visitedPorts.add(port);
-        Dependency minimumDelay = RealDependency.OPLUS_IDENTITY;
+        if (visitedPorts.contains(port))
+            return getDefaultDependency();
+        else 
+            visitedPorts.add(port);
+        if (_minimumDelays.get(port) != null) 
+            return _minimumDelays.get(port);
+        
+        Dependency minimumDelay = getDefaultDependency();
         if (port.isInput()) {
             // if port is input port of this actor
             if (this._actor.inputPortList().contains(port)) {
-                minimumDelay = ((CausalityInterfaceForComposites)((CompositeActor)
-                        this._actor.getContainer()).getCausalityInterface())._getMinimumDelay(port, visitedPorts);
+                // compute minimum delay in the container if not null
+                if (this._actor.getContainer() != null && 
+                        this._actor.getExecutiveDirector().defaultDependency().equals(this._actor.getDirector().defaultDependency())) {
+                    minimumDelay = ((CausalityInterfaceForComposites)((CompositeActor)
+                            this._actor.getContainer()).getCausalityInterface())._getMinimumDelay(port, visitedPorts);
+                } else {
+                    minimumDelay = getDefaultDependency();
+                } 
             }
             // else if port is input port of any actor in this actor
             else {
@@ -834,19 +842,27 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                         Collection<IOPort> sourcePorts = equivalentPort.sourcePortList(); // contains only one item (?)
                         for (IOPort sourcePort : sourcePorts) {
                             Dependency dependency = _getMinimumDelay(sourcePort, visitedPorts);
-                            if (dependency.compareTo(minimumDelay) == RealDependency.LESS_THAN)
+                            if (dependency.compareTo(minimumDelay) == Dependency.LESS_THAN)
                                 minimumDelay = dependency;
-                        } 
+                        }  
+                    }
+                    // set minimum delay for all ports in this equivalence class 
+                    for (IOPort equivalentPort : equivalentPorts) {
+                        _minimumDelays.put(equivalentPort, minimumDelay);
+                        Collection<IOPort> sourcePorts = equivalentPort.sourcePortList(); // contains only one item (?)
+                        for (IOPort sourcePort : sourcePorts) {
+                            _minimumDelays.put(sourcePort, minimumDelay);
+                        }
                     }
                 } else {
                     Collection<IOPort> sourcePorts = port.sourcePortList(); // contains only one item (?)
                     for (IOPort actorOutputPort : sourcePorts) {
                         Dependency dependency = _getMinimumDelay(actorOutputPort, visitedPorts);
-                        if (dependency.compareTo(minimumDelay) == RealDependency.LESS_THAN)
+                        if (dependency.compareTo(minimumDelay) == Dependency.LESS_THAN)
                             minimumDelay = dependency;
                     }
                     if (sourcePorts.size() == 0) {
-                        minimumDelay = RealDependency.OTIMES_IDENTITY;
+                        minimumDelay = getDefaultDependency();
                     }
                 }
             }
@@ -856,21 +872,26 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                 Collection<IOPort> sourcePorts = port.sourcePortList(); // contains only one item (?)
                 for (IOPort actorOutputPort : sourcePorts) {
                     Dependency dependency = _getMinimumDelay(actorOutputPort, visitedPorts);
-                    if (dependency.compareTo(minimumDelay) == RealDependency.LESS_THAN)
+                    if (dependency.compareTo(minimumDelay) == Dependency.LESS_THAN)
                         minimumDelay = dependency;
                 }
                 if (sourcePorts.size() == 0) {
-                    minimumDelay = RealDependency.OTIMES_IDENTITY;
+                    minimumDelay = getDefaultDependency();
                 }
             }
             // else if port is output port of any actor in this actor
             else { 
                 if (port.getContainer() instanceof CompositeActor) {
-                    Collection<IOPort> deepInputPorts = port.deepInsidePortList();
-                    for (IOPort inputPort : deepInputPorts) { 
-                        Dependency delay = _getMinimumDelay(inputPort, visitedPorts);
-                        if (delay.compareTo(minimumDelay) == RealDependency.LESS_THAN)
-                            minimumDelay = delay;
+                    if (((CompositeActor)port.getContainer()).getDirector() != this._actor.getDirector() &&
+                            ((CompositeActor)port.getContainer()).getDirector().defaultDependency().equals(this._actor.getDirector().defaultDependency())) {
+                        Collection<IOPort> deepInputPorts = port.deepInsidePortList();
+                        for (IOPort inputPort : deepInputPorts) { 
+                            Dependency delay = _getMinimumDelay(inputPort, visitedPorts);
+                            if (delay.compareTo(minimumDelay) == Dependency.LESS_THAN)
+                                minimumDelay = delay;
+                        }
+                    } else {
+                        this._actor.getDirector().defaultDependency();
                     }
                 } else {
                     CausalityInterface causalityInterface = ((Actor)port.getContainer()).getCausalityInterface();
@@ -878,11 +899,11 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                     for (IOPort inputPort : inputPorts) {
                         Dependency delay = _getMinimumDelay(inputPort, visitedPorts);
                         delay = delay.oTimes(causalityInterface.getDependency(inputPort, port));
-                        if (delay.compareTo(minimumDelay) == RealDependency.LESS_THAN)
+                        if (delay.compareTo(minimumDelay) == Dependency.LESS_THAN)
                             minimumDelay = delay;
                     }
                     if (inputPorts.size() == 0)
-                        minimumDelay = RealDependency.OTIMES_IDENTITY;
+                        minimumDelay = getDefaultDependency();
                 }
             }
         }
