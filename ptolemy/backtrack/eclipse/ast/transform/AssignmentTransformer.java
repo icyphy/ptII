@@ -1972,8 +1972,10 @@ public class AssignmentTransformer extends AbstractTransformer implements
             return null;
         }
 
+        @SuppressWarnings("unused")
         String ownerName = owner.getName();
         Type type = Type.getType(node);
+        @SuppressWarnings("unused")
         String typeName = type.getName();
 
         Expression array = node;
@@ -2331,6 +2333,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
     private void _handleDeclaration(ASTNode node, List bodyDeclarations,
             TypeAnalyzerState state) {
         Class currentClass = state.getCurrentClass();
+        @SuppressWarnings("unused")
         Class parent = currentClass.getSuperclass();
         List newMethods = new LinkedList();
         List newFields = new LinkedList();

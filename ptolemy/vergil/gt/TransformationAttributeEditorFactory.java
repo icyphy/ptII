@@ -37,7 +37,6 @@ import ptolemy.actor.gt.controller.ModelAttribute;
 import ptolemy.actor.gt.controller.TransformationAttribute;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.domains.erg.kernel.ERGModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

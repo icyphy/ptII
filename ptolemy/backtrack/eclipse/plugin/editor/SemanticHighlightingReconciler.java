@@ -740,6 +740,7 @@ public class SemanticHighlightingReconciler implements
     private void _scheduleJob() {
         if (EditorUtility.getEditorInputJavaElement(_editor, false) != null) {
             Job job = new Job("PtolemySemanticHighlighting.job") {
+                @SuppressWarnings("deprecation")
                 protected IStatus run(IProgressMonitor monitor) {
                     synchronized (_jobLock) {
                         if (_job != null) {

@@ -44,7 +44,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
 
 /** 
  * Split an input stream onto two output ports depending on a

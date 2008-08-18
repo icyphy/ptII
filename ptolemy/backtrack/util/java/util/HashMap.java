@@ -1176,7 +1176,6 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
             HashEntry e = oldBuckets[i];
             while (e != null) {
                 int idx = hash(e.getKeyField());
-                HashEntry dest = getBuckets()[idx];
                 HashEntry next = e.getNext();
                 e.setNext(getBuckets()[idx]);
                 getBuckets()[idx] = e;

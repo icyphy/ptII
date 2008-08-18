@@ -78,6 +78,7 @@ public class MapTest3 {
             map.put(new Integer(i), new Integer(iteration - i));
         }
 
+        @SuppressWarnings("unused")
         long handle3 = map.$GET$CHECKPOINT().createCheckpoint();
         map.entrySet().clear();
         map.$GET$CHECKPOINT().rollback(handle2, true);
@@ -88,6 +89,7 @@ public class MapTest3 {
             map.put(new Integer(i), new Integer(iteration - i));
         }
 
+        @SuppressWarnings("unused")
         long handle4 = map.$GET$CHECKPOINT().createCheckpoint();
         Iterator iterator = map.keySet().iterator();
 
