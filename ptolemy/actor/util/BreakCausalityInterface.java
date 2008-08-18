@@ -35,7 +35,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// BreakCausalityInterface
 
@@ -67,7 +66,7 @@ import ptolemy.actor.parameters.ParameterPort;
  @Pt.AcceptedRating Red (eal)
  */
 public class BreakCausalityInterface extends DefaultCausalityInterface {
-    
+
     /** Construct a causality interface for the specified actor.
      *  @param actor The actor for which this is a causality interface.
      *  @param defaultDependency The default dependency of an output
@@ -92,7 +91,7 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
     public Collection<IOPort> dependentPorts(IOPort port) {
         return _EMPTY_COLLECTION;
     }
-    
+
     /** Return a collection of the ports in this actor that are
      *  in the same equivalence class. This method
      *  returns a collection containing only the specified port.
@@ -119,7 +118,7 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
         result.add(input);
         return result;
     }
-    
+
     /** Return the dependency between the specified input port
      *  and the specified output port.  This method returns
      *  the oPlusIdentity() of the default dependency given
@@ -135,7 +134,7 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
     public Dependency getDependency(IOPort input, IOPort output) {
         return _defaultDependency.oPlusIdentity();
     }
-    
+
     /** Remove the dependency that the specified output port has
      *  on the specified input port. This method does nothing since
      *  in this class, all dependencies have already been removed.

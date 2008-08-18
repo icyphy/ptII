@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.util;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Dependency
 
@@ -95,7 +94,7 @@ public interface Dependency extends Comparable<Dependency> {
      *  @return The multiplicative identity.
      */
     public Dependency oTimesIdentity();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
 
@@ -104,7 +103,7 @@ public interface Dependency extends Comparable<Dependency> {
 
     /** Return value of compareTo() if this is greater than the argument. */
     public static int GREATER_THAN = 1;
-    
+
     /** Return value of compareTo() if this is incomparable to the argument. */
     public static int INCOMPARABLE = 2;
 

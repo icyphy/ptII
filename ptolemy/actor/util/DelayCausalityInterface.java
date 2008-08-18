@@ -27,9 +27,7 @@
  */
 package ptolemy.actor.util;
 
-
 import ptolemy.actor.Actor;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// Delay Causality Interface
@@ -45,7 +43,7 @@ import ptolemy.actor.Actor;
  @author Patricia Derler  
  */
 public class DelayCausalityInterface extends DefaultCausalityInterface {
-    
+
     /** Construct a causality interface for the specified actor.
      *  @param actor The actor for which this is a causality interface.
      *  @param defaultDependency The default dependency of an output

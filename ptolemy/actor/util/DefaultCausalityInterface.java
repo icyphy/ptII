@@ -41,7 +41,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DefaultCausalityInterface
 
@@ -77,7 +76,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (eal)
  */
 public class DefaultCausalityInterface implements CausalityInterface {
-    
+
     /** Construct a causality interface for the specified actor.
      *  @param actor The actor for which this is a causality interface.
      *  @param defaultDependency The default dependency of an output
@@ -110,7 +109,8 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  @param port The port to find the dependents of.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public Collection<IOPort> dependentPorts(IOPort port) throws IllegalActionException {
+    public Collection<IOPort> dependentPorts(IOPort port)
+            throws IllegalActionException {
         if (_forwardPrunedDependencies == null) {
             // removeDependency() has not been called, so this is the simple case.
             if (port.isOutput()) {
@@ -175,7 +175,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
         }
         return result;
     }
-    
+
     /** Return a collection of the input ports in this actor that are
      *  in the same equivalence class with the specified input
      *  port. This base class returns a collection of all
@@ -209,13 +209,14 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *   contained by the associated actor.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public Collection<IOPort> equivalentPorts(IOPort input) throws IllegalActionException {
+    public Collection<IOPort> equivalentPorts(IOPort input)
+            throws IllegalActionException {
         if (input.getContainer() != _actor || !input.isInput()) {
             throw new IllegalArgumentException(
                     "equivalentPort() called with argument "
-                    + input.getFullName()
-                    + " that is not an input port for "
-                    + _actor.getFullName());
+                            + input.getFullName()
+                            + " that is not an input port for "
+                            + _actor.getFullName());
         }
         if (_forwardPrunedDependencies == null) {
             // removeDependencies() has not been called, so this is the
@@ -247,14 +248,14 @@ public class DefaultCausalityInterface implements CausalityInterface {
         _growDependencies(input, result, dependents);
         return result;
     }
-    
+
     /** Return the actor for which this is a dependency.
      *  @return The actor for which this is a dependency.
      */
     public Actor getActor() {
         return _actor;
     }
-    
+
     /** Return the default dependency specified in the constructor.
      *  @return The default dependency.
      */
@@ -282,10 +283,8 @@ public class DefaultCausalityInterface implements CausalityInterface {
      */
     public Dependency getDependency(IOPort input, IOPort output)
             throws IllegalActionException {
-        if (input.isInput()
-                && input.getContainer() == _actor
-                && output.isOutput()
-                && output.getContainer() == _actor) {
+        if (input.isInput() && input.getContainer() == _actor
+                && output.isOutput() && output.getContainer() == _actor) {
             if (_forwardPrunedDependencies != null) {
                 Set<IOPort> outputPorts = _forwardPrunedDependencies.get(input);
                 if (outputPorts != null && outputPorts.contains(output)) {
@@ -297,7 +296,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
         }
         return _defaultDependency.oPlusIdentity();
     }
-    
+
     /** Return a description of the causality interfaces.
      *  @return A description of the causality interfaces.
      */
@@ -305,12 +304,12 @@ public class DefaultCausalityInterface implements CausalityInterface {
         StringBuffer result = new StringBuffer();
         Iterator inputPorts = _actor.inputPortList().iterator();
         while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)inputPorts.next();
+            IOPort inputPort = (IOPort) inputPorts.next();
             result.append(inputPort.getName());
             result.append(" has output dependencies as follows:\n");
             Iterator outputPorts = _actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort)outputPorts.next();
+                IOPort outputPort = (IOPort) outputPorts.next();
                 result.append("   ");
                 result.append(outputPort.getName());
                 result.append(": ");
@@ -341,8 +340,8 @@ public class DefaultCausalityInterface implements CausalityInterface {
      */
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
         if (_forwardPrunedDependencies == null) {
-            _forwardPrunedDependencies = new HashMap<IOPort,Set<IOPort>>();
-            _backwardPrunedDependencies = new HashMap<IOPort,Set<IOPort>>();
+            _forwardPrunedDependencies = new HashMap<IOPort, Set<IOPort>>();
+            _backwardPrunedDependencies = new HashMap<IOPort, Set<IOPort>>();
         }
         Set<IOPort> outputPorts = _forwardPrunedDependencies.get(inputPort);
         if (outputPorts == null) {
@@ -350,7 +349,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
             _forwardPrunedDependencies.put(inputPort, outputPorts);
         }
         outputPorts.add(outputPort);
-        
+
         Set<IOPort> inputPorts = _backwardPrunedDependencies.get(outputPort);
         if (inputPorts == null) {
             inputPorts = new HashSet<IOPort>();
@@ -358,10 +357,10 @@ public class DefaultCausalityInterface implements CausalityInterface {
         }
         inputPorts.add(inputPort);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
-    
+
     /** If the input port is already in the inputs set, do nothing
      *  and return. Otherwise, add the input port to the inputs set,
      *  and its output dependents to the outputs set. If any of those
@@ -370,9 +369,8 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  on all input ports that depend on those outputs.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected void _growDependencies(
-            IOPort input, Set<IOPort> inputs, Set<IOPort> outputs)
-            throws IllegalActionException {
+    protected void _growDependencies(IOPort input, Set<IOPort> inputs,
+            Set<IOPort> outputs) throws IllegalActionException {
         if (!inputs.contains(input)) {
             inputs.add(input);
             for (IOPort output : dependentPorts(input)) {
@@ -386,22 +384,22 @@ public class DefaultCausalityInterface implements CausalityInterface {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The associated actor. */
     protected Actor _actor;
-    
+
     /** A record of removed dependencies from output to input, if any. */
-    protected Map<IOPort,Set<IOPort>> _backwardPrunedDependencies;
+    protected Map<IOPort, Set<IOPort>> _backwardPrunedDependencies;
 
     /** Empty collection for use by dependentPort(). */
     protected static Collection<IOPort> _EMPTY_COLLECTION = new LinkedList<IOPort>();
 
     /** The default dependency of an output port on an input port. */
     protected Dependency _defaultDependency;
-    
+
     /** A record of removed dependencies from input to output, if any. */
-    protected Map<IOPort,Set<IOPort>> _forwardPrunedDependencies;
+    protected Map<IOPort, Set<IOPort>> _forwardPrunedDependencies;
 }

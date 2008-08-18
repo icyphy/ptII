@@ -33,7 +33,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// CausalityInterface
 
@@ -96,12 +95,12 @@ public interface CausalityInterface {
      */
     public Collection<IOPort> equivalentPorts(IOPort input)
             throws IllegalActionException;;
-    
+
     /** Return the associated actor.
      *  @return The actor for which this is a dependency.
      */
     public Actor getActor();
-    
+
     /** Return the default dependency.
      *  @return The default dependency.
      */
@@ -116,7 +115,7 @@ public interface CausalityInterface {
      */
     public Dependency getDependency(IOPort input, IOPort output)
             throws IllegalActionException;
-    
+
     /** Remove the dependency that the specified output port has
      *  on the specified input port. If there is no
      *  defined dependency between the two ports, then this

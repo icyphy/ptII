@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.util;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// BooleanDependency
 
@@ -47,7 +46,7 @@ package ptolemy.actor.util;
  @Pt.AcceptedRating Red (eal)
  */
 public class BooleanDependency implements Dependency {
-    
+
     /** Construct a dependency with the specified value.
      *  Note that the constructor is private. Use valueOf()
      *  to create instances.
@@ -85,11 +84,11 @@ public class BooleanDependency implements Dependency {
      */
     public boolean equals(Object object) {
         if (object instanceof BooleanDependency) {
-            return (_value == ((BooleanDependency)object)._value);
+            return (_value == ((BooleanDependency) object)._value);
         }
         return false;
     }
-    
+
     /** Return the same hashCode that that Java Boolean object would
      *  return had it the same value, which is
      *  the integer 1231 if this object represents true,
@@ -102,7 +101,7 @@ public class BooleanDependency implements Dependency {
         }
         return 1237;
     }
-    
+
     /** Return a dependency that results from parallel composition of
      *  this one and the specified one. This is a dependency whose
      *  value is the logical OR of the value of this dependency and
@@ -113,7 +112,7 @@ public class BooleanDependency implements Dependency {
      *  @exception ClassCastException if d is not a BooleanDependency.
      */
     public Dependency oPlus(Dependency d) {
-        if (((BooleanDependency)d)._value || _value) {
+        if (((BooleanDependency) d)._value || _value) {
             return OTIMES_IDENTITY;
         }
         return OPLUS_IDENTITY;
@@ -137,7 +136,7 @@ public class BooleanDependency implements Dependency {
      *  @exception ClassCastException if d is not a BooleanDependency.
      */
     public Dependency oTimes(Dependency d) {
-        if (_value && ((BooleanDependency)d)._value) {
+        if (_value && ((BooleanDependency) d)._value) {
             return OTIMES_IDENTITY;
         }
         return OPLUS_IDENTITY;
@@ -150,7 +149,7 @@ public class BooleanDependency implements Dependency {
     public Dependency oTimesIdentity() {
         return OTIMES_IDENTITY;
     }
-    
+
     /** Return a string representation in the form
      *  "BooleanDependency(value)", where value is "true"
      *  or "false".
@@ -162,7 +161,7 @@ public class BooleanDependency implements Dependency {
         }
         return "BooleanDependency(false)";
     }
-    
+
     /** Return an instance of BooleanDependency with the specified
      *  value. This is preferable to use over the constructor
      *  because there are only ever two possible values.
@@ -176,18 +175,18 @@ public class BooleanDependency implements Dependency {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** The additive identity, which has value false and indicates
      *  that there is no dependency.
      */
-    public static BooleanDependency OPLUS_IDENTITY
-            = new BooleanDependency(false);
+    public static BooleanDependency OPLUS_IDENTITY = new BooleanDependency(
+            false);
 
     /** The multiplicative identity, which has value true and
      *  indicates that there is a dependency.
      */
-    public static BooleanDependency OTIMES_IDENTITY
-            = new BooleanDependency(true);
+    public static BooleanDependency OTIMES_IDENTITY = new BooleanDependency(
+            true);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

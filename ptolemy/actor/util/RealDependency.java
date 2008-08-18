@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.util;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// RealDependency
 
@@ -49,7 +48,7 @@ package ptolemy.actor.util;
  @Pt.AcceptedRating Red (eal)
  */
 public class RealDependency implements Dependency {
-    
+
     /** Construct a dependency with the specified value.
      *  The constructor is private. Use valueOf() to construct
      *  an instance.
@@ -77,12 +76,12 @@ public class RealDependency implements Dependency {
         if (equals(dependency)) {
             return Dependency.EQUALS;
         }
-        if (_value < ((RealDependency)dependency)._value) {
+        if (_value < ((RealDependency) dependency)._value) {
             return Dependency.LESS_THAN;
         }
         return Dependency.GREATER_THAN;
     }
-    
+
     /** Return true if the value of this dependency equals that
      *  of the specified one, and the specified one is an instance
      *  of RealDepedency.
@@ -90,19 +89,19 @@ public class RealDependency implements Dependency {
      */
     public boolean equals(Object object) {
         if (object instanceof RealDependency) {
-            return (_value == ((RealDependency)object)._value);
+            return (_value == ((RealDependency) object)._value);
         }
         return false;
     }
-    
+
     /** Return the same hashCode that that Java Double object would
      *  return had it the same value.
      */
     public int hashCode() {
         long v = Double.doubleToLongBits(_value);
-        return (int)(v^(v>>>32));
+        return (int) (v ^ (v >>> 32));
     }
-    
+
     /** Return a dependency that results from parallel composition of
      *  this one and the specified one.
      *  @param d The dependency to add.
@@ -111,7 +110,7 @@ public class RealDependency implements Dependency {
      *  @exception ClassCastException if d is not a RealDependency.
      */
     public Dependency oPlus(Dependency d) {
-        if (((RealDependency)d)._value < _value) {
+        if (((RealDependency) d)._value < _value) {
             return d;
         }
         return this;
@@ -133,7 +132,7 @@ public class RealDependency implements Dependency {
      *  @exception ClassCastException if d is not a RealDependency.
      */
     public Dependency oTimes(Dependency d) {
-        return new RealDependency(_value + ((RealDependency)d)._value);
+        return new RealDependency(_value + ((RealDependency) d)._value);
     }
 
     /** Return the dependency that when multiplied by any other
@@ -143,14 +142,14 @@ public class RealDependency implements Dependency {
     public Dependency oTimesIdentity() {
         return OTIMES_IDENTITY;
     }
-    
+
     /** Return the double value of the dependency.
      * @return The value of the dependency.
      */
     public double value() {
         return _value;
     }
-    
+
     /** Return an instance of BooleanDependency with the specified
      *  value. This is preferable to use over the constructor
      *  because it uses the same instances for the most common
@@ -167,20 +166,18 @@ public class RealDependency implements Dependency {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** The additive identity. */
-    public static RealDependency OPLUS_IDENTITY
-            = new RealDependency(Double.POSITIVE_INFINITY);
+    public static RealDependency OPLUS_IDENTITY = new RealDependency(
+            Double.POSITIVE_INFINITY);
 
     /** The multiplicative identity. */
-    public static RealDependency OTIMES_IDENTITY
-            = new RealDependency(0.0);
+    public static RealDependency OTIMES_IDENTITY = new RealDependency(0.0);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The value. */
     private double _value;
-    
-    
+
 }
