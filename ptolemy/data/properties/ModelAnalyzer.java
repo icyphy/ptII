@@ -112,11 +112,11 @@ public class ModelAnalyzer extends Transformer {
     private void _addChoices() throws IllegalActionException {
         _createSolvers("ptolemy.data.properties.configuredSolvers");
         
-        if (solvers.size() > 0) {
-            property.setExpression(solvers.get(0).getSimpleName());
+        if (_solvers.size() > 0) {
+            property.setExpression(_solvers.get(0).getSimpleName());
         }
         
-        for (Class solver : solvers) {
+        for (Class solver : _solvers) {
             property.addChoice(solver.getSimpleName());
         }
 
@@ -138,6 +138,13 @@ public class ModelAnalyzer extends Transformer {
     
     public Object clone() throws CloneNotSupportedException {
         ModelAnalyzer actor = (ModelAnalyzer) super.clone();
+        try {
+            actor._solvers = _createSolvers("ptolemy.data.properties.configuredSolvers");
+        } catch (IllegalActionException ex) {
+            CloneNotSupportedException exception = new CloneNotSupportedException();
+            exception.initCause(ex);
+            throw exception;
+        }
         return actor;
     }
 
@@ -234,7 +241,7 @@ public class ModelAnalyzer extends Transformer {
     
     private PropertySolver _instantiateSolver(CompositeEntity entity, String className) {
 
-        for (Class solver : solvers) {
+        for (Class solver : _solvers) {
             if (className.equals(
                     solver.getSimpleName())) {
                 try {
@@ -277,7 +284,9 @@ public class ModelAnalyzer extends Transformer {
 //        chosenSolver._highlighter.highlight.setToken(oldValue);
 //    }
 
-    private void _createSolvers(String path) throws IllegalActionException {
+    private List<Class> _createSolvers(String path)
+            throws IllegalActionException {
+        List<Class> solvers = new LinkedList<Class>();
         File file = null;
         
         try {
@@ -297,13 +306,13 @@ public class ModelAnalyzer extends Transformer {
             if (classFiles[i].isDirectory()) {
                 if (!className.equals("CVS") && !className.equals(".svn")) {            
                     // Search sub-folder. 
-                    _createSolvers(path + "." + className);
+                    solvers.addAll(_createSolvers(path + "." + className));
                 }
             } else {
                 try {
                     // only consider class files
                     if (className.contains(".class")) {
-                      solvers.add(Class.forName(path + "." + className.substring(0, className.length() - 6)));
+                      _solvers.add(Class.forName(path + "." + className.substring(0, className.length() - 6)));
                     }
                 } catch (ClassNotFoundException e) {
                     assert false;
@@ -311,6 +320,7 @@ public class ModelAnalyzer extends Transformer {
             }
             
         }
+        return solvers;
     }
 
     private URI _getModelURI(String modelName) throws URISyntaxException {
@@ -347,6 +357,6 @@ public class ModelAnalyzer extends Transformer {
     
     public TypedIOPort errorMessage;
     
-    private List<Class> solvers = new LinkedList<Class>();
+    private List<Class> _solvers = new LinkedList<Class>();
     
 }
