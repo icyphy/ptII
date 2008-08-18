@@ -207,6 +207,7 @@ public class TimedDelay extends DETransformer {
      */
     public CausalityInterface getCausalityInterface() { 
         if (_causalityInterface == null) { 
+            // TODO if director changed another interface might be required
             if (getDirector() instanceof TimedDirector) {
                 Dependency dependency = ((TimedDirector)getDirector()).delayDependency(_delay);
                 if (dependency instanceof BooleanDependency) {
@@ -280,7 +281,14 @@ public class TimedDelay extends DETransformer {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        removeDependency(input, output);
+        // the dependency should only be removed if boolean dependencies are used
+        // if real dependencies are used, then there is a dependency
+        if (getDirector() instanceof TimedDirector) {
+            Dependency dependency = ((TimedDirector)getDirector()).delayDependency(_delay);
+            if (dependency instanceof BooleanDependency) {
+                removeDependency(input, output);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
