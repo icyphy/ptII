@@ -195,6 +195,60 @@ COPERNICUSPACKAGES = \
 	$(JHDLPACKAGE) \
 	ptolemy.copernicus.shallow
 
+# Packages used by data/properties
+# Use this command:
+# cd $PTII/data/properties; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/data/properties" dir}' | sed 's@/@.@g'
+DATAPROPERTIESPACKAGES = \
+	ptolemy.data.properties \
+	ptolemy.data.properties.configuredSolvers.lattice \
+	ptolemy.data.properties.configuredSolvers.token \
+	ptolemy.data.properties.gui \
+	ptolemy.data.properties.lattice \
+	ptolemy.data.properties.lattice.academicFalseTrueEqualPriority \
+	ptolemy.data.properties.lattice.academicFalseTrueEqualPriority.actor \
+	ptolemy.data.properties.lattice.academicFalseTrueEqualPriority.data.expr \
+	ptolemy.data.properties.lattice.academicFalseTrueEqualPriority.domains.fsm.kernel \
+	ptolemy.data.properties.lattice.academicFalseTrueEqualPriority.kernel \
+	ptolemy.data.properties.lattice.academicFalseTrueSet \
+	ptolemy.data.properties.lattice.academicFalseTrueSet.actor \
+	ptolemy.data.properties.lattice.academicFalseTrueSet.data.expr \
+	ptolemy.data.properties.lattice.academicFalseTrueSet.domains.fsm.kernel \
+	ptolemy.data.properties.lattice.academicFalseTrueSet.kernel \
+	ptolemy.data.properties.lattice.exampleSetLattice \
+	ptolemy.data.properties.lattice.exampleSetLattice.actor \
+	ptolemy.data.properties.lattice.exampleSetLattice.actor.lib \
+	ptolemy.data.properties.lattice.exampleSetLattice.data.expr \
+	ptolemy.data.properties.lattice.exampleSetLattice.kernel \
+	ptolemy.data.properties.lattice.logicalAND \
+	ptolemy.data.properties.lattice.logicalAND.actor \
+	ptolemy.data.properties.lattice.logicalAND.actor.lib \
+	ptolemy.data.properties.lattice.logicalAND.data.expr \
+	ptolemy.data.properties.lattice.logicalAND.domains.fsm.kernel \
+	ptolemy.data.properties.lattice.logicalAND.domains.sdf.lib \
+	ptolemy.data.properties.lattice.logicalAND.kernel \
+	ptolemy.data.properties.lattice.logicalOrBackward \
+	ptolemy.data.properties.lattice.logicalOrBackward.actor \
+	ptolemy.data.properties.lattice.logicalOrBackward.actor.lib \
+	ptolemy.data.properties.lattice.logicalOrBackward.data.expr \
+	ptolemy.data.properties.lattice.logicalOrBackward.domains.fsm.kernel \
+	ptolemy.data.properties.lattice.logicalOrBackward.kernel \
+	ptolemy.data.properties.lattice.typeSystem_C \
+	ptolemy.data.properties.lattice.typeSystem_C.actor \
+	ptolemy.data.properties.lattice.typeSystem_C.actor.lib \
+	ptolemy.data.properties.lattice.typeSystem_C.actor.lib.logic \
+	ptolemy.data.properties.lattice.typeSystem_C.data.expr \
+	ptolemy.data.properties.lattice.typeSystem_C.domains.fsm.kernel \
+	ptolemy.data.properties.lattice.typeSystem_C.kernel \
+	ptolemy.data.properties.token \
+	ptolemy.data.properties.token.combinedValueToken.actor \
+	ptolemy.data.properties.token.combinedValueToken.domains.fsm.kernel \
+	ptolemy.data.properties.token.combinedValueToken.kernel \
+	ptolemy.data.properties.token.firstValueToken \
+	ptolemy.data.properties.token.firstValueToken.actor \
+	ptolemy.data.properties.token.firstValueToken.domains.fsm.kernel \
+	ptolemy.data.properties.token.firstValueToken.kernel \
+	ptolemy.data.properties.util
+
 # Packages used by Diva
 DIVAPACKAGES = \
 	diva.canvas \
@@ -362,6 +416,7 @@ PTBACKTRACK_PACKAGES = \
 ALL1_4PACKAGES = \
 	$(COMPACKAGES) \
 	$(COPERNICUSPACKAGES) \
+	$(DATAPROPERTIESPACKAGES) \
 	$(DIVAPACKAGES) \
 	$(EXPERIMENTALPACKAGES) \
 	$(GRAPHTRANSFORMATIONPACKAGES) \
