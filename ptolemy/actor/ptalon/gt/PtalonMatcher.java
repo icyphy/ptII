@@ -75,6 +75,7 @@ public class PtalonMatcher extends TypedCompositeActor
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        setClassName("ptolemy.actor.ptalon.gt.PtalonMatcher");
         ptalonCodeLocation = new FileParameter(this, "ptalonCodeLocation");
     }
 
