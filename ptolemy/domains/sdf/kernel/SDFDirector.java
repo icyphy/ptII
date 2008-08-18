@@ -536,14 +536,14 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         // force the schedule to be computed.
         if (_debugging) {
-            _debug("*** Schedule:");
+            _debug("### Schedule:");
         }
 
         try {
             Schedule schedule = scheduler.getSchedule();
             if (_debugging) {
                 _debug(schedule.toString());
-                _debug("*** End schedule");
+                _debug("### End schedule");
             }
         } catch (NotSchedulableException ex) {
             // Capt. Robbins suggested that we show which actors are connected
