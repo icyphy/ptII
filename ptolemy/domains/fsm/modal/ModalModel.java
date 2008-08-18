@@ -497,11 +497,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         _controller = new ModalController(this, "_Controller");
         // Whether the controller does conservative analysis or not should
         // depend on the parameter of this actor.
-        
-        // the parameter in the following statement does not make sense? 
-        // (Patricia Derler 08/18/09)
-        //_controller.stateDependentCausality.setExpression("stateDependentCausality");
-        _controller.stateDependentCausality.setExpression("false");
+        _controller.stateDependentCausality.setExpression("stateDependentCausality");
 
         // configure the directorClass parameter
         directorClass = new StringParameter(this, "directorClass");
