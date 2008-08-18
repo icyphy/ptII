@@ -86,7 +86,8 @@ public class TDLActionsGraph {
      * 
      * @param invocationTime
      * @param actor
-     * @return
+     * @return The node that is used for the execution of an actor at
+     * a certain time.
      */
     public Node getNode(Time invocationTime, Object actor) {
         List<Node> nodes = (List<Node>) _graph.nodes();
@@ -117,7 +118,7 @@ public class TDLActionsGraph {
      * @param port
      * @param lower
      * @param upper
-     * @return
+     * @return The node to be used for writing to an output port.
      */
     public Node getNode(Object port, Time lower, Time upper) {
         List<Node> nodes = (List<Node>) _graph.nodes();
