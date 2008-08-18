@@ -261,7 +261,11 @@ public class Director extends Attribute implements Executable {
      *   and output ports.
      */
     public Dependency defaultDependency() {
-        return BooleanDependency.OTIMES_IDENTITY;
+        if (_isEmbedded())
+            return ((CompositeActor) getContainer()).getExecutiveDirector()
+                    .defaultDependency();
+        else
+            return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Iterate all the deeply contained actors of the
