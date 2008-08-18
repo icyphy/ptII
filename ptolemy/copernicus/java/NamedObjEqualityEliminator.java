@@ -37,7 +37,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import soot.HasPhaseOptions;
 import soot.Local;
-import soot.NullType;
 import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
