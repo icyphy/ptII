@@ -5,9 +5,16 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
+import ptolemy.actor.util.Dependency;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.fsm.modal.ModalPort;
+import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -99,23 +106,33 @@ public class TDLTask extends TypedCompositeActor {
 	 */
 	public Parameter slots;
 	
+    public CausalityInterface getCausalityInterface() {
+        Director executiveDirector = getExecutiveDirector(); 
+        Dependency defaultDependency = BooleanDependency.OTIMES_IDENTITY;
+        if (executiveDirector != null) {
+            defaultDependency = executiveDirector.defaultDependency();
+        }
+        _causalityInterface = new CausalityInterfaceForComposites(this, defaultDependency); 
+        return _causalityInterface;
+    }
 	
-	
-	public Collection getSensorsReadFrom(List refinementInputPorts, List moduleInputPorts) {
+	public List<ModalPort> getSensorsReadFrom(List refinementInputPorts, List moduleInputPorts) {
 	    if (_readsFromSensors == null) {
 	        _readsFromSensors = new ArrayList();
-        	List refinementInputs = null;
-            for (Iterator inputIt = inputPortList().iterator(); inputIt
-                    .hasNext();) {
-                IOPort port = (IOPort) inputIt.next();
-                refinementInputs = new ArrayList();
-                refinementInputs.addAll(port.connectedPortList());
-                refinementInputs.retainAll(refinementInputPorts);
+        	List<IOPort> taskRefinementInputs = null;
+        	
+        	List<IOPort> taskInputPorts = inputPortList(); 
+        	taskRefinementInputs = new ArrayList();
+            for (IOPort inputPort : taskInputPorts) {  
+                taskRefinementInputs.addAll(inputPort.connectedPortList()); 
             }
-            for (Iterator inputIt = refinementInputs.iterator(); inputIt.hasNext();) {
-                List l = new ArrayList();
-                l.addAll(((IOPort)inputIt.next()).connectedPortList());
-                _readsFromSensors.add( l.retainAll(moduleInputPorts));
+            taskRefinementInputs.retainAll(refinementInputPorts);
+            for (IOPort taskRefinementInput : taskRefinementInputs) {
+            //for (Iterator inputIt = taskRefinementInputs.iterator(); inputIt.hasNext();) {
+                List taskModuleInputs = new ArrayList();
+                taskModuleInputs.addAll(taskRefinementInput.connectedPortList());
+                taskModuleInputs.retainAll(moduleInputPorts);
+                _readsFromSensors.addAll(taskModuleInputs);
             }
 	    }
 	    return _readsFromSensors;
@@ -133,7 +150,7 @@ public class TDLTask extends TypedCompositeActor {
 		try {
 			workspace().getWriteAccess();
 
-			TDLTaskOutputPort port = new TDLTaskOutputPort(this, name);
+			TDLTaskPort port = new TDLTaskPort(this, name);
 			return port;
 		} catch (IllegalActionException ex) {
 			// This exception should not occur, so we throw a runtime

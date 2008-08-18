@@ -1,9 +1,18 @@
 package ptolemy.domains.tt.tdl.kernel;
 
 import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.CausalityInterfaceForComposites;
+import ptolemy.actor.util.Dependency;
+import ptolemy.actor.util.RealDependency;
+import ptolemy.actor.util.Time;
 import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.modal.ModalPort;
+import ptolemy.domains.fsm.modal.RefinementPort;
+import ptolemy.graph.Node;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -78,16 +87,39 @@ public class TDLActor extends FSMActor {
 			workspace().doneWriting();
 		}
 	}
-	
-    protected void _readInput(IOPort port) throws IllegalActionException { 
-        Iterator inPorts = inputPortList().iterator(); 
-        while (inPorts.hasNext() && !_stopRequested) {
-            IOPort p = (IOPort) inPorts.next();
-            int width = p.getWidth(); 
-            for (int channel = 0; channel < width; ++channel) {
-                _readInputs(p, channel);
+
+    
+
+    public boolean readInput(Node node, IOPort p, long modePeriod)
+            throws IllegalActionException { 
+        // TODO for all channels  
+        List<IOPort> ports = p.deepInsidePortList();
+        for (IOPort port : ports) {
+            if (port instanceof RefinementPort) {
+                if (inputIsSafeToProcess(port)) {
+                    super._readInputs(port, 0);
+                    TDLModuleDirector director = ((TDLModuleDirector)getDirector());
+                    
+                    director.scheduleEventsAfterAction(node);
+                    return true;
+                }
             }
         }
+        return false;
+    }
+
+    private boolean inputIsSafeToProcess(IOPort port) throws IllegalActionException {
+        Time modelTime = getDirector().getModelTime();
+        Time physicalTime = getExecutiveDirector().getModelTime();
+        CausalityInterfaceForComposites causalityInterface = (CausalityInterfaceForComposites) ((TDLModule)getContainer()).getCausalityInterface();
+        Dependency minimumDelay = causalityInterface
+                .getMinimumDelay(port);  
+        if (minimumDelay instanceof RealDependency) {
+        return ((RealDependency) minimumDelay).value() == Double.MAX_VALUE
+                || modelTime.subtract(((RealDependency)minimumDelay).value()).compareTo(
+                        physicalTime) <= 0;     
+        } else 
+            return true;
     }
 
 }

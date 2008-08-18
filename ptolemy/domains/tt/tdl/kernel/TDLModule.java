@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.Iterator;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.domains.fsm.modal.ModalPort;
 import ptolemy.domains.fsm.modal.Refinement;
@@ -176,6 +177,12 @@ public class TDLModule extends ModalModel {
 		}
 
 		return newModel;
+	}
+	
+	@Override
+	public CausalityInterface getCausalityInterface() {
+	    // TODO Auto-generated method stub
+	    return super.getCausalityInterface();
 	}
 
 	/**

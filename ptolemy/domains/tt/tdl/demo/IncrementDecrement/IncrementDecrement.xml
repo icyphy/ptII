@@ -205,14 +205,14 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[177.5, 50.0]">
                 </property>
-                <port name="inc_i" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="inc_i" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="input"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 205.0]">
                     </property>
                 </port>
-                <port name="inc_o" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="inc_o" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="output"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="50">
                     </property>
@@ -341,14 +341,14 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[177.5, 145.0]">
                 </property>
-                <port name="dec_i" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="dec_i" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="input"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 190.0]">
                     </property>
                 </port>
-                <port name="dec_o" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="dec_o" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="output"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="200">
                     </property>
@@ -518,14 +518,14 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{187.5, 60.0}">
                 </property>
-                <port name="inc_i" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="inc_i" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="input"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 205.0]">
                     </property>
                 </port>
-                <port name="inc_o" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="inc_o" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="output"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="50">
                     </property>
@@ -656,14 +656,14 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{187.5, 155.0}">
                 </property>
-                <port name="dec_i" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="dec_i" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="input"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 190.0]">
                     </property>
                 </port>
-                <port name="dec_o" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="dec_o" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="output"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="200">
                     </property>
@@ -925,21 +925,21 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 145.0]">
                 </property>
-                <port name="sum_in_inc" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="sum_in_inc" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="input"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 155.0]">
                     </property>
                 </port>
-                <port name="sum_in_dec" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="sum_in_dec" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="input"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 235.0]">
                     </property>
                 </port>
-                <port name="sum_out" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="sum_out" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="output"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="250">
                     </property>
@@ -980,21 +980,21 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 240.0]">
                 </property>
-                <port name="sum_in_inc" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="sum_in_inc" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="input"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 165.0}">
                     </property>
                 </port>
-                <port name="sum_in_dec2" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="sum_in_dec2" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="input"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 245.0}">
                     </property>
                 </port>
-                <port name="sum_out2" class="ptolemy.domains.tt.tdl.kernel.TDLTaskOutputPort">
+                <port name="sum_out2" class="ptolemy.domains.tt.tdl.kernel.TDLTaskPort">
                     <property name="output"/>
                     <property name="initialValue" class="ptolemy.data.expr.Parameter" value="250">
                     </property>

@@ -15,7 +15,7 @@ import ptolemy.kernel.util.Workspace;
  * @author Patricia Derler
  * 
  */
-public class TDLTaskOutputPort extends TypedIOPort {
+public class TDLTaskPort extends TypedIOPort {
 
 	/**
 	 * Construct a TypedIOPort with no container and no name that is neither an
@@ -24,7 +24,7 @@ public class TDLTaskOutputPort extends TypedIOPort {
 	 * @throws NameDuplicationException
 	 * @throws IllegalActionException
 	 */
-	public TDLTaskOutputPort() throws IllegalActionException,
+	public TDLTaskPort() throws IllegalActionException,
 			NameDuplicationException {
 		super();
 		_init();
@@ -41,7 +41,7 @@ public class TDLTaskOutputPort extends TypedIOPort {
 	 * @throws NameDuplicationException Thrown if the initial value parameter cannot be created.
 	 * @throws IllegalActionException Thrown if the initial value parameter cannot be created.
 	 */
-	public TDLTaskOutputPort(Workspace workspace)
+	public TDLTaskPort(Workspace workspace)
 			throws IllegalActionException, NameDuplicationException {
 		super(workspace);
 		_init();
@@ -64,7 +64,7 @@ public class TDLTaskOutputPort extends TypedIOPort {
 	 *                If the name coincides with a port already in the
 	 *                container.
 	 */
-	public TDLTaskOutputPort(ComponentEntity container, String name)
+	public TDLTaskPort(ComponentEntity container, String name)
 			throws IllegalActionException, NameDuplicationException {
 		super(container, name);
 		_init();
@@ -92,7 +92,7 @@ public class TDLTaskOutputPort extends TypedIOPort {
 	 *                If the name coincides with a port already in the
 	 *                container.
 	 */
-	public TDLTaskOutputPort(ComponentEntity container, String name,
+	public TDLTaskPort(ComponentEntity container, String name,
 			boolean isInput, boolean isOutput) throws IllegalActionException,
 			NameDuplicationException {
 		super(container, name, isInput, isOutput);

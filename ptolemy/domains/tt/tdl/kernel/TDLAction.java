@@ -2,6 +2,8 @@ package ptolemy.domains.tt.tdl.kernel;
 
 import java.util.Comparator;
 
+import ptolemy.actor.util.Time;
+
 /**
  * Describes a TDL action. Used in the TDLActionsGraph.
  * @author Patricia Derler
@@ -15,7 +17,7 @@ public class TDLAction {
      * @param actionType Type of TDL action.
      * @param actor Actor on which the TDL action has to be performed on.
      */
-    public TDLAction(long time, int actionType, Object actor) {
+    public TDLAction(Time time, int actionType, Object actor) {
         this.time = time;
         this.actionType = actionType;
         this.object = actor;
@@ -58,10 +60,12 @@ public class TDLAction {
      */
     public static final int EXECUTETASK = 6;
     
+    public static final int AFTERTASKOUTPUTS = 7;
+    
     /**
      * Time stamp for the TDL action.
      */
-    public long time;
+    public Time time;
     
     /**
      * Type of TDL action. This is one of the constants defined above.
@@ -76,6 +80,27 @@ public class TDLAction {
     @Override
     public String toString() {
         return actionType + "@" + time + "@" + object;
+    }
+    
+    @Override
+    public boolean equals(Object obj) { 
+        if (obj instanceof TDLAction) {
+            TDLAction action = (TDLAction) obj;
+            if ((this.time.equals(action.time)) && (this.object == action.object) && (this.actionType == action.actionType))
+                return true;
+        }
+        return false;
+    }
+    
+    public boolean sameActionAs(TDLAction obj, Time modePeriod) {
+        if (obj instanceof TDLAction) {
+            TDLAction action = (TDLAction) obj;
+            long time1 = this.time.getLongValue() % modePeriod.getLongValue();
+            long time2 = action.time.getLongValue() % modePeriod.getLongValue();
+            if (time1 == time2 && (this.object == action.object) && (this.actionType == action.actionType))
+                return true;
+        }
+        return false;
     }
     
     /**
@@ -96,7 +121,7 @@ public class TDLAction {
         public int compare(Object event1, Object event2) {
             TDLAction tdlEvent1 = (TDLAction) event1;
             TDLAction tdlEvent2 = (TDLAction) event2;
-            long compareTime = tdlEvent1.time - tdlEvent2.time;
+            long compareTime = tdlEvent1.time.compareTo(tdlEvent2.time);
             if (compareTime != 0)
                 return (int)compareTime;
             else if (tdlEvent1.actionType != tdlEvent2.actionType) 
@@ -107,5 +132,7 @@ public class TDLAction {
         
         
     }
+
+    
     
 }

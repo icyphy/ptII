@@ -274,8 +274,7 @@ public class TDLCodeGeneratorUtilities {
 
 		modeName = state.getName();
 
-		double periodValue = TDLModuleDirector
-				.getModePeriod(state);
+		double periodValue = 1.0; //TDLModuleDirector .getModePeriod(state);
 		String start = "";
 		if (((BooleanToken) state.isInitialState.getToken()).booleanValue())
 			start = "start ";
@@ -290,7 +289,7 @@ public class TDLCodeGeneratorUtilities {
 			sb.append("    task\n");
 		while (taskIterator.hasNext()) {
 			Actor actor = (Actor) taskIterator.next();
-			int frequency = TDLModeScheduler.getFrequency((NamedObj) actor);
+			int frequency = TDLModuleDirector.getFrequency((NamedObj) actor);
 			StringBuffer taskoutputPorts = new StringBuffer();
 
 			// get all input ports that are connected to another module's output
@@ -330,7 +329,7 @@ public class TDLCodeGeneratorUtilities {
 		while (actorIterator.hasNext()) {
 			IOPort port = (IOPort) actorIterator.next();
 			// TODO task output ports
-			int frequency = TDLModeScheduler.getFrequency(port);
+			int frequency = TDLModuleDirector.getFrequency(port);
 			// List ports = port.connectedPortList();
 			// IOPort p = (IOPort) ports.get(2);
 			String portName = port.getFullName().substring(1);
@@ -346,7 +345,7 @@ public class TDLCodeGeneratorUtilities {
 			sb.append("    mode\n");
 		while (transitionIterator.hasNext()) {
 			Transition transition = (Transition) transitionIterator.next();
-			int frequency = TDLModeScheduler.getFrequency(transition);
+			int frequency = TDLModuleDirector.getFrequency(transition);
 			sb.append("      [freq=" + frequency + "] if "
 					+ transition.getName() + " then "
 					+ transition.destinationState().getName() + ";\n");
