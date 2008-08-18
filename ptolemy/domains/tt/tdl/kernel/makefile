@@ -57,16 +57,12 @@ JSRCS = \
 	TDLController.java \
 	TDLMode.java \
 	TDLModeException.java \
-	TDLModeSchedule.java \
-	TDLModeScheduler.java \
-	TDLModeSchedulerException.java \
 	TDLModule.java \
 	TDLModuleDirector.java \
 	TDLReceiver.java \
 	TDLRefinement.java \
 	TDLRefinementPort.java \
 	TDLTask.java \
-	TDLTaskOutputPort.java \
 	TDLTransition.java 
 
 OTHER_FILES_TO_BE_JARED = \
