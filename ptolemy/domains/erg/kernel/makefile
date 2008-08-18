@@ -57,6 +57,7 @@ JSRCS = \
 	SchedulingRelation.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ERGModalModelIcon.xml \
 	EventIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

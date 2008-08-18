@@ -68,9 +68,11 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	MatchIcon.xml \
 	ModelUpdater.xml \
+	ModelUpdaterIcon.xml \
 	TestIcon.xml \
 	TransformIcon.xml \
-	TransformationController.xml
+	TransformationController.xml \
+	TransformationControllerIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
