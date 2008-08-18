@@ -995,6 +995,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             if (!_eventsInExecution.contains(actor)) {
                 List<IOPort> inputPorts = actor.inputPortList();
                 for (IOPort port : inputPorts) {
+                    CausalityInterfaceForComposites causalityInterface = 
+                        (CausalityInterfaceForComposites) ((CompositeActor) this.getContainer())
+                        .getCausalityInterface();
+                    
                     if (PtidesActorProperties.portIsTriggerPort(port)) {
                         Receiver[][] receivers = port.getReceivers();
                         for (int i = 0; i < receivers.length; i++) {
