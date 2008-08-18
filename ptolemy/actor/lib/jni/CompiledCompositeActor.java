@@ -576,8 +576,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // necessary.  If we copy files, then we should rebuild.
         // FIXME: this is a side effect, and we should be sure to do
         // it before returning from this method.
-        long fileDependenciesModificationTime = ((Long) _invokeHelperMethod("copyFilesToCodeDirectory"))
-                .longValue();
+        _invokeHelperMethod("copyFilesToCodeDirectory");
 
         File sharedObjectFile = new File(_sharedObjectPath(_sanitizedActorName));
         
