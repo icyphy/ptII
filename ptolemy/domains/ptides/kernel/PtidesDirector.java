@@ -269,7 +269,8 @@ public class PtidesDirector extends TimedPNDirector {
         return newObject;
     }
 
-    @Override
+    // Don't use @Override because the nightly build can't handle it
+    //@Override
     public Dependency defaultDependency() {
         return RealDependency.OTIMES_IDENTITY;
     }
