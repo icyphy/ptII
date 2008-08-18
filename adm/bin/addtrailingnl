@@ -30,7 +30,7 @@ do
         cat  $file $nlfile > $tmpfile
 	if [ "$printonly" = "no" ]; then
             cp $tmpfile $file
-	    cvs commit -m "Added trailing newline" $file
+	    svn commit -m "Added trailing newline" $file
 	else    
 	    echo "$file: would commit"
 	    diff $file $tmpfile
