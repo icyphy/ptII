@@ -190,7 +190,7 @@ release_nightly:
 		JSDATABASE=/home/bldmastr/jsdatabase \
 		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.jar \
-		test_setup
+		all setup
 
 # Rebuild the distributions
 rebuild: clean all installshield_app build_unixPtII
@@ -910,7 +910,7 @@ ptbuild:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	rm -f /users/$(USER)/logs/java`date  '+%m%d'`
-	-(cd $(PTIIHOME); svn update; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.5" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
+	-(cd $(PTIIHOME); rm configure; svn update; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.5" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
 
 # test in ~ptII
 pttests:
