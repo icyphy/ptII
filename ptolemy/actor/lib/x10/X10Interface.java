@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 
-import javax.comm.CommPortIdentifier;
+import gnu.io.CommPortIdentifier;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.expr.StringParameter;
