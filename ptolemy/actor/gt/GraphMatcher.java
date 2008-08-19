@@ -301,20 +301,24 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     };
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
     protected boolean _isIgnored(Object object) {
         Boolean ignored = _cachedIgnoredObjects.get(object);
         if (ignored != null) {
             return ignored.booleanValue();
         }
 
-        if (_isCreated(object) || GTTools.isIgnored(object)) {
-            return true;
-        }
-        boolean optional = _isOptional(object);
         boolean result;
-        if (optional && _ignoredOptionalObjects.containsKey(object)
-                && _ignoredOptionalObjects.get(object)) {
+        if (_isCreated(object) || GTTools.isIgnored(object)) {
             result = true;
+        } else if (object instanceof NamedObj) {
+            NamedObj optionalContainer = _getOptionalContainer(
+                    (NamedObj) object);
+            result = optionalContainer != null
+                    && _ignoredOptionalObjects.containsKey(optionalContainer)
+                    && _ignoredOptionalObjects.get(optionalContainer);
         } else {
             result = false;
         }
@@ -354,9 +358,6 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
-
     protected boolean _relationCollapsing(NamedObj container) {
         Token collapsingToken = _getAttribute(container,
                 RelationCollapsingAttribute.class, true, false, false);
@@ -366,6 +367,9 @@ public class GraphMatcher extends GraphAnalyzer {
             return ((BooleanToken) collapsingToken).booleanValue();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Check the items in the lookback list for more matching requirements. If
      *  no more requirements are found (i.e., all the lists in the lookback list
@@ -511,11 +515,8 @@ public class GraphMatcher extends GraphAnalyzer {
         _cachedCreatedObjects.clear();
         _cachedIgnoredObjects.clear();
         _cachedNegatedObjects.clear();
-        _cachedOptionalObjects.clear();
+        _cachedOptionalContainers.clear();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     /** Find all instances of NamedObj that implement the MatchCallback
      *  interface, and record them in the _callbacksInPattern list to be
@@ -597,6 +598,30 @@ public class GraphMatcher extends GraphAnalyzer {
                 : object.toString();
     }
 
+    private NamedObj _getOptionalContainer(NamedObj object) {
+        Object optionalObject = _cachedOptionalContainers.get(object);
+        if (optionalObject != null) {
+            if (optionalObject instanceof NamedObj) {
+                return (NamedObj) optionalObject;
+            } else {
+                return null;
+            }
+        }
+
+        NamedObj container = object;
+        while (container != null && !GTTools.isOptional(container)) {
+            container = container.getContainer();
+        }
+        if (container == null) {
+            // Put any non-NamedObj value so that we won't return it later.
+            _cachedOptionalContainers.put(object, Boolean.FALSE);
+            return null;
+        } else {
+            _cachedOptionalContainers.put(object, container);
+            return container;
+        }
+    }
+
     private boolean _isCreated(Object object) {
         Boolean created = _cachedCreatedObjects.get(object);
         if (created != null) {
@@ -617,17 +642,6 @@ public class GraphMatcher extends GraphAnalyzer {
         negated = GTTools.isNegated(object);
         _cachedNegatedObjects.put(object, negated);
         return negated;
-    }
-
-    private boolean _isOptional(Object object) {
-        Boolean optional = _cachedOptionalObjects.get(object);
-        if (optional != null) {
-            return optional.booleanValue();
-        }
-
-        optional = GTTools.isOptional(object);
-        _cachedOptionalObjects.put(object, optional);
-        return optional;
     }
 
     private boolean _matchAtomicEntity(ComponentEntity patternEntity,
@@ -841,18 +855,23 @@ public class GraphMatcher extends GraphAnalyzer {
             patternEntry = patternEntry.getNext();
         }
 
-        boolean optional = false;
+        NamedObj optionalContainer = null;
 
         if (patternEntry != null) {
             ObjectList.Entry previous = patternEntry.getPrevious();
             patternEntry.remove();
 
-            optional = _isOptional(patternObject);
-            if (optional && !_ignoredOptionalObjects.containsKey(
-                    patternObject)) {
-                _ignoredOptionalObjects.put(patternObject, false);
-            } else {
-                optional = false;
+            if (patternObject instanceof NamedObj) {
+                optionalContainer = _getOptionalContainer(
+                        (NamedObj) patternObject);
+                if (optionalContainer != null
+                        && !_ignoredOptionalObjects.containsKey(
+                                optionalContainer)) {
+                    _ignoredOptionalObjects.put(optionalContainer, false);
+                    _clearCaches();
+                } else {
+                    optionalContainer = null;
+                }
             }
 
             patternChildChecked = true;
@@ -892,11 +911,12 @@ public class GraphMatcher extends GraphAnalyzer {
         }
 
         if (success == _negation) {
-            if (!success || optional) {
+            if (!success || optionalContainer != null) {
                 _matchResult.retain(matchSize);
             }
-            if (optional) {
-                _ignoredOptionalObjects.put(patternObject, true);
+            if (optionalContainer != null) {
+                _ignoredOptionalObjects.put(optionalContainer, true);
+                _clearCaches();
                 ObjectList.Entry previous = patternEntry.getPrevious();
                 patternEntry.remove();
                 success = _checkBackward();
@@ -908,8 +928,9 @@ public class GraphMatcher extends GraphAnalyzer {
             lookbackTail.remove();
         }
 
-        if (optional) {
-            _ignoredOptionalObjects.remove(patternObject);
+        if (optionalContainer != null) {
+            _ignoredOptionalObjects.remove(optionalContainer);
+            _clearCaches();
         }
 
         return success;
@@ -1252,6 +1273,9 @@ public class GraphMatcher extends GraphAnalyzer {
         return true;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
     private Map<Object, Boolean> _cachedCreatedObjects =
         new HashMap<Object, Boolean>();
 
@@ -1261,11 +1285,8 @@ public class GraphMatcher extends GraphAnalyzer {
     private Map<Object, Boolean> _cachedNegatedObjects =
         new HashMap<Object, Boolean>();
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
-
-    private Map<Object, Boolean> _cachedOptionalObjects =
-        new HashMap<Object, Boolean>();
+    private Map<NamedObj, Object> _cachedOptionalContainers =
+        new HashMap<NamedObj, Object>();
 
     private MatchCallback _callback = DEFAULT_CALLBACK;
 
