@@ -391,7 +391,10 @@ public class PythonScript extends TypedAtomicActor {
         // create an instance by using the __call__ method
         // of the Main class object
         if (_class == null) {
-            _class = (PyClass) _interpreter.get(_CLASS_NAME);
+            // Since _class is null, we could have been cloned.
+            // Evaluate the script so that we do not use a different
+            // script of another python actor. (This will set _class).
+            _evaluateScript();
         }
         PyObject object = _class.__call__();
 
