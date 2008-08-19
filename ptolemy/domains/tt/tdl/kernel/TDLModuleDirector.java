@@ -201,6 +201,9 @@ public class TDLModuleDirector extends ModalDirector {
                     }
                 }
             }
+            if (_currentWCET > 0.0) { 
+                return; 
+            }
         }
     }
 
@@ -340,7 +343,7 @@ public class TDLModuleDirector extends ModalDirector {
      * Initialize the director, calculate schedule and schedule first firing.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
+        super.initialize(); 
         _resetReceivers();
         _graph = new TDLActionsGraph(((TDLModule) getContainer()),
                 getController());

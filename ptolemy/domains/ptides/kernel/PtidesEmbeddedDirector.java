@@ -234,18 +234,6 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         }
     }
     
-    private void _chooseExecutionStrategy(String executionStrategy) {
-        
-        if (executionStrategy.equals(PlatformExecutionStrategy.BASIC_NON_PREEMPTIVE)) {
-            _executionStrategy = new NonPreemptivePlatformExecutionStrategy(
-                    this);
-        } else if (executionStrategy
-                .equals(PlatformExecutionStrategy.BASIC_PREEMPTIVE)) {
-            _executionStrategy = new PreemptivePlatformExecutionStrategy(
-                    this);
-        }
-    }
-
     /**
      * Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (It must be added
@@ -399,10 +387,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             // take events out of the list of events in execution if the WCET 
             // of the actor has passed
             if (_eventsInExecution.size() > 0) {
-                Actor actorToFire = (Actor) _eventsInExecution.peek().contents;
+                Actor actorToFire = (Actor) _eventsInExecution.getFirst().contents;
                 Time time = getFinishingTime(actorToFire);
                 if (time.equals(_currentPhysicalTime)) {
-                    _eventsInExecution.remove();
+                    _eventsInExecution.removeFirst();
                     if (!_fireAtTheBeginningOfTheWcet(actorToFire))
                         _fireActorInZeroModelTime(actorToFire);
                     
@@ -412,7 +400,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                             .getDoubleValue(), ScheduleEventType.STOP);
                     if (_eventsInExecution.size() > 0)
                         _currentModelTime = _eventsInExecution
-                                .peek().timeStamp;
+                                .getFirst().timeStamp;
                     else
                         _currentModelTime = null;
                 }
@@ -424,7 +412,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                     eventsToFire, _eventsInExecution);
             event = _executionStrategy.getNextEventToFire(_eventsInExecution,
                     eventsToFire, nextRealTimeEventTime, _currentPhysicalTime);
-            
+            System.out.println(_currentPhysicalTime + " " + _currentTime + " " + event);
             // start firing an actor defined by the previously selected event
             if (event != null) {
                 _currentModelTime = event.timeStamp;
@@ -454,7 +442,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                         setFinishingTime(actor, getFinishingTime(actor).add( 
                                 WCET));
                     }
-                    _eventsInExecution.add(event);
+                    _eventsInExecution.addFirst(event);
                 }
             } else {
                 // if new inputs are read, continue firing, otherwise call 
@@ -678,9 +666,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                             + "input port.");
         }
         boolean wasTransferred = false;
-
+        
         for (int i = 0; i < port.getWidth(); i++) { 
-            while (port.hasToken(i)) {   
+            boolean nextTokenNotTested = true;
+            while (port.hasToken(i) && nextTokenNotTested) {   
                 Receiver[][] receivers = port.getReceivers();
             
                 for (int k = 0; k < receivers.length; k++) {
@@ -710,12 +699,14 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                                     minimumDelay.value()).add(
                                     _clockSyncronizationError).add(_networkDelay),
                                     port)); 
-                            receiver.put(t, time);
+                            //receiver.put(t, time);
+                            nextTokenNotTested = false;
                             continue; 
                         }
                         Receiver[][] farReceivers = port.deepGetReceivers();
                         if ((farReceivers == null) || (farReceivers.length <= i)
                                 || (farReceivers[i] == null)) {
+                            nextTokenNotTested = false;
                             continue;
                         }
                         for (int m = 0; m < farReceivers.length; m++) {
@@ -780,6 +771,137 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
+    ///////////////////////////////////////////////////////////////////
+    ////                    protected methods                      ////
+    
+    /**
+     * Choose the ExecutionStrategy object according to the selected string parameter.
+     * @param executionStrategy Given string parameter.
+     */
+    private void _chooseExecutionStrategy(String executionStrategy) {
+        
+        if (executionStrategy.equals(PlatformExecutionStrategy.BASIC_NON_PREEMPTIVE)) {
+            _executionStrategy = new NonPreemptivePlatformExecutionStrategy(
+                    this);
+        } else if (executionStrategy
+                .equals(PlatformExecutionStrategy.BASIC_PREEMPTIVE)) {
+            _executionStrategy = new PreemptivePlatformExecutionStrategy(
+                    this);
+        }
+    }
+
+    /**
+     * This method fires an actor. The actual firing of an actor takes zero
+     * model time, the WCET is simulated by either firing an actor at the
+     * beginning or the end of the WCET.
+     * 
+     * @param actorToFire
+     *            Actor that has to be fired.
+     * @throws IllegalActionException
+     *             Thrown if actor cannot be fired.
+     */
+    private void _fireActorInZeroModelTime(Actor actorToFire)
+            throws IllegalActionException {
+        if (actorToFire instanceof CompositeActor)
+            actorToFire.getDirector().setModelTime(getModelTime());
+        actorToFire.fire();
+        actorToFire.postfire();
+    }
+
+    /**
+     * Determines if the actor has to be fired at the beginning of the WCET. An
+     * actor must be fired at the beginning of the WCET if the firing is
+     * required to determine the WCET. This is the case for actors that do not
+     * have a static WCET but the WCET is defined for contained actors. An
+     * example for such an actor is a TDLModule.
+     * 
+     * @param actor
+     *            Actor that has to be fired.
+     * @return True if actor has to be fired at the beginning of the WCET.
+     */
+    private boolean _fireAtTheBeginningOfTheWcet(Actor actor) {
+        if (actor instanceof TDLModule)
+            return true;
+        return false;
+    }
+
+    /**
+     * Get the list of events that are safe to fire. Those events contain pure
+     * events and triggered events.
+     * 
+     * @return List of events that can be fired next.
+     */
+    private List<TimedEvent> _getNextEventsToFire()
+            throws IllegalActionException {
+        List<TimedEvent> events = new LinkedList<TimedEvent>();
+        for (Actor actor : _eventQueues.keySet()) {
+            TreeSet<Time> set = _eventQueues.get(actor);
+            // take pure events
+            if (!set.isEmpty()) {
+                Time time = set.first();
+                events.add(new TimedEvent(time, actor));
+            }
+            // take trigger events
+            if (!_eventsInExecution.contains(actor)) {
+                List<IOPort> inputPorts = actor.inputPortList();
+                for (IOPort port : inputPorts) {
+                    CausalityInterfaceForComposites causalityInterface = 
+                        (CausalityInterfaceForComposites) ((CompositeActor) this.getContainer())
+                        .getCausalityInterface();
+                    
+                    if (PtidesActorProperties.portIsTriggerPort(port)) {
+                        Receiver[][] receivers = port.getReceivers();
+                        for (int i = 0; i < receivers.length; i++) {
+                            Receiver[] recv = receivers[i];
+                            for (int j = 0; j < recv.length; j++) {
+                                PtidesActorReceiver receiver = (PtidesActorReceiver) recv[j];
+                                Time time = receiver.getNextTime();
+                                if (time != null
+                                        && (isSafeToProcessStatically(time,
+                                                port) || _isSafeToProcess(port,
+                                                new ArrayList(), new Time(this,
+                                                        0.0), time))) {
+                                    List<TimedEvent> toRemove = new ArrayList<TimedEvent>();
+                                    for (int k = 0; k < events.size(); k++) {
+                                        TimedEvent event = events
+                                                .get(k);
+                                        if (event.contents == actor
+                                                && event.timeStamp.equals(time))
+                                            toRemove.add(event);
+                                    }
+                                    for (int k = 0; k < toRemove.size(); k++)
+                                        events.remove(toRemove.get(k));
+                                    events.add(new TimedEvent(time, port));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return events;
+    }
+
+    /** Return time stamp of next event on that port or null if that port
+     * has no events.
+     * @param port 
+     *            Port for which time stamp of next event is requested.
+     * @return Time stamp of next event or null if there are no events.
+     */
+    private Time _getNextEventTimeStamp(IOPort port) {
+        Time time = Time.POSITIVE_INFINITY;
+        Receiver[][] receivers = port.getReceivers();
+        for (int i = 0; i < receivers.length; i++) {
+            Receiver[] recv = receivers[i];
+            for (int j = 0; j < recv.length; j++) { 
+                PtidesReceiver receiver = (PtidesReceiver) recv[j];
+                if (receiver.getNextTime() != null && time.compareTo(receiver.getNextTime()) > 0)
+                    time = receiver.getNextTime(); 
+            }
+        } 
+        return time;
+    }
+
     /**
      * Return time stamp of next real time event. A real time event is either an
      * event for a sensor or an actuator, the end of the WCET of an actor in
@@ -818,6 +940,24 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             }
         }
         return nextRealTimeEvent;
+    }
+
+    /**
+     * Initialize the execution strategy parameter.
+     */
+    private void _initialize() {
+        try {
+            executionStrategy = new StringParameter(this, "executionStrategy");
+            executionStrategy
+                    .addChoice(PlatformExecutionStrategy.BASIC_NON_PREEMPTIVE);
+            executionStrategy
+                    .setExpression(PlatformExecutionStrategy.BASIC_NON_PREEMPTIVE);
+            executionStrategy
+                    .addChoice(PlatformExecutionStrategy.BASIC_PREEMPTIVE);
+        } catch (KernelException e) {
+            throw new InternalErrorException("Cannot set parameter:\n"
+                    + e.getMessage());
+        }
     }
 
     /**
@@ -920,136 +1060,6 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         return false;
     }
 
-    /** Return time stamp of next event on that port or null if that port
-     * has no events.
-     * @param port 
-     *            Port for which time stamp of next event is requested.
-     * @return Time stamp of next event or null if there are no events.
-     */
-    private Time _getNextEventTimeStamp(IOPort port) {
-        Time time = Time.POSITIVE_INFINITY;
-        Receiver[][] receivers = port.getReceivers();
-        for (int i = 0; i < receivers.length; i++) {
-            Receiver[] recv = receivers[i];
-            for (int j = 0; j < recv.length; j++) { 
-                PtidesReceiver receiver = (PtidesReceiver) recv[j];
-                if (receiver.getNextTime() != null && time.compareTo(receiver.getNextTime()) > 0)
-                    time = receiver.getNextTime(); 
-            }
-        } 
-        return time;
-    }
-
-    /**
-     * This method fires an actor. The actual firing of an actor takes zero
-     * model time, the WCET is simulated by either firing an actor at the
-     * beginning or the end of the WCET.
-     * 
-     * @param actorToFire
-     *            Actor that has to be fired.
-     * @throws IllegalActionException
-     *             Thrown if actor cannot be fired.
-     */
-    private void _fireActorInZeroModelTime(Actor actorToFire)
-            throws IllegalActionException {
-        if (actorToFire instanceof CompositeActor)
-            actorToFire.getDirector().setModelTime(getModelTime());
-        actorToFire.fire();
-        actorToFire.postfire();
-    }
-
-    /**
-     * Determines if the actor has to be fired at the beginning of the WCET. An
-     * actor must be fired at the beginning of the WCET if the firing is
-     * required to determine the WCET. This is the case for actors that do not
-     * have a static WCET but the WCET is defined for contained actors. An
-     * example for such an actor is a TDLModule.
-     * 
-     * @param actor
-     *            Actor that has to be fired.
-     * @return True if actor has to be fired at the beginning of the WCET.
-     */
-    private boolean _fireAtTheBeginningOfTheWcet(Actor actor) {
-        if (actor instanceof TDLModule)
-            return true;
-        return false;
-    }
-
-    /**
-     * Get the list of events that are safe to fire. Those events contain pure
-     * events and triggered events.
-     * 
-     * @return List of events that can be fired next.
-     */
-    private List<TimedEvent> _getNextEventsToFire()
-            throws IllegalActionException {
-        List<TimedEvent> events = new LinkedList<TimedEvent>();
-        for (Actor actor : _eventQueues.keySet()) {
-            TreeSet<Time> set = _eventQueues.get(actor);
-            // take pure events
-            if (!set.isEmpty()) {
-                Time time = set.first();
-                events.add(new TimedEvent(time, actor));
-            }
-            // take trigger events
-            if (!_eventsInExecution.contains(actor)) {
-                List<IOPort> inputPorts = actor.inputPortList();
-                for (IOPort port : inputPorts) {
-                    CausalityInterfaceForComposites causalityInterface = 
-                        (CausalityInterfaceForComposites) ((CompositeActor) this.getContainer())
-                        .getCausalityInterface();
-                    
-                    if (PtidesActorProperties.portIsTriggerPort(port)) {
-                        Receiver[][] receivers = port.getReceivers();
-                        for (int i = 0; i < receivers.length; i++) {
-                            Receiver[] recv = receivers[i];
-                            for (int j = 0; j < recv.length; j++) {
-                                PtidesActorReceiver receiver = (PtidesActorReceiver) recv[j];
-                                Time time = receiver.getNextTime();
-                                if (time != null
-                                        && (isSafeToProcessStatically(time,
-                                                port) || _isSafeToProcess(port,
-                                                new ArrayList(), new Time(this,
-                                                        0.0), time))) {
-                                    List<TimedEvent> toRemove = new ArrayList<TimedEvent>();
-                                    for (int k = 0; k < events.size(); k++) {
-                                        TimedEvent event = events
-                                                .get(k);
-                                        if (event.contents == actor
-                                                && event.timeStamp.equals(time))
-                                            toRemove.add(event);
-                                    }
-                                    for (int k = 0; k < toRemove.size(); k++)
-                                        events.remove(toRemove.get(k));
-                                    events.add(new TimedEvent(time, port));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return events;
-    }
-
-    /**
-     * Initialize the execution strategy parameter.
-     */
-    private void _initialize() {
-        try {
-            executionStrategy = new StringParameter(this, "executionStrategy");
-            executionStrategy
-                    .addChoice(PlatformExecutionStrategy.BASIC_NON_PREEMPTIVE);
-            executionStrategy
-                    .setExpression(PlatformExecutionStrategy.BASIC_NON_PREEMPTIVE);
-            executionStrategy
-                    .addChoice(PlatformExecutionStrategy.BASIC_PREEMPTIVE);
-        } catch (KernelException e) {
-            throw new InternalErrorException("Cannot set parameter:\n"
-                    + e.getMessage());
-        }
-    }
-
     /**
      * Transfer all input tokens and return true if inputs were transfered.
      * 
@@ -1092,26 +1102,20 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     ////                     private variables                     ////
 
     /**
-     * List of actors in execution. In a non-preemptive execution, the list only
-     * contains one item.
-     */
-    private Queue<TimedEvent> _eventsInExecution = new LinkedList<TimedEvent>();
-
-    /**
      * The current model time is adjusted when an actor is fired and set to the
      * event time stamp of the event causing the firing.
      */
     private Time _currentModelTime;
 
     /**
-     * Contains finishing times of actors in execution.
-     */
-    private Hashtable<Actor, Time> _finishingTimesOfActorsInExecution = new Hashtable();
-
-    /**
      * Contains an event queue for every actor.
      */
     private Hashtable<Actor, TreeSet<Time>> _eventQueues;
+
+    /**
+     * List of actors in execution. In a non-preemptive execution, the list only contains one item.
+     */
+    private LinkedList<TimedEvent> _eventsInExecution = new LinkedList<TimedEvent>();
 
     /**
      * Used execution strategy which is set according to a parameter.
@@ -1125,5 +1129,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      */
     private CalendarQueue _inputSafeToProcess = new CalendarQueue(
             new TimedEvent.TimeComparator());
+
+    /**
+     * Contains finishing times of actors in execution.
+     */
+    private Hashtable<Actor, Time> _finishingTimesOfActorsInExecution = new Hashtable();
 
 }

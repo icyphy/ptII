@@ -5,9 +5,15 @@ import java.util.Iterator;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.util.CausalityInterface;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.fsm.kernel.FSMDirector;
+import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.domains.fsm.modal.ModalPort;
 import ptolemy.domains.fsm.modal.Refinement;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -181,6 +187,7 @@ public class TDLModule extends ModalModel {
 	
 	@Override
 	public CausalityInterface getCausalityInterface() {
+	    getController();
 	    // TODO Auto-generated method stub
 	    return super.getCausalityInterface();
 	}
@@ -272,12 +279,21 @@ public class TDLModule extends ModalModel {
 				.setExpression("ptolemy.domains.tt.tdl.kernel.TDLModuleDirector");
 		_controller.removeAllEntities();
 		_controller.removeAllPorts();
-		_controller.removeAllRelations();
+		_controller.removeAllRelations(); 
 		_controller.setContainer(null);
 
 		TDLModuleDirector defaultTDLDirector = new TDLModuleDirector(this,
 				"_TDLDirector");
 		defaultTDLDirector.controllerName.setExpression("_Controller");
+		
+
+		ComponentEntity controller = getEntity("_Controller");
+        if (controller != null) {
+            controller.setContainer(null);
+        }
+        _controller = new TDLController(this, "_Controller");
+
+        _controller.stateDependentCausality.setExpression("stateDependentCausality");
 
 	}
 

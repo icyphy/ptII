@@ -608,10 +608,12 @@ public class TDLActionsGraph {
 
             Node modeSwitchEnd = null, modeSwitchStart = null;
             if (_tmpModeSwitchStarts == null
-                    || _tmpModeSwitchStarts.size() == 0)
-                modeSwitchStart = modeSwitchEnd = _createNode(new Time(_module
-                        .getDirector(), 0), TDLAction.AFTERMODESWITCH, mode);
-            else {
+                    || _tmpModeSwitchStarts.size() == 0) {
+                Time time = new Time(_module.getDirector(), 0);
+                modeSwitchStart = modeSwitchEnd = _createNode(time, TDLAction.AFTERMODESWITCH, mode);
+                _tmpModeSwitchStarts.put(time, modeSwitchStart);
+                _tmpModeSwitchEnds.put(time, modeSwitchStart);
+            } else {
                 modeSwitchStart = _tmpModeSwitchStarts.get(new Time(_module
                         .getDirector(), 0.0));
                 if (modeSwitchStart == null)

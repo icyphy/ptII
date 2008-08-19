@@ -30,10 +30,12 @@ package ptolemy.domains.ptides.kernel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -264,7 +266,7 @@ public class PtidesDirector extends TimedPNDirector {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PtidesDirector newObject = (PtidesDirector) super.clone(workspace);
-        _platformsToUnblock = new ArrayList<Actor>();
+        _platformsToUnblock = new HashSet<Actor>();
         _scheduleListeners = new LinkedList<ScheduleListener>();
         return newObject;
     }
@@ -517,7 +519,7 @@ public class PtidesDirector extends TimedPNDirector {
             throw new IllegalActionException(this, "Cannot set parameter:\n"
                     + e.getMessage());
         }
-        _platformsToUnblock = new ArrayList<Actor>();
+        _platformsToUnblock = new HashSet<Actor>();
         _scheduleListeners = new LinkedList<ScheduleListener>();
     }
 
@@ -538,7 +540,7 @@ public class PtidesDirector extends TimedPNDirector {
      * Platforms that are currently blocked but received new events and should
      * be resumed at current model time.
      */
-    private List<Actor> _platformsToUnblock;
+    private Set<Actor> _platformsToUnblock;
 
     /**
      * Registered schedule listeners that want to be informed about all schedule
