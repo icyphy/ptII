@@ -8,19 +8,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.kernel.util.Attribute;
 
 public class SharedUtilities {
-
-    //private SharedParameter _sharedParameter;
-
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-    public SharedUtilities(SharedParameter parameter) {
-        //_sharedParameter = parameter;
+    
+    public SharedUtilities() {
+        // Since this is a shared (singleton) object per model,
+        // it is important that all model-specific references 
+        // need to be reset when cloned. Otherwise, it will lead
+        // to bugs that are hard to detect, and inconsistency
+        // will occur.
         id = count++;
     }
     

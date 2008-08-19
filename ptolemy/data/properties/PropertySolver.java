@@ -71,7 +71,7 @@ public abstract class PropertySolver extends Attribute {
         // **We can only create a new shared utilities object
         // only once per model.
         if (sharedUtilitiesWrapper.getExpression().length() == 0) {
-            sharedUtilitiesWrapper.setToken(new ObjectToken(new SharedUtilities(sharedUtilitiesWrapper)));
+            sharedUtilitiesWrapper.setToken(new ObjectToken(new SharedUtilities()));
         }
 
         Collection<SharedParameter> parameters = sharedUtilitiesWrapper.sharedParameterSet();
@@ -330,8 +330,9 @@ public abstract class PropertySolver extends Attribute {
         _repaintGUI();
     }
 
-    public static void main(String[] args) {
-        testPropertiesAndGenerateReports(args[0]);
+    public static void main(String[] args) throws Exception {
+        testProperties(args);
+        //testPropertiesAndGenerateReports(args[0]);
     }
 
     /** Parse a command-line argument. This method recognized -help
@@ -473,8 +474,10 @@ public abstract class PropertySolver extends Attribute {
             //     Check whether we are expecting an exception,
             //     if in testing mode, then add a RegressionTestErrorException
             PropertySolver failedSolver = ex.getSolver();
-            String trainedException = failedSolver.getTrainedException();
-            String exception = ex.getMessage();
+            
+            // Remove '\r' characters to make Windows-Linux comparable strings.
+            String trainedException = failedSolver.getTrainedException().replaceAll("\r", "");
+            String exception = ex.getMessage().replaceAll("\r", "");
             if (isTesting()) {
                 if (!exception.equals(trainedException)) {
                     addErrors(PropertySolver.getTrainedExceptionMismatchMessage(
@@ -593,7 +596,7 @@ public abstract class PropertySolver extends Attribute {
      * @return
      * @throws IllegalActionException
      */
-    private PropertyAttribute _getPropertyAttribute(NamedObj propertyable) 
+    protected PropertyAttribute _getPropertyAttribute(NamedObj propertyable) 
     throws IllegalActionException {
         PropertyAttribute attribute = null;
 
@@ -654,6 +657,21 @@ public abstract class PropertySolver extends Attribute {
             }
         }
 
+        // The first check is for singleton elements, and the equals()
+        // comparison is necessary for "equivalent" elements, such as
+        // those in the SetLattice usecase.
+        if (previousProperty != property && !previousProperty.equals(property)) {
+            if (previousProperty == null ||
+                    (previousProperty != null && !previousProperty.equals(property))) {
+
+                addErrors(_eol + "Property \"" + getUseCaseName() + 
+                        "\" resolution failed for " + namedObj.getFullName() + 
+                        "." + _eol + "    Trained value: \"" +
+                        previousProperty +
+                        "\"; Resolved value: \"" +
+                        property + "\".");
+            }
+        }
     }
 
     /**

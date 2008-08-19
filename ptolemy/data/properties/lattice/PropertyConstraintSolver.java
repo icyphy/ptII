@@ -285,8 +285,8 @@ public class PropertyConstraintSolver extends PropertySolver {
     throws KernelException {
         super._resolveProperties(analyzer);
 
-        PropertyConstraintCompositeHelper toplevelHelper = 
-            (PropertyConstraintCompositeHelper) getHelper(toplevel());
+        PropertyConstraintHelper toplevelHelper = 
+            (PropertyConstraintHelper) getHelper(toplevel());
 
         toplevelHelper.reinitialize();
 

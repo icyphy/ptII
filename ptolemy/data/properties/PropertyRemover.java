@@ -31,7 +31,7 @@ public class PropertyRemover extends Attribute {
 
         // Create a new shared utilities object (only once).
         if (sharedUtilitiesWrapper.getExpression().length() == 0) {
-            sharedUtilitiesWrapper.setToken(new ObjectToken(new SharedUtilities(sharedUtilitiesWrapper)));
+            sharedUtilitiesWrapper.setToken(new ObjectToken(new SharedUtilities()));
         }
         _sharedUtilities = (SharedUtilities) ((ObjectToken) 
                 sharedUtilitiesWrapper.getToken()).getValue();

@@ -25,7 +25,6 @@
  */
 package ptolemy.data.properties;
 
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -35,6 +34,7 @@ import ptolemy.data.expr.ASTPtMethodCallNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.AbstractParseTreeVisitor;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -133,31 +133,56 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
     }
 
     private Object _resolveLabel(String name, Object container) {
-        if (container instanceof CompositeActor) {
-            Object object = ((CompositeActor)container).getEntity(name);
-            if (object != null) {
-                return object;
-            }
-        }
+        int dotIndex = name.indexOf('.');
         
-        if (container instanceof AtomicActor) {
-            if (name.endsWith(".getPort")) {
-                name = name.replace(".getPort", "");
+        if (dotIndex >= 0) {
+            String subContainerName = name.substring(0, dotIndex);
+            if (container instanceof CompositeActor) {
+                Object object = ((CompositeActor)container).getEntity(subContainerName);
+                if (object != null) {
+                    return _resolveLabel(name.substring(dotIndex + 1), object);
+                }
             }
-            Object object = ((AtomicActor)container).getPort(name);
-            if (object != null) {
-                return object;
+        } else {
+            if (container instanceof CompositeActor) {
+                Object object = ((CompositeActor)container).getEntity(name);
+                if (object != null) {
+                    return object;
+                }
             }
-        } 
+            
+            if (container instanceof Entity) {
+                if (name.endsWith(".getPort")) {
+                    name = name.replace(".getPort", "");
+                }
+                Object object = ((Entity)container).getPort(name);
+                if (object != null) {
+                    return object;
+                }
+            }
+    
+            if (container instanceof NamedObj) {
+                if (name.endsWith(".getParameter")) {
+                    name = name.replace(".getParameter", "");
+                }
+                Object object = ((NamedObj)container).getAttribute(name);
+                if (object != null) {
+                    return object;
+                }
+            }
 
-        if (container instanceof NamedObj) {
-            if (name.endsWith(".getParameter")) {
-                name = name.replace(".getParameter", "");
+            if (container instanceof Entity) {
+                Object object = ((Entity)container).getPort(name);
+                if (object != null) {
+                    return object;
+                }
+                
+                object = ((NamedObj)container).getAttribute(name);
+                if (object != null) {
+                    return object;
+                }
             }
-            Object object = ((NamedObj)container).getAttribute(name);
-            if (object != null) {
-                return object;
-            }
+        
         }
         return null;
     }
