@@ -99,7 +99,7 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
         }
 
         public void managerStateChanged(Manager manager) {
-            if (manager.getState() == Manager.PREINITIALIZING) {
+            if (manager.getState() == Manager.INITIALIZING) {
                 _frame.report("Applying model transformation: " +
                         _attribute.getName());
                 ERGModalModel modelUpdater = _attribute.getModelUpdater();

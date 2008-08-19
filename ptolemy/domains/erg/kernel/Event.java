@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.Executable;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
@@ -161,7 +162,19 @@ public class Event extends State implements Initializable, ValueListener {
         monitoredVariables = new StringParameter(this, "monitoredVariables");
     }
 
+    /** Add the specified object to the list of objects whose
+     *  preinitialize(), intialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object.
+     *  @param initializable The object whose methods should be invoked.
+     *  @see #removeInitializable(Initializable)
+     *  @see ptolemy.actor.CompositeActor#addPiggyback(Executable)
+     */
     public void addInitializable(Initializable initializable) {
+        if (_initializables == null) {
+            _initializables = new LinkedList<Initializable>();
+        }
+        _initializables.add(initializable);
     }
 
     /** React to a change in an attribute. If the changed attribute is
@@ -243,27 +256,51 @@ public class Event extends State implements Initializable, ValueListener {
     }
 
     /** Begin execution of the actor and start to monitor the variables whose
-     *  values this event listens to.
+     *  values this event listens to. Also invoke the initialize methods of
+     *  objects that have been added using {@link #addInitializable()}.
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void initialize() throws IllegalActionException {
         _monitoring = true;
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.initialize();
+            }
+        }
     }
 
-    /** Do nothing.
-     *
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Do nothing except invoke the preinitialize methods
+     *  of objects that have been added using {@link #addInitializable()}.
+     *  @exception IllegalActionException If one of the added objects
+     *   throws it.
      */
     public void preinitialize() throws IllegalActionException {
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.preinitialize();
+            }
+        }
     }
 
-    /** Do nothing.
-     *
-     *  @param initializable The object whose methods should no longer be
-     *  invoked.
+    /** Remove the specified object from the list of objects whose
+     *  preinitialize(), intialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object. If the specified object is not
+     *  on the list, do nothing.
+     *  @param initializable The object whose methods should no longer be invoked.
+     *  @see #addInitializable(Initializable)
+     *  @see ptolemy.actor.CompositeActor#removePiggyback(Executable)
      */
     public void removeInitializable(Initializable initializable) {
+        if (_initializables != null) {
+            _initializables.remove(initializable);
+            if (_initializables.size() == 0) {
+                _initializables = null;
+            }
+        }
     }
 
     /** Call the superclass to set the container (which should be an instance of
@@ -328,11 +365,18 @@ public class Event extends State implements Initializable, ValueListener {
         }
     }
 
-    /** Stop monitoring variables.
+    /** Stop monitoring variables. Also invoke the wrapup methods of
+     *  objects that have been added using {@link #addInitializable()}.
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.wrapup();
+            }
+        }
         _monitoring = false;
     }
 
@@ -354,6 +398,9 @@ public class Event extends State implements Initializable, ValueListener {
 
     /** A list of formal parameters. */
     public ParametersAttribute parameters;
+
+    //////////////////////////////////////////////////////////////////////////
+    //// ParameterParserScope
 
     /**
      The parser scope that resolves the parameters for an ERG event with their
@@ -479,9 +526,6 @@ public class Event extends State implements Initializable, ValueListener {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    //// ParameterParserScope
-
     /** Return the parser scope used to evaluate the actions and values
      *  associated with scheduling relations. The parser scope can evaluate
      *  names in the parameter list of this event. The values for those names
@@ -596,6 +640,11 @@ public class Event extends State implements Initializable, ValueListener {
             }
         }
     }
+
+    /** List of objects whose (pre)initialize() and wrapup() methods should be
+     *  slaved to these.
+     */
+    private transient List<Initializable> _initializables;
 
     /** The variables that this event has been monitoring. */
     private List<Variable> _monitoredVariables;
